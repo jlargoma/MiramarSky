@@ -117,7 +117,7 @@
                 @yield('content')
             </main>
 
-            <footer id="page-footer" class="content-mini content-mini-full font-s12 bg-gray-lighter clearfix">
+            <footer id="page-footer" class="content-mini content-mini-full font-s12 bg-white clearfix">
                 <div class="content content-boxed">
                     <div class="pull-right">
                         

@@ -18,4 +18,7 @@ Route::get('/', function () {
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
-Route::get('/admin', 'Admin\BackendController@index');
+Route::get('/admin',[
+							'middleware' => 'auth',
+							'uses' => 'Admin\BackendController@index'
+						]);
