@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title')Miramarski
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -8,7 +10,7 @@
                 <div class="panel-heading">Welcome</div>
 
                 <div class="panel-body">
-                    Your Application's Landing Page.
+                    Pagina de miramarski
                 </div>
             </div>
         </div>

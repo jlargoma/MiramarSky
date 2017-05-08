@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<!--[if IE 9]>         <html class="ie9 no-focus"> <![endif]-->
-<!--[if gt IE 9]><!--> <html class="no-focus"> <!--<![endif]-->
+<html class="ie9 no-focus"> 
     <head>
         <meta charset="utf-8">
 

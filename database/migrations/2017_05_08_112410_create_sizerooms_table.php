@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePaymentsProTable extends Migration
+class CreateSizeroomsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,9 @@ class CreatePaymentsProTable extends Migration
      */
     public function up()
     {
-        Schema::create('paymentsPro', function (Blueprint $table) {
+        Schema::create('sizeRooms', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('room_id')->unsigned();
-            $table->date('datePayment');
-            $table->string('comment');
-            $table->decimal('import', 8, 2);
+            $table->string('name');
             $table->timestamps();
         });
     }

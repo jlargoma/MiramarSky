@@ -60,7 +60,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ url('/admin/rooms') }}" class="{{ Request::path() == 'admin/rooms' ? 'active' : '' }}">
+                                    <a href="{{ url('/admin/apartamento') }}" class="{{ Request::path() == 'admin/rooms' ? 'active' : '' }}">
                                         <i class="fa fa-home"></i><span class="sidebar-mini-hide">Apartamentos</span>
                                     </a>
                                 </li>
@@ -70,7 +70,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ url('/admin/users') }}" class="{{ Request::path() == 'admin/users' ? 'active' : '' }}">
+                                    <a href="{{ url('/admin/usuarios') }}" class="{{ Request::path() == 'admin/usuarios' ? 'active' : '' }}">
                                         <i class="fa fa-users"></i><span class="sidebar-mini-hide">Usuarios</span>
                                     </a>
                                 </li>
