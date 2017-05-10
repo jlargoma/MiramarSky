@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateCustomer extends Migration
+class CreateTypeseasonsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,14 @@ class UpdateCustomer extends Migration
      */
     public function up()
     {
-         Schema::table('customers', function ($table) {
+        Schema::create('typeseasons', function (Blueprint $table) {
+            $table->increments('id');
+            $table->String('name');
             $table->timestamps();
+        });
+
+        Schema::table('seasons', function ($table) {
+            $table->foreign('type')->references('id')->on('typeseasons');
         });
     }
 

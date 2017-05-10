@@ -60,12 +60,17 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ url('/admin/apartamento') }}" class="{{ Request::path() == 'admin/rooms' ? 'active' : '' }}">
+                                    <a href="{{ url('/admin/apartamentos') }}" class="{{ Request::path() == 'admin/rooms' ? 'active' : '' }}">
                                         <i class="fa fa-home"></i><span class="sidebar-mini-hide">Apartamentos</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ url('/admin/seasons') }}" class="{{ Request::path() == 'admin/seasons' ? 'active' : '' }}">
+                                    <a href="{{ url('/admin/precios') }}" class="{{ Request::path() == 'admin/prices' ? 'active' : '' }}">
+                                        <i class="fa fa-dollar"></i><span class="sidebar-mini-hide">Precios</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('/admin/temporadas') }}" class="{{ Request::path() == 'admin/seasons' ? 'active' : '' }}">
                                         <i class="fa fa-clock-o"></i><span class="sidebar-mini-hide">Temporadas</span>
                                     </a>
                                 </li>

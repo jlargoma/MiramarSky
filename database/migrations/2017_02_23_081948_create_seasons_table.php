@@ -17,7 +17,7 @@ class CreateSeasonsTable extends Migration
             $table->string('name');
             $table->date('start_date');
             $table->date('finish_date');
-            $table->integer('type');
+            $table->integer('type')->unsigned();
             $table->timestamps();
         });
     }

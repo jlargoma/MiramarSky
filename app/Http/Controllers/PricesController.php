@@ -15,7 +15,16 @@ class PricesController extends Controller
      */
     public function index()
     {
-        //
+        return view('backend/prices/prices',[
+                    'prices' => \App\Prices::all(),
+                ]);
+    }
+
+    public function newPrices()
+    {
+        return view('backend/prices/new-prices',[
+                                                'seasons' =>\App\Seasons::all(),
+                                            ]);
     }
 
     /**
@@ -23,9 +32,22 @@ class PricesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $price = new \App\Prices();
+
+        $price->name = $request->input('name');
+        $price->occupation = $request->input('occupation');
+        $price->pricehigh = $request->input('priceHigh');
+        $price->priceMed = $request->input('priceMed');
+        $price->priceLow = $request->input('priceLow');
+        $price->costHigh = $request->input('costHigh');
+        $price->costMed = $request->input('costMed');
+        $price->costLow = $request->input('costLow');
+        
+        if ($price->save()) {
+            return redirect()->action('PricesController@index');
+        }
     }
 
     /**
@@ -68,9 +90,22 @@ class PricesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id                   = $request->input('id');
+        $pricesUpdate          = \App\Prices::find($id);
+        $pricesUpdate->name = $request->input('name');
+        $pricesUpdate->occupation = $request->input('occupation');
+        $pricesUpdate->pricehigh = $request->input('priceHigh');
+        $pricesUpdate->priceMed = $request->input('priceMed');
+        $pricesUpdate->priceLow = $request->input('priceLow');
+        $pricesUpdate->costHigh = $request->input('costHigh');
+        $pricesUpdate->costMed = $request->input('costMed');
+        $pricesUpdate->costLow = $request->input('costLow');
+
+        if ($pricesUpdate->save()) {
+            echo "Cambiada!!";
+        }
     }
 
     /**
@@ -79,8 +114,11 @@ class PricesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
-        //
+        $priceDelete = \App\Prices::find($id);
+        if ($priceDelete->delete()) {
+            return redirect()->action('PricesController@index');
+        }
     }
 }

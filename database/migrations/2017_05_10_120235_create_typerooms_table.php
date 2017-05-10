@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSizeroomsTable extends Migration
+class CreateTyperoomsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,14 +12,14 @@ class CreateSizeroomsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sizeRooms', function (Blueprint $table) {
+        Schema::create('typerooms', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->String('name');
             $table->timestamps();
         });
 
-        Schema::table('Rooms', function ($table) {
-            $table->foreign('sizeRoom')->references('id')->on('sizerooms');
+        Schema::table('rooms', function ($table) {            
+            $table->foreign('owned')->references('id')->on('typerooms');
         });
     }
 

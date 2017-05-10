@@ -5,7 +5,7 @@
 @section('headerButtoms')
     <li class="text-center">
         <button class="btn btn-sm btn-success new-room" data-toggle="modal" data-target="#modal-room">
-            <i class="fa fa-plus"></i> Apartamento
+            <i class="fa fa-plus"></i> Apartamentos
         </button>
     </li>
 @endsection
@@ -23,12 +23,9 @@
                         <th class ="text-center">           Nombre      </th>
                         <th class ="text-center">           Tipo        </th>
                         <th class ="text-center">           Propietario </th>
-                        <th class ="text-center">           Temp. Alta  </th>
-                        <th class ="text-center">           Temp. Media </th>
-                        <th class ="text-center">           Temp. Baja  </th>
-                        <th class ="text-center">           Cost. Alta  </th>
-                        <th class ="text-center">           Cost. Med   </th>
-                        <th class ="text-center">           Cost. Baja  </th>
+                        <th class ="text-center">           Ocupacion min </th>
+                        <th class ="text-center">           Ocupacion max </th>
+                        <th class ="text-center">           Lujo </th>                        
                         <th class ="text-center">           Editar      </th>
 
                     </tr>
@@ -40,33 +37,30 @@
                             <td class="text-center">
                                 <input class="form-control editables text-center name-room-<?php echo $room->id?>"  data-id="<?php echo $room->id; ?>"  type="text" name="<?php echo $room->name?>" value  ="<?php echo $room->name?>">
                             </td>
-                            <td class="text-center"><?php echo $room->sizeRooms->name?></td>
                             <td class="text-center">
-                                <!-- <input class="form-control editables text-center name-user-<?php echo $room->id?>"  data-id="<?php echo $room->id; ?>"  type="text" name="<?php echo $room->user->name?>" value  ="<?php echo $room->user->name?>"> -->
-                                <?php echo $room->user->name ?>
+                                <input class="form-control editables text-center size-room-<?php echo $room->id?>"  data-id="<?php echo $room->id; ?>"  data-size="<?php echo $room->sizeRooms->id; ?>" type="text" name="<?php echo $room->sizeRooms->name?>" value  ="<?php echo $room->sizeRooms->name?>" disabled>
                             </td>
                             <td class="text-center">
-                                <input class="form-control editables text-center price-High-<?php echo $room->id?>"  data-id="<?php echo $room->id; ?>"  type="text" name="<?php echo $room->priceHigh?>" value  ="<?php echo $room->priceHigh?>">
-                            </td>
+                                <input class="form-control editables text-center name-propieratio-<?php echo $room->id?>"  data-id="<?php echo $room->id; ?>"  type="text" name="<?php echo $room->user->name?>" value  ="<?php echo $room->user->name?>" disabled>
+                            </td>    
                             <td class="text-center">
-                                <input class="form-control editables text-center price-Med-<?php echo $room->id?>"  data-id="<?php echo $room->id; ?>"  type="text" name="<?php echo $room->priceMed?>" value  ="<?php echo $room->priceMed?>">
-                            </td>
+                                <input class="form-control editables text-center min-occupation-<?php echo $room->id?>"  data-id="<?php echo $room->id; ?>"  type="text" name="<?php echo $room->sizeRooms->MinOcup?>" value  ="<?php echo $room->sizeRooms->MinOcup?>" disabled>
+                            </td>  
                             <td class="text-center">
-                                <input class="form-control editables text-center price-Low-<?php echo $room->id?>"  data-id="<?php echo $room->id; ?>"  type="text" name="<?php echo $room->priceLow?>" value  ="<?php echo $room->priceLow?>">
-                            </td>
+                                <input class="form-control editables text-center max-occupation-<?php echo $room->id?>"  data-id="<?php echo $room->id; ?>"  type="text" name="<?php echo $room->sizeRooms->maxOcup?>" value  ="<?php echo $room->sizeRooms->maxOcup?>" disabled>
+                            </td> 
                             <td class="text-center">
-                                <input class="form-control editables text-center Cost-High-<?php echo $room->id?>"  data-id="<?php echo $room->id; ?>"  type="text" name="<?php echo $room->costHigh?>" value  ="<?php echo $room->costHigh?>">
-                            </td>
-                            <td class="text-center">
-                                <input class="form-control editables text-center Cost-Med-<?php echo $room->id?>"  data-id="<?php echo $room->id; ?>"  type="text" name="<?php echo $room->costMed?>" value  ="<?php echo $room->costMed?>">
-                            </td>
-                            <td class="text-center">
-                                <input class="form-control editables text-center Cost-Low-<?php echo $room->id?>"  data-id="<?php echo $room->id; ?>"  type="text" name="<?php echo $room->costLow?>" value  ="<?php echo $room->costLow?>">
-                            </td>
+                                <?php if ($room->typeApto == 0): ?>
+                                    <input class="form-control editables text-center type-apto-<?php echo $room->id?>"  data-id="<?php echo $room->id; ?>"  type="text" name="<?php echo $room->typeApto?>" value  ="No" disabled>
+                                <?php else: ?>
+                                    <input class="form-control editables text-center type-apto-<?php echo $room->id?>"  data-id="<?php echo $room->id; ?>"  type="text" name="<?php echo $room->typeApto?>" value  ="Si" disabled>
+                                <?php endif ?>
+                                
+                            </td>                      
                             <td class="text-center">
                                 <div class="btn-group">
                                     <!--  -->
-                                    <a href="{{ url('/admin/apartamento/delete/')}}/<?php echo $room->id ?>" class="btn btn-sm btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Usuario" onclick="return confirm('¿Quieres eliminar el usuario?');">
+                                    <a href="{{ url('/admin/apartamentos/delete/')}}/<?php echo $room->id ?>" class="btn btn-sm btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Usuario" onclick="return confirm('¿Quieres eliminar el apartamento?');">
                                         <i class="fa fa-times"></i>
                                     </a>                                     
                                 </div>
@@ -104,7 +98,7 @@
         $(document).ready(function() {
 
             $('.new-room').click(function(event) {
-                $.get('/admin/apartamento/new', function(data) {
+                $.get('/admin/apartamentos/new', function(data) {
                     $('#content-room').empty().append(data);
                 });
             });
@@ -120,14 +114,8 @@
                 var id = $(this).attr('data-id');
 
                 var name = $('.name-room-'+id).val();
-                var priceHigh = $('.price-High-'+id).val();
-                var priceMed  = $('.price-Med-'+id).val();
-                var priceLow  = $('.price-Low-'+id).val();
-                var costHigh  = $('.cost-High-'+id).val();
-                var costMed   = $('.cost-Med-'+id).val();
-                var costLow   = $('.cost-Low-'+id).val();
 
-                $.get('/admin/apartamento/update/', {  id: id, name: name, priceHigh: priceHigh, priceMed: priceMed, priceLow: priceLow, costHigh: costHigh, costMed: costMed, costLow: costLow}, function(data) {
+                $.get('/admin/apartamentos/update/', {  id: id, name:name}, function(data) {
                     alert(data);
                 });
             });

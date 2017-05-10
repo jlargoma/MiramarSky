@@ -33,11 +33,28 @@ Route::get('/admin',[
 	Route::get('admin/usuarios/delete/{id}', 'UsersController@delete');
 
 // Rooms
-	Route::get('admin/apartamento' , 'RoomsController@index');
-	Route::get('admin/apartamento/new', 'RoomsController@newRoom');
-	Route::get('admin/apartamento/update', 'RoomsController@update');
-	Route::post('admin/apartamento/saveupdate', 'RoomsController@saveUpdate');
-	Route::post('admin/apartamento/create', 'RoomsController@create');
-	Route::get('admin/apartamento/delete/{id}', 'RoomsController@delete');
+	Route::get('admin/apartamentos' , 'RoomsController@index');
+	Route::get('admin/apartamentos/new', 'RoomsController@newRoom');
+	Route::get('admin/apartamentos/update', 'RoomsController@update');
+	Route::post('admin/apartamentos/saveupdate', 'RoomsController@saveUpdate');
+	Route::post('admin/apartamentos/create', 'RoomsController@create');
+	Route::get('admin/apartamentos/delete/{id}', 'RoomsController@delete');
 
+// Prices
+	Route::get('admin/precios' , 'PricesController@index');
+	Route::get('admin/precios/new', 'PricesController@newPrices');
+	Route::get('admin/precios/update', 'PricesController@update');
+	Route::post('admin/precios/saveupdate', 'PricesController@saveUpdate');
+	Route::post('admin/precios/create', 'PricesController@create');
+	Route::get('admin/precios/delete/{id}', 'PricesController@delete');
+
+// seasons
+	Route::get('admin/temporadas' , 'SeasonsController@index');
+	Route::get('admin/temporadas/new', 'SeasonsController@newSeasons');
+	Route::get('admin/temporadas/new-type', 'SeasonsController@newTypeSeasons');
+	Route::get('admin/temporadas/update', 'SeasonsController@update');
+	Route::post('admin/temporadas/saveupdate', 'SeasonsController@saveUpdate');
+	Route::post('admin/temporadas/create', 'SeasonsController@create');
+	Route::post('admin/temporadas/create-type', 'SeasonsController@createType');
+	Route::get('admin/temporadas/delete/{id}', 'SeasonsController@delete');
 

@@ -37,7 +37,7 @@
                                 <input class="form-control editables text-center name-user-<?php echo $user->id?>"  data-id="<?php echo $user->id; ?>"  type="text" name="<?php echo $user->name?>" value  ="<?php echo $user->name?>">
                             </td>
                             <td class="text-center ">
-                                <?php echo $user->role?>
+                                <input class="form-control editables text-center name-role-<?php echo $user->id?>"  data-id="<?php echo $user->id; ?>"  type="text" name="<?php echo $user->role?>" value  ="<?php echo $user->role?>" disabled>
                             </td>
                             <td class="text-center ">
                                 <input class="form-control editables text-center email-user-<?php echo $user->id?>"  data-id="<?php echo $user->id; ?>" style="width: 100%" type="text" name="<?php echo $user->email?>" value ="<?php echo $user->email?>">

@@ -41,12 +41,6 @@ class RoomsController extends Controller
         $room->name = $request->input('name');
         $room->nameRoom = $request->input('nameRoom');
         $room->user_id = $request->input('propietario');
-        $room->pricehigh = $request->input('priceHigh');
-        $room->priceMed = $request->input('priceMed');
-        $room->priceLow = $request->input('priceLow');
-        $room->costHigh = $request->input('costHigh');
-        $room->costMed = $request->input('costMed');
-        $room->costLow = $request->input('costLow');
         $room->typeApto = $request->input('lujo');
         $room->sizeRoom = $request->input('size');
         
@@ -99,18 +93,13 @@ class RoomsController extends Controller
     public function update(Request $request)
     {
         $id                   = $request->input('id');
-        $roomUpdate          = \App\User::find($id);
+        $roomUpdate          = \App\Rooms::find($id);
         $roomUpdate->name = $request->input('name');
-        $roomUpdate->nameRoom = $request->input('nameRoom');
-        $roomUpdate->user_id = $request->input('propietario');
-        $roomUpdate->pricehigh = $request->input('priceHigh');
-        $roomUpdate->priceMed = $request->input('priceMed');
-        $roomUpdate->priceLow = $request->input('priceLow');
-        $roomUpdate->costHigh = $request->input('costHigh');
-        $roomUpdate->costMed = $request->input('costMed');
-        $roomUpdate->costLow = $request->input('costLow');
-        $roomUpdate->typeApto = $request->input('lujo');
-        $roomUpdate->sizeRoom = $request->input('size');
+        // $roomUpdate->nameRoom = $request->input('nameRoom');
+        // $roomUpdate->sizeRoom = $request->input('type');
+        // $roomUpdate->user_id = $request->input('user');
+        // $roomUpdate->typeApto = $request->input('lujo');
+        
 
         if ($roomUpdate->save()) {
             echo "Cambiada!!";
