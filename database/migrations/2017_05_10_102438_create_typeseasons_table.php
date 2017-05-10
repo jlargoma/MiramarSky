@@ -17,10 +17,6 @@ class CreateTypeseasonsTable extends Migration
             $table->String('name');
             $table->timestamps();
         });
-
-        Schema::table('seasons', function ($table) {
-            $table->foreign('type')->references('id')->on('typeseasons');
-        });
     }
 
     /**

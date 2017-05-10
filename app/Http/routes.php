@@ -35,9 +35,13 @@ Route::get('/admin',[
 // Rooms
 	Route::get('admin/apartamentos' , 'RoomsController@index');
 	Route::get('admin/apartamentos/new', 'RoomsController@newRoom');
+	Route::get('admin/apartamentos/new-type', 'RoomsController@newTypeRoom');
+	Route::get('admin/apartamentos/new-size', 'RoomsController@newSizeRoom');
 	Route::get('admin/apartamentos/update', 'RoomsController@update');
 	Route::post('admin/apartamentos/saveupdate', 'RoomsController@saveUpdate');
 	Route::post('admin/apartamentos/create', 'RoomsController@create');
+	Route::post('admin/apartamentos/create-type', 'RoomsController@createType');
+	Route::post('admin/apartamentos/create-size', 'RoomsController@createSize');
 	Route::get('admin/apartamentos/delete/{id}', 'RoomsController@delete');
 
 // Prices

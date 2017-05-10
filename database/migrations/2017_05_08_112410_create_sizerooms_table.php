@@ -15,11 +15,9 @@ class CreateSizeroomsTable extends Migration
         Schema::create('sizeRooms', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->integer('maxOcu');
+            $table->integer('minOcu');
             $table->timestamps();
-        });
-
-        Schema::table('Rooms', function ($table) {
-            $table->foreign('sizeRoom')->references('id')->on('sizerooms');
         });
     }
 

@@ -15,7 +15,7 @@
 		        		</h3>
 		        	</div>
 		        	<div class="clear"></div>
-		        	<form class="form-horizontal" action="{{ url('/admin/apartamento/create') }}" method="post">
+		        	<form class="form-horizontal" action="{{ url('/admin/apartamentos/create') }}" method="post">
 		        		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 		                <div class="col-md-12 col-xs-12 push-20">
 		                    <div class="col-md-6  push-20">
@@ -38,6 +38,16 @@
 		                            	<?php endforeach ?>
 	                            	</select>
 		                            <label for="propietario">Propietario</label>
+		                        </div>
+		                    </div>
+		                    <div class="col-md-6  push-20 ">
+		                        <div class="form-material">
+		                            <select class="js-select2 form-control" id="type" name="type" style="width: 100%;" data-placeholder="Propietario..." required>
+		                            	<?php foreach ($types as $type): ?>
+		                            		<option value="<?php echo $type->id ?>"><?php echo $type->name ?></option>
+		                            	<?php endforeach ?>
+	                            	</select>
+		                            <label for="type">Tipo de Apartamento</label>
 		                        </div>
 		                    </div>
 		                    <div class="col-md-6  push-20">

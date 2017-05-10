@@ -31,7 +31,16 @@ class RoomsController extends Controller
         return view('backend/rooms/new-room',[
                                                 'users' => \App\User::all(),
                                                 'sizes' =>\App\SizeRooms::all(),
+                                                'types'  => \App\TypeRooms::all(),
                                             ]);
+    }
+    public function newTypeRoom()
+    {
+        return view('backend/rooms/new-type-room');
+    }
+    public function newSizeRoom()
+    {
+        return view('backend/rooms/new-size-room');
     }
 
     public function create(Request $request)
@@ -40,11 +49,36 @@ class RoomsController extends Controller
 
         $room->name = $request->input('name');
         $room->nameRoom = $request->input('nameRoom');
+        $room->owned = $request->input('type');
         $room->user_id = $request->input('propietario');
         $room->typeApto = $request->input('lujo');
         $room->sizeRoom = $request->input('size');
         
         if ($room->save()) {
+            return redirect()->action('RoomsController@index');
+        }
+    }
+
+    public function createType(Request $request)
+    {
+        $roomType = new \App\TypeRooms();
+
+        $roomType->name = $request->input('name');
+        
+        if ($roomType->save()) {
+            return redirect()->action('RoomsController@index');
+        }
+    }
+
+    public function createSize(Request $request)
+    {
+        $roomSize = new \App\SizeRooms();
+
+        $roomSize->name = $request->input('name');
+        $roomSize->maxOcu = $request->input('maxOcu');
+        $roomSize->minOcu = $request->input('minOcu');
+        
+        if ($roomSize->save()) {
             return redirect()->action('RoomsController@index');
         }
     }

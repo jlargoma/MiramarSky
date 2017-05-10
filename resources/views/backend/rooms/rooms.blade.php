@@ -8,6 +8,16 @@
             <i class="fa fa-plus"></i> Apartamentos
         </button>
     </li>
+    <li class="text-center">
+        <button class="btn btn-sm btn-success new-size-room" data-toggle="modal" data-target="#modal-room">
+            <i class="fa fa-plus"></i> Tamaño de Apartamentos
+        </button>
+    </li>
+    <li class="text-center">
+        <button class="btn btn-sm btn-success new-type-room" data-toggle="modal" data-target="#modal-room">
+            <i class="fa fa-plus"></i> Tipo de Apartamentos
+        </button>
+    </li>
 @endsection
     
 @section('content')
@@ -44,10 +54,10 @@
                                 <input class="form-control editables text-center name-propieratio-<?php echo $room->id?>"  data-id="<?php echo $room->id; ?>"  type="text" name="<?php echo $room->user->name?>" value  ="<?php echo $room->user->name?>" disabled>
                             </td>    
                             <td class="text-center">
-                                <input class="form-control editables text-center min-occupation-<?php echo $room->id?>"  data-id="<?php echo $room->id; ?>"  type="text" name="<?php echo $room->sizeRooms->MinOcup?>" value  ="<?php echo $room->sizeRooms->MinOcup?>" disabled>
+                                <input class="form-control editables text-center min-occupation-<?php echo $room->id?>"  data-id="<?php echo $room->id; ?>"  type="text" name="<?php echo $room->sizeRooms->minOcu?>" value  ="<?php echo $room->sizeRooms->minOcu?>" disabled>
                             </td>  
                             <td class="text-center">
-                                <input class="form-control editables text-center max-occupation-<?php echo $room->id?>"  data-id="<?php echo $room->id; ?>"  type="text" name="<?php echo $room->sizeRooms->maxOcup?>" value  ="<?php echo $room->sizeRooms->maxOcup?>" disabled>
+                                <input class="form-control editables text-center max-occupation-<?php echo $room->id?>"  data-id="<?php echo $room->id; ?>"  type="text" name="<?php echo $room->sizeRooms->maxOcu?>" value  ="<?php echo $room->sizeRooms->maxOcu?>" disabled>
                             </td> 
                             <td class="text-center">
                                 <?php if ($room->typeApto == 0): ?>
@@ -96,15 +106,23 @@
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
-
+            //Añadir una nueva habitacion
             $('.new-room').click(function(event) {
                 $.get('/admin/apartamentos/new', function(data) {
                     $('#content-room').empty().append(data);
                 });
             });
-            $('.update-room').click(function(event) {
-                 var id = $(this).attr('data-id');
-                $.get('/admin/usuarios/update/'+id, function(data) {
+
+            //añadir un nuevo tipo de apartamento EJ:Propietario-subcominudad
+            $('.new-type-room').click(function(event) {
+                $.get('/admin/apartamentos/new-type', function(data) {
+                    $('#content-room').empty().append(data);
+                });
+            });
+
+            //añadir un nuevo tamaño de apartamento EJ:estudio-apartamento
+            $('.new-size-room').click(function(event) {
+                $.get('/admin/apartamentos/new-size', function(data) {
                     $('#content-room').empty().append(data);
                 });
             });

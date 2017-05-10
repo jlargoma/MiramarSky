@@ -17,10 +17,6 @@ class CreateTyperoomsTable extends Migration
             $table->String('name');
             $table->timestamps();
         });
-
-        Schema::table('rooms', function ($table) {            
-            $table->foreign('owned')->references('id')->on('typerooms');
-        });
     }
 
     /**
