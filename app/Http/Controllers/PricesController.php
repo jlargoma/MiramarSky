@@ -23,10 +23,15 @@ class PricesController extends Controller
     public function newPrices()
     {
         return view('backend/prices/new-prices',[
-                                                'seasons' =>\App\Seasons::all(),
+                                                'seasons' =>\App\TypeSeasons::all(),
                                             ]);
     }
-
+    public function newSpecialPrices()
+    {
+        return view('backend/prices/new-special-prices',[
+                                                'seasons' =>\App\TypeSeasons::all(),
+                                            ]);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -34,22 +39,52 @@ class PricesController extends Controller
      */
     public function create(Request $request)
     {
-        $price = new \App\Prices();
+        $alta = \App\TypeSeasons::where('name','Alta')->first();
+        $media = \App\TypeSeasons::where('name','Media')->first();
+        $baja = \App\TypeSeasons::where('name','Baja')->first();
 
-        $price->name = $request->input('name');
+        $alta  = $alta->id;
+        $media = $media->id;
+        $baja  = $baja->id;
+
+        $price = new \App\Prices;
+        $price->season = $alta;
         $price->occupation = $request->input('occupation');
-        $price->pricehigh = $request->input('priceHigh');
-        $price->priceMed = $request->input('priceMed');
-        $price->priceLow = $request->input('priceLow');
-        $price->costHigh = $request->input('costHigh');
-        $price->costMed = $request->input('costMed');
-        $price->costLow = $request->input('costLow');
+        $price->price = $request->input('priceHigh');
+        $price->cost = $request->input('costHigh');
+        $price->save();
+
+        $price = new \App\Prices;
+        $price->season = $media;
+        $price->occupation = $request->input('occupation');
+        $price->price = $request->input('priceMed');
+        $price->cost = $request->input('costMed');
+        $price->save();
+
+        $price = new \App\Prices;
+        $price->season = $baja;
+        $price->occupation = $request->input('occupation');
+        $price->price = $request->input('priceLow');
+        $price->cost = $request->input('costLow');
         
         if ($price->save()) {
             return redirect()->action('PricesController@index');
         }
     }
 
+    public function createSpecial(Request $request)
+    {
+
+        $special = new \App\Prices;
+        $special->occupation = $request->input('occupation');
+        $special->season = $request->input('season');
+        $special->price = $request->input('price');
+        $special->cost = $request->input('cost');
+
+        if ($special->save()) {
+            return redirect()->action('PricesController@index');
+        }
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -94,14 +129,9 @@ class PricesController extends Controller
     {
         $id                   = $request->input('id');
         $pricesUpdate          = \App\Prices::find($id);
-        $pricesUpdate->name = $request->input('name');
-        $pricesUpdate->occupation = $request->input('occupation');
-        $pricesUpdate->pricehigh = $request->input('priceHigh');
-        $pricesUpdate->priceMed = $request->input('priceMed');
-        $pricesUpdate->priceLow = $request->input('priceLow');
-        $pricesUpdate->costHigh = $request->input('costHigh');
-        $pricesUpdate->costMed = $request->input('costMed');
-        $pricesUpdate->costLow = $request->input('costLow');
+
+        $pricesUpdate->price = $request->input('price');
+        $pricesUpdate->cost = $request->input('cost');
 
         if ($pricesUpdate->save()) {
             echo "Cambiada!!";
@@ -116,8 +146,8 @@ class PricesController extends Controller
      */
     public function delete($id)
     {
-        $priceDelete = \App\Prices::find($id);
-        if ($priceDelete->delete()) {
+        $price = \App\Prices::find($id);
+        if ( $price->delete() ) {
             return redirect()->action('PricesController@index');
         }
     }

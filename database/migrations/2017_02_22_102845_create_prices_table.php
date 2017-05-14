@@ -14,14 +14,10 @@ class CreatePricesTable extends Migration
     {
         Schema::create('prices', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->integer('season')->unsigned();
             $table->integer('occupation');
-            $table->decimal('priceHigh', 8, 2);
-            $table->decimal('priceMed', 8, 2);
-            $table->decimal('priceLow', 8, 2);
-            $table->decimal('costHigh', 8, 2);
-            $table->decimal('costMed', 8, 2);
-            $table->decimal('costLow', 8, 2);
+            $table->decimal('price', 8, 2);
+            $table->decimal('cost', 8, 2);
             $table->timestamps();
         });
     }

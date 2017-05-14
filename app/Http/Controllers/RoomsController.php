@@ -36,11 +36,15 @@ class RoomsController extends Controller
     }
     public function newTypeRoom()
     {
-        return view('backend/rooms/new-type-room');
+        return view('backend/rooms/new-type-room', [
+                                                    'types'  => \App\TypeRooms::all(),
+                                                    ]);
     }
     public function newSizeRoom()
     {
-        return view('backend/rooms/new-size-room');
+        return view('backend/rooms/new-size-room', [
+                                                    'sizes' =>\App\SizeRooms::all(),
+                                                    ]);
     }
 
     public function create(Request $request)

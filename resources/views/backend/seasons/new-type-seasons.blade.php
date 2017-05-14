@@ -17,14 +17,18 @@
 		        	<div class="clear"></div>
 		        	<form class="form-horizontal" action="{{ url('/admin/temporadas/create-type') }}" method="post">
 		        		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-		                <div class="col-md-12 col-xs-12 push-20">
-		                    <div class="col-md-6  push-20">
+		                <div class="col-md-9 col-xs-7 push-20">
 		                        <div class="form-material">
 		                            <input class="form-control" type="text" id="name" name="name" required>
 		                            <label for="nombre">Nombre del tipo de la temporada</label>
 		                        </div>
 		                    </div>
-		                
+		                <div class="col-xs-5 col-md-3" style="border-left: 1px solid black">
+    		        		<label for="tipo">Existentes</label>
+    		        		<?php foreach ($types as $type): ?>
+                        		<p><?php echo $type->name ?></p>
+                        	<?php endforeach ?>                      
+    		        	</div>
 		                <div class="col-md-12 col-xs-12 push-20 text-center">
 							<button class="btn btn-success" type="submit">
 	        					<i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar

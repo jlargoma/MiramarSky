@@ -8,6 +8,11 @@
             <i class="fa fa-plus"></i> Precios
         </button>
     </li>
+    <li class="text-center">
+        <button class="btn btn-sm btn-success new-special-prices" data-toggle="modal" data-target="#modal-prices">
+            <i class="fa fa-plus"></i> Precio Especial
+        </button>
+    </li>
 @endsection
     
 @section('content')
@@ -20,14 +25,10 @@
                 <thead>
                     <tr>
                         <th class ="text-center hidden">    id              </th>
-                        <th class ="text-center">           Nombre          </th>
                         <th class ="text-center">           Ocupacion       </th>
-                        <th class ="text-center">           Temp. Alta      </th>
-                        <th class ="text-center">           Temp. Media     </th>
-                        <th class ="text-center">           Temp. Baja      </th>
-                        <th class ="text-center">           Cost. Alta      </th>
-                        <th class ="text-center">           Cost. Media     </th>
-                        <th class ="text-center">           Cost. Baja      </th>
+                        <th class ="text-center">           Temporada       </th>
+                        <th class ="text-center">           Precio          </th>
+                        <th class ="text-center">           Coste           </th>
                         <th class ="text-center">           Editar          </th>
 
                     </tr>
@@ -37,29 +38,17 @@
                         <tr>
                             <td class="text-center hidden"><?php echo $price->id?></td>
                             <td class="text-center">
-                                <input class="form-control editables text-center name-price-<?php echo $price->id?>"  data-id="<?php echo $price->id; ?>"  type="text" name="<?php echo $price->name?>" value  ="<?php echo $price->name?>">
+                                <input class="form-control editables text-center occupation-<?php echo $price->id?>"  data-id="<?php echo $price->id; ?>"  type="text" name="<?php echo $price->occupation?>" value  ="<?php echo $price->occupation?>" disabled>
                             </td>
                             <td class="text-center">
-                                <input class="form-control editables text-center occupation-<?php echo $price->id?>"  data-id="<?php echo $price->id; ?>"  type="text" name="<?php echo $price->occupation?>" value  ="<?php echo $price->occupation?>">
+                                <input class="form-control editables text-center price-High-<?php echo $price->id?>"  data-id="<?php echo $price->id; ?>"  type="text" value  ="<?php echo $price->typeSeasons->name?>" disabled>
+                            </td>
+                             <td class="text-center">
+                                <input class="form-control editables text-center price-<?php echo $price->id?>"  data-id="<?php echo $price->id; ?>" type="text" value  ="<?php echo $price->price?>">
                             </td>
                             <td class="text-center">
-                                <input class="form-control editables text-center price-High-<?php echo $price->id?>"  data-id="<?php echo $price->id; ?>"  type="text" name="<?php echo $price->priceHigh?>" value  ="<?php echo $price->priceHigh?>">
-                            </td>
-                            <td class="text-center">
-                                <input class="form-control editables text-center price-Med-<?php echo $price->id?>"  data-id="<?php echo $price->id; ?>"  type="text" name="<?php echo $price->priceMed?>" value  ="<?php echo $price->priceMed?>">
-                            </td>    
-                            <td class="text-center">
-                                <input class="form-control editables text-center price-Low-<?php echo $price->id?>"  data-id="<?php echo $price->id; ?>"  type="text" name="<?php echo $price->priceLow?>" value  ="<?php echo $price->priceLow?>">
-                            </td>  
-                            <td class="text-center">
-                                <input class="form-control editables text-center cost-High-<?php echo $price->id?>"  data-id="<?php echo $price->id; ?>"  type="text" name="<?php echo $price->costHigh?>" value  ="<?php echo $price->costHigh?>">
-                            </td>
-                            <td class="text-center">
-                                <input class="form-control editables text-center cost-Med-<?php echo $price->id?>"  data-id="<?php echo $price->id; ?>"  type="text" name="<?php echo $price->costMed?>" value  ="<?php echo $price->costMed?>">
-                            </td>    
-                            <td class="text-center">
-                                <input class="form-control editables text-center cost-Low-<?php echo $price->id?>"  data-id="<?php echo $price->id; ?>"  type="text" name="<?php echo $price->costLow?>" value  ="<?php echo $price->costLow?>">
-                            </td>                      
+                                <input class="form-control editables text-center cost-<?php echo $price->id?>"  data-id="<?php echo $price->id; ?>" type="text" value  ="<?php echo $price->cost?>">
+                            </td>            
                             <td class="text-center">
                                 <div class="btn-group">
                                      
@@ -105,21 +94,19 @@
                     $('#content-prices').empty().append(data);
                 });
             });
-
+            $('.new-special-prices').click(function(event) {
+                $.get('/admin/precios/newSpecial', function(data) {
+                    $('#content-prices').empty().append(data);
+                });
+            });
 
             $('.editables').change(function(event) {
                 var id = $(this).attr('data-id');
 
-                var name = $('.name-price-'+id).val();
-                var occupation = $('.occupation-'+id).val();
-                var priceHigh = $('.price-High-'+id).val();
-                var priceMed  = $('.price-Med-'+id).val();
-                var priceLow  = $('.price-Low-'+id).val();
-                var costHigh  = $('.cost-High-'+id).val();
-                var costMed   = $('.cost-Med-'+id).val();
-                var costLow   = $('.cost-Low-'+id).val();
+                var price = $('.price-'+id).val();
+                var cost  = $('.cost-'+id).val();
 
-                $.get('/admin/precios/update/', {  id: id, name: name,occupation: occupation, priceHigh: priceHigh, priceMed: priceMed, priceLow: priceLow, costHigh: costHigh, costMed: costMed, costLow: costLow}, function(data) {
+                $.get('/admin/precios/update/', {  id: id, price: price,cost: cost, }, function(data) {
                     alert(data);
                 });
             });

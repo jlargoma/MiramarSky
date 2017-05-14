@@ -25,7 +25,6 @@
                 <thead>
                     <tr>
                         <th class ="text-center hidden">    id      </th>
-                        <th class ="text-center">           Nombre    </th>
                         <th class ="text-center">           Inicio  </th>
                         <th class ="text-center">           Fin     </th>
                         <th class ="text-center">           Tipo    </th>                  
@@ -37,9 +36,6 @@
                     <?php foreach ($seasons as $season): ?>
                         <tr>
                             <td class="text-center" hidden><?php echo $season->id ?></td>
-                            <td class="text-center">
-                                <input class="form-control editables text-center name-season-<?php echo $season->id?>"  data-id="<?php echo $season->id; ?>"  type="text" name="<?php echo $season->name?>" value  ="<?php echo $season->name?>">
-                            </td> 
                             <td class="text-center">
                                 <input class="form-control editables text-center start-season-<?php echo $season->id?>"  data-id="<?php echo $season->id; ?>"  type="text" name="<?php echo $season->start_date?>" value  ="<?php  echo date('d-m-Y',strtotime($season->start_date))?>" disabled>
                             </td>

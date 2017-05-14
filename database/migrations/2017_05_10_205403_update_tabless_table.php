@@ -18,8 +18,26 @@ class UpdateTablessTable extends Migration
         Schema::table('seasons', function ($table) {
             $table->foreign('type')->references('id')->on('typeseasons');
         });
+        Schema::table('prices', function ($table) {
+            $table->foreign('season')->references('id')->on('typeseasons');
+        });
         Schema::table('rooms', function ($table) {            
             $table->foreign('owned')->references('id')->on('typerooms');
+        });
+        
+        Schema::table('book', function ($table) {
+           $table->foreign('user_id')->references('id')->on('users');
+           $table->foreign('customer_id')->references('id')->on('customers');
+           $table->foreign('room_id')->references('id')->on('rooms');
+           $table->foreign('season_id')->references('id')->on('seasons');
+        });
+
+        Schema::table('paymentspro', function ($table) {
+           $table->foreign('room_id')->references('id')->on('rooms');
+        });
+
+        Schema::table('payments', function ($table) {
+           $table->foreign('book_id')->references('id')->on('book');
         });
     }
 

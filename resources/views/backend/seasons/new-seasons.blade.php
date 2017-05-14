@@ -19,32 +19,22 @@
 		        		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 		                <div class="col-md-12 col-xs-12 push-20">
 		                    <div class="col-md-6  push-20">
-		                        <div class="form-material">
-		                            <input class="form-control" type="text" id="name" name="name" required>
-		                            <label for="nombre">Nombre de la temporada</label>
-		                        </div>
-		                    </div>
-		                    <div class="col-md-6  push-20">
 		                    	<div class="input-daterange input-group" data-date-format="dd/mm/yyyy">
 									<input class="form-control" type="text" id="start" name="start" placeholder="Desde">
 										<span class="input-group-addon"><i class="fa fa-chevron-right"></i></span>
 									<input class="form-control" type="text" id="finish" name="finish" placeholder="Hasta">
 								</div>
-
 		                    </div>
-		                </div>
-
-		                <div class="col-md-12 col-xs-12 push-20">
-		                    <div class="col-md-6  push-20">
-		                        <div class="form-material">		                     
-		                            <select class="js-select2 form-control" id="type" name="type" style="width: 100%;" required>
-		                            <?php foreach ($seasons as $season): ?>
-		                            	<option value="<?php echo $season->id ?>"><?php echo $season->name ?></option>
-		                            <?php endforeach ?>
-	                            	</select>
-		                            <label for="size">Tipo</label>
-		                        </div>
-		                    </div>
+    	                    <div class="col-md-6  push-20">
+    	                        <div class="form-material">		                     
+    	                            <select class="js-select2 form-control" id="type" name="type" style="width: 100%;" required>
+    	                            <?php foreach ($seasons as $season): ?>
+    	                            	<option value="<?php echo $season->id ?>"><?php echo $season->name ?></option>
+    	                            <?php endforeach ?>
+                                	</select>
+    	                            <label for="size">Tipo</label>
+    	                        </div>
+    	                    </div>
 		                </div>
 		                <div class="col-md-12 col-xs-12 push-20 text-center">
 							<button class="btn btn-success" type="submit">

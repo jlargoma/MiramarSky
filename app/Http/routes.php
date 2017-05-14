@@ -47,9 +47,11 @@ Route::get('/admin',[
 // Prices
 	Route::get('admin/precios' , 'PricesController@index');
 	Route::get('admin/precios/new', 'PricesController@newPrices');
+	Route::get('admin/precios/newSpecial', 'PricesController@newSpecialPrices');
 	Route::get('admin/precios/update', 'PricesController@update');
 	Route::post('admin/precios/saveupdate', 'PricesController@saveUpdate');
 	Route::post('admin/precios/create', 'PricesController@create');
+	Route::post('admin/precios/createSpecial', 'PricesController@createSpecial');
 	Route::get('admin/precios/delete/{id}', 'PricesController@delete');
 
 // seasons

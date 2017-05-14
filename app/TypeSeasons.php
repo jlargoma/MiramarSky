@@ -12,4 +12,9 @@ class TypeSeasons extends Model
     {
         return $this->hasMany('\App\Seasons', 'id', 'type');
     }
+
+    public function prices()
+    {
+        return $this->hasMany('\App\Prices', 'id', 'season');
+    }
 }

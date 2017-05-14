@@ -15,7 +15,7 @@
 		        		</h3>
 		        	</div>
 		        	<div class="clear"></div>
-		        	<form class="form-horizontal" action="{{ url('/admin/precios/create') }}" method="post">
+		        	<form class="form-horizontal" action="{{ url('/admin/precios/createSpecial') }}" method="post">
 		        		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 		                <div class="col-md-12 col-xs-12 push-20">
 		                    <div class="col-md-3  coll--md-offset-4 push-20">
@@ -38,55 +38,26 @@
 		                </div>		               		              
 		                <div class="col-md-12 col-xs-12 push-20">
 		                	<div class="col-md-12  push-20 text-center">
-		                		<h3>Precios de temporada</h3>
+		                		<h3>Precios</h3>
 		                	</div>
 		                	<div class="col-md-3  push-20 col-md-offset-1">
 		                        <div class="form-material">
-		                            <input class="form-control" type="text" id="T-Alta" name="priceHigh" required>
-	                            	<label for="T-Alta">Temp. Alta</label>
+		                            <input class="form-control" type="text" id="price" name="price" required>
+	                            	<label for="price">Precio </label>
 		                        </div>
 		                    </div>
 		                    <div class="col-md-3  push-20">
 		                        <div class="form-material">
-		                            <input class="form-control" type="text" id="T-Media" name="priceMed" required>
-		                            <label for="T-Media">Temp. Media</label>
+		                            <input class="form-control" type="text" id="cost" name="cost" required>
+		                            <label for="cost">Coste</label>
 		                        </div>
 		                    </div>
-		                    <div class="col-md-3  push-20">
-		                        <div class="form-material">
-		                            <input class="form-control" type="text" id="T-Baja" name="priceLow" required>
-		                            <label for="T-Baja">Temp. Baja</label>
-		                        </div>
-		                    </div>
+       		                <div class="col-md-12 col-xs-12 push-20 text-center">
+       							<button class="btn btn-success" type="submit">
+       	        					<i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar
+       	        				</button>
+       						</div>
 		                </div>
-		                <div class="col-md-12 col-xs-12 push-20">
-		                	<div class="col-md-12  push-20 text-center">
-		                		<h3>Precios de Coste temporada</h3>
-		                	</div>
-		                	<div class="col-md-4  push-20 ">
-		                        <div class="form-material">
-		                            <input class="form-control" type="text" id="C-Alta" name="costHigh" required>
-	                            	<label for="C-Alta">Cost. Temp. Alta</label>
-		                        </div>
-		                    </div>
-		                    <div class="col-md-4  push-20">
-		                        <div class="form-material">
-		                            <input class="form-control" type="text" id="C-Media" name="costMed" required>
-		                            <label for="C-Media">Cost. Temp. Media</label>
-		                        </div>
-		                    </div>
-		                    <div class="col-md-4  push-20">
-		                        <div class="form-material">
-		                            <input class="form-control" type="text" id="C-Baja" name="costLow" required>
-		                            <label for="C-Baja">Cost.  Temp. Baja</label>
-		                        </div>
-		                    </div>
-		                </div>
-		                <div class="col-md-12 col-xs-12 push-20 text-center">
-							<button class="btn btn-success" type="submit">
-	        					<i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar
-	        				</button>
-						</div>
 		        	</form>
 		        </div>
 		    </div> 

@@ -29,7 +29,7 @@ class SeasonsController extends Controller
     public function newTypeSeasons()
     {
         return view('backend/seasons/new-type-seasons',[
-                    'seasons' => \App\TypeSeasons::all()
+                    'types' => \App\TypeSeasons::all()
             ]);
     }
 
@@ -48,8 +48,7 @@ class SeasonsController extends Controller
         $finish = Carbon::createFromFormat('d/m/Y', $finish);
         $start->format('Y-m-d');
         $finish->format('Y-m-d');
-
-        $seasons->name = $request->input('name');
+        
         $seasons->start_date = $start;
         $seasons->finish_date = $finish;
         $seasons->type = $request->input('type');
