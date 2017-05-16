@@ -65,26 +65,37 @@ class RoomsController extends Controller
 
     public function createType(Request $request)
     {
-        $roomType = new \App\TypeRooms();
+        $existTypeRoom = \App\TypeRooms::where('name',$request->input('name'))->count();
+        if ($existTypeRoom == 0) {
+            $roomType = new \App\TypeRooms();
 
-        $roomType->name = $request->input('name');
-        
-        if ($roomType->save()) {
-            return redirect()->action('RoomsController@index');
+            $roomType->name = $request->input('name');
+            
+            if ($roomType->save()) {
+                return redirect()->action('RoomsController@index');
+            }
+        }else{
+            echo "Ya existe este tipo de apartamento";
         }
     }
 
     public function createSize(Request $request)
     {
-        $roomSize = new \App\SizeRooms();
+        $existRoomSize = \App\SizeRooms::where('name',$request->input('name'))->count();
+        if ($existRoomSize == 0) {
+            $roomSize = new \App\SizeRooms();
 
-        $roomSize->name = $request->input('name');
-        $roomSize->maxOcu = $request->input('maxOcu');
-        $roomSize->minOcu = $request->input('minOcu');
-        
-        if ($roomSize->save()) {
-            return redirect()->action('RoomsController@index');
+            $roomSize->name = $request->input('name');
+            $roomSize->maxOcu = $request->input('maxOcu');
+            $roomSize->minOcu = $request->input('minOcu');
+            
+            if ($roomSize->save()) {
+                return redirect()->action('RoomsController@index');
+            }
+        }else{
+            echo "Ya existe este tamaño";
         }
+        
     }
     
 

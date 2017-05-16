@@ -21,6 +21,10 @@
 <div class="container">
     <div class="row">
         <div class="col-md-11 col-md-offset-1">
+        <?php echo "<pre>";
+              echo $from."<br>";
+              echo $to."<br>".$user;
+        ?>
             <table class="table table-bordered table-striped js-dataTable-full table-header-bg">
                 <thead>
                     <tr>

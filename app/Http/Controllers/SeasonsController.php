@@ -16,8 +16,17 @@ class SeasonsController extends Controller
      */
     public function index()
     {
+       
+        $fechas = \App\Seasons::find(1);
+        $from = $fechas->start_date;
+        $to = $fechas->finish_date;
+        $users = \App\Seasons::whereBetween('start_date', [$fechas->start_date, $fechas->finish_date])->get();
         return view('backend/seasons/seasons',[
                     'seasons' => \App\Seasons::all(),
+                    'from' => $from,
+                    'to' => $to,
+                    'user' => $users,
+
                 ]);
     }
 
@@ -40,6 +49,7 @@ class SeasonsController extends Controller
      */
     public function create(Request $request)
     {
+
         $seasons = new \App\Seasons();
 
         $start = $request->input('start');
@@ -60,13 +70,19 @@ class SeasonsController extends Controller
 
      public function createType(Request $request)
     {
-        $typeSeasons = new \App\TypeSeasons();
+        $existTypeSeason = \App\TypeSeasons::where('name',$request->input('name'))->count();
+        if ($existTypeSeason == 0) {
+            $typeSeasons = new \App\TypeSeasons();
 
-        $typeSeasons->name = $request->input('name');
-        
-        if ($typeSeasons->save()) {
-            return redirect()->action('SeasonsController@index');
+            $typeSeasons->name = $request->input('name');
+            
+            if ($typeSeasons->save()) {
+                return redirect()->action('SeasonsController@index');
+            }
+        }else{
+            echo "Ya existe este tipo";
         }
+        
     }
     /**
      * Store a newly created resource in storage.
