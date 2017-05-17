@@ -15,7 +15,14 @@ class BookController extends Controller
      */
     public function index()
     {
-        //
+
+        // $re = \App\Book::getRoom(3);
+        // echo $re;
+        // die();
+        return view('backend/planning/planning',[
+                                                'books' => \App\Book::all(),
+                                                'rooms' => \App\Rooms::all(),
+                                                ]);
     }
 
     /**

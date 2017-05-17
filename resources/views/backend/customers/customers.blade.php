@@ -4,18 +4,14 @@
 
 @section('headerButtoms')
     <li class="text-center">
-        <button class="btn btn-sm btn-success new-seasons" data-toggle="modal" data-target="#modal-seasons">
-            <i class="fa fa-plus"></i> Temporada
-        </button>
-    </li>
-    <li class="text-center">
-        <button class="btn btn-sm btn-success new-type-seasons" data-toggle="modal" data-target="#modal-seasons">
-            <i class="fa fa-plus"></i> Tipo de Temporada
+        <button class="btn btn-sm btn-success new-client" data-toggle="modal" data-target="#modal-client">
+            <i class="fa fa-plus"></i> Cliente
         </button>
     </li>
 @endsection
     
 @section('content')
+<?php use \Carbon\Carbon; ?>
 
 <div class="container">
     <div class="row">
@@ -23,34 +19,38 @@
             <table class="table table-bordered table-striped js-dataTable-full table-header-bg">
                 <thead>
                     <tr>
-                        <th class ="text-center hidden">    id      </th>
-                        <th class ="text-center">           Inicio  </th>
-                        <th class ="text-center">           Fin     </th>
-                        <th class ="text-center">           Tipo    </th>                  
-                        <th class ="text-center">           Editar  </th>
+                        <th class ="text-center hidden">id          </th>
+                        <th class ="text-center">       Nombre      </th>
+                        <th class ="text-center">       Email       </th>
+                        <th class ="text-center">       Telefono    </th>                  
+                        <th class ="text-center">       Comentarios </th>                  
+                        <th class ="text-center">       Editar      </th>
 
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($seasons as $season): ?>
+                    <?php foreach ($customers as $customer): ?>
                         <tr>
-                            <td class="text-center" hidden><?php echo $season->id ?></td>
+                            <td class="text-center" hidden><?php echo $customer->id ?></td>
                             <td class="text-center">
-                                <input class="form-control editables text-center start-season-<?php echo $season->id?>"  data-id="<?php echo $season->id; ?>"  type="text" name="<?php echo $season->start_date?>" value  ="<?php  echo date('d-m-Y',strtotime($season->start_date))?>" disabled>
+                                <input class="form-control editables text-center name-customer-<?php echo $customer->id?>"  data-id="<?php echo $customer->id; ?>"  type="text" name="<?php echo $customer->name ?>" value="<?php  echo $customer->name?>" disabled>
                             </td>
                             <td class="text-center">
-                                <input class="form-control editables text-center finish-date-<?php echo $season->id?>"  data-id="<?php echo $season->id; ?>"  type="text" name="<?php echo $season->finish_date ?>" value  ="<?php echo date('d-m-Y',strtotime($season->finish_date)) ?>" disabled>
+                                <input class="form-control editables text-center email-customer-<?php echo $customer->id?>"  data-id="<?php echo $customer->id; ?>"  type="text" name="<?php echo $customer->email ?>" value="<?php  echo $customer->email?>" disabled>
                             </td>
                             <td class="text-center">
-                                <input class="form-control editables text-center type-season-<?php echo $season->id?>"  data-id="<?php echo $season->id; ?>"  type="text" name="<?php echo $season->typeSeasons->name ?>" value  ="<?php echo $season->typeSeasons->name ?>" disabled>
-                            </td>              
-                            <td class="text-center">
-                                <div class="btn-group">
-                                    <a href="{{ url('/admin/temporadas/delete/')}}/<?php echo $season->id ?>" class="btn btn-sm btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Temporada" onclick="return confirm('¿Quieres eliminar la temporada?');">
-                                        <i class="fa fa-times"></i>
-                                    </a>                                     
-                                </div>
+                                <input class="form-control editables text-center phone-customer-<?php echo $customer->id?>"  data-id="<?php echo $customer->id; ?>"  type="text" name="<?php echo $customer->phone ?>" value="<?php  echo $customer->phone?>" disabled>
                             </td>
+                            <td class="text-center">
+                                <input class="form-control editables text-center comments-customer-<?php echo $customer->id?>"  data-id="<?php echo $customer->id; ?>"  type="text" name="<?php echo $customer->comments ?>" value="<?php  echo $customer->comments?>" disabled>
+                            </td>
+                            <td class="text-center">
+                                    <div class="btn-group">
+                                        <a href="{{ url('/admin/clientes/delete/')}}/<?php echo $customer->id ?>" class="btn btn-sm btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Usuario" onclick="return confirm('¿Quieres eliminar el cliente?');">
+                                            <i class="fa fa-times"></i>
+                                        </a>                                     
+                                    </div>
+                                </td>
                         </tr>
                     <?php endforeach ?>
                 </tbody>

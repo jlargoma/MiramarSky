@@ -17,22 +17,11 @@
 		        	<div class="clear"></div>
 		        	<form class="form-horizontal" action="{{ url('/admin/precios/create') }}" method="post">
 		        		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-		                <div class="col-md-12 col-xs-12 push-20">
-		                    <div class="col-md-3  coll--md-offset-4 push-20">
+		                <div class="col-md-3 col-xs-12 col-md-offset-4 push-20">
+		                    <div class="col-md-12 col-xs-12 push-20">
 		                        <div class="form-material">
 		                            <input class="form-control" type="number" id="occupation" name="occupation" required>
-		                            <label for="occupation">Ocupación</label>
-		                        </div>
-		                    </div>
-		                    <div class="col-md-6  push-20 ">
-		                        <div class="form-material">
-		                            <select class="js-select2 form-control" id="season" name="season" style="width: 100%;" data-placeholder="Temporada..." required>
-		                            	<?php foreach ($seasons as $season): ?>
-		                            		<option value ="<?php echo $season->id ?>">	<?php echo $season->name ?>
-		                            		</option>
-		                            	<?php endforeach ?>
-	                            	</select>
-		                            <label for="season">Temporada</label>
+		                            <label for="occupation" class="text-center">Ocupación</label>
 		                        </div>
 		                    </div>
 		                </div>		               		              

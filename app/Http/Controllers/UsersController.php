@@ -37,7 +37,6 @@ class UsersController extends Controller
 
         $user->name = $request->input('name');
         $user->email = $request->input('email');
-        $user->role = $request->input('role');
         $user->password = $request->input('password');
         
         if ($user->save()) {

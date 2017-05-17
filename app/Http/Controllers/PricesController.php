@@ -48,21 +48,21 @@ class PricesController extends Controller
         $baja  = $baja->id;
 
         $price = new \App\Prices;
-        $price->season = $alta;
+        $price->season = $alta ;
         $price->occupation = $request->input('occupation');
         $price->price = $request->input('priceHigh');
         $price->cost = $request->input('costHigh');
         $price->save();
 
         $price = new \App\Prices;
-        $price->season = $media;
+        $price->season =  $media;
         $price->occupation = $request->input('occupation');
         $price->price = $request->input('priceMed');
         $price->cost = $request->input('costMed');
         $price->save();
 
         $price = new \App\Prices;
-        $price->season = $baja;
+        $price->season = $baja ;
         $price->occupation = $request->input('occupation');
         $price->price = $request->input('priceLow');
         $price->cost = $request->input('costLow');

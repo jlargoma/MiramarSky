@@ -76,7 +76,12 @@
                                 </li>
                                 <li>
                                     <a href="{{ url('/admin/usuarios') }}" class="{{ Request::path() == 'admin/usuarios' ? 'active' : '' }}">
-                                        <i class="fa fa-users"></i><span class="sidebar-mini-hide">Usuarios</span>
+                                        <i class="fa fa-user"></i><span class="sidebar-mini-hide">Usuarios</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('/admin/clientes') }}" class="{{ Request::path() == 'admin/clientes' ? 'active' : '' }}">
+                                        <i class="fa fa-users"></i><span class="sidebar-mini-hide">Clientes</span>
                                     </a>
                                 </li>
                                 <li  class="text-danger">

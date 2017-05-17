@@ -23,7 +23,10 @@ Route::get('/admin',[
 							'middleware' => 'auth',
 							'uses' => 'Admin\BackendController@index'
 						]);
-
+//Planing 
+	Route::get('admin/planning' , 'BookController@index');
+	
+	
 // Usuarios
 	Route::get('admin/usuarios' , 'UsersController@index');
 	Route::get('admin/usuarios/new', 'UsersController@newUser');
@@ -31,6 +34,14 @@ Route::get('/admin',[
 	Route::post('admin/usuarios/saveupdate', 'UsersController@saveUpdate');
 	Route::post('admin/usuarios/create', 'UsersController@create');
 	Route::get('admin/usuarios/delete/{id}', 'UsersController@delete');
+
+// Clientes
+	Route::get('admin/clientes' , 'CustomersController@index');
+	Route::get('admin/clientes/new', 'CustomersController@newUser');
+	Route::get('admin/clientes/update', 'CustomersController@update');
+	Route::post('admin/clientes/saveupdate', 'CustomersController@saveUpdate');
+	Route::post('admin/clientes/create', 'CustomersController@create');
+	Route::get('admin/clientes/delete/{id}', 'CustomersController@delete');
 
 // Rooms
 	Route::get('admin/apartamentos' , 'RoomsController@index');

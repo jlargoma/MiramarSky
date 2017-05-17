@@ -19,7 +19,7 @@
 		        		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 		                <div class="col-md-12 col-xs-12 push-20">
 		                    <div class="col-md-6  push-20">
-		                    	<div class="input-daterange input-group" data-date-format="dd/mm/yyyy">
+		                    	<div class="input-daterange input-group" data-date-format="dd-mm-yyyy">
 									<input class="form-control" type="text" id="start" name="start" placeholder="Desde">
 										<span class="input-group-addon"><i class="fa fa-chevron-right"></i></span>
 									<input class="form-control" type="text" id="finish" name="finish" placeholder="Hasta">

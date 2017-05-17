@@ -16,17 +16,9 @@ class SeasonsController extends Controller
      */
     public function index()
     {
-       
-        $fechas = \App\Seasons::find(1);
-        $from = $fechas->start_date;
-        $to = $fechas->finish_date;
-        $users = \App\Seasons::whereBetween('start_date', [$fechas->start_date, $fechas->finish_date])->get();
-        return view('backend/seasons/seasons',[
-                    'seasons' => \App\Seasons::all(),
-                    'from' => $from,
-                    'to' => $to,
-                    'user' => $users,
 
+        return view('backend/seasons/seasons',[
+                    'seasons'  => \App\Seasons::all(),
                 ]);
     }
 
@@ -50,21 +42,25 @@ class SeasonsController extends Controller
     public function create(Request $request)
     {
 
-        $seasons = new \App\Seasons();
+        $exist = \App\Seasons::existDate($request->input('start'),$request->input('finish'));
+        if ($exist == false) {
+            $seasons = new \App\Seasons();
 
-        $start = $request->input('start');
-        $start = Carbon::createFromFormat('d/m/Y', $start);
-        $finish = $request->input('finish');
-        $finish = Carbon::createFromFormat('d/m/Y', $finish);
-        $start->format('Y-m-d');
-        $finish->format('Y-m-d');
-        
-        $seasons->start_date = $start;
-        $seasons->finish_date = $finish;
-        $seasons->type = $request->input('type');
-        
-        if ($seasons->save()) {
-            return redirect()->action('SeasonsController@index');
+            $start = $request->input('start');
+            $start = Carbon::createFromFormat('d-m-Y', $start);
+            $finish = $request->input('finish');
+            $finish = Carbon::createFromFormat('d-m-Y', $finish);
+            $start->format('Y-m-d');
+            $finish->format('Y-m-d');
+            
+            $seasons->start_date = $start;
+            $seasons->finish_date = $finish;
+            $seasons->type = $request->input('type');
+            if ($seasons->save()) {
+                return redirect()->action('SeasonsController@index');
+            }
+        }else{
+                echo "La fecha ya esta ocupada";            
         }
     }
 
@@ -135,8 +131,13 @@ class SeasonsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
-        //
+        $season = \App\Seasons::find($id);
+
+        if ($season->delete()) {
+                return redirect()->action('SeasonsController@index');
+            }
+
     }
 }

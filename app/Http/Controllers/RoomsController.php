@@ -163,8 +163,8 @@ class RoomsController extends Controller
      */
     public function delete($id)
     {
-        $user = \App\User::find($id);
-        if ( $user->delete() ) {
+        $room = \App\Rooms::find($id);
+        if ( $room->delete() ) {
             return redirect()->action('RoomsController@index');
         }
     }
