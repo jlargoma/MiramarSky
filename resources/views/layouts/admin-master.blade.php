@@ -55,7 +55,7 @@
                         <div class="side-content">
                             <ul class="nav-main">
                                 <li>
-                                    <a href="{{ url('/admin') }}" class="{{ Request::path() == 'admin' ? 'active' : '' }}">
+                                    <a href="{{ url('/admin/planning') }}" class="{{ Request::path() == 'admin/planning' ? 'active' : '' }}">
                                         <i class="fa fa-calendar"></i><span class="sidebar-mini-hide">Planning</span>
                                     </a>
                                 </li>

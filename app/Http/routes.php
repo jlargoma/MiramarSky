@@ -25,6 +25,7 @@ Route::get('/admin',[
 						]);
 //Planing 
 	Route::get('admin/planning' , 'BookController@index');
+	Route::get('admin/planning/new' , 'BookController@newBook');
 	
 	
 // Usuarios

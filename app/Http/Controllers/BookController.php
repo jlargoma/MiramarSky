@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use \Carbon\Carbon;
 
 class BookController extends Controller
 {
@@ -16,12 +17,30 @@ class BookController extends Controller
     public function index()
     {
 
-        // $re = \App\Book::getRoom(3);
-        // echo $re;
-        // die();
+        if ( !isset($_GET['month']) || !isset($_GET['year'])) {
+        $date = Carbon::now();
+        }else{
+            $date = Carbon::createFromFormat('Y-m',$_GET['year']."-".$_GET['month']);
+        }
+        $startMonth = $date->copy()->startOfMonth();
+        $endMonth = $date->copy()->endOfMonth();
+        $countDays = $endMonth->diffInDays($startMonth);
+
+
         return view('backend/planning/planning',[
-                                                'books' => \App\Book::all(),
-                                                'rooms' => \App\Rooms::all(),
+                                                'books'      => \App\Book::all(),
+                                                'rooms'      => \App\Rooms::all(),
+                                                'date'       => $date,
+                                                'startMonth' => $startMonth,
+                                                'endMonth'   => $endMonth,
+                                                'countDays'  => $countDays,
+                                                ]);
+    }
+
+    public function newBook(){
+
+        return view('/backend/planning/new-book',[
+                                                    'rooms' => \App\Rooms::all()
                                                 ]);
     }
 
