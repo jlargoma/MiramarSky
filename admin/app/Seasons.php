@@ -12,8 +12,9 @@ class Seasons extends Model
     	$fechas = \App\Seasons::all();
         $existStart = False;
         $existFinish = False;        
-        $requestStart = Carbon::createFromFormat('d-m-Y',$start);
-        $requestFinish = Carbon::createFromFormat('d-m-Y',$finish);
+        $requestStart = Carbon::createFromFormat('m/d/Y',$start);
+        $requestFinish = Carbon::createFromFormat('m/d/Y',$finish);
+
         foreach ($fechas as $fecha) {
             if ($existStart == False && $existFinish == False) {
                 $start = Carbon::createFromFormat('Y-m-d', $fecha->start_date);

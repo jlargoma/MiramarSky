@@ -15,7 +15,7 @@ class CustomersController extends Controller
      */
     public function index()
     {
-        return view('backend/customers/customers',['customers' => \App\Customers::all()]);
+        return view('backend/customers/index',['customers' => \App\Customers::all()]);
     }
 
     /**
@@ -23,9 +23,18 @@ class CustomersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $customer = new \App\Customers();
+
+        $customer->name = $request->input('name');
+        $customer->email = $request->input('email');
+        $customer->phone = $request->input('phone');
+        $customer->comments = $request->input('comment');
+
+        if ($customer->save()) {
+            return redirect()->action('CustomersController@index');
+        }
     }
 
     /**
@@ -79,8 +88,12 @@ class CustomersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete($id)
     {
-        //
+        $customer = \App\Customers::find($id);
+
+        if ($customer->delete()) {
+            return redirect()->action('CustomersController@index');
+        }
     }
 }

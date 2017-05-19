@@ -15,7 +15,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        return view('backend/users/Users',[
+        return view('backend/users/index',[
                     'users' => \App\User::all(),
                 ]);
     }
@@ -37,6 +37,7 @@ class UsersController extends Controller
 
         $user->name = $request->input('name');
         $user->email = $request->input('email');
+        $user->role = $request->input('role');
         $user->password = $request->input('password');
         
         if ($user->save()) {
@@ -85,12 +86,30 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update($id)
+    {
+        $user = \App\User::find($id);
+        return view('backend/users/update-user',['user' => $user]);
+    }
+
+    public function saveUpdate(Request $request)
+    {
+        $id                   = $request->input('id');
+        $userUpadate          = \App\User::find($id);
+        $userUpadate->role = $request->input('role');
+        $userUpadate->name    = $request->input('name');
+        $userUpadate->email    = $request->input('email');
+
+        if ($userUpadate->save()) {
+            return redirect()->action('UsersController@index');
+        }
+    }
+
+    public function saveAjax(Request $request)
     {
         $id                   = $request->input('id');
         $userUpadate          = \App\User::find($id);
         $userUpadate->name    = $request->input('name');
-        $userUpadate->role = $request->input('role');
         $userUpadate->email    = $request->input('email');
 
         if ($userUpadate->save()) {

@@ -53,7 +53,7 @@
 <script src="{{asset('/admin-css/assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
 <script src="{{asset('/admin-css/assets/js/plugins/select2/select2.full.min.js')}}"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
 <script>
     jQuery(function () {
         App.initHelpers(['datepicker', 'select2','summernote','ckeditor']);

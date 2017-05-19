@@ -24,7 +24,8 @@ Route::get('/',[
 // Usuarios
 	Route::get('usuarios' , 'UsersController@index');
 	Route::get('usuarios/new', 'UsersController@newUser');
-	Route::get('usuarios/update', 'UsersController@update');
+	Route::get('usuarios/update/{id}', 'UsersController@update');
+	Route::post('usuarios/saveAjax', 'UsersController@saveAjax');
 	Route::post('usuarios/saveupdate', 'UsersController@saveUpdate');
 	Route::post('usuarios/create', 'UsersController@create');
 	Route::get('usuarios/delete/{id}', 'UsersController@delete');

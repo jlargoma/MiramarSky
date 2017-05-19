@@ -17,8 +17,10 @@ class SeasonsController extends Controller
     public function index()
     {
 
-        return view('backend/seasons/seasons',[
+        return view('backend/seasons/index',[
                     'seasons'  => \App\Seasons::all(),
+                    'newtypeSeasons' => \App\TypeSeasons::all(),
+                    'typeSeasons' => \App\TypeSeasons::all(),                    
                 ]);
     }
 
@@ -40,19 +42,20 @@ class SeasonsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
-    {
+    {   
+        
 
         $exist = \App\Seasons::existDate($request->input('start'),$request->input('finish'));
         if ($exist == false) {
             $seasons = new \App\Seasons();
 
             $start = $request->input('start');
-            $start = Carbon::createFromFormat('d-m-Y', $start);
+            $start = Carbon::createFromFormat('m/d/Y',$start);
             $finish = $request->input('finish');
-            $finish = Carbon::createFromFormat('d-m-Y', $finish);
+            $finish = Carbon::createFromFormat('m/d/Y',$finish);
             $start->format('Y-m-d');
             $finish->format('Y-m-d');
-            
+
             $seasons->start_date = $start;
             $seasons->finish_date = $finish;
             $seasons->type = $request->input('type');

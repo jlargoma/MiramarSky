@@ -15,7 +15,7 @@
 		        		</h3>
 		        	</div>
 		        	<div class="clear"></div>
-		        	<form class="form-horizontal" action="{{ url('/admin/usuarios/saveupdate') }}" method="post">
+		        	<form class="form-horizontal" action="{{ url('usuarios/saveupdate') }}" method="post">
 		        		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 		        		<input type="hidden" name="id" value="<?php echo $user->id; ?>">
 		                <div class="col-md-12 col-xs-12 push-20">
@@ -35,14 +35,15 @@
 		                <div class="col-md-12 col-xs-12 push-20">
 		                	<div class="col-md-4  push-20">
 		                        <div class="form-material">
-		                            <select class="js-select2 form-control" id="role" name="role" style="width: 100%;" data-placeholder="Tipo de usuario..." required>
-		                            	<option value="Admin">Admin</option>
-		                            	<option value="Jaime">Jaime</option>
-		                            	<option value="Limpieza">Limpieza</option>
-		                            	<option value="Agente">Agente</option>
-		                            	<option value="Propietario">Propietario</option>
-	                            	</select>
-	                            	<label for="role">Tipo de usuario</label>
+		                        		<select class="js-select2 form-control" id="role" name="role" style="width: 100%;" data-placeholder="Tipo de usuario..." required>
+			                            	<option value="Admin">Admin</option>
+			                            	<option value="Jaime">Jaime</option>
+			                            	<option value="Limpieza">Limpieza</option>
+			                            	<option value="Agente">Agente</option>
+			                            	<option value="Propietario">Propietario</option>
+		                            	</select>
+		                            	<label for="role">Tipo de usuario</label>
+		                            
 		                        </div>
 		                    </div>
 		                    <div class="col-md-6  push-20">

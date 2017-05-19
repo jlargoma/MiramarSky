@@ -15,8 +15,10 @@ class RoomsController extends Controller
      */
     public function index()
     {
-        return view('backend/rooms/rooms',[
+        return view('backend/rooms/index',[
                     'rooms' => \App\Rooms::all(),
+                    'sizes' =>\App\SizeRooms::all(),
+                    'types'  => \App\TypeRooms::all(),
                 ]);
     }
 
