@@ -19,6 +19,7 @@ class RoomsController extends Controller
                     'rooms' => \App\Rooms::all(),
                     'sizes' =>\App\SizeRooms::all(),
                     'types'  => \App\TypeRooms::all(),
+                    'owners' => \App\User::whereIn('role',['Admin','Propietario'])->get(),
                 ]);
     }
 
@@ -28,38 +29,23 @@ class RoomsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function newRoom()
-    {
-        return view('backend/rooms/new-room',[
-                                                'users' => \App\User::all(),
-                                                'sizes' =>\App\SizeRooms::all(),
-                                                'types'  => \App\TypeRooms::all(),
-                                            ]);
-    }
-    public function newTypeRoom()
-    {
-        return view('backend/rooms/new-type-room', [
-                                                    'types'  => \App\TypeRooms::all(),
-                                                    ]);
-    }
-    public function newSizeRoom()
-    {
-        return view('backend/rooms/new-size-room', [
-                                                    'sizes' =>\App\SizeRooms::all(),
-                                                    ]);
-    }
 
     public function create(Request $request)
     {
         $room = new \App\Rooms();
-
+        if($request->input('luxury') == "on"){
+            $luxury = 1;
+        }
+        else{
+            $luxury = 0;
+        }
         $room->name = $request->input('name');
         $room->nameRoom = $request->input('nameRoom');
-        $room->owned = $request->input('type');
-        $room->user_id = $request->input('propietario');
-        $room->typeApto = $request->input('lujo');
-        $room->sizeRoom = $request->input('size');
-        
+        $room->owned = $request->input('owner');
+        $room->typeApto = $request->input('type');
+        $room->sizeRoom = $request->input('sizeRoom');
+        $room->luxury = $luxury;
+  
         if ($room->save()) {
             return redirect()->action('RoomsController@index');
         }
@@ -88,8 +74,8 @@ class RoomsController extends Controller
             $roomSize = new \App\SizeRooms();
 
             $roomSize->name = $request->input('name');
-            $roomSize->maxOcu = $request->input('maxOcu');
-            $roomSize->minOcu = $request->input('minOcu');
+            $roomSize->maxOcu = $request->input('max');
+            $roomSize->minOcu = $request->input('min');
             
             if ($roomSize->save()) {
                 return redirect()->action('RoomsController@index');

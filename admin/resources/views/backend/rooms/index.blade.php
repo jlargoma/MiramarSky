@@ -31,7 +31,7 @@
                     <tr>
                         <th class ="text-center hidden">             id            </th>
                         <th class ="text-center bg-complete text-white">  Nombre        </th>
-                        <th class ="text-center bg-complete text-white">  Tipo          </th>
+                        <th class ="text-center bg-complete text-white">  Tamaño          </th>
                         <th class ="text-center bg-complete text-white">  Propietario   </th>
                         <th class ="text-center bg-complete text-white">  Ocupacion min </th>
                         <th class ="text-center bg-complete text-white">  Ocupacion max </th>
@@ -59,7 +59,7 @@
                                <?php echo $room->sizeRooms->maxOcu?>
                            </td> 
                            <td class="text-center">
-                               <?php if ($room->typeApto == 0): ?>
+                               <?php if ($room->luxury == 0): ?>
                                    No
                                <?php else: ?>
                                    Si
@@ -79,94 +79,198 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-4">
-            <div class="sm-m-l-5 sm-m-r-5">
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingOne">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
-                                    Tipo de Apartamento
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <div class="panel-title col-md-6">Tipo Apartamento
-                                        </div>
-                                        <div class="panel-title col-md-6">Tipos
-                                        </div>
-                                    </div>
+        <div class="col-md-4" style="border:1px solid black">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="sm-m-l-5 sm-m-r-5">
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                         Tipo de Apartamento
+                                        </a>
+                                      </h4>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                                     <div class="panel-body">
-                                        <div class="col-md-6">
-                                            <form role="form"  action="{{ url('apartamentos/create-type') }}" method="post">
-                                                <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                                <div class="input-group transparent">
-                                                    <span class="input-group-addon">
-                                                        <i class="fa fa-user"></i>
-                                                    </span>
-                                                    <input type="text" class="form-control" name="name" placeholder="nombre" required="" aria-required="true" aria-invalid="false">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <div class="panel-title col-md-12">Tipo Apartamento
                                                 </div>
-                                                    <br>
-                                                <div class="input-group">
-                                                    <button class="btn btn-complete" type="submit">Guardar</button>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="col-md-6">
+                                                    <form role="form"  action="{{ url('apartamentos/create-type') }}" method="post">
+                                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                                        <div class="input-group transparent">
+                                                            <span class="input-group-addon">
+                                                                <i class="fa fa-user"></i>
+                                                            </span>
+                                                            <input type="text" class="form-control" name="name" placeholder="nombre" required="" aria-required="true" aria-invalid="false">
+                                                        </div>
+                                                            <br>
+                                                        <div class="input-group">
+                                                            <button class="btn btn-complete" type="submit">Guardar</button>
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                            </form>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <?php foreach ($types as $type): ?>
-                                                <?php echo $type->name ?><br>
-                                            <?php endforeach ?>
+                                                <div class="col-md-6">
+                                                    <?php foreach ($types as $type): ?>
+                                                        <?php echo $type->name ?><br>
+                                                    <?php endforeach ?>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingTwo">
-                            <h4 class="panel-title">
-                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    Tamaño de apartamento
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <div class="panel-title col-md-6">Agregar Tamaño
-                                        </div>
-                                        <div class="panel-title col-md-6">Tamaños
-                                        </div>
-                                    </div>
-                                    <form role="form"  action="{{ url('temporadas/create') }}" method="post">
-                                        <div class="panel-body">
-                                            <div class="col-md-12">
-                                                <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                                <div class="input-group transparent">
-                                                    <span class="input-group-addon">
-                                                        <i class="pg-plus_circle"></i>
-                                                    </span>
-                                                    <select class="full-width" data-init-plugin="select2" name="type">
-
-                                                    </select>
-                                                </div>
-                                                <br>
-                                                <div class="input-daterange input-group" id="datepicker-range">
-                                                    <input id="start" type="text" class="input-sm form-control" name="start" data-date-format="dd-mm-yyyy">
-                                                    <span class="input-group-addon">to</span>
-                                                    <input id="finish" type="text" class="input-sm form-control" name="finish" data-date-format="dd-mm-yyyy">
-                                                </div>
-                                                <br>
-                                                <div class="input-group">
-                                                    <button class="btn btn-complete" type="submit">Guardar</button>
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingTwo">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        Tamaño de apartamento
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                    <div class="panel-body">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <div class="panel-title col-md-12">
+                                                    Agregar Tamaño
                                                 </div>
                                             </div>
+                                            <form role="form"  action="{{ url('apartamentos/create-size') }}" method="post">
+                                                <div class="panel-body">
+                                                    <div class="col-md-12">
+                                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                                        <div class="input-group transparent">
+                                                            <div class="col-md-9">
+                                                                <div class="input-group transparent">
+                                                                    <span class="input-group-addon">
+                                                                        <i class="fa fa-user"></i>
+                                                                    </span>
+                                                                    <input type="text" class="form-control" name="name" placeholder="nombre" required="" aria-required="true" aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <?php foreach ($sizes as $size): ?>
+                                                                    <?php echo $size->name."<br>" ?>
+                                                                <?php endforeach ?>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <br>
+                                                        <div class="input-group transparent">
+                                                            <span class="input-group-addon">
+                                                                Min
+                                                            </span>
+                                                            <input type="text" class="form-control" name="min" placeholder="min" required="" aria-required="true" aria-invalid="false">
+                                                            <span class="input-group-addon">
+                                                                Max
+                                                            </span>
+                                                            <input type="text" class="form-control" name="max" placeholder="max" required="" aria-required="true" aria-invalid="false">
+                                                        </div>
+                                                        <br>
+                                                        <br>
+                                                        <div class="input-group">
+                                                            <button class="btn btn-complete" type="submit">Guardar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
                                         </div>
-                                    </form>
+                                    </div>    
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingThree">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                            Apartamento
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                                    <div class="panel-body">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <div class="panel-title col-md-12">
+                                                    Agregar Apartamento
+                                                </div>
+                                            </div>
+                                            <form role="form"  action="{{ url('apartamentos/create') }}" method="post">
+                                                <div class="panel-body">
+                                                    <div class="col-md-12">
+                                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                                        <div>
+                                                            <div class="input-group transparent">
+                                                                <span class="input-group-addon">
+                                                                    <i class="fa fa-user"></i>
+                                                                </span>
+                                                                <input type="text" class="form-control" name="name" placeholder="Nombre" required="" aria-required="true" aria-invalid="false">
+                                                            </div>
+                                                                <br>
+                                                            <div class="input-group transparent">
+                                                                <span class="input-group-addon">
+                                                                    <i class="pg-home"></i>
+                                                                </span>
+                                                                <input type="text" class="form-control" name="nameRoom" placeholder="Nombre Apartamento" required="" aria-required="true" aria-invalid="false">
+                                                            </div>
+                                                                <br>
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    Propietario
+                                                                </span>
+                                                                <select class="full-width" data-init-plugin="select2" name="owner">
+                                                                        <option></option>
+                                                                    <?php foreach ($owners as $owner): ?>
+                                                                         <option value="<?php echo $owner->id ?>"><?php echo $owner->name ?></option>
+                                                                    <?php endforeach ?>
+                                                                </select>
+                                                            </div>
+                                                                <br>
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    Tipo de apartamento
+                                                                </span>
+                                                                <select class="full-width" data-init-plugin="select2" name="type">
+                                                                        <option></option>
+                                                                    <?php foreach ($types as $type): ?>
+                                                                         <option value="<?php echo $type->id ?>"><?php echo $type->name ?></option>
+                                                                    <?php endforeach ?>
+                                                                </select>
+                                                            </div>
+                                                                <br>
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    Tamaño
+                                                                </span>
+                                                                <select class="full-width" data-init-plugin="select2" name="sizeRoom">
+                                                                        <option></option>
+                                                                    <?php foreach ($sizes as $size): ?>
+                                                                         <option value="<?php echo $size->id ?>"><?php echo $size->name ?></option>
+                                                                    <?php endforeach ?>
+                                                                </select>
+                                                            </div> 
+                                                                <br>
+                                                            <div class="input-group">
+                                                                <label class="inline">Lujo</label>
+                                                                <span class="input-group-addon bg-transparent">
+                                                                    <input type="checkbox" name="luxury" data-init-plugin="switchery" data-size="small" data-color="primary" checked="checked" />
+                                                                </span>
+                                                            </div>   
+                                                        </div>
+                                                            <br>
+                                                        <div class="input-group">
+                                                            <button class="btn btn-complete" type="submit">Guardar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>   
                                 </div>
                             </div>
                         </div>
@@ -176,24 +280,6 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="modal-seasons" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog modal-md">
-            <div class="modal-content">
-                <div class="block block-themed block-transparent remove-margin-b">
-                    <div class="block-header bg-primary-dark">
-                        <ul class="block-options">
-                            <li>
-                                <button data-dismiss="modal" type="button"><i class="si si-close"></i></button>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="row block-content" id="content-seasons">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 @endsection
 

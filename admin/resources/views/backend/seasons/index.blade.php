@@ -52,7 +52,7 @@
                             </td>              
                             <td class="text-center">
                                 <div class="btn-group">
-                                    <a href="{{ url('/admin/temporadas/delete/')}}/<?php echo $season->id ?>" class="btn btn-sm btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Temporada" onclick="return confirm('¿Quieres eliminar la temporada?');">
+                                    <a href="{{ url('temporadas/delete/')}}/<?php echo $season->id ?>" class="btn btn-sm btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Temporada" onclick="return confirm('¿Quieres eliminar la temporada?');">
                                         <i class="fa fa-times"></i>
                                     </a>                                     
                                 </div>

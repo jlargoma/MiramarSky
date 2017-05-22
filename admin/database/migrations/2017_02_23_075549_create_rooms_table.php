@@ -19,12 +19,8 @@ class CreateRoomsTable extends Migration
             $table->integer('owned')->unsigned();
             $table->integer('typeApto')->unsigned();
             $table->integer('sizeRoom')->unsigned();
+            $table->integer('luxury');
             $table->timestamps();
-        });
-
-        Schema::table('rooms', function ($table) {
-            $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

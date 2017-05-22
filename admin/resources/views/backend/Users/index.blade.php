@@ -7,6 +7,7 @@
     <link href="assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
+
 @endsection
     
 @section('content')
@@ -45,7 +46,7 @@
                                 <?php echo $user->role?>
                             </td>
                             <td class="text-center ">
-                                <input class="form-control editables text-center email-user-<?php echo $user->id?>"  data-id="<?php echo $user->id; ?>" style="width: 100%" type="text" name="<?php echo $user->email?>" value ="<?php echo $user->email?>">
+                                <?php echo $user->email?>
                             </td>
 
                             <td class="text-center">
@@ -54,9 +55,10 @@
                                     <a href="{{ url('usuarios/delete/')}}/<?php echo $user->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Usuario" onclick="return confirm('¿Quieres eliminar el usuario?');">
                                         <i class="fa fa-times"></i>
                                     </a>
-                                    <a class="btn btn-tag btn-warning update-user" type="button"  data-id="<?php echo $user->id ?>" data-toggle="modal" data-target="#modal-user" title="" data-original-title="Editar Usuario" >
+                                    <a class="btn btn-tag btn-warning update-user" type="button"  data-id="<?php echo $user->id ?>" data-toggle="modal" data-target="#modalSlideLeft" title="" data-original-title="Editar Usuario" >
                                         <i class="fa fa-edit"></i>
-                                    </a>                                    
+                                    </a>
+                                  
                                 </div>
                             </td>
                         </tr>
@@ -126,26 +128,26 @@
         </div>
     </div>
 </div>
+<div class="modal fade slide-right" id="modalSlideLeft" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content-wrapper">
+      <div class="modal-content">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>
+        </button>
+        <div class="container-xs-height full-height">
+          <div class="row-xs-height">
+            <div class="modal-body col-xs-height col-middle text-center   ">
 
-
-<div class="modal fade" id="modal-user" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="block block-themed block-transparent remove-margin-b">
-                <div class="block-header bg-primary-dark">
-                    <ul class="block-options">
-                        <li>
-                            <button data-dismiss="modal" type="button"><i class="si si-close"></i></button>
-                        </li>
-                    </ul>
-                </div>
-                <div class="row block-content" id="content-user">
-
-                </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
 </div>
+
 @endsection
 
 @section('scripts')
@@ -155,12 +157,13 @@
     <script src="assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
     <script type="text/javascript" src="assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
     <script type="text/javascript" src="assets/plugins/datatables-responsive/js/lodash.min.js"></script>
+  
     <script type="text/javascript">
         $(document).ready(function() {
             $('.update-user').click(function(event) {
                 var id = $(this).attr('data-id');
                 $.get('usuarios/update/'+id, function(data) {
-                    $('#content-user').empty().append(data);
+                    $('.modal-body').empty().append(data);
                 });
             });
 

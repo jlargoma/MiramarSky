@@ -16,7 +16,8 @@ class PricesController extends Controller
     public function index()
     {
         return view('backend/prices/prices',[
-                    'prices' => \App\Prices::all(),
+                    'countOccupations' => \App\SizeRooms::distinct()->get(['minOcu']),
+                    'seasons' => \App\TypeSeasons::all(),
                 ]);
     }
 

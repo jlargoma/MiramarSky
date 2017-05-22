@@ -22,7 +22,8 @@ class UpdateTablessTable extends Migration
             $table->foreign('season')->references('id')->on('typeseasons');
         });
         Schema::table('rooms', function ($table) {            
-            $table->foreign('owned')->references('id')->on('typerooms');
+            $table->foreign('owned')->references('id')->on('users');
+             $table->foreign('typeApto')->references('id')->on('typerooms');
         });
         
         Schema::table('book', function ($table) {

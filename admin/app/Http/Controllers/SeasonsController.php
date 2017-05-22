@@ -24,18 +24,6 @@ class SeasonsController extends Controller
                 ]);
     }
 
-    public function newSeasons()
-    {
-        return view('backend/seasons/new-seasons',[
-                                                    'seasons' => \App\TypeSeasons::all()]);
-    }
-    public function newTypeSeasons()
-    {
-        return view('backend/seasons/new-type-seasons',[
-                    'types' => \App\TypeSeasons::all()
-            ]);
-    }
-
     /**
      * Show the form for creating a new resource.
      *
