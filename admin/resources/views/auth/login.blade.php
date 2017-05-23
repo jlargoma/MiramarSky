@@ -56,57 +56,39 @@
           <img src="assets/img/miramar-logo-t.png" alt="logo" data-src="assets/img/miramar-logo-t.png" data-src-retina="assets/img/miramar-logo-t.png" width="77" height="63">
           <p class="p-t-35">Logueate para acceder a tu cuenta</p>
           <!-- START Login Form -->
-          <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
-                                {{ csrf_field() }}
+          <form id="form-login" class="p-t-15" role="form" method="POST" action="{{ url('/login') }}">
+            {{ csrf_field() }}
+            <!-- START Form Control-->
+            <div class="form-group form-group-default">
+              <label>Email</label>
+              <div class="controls">
+                <input type="text" name="email" placeholder="Email" class="form-control" required>
+              </div>
+            </div>
+            <!-- END Form Control-->
+            <!-- START Form Control-->
+            <div class="form-group form-group-default">
+              <label>Password</label>
+              <div class="controls">
+                <input type="password" class="form-control" name="password" placeholder="Password" required>
+              </div>
+            </div>
+            <!-- START Form Control-->
+            <div class="row">
+              <div class="col-md-6 no-padding">
+                <div class="checkbox ">
+                  <input type="checkbox" value="1" id="checkbox1">
+                  <label for="checkbox1">Recuerdame</label>
+                </div>
+              </div>
+              <div class="col-md-6 text-right">
+                <a href="{{ url('/password/reset') }}" class="text-info small">Olvide mi contraseña</a>
+              </div>
+            </div>
+            <!-- END Form Control-->
+            <button class="btn btn-primary btn-cons m-t-10" type="submit">Login </button>
+          </form>
 
-                                <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                    <label for="email" class="col-md-4 control-label">E-Mail</label>
-
-                                    <div class="col-md-6">
-                                        <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}">
-
-                                        @if ($errors->has('email'))
-                                            <span class="help-block">
-                                                <strong>{{ $errors->first('email') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                    <label for="password" class="col-md-4 control-label">Contraseña</label>
-
-                                    <div class="col-md-6">
-                                        <input id="password" type="password" class="form-control" name="password">
-
-                                        @if ($errors->has('password'))
-                                            <span class="help-block">
-                                                <strong>{{ $errors->first('password') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-md-6 col-md-offset-4">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="remember"> Recuerdame
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-md-6 col-md-offset-4 text-center">
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="fa fa-btn fa-sign-in"></i> Login
-                                        </button>
-                                        <br>
-                                        <a class="btn btn-link" href="{{ url('/password/reset') }}">Has olvidado tu contraseña?</a>
-                                    </div>
-                                </div>
-                            </form>
           <!--END Login Form-->
         </div>
       </div>
