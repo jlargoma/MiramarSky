@@ -135,7 +135,7 @@
 				<div class=" pull-left sm-table hidden-xs hidden-sm">
 					<div class="header-inner">
 						<div class="brand inline">
-							<img src="assets/img/logo.png" alt="logo" data-src="assets/img/logo.png" data-src-retina="assets/img/logo_2x.png" width="78" height="22">
+							<img src="assets/img/miramar-logo-t.png" alt="logo" data-src="assets/img/miramar-logo-t.png" data-src-retina="assets/img/miramar-logo-t.png" width="50" height="43">
 						</div>
 						<!-- START NOTIFICATION LIST -->
 						<!-- END NOTIFICATIONS LIST -->

@@ -23,48 +23,55 @@
               </div>
             </div>
             <div class="clearfix"></div>
-            <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch">
-                <thead>
-                    <tr>
-                        <th class ="text-center hidden" style="width: 25%">id</th>
-                        <th class ="text-center bg-complete text-white" style="width: 25%">Nombre</th>
-                        <th class ="text-center bg-complete text-white" style="width: 15%"> Tipo</th>
-                        <th class ="text-center bg-complete text-white" style="width: 35%">Email</th>
-                        <th class ="text-center bg-complete text-white" style="width: 25%">Editar</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($users as $user): ?>
+            <?php if (count($users) > 0): ?>
+                
+               
+                <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch">
+                    <thead>
                         <tr>
-                            <td class="text-center hidden">
-                                <input type="text" name="<?php echo $user->id?>" value="<?php echo $user->id?>">
-                            </td>
-                            <td class="text-center "><?php echo $user->name?>
-                            </td>
-                            <td class="text-center ">
-                                <?php echo $user->role?>
-                            </td>
-                            <td class="text-center ">
-                                <?php echo $user->email?>
-                            </td>
+                            <th class ="text-center hidden" style="width: 25%">id</th>
+                            <th class ="text-center bg-complete text-white" style="width: 25%">Nombre</th>
+                            <th class ="text-center bg-complete text-white" style="width: 15%"> Tipo</th>
+                            <th class ="text-center bg-complete text-white" style="width: 35%">Email</th>
+                            <th class ="text-center bg-complete text-white" style="width: 25%">Editar</th>
 
-                            <td class="text-center">
-                                <div class="btn-group">
-                                    <!--  -->
-                                    <a href="{{ url('usuarios/delete/')}}/<?php echo $user->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Usuario" onclick="return confirm('¿Quieres eliminar el usuario?');">
-                                        <i class="fa fa-times"></i>
-                                    </a>
-                                    <a class="btn btn-tag btn-warning update-user" type="button"  data-id="<?php echo $user->id ?>" data-toggle="modal" data-target="#modalSlideLeft" title="" data-original-title="Editar Usuario" >
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                  
-                                </div>
-                            </td>
                         </tr>
-                    <?php endforeach ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($users as $user): ?>
+                            <tr>
+                                <td class="text-center hidden">
+                                    <input type="text" name="<?php echo $user->id?>" value="<?php echo $user->id?>">
+                                </td>
+                                <td class="text-center "><?php echo $user->name?>
+                                </td>
+                                <td class="text-center ">
+                                    <?php echo $user->role?>
+                                </td>
+                                <td class="text-center ">
+                                    <?php echo $user->email?>
+                                </td>
+
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <!--  -->
+                                        <a href="{{ url('usuarios/delete/')}}/<?php echo $user->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Usuario" onclick="return confirm('¿Quieres eliminar el usuario?');">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                        <a class="btn btn-tag btn-warning update-user" type="button"  data-id="<?php echo $user->id ?>" data-toggle="modal" data-target="#myModal" title="" data-original-title="Editar Usuario" >
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                      
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
+
+            <?php else: ?>
+                
+            <?php endif ?>
         </div>
         <div class="col-md-4">
             <div class="container-fluid container-fixed-lg">
@@ -128,7 +135,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade slide-right" id="modalSlideLeft" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade stick-up" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-sm">
     <div class="modal-content-wrapper">
       <div class="modal-content">

@@ -1,4 +1,3 @@
-
 <style type="text/css">
 	.not-padding {
 		padding: 0;
@@ -9,26 +8,30 @@
 
 	.booked{
 		background-color: green;
-		min-height: 40px!important;
+		min-width: 33.33%;
+		min-height: 20px!important;
 	}
 	.closed{
 		background-color: red;
-		min-height: 40px!important;
+		min-width: 33.33%;
+		min-height: 20px!important;
 		
 	}
 	.bloq{
 		background-color: yellow;
-		min-height: 40px!important;
+		min-width: 33.33%;
+		min-height: 20px!important;
 		
 	}
 	.sub{
 		background-color: orange;
-		min-height: 40px!important;
+		min-width: 33.33%;
+		min-height: 20px!important;
 		
 	}
 
 	.end, .start{
-		opacity: 0.25;
+		opacity: 0.50;
 	}
 
 	.fc-day.fc-sun.fc-widget-content.fc-other-month.fc-first{
@@ -668,120 +671,120 @@
 <script src="//code.jquery.com/jquery.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
-
-<div id="calendar" class="col-xs-12 col-md-12">
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div class="calendar fc fc-ltr">
-                <table class="fc-header" style="width:100%">
-                    <tbody>
-                        <tr>
-                            <td class="fc-header-center"> 
-                            	<span class="fc-header-title">  
-                            		
-                            		<h2><?php echo ucfirst($date->copy()->formatLocalized('%B %Y')) ?></h2>          
-                            	</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="fc-content" style="position: relative; min-height: 1px;">
-                    <div class="fc-view fc-view-month fc-grid" style="position: relative; min-height: 1px;" unselectable="on">
-                        <table class="fc-border-separate" style="width:100%;border: 1px solid black" cellspacing="0">
-                            <thead>
-                                <tr class="fc-last">
-                                	<th class="fc-day-header fc-mon fc-widget-header">
-                                		<span style="font-size: 12px">Apto</span>
-                                	</th>
-                        			<?php $dayMonth = $startMonth; ?>
-                                	<?php for ( $i = 1; $i <= $countDays+1; $i++): ?>
-                                		<th class="fc-day-header fc-mon fc-widget-header" style="width: 158px;">
-											<span style="font-size: 12px">
-												<?php echo $dayMonth->format('d') ?> <br>
-												<!-- <?php echo ucfirst($dayMonth->formatLocalized('%a')) ?> -->
-											</span>
-                                		</th>
-                            			<?php $dayMonth->addDay() ?>
-                                	<?php endfor ?>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            	<?php foreach ($rooms as $room): ?>
-	                                <tr class="fc-week fc-first">
-	                                	<td class="fc-day fc-sun fc-widget-content fc-other-month fc-first text-center">
-	                                		<span style="font-size: 12px"><?php echo substr($room->nameRoom, 0, 5); ?></span>
-	                                	</td>
-                        				<?php 
-											$day = $startMonth->copy()->subMonth();
-
-
-											for ( $i = 1; $i <= $countDays+1; $i++): 
-											/* Reservas por Año y Mes */
-											// $criteriaBooks = new CDbCriteria();
-											// $criteriaBooks->condition = 'Type IN (0,1,6,7) AND "'.$day->copy()->format('Y-m-d').'" BETWEEN Start AND Finish AND RoomID = '.$room->ID;
-											$books = \App\Book::whereIn('type_book' , [0,1,6,7])
-																->where('room_id', $room->id)
-																->where('start', '<=' ,$day->copy()->format('Y-m-d'))
-																->where('finish', '>=' ,$day->copy()->format('Y-m-d'))
-																->get();												
-											$status = "";
-		                                	if (count($books) > 0) {
-		                                		
-		                                		foreach ($books as $book){
-
-													$nameCustomer = $book->customer->name;
-													$startBook    = $book->start;
-													$endBook      = $book->finish;
-													$startDate    = date('d-m-Y' , strtotime($book->start));
-													$endDate      = date('d-m-Y', strtotime($book->finish));
-	                                				switch ($book->type_book) {
-	                                					case 1:
-	                                						$status = "booked";
-	                                						break;
-	                                					case 2:
-	                                						$status = "closed";
-	                                						break;
-	                                					case 7:
-	                                						$status = "bloq";
-	                                						break;
-	                                					case 8:
-	                                						$status = "sub";
-	                                						break;
-	                                					default:
-	                                						$status = "";
-	                                						break;
-	                                				}
-		                                		} 
-											} 
-											else {
-												$status = "";
-												$nameCustomer = "";
-												$startBook    = "";
-												$endBook      = "";
-											}
-		                                ?>	
-		                                	<td class="fc-day fc-sun fc-widget-content fc-other-month fc-first"  style="padding: 1px; width: 30px;" data-toggle="tooltip" title="<?php echo $nameCustomer; ?>">
-		                                	    <div class="col-xs-12 not-padding descrip-<?php echo $i?>" style="min-height: 30px;">
-
-		                                	        <div class="col-xs-4 not-padding min-h50 <?php if ($book->finish == $day->copy()->format('Y-m-d') && $book->start < $day->copy()->format('Y-m-d')){ echo $status.' end';}elseif($book->finish > $day->copy()->format('Y-m-d') && $book->start < $day->copy()->format('Y-m-d')){echo $status;}else{} ?>"></div>
-
-		                                	        <div class="col-xs-4 not-padding min-h50 <?php if ($book->finish > $day->copy()->format('Y-m-d') && $book->start < $day->copy()->format('Y-m-d')){ echo $status;}else{} ?>"></div>
-
-		                                  	        <div class="col-xs-4 not-padding min-h50 <?php if ($book->start == $day->copy()->format('Y-m-d')){ echo $status.' start';}elseif($book->finish != $day->copy()->format('Y-m-d')){echo $status;}else{} ?>"></div>
-		                                	    </div>
-		                                	</td>
-	                                		<?php $day->addDay(); ?>
-		                                <?php endfor ?>
+<?php $date->subMonth(); ?>
+<?php for ($j=0; $j < 3; $j++): 
+	$startMonth = $date->copy()->startOfMonth();
+	$endMonth = $date->copy()->endOfMonth();
+	$countDays = $endMonth->diffInDays($startMonth);
+?>
+	<div id="calendar" class="col-xs-12 col-md-12">
+	    <div class="panel panel-default">
+	        <div class="panel-body">
+	            <div class="calendar fc fc-ltr">
+	                <h2><?php echo ucfirst($date->copy()->formatLocalized('%B %Y')) ?></h2>          
+	                            	
+	                <div class="fc-content" style="position: relative; min-height: 1px;">
+	                    <div class="fc-view fc-view-month fc-grid" style="position: relative; min-height: 1px;" unselectable="on">
+	                        <table class="fc-border-separate" style="width:100%;border: 1px solid black" cellspacing="0">
+	                            <thead>
+	                                <tr class="fc-last">
+	                                	<th class="fc-day-header fc-mon fc-widget-header">
+	                                		<span style="font-size: 12px">Apto</span>
+	                                	</th>
+	                        			<?php $dayMonth = $startMonth; ?>
+	                                	<?php for ( $i = 1; $i <= $countDays+1; $i++): ?>
+	                                		<th class="fc-day-header fc-mon fc-widget-header" style="width: 100px;">
+												<span style="font-size: 11px">
+													<?php echo $dayMonth->format('d') ?> <br>
+													<!-- <?php echo ucfirst($dayMonth->formatLocalized('%a')) ?> -->
+												</span>
+	                                		</th>
+	                            			<?php $dayMonth->addDay() ?>
+	                                	<?php endfor ?>
 	                                </tr>
-                            	<?php endforeach ?>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+	                            </thead>
+	                            <tbody>
+	                            	<?php foreach ($rooms as $room): ?>
+	                            		<tr>
+	                            			<td class="text-center"><?php echo substr($room->nameRoom, 0,5) ?></td>
+		                        				<?php 
+													$day = $startMonth->copy()->subMonth();
+
+
+													for ( $i = 1; $i <= $countDays+1; $i++): 
+													/* Reservas por Año y Mes */
+													// $criteriaBooks = new CDbCriteria();
+													// $criteriaBooks->condition = 'Type IN (0,1,6,7) AND "'.$day->copy()->format('Y-m-d').'" BETWEEN Start AND Finish AND RoomID = '.$room->ID;
+													$books = \App\Book::whereIn('type_book' , [0,1,6,7])
+																		->where('room_id', $room->id)
+																		->where('start', '<=' ,$day->copy()->format('Y-m-d'))
+																		->where('finish', '>=' ,$day->copy()->format('Y-m-d'))
+																		->get();												
+													$status = "";											
+				                                	if (count($books) > 0) {
+				                                		
+				                                		foreach ($books as $book){
+
+															$nameCustomer = $book->customer->name;
+															$startBook    = $book->start;
+															$endBook      = $book->finish;
+															$startDate    = date('d-m-Y' , strtotime($book->start));
+															$endDate      = date('d-m-Y', strtotime($book->finish));
+			                                				switch ($book->type_book) {
+			                                					case 1:
+			                                						$status = "booked";
+			                                						break;
+			                                					case 2:
+			                                						$status = "closed";
+			                                						break;
+			                                					case 7:
+			                                						$status = "bloq";
+			                                						break;
+			                                					case 8:
+			                                						$status = "sub";
+			                                						break;
+			                                					default:
+			                                						$status = "";
+			                                						break;
+			                                				}
+				                                		}
+
+
+													} 
+													else {
+														$status = "";
+														$nameCustomer = "";
+														$startBook    = "";
+														$endBook      = "";
+													}
+				                                ?>	
+				                                	<?php if ($book->finish > $day->copy()->format('Y-m-d') && $book->start < $day->copy()->format('Y-m-d')): ?>
+				                                	<td style="border: 1px solid black"  title="<?php echo $nameCustomer; ?>">
+				                                		<div class="not-padding <?php echo $status ?>" style="width: 100%"></div>
+				                                	</td>
+				                                	<?php else:?>
+				                                		<td style="border: 1px solid black">
+				                                			<div class="descrip-<?php echo $i?>">
+				                                				<div class="not-padding <?php if ($book->finish == $day->copy()->format('Y-m-d') && $book->start < $day->copy()->format('Y-m-d')){ echo $status.' end';}elseif($book->finish > $day->copy()->format('Y-m-d') && $book->start < $day->copy()->format('Y-m-d')){echo $status;}else{} ?>" style="float:left;width: 5px" title="<?php echo $nameCustomer; ?>"></div>
+				                                				<div class="not-padding <?php if ($book->finish > $day->copy()->format('Y-m-d') && $book->start < $day->copy()->format('Y-m-d')){ echo $status;}elseif($book->finish > $day->copy()->format('Y-m-d') && $book->start < $day->copy()->format('Y-m-d')){echo $status;}else{} ?>" style="float:left;width: 5px"></div>
+				                                				<div class="not-padding <?php if ($book->start == $day->copy()->format('Y-m-d') && $book->finish > $day->copy()->format('Y-m-d')){ echo $status.' end';}elseif($book->finish > $day->copy()->format('Y-m-d') && $book->start < $day->copy()->format('Y-m-d')){echo $status;}else{} ?>" style="float:right;width: 5px" title="<?php echo $nameCustomer; ?>"></div>
+				                                			</div>
+				                                		</td>
+				                                	<?php endif ?>
+	                            					
+	                            				<?php $day->addDay(); ?>
+	                            			<?php endfor ?>
+	                            		</tr>
+	                            	<?php endforeach;?>
+	                            </tbody>
+	                        </table>		
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+<?php $date->addMonth(); ?>
+<?php endfor;?>
 
 

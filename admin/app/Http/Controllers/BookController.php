@@ -17,23 +17,17 @@ class BookController extends Controller
     public function index()
     {
 
-        if ( !isset($_GET['month']) || !isset($_GET['year'])) {
-        $date = Carbon::now();
-        }else{
-            $date = Carbon::createFromFormat('Y-m',$_GET['year']."-".$_GET['month']);
-        }
-        $startMonth = $date->copy()->startOfMonth();
-        $endMonth = $date->copy()->endOfMonth();
-        $countDays = $endMonth->diffInDays($startMonth);
+        // if ( !isset($_GET['month']) || !isset($_GET['year'])) {
+            $date = Carbon::now();
+        // }else{
+            // $date = Carbon::createFromFormat('Y-m',$_GET['year']."-".$_GET['month']);
+        // }
 
 
         return view('backend/planning/planning',[
                                                 'books'      => \App\Book::all(),
                                                 'rooms'      => \App\Rooms::all(),
                                                 'date'       => $date,
-                                                'startMonth' => $startMonth,
-                                                'endMonth'   => $endMonth,
-                                                'countDays'  => $countDays,
                                                 ]);
     }
 

@@ -16,6 +16,8 @@ Route::get('/',[
 				'middleware' => 'auth',
 				'uses' => 'Admin\BackendController@index'
 			]);
+
+Route::group(['middleware' => 'auth'], function () {
 //Planing 
 	Route::get('planning' , 'BookController@index');
 	Route::get('planning/new' , 'BookController@newBook');
@@ -45,7 +47,7 @@ Route::get('/',[
 	Route::get('apartamentos/new-size', 'RoomsController@newSizeRoom');
 	Route::get('apartamentos/update', 'RoomsController@update');
 	Route::post('apartamentos/saveupdate', 'RoomsController@saveUpdate');
-	Route::post('apartamentos/create', 'RoomsController@create');
+	Route::post('apartamentos/create/{id}/{seasson}', 'RoomsController@create');
 	Route::post('apartamentos/create-type', 'RoomsController@createType');
 	Route::post('apartamentos/create-size', 'RoomsController@createSize');
 	Route::get('apartamentos/delete/{id}', 'RoomsController@delete');
@@ -70,3 +72,4 @@ Route::get('/',[
 	Route::post('temporadas/create-type', 'SeasonsController@createType');
 	Route::get('temporadas/delete/{id}', 'SeasonsController@delete');
 
+});
