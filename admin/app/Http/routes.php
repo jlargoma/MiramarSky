@@ -19,8 +19,10 @@ Route::get('/',[
 
 Route::group(['middleware' => 'auth'], function () {
 //Planing 
-	Route::get('planning' , 'BookController@index');
-	Route::get('planning/new' , 'BookController@newBook');
+	Route::get('reservas' , 'BookController@index');
+	Route::get('reservas/new' , 'BookController@newBook');
+	Route::get('reservas/changeBook/{id}' , 'BookController@changeBook');
+
 	
 	
 // Usuarios
@@ -36,7 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('clientes' , 'CustomersController@index');
 	Route::get('clientes/new', 'CustomersController@newUser');
 	Route::get('clientes/update', 'CustomersController@update');
-	Route::post('clientes/saveupdate', 'CustomersController@saveUpdate');
+	Route::get('clientes/save', 'CustomersController@save');
 	Route::post('clientes/create', 'CustomersController@create');
 	Route::get('clientes/delete/{id}', 'CustomersController@delete');
 
@@ -47,7 +49,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('apartamentos/new-size', 'RoomsController@newSizeRoom');
 	Route::get('apartamentos/update', 'RoomsController@update');
 	Route::post('apartamentos/saveupdate', 'RoomsController@saveUpdate');
-	Route::post('apartamentos/create/{id}/{seasson}', 'RoomsController@create');
+	Route::post('apartamentos/create', 'RoomsController@create');
 	Route::post('apartamentos/create-type', 'RoomsController@createType');
 	Route::post('apartamentos/create-size', 'RoomsController@createSize');
 	Route::get('apartamentos/delete/{id}', 'RoomsController@delete');

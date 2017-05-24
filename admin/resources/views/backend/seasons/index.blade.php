@@ -52,7 +52,7 @@
                             </td>              
                             <td class="text-center">
                                 <div class="btn-group">
-                                    <a href="{{ url('temporadas/delete/')}}/<?php echo $season->id ?>" class="btn btn-sm btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Temporada" onclick="return confirm('¿Quieres eliminar la temporada?');">
+                                    <a href="{{ url('temporadas/delete/')}}/<?php echo $season->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Temporada" onclick="return confirm('¿Quieres eliminar la temporada?');">
                                         <i class="fa fa-times"></i>
                                     </a>                                     
                                 </div>
@@ -163,25 +163,13 @@
             </div>
         </div>
     </div>
-</div>
-<div class="modal fade" id="modal-seasons" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog modal-md">
-            <div class="modal-content">
-                <div class="block block-themed block-transparent remove-margin-b">
-                    <div class="block-header bg-primary-dark">
-                        <ul class="block-options">
-                            <li>
-                                <button data-dismiss="modal" type="button"><i class="si si-close"></i></button>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="row block-content" id="content-seasons">
+    <div class="row">
 
-                    </div>
-                </div>
-            </div>
+        <div class="col-md-12">
+            @include('backend.seasons.calendar')
         </div>
     </div>
+</div>
 
 @endsection
 

@@ -10,7 +10,6 @@
 @endsection
 
 @section('content')
-<?php use \Carbon\Carbon; ?>
 
 <div class="container-fluid padding-25 sm-padding-10">
     <div class="row">
@@ -26,11 +25,11 @@
                 <thead>
                     <tr>
                         <th class ="text-center hidden bg-complete text-white">id          </th>
-                        <th class ="text-center bg-complete text-white">       Nombre      </th>
-                        <th class ="text-center bg-complete text-white">       Email       </th>
-                        <th class ="text-center bg-complete text-white">       Telefono    </th>                  
-                        <th class ="text-center bg-complete text-white">       Comentarios </th>                  
-                        <th class ="text-center bg-complete text-white">       Editar      </th>
+                        <th class ="text-center bg-complete text-white" style="width:10%">       Nombre      </th>
+                        <th class ="text-center bg-complete text-white" style="width:10%">       Email       </th>
+                        <th class ="text-center bg-complete text-white" style="width:10%">       Telefono    </th>                  
+                        <th class ="text-center bg-complete text-white" style="width:50%">       Comentarios </th>                  
+                        <th class ="text-center bg-complete text-white" style="width:5%">       Editar      </th>
 
                     </tr>
                 </thead>
@@ -39,24 +38,26 @@
                         <tr>
                             <td class="text-center font-montserrat" hidden><?php echo $customer->id ?></td>
                             <td class="text-center font-montserrat">
-                               <?php  echo $customer->name?>
+                               <input type="text" class="editables name-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->name?>" style="border-style: none none solid">
                             </td>
                             <td class="text-center font-montserrat">
-                               <?php  echo $customer->email?>
+                                <input type="text" class="editables email-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->email?>" style="border-style: none none solid">
                             </td>
                             <td class="text-center font-montserrat">
-                               <?php  echo $customer->phone?>
+                                <input type="number" class="editables phone-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->phone?>" style="border-style: none none solid">
+                               
                             </td>
                             <td class="text-center font-montserrat">
-                                <?php  echo $customer->comments?>
+                                <input type="text" class="editables comments-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->comments?>" style="border-style: none none solid;width: 85%">
+                                
                             </td>
                             <td class="text-center font-montserrat">
-                                    <div class="btn-group">
-                                        <a href="{{ url('clientes/delete/')}}/<?php echo $customer->id ?>" class="btn btn-sm btn-danger font-montserrat" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Cliente" onclick="return confirm('¿Quieres eliminar el cliente?');">
-                                            <i class="fa fa-times"></i>
-                                        </a>                                     
-                                    </div>
-                                </td>
+                                <div class="btn-group">
+                                    <a href="{{ url('clientes/delete/')}}/<?php echo $customer->id ?>" class="btn btn-tag btn-danger font-montserrat" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Cliente" onclick="return confirm('¿Quieres eliminar el cliente?');">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>                                     
+                                </div>
+                            </td>
                         </tr>
                     <?php endforeach ?>
                 </tbody>
@@ -118,7 +119,25 @@
         </div>
     </div>
 </div>
+<div class="modal fade slide-up disable-scroll in" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content-wrapper">
+      <div class="modal-content">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-30"></i>
+        </button>
+        <div class="container-xs-height full-height">
+          <div class="row-xs-height">
+            <div class="modal-body col-xs-height col-middle text-center   ">
 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
 @endsection
 
 @section('scripts')
@@ -128,5 +147,27 @@
     <script src="assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
     <script type="text/javascript" src="assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
     <script type="text/javascript" src="assets/plugins/datatables-responsive/js/lodash.min.js"></script>
-    
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.update-customer').click(function(event) {
+                var id = $(this).attr('data-id');
+                $.get('clientes/update/'+id, function(data) {
+                    $('.modal-body').empty().append(data);
+                });
+            });
+
+            $('.editables').change(function(event) {
+                var id = $(this).attr('data-id');
+
+                var name = $('.name-'+id).val();
+                var email = $('.email-'+id).val();
+                var phone = $('.phone-'+id).val();
+                var comments = $('.comments-'+id).val();
+
+                $.get('clientes/save', {  id: id, name: name, email: email, phone: phone, comments: comments}, function(data) {
+                    alert(data);
+                });
+            });
+        });
+    </script>
 @endsection

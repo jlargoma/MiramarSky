@@ -308,29 +308,4 @@
     <script src="assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
 
    
-    <script type="text/javascript">
-        $(document).ready(function() {
-
-            $('.new-seasons').click(function(event) {
-                $.get('/admin/temporadas/new', function(data) {
-                    $('#content-seasons').empty().append(data);
-                });
-            });
-            $('.new-type-seasons').click(function(event) {
-                $.get('/admin/temporadas/new-type', function(data) {
-                    $('#content-seasons').empty().append(data);
-                });
-            });
-
-            $('.editables').change(function(event) {
-                var id = $(this).attr('data-id');
-
-                var name = $('.name-room-'+id).val();
-
-                $.get('/admin/apartamentos/update/', {  id: id, name:name}, function(data) {
-                    alert(data);
-                });
-            });
-        });
-    </script>
 @endsection

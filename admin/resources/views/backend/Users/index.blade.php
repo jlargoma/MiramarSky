@@ -56,9 +56,11 @@
                                     <div class="btn-group">
                                         <!--  -->
                                         <a href="{{ url('usuarios/delete/')}}/<?php echo $user->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Usuario" onclick="return confirm('¿Quieres eliminar el usuario?');">
-                                            <i class="fa fa-times"></i>
+                                            <i class="fa fa-trash-o"></i>
                                         </a>
-                                        <a class="btn btn-tag btn-warning update-user" type="button"  data-id="<?php echo $user->id ?>" data-toggle="modal" data-target="#myModal" title="" data-original-title="Editar Usuario" >
+                                    </div>
+                                    <div class="btn-group">
+                                        <a class="btn btn-tag btn-success update-user" type="button"  data-id="<?php echo $user->id ?>" data-toggle="modal" data-target="#myModal" title="Editar Usuario" >
                                             <i class="fa fa-edit"></i>
                                         </a>
                                       
@@ -135,11 +137,11 @@
         </div>
     </div>
 </div>
-<div class="modal fade stick-up" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
+<div class="modal fade slide-up disable-scroll in" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-md">
     <div class="modal-content-wrapper">
       <div class="modal-content">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14"></i>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-30"></i>
         </button>
         <div class="container-xs-height full-height">
           <div class="row-xs-height">

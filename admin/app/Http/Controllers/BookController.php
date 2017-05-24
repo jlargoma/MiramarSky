@@ -90,7 +90,34 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
+    }
+
+
+
+    public function changeBook(Request $request, $id)
+    {
+        if ( isset($request->room) && !empty($request->room)) {
+            $book = \App\Book::find($id);
+            echo "<pre>";
+            print_r($book->changeBook("",$request->room));
+            die();
+
+            if ($book->changeBook("",$request->room)) {
+                return "OK";
+            }else{
+                return "Ya hay una reserva para ese apartamento";
+            }
+        }
+        if ( isset($request->status) && !empty($request->status)) {
+            $book = \App\Book::find($id);
+            
+            if ($book->changeBook($request->status,"")) {
+                return "OK";
+            }
+        }else{
+            return "Valor nulo o vacio";
+        }
     }
 
     /**

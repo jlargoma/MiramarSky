@@ -45,7 +45,7 @@
         <!-- START Background Caption-->
         <div class="bg-caption pull-bottom sm-pull-bottom text-white p-l-20 m-b-20">
           <h2 class="semi-bold text-white">
-					Apartamentos sierra nevada</h2>
+					Apartamentos MIRAMAR SKI</h2>
         </div>
         <!-- END Background Caption-->
       </div>

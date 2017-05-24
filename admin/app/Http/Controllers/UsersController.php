@@ -91,21 +91,6 @@ class UsersController extends Controller
                                             ]);
     }
 
-    public function saveUpdate(Request $request)
-    {
-        $id                   = $request->input('id');
-        $userUpadate          = \App\User::find($id);
-
-        $userUpadate->role = $request->input('role');
-        $userUpadate->name    = $request->input('name');
-        $userUpadate->password = $request->input('password');
-        $userUpadate->email    = $request->input('email');
-
-        if ($userUpadate->save()) {
-            return redirect()->action('UsersController@index');
-        }
-    }
-
     public function saveAjax(Request $request)
     {
         $id                   = $request->input('id');

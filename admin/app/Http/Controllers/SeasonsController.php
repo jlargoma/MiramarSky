@@ -16,11 +16,12 @@ class SeasonsController extends Controller
      */
     public function index()
     {
-
+        $date = Carbon::now();
         return view('backend/seasons/index',[
                     'seasons'  => \App\Seasons::all(),
                     'newtypeSeasons' => \App\TypeSeasons::all(),
-                    'typeSeasons' => \App\TypeSeasons::all(),                    
+                    'typeSeasons' => \App\TypeSeasons::all(),
+                    'date'       => $date,                 
                 ]);
     }
 
@@ -70,38 +71,6 @@ class SeasonsController extends Controller
             echo "Ya existe este tipo";
         }
         
-    }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**

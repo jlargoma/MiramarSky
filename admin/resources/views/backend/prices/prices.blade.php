@@ -55,10 +55,10 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="text-center">
-                                                        <input class="editable price-<?php echo $price->id?>" type="text" name="cost" data-id="<?php echo $price->id ?>" value="<?php echo $price->price ?>" style="width: 100%;text-align: right;">
+                                                        <input class="editable price-<?php echo $price->id?>" type="text" name="cost" data-id="<?php echo $price->id ?>" value="<?php echo $price->price ?>" style="width: 100%;text-align: center;border-style: none none solid">
                                                     </td>
                                                     <td class="text-center">
-                                                        <input class="editable cost-<?php echo $price->id?>" type="text" name="cost" data-id="<?php echo $price->id ?>" value="<?php echo $price->cost ?>" style="width: 100%;text-align: right;">
+                                                        <input class="editable cost-<?php echo $price->id?>" type="text" name="cost" data-id="<?php echo $price->id ?>" value="<?php echo $price->cost ?>" style="width: 100%;text-align: center;border-style: none none solid">
                                                     </td>
                                                     <td class="text-center">
                                                         <?php $ben = ( ($price->price * 100) / $price->cost)-100; ?>

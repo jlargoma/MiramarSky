@@ -19,7 +19,7 @@
     </style>
 <div class="container-fluid padding-10 sm-padding-10">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 col-xs-12">
             <div class="col-md-12 col-xs-12" style="width: 100%">
                 <div class="text-center pendientes" id="hide"><h3>Reservas pendientes</h3></div>
                     <div class="reservatable">
@@ -34,7 +34,7 @@
                                 <tr>
 
                                     <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
-                                    <th class ="text-center bg-complete text-white" style="width:5%">   Personas    </th>
+                                    <th class ="text-center bg-complete text-white" style="width:5%">   Pax    </th>
                                     <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
                                     <th class ="text-center bg-complete text-white" style="width:15%">  Entrada     </th>
                                     <th class ="text-center bg-complete text-white" style="width:15%">  Salida      </th>
@@ -48,7 +48,20 @@
                                 <tr class="<?php echo $book->getStatus($book->type_book) ?>">
                                     <td class ="text-center"><?php echo $book->Customer->name ?></td>
                                     <td class ="text-center"><?php echo $book->pax ?></td>
-                                    <td class ="text-center"><?php echo $book->Room->name ?></td>
+                                    <td class ="text-center">
+                                        <select class="room" class="form-control" data-id="<?php echo $book->id ?>" >
+                                            
+                                            <?php foreach ($rooms as $room): ?>
+                                                <?php if ($room->id == $book->room_id): ?>
+                                                    <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
+                                                        <?php echo $room->name ?><span>
+                                                    </option>
+                                                <?php else:?>
+                                                    <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
+                                                <?php endif ?>
+                                            <?php endforeach ?>
+                                        </select>
+                                    </td>
                                     <td class ="text-center">
                                         <?php
                                             $start = Carbon::createFromFormat('Y-m-d',$book->start);
@@ -63,7 +76,19 @@
                                     </td>
                                     <td class ="text-center"><?php echo $book->nigths ?></td>
                                     <td class ="text-center"><?php echo $book->total_price."€" ?></td>
-                                    <td class ="text-center"><?php echo $book->getStatus($book->type_book) ?></td>
+                                    <td class ="text-center">
+                                        <select class="status" class="form-control" data-id="<?php echo $book->id ?>" >
+                                            <?php for ($i=1; $i < 9; $i++): ?> 
+                                                <?php if ($i == $book->type_book): ?>
+                                                    <option selected value="<?php echo $i ?>"  data-id="aaaa"><?php echo $book->getStatus($i) ?></option>
+                                                <?php else: ?>
+                                                    <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
+                                                <?php endif ?>                                          
+                                                 
+                                            <?php endfor; ?>
+                                        </select>
+                                    </td>
+                                    
                                 </tr>
                             <?php endforeach ?>
                             </tbody>
@@ -72,7 +97,7 @@
                             
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 col-xs-12">
             @include('backend.planning.calendar')
         </div>
     </div>
@@ -138,30 +163,31 @@
                 });
             });
 
-            //añadir un nuevo tipo de apartamento EJ:Propietario-subcominudad
-            $('.new-type-room').click(function(event) {
-                $.get('/admin/apartamentos/new-type', function(data) {
-                    $('#content-room').empty().append(data);
-                });
-            });
-
-            //añadir un nuevo tamaño de apartamento EJ:estudio-apartamento
-            $('.new-size-room').click(function(event) {
-                $.get('/admin/apartamentos/new-size', function(data) {
-                    $('#content-room').empty().append(data);
-                });
-            });
-
-
-            $('.editables').change(function(event) {
+            /* $('#status, #room').change(function(event) { */
+            $('.status, .room').change(function(event) {
                 var id = $(this).attr('data-id');
-
-                var name = $('.name-room-'+id).val();
-
-                $.get('/admin/apartamentos/update/', {  id: id, name:name}, function(data) {
+                /* var room = $('#room').val();*/
+                console.log($(this).attr('class'));
+                var clase = $(this).attr('class');
+                
+                if (clase == "status") {
+                   var status = $(this).val();
+                }else{
+                    var status = "";
+                }if(clase == "room"){
+                    var room = $(this).val();
+                }else{
+                    var room = "";
+                }
+                /* $.get('/admin/apartamentos/update/'+id, {  id: id, status:status, room:room }, function(data) { */
+                $.get('reservas/changeBook/'+id, {status:status,room: room}, function(data) {
                     alert(data);
+                    /*window.location.reload();*/
                 });
             });
+
+
+            
         });
 
     </script>

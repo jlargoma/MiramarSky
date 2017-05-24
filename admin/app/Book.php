@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use \Carbon\Carbon;
-
+use DB;
 class Book extends Model
 {
 	protected $table = 'book';
@@ -55,5 +55,62 @@ class Book extends Model
         }else{
         	return True;
         }
+    }
+
+    public function changeBook($status,$room)
+    {
+        if (!empty($status)) {
+            $this->type_book = $status;
+            if ($this->save()) {
+                return "Cambiado!";
+            }
+        }
+        if (!empty($room)) {
+            $isStartReservable = 0;
+            $isfinishReservable = 0;
+
+            $books = \App\Book::where('room_id', $room)->get();
+
+            $start = Carbon::createFromFormat('Y-m-d', $this->start);
+            $finish = Carbon::createFromFormat('Y-m-d', $this->finish);
+            $isStart = 0;
+            $isFinish = 0;
+            foreach ($books as $key => $book) {
+                
+                $bookStart = Carbon::createFromFormat('Y-m-d', $book->start);
+                $bookFinish = Carbon::createFromFormat('Y-m-d', $book->finish);
+
+                $isStart = Carbon::create( $start->year, $start->month, $start->day )
+                                    ->between( $start, $finish );
+
+                $isFinish = Carbon::create( $finish->year, $finish->month, $finish->day )
+                                    ->between( $start, $finish );
+
+                if (!$isStart && !$isFinish){
+                    $isStartReservable = 1;
+                    $isfinishReservable = 1;
+                    break;
+                }
+ 
+            }
+
+
+            return ['start' => $isStart, 'finish' => $isFinish, 'books' => $books];
+
+            /*
+            if ( $isStartReservable == 1 && $isfinishReservable == 1 ) {
+                $this->room_id = $room;
+
+               
+                if ( $this->save() ) {
+                    return true;
+                }
+            }else{
+                return false;
+            }
+            */
+
+        }
+        
     }
 }

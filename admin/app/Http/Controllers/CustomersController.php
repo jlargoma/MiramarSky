@@ -77,10 +77,30 @@ class CustomersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
-        //
+        $customer = \App\Customers::find($id);
+
+        return view('backend/customer/_form',  [
+                                                'customer' => $customer
+                                            ]);
     }
+    
+    public function save(Request $request)
+    {
+        $id                   = $request->input('id');
+        $customerUpadate          = \App\Customers::find($id);
+
+        $customerUpadate->name      = $request->input('name');
+        $customerUpadate->email     = $request->input('email');
+        $customerUpadate->phone     = $request->input('phone');
+        $customerUpadate->comments  = $request->input('comments');
+
+        if ($customerUpadate->save()) {
+            echo "Cambiada!!";
+        }
+    }
+
 
     /**
      * Remove the specified resource from storage.
