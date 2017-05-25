@@ -24,7 +24,7 @@
 		
 	}
 	.sub{
-		background-color: orange;
+		background-color: #8A7DBE;
 		min-width: 33.33%;
 		min-height: 20px!important;
 		
@@ -707,6 +707,7 @@
 	                            	<?php foreach ($rooms as $room): ?>
 	                            		<tr>
 	                            			<td class="text-center"><?php echo substr($room->nameRoom, 0,5) ?></td>
+				                               
 		                        				<?php 
 													$day = $startMonth->copy()->subMonth();
 
@@ -715,12 +716,12 @@
 													/* Reservas por Año y Mes */
 													// $criteriaBooks = new CDbCriteria();
 													// $criteriaBooks->condition = 'Type IN (0,1,6,7) AND "'.$day->copy()->format('Y-m-d').'" BETWEEN Start AND Finish AND RoomID = '.$room->ID;
-													$books = \App\Book::whereIn('type_book' , [0,1,6,7])
+													$books = \App\Book::whereIn('type_book' , [1,2,7,8])
 																		->where('room_id', $room->id)
 																		->where('start', '<=' ,$day->copy()->format('Y-m-d'))
 																		->where('finish', '>=' ,$day->copy()->format('Y-m-d'))
 																		->get();												
-													$status = "";											
+													$status = "";
 				                                	if (count($books) > 0) {
 				                                		
 				                                		foreach ($books as $book){
@@ -758,6 +759,7 @@
 														$endBook      = "";
 													}
 				                                ?>	
+
 				                                	<?php if ($book->finish > $day->copy()->format('Y-m-d') && $book->start < $day->copy()->format('Y-m-d')): ?>
 				                                	<td style="border: 1px solid black"  title="<?php echo $nameCustomer; ?>">
 				                                		<div class="not-padding <?php echo $status ?>" style="width: 100%"></div>

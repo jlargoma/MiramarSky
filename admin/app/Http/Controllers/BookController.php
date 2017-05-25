@@ -25,15 +25,29 @@ class BookController extends Controller
 
 
         return view('backend/planning/planning',[
-                                                'books'      => \App\Book::all(),
-                                                'rooms'      => \App\Rooms::all(),
-                                                'date'       => $date,
+                                                'newbooks'  => \App\Book::newBooks(),
+                                                'countnews' =>count(\App\Book::newBooks()),
+                                                
+                                                'oldbooks'  => \App\Book::oldBooks(),
+                                                'countold'  =>count(\App\Book::oldBooks()),
+                                                
+                                                'proxbooks' => \App\Book::proxBooks(),
+                                                'countprox' =>count(\App\Book::proxBooks()),
+                                                
+                                                'bloqbooks' => \App\Book::bloqBooks(),
+                                                'countbloq' =>count(\App\Book::bloqBooks()),
+                                                
+                                                'subbooks'  => \App\Book::subBooks(),
+                                                'countsub'  =>count(\App\Book::subBooks()),
+
+                                                'rooms'     => \App\Rooms::all(),
+                                                'date'      => $date,
                                                 ]);
     }
 
     public function newBook(){
 
-        return view('/backend/planning/new-book',[
+        return view('backend/planning/_form',[
                                                     'rooms' => \App\Rooms::all()
                                                 ]);
     }
@@ -100,49 +114,21 @@ class BookController extends Controller
         if ( isset($request->room) && !empty($request->room)) {
             $book = \App\Book::find($id);
 
-            // if ($book->changeBook("",$request->room)) {
-            //     return "OK";
-            // }else{
-            //     return "Ya hay una reserva para ese apartamento";
-            // }
+            if ($book->changeBook("",$request->room)) {
+                return "OK";
+            }else{
+                return "Ya hay una reserva para ese apartamento";
+            }
 
-                $isRooms = \App\Book::where('room_id',$request->room)->get();
-                $existStart = 0;
-                $existFinish = 0;        
-                $requestStart = Carbon::createFromFormat('Y-m-d',$book->start);
-                $requestFinish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                echo "<pre>";
-                foreach ($isRooms as $isRoom) {
-                    if ($existStart == 0 && $existFinish == 0) {
-                        $start = Carbon::createFromFormat('Y-m-d', $isRoom->start);
-                        
-                        $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish); 
-
-                        $existStart = Carbon::create(
-                                                        $requestStart->year,
-                                                        $requestStart->month,
-                                                        $requestStart->day)
-                                                    ->between($start,$finish);
-                        var_dump($existStart);
-                        $existFinish = Carbon::create(
-                                                        $requestFinish->year,
-                                                        $requestFinish->month,
-                                                        $requestFinish->day)
-                                                    ->between($start,$finish);
-                    }
-                    die();
-                }
-                if ($existStart == 0 && $existFinish == 0) {
-                    return 0;
-                }else{
-                    return 1;
-                }
+                
         }
         if ( isset($request->status) && !empty($request->status)) {
             $book = \App\Book::find($id);
             
             if ($book->changeBook($request->status,"")) {
-                return "OK";
+                return "Estado cambiado";
+            }else{
+                return "No se puede cambiar el estado";
             }
         }else{
             return "Valor nulo o vacio";

@@ -21,6 +21,7 @@ Route::group(['middleware' => 'auth'], function () {
 //Planing 
 	Route::get('reservas' , 'BookController@index');
 	Route::get('reservas/new' , 'BookController@newBook');
+	Route::post('reservas/create' , 'BookController@newBook');
 	Route::get('reservas/changeBook/{id}' , 'BookController@changeBook');
 
 	

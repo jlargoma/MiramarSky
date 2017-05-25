@@ -29,7 +29,7 @@ class Book extends Model
     //Para poner nombre al estado de la reserva//
 	static function getStatus($status)
     {
-    	$array = [1 =>"Reservado", 2 =>"Pagada la señal",3 =>"SIN RESPONDER",4 =>"Denegado", 5 =>"Contestado(EMAIL)",6 =>"Cancelada", 7 =>"Bloqueado",8 =>"SubComunidad"];
+    	$array = [1 =>"Reservado", 2 =>"Pagada-la-señal",3 =>"SIN RESPONDER",4 =>"Denegado", 5 =>"Contestado(EMAIL)",6 =>"Cancelada", 7 =>"Bloqueado",8 =>"SubComunidad"];
 
     	return $status = $array[$status];
     }
@@ -66,33 +66,46 @@ class Book extends Model
             }
         }
         if (!empty($room)) {
-            $isStartReservable = 0;
-            $isfinishReservable = 0;
+            $isRooms = \App\Book::where('room_id',$room)->get();
 
-            $books = \App\Book::where('room_id', $room)->get();
+                $existStart = false;
+                $existFinish = false;        
+                $roomStart = Carbon::createFromFormat('Y-m-d',$this->start);
+                $roomFinish = Carbon::createFromFormat('Y-m-d',$this->finish);
+                foreach ($isRooms as $isRoom) {
+                    if ($existStart == false && $existFinish == false) {
+                        $start = Carbon::createFromFormat('Y-m-d', $isRoom->start);
+                        
+                        $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish); 
 
-            $start = Carbon::createFromFormat('Y-m-d', $this->start);
-            $finish = Carbon::createFromFormat('Y-m-d', $this->finish);
-            $isStart = 0;
-            $isFinish = 0;
-            foreach ($books as $key => $book) {
-                
-                $bookStart = Carbon::createFromFormat('Y-m-d', $book->start);
-                $bookFinish = Carbon::createFromFormat('Y-m-d', $book->finish);
+                        $existStart = Carbon::create(
+                                                        $roomStart->year,
+                                                        $roomStart->month,
+                                                        $roomStart->day)
+                                                    ->between($start,$finish);
 
-               
-               
+                        $existFinish = Carbon::create(
+                                                        $roomFinish->year,
+                                                        $roomFinish->month,
+                                                        $roomFinish->day)
+                                                    ->between($start,$finish);
 
-                if (!$isStart && !$isFinish){
-                    $isStartReservable = 1;
-                    $isfinishReservable = 1;
-                    break;
+                    }else{
+                        break;
+                    }
+                    
                 }
- 
-            }
-
-
-            return ['start' => $isStart, 'finish' => $isFinish, 'books' => $books];
+                if ($existStart == false && $existFinish == false) {
+                    $this->room_id = $room;
+                    if($this->save()){
+                       return true; 
+                   }else{
+                    return false;
+                   }
+                    
+                }else{
+                    return false;
+                }
 
             /*
             if ( $isStartReservable == 1 && $isfinishReservable == 1 ) {
@@ -108,6 +121,54 @@ class Book extends Model
             */
 
         }
-        
+    }
+
+    // Funcion para buscar las nuevas reservas
+    static public function newBooks()
+    {
+        $date = Carbon::now();
+        $books = \App\Book::where('start' ,'>' , $date)
+                            ->whereNotIn('type_book',[2,7,8])
+                            ->get();
+
+        return $books;
+    }
+
+    static public function oldBooks()
+    {
+        $date = Carbon::now();
+        $books = \App\Book::where('start' ,'<' , $date)
+                            ->whereNotIn('type_book',[7,8])->get();
+
+        return $books;
+    }
+
+    static public function bloqBooks()
+    {
+        $date = Carbon::now();
+        $books = \App\Book::where('type_book', 7)
+                            ->get();
+
+        return $books;
+    }
+
+    static public function subBooks()
+    {
+        $date = Carbon::now();
+        $books = \App\Book::where('type_book', 8)
+                            ->get();
+
+        return $books;
+    }
+
+    static public function proxBooks()
+    {
+        $date = Carbon::now();
+        $books = \App\Book::where('start' ,'>' , $date)
+                            ->where('type_book', 2)
+                            ->whereNotIn('type_book',[7,8])
+                            ->get();
+
+        return $books;
     }
 }
