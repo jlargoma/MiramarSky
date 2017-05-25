@@ -99,15 +99,34 @@ class BookController extends Controller
     {
         if ( isset($request->room) && !empty($request->room)) {
             $book = \App\Book::find($id);
-            echo "<pre>";
-            print_r($book->changeBook("",$request->room));
-            die();
 
-            if ($book->changeBook("",$request->room)) {
-                return "OK";
-            }else{
-                return "Ya hay una reserva para ese apartamento";
-            }
+            // if ($book->changeBook("",$request->room)) {
+            //     return "OK";
+            // }else{
+            //     return "Ya hay una reserva para ese apartamento";
+            // }
+
+                $isRoom = \App\Seasons::where('room_id',$request->room);
+                $existStart = False;
+                $existFinish = False;        
+                $requestStart = Carbon::createFromFormat('Y-m-d',$book->start);
+                $requestFinish = Carbon::createFromFormat('Y-m-d',$book->finish);
+                echo "<pre>";
+                print_r($requestStart);
+                die();
+                foreach ($fechas as $fecha) {
+                    if ($existStart == False && $existFinish == False) {
+                        $start = Carbon::createFromFormat('Y-m-d', $fecha->start_date);
+                        $finish = Carbon::createFromFormat('Y-m-d', $fecha->finish_date);                
+                        $existStart = Carbon::create($requestStart->year,$requestStart->month,$requestStart->day)->between($start, $finish);
+                        $existFinish = Carbon::create($requestFinish->year,$requestFinish->month,$requestFinish->day)->between($start, $finish);
+                    }
+                }
+                if ($existStart == False && $existFinish == False) {
+                    return False;
+                }else{
+                    return True;
+                }
         }
         if ( isset($request->status) && !empty($request->status)) {
             $book = \App\Book::find($id);

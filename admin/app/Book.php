@@ -80,11 +80,8 @@ class Book extends Model
                 $bookStart = Carbon::createFromFormat('Y-m-d', $book->start);
                 $bookFinish = Carbon::createFromFormat('Y-m-d', $book->finish);
 
-                $isStart = Carbon::create( $start->year, $start->month, $start->day )
-                                    ->between( $start, $finish );
-
-                $isFinish = Carbon::create( $finish->year, $finish->month, $finish->day )
-                                    ->between( $start, $finish );
+               
+               
 
                 if (!$isStart && !$isFinish){
                     $isStartReservable = 1;
