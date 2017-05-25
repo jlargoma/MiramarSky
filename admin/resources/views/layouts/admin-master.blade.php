@@ -50,11 +50,11 @@
 				<ul class="menu-items">
 
 					<li class="m-t-10 ">
-						<a href="{{ url('/planning') }}" class="detailed">
+						<a href="{{ url('/reservas') }}" class="detailed">
 							<span class="title">Planning</span>
 							<!-- <span class="details">12 New Updates</span> -->
 						</a>
-						<span class="{{ Request::path() == '/planning' ? 'bg-success' : '' }} icon-thumbnail"><i class="pg-calender"></i></span>
+						<span class="{{ Request::path() == '/reservas' ? 'bg-success' : '' }} icon-thumbnail"><i class="pg-calender"></i></span>
 					</li>
 					
 					<li class="m-t-10 ">
