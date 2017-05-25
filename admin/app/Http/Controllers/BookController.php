@@ -106,26 +106,36 @@ class BookController extends Controller
             //     return "Ya hay una reserva para ese apartamento";
             // }
 
-                $isRoom = \App\Seasons::where('room_id',$request->room);
-                $existStart = False;
-                $existFinish = False;        
+                $isRooms = \App\Book::where('room_id',$request->room)->get();
+                $existStart = 0;
+                $existFinish = 0;        
                 $requestStart = Carbon::createFromFormat('Y-m-d',$book->start);
                 $requestFinish = Carbon::createFromFormat('Y-m-d',$book->finish);
                 echo "<pre>";
-                print_r($requestStart);
-                die();
-                foreach ($fechas as $fecha) {
-                    if ($existStart == False && $existFinish == False) {
-                        $start = Carbon::createFromFormat('Y-m-d', $fecha->start_date);
-                        $finish = Carbon::createFromFormat('Y-m-d', $fecha->finish_date);                
-                        $existStart = Carbon::create($requestStart->year,$requestStart->month,$requestStart->day)->between($start, $finish);
-                        $existFinish = Carbon::create($requestFinish->year,$requestFinish->month,$requestFinish->day)->between($start, $finish);
+                foreach ($isRooms as $isRoom) {
+                    if ($existStart == 0 && $existFinish == 0) {
+                        $start = Carbon::createFromFormat('Y-m-d', $isRoom->start);
+                        
+                        $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish); 
+
+                        $existStart = Carbon::create(
+                                                        $requestStart->year,
+                                                        $requestStart->month,
+                                                        $requestStart->day)
+                                                    ->between($start,$finish);
+                        print_r($existStart);
+                        $existFinish = Carbon::create(
+                                                        $requestFinish->year,
+                                                        $requestFinish->month,
+                                                        $requestFinish->day)
+                                                    ->between($start,$finish);
                     }
+                    die();
                 }
-                if ($existStart == False && $existFinish == False) {
-                    return False;
+                if ($existStart == 0 && $existFinish == 0) {
+                    return 0;
                 }else{
-                    return True;
+                    return 1;
                 }
         }
         if ( isset($request->status) && !empty($request->status)) {
