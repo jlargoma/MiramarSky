@@ -30,7 +30,6 @@ class UpdateTablessTable extends Migration
            $table->foreign('user_id')->references('id')->on('users');
            $table->foreign('customer_id')->references('id')->on('customers');
            $table->foreign('room_id')->references('id')->on('rooms');
-           $table->foreign('season_id')->references('id')->on('seasons');
         });
 
         Schema::table('paymentspro', function ($table) {

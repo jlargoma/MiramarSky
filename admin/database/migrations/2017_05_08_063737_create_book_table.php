@@ -17,7 +17,6 @@ class CreateBookTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('customer_id')->unsigned();
             $table->integer('room_id')->unsigned();
-            $table->integer('season_id')->unsigned();
             $table->date('start');
             $table->date('finish');
             $table->string('comment');
