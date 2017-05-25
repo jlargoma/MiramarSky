@@ -33,7 +33,8 @@ class UsersController extends Controller
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->role = $request->input('role');
-        $user->password = $request->input('password');
+        $user->remember_token = str_random(60);
+        $user->password = bcrypt($request->input('password'));
         
         if ($user->save()) {
             return redirect()->action('UsersController@index');
@@ -89,6 +90,18 @@ class UsersController extends Controller
         return view('backend/users/_form',  [
                                                 'user' => $user
                                             ]);
+    }
+
+    public function saveUpdate(Request $request)
+    {
+        $id                   = $request->input('id');
+        $userUpadate          = \App\User::find($id);
+        $userUpadate->name    = $request->input('name');
+        $userUpadate->email    = $request->input('email');
+
+        if ($userUpadate->save()) {
+            return redirect()->action('UsersController@index');
+        }
     }
 
     public function saveAjax(Request $request)

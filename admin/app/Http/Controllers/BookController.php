@@ -123,7 +123,7 @@ class BookController extends Controller
                                                         $requestStart->month,
                                                         $requestStart->day)
                                                     ->between($start,$finish);
-                        print_r($existStart);
+                        var_dump($existStart);
                         $existFinish = Carbon::create(
                                                         $requestFinish->year,
                                                         $requestFinish->month,
