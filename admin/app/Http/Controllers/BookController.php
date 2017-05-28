@@ -22,9 +22,9 @@ class BookController extends Controller
         // }else{
             // $date = Carbon::createFromFormat('Y-m',$_GET['year']."-".$_GET['month']);
         // }
+       
 
-
-        return view('backend/planning/planning',[
+        return view('backend/planning/index',[
                                                 'newbooks'  => \App\Book::newBooks(),
                                                 'countnews' =>count(\App\Book::newBooks()),
                                                 
@@ -42,14 +42,21 @@ class BookController extends Controller
 
                                                 'rooms'     => \App\Rooms::all(),
                                                 'date'      => $date,
+
                                                 ]);
     }
 
     public function newBook(){
 
+        $max = \App\SizeRooms::max('maxOcu');
+        $min = \App\SizeRooms::min('minOcu');
+
         return view('backend/planning/_form',[
-                                                    'rooms' => \App\Rooms::all()
-                                                ]);
+                                                'book' => new \App\Book(),
+                                                'rooms' => \App\Rooms::all(),
+                                                'min' => $min,
+                                                'max' => $max,
+                                            ]);
     }
 
     /**
@@ -57,9 +64,15 @@ class BookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $book = new \App\Book();
+        echo "<pre>";
+            if ($book->existDate($request->start,$request->finish,$request->room)) {
+                return "va bien";
+            }else{
+                return "va mal";
+            }
     }
 
     /**
@@ -110,29 +123,33 @@ class BookController extends Controller
 
 
     public function changeBook(Request $request, $id)
-    {
-        if ( isset($request->room) && !empty($request->room)) {
-            $book = \App\Book::find($id);
+        {
+            if ( isset($request->room) && !empty($request->room)) {
+                $book = \App\Book::find($id);
 
-            if ($book->changeBook("",$request->room)) {
-                return "OK";
-            }else{
-                return "Ya hay una reserva para ese apartamento";
+                if ($book->changeBook("",$request->room)) {
+                    return "OK";
+                }else{
+                    return "Ya hay una reserva para ese apartamento";
+                }
+
+                    
             }
-
+            if ( isset($request->status) && !empty($request->status)) {
+                $book = \App\Book::find($id);
                 
-        }
-        if ( isset($request->status) && !empty($request->status)) {
-            $book = \App\Book::find($id);
-            
-            if ($book->changeBook($request->status,"")) {
-                return "Estado cambiado";
+                if ($book->changeBook($request->status,"")) {
+                    return "Estado cambiado";
+                }else{
+                    return "No se puede cambiar el estado";
+                }
             }else{
-                return "No se puede cambiar el estado";
+                return "Valor nulo o vacio";
             }
-        }else{
-            return "Valor nulo o vacio";
         }
+
+    static function getPriceBook($start,$finish,$room,$pax){
+            echo "hola";
     }
 
     /**

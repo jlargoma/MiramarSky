@@ -15,8 +15,11 @@ class PricesController extends Controller
      */
     public function index()
     {
-        return view('backend/prices/prices',[
-                    'countOccupations' => \App\SizeRooms::distinct()->get(['minOcu']),
+        $max = \App\SizeRooms::max('maxOcu');
+        $min = \App\SizeRooms::min('minOcu');
+        return view('backend/prices/index',[
+                    'min' => $min,
+                    'max' => $max,
                     'seasons' => \App\TypeSeasons::all(),
                     'newseasons' => \App\TypeSeasons::all(),
                 ]);

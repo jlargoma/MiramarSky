@@ -8,6 +8,10 @@
     <link href="assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
 
+    <link href="assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
+    <link href="assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" media="screen">
+    <link href="assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" media="screen">
+
 @endsection
     
 @section('content')
@@ -28,6 +32,7 @@
     </style>
 <div class="container-fluid padding-10 sm-padding-10">
     <div class="row">
+        
         <div class="col-md-12 col-xs-12 m-b-10 ">
             <button class="btn btn-tag btn-success create-book btn-cons m-b-10" data-toggle="modal" data-target="#myModal" type="button"><i class="pg-plus"></i></span>
             </button>
@@ -36,6 +41,7 @@
         <div class="col-md-6 col-xs-12">
             <div class="sm-m-l-5 sm-m-r-5">
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <!-- Pendientes -->
                     <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingOne">
                             <h4 class="panel-title">
@@ -126,6 +132,7 @@
                         </div>
                     </div>
 
+                    <!-- Antiguas -->
                     <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingTwo">
                             <h4 class="panel-title">
@@ -213,6 +220,7 @@
                         </div>
                     </div>
 
+                    <!-- Bloqueadas -->
                     <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingThree">
                             <h4 class="panel-title">
@@ -300,6 +308,7 @@
                         </div>
                     </div>
 
+                    <!-- Subcomunidad -->
                     <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingFour">
                             <h4 class="panel-title">
@@ -385,6 +394,7 @@
                         </div>
                     </div>
 
+                    <!-- Siguientes -->
                     <div class="panel panel-default">
                         <div class="panel-heading" role="tab" id="headingFive">
                             <h4 class="panel-title">
@@ -524,12 +534,28 @@
 
 @section('scripts')
 
-    <script src="assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
-    <script type="text/javascript" src="assets/plugins/datatables-responsive/js/lodash.min.js"></script>
+   <script src="assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
+   <script src="assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
+   <script src="assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
+   <script src="assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
+   <script type="text/javascript" src="assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
+   <script type="text/javascript" src="assets/plugins/datatables-responsive/js/lodash.min.js"></script>
+
+   <script src="assets/plugins/bootstrap3-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+   <script type="text/javascript" src="assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
+   <script type="text/javascript" src="assets/plugins/dropzone/dropzone.min.js"></script>
+   <script type="text/javascript" src="assets/plugins/bootstrap-tag/bootstrap-tagsinput.min.js"></script>
+   <script type="text/javascript" src="assets/plugins/jquery-inputmask/jquery.inputmask.min.js"></script>
+   <script src="assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
+   <script src="assets/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+   <script src="assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
+   <script src="assets/plugins/summernote/js/summernote.min.js" type="text/javascript"></script>
+   <script src="assets/plugins/moment/moment.min.js"></script>
+   <script src="assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+   <script src="assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
+   <script src="assets/plugins/bootstrap-typehead/typeahead.bundle.min.js"></script>
+   <script src="assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
+   <script src="assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {          

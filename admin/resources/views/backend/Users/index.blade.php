@@ -76,62 +76,72 @@
             <?php endif ?>
         </div>
         <div class="col-md-4">
-            <div class="container-fluid container-fixed-lg">
-                <div class="row">
-                    <div class="col-md-4">
-                        <!-- START PANEL -->
-                        <div class="panel panel-default">
+            <div class="sm-m-l-5 sm-m-r-5">
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                                    Agregar usuario
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">
+                            <div class="panel-body">
+                                <div class="panel panel-default">
                             <div class="panel-heading">
-                                <div class="panel-title">Agregar Usuario
+                                <div class="panel-title col-md-12">Agregar Usuario
                                 </div>
                             </div>
                             <div class="panel-body">
-                                <form role="form"  action="{{ url('usuarios/create') }}" method="post">
-                                <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                    <div class="input-group transparent">
-                                        <span class="input-group-addon">
-                                            <i class="fa fa-user"></i>
-                                        </span>
-                                        <input type="text" class="form-control" name="name" placeholder="Nombre" required="" aria-required="true" aria-invalid="false">
-                                    </div>
-                                        <br>
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="pg-plus_circle"></i>
-                                        </span>
-                                        <select class="full-width" data-init-plugin="select2" name="role">
-                                            <option></option>
-                                            <option value="Admin">Admin</option>
-                                            <option value="Jaime">Jaime</option>
-                                            <option value="Limpieza">Limpieza</option>
-                                            <option value="Agente">Agente</option>
-                                            <option value="Propietario">Propietario</option>
-                                        </select>
-                                    </div>
-                                        <br>
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="fa fa-key"></i>
-                                        </span>
-                                            <input type="password" class="form-control" name="password"  required="" aria-required="true" aria-invalid="false">
-                                    </div>
-                                        <br>
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="pg-mail"></i>
-                                        </span>
-                                            <input type="email" class="form-control" name="email" placeholder="Email" required="" aria-required="true" aria-invalid="false">
-                                    </div>
-                                        <br>
-                                    <div class="input-group">
-                                        <button class="btn btn-complete" type="submit">Guardar</button>
-                                    </div>
-                                </form>
+                                <div class="col-md-12">
+                                    <form role="form"  action="{{ url('usuarios/create') }}" method="post">
+                                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                        <div class="input-group transparent">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </span>
+                                            <input type="text" class="form-control" name="name" placeholder="Nombre" required="" aria-required="true" aria-invalid="false">
+                                        </div>
+                                            <br>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="pg-plus_circle"></i>
+                                            </span>
+                                            <select class="full-width" data-init-plugin="select2" name="role">
+                                                <option></option>
+                                                <option value="Admin">Admin</option>
+                                                <option value="Jaime">Jaime</option>
+                                                <option value="Limpieza">Limpieza</option>
+                                                <option value="Agente">Agente</option>
+                                                <option value="Propietario">Propietario</option>
+                                            </select>
+                                        </div>
+                                            <br>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-key"></i>
+                                            </span>
+                                                <input type="password" class="form-control" name="password"  required="" aria-required="true" aria-invalid="false">
+                                        </div>
+                                            <br>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="pg-mail"></i>
+                                            </span>
+                                                <input type="email" class="form-control" name="email" placeholder="Email" required="" aria-required="true" aria-invalid="false">
+                                        </div>
+                                            <br>
+                                        <div class="input-group">
+                                            <button class="btn btn-complete" type="submit">Guardar</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                        <!-- END PANEL -->
+                            </div>
+                        </div>
                     </div>
-                        <!-- END PANEL -->      
                 </div>
             </div>
         </div>
