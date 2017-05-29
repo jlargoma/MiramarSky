@@ -32,8 +32,17 @@ class Seasons extends Model
 
     
     public function typeSeasons()
-    {
-        return $this->hasOne('\App\TypeSeasons', 'id', 'type');
-    }
+        {
+            return $this->hasOne('\App\TypeSeasons', 'id', 'type');
+        }
 
+
+    public static function getSeason($start)
+        {
+            // echo $start." ";
+            $season = \App\Seasons::where('start_date' , '<=' , $start )->get();
+            // echo $season->id." <br>";
+            
+            return $season[0]->id;
+        }
 }

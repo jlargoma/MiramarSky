@@ -23,7 +23,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('reservas/new' , 'BookController@newBook');
 	Route::post('reservas/create' , 'BookController@create');
 	Route::get('reservas/changeBook/{id}' , 'BookController@changeBook');
-	Route::get('reservas/getPriceBook/{start}/{finish}/{room}/{pax}' , 'BookController@getPriceBook');
+	Route::post('reservas/getPriceBook' , 'BookController@getPriceBook');
 
 	
 	

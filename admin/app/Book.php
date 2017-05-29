@@ -17,18 +17,18 @@ class Book extends Model
     protected $parking = 0;
 
 
-    public function customer()
-        {
-            return $this->hasOne('\App\Customers', 'id', 'customer_id');
-        }
+        public function customer()
+            {
+                return $this->hasOne('\App\Customers', 'id', 'customer_id');
+            }
 
-    public function room()
-        {
-            return $this->hasOne('\App\Rooms', 'id', 'room_id');
-        }
+        public function room()
+            {
+                return $this->hasOne('\App\Rooms', 'id', 'room_id');
+            }
 
     //Para poner nombre al estado de la reserva//
-	static function getStatus($status)
+	   static function getStatus($status)
         {
         	$array = [1 =>"Reservado", 2 =>"Pagada-la-señal",3 =>"SIN RESPONDER",4 =>"Denegado", 5 =>"Contestado(EMAIL)",6 =>"Cancelada", 7 =>"Bloqueado",8 =>"SubComunidad"];
 
@@ -36,7 +36,7 @@ class Book extends Model
         }
 
     //Para poner nombre al parking de la reserva//
-    static function getParking($parking)
+        static function getParking($parking)
         {
             $array = [1 =>"Si", 2 =>"Gratis",3 =>"50 %",4 =>"No"];
 
@@ -44,7 +44,7 @@ class Book extends Model
         }
 
     //Para comprobar el dia de la reserva en el calendario
-    static function existDate($start,$finish,$room)
+        static function existDate($start,$finish,$room)
         {
         	if ($room != 3) {
                 $books = \App\Book::where('id',$room)->get();
@@ -74,12 +74,32 @@ class Book extends Model
         }
 
     // Funcion para comprobar el precio de la reserva
-    static function getPriceBook($start,$finish,$room,$pax){
+        static function getPriceBook($start,$finish,$pax,$room)
+        {
+            $totalPrices = 0;
 
-    }
+            for ($i=$start; $i < $finish; $i++) { 
+                $seasonActive = \App\Seasons::getSeason($i);
+
+
+                $prices = \App\Prices::where('season' ,  $seasonActive)
+                                    ->where('occupation', $pax)->get();
+
+                foreach ($prices as $key => $price) {
+                    $totalPrices = $totalPrices + $price->price;
+                }
+                
+
+                echo $totalPrices."<br>";
+
+            } 
+            
+            die();       
+            // return "llega";
+        }
 
     // Funcion para cambiar la reserva de habitacion o estado
-    public function changeBook($status,$room)
+        public function changeBook($status,$room)
         {
             if (!empty($status)) {
                 $this->type_book = $status;
@@ -146,7 +166,7 @@ class Book extends Model
         }
 
     // Funcion para buscar las nuevas reservas
-    static public function newBooks()
+        static public function newBooks()
         {
             $date = Carbon::now();
             $books = \App\Book::where('start' ,'>' , $date)
@@ -157,17 +177,17 @@ class Book extends Model
         }
 
     // Funcion para buscar las reservas pasadas
-    static public function oldBooks()
-        {
-            $date = Carbon::now();
-            $books = \App\Book::where('start' ,'<' , $date)
-                                ->whereNotIn('type_book',[7,8])->get();
+        static public function oldBooks()
+            {
+                $date = Carbon::now();
+                $books = \App\Book::where('start' ,'<' , $date)
+                                    ->whereNotIn('type_book',[7,8])->get();
 
-            return $books;
-        }
+                return $books;
+            }
 
     // Funcion para buscar las reservas Bloqueadas
-    static public function bloqBooks()
+       static public function bloqBooks()
         {
             $date = Carbon::now();
             $books = \App\Book::where('type_book', 7)
@@ -177,7 +197,7 @@ class Book extends Model
         }
 
     // Funcion para buscar las reservas de subcomunidad
-    static public function subBooks()
+        static public function subBooks()
         {
             $date = Carbon::now();
             $books = \App\Book::where('type_book', 8)
@@ -187,7 +207,7 @@ class Book extends Model
         }
 
     // Funcion para buscar las reservas proximas
-    static public function proxBooks()
+       static public function proxBooks()
         {
             $date = Carbon::now();
             $books = \App\Book::where('start' ,'>' , $date)

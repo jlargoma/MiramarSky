@@ -148,8 +148,11 @@ class BookController extends Controller
             }
         }
 
-    static function getPriceBook($start,$finish,$room,$pax){
-            echo "hola";
+    static function getPriceBook(Request $request){
+            
+        $book = new \App\Book();
+        $price = $book->getPriceBook($request->input('start'),$request->input('finish'),$request->input('pax'),$request->input('room'));
+        // echo $price;
     }
 
     /**
