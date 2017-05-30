@@ -74,96 +74,180 @@ class Book extends Model
         }
 
     // Funcion para comprobar el precio de la reserva
-        static function getPriceBook($start,$finish,$pax,$room)
-        {
-            $totalPrices = 0;
+        static function getPriceBook($start,$finish,$pax,$room,$park)
+            {   
 
-            for ($i=$start; $i < $finish; $i++) { 
-                $seasonActive = \App\Seasons::getSeason($i);
+                $start = explode('/', $start);
+                $inicio = $start[2]."-".$start[0]."-".$start[1];
 
+                $finish = explode('/', $finish);
+                $final = $finish[2]."-".$finish[0]."-".$finish[1];
 
-                $prices = \App\Prices::where('season' ,  $seasonActive)
-                                    ->where('occupation', $pax)->get();
+                $paxPerRoom = \App\Rooms::getPaxRooms($pax,$room);
 
-                foreach ($prices as $key => $price) {
-                    $totalPrices = $totalPrices + $price->price;
+                if ($paxPerRoom > $pax) {
+                    $pax = $paxPerRoom;
                 }
                 
+                $totalPrices = 0;
+                $supPark = 0;
+                $noches = 0;
+                for ($i=$inicio; $i < $final; $i++) { 
 
-                echo $totalPrices."<br>";
+                    $seasonActive = \App\Seasons::getSeason($i);
+                    ;
+                    $prices = \App\Prices::where('season' ,  $seasonActive)
+                                        ->where('occupation', $pax)->get();
+                    
+                    foreach ($prices as $key => $price) {
+                        $totalPrices = $totalPrices + $price->price;
+                    }
 
-            } 
-            
-            die();       
-            // return "llega";
-        }
+                    $noches ++;
+                }
+                 switch ($park) {
+                        case 1:
+                            $supPark = 15 * $noches;
+                            break;
+                        case 2:
+                            $supPark = 0;
+                            break;
+                        case 3:
+                            $supPark = (15 * $noches) / 2;
+                            break;
+                        case 4:
+                            $supPark = 0;
+                            break;
+                    }
+
+                $totalPrices = $totalPrices + $supPark;
+
+
+                return $totalPrices;
+            }
+
+
+    // Funcion para comprobar el precio de la reserva
+        static function getCostBook($start,$finish,$pax,$room,$park)
+            {   
+
+                $start = explode('/', $start);
+                $inicio = $start[2]."-".$start[0]."-".$start[1];
+
+                $finish = explode('/', $finish);
+                $final = $finish[2]."-".$finish[0]."-".$finish[1];
+
+                $paxPerRoom = \App\Rooms::getPaxRooms($pax,$room);
+
+                if ($paxPerRoom > $pax) {
+                    $pax = $paxPerRoom;
+                }
+                
+                $totalCost = 0;
+                $supPark = 0;
+                $noches = 0;
+                for ($i=$inicio; $i < $final; $i++) { 
+
+                    $seasonActive = \App\Seasons::getSeason($i);
+                    ;
+                    $prices = \App\Prices::where('season' ,  $seasonActive)
+                                        ->where('occupation', $pax)->get();
+                    
+                    foreach ($prices as $key => $price) {
+                        
+                        $totalCost = $totalCost + $price->cost;
+                    }
+
+                    $noches ++;
+                }
+                 switch ($park) {
+                        case 1:
+                            $supPark = 15 * $noches;
+                            break;
+                        case 2:
+                            $supPark = 0;
+                            break;
+                        case 3:
+                            $supPark = (15 * $noches) / 2;
+                            break;
+                        case 4:
+                            $supPark = 0;
+                            break;
+                    }
+
+                $totalCost = $totalCost + $supPark;
+
+
+                return $totalCost;
+            }
+
 
     // Funcion para cambiar la reserva de habitacion o estado
         public function changeBook($status,$room)
-        {
-            if (!empty($status)) {
-                $this->type_book = $status;
-                if ($this->save()) {
-                    return "Cambiado!";
-                }
-            }
-            if (!empty($room)) {
-                $isRooms = \App\Book::where('room_id',$room)->get();
-
-                    $existStart = false;
-                    $existFinish = false;        
-                    $roomStart = Carbon::createFromFormat('Y-m-d',$this->start);
-                    $roomFinish = Carbon::createFromFormat('Y-m-d',$this->finish);
-                    foreach ($isRooms as $isRoom) {
-                        if ($existStart == false && $existFinish == false) {
-                            $start = Carbon::createFromFormat('Y-m-d', $isRoom->start);
-                            
-                            $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish); 
-
-                            $existStart = Carbon::create(
-                                                            $roomStart->year,
-                                                            $roomStart->month,
-                                                            $roomStart->day)
-                                                        ->between($start,$finish);
-
-                            $existFinish = Carbon::create(
-                                                            $roomFinish->year,
-                                                            $roomFinish->month,
-                                                            $roomFinish->day)
-                                                        ->between($start,$finish);
-
-                        }else{
-                            break;
-                        }
-                        
+            {
+                if (!empty($status)) {
+                    $this->type_book = $status;
+                    if ($this->save()) {
+                        return "Cambiado!";
                     }
-                    if ($existStart == false && $existFinish == false) {
+                }
+                if (!empty($room)) {
+                    $isRooms = \App\Book::where('room_id',$room)->get();
+
+                        $existStart = false;
+                        $existFinish = false;        
+                        $roomStart = Carbon::createFromFormat('Y-m-d',$this->start);
+                        $roomFinish = Carbon::createFromFormat('Y-m-d',$this->finish);
+                        foreach ($isRooms as $isRoom) {
+                            if ($existStart == false && $existFinish == false) {
+                                $start = Carbon::createFromFormat('Y-m-d', $isRoom->start);
+                                
+                                $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish); 
+
+                                $existStart = Carbon::create(
+                                                                $roomStart->year,
+                                                                $roomStart->month,
+                                                                $roomStart->day)
+                                                            ->between($start,$finish);
+
+                                $existFinish = Carbon::create(
+                                                                $roomFinish->year,
+                                                                $roomFinish->month,
+                                                                $roomFinish->day)
+                                                            ->between($start,$finish);
+
+                            }else{
+                                break;
+                            }
+                            
+                        }
+                        if ($existStart == false && $existFinish == false) {
+                            $this->room_id = $room;
+                            if($this->save()){
+                               return true; 
+                           }else{
+                            return false;
+                           }
+                            
+                        }else{
+                            return false;
+                        }
+
+                    /*
+                    if ( $isStartReservable == 1 && $isfinishReservable == 1 ) {
                         $this->room_id = $room;
-                        if($this->save()){
-                           return true; 
-                       }else{
-                        return false;
-                       }
-                        
+
+                       
+                        if ( $this->save() ) {
+                            return true;
+                        }
                     }else{
                         return false;
                     }
+                    */
 
-                /*
-                if ( $isStartReservable == 1 && $isfinishReservable == 1 ) {
-                    $this->room_id = $room;
-
-                   
-                    if ( $this->save() ) {
-                        return true;
-                    }
-                }else{
-                    return false;
                 }
-                */
-
             }
-        }
 
     // Funcion para buscar las nuevas reservas
         static public function newBooks()

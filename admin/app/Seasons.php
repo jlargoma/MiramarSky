@@ -40,9 +40,11 @@ class Seasons extends Model
     public static function getSeason($start)
         {
             // echo $start." ";
-            $season = \App\Seasons::where('start_date' , '<=' , $start )->get();
-            // echo $season->id." <br>";
-            
+
+            $season = \App\Seasons::where('start_date' , '<=' , $start )
+                                    ->where('finish_date', '>=' , $start)->get();
+            // print_r($season);
+            // die();
             return $season[0]->id;
         }
 }

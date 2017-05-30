@@ -46,7 +46,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <label>Pax</label>
-                                    <select class="form-control full-width" data-init-plugin="select2" name="room">
+                                    <select class="form-control full-width room" data-init-plugin="select2" name="room" id="room">
                                         <?php foreach ($rooms as $room): ?>
                                             <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
                                         <?php endforeach ?>
@@ -54,12 +54,26 @@
                                 </div>
                                 <div class="col-md-2">
                                     <label>Park</label>
-                                    <select class=" form-control full-width" data-init-plugin="select2" name="parking">
+                                    <select class=" form-control full-width parking" data-init-plugin="select2" name="parking">
                                         <?php for ($i=1; $i <= 4 ; $i++): ?>
                                             <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
                                         <?php endfor;?>
                                     </select>
                                 </div>    
+                            </div>
+                            <div class="input-group col-md-12">
+                                <div class="col-md-3">
+                                    <label>Total</label>
+                                    <input type="text" class="form-control total" name="total" value="" disabled style="width: 100%">
+                                </div> 
+                                <div class="col-md-3">
+                                    <label>Coste</label>
+                                    <input type="text" class="form-control cost" name="cost" value="" disabled style="width: 100%">
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Beneficio</label>
+                                    <input type="text" class="form-control beneficio" name="beneficio" value="" disabled style="width: 100%">
+                                </div>
                             </div>
                             <br>
                             <div class="input-group col-md-12">
@@ -106,6 +120,7 @@
             <!-- END PANEL -->      
     </div>
 </div>
+
 <script src="assets/plugins/moment/moment.min.js"></script>
 <script src="assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
 <script src="assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
@@ -116,17 +131,25 @@
         var start  = 0;
         var finish = 0;
         var diferencia = 0;
+        var price = 0;
+        var cost = 0;
+
+
         $('#start').change(function(event) {
             start= $(this).val();
+            var info = start.split('/');
+            start = info[1] + '/' + info[0] + '/' + info[2];
             if (finish != 0) {
                 diferencia = Math.floor((  Date.parse(finish)- Date.parse(start) ) / 86400000);
                 $('.noches').empty();
                 $('.noches').html(diferencia);
             }
-            console.log(start);
+
         });
         $('#finish').change(function(event) {
             finish= $(this).val();
+            var info = finish.split('/');
+            finish = info[1] + '/' + info[0] + '/' + info[2];           
             if (start != 0) {
                 diferencia = Math.floor((  Date.parse(finish)- Date.parse(start) ) / 86400000);
                 $('.noches').empty();
@@ -134,12 +157,30 @@
                
             }
         });
-        $('#room').change(function(event){
-            var room = $(this).val();
+        $('#room,.pax,.parking').change(function(event){            
+            var room = $('#room').val();
+            console.log(room);
             var pax = $('.pax').val();
-             $.get('reservas/getPriceBook/'+start+'/'+finish+'/'+room, function(data) {
-                    alert(data);
+            var park = $('.parking').val();
+            
+
+            price = $.get('reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}, function(data) {
+                $('.total').empty();
+                $('.total').val(data);
+                price = data;
                 });
+
+            cost = $.get('reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}, function(data) {
+                $('.cost').empty();
+                $('.cost').val(data);
+                
+                });
+
+            var cost = $('.cost').val();
+            var price = $('.total').val();
+            console.log(cost+" "+price);
+            
+
         })
 
     });

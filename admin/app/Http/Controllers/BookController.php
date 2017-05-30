@@ -151,9 +151,20 @@ class BookController extends Controller
     static function getPriceBook(Request $request){
             
         $book = new \App\Book();
-        $price = $book->getPriceBook($request->input('start'),$request->input('finish'),$request->input('pax'),$request->input('room'));
-        // echo $price;
+
+        $price = $book->getPriceBook($request->start,$request->finish,$request->pax,$request->room,$request->park);
+
+        return $price;
     }
+    static function getCostBook(Request $request){
+            
+        $book = new \App\Book();
+
+        $cost = $book->getCostBook($request->start,$request->finish,$request->pax,$request->room,$request->park);
+        
+        return $cost;
+    }
+
 
     /**
      * Remove the specified resource from storage.

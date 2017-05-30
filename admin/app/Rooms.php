@@ -21,4 +21,11 @@ class Rooms extends Model
     {
         return $this->hasOne('\App\User', 'id', 'owned');
     }
+
+    public static function getPaxRooms($pax,$room)
+        {
+            $room = \App\Rooms::where('id', $room)->first();
+            
+            return $room->sizeRooms->minOcu;    
+        }
 }
