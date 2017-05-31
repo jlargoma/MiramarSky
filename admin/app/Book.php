@@ -261,42 +261,21 @@ class Book extends Model
         }
 
     // Funcion para buscar las reservas pasadas
-        static public function oldBooks()
+        static public function paidBooks()
             {
                 $date = Carbon::now();
                 $books = \App\Book::where('start' ,'<' , $date)
-                                    ->whereNotIn('type_book',[7,8])->get();
+                                    ->whereNotIn('type_book',[7,8])
+                                    ->orderBy('start', 'desc')->get();
 
                 return $books;
             }
 
-    // Funcion para buscar las reservas Bloqueadas
-       static public function bloqBooks()
+    // Funcion para buscar las reservas especiales
+       static public function specialBooks()
         {
             $date = Carbon::now();
-            $books = \App\Book::where('type_book', 7)
-                                ->get();
-
-            return $books;
-        }
-
-    // Funcion para buscar las reservas de subcomunidad
-        static public function subBooks()
-        {
-            $date = Carbon::now();
-            $books = \App\Book::where('type_book', 8)
-                                ->get();
-
-            return $books;
-        }
-
-    // Funcion para buscar las reservas proximas
-       static public function proxBooks()
-        {
-            $date = Carbon::now();
-            $books = \App\Book::where('start' ,'>' , $date)
-                                ->where('type_book', 2)
-                                ->whereNotIn('type_book',[7,8])
+            $books = \App\Book::whereIn('type_book', [7,8])
                                 ->get();
 
             return $books;

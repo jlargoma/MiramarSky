@@ -36,7 +36,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php for ($i=$min; $i <= $max ; $i++): ?>
+                    <?php for ($i=4; $i <= 8 ; $i++): ?>
                         <tr>
                         
                             <td class ="text-center"> 

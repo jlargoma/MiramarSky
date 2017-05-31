@@ -22,41 +22,27 @@ class BookController extends Controller
         // }else{
             // $date = Carbon::createFromFormat('Y-m',$_GET['year']."-".$_GET['month']);
         // }
-       
+        $max = \App\SizeRooms::max('maxOcu');
+        $min = \App\SizeRooms::min('minOcu');
 
         return view('backend/planning/index',[
                                                 'newbooks'  => \App\Book::newBooks(),
                                                 'countnews' =>count(\App\Book::newBooks()),
                                                 
-                                                'oldbooks'  => \App\Book::oldBooks(),
-                                                'countold'  =>count(\App\Book::oldBooks()),
+                                                'paidbooks' => \App\Book::paidBooks(),
+                                                'countpaid' =>count(\App\Book::paidBooks()),
                                                 
-                                                'proxbooks' => \App\Book::proxBooks(),
-                                                'countprox' =>count(\App\Book::proxBooks()),
-                                                
-                                                'bloqbooks' => \App\Book::bloqBooks(),
-                                                'countbloq' =>count(\App\Book::bloqBooks()),
-                                                
-                                                'subbooks'  => \App\Book::subBooks(),
-                                                'countsub'  =>count(\App\Book::subBooks()),
+                                                'specialbooks' => \App\Book::specialBooks(),
+                                                'countspecial' =>count(\App\Book::specialBooks()),
 
                                                 'rooms'     => \App\Rooms::all(),
                                                 'date'      => $date,
 
-                                                ]);
-    }
-
-    public function newBook(){
-
-        $max = \App\SizeRooms::max('maxOcu');
-        $min = \App\SizeRooms::min('minOcu');
-
-        return view('backend/planning/_form',[
-                                                'book' => new \App\Book(),
-                                                'rooms' => \App\Rooms::all(),
                                                 'min' => $min,
                                                 'max' => $max,
-                                            ]);
+
+                                                'book' => new \App\Book(),
+                                                ]);
     }
 
     /**

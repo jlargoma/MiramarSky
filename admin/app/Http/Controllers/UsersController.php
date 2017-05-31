@@ -32,6 +32,7 @@ class UsersController extends Controller
 
         $user->name = $request->input('name');
         $user->email = $request->input('email');
+        $user->phone = $request->input('phone');
         $user->role = $request->input('role');
         $user->remember_token = str_random(60);
         $user->password = bcrypt($request->input('password'));
@@ -98,6 +99,7 @@ class UsersController extends Controller
         $userUpadate          = \App\User::find($id);
         $userUpadate->name    = $request->input('name');
         $userUpadate->email    = $request->input('email');
+        $userUpadate->phone    = $request->input('phone');
 
         if ($userUpadate->save()) {
             return redirect()->action('UsersController@index');

@@ -17,16 +17,16 @@
 @section('content')
 <?php use \Carbon\Carbon; ?>
     <style type="text/css">
-        .Reservado td{
+        .Reservado{
             background-color: #0DAD9E !important;
         }
-        .Pagada-la-señal td{
+        .Pagada-la-señal{
             background-color: #F77975  !important;
         }
-        .Bloqueado td{
+        .Bloqueado{
             background-color: #F9D975 !important;
         }
-        .SubComunidad td{
+        .SubComunidad{
             background-color: #8A7DBE !important;
         }
     </style>
@@ -38,34 +38,144 @@
             </button>
         </div>
 
-        <div class="col-md-6 col-xs-12">
-            <div class="sm-m-l-5 sm-m-r-5">
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <!-- Pendientes -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingOne">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed ">
-                                    Reservas pendientes <?php echo $countnews ?>
-                                </a>
-                            </h4>
+        <div class="col-md-6">
+                <div class="alert alert-info visible-xs m-r-5 m-l-5" role="alert">
+                    <button class="close" data-dismiss="alert"></button>
+                    <strong>Info: </strong> On mobile the tab will be come a Accorian by using data-init-reponsive-tabs="collapse"
+                </div>
+                <div class="panel">
+                    <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="collapse">
+                        <li><a href="#tabNueva" data-toggle="tab" role="tab">Nueva</a>
+                        </li>
+                        <li class="active"><a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes <?php echo $countnews ?></a>
+                        </li>
+                        <li><a href="#tabEspeciales" data-toggle="tab" role="tab">Especiales</a>
+                        </li>
+                        <li><a href="#tabPagadas" data-toggle="tab" role="tab">Pagadas</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane " id="tabNueva">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form role="form"  action="{{ url('reservas/getPriceBook') }}" method="post">
+
+                                        <!-- Seccion Reserva -->
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                Crear reserva
+                                            </div>
+                                        </div>
+
+                                        <div class="panel-body">
+                                            
+                                            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+
+                                                <div class="input-group col-md-12">
+                                                    <div class="col-md-4">
+                                                        <label>Entrada</label>
+                                                        <div class="input-daterange input-group" id="datepicker-range">
+
+                                                            <input id="start" type="text" class="input-sm form-control" name="start" data-date-format="dd-mm-yyyy">
+                                                            <span class="input-group-addon">to</span>
+                                                            <input id="finish" type="text" class="input-sm form-control" name="finish" data-date-format="dd-mm-yyyy">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>Noches</label>
+                                                        <input type="text" class="form-control noches" name="noches" value="" disabled style="width: 100%">
+                                                    </div> 
+                                                    <div class="col-md-1">
+                                                        <label>Pax</label>
+                                                        <input  type="text" class="form-control full-width pax" name="pax" style="width: 100%">
+                                                            
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Pax</label>
+                                                        <select class="form-control full-width newroom" data-init-plugin="select2" name="newroom" id="newroom">
+                                                            <?php foreach ($rooms as $room): ?>
+                                                                <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
+                                                            <?php endforeach ?>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Park</label>
+                                                        <select class=" form-control full-width parking" data-init-plugin="select2" name="parking">
+                                                            <?php for ($i=1; $i <= 4 ; $i++): ?>
+                                                                <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
+                                                            <?php endfor;?>
+                                                        </select>
+                                                    </div>    
+                                                </div>
+                                                <div class="input-group col-md-12">
+                                                    <div class="col-md-3">
+                                                        <label>Total</label>
+                                                        <input type="text" class="form-control total" name="total" value="" disabled style="width: 100%">
+                                                    </div> 
+                                                    <div class="col-md-3">
+                                                        <label>Coste</label>
+                                                        <input type="text" class="form-control cost" name="cost" value="" disabled style="width: 100%">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label>Beneficio</label>
+                                                        <input type="text" class="form-control beneficio" name="beneficio" value="" disabled style="width: 100%">
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="input-group col-md-12">
+                                                    <label>Comentarios</label>
+                                                    <textarea class="form-control" name="book_comments" style="width: 100%">
+                                                        
+                                                    </textarea>
+                                                </div>                         
+                                        </div>
+
+                                        <!-- Seccion Cliente -->
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                Crear Cliente
+                                            </div>
+                                        </div>
+
+                                        <div class="panel-body">
+
+                                            <div class="input-group col-md-12">
+                                                <div class="col-md-4">
+                                                    Nombre: <input class="form-control" type="text" name="name">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    Email: <input class="form-control" type="email" name="email">  
+                                                </div>
+                                                <div class="col-md-4">
+                                                    Telefono: <input class="form-control" type="number" name="phone"> 
+                                                </div>  
+                                                <div style="clear: both;"></div>
+                                                <br>
+                                                <div class="input-group col-md-12">
+                                                    <button class="btn btn-complete" type="submit">Guardar</button>
+                                                </div> 
+                                            </div>                                            
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
                         </div>
 
-                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">
-
-                            <div class="panel-body">
-                                
-                                <div class="pull-right">
-                                  <div class="col-xs-12 ">
-                                    <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
-                                  </div>
+                        <div class="tab-pane active" id="tabPendientes">
+                            <div class="row column-seperation">
+                                <div class="pull-left">
+                                    <div class="col-xs-12 ">
+                                        <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
+                                    </div>
                                 </div>
-                                
+                        
                                 <div class="clearfix"></div>
-                                
+    
                                 <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
                                     <thead>
                                         <tr>
+                                            <th class ="text-center bg-complete text-white" style="width:1%"></th>
                                             <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Pax    </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
@@ -78,96 +188,8 @@
                                     </thead>
                                     <tbody>
                                     <?php foreach ($newbooks as $book): ?>
-                                        <tr class="<?php echo $book->getStatus($book->type_book) ?>">
-                                            <td class ="text-center"><?php echo $book->Customer->name ?></td>
-                                            <td class ="text-center"><?php echo $book->pax ?></td>
-                                            <td class ="text-center">
-                                                <select class="room" class="form-control" data-id="<?php echo $book->id ?>" >
-                                                    
-                                                    <?php foreach ($rooms as $room): ?>
-                                                        <?php if ($room->id == $book->room_id): ?>
-                                                            <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                                                <?php echo $room->name ?><span>
-                                                            </option>
-                                                        <?php else:?>
-                                                            <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
-                                                        <?php endif ?>
-                                                    <?php endforeach ?>
-                                                </select>
-                                            </td>
-                                            <td class ="text-center">
-                                                <?php
-                                                    $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                                    echo $start->format('d-m-Y');
-                                                ?>
-                                            </td>
-                                            <td class ="text-center">
-                                                <?php
-                                                    $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                                    echo $finish->format('d-m-Y');
-                                                ?>
-                                            </td>
-                                            <td class ="text-center"><?php echo $book->nigths ?></td>
-                                            <td class ="text-center"><?php echo $book->total_price."€" ?></td>
-                                            <td class ="text-center">
-                                                <select class="status" class="form-control" data-id="<?php echo $book->id ?>" >
-                                                    <?php for ($i=1; $i < 9; $i++): ?> 
-                                                        <?php if ($i == $book->type_book): ?>
-                                                            <option selected value="<?php echo $i ?>"  data-id="aaaa"><?php echo $book->getStatus($i) ?></option>
-                                                        <?php else: ?>
-                                                            <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
-                                                        <?php endif ?>                                          
-                                                         
-                                                    <?php endfor; ?>
-                                                </select>
-                                            </td>
-                                            
-                                        </tr>
-                                    <?php endforeach ?>
-                                    </tbody>
-                                </table>
-
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <!-- Antiguas -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingTwo">
-                            <h4 class="panel-title">
-                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    Reservas Antiguas <?php echo $countold ?>
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-
-                                <div class="pull-right">
-                                  <div class="col-xs-12 ">
-                                    <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
-                                  </div>
-                                </div>
-
-                                <div class="clearfix"></div>
-
-                                <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
-                                    <thead>
                                         <tr>
-                                            <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
-                                            <th class ="text-center bg-complete text-white" style="width:5%">   Pax    </th>
-                                            <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
-                                            <th class ="text-center bg-complete text-white" style="width:15%">  Entrada     </th>
-                                            <th class ="text-center bg-complete text-white" style="width:15%">  Salida      </th>
-                                            <th class ="text-center bg-complete text-white">                    Noches      </th>
-                                            <th class ="text-center bg-complete text-white">                    Precio      </th>
-                                            <th class ="text-center bg-complete text-white">                    Estado      </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php foreach ($oldbooks as $book): ?>
-                                        <tr class="<?php echo $book->getStatus($book->type_book) ?>">
+                                            <td class="<?php echo $book->getStatus($book->type_book) ?>"></td>
                                             <td class ="text-center"><?php echo $book->Customer->name ?></td>
                                             <td class ="text-center"><?php echo $book->pax ?></td>
                                             <td class ="text-center">
@@ -215,120 +237,24 @@
                                     <?php endforeach ?>
                                     </tbody>
                                 </table>  
-
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Bloqueadas -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingThree">
-                            <h4 class="panel-title">
-                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    Reservas Bloqueadas <?php echo $countbloq ?>
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-
-                                <div class="pull-right">
-                                  <div class="col-xs-12 ">
-                                    <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
-                                  </div>
+                        <div class="tab-pane " id="tabEspeciales">
+                            <div class="row">
+                                <div class="pull-left">
+                                    <div class="col-xs-12 ">
+                                        <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
+                                    </div>
                                 </div>
-
-                                <div class="clearfix"></div>
-
-                                <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
-                                    <thead>
-                                        <tr>
-                                            <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
-                                            <th class ="text-center bg-complete text-white" style="width:5%">   Pax    </th>
-                                            <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
-                                            <th class ="text-center bg-complete text-white" style="width:15%">  Entrada     </th>
-                                            <th class ="text-center bg-complete text-white" style="width:15%">  Salida      </th>
-                                            <th class ="text-center bg-complete text-white">                    Noches      </th>
-                                            <th class ="text-center bg-complete text-white">                    Precio      </th>
-                                            <th class ="text-center bg-complete text-white">                    Estado      </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php foreach ($bloqbooks as $book): ?>
-                                        <tr class="<?php echo $book->getStatus($book->type_book) ?>">
-                                            <td class ="text-center"><?php echo $book->Customer->name ?></td>
-                                            <td class ="text-center"><?php echo $book->pax ?></td>
-                                            <td class ="text-center">
-                                                <select class="room" class="form-control" data-id="<?php echo $book->id ?>" >
-                                                    
-                                                    <?php foreach ($rooms as $room): ?>
-                                                        <?php if ($room->id == $book->room_id): ?>
-                                                            <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                                                <?php echo $room->name ?><span>
-                                                            </option>
-                                                        <?php else:?>
-                                                            <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
-                                                        <?php endif ?>
-                                                    <?php endforeach ?>
-                                                </select>
-                                            </td>
-                                            <td class ="text-center">
-                                                <?php
-                                                    $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                                    echo $start->format('d-m-Y');
-                                                ?>
-                                            </td>
-                                            <td class ="text-center">
-                                                <?php
-                                                    $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                                    echo $finish->format('d-m-Y');
-                                                ?>
-                                            </td>
-                                            <td class ="text-center"><?php echo $book->nigths ?></td>
-                                            <td class ="text-center"><?php echo $book->total_price."€" ?></td>
-                                            <td class ="text-center">
-                                                <select class="status" class="form-control" data-id="<?php echo $book->id ?>" >
-                                                    <?php for ($i=1; $i < 9; $i++): ?> 
-                                                        <?php if ($i == $book->type_book): ?>
-                                                            <option selected value="<?php echo $i ?>"  data-id="aaaa"><?php echo $book->getStatus($i) ?></option>
-                                                        <?php else: ?>
-                                                            <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
-                                                        <?php endif ?>                                          
-                                                         
-                                                    <?php endfor; ?>
-                                                </select>
-                                            </td>
-                                            
-                                        </tr>
-                                    <?php endforeach ?>
-                                    </tbody>
-                                </table>  
                                 
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Subcomunidad -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingFour">
-                            <h4 class="panel-title">
-                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                    Reservas Subcomunidad <?php echo $countsub ?>
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-
-                                <div class="pull-right">
-                                  <div class="col-xs-12 ">
-                                    <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
-                                  </div>
-                                </div>
                                 <div class="clearfix"></div>
-                                <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
+
+                                <div class="col-md-12">
+                                    <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
                                     <thead>
                                         <tr>
+                                            <th class ="text-center bg-complete text-white" style="width:1%"></th>
                                             <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Pax    </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
@@ -340,8 +266,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <?php foreach ($subbooks as $book): ?>
-                                        <tr class="<?php echo $book->getStatus($book->type_book) ?>">
+                                    <?php foreach ($specialbooks as $book): ?>
+                                        <tr>
+                                            <td class="<?php echo $book->getStatus($book->type_book) ?>"></td>
                                             <td class ="text-center"><?php echo $book->Customer->name ?></td>
                                             <td class ="text-center"><?php echo $book->pax ?></td>
                                             <td class ="text-center">
@@ -388,25 +315,14 @@
                                         </tr>
                                     <?php endforeach ?>
                                     </tbody>
-                                </table>  
-                                
+                                </table> 
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Siguientes -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingFive">
-                            <h4 class="panel-title">
-                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                                    Siguientes reservas <?php echo $countprox ?>
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-
-                                <div class="pull-right">
+                        <div class="tab-pane" id="tabPagadas">
+                            <div class="row">
+                                <div class="pull-left">
                                     <div class="col-xs-12 ">
                                         <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
                                     </div>
@@ -417,6 +333,7 @@
                                 <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
                                     <thead>
                                         <tr>
+                                            <th class ="text-center bg-complete text-white" style="width:1%"></th>
                                             <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Pax    </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
@@ -428,8 +345,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <?php foreach ($proxbooks as $book): ?>
-                                        <tr class="<?php echo $book->getStatus($book->type_book) ?>">
+                                    <?php foreach ($paidbooks as $book): ?>
+                                        <tr>
+                                            <td class="<?php echo $book->getStatus($book->type_book) ?>"></td>
                                             <td class ="text-center"><?php echo $book->Customer->name ?></td>
                                             <td class ="text-center"><?php echo $book->pax ?></td>
                                             <td class ="text-center">
@@ -476,14 +394,12 @@
                                         </tr>
                                     <?php endforeach ?>
                                     </tbody>
-                                </table>    
-                                
+                                </table>   
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
-            </div>
         </div>
 
         <div class="col-md-6 col-xs-12">
@@ -590,9 +506,61 @@
                 });
             });
 
+            var start  = 0;
+            var finish = 0;
+            var diferencia = 0;
+            var price = 0;
+            var cost = 0;
+
+
+            $('#start').change(function(event) {
+                start= $(this).val();
+                var info = start.split('/');
+                start = info[1] + '/' + info[0] + '/' + info[2];
+                if (finish != 0) {
+                    diferencia = Math.floor((  Date.parse(finish)- Date.parse(start) ) / 86400000);
+                    $('.noches').empty();
+                    $('.noches').html(diferencia);
+                }
+            });
+
+            $('#finish').change(function(event) {
+                finish= $(this).val();
+                var info = finish.split('/');
+                finish = info[1] + '/' + info[0] + '/' + info[2];           
+                if (start != 0) {
+                    diferencia = Math.floor((  Date.parse(finish)- Date.parse(start) ) / 86400000);
+                    $('.noches').empty();
+                    $('.noches').val(diferencia);
+                }
+            });
+
+            $('#newroom, .pax, .parking').change(function(event){ 
+
+                var room = $('#newroom').val();
+                var pax = $('.pax').val();
+                var park = $('.parking').val();
+                var beneficio = 0;
+
+                $.get('reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                    $('.total').empty();
+                    $('.total').val(data);
+                    price = data;
+                        $.get('reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                        $('.cost').empty();
+                        $('.cost').val(data);  
+                        cost = data;
+                        beneficio = price - cost;
+                        $('.beneficio').empty;
+                        $('.beneficio').val(beneficio);
+                        
+                    });
+                });
+            });
 
             
         });
 
     </script>
+
 @endsection

@@ -30,6 +30,16 @@
                         </div>
                             <br>
                         <div class="input-group">
+                            <label>Correo</label>
+                            <input type="email" class="form-control" name="email" placeholder="Email" required="" aria-required="true" aria-invalid="false" value="<?php echo $user->email?>">
+                        </div>    
+                            <br>
+                        <div class="input-group">
+                            <label>Telefono</label>
+                            <input type="number" class="form-control" name="phone" placeholder="Telefono" required="" aria-required="true" aria-invalid="false">
+                        </div>
+                            <br>
+                        <div class="input-group">
                         	<label>Cargo</label>
                             <select class="full-width" data-init-plugin="select2" name="role">
                                 <option value="<?php echo $user->role ?>" default><?php echo $user->role ?></option>
@@ -44,11 +54,6 @@
                         <div class="input-group">
 							<label>Contraseña</label>
                             <input type="password" class="form-control" name="password"  required="" aria-required="true" aria-invalid="false" value="<?php echo $user->password ?>">
-                        </div>
-                            <br>
-                        <div class="input-group">
-                        	<label>Correo</label>
-							<input type="email" class="form-control" name="email" placeholder="Email" required="" aria-required="true" aria-invalid="false" value="<?php echo $user->email?>">
                         </div>
                             <br>
                         <div class="input-group">

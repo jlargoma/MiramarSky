@@ -13,7 +13,9 @@
 
 <div class="container-fluid padding-25 sm-padding-10">
     <div class="row">
-
+        <div class="col-md-12 col-xs-12">
+            <h2>Clientes</h2>
+        </div>
         <div class="col-md-8 col-xs-12">
             <div class="pull-right">
               <div class="col-xs-12 ">
@@ -28,9 +30,7 @@
                         <th class ="text-center bg-complete text-white" >       Nombre      </th>
                         <th class ="text-center bg-complete text-white" >       Email       </th>
                         <th class ="text-center bg-complete text-white" >       Telefono    </th>                  
-                        <th class ="text-center bg-complete text-white" >       Comentarios </th>                  
-                        <th class ="text-center bg-complete text-white" >       Editar      </th>
-
+                        <th class ="text-center bg-complete text-white" style="width: 40%">       Comentarios </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,13 +50,6 @@
                             <td class="text-center font-montserrat">
                                 <input type="text" class="editables comments-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->comments?>" style="border-style: none none solid;width: 85%">
                                 
-                            </td>
-                            <td class="text-center font-montserrat">
-                                <div class="btn-group">
-                                    <a href="{{ url('clientes/delete/')}}/<?php echo $customer->id ?>" class="btn btn-tag btn-danger font-montserrat" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Cliente" onclick="return confirm('¿Quieres eliminar el cliente?');">
-                                        <i class="fa fa-trash-o"></i>
-                                    </a>                                     
-                                </div>
                             </td>
                         </tr>
                     <?php endforeach ?>

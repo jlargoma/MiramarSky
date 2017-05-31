@@ -665,14 +665,24 @@
 <script src="//code.jquery.com/jquery.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
-<?php $date->subMonth(); ?>
-<?php for ($j=0; $j < 4; $j++):
+<!-- <?php $date->subMonth(); ?> -->
+<div class="col-md-1">
+	<div class="Alta col-md-1 col-xs-6">&nbsp;</div><div class=" col-md-6 col-xs-6">Alta</div>	               
+</div>
+<div class="col-md-1">
+	<div class="Media col-md-1 col-xs-6">&nbsp;</div><div class=" col-md-6 col-xs-6">Media</div>	               
+</div>
+<div class="col-md-1">
+	<div class="Baja col-md-1 col-xs-6">&nbsp;</div><div class=" col-md-6 col-xs-6">Baja</div>	               
+</div> 
+<div style="clear: both;"></div>
+<?php for ($j=0; $j < 12; $j++):
 
 	$startMonth = $date->copy()->startOfMonth();
 	$endMonth = $date->copy()->endOfMonth();
 	$countDays = $endMonth->diffInDays($startMonth);
 ?>
-	<div id="calendar" class="col-xs-12 col-md-6">
+	<div id="calendar" class="col-xs-12 col-md-3">
 	    <div class="panel panel-default">
 	        <div class="panel-body">
 	            <div class="calendar fc fc-ltr">
@@ -680,44 +690,28 @@
 						<?php echo ucfirst($date->copy()->formatLocalized('%b %Y')) ?>  
 	                </div>
 	                        
-	                <div class="col-md-2">
-	                	<div class="Alta col-md-1 col-xs-6">&nbsp;</div><div class=" col-md-6 col-xs-6">Alta</div>	               
-	                </div>
-	                <div class="col-md-2">
-	                	<div class="Media col-md-1 col-xs-6">&nbsp;</div><div class=" col-md-6 col-xs-6">Media</div>	               
-	                </div>
-	                <div class="col-md-2">
-	                	<div class="Baja col-md-1 col-xs-6">&nbsp;</div><div class=" col-md-6 col-xs-6">Baja</div>	               
-	                </div>         	
+	                        	
 	                <div class="fc-content" style="position: relative; min-height: 1px;">
 	                    <div class="fc-view fc-view-month fc-grid" style="position: relative; min-height: 1px;" unselectable="on">
 	                        <table class="fc-border-separate" style="width:100%;border: 1px solid black" cellspacing="0">
 	                            <thead>
-	                                <tr class="fc-last">
-	                        			<?php $dayMonth = $startMonth; ?>
-	                                	<?php for ( $i = 1; $i <= $countDays+1; $i++): ?>
-	                                		<th class="fc-day-header fc-mon fc-widget-header" style="width: 100px;">
-												<span style="font-size: 11px">
-													<?php echo $dayMonth->format('d') ?> <br>
-													<!-- <?php echo ucfirst($dayMonth->formatLocalized('%a')) ?> -->
-												</span>
-	                                		</th>
-	                            			<?php $dayMonth->addDay() ?>
-	                                	<?php endfor ?>
-	                                </tr>
-	                            </thead>
-	                            <tbody>
-	                            		<tr>
+	                                
+                        			<?php $dayMonth = $startMonth;?>
 
-	                            				<?php 
-	                            					$day = $startMonth->copy()->subMonth();
-
-	                            					for ( $i = 1; $i <= $countDays+1; $i++): 
-	                            					/* Reservas por Año y Mes */
-	                            					// $criteriaBooks = new CDbCriteria();
-	                            					// $criteriaBooks->condition = 'Type IN (0,1,6,7) AND "'.$day->copy()->format('Y-m-d').'" BETWEEN Start AND Finish AND RoomID = '.$room->ID;
-	                            					$daySeasons = \App\Seasons::where('start_date', '<=' ,$day->copy()->format('Y-m-d'))
-	                            										->where('finish_date', '>=' ,$day->copy()->format('Y-m-d'))
+                                	<?php for ($i = 1; $i <= $countDays+1; $i++): ?>
+	                                	<?php if ($dayMonth->format('w') != 1 && $i == 1): ?>
+											<?php for ($h = 1; $h <= $dayMonth->format('w')-1; $h++): ?>
+													<th class="fc-day-header fc-mon fc-widget-header" style="width: 100px;">
+														&nbsp;
+	                                				</th>
+											<?php endfor ?>
+	                                	<?php endif ?>
+										<?php if ($dayMonth->format('D') == "Mon"): ?>
+                                			<tr class="fc-last">
+                                		<?php endif ?>
+                                			<?php 
+                                			$daySeasons = \App\Seasons::where('start_date', '<=' ,$dayMonth)
+	                            										->where('finish_date', '>=' ,$dayMonth)
 	                            										->get();												
 	                            					$status = "";
 	                            					if (count($daySeasons) > 0) {
@@ -741,8 +735,6 @@
 	                            									break;
 	                            							}
 	                            						}
-
-
 	                            					} 
 	                            					else {
 	                            						$status = "";
@@ -750,16 +742,22 @@
 	                            						$startseason    = "";
 	                            						$endseason      = "";
 	                            					}
-	                            				?>
+	                            					?>
+	                                		<th class="fc-day-header fc-mon fc-widget-header <?php echo $status ?>" style="width: 100px;">
+												<span style="font-size: 11px">
+													<?php echo $dayMonth->format('d') ?> <br>
+													<!-- <?php echo ucfirst($dayMonth->formatLocalized('%a')) ?> -->
+												</span>
+	                                		</th>    
 
-	                            				<td style="border: 1px solid black"  title="<?php echo $nameSeason ; ?>">
-	                            					<div class="not-padding <?php echo $status ?>" style="min-width: 100%">&nbsp;</div>
-	                            				</td>
-	                            		
-	                            			<?php $day->addDay(); ?>
-	                            			<?php endfor ?>
-	                            		</tr>
-	                            </tbody>
+                            				<?php $dayMonth->addDay() ?>
+
+                            			<?php if ($dayMonth->format('D') == "Mon"): ?>
+                            				</tr>
+                            			<?php endif ?>
+                                	<?php endfor ?>
+	                                
+	                            </thead>
 	                        </table>		
 	                    </div>
 	                </div>
@@ -768,6 +766,9 @@
 	    </div>
 	</div>
 <?php $date->addMonth(); ?>
+<?php if ($j == 3 ||$j == 7 ||$j == 11): ?>
+	<div style="clear: both;"></div>
+<?php endif ?>
 <?php endfor;?>
 
 

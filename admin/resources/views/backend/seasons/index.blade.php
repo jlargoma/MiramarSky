@@ -20,20 +20,15 @@
     <div class="row">
 
         <div class="col-md-8">
-            <div class="pull-right">
-              <div class="col-xs-12 ">
-                <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
-              </div>
-            </div>
             <div class="clearfix"></div>
             <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch">
                 <thead>
                     <tr>
                         <th class ="text-center hidden">    id      </th>
-                        <th class ="text-center bg-complete text-white">           Inicio  </th>
-                        <th class ="text-center bg-complete text-white">           Fin     </th>
-                        <th class ="text-center bg-complete text-white">           Tipo    </th>                  
-                        <th class ="text-center bg-complete text-white">           Editar  </th>
+                        <th class ="text-center bg-complete text-white"> Inicio  </th>
+                        <th class ="text-center bg-complete text-white"> Fin     </th>
+                        <th class ="text-center bg-complete text-white"> Tipo    </th>                  
+                        <th class ="text-center bg-complete text-white"> Eliminar  </th>
 
                     </tr>
                 </thead>
@@ -42,10 +37,10 @@
                         <tr>
                             <td class="text-center" hidden><?php echo $season->id ?></td>
                             <td class="text-center">
-                                <?php  echo date('d-m-Y',strtotime($season->start_date))?>
+                                <?php  echo date('d-M-Y',strtotime($season->start_date))?>
                             </td>
                             <td class="text-center">
-                                <?php echo date('d-m-Y',strtotime($season->finish_date)) ?>
+                                <?php echo date('d-M-Y',strtotime($season->finish_date)) ?>
                             </td>
                             <td class="text-center">
                                 <?php echo $season->typeSeasons->name ?>

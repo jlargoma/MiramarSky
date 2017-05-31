@@ -15,12 +15,14 @@
 
 <div class="container-fluid padding-25 sm-padding-10">
     <div class="row">
-
+        <div class="col-md-12 col-xs-12">
+            <h2>Usuarios</h2>
+        </div>
         <div class="col-md-8">
-            <div class="pull-right">
-              <div class="col-xs-12 ">
-                <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
-              </div>
+            <div class="pull-left">
+                <div class="col-xs-12 " >
+                    <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
+                </div>
             </div>
             <div class="clearfix"></div>
             <?php if (count($users) > 0): ?>
@@ -31,9 +33,10 @@
                         <tr>
                             <th class ="text-center hidden" style="width: 25%">id</th>
                             <th class ="text-center bg-complete text-white" style="width: 25%">Nombre</th>
+                            <th class ="text-center bg-complete text-white" style="width: 25%">Telefono</th>
                             <th class ="text-center bg-complete text-white" style="width: 15%"> Tipo</th>
                             <th class ="text-center bg-complete text-white" style="width: 35%">Email</th>
-                            <th class ="text-center bg-complete text-white" style="width: 25%">Editar</th>
+                            <th class ="text-center bg-complete text-white" style="width: 25%">Eliminar</th>
 
                         </tr>
                     </thead>
@@ -43,7 +46,9 @@
                                 <td class="text-center hidden">
                                     <input type="text" name="<?php echo $user->id?>" value="<?php echo $user->id?>">
                                 </td>
-                                <td class="text-center "><?php echo $user->name?>
+                                <td class="text-center "><a class="btn btn-tag update-user" type="button"  data-id="<?php echo $user->id ?>" data-toggle="modal" data-target="#myModal" title="Editar Usuario" ><?php echo $user->name?></a>
+                                </td>
+                                <td class="text-center "><?php echo $user->phone?>
                                 </td>
                                 <td class="text-center ">
                                     <?php echo $user->role?>
@@ -58,12 +63,6 @@
                                         <a href="{{ url('usuarios/delete/')}}/<?php echo $user->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Usuario" onclick="return confirm('¿Quieres eliminar el usuario?');">
                                             <i class="fa fa-trash-o"></i>
                                         </a>
-                                    </div>
-                                    <div class="btn-group">
-                                        <a class="btn btn-tag btn-success update-user" type="button"  data-id="<?php echo $user->id ?>" data-toggle="modal" data-target="#myModal" title="Editar Usuario" >
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                      
                                     </div>
                                 </td>
                             </tr>
@@ -102,6 +101,13 @@
                                                 <i class="fa fa-user"></i>
                                             </span>
                                             <input type="text" class="form-control" name="name" placeholder="Nombre" required="" aria-required="true" aria-invalid="false">
+                                        </div>
+                                            <br>
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="pg-phone"></i>
+                                            </span>
+                                            <input type="number" class="form-control" name="phone" placeholder="Telefono" required="" aria-required="true" aria-invalid="false">
                                         </div>
                                             <br>
                                         <div class="input-group">
@@ -151,7 +157,7 @@
   <div class="modal-dialog modal-md">
     <div class="modal-content-wrapper">
       <div class="modal-content">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-30"></i>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-50"></i>
         </button>
         <div class="container-xs-height full-height">
           <div class="row-xs-height">
