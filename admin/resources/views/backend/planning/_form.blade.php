@@ -144,8 +144,8 @@
                 $('.noches').empty();
                 $('.noches').html(diferencia);
             }
-
         });
+
         $('#finish').change(function(event) {
             finish= $(this).val();
             var info = finish.split('/');
@@ -154,34 +154,30 @@
                 diferencia = Math.floor((  Date.parse(finish)- Date.parse(start) ) / 86400000);
                 $('.noches').empty();
                 $('.noches').val(diferencia);
-               
             }
         });
-        $('#room,.pax,.parking').change(function(event){            
+
+        $('#room, .pax, .parking').change(function(event){ 
+
             var room = $('#room').val();
-            console.log(room);
             var pax = $('.pax').val();
             var park = $('.parking').val();
-            
+            var beneficio = 0;
 
-            price = $.get('reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}, function(data) {
+            $.get('reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
                 $('.total').empty();
                 $('.total').val(data);
                 price = data;
+                    $.get('reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                    $('.cost').empty();
+                    $('.cost').val(data);  
+                    cost = data;
+                    beneficio = price - cost;
+                    $('.beneficio').empty;
+                    $('.beneficio').val(beneficio);
+                    
                 });
-
-            cost = $.get('reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}, function(data) {
-                $('.cost').empty();
-                $('.cost').val(data);
-                
-                });
-
-            var cost = $('.cost').val();
-            var price = $('.total').val();
-            console.log(cost+" "+price);
-            
-
-        })
-
+            });
+        });
     });
 </script>
