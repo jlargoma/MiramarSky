@@ -17,7 +17,7 @@
             <h2>Clientes</h2>
         </div>
         <div class="col-md-8 col-xs-12">
-            <div class="pull-right">
+            <div class="pull-left">
               <div class="col-xs-12 ">
                 <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
               </div>
@@ -38,7 +38,8 @@
                         <tr>
                             <td class="text-center font-montserrat" hidden><?php echo $customer->id ?></td>
                             <td class="text-center font-montserrat">
-                               <input type="text" class="editables name-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->name?>" style="border-style: none none solid">
+                               <!-- <input type="text" class="editables name-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->name?>" style="border-style: none none solid"> -->
+                               <?php echo $customer->name ?>
                             </td>
                             <td class="text-center font-montserrat">
                                 <input type="text" class="editables email-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->email?>" style="border-style: none none solid">

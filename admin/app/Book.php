@@ -47,11 +47,13 @@ class Book extends Model
         static function existDate($start,$finish,$room)
         {
         	if ($room != 3) {
+                
                 $books = \App\Book::where('id',$room)->get();
                 $existStart = False;
                 $existFinish = False;        
                 $requestStart = Carbon::createFromFormat('Y-m-d',$start);
                 $requestFinish = Carbon::createFromFormat('Y-m-d',$finish);
+
                 foreach ($books as $book) {
                     if ($existStart == False && $existFinish == False) {
                         $start = Carbon::createFromFormat('Y-m-d', $book->start);
@@ -63,11 +65,13 @@ class Book extends Model
                         break;
                     }
                 }
+
                 if ($existStart == False && $existFinish == False) {
                     return True;
                 }else{
                     return False;
                 }
+
             }else{
                 return true;
             }   

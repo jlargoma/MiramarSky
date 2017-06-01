@@ -12,9 +12,11 @@ class UpdateTablessTable extends Migration
      */
     public function up()
     {
-        Schema::table('Rooms', function ($table) {
-            $table->foreign('sizeRoom')->references('id')->on('sizerooms');
+
+        Schema::table('customers', function ($table) {
+            $table->foreign('user_id')->references('id')->on('users');
         });
+
         Schema::table('seasons', function ($table) {
             $table->foreign('type')->references('id')->on('typeseasons');
         });

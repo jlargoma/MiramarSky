@@ -1,3 +1,7 @@
+<?php setlocale(LC_TIME, "ES"); ?>
+<?php setlocale(LC_TIME, "es_ES");
+	use Carbon\Carbon; 
+?>
 <style type="text/css">
 	.not-padding {
 		padding: 0;
@@ -662,17 +666,26 @@
 	}
 </style>
 
-<?php 
-	setlocale(LC_ALL, "es_ES.utf8"); 
-	use Carbon\Carbon; 
-?>
-<!-- Latest compiled and minified CSS & JS -->
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<script src="//code.jquery.com/jquery.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
+
 <?php $date->subMonth(); ?>
-<?php for ($j=0; $j < 3; $j++): 
+<div id="leyenda-reservas" class="col-xs-12 col-md-12 m-b-20">
+    <div class="panel-body bg-white">
+        <div style="float:left;width:20px;height:20px;background-color:white;border: 1px solid #333;margin-left:10px;"></div>
+        <div style="float:left;margin-left:5px">Libre</div>
+
+        <div style="float:left;width:20px;height:20px;background-color:#0DAD9E;border: 1px solid #333;margin-left:10px;"></div>
+        <div style="float:left;margin-left:5px">Reservado</div>
+
+        <div style="float:left;width:20px;height:20px;background-color:#F77975;border: 1px solid #333;margin-left:10px;"></div>
+        <div style="float:left;margin-left:5px">Pagada la señal</div>
+
+        <div style="float:left;width:20px;height:20px;background-color:#F9D975;border: 1px solid #333;margin-left:10px;"></div>
+        <div style="float:left;margin-left:5px">Bloqueado</div>
+        <div style="float:left;width:20px;height:20px;background-color:#8A7DBE;border: 1px solid #333;margin-left:10px;"></div>
+        <div style="float:left;margin-left:5px">Subcomunidad</div>
+    </div>
+</div>
+<?php for ($j=0; $j < 2; $j++): 
 	$startMonth = $date->copy()->startOfMonth();
 	$endMonth = $date->copy()->endOfMonth();
 	$countDays = $endMonth->diffInDays($startMonth);

@@ -97,9 +97,14 @@ class UsersController extends Controller
     {
         $id                   = $request->input('id');
         $userUpadate          = \App\User::find($id);
-        $userUpadate->name    = $request->input('name');
-        $userUpadate->email    = $request->input('email');
-        $userUpadate->phone    = $request->input('phone');
+        
+        
+        $userUpadate->name = $request->input('name');
+        $userUpadate->email = $request->input('email');
+        $userUpadate->phone = $request->input('phone');
+        $userUpadate->role = $request->input('role');
+        $userUpadate->remember_token = str_random(60);
+        $userUpadate->password = bcrypt($request->input('password'));
 
         if ($userUpadate->save()) {
             return redirect()->action('UsersController@index');

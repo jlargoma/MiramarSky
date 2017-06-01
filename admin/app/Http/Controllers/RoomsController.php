@@ -17,7 +17,6 @@ class RoomsController extends Controller
     {
         return view('backend/rooms/index',[
                     'rooms' => \App\Rooms::all(),
-                    'sizes' =>\App\SizeRooms::all(),
                     'types'  => \App\TypeRooms::all(),
                     'owners' => \App\User::whereIn('role',['Admin','Propietario'])->get(),
                 ]);
@@ -33,6 +32,7 @@ class RoomsController extends Controller
     public function create(Request $request)
     {
         $room = new \App\Rooms();
+
         if($request->input('luxury') == "on"){
             $luxury = 1;
         }
@@ -65,25 +65,6 @@ class RoomsController extends Controller
         }else{
             echo "Ya existe este tipo de apartamento";
         }
-    }
-
-    public function createSize(Request $request)
-    {
-        $existRoomSize = \App\SizeRooms::where('name',$request->input('name'))->count();
-        if ($existRoomSize == 0) {
-            $roomSize = new \App\SizeRooms();
-
-            $roomSize->name = $request->input('name');
-            $roomSize->maxOcu = $request->input('max');
-            $roomSize->minOcu = $request->input('min');
-            
-            if ($roomSize->save()) {
-                return redirect()->action('RoomsController@index');
-            }
-        }else{
-            echo "Ya existe este tamaño";
-        }
-        
     }
     
 
@@ -131,11 +112,10 @@ class RoomsController extends Controller
     {
         $id                   = $request->input('id');
         $roomUpdate          = \App\Rooms::find($id);
-        $roomUpdate->name = $request->input('name');
-        // $roomUpdate->nameRoom = $request->input('nameRoom');
-        // $roomUpdate->sizeRoom = $request->input('type');
-        // $roomUpdate->user_id = $request->input('user');
-        // $roomUpdate->typeApto = $request->input('lujo');
+
+        $roomUpdate->luxury = $request->input('luxury');
+        $roomUpdate->minOcu = $request->input('minOcu');
+        $roomUpdate->maxOcu = $request->input('maxOcu');
         
 
         if ($roomUpdate->save()) {

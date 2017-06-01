@@ -33,15 +33,15 @@ class SeasonsController extends Controller
     public function create(Request $request)
     {   
         
-
+        
         $exist = \App\Seasons::existDate($request->input('start'),$request->input('finish'));
         if ($exist == false) {
             $seasons = new \App\Seasons();
 
             $start = $request->input('start');
-            $start = Carbon::createFromFormat('m/d/Y',$start);
+            $start = Carbon::createFromFormat('d/m/Y',$start);
             $finish = $request->input('finish');
-            $finish = Carbon::createFromFormat('m/d/Y',$finish);
+            $finish = Carbon::createFromFormat('d/m/Y',$finish);
             $start->format('Y-m-d');
             $finish->format('Y-m-d');
 
@@ -63,8 +63,16 @@ class SeasonsController extends Controller
             $typeSeasons = new \App\TypeSeasons();
 
             $typeSeasons->name = $request->input('name');
-            
+
             if ($typeSeasons->save()) {
+                for ($i=4; $i <=8 ; $i++) { 
+                    $price= new \App\Prices();
+                    $price ->season = $typeSeasons->id;
+                    $price ->occupation = $i;
+                    $price ->save();
+                }
+                
+
                 return redirect()->action('SeasonsController@index');
             }
         }else{

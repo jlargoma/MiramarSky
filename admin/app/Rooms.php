@@ -12,9 +12,9 @@ class Rooms extends Model
         return $this->hasOne('\App\Book', 'id', 'room_id');
     }
 
-    public function sizeRooms()
+    public function typeRoom()
     {
-        return $this->hasOne('\App\SizeRooms', 'id', 'sizeRoom');
+        return $this->hasOne('\App\TypeRooms', 'id', 'typeApto');
     }
 
     public function user()

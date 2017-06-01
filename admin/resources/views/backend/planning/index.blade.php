@@ -29,29 +29,26 @@
         .SubComunidad{
             background-color: #8A7DBE !important;
         }
+        .botones{
+            padding-top: 0px!important;
+            padding-bottom: 0px!important;
+        }
     </style>
 <div class="container-fluid padding-10 sm-padding-10">
     <div class="row">
         
-        <div class="col-md-12 col-xs-12 m-b-10 ">
-            <button class="btn btn-tag btn-success create-book btn-cons m-b-10" data-toggle="modal" data-target="#myModal" type="button"><i class="pg-plus"></i></span>
-            </button>
-        </div>
-
-        <div class="col-md-6">
-                <div class="alert alert-info visible-xs m-r-5 m-l-5" role="alert">
-                    <button class="close" data-dismiss="alert"></button>
-                    <strong>Info: </strong> On mobile the tab will be come a Accorian by using data-init-reponsive-tabs="collapse"
-                </div>
+        <div class="col-md-7">
                 <div class="panel">
                     <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="collapse">
-                        <li><a href="#tabNueva" data-toggle="tab" role="tab">Nueva</a>
+                        <li><a href="#tabNueva" data-toggle="tab" role="tab">Nueva <?php echo $arrayMonth[1][1] ?></a>
                         </li>
-                        <li class="active"><a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes <?php echo $countnews ?></a>
+                        <li class="active"><a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes </a>
                         </li>
-                        <li><a href="#tabEspeciales" data-toggle="tab" role="tab">Especiales</a>
+                        <li><a href="#tabEspeciales" data-toggle="tab" role="tab">Especiales </a>
                         </li>
-                        <li><a href="#tabPagadas" data-toggle="tab" role="tab">Pagadas</a>
+                        <li><a href="#tabPagadas" data-toggle="tab" role="tab">Pagadas </a>
+                        </li>
+                        <li><a href="#tabUpdate" data-toggle="tab" role="tab">Actualizar </a>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -77,7 +74,7 @@
                                                         <div class="input-daterange input-group" id="datepicker-range">
 
                                                             <input id="start" type="text" class="input-sm form-control" name="start" data-date-format="dd-mm-yyyy">
-                                                            <span class="input-group-addon">to</span>
+                                                            <span class="input-group-addon">Hasta</span>
                                                             <input id="finish" type="text" class="input-sm form-control" name="finish" data-date-format="dd-mm-yyyy">
                                                         </div>
                                                     </div>
@@ -105,12 +102,18 @@
                                                                 <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
                                                             <?php endfor;?>
                                                         </select>
-                                                    </div>    
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Mensajes</label>
+                                                        <p class="mensajes">
+                                                            
+                                                        </p>
+                                                    </div>  
                                                 </div>
                                                 <div class="input-group col-md-12">
                                                     <div class="col-md-3">
                                                         <label>Total</label>
-                                                        <input type="text" class="form-control total" name="total" value="" disabled style="width: 100%">
+                                                        <input type="text" class="form-control total" name="total" value="" style="width: 100%">
                                                     </div> 
                                                     <div class="col-md-3">
                                                         <label>Coste</label>
@@ -177,20 +180,22 @@
                                         <tr>
                                             <th class ="text-center bg-complete text-white" style="width:1%"></th>
                                             <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
-                                            <th class ="text-center bg-complete text-white" style="width:5%">   Pax    </th>
+                                            <th class ="text-center bg-complete text-white" style="width:5%">   Telefono    </th>
+                                            <th class ="text-center bg-complete text-white" style="width:5%">   Pax         </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
                                             <th class ="text-center bg-complete text-white" style="width:15%">  Entrada     </th>
                                             <th class ="text-center bg-complete text-white" style="width:15%">  Salida      </th>
-                                            <th class ="text-center bg-complete text-white">                    Noches      </th>
+                                            <th class ="text-center bg-complete text-white" style="width:5%">   Noc         </th>
                                             <th class ="text-center bg-complete text-white">                    Precio      </th>
                                             <th class ="text-center bg-complete text-white">                    Estado      </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <?php foreach ($newbooks as $book): ?>
+                                    <?php foreach ($arrayBooks["nuevas"] as $book): ?>
                                         <tr>
-                                            <td class="<?php echo $book->getStatus($book->type_book) ?>"></td>
+                                            <td class="<?php echo $book->getStatus($book->type_book) ?>" rowspan="2"></td>
                                             <td class ="text-center"><?php echo $book->Customer->name ?></td>
+                                            <td class ="text-center"><a href="tel:<?php echo $book->Customer->phone ?>"><?php echo $book->Customer->phone ?></a></td>
                                             <td class ="text-center"><?php echo $book->pax ?></td>
                                             <td class ="text-center">
                                                 <select class="room" class="form-control" data-id="<?php echo $book->id ?>" >
@@ -209,13 +214,13 @@
                                             <td class ="text-center">
                                                 <?php
                                                     $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                                    echo $start->format('d-m-Y');
+                                                    echo $start->format('d M');
                                                 ?>
                                             </td>
                                             <td class ="text-center">
                                                 <?php
                                                     $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                                    echo $finish->format('d-m-Y');
+                                                    echo $finish->format('d M');
                                                 ?>
                                             </td>
                                             <td class ="text-center"><?php echo $book->nigths ?></td>
@@ -233,6 +238,13 @@
                                                 </select>
                                             </td>
                                             
+                                        </tr>
+                                        <tr >
+                                            <td class="botones" colspan="2">Precio</td>
+                                            <td class="botones" colspan="2">Botones 1</td>
+                                            <td class="botones" colspan="2">Botones 2</td>
+                                            <td class="botones" colspan="2">Botones 3</td>
+                                            <td class="botones" >Botones 4</td>
                                         </tr>
                                     <?php endforeach ?>
                                     </tbody>
@@ -254,22 +266,24 @@
                                     <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
                                     <thead>
                                         <tr>
-                                            <th class ="text-center bg-complete text-white" style="width:1%"></th>
+                                            <th class ="text-center bg-complete text-white" style="width:10px"></th>
                                             <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
+                                            <th class ="text-center bg-complete text-white" style="width:5%">   Telefono    </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Pax    </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
                                             <th class ="text-center bg-complete text-white" style="width:15%">  Entrada     </th>
-                                            <th class ="text-center bg-complete text-white" style="width:15%">  Salida      </th>
-                                            <th class ="text-center bg-complete text-white">                    Noches      </th>
+                                            <th class ="text-center bg-complete text-white" style="width:20%">  Salida      </th>
+                                            <th class ="text-center bg-complete text-white" style="width:2%">   Noc         </th>
                                             <th class ="text-center bg-complete text-white">                    Precio      </th>
                                             <th class ="text-center bg-complete text-white">                    Estado      </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <?php foreach ($specialbooks as $book): ?>
+                                    <?php foreach ($arrayBooks["especiales"] as $book): ?>
                                         <tr>
-                                            <td class="<?php echo $book->getStatus($book->type_book) ?>"></td>
+                                            <td class="<?php echo $book->getStatus($book->type_book) ?>" rowspan="2"></td>
                                             <td class ="text-center"><?php echo $book->Customer->name ?></td>
+                                            <td class ="text-center"><a href="tel:<?php echo $book->Customer->phone ?>"><?php echo $book->Customer->phone ?></a></td>
                                             <td class ="text-center"><?php echo $book->pax ?></td>
                                             <td class ="text-center">
                                                 <select class="room" class="form-control" data-id="<?php echo $book->id ?>" >
@@ -288,13 +302,13 @@
                                             <td class ="text-center">
                                                 <?php
                                                     $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                                    echo $start->format('d-m-Y');
+                                                    echo $start->format('d-M');
                                                 ?>
                                             </td>
                                             <td class ="text-center">
                                                 <?php
                                                     $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                                    echo $finish->format('d-m-Y');
+                                                    echo $finish->format('d-M');
                                                 ?>
                                             </td>
                                             <td class ="text-center"><?php echo $book->nigths ?></td>
@@ -312,6 +326,13 @@
                                                 </select>
                                             </td>
                                             
+                                        </tr>
+                                        <tr >
+                                            <td class="botones" colspan="2">Precio</td>
+                                            <td class="botones" colspan="2">Botones 1</td>
+                                            <td class="botones" colspan="2">Botones 2</td>
+                                            <td class="botones" colspan="2">Botones 3</td>
+                                            <td class="botones" >Botones 4</td>
                                         </tr>
                                     <?php endforeach ?>
                                     </tbody>
@@ -335,20 +356,22 @@
                                         <tr>
                                             <th class ="text-center bg-complete text-white" style="width:1%"></th>
                                             <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
+                                            <th class ="text-center bg-complete text-white" style="width:5%">   Telefono    </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Pax    </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
                                             <th class ="text-center bg-complete text-white" style="width:15%">  Entrada     </th>
                                             <th class ="text-center bg-complete text-white" style="width:15%">  Salida      </th>
-                                            <th class ="text-center bg-complete text-white">                    Noches      </th>
+                                            <th class ="text-center bg-complete text-white" style="width:5%">   Noc         </th>
                                             <th class ="text-center bg-complete text-white">                    Precio      </th>
                                             <th class ="text-center bg-complete text-white">                    Estado      </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <?php foreach ($paidbooks as $book): ?>
+                                    <?php foreach ($arrayBooks["pagadas"] as $book): ?>
                                         <tr>
                                             <td class="<?php echo $book->getStatus($book->type_book) ?>"></td>
                                             <td class ="text-center"><?php echo $book->Customer->name ?></td>
+                                            <td class ="text-center"><a href="tel:<?php echo $book->Customer->phone ?>"><?php echo $book->Customer->phone ?></a></td>
                                             <td class ="text-center"><?php echo $book->pax ?></td>
                                             <td class ="text-center">
                                                 <select class="room" class="form-control" data-id="<?php echo $book->id ?>" >
@@ -367,13 +390,13 @@
                                             <td class ="text-center">
                                                 <?php
                                                     $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                                    echo $start->format('d-m-Y');
+                                                    echo $start->format('d M');
                                                 ?>
                                             </td>
                                             <td class ="text-center">
                                                 <?php
                                                     $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                                    echo $finish->format('d-m-Y');
+                                                    echo $finish->format('d M');
                                                 ?>
                                             </td>
                                             <td class ="text-center"><?php echo $book->nigths ?></td>
@@ -385,16 +408,137 @@
                                                             <option selected value="<?php echo $i ?>"  data-id="aaaa"><?php echo $book->getStatus($i) ?></option>
                                                         <?php else: ?>
                                                             <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
-                                                        <?php endif ?>                                          
-                                                         
+                                                        <?php endif ?>     
                                                     <?php endfor; ?>
                                                 </select>
                                             </td>
                                             
                                         </tr>
+                                        <tr>
+                                            <tr >
+                                            <td class="botones" colspan="2">Precio</td>
+                                            <td class="botones" colspan="2">Botones 1</td>
+                                            <td class="botones" colspan="2">Botones 2</td>
+                                            <td class="botones" colspan="2">Botones 3</td>
+                                            <td class="botones" >Botones 4</td>
+                                        </tr>
+                                        </tr>
                                     <?php endforeach ?>
                                     </tbody>
                                 </table>   
+                            </div>
+                        </div>
+                        
+                        <div class="tab-pane " id="tabUpdate">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form role="form"  action="{{ url('reservas/getPriceBook') }}" method="post">
+
+                                        <!-- Seccion Reserva -->
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                Crear reserva
+                                            </div>
+                                        </div>
+
+                                        <div class="panel-body">
+                                            
+                                            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+
+                                                <div class="input-group col-md-12">
+                                                    <div class="col-md-4">
+                                                        <label>Entrada</label>
+                                                        <div class="input-daterange input-group" id="datepicker-range">
+
+                                                            <input id="start" type="text" class="input-sm form-control" name="start" data-date-format="dd-mm-yyyy">
+                                                            <span class="input-group-addon">Hasta</span>
+                                                            <input id="finish" type="text" class="input-sm form-control" name="finish" data-date-format="dd-mm-yyyy">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label>Noches</label>
+                                                        <input type="text" class="form-control noches" name="noches" value="" disabled style="width: 100%">
+                                                    </div> 
+                                                    <div class="col-md-1">
+                                                        <label>Pax</label>
+                                                        <input  type="text" class="form-control full-width pax" name="pax" style="width: 100%">
+                                                            
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Pax</label>
+                                                        <select class="form-control full-width newroom" data-init-plugin="select2" name="newroom" id="newroom">
+                                                            <?php foreach ($rooms as $room): ?>
+                                                                <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
+                                                            <?php endforeach ?>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Park</label>
+                                                        <select class=" form-control full-width parking" data-init-plugin="select2" name="parking">
+                                                            <?php for ($i=1; $i <= 4 ; $i++): ?>
+                                                                <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
+                                                            <?php endfor;?>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Mensajes</label>
+                                                        <p class="mensajes">
+                                                            
+                                                        </p>
+                                                    </div>  
+                                                </div>
+                                                <div class="input-group col-md-12">
+                                                    <div class="col-md-3">
+                                                        <label>Total</label>
+                                                        <input type="text" class="form-control total" name="total" value="" style="width: 100%">
+                                                    </div> 
+                                                    <div class="col-md-3">
+                                                        <label>Coste</label>
+                                                        <input type="text" class="form-control cost" name="cost" value="" disabled style="width: 100%">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label>Beneficio</label>
+                                                        <input type="text" class="form-control beneficio" name="beneficio" value="" disabled style="width: 100%">
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="input-group col-md-12">
+                                                    <label>Comentarios</label>
+                                                    <textarea class="form-control" name="book_comments" style="width: 100%">
+                                                        
+                                                    </textarea>
+                                                </div>                         
+                                        </div>
+
+                                        <!-- Seccion Cliente -->
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                Crear Cliente
+                                            </div>
+                                        </div>
+
+                                        <div class="panel-body">
+
+                                            <div class="input-group col-md-12">
+                                                <div class="col-md-4">
+                                                    Nombre: <input class="form-control" type="text" name="name">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    Email: <input class="form-control" type="email" name="email">  
+                                                </div>
+                                                <div class="col-md-4">
+                                                    Telefono: <input class="form-control" type="number" name="phone"> 
+                                                </div>  
+                                                <div style="clear: both;"></div>
+                                                <br>
+                                                <div class="input-group col-md-12">
+                                                    <button class="btn btn-complete" type="submit">Guardar</button>
+                                                </div> 
+                                            </div>                                            
+                                        </div>
+
+                                    </form>
+                                </div>
                             </div>
                         </div>
 
@@ -402,24 +546,7 @@
                 </div>
         </div>
 
-        <div class="col-md-6 col-xs-12">
-            <div id="leyenda-reservas" style="margin-top:30px;float:left;margin-left:5%">
-                <div>
-                    <div style="float:left;width:20px;height:20px;background-color:white;border: 1px solid #333;margin-left:10px;"></div>
-                    <div style="float:left;margin-left:5px">Libre</div>
-
-                    <div style="float:left;width:20px;height:20px;background-color:#0DAD9E;border: 1px solid #333;margin-left:10px;"></div>
-                    <div style="float:left;margin-left:5px">Reservado</div>
-
-                    <div style="float:left;width:20px;height:20px;background-color:#F77975;border: 1px solid #333;margin-left:10px;"></div>
-                    <div style="float:left;margin-left:5px">Pagada la señal</div>
-
-                    <div style="float:left;width:20px;height:20px;background-color:#F9D975;border: 1px solid #333;margin-left:10px;"></div>
-                    <div style="float:left;margin-left:5px">Bloqueado</div>
-                    <div style="float:left;width:20px;height:20px;background-color:#8A7DBE;border: 1px solid #333;margin-left:10px;"></div>
-                    <div style="float:left;margin-left:5px">Subcomunidad</div>
-                </div>
-            </div>
+        <div class="col-md-5 col-xs-12">            
             @include('backend.planning.calendar')
         </div>
 
@@ -541,7 +668,12 @@
                 var pax = $('.pax').val();
                 var park = $('.parking').val();
                 var beneficio = 0;
-
+                if (pax < 4) {
+                    $('.mensajes').empty();
+                    $('.mensajes').html('Se cobraran 4 personas');
+                }else{
+                    $('.mensajes').empty();
+                }
                 $.get('reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
                     $('.total').empty();
                     $('.total').val(data);
@@ -556,6 +688,8 @@
                         
                     });
                 });
+
+                
             });
 
             

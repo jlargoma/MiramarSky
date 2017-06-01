@@ -10,6 +10,6 @@ class TypeRooms extends Model
 
     public function rooms()
     {
-        return $this->hasMany('\App\Rooms', 'id', 'sizeRoom');
+        return $this->hasMany('\App\Rooms', 'id', 'typeApto');
     }
 }

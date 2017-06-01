@@ -52,8 +52,12 @@
                                                     <input class="editable cost-<?php echo $price->id?>" type="text" name="cost" data-id="<?php echo $price->id ?>" value="<?php echo $price->cost ?>" style="width: 100%;text-align: center;border-style: none none solid">
                                                 </td>
                                                 <td class="text-center" style="border-right: : 1px solid #48b0f7">
-                                                    <?php $ben = ( ($price->price * 100) / $price->cost)-100; ?>
-                                                    <?php echo number_format($ben, 2 , ',', '.') ?>%
+                                                    <?php if ($price->price == 0 || $price->cost == 0): ?>
+                                                        0%
+                                                    <?php else: ?>
+                                                        <?php $ben = ( ($price->price * 100) / $price->cost)-100; ?>
+                                                        <?php echo number_format($ben, 2 , ',', '.') ?>%
+                                                    <?php endif ?>
                                                 </td>
                                 <?php else: ?>
                                     <td style="border-left: 1px solid #48b0f7"></td>
@@ -100,7 +104,7 @@
                                             <span class="input-group-addon">
                                                 <i class="pg-plus_circle"></i>
                                             </span>
-                                            <select class="full-width" data-init-plugin="select2" name="seasson">
+                                            <select class="full-width" data-init-plugin="select2" name="season">
                                                 <option></option>
                                                 <?php foreach ($newseasons as $newseason): ?>
                                                     <option value="<?php echo $newseason->id ?>"><?php echo $newseason->name ?></option>

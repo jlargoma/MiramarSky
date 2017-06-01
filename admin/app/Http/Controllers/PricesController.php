@@ -15,11 +15,9 @@ class PricesController extends Controller
      */
     public function index()
     {
-        $max = \App\SizeRooms::max('maxOcu');
-        $min = \App\SizeRooms::min('minOcu');
+
         return view('backend/prices/index',[
-                    'min' => $min,
-                    'max' => $max,
+
                     'seasons' => \App\TypeSeasons::all(),
                     'newseasons' => \App\TypeSeasons::all(),
                 ]);
@@ -37,7 +35,7 @@ class PricesController extends Controller
 
         if (count($existPrice)  == 0) {
             $price = new \App\Prices;
-            $price->season = $request->input('seasson') ;
+            $price->season = $request->input('season') ;
             $price->occupation = $request->input('occupation');
             $price->price = $request->input('price');
             $price->cost = $request->input('cost');

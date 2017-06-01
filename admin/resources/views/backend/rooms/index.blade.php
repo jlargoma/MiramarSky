@@ -20,7 +20,7 @@
     <div class="row">
 
         <div class="col-md-8">
-            <div class="pull-right">
+            <div class="pull-left">
               <div class="col-xs-12 ">
                 <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
               </div>
@@ -31,7 +31,7 @@
                     <tr>
                         <th class ="text-center hidden">             id            </th>
                         <th class ="text-center bg-complete text-white">  Nombre        </th>
-                        <th class ="text-center bg-complete text-white">  Tamaño          </th>
+                        <th class ="text-center bg-complete text-white">  Piso        </th>
                         <th class ="text-center bg-complete text-white">  Propietario   </th>
                         <th class ="text-center bg-complete text-white">  Ocupacion min </th>
                         <th class ="text-center bg-complete text-white">  Ocupacion max </th>
@@ -47,22 +47,26 @@
                                <?php echo $room->name?>
                            </td>
                            <td class="text-center">
-                               <?php echo $room->sizeRooms->name?>
+                               <?php echo $room->typeRoom->name?>
                            </td>
                            <td class="text-center">
                                <?php echo $room->user->name?>
                            </td>    
                            <td class="text-center">
-                               <?php echo $room->sizeRooms->minOcu?>
+                                <input class="editable minOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->minOcu?>" style="width: 100%;text-align: center;border-style: none none solid">
                            </td>  
                            <td class="text-center">
-                               <?php echo $room->sizeRooms->maxOcu?>
+                               <input class="editable maxOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->maxOcu?>" style="width: 100%;text-align: center;border-style: none none solid">
                            </td> 
                            <td class="text-center">
                                <?php if ($room->luxury == 0): ?>
-                                   No
+                                   <span class="input-group-addon bg-transparent">
+                                        <input type="checkbox" class="editable" data-id="<?php echo $room->id ?>" name="luxury" data-init-plugin="switchery" data-size="small" data-color="primary" />
+                                    </span>
                                <?php else: ?>
-                                   Si
+                                   <span class="input-group-addon bg-transparent">
+                                        <input type="checkbox" class="editable" data-id="<?php echo $room->id ?>" name="luxury" data-init-plugin="switchery" data-size="small" data-color="primary" checked="checked" />
+                                    </span>
                                <?php endif ?>
                                
                            </td>                      
@@ -88,7 +92,7 @@
                                 <div class="panel-heading" role="tab" id="headingOne">
                                     <h4 class="panel-title">
                                         <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                         Tipo de Apartamento
+                                            Condicion %
                                         </a>
                                       </h4>
                                 </div>
@@ -126,65 +130,6 @@
                                 </div>
                             </div>
                             <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="headingTwo">
-                                    <h4 class="panel-title">
-                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        Tamaño de apartamento
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                    <div class="panel-body">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <div class="panel-title col-md-12">
-                                                    Agregar Tamaño
-                                                </div>
-                                            </div>
-                                            <form role="form"  action="{{ url('apartamentos/create-size') }}" method="post">
-                                                <div class="panel-body">
-                                                    <div class="col-md-12">
-                                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                                        <div class="input-group transparent">
-                                                            <div class="col-md-9">
-                                                                <div class="input-group transparent">
-                                                                    <span class="input-group-addon">
-                                                                        <i class="fa fa-user"></i>
-                                                                    </span>
-                                                                    <input type="text" class="form-control" name="name" placeholder="nombre" required="" aria-required="true" aria-invalid="false">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <?php foreach ($sizes as $size): ?>
-                                                                    <?php echo $size->name."<br>" ?>
-                                                                <?php endforeach ?>
-                                                            </div>
-                                                            
-                                                        </div>
-                                                        <br>
-                                                        <div class="input-group transparent">
-                                                            <span class="input-group-addon">
-                                                                Min
-                                                            </span>
-                                                            <input type="text" class="form-control" name="min" placeholder="min" required="" aria-required="true" aria-invalid="false">
-                                                            <span class="input-group-addon">
-                                                                Max
-                                                            </span>
-                                                            <input type="text" class="form-control" name="max" placeholder="max" required="" aria-required="true" aria-invalid="false">
-                                                        </div>
-                                                        <br>
-                                                        <br>
-                                                        <div class="input-group">
-                                                            <button class="btn btn-complete" type="submit">Guardar</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>    
-                                </div>
-                            </div>
-                            <div class="panel panel-default">
                                 <div class="panel-heading" role="tab" id="headingThree">
                                     <h4 class="panel-title">
                                         <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
@@ -216,7 +161,26 @@
                                                                 <span class="input-group-addon">
                                                                     <i class="pg-home"></i>
                                                                 </span>
-                                                                <input type="text" class="form-control" name="nameRoom" placeholder="Nombre Apartamento" required="" aria-required="true" aria-invalid="false">
+                                                                <input type="text" class="form-control" name="nameRoom" placeholder="Piso" required="" aria-required="true" aria-invalid="false">
+                                                            </div>
+                                                                <br>
+                                                            <div class="input-group transparent">
+                                                                <div class="col-md-6">
+                                                                    <span class="input-group-addon">
+                                                                        <i class="pg-minus_circle"></i>
+                                                                    </span>
+                                                                    <input type="text" class="form-control" name="minOcu" placeholder="Minima ocupacion" required="" aria-required="true" aria-invalid="false">
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <span class="input-group-addon">
+                                                                        <i class="pg-plus_circle"></i>
+                                                                    </span>
+                                                                    <input type="text" class="form-control" name="maxOcu" placeholder="Maxima ocupacion" required="" aria-required="true" aria-invalid="false">
+                                                                </div>
+                                                            </div>
+                                                                <br>
+                                                            <div class="input-group transparent" style="width: 45%">
+                                                                
                                                             </div>
                                                                 <br>
                                                             <div class="input-group">
@@ -244,22 +208,8 @@
                                                             </div>
                                                                 <br>
                                                             <div class="input-group">
-                                                                <span class="input-group-addon">
-                                                                    Tamaño
-                                                                </span>
-                                                                <select class="full-width" data-init-plugin="select2" name="sizeRoom">
-                                                                        <option></option>
-                                                                    <?php foreach ($sizes as $size): ?>
-                                                                         <option value="<?php echo $size->id ?>"><?php echo $size->name ?></option>
-                                                                    <?php endforeach ?>
-                                                                </select>
-                                                            </div> 
-                                                                <br>
-                                                            <div class="input-group">
                                                                 <label class="inline">Lujo</label>
-                                                                <span class="input-group-addon bg-transparent">
                                                                     <input type="checkbox" name="luxury" data-init-plugin="switchery" data-size="small" data-color="primary" checked="checked" />
-                                                                </span>
                                                             </div>   
                                                         </div>
                                                             <br>
@@ -307,5 +257,28 @@
     <script src="assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
     <script src="assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
 
-   
+   <script type="text/javascript">
+       
+       $(document).ready(function() {
+            $('.editable').change(function(event) {
+                var id = $(this).attr('data-id');
+                var luxury = $(this).is(':checked');
+                
+                if (luxury == true) {
+                    luxury = 1;
+                }else{
+                    luxury = 0;
+                }
+
+                var minOcu = $('.minOcu-'+id).val();
+                var maxOcu = $('.maxOcu-'+id).val();
+                
+                console.log(minOcu);
+                $.get('apartamentos/update', {  id: id, luxury: luxury, maxOcu: maxOcu, minOcu: minOcu}, function(data) {
+                    alert(data)
+                });
+            });
+
+       });
+   </script>
 @endsection

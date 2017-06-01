@@ -656,25 +656,22 @@
 	}
 </style>
 
-<?php 
-	setlocale(LC_ALL, "es_ES.utf8"); 
-	use Carbon\Carbon;
+<?php setlocale(LC_TIME, "ES"); ?>
+<?php setlocale(LC_TIME, "es_ES");
+	use Carbon\Carbon; 
 ?>
-<!-- Latest compiled and minified CSS & JS -->
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<script src="//code.jquery.com/jquery.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
-<!-- <?php $date->subMonth(); ?> -->
-<div class="col-md-1">
-	<div class="Alta col-md-1 col-xs-6">&nbsp;</div><div class=" col-md-6 col-xs-6">Alta</div>	               
+<div class="col-md-12 m-b-20">
+	<div class="col-md-1">
+		<div class="Alta col-md-1 col-xs-6">&nbsp;</div><div class=" col-md-6 col-xs-6">Alta</div>	               
+	</div>
+	<div class="col-md-1">
+		<div class="Media col-md-1 col-xs-6">&nbsp;</div><div class=" col-md-6 col-xs-6">Media</div>	               
+	</div>
+	<div class="col-md-1">
+		<div class="Baja col-md-1 col-xs-6">&nbsp;</div><div class=" col-md-6 col-xs-6">Baja</div>	               
+	</div> 
 </div>
-<div class="col-md-1">
-	<div class="Media col-md-1 col-xs-6">&nbsp;</div><div class=" col-md-6 col-xs-6">Media</div>	               
-</div>
-<div class="col-md-1">
-	<div class="Baja col-md-1 col-xs-6">&nbsp;</div><div class=" col-md-6 col-xs-6">Baja</div>	               
-</div> 
+
 <div style="clear: both;"></div>
 <?php for ($j=0; $j < 12; $j++):
 

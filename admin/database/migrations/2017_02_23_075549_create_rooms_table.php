@@ -18,7 +18,8 @@ class CreateRoomsTable extends Migration
             $table->string('nameRoom');
             $table->integer('owned')->unsigned();
             $table->integer('typeApto')->unsigned();
-            $table->integer('sizeRoom')->unsigned();
+            $table->integer('minOcu');
+            $table->integer('maxOcu');
             $table->integer('luxury');
             $table->timestamps();
         });

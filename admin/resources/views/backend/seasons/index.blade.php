@@ -140,7 +140,7 @@
                                                 <div class="input-daterange input-group" id="datepicker-range">
 
                                                     <input id="start" type="text" class="input-sm form-control" name="start" data-date-format="dd-mm-yyyy">
-                                                    <span class="input-group-addon">to</span>
+                                                    <span class="input-group-addon">Hasta</span>
                                                     <input id="finish" type="text" class="input-sm form-control" name="finish" data-date-format="dd-mm-yyyy">
                                                 </div>
                                                 <br>

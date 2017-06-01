@@ -36,7 +36,7 @@
                             <br>
                         <div class="input-group">
                             <label>Telefono</label>
-                            <input type="number" class="form-control" name="phone" placeholder="Telefono" required="" aria-required="true" aria-invalid="false">
+                            <input type="number" class="form-control" name="phone" placeholder="Telefono" required="" aria-required="true" aria-invalid="false" value="<?php echo $user->phone ?>">
                         </div>
                             <br>
                         <div class="input-group">
