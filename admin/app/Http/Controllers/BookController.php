@@ -21,8 +21,9 @@ class BookController extends Controller
     {
 
         $date = Carbon::now();
+        $mes = Carbon::now();
         $start = new Carbon('first day of September 2016');
-        $firstDayOfTheYear = new Carbon('first day of 2016');
+        $firstDayOfTheYear = Carbon::create(2016, 1, 1);
 
         $arrayBooks = [
                         "nuevas" => [], 
@@ -34,32 +35,26 @@ class BookController extends Controller
                             ->orderBy('start','desc')
                             ->get();
 
-        $arrayMonth = [
-                        1  => [],
-                        2  => [],
-                        3  => [],
-                        4  => [],
-                        5  => [],
-                        6  => [],
-                        7  => [],
-                        8  => [],
-                        9  => [],
-                        11 => [],
-                        12 => [],
-                        13 => []
-                        ];
+        $arrayMonths = array();
 
-        for ($i=1; $i <= 13; $i++) { 
+
+
+        for ($i=1; $i <= 4; $i++) { 
             
             $startMonth = $firstDayOfTheYear->copy()->startOfMonth();
             $endMonth = $firstDayOfTheYear->copy()->endOfMonth();
             $countDays = $endMonth->diffInDays($startMonth);
             $day = $startMonth;
-            for ($j=1; $j < $countDays ; $j++) { 
-                $arrayMonth[$i][$j] = $day;
-                $day = $day->addDay();
+
+
+            for ($j=1; $j <= $countDays+1 ; $j++) { 
+                    $arrayMonths[$i][$j] = $day->format('d');     
+
+                
+                    $day = $day->addDay();
             }
 
+            $firstDayOfTheYear->addMonth();                                    
 
         }
                         
@@ -71,15 +66,17 @@ class BookController extends Controller
             } elseif($book->type_book == 6 || $book->type_book == 7){
                 $arrayBooks["especiales"][] = $book;
             }
-            
         }
 
         return view('backend/planning/index',[
-                                                'arrayBooks' => $arrayBooks,
-                                                'arrayMonth' => $arrayMonth,
-                                                'rooms'     => \App\Rooms::all(),
-                                                'date'      => $date,
-                                                'book' => new \App\Book(),
+                                                'arrayBooks'    => $arrayBooks,
+                                                'arrayMonths'   => $arrayMonths,
+                                                'rooms'         => \App\Rooms::all(),
+                                                'roomscalendar' => \App\Rooms::where('id' , '>' , 4)->get(),
+                                                'mes'           => $mes->subMonth(),
+                                                'date'          => $date->subMonth(),
+                                                // 'enero'      => $firstDayOfTheYear,
+                                                'book'          => new \App\Book(),
                                                 ]);
     }
 

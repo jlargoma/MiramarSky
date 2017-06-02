@@ -36,6 +36,8 @@
 	    <![endif]-->
 	</head>
 	<body class="fixed-header dashboard">
+	<!-- <body class="fixed-header dashboard  windows desktop sidebar-visible pace-done menu-pin"> -->
+	
 		<!-- BEGIN SIDEBPANEL-->
 		<nav class="page-sidebar" data-pages="sidebar">
 			<!-- END SIDEBAR MENU TOP TRAY CONTENT-->
