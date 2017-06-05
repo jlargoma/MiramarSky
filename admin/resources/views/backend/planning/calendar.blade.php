@@ -717,7 +717,7 @@
 	                                </tr>
 	                            </thead>
 	                            <tbody>
-	                            	<?php foreach ($rooms as $room): ?>
+	                            	<?php foreach ($roomscalendar as $room): ?>
 	                            		<tr>
 	                            			<td class="text-center"><?php echo substr($room->nameRoom, 0,5) ?></td>
 				                               

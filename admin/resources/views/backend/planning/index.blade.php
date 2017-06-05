@@ -19,346 +19,174 @@
     <style type="text/css">
         .Reservado{
             background-color: #0DAD9E !important;
+            color: black;
         }
         .Pagada-la-señal{
             background-color: #F77975  !important;
+            color: black;
         }
         .Bloqueado{
             background-color: #F9D975 !important;
+            color: black;
         }
         .SubComunidad{
             background-color: #8A7DBE !important;
+            color: black;
         }
         .botones{
             padding-top: 0px!important;
             padding-bottom: 0px!important;
+        }
+        .end, .start{
+            opacity: 0.50;
         }
     </style>
 <div class="container-fluid padding-10 sm-padding-10">
     <div class="row">
         
         <div class="col-md-7">
-                <div class="panel">
-                    <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="collapse">
-                        <li><a href="#tabNueva" data-toggle="tab" role="tab">Nueva</a>
-                        </li>
-                        <li class="active"><a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes </a>
-                        </li>
-                        <li><a href="#tabEspeciales" data-toggle="tab" role="tab">Especiales </a>
-                        </li>
-                        <li><a href="#tabPagadas" data-toggle="tab" role="tab">Pagadas </a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
+            <div class="panel">
+                <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="collapse">
+                    <li><a href="#tabNueva" data-toggle="tab" role="tab">Nueva</a>
+                    </li>
+                    <li class="active"><a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes </a>
+                    </li>
+                    <li><a href="#tabEspeciales" data-toggle="tab" role="tab">Especiales </a>
+                    </li>
+                    <li><a href="#tabPagadas" data-toggle="tab" role="tab">Pagadas </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
 
-                        <div class="tab-pane " id="tabNueva">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <form role="form"  action="{{ url('reservas/getPriceBook') }}" method="post">
+                    <div class="tab-pane " id="tabNueva">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form role="form"  action="{{ url('reservas/getPriceBook') }}" method="post">
 
-                                        <!-- Seccion Reserva -->
-                                        <div class="panel-heading">
-                                            <div class="panel-title">
-                                                Crear reserva
-                                            </div>
+                                    <!-- Seccion Reserva -->
+                                    <div class="panel-heading">
+                                        <div class="panel-title">
+                                            Crear reserva
                                         </div>
+                                    </div>
 
-                                        <div class="panel-body">
-                                            
-                                            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-
-                                                <div class="input-group col-md-12">
-                                                    <div class="col-md-4">
-                                                        <label>Entrada</label>
-                                                        <div class="input-daterange input-group" id="datepicker-range">
-
-                                                            <input id="start" type="text" class="input-sm form-control" name="start" data-date-format="dd-mm-yyyy">
-                                                            <span class="input-group-addon">Hasta</span>
-                                                            <input id="finish" type="text" class="input-sm form-control" name="finish" data-date-format="dd-mm-yyyy">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-1">
-                                                        <label>Noches</label>
-                                                        <input type="text" class="form-control noches" name="noches" value="" disabled style="width: 100%">
-                                                    </div> 
-                                                    <div class="col-md-1">
-                                                        <label>Pax</label>
-                                                        <input  type="text" class="form-control full-width pax" name="pax" style="width: 100%">
-                                                            
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <label>Pax</label>
-                                                        <select class="form-control full-width newroom" data-init-plugin="select2" name="newroom" id="newroom">
-                                                            <?php foreach ($rooms as $room): ?>
-                                                                <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
-                                                            <?php endforeach ?>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <label>Park</label>
-                                                        <select class=" form-control full-width parking" data-init-plugin="select2" name="parking">
-                                                            <?php for ($i=1; $i <= 4 ; $i++): ?>
-                                                                <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
-                                                            <?php endfor;?>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <label>Mensajes</label>
-                                                        <p class="mensajes">
-                                                            
-                                                        </p>
-                                                    </div>  
-                                                </div>
-                                                <div class="input-group col-md-12">
-                                                    <div class="col-md-3">
-                                                        <label>Total</label>
-                                                        <input type="text" class="form-control total" name="total" value="" style="width: 100%">
-                                                    </div> 
-                                                    <div class="col-md-3">
-                                                        <label>Coste</label>
-                                                        <input type="text" class="form-control cost" name="cost" value="" disabled style="width: 100%">
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label>Beneficio</label>
-                                                        <input type="text" class="form-control beneficio" name="beneficio" value="" disabled style="width: 100%">
-                                                    </div>
-                                                </div>
-                                                <br>
-                                                <div class="input-group col-md-12">
-                                                    <label>Comentarios</label>
-                                                    <textarea class="form-control" name="book_comments" style="width: 100%">
-                                                        
-                                                    </textarea>
-                                                </div>                         
-                                        </div>
-
-                                        <!-- Seccion Cliente -->
-                                        <div class="panel-heading">
-                                            <div class="panel-title">
-                                                Crear Cliente
-                                            </div>
-                                        </div>
-
-                                        <div class="panel-body">
+                                    <div class="panel-body">
+                                        
+                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
                                             <div class="input-group col-md-12">
                                                 <div class="col-md-4">
-                                                    Nombre: <input class="form-control" type="text" name="name">
+                                                    <label>Entrada</label>
+                                                    <div class="input-daterange input-group" id="datepicker-range">
+
+                                                        <input id="start" type="text" class="input-sm form-control" name="start" data-date-format="dd-mm-yyyy">
+                                                        <span class="input-group-addon">Hasta</span>
+                                                        <input id="finish" type="text" class="input-sm form-control" name="finish" data-date-format="dd-mm-yyyy">
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    Email: <input class="form-control" type="email" name="email">  
-                                                </div>
-                                                <div class="col-md-4">
-                                                    Telefono: <input class="form-control" type="number" name="phone"> 
-                                                </div>  
-                                                <div style="clear: both;"></div>
-                                                <br>
-                                                <div class="input-group col-md-12">
-                                                    <button class="btn btn-complete" type="submit">Guardar</button>
+                                                <div class="col-md-1">
+                                                    <label>Noches</label>
+                                                    <input type="text" class="form-control noches" name="noches" value="" disabled style="width: 100%">
                                                 </div> 
-                                            </div>                                            
-                                        </div>
-
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-pane active" id="tabPendientes">
-                            <div class="row column-seperation">
-                                <div class="pull-left">
-                                        <div class="col-xs-12 ">
-                                            <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
-                                        </div>
-                                    </div>
-                            
-                                    <div class="clearfix"></div>
-        
-                                    <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
-                                        <thead>
-                                            <tr>
-                                                <th class ="text-center bg-complete text-white" style="width:1%"></th>
-                                                <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
-                                                <th class ="text-center bg-complete text-white" style="width:5%">   Telefono    </th>
-                                                <th class ="text-center bg-complete text-white" style="width:5%">   Pax         </th>
-                                                <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
-                                                <th class ="text-center bg-complete text-white" style="width:15%">  Entrada     </th>
-                                                <th class ="text-center bg-complete text-white" style="width:15%">  Salida      </th>
-                                                <th class ="text-center bg-complete text-white" style="width:5%">   Noc         </th>
-                                                <th class ="text-center bg-complete text-white">                    Precio      </th>
-                                                <th class ="text-center bg-complete text-white">                    Estado      </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        <?php foreach ($arrayBooks["nuevas"] as $book): ?>
-                                            <tr>
-                                                <tr>
-                                                    <td class="<?php echo $book->getStatus($book->type_book) ?>" rowspan="2"></td>
-                                                    <td class ="text-center"><?php echo $book->Customer->name ?></td>
-                                                    <td class ="text-center"><a href="tel:<?php echo $book->Customer->phone ?>"><?php echo $book->Customer->phone ?></a></td>
-                                                    <td class ="text-center"><?php echo $book->pax ?></td>
-                                                    <td class ="text-center">
-                                                        <select class="room" class="form-control" data-id="<?php echo $book->id ?>" >
-                                                            
-                                                            <?php foreach ($rooms as $room): ?>
-                                                                <?php if ($room->id == $book->room_id): ?>
-                                                                    <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                                                        <?php echo $room->name ?>
-                                                                    </option>
-                                                                <?php else:?>
-                                                                    <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
-                                                                <?php endif ?>
-                                                            <?php endforeach ?>
-                                                        </select>
-                                                    </td>
-                                                    <td class ="text-center">
-                                                        <?php
-                                                            $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                                            echo $start->format('d M');
-                                                        ?>
-                                                    </td>
-                                                    <td class ="text-center">
-                                                        <?php
-                                                            $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                                            echo $finish->format('d M');
-                                                        ?>
-                                                    </td>
-                                                    <td class ="text-center"><?php echo $book->nigths ?></td>
-                                                    <td class ="text-center"><?php echo $book->total_price."€" ?></td>
-                                                    <td class ="text-center">
-                                                        <select class="status" class="form-control" data-id="<?php echo $book->id ?>" >
-                                                            <?php for ($i=1; $i < 9; $i++): ?> 
-                                                                <?php if ($i == $book->type_book): ?>
-                                                                    <option selected value="<?php echo $i ?>"  data-id="aaaa"><?php echo $book->getStatus($i) ?></option>
-                                                                <?php else: ?>
-                                                                    <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
-                                                                <?php endif ?>                                          
-                                                                 
-                                                            <?php endfor; ?>
-                                                        </select>
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr >
-                                                    <td class="botones" colspan="2">Precio</td>
-                                                    <td class="botones" colspan="2">Botones 1</td>
-                                                    <td class="botones" colspan="2">Botones 2</td>
-                                                    <td class="botones" colspan="2">Botones 3</td>
-                                                    <td class="botones" >Botones 4</td>
-                                                </tr>
-                                            </tr>
-                                        <?php endforeach ?>
-                                        </tbody>
-                                    </table>  
-                                </div>
-                        </div>
-
-                        <div class="tab-pane " id="tabEspeciales">
-                            <div class="row">
-                                <div class="pull-left">
-                                    <div class="col-xs-12 ">
-                                        <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
-                                    </div>
-                                </div>
-                                
-                                <div class="clearfix"></div>
-
-                                <div class="col-md-12">
-                                    <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
-                                    <thead>
-                                        <tr>
-                                            <th class ="text-center bg-complete text-white" style="width:10px"></th>
-                                            <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
-                                            <th class ="text-center bg-complete text-white" style="width:5%">   Telefono    </th>
-                                            <th class ="text-center bg-complete text-white" style="width:5%">   Pax    </th>
-                                            <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
-                                            <th class ="text-center bg-complete text-white" style="width:15%">  Entrada     </th>
-                                            <th class ="text-center bg-complete text-white" style="width:20%">  Salida      </th>
-                                            <th class ="text-center bg-complete text-white" style="width:2%">   Noc         </th>
-                                            <th class ="text-center bg-complete text-white">                    Precio      </th>
-                                            <th class ="text-center bg-complete text-white">                    Estado      </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php foreach ($arrayBooks["especiales"] as $book): ?>
-                                        <tr>
-                                            <td class="<?php echo $book->getStatus($book->type_book) ?>" rowspan="2"></td>
-                                            <td class ="text-center"><?php echo $book->Customer->name ?></td>
-                                            <td class ="text-center"><a href="tel:<?php echo $book->Customer->phone ?>"><?php echo $book->Customer->phone ?></a></td>
-                                            <td class ="text-center"><?php echo $book->pax ?></td>
-                                            <td class ="text-center">
-                                                <select class="room" class="form-control" data-id="<?php echo $book->id ?>" >
-                                                    
-                                                    <?php foreach ($rooms as $room): ?>
-                                                        <?php if ($room->id == $book->room_id): ?>
-                                                            <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                                                <?php echo $room->name ?><span>
-                                                            </option>
-                                                        <?php else:?>
+                                                <div class="col-md-1">
+                                                    <label>Pax</label>
+                                                    <input  type="text" class="form-control full-width pax" name="pax" style="width: 100%">
+                                                        
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label>Pax</label>
+                                                    <select class="form-control full-width newroom" data-init-plugin="select2" name="newroom" id="newroom">
+                                                        <?php foreach ($rooms as $room): ?>
                                                             <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
-                                                        <?php endif ?>
-                                                    <?php endforeach ?>
-                                                </select>
-                                            </td>
-                                            <td class ="text-center">
-                                                <?php
-                                                    $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                                    echo $start->format('d-M');
-                                                ?>
-                                            </td>
-                                            <td class ="text-center">
-                                                <?php
-                                                    $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                                    echo $finish->format('d-M');
-                                                ?>
-                                            </td>
-                                            <td class ="text-center"><?php echo $book->nigths ?></td>
-                                            <td class ="text-center"><?php echo $book->total_price."€" ?></td>
-                                            <td class ="text-center">
-                                                <select class="status" class="form-control" data-id="<?php echo $book->id ?>" >
-                                                    <?php for ($i=1; $i < 9; $i++): ?> 
-                                                        <?php if ($i == $book->type_book): ?>
-                                                            <option selected value="<?php echo $i ?>"  data-id="aaaa"><?php echo $book->getStatus($i) ?></option>
-                                                        <?php else: ?>
-                                                            <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
-                                                        <?php endif ?>                                          
-                                                         
-                                                    <?php endfor; ?>
-                                                </select>
-                                            </td>
-                                            
-                                        </tr>
-                                        <tr >
-                                            <td class="botones" colspan="2">Precio</td>
-                                            <td class="botones" colspan="2">Botones 1</td>
-                                            <td class="botones" colspan="2">Botones 2</td>
-                                            <td class="botones" colspan="2">Botones 3</td>
-                                            <td class="botones" >Botones 4</td>
-                                        </tr>
-                                    <?php endforeach ?>
-                                    </tbody>
-                                </table> 
-                                </div>
+                                                        <?php endforeach ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label>Park</label>
+                                                    <select class=" form-control full-width parking" data-init-plugin="select2" name="parking">
+                                                        <?php for ($i=1; $i <= 4 ; $i++): ?>
+                                                            <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
+                                                        <?php endfor;?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label>Mensajes</label>
+                                                    <p class="mensajes">
+                                                        
+                                                    </p>
+                                                </div>  
+                                            </div>
+                                            <div class="input-group col-md-12">
+                                                <div class="col-md-3">
+                                                    <label>Total</label>
+                                                    <input type="text" class="form-control total" name="total" value="" style="width: 100%">
+                                                </div> 
+                                                <div class="col-md-3">
+                                                    <label>Coste</label>
+                                                    <input type="text" class="form-control cost" name="cost" value="" disabled style="width: 100%">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label>Beneficio</label>
+                                                    <input type="text" class="form-control beneficio" name="beneficio" value="" disabled style="width: 100%">
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="input-group col-md-12">
+                                                <label>Comentarios</label>
+                                                <textarea class="form-control" name="book_comments" style="width: 100%">
+                                                    
+                                                </textarea>
+                                            </div>                         
+                                    </div>
+
+                                    <!-- Seccion Cliente -->
+                                    <div class="panel-heading">
+                                        <div class="panel-title">
+                                            Crear Cliente
+                                        </div>
+                                    </div>
+
+                                    <div class="panel-body">
+
+                                        <div class="input-group col-md-12">
+                                            <div class="col-md-4">
+                                                Nombre: <input class="form-control" type="text" name="name">
+                                            </div>
+                                            <div class="col-md-4">
+                                                Email: <input class="form-control" type="email" name="email">  
+                                            </div>
+                                            <div class="col-md-4">
+                                                Telefono: <input class="form-control" type="number" name="phone"> 
+                                            </div>  
+                                            <div style="clear: both;"></div>
+                                            <br>
+                                            <div class="input-group col-md-12">
+                                                <button class="btn btn-complete" type="submit">Guardar</button>
+                                            </div> 
+                                        </div>                                            
+                                    </div>
+
+                                </form>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="tab-pane" id="tabPagadas">
-                            <div class="row">
-                                <div class="pull-left">
+                    <div class="tab-pane active" id="tabPendientes">
+                        <div class="row column-seperation">
+                            <div class="pull-left">
                                     <div class="col-xs-12 ">
                                         <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
                                     </div>
                                 </div>
-                                
+                        
                                 <div class="clearfix"></div>
-
+    
                                 <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
                                     <thead>
                                         <tr>
-                                            <th class ="text-center bg-complete text-white" style="width:1%"></th>
                                             <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Telefono    </th>
-                                            <th class ="text-center bg-complete text-white" style="width:5%">   Pax    </th>
+                                            <th class ="text-center bg-complete text-white" style="width:5%">   Pax         </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
                                             <th class ="text-center bg-complete text-white" style="width:15%">  Entrada     </th>
                                             <th class ="text-center bg-complete text-white" style="width:15%">  Salida      </th>
@@ -368,253 +196,448 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <?php foreach ($arrayBooks["pagadas"] as $book): ?>
-                                        <tr>
-                                            <td class="<?php echo $book->getStatus($book->type_book) ?>"></td>
-                                            <td class ="text-center"><?php echo $book->Customer->name ?></td>
-                                            <td class ="text-center"><a href="tel:<?php echo $book->Customer->phone ?>"><?php echo $book->Customer->phone ?></a></td>
-                                            <td class ="text-center"><?php echo $book->pax ?></td>
-                                            <td class ="text-center">
-                                                <select class="room" class="form-control" data-id="<?php echo $book->id ?>" >
-                                                    
-                                                    <?php foreach ($rooms as $room): ?>
-                                                        <?php if ($room->id == $book->room_id): ?>
-                                                            <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                                                <?php echo $room->name ?><span>
-                                                            </option>
-                                                        <?php else:?>
-                                                            <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
-                                                        <?php endif ?>
-                                                    <?php endforeach ?>
-                                                </select>
-                                            </td>
-                                            <td class ="text-center">
-                                                <?php
-                                                    $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                                    echo $start->format('d M');
-                                                ?>
-                                            </td>
-                                            <td class ="text-center">
-                                                <?php
-                                                    $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                                    echo $finish->format('d M');
-                                                ?>
-                                            </td>
-                                            <td class ="text-center"><?php echo $book->nigths ?></td>
-                                            <td class ="text-center"><?php echo $book->total_price."€" ?></td>
-                                            <td class ="text-center">
-                                                <select class="status" class="form-control" data-id="<?php echo $book->id ?>" >
-                                                    <?php for ($i=1; $i < 9; $i++): ?> 
-                                                        <?php if ($i == $book->type_book): ?>
-                                                            <option selected value="<?php echo $i ?>"  data-id="aaaa"><?php echo $book->getStatus($i) ?></option>
-                                                        <?php else: ?>
-                                                            <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
-                                                        <?php endif ?>     
-                                                    <?php endfor; ?>
-                                                </select>
-                                            </td>
-                                            
-                                        </tr>
-                                        <tr>
-                                            <tr >
-                                            <td class="botones" colspan="2">Precio</td>
-                                            <td class="botones" colspan="2">Botones 1</td>
-                                            <td class="botones" colspan="2">Botones 2</td>
-                                            <td class="botones" colspan="2">Botones 3</td>
-                                            <td class="botones" >Botones 4</td>
-                                        </tr>
-                                        </tr>
+                                    <?php foreach ($arrayBooks["nuevas"] as $book): ?>
+                                            <tr>
+                                                <td class ="text-center <?php echo $book->getStatus($book->type_book) ?>">
+                                                    <?php echo $book->Customer->name ?>
+                                                </td>
+                                                <td class ="text-center">
+                                                    <a href="tel:<?php echo $book->Customer->phone ?>"><?php echo $book->Customer->phone ?></a>
+                                                </td>
+                                                <td class ="text-center"><?php echo $book->pax ?></td>
+                                                <td class ="text-center">
+                                                    <select class="room" class="form-control" data-id="<?php echo $book->id ?>" >
+                                                        
+                                                        <?php foreach ($rooms as $room): ?>
+                                                            <?php if ($room->id == $book->room_id): ?>
+                                                                <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
+                                                                    <?php echo $room->name ?>
+                                                                </option>
+                                                            <?php else:?>
+                                                                <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
+                                                            <?php endif ?>
+                                                        <?php endforeach ?>
+                                                    </select>
+                                                </td>
+                                                <td class ="text-center">
+                                                    <?php
+                                                        $start = Carbon::createFromFormat('Y-m-d',$book->start);
+                                                        echo $start->format('d M');
+                                                    ?>
+                                                </td>
+                                                <td class ="text-center">
+                                                    <?php
+                                                        $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
+                                                        echo $finish->format('d M');
+                                                    ?>
+                                                </td>
+                                                <td class ="text-center"><?php echo $book->nigths ?></td>
+                                                <td class ="text-center"><?php echo $book->total_price."€" ?></td>
+                                                <td class ="text-center">
+                                                    <select class="status" class="form-control" data-id="<?php echo $book->id ?>" >
+                                                        <?php for ($i=1; $i < 9; $i++): ?> 
+                                                            <?php if ($i == $book->type_book): ?>
+                                                                <option selected value="<?php echo $i ?>"  data-id="aaaa"><?php echo $book->getStatus($i) ?></option>
+                                                            <?php else: ?>
+                                                                <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
+                                                            <?php endif ?>                                          
+                                                             
+                                                        <?php endfor; ?>
+                                                    </select>
+                                                </td>
+                                                
+                                            </tr>
                                     <?php endforeach ?>
                                     </tbody>
-                                </table>   
+                                </table>  
+                            </div>
+                    </div>
+
+                    <div class="tab-pane " id="tabEspeciales">
+                        <div class="row">
+                            <div class="pull-left">
+                                <div class="col-xs-12 ">
+                                    <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
+                                </div>
+                            </div>
+                            
+                            <div class="clearfix"></div>
+
+                            <div class="col-md-12">
+                                <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
+                                <thead>
+                                    <tr>
+                                        <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
+                                        <th class ="text-center bg-complete text-white" style="width:5%">   Telefono    </th>
+                                        <th class ="text-center bg-complete text-white" style="width:5%">   Pax    </th>
+                                        <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
+                                        <th class ="text-center bg-complete text-white" style="width:15%">  Entrada     </th>
+                                        <th class ="text-center bg-complete text-white" style="width:20%">  Salida      </th>
+                                        <th class ="text-center bg-complete text-white" style="width:2%">   Noc         </th>
+                                        <th class ="text-center bg-complete text-white">                    Precio      </th>
+                                        <th class ="text-center bg-complete text-white">                    Estado      </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php foreach ($arrayBooks["especiales"] as $book): ?>
+                                    <tr>
+                                        <td class ="text-center <?php echo $book->getStatus($book->type_book) ?>">
+                                            <?php echo $book->Customer->name ?>                                                    
+                                        </td>
+
+                                        <td class ="text-center">
+                                            <a href="tel:<?php echo $book->Customer->phone ?>"><?php echo $book->Customer->phone ?></a>
+                                        </td>
+
+                                        <td class ="text-center">
+                                            <?php echo $book->pax ?>                                            
+                                        </td>
+
+                                        <td class ="text-center">
+                                            <select class="room" class="form-control" data-id="<?php echo $book->id ?>" >
+                                                
+                                                <?php foreach ($rooms as $room): ?>
+                                                    <?php if ($room->id == $book->room_id): ?>
+                                                        <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
+                                                            <?php echo $room->name ?><span>
+                                                        </option>
+                                                    <?php else:?>
+                                                        <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
+                                                    <?php endif ?>
+                                                <?php endforeach ?>
+                                            </select>
+                                        </td>
+                                        <td class ="text-center">
+                                            <?php
+                                                $start = Carbon::createFromFormat('Y-m-d',$book->start);
+                                                echo $start->format('d-M');
+                                            ?>
+                                        </td>
+                                        <td class ="text-center">
+                                            <?php
+                                                $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
+                                                echo $finish->format('d-M');
+                                            ?>
+                                        </td>
+                                        <td class ="text-center"><?php echo $book->nigths ?></td>
+                                        <td class ="text-center"><?php echo $book->total_price."€" ?></td>
+                                        <td class ="text-center">
+                                            <select class="status" class="form-control" data-id="<?php echo $book->id ?>" >
+                                                <?php for ($i=1; $i < 9; $i++): ?> 
+                                                    <?php if ($i == $book->type_book): ?>
+                                                        <option selected value="<?php echo $i ?>"  data-id="aaaa"><?php echo $book->getStatus($i) ?></option>
+                                                    <?php else: ?>
+                                                        <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
+                                                    <?php endif ?>                                          
+                                                     
+                                                <?php endfor; ?>
+                                            </select>
+                                        </td>
+                                        
+                                    </tr>
+                                <?php endforeach ?>
+                                </tbody>
+                            </table> 
                             </div>
                         </div>
-
                     </div>
+
+                    <div class="tab-pane" id="tabPagadas">
+                        <div class="row">
+                            <div class="pull-left">
+                                <div class="col-xs-12 ">
+                                    <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
+                                </div>
+                            </div>
+                            
+                            <div class="clearfix"></div>
+
+                            <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
+                                <thead>
+                                    <tr>
+                                        <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
+                                        <th class ="text-center bg-complete text-white" style="width:5%">   Telefono    </th>
+                                        <th class ="text-center bg-complete text-white" style="width:5%">   Pax    </th>
+                                        <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
+                                        <th class ="text-center bg-complete text-white" style="width:15%">  Entrada     </th>
+                                        <th class ="text-center bg-complete text-white" style="width:15%">  Salida      </th>
+                                        <th class ="text-center bg-complete text-white" style="width:5%">   Noc         </th>
+                                        <th class ="text-center bg-complete text-white">                    Precio      </th>
+                                        <th class ="text-center bg-complete text-white">                    Estado      </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php foreach ($arrayBooks["pagadas"] as $book): ?>
+                                    <tr>
+                                        <td class ="text-center <?php echo $book->getStatus($book->type_book) ?>">
+                                            <?php echo $book->Customer->name ?>                                            
+                                        </td>
+
+                                        <td class ="text-center">
+                                            <a href="tel:<?php echo $book->Customer->phone ?>"><?php echo $book->Customer->phone ?></a>
+                                        </td>
+
+                                        <td class ="text-center">
+                                            <?php echo $book->pax ?>                                                
+                                        </td>
+
+                                        <td class ="text-center">
+                                            <select class="room" class="form-control" data-id="<?php echo $book->id ?>" >
+                                                <?php foreach ($rooms as $room): ?>
+                                                    <?php if ($room->id == $book->room_id): ?>
+                                                        <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
+                                                            <?php echo $room->name ?><span>
+                                                        </option>
+                                                    <?php else:?>
+                                                        <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
+                                                    <?php endif ?>
+                                                <?php endforeach ?>
+                                            </select>
+                                        </td>
+                                        <td class ="text-center">
+                                            <?php
+                                                $start = Carbon::createFromFormat('Y-m-d',$book->start);
+                                                echo $start->format('d M');
+                                            ?>
+                                        </td>
+                                        <td class ="text-center">
+                                            <?php
+                                                $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
+                                                echo $finish->format('d M');
+                                            ?>
+                                        </td>
+                                        <td class ="text-center"><?php echo $book->nigths ?></td>
+                                        <td class ="text-center"><?php echo $book->total_price."€" ?></td>
+                                        <td class ="text-center">
+                                            <select class="status" class="form-control" data-id="<?php echo $book->id ?>" >
+                                                <?php for ($i=1; $i < 9; $i++): ?> 
+                                                    <?php if ($i == $book->type_book): ?>
+                                                        <option selected value="<?php echo $i ?>"  data-id="aaaa"><?php echo $book->getStatus($i) ?></option>
+                                                    <?php else: ?>
+                                                        <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
+                                                    <?php endif ?>     
+                                                <?php endfor; ?>
+                                            </select>
+                                        </td>
+                                        
+                                    </tr>
+                                <?php endforeach ?>
+                                </tbody>
+                            </table>   
+                        </div>
+                    </div>
+
                 </div>
+            </div>
         </div>
 
-        <div class="col-md-5 col-xs-12">
+        <div class="col-md-12 col-xs-12">
             <div class="panel">
-                    <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="collapse">
-                        <li class="active"><a href="#tabPrimera" data-toggle="tab" role="tab"><?php echo  $mes->format('M Y')?></a>
-                        </li>
-                        <li><a href="#tabSegunda" data-toggle="tab" role="tab"><?php echo  $mes->addMonth()->format('M Y')?> </a>
-                        </li>
-                        <li><a href="#tabTercera" data-toggle="tab" role="tab"><?php echo  $mes->addMonth()->format('M Y')?> </a>
-                        </li>
-                        <li><a href="#tabCuarta" data-toggle="tab" role="tab"><?php echo  $mes->addMonth()->format('M Y')?> </a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="tabPrimera">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <table class="fc-border-separate" style="border:1px solid black;width: 100%">
-                                        <thead>
+                <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="collapse">
+                 <li class="active"><a href="#tabPrimera" data-toggle="tab" role="tab"><?php echo  $mes->format('M Y')?></a>
+                 </li>
+                 <li><a href="#tabSegunda" data-toggle="tab" role="tab"><?php echo  $mes->addMonth()->format('M Y')?> </a>
+                 </li>
+                 <li><a href="#tabTercera" data-toggle="tab" role="tab"><?php echo  $mes->addMonth()->format('M Y')?> </a>
+                 </li>
+                 <li><a href="#tabCuarta" data-toggle="tab" role="tab"><?php echo  $mes->addMonth()->format('M Y')?> </a>
+                 </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tabPrimera">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="fc-border-separate" style="border:1px solid black;width: 100%">
+                                    <thead>
+                                        <tr>
+                                           <td colspan="<?php echo count($arrayMonths[1])+1 ?>">
+                                               <?php echo  $date->format('M Y')?>
+                                           </td> 
+                                        </tr>
+                                        <tr>
+                                            <td>Apto</td>
+                                            <?php for ($i=1; $i <= count($arrayMonths[1]) ; $i++): ?> 
+                                                <td style='border:1px solid black'>
+                                                    <?php echo $i?> 
+                                                </td> 
+                                             <?php endfor; ?> 
+                                        </tr> 
+                                    </thead>
+                                    <tbody>
+                                        
+                                        <?php foreach ($roomscalendar as $room): ?>
                                             <tr>
-                                               <td colspan="<?php echo count($arrayMonths[1])+1 ?>">
-
-                                                   <?php echo  $date->format('M Y')?>
-                                               </td> 
+                                                <td>
+                                                    <?php echo substr($room->name, 0,5)." " ?>
+                                                </td>
+                                                    <?php for ($j=1; $j <= count($arrayMonths[1]) ; $j++):?>
+                                                            
+                                                            <td><pre><?php print_r($arrayReservas) ?></td>
+                                                    <?php endfor; ?> 
                                             </tr>
-                                            <tr>
-                                                <td>Apto </td>
-                                                <?php for ($i=1; $i <= count($arrayMonths[1]) ; $i++): ?> 
-                                                    <td style='border:1px solid black'>
-                                                        <?php echo $i?>
-                                                    </td> 
-                                                 <?php endfor; ?> 
-                                            </tr> 
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($roomscalendar as $room): ?>
-                                                <tr>
-                                                    <td><?php echo substr($room->name, 0,5)?></td>
-                                                    <?php for ($j=1; $j <= count($arrayMonths[1]) ; $j++): ?> 
-                                                    <td style='border:1px solid black'>
-                                                        <div class="descrip-<?php echo $i?>">
+                                         <?php endforeach ?>
 
-                                                            <div class="not-padding Reservado" style="float:left;width: 5px">&nbsp;</div>
-                                                            <div class="not-padding Pagado" style="float:left;width: 5px">&nbsp;</div>
-                                                            <div class="not-padding Bloqueado" style="float:right;width: 5px">&nbsp;</div>
-                                                        </div>
-                                                    </td> 
-                                                 <?php endfor; ?> 
-                                                </tr>
-                                            <?php endforeach ?>
-                                        </tbody>
-                                    </table>
-                                    <?php $date = $date->addMonth(); ?>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-pane " id="tabSegunda">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <table class="fc-border-separate" style="border:1px solid black;width: 100%">
-                                        <thead>
-                                            <tr>
-                                               <td colspan="<?php echo count($arrayMonths[2])+1 ?>">
-                                                   <?php echo  $date->format('M Y')?>
-                                               </td> 
-                                            </tr>
-                                            <tr>
-                                                <td>Apto</td>
-                                                <?php for ($i=1; $i <= count($arrayMonths[2]) ; $i++): ?> 
-                                                    <td style='border:1px solid black'>
-                                                        <?php echo $i?> 
-                                                    </td> 
-                                                 <?php endfor; ?> 
-                                            </tr> 
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($roomscalendar as $room): ?>
-                                                <tr>
-                                                    <td><?php echo substr($room->name, 0,5)?></td>
-                                                    <?php for ($j=1; $j <= count($arrayMonths[2]) ; $j++): ?> 
-                                                    <td style='border:1px solid black'>
-                                                        <div class="descrip-<?php echo $i?>">
-                                                            <div class="not-padding Reservado" style="float:left;width: 5px">&nbsp;</div>
-                                                            <div class="not-padding Pagado" style="float:left;width: 5px">&nbsp;</div>
-                                                            <div class="not-padding Bloqueado" style="float:right;width: 5px">&nbsp;</div>
-                                                        </div>
-                                                    </td> 
-                                                 <?php endfor; ?> 
-                                                </tr>
-                                            <?php endforeach ?>
-                                        </tbody>
-                                    </table>
-                                    <?php $date = $date->addMonth(); ?>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-pane " id="tabTercera">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <table class="fc-border-separate" style="border:1px solid black;width: 100%">
-                                        <thead>
-                                            <tr>
-                                               <td colspan="<?php echo count($arrayMonths[3])+1 ?>">
-                                                   <?php echo  $date->format('M Y')?>
-                                               </td> 
-                                            </tr>
-                                            <tr>
-                                                <td>Apto </td>
-                                                <?php for ($i=1; $i <= count($arrayMonths[3]) ; $i++): ?> 
-                                                    <td style='border:1px solid black'>
-                                                        <?php echo $i?>
-                                                    </td> 
-                                                 <?php endfor; ?> 
-                                            </tr> 
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($roomscalendar as $room): ?>
-                                                <tr>
-                                                    <td><?php echo substr($room->name, 0,5)?></td>
-                                                    <?php for ($j=1; $j <= count($arrayMonths[3]) ; $j++): ?> 
-                                                    <td style='border:1px solid black'>
-                                                        <div class="descrip-<?php echo $i?>">
-                                                            <div class="not-padding Reservado" style="float:left;width: 5px">&nbsp;</div>
-                                                            <div class="not-padding Pagado" style="float:left;width: 5px">&nbsp;</div>
-                                                            <div class="not-padding Bloqueado" style="float:right;width: 5px">&nbsp;</div>
-                                                        </div>
-                                                    </td> 
-                                                 <?php endfor; ?> 
-                                                </tr>
-                                            <?php endforeach ?>
-                                        </tbody>
-                                    </table>
-                                    <?php $date = $date->addMonth(); ?>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-pane" id="tabCuarta">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <table class="fc-border-separate" style="border:1px solid black;width: 100%">
-                                        <thead>
-                                            <tr>
-                                               <td colspan="<?php echo count($arrayMonths[4])+1 ?>">
-                                                   <?php echo  $date->format('M Y')?>
-                                               </td> 
-                                            </tr>
-                                            <tr>
-                                                <td>Apto </td>
-                                                <?php for ($i=1; $i <= count($arrayMonths[4]) ; $i++): ?> 
-                                                    <td style='border:1px solid black'>
-                                                        <?php echo $i?>
-                                                    </td> 
-                                                 <?php endfor; ?> 
-                                            </tr> 
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($roomscalendar as $room): ?>
-                                                <tr>
-                                                    <td><?php echo substr($room->name, 0,5)?></td>
-                                                    <?php for ($j=1; $j <= count($arrayMonths[4]) ; $j++): ?> 
-                                                    <td style='border:1px solid black'>
-                                                        <div class="descrip-<?php echo $i?>">
-                                                            <div class="not-padding Reservado" style="float:left;width: 5px">&nbsp;</div>
-                                                            <div class="not-padding Pagado" style="float:left;width: 5px">&nbsp;</div>
-                                                            <div class="not-padding Bloqueado" style="float:right;width: 5px">&nbsp;</div>
-                                                        </div>
-                                                    </td> 
-                                                 <?php endfor; ?> 
-                                                </tr>
-                                            <?php endforeach ?>
-                                        </tbody>
-                                    </table>
-                                    <?php $date = $date->addMonth(); ?>
-                                </div>
+                                    </tbody>
+                                </table>
+                                <?php $date = $date->addMonth(); ?>
                             </div>
                         </div>
                     </div>
-                </div>         
 
+                    <div class="tab-pane " id="tabSegunda">
+                        <div class="row">
+                        <div class="col-md-12">
+                            <table class="fc-border-separate" style="border:1px solid black;width: 100%">
+                                <thead>
+                                    <tr>
+                                       <td colspan="<?php echo count($arrayMonths[1])+1 ?>">
+                                           <?php echo  $date->format('M Y')?>
+                                       </td> 
+                                    </tr>
+                                    <tr>
+                                        <td>Apto</td>
+                                        <?php for ($i=1; $i <= count($arrayMonths[1]) ; $i++): ?> 
+                                            <td style='border:1px solid black'>
+                                                <?php echo $i?> 
+                                            </td> 
+                                         <?php endfor; ?> 
+                                    </tr> 
+                                </thead>
+                                <tbody>
+                                    
+                                    <?php foreach ($roomscalendar as $room): ?>
+                                        <tr>
+                                            <td>
+                                                <?php echo substr($room->name, 0,5)." " ?>
+                                            </td>
+                                                <?php for ($j=1; $j <= count($arrayMonths[1]) ; $j++):?>
+                                                    <?php if (isset($arrayReservas[$room->id])): ?>
+                                                            <td style='border:1px solid black' width="3%">
+                                                                <?php if (isset($arrayReservas[$room->id][$room->id][$j])): ?>
+                                                                        <div class="descrip-<?php echo $i?> <?php print_r($arrayReservas[$room->id][$room->id][$j]); ?> ">&nbsp;
+                                                                        </div>
+                                                                    
+                                                                <?php endif ?>
+                                                                
+                                                            </td>
+                                                    <?php else: ?>
+                                                        <td style='border:1px solid black'>
+                                                        </td>
+                                                    <?php endif ?>
+                                                <?php endfor; ?> 
+                                        </tr>
+                                     <?php endforeach ?>
+
+                                </tbody>
+                            </table>
+                            <?php $date = $date->addMonth(); ?>
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane " id="tabTercera">
+                        <div class="row">
+                        <div class="col-md-12">
+                            <table class="fc-border-separate" style="border:1px solid black;width: 100%">
+                                <thead>
+                                    <tr>
+                                       <td colspan="<?php echo count($arrayMonths[1])+1 ?>">
+                                           <?php echo  $date->format('M Y')?>
+                                       </td> 
+                                    </tr>
+                                    <tr>
+                                        <td>Apto</td>
+                                        <?php for ($i=1; $i <= count($arrayMonths[1]) ; $i++): ?> 
+                                            <td style='border:1px solid black'>
+                                                <?php echo $i?> 
+                                            </td> 
+                                         <?php endfor; ?> 
+                                    </tr> 
+                                </thead>
+                                <tbody>
+                                    
+                                    <?php foreach ($roomscalendar as $room): ?>
+                                        <tr>
+                                            <td>
+                                                <?php echo substr($room->name, 0,5)." " ?>
+                                            </td>
+                                                <?php for ($j=1; $j <= count($arrayMonths[1]) ; $j++):?>
+                                                    <?php if (isset($arrayReservas[$room->id])): ?>
+                                                            <td style='border:1px solid black' width="3%">
+                                                                <?php if (isset($arrayReservas[$room->id][$room->id][$j])): ?>
+                                                                        <div class="descrip-<?php echo $i?> <?php print_r($arrayReservas[$room->id][$room->id][$j]); ?> ">&nbsp;
+                                                                        </div>
+                                                                    
+                                                                <?php endif ?>
+                                                                
+                                                            </td>
+                                                    <?php else: ?>
+                                                        <td style='border:1px solid black'>
+                                                        </td>
+                                                    <?php endif ?>
+                                                <?php endfor; ?> 
+                                        </tr>
+                                     <?php endforeach ?>
+
+                                </tbody>
+                            </table>
+                            <?php $date = $date->addMonth(); ?>
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="tabCuarta">
+                        <div class="row">
+                        <div class="col-md-12">
+                            <table class="fc-border-separate" style="border:1px solid black;width: 100%">
+                                <thead>
+                                    <tr>
+                                       <td colspan="<?php echo count($arrayMonths[1])+1 ?>">
+                                           <?php echo  $date->format('M Y')?>
+                                       </td> 
+                                    </tr>
+                                    <tr>
+                                        <td>Apto</td>
+                                        <?php for ($i=1; $i <= count($arrayMonths[1]) ; $i++): ?> 
+                                            <td style='border:1px solid black'>
+                                                <?php echo $i?> 
+                                            </td> 
+                                         <?php endfor; ?> 
+                                    </tr> 
+                                </thead>
+                                <tbody>
+                                    
+                                    <?php foreach ($roomscalendar as $room): ?>
+                                        <tr>
+                                            <td>
+                                                <?php echo substr($room->name, 0,5)." " ?>
+                                            </td>
+                                                <?php for ($j=1; $j <= count($arrayMonths[1]) ; $j++):?>
+                                                    <?php if (isset($arrayReservas[$room->id])): ?>
+                                                            <td style='border:1px solid black' width="3%">
+                                                                <?php if (isset($arrayReservas[$room->id][$room->id][$j])): ?>
+                                                                        <div class="descrip-<?php echo $i?> <?php print_r($arrayReservas[$room->id][$room->id][$j]); ?> ">&nbsp;
+                                                                        </div>
+                                                                    
+                                                                <?php endif ?>
+                                                                
+                                                            </td>
+                                                    <?php else: ?>
+                                                        <td style='border:1px solid black'>
+                                                        </td>
+                                                    <?php endif ?>
+                                                <?php endfor; ?> 
+                                        </tr>
+                                     <?php endforeach ?>
+
+                                </tbody>
+                            </table>
+                            <?php $date = $date->addMonth(); ?>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>    
         </div>
     </div>
 </div>
@@ -622,17 +645,17 @@
 <div class="modal fade slide-up disable-scroll in" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content-wrapper">
-      <div class="modal-content">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-50"></i>
-        </button>
-        <div class="container-xs-height full-height">
-          <div class="row-xs-height">
-            <div class="modal-body col-xs-height col-middle text-center">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-50"></i>
+            </button>
+            <div class="container-xs-height full-height">
+                <div class="row-xs-height">
+                    <div class="modal-body col-xs-height col-middle text-center">
 
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
     <!-- /.modal-content -->
   </div>
