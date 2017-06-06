@@ -26,12 +26,15 @@ class CreateBookTable extends Migration
             $table->integer('nigths');
             $table->decimal('sup_limp',8,2);
             $table->decimal('sup_park',8,2);
+            $table->integer('type_park');
             $table->decimal('cost_park',8,2);
             $table->decimal('sup_lujo',8,2);
             $table->decimal('cost_lujo',8,2);
             $table->decimal('cost_apto',8,2);
             $table->decimal('cost_total',8,2);
             $table->decimal('total_price',8,2);
+            $table->decimal('total_ben',8,2);
+            $table->decimal('extra',8,2);
             $table->decimal('inc_percent',4,2);
             $table->decimal('ben_jorge',8,2);
             $table->decimal('ben_jaime',8,2);

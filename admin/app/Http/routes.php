@@ -56,16 +56,16 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('apartamentos/create-type', 'RoomsController@createType');
 	Route::post('apartamentos/create-size', 'RoomsController@createSize');
 	Route::get('apartamentos/delete/{id}', 'RoomsController@delete');
+	Route::get('apartamentos/getPaxPerRooms/{id}', 'RoomsController@getPaxPerRooms');
 
 // Prices
 	Route::get('precios' , 'PricesController@index');
-	Route::get('precios/new', 'PricesController@newPrices');
-	Route::get('precios/newSpecial', 'PricesController@newSpecialPrices');
 	Route::get('precios/update', 'PricesController@update');
-	Route::post('precios/saveupdate', 'PricesController@saveUpdate');
+	Route::get('precios/updateExtra', 'PricesController@updateExtra');
 	Route::post('precios/create', 'PricesController@create');
-	Route::post('precios/createSpecial', 'PricesController@createSpecial');
 	Route::get('precios/delete/{id}', 'PricesController@delete');
+	Route::get('precios/deleteExtra/{id}', 'PricesController@delete');
+	Route::post('precios/createExtras', 'PricesController@createExtras');
 
 // seasons
 	Route::get('temporadas' , 'SeasonsController@index');

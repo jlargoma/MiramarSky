@@ -61,7 +61,30 @@
                     <div class="tab-pane " id="tabNueva">
                         <div class="row">
                             <div class="col-md-12">
-                                <form role="form"  action="{{ url('reservas/getPriceBook') }}" method="post">
+                                <form role="form"  action="{{ url('reservas/create') }}" method="post">
+                                    
+                                    <!-- Seccion Cliente -->
+                                    <div class="panel-heading">
+                                        <div class="panel-title">
+                                            Crear Cliente
+                                        </div>
+                                    </div>
+
+                                    <div class="panel-body">
+
+                                        <div class="input-group col-md-12">
+                                            <div class="col-md-4">
+                                                Nombre: <input class="form-control" type="text" name="name">
+                                            </div>
+                                            <div class="col-md-4">
+                                                Email: <input class="form-control" type="email" name="email">  
+                                            </div>
+                                            <div class="col-md-4">
+                                                Telefono: <input class="form-control" type="number" name="phone"> 
+                                            </div>  
+                                            <div style="clear: both;"></div>
+                                        </div>                                            
+                                    </div>
 
                                     <!-- Seccion Reserva -->
                                     <div class="panel-heading">
@@ -94,7 +117,7 @@
                                                         
                                                 </div>
                                                 <div class="col-md-2">
-                                                    <label>Pax</label>
+                                                    <label>Apartamento</label>
                                                     <select class="form-control full-width newroom" data-init-plugin="select2" name="newroom" id="newroom">
                                                         <?php foreach ($rooms as $room): ?>
                                                             <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
@@ -109,14 +132,16 @@
                                                         <?php endfor;?>
                                                     </select>
                                                 </div>
-                                                <div class="col-md-2">
-                                                    <label>Mensajes</label>
-                                                    <p class="mensajes">
-                                                        
-                                                    </p>
-                                                </div>  
                                             </div>
                                             <div class="input-group col-md-12">
+                                                <div class="col-md-3">
+                                                    <label>Extras</label>
+                                                    <select class="full-width select2-hidden-accessible" data-init-plugin="select2" multiple="" name="extras" tabindex="-1" aria-hidden="true">
+                                                        <?php foreach ($extras as $extra): ?>
+                                                            <option value="<?php echo $extra->id ?>"><?php echo $extra->name ?></option>
+                                                        <?php endforeach ?>
+                                                    </select>
+                                                </div>
                                                 <div class="col-md-3">
                                                     <label>Total</label>
                                                     <input type="text" class="form-control total" name="total" value="" style="width: 100%">
@@ -136,36 +161,12 @@
                                                 <textarea class="form-control" name="book_comments" style="width: 100%">
                                                     
                                                 </textarea>
-                                            </div>                         
-                                    </div>
-
-                                    <!-- Seccion Cliente -->
-                                    <div class="panel-heading">
-                                        <div class="panel-title">
-                                            Crear Cliente
-                                        </div>
-                                    </div>
-
-                                    <div class="panel-body">
-
-                                        <div class="input-group col-md-12">
-                                            <div class="col-md-4">
-                                                Nombre: <input class="form-control" type="text" name="name">
-                                            </div>
-                                            <div class="col-md-4">
-                                                Email: <input class="form-control" type="email" name="email">  
-                                            </div>
-                                            <div class="col-md-4">
-                                                Telefono: <input class="form-control" type="number" name="phone"> 
-                                            </div>  
-                                            <div style="clear: both;"></div>
+                                            </div> 
                                             <br>
                                             <div class="input-group col-md-12">
                                                 <button class="btn btn-complete" type="submit">Guardar</button>
-                                            </div> 
-                                        </div>                                            
+                                            </div>                        
                                     </div>
-
                                 </form>
                             </div>
                         </div>
@@ -431,7 +432,7 @@
             </div>
         </div>
 
-        <div class="col-md-12 col-xs-12">
+        <div class="col-md-5 col-xs-12">
             <div class="panel">
                 <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="collapse">
                  <li class="active"><a href="#tabPrimera" data-toggle="tab" role="tab"><?php echo  $mes->format('M Y')?></a>
@@ -457,25 +458,37 @@
                                         <tr>
                                             <td>Apto</td>
                                             <?php for ($i=1; $i <= count($arrayMonths[1]) ; $i++): ?> 
-                                                <td style='border:1px solid black'>
+                                                <td style='border:1px solid black;width: 3%'>
                                                     <?php echo $i?> 
                                                 </td> 
                                              <?php endfor; ?> 
                                         </tr> 
                                     </thead>
                                     <tbody>
-                                        
                                         <?php foreach ($roomscalendar as $room): ?>
                                             <tr>
                                                 <td>
                                                     <?php echo substr($room->name, 0,5)." " ?>
                                                 </td>
                                                     <?php for ($j=1; $j <= count($arrayMonths[1]) ; $j++):?>
-                                                            
-                                                            <td><pre><?php print_r($arrayReservas) ?></td>
+                                                            <?php if (isset($arrayReservas[$room->id][$j])): ?>
+                                                                <?php if (strpos($arrayReservas[0][$room->id][$j],'start') != 0 || strpos($arrayReservas[0][$room->id][$j],'end') != 0 ): ?>
+                                                                        <td style="border: 1px solid black">
+                                                                            <div class="descrip-<?php echo $i?>">
+                                                                                <div class="not-padding <?php if (strpos($arrayReservas[0][$room->id][$j],'end') != 0){ echo $arrayReservas[0][$room->id][$j];}else{} ?>" style="float:left;width: 5px">&nbsp;</div>
+                                                                                <div class="not-padding " style="float:left;width: 5px">&nbsp;</div>
+                                                                                <div class="not-padding <?php if (strpos($arrayReservas[0][$room->id][$j],'start') != 0){ echo $arrayReservas[0][$room->id][$j];}else{} ?>" style="float:right;width: 5px">&nbsp;</div>
+                                                                            </div>
+                                                                        </td>
+                                                                <?php else: ?>
+                                                                    <td style='border:1px solid black' class="<?php echo($arrayReservas[0][$room->id][$j]) ?>"></td>
+                                                                <?php endif; ?>
+                                                            <?php else: ?>
+                                                                <td style='border:1px solid black'></td>
+                                                            <?php endif ?>
                                                     <?php endfor; ?> 
                                             </tr>
-                                         <?php endforeach ?>
+                                        <?php endforeach ?>
 
                                     </tbody>
                                 </table>
@@ -490,14 +503,14 @@
                             <table class="fc-border-separate" style="border:1px solid black;width: 100%">
                                 <thead>
                                     <tr>
-                                       <td colspan="<?php echo count($arrayMonths[1])+1 ?>">
+                                       <td colspan="<?php echo count($arrayMonths[2])+1 ?>">
                                            <?php echo  $date->format('M Y')?>
                                        </td> 
                                     </tr>
                                     <tr>
                                         <td>Apto</td>
-                                        <?php for ($i=1; $i <= count($arrayMonths[1]) ; $i++): ?> 
-                                            <td style='border:1px solid black'>
+                                        <?php for ($i=1; $i <= count($arrayMonths[2]) ; $i++): ?> 
+                                            <td style='border:1px solid black;width: 3%'>
                                                 <?php echo $i?> 
                                             </td> 
                                          <?php endfor; ?> 
@@ -510,23 +523,25 @@
                                             <td>
                                                 <?php echo substr($room->name, 0,5)." " ?>
                                             </td>
-                                                <?php for ($j=1; $j <= count($arrayMonths[1]) ; $j++):?>
-                                                    <?php if (isset($arrayReservas[$room->id])): ?>
-                                                            <td style='border:1px solid black' width="3%">
-                                                                <?php if (isset($arrayReservas[$room->id][$room->id][$j])): ?>
-                                                                        <div class="descrip-<?php echo $i?> <?php print_r($arrayReservas[$room->id][$room->id][$j]); ?> ">&nbsp;
+                                                <?php for ($j=1; $j <= count($arrayMonths[2]) ; $j++):?>
+                                                        <?php if (isset($arrayReservas[1][$room->id][$j])): ?>
+                                                            <?php if (strpos($arrayReservas[1][$room->id][$j],'start') != 0 || strpos($arrayReservas[1][$room->id][$j],'end') != 0 ): ?>
+                                                                    <td style="border: 1px solid black">
+                                                                        <div class="descrip-<?php echo $i?>">
+                                                                            <div class="not-padding <?php if (strpos($arrayReservas[1][$room->id][$j],'end') != 0){ echo $arrayReservas[1][$room->id][$j];}else{} ?>" style="float:left;width: 5px">&nbsp;</div>
+                                                                            <div class="not-padding " style="float:left;width: 5px">&nbsp;</div>
+                                                                            <div class="not-padding <?php if (strpos($arrayReservas[1][$room->id][$j],'start') != 0){ echo $arrayReservas[1][$room->id][$j];}else{} ?>" style="float:right;width: 5px">&nbsp;</div>
                                                                         </div>
-                                                                    
-                                                                <?php endif ?>
-                                                                
-                                                            </td>
-                                                    <?php else: ?>
-                                                        <td style='border:1px solid black'>
-                                                        </td>
-                                                    <?php endif ?>
+                                                                    </td>
+                                                            <?php else: ?>
+                                                                <td style='border:1px solid black' class="<?php echo($arrayReservas[1][$room->id][$j]) ?>"></td>
+                                                            <?php endif; ?>
+                                                        <?php else: ?>
+                                                            <td style='border:1px solid black'></td>
+                                                        <?php endif ?>
                                                 <?php endfor; ?> 
                                         </tr>
-                                     <?php endforeach ?>
+                                    <?php endforeach ?>
 
                                 </tbody>
                             </table>
@@ -547,37 +562,38 @@
                                     </tr>
                                     <tr>
                                         <td>Apto</td>
-                                        <?php for ($i=1; $i <= count($arrayMonths[1]) ; $i++): ?> 
-                                            <td style='border:1px solid black'>
+                                        <?php for ($i=1; $i <= count($arrayMonths[3]) ; $i++): ?> 
+                                            <td style='border:1px solid black;width: 3%'>
                                                 <?php echo $i?> 
                                             </td> 
                                          <?php endfor; ?> 
                                     </tr> 
                                 </thead>
                                 <tbody>
-                                    
                                     <?php foreach ($roomscalendar as $room): ?>
                                         <tr>
                                             <td>
                                                 <?php echo substr($room->name, 0,5)." " ?>
                                             </td>
-                                                <?php for ($j=1; $j <= count($arrayMonths[1]) ; $j++):?>
-                                                    <?php if (isset($arrayReservas[$room->id])): ?>
-                                                            <td style='border:1px solid black' width="3%">
-                                                                <?php if (isset($arrayReservas[$room->id][$room->id][$j])): ?>
-                                                                        <div class="descrip-<?php echo $i?> <?php print_r($arrayReservas[$room->id][$room->id][$j]); ?> ">&nbsp;
+                                                <?php for ($j=1; $j <= count($arrayMonths[3]) ; $j++):?>
+                                                        <?php if (isset($arrayReservas[2][$room->id][$j])): ?>
+                                                            <?php if (strpos($arrayReservas[2][$room->id][$j],'start') != 0 || strpos($arrayReservas[2][$room->id][$j],'end') != 0 ): ?>
+                                                                    <td style="border: 1px solid black">
+                                                                        <div class="descrip-<?php echo $i?>">
+                                                                            <div class="not-padding <?php if (strpos($arrayReservas[2][$room->id][$j],'end') != 0){ echo $arrayReservas[2][$room->id][$j];}else{} ?>" style="float:left;width: 5px">&nbsp;</div>
+                                                                            <div class="not-padding " style="float:left;width: 5px">&nbsp;</div>
+                                                                            <div class="not-padding <?php if (strpos($arrayReservas[2][$room->id][$j],'start') != 0){ echo $arrayReservas[2][$room->id][$j];}else{} ?>" style="float:right;width: 5px">&nbsp;</div>
                                                                         </div>
-                                                                    
-                                                                <?php endif ?>
-                                                                
-                                                            </td>
-                                                    <?php else: ?>
-                                                        <td style='border:1px solid black'>
-                                                        </td>
-                                                    <?php endif ?>
+                                                                    </td>
+                                                            <?php else: ?>
+                                                                <td style='border:1px solid black' class="<?php echo($arrayReservas[2][$room->id][$j]) ?>"></td>
+                                                            <?php endif; ?>
+                                                        <?php else: ?>
+                                                            <td style='border:1px solid black'></td>
+                                                        <?php endif ?>
                                                 <?php endfor; ?> 
                                         </tr>
-                                     <?php endforeach ?>
+                                    <?php endforeach ?>
 
                                 </tbody>
                             </table>
@@ -598,37 +614,38 @@
                                     </tr>
                                     <tr>
                                         <td>Apto</td>
-                                        <?php for ($i=1; $i <= count($arrayMonths[1]) ; $i++): ?> 
-                                            <td style='border:1px solid black'>
+                                        <?php for ($i=1; $i <= count($arrayMonths[4]) ; $i++): ?> 
+                                            <td style='border:1px solid black;width: 3%'>
                                                 <?php echo $i?> 
                                             </td> 
                                          <?php endfor; ?> 
                                     </tr> 
                                 </thead>
                                 <tbody>
-                                    
                                     <?php foreach ($roomscalendar as $room): ?>
                                         <tr>
                                             <td>
                                                 <?php echo substr($room->name, 0,5)." " ?>
                                             </td>
-                                                <?php for ($j=1; $j <= count($arrayMonths[1]) ; $j++):?>
-                                                    <?php if (isset($arrayReservas[$room->id])): ?>
-                                                            <td style='border:1px solid black' width="3%">
-                                                                <?php if (isset($arrayReservas[$room->id][$room->id][$j])): ?>
-                                                                        <div class="descrip-<?php echo $i?> <?php print_r($arrayReservas[$room->id][$room->id][$j]); ?> ">&nbsp;
+                                                <?php for ($j=1; $j <= count($arrayMonths[4]) ; $j++):?>
+                                                        <?php if (isset($arrayReservas[3][$room->id][$j])): ?>
+                                                            <?php if (strpos($arrayReservas[3][$room->id][$j],'start') != 0 || strpos($arrayReservas[3][$room->id][$j],'end') != 0 ): ?>
+                                                                    <td style="border: 1px solid black">
+                                                                        <div class="descrip-<?php echo $i?>">
+                                                                            <div class="not-padding <?php if (strpos($arrayReservas[3][$room->id][$j],'end') != 0){ echo $arrayReservas[3][$room->id][$j];}else{} ?>" style="float:left;width: 5px">&nbsp;</div>
+                                                                            <div class="not-padding " style="float:left;width: 5px">&nbsp;</div>
+                                                                            <div class="not-padding <?php if (strpos($arrayReservas[3][$room->id][$j],'start') != 0){ echo $arrayReservas[3][$room->id][$j];}else{} ?>" style="float:right;width: 5px">&nbsp;</div>
                                                                         </div>
-                                                                    
-                                                                <?php endif ?>
-                                                                
-                                                            </td>
-                                                    <?php else: ?>
-                                                        <td style='border:1px solid black'>
-                                                        </td>
-                                                    <?php endif ?>
+                                                                    </td>
+                                                            <?php else: ?>
+                                                                <td style='border:1px solid black' class="<?php echo($arrayReservas[3][$room->id][$j]) ?>"></td>
+                                                            <?php endif; ?>
+                                                        <?php else: ?>
+                                                            <td style='border:1px solid black'></td>
+                                                        <?php endif ?>
                                                 <?php endfor; ?> 
                                         </tr>
-                                     <?php endforeach ?>
+                                    <?php endforeach ?>
 
                                 </tbody>
                             </table>
@@ -692,13 +709,6 @@
     <script type="text/javascript">
         $(document).ready(function() {          
 
-            $('.create-book').click(function(event) {
-                var id = $(this).attr('data-id');
-                $.get('reservas/new', function(data) {
-                    $('.modal-body').empty().append(data);
-                });
-            });
-
             /* $('#status, #room').change(function(event) { */
             $('.status, .room').change(function(event) {
                 var id = $(this).attr('data-id');
@@ -757,12 +767,15 @@
                 var pax = $('.pax').val();
                 var park = $('.parking').val();
                 var beneficio = 0;
-                if (pax < 4) {
-                    $('.mensajes').empty();
-                    $('.mensajes').html('Se cobraran 4 personas');
-                }else{
-                    $('.mensajes').empty();
-                }
+                
+                $.get('apartamentos/getPaxPerRooms/'+room).success(function( data ){
+                    if (pax < data) {
+                        $('.pax').attr('style' , 'background-color:red');
+                    }else{
+                        $('.pax').removeAttr('style');
+                    }
+                });
+
                 $.get('reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
                     $('.total').empty();
                     $('.total').val(data);

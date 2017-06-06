@@ -136,4 +136,11 @@ class RoomsController extends Controller
             return redirect()->action('RoomsController@index');
         }
     }
+    
+    public static function getPaxPerRooms($room)
+        {
+            $room = \App\Rooms::where('id', $room)->first();
+            
+            return $room->minOcu;    
+        }
 }

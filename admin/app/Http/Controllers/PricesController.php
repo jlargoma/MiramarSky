@@ -20,6 +20,7 @@ class PricesController extends Controller
 
                     'seasons' => \App\TypeSeasons::all(),
                     'newseasons' => \App\TypeSeasons::all(),
+                    'extras' => \App\Extras::all(),
                 ]);
     }
 
@@ -48,6 +49,23 @@ class PricesController extends Controller
      
     }
     
+    public function createExtras(Request $request)
+    {
+        $existExtra = \App\Extras::where('name',$request->input('name'))->get();
+
+        if (count($existExtra)  == 0) {
+            $extra = new \App\Extras;
+            $extra->name = $request->input('name');
+            $extra->price = $request->input('price');
+            $extra->cost = $request->input('cost');
+            if ($extra->save()) {
+                return redirect()->action('PricesController@index');
+            }
+        }else{
+                return redirect()->action('PricesController@index');
+        }
+     
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -64,6 +82,19 @@ class PricesController extends Controller
         $pricesUpdate->cost = $request->input('cost');
 
         if ($pricesUpdate->save()) {
+            echo "Cambiada!!";
+        }
+    }
+
+    public function updateExtra(Request $request)
+    {
+        $id                   = $request->input('id');
+        $extraUpdate          = \App\Extras::find($id);
+
+        $extraUpdate->price = $request->input('extraprice');
+        $extraUpdate->cost = $request->input('extracost');
+
+        if ($extraUpdate->save()) {
             echo "Cambiada!!";
         }
     }

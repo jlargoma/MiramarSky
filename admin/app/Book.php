@@ -27,6 +27,11 @@ class Book extends Model
                 return $this->hasOne('\App\Rooms', 'id', 'room_id');
             }
 
+        public function extrasBook()
+            {
+                return $this->hasMany('\App\ExtrasBooks', 'id', 'book_id');
+            }
+
     //Para poner nombre al estado de la reserva//
 	   static function getStatus($status)
         {
@@ -46,13 +51,13 @@ class Book extends Model
     //Para comprobar el dia de la reserva en el calendario
         static function existDate($start,$finish,$room)
         {
-        	if ($room != 3) {
+        	if ($room >= 5) {
                 
                 $books = \App\Book::where('id',$room)->get();
                 $existStart = False;
                 $existFinish = False;        
-                $requestStart = Carbon::createFromFormat('Y-m-d',$start);
-                $requestFinish = Carbon::createFromFormat('Y-m-d',$finish);
+                $requestStart = Carbon::createFromFormat('Y/m/d',$start);
+                $requestFinish = Carbon::createFromFormat('Y/m/d',$finish);
 
                 foreach ($books as $book) {
                     if ($existStart == False && $existFinish == False) {
@@ -82,27 +87,28 @@ class Book extends Model
             {   
 
                 $start = explode('/', $start);
+
                 $inicio = $start[2]."-".$start[0]."-".$start[1];
 
                 $finish = explode('/', $finish);
                 $final = $finish[2]."-".$finish[0]."-".$finish[1];
 
+
                 $paxPerRoom = \App\Rooms::getPaxRooms($pax,$room);
+
 
                 if ($paxPerRoom > $pax) {
                     $pax = $paxPerRoom;
                 }
-                
                 $totalPrices = 0;
                 $supPark = 0;
                 $noches = 0;
                 for ($i=$inicio; $i < $final; $i++) { 
 
                     $seasonActive = \App\Seasons::getSeason($i);
-                    ;
                     $prices = \App\Prices::where('season' ,  $seasonActive)
                                         ->where('occupation', $pax)->get();
-                    
+
                     foreach ($prices as $key => $price) {
                         $totalPrices = $totalPrices + $price->price;
                     }
@@ -212,13 +218,13 @@ class Book extends Model
                                                                 $roomStart->year,
                                                                 $roomStart->month,
                                                                 $roomStart->day)
-                                                            ->between($start,$finish);
+                                                            ->between($start->copy()->addDay(),$finish->copy()->subDay());
 
                                 $existFinish = Carbon::create(
                                                                 $roomFinish->year,
                                                                 $roomFinish->month,
                                                                 $roomFinish->day)
-                                                            ->between($start,$finish);
+                                                            ->between($start->copy()->addDay(),$finish->copy()->subDay());
 
                             }else{
                                 break;

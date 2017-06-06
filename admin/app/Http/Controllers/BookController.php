@@ -34,13 +34,13 @@ class BookController extends Controller
         
 
         $arrayReservas = array();
-        $apartamentos = \App\Rooms::where('id',5)->get();
+        $apartamentos = \App\Rooms::all();
         foreach ($apartamentos as $apartamento) {
             $mesinicio = Carbon::now()->subMonth();
             for ($i=0; $i < 4; $i++) { 
 
-                $arrayReservas[$i][$apartamento->id] = $this->getCalendar($apartamento->id,$mesinicio,$i);
-            $mesinicio = $mes->addMonth();
+                $arrayReservas[$i][$apartamento->id] = $this->getCalendar($apartamento->id,$mesinicio);
+                $mesinicio->addMonth();
             }
             
         }
@@ -87,6 +87,7 @@ class BookController extends Controller
                                                 'mes'           => $mes->subMonth(),
                                                 'date'          => $date->subMonth(),
                                                 'book'          => new \App\Book(),
+                                                'extras'        => \App\Extras::all(),
                                                 ]);
     }
 
@@ -99,11 +100,14 @@ class BookController extends Controller
     {
         $book = new \App\Book();
         echo "<pre>";
+        print_r($request->start);
+        
             if ($book->existDate($request->start,$request->finish,$request->room)) {
                 return "va bien";
             }else{
                 return "va mal";
             }
+        die;
     }
 
     /**
@@ -208,7 +212,7 @@ class BookController extends Controller
         //
     }
 
-    public function getCalendar($id,$mes,$posicion)
+    public function getCalendar($id,$mes)
     {
 
         $firstDayOfTheYear = $mes;
@@ -275,13 +279,10 @@ class BookController extends Controller
                                     $status = "";
                                 }
                                 break;
-
-                            default:
-                                # code...
-                                break;
                         }
-                          $arrayReservas[$posicion][$id][$i] = $status;
-                          $day = $day->addDay();
+                            $arrayReservas[$i] = $status;
+
+                            $day = $day->addDay();
                       } else {
                           $day = $day->addDay();
                       }      
@@ -291,7 +292,7 @@ class BookController extends Controller
 
         } else {
 
-            $arrayReservas[$posicion][$id] = "no hay reservas para este mes";
+            $arrayReservas = "no hay reservas para este mes";
 
         }
 

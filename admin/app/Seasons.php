@@ -43,8 +43,7 @@ class Seasons extends Model
 
             $season = \App\Seasons::where('start_date' , '<=' , $start )
                                     ->where('finish_date', '>=' , $start)->get();
-            // print_r($season);
-            // die();
-            return $season[0]->id;
+
+            return $season[0]->type;
         }
 }

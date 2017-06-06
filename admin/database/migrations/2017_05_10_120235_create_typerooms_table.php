@@ -14,7 +14,7 @@ class CreateTyperoomsTable extends Migration
     {
         Schema::create('typerooms', function (Blueprint $table) {
             $table->increments('id');
-            $table->String('name');
+            $table->string('name');
             $table->timestamps();
         });
     }

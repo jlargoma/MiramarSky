@@ -9,7 +9,7 @@ class Rooms extends Model
 
 	public function book()
     {
-        return $this->hasOne('\App\Book', 'id', 'room_id');
+        return $this->hasMany('\App\Book', 'id', 'room_id');
     }
 
     public function typeRoom()
@@ -26,6 +26,8 @@ class Rooms extends Model
         {
             $room = \App\Rooms::where('id', $room)->first();
             
-            return $room->sizeRooms->minOcu;    
+            return $room->minOcu;    
         }
+
+
 }
