@@ -82,7 +82,7 @@
                 </div>
 
                 <div class="tab-pane " id="tabExtras">
-                    <div class="col-md-10">
+                    <div class="col-md-8">
                         <table class="table table-hover  table-responsive-block" >
                             <thead>
                                 <tr>
@@ -111,7 +111,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <div class="sm-m-l-5 sm-m-r-5">
                             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                                 <!-- <div class="panel panel-default">

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use \Carbon\Carbon;
+use Auth;
+use Illuminate\Routing\Controller;
 
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
@@ -100,10 +102,48 @@ class BookController extends Controller
     {
         $book = new \App\Book();
         echo "<pre>";
-        print_r($request->start);
-        
-            if ($book->existDate($request->start,$request->finish,$request->room)) {
-                return "va bien";
+            if ($book->existDate($request->start,$request->finish,$request->newroom)) {
+                //creacion del cliente
+                    $customer = new \App\Customers();
+                    $customer->user_id = Auth::user()->id;
+                    $customer->name = $request->name;
+                    $customer->email = $request->email;
+                    $customer->phone = $request->phone;
+                    
+                    if($customer->save()){
+                        //Creacion de la reserva
+                            $book->user_id = Auth::user()->id;
+                            $book->customer_id = $customer->id;
+                            $book->room_id = $request->newroom;
+                            $book->start = Carbon::createFromFormat('d/m/Y',$request->start);
+                            $book->finish = Carbon::createFromFormat('d/m/Y',$request->finish);
+                            $book->comment = $request->comments;
+                            $book->book_comments = $request->book_comments;
+                            $book->type_book = 3;
+                            $book->pax = $request->pax;
+                            $book->nigths = $request->nigths;
+                            $room = \App\Rooms::find($request->newroom);
+                            $book->sup_limp = ($room->typeApto == 1) ? 30 : 50;
+                            $book->sup_park = $book->getPricePark($request->parking,$request->nigths);
+                            $book->type_park = $request->parking;
+                            $book->cost_park = $book->getCostPark($request->parking,$request->nigths);
+                            $book->sup_lujo = ($room->luxury == 1) ? 50 : 0;
+                            $book->cost_lujo = ($room->luxury == 1) ? 40 : 0;
+                            $book->cost_apto = $book->getCostBook($request->start,$request->finish,$request->pax,$request->newroom);
+                            $book->cost_total = $book->getCostBook($request->start,$request->finish,$request->pax,$request->newroom) + $book->cost_park + $book->cost_lujo;
+                            $book->total_price = $book->getPriceBook($request->start,$request->finish,$request->pax,$request->newroom) + $book->sup_park + $book->sup_lujo;
+                            $book->total_ben = $book->total_price - $book->cost_total;
+                            //Porcentaje de beneficio
+                            $book->inc_percent = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
+                            $book->ben_jorge = $book->getBenJorge($book->total_ben,$room->id);
+                            $book->ben_jaime = $book->getBenJaime($book->total_ben,$room->id);
+                            if($book->save()){
+                                return redirect()->action('BookController@index');
+                            };
+
+                    };
+                
+                
             }else{
                 return "va mal";
             }
@@ -152,7 +192,13 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+     $book = \App\Book::find($id);
+
+     return view('backend/planning/_form',  [
+                                                'book'   => $book ,
+                                                'rooms'  => \App\Rooms::all(),
+                                                'extras' => \App\Extras::all(),
+                                            ]);
     }
 
 
@@ -183,22 +229,26 @@ class BookController extends Controller
             }
         }
 
-    static function getPriceBook(Request $request){
+    static function getPriceBook(Request $request)
+        {
+
+            $book = new \App\Book();
+            print_r($request->start);
+            die();
+            $price = $book->getPriceBook($request->start,$request->finish,$request->pax,$request->room,$request->park);
+
+            return $price;
+        }
+
+    static function getCostBook(Request $request)
+        {
+                
+            $book = new \App\Book();
+
+            $cost = $book->getCostBook($request->start,$request->finish,$request->pax,$request->room,$request->park);
             
-        $book = new \App\Book();
-
-        $price = $book->getPriceBook($request->start,$request->finish,$request->pax,$request->room,$request->park);
-
-        return $price;
-    }
-    static function getCostBook(Request $request){
-            
-        $book = new \App\Book();
-
-        $cost = $book->getCostBook($request->start,$request->finish,$request->pax,$request->room,$request->park);
-        
-        return $cost;
-    }
+            return $cost;
+        }
 
 
     /**
@@ -208,94 +258,93 @@ class BookController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        //
-    }
-
-    public function getCalendar($id,$mes)
-    {
-
-        $firstDayOfTheYear = $mes;
-
-        $reservas = \App\Book::whereIn('type_book' , [1,2,7,8])
-                                ->where('room_id', $id)
-                                ->whereMonth('start', '=' ,$firstDayOfTheYear->copy()->format('m'))
-                                ->get();
-
-        if (count($reservas) > 0) {
-
-            foreach ($reservas as $key => $reserva) {
-
-                $startMonth = $firstDayOfTheYear->copy()->startOfMonth();
-                $endMonth = $firstDayOfTheYear->copy()->endOfMonth();
-                $countDays = $endMonth->diffInDays($startMonth);
-                $day = $startMonth->copy();
-
-
-                for ($i=1; $i <= $countDays ; $i++) { 
-                    if ($day->copy()->format('Y-m-d')  <= $reserva->finish && $day->copy()->format('Y-m-d') >= $reserva->start) {
-                        switch ($reserva->type_book) {
-                            case '1':
-                                if ($day->copy()->format('Y-m-d') == $reserva->start) {
-                                    $status = "Reservado start";
-                                } elseif($day->copy()->format('Y-m-d') > $reserva->start && $day->copy()->format('Y-m-d')  < $reserva->finish) {
-                                    $status = "Reservado";
-                                }elseif ($day->copy()->format('Y-m-d') == $reserva->finish){
-                                   $status = "Reservado end"; 
-                                }else{
-                                    $status = "";
-                                }
-                                break;
-                            case '2':
-                                if ($day->copy()->format('Y-m-d') == $reserva->start) {
-                                    $status = "Pagada-la-señal start";
-                                } elseif($day->copy()->format('Y-m-d') > $reserva->start && $day->copy()->format('Y-m-d')  < $reserva->finish) {
-                                    $status = "Pagada-la-señal";
-                                }elseif ($day->copy()->format('Y-m-d') == $reserva->finish){
-                                   $status = "Pagada-la-señal end"; 
-                                }else{
-                                    $status = "";
-                                }
-                                break;
-                            case '7':
-                                if ($day->copy()->format('Y-m-d') == $reserva->start) {
-                                    $status = "Bloqueado start";
-                                } elseif($day->copy()->format('Y-m-d') > $reserva->start && $day->copy()->format('Y-m-d')  < $reserva->finish) {
-                                    $status = "Bloqueado";
-                                }elseif ($day->copy()->format('Y-m-d') == $reserva->finish){
-                                   $status = "Bloqueado end"; 
-                                }else{
-                                    $status = "";
-                                }
-                                break;
-                            case '8':
-                                if ($day->copy()->format('Y-m-d') == $reserva->start) {
-                                    $status = "SubComunidad start";
-                                } elseif($day->copy()->format('Y-m-d') > $reserva->start && $day->copy()->format('Y-m-d')  < $reserva->finish) {
-                                    $status = "SubComunidad";
-                                }elseif ($day->copy()->format('Y-m-d') == $reserva->finish){
-                                   $status = "SubComunidad end"; 
-                                }else{
-                                    $status = "";
-                                }
-                                break;
-                        }
-                            $arrayReservas[$i] = $status;
-
-                            $day = $day->addDay();
-                      } else {
-                          $day = $day->addDay();
-                      }      
-                }
-                
-            }
-
-        } else {
-
-            $arrayReservas = "no hay reservas para este mes";
-
+        {
+            //
         }
 
-        return $arrayReservas;
-    }
+    public function getCalendar($id,$mes)
+        {
+
+            $firstDayOfTheYear = $mes;
+
+            $reservas = \App\Book::whereIn('type_book' , [1,2,7,8])
+                                    ->where('room_id', $id)
+                                    ->whereMonth('start', '=' ,$firstDayOfTheYear->copy()->format('m'))
+                                    ->get();
+            if (count($reservas) > 0) {
+
+                foreach ($reservas as $key => $reserva) {
+
+                    $startMonth = $firstDayOfTheYear->copy()->startOfMonth();
+                    $endMonth = $firstDayOfTheYear->copy()->endOfMonth();
+                    $countDays = $endMonth->diffInDays($startMonth);
+                    $day = $startMonth->copy();
+
+
+                    for ($i=1; $i <= $countDays ; $i++) { 
+                        if ($day->copy()->format('Y-m-d')  <= $reserva->finish && $day->copy()->format('Y-m-d') >= $reserva->start) {
+                            switch ($reserva->type_book) {
+                                case '1':
+                                    if ($day->copy()->format('Y-m-d') == $reserva->start) {
+                                        $status = "Reservado start";
+                                    } elseif($day->copy()->format('Y-m-d') > $reserva->start && $day->copy()->format('Y-m-d')  < $reserva->finish) {
+                                        $status = "Reservado";
+                                    }elseif ($day->copy()->format('Y-m-d') == $reserva->finish){
+                                       $status = "Reservado end"; 
+                                    }else{
+                                        $status = "";
+                                    }
+                                    break;
+                                case '2':
+                                    if ($day->copy()->format('Y-m-d') == $reserva->start) {
+                                        $status = "Pagada-la-señal start";
+                                    } elseif($day->copy()->format('Y-m-d') > $reserva->start && $day->copy()->format('Y-m-d')  < $reserva->finish) {
+                                        $status = "Pagada-la-señal";
+                                    }elseif ($day->copy()->format('Y-m-d') == $reserva->finish){
+                                       $status = "Pagada-la-señal end"; 
+                                    }else{
+                                        $status = "";
+                                    }
+                                    break;
+                                case '7':
+                                    if ($day->copy()->format('Y-m-d') == $reserva->start) {
+                                        $status = "Bloqueado start";
+                                    } elseif($day->copy()->format('Y-m-d') > $reserva->start && $day->copy()->format('Y-m-d')  < $reserva->finish) {
+                                        $status = "Bloqueado";
+                                    }elseif ($day->copy()->format('Y-m-d') == $reserva->finish){
+                                       $status = "Bloqueado end"; 
+                                    }else{
+                                        $status = "";
+                                    }
+                                    break;
+                                case '8':
+                                    if ($day->copy()->format('Y-m-d') == $reserva->start) {
+                                        $status = "SubComunidad start";
+                                    } elseif($day->copy()->format('Y-m-d') > $reserva->start && $day->copy()->format('Y-m-d')  < $reserva->finish) {
+                                        $status = "SubComunidad";
+                                    }elseif ($day->copy()->format('Y-m-d') == $reserva->finish){
+                                       $status = "SubComunidad end"; 
+                                    }else{
+                                        $status = "";
+                                    }
+                                    break;
+                            }
+                                $arrayReservas[$i] = $status;
+
+                                $day = $day->addDay();
+                          } else {
+                              $day = $day->addDay();
+                          }      
+                    }
+                    
+                }
+
+            } else {
+
+                $arrayReservas = "no hay reservas para este mes";
+
+            }
+
+            return $arrayReservas;
+        }
 }

@@ -48,7 +48,7 @@
                             <td class="text-center">
                                 <div class="btn-group">
                                     <a href="{{ url('temporadas/delete/')}}/<?php echo $season->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Temporada" onclick="return confirm('¿Quieres eliminar la temporada?');">
-                                        <i class="fa fa-times"></i>
+                                        <i class="fa fa-trash"></i>
                                     </a>                                     
                                 </div>
                             </td>

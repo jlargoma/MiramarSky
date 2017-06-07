@@ -40,6 +40,10 @@
         .end, .start{
             opacity: 0.50;
         }
+        a {
+            color: black;
+            cursor: pointer;
+        }
     </style>
 <div class="container-fluid padding-10 sm-padding-10">
     <div class="row">
@@ -109,7 +113,7 @@
                                                 </div>
                                                 <div class="col-md-1">
                                                     <label>Noches</label>
-                                                    <input type="text" class="form-control noches" name="noches" value="" disabled style="width: 100%">
+                                                    <input type="text" class="form-control nigths" name="nigths" value="" style="width: 100%">
                                                 </div> 
                                                 <div class="col-md-1">
                                                     <label>Pax</label>
@@ -157,10 +161,17 @@
                                             </div>
                                             <br>
                                             <div class="input-group col-md-12">
-                                                <label>Comentarios</label>
+                                                <label>Comentarios Usuario</label>
+                                                <textarea class="form-control" name="comments" style="width: 100%">
+                                                    
+                                                </textarea>
+                                                <label>Comentarios reserva</label>
                                                 <textarea class="form-control" name="book_comments" style="width: 100%">
                                                     
                                                 </textarea>
+                                            </div> 
+                                            <div class="input-group col-md-12">
+                                                
                                             </div> 
                                             <br>
                                             <div class="input-group col-md-12">
@@ -200,7 +211,7 @@
                                     <?php foreach ($arrayBooks["nuevas"] as $book): ?>
                                             <tr>
                                                 <td class ="text-center <?php echo $book->getStatus($book->type_book) ?>">
-                                                    <?php echo $book->Customer->name ?>
+                                                    <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="<?php echo "reservas/update/".$book->id";?>"><?php echo $book->Customer->name ?></a>
                                                 </td>
                                                 <td class ="text-center">
                                                     <a href="tel:<?php echo $book->Customer->phone ?>"><?php echo $book->Customer->phone ?></a>
@@ -709,6 +720,7 @@
     <script type="text/javascript">
         $(document).ready(function() {          
 
+
             /* $('#status, #room').change(function(event) { */
             $('.status, .room').change(function(event) {
                 var id = $(this).attr('data-id');
@@ -745,8 +757,8 @@
                 start = info[1] + '/' + info[0] + '/' + info[2];
                 if (finish != 0) {
                     diferencia = Math.floor((  Date.parse(finish)- Date.parse(start) ) / 86400000);
-                    $('.noches').empty();
-                    $('.noches').html(diferencia);
+                    $('.nigths').empty();
+                    $('.nigths').html(diferencia);
                 }
             });
 
@@ -756,8 +768,8 @@
                 finish = info[1] + '/' + info[0] + '/' + info[2];           
                 if (start != 0) {
                     diferencia = Math.floor((  Date.parse(finish)- Date.parse(start) ) / 86400000);
-                    $('.noches').empty();
-                    $('.noches').val(diferencia);
+                    $('.nigths').empty();
+                    $('.nigths').val(diferencia);
                 }
             });
 

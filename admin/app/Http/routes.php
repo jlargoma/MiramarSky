@@ -18,15 +18,15 @@ Route::get('/',[
 			]);
 
 Route::group(['middleware' => 'auth'], function () {
+
 //Planing 
 	Route::get('reservas' , 'BookController@index');
 	Route::get('reservas/new' , 'BookController@newBook');
 	Route::post('reservas/create' , 'BookController@create');
+	Route::get('reservas/update/{id}' , 'BookController@update');	
 	Route::get('reservas/changeBook/{id}' , 'BookController@changeBook');
 	Route::get('reservas/getPriceBook' , 'BookController@getPriceBook');
 	Route::get('reservas/getCostBook' , 'BookController@getCostBook');
-
-	
 	
 // Usuarios
 	Route::get('usuarios' , 'UsersController@index');
@@ -76,5 +76,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('temporadas/create', 'SeasonsController@create');
 	Route::post('temporadas/create-type', 'SeasonsController@createType');
 	Route::get('temporadas/delete/{id}', 'SeasonsController@delete');
+
+// Pagos
+	Route::get('pagos' , 'PaymentsController@index');
 
 });

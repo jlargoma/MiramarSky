@@ -14,8 +14,17 @@ class PaymentsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //
+    {   
+        $payments = \App\Payments::orderBy('book_id' , 'ASC')->get();
+        $pagos = array();
+
+        foreach ($payments as $payment) {
+            $pagos[$payment->book_id] = $pagos[$payment->book_id] + $payment->import;
+        }
+
+        return view('backend/payments/index',[
+                                                'pagos' => $pagos,
+                                                ]);
     }
 
     /**

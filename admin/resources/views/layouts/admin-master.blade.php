@@ -79,6 +79,13 @@
 						</a>
 						<span class="{{ Request::path() == '/temporadas' ? 'bg-success' : '' }} icon-thumbnail"><i class=" pg-clock"></i></span>
 					</li>
+					
+					<li class="m-t-10 ">
+						<a href="{{ url('/pagos') }}" class="detailed">
+							<span class="title">Pagos de reservas</span>
+						</a>
+						<span class="{{ Request::path() == '/pagos' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa fa-money"></i></span>
+					</li>
 
 					<li class="m-t-10 ">
 						<a href="{{ url('/usuarios') }}" class="detailed">

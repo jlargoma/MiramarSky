@@ -73,8 +73,8 @@
                            <td class="text-center">
                                <div class="btn-group">
                                    <!--  -->
-                                   <a href="{{ url('/admin/apartamentos/delete/')}}/<?php echo $room->id ?>" class="btn btn-sm btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Apartamento" onclick="return confirm('¿Quieres eliminar el apartamento?');">
-                                       <i class="fa fa-times"></i>
+                                   <a href="{{ url('/admin/apartamentos/delete/')}}/<?php echo $room->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Apartamento" onclick="return confirm('¿Quieres eliminar el apartamento?');">
+                                       <i class="fa fa-trash"></i>
                                    </a>                                     
                                </div>
                            </td>
