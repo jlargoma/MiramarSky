@@ -24,9 +24,12 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('reservas/new' , 'BookController@newBook');
 	Route::post('reservas/create' , 'BookController@create');
 	Route::get('reservas/update/{id}' , 'BookController@update');	
+	Route::post('reservas/saveUpdate/{id}' , 'BookController@saveUpdate');	
 	Route::get('reservas/changeBook/{id}' , 'BookController@changeBook');
 	Route::get('reservas/getPriceBook' , 'BookController@getPriceBook');
 	Route::get('reservas/getCostBook' , 'BookController@getCostBook');
+	Route::get('reservas/getPricePark' , 'BookController@getPricePark');
+	Route::get('reservas/getCostPark' , 'BookController@getCostPark');
 	
 // Usuarios
 	Route::get('usuarios' , 'UsersController@index');
@@ -79,5 +82,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 // Pagos
 	Route::get('pagos' , 'PaymentsController@index');
+	Route::get('pagos/create', 'PaymentsController@create');
 
 });

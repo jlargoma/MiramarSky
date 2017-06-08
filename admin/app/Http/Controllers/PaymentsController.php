@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use \Carbon\Carbon;
 
 class PaymentsController extends Controller
 {
@@ -15,15 +16,9 @@ class PaymentsController extends Controller
      */
     public function index()
     {   
-        $payments = \App\Payments::orderBy('book_id' , 'ASC')->get();
-        $pagos = array();
-
-        foreach ($payments as $payment) {
-            $pagos[$payment->book_id] = $pagos[$payment->book_id] + $payment->import;
-        }
 
         return view('backend/payments/index',[
-                                                'pagos' => $pagos,
+                                                'pagos' => \App\Payments::all(),
                                                 ]);
     }
 
@@ -32,9 +27,20 @@ class PaymentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $payment = new \App\Payments();
+
+        $date = Carbon::createFromFormat('d/m/Y' ,$request->date);
+        $payment->book_id = $request->id;
+        $payment->datePayment = $date;
+        $payment->import = $request->importe;
+        $payment->comment = $request->comment;
+            if ($payment->save()) {
+                return 'cobro guardado';
+            }
+            
+        
     }
 
     /**

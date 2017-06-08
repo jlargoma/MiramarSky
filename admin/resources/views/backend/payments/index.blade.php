@@ -24,9 +24,9 @@
 
                     <thead>
                         <th class ="text-center bg-complete text-white"> Reserva    </th>
-                        <th class ="text-center bg-complete text-white"> Total      </th>
-                        <th class ="text-center bg-complete text-white"> Pagado     </th>
-                        <th class ="text-center bg-complete text-white"> Pendiente  </th>
+                        <th class ="text-center bg-complete text-white"> Importe      </th>
+                        <th class ="text-center bg-complete text-white"> Tipo    </th>
+                        <th class ="text-center bg-complete text-white"> Comentario  </th>
                     </thead>
                     <tbody>
                         <?php if (count($pagos) >0): ?>
@@ -34,12 +34,10 @@
                             <?php foreach ($pagos as $pago): ?>
                                 
                                 <tr>
-                                    
-                                    <td><?php echo $pago->book_id ?></td>
-                                    <td><?php echo $pago->book->total_price ?></td>
-                                    <td><?php echo $pago->book_id ?></td>
-                                    <td><?php echo $pago->book_id ?></td>
-
+                                    <td class="text-center"><?php echo $pago->book_id ?></td>
+                                    <td class="text-center"><?php echo $pago->import ?></td>                                    
+                                    <td class="text-center"><?php echo $pago->type ?></td>
+                                    <td class="text-center"><?php echo $pago->comment ?></td>
                                 </tr> 
 
                             <?php endforeach ?>

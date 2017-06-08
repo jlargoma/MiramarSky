@@ -99,89 +99,57 @@ class BookController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
-    {
-        $book = new \App\Book();
-        echo "<pre>";
-            if ($book->existDate($request->start,$request->finish,$request->newroom)) {
-                //creacion del cliente
-                    $customer = new \App\Customers();
-                    $customer->user_id = Auth::user()->id;
-                    $customer->name = $request->name;
-                    $customer->email = $request->email;
-                    $customer->phone = $request->phone;
+        {
+            $book = new \App\Book();
+            echo "<pre>";
+                if ($book->existDate($request->start,$request->finish,$request->newroom)) {
+                    //creacion del cliente
+                        $customer = new \App\Customers();
+                        $customer->user_id = Auth::user()->id;
+                        $customer->name = $request->name;
+                        $customer->email = $request->email;
+                        $customer->phone = $request->phone;
+                        
+                        if($customer->save()){
+                            //Creacion de la reserva
+                                $book->user_id       = Auth::user()->id;
+                                $book->customer_id   = $customer->id;
+                                $book->room_id       = $request->newroom;
+                                $book->start         = Carbon::createFromFormat('d/m/Y',$request->start);
+                                $book->finish        = Carbon::createFromFormat('d/m/Y',$request->finish);
+                                $book->comment       = $request->comments;
+                                $book->book_comments = $request->book_comments;
+                                $book->type_book     = 3;
+                                $book->pax           = $request->pax;
+                                $book->nigths        = $request->nigths;
+                                $room                = \App\Rooms::find($request->newroom);
+                                $book->sup_limp      = ($room->typeApto == 1) ? 30 : 50;
+                                $book->sup_park      = $book->getPricePark($request->parking,$request->nigths);
+                                $book->type_park     = $request->parking;
+                                $book->cost_park     = $book->getCostPark($request->parking,$request->nigths);
+                                $book->sup_lujo      = ($room->luxury == 1) ? 50 : 0;
+                                $book->cost_lujo     = ($room->luxury == 1) ? 40 : 0;
+                                $book->cost_apto     = $book->getCostBook($request->start,$request->finish,$request->pax,$request->newroom);
+                                $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo;
+                                $book->total_price   = $book->getPriceBook($request->start,$request->finish,$request->pax,$request->newroom) + $book->sup_park + $book->sup_lujo;
+                                $book->total_ben     = $book->total_price - $book->cost_total;
+                                //Porcentaje de beneficio
+                                $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
+                                $book->ben_jorge     = $book->getBenJorge($book->total_ben,$room->id);
+                                $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
+                                if($book->save()){
+                                    return redirect()->action('BookController@index');
+                                };
+
+                        };
                     
-                    if($customer->save()){
-                        //Creacion de la reserva
-                            $book->user_id = Auth::user()->id;
-                            $book->customer_id = $customer->id;
-                            $book->room_id = $request->newroom;
-                            $book->start = Carbon::createFromFormat('d/m/Y',$request->start);
-                            $book->finish = Carbon::createFromFormat('d/m/Y',$request->finish);
-                            $book->comment = $request->comments;
-                            $book->book_comments = $request->book_comments;
-                            $book->type_book = 3;
-                            $book->pax = $request->pax;
-                            $book->nigths = $request->nigths;
-                            $room = \App\Rooms::find($request->newroom);
-                            $book->sup_limp = ($room->typeApto == 1) ? 30 : 50;
-                            $book->sup_park = $book->getPricePark($request->parking,$request->nigths);
-                            $book->type_park = $request->parking;
-                            $book->cost_park = $book->getCostPark($request->parking,$request->nigths);
-                            $book->sup_lujo = ($room->luxury == 1) ? 50 : 0;
-                            $book->cost_lujo = ($room->luxury == 1) ? 40 : 0;
-                            $book->cost_apto = $book->getCostBook($request->start,$request->finish,$request->pax,$request->newroom);
-                            $book->cost_total = $book->getCostBook($request->start,$request->finish,$request->pax,$request->newroom) + $book->cost_park + $book->cost_lujo;
-                            $book->total_price = $book->getPriceBook($request->start,$request->finish,$request->pax,$request->newroom) + $book->sup_park + $book->sup_lujo;
-                            $book->total_ben = $book->total_price - $book->cost_total;
-                            //Porcentaje de beneficio
-                            $book->inc_percent = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
-                            $book->ben_jorge = $book->getBenJorge($book->total_ben,$room->id);
-                            $book->ben_jaime = $book->getBenJaime($book->total_ben,$room->id);
-                            if($book->save()){
-                                return redirect()->action('BookController@index');
-                            };
+                    
+                }else{
+                    return "va mal";
+                }
+            die;
+        }
 
-                    };
-                
-                
-            }else{
-                return "va mal";
-            }
-        die;
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -191,17 +159,16 @@ class BookController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-     $book = \App\Book::find($id);
+        {
+         $book = \App\Book::find($id);
 
-     return view('backend/planning/_form',  [
-                                                'book'   => $book ,
-                                                'rooms'  => \App\Rooms::all(),
-                                                'extras' => \App\Extras::all(),
-                                            ]);
-    }
-
-
+         return view('backend/planning/update',  [
+                                                    'book'   => $book ,
+                                                    'rooms'  => \App\Rooms::all(),
+                                                    'extras' => \App\Extras::all(),
+                                                    'payments' => \App\Payments::where('book_id',$book->id)->get(),
+                                                ]);
+        }
 
     public function changeBook(Request $request, $id)
         {
@@ -232,24 +199,64 @@ class BookController extends Controller
     static function getPriceBook(Request $request)
         {
 
-            $book = new \App\Book();
-            print_r($request->start);
-            die();
-            $price = $book->getPriceBook($request->start,$request->finish,$request->pax,$request->room,$request->park);
+            $start = Carbon::createFromFormat('m/d/Y' , $request->start);
+            $finish = Carbon::createFromFormat('m/d/Y' , $request->finish);
+            $countDays = $finish->diffInDays($start);
 
-            return $price;
+
+            $paxPerRoom = \App\Rooms::getPaxRooms($request->pax,$request->room);
+
+            $pax = $request->pax;
+            if ($paxPerRoom > $request->pax) {
+                $pax = $paxPerRoom;
+            }
+
+            $price = 0;
+
+            for ($i=1; $i <= $countDays; $i++) { 
+
+                $seasonActive = \App\Seasons::getSeason($start->copy());
+                $prices = \App\Prices::where('season' ,  $seasonActive)
+                                    ->where('occupation', $pax)->get();
+
+                foreach ($prices as $precio) {
+                    $price = $price + $precio->price;
+                }
+            }
+
+
+            return $price;  
         }
 
     static function getCostBook(Request $request)
         {
-                
-            $book = new \App\Book();
 
-            $cost = $book->getCostBook($request->start,$request->finish,$request->pax,$request->room,$request->park);
-            
-            return $cost;
+            $start = Carbon::createFromFormat('m/d/Y' , $request->start);
+            $finish = Carbon::createFromFormat('m/d/Y' , $request->finish);
+            $countDays = $finish->diffInDays($start);
+
+
+            $paxPerRoom = \App\Rooms::getPaxRooms($request->pax,$request->room);
+
+            $pax = $request->pax;
+            if ($paxPerRoom > $request->pax) {
+                $pax = $paxPerRoom;
+            }
+            $cost = 0;
+            for ($i=1; $i <= $countDays; $i++) { 
+
+                $seasonActive = \App\Seasons::getSeason($start->copy());
+                $costs = \App\Prices::where('season' ,  $seasonActive)
+                                    ->where('occupation', $pax)->get();
+
+                foreach ($costs as $key => $precio) {
+                    $cost = $cost + $precio->cost;
+                }
+            }
+
+
+            return $cost;  
         }
-
 
     /**
      * Remove the specified resource from storage.
@@ -347,4 +354,84 @@ class BookController extends Controller
 
             return $arrayReservas;
         }
+
+    //Funcion para actualizar la reserva
+        public function saveUpdate(Request $request, $id)
+            {
+                echo "<pre>";
+                $book = \App\Book::find($id);
+                $room = \App\Rooms::find($request->newroom);
+
+                $book->user_id       = Auth::user()->id;
+                $book->customer_id   = $request->customer_id;
+                $book->room_id       = $request->newroom;
+                $book->start         = Carbon::createFromFormat('d/m/Y',$request->start);
+                $book->finish        = Carbon::createFromFormat('d/m/Y',$request->finish);
+                $book->comment       = $request->comments ;
+                $book->book_comments = $request->book_comments;
+                $book->pax           = $request->pax;
+                $book->nigths        = $request->nigths;
+                $book->sup_limp      = ($room->typeApto == 1) ? 30 : 50;
+                $book->sup_park      = $book->getPricePark($request->parking,$request->nigths);
+                $book->type_park     = $request->parking ;
+                $book->cost_park     = $book->getCostPark($request->parking,$request->nigths);
+                $book->sup_lujo      = ($room->luxury == 1) ? 50 : 0;
+                $book->cost_lujo     = ($room->luxury == 1) ? 40 : 0;
+                $book->cost_apto     = $book->getCostBook($request->start,$request->finish,$request->pax,$request->newroom);
+                $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo;
+                $book->total_price   = $request->total;
+                $book->total_ben     = $book->total_price - $book->cost_total;
+                $book->extra         = $request->extra ;
+                $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
+                $book->ben_jorge     = $book->getBenJorge($book->total_ben,$room->id);
+                $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
+
+                if ($book->save()) {
+                    return redirect()->action('BookController@index');
+                }
+            }
+
+    //Funcion para el precio del Aparcamiento
+        static function getPricePark(Request $request)
+            {
+
+                $supPark = 0;
+                switch ($request->park) {
+                        case 1:
+                            $supPark = 15 * $request->noches;
+                            break;
+                        case 2:
+                            $supPark = 0;
+                            break;
+                        case 3:
+                            $supPark = (15 * $request->noches) / 2;
+                            break;
+                        case 4:
+                            $supPark = 0;
+                            break;
+                    }
+                return $supPark;
+            }
+    
+    //Funcion para el coste del Aparcamiento
+        static function getCostPark(Request $request)
+            {
+                $supPark = 0;
+                switch ($request->park) {
+                        case 1:
+                            $supPark = 13.5 * $request->noches;
+                            break;
+                        case 2:
+                            $supPark = 0;
+                            break;
+                        case 3:
+                            $supPark = (13.5 * $request->noches) / 2;
+                            break;
+                        case 4:
+                            $supPark = 0;
+                            break;
+                    }
+                return $supPark;
+            }
+
 }

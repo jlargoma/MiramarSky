@@ -15,19 +15,19 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="default">
 		<meta content="" name="description" />
 		<meta content="" name="author" />
-		<link href="assets/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" />
-		<link href="assets/plugins/bootstrapv3/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-		<link href="assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css" />
-		<link href="assets/plugins/jquery-scrollbar/jquery.scrollbar.css" rel="stylesheet" type="text/css" media="screen" />
-		<link href="assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" media="screen" />
-		<link href="assets/plugins/switchery/css/switchery.min.css" rel="stylesheet" type="text/css" media="screen" />
-		<link href="assets/plugins/nvd3/nv.d3.min.css" rel="stylesheet" type="text/css" media="screen" />
-		<link href="assets/plugins/mapplic/css/mapplic.css" rel="stylesheet" type="text/css" />
-		<link href="assets/plugins/rickshaw/rickshaw.min.css" rel="stylesheet" type="text/css" />
-		<link href="assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
-		<link href="assets/plugins/jquery-metrojs/MetroJs.css" rel="stylesheet" type="text/css" media="screen" />
-		<link href="pages/css/pages-icons.css" rel="stylesheet" type="text/css">
-		<link class="main-stylesheet" href="pages/css/pages.css" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('assets/plugins/pace/pace-theme-flash.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('assets/plugins/bootstrapv3/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('assets/plugins/font-awesome/css/font-awesome.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('assets/plugins/jquery-scrollbar/jquery.scrollbar.css') }}" rel="stylesheet" type="text/css" media="screen" />
+		<link href="{{ asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" media="screen" />
+		<link href="{{ asset('assets/plugins/switchery/css/switchery.min.css') }}" rel="stylesheet" type="text/css" media="screen" />
+		<link href="{{ asset('assets/plugins/nvd3/nv.d3.min.css') }}" rel="stylesheet" type="text/css" media="screen" />
+		<link href="{{ asset('assets/plugins/mapplic/css/mapplic.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('assets/plugins/rickshaw/rickshaw.min.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('assets/plugins/bootstrap-datepicker/css/datepicker3.css') }}" rel="stylesheet" type="text/css" media="screen">
+		<link href="{{ asset('assets/plugins/jquery-metrojs/MetroJs.css') }}" rel="stylesheet" type="text/css" media="screen" />
+		<link href="{{ asset('pages/css/pages-icons.css') }}" rel="stylesheet" type="text/css">
+		<link class="main-stylesheet" href="{{ asset('pages/css/pages.css') }}" rel="stylesheet" type="text/css" />
 
 
 		@yield('externalScripts')
@@ -43,7 +43,7 @@
 			<!-- END SIDEBAR MENU TOP TRAY CONTENT-->
 			<!-- BEGIN SIDEBAR MENU HEADER-->
 			<div class="sidebar-header">
-				<a href="{{ url('/admin') }}"><img src="assets/img/logo_white.png" alt="logo" class="brand" data-src="assets/img/logo_white.png" data-src-retina="assets/img/logo_white_2x.png" width="78" height="22"></a>
+				<a href="{{ url('/admin') }}"><img src="{{asset ('assets/img/logo_white.png') }}" alt="logo" class="brand" data-src="{{asset ('assets/img/logo_white.png') }}" data-src-retina="{{asset ('assets/img/logo_white_2x.png') }}" width="78" height="22"></a>
 			</div>
 			<!-- END SIDEBAR MENU HEADER-->
 			<!-- START SIDEBAR MENU -->
@@ -125,7 +125,7 @@
 					<div class="pull-center hidden-md hidden-lg">
 						<div class="header-inner">
 							<div class="brand inline">
-								<img src="assets/img/logo.png" alt="logo" data-src="assets/img/logo.png" data-src-retina="assets/img/logo_2x.png" width="78" height="22">
+								<img src="{{asset ('assets/img/logo.png') }}" alt="logo" data-src="{{asset ('assets/img/logo.png') }}" data-src-retina="{{asset ('assets/img/logo_2x.png') }}" width="78" height="22">
 							</div>
 						</div>
 					</div>
@@ -144,7 +144,7 @@
 				<div class=" pull-left sm-table hidden-xs hidden-sm">
 					<div class="header-inner">
 						<div class="brand inline">
-							<img src="assets/img/miramar-logo-t.png" alt="logo" data-src="assets/img/miramar-logo-t.png" data-src-retina="assets/img/miramar-logo-t.png" width="50" height="43">
+							<img src="{{asset ('assets/img/miramar-logo-t.png') }}" alt="logo" data-src="{{asset ('assets/img/miramar-logo-t.png') }}" data-src-retina="{{asset ('assets/img/miramar-logo-t.png') }}" width="50" height="43">
 						</div>
 						<!-- START NOTIFICATION LIST -->
 						<!-- END NOTIFICATIONS LIST -->
@@ -165,7 +165,7 @@
 						<div class="dropdown pull-right">
 							<button class="profile-dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<span class="thumbnail-wrapper d32 circular inline m-t-5">
-									<img src="assets/img/profiles/avatar.jpg" alt="" data-src="assets/img/profiles/avatar.jpg" data-src-retina="assets/img/profiles/avatar_small2x.jpg" width="32" height="32">
+									<img src="{{asset ('assets/img/profiles/avatar.jpg') }}" alt="" data-src="{{asset ('assets/img/profiles/avatar.jpg') }}" data-src-retina="{{asset ('assets/img/profiles/avatar_small2x.jpg') }}" width="32" height="32">
 								</span>
 							</button>
 							<ul class="dropdown-menu profile-dropdown" role="menu">
@@ -219,45 +219,45 @@
 
 			
 		<!-- BEGIN VENDOR JS -->
-		<script src="assets/plugins/pace/pace.min.js" type="text/javascript"></script>
-		<script src="assets/plugins/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
-		<script src="assets/plugins/modernizr.custom.js" type="text/javascript"></script>
-		<script src="assets/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-		<script src="assets/plugins/bootstrapv3/js/bootstrap.min.js" type="text/javascript"></script>
-		<script src="assets/plugins/jquery/jquery-easy.js" type="text/javascript"></script>
-		<script src="assets/plugins/jquery-unveil/jquery.unveil.min.js" type="text/javascript"></script>
-		<script src="assets/plugins/jquery-bez/jquery.bez.min.js"></script>
-		<script src="assets/plugins/jquery-ios-list/jquery.ioslist.min.js" type="text/javascript"></script>
-		<script src="assets/plugins/jquery-actual/jquery.actual.min.js"></script>
-		<script src="assets/plugins/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-		<script type="text/javascript" src="assets/plugins/select2/js/select2.full.min.js"></script>
-		<script type="text/javascript" src="assets/plugins/classie/classie.js"></script>
-		<script src="assets/plugins/switchery/js/switchery.min.js" type="text/javascript"></script>
-		<script src="assets/plugins/nvd3/lib/d3.v3.js" type="text/javascript"></script>
-		<script src="assets/plugins/nvd3/nv.d3.min.js" type="text/javascript"></script>
-		<script src="assets/plugins/nvd3/src/utils.js" type="text/javascript"></script>
-		<script src="assets/plugins/nvd3/src/tooltip.js" type="text/javascript"></script>
-		<script src="assets/plugins/nvd3/src/interactiveLayer.js" type="text/javascript"></script>
-		<script src="assets/plugins/nvd3/src/models/axis.js" type="text/javascript"></script>
-		<script src="assets/plugins/nvd3/src/models/line.js" type="text/javascript"></script>
-		<script src="assets/plugins/nvd3/src/models/lineWithFocusChart.js" type="text/javascript"></script>
-		<script src="assets/plugins/mapplic/js/hammer.js"></script>
-		<script src="assets/plugins/mapplic/js/jquery.mousewheel.js"></script>
-		<script src="assets/plugins/mapplic/js/mapplic.js"></script>
-		<script src="assets/plugins/rickshaw/rickshaw.min.js"></script>
-		<script src="assets/plugins/jquery-metrojs/MetroJs.min.js" type="text/javascript"></script>
-		<script src="assets/plugins/jquery-sparkline/jquery.sparkline.min.js" type="text/javascript"></script>
-		<script src="assets/plugins/skycons/skycons.js" type="text/javascript"></script>
-		<script src="assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/pace/pace.min.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/jquery/jquery-1.11.1.min.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/modernizr.custom.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/bootstrapv3/js/bootstrap.min.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/jquery/jquery-easy.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/jquery-unveil/jquery.unveil.min.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/jquery-bez/jquery.bez.min.js') }}"></script>
+		<script src="{{ asset('assets/plugins/jquery-ios-list/jquery.ioslist.min.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/jquery-actual/jquery.actual.min.js') }}"></script>
+		<script src="{{ asset('assets/plugins/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('assets/plugins/select2/js/select2.full.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('assets/plugins/classie/classie.js') }}"></script>
+		<script src="{{ asset('assets/plugins/switchery/js/switchery.min.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/nvd3/lib/d3.v3.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/nvd3/nv.d3.min.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/nvd3/src/utils.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/nvd3/src/tooltip.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/nvd3/src/interactiveLayer.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/nvd3/src/models/axis.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/nvd3/src/models/line.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/nvd3/src/models/lineWithFocusChart.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/mapplic/js/hammer.js') }}"></script>
+		<script src="{{ asset('assets/plugins/mapplic/js/jquery.mousewheel.js') }}"></script>
+		<script src="{{ asset('assets/plugins/mapplic/js/mapplic.js') }}"></script>
+		<script src="{{ asset('assets/plugins/rickshaw/rickshaw.min.js') }}"></script>
+		<script src="{{ asset('assets/plugins/jquery-metrojs/MetroJs.min.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/jquery-sparkline/jquery.sparkline.min.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/skycons/skycons.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') }}" type="text/javascript"></script>
 		@yield('scripts')
 		<!-- END VENDOR JS -->
 		<!-- BEGIN CORE TEMPLATE JS -->
-		<script src="pages/js/pages.min.js"></script>
+		<script src="{{ asset('pages/js/pages.min.js') }}"></script>
 		<!-- END CORE TEMPLATE JS -->
 		<!-- BEGIN PAGE LEVEL JS -->
-		<script src="assets/js/datatables.js" type="text/javascript"></script>
-		 <script src="assets/js/form_elements.js" type="text/javascript"></script>
-		<script src="assets/js/scripts.js" type="text/javascript"></script>
+		<script src="{{ asset('assets/js/datatables.js') }}" type="text/javascript"></script>
+		 <script src="{{ asset('assets/js/form_elements.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('assets/js/scripts.js') }}" type="text/javascript"></script>
 
 		
 		<!-- END PAGE LEVEL JS -->

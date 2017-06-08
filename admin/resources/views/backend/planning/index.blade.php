@@ -211,7 +211,7 @@
                                     <?php foreach ($arrayBooks["nuevas"] as $book): ?>
                                             <tr>
                                                 <td class ="text-center <?php echo $book->getStatus($book->type_book) ?>">
-                                                    <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="<?php echo "reservas/update/".$book->id";?>"><?php echo $book->Customer->name ?></a>
+                                                    <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('reservas/update')}}/<?php echo $book->id ?>"><?php echo $book->Customer->name ?></a>
                                                 </td>
                                                 <td class ="text-center">
                                                     <a href="tel:<?php echo $book->Customer->phone ?>"><?php echo $book->Customer->phone ?></a>
@@ -779,7 +779,9 @@
                 var pax = $('.pax').val();
                 var park = $('.parking').val();
                 var beneficio = 0;
-                
+                var costPark = 0;
+                var pricePark = 0;
+
                 $.get('apartamentos/getPaxPerRooms/'+room).success(function( data ){
                     if (pax < data) {
                         $('.pax').attr('style' , 'background-color:red');
@@ -788,22 +790,38 @@
                     }
                 });
 
-                $.get('reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                    $('.total').empty();
-                    $('.total').val(data);
-                    price = data;
-                        $.get('reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                        $('.cost').empty();
-                        $('.cost').val(data);  
-                        cost = data;
-                        beneficio = price - cost;
-                        $('.beneficio').empty;
-                        $('.beneficio').val(beneficio);
-                        
+                $.get('reservas/getPricePark', {park: park, noches: diferencia}).success(function( data ) {
+                    pricePark = data;
+                    $.get('reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                        price = data;
+                        price = (parseFloat(price) + parseFloat(pricePark));
+                        $('.total').empty();
+                        $('.total').val(price);
+                            $.get('reservas/getCostPark', {park: park, noches: diferencia}).success(function( data ) {
+                                costPark = data;
+                                    $.get('reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                                        cost = data;
+                                        cost = (parseFloat(cost) + parseFloat(costPark));
+                                        $('.cost').empty();
+                                        $('.cost').val(cost);
+                                        beneficio = price - cost;
+                                        $('.beneficio').empty;
+                                        $('.beneficio').val(beneficio);
+                                    });
+                            });
                     });
                 });
 
                 
+            });
+            
+            $('.total').change(function(event) {
+                var price = $(this).val();
+                var cost = $('.cost').val();
+                var beneficio = (parseFloat(price) - parseFloat(cost));
+                console.log(beneficio);
+                $('.beneficio').empty;
+                $('.beneficio').val(beneficio);
             });
 
             

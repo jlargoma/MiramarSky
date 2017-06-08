@@ -89,69 +89,65 @@ class Book extends Model
     // Funcion para comprobar el precio de la reserva
         static function getPriceBook($start,$finish,$pax,$room)
             {   
-
-                $start = explode('/', $start);
-
-                $inicio = $start[2]."-".$start[1]."-".$start[0];
-
-                $finish = explode('/', $finish);
-                $final = $finish[2]."-".$finish[1]."-".$finish[0];
+                echo "llega";
+                die();
+                $start = Carbon::createFromFormat('m/d/Y' , $start);
+                $finish = Carbon::createFromFormat('m/d/Y' , $finish);
+                $countDays = $finish->diffInDays($start);
 
 
                 $paxPerRoom = \App\Rooms::getPaxRooms($pax,$room);
 
-                
+                $pax = $pax;
                 if ($paxPerRoom > $pax) {
                     $pax = $paxPerRoom;
                 }
-                $price = 0;
-                for ($i=$inicio; $i < $final; $i++) { 
 
-                    $seasonActive = \App\Seasons::getSeason($i);
+                $price = 0;
+
+                for ($i=1; $i <= $countDays; $i++) { 
+
+                    $seasonActive = \App\Seasons::getSeason($start->copy());
                     $prices = \App\Prices::where('season' ,  $seasonActive)
                                         ->where('occupation', $pax)->get();
 
-                    foreach ($prices as $key => $precio) {
+                    foreach ($prices as $precio) {
                         $price = $price + $precio->price;
                     }
                 }
 
 
-                return $price;
+                return $price; 
             }
     
     // Funcion para comprobar el precio de la reserva
         static function getCostBook($start,$finish,$pax,$room)
             {   
-
-                $start = explode('/', $start);
-                $inicio = $start[2]."-".$start[1]."-".$start[0];
-
-                $finish = explode('/', $finish);
-                $final = $finish[2]."-".$finish[1]."-".$finish[0];
-
-                $paxPerRoom = \App\Rooms::getPaxRooms($pax,$room);
-
-                if ($paxPerRoom > $pax) {
-                    $pax = $paxPerRoom;
-                }
-
-                $cost = 0;
-                for ($i=$inicio; $i < $final; $i++) { 
-                    
-                    $seasonActive = \App\Seasons::getSeason($i);
-                    
-                    $prices = \App\Prices::where('season' ,  $seasonActive)
-                                        ->where('occupation', $pax)->get();
-
-                    foreach ($prices as $key => $price) {
-                        
-                        $cost = $cost + $price->cost;
-                    }
-                }
+                
+               $start = Carbon::createFromFormat('d/m/Y' , $start);
+               $finish = Carbon::createFromFormat('d/m/Y' , $finish);
+               $countDays = $finish->diffInDays($start);
 
 
-                return $cost;
+               $paxPerRoom = \App\Rooms::getPaxRooms($pax,$room);
+
+               if ($paxPerRoom > $pax) {
+                   $pax = $paxPerRoom;
+               }
+               $cost = 0;
+               for ($i=1; $i <= $countDays; $i++) { 
+
+                   $seasonActive = \App\Seasons::getSeason($start->copy());
+                   $costs = \App\Prices::where('season' ,  $seasonActive)
+                                       ->where('occupation', $pax)->get();
+
+                   foreach ($costs as $key => $precio) {
+                       $cost = $cost + $precio->cost;
+                   }
+               }
+
+
+               return $cost;  
             }
 
     //Funcion para el precio del Aparcamiento
