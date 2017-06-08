@@ -8,8 +8,6 @@
 		width: 100%;
 	}
 </style>
-
-
 <div class="container-fixed-lg">
     <div>
         <div style="width: 100%">
