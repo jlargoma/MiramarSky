@@ -105,7 +105,6 @@
                                                 <div class="col-md-4">
                                                     <label>Entrada</label>
                                                     <div class="input-daterange input-group" id="datepicker-range">
-
                                                         <input id="start" type="text" class="input-sm form-control" name="start" data-date-format="dd-mm-yyyy">
                                                         <span class="input-group-addon">Hasta</span>
                                                         <input id="finish" type="text" class="input-sm form-control" name="finish" data-date-format="dd-mm-yyyy">
@@ -200,8 +199,8 @@
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Telefono    </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Pax         </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
-                                            <th class ="text-center bg-complete text-white" style="width:15%">  Entrada     </th>
-                                            <th class ="text-center bg-complete text-white" style="width:15%">  Salida      </th>
+                                            <th class ="text-center bg-complete text-white" style="width:20%">  IN     </th>
+                                            <th class ="text-center bg-complete text-white" style="width:20%">  OUT      </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Noc         </th>
                                             <th class ="text-center bg-complete text-white">                    Precio      </th>
                                             <th class ="text-center bg-complete text-white">                    Estado      </th>
@@ -209,13 +208,27 @@
                                     </thead>
                                     <tbody>
                                     <?php foreach ($arrayBooks["nuevas"] as $book): ?>
+                                        <?php
+                                            $total = 0;
+                                                foreach ($pagos as $pago) {
+                                                    if ($pago->book_id == $book->id) { $total   += $pago->import; } else {}
+                                                } 
+                                        ?>
                                             <tr>
-                                                <td class ="text-center <?php echo $book->getStatus($book->type_book) ?>">
+                                                <td class ="text-center">
+                                                <div style="width: 5%;float: left;" class="<?php echo $book->getStatus($book->type_book) ?>">
+                                                    &nbsp;
+                                                </div>
+                                                <div style="width: 95%;float: left;">
                                                     <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('reservas/update')}}/<?php echo $book->id ?>"><?php echo $book->Customer->name ?></a>
+                                                </div>
+                                                    <progress value="<?php if ($total == 0){ echo $total;}else{echo 100/($book->total_price/$total);} ?>" max="100"></progress>
                                                 </td>
+
                                                 <td class ="text-center">
                                                     <a href="tel:<?php echo $book->Customer->phone ?>"><?php echo $book->Customer->phone ?></a>
                                                 </td>
+
                                                 <td class ="text-center"><?php echo $book->pax ?></td>
                                                 <td class ="text-center">
                                                     <select class="room" class="form-control" data-id="<?php echo $book->id ?>" >
@@ -229,6 +242,7 @@
                                                                 <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
                                                             <?php endif ?>
                                                         <?php endforeach ?>
+
                                                     </select>
                                                 </td>
                                                 <td class ="text-center">
@@ -442,7 +456,7 @@
                 </div>
             </div>
         </div>
-
+    
         <div class="col-md-5 col-xs-12">
             <div class="panel">
                 <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="collapse">
@@ -482,7 +496,7 @@
                                                     <?php echo substr($room->name, 0,5)." " ?>
                                                 </td>
                                                     <?php for ($j=1; $j <= count($arrayMonths[1]) ; $j++):?>
-                                                            <?php if (isset($arrayReservas[$room->id][$j])): ?>
+                                                            <?php if (isset($arrayReservas[0][$room->id][$j])): ?>
                                                                 <?php if (strpos($arrayReservas[0][$room->id][$j],'start') != 0 || strpos($arrayReservas[0][$room->id][$j],'end') != 0 ): ?>
                                                                         <td style="border: 1px solid black">
                                                                             <div class="descrip-<?php echo $i?>">
@@ -511,6 +525,7 @@
                     <div class="tab-pane " id="tabSegunda">
                         <div class="row">
                         <div class="col-md-12">
+                        <pre>
                             <table class="fc-border-separate" style="border:1px solid black;width: 100%">
                                 <thead>
                                     <tr>
@@ -535,6 +550,7 @@
                                                 <?php echo substr($room->name, 0,5)." " ?>
                                             </td>
                                                 <?php for ($j=1; $j <= count($arrayMonths[2]) ; $j++):?>
+                                                    <?php print_r($arrayReservas[1]) ?>
                                                         <?php if (isset($arrayReservas[1][$room->id][$j])): ?>
                                                             <?php if (strpos($arrayReservas[1][$room->id][$j],'start') != 0 || strpos($arrayReservas[1][$room->id][$j],'end') != 0 ): ?>
                                                                     <td style="border: 1px solid black">
@@ -667,6 +683,7 @@
                 </div>
             </div>    
         </div>
+
     </div>
 </div>
 

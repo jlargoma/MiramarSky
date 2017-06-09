@@ -37,6 +37,7 @@ class BookController extends Controller
 
         $arrayReservas = array();
         $apartamentos = \App\Rooms::all();
+        
         foreach ($apartamentos as $apartamento) {
             $mesinicio = Carbon::now()->subMonth();
             for ($i=0; $i < 4; $i++) { 
@@ -46,6 +47,7 @@ class BookController extends Controller
             }
             
         }
+
         $firstDayOfTheYear = Carbon::now()->subMonth();
 
         for ($i=1; $i <= 4; $i++) { 
@@ -59,7 +61,6 @@ class BookController extends Controller
             for ($j=1; $j <= $countDays+1 ; $j++) { 
                     $arrayMonths[$i][$j] = $day->format('d');     
 
-                
                     $day = $day->addDay();
             }
 
@@ -84,12 +85,13 @@ class BookController extends Controller
                                                 'arrayBooks'    => $arrayBooks,
                                                 'arrayMonths'   => $arrayMonths,
                                                 'rooms'         => \App\Rooms::all(),
-                                                'roomscalendar' => \App\Rooms::all(),
-                                                'arrayReservas'    => $arrayReservas,
+                                                'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->get(),
+                                                'arrayReservas' => $arrayReservas,
                                                 'mes'           => $mes->subMonth(),
                                                 'date'          => $date->subMonth(),
                                                 'book'          => new \App\Book(),
                                                 'extras'        => \App\Extras::all(),
+                                                'pagos'         => \App\Payments::all(),
                                                 ]);
     }
 
@@ -272,24 +274,23 @@ class BookController extends Controller
     public function getCalendar($id,$mes)
         {
 
-            $firstDayOfTheYear = $mes;
-
             $reservas = \App\Book::whereIn('type_book' , [1,2,7,8])
                                     ->where('room_id', $id)
-                                    ->whereMonth('start', '=' ,$firstDayOfTheYear->copy()->format('m'))
+                                    ->whereMonth('start', '=' ,$mes->copy()->format('m'))
                                     ->get();
+
             if (count($reservas) > 0) {
 
                 foreach ($reservas as $key => $reserva) {
 
-                    $startMonth = $firstDayOfTheYear->copy()->startOfMonth();
-                    $endMonth = $firstDayOfTheYear->copy()->endOfMonth();
+                    $startMonth = $mes->copy()->startOfMonth();
+                    $endMonth = $mes->copy()->endOfMonth();
                     $countDays = $endMonth->diffInDays($startMonth);
                     $day = $startMonth->copy();
 
 
-                    for ($i=1; $i <= $countDays ; $i++) { 
-                        if ($day->copy()->format('Y-m-d')  <= $reserva->finish && $day->copy()->format('Y-m-d') >= $reserva->start) {
+                    for ($i=1; $i <= $countDays+1 ; $i++) { 
+                        if ($day->copy()->format('Y-m-d') <= $reserva->finish && $day->copy()->format('Y-m-d') >= $reserva->start) {
                             switch ($reserva->type_book) {
                                 case '1':
                                     if ($day->copy()->format('Y-m-d') == $reserva->start) {

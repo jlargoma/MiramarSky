@@ -83,9 +83,15 @@ class PaymentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $paymentUpdate = \App\Payments::find($request->id);
+
+        $paymentUpdate->import = $request->importe;
+        if ($paymentUpdate->save()) {
+            return "Importe cambiado";
+        }
+
     }
 
     /**

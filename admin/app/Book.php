@@ -32,9 +32,9 @@ class Book extends Model
                 return $this->hasMany('\App\ExtrasBooks', 'id', 'book_id');
             }
 
-        public function payments()
+        public function pago()
             {
-                return $this->hasMany('\App\Payments', 'id', 'book_id');
+                return $this->hasMany('\App\Payments', 'book_id', 'id');
             }
 
     //Para poner nombre al estado de la reserva//

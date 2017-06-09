@@ -12,7 +12,7 @@
 <div class="container-fluid padding-10 sm-padding-10">
     <div class="row">
         <div class="col-md-12 col-xs-12">
-            <h2>Actualizar reserva</h2>
+            <h2>Actualizar reserva  de <?php echo "<b>".$book->customer->name."</b>" ?> creada el <?php echo $book->created_at ?></h2>
         </div>
         <div class="col-md-8">
             <div class="panel">
@@ -176,7 +176,9 @@
                                                         echo $fecha->format('d-m-Y') 
                                                     ?>
                                                 </td>
-                                                <td class ="text-center"><?php echo $payment->import ?>€</td>
+                                                <td class ="text-center">
+                                                    <input class="editable payment-<?php echo $payment->id?>" type="text" name="cost" data-id="<?php echo $payment->id ?>" value="<?php echo $payment->import ?>" style="width: 50%;text-align: center;border-style: none none solid">€
+                                                </td>
                                                 <td class ="text-center"><?php echo $payment->comment ?></td>
                                             </tr>
                                             <?php $total = $total + $payment->import ?>
@@ -200,22 +202,28 @@
                                         <?php endif ?>
                                     <?php else: ?>
                                         <tr>
-                                                <td class ="text-center">
-                                                    <div class="input-daterange input-group" id="datepicker-range">
-                                                        <input type="text" class="input-sm form-control fecha-cobro" name="start" data-date-format="dd-mm-yyyy" value="<?php $hoy = Carbon::now() ;echo $hoy->format('d/m/Y') ?>">
-                                                    </div>
+                                            <td class ="text-center">
+                                                <div class="input-daterange input-group" id="datepicker-range">
+                                                    <input type="text" class="input-sm form-control fecha-cobro" name="start" data-date-format="dd-mm-yyyy" value="<?php $hoy = Carbon::now() ;echo $hoy->format('d/m/Y') ?>">
+                                                </div>
+                                            </td>
+                                            <td class ="text-center">
+                                                <input class="importe" type="text" name="importe"  style="width: 100%;text-align: center;border-style: none none solid">
+                                            </td>
+                                            <td class ="text-center"> 
+                                                <input class="comment" type="text" name="comment"  style="width: 100%;text-align: center;border-style: none none solid">
                                                 </td>
-                                                <td class ="text-center">
-                                                    <input class="importe" type="text" name="importe"  style="width: 100%;text-align: center;border-style: none none solid">
-                                                </td>
-                                                <td class ="text-center"> 
-                                                    <input class="comment" type="text" name="comment"  style="width: 100%;text-align: center;border-style: none none solid">
-                                                    </td>
-                                            </tr>
+                                        </tr>
                                     <?php endif ?>
                                     <tr>
-                                        <td class="text-center" colspan="2">Falta</td>
-                                        <td class="text-center" ><?php echo $book->total_price-$total ?>€</td>
+                                        <?php if ($total < $book->total_price): ?>
+                                            <td class="text-center" colspan="2">Falta</td>
+                                            <td class="text-center" ><?php echo $total-$book->total_price ?>€</td>
+                                        <?php else: ?>
+                                            <td class="text-center" colspan="2">Sobran</td>
+                                            <td class="text-center" ><?php echo $total-$book->total_price ?>€</td>
+                                        <?php endif ?>
+                                        
                                     </tr>
                                 </tbody>
                             </table>
@@ -330,6 +338,16 @@
                     alert(data);
                     location.reload();
                 });
+            });
+
+            $('.editable').change(function(event) {
+                var id = $(this).attr('data-id');               
+                var importe = $(this).val();
+                console.log(id);
+                $.get('/admin/public/pagos/update', {  id: id, importe: importe}, function(data) {
+                    window.location.reload();
+                });
+
             });
         });
 

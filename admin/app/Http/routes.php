@@ -83,5 +83,6 @@ Route::group(['middleware' => 'auth'], function () {
 // Pagos
 	Route::get('pagos' , 'PaymentsController@index');
 	Route::get('pagos/create', 'PaymentsController@create');
+	Route::get('pagos/update', 'PaymentsController@update');
 
 });

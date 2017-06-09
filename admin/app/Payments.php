@@ -8,6 +8,6 @@ class Payments extends Model
 {
     public function book()
             {
-                return $this->hasOne('\App\Book', 'book_id', 'id');
+                return $this->hasOne('\App\Book', 'id', 'book_id');
             }
 }
