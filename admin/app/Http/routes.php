@@ -30,6 +30,8 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('reservas/getCostBook' , 'BookController@getCostBook');
 	Route::get('reservas/getPricePark' , 'BookController@getPricePark');
 	Route::get('reservas/getCostPark' , 'BookController@getCostPark');
+	// Route::get('prueba' , 'BookController@getBaseDatos');
+	Route::get('prueba' , 'BookController@getCobrosBD');
 	
 // Usuarios
 	Route::get('usuarios' , 'UsersController@index');

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use \Carbon\Carbon;
 use Auth;
@@ -92,6 +92,7 @@ class BookController extends Controller
                                                 'book'          => new \App\Book(),
                                                 'extras'        => \App\Extras::all(),
                                                 'pagos'         => \App\Payments::all(),
+                                                
                                                 ]);
     }
 
@@ -273,7 +274,7 @@ class BookController extends Controller
 
     public function getCalendar($id,$mes)
         {
-
+            $arrayReservas = array();
             $reservas = \App\Book::whereIn('type_book' , [1,2,7,8])
                                     ->where('room_id', $id)
                                     ->whereMonth('start', '=' ,$mes->copy()->format('m'))
@@ -434,5 +435,79 @@ class BookController extends Controller
                     }
                 return $supPark;
             }
+    
+    // Funcion para la migracion de la base antigua  a la nuevas
+        // public function getBaseDatos()
+        //     {
+        //         $apartamentos = DB::connection('apartamento')->table('book')->get();
+                
+        //         echo "<pre>";
+        //         foreach ($apartamentos as $apartamento) {
+        //             $book = \App\Book::find($apartamento->ID);
+        //             if (count($book) > 0) {
+        //                 echo "Ya existe esta reserva ".$apartamento->ID." <br>";
+        //             } else {
+        //                 $book = new \App\Book();
+        //                 $book->id            = $apartamento->ID;
+        //                 $book->user_id       =$apartamento->UserID;
+        //                 $book->customer_id   =$apartamento->CustomerID;
+        //                 $book->room_id       =$apartamento->RoomID;
+        //                 $book->start         =$apartamento->Start;
+        //                 $book->finish        =$apartamento->Finish;
+        //                 $book->comment       =($apartamento->Comment != "") ? $apartamento->Comment : "";
+        //                 $book->book_comments =($apartamento->bookComments != "") ? $apartamento->bookComments : "";
+        //                 $book->pax           =$apartamento->Pax;
+        //                 $book->nigths        =$apartamento->noches;
+        //                 $book->sup_limp      =$apartamento->supLimp;
+        //                 $book->sup_park      =$apartamento->supPark;
+        //                 $book->type_book     = $apartamento->Type;
+        //                 $book->type_park     = 0;
+        //                 $book->cost_park     =$apartamento->Parking;
+        //                 $book->sup_lujo      =$apartamento->supLujo;
+        //                 $book->cost_lujo     =$apartamento->LujoCoste;
+        //                 $book->cost_apto     =$apartamento->costeApto;
+        //                 $book->cost_total    =$apartamento->costeTotal;
+        //                 $book->total_price   =$apartamento->totalPrice;
+        //                 $book->total_ben     =$apartamento->ingresoNeto;
+        //                 $book->extra         = 0;
+        //                 $book->inc_percent   =$apartamento->porcIngreso;
+        //                 $book->ben_jorge     = $book->getBenJorge($book->total_ben,$apartamento->RoomID);
+        //                 $book->ben_jaime     = $book->getBenJaime($book->total_ben,$apartamento->RoomID);
+        //                 $book->send          =$apartamento->send;
+        //                 $book->statusCobro   =$apartamento->statusCobro;
+        //                 if ($book->save()) {
+        //                    echo "Insertado ID ".$apartamento->ID."<br>";
+        //                 } else {
+        //                     # code...
+        //                 }
+        //             }       
+        //         }
+        //     }
+    // Funcion para la migracion de la base antigua  a la nuevas
+        public function getCobrosBD()
+            {
+                $cobros = DB::connection('apartamento')->table('cobros')->orderBy('ID' , 'ASC')->get();
+                
+                echo "<pre>";
+                foreach ($cobros as $cobro) {
+                    $payment = \App\Payments::find($cobro->ID);
+                    if (count($payment) > 0) {
+                        echo "Ya existe este cobro  ".$cobro->ID." <br>";
+                    } else {
+                        $payment              = new \App\Payments();
+                        $payment->id          =$cobro->ID;
+                        $payment->book_id     =$cobro->bookID;
+                        $payment->datePayment =$cobro->dateCobro;
+                        $payment->import      =$cobro->import;
+                        $payment->type        =$cobro->type;
+                        $payment->comment     =$cobro->Comment;
 
+                        if ($payment->save()) {
+                           echo "Insertado ID ".$cobro->ID."<br>";
+                        } else {
+                            # code...
+                        }
+                    }   
+                }
+            }
 }

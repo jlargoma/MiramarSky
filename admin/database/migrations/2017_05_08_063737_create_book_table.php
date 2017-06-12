@@ -38,6 +38,8 @@ class CreateBookTable extends Migration
             $table->decimal('inc_percent',4,2);
             $table->decimal('ben_jorge',8,2);
             $table->decimal('ben_jaime',8,2);
+            $table->integer('send');
+            $table->integer('statusCobro');
             $table->timestamps();
         });
     }

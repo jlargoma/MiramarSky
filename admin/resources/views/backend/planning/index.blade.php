@@ -248,13 +248,13 @@
                                                 <td class ="text-center">
                                                     <?php
                                                         $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                                        echo $start->format('d M');
+                                                        echo $start->format('d M y');
                                                     ?>
                                                 </td>
                                                 <td class ="text-center">
                                                     <?php
                                                         $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                                        echo $finish->format('d M');
+                                                        echo $finish->format('d M y');
                                                     ?>
                                                 </td>
                                                 <td class ="text-center"><?php echo $book->nigths ?></td>
@@ -263,7 +263,7 @@
                                                     <select class="status" class="form-control" data-id="<?php echo $book->id ?>" >
                                                         <?php for ($i=1; $i < 9; $i++): ?> 
                                                             <?php if ($i == $book->type_book): ?>
-                                                                <option selected value="<?php echo $i ?>"  data-id="aaaa"><?php echo $book->getStatus($i) ?></option>
+                                                                <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
                                                             <?php else: ?>
                                                                 <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
                                                             <?php endif ?>                                          
@@ -307,8 +307,14 @@
                                 <tbody>
                                 <?php foreach ($arrayBooks["especiales"] as $book): ?>
                                     <tr>
-                                        <td class ="text-center <?php echo $book->getStatus($book->type_book) ?>">
-                                            <?php echo $book->Customer->name ?>                                                    
+                                        <td class ="text-center">
+                                        <div style="width: 5%;float: left;" class="<?php echo $book->getStatus($book->type_book) ?>">
+                                            &nbsp;
+                                        </div>
+                                        <div style="width: 95%;float: left;">
+                                            <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('reservas/update')}}/<?php echo $book->id ?>"><?php echo $book->Customer->name ?></a>
+                                        </div>
+                                            <progress value="<?php if ($total == 0){ echo $total;}else{echo 100/($book->total_price/$total);} ?>" max="100"></progress>
                                         </td>
 
                                         <td class ="text-center">
@@ -395,8 +401,14 @@
                                 <tbody>
                                 <?php foreach ($arrayBooks["pagadas"] as $book): ?>
                                     <tr>
-                                        <td class ="text-center <?php echo $book->getStatus($book->type_book) ?>">
-                                            <?php echo $book->Customer->name ?>                                            
+                                        <td class ="text-center">
+                                        <div style="width: 5%;float: left;" class="<?php echo $book->getStatus($book->type_book) ?>">
+                                            &nbsp;
+                                        </div>
+                                        <div style="width: 95%;float: left;">
+                                            <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('reservas/update')}}/<?php echo $book->id ?>"><?php echo $book->Customer->name ?></a>
+                                        </div>
+                                            <progress value="<?php if ($total == 0){ echo $total;}else{echo 100/($book->total_price/$total);} ?>" max="100"></progress>
                                         </td>
 
                                         <td class ="text-center">
