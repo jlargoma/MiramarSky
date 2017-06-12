@@ -306,6 +306,12 @@
                                 </thead>
                                 <tbody>
                                 <?php foreach ($arrayBooks["especiales"] as $book): ?>
+                                    <?php
+                                        $total = 0;
+                                            foreach ($pagos as $pago) {
+                                                if ($pago->book_id == $book->id) { $total   += $pago->import; } else {}
+                                            } 
+                                    ?>
                                     <tr>
                                         <td class ="text-center">
                                         <div style="width: 5%;float: left;" class="<?php echo $book->getStatus($book->type_book) ?>">
@@ -400,6 +406,12 @@
                                 </thead>
                                 <tbody>
                                 <?php foreach ($arrayBooks["pagadas"] as $book): ?>
+                                    <?php
+                                        $total = 0;
+                                            foreach ($pagos as $pago) {
+                                                if ($pago->book_id == $book->id) { $total   += $pago->import; } else {}
+                                            } 
+                                    ?>
                                     <tr>
                                         <td class ="text-center">
                                         <div style="width: 5%;float: left;" class="<?php echo $book->getStatus($book->type_book) ?>">
