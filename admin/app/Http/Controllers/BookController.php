@@ -21,11 +21,21 @@ class BookController extends Controller
      */
     public function index()
     {
+        $totalBook = array();
+        $arrayReservas = array();
+        $pagos =  \App\Payments::all();
+        $apartamentos = \App\Rooms::all();
+        
+
 
         $date = Carbon::now();
         $mes = Carbon::now();
         $start = new Carbon('first day of September 2016');
         $firstDayOfTheYear = new Carbon('first day of September 2016');
+        $firstDayOfTheYear = Carbon::now()->subMonth();
+        $books = \App\Book::where('start','>',$start)
+                            ->orderBy('start','desc')
+                            ->get();
 
         $arrayBooks = [
                         "nuevas" => [], 
@@ -34,23 +44,29 @@ class BookController extends Controller
                         ];
 
         
-
-        $arrayReservas = array();
-        $apartamentos = \App\Rooms::all();
         
-        foreach ($apartamentos as $apartamento) {
-            $mesinicio = Carbon::now()->subMonth();
-            for ($i=0; $i < 4; $i++) { 
-
-                $arrayReservas[$i][$apartamento->id] = $this->getCalendar($apartamento->id,$mesinicio);
-                $mesinicio->addMonth();
+        foreach ($apartamentos as $apartamento) 
+            {
+                $mesinicio = Carbon::now()->subMonth();
+                for ($i=0; $i < 4; $i++) 
+                    { 
+                        $arrayReservas[$i][$apartamento->id] = $this->getCalendar($apartamento->id,$mesinicio);
+                        $mesinicio->addMonth();
+                    }
             }
-            
-        }
 
-        $firstDayOfTheYear = Carbon::now()->subMonth();
+        foreach ($pagos as $key => $pago) 
+            {
+                if (isset($totalBook[$pago->book_id])) {
+                    $totalBook[$pago->book_id] += $pago->import;
+                }else{
+                    $totalBook[$pago->book_id] = $pago->import;
+                }
+                
+            } 
 
-        for ($i=1; $i <= 4; $i++) { 
+        for ($i=1; $i <= 4; $i++) 
+            { 
             
             $startMonth = $firstDayOfTheYear->copy()->startOfMonth();
             $endMonth = $firstDayOfTheYear->copy()->endOfMonth();
@@ -66,20 +82,18 @@ class BookController extends Controller
 
             $firstDayOfTheYear->addMonth();                                    
 
-        }
-        $books = \App\Book::where('start','>',$start)
-                            ->orderBy('start','desc')
-                            ->get();
-
-        foreach ($books as $key => $book) {
-            if ($book->type_book == 1 || $book->type_book == 3 || $book->type_book == 4 || $book->type_book == 5 || $book->type_book == 6 ) {
-                $arrayBooks["nuevas"][] = $book;
-            } elseif( $book->type_book == 2) {
-                $arrayBooks["pagadas"][] = $book;
-            } elseif($book->type_book == 7 || $book->type_book == 8){
-                $arrayBooks["especiales"][] = $book;
             }
-        }
+
+        foreach ($books as $key => $book)
+            {
+                if ($book->type_book == 1 || $book->type_book == 3 || $book->type_book == 4 || $book->type_book == 5 || $book->type_book == 6 ) {
+                    $arrayBooks["nuevas"][] = $book;
+                } elseif( $book->type_book == 2) {
+                    $arrayBooks["pagadas"][] = $book;
+                } elseif($book->type_book == 7 || $book->type_book == 8){
+                    $arrayBooks["especiales"][] = $book;
+                }
+            }
 
         return view('backend/planning/index',[
                                                 'arrayBooks'    => $arrayBooks,
@@ -91,7 +105,7 @@ class BookController extends Controller
                                                 'date'          => $date->subMonth(),
                                                 'book'          => new \App\Book(),
                                                 'extras'        => \App\Extras::all(),
-                                                'pagos'         => \App\Payments::all(),
+                                                'totalBook'     => $totalBook,
                                                 
                                                 ]);
     }

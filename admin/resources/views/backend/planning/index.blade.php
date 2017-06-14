@@ -47,7 +47,7 @@
     </style>
 <div class="container-fluid padding-10 sm-padding-10">
     <div class="row">
-        
+
         <div class="col-md-7">
             <div class="panel">
                 <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="collapse">
@@ -208,21 +208,20 @@
                                     </thead>
                                     <tbody>
                                     <?php foreach ($arrayBooks["nuevas"] as $book): ?>
-                                        <?php
-                                            $total = 0;
-                                                foreach ($pagos as $pago) {
-                                                    if ($pago->book_id == $book->id) { $total   += $pago->import; } else {}
-                                                } 
-                                        ?>
+                                        
                                             <tr>
                                                 <td class ="text-center">
-                                                <div style="width: 5%;float: left;" class="<?php echo $book->getStatus($book->type_book) ?>">
-                                                    &nbsp;
-                                                </div>
-                                                <div style="width: 95%;float: left;">
-                                                    <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('reservas/update')}}/<?php echo $book->id ?>"><?php echo $book->Customer->name ?></a>
-                                                </div>
-                                                    <progress value="<?php if ($total == 0){ echo $total;}else{echo 100/($book->total_price/$total);} ?>" max="100"></progress>
+                                                    <div style="width: 100%;float: left;" class="<?php echo $book->getStatus($book->type_book) ?>">
+                                                    <?php if (isset($totalBook[$book->id])): ?>
+                                                        <?php echo number_format(100/($book->total_price/$totalBook[$book->id]),0)?> %
+                                                    <?php else: ?>
+                                                        0 %
+                                                    <?php endif ?>
+                                                    </div>
+                                                    <div style="width: 100%;float: left;">
+                                                        <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('reservas/update')}}/<?php echo $book->id ?>"><?php echo $book->Customer->name ?></a>
+                                                    </div>
+                                                    
                                                 </td>
 
                                                 <td class ="text-center">
@@ -306,21 +305,18 @@
                                 </thead>
                                 <tbody>
                                 <?php foreach ($arrayBooks["especiales"] as $book): ?>
-                                    <?php
-                                        $total = 0;
-                                            foreach ($pagos as $pago) {
-                                                if ($pago->book_id == $book->id) { $total   += $pago->import; } else {}
-                                            } 
-                                    ?>
                                     <tr>
                                         <td class ="text-center">
-                                        <div style="width: 5%;float: left;" class="<?php echo $book->getStatus($book->type_book) ?>">
-                                            &nbsp;
-                                        </div>
-                                        <div style="width: 95%;float: left;">
-                                            <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('reservas/update')}}/<?php echo $book->id ?>"><?php echo $book->Customer->name ?></a>
-                                        </div>
-                                            <progress value="<?php if ($total == 0){ echo $total;}else{echo 100/($book->total_price/$total);} ?>" max="100"></progress>
+                                            <div style="width: 5%;float: left;" class="<?php echo $book->getStatus($book->type_book) ?>">
+                                                <?php if (isset($totalBook[$book->id])): ?>
+                                                    <?php echo number_format(100/($book->total_price/$totalBook[$book->id]),0)?> %
+                                                <?php else: ?>
+                                                    0 %
+                                                <?php endif ?>
+                                            </div>
+                                            <div style="width: 95%;float: left;">
+                                                <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('reservas/update')}}/<?php echo $book->id ?>"><?php echo $book->Customer->name ?></a>
+                                            </div>
                                         </td>
 
                                         <td class ="text-center">
@@ -406,21 +402,18 @@
                                 </thead>
                                 <tbody>
                                 <?php foreach ($arrayBooks["pagadas"] as $book): ?>
-                                    <?php
-                                        $total = 0;
-                                            foreach ($pagos as $pago) {
-                                                if ($pago->book_id == $book->id) { $total   += $pago->import; } else {}
-                                            } 
-                                    ?>
                                     <tr>
                                         <td class ="text-center">
-                                        <div style="width: 5%;float: left;" class="<?php echo $book->getStatus($book->type_book) ?>">
-                                            &nbsp;
-                                        </div>
-                                        <div style="width: 95%;float: left;">
-                                            <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('reservas/update')}}/<?php echo $book->id ?>"><?php echo $book->Customer->name ?></a>
-                                        </div>
-                                            <progress value="<?php if ($total == 0){ echo $total;}else{echo 100/($book->total_price/$total);} ?>" max="100"></progress>
+                                            <div style="width: 5%;float: left;" class="<?php echo $book->getStatus($book->type_book) ?>">
+                                                <?php if (isset($totalBook[$book->id])): ?>
+                                                    <?php echo number_format(100/($book->total_price/$totalBook[$book->id]),0)?> %
+                                                <?php else: ?>
+                                                    0 %
+                                                <?php endif ?>
+                                            </div>
+                                            <div style="width: 95%;float: left;">
+                                                <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('reservas/update')}}/<?php echo $book->id ?>"><?php echo $book->Customer->name ?></a>
+                                            </div>
                                         </td>
 
                                         <td class ="text-center">
