@@ -127,7 +127,16 @@ class BookController extends Controller
     public function create(Request $request)
         {
             $book = new \App\Book();
-            echo "<pre>";
+            $extraPrice = 0 ;
+            $extraCost  = 0;
+
+            if ($request->extras != "") {
+                foreach ($request->extras as $extra) {
+                   $precios = \App\Extras::find($extra);
+                   $extraPrice += $precios->price;
+                   $extraCost += $precios->cost;
+                }
+            }
                 if ($book->existDate($request->start,$request->finish,$request->newroom)) {
                     //creacion del cliente
                         $customer = new \App\Customers();
@@ -148,6 +157,7 @@ class BookController extends Controller
                                 $book->type_book     = 3;
                                 $book->pax           = $request->pax;
                                 $book->nigths        = $request->nigths;
+                                $book->agency        = $request->agencia;
                                 $room                = \App\Rooms::find($request->newroom);
                                 $book->sup_limp      = ($room->typeApto == 1) ? 30 : 50;
                                 $book->sup_park      = $book->getPricePark($request->parking,$request->nigths);
@@ -156,24 +166,25 @@ class BookController extends Controller
                                 $book->sup_lujo      = ($room->luxury == 1) ? 50 : 0;
                                 $book->cost_lujo     = ($room->luxury == 1) ? 40 : 0;
                                 $book->cost_apto     = $book->getCostBook($request->start,$request->finish,$request->pax,$request->newroom);
-                                $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo;
-                                $book->total_price   = $book->getPriceBook($request->start,$request->finish,$request->pax,$request->newroom) + $book->sup_park + $book->sup_lujo;
+                                $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->agency + $extraCost + $book->agency;
+                                $book->total_price   = $book->getPriceBook($request->start,$request->finish,$request->pax,$request->newroom) + $book->sup_park + $book->sup_lujo + $extraPrice;
                                 $book->total_ben     = $book->total_price - $book->cost_total;
+                                $book->extraPrice    = $extraPrice;
+                                $book->extraCost     = $extraCost;
                                 //Porcentaje de beneficio
                                 $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
                                 $book->ben_jorge     = $book->getBenJorge($book->total_ben,$room->id);
                                 $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
+
                                 if($book->save()){
                                     return redirect()->action('BookController@index');
                                 };
-
                         };
                     
                     
                 }else{
-                    return "va mal";
+                
                 }
-            die;
         }
 
 
@@ -193,6 +204,7 @@ class BookController extends Controller
                                                     'rooms'  => \App\Rooms::all(),
                                                     'extras' => \App\Extras::all(),
                                                     'payments' => \App\Payments::where('book_id',$book->id)->get(),
+                                                    'typecobro' => new \App\Book(),
                                                 ]);
         }
 
@@ -325,7 +337,9 @@ class BookController extends Controller
     //Funcion para el precio del Aparcamiento
         static function getPricePark(Request $request)
             {
-
+                print_r($request->park);
+                // print_r($request->noches);
+                die();
                 $supPark = 0;
                 switch ($request->park) {
                         case 1:

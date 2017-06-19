@@ -43,7 +43,7 @@
 			<!-- END SIDEBAR MENU TOP TRAY CONTENT-->
 			<!-- BEGIN SIDEBAR MENU HEADER-->
 			<div class="sidebar-header">
-				<a href="{{ url('/admin') }}"><img src="{{asset ('assets/img/logo_white.png') }}" alt="logo" class="brand" data-src="{{asset ('assets/img/logo_white.png') }}" data-src-retina="{{asset ('assets/img/logo_white_2x.png') }}" width="78" height="22"></a>
+				<a href="{{ url('admin') }}"><img src="{{asset ('assets/img/logo_white.png') }}" alt="logo" class="brand" data-src="{{asset ('assets/img/logo_white.png') }}" data-src-retina="{{asset ('assets/img/logo_white_2x.png') }}" width="78" height="22"></a>
 			</div>
 			<!-- END SIDEBAR MENU HEADER-->
 			<!-- START SIDEBAR MENU -->
@@ -52,7 +52,7 @@
 				<ul class="menu-items">
 
 					<li class="m-t-10 ">
-						<a href="{{ url('/reservas') }}" class="detailed">
+						<a href="{{ url('admin/reservas') }}" class="detailed">
 							<span class="title">Planning</span>
 							<!-- <span class="details">12 New Updates</span> -->
 						</a>
@@ -60,42 +60,42 @@
 					</li>
 					
 					<li class="m-t-10 ">
-						<a href="{{ url('/apartamentos') }}" class="detailed">
+						<a href="{{ url('admin/apartamentos') }}" class="detailed">
 							<span class="title">Apartamentos</span>
 						</a>
 						<span class="{{ Request::path() == '/apartamentos' ? 'bg-success' : '' }} icon-thumbnail"><i class="pg-home"></i></span>
 					</li>
 
 					<li class="m-t-10 ">
-						<a href="{{ url('/precios') }}" class="detailed">
+						<a href="{{ url('admin/precios') }}" class="detailed">
 							<span class="title">Precios</span>
 						</a>
 						<span class="{{ Request::path() == '/precios' ? 'bg-success' : '' }} icon-thumbnail"><i class="pg-home"></i></span>
 					</li>
 
 					<li class="m-t-10 ">
-						<a href="{{ url('/temporadas') }}" class="detailed">
+						<a href="{{ url('admin/temporadas') }}" class="detailed">
 							<span class="title">Temporadas</span>
 						</a>
 						<span class="{{ Request::path() == '/temporadas' ? 'bg-success' : '' }} icon-thumbnail"><i class=" pg-clock"></i></span>
 					</li>
 					
 					<li class="m-t-10 ">
-						<a href="{{ url('/pagos') }}" class="detailed">
+						<a href="{{ url('admin/pagos') }}" class="detailed">
 							<span class="title">Pagos de reservas</span>
 						</a>
 						<span class="{{ Request::path() == '/pagos' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa fa-money"></i></span>
 					</li>
 
 					<li class="m-t-10 ">
-						<a href="{{ url('/usuarios') }}" class="detailed">
+						<a href="{{ url('admin/usuarios') }}" class="detailed">
 							<span class="title">Usuarios</span>
 						</a>
 						<span class="{{ Request::path() == '/usuarios' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa fa-user"></i></span>
 					</li>
 
 					<li class="m-t-10 ">
-						<a href="{{ url('/clientes') }}" class="detailed">
+						<a href="{{ url('admin/clientes') }}" class="detailed">
 							<span class="title">Clientes</span>
 						</a>
 						<span class="{{ Request::path() == '/clientes' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa  fa-users"></i></span>
@@ -172,7 +172,7 @@
 								<li><a href="#"><i class="pg-settings_small"></i> Settings</a>
 								</li>
 								<li class="bg-master-lighter">
-									<a href="{{ url('/logout') }}" class="clearfix">
+									<a href="{{ url('logout') }}" class="clearfix">
 										<span class="pull-left">Logout</span>
 										<span class="pull-right"><i class="pg-power"></i></span>
 									</a>

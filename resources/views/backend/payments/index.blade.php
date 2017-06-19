@@ -34,9 +34,9 @@
                             <?php foreach ($pagos as $pago): ?>
                                 
                                 <tr>
-                                    <td class="text-center"><?php echo $pago->book_id ?></td>
+                                    <td class="text-center"><a class="update-book" data-id="<?php echo $pago->book_id ?>"  title="Editar Reserva"  href="{{url ('reservas/update')}}/<?php echo $pago->book_id ?>"><?php echo $pago->book_id ?></a></td>
                                     <td class="text-center"><?php echo $pago->import ?></td>                                    
-                                    <td class="text-center"><?php echo $pago->type ?></td>
+                                    <td class="text-center"><?php echo $book->getTypeCobro($pago->type) ?></td>
                                     <td class="text-center"><?php echo $pago->comment ?></td>
                                 </tr> 
 

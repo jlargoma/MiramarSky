@@ -181,7 +181,7 @@
                                                     <input class="editable payment-<?php echo $payment->id?>" type="text" name="cost" data-id="<?php echo $payment->id ?>" value="<?php echo $payment->import ?>" style="width: 50%;text-align: center;border-style: none none solid">€
                                                 </td>
                                                 <td class ="text-center"><?php echo $payment->comment ?></td>
-                                                <td class ="text-center"><?php echo $payment->getType($payment->type) ?> </td>
+                                                <td class ="text-center"><?php echo $typecobro->getTypeCobro($payment->type) ?> </td>
                                             </tr>
                                             <?php $total = $total + $payment->import ?>
                                         <?php endforeach ?>

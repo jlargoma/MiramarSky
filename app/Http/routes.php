@@ -12,83 +12,84 @@
 */
 Route::auth();
 
-Route::get('/',[
-				'middleware' => 'auth',
-				'uses' => 'Admin\BackendController@index'
-			]);
+Route::get('/',['middleware' => 'authSubAdmin','middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
 
-Route::group(['middleware' => 'auth'], function () {
+
+// Route::get('/admin/propietario',['middleware' => 'authSubAdmin','uses' => 'Admin\BackendController@index']);
+// Route::get('/admin/propietario',['middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
+
+// Route::group(['middleware' => 'authSubAdmin'], function () {
 
 //Planing 
-	Route::get('reservas/{month?}' , 'BookController@index');
-	Route::get('reservas/new' , 'BookController@newBook');
-	Route::post('reservas/create' , 'BookController@create');
-	Route::get('reservas/update/{id}' , 'BookController@update');	
-	Route::post('reservas/saveUpdate/{id}' , 'BookController@saveUpdate');	
-	Route::get('reservas/changeBook/{id}' , 'BookController@changeBook');
-	Route::get('reservas/getPriceBook' , 'BookController@getPriceBook');
-	Route::get('reservas/getCostBook' , 'BookController@getCostBook');
-	Route::get('reservas/getPricePark' , 'BookController@getPricePark');
-	Route::get('reservas/getCostPark' , 'BookController@getCostPark');
-	// Route::get('prueba' , 'BookController@getBaseDatos');
-	// Route::get('prueba' , 'BookController@changeBooks');
+	
+	Route::get('admin/reservas/new' , 'BookController@newBook');
+	Route::post('admin/reservas/create' , 'BookController@create');
+	Route::get('admin/reservas/update/{id}' , 'BookController@update');	
+	Route::post('admin/reservas/saveUpdate/{id}' , 'BookController@saveUpdate');	
+	Route::get('admin/reservas/changeBook/{id}' , 'BookController@changeBook');
+	Route::get('admin/reservas/getPriceBook' , 'BookController@getPriceBook');
+	Route::get('admin/reservas/getCostBook' , 'BookController@getCostBook');
+	Route::get('admin/reservas/getPricePark' , 'BookController@getPricePark');
+	Route::get('admin/reservas/getCostPark' , 'BookController@getCostPark');
+	Route::get('admin/reservas/{month?}' , 'BookController@index');
+
 	
 // Usuarios
-	Route::get('usuarios' , 'UsersController@index');
-	Route::get('usuarios/new', 'UsersController@newUser');
-	Route::get('usuarios/update/{id}', 'UsersController@update');
-	Route::post('usuarios/saveAjax', 'UsersController@saveAjax');
-	Route::post('usuarios/saveupdate', 'UsersController@saveUpdate');
-	Route::post('usuarios/create', 'UsersController@create');
-	Route::get('usuarios/delete/{id}', 'UsersController@delete');
+	Route::get('admin/usuarios' , 'UsersController@index');
+	Route::get('admin/usuarios/new', 'UsersController@newUser');
+	Route::get('admin/usuarios/update/{id}', 'UsersController@update');
+	Route::post('admin/usuarios/saveAjax', 'UsersController@saveAjax');
+	Route::post('admin/usuarios/saveupdate', 'UsersController@saveUpdate');
+	Route::post('admin/usuarios/create', 'UsersController@create');
+	Route::get('admin/usuarios/delete/{id}', 'UsersController@delete');
 
 // Clientes
-	Route::get('clientes' , 'CustomersController@index');
-	Route::get('clientes/new', 'CustomersController@newUser');
-	Route::get('clientes/update', 'CustomersController@update');
-	Route::get('clientes/save', 'CustomersController@save');
-	Route::post('clientes/create', 'CustomersController@create');
-	Route::get('clientes/delete/{id}', 'CustomersController@delete');
+	Route::get('admin/clientes' , 'CustomersController@index');
+	Route::get('admin/clientes/new', 'CustomersController@newUser');
+	Route::get('admin/clientes/update', 'CustomersController@update');
+	Route::get('admin/clientes/save', 'CustomersController@save');
+	Route::post('admin/clientes/create', 'CustomersController@create');
+	Route::get('admin/clientes/delete/{id}', 'CustomersController@delete');
 
 // Rooms
-	Route::get('apartamentos' , 'RoomsController@index');
-	Route::get('apartamentos/new', 'RoomsController@newRoom');
-	Route::get('apartamentos/new-type', 'RoomsController@newTypeRoom');
-	Route::get('apartamentos/new-size', 'RoomsController@newSizeRoom');
-	Route::get('apartamentos/update', 'RoomsController@update');
-	Route::post('apartamentos/saveupdate', 'RoomsController@saveUpdate');
-	Route::post('apartamentos/create', 'RoomsController@create');
-	Route::post('apartamentos/create-type', 'RoomsController@createType');
-	Route::post('apartamentos/create-size', 'RoomsController@createSize');
-	Route::get('apartamentos/delete/{id}', 'RoomsController@delete');
-	Route::get('apartamentos/getPaxPerRooms/{id}', 'RoomsController@getPaxPerRooms');
+	Route::get('admin/apartamentos' , 'RoomsController@index');
+	Route::get('admin/apartamentos/new', 'RoomsController@newRoom');
+	Route::get('admin/apartamentos/new-type', 'RoomsController@newTypeRoom');
+	Route::get('admin/apartamentos/new-size', 'RoomsController@newSizeRoom');
+	Route::get('admin/apartamentos/update', 'RoomsController@update');
+	Route::post('admin/apartamentos/saveupdate', 'RoomsController@saveUpdate');
+	Route::post('admin/apartamentos/create', 'RoomsController@create');
+	Route::post('admin/apartamentos/create-type', 'RoomsController@createType');
+	Route::post('admin/apartamentos/create-size', 'RoomsController@createSize');
+	Route::get('admin/apartamentos/delete/{id}', 'RoomsController@delete');
+	Route::get('admin/apartamentos/getPaxPerRooms/{id}', 'RoomsController@getPaxPerRooms');
 
 // Prices
-	Route::get('precios' , 'PricesController@index');
-	Route::get('precios/update', 'PricesController@update');
-	Route::get('precios/updateExtra', 'PricesController@updateExtra');
-	Route::post('precios/create', 'PricesController@create');
-	Route::get('precios/delete/{id}', 'PricesController@delete');
-	Route::get('precios/deleteExtra/{id}', 'PricesController@delete');
-	Route::post('precios/createExtras', 'PricesController@createExtras');
+	Route::get('admin/precios' ,['middleware' => 'authSubAdmin','uses' =>  'PricesController@index']);
+	Route::get('admin/precios/update', 'PricesController@update');
+	Route::get('admin/precios/updateExtra', 'PricesController@updateExtra');
+	Route::post('admin/precios/create', 'PricesController@create');
+	Route::get('admin/precios/delete/{id}', 'PricesController@delete');
+	Route::get('admin/precios/deleteExtra/{id}', 'PricesController@delete');
+	Route::post('admin/precios/createExtras', 'PricesController@createExtras');
 
 // seasons
-	Route::get('temporadas' , 'SeasonsController@index');
-	Route::get('temporadas/new', 'SeasonsController@newSeasons');
-	Route::get('temporadas/new-type', 'SeasonsController@newTypeSeasons');
-	Route::get('temporadas/update', 'SeasonsController@update');
-	Route::post('temporadas/saveupdate', 'SeasonsController@saveUpdate');
-	Route::post('temporadas/create', 'SeasonsController@create');
-	Route::post('temporadas/create-type', 'SeasonsController@createType');
-	Route::get('temporadas/delete/{id}', 'SeasonsController@delete');
+	Route::get('admin/temporadas' , 'SeasonsController@index');
+	Route::get('admin/temporadas/new', 'SeasonsController@newSeasons');
+	Route::get('admin/temporadas/new-type', 'SeasonsController@newTypeSeasons');
+	Route::get('admin/temporadas/update', 'SeasonsController@update');
+	Route::post('admin/temporadas/saveupdate', 'SeasonsController@saveUpdate');
+	Route::post('admin/temporadas/create', 'SeasonsController@create');
+	Route::post('admin/temporadas/create-type', 'SeasonsController@createType');
+	Route::get('admin/temporadas/delete/{id}', 'SeasonsController@delete');
 
 // Pagos
-	Route::get('pagos' , 'PaymentsController@index');
-	Route::get('pagos/create', 'PaymentsController@create');
-	Route::get('pagos/update', 'PaymentsController@update');
+	Route::get('admin/pagos' , 'PaymentsController@index');
+	Route::get('admin/pagos/create', 'PaymentsController@create');
+	Route::get('admin/pagos/update', 'PaymentsController@update');
 
 
 //Liquidacion
-	Route::get('liquidacion' , 'LiquidacionController@index');
+	Route::get('admin/liquidacion' , 'LiquidacionController@index');
 
-});
+// });

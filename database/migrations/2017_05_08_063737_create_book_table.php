@@ -24,6 +24,7 @@ class CreateBookTable extends Migration
             $table->integer('type_book');
             $table->integer('pax');
             $table->integer('nigths');
+            $table->integer('agency');
             $table->decimal('sup_limp',8,2);
             $table->decimal('sup_park',8,2);
             $table->integer('type_park');

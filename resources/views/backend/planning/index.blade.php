@@ -96,13 +96,13 @@
             padding-top: 0px!important;
             padding-bottom: 0px!important;
         }
-        /*.end, .start{
-            background: red; /* For browsers that do not support gradients */
-            background: -webkit-linear-gradient(left, red , yellow); /* For Safari 5.1 to 6.0 */
-            background: -o-linear-gradient(right, red, yellow); /* For Opera 11.1 to 12.0 */
-            background: -moz-linear-gradient(right, red, yellow); /* For Firefox 3.6 to 15 */
-            background: linear-gradient(to right, red , yellow); /* Standard syntax */
-        }*/
+        .nuevo{
+            background-color: lightgreen;
+            color: black;
+            border-radius: 11px;
+            width: 50px;
+        }
+
         a {
             color: black;
             cursor: pointer;
@@ -128,9 +128,9 @@
             <div class="col-md-7 col-xs-12">
                 <div class="panel">
                     <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="collapse">
-                        <li><a href="#tabNueva" data-toggle="tab" role="tab">+</a>
+                        <li class="nuevo active"><a href="#tabNueva" data-toggle="tab" role="tab" >+</a>
                         </li>
-                        <li class="active"><a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes </a>
+                        <li ><a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes </a>
                         </li>
                         <li><a href="#tabEspeciales" data-toggle="tab" role="tab">Especiales </a>
                         </li>
@@ -139,7 +139,7 @@
                     </ul>
                     <div class="tab-content">
 
-                        <div class="tab-pane " id="tabNueva">
+                        <div class="tab-pane active" id="tabNueva">
                             <div class="row">
                                 <div class="col-md-12">
                                     <form role="form"  action="{{ url('reservas/create') }}" method="post">
@@ -147,7 +147,7 @@
                                         <!-- Seccion Cliente -->
                                         <div class="panel-heading">
                                             <div class="panel-title">
-                                                Crear Cliente
+                                                Datos del cliente
                                             </div>
                                         </div>
 
@@ -212,11 +212,15 @@
                                                             <?php endfor;?>
                                                         </select>
                                                     </div>
+                                                    <div class="col-md-1">
+                                                        <label>Agencia</label>
+                                                        <input type="text" class="agencia" name="agencia" value="0">
+                                                    </div>
                                                 </div>
                                                 <div class="input-group col-md-12">
                                                     <div class="col-md-3">
                                                         <label>Extras</label>
-                                                        <select class="full-width select2-hidden-accessible" data-init-plugin="select2" multiple="" name="extras" tabindex="-1" aria-hidden="true">
+                                                        <select class="full-width select2-hidden-accessible" data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true">
                                                             <?php foreach ($extras as $extra): ?>
                                                                 <option value="<?php echo $extra->id ?>"><?php echo $extra->name ?></option>
                                                             <?php endforeach ?>
@@ -237,14 +241,18 @@
                                                 </div>
                                                 <br>
                                                 <div class="input-group col-md-12">
-                                                    <label>Comentarios Usuario</label>
-                                                    <textarea class="form-control" name="comments" style="width: 100%">
-                                                        
-                                                    </textarea>
-                                                    <label>Comentarios reserva</label>
-                                                    <textarea class="form-control" name="book_comments" style="width: 100%">
-                                                        
-                                                    </textarea>
+                                                    <div class="col-md-6">
+                                                        <label>Comentarios Usuario</label>
+                                                        <textarea class="form-control" name="comments" style="width: 100%">
+                                                            
+                                                        </textarea>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label>Comentarios reserva</label>
+                                                        <textarea class="form-control book_comments" name="book_comments" style="width: 100%">
+                                                            
+                                                        </textarea>
+                                                    </div>
                                                 </div> 
                                                 <div class="input-group col-md-12">
                                                     
@@ -259,7 +267,7 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane active" id="tabPendientes">
+                        <div class="tab-pane " id="tabPendientes">
                             <div class="row column-seperation">
                                 <div class="pull-left">
                                         <div class="col-xs-12 ">
@@ -287,7 +295,7 @@
                                             <?php foreach ($arrayBooks["nuevas"] as $book): ?>
                                                     <tr>
                                                         <td class ="text-center">
-                                                            <div style="width: 35%;float: left;" class="<?php echo $book->getStatus($book->type_book) ?>">
+                                                            <div style="width: 38%;float: left;border-radius: 15px;height:20px" class="<?php echo $book->getStatus($book->type_book) ?>">
                                                                 <?php if (isset($payment[$book->id])): ?>
                                                                     <?php if ($payment[$book->id] == 0){ echo $payment[$book->id];}else{echo number_format(100/($book->total_price/$payment[$book->id]),0,'.',',')."%";} ?>
                                                                 <?php else: ?>
@@ -375,7 +383,7 @@
                                 <div class="clearfix"></div>
 
                                 <div class="col-md-12">
-                                    <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
+                                    <table class="table table-hover demo-table-search table-responsive" id="tableWithSearch" >
                                         <thead>
                                             <tr>
                                                 <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
@@ -386,7 +394,7 @@
                                                 <th class ="text-center bg-complete text-white" style="width:11%!important">  OUT      </th>
                                                 <th class ="text-center bg-complete text-white" style="width:5%">   Noc         </th>
                                                 <th class ="text-center bg-complete text-white">                    Precio      </th>
-                                                <th class ="text-center bg-complete text-white" style="width:5%">   Estado      </th>
+                                                <th class ="text-center bg-complete text-white" style="width:17%">   Estado      </th>
                                                 <th class ="text-center bg-complete text-white">                    Acciones    </th>
                                             </tr>
                                         </thead>
@@ -394,7 +402,7 @@
                                             <?php foreach ($arrayBooks["especiales"] as $book): ?>
                                                     <tr>
                                                         <td class ="text-center">
-                                                            <div style="width: 35%;float: left;" class="<?php echo $book->getStatus($book->type_book) ?>">
+                                                            <div style="width: 38%;float: left;border-radius: 15px;height:20px" class="<?php echo $book->getStatus($book->type_book) ?>">
                                                                 <?php if (isset($payment[$book->id])): ?>
                                                                     <?php if ($payment[$book->id] == 0){ echo $payment[$book->id];}else{echo number_format(100/($book->total_price/$payment[$book->id]),0,'.',',')."%";} ?>
                                                                 <?php else: ?>
@@ -482,7 +490,7 @@
                                 
                                 <div class="clearfix"></div>
 
-                                <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
+                                <table class="table table-hover demo-table-search table-responsive" id="tableWithSearch" >
                                     <thead>
                                         <tr>
                                             <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
@@ -493,7 +501,7 @@
                                             <th class ="text-center bg-complete text-white" style="width:11%!important">  OUT      </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Noc         </th>
                                             <th class ="text-center bg-complete text-white">                    Precio      </th>
-                                            <th class ="text-center bg-complete text-white" style="width:5%">   Estado      </th>
+                                            <th class ="text-center bg-complete text-white" style="width:17%">   Estado      </th>
                                             <th class ="text-center bg-complete text-white">                    Acciones    </th>
                                         </tr>
                                     </thead>
@@ -501,14 +509,14 @@
                                         <?php foreach ($arrayBooks["pagadas"] as $book): ?>
                                                 <tr>
                                                     <td class ="text-center">
-                                                        <div style="width: 35%;float: left;" class="<?php echo $book->getStatus($book->type_book) ?>">
+                                                        <div style="width: 38%;float: left;border-radius: 15px;height:20px" class="<?php echo $book->getStatus($book->type_book) ?>">
                                                             <?php if (isset($payment[$book->id])): ?>
                                                                 <?php if ($payment[$book->id] == 0){ echo $payment[$book->id];}else{echo number_format(100/($book->total_price/$payment[$book->id]),0,'.',',')."%";} ?>
                                                             <?php else: ?>
                                                             <?php endif ?>
                                                             
                                                         </div>
-                                                        <div style="width: 65%;float: right;">
+                                                        <div style="width: 62%;float: right;">
                                                             <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('reservas/update')}}/<?php echo $book->id ?>"><?php echo substr($book->Customer->name, 0,10)  ?></a>
                                                         </div>
                                                     </td>
@@ -1060,7 +1068,7 @@
                 }
             });
 
-            $('#newroom, .pax, .parking').change(function(event){ 
+            $('#newroom, .pax, .parking, .agencia').change(function(event){ 
 
                 var room = $('#newroom').val();
                 var pax = $('.pax').val();
@@ -1068,11 +1076,14 @@
                 var beneficio = 0;
                 var costPark = 0;
                 var pricePark = 0;
-
+                var agencia = 0;
                 $.get('apartamentos/getPaxPerRooms/'+room).success(function( data ){
                     if (pax < data) {
                         $('.pax').attr('style' , 'background-color:red');
+                        $('.book_comments').empty();
+                        $('.book_comments').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
                     }else{
+                        $('.book_comments').empty();
                         $('.pax').removeAttr('style');
                     }
                 });
@@ -1081,6 +1092,7 @@
                     pricePark = data;
                     $.get('reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
                         price = data;
+                        
                         price = (parseFloat(price) + parseFloat(pricePark));
                         $('.total').empty();
                         $('.total').val(price);
@@ -1088,7 +1100,8 @@
                                 costPark = data;
                                     $.get('reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
                                         cost = data;
-                                        cost = (parseFloat(cost) + parseFloat(costPark));
+                                        agencia = $('.agencia').val();
+                                        cost = (parseFloat(cost) + parseFloat(costPark) + parseFloat(agencia));
                                         $('.cost').empty();
                                         $('.cost').val(cost);
                                         beneficio = price - cost;

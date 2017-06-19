@@ -15,6 +15,7 @@ class Book extends Model
      */
     protected $status = 0;
     protected $parking = 0;
+    protected $typePayment = 0;
     protected $banco = 0;
     protected $cobJorge = 0;
     protected $cobJaime = 0;
@@ -46,6 +47,14 @@ class Book extends Model
             	$array = [1 =>"Reservado", 2 =>"Pagada-la-señal",3 =>"SIN RESPONDER",4 =>"Denegado", 5 =>"Contestado(EMAIL)",6 =>"Cancelada", 7 =>"Bloqueado",8 =>"SubComunidad"];
 
             	return $status = $array[$status];
+            }
+
+    //Para poner nombre al tipo de cobro//
+       static function getTypeCobro($typePayment)
+            {
+                $array = [0 =>"Metalico Jorge", 1 =>"Metalico Jaime",2 =>"Banco"];
+
+                return $typePayment = $array[$typePayment];
             }
 
     //Para poner nombre al parking de la reserva//
@@ -92,10 +101,9 @@ class Book extends Model
     // Funcion para comprobar el precio de la reserva
         static function getPriceBook($start,$finish,$pax,$room)
             {   
-                echo "llega";
-                die();
-                $start = Carbon::createFromFormat('m/d/Y' , $start);
-                $finish = Carbon::createFromFormat('m/d/Y' , $finish);
+
+                $start = Carbon::createFromFormat('d/m/Y' , $start);
+                $finish = Carbon::createFromFormat('d/m/Y' , $finish);
                 $countDays = $finish->diffInDays($start);
 
 

@@ -19,6 +19,7 @@ class PaymentsController extends Controller
 
         return view('backend/payments/index',[
                                                 'pagos' => \App\Payments::all(),
+                                                'book' => new \App\Book(),
                                                 ]);
     }
 
