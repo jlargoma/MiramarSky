@@ -12,7 +12,7 @@
 */
 Route::auth();
 
-Route::get('/',['middleware' => 'authSubAdmin','middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
+// Route::get('/',['middleware' => 'authSubAdmin','middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
 
 
 // Route::get('/admin/propietario',['middleware' => 'authSubAdmin','uses' => 'Admin\BackendController@index']);

@@ -530,8 +530,14 @@ class BookController extends Controller
 
         public function bloqOwned(Request $request)
             {
-                $start = Carbon::CreateFromFormat('d/m/Y',$request->start);
-                $finish = Carbon::CreateFromFormat('d/m/Y',$request->finish);
-                echo Auth::user()->id;
+                
+                $room = \App\Rooms::where('owned', Auth::user()->id)->first();
+
+                $book = new \App\Book();
+                if ($book->existDate($request->start,$request->finish,$room->id)) {
+                    echo "llega";
+                }else{
+                    echo "ya hay una reserva";
+                }
             }
 }

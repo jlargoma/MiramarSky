@@ -65,6 +65,7 @@ class Book extends Model
 
                 return $parking = $array[$parking];
             }
+   
     //Para poner nombre a la agencia//
        static function getAgency($agency)
             {
@@ -73,13 +74,12 @@ class Book extends Model
                 return $agency = $array[$agency];
             }
 
-
     //Para comprobar el dia de la reserva en el calendario
         static function existDate($start,$finish,$room)
             {   
             	if ($room >= 5) {
                     
-                    $books = \App\Book::where('room_id',$room)->get();
+                    $books = \App\Book::where('room_id',$room)->where('type_book',2)->get();
                     $existStart = False;
                     $existFinish = False;        
                     $requestStart = Carbon::createFromFormat('d/m/Y',$start);
