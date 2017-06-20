@@ -206,24 +206,32 @@
                                                     </div>
                                                     <div class="col-md-2">
                                                         <label>Park</label>
-                                                        <select class=" form-control full-width parking" data-init-plugin="select2" name="parking">
+                                                        <select class=" form-control parking"  name="parking">
                                                             <?php for ($i=1; $i <= 4 ; $i++): ?>
                                                                 <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
                                                             <?php endfor;?>
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-1">
-                                                        <label>Agencia</label>
-                                                        <input type="text" class="agencia" name="agencia" value="0">
-                                                    </div>
-                                                </div>
-                                                <div class="input-group col-md-12">
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-2">
                                                         <label>Extras</label>
                                                         <select class="full-width select2-hidden-accessible" data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true">
                                                             <?php foreach ($extras as $extra): ?>
                                                                 <option value="<?php echo $extra->id ?>"><?php echo $extra->name ?></option>
                                                             <?php endforeach ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="input-group col-md-12">
+                                                    <div class="col-md-1">                                                        
+                                                        <label>Cost Agencia</label>
+                                                        <input type="text" class="agencia form-control" name="agencia" value="0">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label>Agencia</label>
+                                                        <select class=" form-control full-width agency" data-init-plugin="select2" name="agency">
+                                                            <?php for ($i=1; $i <= 2 ; $i++): ?>
+                                                                <option value="<?php echo $i ?>"><?php echo $book->getAgency($i) ?></option>
+                                                            <?php endfor;?>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-3">
@@ -244,13 +252,11 @@
                                                     <div class="col-md-6">
                                                         <label>Comentarios Usuario</label>
                                                         <textarea class="form-control" name="comments" style="width: 100%">
-                                                            
                                                         </textarea>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label>Comentarios reserva</label>
                                                         <textarea class="form-control book_comments" name="book_comments" style="width: 100%">
-                                                            
                                                         </textarea>
                                                     </div>
                                                 </div> 

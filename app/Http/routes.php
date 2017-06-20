@@ -92,4 +92,8 @@ Route::get('/',['middleware' => 'authSubAdmin','middleware' => 'authRole','uses'
 //Liquidacion
 	Route::get('admin/liquidacion' , 'LiquidacionController@index');
 
+//Propietario
+	Route::get('admin/propietario' , 'BookController@owned');
+	Route::post('admin/propietario/bloquear' , 'BookController@bloqOwned');
+
 // });

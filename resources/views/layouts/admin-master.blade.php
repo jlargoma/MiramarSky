@@ -37,74 +37,77 @@
 	</head>
 	<body class="fixed-header dashboard">
 	<!-- <body class="fixed-header dashboard  windows desktop sidebar-visible pace-done menu-pin"> -->
-	
+		<?php if (Auth::user()->role == 'Admin' || Auth::user()->role == 'subadmin'): ?>
+			<nav class="page-sidebar" data-pages="sidebar">
+				<!-- END SIDEBAR MENU TOP TRAY CONTENT-->
+				<!-- BEGIN SIDEBAR MENU HEADER-->
+				<div class="sidebar-header">
+					<a href="{{ url('admin') }}"><img src="{{asset ('assets/img/logo_white.png') }}" alt="logo" class="brand" data-src="{{asset ('assets/img/logo_white.png') }}" data-src-retina="{{asset ('assets/img/logo_white_2x.png') }}" width="78" height="22"></a>
+				</div>
+				<!-- END SIDEBAR MENU HEADER-->
+				<!-- START SIDEBAR MENU -->
+				<div class="sidebar-menu">
+					<!-- BEGIN SIDEBAR MENU ITEMS-->
+					<ul class="menu-items">
+
+						<li class="m-t-10 ">
+							<a href="{{ url('admin/reservas') }}" class="detailed">
+								<span class="title">Planning</span>
+								<!-- <span class="details">12 New Updates</span> -->
+							</a>
+							<span class="{{ Request::path() == '/reservas' ? 'bg-success' : '' }} icon-thumbnail"><i class="pg-calender"></i></span>
+						</li>
+						
+						<li class="m-t-10 ">
+							<a href="{{ url('admin/apartamentos') }}" class="detailed">
+								<span class="title">Apartamentos</span>
+							</a>
+							<span class="{{ Request::path() == '/apartamentos' ? 'bg-success' : '' }} icon-thumbnail"><i class="pg-home"></i></span>
+						</li>
+
+						<li class="m-t-10 ">
+							<a href="{{ url('admin/precios') }}" class="detailed">
+								<span class="title">Precios</span>
+							</a>
+							<span class="{{ Request::path() == '/precios' ? 'bg-success' : '' }} icon-thumbnail"><i class="pg-home"></i></span>
+						</li>
+
+						<li class="m-t-10 ">
+							<a href="{{ url('admin/temporadas') }}" class="detailed">
+								<span class="title">Temporadas</span>
+							</a>
+							<span class="{{ Request::path() == '/temporadas' ? 'bg-success' : '' }} icon-thumbnail"><i class=" pg-clock"></i></span>
+						</li>
+						
+						<li class="m-t-10 ">
+							<a href="{{ url('admin/pagos') }}" class="detailed">
+								<span class="title">Pagos de reservas</span>
+							</a>
+							<span class="{{ Request::path() == '/pagos' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa fa-money"></i></span>
+						</li>
+
+						<li class="m-t-10 ">
+							<a href="{{ url('admin/usuarios') }}" class="detailed">
+								<span class="title">Usuarios</span>
+							</a>
+							<span class="{{ Request::path() == '/usuarios' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa fa-user"></i></span>
+						</li>
+
+						<li class="m-t-10 ">
+							<a href="{{ url('admin/clientes') }}" class="detailed">
+								<span class="title">Clientes</span>
+							</a>
+							<span class="{{ Request::path() == '/clientes' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa  fa-users"></i></span>
+						</li>
+					</ul>
+					<div class="clearfix"></div>
+				</div>
+				<!-- END SIDEBAR MENU -->
+			</nav>
+		<?php else: ?>
+		<?php endif ?>
 		<!-- BEGIN SIDEBPANEL-->
-		<nav class="page-sidebar" data-pages="sidebar">
-			<!-- END SIDEBAR MENU TOP TRAY CONTENT-->
-			<!-- BEGIN SIDEBAR MENU HEADER-->
-			<div class="sidebar-header">
-				<a href="{{ url('admin') }}"><img src="{{asset ('assets/img/logo_white.png') }}" alt="logo" class="brand" data-src="{{asset ('assets/img/logo_white.png') }}" data-src-retina="{{asset ('assets/img/logo_white_2x.png') }}" width="78" height="22"></a>
-			</div>
-			<!-- END SIDEBAR MENU HEADER-->
-			<!-- START SIDEBAR MENU -->
-			<div class="sidebar-menu">
-				<!-- BEGIN SIDEBAR MENU ITEMS-->
-				<ul class="menu-items">
-
-					<li class="m-t-10 ">
-						<a href="{{ url('admin/reservas') }}" class="detailed">
-							<span class="title">Planning</span>
-							<!-- <span class="details">12 New Updates</span> -->
-						</a>
-						<span class="{{ Request::path() == '/reservas' ? 'bg-success' : '' }} icon-thumbnail"><i class="pg-calender"></i></span>
-					</li>
-					
-					<li class="m-t-10 ">
-						<a href="{{ url('admin/apartamentos') }}" class="detailed">
-							<span class="title">Apartamentos</span>
-						</a>
-						<span class="{{ Request::path() == '/apartamentos' ? 'bg-success' : '' }} icon-thumbnail"><i class="pg-home"></i></span>
-					</li>
-
-					<li class="m-t-10 ">
-						<a href="{{ url('admin/precios') }}" class="detailed">
-							<span class="title">Precios</span>
-						</a>
-						<span class="{{ Request::path() == '/precios' ? 'bg-success' : '' }} icon-thumbnail"><i class="pg-home"></i></span>
-					</li>
-
-					<li class="m-t-10 ">
-						<a href="{{ url('admin/temporadas') }}" class="detailed">
-							<span class="title">Temporadas</span>
-						</a>
-						<span class="{{ Request::path() == '/temporadas' ? 'bg-success' : '' }} icon-thumbnail"><i class=" pg-clock"></i></span>
-					</li>
-					
-					<li class="m-t-10 ">
-						<a href="{{ url('admin/pagos') }}" class="detailed">
-							<span class="title">Pagos de reservas</span>
-						</a>
-						<span class="{{ Request::path() == '/pagos' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa fa-money"></i></span>
-					</li>
-
-					<li class="m-t-10 ">
-						<a href="{{ url('admin/usuarios') }}" class="detailed">
-							<span class="title">Usuarios</span>
-						</a>
-						<span class="{{ Request::path() == '/usuarios' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa fa-user"></i></span>
-					</li>
-
-					<li class="m-t-10 ">
-						<a href="{{ url('admin/clientes') }}" class="detailed">
-							<span class="title">Clientes</span>
-						</a>
-						<span class="{{ Request::path() == '/clientes' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa  fa-users"></i></span>
-					</li>
-				</ul>
-				<div class="clearfix"></div>
-			</div>
-			<!-- END SIDEBAR MENU -->
-		</nav>
+		
 		<!-- END SIDEBAR -->
 		<!-- START PAGE-CONTAINER -->
 		<div class="page-container ">
@@ -160,21 +163,14 @@
 					<!-- START User Info-->
 					<div class="visible-lg visible-md m-t-10">
 						<div class="pull-left p-r-10 p-t-10 fs-16 font-heading">
-							<span class="semi-bold">{{ Auth::user()->name }}</span>
-						</div>
-						<div class="dropdown pull-right">
 							<button class="profile-dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<span class="thumbnail-wrapper d32 circular inline m-t-5">
-									<img src="{{asset ('assets/img/profiles/avatar.jpg') }}" alt="" data-src="{{asset ('assets/img/profiles/avatar.jpg') }}" data-src-retina="{{asset ('assets/img/profiles/avatar_small2x.jpg') }}" width="32" height="32">
-								</span>
+								<span class="semi-bold">{{ Auth::user()->name }}</span>
 							</button>
 							<ul class="dropdown-menu profile-dropdown" role="menu">
-								<li><a href="#"><i class="pg-settings_small"></i> Settings</a>
 								</li>
 								<li class="bg-master-lighter">
 									<a href="{{ url('logout') }}" class="clearfix">
 										<span class="pull-left">Logout</span>
-										<span class="pull-right"><i class="pg-power"></i></span>
 									</a>
 								</li>
 							</ul>

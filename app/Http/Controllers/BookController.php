@@ -469,4 +469,69 @@ class BookController extends Controller
                     echo "cambiada<br>";
                 }
             }
+
+    // Pagina de propietario
+        public function owned()
+            {
+                $firstDayOfTheYear = new Carbon('first day of September 2016');
+                
+                $mes = array();
+                $arrayReservas = array();
+                $arrayMonths = array();
+
+                $room = \App\Rooms::where('owned', Auth::user()->id)->first();
+
+                $reservas = \App\Book::whereIn('type_book',[2,7,8])->where('room_id',$room->id)->orderBy('start', 'ASC')->get();
+
+                foreach ($reservas as $reserva) {
+                    $dia = Carbon::createFromFormat('Y-m-d',$reserva->start);
+                    $start = Carbon::createFromFormat('Y-m-d',$reserva->start);
+                    $finish = Carbon::createFromFormat('Y-m-d',$reserva->finish);
+                    $diferencia = $start->diffInDays($finish);
+                    for ($i=0; $i <= $diferencia; $i++) {
+                        $arrayReservas[$reserva->room_id][$dia->copy()->format('Y')][$dia->copy()->format('n')][$dia->copy()->format('j')] = $reserva;
+                        $dia = $dia->addDay();
+                    }
+                }
+
+                for ($i=1; $i <= 12; $i++) { 
+                    $mes[$firstDayOfTheYear->copy()->format('n')] = $firstDayOfTheYear->copy()->format('M Y');
+                    $firstDayOfTheYear = $firstDayOfTheYear->addMonth();
+                }
+
+                for ($i=1; $i <= 12; $i++) { 
+                    
+                    $startMonth = $firstDayOfTheYear->copy()->startOfMonth();
+                    $endMonth   = $firstDayOfTheYear->copy()->endOfMonth();
+                    $countDays  = $endMonth->diffInDays($startMonth);
+                    $day        = $startMonth;
+
+
+                    for ($j=1; $j <= $countDays+1 ; $j++) { 
+                            $arrayMonths[$firstDayOfTheYear->copy()->format('n')] = $day->format('d');     
+
+                            $day = $day->addDay();
+                    }
+                    
+                    $firstDayOfTheYear->addMonth();                                    
+
+                }
+
+                return view('backend.owned.index',[
+                                                    'user'     => \App\User::find(Auth::user()->id),
+                                                    'room'     => $room,
+                                                    'books'    => \App\Book::where('room_id', $room->id)->orderBy('start','ASC')->get(),
+                                                    'mes'      => $mes,
+                                                    'reservas' => $arrayReservas,
+                                                    'date' => new Carbon('first day of September 2016'),
+                                                    'arrayMonths' => $arrayMonths,
+                                                    ]);
+            }
+
+        public function bloqOwned(Request $request)
+            {
+                $start = Carbon::CreateFromFormat('d/m/Y',$request->start);
+                $finish = Carbon::CreateFromFormat('d/m/Y',$request->finish);
+                echo Auth::user()->id;
+            }
 }

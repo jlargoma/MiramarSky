@@ -20,6 +20,7 @@ class Book extends Model
     protected $cobJorge = 0;
     protected $cobJaime = 0;
     protected $pendiente = 0;
+    protected $agency = 0;
 
         public function customer()
             {
@@ -64,6 +65,14 @@ class Book extends Model
 
                 return $parking = $array[$parking];
             }
+    //Para poner nombre a la agencia//
+       static function getAgency($agency)
+            {
+                $array = [1 =>"Booking", 2 =>"Trivago"];
+
+                return $agency = $array[$agency];
+            }
+
 
     //Para comprobar el dia de la reserva en el calendario
         static function existDate($start,$finish,$room)
