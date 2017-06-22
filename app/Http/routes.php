@@ -19,7 +19,7 @@ Route::get('/','HomeController@index');
 // Route::get('/admin/propietario',['middleware' => 'authSubAdmin','uses' => 'Admin\BackendController@index']);
 // Route::get('/admin/propietario',['middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
 
-// Route::group(['middleware' => 'authSubAdmin'], function () {
+Route::group(['middleware' => 'authSubAdmin'], function () {
 
 //Planing 
 	
@@ -97,4 +97,4 @@ Route::get('/','HomeController@index');
 	Route::get('admin/propietario' , 'BookController@owned');
 	Route::post('admin/propietario/bloquear' , 'BookController@bloqOwned');
 
-// });
+});

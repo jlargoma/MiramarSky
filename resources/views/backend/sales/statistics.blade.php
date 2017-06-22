@@ -11,10 +11,7 @@
 @endsection
 
 @section('content')
-<?php use \Carbon\Carbon; 
-setlocale(LC_TIME, "ES");
-setlocale(LC_TIME, "es_ES");
-?>
+<?php use \Carbon\Carbon; ?>
 
 <style>
 	.table>thead>tr>th {
@@ -43,13 +40,6 @@ setlocale(LC_TIME, "es_ES");
 		font-size: 15px!important;
 		text-transform: capitalize!important;
 	}
-	
-	.red{
-		color: red;
-	}
-	.blue{
-		color: blue;
-	}
 </style>
 <div class="container-fluid padding-5 sm-padding-10">
 
@@ -57,39 +47,33 @@ setlocale(LC_TIME, "es_ES");
     <div class="row">
         <div class="col-md-12">
 			<div class="tab-content">
-				<div class="pull-left">
-				        <div class="col-xs-12 ">
-				            <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
-				        </div>
-				    </div>
-				
-				    <div class="clearfix"></div>
+
 			    <div class="tab-pane active" id="tabPrices">
-			        <table class="table table-hover demo-table-search table-responsive" id="tableWithSearch" >
+			        <table class="table table-hover  table-responsive" >
 			        	<thead >
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Nombre</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Pax</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Apto</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Entrada</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Salida</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%"><i class="fa fa-moon-o"></i></th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">PVP</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Cob <br> Banco</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Cob <br> Jorge</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Cob <br> Jaime</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Pend</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Ingreso <br> Total</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">%Ben</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Coste <br> Total</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Coste <br> Apto</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Park</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Lujo</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Limp</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Agencia</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Ben <br> Jorge</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">% <br> Jorge</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Ben <br> Jaime</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">% <br> Jaime</th>
+			        		<th class ="text-center bg-complete text-white" >Nombre</th>
+			        		<th class ="text-center bg-complete text-white">Pax</th>
+			        		<th class ="text-center bg-complete text-white">Apto</th>
+			        		<th class ="text-center bg-complete text-white">Entrada</th>
+			        		<th class ="text-center bg-complete text-white">Salida</th>
+			        		<th class ="text-center bg-complete text-white"><i class="fa fa-moon-o"></i></th>
+			        		<th class ="text-center bg-complete text-white">PVP</th>
+			        		<th class ="text-center bg-complete text-white">Cob <br> Banco</th>
+			        		<th class ="text-center bg-complete text-white">Cob <br> Jorge</th>
+			        		<th class ="text-center bg-complete text-white">Cob <br> Jaime</th>
+			        		<th class ="text-center bg-complete text-white">Pend</th>
+			        		<th class ="text-center bg-complete text-white">Ingreso <br> Total</th>
+			        		<th class ="text-center bg-complete text-white">%Ben</th>
+			        		<th class ="text-center bg-complete text-white">Coste <br> Total</th>
+			        		<th class ="text-center bg-complete text-white">Coste <br> Apto</th>
+			        		<th class ="text-center bg-complete text-white">Park</th>
+			        		<th class ="text-center bg-complete text-white">Lujo</th>
+			        		<th class ="text-center bg-complete text-white">Limp</th>
+			        		<th class ="text-center bg-complete text-white">Agencia</th>
+			        		<th class ="text-center bg-complete text-white">Ben <br> Jorge</th>
+			        		<th class ="text-center bg-complete text-white">% <br> Jorge</th>
+			        		<th class ="text-center bg-complete text-white">Ben <br> Jaime</th>
+			        		<th class ="text-center bg-complete text-white">% <br> Jaime</th>
 			        	</thead>
 			        	<tbody >
 			        		<?php foreach ($books as $book): ?>
@@ -102,43 +86,34 @@ setlocale(LC_TIME, "es_ES");
 				        			<td class="text-center">
 				        				<?php 
     										$start = Carbon::createFromFormat('Y-m-d',$book->start);
-    										echo $start->formatLocalized('%d %b');
+    										echo $start->format('d-m-Y');
     									?>
 				        			</td>
 				        			<td class="text-center">
 				        				<?php 
     										$finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-    										echo $finish->formatLocalized('%d %b');
+    										echo $finish->format('d-m-Y');
     									?>
 				        			</td>
 				        			<td class="text-center"><?php echo $book->nigths ?></td>
-				        			<td class="text-center"><?php echo number_format($book->total_price,2,',','.') ?> €</td>
+				        			<td class="text-center"><?php echo number_format($book->total_price,2,',','.') ?></td>
 
-				        			<td class="text-center pagos bi"><?php echo number_format($book->getPayment(2),2,',','.'); ?> €</td>
-				        			<td class="text-center pagos"><?php echo number_format($book->getPayment(0),2,',','.'); ?> €</td>
-				        			<td class="text-center pagos"><?php echo number_format($book->getPayment(1),2,',','.'); ?> €</td>
-									<td class="text-center pagos pendiente"><?php echo number_format(($book->total_price - $book->getPayment(4)),2,',','.')." €"; ?></td>
-				        			<td class="text-center coste bi" style="border-left: 1px solid black;"><?php echo number_format($book->total_ben,2,',','.') ?> €</td>
+				        			<td class="text-center pagos bi"><?php echo $book->getPayment(2)." €"; ?></td>
+				        			<td class="text-center pagos"><?php echo $book->getPayment(0)." €"; ?></td>
+				        			<td class="text-center pagos"><?php echo $book->getPayment(1)." €"; ?></td>
+
+				        			<td class="text-center coste bi" style="border-left: 1px solid black;"><?php echo $book->total_ben ?></td>
 				        			<td class="text-center coste"><?php echo number_format($book->inc_percent,0)." %" ?></td>
-				        			<td class="text-center coste"><?php echo number_format($book->cost_total,2,',','.')?> €</td>
-				        			<td class="text-center coste"><?php echo number_format($book->cost_apto,2,',','.')?> €</td>
-				        			<td class="text-center coste"><?php echo number_format($book->cost_park,2,',','.')?> €</td>
-				        			<td class="text-center coste" ><?php echo number_format($book->cost_lujo,2,',','.')?> €</td>
-				        			<td class="text-center coste">		<?php echo number_format($book->sup_limp,2,',','.') ?>€</td>
-				        			<td class="text-center coste bf">	<?php echo number_format($book->agency,2,',','.') ?>€</td>
+				        			<td class="text-center coste"><?php echo number_format($book->cost_total,2,',','.')." €" ?></td>
+				        			<td class="text-center coste"><?php echo number_format($book->cost_apto,2,',','.')." €" ?></td>
+				        			<td class="text-center coste"><?php echo number_format($book->cost_park,2,',','.')." €" ?></td>
+				        			<td class="text-center coste" ><?php echo number_format($book->cost_lujo,2,',','.')." €" ?></td>
+				        			<td class="text-center coste">0</td>
+				        			<td class="text-center coste bf">0</td>
 				        			<td class="text-center"><?php echo number_format($book->ben_jorge,2,',','.') ?></td>
-				        			<?php if ($book->total_ben > 0): ?>
-				        				<td class="text-center"><?php echo number_format(($book->total_ben/$book->ben_jorge)*100)."%" ?></td>
-				        			<?php else: ?>
-				        				<td class="text-center"> 0%</td>
-				        			<?php endif ?>
-				        			
+				        			<td class="text-center"> echo</td>
 				        			<td class="text-center"><?php echo number_format($book->ben_jaime,2,',','.') ?></td>
-				        			<?php if ($book->total_ben > 0): ?>
-				        				<td class="text-center"><?php echo number_format(($book->total_ben/$book->ben_jaime)*100)."%" ?></td>
-				        			<?php else: ?>
-				        				<td class="text-center"> 0%</td>
-				        			<?php endif ?>
+				        			<td class="text-center"></td>
 				        		</tr>
 			        		<?php endforeach ?>
 			        		
@@ -185,10 +160,8 @@ setlocale(LC_TIME, "es_ES");
 	  			
 	  			var pendCobro = pendientes[ind];
 
-	  			if ($(pendCobro).text() == '0,00 €') {
-	  				$(pendCobro).addClass("blue");
-	  			}else{
-	  				$(pendCobro).addClass("red");
+	  			if ($(pendCobro).text() == '0 €') {
+	  				$(pendCobro).css('color', 'blue');
 	  			};
 			}
 		}
@@ -197,9 +170,6 @@ setlocale(LC_TIME, "es_ES");
 		
 			
 		colorPendienteCobro();
-		$('.dataTables_paginate').click(function(event) {
-			colorPendienteCobro();
-		});
 	});
 </script>
 @endsection

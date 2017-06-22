@@ -79,7 +79,7 @@ class Book extends Model
             {   
             	if ($room >= 5) {
                     
-                    $books = \App\Book::where('room_id',$room)->where('type_book',2)->get();
+                    $books = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,7,8])->get();
                     $existStart = False;
                     $existFinish = False;        
                     $requestStart = Carbon::createFromFormat('d/m/Y',$start);
@@ -337,7 +337,7 @@ class Book extends Model
                 return $beneficio;
             }
     
-    //Funcion para calcular el beneficio de Jorge
+    //Funcion para calcular el beneficio de Jaime
         static public function getBenJaime($ben,$id)
             {
                 $room = \App\Rooms::find($id);
@@ -373,15 +373,23 @@ class Book extends Model
                 //     $this->banco += $payment->import;
                 // }
                 foreach ($this->pago as $pago) {
-                    if ($pago->type == $tipo) {
-                        $this->banco = $pago->import;
+                    if ($pago->type == $tipo && $tipo == 2) {
+                        $this->banco += $pago->import;
+                    }else if ($pago->type == $tipo && $tipo == 1) {
+                        $this->cobJorge += $pago->import;
+                    }else if ($pago->type == $tipo && $tipo == 0) {
+                        $this->cobJaime += $pago->import;
                     }
                     
                 }
                 if ($tipo == 2) {
                     return  $this->banco;
-                }else{
-                    return 0;
+                }else if($tipo == 1) {
+                    return  $this->cobJorge;
+                }else if($tipo == 0) {
+                    return  $this->cobJaime;
+                }else if($tipo == 4){
+                    return $this->banco + $this->cobJorge + $this->cobJaime;
                 }
                 
             }

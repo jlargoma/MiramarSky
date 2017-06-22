@@ -479,6 +479,11 @@ class BookController extends Controller
                 $arrayReservas = array();
                 $arrayMonths = array();
 
+                $total = 0;
+                $apto = 0;
+                $park = 0;
+                $lujo = 0;
+
                 $room = \App\Rooms::where('owned', Auth::user()->id)->first();
 
                 $reservas = \App\Book::whereIn('type_book',[2,7,8])->where('room_id',$room->id)->orderBy('start', 'ASC')->get();
@@ -516,15 +521,28 @@ class BookController extends Controller
                     $firstDayOfTheYear->addMonth();                                    
 
                 }
+                $books = \App\Book::where('room_id', $room->id)->orderBy('start','ASC')->get();
+
+                
+                foreach ($books as $book) {
+                    $total +=  $book->cost_total;
+                    $apto += $book->cost_apto;
+                    $park += $book->cost_park;
+                    $lujo += $book->cost_lujo;
+                }
 
                 return view('backend.owned.index',[
-                                                    'user'     => \App\User::find(Auth::user()->id),
-                                                    'room'     => $room,
-                                                    'books'    => \App\Book::where('room_id', $room->id)->orderBy('start','ASC')->get(),
-                                                    'mes'      => $mes,
-                                                    'reservas' => $arrayReservas,
-                                                    'date' => new Carbon('first day of September 2016'),
+                                                    'user'        => \App\User::find(Auth::user()->id),
+                                                    'room'        => $room,
+                                                    'books'       => $books,
+                                                    'mes'         => $mes,
+                                                    'reservas'    => $arrayReservas,
+                                                    'date'        => new Carbon('first day of September 2016'),
                                                     'arrayMonths' => $arrayMonths,
+                                                    'total'       => $total,
+                                                    'apto'       => $apto,
+                                                    'park'       => $park,
+                                                    'lujo'       => $lujo,
                                                     ]);
             }
 
@@ -535,7 +553,27 @@ class BookController extends Controller
 
                 $book = new \App\Book();
                 if ($book->existDate($request->start,$request->finish,$room->id)) {
-                    echo "llega";
+                    $customer = \App\Customers::where('name' , 'Bloqueo '.Auth::user()->name)->first();
+                    if (count($customer) > 0) {
+                        echo "Ya existe ese usuario";
+                        $book->user_id = Auth::user()->id;
+                        
+                    }else{
+                        $bloqueo = new \App\Customers();
+                        $bloqueo->user_id = Auth::user()->id;
+                        $bloqueo->name = 'Bloqueo '.Auth::user()->name;
+
+                        $bloqueo->save();
+
+                        $book->user_id = Auth::user()->id;
+                        $book->customer_id = $bloqueo->id;
+                        $book->room_id = $room->id;
+                        $book->start = Carbon::CreateFromFormat('d/m/Y',$request->start);
+                        $book->finish = Carbon::CreateFromFormat('d/m/Y',$request->finish);
+                        $book->type_book = 7;
+
+                        $book->save();
+                    }
                 }else{
                     echo "ya hay una reserva";
                 }

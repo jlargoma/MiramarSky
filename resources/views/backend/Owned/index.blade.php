@@ -100,6 +100,11 @@ setlocale(LC_TIME, "es_ES");
 		<div class="text-center"><h1 class="text-complete"><?php echo strtoupper($user->name) ?></h1></div>
 		<div class="col-md-3">
 			<button class="bloq-fecha">Bloquear Fechas</button>
+			<button class="liquidacion">Bloquear Fechas</button>
+		</div>
+		<div style="clear: both;"></div>
+		<br>
+		<div class="col-md-3">
 			<div id="bloq" style="display: none">
 				<div class="col-md-12 padding-10" style="border: 1px solid  black;border-radius: 30px">
 					<form role="form"  action="{{ url('/admin/propietario/bloquear') }}" method="post">
@@ -119,7 +124,44 @@ setlocale(LC_TIME, "es_ES");
 			</div>
 		</div>
 		<div style="clear: both;"></div>
+		<br>
+		<div class="col-md-6">
+			<div id="liquidacion" style="display: none">
+				<div class="col-md-12 padding-10" style="border: 1px solid  black;border-radius: 30px">
+					<table class="table table-hover  no-footer" id="basicTable" role="grid">
+					</table>
+				</div>
+			</div>
+		</div>
+		
+		<div style="clear: both;"></div>
+		<br>
 		<?php if (count($room) > 0): ?>
+			<div class="col-md-6">
+				<table class="table table-hover  no-footer" id="basicTable" role="grid">
+					<thead>
+						<th class ="text-center bg-complete text-white">Total</th>
+						<th class ="text-center bg-complete text-white">Coste apartamento</th>
+						<th class ="text-center bg-complete text-white">Parking</th>
+						<?php if ($room->luxury == 1): ?>
+							<th class ="text-center bg-complete text-white">Sup.Lujo</th>
+						<?php else: ?>
+						<?php endif ?>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="text-center"><?php echo number_format($total,2,',','.'); ?>€</td>
+							<td class="text-center"><?php echo number_format($apto,2,',','.'); ?>€</td>
+							<td class="text-center"><?php echo number_format($park,2,',','.'); ?>€</td>
+							<?php if ($room->luxury == 1): ?>
+								<td class="text-center"><?php echo number_format($lujo,2,',','.'); ?>€</td>
+							<?php else: ?>
+							<?php endif ?>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div style="clear: both;"></div>
 			<div class="col-md-6">
 				<table class="table table-hover  no-footer" id="basicTable" role="grid">
 					
@@ -273,6 +315,15 @@ setlocale(LC_TIME, "es_ES");
 			$('.bloq-fecha').click(function(event) {
 				
 				var x = document.getElementById('bloq');
+				    if (x.style.display === 'none') {
+				        x.style.display = 'block';
+				    } else {
+				        x.style.display = 'none';
+				    }
+			});
+			$('.liquidacion').click(function(event) {
+				
+				var x = document.getElementById('liquidacion');
 				    if (x.style.display === 'none') {
 				        x.style.display = 'block';
 				    } else {

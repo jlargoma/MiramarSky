@@ -128,9 +128,9 @@
             <div class="col-md-7 col-xs-12">
                 <div class="panel">
                     <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="collapse">
-                        <li class="nuevo active"><a href="#tabNueva" data-toggle="tab" role="tab" >+</a>
+                        <li class="nuevo"><a href="#tabNueva" data-toggle="tab" role="tab" >+</a>
                         </li>
-                        <li ><a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes </a>
+                        <li class="active" ><a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes </a>
                         </li>
                         <li><a href="#tabEspeciales" data-toggle="tab" role="tab">Especiales </a>
                         </li>
@@ -139,10 +139,10 @@
                     </ul>
                     <div class="tab-content">
 
-                        <div class="tab-pane active" id="tabNueva">
+                        <div class="tab-pane " id="tabNueva">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <form role="form"  action="{{ url('reservas/create') }}" method="post">
+                                    <form role="form"  action="{{ url('/admin/reservas/create') }}" method="post">
                                         
                                         <!-- Seccion Cliente -->
                                         <div class="panel-heading">
@@ -273,7 +273,7 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane " id="tabPendientes">
+                        <div class="tab-pane active" id="tabPendientes">
                             <div class="row column-seperation">
                                 <div class="pull-left">
                                         <div class="col-xs-12 ">
@@ -285,7 +285,8 @@
         
                                     <table class="table table-hover demo-table-search table-responsive" id="tableWithSearch" >
                                         <thead>
-                                            <tr>
+                                            <tr>   
+                                                <th class ="text-center bg-complete text-white" style="width:5%"> Pagos </th>
                                                 <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
                                                 <th class ="text-center bg-complete text-white" style="width:2%">   Pax         </th>
                                                 <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
@@ -303,14 +304,17 @@
                                                         <td class ="text-center">
                                                             <div style="width: 38%;float: left;border-radius: 15px;height:20px" class="<?php echo $book->getStatus($book->type_book) ?>">
                                                                 <?php if (isset($payment[$book->id])): ?>
-                                                                    <?php if ($payment[$book->id] == 0){ echo $payment[$book->id];}else{echo number_format(100/($book->total_price/$payment[$book->id]),0,'.',',')."%";} ?>
+                                                                    <?php if ($payment[$book->id] == 0){ echo $payment[$book->id];}else{
+                                                                        echo '<input class="progress-circle" data-color="danger" data-pages-progress="circle" value="'.number_format(100/($book->total_price/$payment[$book->id]),0,'.',',').'" type="hidden">'.number_format(100/($book->total_price/$payment[$book->id]),0,'.',',').'%';} ?>
+
                                                                 <?php else: ?>
                                                                 <?php endif ?>
                                                                 
                                                             </div>
-                                                            <div style="width: 65%;float: right;">
-                                                                <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('reservas/update')}}/<?php echo $book->id ?>"><?php echo substr($book->Customer->name, 0,10)  ?></a>
-                                                            </div>
+                                                        </td>
+                                                        <td class ="text-center">
+                                                                <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo substr($book->customer['name'], 0,10)  ?></a>
+                                                            
                                                         </td>
 
                                                         <td class ="text-center"><?php echo $book->pax ?></td>
@@ -342,7 +346,12 @@
                                                             ?>
                                                         </td>
                                                         <td class ="text-center"><?php echo $book->nigths ?></td>
-                                                        <td class ="text-center"><?php echo $book->total_price."€" ?></td>
+                                                        <td class ="text-center"><?php echo $book->total_price."€" ?><br>
+                                                                                <?php if (isset($payment[$book->id])): ?>
+                                                                                    <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
+                                                                                <?php else: ?>
+                                                                                <?php endif ?>
+                                                        </td>
                                                         <td class ="text-center">
                                                             <select class="status form-control" data-id="<?php echo $book->id ?>" >
                                                                 <?php for ($i=1; $i < 9; $i++): ?> 
@@ -358,8 +367,8 @@
                                                         <td>
                                                             <div class="btn-group">
                                                                 <!--  -->
-                                                                <?php if ($book->Customer->phone != 0): ?>
-                                                                        <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->Customer->phone ?>"><i class="pg-phone"></i>
+                                                                <?php if ($book->customer['phone'] != 0): ?>
+                                                                        <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->customer['phone'] ?>"><i class="pg-phone"></i>
                                                                         </a>
                                                                 <?php endif ?>
                                                                 
@@ -392,6 +401,7 @@
                                     <table class="table table-hover demo-table-search table-responsive" id="tableWithSearch" >
                                         <thead>
                                             <tr>
+                                                <th class ="text-center bg-complete text-white" style="width:5%">  Pagos     </th>
                                                 <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
                                                 <!-- <th class ="text-center bg-complete text-white" style="width:5%">   Telefono    </th> -->
                                                 <th class ="text-center bg-complete text-white" style="width:2%">   Pax         </th>
@@ -407,17 +417,16 @@
                                         <tbody>
                                             <?php foreach ($arrayBooks["especiales"] as $book): ?>
                                                     <tr>
-                                                        <td class ="text-center">
-                                                            <div style="width: 38%;float: left;border-radius: 15px;height:20px" class="<?php echo $book->getStatus($book->type_book) ?>">
-                                                                <?php if (isset($payment[$book->id])): ?>
-                                                                    <?php if ($payment[$book->id] == 0){ echo $payment[$book->id];}else{echo number_format(100/($book->total_price/$payment[$book->id]),0,'.',',')."%";} ?>
-                                                                <?php else: ?>
-                                                                <?php endif ?>
-                                                                
-                                                            </div>
-                                                            <div style="width: 65%;float: right;">
-                                                                <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('reservas/update')}}/<?php echo $book->id ?>"><?php echo substr($book->Customer->name, 0,10)  ?></a>
-                                                            </div>
+                                                        <td class ="text-center">                                                            
+                                                            <?php if (isset($payment[$book->id])): ?>
+                                                                <?php if ($payment[$book->id] == 0){ echo $payment[$book->id];}else{
+                                                                    echo '<input class="progress-circle" data-color="danger" data-pages-progress="circle" value="'.number_format(100/($book->total_price/$payment[$book->id]),0,'.',',').'" type="hidden">'.number_format(100/($book->total_price/$payment[$book->id]),0,'.',',').'%';} ?>
+
+                                                            <?php else: ?>
+                                                            <?php endif ?>
+                                                        </td>
+                                                        <td class ="text-center">                                                            
+                                                            <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo substr($book->customer['name'], 0,10)  ?></a>
                                                         </td>
 
                                                         <td class ="text-center"><?php echo $book->pax ?></td>
@@ -465,8 +474,8 @@
                                                         <td>
                                                             <div class="btn-group">
                                                                 <!--  -->
-                                                                <?php if ($book->Customer->phone != 0): ?>
-                                                                        <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->Customer->phone ?>"><i class="pg-phone"></i>
+                                                                <?php if ($book->customer['phone'] != 0): ?>
+                                                                        <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->customer['phone'] ?>"><i class="pg-phone"></i>
                                                                         </a>
                                                                 <?php endif ?>
                                                                 
@@ -499,6 +508,7 @@
                                 <table class="table table-hover demo-table-search table-responsive" id="tableWithSearch" >
                                     <thead>
                                         <tr>
+                                            <th class ="text-center bg-complete text-white" style="width:5%">  Pagos     </th>
                                             <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
                                             <!-- <th class ="text-center bg-complete text-white" style="width:5%">   Telefono    </th> -->
                                             <th class ="text-center bg-complete text-white" style="width:2%">   Pax         </th>
@@ -514,17 +524,16 @@
                                     <tbody>
                                         <?php foreach ($arrayBooks["pagadas"] as $book): ?>
                                                 <tr>
+                                                    <td class ="text-center">                                                    
+                                                        <?php if (isset($payment[$book->id])): ?>
+                                                            <?php if ($payment[$book->id] == 0){ echo $payment[$book->id];}else{
+                                                                echo '<input class="progress-circle" data-color="danger" data-pages-progress="circle" value="'.number_format(100/($book->total_price/$payment[$book->id]),0,'.',',').'" type="hidden">'.number_format(100/($book->total_price/$payment[$book->id]),0,'.',',').'%';} ?>
+
+                                                        <?php else: ?>
+                                                        <?php endif ?>
+                                                    </td>   
                                                     <td class ="text-center">
-                                                        <div style="width: 38%;float: left;border-radius: 15px;height:20px" class="<?php echo $book->getStatus($book->type_book) ?>">
-                                                            <?php if (isset($payment[$book->id])): ?>
-                                                                <?php if ($payment[$book->id] == 0){ echo $payment[$book->id];}else{echo number_format(100/($book->total_price/$payment[$book->id]),0,'.',',')."%";} ?>
-                                                            <?php else: ?>
-                                                            <?php endif ?>
-                                                            
-                                                        </div>
-                                                        <div style="width: 62%;float: right;">
-                                                            <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('reservas/update')}}/<?php echo $book->id ?>"><?php echo substr($book->Customer->name, 0,10)  ?></a>
-                                                        </div>
+                                                        <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo substr($book->customer['name'], 0,10)  ?></a>
                                                     </td>
 
                                                     <td class ="text-center"><?php echo $book->pax ?></td>
@@ -572,8 +581,8 @@
                                                     <td>
                                                         <div class="btn-group">
                                                             <!--  -->
-                                                            <?php if ($book->Customer->phone != 0): ?>
-                                                                    <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->Customer->phone ?>"><i class="pg-phone"></i>
+                                                            <?php if ($book->customer['phone'] != 0): ?>
+                                                                    <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->customer['phone'] ?>"><i class="pg-phone"></i>
                                                                     </a>
                                                             <?php endif ?>
                                                             
@@ -662,9 +671,9 @@
                                                                         </td>
                                                                 <?php else: ?>
                                                                     
-                                                                        <td style='border:1px solid black;width: 3%' title="<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->Customer->name ?>" class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?>">
+                                                                        <td style='border:1px solid black;width: 3%' title="<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->customer['name'] ?>" class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?>">
 
-                                                                       <a href="{{url ('reservas/update')}}/<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->id ?>">
+                                                                       <a href="{{url ('/admin/reservas/update')}}/<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->id ?>">
                                                                            <div style="width: 100%;height: 100%">
                                                                                &nbsp;
                                                                            </div>
@@ -747,9 +756,9 @@
                                                                         </td>
                                                                 <?php else: ?>
                                                                     
-                                                                        <td style='border:1px solid black;width: 3%' title="<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->Customer->name ?>" class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?>">
+                                                                        <td style='border:1px solid black;width: 3%' title="<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->customer['name'] ?>" class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?>">
 
-                                                                       <a href="{{url ('reservas/update')}}/<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->id ?>">
+                                                                       <a href="{{url ('/admin/reservas/update')}}/<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->id ?>">
                                                                            <div style="width: 100%;height: 100%">
                                                                                &nbsp;
                                                                            </div>
@@ -832,9 +841,9 @@
                                                                         </td>
                                                                 <?php else: ?>
                                                                     
-                                                                        <td style='border:1px solid black;width: 3%' title="<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->Customer->name ?>" class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?>">
+                                                                        <td style='border:1px solid black;width: 3%' title="<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->customer['name'] ?>" class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?>">
 
-                                                                       <a href="{{url ('reservas/update')}}/<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->id ?>">
+                                                                       <a href="{{url ('/admin/reservas/update')}}/<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->id ?>">
                                                                            <div style="width: 100%;height: 100%">
                                                                                &nbsp;
                                                                            </div>
@@ -917,9 +926,9 @@
                                                                         </td>
                                                                 <?php else: ?>
                                                                     
-                                                                        <td style='border:1px solid black;width: 3%' title="<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->Customer->name ?>" class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?>">
+                                                                        <td style='border:1px solid black;width: 3%' title="<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->customer['name'] ?>" class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?>">
 
-                                                                       <a href="{{url ('reservas/update')}}/<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->id ?>">
+                                                                       <a href="{{url ('/admin/reservas/update')}}/<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->id ?>">
                                                                            <div style="width: 100%;height: 100%">
                                                                                &nbsp;
                                                                            </div>
@@ -1017,7 +1026,7 @@
                     var room = $(this).val();
                     var status = "";
                 }
-                $.get('/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
+                $.get('//admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
                     alert(data);
                     // window.location.reload();
                 });
@@ -1039,7 +1048,7 @@
             //         var room = "";
             //     }
             //     /* $.get('/admin/apartamentos/update/'+id, {  id: id, status:status, room:room }, function(data) { */
-            //     // $.get('/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
+            //     // $.get('//admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
             //     //     alert(data);
             //     //     window.location.reload();
             //     // });
@@ -1094,17 +1103,17 @@
                     }
                 });
 
-                $.get('reservas/getPricePark', {park: park, noches: diferencia}).success(function( data ) {
+                $.get('/admin/reservas/getPricePark', {park: park, noches: diferencia}).success(function( data ) {
                     pricePark = data;
-                    $.get('reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                    $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
                         price = data;
                         
                         price = (parseFloat(price) + parseFloat(pricePark));
                         $('.total').empty();
                         $('.total').val(price);
-                            $.get('reservas/getCostPark', {park: park, noches: diferencia}).success(function( data ) {
+                            $.get('/admin/reservas/getCostPark', {park: park, noches: diferencia}).success(function( data ) {
                                 costPark = data;
-                                    $.get('reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                                    $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
                                         cost = data;
                                         agencia = $('.agencia').val();
                                         cost = (parseFloat(cost) + parseFloat(costPark) + parseFloat(agencia));
@@ -1131,7 +1140,7 @@
             $('#date').change(function(event) {
                 
                 var month = $(this).val();
-                window.location = '/reservas/'+month;
+                window.location = '//admin/reservas/'+month;
             });
             
         });

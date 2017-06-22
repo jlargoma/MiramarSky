@@ -37,7 +37,7 @@
 	</head>
 	<body class="fixed-header dashboard">
 	<!-- <body class="fixed-header dashboard  windows desktop sidebar-visible pace-done menu-pin"> -->
-		<?php if (Auth::user()->role == 'Admin' || Auth::user()->role == 'subadmin'): ?>
+		<?php if (Auth::user()->role == 'admin' || Auth::user()->role == 'subadmin'): ?>
 			<nav class="page-sidebar" data-pages="sidebar">
 				<!-- END SIDEBAR MENU TOP TRAY CONTENT-->
 				<!-- BEGIN SIDEBAR MENU HEADER-->
@@ -69,7 +69,7 @@
 							<a href="{{ url('admin/precios') }}" class="detailed">
 								<span class="title">Precios</span>
 							</a>
-							<span class="{{ Request::path() == '/precios' ? 'bg-success' : '' }} icon-thumbnail"><i class="pg-home"></i></span>
+							<span class="{{ Request::path() == '/precios' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa fa-eur"></i></span>
 						</li>
 
 						<li class="m-t-10 ">
@@ -98,6 +98,13 @@
 								<span class="title">Clientes</span>
 							</a>
 							<span class="{{ Request::path() == '/clientes' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa  fa-users"></i></span>
+						</li>
+
+						<li class="m-t-10 ">
+							<a href="{{ url('admin/liquidacion') }}" class="detailed">
+								<span class="title">Liquidacion</span>
+							</a>
+							<span class="{{ Request::path() == '/clientes' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa  fa-line-chart"></i></span>
 						</li>
 					</ul>
 					<div class="clearfix"></div>
