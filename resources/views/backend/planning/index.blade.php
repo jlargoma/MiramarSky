@@ -635,7 +635,7 @@
                                     <table class="fc-border-separate" style="border:1px solid black;width: 100%">
                                        <thead>
                                             <tr>
-                                                <td colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
+                                                <td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
                                                     <?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
                                                 </td> 
                                             </tr>
@@ -728,7 +728,7 @@
                                     <table class="fc-border-separate" style="border:1px solid black;width: 100%">
                                        <thead>
                                             <tr>
-                                                <td colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
+                                                <td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
                                                     <?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
                                                 </td> 
                                             </tr>
@@ -821,7 +821,7 @@
                                     <table class="fc-border-separate" style="border:1px solid black;width: 100%">
                                        <thead>
                                             <tr>
-                                                <td colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
+                                                <td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
                                                     <?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
                                                 </td> 
                                             </tr>
@@ -914,15 +914,23 @@
                                     <table class="fc-border-separate" style="border:1px solid black;width: 100%">
                                        <thead>
                                             <tr>
-                                                <td colspan="<?php echo $arrayMonths[$date->copy()->format('n')] ?>">
+                                                <td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
                                                     <?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
                                                 </td> 
                                             </tr>
                                             <tr>
-                                                <td style="width: 1%!important">Apto</td>
+                                                <td rowspan="2" style="width: 1%!important">Apto</td>
+                                                    <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
+                                                        <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
+                                                            <?php echo $i?> 
+                                                        </td> 
+                                                     <?php endfor; ?>
+                                            </tr>
+                                            <tr>
+                                                
                                                 <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-                                                    <td style='border:1px solid black;width: 3%' class="text-center">
-                                                        <?php echo $i."<br>".$days[$date->copy()->format('n')][$i]?> 
+                                                    <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$date->copy()->format('n')][$i]?>">
+                                                        <?php echo $days[$date->copy()->format('n')][$i]?> 
                                                     </td> 
                                                  <?php endfor; ?> 
                                             </tr>

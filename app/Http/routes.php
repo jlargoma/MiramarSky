@@ -14,7 +14,6 @@ Route::auth();
 
 // Route::get('/',['middleware' => 'authSubAdmin','middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
 Route::get('/','HomeController@index');
-Route::get('/admin','BookController@index');
 
 
 // Route::get('/admin/propietario',['middleware' => 'authSubAdmin','uses' => 'Admin\BackendController@index']);
