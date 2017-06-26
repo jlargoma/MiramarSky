@@ -24,7 +24,7 @@ setlocale(LC_TIME, "es_ES");
 		/*font-size: 15px!important;*/
 	}
 	td{
-		font-size: 13px!important;
+		font-size: 11px!important;
 		padding: 10px 5px!important;
 	}
 	.pagos{
@@ -40,7 +40,7 @@ setlocale(LC_TIME, "es_ES");
 	th.text-center.bg-complete.text-white{
 		padding: 10px 5px;
 		font-weight: 300;
-		font-size: 15px!important;
+		font-size: 12px!important;
 		text-transform: capitalize!important;
 	}
 	
@@ -67,12 +67,12 @@ setlocale(LC_TIME, "es_ES");
 			    <div class="tab-pane active" id="tabPrices">
 			        <table class="table table-hover demo-table-search table-responsive" id="tableWithSearch" >
 			        	<thead >
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Nombre</th>
+			        		<th class ="text-center bg-complete text-white" style="width: 7%">Nombre</th>
 			        		<th class ="text-center bg-complete text-white" style="width: 5%">Pax</th>
 			        		<th class ="text-center bg-complete text-white" style="width: 5%">Apto</th>
 			        		<th class ="text-center bg-complete text-white" style="width: 5%">Entrada</th>
 			        		<th class ="text-center bg-complete text-white" style="width: 5%">Salida</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%"><i class="fa fa-moon-o"></i></th>
+			        		<th class ="text-center bg-complete text-white" style="width: 2%"><i class="fa fa-moon-o"></i></th>
 			        		<th class ="text-center bg-complete text-white" style="width: 5%">PVP</th>
 			        		<th class ="text-center bg-complete text-white" style="width: 5%">Cob <br> Banco</th>
 			        		<th class ="text-center bg-complete text-white" style="width: 5%">Cob <br> Jorge</th>

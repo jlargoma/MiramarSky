@@ -89,7 +89,9 @@ setlocale(LC_TIME, "es_ES");
 	        border-radius: 11px;
 	        width: 50px;
 	    }
-
+		td.text-center{
+			padding: 3px!important;
+		}
 	    a {
 	        color: black;
 	        cursor: pointer;
@@ -137,12 +139,12 @@ setlocale(LC_TIME, "es_ES");
 		<div style="clear: both;"></div>
 		<br>
 		<?php if (count($room) > 0): ?>
-			<div class="col-md-6">
+			<div class="col-md-3 col-md-offset-3">
 				<table class="table table-hover  no-footer" id="basicTable" role="grid">
 					<thead>
-						<th class ="text-center bg-complete text-white">Total</th>
-						<th class ="text-center bg-complete text-white">Coste apartamento</th>
-						<th class ="text-center bg-complete text-white">Parking</th>
+						<th class ="text-center bg-complete text-white">Ingresos</th>
+						<th class ="text-center bg-complete text-white">Apto</th>
+						<th class ="text-center bg-complete text-white">Park</th>
 						<?php if ($room->luxury == 1): ?>
 							<th class ="text-center bg-complete text-white">Sup.Lujo</th>
 						<?php else: ?>
@@ -163,11 +165,11 @@ setlocale(LC_TIME, "es_ES");
 			</div>
 			<div style="clear: both;"></div>
 			<div class="col-md-6">
-				<table class="table table-hover  no-footer" id="basicTable" role="grid">
+				<table class="table table-hover  no-footer " id="basicTable" role="grid" >
 					
 					<thead>
-						<th class ="text-center bg-complete text-white" style="width: 15%">Cliente</th>
-						<th class ="text-center bg-complete text-white">Personas</th>
+						<th class ="text-center bg-complete text-white" style="width: 25%">Cliente</th>
+						<th class ="text-center bg-complete text-white" style="width: 5%">Personas</th>
 						<th class ="text-center bg-complete text-white">Entrada</th>
 						<th class ="text-center bg-complete text-white">Salida</th>
 						<th class ="text-center bg-complete text-white">Total</th>
@@ -183,18 +185,18 @@ setlocale(LC_TIME, "es_ES");
 					<tbody>
 						<?php foreach ($books as $book): ?>
 							<tr>
-								<td class="text-center"><?php echo $book->Customer->name ?> </td>
+								<td class="text-center"><?php echo ucfirst(strtolower($book->Customer->name)) ?> </td>
 								<td class="text-center"><?php echo $book->pax ?> </td>
 								<td class="text-center">
 									<?php 
 										$start = Carbon::CreateFromFormat('Y-m-d',$book->start);
-										echo $start->formatLocalized('%d-%b-%Y');
+										echo $start->formatLocalized('%d-%b');
 									?> 
 								</td>
 								<td class="text-center">
 									<?php 
 										$finish = Carbon::CreateFromFormat('Y-m-d',$book->finish);
-										echo $finish->formatLocalized('%d-%b-%Y');
+										echo $finish->formatLocalized('%d-%b');
 									?> 
 								</td>
 								<td class="text-center total"><?php echo number_format($book->cost_total,2,',','.') ?> €</td>

@@ -309,10 +309,13 @@
                                                             <?php if (isset($payment[$book->id])): ?>
                                                                 <?php if ($payment[$book->id] == 0): ?>
                                                                 <?php else:?>
+                                                                    <input class="progress-circle" data-pages-progress="circle" value="<?php echo number_format(100/($book->total_price/$payment[$book->id]),0) ?>" type="hidden">
+                                                                    <?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?>
+<!-- 
                                                                     <p><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></p>
                                                                     <div class="progress ">
                                                                     <div class="progress-bar progress-bar-danger" style="width:<?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?>"></div>
-                                                                    </div>                                                            
+                                                                    </div>            -->                                                 
                                                                 <?php endif; ?>
                                                             <?php else: ?>
                                                             <?php endif ?>

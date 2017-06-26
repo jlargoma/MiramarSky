@@ -696,16 +696,20 @@
                         			<?php $dayMonth = $startMonth;?>
 
                                 	<?php for ($i = 1; $i <= $countDays+1; $i++): ?>
-	                                	<?php if ($dayMonth->format('w') != 1 && $i == 1): ?>
+										<?php if($dayMonth->format('w') == 0 && $i == 1): ?>
+											<?php for ($h = 1; $h <= 6; $h++): ?>
+													<th class="fc-day-header fc-mon fc-widget-header" style="width: 100px;">
+														&nbsp;
+	                                				</th>
+											<?php endfor ?>
+	                                	<?php elseif ($dayMonth->format('w') != 1 && $i == 1): ?>
 											<?php for ($h = 1; $h <= $dayMonth->format('w')-1; $h++): ?>
 													<th class="fc-day-header fc-mon fc-widget-header" style="width: 100px;">
 														&nbsp;
 	                                				</th>
 											<?php endfor ?>
+										
 	                                	<?php endif ?>
-										<?php if ($dayMonth->format('D') == "Mon"): ?>
-                                			<tr class="fc-last">
-                                		<?php endif ?>
                                 			<?php 
                                 			$daySeasons = \App\Seasons::where('start_date', '<=' ,$dayMonth)
 	                            										->where('finish_date', '>=' ,$dayMonth)
@@ -763,7 +767,7 @@
 	    </div>
 	</div>
 <?php $date->addMonth(); ?>
-<?php if ($j == 3 ||$j == 7 ||$j == 11): ?>
+<?php if ($j == 3 ||$j == 7): ?>
 	<div style="clear: both;"></div>
 <?php endif ?>
 <?php endfor;?>
