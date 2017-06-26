@@ -2,7 +2,7 @@
 	<div class="container container-mobile">
 		<div class="row">
 			<div class="col-md-3 col-xs-12">
-				<img src="{{ asset ('frontend/images/logo.png')}}" alt="logo" class="img-responsive logo-footer" style="max-width: 200px">
+				<img src="{{ asset ('frontend/images/logo-dark.png')}}" alt="logo" class="img-responsive logo-footer" style="max-width: 200px">
 				<p class="text-left font-w200 font-s20 push-0" style="letter-spacing: 0; line-height: 1.3">
 					Avda. Quitapesares nº20 <br><strong>VILLAVICIOSA DE ODÓN</strong>
 				</p>

@@ -21,7 +21,6 @@ elixir(function (mix) {
                 "css/font-icons.css",
                 "css/animate.css",
                 "css/magnific-popup.css",
-                "css/dark.css",
 				"css/responsive.css"
     ], 'public/css/app.css');
 });

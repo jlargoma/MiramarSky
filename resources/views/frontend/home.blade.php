@@ -154,17 +154,17 @@
        		</div>
        		<div class="container container-mobile clearfix push-20">
        			<?php if (!$mobile->isMobile()): ?>
-       			<div class="col-md-12 col-xs-12 push-20 hidden-xs hidden-sm">
+       			<!-- <div class="col-md-12 col-xs-12 push-20 hidden-xs hidden-sm">
        				<a href="{{ url('/contacto') }}">
        					<img class="img-responsive" alt="plane en forma 10 semanas" src="{{ asset('/assets/images/gym/EVOLUTIO-BANNER-PLAN-EN-FORMA.jpg') }}"/>
        				</a>
-       			</div>
+       			</div> -->
        			<?php else: ?>
-       			<div class="col-xs-12 push-20 hidden-lg hidden-md">
+       			<!-- <div class="col-xs-12 push-20 hidden-lg hidden-md">
        				<a href="{{ url('/contacto') }}">
        					<img class="img-responsive" alt="plane en forma 10 semanas" src="{{ asset('/assets/images/gym/EVOLUTIO-BANNER-PLAN-EN-FORMA-mobile.png') }}"/>
        				</a>
-       			</div>
+       			</div> -->
        			<?php endif; ?>
        		</div>
    			<div class="row push-20">
@@ -173,61 +173,76 @@
    				</h2>
    				<div class="col-md-12 col-xs-12">
 
-   					<div class="col-xs-12 col-md-3 push-mobile-20">
+   					<div class="image-box push-mobile-20">
    						<div class="col-xs-12 not-padding  container-image-box">
    							<div class="col-xs-12 not-padding push-0">
-   								<a href="{{url('/entrenamiento-funcional-villaviciosa-de-odon')}}">
-   									<img class="img-responsive imga" src="{{ asset('/assets/images/gym/personal-trainer-villaviciosa-de-odon.jpg')}}" alt="personal trainer villaviciosa"/>
+   								<a href="{{url('/#')}}">
+   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/small/apto-lujo-sierra-nevada.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
    								</a>
    							</div>
    							<div class="col-xs-12 not-padding text-right overlay-text">
    								<h2 class="font-w600 center push-10 text-center text font-s24" >
-   									<a class="white text-white" href="{{url('/entrenamiento-funcional-villaviciosa-de-odon')}}">ENTRENAMIENTO FUNCIONAL</a>
+   									<a class="white text-white" href="{{url('/#')}}">APARTAMENTO DE LUJO</a>
    								</h2>
    							</div>
    						</div>
    					</div>
 
-   					<div class="col-xs-12 col-md-3 push-mobile-20">
+   					<div class="image-box push-mobile-20">
    						<div class="col-xs-12 not-padding  container-image-box">
    							<div class="col-xs-12 not-padding push-0">
-   								<a href="{{url('/entrenamiento-funcional-villaviciosa-de-odon')}}">
-   									<img class="img-responsive" src="{{ asset('/assets/images/gym/entrenador-personal.jpg')}}"  alt="entrenador personal villaviciosa"/>
+   								<a href="{{url('/#')}}">
+   									<img class="img-responsive" src="{{ asset('/img/miramarski/small/estudio-lujo-sierra-nevada.jpg')}}"  alt="Estudio de lujo sierra nevada"/>
    								</a>
    							</div>
    							<div class="col-xs-12 not-padding text-right overlay-text">
    								<h2 class="font-w600 center push-10 text-center text font-s24" >
-   									<a class="white text-white" href="{{url('/entrenador-personal-villaviciosa-de-odon')}}">PERSONAL TRAINER</a>
+   									<a class="white text-white" href="{{url('/#')}}">ESTUDIO DE LUJO</a>
    								</h2>
    							</div>
    						</div>
    					</div>
 
-   					<div class="col-xs-12 col-md-3 push-mobile-20">
+   					<div class="image-box push-mobile-20">
    						<div class="col-xs-12 not-padding  container-image-box">
    							<div class="col-xs-12 not-padding push-0">
-   								<a href="{{url('/hipopresivos-villaviciosa-de-odon')}}">
-   									<img class="img-responsive imga" src="{{ asset('/assets/images/gym/gimansia-hipopresivos-villaviosa-de-odon-evolutio255x210.jpg')}}"  alt="hipopresivos villaviciosa"/>
+   								<a href="{{url('/#')}}">
+   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/small/apartamento-standar-sierra-nevada.jpg')}}"  alt="Apartamento standard sierra nevada"/>
    								</a>
    							</div>
    							<div class="col-xs-12 not-padding text-right overlay-text">
    								<h2 class="font-w600 center push-10 text-center text font-s24" >
-   									<a class="white text-white" href="{{url('/hipopresivos-villaviciosa-de-odon')}}">HIPOPRESIVOS</a>
+   									<a class="white text-white" href="{{url('/#')}}">APARTAMENTO STANDARD</a>
    								</h2>
    							</div>
    						</div>
    					</div>
 
-   					<div class="col-xs-12 col-md-3 push-mobile-20">
+   					<div class="image-box push-mobile-20">
    						<div class="col-xs-12 not-padding  container-image-box">
    							<div class="col-xs-12 not-padding push-0">
-   								<a href="{{url('/cardio-fight-villaviciosa-de-odon')}}">
-   									<img class="img-responsive" src="{{ asset('/assets/images/gym/cardio-boxing-villaviciosa-de-odon-boxeo-chicas-2.jpg')}}"  alt="cardio boxing villaviciosa"/>
+   								<a href="{{url('/#')}}">
+   									<img class="img-responsive" src="{{ asset('/img/miramarski/small/estudio-standard-sierra-nevada.jpg')}}"  alt="Estudio standard sierra nevada"/>
    								</a>
    							</div>
    							<div class="col-xs-12 not-padding text-right overlay-text">
    								<h2 class="font-w600 center push-10 text-center text font-s24" >
-   									<a class="white text-white" href="{{url('/cardio-fight-villaviciosa-de-odon')}}">CARDIO BOXING</a>
+   									<a class="white text-white" href="{{url('/#')}}">ESTUDIO STANDARD</a>
+   								</h2>
+   							</div>
+   						</div>
+   					</div>
+
+   					<div class="image-box push-mobile-20">
+   						<div class="col-xs-12 not-padding  container-image-box">
+   							<div class="col-xs-12 not-padding push-0">
+   								<a href="{{url('/#')}}">
+   									<img class="img-responsive" src="{{ asset('/img/miramarski/small/edificio-miramarski-sierra-nevada.jpg')}}"  alt="Estudio standard sierra nevada"/>
+   								</a>
+   							</div>
+   							<div class="col-xs-12 not-padding text-right overlay-text">
+   								<h2 class="font-w600 center push-10 text-center text font-s24" >
+   									<a class="white text-white" href="{{url('/#')}}">EL EDIFICIO</a>
    								</h2>
    							</div>
    						</div>
@@ -239,30 +254,28 @@
 
        		<div class="row clearfix common-height">
 
-       			<div class="col-md-6 center col-padding hidden-sm hidden-xs" style="background: url({{ asset('/assets/images/gym/entrenamiento-funcional-villaviciosa.jpg') }}) center center / cover no-repeat; ">
+       			<div class="col-md-6 center col-padding hidden-sm hidden-xs" style="background: url({{ asset('/img/miramarski/Piso-8D-11.jpg') }}) center center / cover no-repeat; ">
        				<div>&nbsp;</div>
        			</div>
 
        			<div class="col-md-6 center col-padding" style="background-color: rgb(255, 255, 255); height: 674px;">
        				<div>
-       					<div class="heading-block nobottomborder">
-       						<h3>¿QUE HACEMOS?</h3>
+       					<div class="heading-block nobottomborder" style="margin-bottom: 20px">
+       						<h3 class="green">¿QUE HACEMOS?</h3>
        					</div>
-       					<p class="lead  text-justify black">
-       						Porque todos tenemos ciertas necesidades especiales a la hora de hacer ejercicio, os presentamos nuestra propuesta con la que tratamos de cubrir tus necesidades de individualización en un formato en el que se podrá recibir una atención personalizada gracias a estar en un grupo reducido de personas con unas demandas similares y a nuestros entrenadores personales que especificarán el trabajo de cada miembro.<br><br>
-       						<span class="green font-w600">TE AYUDAREMOS A RECUPERAR TU BIENESTAR</span>
+       					<p class="lead  text-justify black ls-15">
+       						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
+       						<span class="green font-w600 text-center">Lorem ipsum dolor sit amet</span>
 
        					</p>
-       					<h2 class="green font-w600 text-left nobottommargin">Evolutio</h2>
-       					<h4 class="text-left">Tu centro de entrenamiento en Villaviciosa de Odón</h4>
-       					<p class="lead  text-justify black">
-       						Nuestro método deportivo es un sistema ideado por expertos que ofrece grandes beneficios y excelentes resultados en nuestro centro de entrenamiento en Villaviciosa de Odón, muy cerca de Móstoles. Con él cada día es diferente, mejoras tu fuerza, resistencia, velocidad, flexibilidad... todo lo que necesita un deportista.
+       					<h2 class="green font-w600 text-left nobottommargin">Lorem ipsum dolor sit amet</h2>
+       					<h4 class="text-left">consectetur adipiscing elit</h4>
+       					<p class="lead  text-justify black ls-15">
+       						Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. <br><br>
 
-       						Nuestro objetivo como entrenadores personales, es encontrar un equilibrio saludable entre la parte física, mental y emocional, mejorando los cuatro pilares fundamentales: Nutrición, Actividad Física, Mentalidad y Descanso. Por eso, en nuestro centro de Villaviciosa de Odón, contamos con nutricionista deportivo, fisioterapeuta y un personal trainer que te dará atención personalizada.
+       						Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?<br><br>
 
-       						Todos los entrenamientos son siempre guiados por un especialista, uno de nuestros entrenadores personales. 
-
-       						Tenemos clases grupales de pilates, cardio boxing, etc. y sesiones individuales, readaptadores, dietistas, coaches, fisioterapeutas, activadores musculares… Trabajamos juntos por y para tu salud.
+       						At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus.
 
        					</p>
        				</div>
