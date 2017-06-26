@@ -14,6 +14,7 @@ class Book extends Model
      * @var array
      */
     protected $status = 0;
+    protected $dayweek = 0;
     protected $parking = 0;
     protected $typePayment = 0;
     protected $banco = 0;
@@ -40,6 +41,14 @@ class Book extends Model
         public function pago()
             {
                 return $this->hasMany('\App\Payments', 'book_id', 'id');
+            }
+
+    //Para poner nombre al dia del calendario//
+       static function getDayWeek($dayweek)
+            {
+                $array = [1=> "L",2 =>"M", 3 =>"X",4 =>"J",5 =>"V", 6 =>"S",0 =>"D"];
+
+                return $dayweek = $array[$dayweek];
             }
 
     //Para poner nombre al estado de la reserva//

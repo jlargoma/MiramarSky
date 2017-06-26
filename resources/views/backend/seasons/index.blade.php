@@ -20,42 +20,47 @@
     <div class="row">
 
         <div class="col-md-8">
+            <div class="pull-left">
+                <div class="col-xs-12 ">
+                    <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
+                </div>
+            </div>
             <div class="clearfix"></div>
-            <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch">
-                <thead>
-                    <tr>
-                        <th class ="text-center hidden">    id      </th>
-                        <th class ="text-center bg-complete text-white"> Inicio  </th>
-                        <th class ="text-center bg-complete text-white"> Fin     </th>
-                        <th class ="text-center bg-complete text-white"> Tipo    </th>                  
-                        <th class ="text-center bg-complete text-white"> Eliminar  </th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($seasons as $season): ?>
+                <table class="table table-hover demo-table-search table-responsive" id="tableWithSearch" >
+                    <thead>
                         <tr>
-                            <td class="text-center" hidden><?php echo $season->id ?></td>
-                            <td class="text-center">
-                                <?php  echo date('d-M-Y',strtotime($season->start_date))?>
-                            </td>
-                            <td class="text-center">
-                                <?php echo date('d-M-Y',strtotime($season->finish_date)) ?>
-                            </td>
-                            <td class="text-center">
-                                <?php echo $season->typeSeasons->name ?>
-                            </td>              
-                            <td class="text-center">
-                                <div class="btn-group">
-                                    <a href="{{ url('temporadas/delete/')}}/<?php echo $season->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Temporada" onclick="return confirm('¿Quieres eliminar la temporada?');">
-                                        <i class="fa fa-trash"></i>
-                                    </a>                                     
-                                </div>
-                            </td>
+                            <th class ="text-center hidden">    id      </th>
+                            <th class ="text-center bg-complete text-white"> Inicio  </th>
+                            <th class ="text-center bg-complete text-white"> Fin     </th>
+                            <th class ="text-center bg-complete text-white"> Tipo    </th>                  
+                            <th class ="text-center bg-complete text-white"> Eliminar  </th>
+
                         </tr>
-                    <?php endforeach ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($seasons as $season): ?>
+                            <tr>
+                                <td class="text-center" hidden><?php echo $season->id ?></td>
+                                <td class="text-center">
+                                    <?php  echo date('d-M-Y',strtotime($season->start_date))?>
+                                </td>
+                                <td class="text-center">
+                                    <?php echo date('d-M-Y',strtotime($season->finish_date)) ?>
+                                </td>
+                                <td class="text-center">
+                                    <?php echo $season->typeSeasons->name ?>
+                                </td>              
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <a href="{{ url('temporadas/delete/')}}/<?php echo $season->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Temporada" onclick="return confirm('¿Quieres eliminar la temporada?');">
+                                            <i class="fa fa-trash"></i>
+                                        </a>                                     
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach ?>
+                    </tbody>
+                </table>
         </div>
         <div class="col-md-4">
             <div class="sm-m-l-5 sm-m-r-5">

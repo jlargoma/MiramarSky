@@ -107,6 +107,10 @@
             color: black;
             cursor: pointer;
         }
+        .S, .D{
+            background-color: rgba(0,0,0,0.2);
+            color: red;
+        }
     </style>
 
     <div class="container-fluid padding-10 sm-padding-10">
@@ -290,8 +294,8 @@
                                                 <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
                                                 <th class ="text-center bg-complete text-white" style="width:2%">   Pax         </th>
                                                 <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
-                                                <th class ="text-center bg-complete text-white" style="width:11%!important">  IN     </th>
-                                                <th class ="text-center bg-complete text-white" style="width:11%!important">  OUT      </th>
+                                                <th class ="text-center bg-complete text-white" style="width:20%!important">  IN     </th>
+                                                <th class ="text-center bg-complete text-white" style="width:20%!important">  OUT      </th>
                                                 <th class ="text-center bg-complete text-white" style="width:5%">   Noc         </th>
                                                 <th class ="text-center bg-complete text-white">                    Precio      </th>
                                                 <th class ="text-center bg-complete text-white" style="width:5%">   Estado      </th>
@@ -301,17 +305,18 @@
                                         <tbody>
                                             <?php foreach ($arrayBooks["nuevas"] as $book): ?>
                                                     <tr>
-                                                        <td class ="text-center">
-                                                            <div style="width: 38%;float: left;border-radius: 15px;height:20px" class="<?php echo $book->getStatus($book->type_book) ?>">
-                                                                <?php if (isset($payment[$book->id])): ?>
-                                                                    <?php if ($payment[$book->id] == 0){ echo $payment[$book->id];}else{
-                                                                        echo '<input class="progress-circle" data-color="danger" data-pages-progress="circle" value="'.number_format(100/($book->total_price/$payment[$book->id]),0,'.',',').'" type="hidden">'.number_format(100/($book->total_price/$payment[$book->id]),0,'.',',').'%';} ?>
-
-                                                                <?php else: ?>
-                                                                <?php endif ?>
-                                                                
-                                                            </div>
-                                                        </td>
+                                                        <td class ="text-center">                                                    
+                                                            <?php if (isset($payment[$book->id])): ?>
+                                                                <?php if ($payment[$book->id] == 0): ?>
+                                                                <?php else:?>
+                                                                    <p><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></p>
+                                                                    <div class="progress ">
+                                                                    <div class="progress-bar progress-bar-danger" style="width:<?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?>"></div>
+                                                                    </div>                                                            
+                                                                <?php endif; ?>
+                                                            <?php else: ?>
+                                                            <?php endif ?>
+                                                        </td> 
                                                         <td class ="text-center">
                                                                 <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo substr($book->customer['name'], 0,10)  ?></a>
                                                             
@@ -319,7 +324,7 @@
 
                                                         <td class ="text-center"><?php echo $book->pax ?></td>
                                                         <td class ="text-center">
-                                                            <select class="room" class="form-control" data-id="<?php echo $book->id ?>" >
+                                                            <select class="room" data-id="<?php echo $book->id ?>" >
                                                                 
                                                                 <?php foreach ($rooms as $room): ?>
                                                                     <?php if ($room->id == $book->room_id): ?>
@@ -333,16 +338,16 @@
 
                                                             </select>
                                                         </td>
-                                                        <td class ="text-center">
+                                                        <td class ="text-center" style="width: 20%!important">
                                                             <?php
                                                                 $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                                                echo $start->format('d M y');
+                                                                echo $start->formatLocalized('%d %b');
                                                             ?>
                                                         </td>
-                                                        <td class ="text-center">
+                                                        <td class ="text-center" style="width: 20%!important">
                                                             <?php
                                                                 $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                                                echo $finish->format('d M y');
+                                                                echo $finish->formatLocalized('%d %b');
                                                             ?>
                                                         </td>
                                                         <td class ="text-center"><?php echo $book->nigths ?></td>
@@ -391,17 +396,16 @@
                             <div class="row">
                                 <div class="pull-left">
                                     <div class="col-xs-12 ">
-                                        <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
+                                        <input type="text" id="search-table2" class="form-control pull-right" placeholder="Buscar">
                                     </div>
                                 </div>
                                 
                                 <div class="clearfix"></div>
 
                                 <div class="col-md-12">
-                                    <table class="table table-hover demo-table-search table-responsive" id="tableWithSearch" >
+                                    <table class="table table-hover demo-table-search table-responsive" id="tableWithSearch2" >
                                         <thead>
                                             <tr>
-                                                <th class ="text-center bg-complete text-white" style="width:5%">  Pagos     </th>
                                                 <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
                                                 <!-- <th class ="text-center bg-complete text-white" style="width:5%">   Telefono    </th> -->
                                                 <th class ="text-center bg-complete text-white" style="width:2%">   Pax         </th>
@@ -418,15 +422,7 @@
                                             <?php foreach ($arrayBooks["especiales"] as $book): ?>
                                                     <tr>
                                                         <td class ="text-center">                                                            
-                                                            <?php if (isset($payment[$book->id])): ?>
-                                                                <?php if ($payment[$book->id] == 0){ echo $payment[$book->id];}else{
-                                                                    echo '<input class="progress-circle" data-color="danger" data-pages-progress="circle" value="'.number_format(100/($book->total_price/$payment[$book->id]),0,'.',',').'" type="hidden">'.number_format(100/($book->total_price/$payment[$book->id]),0,'.',',').'%';} ?>
-
-                                                            <?php else: ?>
-                                                            <?php endif ?>
-                                                        </td>
-                                                        <td class ="text-center">                                                            
-                                                            <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo substr($book->customer['name'], 0,10)  ?></a>
+                                                            <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo $book->customer['name'] ?></a>
                                                         </td>
 
                                                         <td class ="text-center"><?php echo $book->pax ?></td>
@@ -445,20 +441,25 @@
 
                                                             </select>
                                                         </td>
-                                                        <td class ="text-center">
+                                                        <td class ="text-center" style="width: 20%!important">
                                                             <?php
                                                                 $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                                                echo $start->format('d M y');
+                                                                echo $start->formatLocalized('%d %b');
                                                             ?>
                                                         </td>
-                                                        <td class ="text-center">
+                                                        <td class ="text-center" style="width: 20%!important">
                                                             <?php
                                                                 $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                                                echo $finish->format('d M y');
+                                                                echo $finish->formatLocalized('%d %b');
                                                             ?>
                                                         </td>
                                                         <td class ="text-center"><?php echo $book->nigths ?></td>
-                                                        <td class ="text-center"><?php echo $book->total_price."€" ?></td>
+                                                        <td class ="text-center"><?php echo $book->total_price."€" ?><br>
+                                                                                <?php if (isset($payment[$book->id])): ?>
+                                                                                    <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
+                                                                                <?php else: ?>
+                                                                                <?php endif ?>
+                                                        </td>
                                                         <td class ="text-center">
                                                             <select class="status form-control" data-id="<?php echo $book->id ?>" >
                                                                 <?php for ($i=1; $i < 9; $i++): ?> 
@@ -499,26 +500,25 @@
                             <div class="row">
                                 <div class="pull-left">
                                     <div class="col-xs-12 ">
-                                        <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
+                                        <input type="text" id="search-table3" class="form-control pull-right" placeholder="Buscar">
                                     </div>
                                 </div>
                                 
                                 <div class="clearfix"></div>
 
-                                <table class="table table-hover demo-table-search table-responsive" id="tableWithSearch" >
+                                <table class="table table-hover demo-table-search table-responsive" id="tableWithSearch3" >
                                     <thead>
-                                        <tr>
-                                            <th class ="text-center bg-complete text-white" style="width:5%">  Pagos     </th>
-                                            <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
-                                            <!-- <th class ="text-center bg-complete text-white" style="width:5%">   Telefono    </th> -->
+                                        <tr>   
+                                            <th class ="text-center bg-complete text-white" style="width:5%"> Pagos </th>
+                                            <th class ="text-center bg-complete text-white" style="width:5%">  Cliente     </th>
                                             <th class ="text-center bg-complete text-white" style="width:2%">   Pax         </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
-                                            <th class ="text-center bg-complete text-white" style="width:11%!important">  IN     </th>
-                                            <th class ="text-center bg-complete text-white" style="width:11%!important">  OUT      </th>
+                                            <th class ="text-center bg-complete text-white" style="width:20%!important">  IN     </th>
+                                            <th class ="text-center bg-complete text-white" style="width:20%!important">  OUT      </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Noc         </th>
-                                            <th class ="text-center bg-complete text-white">                    Precio      </th>
-                                            <th class ="text-center bg-complete text-white" style="width:17%">   Estado      </th>
-                                            <th class ="text-center bg-complete text-white">                    Acciones    </th>
+                                            <th class ="text-center bg-complete text-white" style="width:5%">   Precio      </th>
+                                            <th class ="text-center bg-complete text-white" style="width:5%">   Estado      </th>
+                                            <th class ="text-center bg-complete text-white" style="width:5%">   Acciones    </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -526,19 +526,24 @@
                                                 <tr>
                                                     <td class ="text-center">                                                    
                                                         <?php if (isset($payment[$book->id])): ?>
-                                                            <?php if ($payment[$book->id] == 0){ echo $payment[$book->id];}else{
-                                                                echo '<input class="progress-circle" data-color="danger" data-pages-progress="circle" value="'.number_format(100/($book->total_price/$payment[$book->id]),0,'.',',').'" type="hidden">'.number_format(100/($book->total_price/$payment[$book->id]),0,'.',',').'%';} ?>
-
+                                                            <?php if ($payment[$book->id] == 0): ?>
+                                                            <?php else:?>
+                                                                <p><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></p>
+                                                                <div class="progress ">
+                                                                <div class="progress-bar progress-bar-danger" style="width:<?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?>"></div>
+                                                                </div>                                                            
+                                                            <?php endif; ?>
                                                         <?php else: ?>
                                                         <?php endif ?>
-                                                    </td>   
+                                                    </td> 
                                                     <td class ="text-center">
-                                                        <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo substr($book->customer['name'], 0,10)  ?></a>
+                                                            <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo substr($book->customer['name'], 0,10)  ?></a>
+                                                        
                                                     </td>
 
                                                     <td class ="text-center"><?php echo $book->pax ?></td>
                                                     <td class ="text-center">
-                                                        <select class="room" class="form-control" data-id="<?php echo $book->id ?>" >
+                                                        <select class="room" data-id="<?php echo $book->id ?>" >
                                                             
                                                             <?php foreach ($rooms as $room): ?>
                                                                 <?php if ($room->id == $book->room_id): ?>
@@ -552,20 +557,25 @@
 
                                                         </select>
                                                     </td>
-                                                    <td class ="text-center">
+                                                    <td class ="text-center" style="width: 20%!important">
                                                         <?php
                                                             $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                                            echo $start->format('d M y');
+                                                            echo $start->formatLocalized('%d %b');
                                                         ?>
                                                     </td>
-                                                    <td class ="text-center">
+                                                    <td class ="text-center" style="width: 20%!important">
                                                         <?php
                                                             $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                                            echo $finish->format('d M y');
+                                                            echo $finish->formatLocalized('%d %b');
                                                         ?>
                                                     </td>
                                                     <td class ="text-center"><?php echo $book->nigths ?></td>
-                                                    <td class ="text-center"><?php echo $book->total_price."€" ?></td>
+                                                    <td class ="text-center"><?php echo $book->total_price."€" ?><br>
+                                                                            <?php if (isset($payment[$book->id])): ?>
+                                                                                <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
+                                                                            <?php else: ?>
+                                                                            <?php endif ?>
+                                                    </td>
                                                     <td class ="text-center">
                                                         <select class="status form-control" data-id="<?php echo $book->id ?>" >
                                                             <?php for ($i=1; $i < 9; $i++): ?> 
@@ -625,15 +635,23 @@
                                     <table class="fc-border-separate" style="border:1px solid black;width: 100%">
                                        <thead>
                                             <tr>
-                                                <td colspan="<?php echo $arrayMonths[$date->copy()->format('n')] ?>">
+                                                <td colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
                                                     <?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
                                                 </td> 
                                             </tr>
                                             <tr>
-                                                <td style="width: 1%!important">Apto</td>
+                                                <td rowspan="2" style="width: 1%!important">Apto</td>
+                                                    <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
+                                                        <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
+                                                            <?php echo $i?> 
+                                                        </td> 
+                                                     <?php endfor; ?>
+                                            </tr>
+                                            <tr>
+                                                
                                                 <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-                                                    <td style='border:1px solid black;width: 3%'>
-                                                        <?php echo $i?> 
+                                                    <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$date->copy()->format('n')][$i]?>">
+                                                        <?php echo $days[$date->copy()->format('n')][$i]?> 
                                                     </td> 
                                                  <?php endfor; ?> 
                                             </tr>
@@ -683,7 +701,7 @@
 
                                                                 <?php endif ?>
                                                             <?php else: ?>
-                                                                <td style='border:1px solid black;width: 3%'>
+                                                                <td class="<?php echo $days[$date->copy()->format('n')][$i]?>" style='border:1px solid black;width: 3%'>
                                                                     
                                                                 </td>
                                                             <?php endif; ?>
@@ -710,15 +728,23 @@
                                     <table class="fc-border-separate" style="border:1px solid black;width: 100%">
                                        <thead>
                                             <tr>
-                                                <td colspan="<?php echo $arrayMonths[$date->copy()->format('n')] ?>">
+                                                <td colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
                                                     <?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
                                                 </td> 
                                             </tr>
                                             <tr>
-                                                <td style="width: 1%!important">Apto</td>
+                                                <td rowspan="2" style="width: 1%!important">Apto</td>
+                                                    <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
+                                                        <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
+                                                            <?php echo $i?> 
+                                                        </td> 
+                                                     <?php endfor; ?>
+                                            </tr>
+                                            <tr>
+                                                
                                                 <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-                                                    <td style='border:1px solid black;width: 3%'>
-                                                        <?php echo $i?> 
+                                                    <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$date->copy()->format('n')][$i]?>">
+                                                        <?php echo $days[$date->copy()->format('n')][$i]?> 
                                                     </td> 
                                                  <?php endfor; ?> 
                                             </tr>
@@ -768,7 +794,7 @@
 
                                                                 <?php endif ?>
                                                             <?php else: ?>
-                                                                <td style='border:1px solid black;width: 3%'>
+                                                                <td class="<?php echo $days[$date->copy()->format('n')][$i]?>" style='border:1px solid black;width: 3%'>
                                                                     
                                                                 </td>
                                                             <?php endif; ?>
@@ -795,15 +821,23 @@
                                     <table class="fc-border-separate" style="border:1px solid black;width: 100%">
                                        <thead>
                                             <tr>
-                                                <td colspan="<?php echo $arrayMonths[$date->copy()->format('n')] ?>">
+                                                <td colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
                                                     <?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
                                                 </td> 
                                             </tr>
                                             <tr>
-                                                <td style="width: 1%!important">Apto</td>
+                                                <td rowspan="2" style="width: 1%!important">Apto</td>
+                                                    <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
+                                                        <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
+                                                            <?php echo $i?> 
+                                                        </td> 
+                                                     <?php endfor; ?>
+                                            </tr>
+                                            <tr>
+                                                
                                                 <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-                                                    <td style='border:1px solid black;width: 3%'>
-                                                        <?php echo $i?> 
+                                                    <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$date->copy()->format('n')][$i]?>">
+                                                        <?php echo $days[$date->copy()->format('n')][$i]?> 
                                                     </td> 
                                                  <?php endfor; ?> 
                                             </tr>
@@ -853,7 +887,7 @@
 
                                                                 <?php endif ?>
                                                             <?php else: ?>
-                                                                <td style='border:1px solid black;width: 3%'>
+                                                                <td class="<?php echo $days[$date->copy()->format('n')][$i]?>" style='border:1px solid black;width: 3%'>
                                                                     
                                                                 </td>
                                                             <?php endif; ?>
@@ -887,8 +921,8 @@
                                             <tr>
                                                 <td style="width: 1%!important">Apto</td>
                                                 <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-                                                    <td style='border:1px solid black;width: 3%'>
-                                                        <?php echo $i?> 
+                                                    <td style='border:1px solid black;width: 3%' class="text-center">
+                                                        <?php echo $i."<br>".$days[$date->copy()->format('n')][$i]?> 
                                                     </td> 
                                                  <?php endfor; ?> 
                                             </tr>
@@ -938,7 +972,7 @@
 
                                                                 <?php endif ?>
                                                             <?php else: ?>
-                                                                <td style='border:1px solid black;width: 3%'>
+                                                                <td class="<?php echo $days[$date->copy()->format('n')][$i]?>" style='border:1px solid black;width: 3%'>
                                                                     
                                                                 </td>
                                                             <?php endif; ?>
@@ -1026,7 +1060,7 @@
                     var room = $(this).val();
                     var status = "";
                 }
-                $.get('//admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
+                $.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
                     alert(data);
                     // window.location.reload();
                 });
@@ -1092,7 +1126,7 @@
                 var costPark = 0;
                 var pricePark = 0;
                 var agencia = 0;
-                $.get('apartamentos/getPaxPerRooms/'+room).success(function( data ){
+                $.get('/apartamentos/getPaxPerRooms/'+room).success(function( data ){
                     if (pax < data) {
                         $('.pax').attr('style' , 'background-color:red');
                         $('.book_comments').empty();
@@ -1140,7 +1174,7 @@
             $('#date').change(function(event) {
                 
                 var month = $(this).val();
-                window.location = '//admin/reservas/'+month;
+                window.location = '/admin/reservas/'+month;
             });
             
         });

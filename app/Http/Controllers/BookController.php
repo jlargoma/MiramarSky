@@ -26,7 +26,7 @@ class BookController extends Controller
             $arrayReservas = array();
             $totalPayments = array();
             $arrayMonths = array();
-            
+            $arrayDays = array();
             if ( empty($month) ) {
                 $date = Carbon::now();
             }else{
@@ -64,7 +64,7 @@ class BookController extends Controller
             }
 
             $firstDayOfTheYear = new Carbon('first day of September 2016');
-
+            $book = new \App\Book();
             for ($i=1; $i <= 12; $i++) { 
                 
                 $startMonth = $firstDayOfTheYear->copy()->startOfMonth();
@@ -72,11 +72,10 @@ class BookController extends Controller
                 $countDays  = $endMonth->diffInDays($startMonth);
                 $day        = $startMonth;
 
-
-                for ($j=1; $j <= $countDays+1 ; $j++) { 
-                        $arrayMonths[$firstDayOfTheYear->copy()->format('n')] = $day->format('d');     
-
-                        $day = $day->addDay();
+                $arrayMonths[$firstDayOfTheYear->copy()->format('n')] = $day->copy()->format('t');     
+                for ($j=1; $j <= $day->copy()->format('t') ; $j++) { 
+                    $arrayDays[$firstDayOfTheYear->copy()->format('n')][$j] = $book->getDayWeek($day->copy()->format('w'));
+                    $day = $day->copy()->addDay();
                 }
                 
                 $firstDayOfTheYear->addMonth();                                    
@@ -115,7 +114,8 @@ class BookController extends Controller
                                                     'book'          => new \App\Book(),
                                                     'extras'        => \App\Extras::all(),
                                                     'payment'       => $totalPayments,
-                                                    'pagos' => \App\Payments::all(),
+                                                    'pagos'         => \App\Payments::all(),
+                                                    'days'          => $arrayDays,
                                                     ]);
         }
 
