@@ -137,10 +137,10 @@ class BookController extends Controller
                    $extraCost += $precios->cost;
                 }
             }
-                if ($book->existDate($request->start,$request->finish,$request->newroom)) {
+                if ($book->existDate($request->start,$request->finish, $request->newroom)) {
                     //creacion del cliente
                         $customer = new \App\Customers();
-                        $customer->user_id = Auth::user()->id;
+                        $customer->user_id = (Auth::user()->id)?Auth::user()->id:23;
                         $customer->name = $request->name;
                         $customer->email = $request->email;
                         $customer->phone = $request->phone;
@@ -177,7 +177,7 @@ class BookController extends Controller
                                 $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
 
                                 if($book->save()){
-                                    return redirect()->action('BookController@index');
+                                    return redirect()->back();
                                 };
                         };
                     

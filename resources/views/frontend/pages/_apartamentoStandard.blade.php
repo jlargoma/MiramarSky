@@ -1,6 +1,6 @@
 @extends('layouts.master_pages')
 
-@section('title') Apartamento de lujo en Sierra Nevada @endsection
+@section('title') Apartamento Standard en Sierra Nevada @endsection
 
 @section('content')
 	<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
@@ -32,9 +32,9 @@
 							<?php foreach ($slides as $slide): ?>
 								
 							
-							<div class="slide" data-thumb="{{ asset('/img/miramarski/galerias/apartamento-lujo')}}/<?php echo $slide->getFilename() ?>">
+							<div class="slide" data-thumb="{{ asset('/img/miramarski/galerias/apartamento-standard')}}/<?php echo $slide->getFilename() ?>">
 								<a href="#">
-									<img src="{{ asset('/img/miramarski/galerias/apartamento-lujo')}}/<?php echo $slide->getFilename() ?>" alt="<?php echo $slide->getFilename () ?>">
+									<img src="{{ asset('/img/miramarski/galerias/apartamento-standard')}}/<?php echo $slide->getFilename() ?>" alt="<?php echo $slide->getFilename () ?>">
 									<!-- <div class="flex-caption slider-caption-bg"><?php echo $slide->getFilename () ?></div> -->
 								</a>
 							</div>
@@ -47,14 +47,14 @@
 			<div class="col-sm-6 col-padding">
 				<div>
 					<div class="heading-block">
-						<h3>APARTAMENTO DE LUJO 2 DORMITORIOS</h3>
+						<h3>APARTAMENTO STANDARD 2 DORMITORIOS</h3>
 						<h5>
 							<div class="product-rating">
 								<i class="text-warning icon-star3"></i>
 								<i class="text-warning icon-star3"></i>
 								<i class="text-warning icon-star3"></i>
 								<i class="text-warning icon-star3"></i>
-								<i class="text-warning icon-star3"></i>
+								<i class="text-warning icon-star-empty"></i>
 							</div>
 						</h5>
 					</div>
@@ -102,7 +102,7 @@
 			<div class="col-xs-12 col-md-6" style=" min-height: 535px">
 				<img src="{{asset('/img/miramarski/esquiadores.png')}}" class="img-responsive" style="position: absolute; bottom: 0">
 			</div>
-			<div id="content-book-response" class="col-xs-12 col-md-6" style="">
+			<div class="col-xs-12 col-md-6" style="">
 				@include('frontend._formBook')
             </div>
 		</div>
@@ -132,13 +132,13 @@
 				<div class="col-md-4 push-mobile-20">
 					<div class="col-xs-12 not-padding  container-image-box">
 						<div class="col-xs-12 not-padding push-0">
-							<a href="{{url('/apartamentos/apartamento-standard-sierra-nevada')}}">
-								<img class="img-responsive imga" src="{{ asset('/img/miramarski/small/apartamento-standar-sierra-nevada.jpg')}}"  alt="Apartamento standard sierra nevada"/>
+							<a href="{{url('/apartamentos/apartamento-lujo-sierra-nevada')}}">
+								<img class="img-responsive imga" src="{{ asset('/img/miramarski/small/apto-lujo-sierra-nevada.jpg')}}"  alt="Apartamento lujo sierra nevada"/>
 							</a>
 						</div>
 						<div class="col-xs-12 not-padding text-right overlay-text">
 							<h2 class="font-w600 center push-10 text-center text font-s24" >
-								<a class="white text-white" href="{{url('/apartamentos/apartamento-standard-sierra-nevada')}}">APARTAMENTO STANDARD</a>
+								<a class="white text-white" href="{{url('/apartamentos/apartamento-lujo-sierra-nevada')}}">APARTAMENTO LUJO</a>
 							</h2>
 						</div>
 					</div>
@@ -173,17 +173,7 @@
 		$(".daterange1").daterangepicker({
 			"buttonClasses": "button button-rounded button-mini nomargin",
 			"applyClass": "button-color",
-			"cancelClass": "button-light",
-			"minDate": "<?php echo date('Y/m/d') ?>",
-		 	locale: {
-		      format: 'YYYY/MM/DD'
-		    },
-		    onSelect: function(selectedDate) {
-		        var option = this.id == "from" ? "minDate" : "maxDate",
-		            instance = $(this).data("datepicker"),
-		            date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
-		        dates.not(this).datepicker("option", option, date);
-		    }
+			"cancelClass": "button-light"
 		});
 	});
 
@@ -194,7 +184,6 @@
 		        scrollTop: $("#content-form-book").offset().top - 80},
         'slow');
 	});
-
 	$('span.close').click(function(event) {
 		$('#content-form-book').hide('400');
 		$('html,body').animate({
@@ -202,82 +191,5 @@
         'slow');
 	});
 
-
-		$(".only-numbers").keydown(function (e) {	    
-	       	if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||	         
-	           	(e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 	         
-	           	(e.keyCode >= 35 && e.keyCode <= 40)) {	             
-	                return;
-	       	}	     
-	       	if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-	           e.preventDefault();
-	       	}
-	   	});
-
-		$('#quantity').change(function(event) {
-			var val = parseInt($(this).val());
-			if ( val >= 5) {
-				$('#apto-estudio').attr('disabled',true);
-				$('#apto-estudio').hide();	
-
-			}else{
-				
-				$('#apto-estudio').attr('disabled',false);
-				$('#apto-estudio').show();
-			}
-		});
-
-		$('.minus').click(function(event) {
-			var aux = parseInt($('#quantity').val());
-			if (aux  > 4) {
-				aux = aux-1;
-				$('#quantity').val(aux);
-				if ( aux >= 5) {
-					$('#apto-estudio').attr('disabled',true);
-				}
-			}
-		});
-
-		$('.plus').click(function(event) {
-			var aux = parseInt($('#quantity').val());
-			if (aux  < 8) {
-				aux = aux+1;
-
-				$('#quantity').val(aux);
-
-				if ( aux >= 5) {
-					$('#apto-estudio').attr('disabled',true);
-					$('#apto-estudio').hide();
-				}else{
-					$('#apto-estudio').attr('disabled',false);
-					$('#apto-estudio').show();
-
-				}
-			}
-			
-		});
-		$('#form-book-apto-lujo').submit(function(event) {
-
-			event.preventDefault();
-
-			var _token   = $('input[name="_token"]').val();
-			var name     = $('input[name="name"]').val();
-			var email    = $('input[name="email"]').val();
-			var phone    = $('input[name="telefono"]').val();
-			var date     = $('input[name="date"]').val();
-			var quantity = $('input[name="quantity"]').val();
-			var apto     = $('input[name="apto"]').val();
-			var luxury   = $('input[name="luxury"]').val();
-			var parking  = $('input[name="parking"]').val();
-			var comment  = $('textarea[name="comment"]').val();
-
-			var url = $(this).attr('action');
-
-			$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   date : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
-				
-				$('#content-book-response').empty().append(data);
-			});
-
-		});
 </script>	
 @endsection

@@ -16,11 +16,14 @@ Route::auth();
 Route::get('/','HomeController@index');
 Route::get('/apartamentos/apartamento-lujo-sierra-nevada','HomeController@apartamentoLujo');
 Route::get('/apartamentos/estudio-lujo-sierra-nevada','HomeController@estudioLujo');
-Route::get('/apartamentos/apartamento-standrad-sierra-nevada','HomeController@apartamentoStandard');
-Route::get('/apartamentos/estudio-standrad-sierra-nevada','HomeController@estudioStandard');
+Route::get('/apartamentos/apartamento-standard-sierra-nevada','HomeController@apartamentoStandard');
+Route::get('/apartamentos/estudio-standard-sierra-nevada','HomeController@estudioStandard');
 Route::get('/edificio-miramarski-sierra-nevada','HomeController@edificio');
 Route::get('/contacto','HomeController@contacto');
 
+Route::post('/getPriceBook','HomeController@getPriceBook');
+
+Route::post('admin/reservas/create' , 'BookController@create');
 
 // Route::get('/admin/propietario',['middleware' => 'authSubAdmin','uses' => 'Admin\BackendController@index']);
 // Route::get('/admin/propietario',['middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
@@ -30,7 +33,7 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 //Planing 
 	
 	Route::get('admin/reservas/new' , 'BookController@newBook');
-	Route::post('admin/reservas/create' , 'BookController@create');
+	// Route::post('admin/reservas/create' , 'BookController@create');
 	Route::get('admin/reservas/update/{id}' , 'BookController@update');	
 	Route::post('admin/reservas/saveUpdate/{id}' , 'BookController@saveUpdate');	
 	Route::get('admin/reservas/changeBook/{id}' , 'BookController@changeBook');

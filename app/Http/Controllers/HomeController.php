@@ -11,6 +11,7 @@ use Mail;
 use App\Classes\Mobile;
 use URL;
 use File;
+
 class HomeController extends Controller
 {
 
@@ -45,11 +46,12 @@ class HomeController extends Controller
     }
     public function estudioLujo(){
 
-        return view('frontend.pages._estudioLujo');
+       
     }
     public function apartamentoStandard(){
 
-        return view('frontend.pages.apartamentoStandard');
+        $slides = File::allFiles(public_path().'/img/miramarski/galerias/apartamento-standard');
+        return view('frontend.pages._apartamentoStandard', [ 'slides' => $slides]);
     }
     public function estudioStandard(){
 
@@ -64,4 +66,123 @@ class HomeController extends Controller
         return view('frontend.contacto');
     }
 
+
+    static function getPriceBook(Request $request){
+
+        
+        $date = explode('-', $request->input('date'));
+       
+        $start = Carbon::createFromFormat('Y/m/d' , trim($date[0]));
+        $finish = Carbon::createFromFormat('Y/m/d' , trim($date[1]));
+        $countDays = $finish->diffInDays($start);
+
+        $roomAssigned = 111;
+        if ($request->input('apto') == '2dorm' && $request->input('luxury') == 'si') {
+            
+            $rooms = \App\Rooms::where('typeApto', 2)->where('luxury', 1)->get();
+            if ( count($rooms) > 0) {
+                foreach ($rooms as $key => $room) {
+                    if ( \App\Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'), $room->id) ) {
+                        $roomAssigned =  $room->id;
+                        break;
+                    }
+                }
+            }
+
+            $limp = 50;
+        }elseif($request->input('apto') == '2dorm' && $request->input('luxury') == 'no'){
+            $rooms = \App\Rooms::where('typeApto', 2)->where('luxury', 0)->get();
+
+            if ( count($rooms) > 0) {
+                foreach ($rooms as $key => $room) {
+                    if ( \App\Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'), $room->id) ) {
+                        $roomAssigned =  $room->id;
+                        break;
+                    }
+                }
+            }
+            $limp = 50;
+        }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'si'){
+            $rooms = \App\Rooms::where('typeApto', 1)->where('luxury', 1)->get();
+            if ( count($rooms) > 0) {
+                foreach ($rooms as $key => $room) {
+                    if ( \App\Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'), $room->id) ) {
+                        $roomAssigned =  $room->id;
+                        break;
+                    }
+                }
+            }
+            /* $room = 116;  A definir por jorge */
+            $limp = 35;
+
+
+        }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'no'){
+            $rooms = \App\Rooms::where('typeApto', 1)->where('luxury', 0)->get();
+
+            if ( count($rooms) > 0) {
+                foreach ($rooms as $key => $room) {
+                    if ( \App\Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'), $room->id) ) {
+                        $roomAssigned =  $room->id;
+                        break;
+                    }
+                }
+            }
+            $limp = 35;
+        }
+
+        $paxPerRoom = \App\Rooms::getPaxRooms($request->input('quantity'), $roomAssigned);
+
+        $pax = $request->input('quantity');
+        if ($paxPerRoom > $request->input('quantity')) {
+            $pax = $paxPerRoom;
+        }
+
+        $price = 0;
+
+        for ($i=1; $i <= $countDays; $i++) { 
+
+            $seasonActive = \App\Seasons::getSeason($start->copy());
+            $prices = \App\Prices::where('season' ,  $seasonActive)
+                                ->where('occupation', $pax)->get();
+
+            foreach ($prices as $precio) {
+                $price = $price + $precio->price;
+            }
+        }
+
+        if ($request->input('parking') == 'si') {
+            $parking = 15 * $countDays;
+        }else{
+            $parking = 0;
+        }
+
+        if ($request->input('luxury') == 'si') {
+            $luxury = 50;
+        }else{
+            $luxury = 0;
+        }
+        
+        $total =  $price + $parking + $limp + $luxury;  
+
+
+        return view('frontend.bookStatus.response', [
+                                                        'id_apto' => $roomAssigned,
+                                                        'pax'     => $pax,
+                                                        'nigths'  => $countDays,
+                                                        'apto'    => ($request->input('apto') == '2dorm')?'Apartamento': 'estudio',
+                                                        'name'    => $request->input('name'),
+                                                        'email'   => $request->input('email'),
+                                                        'start'   => $start,
+                                                        'finish'  => $finish,
+                                                        'parking' => $parking,
+                                                        'luxury'  => $luxury,
+                                                        'total'   => $total,
+                                                        'comment' => $request->input('comment'),
+                                                    ]);
+
+    }
+
 }
+
+
+
