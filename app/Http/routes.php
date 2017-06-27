@@ -14,6 +14,12 @@ Route::auth();
 
 // Route::get('/',['middleware' => 'authSubAdmin','middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
 Route::get('/','HomeController@index');
+Route::get('/apartamentos/apartamento-lujo-sierra-nevada','HomeController@apartamentoLujo');
+Route::get('/apartamentos/estudio-lujo-sierra-nevada','HomeController@estudioLujo');
+Route::get('/apartamentos/apartamento-standrad-sierra-nevada','HomeController@apartamentoStandard');
+Route::get('/apartamentos/estudio-standrad-sierra-nevada','HomeController@estudioStandard');
+Route::get('/edificio-miramarski-sierra-nevada','HomeController@edificio');
+Route::get('/contacto','HomeController@contacto');
 
 
 // Route::get('/admin/propietario',['middleware' => 'authSubAdmin','uses' => 'Admin\BackendController@index']);

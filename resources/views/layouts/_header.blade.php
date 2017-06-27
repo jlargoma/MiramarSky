@@ -50,11 +50,11 @@
 </div>
 <!-- Header
 ============================================= -->	
-<header id="header" class="static-sticky transparent-header  not-dark">
+<header id="header" class="static-sticky transparent-header  not-dark header-not-transparent-pages">
 
 	<div id="header-wrap">
 
-		<div class="container-fluid clearfix">
+		<div class="container clearfix">
 
 			<div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
 
@@ -106,11 +106,11 @@
 						<a href="{{ url('/reserva') }}"><div>Reserva</div></a></li>
 					</li>
 					<li>
-						<a href="{{ url('/blog') }}"><div>Actividades en Sierra Nevada</div></a></li>
+						<a href="{{ url('/blog') }}"><div>Actividades</div></a></li>
 					</li>
 					
 					<li>
-						<a href="{{url('edificio-miramarski-sierra-nevada')}}"><div>El edificio</div></a>
+						<a href="{{url('/edificio-miramarski-sierra-nevada')}}"><div>El edificio</div></a>
 					</li>
 					<li>
 						<a href="{{ url('/contacto') }}"><div>Contacto</div></a></li>

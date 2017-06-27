@@ -176,13 +176,13 @@
    					<div class="image-box push-mobile-20">
    						<div class="col-xs-12 not-padding  container-image-box">
    							<div class="col-xs-12 not-padding push-0">
-   								<a href="{{url('/#')}}">
+   								<a href="{{url('/apartamentos/apartamento-lujo-sierra-nevada')}}">
    									<img class="img-responsive imga" src="{{ asset('/img/miramarski/small/apto-lujo-sierra-nevada.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
    								</a>
    							</div>
    							<div class="col-xs-12 not-padding text-right overlay-text">
    								<h2 class="font-w600 center push-10 text-center text font-s24" >
-   									<a class="white text-white" href="{{url('/#')}}">APARTAMENTO DE LUJO</a>
+   									<a class="white text-white" href="{{url('/apartamentos/apartamento-lujo-sierra-nevada')}}">APARTAMENTO DE LUJO</a>
    								</h2>
    							</div>
    						</div>
@@ -191,13 +191,13 @@
    					<div class="image-box push-mobile-20">
    						<div class="col-xs-12 not-padding  container-image-box">
    							<div class="col-xs-12 not-padding push-0">
-   								<a href="{{url('/#')}}">
+   								<a href="{{url('/apartamentos/estudio-lujo-sierra-nevada')}}">
    									<img class="img-responsive" src="{{ asset('/img/miramarski/small/estudio-lujo-sierra-nevada.jpg')}}"  alt="Estudio de lujo sierra nevada"/>
    								</a>
    							</div>
    							<div class="col-xs-12 not-padding text-right overlay-text">
    								<h2 class="font-w600 center push-10 text-center text font-s24" >
-   									<a class="white text-white" href="{{url('/#')}}">ESTUDIO DE LUJO</a>
+   									<a class="white text-white" href="{{url('/apartamentos/estudio-lujo-sierra-nevada')}}">ESTUDIO DE LUJO</a>
    								</h2>
    							</div>
    						</div>
@@ -206,13 +206,13 @@
    					<div class="image-box push-mobile-20">
    						<div class="col-xs-12 not-padding  container-image-box">
    							<div class="col-xs-12 not-padding push-0">
-   								<a href="{{url('/#')}}">
+   								<a href="{{url('/apartamentos/apartamento-standard-sierra-nevada')}}">
    									<img class="img-responsive imga" src="{{ asset('/img/miramarski/small/apartamento-standar-sierra-nevada.jpg')}}"  alt="Apartamento standard sierra nevada"/>
    								</a>
    							</div>
    							<div class="col-xs-12 not-padding text-right overlay-text">
    								<h2 class="font-w600 center push-10 text-center text font-s24" >
-   									<a class="white text-white" href="{{url('/#')}}">APARTAMENTO STANDARD</a>
+   									<a class="white text-white" href="{{url('/apartamentos/apartamento-standard-sierra-nevada')}}">APARTAMENTO STANDARD</a>
    								</h2>
    							</div>
    						</div>
@@ -221,13 +221,13 @@
    					<div class="image-box push-mobile-20">
    						<div class="col-xs-12 not-padding  container-image-box">
    							<div class="col-xs-12 not-padding push-0">
-   								<a href="{{url('/#')}}">
+   								<a href="{{url('/apartamentos/estudio-standard-sierra-nevada')}}">
    									<img class="img-responsive" src="{{ asset('/img/miramarski/small/estudio-standard-sierra-nevada.jpg')}}"  alt="Estudio standard sierra nevada"/>
    								</a>
    							</div>
    							<div class="col-xs-12 not-padding text-right overlay-text">
    								<h2 class="font-w600 center push-10 text-center text font-s24" >
-   									<a class="white text-white" href="{{url('/#')}}">ESTUDIO STANDARD</a>
+   									<a class="white text-white" href="{{url('/apartamentos/estudio-standard-sierra-nevada')}}">ESTUDIO STANDARD</a>
    								</h2>
    							</div>
    						</div>
@@ -236,13 +236,13 @@
    					<div class="image-box push-mobile-20">
    						<div class="col-xs-12 not-padding  container-image-box">
    							<div class="col-xs-12 not-padding push-0">
-   								<a href="{{url('/#')}}">
+   								<a href="{{url('/edificio-miramarski-sierra-nevada')}}">
    									<img class="img-responsive" src="{{ asset('/img/miramarski/small/edificio-miramarski-sierra-nevada.jpg')}}"  alt="Estudio standard sierra nevada"/>
    								</a>
    							</div>
    							<div class="col-xs-12 not-padding text-right overlay-text">
    								<h2 class="font-w600 center push-10 text-center text font-s24" >
-   									<a class="white text-white" href="{{url('/#')}}">EL EDIFICIO</a>
+   									<a class="white text-white" href="{{url('/edificio-miramarski-sierra-nevada')}}">EL EDIFICIO</a>
    								</h2>
    							</div>
    						</div>

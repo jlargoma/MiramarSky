@@ -10,6 +10,7 @@ use Auth;
 use Mail;
 use App\Classes\Mobile;
 use URL;
+use File;
 class HomeController extends Controller
 {
 
@@ -36,5 +37,31 @@ class HomeController extends Controller
                             ]);
     }
 
+
+    public function apartamentoLujo(){
+        $slides = File::allFiles(public_path().'/img/miramarski/galerias/apartamento-lujo');
+
+        return view('frontend.pages._apartamentoLujo', [ 'slides' => $slides]);
+    }
+    public function estudioLujo(){
+
+        return view('frontend.pages._estudioLujo');
+    }
+    public function apartamentoStandard(){
+
+        return view('frontend.pages.apartamentoStandard');
+    }
+    public function estudioStandard(){
+
+        return view('frontend.pages._estudioStandard');
+    }
+    public function edificio(){
+
+        return view('frontend.pages._edificio');
+    }
+    public function contacto(){
+
+        return view('frontend.contacto');
+    }
 
 }

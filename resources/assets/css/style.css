@@ -15212,11 +15212,15 @@ label,
 #logo, #primary-menu ul li .mega-menu-content.style-2 ul.mega-menu-column>li.mega-menu-title>a, #primary-menu ul li>a, #top-search form input, .button.button-desc, .counter, .entry-link, .entry.entry-date-section span, .nav-tree li a, .wedding-head .first-name, .wedding-head .last-name, h1, h2, h3, h4, h5, h6, label{
 	font-family: 'miramar'!important;	
 }
- #primary-menu ul li > a{
+ #primary-menu ul li  a{
  	font-size: 16px!important;
  	color:  #3f51b5;
  }
-  #primary-menu ul li > a:hover{
- 	background-color: #3f51b5;
+  #primary-menu ul li a:hover{
+ 	background-color: #3f51b5!important;
  	color: white!important;
  }
+
+.bg-bluesky{
+	background-color: #3f51b5;
+}
