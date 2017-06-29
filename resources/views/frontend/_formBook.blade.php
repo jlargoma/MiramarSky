@@ -2,9 +2,9 @@
     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
     <div class="col-md-12">
-        <div class="block-header text-center push-20">
+        <!-- <div class="block-header text-center push-20">
             <h3 class="white text-white" style="margin-bottom:0px">CALCULA TU RESERVA</h3>
-        </div>
+        </div> -->
         <div class="block-content">
             <div class="form-group col-sm-12 col-xs-12 col-md-4 col-lg-4 white">
                 <label>*Nombre</label>
@@ -20,7 +20,7 @@
             </div>
 			<div style="clear: both;"></div>
             <div class="form-group col-sm-10 col-xs-10 col-md-3 white">
-                <label>*Entrada - Salida</label>
+                <label style="display: inline!important;">*Entrada - Salida</label>
                 <div class="input-group">
                     <input type="text" class="sm-form-control daterange1" id="date"   name="date" required>
                 </div>
@@ -28,12 +28,17 @@
                     <br><b>* ESTANCIA MÍNIMA: 2 NOCHES</b>
                 </p>
             </div>
-            <div class="form-group col-sm-6 col-xs-6 col-md-3 white">
-           		<label>*Ocupantes</label>
+            <div class="form-group col-sm-6 col-xs-6 col-md-2 white">
+           		<label style="display: inline!important;">*Ocupantes</label>
             	<div class="quantity center clearfix divcenter">
-					<input type="button" value="-" class="minus black" style=" color: black;">
-					<input id="quantity" type="text" name="quantity" value="4" class="qty" style="background: white; color: black;">
-					<input type="button" value="+" class="plus black" style=" color: black;">
+					<!-- <input type="button" value="-" class="minus black" style=" color: black;">
+					<input id="quantity" type="text" name="quantity" value="4" class="qty" style="background: white; color: black;"> -->
+                    <select id="quantity" class="sm-form-control" name="quantity">
+                        <?php for ($i = 1;  $i < 8 ; $i++): ?>
+                            <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                        <?php endfor ?>
+                    </select>
+					<!-- <input type="button" value="+" class="plus black" style=" color: black;"> -->
 				</div>
                 
                 <p class="help-block white" style="line-height:1.2">Máximo 8 personas</p>
@@ -42,35 +47,35 @@
                 </p>
             </div>
             
-             <div class="form-group col-sm-3 col-xs-6 col-md-2" style="padding: 0">
-                <label class="parking white">*Apto</label>
-                <div>
+             <div class="form-group col-sm-3 col-xs-6 col-md-3" style="padding: 0">
+                <label style="display: inline!important;" class="col-md-12 parking white">* Tipo Apto</label>
+                <div class="col-md-6">
 					<input id="apto-2dorm" class="radio-style" name="apto" type="radio" checked="" value="2dorm">
-					<label for="apto-2dorm" class="radio-style-3-label">Dos dorm</label>
+					<label for="apto-2dorm" class="radio-style-3-label">2 dorm</label>
 				</div>
-				<div>
+				<div class="col-md-6">
 					<input id="apto-estudio" class="radio-style" name="apto" type="radio" value="estudio">
 					<label for="apto-estudio" class="radio-style-3-label">Estudio</label>
 				</div>
             </div>
              <div class="form-group col-sm-3 col-xs-6 col-md-2">
-                <label class="luxury white">*lujo</label>
-                <div>
+                <label style="display: inline!important;" class="col-md-12 luxury white">*lujo</label>
+                <div class="col-md-6"> 
 					<input id="luxury-yes" class="radio-style" name="luxury" type="radio" checked="" value="si">
 					<label for="luxury-yes" class="radio-style-3-label">Si</label>
 				</div>
-				<div>
+				<div class="col-md-6">
 					<input id="luxury-no" class="radio-style" name="luxury" type="radio" value="no">
 					<label for="luxury-no" class="radio-style-3-label">No</label>
 				</div>
             </div>
             <div class="form-group col-sm-3 col-xs-6 col-md-2">
-                <label class="parking white">*Parking</label>
-                <div>
+                <label style="display: inline!important;" class="col-md-12 parking white">*Parking</label>
+                <div class="col-md-6">
 					<input id="parking-yes" class="radio-style" name="parking" type="radio" checked="" value="si">
 					<label for="parking-yes" class="radio-style-3-label">Si</label>
 				</div>
-				<div>
+				<div class="col-md-6">
 					<input id="parking-no" class="radio-style" name="parking" type="radio" value="no">
 					<label for="parking-no" class="radio-style-3-label">No</label>
 				</div>
@@ -81,7 +86,7 @@
                 </div>
             </div>
             <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12 text-center">
-                <button type="submit" class="button button-3d button-xlarge button-rounded button-white button-light" id="confirm-reserva">Solicitar reserva</button>
+                <button type="submit" class="button button-3d button-xlarge button-rounded button-white button-light" id="confirm-reserva">Calcular reserva</button>
             </div>
         </div>
     </div>

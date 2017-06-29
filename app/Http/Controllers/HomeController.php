@@ -72,8 +72,8 @@ class HomeController extends Controller
         
         $date = explode('-', $request->input('date'));
        
-        $start = Carbon::createFromFormat('Y/m/d' , trim($date[0]));
-        $finish = Carbon::createFromFormat('Y/m/d' , trim($date[1]));
+        $start = Carbon::createFromFormat('d/m/Y' , trim($date[0]));
+        $finish = Carbon::createFromFormat('d/m/Y' , trim($date[1]));
         $countDays = $finish->diffInDays($start);
 
         $roomAssigned = 111;
@@ -129,6 +129,7 @@ class HomeController extends Controller
             }
             $limp = 35;
         }
+
 
         $paxPerRoom = \App\Rooms::getPaxRooms($request->input('quantity'), $roomAssigned);
 

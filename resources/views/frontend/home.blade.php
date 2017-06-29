@@ -9,13 +9,18 @@
 
        	<section class="page-section">
 
-   			<div id="banner-offert" class="button button-full center tright footer-stick line-promo" style="padding: 0;background-color: #fff;margin-bottom: 0px!important;"  data-animate="bounceIn">
+   			<div id="banner-offert" class="button button-full center tright footer-stick line-promo" style="padding: 0;;margin-bottom: 0px!important;"  data-animate="bounceIn">
    				<div class="row" style="padding: 0 15px;">
-   					<div class="col-xs-12 center  font-w300 text-center" style="padding: 20px 0">
-   						<span class="font-w800">SOLICITA TU RESERVA</span> ¡COMIENZA TUS VACACIONES YA!
-   						<div id="btn-hover-banner" class="button button-desc button-border button-rounded center">RESERVAR YA!</div>
-   					</div>
-   				</div>
+   					
+   					<div id class="col-xs-12 center  font-w300 text-center" style="padding: 20px 0">
+		                <div id="typed-strings">
+						  	<p><span class="font-w800">SOLICITA TU RESERVA</span> ¡COMIENZA TUS VACACIONES YA!</p>
+		                </div>
+		                <span id="typed" style="white-space:pre;"></span>
+		                <div id="btn-hover-banner" class="button button-desc button-border button-rounded center">RESERVAR YA!</div>
+	              	</div>
+               		
+				</div>
    			</div>
        		<div id="content-book" class="container clearfix push-10" style="display: none;">
        			<div class="tabs advanced-real-estate-tabs clearfix">

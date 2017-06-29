@@ -112,6 +112,7 @@
 		</div>
 		<div id="gotoTop" class="fa fa-chevron-up"></div>
 		<script type="text/javascript" src="{{ asset('/js/scripts.js')}}"></script>
+		<script type="text/javascript" src="{{ asset('/js/typed.js')}}"></script>
 		<script type="text/javascript">
 			var tpj=jQuery;
 			var revapi31;
@@ -220,11 +221,15 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 
-			  	$('#banner-offert').hover(function() {
-			  		$('#btn-hover-banner').addClass('hover-white');
-			  	}, function() {
-			  		$('#btn-hover-banner').removeClass('hover-white')
-			  	});
+				// function hoverable(argument) {
+			 //  		$('#btn-hover-banner').addClass('hover-white');
+				// }
+
+			 //  	$('#banner-offert').hover(function() {
+			 //  		$('#btn-hover-banner').addClass('hover-white');
+			 //  	}, function() {
+			 //  		$('#btn-hover-banner').removeClass('hover-white')
+			 //  	});
 
 			  	$('#banner-offert').click(function(event) {
 			  		$('#content-book').show('400');
@@ -232,6 +237,9 @@
 			  		       scrollTop: $("#content-book").offset().top - 60
 			  		   }, 2000);
 			  	});
+
+
+			  	// hoverable();
 
 			  	/*$(window).scroll(function(){
 				  var sticky = $('.sticky-top-bar'),
@@ -242,6 +250,34 @@
 				});*/
 			});	
 		</script>
+		<script>
+		    document.addEventListener('DOMContentLoaded', function(){
 
+		        Typed.new("#typed", {
+		            stringsElement: document.getElementById('typed-strings'),
+		            typeSpeed: 30,
+		            backDelay: 500,
+		            loop: false,
+		            contentType: 'html', // or text
+		            // defaults to null for infinite loop
+		            loopCount: null,
+		            callback: function(){ foo(); },
+		            resetCallback: function() { newTyped(); }
+		        });
+
+		        var resetElement = document.querySelector('.reset');
+		        if(resetElement) {
+		            resetElement.addEventListener('click', function() {
+		                document.getElementById('typed')._typed.reset();
+		            });
+		        }
+
+		    });
+
+		    function newTyped(){ /* A new typed object */ }
+
+		    function foo(){ console.log("Callback"); }
+
+		</script>
 	</body>
 	</html>

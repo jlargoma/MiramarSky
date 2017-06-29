@@ -74,7 +74,7 @@
 					<li class="mega-menu"><a href="#"><div>Apartamentos</div></a>
 						<div class="mega-menu-content style-2 clearfix">
 							<ul class="mega-menu-column col-md-6">
-								<li class="mega-menu-title"><a href="#" class="font-w600 green"><div>Apartamentos de lujo</div></a>
+								<li class="mega-menu-title"><a href="#" class="font-w600 green"><div>Apartamentos</div></a>
 									<ul>
 										
 										<li>

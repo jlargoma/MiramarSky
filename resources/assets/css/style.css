@@ -14281,18 +14281,12 @@ td.clases h3.name{
 .line-promo{
 	letter-spacing: 0; 
 	line-height: 1;
-	color:#3F51B5;
-    background-size: 200% 100%;
-    background-image: linear-gradient(to right, #FFF 50%, #3F51B5 50%);
-    transition: background-position 2s;
-}
-.line-promo:hover {
-    background-position: -100% 0;
-    color: white;
+    background: #3F51B5!important;
+    color: white!important;
 }
 .line-promo .button.button-desc.button-border.button-rounded.center{
-	border-color: #3F51B5;
-	color: #3F51B5;
+	border-color: #FFF;
+	color: #FFF;
 }
 .line-promo .hover-white{
 	border-color: #FFF !important;
@@ -15215,6 +15209,7 @@ label,
  #primary-menu ul li  a{
  	font-size: 16px!important;
  	color:  #3f51b5;
+ 	font-weight: 800;
  }
   #primary-menu ul li a:hover{
  	background-color: #3f51b5!important;
@@ -15223,4 +15218,46 @@ label,
 
 .bg-bluesky{
 	background-color: #3f51b5;
+}
+
+ /* code for animated blinking cursor */
+.typed-cursor{
+    opacity: 1;
+    font-weight: 100;
+    -webkit-animation: blink 0.7s infinite;
+    -moz-animation: blink 0.7s infinite;
+    -ms-animation: blink 0.7s infinite;
+    -o-animation: blink 0.7s infinite;
+    animation: blink 0.7s infinite;
+}
+@-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-webkit-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-moz-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-ms-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+@-o-keyframes blink{
+    0% { opacity:1; }
+    50% { opacity:0; }
+    100% { opacity:1; }
+}
+
+.typed-fade-out{
+    opacity: 0;
+    animation: 0;
+    transition: opacity .25s;
 }
