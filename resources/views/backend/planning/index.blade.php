@@ -96,13 +96,10 @@
             padding-top: 0px!important;
             padding-bottom: 0px!important;
         }
-        .nuevo{
-            background-color: lightgreen;
-            color: black;
-            border-radius: 11px;
-            width: 50px;
+        td{
+            margin: 0px;
+            padding: 0px!important;
         }
-
         a {
             color: black;
             cursor: pointer;
@@ -132,13 +129,13 @@
             <div class="col-md-7 col-xs-12">
                 <div class="panel">
                     <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="collapse">
-                        <li class="nuevo"><a href="#tabNueva" data-toggle="tab" role="tab" >+</a>
+                        <li class="nuevo"><a href="#tabNueva" data-toggle="tab" role="tab" ><i class="fa fa-plus-circle fa-3x" style="color:green" aria-hidden="true"></i></a>
                         </li>
                         <li class="active" ><a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes </a>
                         </li>
                         <li><a href="#tabEspeciales" data-toggle="tab" role="tab">Especiales </a>
                         </li>
-                        <li><a href="#tabPagadas" data-toggle="tab" role="tab">Pagadas </a>
+                        <li><a href="#tabPagadas" data-toggle="tab" role="tab">Confirmadas </a>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -290,42 +287,53 @@
                                     <table class="table table-hover demo-table-search table-responsive" id="tableWithSearch" >
                                         <thead>
                                             <tr>   
-                                                <th class ="text-center bg-complete text-white" style="width:5%"> Pagos </th>
-                                                <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
-                                                <th class ="text-center bg-complete text-white" style="width:2%">   Pax         </th>
+                                                <th class ="text-center bg-complete text-white" style="width:5%!important"> Cobros </th>
+                                                <th class ="text-center bg-complete text-white" style="width:20%!important">  Cliente     </th>
+                                                <th class ="text-center bg-complete text-white" style="width:10%">  Telefono     </th>
+                                                <th class ="text-center bg-complete text-white" style="width:2%">   P         </th>
                                                 <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
-                                                <th class ="text-center bg-complete text-white" style="width:20%!important">  IN     </th>
-                                                <th class ="text-center bg-complete text-white" style="width:20%!important">  OUT      </th>
+                                                <th class ="text-center bg-complete text-white" style="width:5%!important">  IN     </th>
+                                                <th class ="text-center bg-complete text-white" style="width:5%!important">  OUT      </th>
                                                 <th class ="text-center bg-complete text-white" style="width:5%">   Noc         </th>
                                                 <th class ="text-center bg-complete text-white">                    Precio      </th>
                                                 <th class ="text-center bg-complete text-white" style="width:5%">   Estado      </th>
-                                                <th class ="text-center bg-complete text-white">                    Acciones    </th>
+                                                <th class ="text-center bg-complete text-white">                    A  </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php foreach ($arrayBooks["nuevas"] as $book): ?>
                                                     <tr>
-                                                        <td class ="text-center">                                                    
+                                                        <td class ="text-center ">
                                                             <?php if (isset($payment[$book->id])): ?>
                                                                 <?php if ($payment[$book->id] == 0): ?>
                                                                 <?php else:?>
-                                                                    <input class="progress-circle" data-pages-progress="circle" value="<?php echo number_format(100/($book->total_price/$payment[$book->id]),0) ?>" type="hidden">
-                                                                    <?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?>
-<!-- 
-                                                                    <p><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></p>
-                                                                    <div class="progress ">
-                                                                    <div class="progress-bar progress-bar-danger" style="width:<?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?>"></div>
-                                                                    </div>            -->                                                 
+                                                                    <!-- input class="progress-circle" data-pages-progress="circle" value="<?php echo number_format(100/($book->total_price/$payment[$book->id]),0) ?>" type="hidden">
+                                                                    <?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?> -->
+                                                                        <p><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></p>
+
+                                                                        <div class="progress ">
+                                                                        <div class="progress-bar progress-bar-danger" style="width:<?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?>"></div>
+                                                                        </div> 
+                                                                                                                               
                                                                 <?php endif; ?>
                                                             <?php else: ?>
-                                                            <?php endif ?>
+                                                            <?php endif ?> 
                                                         </td> 
+
                                                         <td class ="text-center">
-                                                                <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo substr($book->customer['name'], 0,10)  ?></a>
-                                                            
+
+                                                                <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo $book->customer['name']  ?></a>                                                        
+                                                        </td>
+
+                                                        <td class ="text-center"> 
+                                                            <?php if ($book->customer->phone != 0): ?>
+                                                                <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?>
+                                                            <?php else: ?>
+                                                            <?php endif ?>
                                                         </td>
 
                                                         <td class ="text-center"><?php echo $book->pax ?></td>
+
                                                         <td class ="text-center">
                                                             <select class="room" data-id="<?php echo $book->id ?>" >
                                                                 
@@ -341,25 +349,30 @@
 
                                                             </select>
                                                         </td>
+
                                                         <td class ="text-center" style="width: 20%!important">
                                                             <?php
                                                                 $start = Carbon::createFromFormat('Y-m-d',$book->start);
                                                                 echo $start->formatLocalized('%d %b');
                                                             ?>
                                                         </td>
+
                                                         <td class ="text-center" style="width: 20%!important">
                                                             <?php
                                                                 $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
                                                                 echo $finish->formatLocalized('%d %b');
                                                             ?>
                                                         </td>
+
                                                         <td class ="text-center"><?php echo $book->nigths ?></td>
+
                                                         <td class ="text-center"><?php echo $book->total_price."€" ?><br>
                                                                                 <?php if (isset($payment[$book->id])): ?>
                                                                                     <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
                                                                                 <?php else: ?>
                                                                                 <?php endif ?>
                                                         </td>
+
                                                         <td class ="text-center">
                                                             <select class="status form-control" data-id="<?php echo $book->id ?>" >
                                                                 <?php for ($i=1; $i < 9; $i++): ?> 
@@ -372,13 +385,15 @@
                                                                 <?php endfor; ?>
                                                             </select>
                                                         </td>
+
                                                         <td>
-                                                            <div class="btn-group">
+                                                            <div class="col-md-6 <?php echo $book->getStatus($book->type_book) ?>" style="    position: relative;height: 30px;width: 30px;border-radius:50%">&nbsp;</div>
+                                                            <div class="btn-group col-md-6">
                                                                 <!--  -->
-                                                                <?php if ($book->customer['phone'] != 0): ?>
+                                                                <!-- <?php if ($book->customer['phone'] != 0): ?>
                                                                         <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->customer['phone'] ?>"><i class="pg-phone"></i>
                                                                         </a>
-                                                                <?php endif ?>
+                                                                <?php endif ?> -->
                                                                 
                                                                 <?php if ($book->send == 0): ?>
                                                                     <a class="btn btn-tag btn-primary" ><i class=" pg-mail"></i></a>
@@ -410,7 +425,7 @@
                                         <thead>
                                             <tr>
                                                 <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
-                                                <!-- <th class ="text-center bg-complete text-white" style="width:5%">   Telefono    </th> -->
+                                                <th class ="text-center bg-complete text-white" style="width:5%">   Telefono    </th>
                                                 <th class ="text-center bg-complete text-white" style="width:2%">   Pax         </th>
                                                 <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
                                                 <th class ="text-center bg-complete text-white" style="width:11%!important">  IN     </th>
@@ -428,6 +443,7 @@
                                                             <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo $book->customer['name'] ?></a>
                                                         </td>
 
+                                                        <td class ="text-center"><?php echo $book->customer->phone ?></td>
                                                         <td class ="text-center"><?php echo $book->pax ?></td>
                                                         <td class ="text-center">
                                                             <select class="room" class="form-control" data-id="<?php echo $book->id ?>" >
@@ -476,20 +492,19 @@
                                                             </select>
                                                         </td>
                                                         <td>
-                                                            <div class="btn-group">
+                                                            <div class="col-md-6 <?php echo $book->getStatus($book->type_book) ?>" style="    position: relative;height: 30px;width: 30px;border-radius:50%">&nbsp;</div>
+                                                            <div class="btn-group col-md-6">
                                                                 <!--  -->
-                                                                <?php if ($book->customer['phone'] != 0): ?>
+                                                                <!-- <?php if ($book->customer['phone'] != 0): ?>
                                                                         <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->customer['phone'] ?>"><i class="pg-phone"></i>
                                                                         </a>
-                                                                <?php endif ?>
+                                                                <?php endif ?> -->
                                                                 
                                                                 <?php if ($book->send == 0): ?>
                                                                     <a class="btn btn-tag btn-primary" ><i class=" pg-mail"></i></a>
                                                                     </a>
                                                                 <?php else: ?>
                                                                 <?php endif ?>
-                                                                
-                                                            </div>
                                                         </td>
                                                     </tr>
                                             <?php endforeach ?>
@@ -512,8 +527,9 @@
                                 <table class="table table-hover demo-table-search table-responsive" id="tableWithSearch3" >
                                     <thead>
                                         <tr>   
-                                            <th class ="text-center bg-complete text-white" style="width:5%"> Pagos </th>
+                                            <th class ="text-center bg-complete text-white" style="width:5%"> Cobros </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">  Cliente     </th>
+                                            <th class ="text-center bg-complete text-white" style="width:5%">  Telefono     </th>
                                             <th class ="text-center bg-complete text-white" style="width:2%">   Pax         </th>
                                             <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
                                             <th class ="text-center bg-complete text-white" style="width:20%!important">  IN     </th>
@@ -540,10 +556,10 @@
                                                         <?php endif ?>
                                                     </td> 
                                                     <td class ="text-center">
-                                                            <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo substr($book->customer['name'], 0,10)  ?></a>
-                                                        
+                                                            <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo substr($book->customer['name'], 0,10)  ?></a>                                                        
                                                     </td>
 
+                                                    <td class ="text-center"><?php echo $book->customer->phone ?></td>
                                                     <td class ="text-center"><?php echo $book->pax ?></td>
                                                     <td class ="text-center">
                                                         <select class="room" data-id="<?php echo $book->id ?>" >
@@ -592,20 +608,19 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <div class="btn-group">
+                                                        <div class="col-md-6 <?php echo $book->getStatus($book->type_book) ?>" style="    position: relative;height: 30px;width: 30px;border-radius:50%">&nbsp;</div>
+                                                        <div class="btn-group col-md-6">
                                                             <!--  -->
-                                                            <?php if ($book->customer['phone'] != 0): ?>
+                                                            <!-- <?php if ($book->customer['phone'] != 0): ?>
                                                                     <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->customer['phone'] ?>"><i class="pg-phone"></i>
                                                                     </a>
-                                                            <?php endif ?>
+                                                            <?php endif ?> -->
                                                             
                                                             <?php if ($book->send == 0): ?>
                                                                 <a class="btn btn-tag btn-primary" ><i class=" pg-mail"></i></a>
                                                                 </a>
                                                             <?php else: ?>
                                                             <?php endif ?>
-                                                            
-                                                        </div>
                                                     </td>
                                                 </tr>
                                         <?php endforeach ?>
