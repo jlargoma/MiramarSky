@@ -14,9 +14,39 @@ class PaymentsProController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //
-    }
+        {
+            $books = \App\Book::all();
+
+            $payments = array();
+
+            foreach ($books as $book) {
+                if (isset($payments[$book->room_id])) {
+                  $payments[$book->room_id] += $book->total_price;
+                }else{
+                    $payments[$book->room_id] = $book->total_price;
+                }
+                
+            }
+
+            $payments = \App\PaymentsPro::all();
+
+            $total_payments = array();
+
+            foreach ($payments as $payments) {
+                if (isset($total_payments[$payments->room_id])) {
+                  $total_payments[$payments->room_id] += $payments->import;
+                }else{
+                    $total_payments[$payments->room_id] = $payments->import;
+                }
+                
+            }
+
+            return view('backend/paymentspro/index',[
+                                                        'rooms' => \App\Rooms::all(),
+                                                        'payments' => $payments,
+                                                        'totalPayment' => $total_payments,
+                                                        ]);
+        }
 
     /**
      * Show the form for creating a new resource.

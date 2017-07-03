@@ -3,7 +3,8 @@
 @section('title') Administrador de reservas MiramarSKI @endsection
 
 @section('externalScripts') 
-
+<link rel="stylesheet" href="/assets/plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="/assets/plugins/select2/js/select2.css">
 
 @endsection
     
@@ -197,7 +198,15 @@
                                                 </td>
                                                 <td class ="text-center"> 
                                                     <input class="comment" type="text" name="comment"  style="width: 100%;text-align: center;border-style: none none solid">
-                                                    </td>
+                                                </td>
+                                                <td class="text-center">
+                                                    <select class="full-width select2-hidden-accessible type_payment" data-init-plugin="select2" name="type_payment"  tabindex="-1" aria-hidden="true">
+                                                        <?php for ($i=0; $i < 3 ; $i++): ?>
+                                                           <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
+                            
+                                                        <?php endfor ;?>
+                                                    </select>
+                                                </td>
                                             </tr>
                                         <?php else: ?>
 
@@ -214,16 +223,26 @@
                                             </td>
                                             <td class ="text-center"> 
                                                 <input class="comment" type="text" name="comment"  style="width: 100%;text-align: center;border-style: none none solid">
-                                                </td>
+                                            </td>
+                                            <td class="text-center">
+                                                <select class="full-width select2-hidden-accessible type_payment" data-init-plugin="select2" name="type_payment"  tabindex="-1" aria-hidden="true">
+                                                    <?php for ($i=0; $i < 3 ; $i++): ?>
+                                                       <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
+                                                
+                                                    <?php endfor ;?>
+                                                </select>
+                                            </td>
                                         </tr>
                                     <?php endif ?>
                                     <tr>
                                         <?php if ($total < $book->total_price): ?>
                                             <td class="text-center" colspan="2">Falta</td>
                                             <td class="text-center" ><?php echo $total-$book->total_price ?>€</td>
-                                        <?php else: ?>
+                                        <?php elseif($total > $book->total_price): ?>
                                             <td class="text-center" colspan="2">Sobran</td>
                                             <td class="text-center" ><?php echo $total-$book->total_price ?>€</td>
+                                        <?php else: ?>
+                                            <td class="text-center" colspan="4">Al corriente de pago</td>
                                         <?php endif ?>
                                         
                                     </tr>
@@ -241,6 +260,7 @@
 @endsection
 
 @section('scripts')
+<script src="/assets/plugins/select2/select2.full.min.js"></script>
 <script type="text/javascript">
         $(document).ready(function() {          
 
@@ -291,23 +311,23 @@
                 finish = info[1] + '/' + info[0] + '/' + info[2]; 
 
                 diferencia = Math.floor((  Date.parse(finish)- Date.parse(start) ) / 86400000);       
-                $.get('/admin/public/apartamentos/getPaxPerRooms/'+room).success(function( data ){
+                $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
                     if (pax < data) {
                         $('.pax').attr('style' , 'background-color:red');
                     }else{
                         $('.pax').removeAttr('style');
                     }
                 });
-                $.get('/admin/public/reservas/getPricePark', {park: park, noches: diferencia}).success(function( data ) {
+                $.get('/admin/reservas/getPricePark', {park: park, noches: diferencia}).success(function( data ) {
                     pricePark = data;
-                    $.get('/admin/public/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                    $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
                         price = data;
                         price = (parseFloat(price) + parseFloat(pricePark));
                         $('.total').empty();
                         $('.total').val(price);
-                            $.get('/admin/public/reservas/getCostPark', {park: park, noches: diferencia}).success(function( data ) {
+                            $.get('/admin/reservas/getCostPark', {park: park, noches: diferencia}).success(function( data ) {
                                 costPark = data;
-                                    $.get('/admin/public/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                                    $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
                                         cost = data;
                                         cost = (parseFloat(cost) + parseFloat(costPark));
                                         $('.cost').empty();
@@ -336,9 +356,11 @@
                 var date = $('.fecha-cobro').val();
                 var importe = $('.importe').val();
                 var comment = $('.comment').val();
-                $.get('/admin/public/pagos/create', {id: id, date: date, importe: importe, comment: comment}).success(function( data ) {
+                var type = $('.type_payment').val();
+                console.log(type);
+                $.get('/admin/pagos/create', {id: id, date: date, importe: importe, comment: comment, type: type}).success(function( data ) {
                     alert(data);
-                    location.reload();
+                    window.location.reload();
                 });
             });
 
@@ -346,7 +368,7 @@
                 var id = $(this).attr('data-id');               
                 var importe = $(this).val();
                 console.log(id);
-                $.get('/admin/public/pagos/update', {  id: id, importe: importe}, function(data) {
+                $.get('/admin/pagos/update', {  id: id, importe: importe}, function(data) {
                     window.location.reload();
                 });
 

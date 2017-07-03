@@ -17,7 +17,9 @@ class RoomsController extends Controller
     {
         return view('backend/rooms/index',[
                     'rooms' => \App\Rooms::all(),
-                    'types'  => \App\TypeRooms::all(),
+                    'sizes'  => \App\SizeRooms::all(),
+                    'types'  => \App\TypeApto::all(),
+                    'tipos'  => \App\TypeApto::all(),
                     'owners' => \App\User::whereIn('role',['Admin','Propietario'])->get(),
                 ]);
     }
@@ -53,9 +55,25 @@ class RoomsController extends Controller
 
     public function createType(Request $request)
     {
-        $existTypeRoom = \App\TypeRooms::where('name',$request->input('name'))->count();
+       $existTypeRoom = \App\TypeApto::where('name',$request->input('name'))->count();
+       if ($existTypeRoom == 0) {
+           $roomType = new \App\TypeApto();
+
+           $roomType->name = $request->input('name');
+           
+           if ($roomType->save()) {
+               return redirect()->action('RoomsController@index');
+           }
+       }else{
+           echo "Ya existe este tipo de apartamento";
+       }
+    }
+
+    public function createSize(Request $request)
+    {
+        $existTypeRoom = \App\SizeRooms::where('name',$request->input('name'))->count();
         if ($existTypeRoom == 0) {
-            $roomType = new \App\TypeRooms();
+            $roomType = new \App\SizeRooms();
 
             $roomType->name = $request->input('name');
             
@@ -123,6 +141,19 @@ class RoomsController extends Controller
         }
     }
 
+    public function updateType(Request $request)
+    {
+        $id                   = $request->id;
+        $roomUpdate          = \App\Rooms::find($id);
+
+
+        $roomUpdate->typeApto = $request->tipo;
+        
+
+        if ($roomUpdate->save()) {
+            echo "Cambiada!!";
+        }
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -143,4 +174,30 @@ class RoomsController extends Controller
             
             return $room->minOcu;    
         }
+
+    public function uploadFile(Request $request)
+        {   
+            echo "llega";
+            die();
+
+            $room = \App\Rooms::find($request->id);
+
+            $directory =public_path()."/img/miramarski/galerias/".$room->nameRoom;
+
+            if (!file_exists($directory)) {
+                mkdir($directory, 0777, true);
+            }
+
+            $directory =public_path()."/img/miramarski/galerias/".$room->nameRoom."/";
+            // echo $storage_path . basename( $_FILES['uploadedfile']['name']);
+            $directory = $directory . basename( $_FILES[$request->type]['name']); 
+            if(move_uploaded_file($request->type, $directory)) {
+                echo "subido";
+                return redirect()->action('RoomsController@index');
+            } else{
+                echo "no subido";
+                return redirect()->action('RoomsController@index');
+            }
+        }
+
 }

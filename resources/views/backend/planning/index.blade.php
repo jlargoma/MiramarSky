@@ -386,9 +386,7 @@
                                                             </select>
                                                         </td>
 
-                                                        <td>
-                                                            <div class="col-md-6 <?php echo $book->getStatus($book->type_book) ?>" style="    position: relative;height: 30px;width: 30px;border-radius:50%">&nbsp;</div>
-                                                            <div class="btn-group col-md-6">
+                                                        <td>                                                        
                                                                 <!--  -->
                                                                 <!-- <?php if ($book->customer['phone'] != 0): ?>
                                                                         <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->customer['phone'] ?>"><i class="pg-phone"></i>
@@ -491,9 +489,7 @@
                                                                 <?php endfor; ?>
                                                             </select>
                                                         </td>
-                                                        <td>
-                                                            <div class="col-md-6 <?php echo $book->getStatus($book->type_book) ?>" style="    position: relative;height: 30px;width: 30px;border-radius:50%">&nbsp;</div>
-                                                            <div class="btn-group col-md-6">
+                                                        <td>                                                        
                                                                 <!--  -->
                                                                 <!-- <?php if ($book->customer['phone'] != 0): ?>
                                                                         <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->customer['phone'] ?>"><i class="pg-phone"></i>
@@ -650,15 +646,15 @@
                         <div class="tab-pane active" id="tabPrimera">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <table class="fc-border-separate" style="border:1px solid black;width: 100%">
+                                    <table class="fc-border-separate" style="width: 100%">
                                        <thead>
-                                            <tr>
+                                            <tr >
                                                 <td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
                                                     <?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
                                                 </td> 
                                             </tr>
                                             <tr>
-                                                <td rowspan="2" style="width: 1%!important">Apto</td>
+                                                <td rowspan="2" style="width: 1%!important"></td>
                                                     <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
                                                         <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
                                                             <?php echo $i?> 
@@ -679,13 +675,13 @@
                                             <?php foreach ($roomscalendar as $room): ?>
                                                 <tr>
                                                     <?php $date = $date->startOfMonth() ?>
-                                                    <td><?php echo substr($room->nameRoom, 0,5)." " ?>      </td>
+                                                    <td class="text-center"><b><?php echo substr($room->nameRoom, 0,5)?></b></td>
                                                         
                                                     <?php for ($i=01; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
 
                                                             <?php if (isset($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i])): ?>
                                                                 <?php if ($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->start == $date->copy()->format('Y-m-d')): ?>
-                                                                        <td style='border:1px solid black;width: 3%'>
+                                                                        <td style='border:1px solid grey;width: 3%'>
                                                                             <div style="width: 50%;float: left;">
                                                                                 &nbsp;
                                                                             </div>
@@ -695,7 +691,7 @@
 
                                                                         </td>    
                                                                 <?php elseif($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->finish == $date->copy()->format('Y-m-d')): ?>
-                                                                        <td style='border:1px solid black;width: 3%'>
+                                                                        <td style='border:1px solid grey;width: 3%'>
                                                                             <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?> end" style="width: 50%;float: left;">
                                                                                 &nbsp;
                                                                             </div>
@@ -707,7 +703,7 @@
                                                                         </td>
                                                                 <?php else: ?>
                                                                     
-                                                                        <td style='border:1px solid black;width: 3%' title="<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->customer['name'] ?>" class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?>">
+                                                                        <td style='border:1px solid grey;width: 3%' title="<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->customer['name'] ?>" class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?>">
 
                                                                        <a href="{{url ('/admin/reservas/update')}}/<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->id ?>">
                                                                            <div style="width: 100%;height: 100%">
@@ -719,7 +715,7 @@
 
                                                                 <?php endif ?>
                                                             <?php else: ?>
-                                                                <td class="<?php echo $days[$date->copy()->format('n')][$i]?>" style='border:1px solid black;width: 3%'>
+                                                                <td class="<?php echo $days[$date->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
                                                                     
                                                                 </td>
                                                             <?php endif; ?>

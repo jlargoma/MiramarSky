@@ -24,7 +24,6 @@ Route::get('/contacto','HomeController@contacto');
 Route::post('/getPriceBook','HomeController@getPriceBook');
 
 Route::post('admin/reservas/create' , 'BookController@create');
-
 // Route::get('/admin/propietario',['middleware' => 'authSubAdmin','uses' => 'Admin\BackendController@index']);
 // Route::get('/admin/propietario',['middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
 
@@ -67,13 +66,14 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 	Route::get('admin/apartamentos/new-type', 'RoomsController@newTypeRoom');
 	Route::get('admin/apartamentos/new-size', 'RoomsController@newSizeRoom');
 	Route::get('admin/apartamentos/update', 'RoomsController@update');
+	Route::get('admin/apartamentos/update-type', 'RoomsController@updateType');
 	Route::post('admin/apartamentos/saveupdate', 'RoomsController@saveUpdate');
 	Route::post('admin/apartamentos/create', 'RoomsController@create');
 	Route::post('admin/apartamentos/create-type', 'RoomsController@createType');
 	Route::post('admin/apartamentos/create-size', 'RoomsController@createSize');
 	Route::get('admin/apartamentos/delete/{id}', 'RoomsController@delete');
 	Route::get('admin/apartamentos/getPaxPerRooms/{id}', 'RoomsController@getPaxPerRooms');
-
+	Route::get('admin/apartamentos/uploadfile', 'RoomsController@uploadFile');
 // Prices
 	Route::get('admin/precios' ,['middleware' => 'authSubAdmin','uses' =>  'PricesController@index']);
 	Route::get('admin/precios/update', 'PricesController@update');
@@ -97,6 +97,11 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 	Route::get('admin/pagos' , 'PaymentsController@index');
 	Route::get('admin/pagos/create', 'PaymentsController@create');
 	Route::get('admin/pagos/update', 'PaymentsController@update');
+
+// Pagos
+	Route::get('admin/pagos-propietarios' , 'PaymentsProController@index');
+	Route::get('admin/pagos-propietarios/create', 'PaymentsController@create');
+	Route::get('admin/pagos-propietarios/update', 'PaymentsController@update');
 
 
 //Liquidacion

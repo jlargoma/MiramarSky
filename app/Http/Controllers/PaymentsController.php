@@ -37,6 +37,7 @@ class PaymentsController extends Controller
         $payment->datePayment = $date;
         $payment->import = $request->importe;
         $payment->comment = $request->comment;
+        $payment->type = $request->type;
             if ($payment->save()) {
                 return 'cobro guardado';
             }
