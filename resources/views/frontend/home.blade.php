@@ -198,8 +198,8 @@
 			<section  class="page-section" style="letter-spacing: 0;line-height: 1;">
 				<div class="col-xs-12">
 					<div class="col-xs-12">
-						<div class="heading-block nobottomborder" style="margin-bottom: 20px">
-							<h3 class="green">EL edificio y los apartamentos</h3>
+						<div class="heading-block center nobottomborder" style="margin-bottom: 20px">
+							<h3 class="green">EL edificio</h3>
 						</div>
 						<p class="lead  text-justify black ls-15">
 							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
@@ -224,26 +224,31 @@
 
 				</div>
 				<div style="clear: both;"></div>
+
+				<div class="heading-block center">
+					<h3 class="green">APARTAMENTOS</h3>
+				</div>
+
 				<a href="{{url('/apartamentos/apartamento-lujo-sierra-nevada')}}">
-					<div class="section parallax-effect nomargin noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apartamento-lujo/a-panoramica.jpg') }}); padding: 40px 0;" data-stellar-background-ratio="0.4">
+					<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apartamento-lujo/a-panoramica.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800" style="text-shadow: 1px 1px #000;">APARTAMENTO DE LUJO</h3>
 							<span  class="text-center white text-white" style="text-shadow: 1px 1px #000;">Lorem ipsum dolor sit amet</span>
 					</div>
 				</a>
 				<a href="{{url('/apartamentos/apartamento-standard-sierra-nevada')}}">
-					<div class="section parallax-effect nomargin noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apartamento-standard/salon5-min.jpg') }}); padding: 40px 0;" data-stellar-background-ratio="0.4">
+					<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apartamento-standard/salon5-min.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800" style="text-shadow: 1px 1px #000;">APARTAMENTO STANDARD</h3>
 							<span  class="text-center white text-white" style="text-shadow: 1px 1px #000;">Lorem ipsum dolor sit amet</span>
 					</div>
 				</a>
 				<a href="{{url('/apartamentos/estudio-lujo-sierra-nevada')}}">
-					<div class="section parallax-effect nomargin noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apartamento-lujo/a-panoramica.jpg') }}); padding: 40px 0;" data-stellar-background-ratio="0.4">
+					<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apartamento-lujo/a-panoramica.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800" style="text-shadow: 1px 1px #000;">ESTUDIO DE LUJO</h3>
 							<span  class="text-center white text-white" style="text-shadow: 1px 1px #000;">Lorem ipsum dolor sit amet</span>
 					</div>
 				</a>
 				<a href="{{url('/apartamentos/estudio-standard-sierra-nevada')}}">
-					<div class="section parallax-effect nomargin noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apartamento-lujo/salon.jpg') }}); padding: 40px 0;" data-stellar-background-ratio="0.4">
+					<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apartamento-lujo/salon.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800" style="text-shadow: 1px 1px #000;">ESTUDIO STANDARD</h3>
 							<span  class="text-center white text-white" style="text-shadow: 1px 1px #000;">Lorem ipsum dolor sit amet</span>
 					</div>
@@ -254,7 +259,7 @@
 				
 				<div class="row">
 					<div class="heading-block center">
-						<h3>OTROS SERVICIOS</h3>
+						<h3 class="green">OTROS SERVICIOS</h3>
 					</div>
 
 					

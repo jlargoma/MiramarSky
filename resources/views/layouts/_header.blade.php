@@ -56,7 +56,7 @@
 
 	<div id="header-wrap">
 
-		<div class="container clearfix">
+		<div class="container container-mobile clearfix">
 
 			<div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
 

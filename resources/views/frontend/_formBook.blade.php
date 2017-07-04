@@ -16,7 +16,7 @@
             </div>
 			<div class="hidden-xs hidden-sm" style="clear: both;"></div>
             <div class="form-group col-sm-12 col-xs-6 col-md-3 white">
-                <label style="display: inline!important;">*Entrada - Salida</label>
+                <label style="display: inherit!important;">*Entrada - Salida</label>
                 <div class="input-group">
                     <input type="text" class="sm-form-control daterange1" id="date"   name="date" required>
                 </div>
@@ -25,7 +25,7 @@
                 </p>
             </div>
             <div class="form-group col-sm-12 col-xs-6 col-md-2 white">
-           		<label style="display: inline!important;">*Ocupantes</label>
+           		<label style="display: inherit!important;">*Ocupantes</label>
             	<div class="quantity center clearfix divcenter">
 					<!-- <input type="button" value="-" class="minus black" style=" color: black;">
 					<input id="quantity" type="text" name="quantity" value="4" class="qty" style="background: white; color: black;"> -->

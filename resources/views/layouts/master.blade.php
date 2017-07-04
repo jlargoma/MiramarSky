@@ -15,7 +15,14 @@
 		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/font-icons.css')}}" />
 		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/animate.css')}}" />
 		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/magnific-popup.css')}}" />
-		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/responsive.css')}}" />
+
+		<?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
+			<link rel="stylesheet" href="{{ asset ('/frontend/css/dark-mobile.css')}}" type="text/css" />
+			<link rel="stylesheet" href="{{ asset ('/frontend/css/responsive-mobile.css')}}" type="text/css" />
+		<?php else: ?>
+			<link rel="stylesheet" href="{{ asset ('/frontend/css/dark.css')}}" type="text/css" />
+			<link rel="stylesheet" href="{{ asset ('/frontend/css/responsive.css')}}" type="text/css" />
+		<?php endif; ?>
 
 		<link rel="stylesheet" href="{{ asset ('/frontend/colors.php?color=3F51B5')}}" type="text/css" />
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/> 
@@ -260,7 +267,7 @@
 						responsiveLevels:[1240,1024,778,480],
 						visibilityLevels:[1240,1024,778,480],
 						gridwidth:[1240,1024,778,480],
-						gridheight:[700,650,650,600],
+						gridheight:[700,650,550,550],
 						lazyType:"none",
 						shadow:0,
 						spinner:"off",
