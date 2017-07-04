@@ -243,7 +243,7 @@
 					</div>
 				</a>
 				<a href="{{url('/apartamentos/estudio-standard-sierra-nevada')}}">
-					<div class="section parallax-effect nomargin noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apartamento-lujo/a-panoramica.jpg') }}); padding: 40px 0;" data-stellar-background-ratio="0.4">
+					<div class="section parallax-effect nomargin noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apartamento-lujo/salon.jpg') }}); padding: 40px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800" style="text-shadow: 1px 1px #000;">ESTUDIO STANDARD</h3>
 							<span  class="text-center white text-white" style="text-shadow: 1px 1px #000;">Lorem ipsum dolor sit amet</span>
 					</div>
