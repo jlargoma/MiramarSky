@@ -4,18 +4,9 @@
 
 @section('externalScripts') 
 	
-	<link href="assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
-	<link href="assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
-	<link href="assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
-
-@endsection
-
-@section('content')
-<?php use \Carbon\Carbon; 
-setlocale(LC_TIME, "ES");
-setlocale(LC_TIME, "es_ES");
-?>
-
+	<link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
+	<link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
 <style>
 	.table>thead>tr>th {
 		padding:0px!important;
@@ -51,6 +42,15 @@ setlocale(LC_TIME, "es_ES");
 		color: blue;
 	}
 </style>
+@endsection
+
+@section('content')
+<?php use \Carbon\Carbon; 
+setlocale(LC_TIME, "ES");
+setlocale(LC_TIME, "es_ES");
+?>
+
+
 <div class="container-fluid padding-5 sm-padding-10">
 
 

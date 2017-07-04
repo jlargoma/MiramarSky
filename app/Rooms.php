@@ -27,6 +27,11 @@ class Rooms extends Model
         return $this->hasOne('\App\User', 'id', 'owned');
     }
 
+    public function paymentPro()
+    {
+        return $this->hasMany('\App\Paymentspro', 'id', 'room_id');
+    }
+
     public static function getPaxRooms($pax,$room)
         {
             $room = \App\Rooms::where('id', $room)->first();

@@ -8,6 +8,10 @@ class Paymentspro extends Model
 {
     
     //
+    protected $table = 'paymentspro';
     
-    
+    public function paymentRoom()
+    {
+        return $this->hasOne('\App\Rooms', 'room_id', 'id');
+    }
 }
