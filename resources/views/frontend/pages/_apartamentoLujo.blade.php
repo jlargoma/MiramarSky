@@ -107,15 +107,15 @@
             </div>
 		</div>
 
-		<div class="container clearfix">
+		<div class="container container-mobile clearfix">
 			<div class="col-xs-12">
 				<h3 class="text-center font-w300">
 					OTROS <span class="green font-w800">APARTAMENTOS</span>
 				</h3>
 			</div>
 			<div class="col-xs-12">
-				<div class="col-md-4 push-mobile-20">
-					<div class="col-xs-12 not-padding  container-image-box">
+				<div class="col-md-4 ">
+					<div class="col-xs-12 not-padding  container-image-box push-mobile-20">
 						<div class="col-xs-12 not-padding push-0">
 							<a href="{{url('/apartamentos/estudio-lujo-sierra-nevada')}}">
 								<img class="img-responsive" src="{{ asset('/img/miramarski/small/estudio-lujo-sierra-nevada.jpg')}}"  alt="Estudio de lujo sierra nevada"/>
@@ -130,7 +130,7 @@
 				</div>
 
 				<div class="col-md-4 push-mobile-20">
-					<div class="col-xs-12 not-padding  container-image-box">
+					<div class="col-xs-12 not-padding  container-image-box push-mobile-20">
 						<div class="col-xs-12 not-padding push-0">
 							<a href="{{url('/apartamentos/apartamento-standard-sierra-nevada')}}">
 								<img class="img-responsive imga" src="{{ asset('/img/miramarski/small/apartamento-standar-sierra-nevada.jpg')}}"  alt="Apartamento standard sierra nevada"/>
@@ -145,7 +145,7 @@
 				</div>
 
 				<div class="col-md-4 push-mobile-20">
-					<div class="col-xs-12 not-padding  container-image-box">
+					<div class="col-xs-12 not-padding  container-image-box push-mobile-20">
 						<div class="col-xs-12 not-padding push-0">
 							<a href="{{url('/apartamentos/estudio-standard-sierra-nevada')}}">
 								<img class="img-responsive" src="{{ asset('/img/miramarski/small/estudio-standard-sierra-nevada.jpg')}}"  alt="Estudio standard sierra nevada"/>

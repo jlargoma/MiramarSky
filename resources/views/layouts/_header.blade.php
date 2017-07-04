@@ -1,53 +1,55 @@
-<div id="top-bar" class="transparent-topbar">
+<?php if (!$mobile->isMobile()): ?>
+	<div id="top-bar" class="transparent-topbar">
 
-	<div class="container-fluid clearfix">
+		<div class="container-fluid clearfix">
 
-		<div class="row center nobottommargin">
-			
-			<div class="col-lg-10 col-md-8 col-xs-12">
-				<div class="top-links">
-					<ul>
-						<li >
-						
-						</li>
-						<li class="hidden-md hiddens-sm hidden-xs">
+			<div class="row center nobottommargin">
+				
+				<div class="col-lg-10 col-md-8 col-xs-12">
+					<div class="top-links">
+						<ul>
+							<li >
 							
+							</li>
+							<li class="hidden-md hiddens-sm hidden-xs">
+								
+							</li>
+							<li class="hidden-md hiddens-sm hidden-xs">
+								
+							</li>
+						</ul>
+
+					</div>
+				</div>
+				<div class="col-lg-2 col-md-4 col-xs-12 hiddens-sm hidden-xs">
+					<ul class="header-extras-2 divcenter pull-right">
+						<li>
+							<a class="facebook" href="https://www.facebook.com/Evolutio.fit" ><i class="fa fa-facebook-official fa-2x"></i></a>
 						</li>
-						<li class="hidden-md hiddens-sm hidden-xs">
-							
+						<li>
+							<a class="instagram" href="#" ><i class="fa fa-instagram fa-2x"></i></a>
+						</li>
+						<li>
+							<a class="whatsapp"  href="whatsapp://send?text=Descubre%20www.evolutio.fit!!%20disfruta%20de%20sus%20ofertas%20exclusivas" data-action="share/whatsapp/share" ><i class="fa fa-whatsapp fa-2x"></i></a>
+						</li>
+						<li>
+							<a class="email" href="mailto:info@evolutio.fit" ><i class="fa fa-envelope fa-2x"></i></a>
+						</li>
+
+						<li>
+							<a class="map" href="https://www.google.es/maps/place/Av.+Quitapesares,+20,+28670+Villaviciosa+de+Od%C3%B3n,+Madrid/@40.3500423,-3.9011227,17z/data=!3m1!4b1!4m5!3m4!1s0xd418e238472183f:0x5217e4e5e7d47fd3!8m2!3d40.3500423!4d-3.898934" ><i class="fa fa-map-marker fa-2x"></i></a>
+						</li>
+						<li>
+							<a class="phone" href="tel:911723217"><i class="fa fa-phone fa-2x"></i></a>
 						</li>
 					</ul>
-
 				</div>
 			</div>
-			<div class="col-lg-2 col-md-4 col-xs-12 hiddens-sm hidden-xs">
-				<ul class="header-extras-2 divcenter pull-right">
-					<li>
-						<a class="facebook" href="https://www.facebook.com/Evolutio.fit" ><i class="fa fa-facebook-official fa-2x"></i></a>
-					</li>
-					<li>
-						<a class="instagram" href="#" ><i class="fa fa-instagram fa-2x"></i></a>
-					</li>
-					<li>
-						<a class="whatsapp"  href="whatsapp://send?text=Descubre%20www.evolutio.fit!!%20disfruta%20de%20sus%20ofertas%20exclusivas" data-action="share/whatsapp/share" ><i class="fa fa-whatsapp fa-2x"></i></a>
-					</li>
-					<li>
-						<a class="email" href="mailto:info@evolutio.fit" ><i class="fa fa-envelope fa-2x"></i></a>
-					</li>
 
-					<li>
-						<a class="map" href="https://www.google.es/maps/place/Av.+Quitapesares,+20,+28670+Villaviciosa+de+Od%C3%B3n,+Madrid/@40.3500423,-3.9011227,17z/data=!3m1!4b1!4m5!3m4!1s0xd418e238472183f:0x5217e4e5e7d47fd3!8m2!3d40.3500423!4d-3.898934" ><i class="fa fa-map-marker fa-2x"></i></a>
-					</li>
-					<li>
-						<a class="phone" href="tel:911723217"><i class="fa fa-phone fa-2x"></i></a>
-					</li>
-				</ul>
-			</div>
 		</div>
 
 	</div>
-
-</div>
+<?php endif; ?>
 <!-- Header
 ============================================= -->	
 <header id="header" class="static-sticky transparent-header  not-dark header-not-transparent-pages">

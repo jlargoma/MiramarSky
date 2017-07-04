@@ -2,33 +2,29 @@
     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
     <div class="col-md-12">
-        <!-- <div class="block-header text-center push-20">
-            <h3 class="white text-white" style="margin-bottom:0px">CALCULA TU RESERVA</h3>
-        </div> -->
-        <div class="block-content">
-            <div class="form-group col-sm-12 col-xs-12 col-md-4 col-lg-4 white">
+            <div class="form-group col-sm-12 col-xs-6 col-md-4 col-lg-4 white">
                 <label>*Nombre</label>
                 <input type="text" class="sm-form-control" name="name" id="nombre" placeholder="Nombre..." maxlength="40" required="">
             </div>
-            <div class="form-group col-sm-12 col-xs-12 col-md-4 col-lg-4 white">
+            <div class="form-group col-sm-12 col-xs-6 col-md-4 col-lg-4 white">
                 <label>*Email</label>
                 <input type="email" class="sm-form-control"  name="email" id="email" placeholder="Email..." maxlength="40" required="">
             </div>
-            <div class="form-group col-sm-12 col-xs-12 col-md-4 col-lg-4 white">
+            <div class="form-group col-sm-12 col-xs-6 col-md-4 col-lg-4 white">
                 <label>*Telefono</label>
                 <input type="text" class="sm-form-control only-numbers" name="telefono" id="telefono" placeholder="Teléfono..." maxlength="9" required="">
             </div>
-			<div style="clear: both;"></div>
-            <div class="form-group col-sm-10 col-xs-10 col-md-3 white">
+			<div class="hidden-xs hidden-sm" style="clear: both;"></div>
+            <div class="form-group col-sm-12 col-xs-6 col-md-3 white">
                 <label style="display: inline!important;">*Entrada - Salida</label>
                 <div class="input-group">
                     <input type="text" class="sm-form-control daterange1" id="date"   name="date" required>
                 </div>
-                <p class="help-block white" style="line-height:1.2">La entrada es a partir de la 16:00 pm
+                <p class="help-block white hidden-sm hidden-xs" style="line-height:1.2">La entrada es a partir de la 16:00 pm
                     <br><b>* ESTANCIA MÍNIMA: 2 NOCHES</b>
                 </p>
             </div>
-            <div class="form-group col-sm-6 col-xs-6 col-md-2 white">
+            <div class="form-group col-sm-12 col-xs-6 col-md-2 white">
            		<label style="display: inline!important;">*Ocupantes</label>
             	<div class="quantity center clearfix divcenter">
 					<!-- <input type="button" value="-" class="minus black" style=" color: black;">
@@ -41,13 +37,13 @@
 					<!-- <input type="button" value="+" class="plus black" style=" color: black;"> -->
 				</div>
                 
-                <p class="help-block white" style="line-height:1.2">Máximo 8 personas</p>
-                <p class="help-block white" style="color: white; line-height:1.2;">    
+                <p class="help-block white hidden-sm hidden-xs" style="line-height:1.2">Máximo 8 personas</p>
+                <p class="help-block white hidden-sm hidden-xs" style="color: white; line-height:1.2;">    
                     <b>* SOLICITAR APTO DOS DORM 6 PAX</b>
                 </p>
             </div>
             
-             <div class="form-group col-sm-3 col-xs-6 col-md-3" style="padding: 0">
+            <div class="form-group col-sm-12 col-xs-6 col-md-3" style="padding: 0">
                 <label style="display: inline!important;" class="col-md-12 parking white">* Tipo Apto</label>
                 <div class="col-md-6">
 					<input id="apto-2dorm" class="radio-style" name="apto" type="radio" checked="" value="2dorm">
@@ -58,7 +54,7 @@
 					<label for="apto-estudio" class="radio-style-3-label">Estudio</label>
 				</div>
             </div>
-             <div class="form-group col-sm-3 col-xs-6 col-md-2">
+            <div class="form-group col-sm-12 col-xs-6 col-md-2">
                 <label style="display: inline!important;" class="col-md-12 luxury white">*lujo</label>
                 <div class="col-md-6"> 
 					<input id="luxury-yes" class="radio-style" name="luxury" type="radio" checked="" value="si">
@@ -69,7 +65,7 @@
 					<label for="luxury-no" class="radio-style-3-label">No</label>
 				</div>
             </div>
-            <div class="form-group col-sm-3 col-xs-6 col-md-2">
+            <div class="form-group col-sm-12 col-xs-6 col-md-2">
                 <label style="display: inline!important;" class="col-md-12 parking white">*Parking</label>
                 <div class="col-md-6">
 					<input id="parking-yes" class="radio-style" name="parking" type="radio" checked="" value="si">
@@ -88,6 +84,5 @@
             <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12 text-center">
                 <button type="submit" class="button button-3d button-xlarge button-rounded button-white button-light" id="confirm-reserva">Calcular reserva</button>
             </div>
-        </div>
     </div>
 </form>

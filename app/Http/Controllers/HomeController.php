@@ -41,8 +41,8 @@ class HomeController extends Controller
 
     public function apartamentoLujo(){
         $slides = File::allFiles(public_path().'/img/miramarski/galerias/apartamento-lujo');
-
-        return view('frontend.pages._apartamentoLujo', [ 'slides' => $slides]);
+        $mobile = new Mobile();
+        return view('frontend.pages._apartamentoLujo', [ 'slides' => $slides, 'mobile'   => $mobile,]);
     }
     public function estudioLujo(){
 
@@ -51,15 +51,16 @@ class HomeController extends Controller
     public function apartamentoStandard(){
 
         $slides = File::allFiles(public_path().'/img/miramarski/galerias/apartamento-standard');
-        return view('frontend.pages._apartamentoStandard', [ 'slides' => $slides]);
+        $mobile = new Mobile();
+        return view('frontend.pages._apartamentoStandard', [ 'slides' => $slides, 'mobile'   => $mobile,]);
     }
     public function estudioStandard(){
 
-        return view('frontend.pages._estudioStandard');
+        // return view('frontend.pages._estudioStandard');
     }
     public function edificio(){
 
-        return view('frontend.pages._edificio');
+        // return view('frontend.pages._edificio');
     }
     public function contacto(){
 
