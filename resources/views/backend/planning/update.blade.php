@@ -17,7 +17,7 @@
         </div>
         <div class="col-md-8">
             <div class="panel">
-                <form role="form"  action="{{ url('reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post" >
+                <form role="form"  action="{{ url('/admin/reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post" >
                             
                     <!-- Seccion Cliente -->
                     <div class="panel-heading">

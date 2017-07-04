@@ -15,10 +15,7 @@
 @endsection
     
 @section('content')
-<?php use \Carbon\Carbon; 
-    setlocale(LC_TIME, "ES");
-    setlocale(LC_TIME, "es_ES");
-?>
+<?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
     <style type="text/css">
         .Reservado{
             background-color: #0DAD9E !important;
@@ -632,18 +629,19 @@
             <div class="col-md-5 col-xs-12">
                 <div class="panel">
                     <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="collapse">
-                     <li class="active"><a href="#tabPrimera" data-toggle="tab" role="tab"><?php echo ucfirst($date->copy()->formatLocalized('%B %Y'))?></a>
+                     <li><a href="#tab1" data-toggle="tab" role="tab"><?php echo ucfirst($date->copy()->formatLocalized('%B %Y'))?></a>
                      </li>
-                     <li><a href="#tabSegunda" data-toggle="tab" role="tab"><?php echo ucfirst($date->addMonth()->formatLocalized('%B %Y'))?> </a>
+                     <li><a href="#tab2" data-toggle="tab" role="tab"><?php echo ucfirst($date->addMonth()->formatLocalized('%B %Y'))?> </a>
                      </li>
-                     <li><a href="#tabTercera" data-toggle="tab" role="tab"><?php echo ucfirst($date->addMonth()->formatLocalized('%B %Y'))?> </a>
+                     <li><a href="#tab3" data-toggle="tab" role="tab"><?php echo ucfirst($date->addMonth()->formatLocalized('%B %Y'))?> </a>
                      </li>
-                     <li><a href="#tabCuarta" data-toggle="tab" role="tab"><?php echo ucfirst($date->addMonth()->formatLocalized('%B %Y'))?> </a>
+                     <li><a href="#tab4" data-toggle="tab" role="tab"><?php echo ucfirst($date->addMonth()->formatLocalized('%B %Y'))?> </a>
                      </li>
                     </ul>
                     <div class="tab-content">
                         <?php $date=$date->subMonth(3); ?>
-                        <div class="tab-pane active" id="tabPrimera">
+                        <?php for ($z=1; $z < 5; $z++):?>
+                        <div class="tab-pane " id="tab<?php echo $z ?>">
                             <div class="row">
                                 <div class="col-md-12">
                                     <table class="fc-border-separate" style="width: 100%">
@@ -735,285 +733,8 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="tab-pane " id="tabSegunda">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <table class="fc-border-separate" style="border:1px solid black;width: 100%">
-                                       <thead>
-                                            <tr>
-                                                <td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
-                                                    <?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
-                                                </td> 
-                                            </tr>
-                                            <tr>
-                                                <td rowspan="2" style="width: 1%!important">Apto</td>
-                                                    <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-                                                        <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
-                                                            <?php echo $i?> 
-                                                        </td> 
-                                                     <?php endfor; ?>
-                                            </tr>
-                                            <tr>
-                                                
-                                                <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-                                                    <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$date->copy()->format('n')][$i]?>">
-                                                        <?php echo $days[$date->copy()->format('n')][$i]?> 
-                                                    </td> 
-                                                 <?php endfor; ?> 
-                                            </tr>
-                                       </thead>
-                                       <tbody>
-                                       
-                                            <?php foreach ($roomscalendar as $room): ?>
-                                                <tr>
-                                                    <?php $date = $date->startOfMonth() ?>
-                                                    <td><?php echo substr($room->nameRoom, 0,5)." " ?>      </td>
-                                                        
-                                                    <?php for ($i=01; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-
-                                                            <?php if (isset($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i])): ?>
-                                                                <?php if ($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->start == $date->copy()->format('Y-m-d')): ?>
-                                                                        <td style='border:1px solid black;width: 3%'>
-                                                                            <div style="width: 50%;float: left;">
-                                                                                &nbsp;
-                                                                            </div>
-                                                                            <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?> start" style="width: 50%;float: left;">
-                                                                                &nbsp;
-                                                                            </div>
-
-                                                                        </td>    
-                                                                <?php elseif($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->finish == $date->copy()->format('Y-m-d')): ?>
-                                                                        <td style='border:1px solid black;width: 3%'>
-                                                                            <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?> end" style="width: 50%;float: left;">
-                                                                                &nbsp;
-                                                                            </div>
-                                                                            <div style="width: 50%;float: left;">
-                                                                                &nbsp;
-                                                                            </div>
-                                                                            
-
-                                                                        </td>
-                                                                <?php else: ?>
-                                                                    
-                                                                        <td style='border:1px solid black;width: 3%' title="<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->customer['name'] ?>" class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?>">
-
-                                                                       <a href="{{url ('/admin/reservas/update')}}/<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->id ?>">
-                                                                           <div style="width: 100%;height: 100%">
-                                                                               &nbsp;
-                                                                           </div>
-                                                                       </a>
-
-                                                                    </td>
-
-                                                                <?php endif ?>
-                                                            <?php else: ?>
-                                                                <td class="<?php echo $days[$date->copy()->format('n')][$i]?>" style='border:1px solid black;width: 3%'>
-                                                                    
-                                                                </td>
-                                                            <?php endif; ?>
-                                                            <?php if ($date->copy()->format('d') != $arrayMonths[$date->copy()->format('n')]): ?>
-                                                                <?php $date = $date->addDay(); ?>
-                                                            <?php else: ?>
-                                                                <?php $date = $date->startOfMonth() ?>
-                                                            <?php endif ?>
-                                                        
-                                                    <?php endfor; ?> 
-                                                </tr>
-                                                
-                                            <?php endforeach; ?>
-                                       </tbody>
-                                    </table>
-                                    <?php $date = $date->addMonth(); ?>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-pane " id="tabTercera">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <table class="fc-border-separate" style="border:1px solid black;width: 100%">
-                                       <thead>
-                                            <tr>
-                                                <td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
-                                                    <?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
-                                                </td> 
-                                            </tr>
-                                            <tr>
-                                                <td rowspan="2" style="width: 1%!important">Apto</td>
-                                                    <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-                                                        <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
-                                                            <?php echo $i?> 
-                                                        </td> 
-                                                     <?php endfor; ?>
-                                            </tr>
-                                            <tr>
-                                                
-                                                <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-                                                    <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$date->copy()->format('n')][$i]?>">
-                                                        <?php echo $days[$date->copy()->format('n')][$i]?> 
-                                                    </td> 
-                                                 <?php endfor; ?> 
-                                            </tr>
-                                       </thead>
-                                       <tbody>
-                                       
-                                            <?php foreach ($roomscalendar as $room): ?>
-                                                <tr>
-                                                    <?php $date = $date->startOfMonth() ?>
-                                                    <td><?php echo substr($room->nameRoom, 0,5)." " ?>      </td>
-                                                        
-                                                    <?php for ($i=01; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-
-                                                            <?php if (isset($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i])): ?>
-                                                                <?php if ($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->start == $date->copy()->format('Y-m-d')): ?>
-                                                                        <td style='border:1px solid black;width: 3%'>
-                                                                            <div style="width: 50%;float: left;">
-                                                                                &nbsp;
-                                                                            </div>
-                                                                            <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?> start" style="width: 50%;float: left;">
-                                                                                &nbsp;
-                                                                            </div>
-
-                                                                        </td>    
-                                                                <?php elseif($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->finish == $date->copy()->format('Y-m-d')): ?>
-                                                                        <td style='border:1px solid black;width: 3%'>
-                                                                            <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?> end" style="width: 50%;float: left;">
-                                                                                &nbsp;
-                                                                            </div>
-                                                                            <div style="width: 50%;float: left;">
-                                                                                &nbsp;
-                                                                            </div>
-                                                                            
-
-                                                                        </td>
-                                                                <?php else: ?>
-                                                                    
-                                                                        <td style='border:1px solid black;width: 3%' title="<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->customer['name'] ?>" class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?>">
-
-                                                                       <a href="{{url ('/admin/reservas/update')}}/<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->id ?>">
-                                                                           <div style="width: 100%;height: 100%">
-                                                                               &nbsp;
-                                                                           </div>
-                                                                       </a>
-
-                                                                    </td>
-
-                                                                <?php endif ?>
-                                                            <?php else: ?>
-                                                                <td class="<?php echo $days[$date->copy()->format('n')][$i]?>" style='border:1px solid black;width: 3%'>
-                                                                    
-                                                                </td>
-                                                            <?php endif; ?>
-                                                            <?php if ($date->copy()->format('d') != $arrayMonths[$date->copy()->format('n')]): ?>
-                                                                <?php $date = $date->addDay(); ?>
-                                                            <?php else: ?>
-                                                                <?php $date = $date->startOfMonth() ?>
-                                                            <?php endif ?>
-                                                        
-                                                    <?php endfor; ?> 
-                                                </tr>
-                                                
-                                            <?php endforeach; ?>
-                                       </tbody>
-                                    </table>
-                                    <?php $date = $date->addMonth(); ?>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-pane " id="tabCuarta">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <table class="fc-border-separate" style="border:1px solid black;width: 100%">
-                                       <thead>
-                                            <tr>
-                                                <td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
-                                                    <?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
-                                                </td> 
-                                            </tr>
-                                            <tr>
-                                                <td rowspan="2" style="width: 1%!important">Apto</td>
-                                                    <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-                                                        <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
-                                                            <?php echo $i?> 
-                                                        </td> 
-                                                     <?php endfor; ?>
-                                            </tr>
-                                            <tr>
-                                                
-                                                <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-                                                    <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$date->copy()->format('n')][$i]?>">
-                                                        <?php echo $days[$date->copy()->format('n')][$i]?> 
-                                                    </td> 
-                                                 <?php endfor; ?> 
-                                            </tr>
-                                       </thead>
-                                       <tbody>
-                                       
-                                            <?php foreach ($roomscalendar as $room): ?>
-                                                <tr>
-                                                    <?php $date = $date->startOfMonth() ?>
-                                                    <td><?php echo substr($room->nameRoom, 0,5)." " ?>      </td>
-                                                        
-                                                    <?php for ($i=01; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-
-                                                            <?php if (isset($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i])): ?>
-                                                                <?php if ($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->start == $date->copy()->format('Y-m-d')): ?>
-                                                                        <td style='border:1px solid black;width: 3%'>
-                                                                            <div style="width: 50%;float: left;">
-                                                                                &nbsp;
-                                                                            </div>
-                                                                            <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?> start" style="width: 50%;float: left;">
-                                                                                &nbsp;
-                                                                            </div>
-
-                                                                        </td>    
-                                                                <?php elseif($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->finish == $date->copy()->format('Y-m-d')): ?>
-                                                                        <td style='border:1px solid black;width: 3%'>
-                                                                            <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?> end" style="width: 50%;float: left;">
-                                                                                &nbsp;
-                                                                            </div>
-                                                                            <div style="width: 50%;float: left;">
-                                                                                &nbsp;
-                                                                            </div>
-                                                                            
-
-                                                                        </td>
-                                                                <?php else: ?>
-                                                                    
-                                                                        <td style='border:1px solid black;width: 3%' title="<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->customer['name'] ?>" class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?>">
-
-                                                                       <a href="{{url ('/admin/reservas/update')}}/<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->id ?>">
-                                                                           <div style="width: 100%;height: 100%">
-                                                                               &nbsp;
-                                                                           </div>
-                                                                       </a>
-
-                                                                    </td>
-
-                                                                <?php endif ?>
-                                                            <?php else: ?>
-                                                                <td class="<?php echo $days[$date->copy()->format('n')][$i]?>" style='border:1px solid black;width: 3%'>
-                                                                    
-                                                                </td>
-                                                            <?php endif; ?>
-                                                            <?php if ($date->copy()->format('d') != $arrayMonths[$date->copy()->format('n')]): ?>
-                                                                <?php $date = $date->addDay(); ?>
-                                                            <?php else: ?>
-                                                                <?php $date = $date->startOfMonth() ?>
-                                                            <?php endif ?>
-                                                        
-                                                    <?php endfor; ?> 
-                                                </tr>
-                                                
-                                            <?php endforeach; ?>
-                                       </tbody>
-                                    </table>
-                                    <?php $date = $date->addMonth(); ?>
-                                </div>
-                            </div>
-                        </div>
+                        <?php endfor; ?>
+                        
                     </div>
                 </div>    
             </div>

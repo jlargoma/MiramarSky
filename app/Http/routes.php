@@ -101,7 +101,7 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 // Pagos-Propietarios
 	Route::get('admin/pagos-propietarios/{month?}' , 'PaymentsProController@index');
 	Route::post('admin/pagos-propietarios/create', 'PaymentsProController@create');
-	Route::get('admin/pagos-propietarios/update/{id}', 'PaymentsProController@update');
+	Route::get('admin/pagos-propietarios/update/{id}/{month?}', 'PaymentsProController@update');
 
 
 //Liquidacion

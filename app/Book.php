@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use \Carbon\Carbon;
 use DB;
+use Mail;
+
 class Book extends Model
 {
 	protected $table = 'book';
@@ -222,10 +224,41 @@ class Book extends Model
             }
 
     // Funcion para cambiar la reserva de habitacion o estado
-        public function changeBook($status,$room)
+        public function changeBook($status,$room,$book)
             {
                 if (!empty($status)) {
                     $this->type_book = $status;
+                    switch ($status) {
+                        case '1':
+                            Mail::send('backend.emails.reservado',['book' => $book], function ($message) {
+                                    $message->from('jbaz@daimonconsulting.com', 'Miramarski');
+
+                                    $message->to('jbaz@daimonconsulting.com');
+                                    $message->subject('Correo de reserva');
+                                });
+                            break;
+                        case '2':
+                            Mail::send('backend.emails.confirmado',['book' => $book], function ($message) {
+                                    $message->from('jbaz@daimonconsulting.com', 'Miramarski');
+
+                                    $message->to('jbaz@daimonconsulting.com');
+                                    $message->subject('Correo del confirmacion del pago parcial');
+                                });
+
+                            break;
+                        case '4':
+                            Mail::send('backend.emails.cancelado',['book' => $book], function ($message) {
+                                    $message->from('jbaz@daimonconsulting.com', 'Miramarski');
+
+                                    $message->to('jbaz@daimonconsulting.com');
+                                    $message->subject('Correo de denegado');
+                                });  
+
+                            break;
+                        default:
+                            # code...
+                            break;
+                    }
                     if ($this->save()) {
                         return "Cambiado!";
                     }

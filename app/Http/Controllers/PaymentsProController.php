@@ -21,7 +21,7 @@ class PaymentsProController extends Controller
                 $date = Carbon::createFromDate(2016, 9, 1);
             }else{
                 $month = Carbon::createFromFormat('Y',$month);
-                $date = $month->copy();
+                $date = $month->copy()->addMonth(6);
 
             }
 
@@ -133,10 +133,14 @@ class PaymentsProController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($id, Request $request)
+    public function update($id,$month = "", Request $request)
     {
+
         $room = \App\Rooms::find($id);
-        $payments = \App\PaymentsPro::where('room_id',$id)->get();
+        $month = Carbon::createFromFormat('Y',$month);
+        $date = $month->copy()->addMonth(6);
+
+        $payments = \App\PaymentsPro::where('room_id',$id)->where('datePayment','>',$date->copy())->where('datePayment','<',$date->copy()->addYear())->get();
 
         return view('backend/paymentspro/_form',  [
                                                 'room' => $room,

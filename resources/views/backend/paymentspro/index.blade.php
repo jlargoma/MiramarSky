@@ -67,7 +67,7 @@
                     <tbody>
                         <?php foreach ($rooms as $room): ?>
                           <tr style="margin: 0px">
-                            <td class="text-center"><a class="update-payments" type="button" data-debt="<?php echo $debt[$room->id] ?>"  data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments" title="Añadir pago" ><?php echo $room->nameRoom ?></a></td>
+                            <td class="text-center"><a class="update-payments" type="button" data-debt="<?php echo $debt[$room->id] ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments" title="Añadir pago" ><?php echo $room->nameRoom ?></a></td>
                             <td class="text-center"><?php echo $room->typeAptos->name ?></td>
                             <td class="text-center">
                               <?php if (isset($total[$room->id])): ?>
@@ -155,7 +155,8 @@
         $('.update-payments').click(function(event) {
             var debt = $(this).attr('data-debt');
             var id   = $(this).attr('data-id');
-            $.get('/admin/pagos-propietarios/update/'+id,{ debt: debt}, function(data) {
+            var month = $(this).attr('data-month');
+            $.get('/admin/pagos-propietarios/update/'+id+'/'+month,{ debt: debt}, function(data) {
                 $('.modal-body').empty().append(data);
             });
         });

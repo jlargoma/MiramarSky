@@ -214,7 +214,7 @@ class BookController extends Controller
             if ( isset($request->room) && !empty($request->room)) {
                 $book = \App\Book::find($id);
 
-                if ($book->changeBook("",$request->room)) {
+                if ($book->changeBook("",$request->room,$book)) {
                     return "OK";
                 }else{
                     return "Ya hay una reserva para ese apartamento";
@@ -225,7 +225,7 @@ class BookController extends Controller
             if ( isset($request->status) && !empty($request->status)) {
                 $book = \App\Book::find($id);
                 
-                if ($book->changeBook($request->status,"")) {
+                if ($book->changeBook($request->status,"",$book)) {
                     return "Estado cambiado";
                 }else{
                     return "No se puede cambiar el estado";
