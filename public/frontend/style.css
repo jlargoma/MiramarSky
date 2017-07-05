@@ -14181,7 +14181,7 @@ td.clases h3.name{
 	}
 	
 	#primary-menu-trigger{
-		color: black;
+		color: white;
 	}
 	
 	.btn-close-mobile{
@@ -14578,6 +14578,10 @@ p.text {
 		/*display: none;*/
 	}
 	#header.sticky-style-2 { height: 120px; }
+
+	.sf-js-enabled.show li a{
+		color: #3F51B5!important
+	}
 }
 @media (max-width: 1388px){
 
@@ -14739,7 +14743,7 @@ p.text {
 .dark #header:not(.transparent-header),
 #header.dark:not(.transparent-header),
 #header.dark.sticky-header.transparent-header #header-wrap:not(.not-dark),
-#footer.dark { background-color: #2C3E50; }
+#footer.dark { background-color: white;/*#2C3E50;*/ }
 
 .dark #header:not(.transparent-header),
 #header.dark:not(.transparent-header) { border-bottom: 1px solid rgba(255,255,255,0.1); }
@@ -15208,12 +15212,12 @@ label,
 }
  #primary-menu ul li  a{
  	font-size: 16px!important;
- 	color:  #3f51b5;
+ 	color:  #FFF;
  	font-weight: 800;
  }
-  #primary-menu ul li a:hover{
- 	background-color: #3f51b5!important;
- 	color: white!important;
+  .sticky-header #primary-menu ul li a{
+ 	/*background-color: #3f51b5!important;*/
+ 	color: #3f51b5!important;
  }
 
 .bg-bluesky{

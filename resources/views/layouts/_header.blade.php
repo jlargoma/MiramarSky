@@ -52,7 +52,7 @@
 <?php endif; ?>
 <!-- Header
 ============================================= -->	
-<header id="header" class="static-sticky transparent-header  not-dark header-not-transparent-pages">
+<header id="header" class="static-sticky transparent-header  not-dark ">
 
 	<div id="header-wrap">
 
@@ -64,8 +64,8 @@
 			============================================= -->
 			
 			<div id="logo">
-				<a href="{{url('/')}}" class="standard-logo" data-dark-logo="{{ asset ('frontend/images/logo-dark.png')}}" data-sticky-logo="{{ asset ('frontend/images/logo-dark.png')}}" data-mobile-logo="{{ asset ('frontend/images/logo-dark.png')}}"><img src="{{ asset ('frontend/images/logo.png')}}" alt="Logo"></a>
-				<a href="{{url('/')}}" class="retina-logo" data-dark-logo="{{ asset ('frontend/images/logo-dark.png')}}" data-sticky-logo="{{ asset ('frontend/images/logo-dark.png')}}" data-mobile-logo="{{ asset ('frontend/images/logo-dark.png')}}"><img src="{{ asset ('frontend/images/logo.png')}}" alt="Logo"></a>
+				<a href="{{url('/')}}" class="standard-logo" data-dark-logo="{{ asset ('frontend/images/logo-dark.png')}}" data-sticky-logo="{{ asset ('frontend/images/logo-dark.png')}}" data-mobile-logo="{{ asset ('frontend/images/logo.png')}}"><img src="{{ asset ('frontend/images/logo.png')}}" alt="Logo"></a>
+				<a href="{{url('/')}}" class="retina-logo" data-dark-logo="{{ asset ('frontend/images/logo-dark.png')}}" data-sticky-logo="{{ asset ('frontend/images/logo-dark.png')}}" data-mobile-logo="{{ asset ('frontend/images/logo.png')}}"><img src="{{ asset ('frontend/images/logo.png')}}" alt="Logo"></a>
 			</div>
 
 			<!-- Primary Navigation
