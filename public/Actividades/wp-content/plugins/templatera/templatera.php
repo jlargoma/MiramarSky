@@ -3,7 +3,7 @@
 Plugin Name: Templatera
 Plugin URI: http://vc.wpbakery.com/
 Description: Template Manager for Visual Composer on Steroids
-Version: 1.1.11
+Version: 1.1.12
 Author: WPBakery
 Author URI: http://wpbakery.com
 License: http://codecanyon.net/licenses
@@ -13,7 +13,7 @@ License: http://codecanyon.net/licenses
 if ( ! defined( 'ABSPATH' ) ) {
 	die( '-1' );
 }
-define( 'WPB_VC_REQUIRED_VERSION', '4.11' );
+define( 'WPB_VC_REQUIRED_VERSION', '5.0' );
 
 function templatera_notice() {
 	$plugin_data = get_plugin_data( __FILE__ );
@@ -41,7 +41,10 @@ require_once( $dir . '/lib/vc_template_manager.php' );
  * Registry hooks
  */
 
-register_activation_hook( __FILE__, array( 'VcTemplateManager', 'install' ) );
+register_activation_hook( __FILE__, array(
+	'VcTemplateManager',
+	'install',
+) );
 
 add_action( 'init', 'templatera_init' );
 
@@ -91,13 +94,9 @@ function templatera_init() {
  * @since 1.2
  */
 function wpb_templatera_add_submenu_page() {
-	if ( ! WPB_VC_NEW_USER_ACCESS_VERSION || ( WPB_VC_NEW_USER_ACCESS_VERSION && vc_user_access()
-				->part( 'templates' )
-				->checkStateAny( true, null )
-				->get() )
-	) {
+	if ( ! WPB_VC_NEW_USER_ACCESS_VERSION || ( WPB_VC_NEW_USER_ACCESS_VERSION && vc_user_access()->part( 'templates' )->checkStateAny( true, null )->get() ) ) {
 		$labels = VcTemplateManager::getPostTypesLabels();
-		add_submenu_page( VC_PAGE_MAIN_SLUG, $labels['name'], $labels['name'], 'manage_options', 'edit.php?post_type=' . rawurlencode( VcTemplateManager::postType() ), '' );
+		add_submenu_page( VC_PAGE_MAIN_SLUG, $labels['name'], $labels['name'], 'edit_posts', 'edit.php?post_type=' . rawurlencode( VcTemplateManager::postType() ), '' );
 	}
 }
 
@@ -109,7 +108,7 @@ function wpb_templatera_add_submenu_page() {
 function wpb_templatera_menu_highlight() {
 	global $parent_file, $submenu_file, $post_type;
 
-	if ( $post_type === VcTemplateManager::postType() && ( ! defined( 'VC_IS_TEMPLATE_PREVIEW' ) || ! VC_IS_TEMPLATE_PREVIEW ) ) {
+	if ( VcTemplateManager::postType() === $post_type && ( ! defined( 'VC_IS_TEMPLATE_PREVIEW' ) || ! VC_IS_TEMPLATE_PREVIEW ) ) {
 		$parent_file = VC_PAGE_MAIN_SLUG;
 		$submenu_file = 'edit.php?post_type=' . rawurlencode( VcTemplateManager::postType() );
 	}

@@ -1,5 +1,5 @@
 <?php if (!$mobile->isMobile()): ?>
-	<div id="top-bar" class="transparent-topbar">
+	<div id="top-bar" class="transparent-topbar hidden-sm hidden-xs">
 
 		<div class="container-fluid clearfix">
 
@@ -108,7 +108,7 @@
 						<a href="{{ url('/reserva') }}"><div>Reserva</div></a></li>
 					</li>
 					<li>
-						<a href="{{ url('/blog') }}"><div>Actividades</div></a></li>
+						<a href="{{ url('/actividades') }}"><div>Actividades</div></a></li>
 					</li>
 					
 					<li>

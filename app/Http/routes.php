@@ -28,6 +28,7 @@ Route::post('admin/reservas/create' , 'BookController@create');
 // Route::get('/admin/propietario',['middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
 
 Route::group(['middleware' => 'authSubAdmin'], function () {
+	Route::get('/admin','BookController@index');
 
 //Planing 
 	

@@ -5,28 +5,65 @@
  * @package vas_map
  */
 if ( ! class_exists( 'VcTemplateManager' ) ) {
+	/**
+	 * Class VcTemplateManager
+	 */
 	class VcTemplateManager {
+		/**
+		 * @var string
+		 */
 		protected $dir;
-		protected static $post_type = "templatera";
-		protected static $meta_data_name = "templatera";
+		/**
+		 * @var string
+		 */
+		protected static $post_type = 'templatera';
+		/**
+		 * @var string
+		 */
+		protected static $meta_data_name = 'templatera';
+		/**
+		 * @var string
+		 */
 		protected $settings_tab = 'templatera';
+		/**
+		 * @var string
+		 */
 		protected $filename = 'templatera';
+		/**
+		 * @var bool
+		 */
 		protected $init = false;
+		/**
+		 * @var bool
+		 */
 		protected $current_post_type = false;
+		/**
+		 * @var string
+		 */
 		protected static $template_type = 'templatera_templates';
+		/**
+		 * @var array
+		 */
 		protected $settings = array(
 			'assets_dir' => 'assets',
 			'templates_dir' => 'templates',
-			'template_extension' => 'tpl.php'
+			'template_extension' => 'tpl.php',
 		);
+		/**
+		 * @var string
+		 */
 		protected static $vcWithTemplatePreview = '4.8';
 
+		/**
+		 * VcTemplateManager constructor.
+		 * @param $dir
+		 */
 		function __construct( $dir ) {
 			$this->dir = empty( $dir ) ? dirname( dirname( __FILE__ ) ) : $dir; // Set dir or find by current file path.
 			$this->plugin_dir = basename( $this->dir ); // Plugin directory name required to append all required js/css files.
 			add_filter( 'wpb_vc_js_status_filter', array(
-				&$this,
-				'setJsStatusValue'
+				$this,
+				'setJsStatusValue',
 			) );
 		}
 
@@ -40,7 +77,7 @@ if ( ! class_exists( 'VcTemplateManager' ) ) {
 		 */
 		public static function getInstance( $dir = '' ) {
 			static $instance = null;
-			if ( $instance === null ) {
+			if ( null === $instance ) {
 				$instance = new VcTemplateManager( $dir );
 			}
 
@@ -55,7 +92,7 @@ if ( ! class_exists( 'VcTemplateManager' ) ) {
 		 */
 		public static function install() {
 			$migrated = get_option( 'templatera_migrated_templates' ); // Check is migration already performed
-			if ( $migrated !== 'yes' ) {
+			if ( 'yes' !== $migrated ) {
 				$templates = (array) get_option( 'wpb_js_templates' );
 				foreach ( $templates as $template ) {
 					self::create( $template['name'], $template['template'] );
@@ -81,14 +118,12 @@ if ( ! class_exists( 'VcTemplateManager' ) ) {
 			} // Disable double initialization.
 			$this->init = true;
 
-			if ( current_user_can( 'manage_options' ) && isset( $_GET['action'] ) && $_GET['action'] === 'export_templatera' ) {
+			if ( current_user_can( 'manage_options' ) && isset( $_GET['action'] ) && 'export_templatera' === $_GET['action'] ) {
 				$id = ( isset( $_GET['id'] ) ? $_GET['id'] : null );
 				add_action( 'wp_loaded', array_map( array(
-					&$this,
-					'export'
+					$this,
+					'export',
 				), array( $id ) ) );
-			} elseif ( current_user_can( 'manage_options' ) && isset( $_GET['action'] ) && $_GET['action'] === 'import_templatera' ) {
-				add_action( 'wp_loaded', array( &$this, 'import' ) );
 			}
 			$this->createPostType();
 			$this->initPluginLoaded(); // init filters/actions and hooks
@@ -96,7 +131,10 @@ if ( ! class_exists( 'VcTemplateManager' ) ) {
 			if ( $this->isValidPostType() ) {
 				$pt_array = get_option( 'wpb_js_content_types' );
 				if ( ! is_array( $pt_array ) || empty( $pt_array ) ) {
-					$pt_array = array( self::postType(), 'page' );
+					$pt_array = array(
+						self::postType(),
+						'page',
+					);
 					update_option( 'wpb_js_content_types', $pt_array );
 				} elseif ( ! in_array( self::postType(), $pt_array ) ) {
 					$pt_array[] = self::postType();
@@ -104,16 +142,22 @@ if ( ! class_exists( 'VcTemplateManager' ) ) {
 				}
 				vc_set_default_editor_post_types( array(
 					'page',
-					'templatera'
+					'templatera',
 				) );
 				vc_editor_set_post_types( vc_editor_post_types() + array( 'templatera' ) );
-				add_action( 'admin_init', array( &$this, 'createMetaBox' ), 1 );
+				add_action( 'admin_init', array(
+					$this,
+					'createMetaBox',
+				), 1 );
 				add_filter( 'vc_role_access_with_post_types_get_state', '__return_true' );
 				add_filter( 'vc_role_access_with_backend_editor_get_state', '__return_true' );
 				add_filter( 'vc_role_access_with_frontend_editor_get_state', '__return_true' );
 				add_filter( 'vc_check_post_type_validation', '__return_true' );
 			}
-			add_action( 'wp_loaded', array( $this, 'createShortcode' ) );
+			add_action( 'wp_loaded', array(
+				$this,
+				'createShortcode',
+			) );
 
 			return $this; // chaining.
 		}
@@ -126,14 +170,10 @@ if ( ! class_exists( 'VcTemplateManager' ) ) {
 		 * @return array
 		 */
 		public function addTab( $tabs ) {
-			if ( $this->isUserRoleAccessVcVersion() && ! vc_user_access()
-					->part( 'templates' )
-					->can()
-					->get()
-			) {
+			if ( $this->isUserRoleAccessVcVersion() && ! vc_user_access()->part( 'templates' )->can()->get() ) {
 				return $tabs;
 			}
-			$tabs[ $this->settings_tab ] = __( 'Templatera', "templatera" );
+			$tabs[ $this->settings_tab ] = __( 'Templatera', 'templatera' );
 
 			return $tabs;
 		}
@@ -146,17 +186,23 @@ if ( ! class_exists( 'VcTemplateManager' ) ) {
 		public function buildTab( Vc_Settings $settings ) {
 			$settings->addSection( $this->settings_tab );
 			add_filter( 'vc_setting-tab-form-' . $this->settings_tab, array(
-				&$this,
-				'settingsFormParams'
+				$this,
+				'settingsFormParams',
 			) );
-			$settings->addField( $this->settings_tab, __( 'Export VC Templates', "templatera" ), 'export', array(
-				&$this,
-				'settingsFieldExportSanitize'
-			), array( &$this, 'settingsFieldExport' ) );
-			$settings->addField( $this->settings_tab, __( 'Import VC Templates', "templatera" ), 'import', array(
-				&$this,
-				'settingsFieldImportSanitize'
-			), array( &$this, 'settingsFieldImport' ) );
+			$settings->addField( $this->settings_tab, __( 'Export VC Templates', 'templatera' ), 'export', array(
+				$this,
+				'settingsFieldExportSanitize',
+			), array(
+				$this,
+				'settingsFieldExport',
+			) );
+			$settings->addField( $this->settings_tab, __( 'Import VC Templates', 'templatera' ), 'import', array(
+				$this,
+				'settingsFieldImportSanitize',
+			), array(
+				$this,
+				'settingsFieldImport',
+			) );
 		}
 
 		/**
@@ -185,13 +231,13 @@ if ( ! class_exists( 'VcTemplateManager' ) ) {
 		 * Builds export link in settings tab.
 		 */
 		public function settingsFieldExport() {
-			echo '<a href="export.php?page=wpb_vc_settings&action=export_templatera" class="button">' . __( 'Download Export File', "templatera" ) . '</a>';
+			echo '<a href="export.php?page=wpb_vc_settings&action=export_templatera" class="button">' . __( 'Download Export File', 'templatera' ) . '</a>';
 		}
 
 		/**
 		 * Convert template/post to xml for export
 		 *
-		 * @param $template Template object
+		 * @param stdClass $template
 		 *
 		 * @return string
 		 */
@@ -202,16 +248,15 @@ if ( ! class_exists( 'VcTemplateManager' ) ) {
 			$user_roles = isset( $meta_data['user_role'] ) ? $meta_data['user_role'] : false;
 			$xml = '';
 			$xml .= '<template>';
-			$xml .= '<title>' . apply_filters( 'the_title_rss', $template->post_title ) . '</title>'
-			        . '<content>' . $this->wxr_cdata( apply_filters( 'the_content_export', $template->post_content ) ) . '</content>';
-			if ( $post_types !== false ) {
+			$xml .= '<title>' . apply_filters( 'the_title_rss', $template->post_title ) . '</title>' . '<content>' . $this->wxr_cdata( apply_filters( 'the_content_export', $template->post_content ) ) . '</content>';
+			if ( false !== $post_types ) {
 				$xml .= '<post_types>';
 				foreach ( $post_types as $t ) {
 					$xml .= '<post_type>' . $t . '</post_type>';
 				}
 				$xml .= '</post_types>';
 			}
-			if ( $user_roles !== false ) {
+			if ( false !== $user_roles ) {
 				$xml .= '<user_roles>';
 				foreach ( $user_roles as $u ) {
 					$xml .= '<user_role>' . $u . '</user_role>';
@@ -236,7 +281,7 @@ if ( ! class_exists( 'VcTemplateManager' ) ) {
 			} else {
 				$templates = get_posts( array(
 					'post_type' => self::postType(),
-					'numberposts' => - 1
+					'numberposts' => - 1,
 				) );
 			}
 
@@ -258,18 +303,18 @@ if ( ! class_exists( 'VcTemplateManager' ) ) {
 		 */
 		public function settingsFieldImportSanitize() {
 			$file = isset( $_FILES['import'] ) ? $_FILES['import'] : false;
-			if ( $file === false || ! file_exists( $file['tmp_name'] ) ) {
+			if ( false === $file || ! file_exists( $file['tmp_name'] ) ) {
 				return false;
 			} else {
 				$post_types = get_post_types( array( 'public' => true ) );
 				$roles = get_editable_roles();
 				$templateras = simplexml_load_file( $file['tmp_name'] );
-				foreach ( $templateras as $t ) {
+				foreach ( $templateras as $template ) {
 					$template_post_types = $template_user_roles = $meta_data = array();
-					$content = (string) $t->content;
-					$id = $this->create( (string) $t->title, $content );
+					$content = (string) $template->content;
+					$id = $this->create( (string) $template->title, $content );
 					$this->contentMediaUpload( $id, $content );
-					foreach ( $t->post_types as $type ) {
+					foreach ( $template->post_types as $type ) {
 						$post_type = (string) $type->post_type;
 						if ( in_array( $post_type, $post_types ) ) {
 							$template_post_types[] = $post_type;
@@ -278,7 +323,7 @@ if ( ! class_exists( 'VcTemplateManager' ) ) {
 					if ( ! empty( $template_post_types ) ) {
 						$meta_data['post_type'] = $template_post_types;
 					}
-					foreach ( $t->user_roles as $role ) {
+					foreach ( $template->user_roles as $role ) {
 						$user_role = (string) $role->user_role;
 						if ( in_array( $user_role, $roles ) ) {
 							$template_user_roles[] = $user_role;
@@ -313,7 +358,8 @@ if ( ! class_exists( 'VcTemplateManager' ) ) {
 		protected function contentMediaUpload( $post_id, $content ) {
 			preg_match_all( '/<img|a[^>]* src|href=[\'"]?([^>\'" ]+)/', $content, $matches );
 			foreach ( $matches[1] as $match ) {
-				if ( ! empty( $match ) ) {
+				$extension = pathinfo( $match, PATHINFO_EXTENSION );
+				if ( ! empty( $match ) && ! empty( $extension ) ) {
 					$file_array = array();
 					$file_array['name'] = basename( $match );
 					$tmp_file = download_url( $match );
@@ -338,7 +384,7 @@ if ( ! class_exists( 'VcTemplateManager' ) ) {
 			}
 			wp_update_post( array(
 				'ID' => $post_id,
-				'post_content' => $content
+				'post_content' => $content,
 			) );
 
 			return true;
@@ -367,35 +413,36 @@ if ( ! class_exists( 'VcTemplateManager' ) ) {
 		 * @return void
 		 */
 		function createPostType() {
-			register_post_type( self::postType(),
-				array(
-					'labels' => self::getPostTypesLabels(),
-					'public' => false,
-					'has_archive' => false,
-					'show_in_nav_menus' => true,
-					'exclude_from_search' => true,
-					'publicly_queryable' => false,
-					'show_ui' => true,
-					'query_var' => true,
-					'capability_type' => 'post',
-					'hierarchical' => false,
-					'menu_position' => null,
-					'menu_icon' => $this->assetUrl( 'images/icon.gif' ),
-					'show_in_menu' => ! WPB_VC_NEW_MENU_VERSION,
-				)
-			);
+			register_post_type( self::postType(), array(
+				'labels' => self::getPostTypesLabels(),
+				'public' => false,
+				'has_archive' => false,
+				'show_in_nav_menus' => true,
+				'exclude_from_search' => true,
+				'publicly_queryable' => false,
+				'show_ui' => true,
+				'query_var' => true,
+				'capability_type' => 'post',
+				'hierarchical' => false,
+				'menu_position' => null,
+				'menu_icon' => $this->assetUrl( 'images/icon.gif' ),
+				'show_in_menu' => ! WPB_VC_NEW_MENU_VERSION,
+			) );
 		}
 
+		/**
+		 * @return array
+		 */
 		public static function getPostTypesLabels() {
 			return array(
-				'add_new_item' => __( 'Add template', "templatera" ),
-				'name' => __( 'Templates', "templatera" ),
-				'singular_name' => __( 'Template', "templatera" ),
-				'edit_item' => __( 'Edit Template', "templatera" ),
-				'view_item' => __( 'View Template', "templatera" ),
-				'search_items' => __( 'Search Templates', "templatera" ),
-				'not_found' => __( 'No Templates found', "templatera" ),
-				'not_found_in_trash' => __( 'No Templates found in Trash', "templatera" ),
+				'add_new_item' => __( 'Add template', 'templatera' ),
+				'name' => __( 'Templates', 'templatera' ),
+				'singular_name' => __( 'Template', 'templatera' ),
+				'edit_item' => __( 'Edit Template', 'templatera' ),
+				'view_item' => __( 'View Template', 'templatera' ),
+				'search_items' => __( 'Search Templates', 'templatera' ),
+				'not_found' => __( 'No Templates found', 'templatera' ),
+				'not_found_in_trash' => __( 'No Templates found in Trash', 'templatera' ),
 			);
 		}
 
@@ -407,75 +454,80 @@ if ( ! class_exists( 'VcTemplateManager' ) ) {
 
 			// Check for nav controls
 			add_filter( 'vc_nav_controls', array(
-					&$this,
-					'createButtonFrontBack'
+				$this,
+				'createButtonFrontBack',
 			) );
 			add_filter( 'vc_nav_front_controls', array(
-				&$this,
-				'createButtonFrontBack'
+				$this,
+				'createButtonFrontBack',
 			) );
 
 			// add settings tab in visual composer settings
-			add_filter( 'vc_settings_tabs', array( &$this, 'addTab' ) );
+			add_filter( 'vc_settings_tabs', array(
+				$this,
+				'addTab',
+			) );
 			// build settings tab @ER
 			add_action( 'vc_settings_tab-' . $this->settings_tab, array(
-				&$this,
-				'buildTab'
+				$this,
+				'buildTab',
 			) );
 
 			add_action( 'wp_ajax_vc_templatera_save_template', array(
-				&$this,
-				'saveTemplate'
+				$this,
+				'saveTemplate',
 			) );
 			add_action( 'wp_ajax_vc_templatera_delete_template', array(
-				&$this,
-				'delete'
+				$this,
+				'delete',
 			) );
 			add_filter( 'vc_templates_render_category', array(
-				&$this,
-				'renderTemplateBlock'
+				$this,
+				'renderTemplateBlock',
 			), 10, 2 );
 			add_filter( 'vc_templates_render_template', array(
-				&$this,
-				'renderTemplateWindow'
+				$this,
+				'renderTemplateWindow',
 			), 10, 2 );
 
 			if ( $this->getPostType() !== 'vc_grid_item' ) {
 				add_filter( 'vc_get_all_templates', array(
-					&$this,
-					'replaceCustomWithTemplateraTemplates'
+					$this,
+					'replaceCustomWithTemplateraTemplates',
 				) );
 			}
 			add_filter( 'vc_templates_render_frontend_template', array(
-				&$this,
-				'renderFrontendTemplate'
+				$this,
+				'renderFrontendTemplate',
 			), 10, 2 );
 			add_filter( 'vc_templates_render_backend_template', array(
-				&$this,
-				'renderBackendTemplate'
+				$this,
+				'renderBackendTemplate',
 			), 10, 2 );
 			add_action( 'vc_templates_render_backend_template_preview', array(
-				&$this,
-				'getTemplateContentPreview'
+				$this,
+				'getTemplateContentPreview',
 			), 10, 2 );
 			add_filter( 'vc_templates_show_save', array(
-				&$this,
-				'addTemplatesShowSave'
+				$this,
+				'addTemplatesShowSave',
 			) );
 			add_action( 'wp_ajax_wpb_templatera_load_html', array(
-				&$this,
-				'loadHtml'
+				$this,
+				'loadHtml',
 			) ); // used in changeShortcodeParams in templates.js, todo make sure we need this?
-			add_action( 'save_post', array( &$this, 'saveMetaBox' ) );
-
+			add_action( 'save_post', array(
+				$this,
+				'saveMetaBox',
+			) );
 
 			add_action( 'vc_frontend_editor_enqueue_js_css', array(
-				&$this,
-				'assetsFe'
+				$this,
+				'assetsFe',
 			) );
 			add_action( 'vc_backend_editor_enqueue_js_css', array(
-				&$this,
-				'assetsBe'
+				$this,
+				'assetsBe',
 			) );
 
 		}
@@ -495,6 +547,7 @@ if ( ! class_exists( 'VcTemplateManager' ) ) {
 		 * Removes save block if we editing templatera page
 		 * In add templates panel window
 		 * @since 4.4
+		 * @param $show_save
 		 * @return bool
 		 */
 		public function addTemplatesPanelShowSave( $show_save ) {
@@ -591,22 +644,22 @@ if ( ! class_exists( 'VcTemplateManager' ) ) {
 			return $template_id;
 		}
 
+		/**
+		 * @param $category
+		 * @return mixed
+		 */
 		public function renderTemplateBlock( $category ) {
 			if ( self::$template_type === $category['category'] ) {
-				if ( ! $this->isUserRoleAccessVcVersion() || ( $this->isUserRoleAccessVcVersion() && vc_user_access()
-							->part( 'templates' )
-							->checkStateAny( true, null )
-							->get() )
-				) {
+				if ( ! $this->isUserRoleAccessVcVersion() || ( $this->isUserRoleAccessVcVersion() && vc_user_access()->part( 'templates' )->checkStateAny( true, null )->get() ) ) {
 					$category['output'] = '
 				<div class="vc_column vc_col-sm-12" data-vc-hide-on-search="true">
-					<div class="vc_element_label">' . esc_html( 'Save current layout as a template', 'js_composer' ) . '</div>
+					<div class="vc_element_label">' . esc_html__( 'Save current layout as a template', 'js_composer' ) . '</div>
 					<div class="vc_input-group">
 						<input name="padding" class="vc_form-control wpb-textinput vc_panel-templates-name" type="text" value=""
 						       placeholder="' . esc_attr( 'Template name', 'js_composer' ) . '">
-						<span class="vc_input-group-btn"> <button class="vc_btn vc_btn-primary vc_btn-sm vc_template-save-btn">' . esc_html( 'Save template', 'js_composer' ) . '</button></span>
+						<span class="vc_input-group-btn"> <button class="vc_btn vc_btn-primary vc_btn-sm vc_template-save-btn">' . esc_html__( 'Save template', 'js_composer' ) . '</button></span>
 					</div>
-					<span class="vc_description">' . esc_html( 'Save your layout and reuse it on different sections of your website', 'js_composer' ) . '</span>
+					<span class="vc_description">' . esc_html__( 'Save your layout and reuse it on different sections of your website', 'js_composer' ) . '</span>
 				</div>';
 				}
 				$category['output'] .= '<div class="vc_col-md-12">';
@@ -622,7 +675,7 @@ if ( ! class_exists( 'VcTemplateManager' ) ) {
 			<ul class="vc_templates-list-my_templates">';
 				if ( ! empty( $category['templates'] ) ) {
 					foreach ( $category['templates'] as $template ) {
-						$category['output'] .= visual_composer()->templatesPanelEditor()->renderTemplateListItem($template);
+						$category['output'] .= visual_composer()->templatesPanelEditor()->renderTemplateListItem( $template );
 					}
 				}
 				$category['output'] .= '</ul></div>';
@@ -669,11 +722,7 @@ if ( ! class_exists( 'VcTemplateManager' ) ) {
 				$edit_template_title = esc_attr( 'Edit template', 'templatera' );
 				$template_url = esc_attr( admin_url( 'post.php?post=' . $template_data['unique_id'] . '&action=edit' ) );
 				$edit_tr_html = '';
-				if ( ! $this->isUserRoleAccessVcVersion() || ( $this->isUserRoleAccessVcVersion() && vc_user_access()
-							->part( 'templates' )
-							->checkStateAny( true, null )
-							->get() )
-				) {
+				if ( ! $this->isUserRoleAccessVcVersion() || ( $this->isUserRoleAccessVcVersion() && vc_user_access()->part( 'templates' )->checkStateAny( true, null )->get() ) ) {
 					$edit_tr_html = <<<EDTR
 				<a href="$template_url"  class="vc_general vc_ui-control-button" title="$edit_template_title" target="_blank">
 					<i class="vc_ui-icon-pixel vc_ui-icon-pixel-control-edit-dark"></i>
@@ -702,19 +751,19 @@ HTML;
 			} else {
 				?>
 				<div class="vc_template-wrapper vc_input-group"
-				     data-template_id="<?php echo esc_attr( $template_data['unique_id'] ); ?>">
+					data-template_id="<?php echo esc_attr( $template_data['unique_id'] ); ?>">
 					<a data-template-handler="true" class="vc_template-display-title vc_form-control"
-					   data-vc-ui-element="template-title"
-					   href="javascript:;"><?php echo esc_html( $template_name ); ?></a>
-			<span class="vc_input-group-btn vc_template-icon vc_template-edit-icon"
-			      title="<?php esc_attr_e( 'Edit template', 'templatera' ); ?>"
-			      data-template_id="<?php echo esc_attr( $template_data['unique_id'] ); ?>"><a
-					href="<?php echo esc_attr( admin_url( 'post.php?post=' . $template_data['unique_id'] . '&action=edit' ) ); ?>"
-					target="_blank" class="vc_icon"></i></a></span>
-			<span class="vc_input-group-btn vc_template-icon vc_template-delete-icon"
-			      title="<?php esc_attr_e( 'Delete template', 'templatera' ); ?>"
-			      data-template_id="<?php echo esc_attr( $template_data['unique_id'] ); ?>"><i
-					class="vc_icon"></i></span>
+						data-vc-ui-element="template-title"
+						href="javascript:;"><?php echo esc_html( $template_name ); ?></a>
+					<span class="vc_input-group-btn vc_template-icon vc_template-edit-icon"
+						title="<?php esc_attr_e( 'Edit template', 'templatera' ); ?>"
+						data-template_id="<?php echo esc_attr( $template_data['unique_id'] ); ?>"><a
+							href="<?php echo esc_attr( admin_url( 'post.php?post=' . $template_data['unique_id'] . '&action=edit' ) ); ?>"
+							target="_blank" class="vc_icon"></i></a></span>
+					<span class="vc_input-group-btn vc_template-icon vc_template-delete-icon"
+						title="<?php esc_attr_e( 'Delete template', 'templatera' ); ?>"
+						data-template_id="<?php echo esc_attr( $template_data['unique_id'] ); ?>"><i
+							class="vc_icon"></i></span>
 				</div>
 				<?php
 			}
@@ -745,7 +794,7 @@ HTML;
 			if ( ! empty( $data ) ) {
 				$found = false;
 				foreach ( $data as $key => $category ) {
-					if ( $category['category'] == 'my_templates' ) {
+					if ( 'my_templates' == $category['category'] ) {
 						$found = true;
 						$data[ $key ]['templates'] = $templatera_arr;
 					}
@@ -777,28 +826,31 @@ HTML;
 		 */
 		function createShortcode() {
 			vc_map( array(
-				"name" => __( "Templatera", "templatera" ),
-				"base" => "templatera",
-				"icon" => "icon-templatera",
-				"category" => __( 'Content', "templatera" ),
-				"params" => array(
+				'name' => __( 'Templatera', 'templatera' ),
+				'base' => 'templatera',
+				'icon' => 'icon-templatera',
+				'category' => __( 'Content', 'templatera' ),
+				'params' => array(
 					array(
-						"type" => "dropdown",
-						"heading" => __( "Select template", "templatera" ),
-						"param_name" => "id",
-						"value" => array( __( 'Choose template', 'js_composer' ) => '' ) + $this->getTemplateList(),
-						"description" => __( "Choose which template to load for this location.", "templatera" )
+						'type' => 'dropdown',
+						'heading' => __( 'Select template', 'templatera' ),
+						'param_name' => 'id',
+						'value' => array( __( 'Choose template', 'js_composer' ) => '' ) + $this->getTemplateList(),
+						'description' => __( 'Choose which template to load for this location.', 'templatera' ),
 					),
 					array(
-						"type" => "textfield",
-						"heading" => __( "Extra class name", "templatera" ),
-						"param_name" => "el_class",
-						"description" => __( "If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.", "templatera" )
-					)
+						'type' => 'textfield',
+						'heading' => __( 'Extra class name', 'templatera' ),
+						'param_name' => 'el_class',
+						'description' => __( 'If you wish to style particular content element differently, then use this field to add a class name and then refer to it in your css file.', 'templatera' ),
+					),
 				),
-				"js_view" => 'VcTemplatera'
+				'js_view' => 'VcTemplatera',
 			) );
-			add_shortcode( 'templatera', array( &$this, 'outputShortcode' ) );
+			add_shortcode( 'templatera', array(
+				$this,
+				'outputShortcode',
+			) );
 		}
 
 		/**
@@ -813,16 +865,19 @@ HTML;
 			$id = $el_class = $output = '';
 			extract( shortcode_atts( array(
 				'el_class' => '',
-				'id' => ''
+				'id' => '',
 			), $atts ) );
 			if ( empty( $id ) ) {
 				return $output;
 			}
-			$my_query = new WP_Query( array( 'post_type' => self::postType(), 'p' => (int)$id ) );
+			$my_query = new WP_Query( array(
+				'post_type' => self::postType(),
+				'p' => (int) $id,
+			) );
 			WPBMap::addAllMappedShortcodes();
 			while ( $my_query->have_posts() ) {
 				$my_query->the_post();
-				if( get_the_ID() === (int)$id ) {
+				if ( get_the_ID() === (int) $id ) {
 					$output .= '<div class="templatera_shortcode' . ( $el_class ? ' ' . $el_class : '' ) . '">';
 					ob_start();
 					visual_composer()->addFrontCss();
@@ -832,9 +887,10 @@ HTML;
 					$output .= '</div>';
 					$output = do_shortcode( $output );
 				}
+				wp_reset_postdata();
 			}
-			wp_reset_query();
 			wp_enqueue_style( 'templatera_inline', $this->assetUrl( 'css/front_style.css' ), false, '2.1' );
+
 			return $output;
 		}
 
@@ -842,9 +898,9 @@ HTML;
 		 * Create meta box for self::$post_type, with template settings
 		 */
 		public function createMetaBox() {
-			add_meta_box( 'vas_template_settings_metabox', __( 'Template Settings', "templatera" ), array(
-				&$this,
-				'sideOutput'
+			add_meta_box( 'vc_template_settings_metabox', __( 'Template Settings', 'templatera' ), array(
+				$this,
+				'sideOutput',
 			), self::postType(), 'side', 'high' );
 		}
 
@@ -856,25 +912,25 @@ HTML;
 			$data_post_types = isset( $data['post_type'] ) ? $data['post_type'] : array();
 			$post_types = get_post_types( array( 'public' => true ) );
 			echo '<div class="misc-pub-section">
-            <div class="templatera_title"><b>' . __( 'Post types', "templatera" ) . '</b></div>
+            <div class="templatera_title"><b>' . __( 'Post types', 'templatera' ) . '</b></div>
             <div class="input-append">
                 ';
 			foreach ( $post_types as $type ) {
-				if ( $type != 'attachment' && ! $this->isSamePostType( $type ) ) {
-					echo '<label><input type="checkbox" name="' . esc_attr( self::$meta_data_name ) . '[post_type][]" value="' . esc_attr( $type ) . '"' . ( in_array( $type, $data_post_types ) ? ' checked="true"' : '' ) . '> ' . ucfirst( $type ) . '</label><br/>';
+				if ( 'attachment' !== $type && ! $this->isSamePostType( $type ) ) {
+					echo '<label><input type="checkbox" name="' . esc_attr( self::$meta_data_name ) . '[post_type][]" value="' . esc_attr( $type ) . '" ' . ( in_array( $type, $data_post_types ) ? ' checked="true"' : '' ) . '>' . ucfirst( $type ) . '</label><br/>';
 				}
 			}
-			echo '</div><p>' . __( 'Select for which post types this template should be available. Default: Available for all post types.', "templatera" ) . '</p></div>';
+			echo '</div><p>' . __( 'Select for which post types this template should be available. Default: Available for all post types.', 'templatera' ) . '</p></div>';
 			$groups = get_editable_roles();
 			$data_user_role = isset( $data['user_role'] ) ? $data['user_role'] : array();
 			echo '<div class="misc-pub-section vc_user_role">
-            <div class="templatera_title"><b>' . __( 'Roles', "templatera" ) . '</b></div>
+            <div class="templatera_title"><b>' . __( 'Roles', 'templatera' ) . '</b></div>
             <div class="input-append">
                 ';
 			foreach ( $groups as $key => $g ) {
-				echo '<label><input type="checkbox" name="' . self::$meta_data_name . '[user_role][]" value="' . $key . '"' . ( in_array( $key, $data_user_role ) ? ' checked="true"' : '' ) . '> ' . $g['name'] . '</label><br/>';
+				echo '<label><input type="checkbox" name="' . self::$meta_data_name . '[user_role][]" value="' . esc_attr( $key ) . '" ' . ( in_array( $key, $data_user_role ) ? ' checked="true"' : '' ) . '> ' . $g['name'] . '</label><br/>';
 			}
-			echo '</div><p>' . __( 'Select for user roles this template should be available. Default: Available for all user roles.', "templatera" ) . '</p></div>';
+			echo '</div><p>' . __( 'Select for user roles this template should be available. Default: Available for all user roles.', 'templatera' ) . '</p></div>';
 		}
 
 		/**
@@ -899,6 +955,9 @@ HTML;
 			return $this->dir . '/assets/' . $file;
 		}
 
+		/**
+		 * @return bool
+		 */
 		public function isValidPostType() {
 			$type = get_post_type();
 			$post = ( isset( $_GET['post'] ) && $this->compareType( get_post_type( $_GET['post'] ) ) );
@@ -906,15 +965,13 @@ HTML;
 			$post_type_id = ( isset( $_GET['post_id'] ) && $this->compareType( get_post_type( (int) $_GET['post_id'] ) ) );
 			$post_vc_type_id = ( isset( $_GET['vc_post_id'] ) && $this->compareType( get_post_type( (int) $_GET['vc_post_id'] ) ) );
 
-			return (
-				( $type && $this->compareType( $type ) ) ||
-				( $post ) ||
-				( $post_type ) ||
-				( $post_type_id )||
-				( $post_vc_type_id )
-			);
+			return ( ( $type && $this->compareType( $type ) ) || ( $post ) || ( $post_type ) || ( $post_type_id ) || ( $post_vc_type_id ) );
 		}
 
+		/**
+		 * @param $type
+		 * @return bool
+		 */
 		public function compareType( $type ) {
 			return in_array( $type, array_merge( vc_editor_post_types(), array( 'templatera' ) ) );
 		}
@@ -929,44 +986,45 @@ HTML;
 			}
 		}
 
+		/**
+		 *
+		 */
 		public function assetsFe() {
-			if ( $this->isValidPostType() && ( vc_user_access()
-						->part( 'frontend_editor' )
-						->can()
-						->get() )
-			) {
+			if ( $this->isValidPostType() && ( vc_user_access()->part( 'frontend_editor' )->can()->get() ) ) {
 				$this->addGridScripts();
-				$dependency = array( 'vc-frontend-editor-min-js', );
-				wp_register_script( 'vc_plugin_inline_templates', $this->assetURL( 'js/templates_panels.js' ), $dependency, WPB_VC_VERSION, true );
-				wp_register_script( 'vc_plugin_templates', $this->assetURL( 'js/templates.js' ), array(), time(), true );
+				$dependency = array( 'vc-frontend-editor-min-js' );
+				wp_register_script( 'vc_plugin_inline_templates', $this->assetUrl( 'js/templates_panels.js' ), $dependency, WPB_VC_VERSION, true );
+				wp_register_script( 'vc_plugin_templates', $this->assetUrl( 'js/templates.js' ), array(), time(), true );
 				wp_localize_script( 'vc_plugin_templates', 'VcTemplateI18nLocale', array(
-					'please_enter_templates_name' => __( 'Please enter template name', "templatera" )
+					'please_enter_templates_name' => __( 'Please enter template name', 'templatera' ),
 				) );
-				wp_register_style( 'vc_plugin_template_css', $this->assetURL( 'css/style.css' ), false, '1.1.0' );
+				wp_register_style( 'vc_plugin_template_css', $this->assetUrl( 'css/style.css' ), false, '1.1.0' );
 				wp_enqueue_style( 'vc_plugin_template_css' );
 				$this->addTemplateraJs();
 			}
 		}
 
+		/**
+		 *
+		 */
 		public function assetsBe() {
-			if ( $this->isValidPostType() && ( vc_user_access()
-						->part( 'backend_editor' )
-						->can()
-						->get() || $this->isSamePostType() )
-			) {
+			if ( $this->isValidPostType() && ( vc_user_access()->part( 'backend_editor' )->can()->get() || $this->isSamePostType() ) ) {
 				$this->addGridScripts();
 				$dependency = array( 'vc-backend-min-js' );
-				wp_register_script( 'vc_plugin_inline_templates', $this->assetURL( 'js/templates_panels.js' ), $dependency, WPB_VC_VERSION, true );
-				wp_register_script( 'vc_plugin_templates', $this->assetURL( 'js/templates.js' ), array(), time(), true );
+				wp_register_script( 'vc_plugin_inline_templates', $this->assetUrl( 'js/templates_panels.js' ), $dependency, WPB_VC_VERSION, true );
+				wp_register_script( 'vc_plugin_templates', $this->assetUrl( 'js/templates.js' ), array(), time(), true );
 				wp_localize_script( 'vc_plugin_templates', 'VcTemplateI18nLocale', array(
-					'please_enter_templates_name' => __( 'Please enter template name', "templatera" ),
+					'please_enter_templates_name' => __( 'Please enter template name', 'templatera' ),
 				) );
-				wp_register_style( 'vc_plugin_template_css', $this->assetURL( 'css/style.css' ), false, '1.1.0' );
+				wp_register_style( 'vc_plugin_template_css', $this->assetUrl( 'css/style.css' ), false, '1.1.0' );
 				wp_enqueue_style( 'vc_plugin_template_css' );
 				$this->addTemplateraJs();
 			}
 		}
 
+		/**
+		 * @return bool|false|string
+		 */
 		public function getPostType() {
 			if ( $this->current_post_type ) {
 				return $this->current_post_type;
@@ -990,23 +1048,19 @@ HTML;
 		 * @return array
 		 */
 		public function createButtonFrontBack( $buttons ) {
-			if ( $this->isUserRoleAccessVcVersion() && ! vc_user_access()
-					->part( 'templates' )
-					->can()
-					->get()
-			) {
+			if ( $this->isUserRoleAccessVcVersion() && ! vc_user_access()->part( 'templates' )->can()->get() ) {
 				return $buttons;
 			}
-			if ( $this->getPostType() == "vc_grid_item" ) {
+			if ( 'vc_grid_item' === $this->getPostType() ) {
 				return $buttons;
 			}
 
 			$new_buttons = array();
 
 			foreach ( $buttons as $button ) {
-				if ( $button[0] != 'templates' ) {
+				if ( 'templates' !== $button[0] ) {
 					// disable custom css as well but only in templatera page
-					if ( ! $this->isSamePostType() || ( $this->isSamePostType() && $button[0] != 'custom_css' ) ) {
+					if ( ! $this->isSamePostType() || ( $this->isSamePostType() && 'custom_css' !== $button[0] ) ) {
 						$new_buttons[] = $button;
 					}
 				} else {
@@ -1014,7 +1068,7 @@ HTML;
 						// @since 4.4 button is available but "Save" Functionality in form is disabled in templatera post.
 						$new_buttons[] = array(
 							'custom_templates',
-							'<li class="vc_navbar-border-right"><a href="#" class="vc_icon-btn vc_templatera_button"  id="vc-templatera-editor-button" title="' . __( 'Templates', 'js_composer' ) . '"></a></li>'
+							'<li class="vc_navbar-border-right"><a href="#" class="vc_icon-btn vc_templatera_button"  id="vc-templatera-editor-button" title="' . __( 'Templates', 'js_composer' ) . '"></a></li>',
 						);
 					} else {
 						if ( $this->isSamePostType() ) {
@@ -1022,11 +1076,10 @@ HTML;
 						} else {
 							$new_buttons[] = array(
 								'custom_templates',
-								'<li class="vc_navbar-border-right"><a href="#" class="vc_icon-btn vc_templatera_button"  id="vc-templatera-editor-button" title="' . __( 'Templates', 'js_composer' ) . '"></a></li>'
+								'<li class="vc_navbar-border-right"><a href="#" class="vc_icon-btn vc_templatera_button"  id="vc-templatera-editor-button" title="' . __( 'Templates', 'js_composer' ) . '"></a></li>',
 							);
 						}
 					}
-
 				}
 			}
 
@@ -1062,13 +1115,11 @@ HTML;
 			$template_id = $this->create( $title, $content );
 			$template_title = get_the_title( $template_id );
 			if ( $this->isNewVcVersion( self::$vcWithTemplatePreview ) ) {
-				echo visual_composer()
-					->templatesPanelEditor()
-					->renderTemplateListItem( array(
-						'name' => $template_title,
-						'unique_id' => $template_id,
-						'type' => self::$template_type
-					) );
+				echo visual_composer()->templatesPanelEditor()->renderTemplateListItem( array(
+					'name' => $template_title,
+					'unique_id' => $template_id,
+					'type' => self::$template_type,
+				) );
 			} else {
 				echo $this->renderTemplateWindowTemplateraTemplates( $template_title, array( 'unique_id' => $template_id ) );
 			}
@@ -1086,7 +1137,7 @@ HTML;
 			$list = array();
 			$templates = get_posts( array(
 				'post_type' => self::postType(),
-				'numberposts' => - 1
+				'numberposts' => - 1,
 			) );
 			$post = get_post( isset( $_POST['post_id'] ) ? $_POST['post_id'] : null );
 			foreach ( $templates as $template ) {
@@ -1094,10 +1145,7 @@ HTML;
 				$meta_data = get_post_meta( $id, self::$meta_data_name, true );
 				$post_types = isset( $meta_data['post_type'] ) ? $meta_data['post_type'] : false;
 				$user_roles = isset( $meta_data['user_role'] ) ? $meta_data['user_role'] : false;
-				if (
-					( ! $post || ! $post_types || in_array( $post->post_type, $post_types ) )
-					&& ( ! $current_user_role || ! $user_roles || in_array( $current_user_role, $user_roles ) )
-				) {
+				if ( ( ! $post || ! $post_types || in_array( $post->post_type, $post_types ) ) && ( ! $current_user_role || ! $user_roles || in_array( $current_user_role, $user_roles ) ) ) {
 					$list[ $template->post_title ] = $id;
 				}
 			}
@@ -1119,7 +1167,7 @@ HTML;
 				'post_title' => $title,
 				'post_content' => $content,
 				'post_status' => 'publish',
-				'post_type' => self::postType()
+				'post_type' => self::postType(),
 			) );
 		}
 
@@ -1138,7 +1186,7 @@ HTML;
 
 				if ( ! $post || ! $this->isSamePostType( $post->post_type ) ) {
 					die( 'failed to delete' );
-				} else if( wp_delete_post( $post_id ) ) {
+				} else if ( wp_delete_post( $post_id ) ) {
 					die( 'deleted' );
 				}
 			}
@@ -1157,7 +1205,7 @@ HTML;
 				return true;
 			}
 			if ( isset( $_POST[ self::$meta_data_name ] ) ) {
-				$options = isset( $_POST[ self::$meta_data_name ] ) ? (array) $_POST[ self::$meta_data_name ] : Array();
+				$options = isset( $_POST[ self::$meta_data_name ] ) ? (array) $_POST[ self::$meta_data_name ] : array();
 				update_post_meta( (int) $post_id, self::$meta_data_name, $options );
 			} else {
 				delete_post_meta( (int) $post_id, self::$meta_data_name );
@@ -1197,19 +1245,21 @@ HTML;
 			die();
 		}
 
+		/**
+		 *
+		 */
 		public function addGridScripts() {
 			if ( $this->isSamePostType() ) {
-				wp_enqueue_script( 'wpb_templatera-grid-id-param-js',
-					$this->assetURL( 'js/templatera-grid-id-param.js' ),
-					array( 'wpb_js_composer_js_listeners' ), WPB_VC_REQUIRED_VERSION, true );
+				wp_enqueue_script( 'wpb_templatera-grid-id-param-js', $this->assetUrl( 'js/templatera-grid-id-param.js' ), array( 'wpb_js_composer_js_listeners' ), WPB_VC_REQUIRED_VERSION, true );
 			}
 		}
 
 		/**
+		 * @param string $type
 		 * @return bool
 		 */
 		protected function isSamePostType( $type = '' ) {
-			return $type ? $type === self::postType() : get_post_type() === self::postType();
+			return $type ? self::postType() === $type : get_post_type() === self::postType();
 		}
 	}
 }

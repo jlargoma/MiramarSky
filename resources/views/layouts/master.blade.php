@@ -29,141 +29,62 @@
 		
 		<title>@yield('title')</title>
 		
-		
-		<?php if (!$mobile->isMobile()): ?>
-			<style>
 
-				.demos-filter {
-					margin: 0;
-					text-align: right;
-				}
+		<style>
 
-				.demos-filter li {
-					list-style: none;
-					margin: 10px 0px;
-				}
+			.demos-filter {
+				margin: 0;
+				text-align: right;
+			}
 
-				.demos-filter li a {
-					display: block;
-					border: 0;
-					text-transform: uppercase;
-					letter-spacing: 1px;
-					color: #444;
-				}
+			.demos-filter li {
+				list-style: none;
+				margin: 10px 0px;
+			}
 
-				.demos-filter li a:hover,
-				.demos-filter li.activeFilter a { color: #1ABC9C; }
+			.demos-filter li a {
+				display: block;
+				border: 0;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+				color: #444;
+			}
 
-				@media (max-width: 991px) {
-					.demos-filter { text-align: center; }
+			.demos-filter li a:hover,
+			.demos-filter li.activeFilter a { color: #1ABC9C; }
 
-					.demos-filter li {
-						float: left;
-						width: 33.3%;
-						padding: 0 20px;
-					}
-				}
-
-				@media (max-width: 767px) { .demos-filter li { width: 50%; } }
-
-				#rev_slider_31_1 .uranus.tparrows {
-					width:50px;
-					height:50px;
-					background:rgba(255,255,255,0);
-				}
-				#rev_slider_31_1 .uranus.tparrows:before {
-					width:50px;
-					height:50px;
-					line-height:50px;
-					font-size:40px;
-					transition:all 0.3s;
-					-webkit-transition:all 0.3s;
-				}
-				#rev_slider_31_1 .uranus.tparrows:hover:before { opacity:0.75; }
-				.hermes .tp-bullet {
-					overflow:hidden;
-					border-radius:50%;
-					width:16px;
-					height:16px;
-					background-color:rgba(0,0,0,0);
-					box-shadow:inset 0 0 0 2px rgb(255,255,255);
-					-webkit-transition:background 0.3s ease;
-					transition:background 0.3s ease;
-					position:absolute;
-				}
-				.hermes .tp-bullet:hover { background-color:rgba(0,0,0,0.21); }
-				.hermes .tp-bullet:after {
-					content:' ';
-					position:absolute;
-					bottom:0;
-					height:0;
-					left:0;
-					width:100%;
-					background-color:rgb(255,255,255);
-					box-shadow:0 0 1px rgb(255,255,255);
-					-webkit-transition:height 0.3s ease;
-					transition:height 0.3s ease;
-				}
-				.hermes .tp-bullet.selected:after{height:100%}
-
-			</style>
-		<?php else: ?>
-			<style>
-
-				.demos-filter {
-					margin: 0;
-					text-align: right;
-				}
+			@media (max-width: 991px) {
+				.demos-filter { text-align: center; }
 
 				.demos-filter li {
-					list-style: none;
-					margin: 10px 0px;
+					float: left;
+					width: 33.3%;
+					padding: 0 20px;
 				}
+			}
 
-				.demos-filter li a {
-					display: block;
-					border: 0;
-					text-transform: uppercase;
-					letter-spacing: 1px;
-					color: #444;
-				}
+			@media (max-width: 767px) {
+				.demos-filter li { width: 50%; }
+			}
 
-				.demos-filter li a:hover,
-				.demos-filter li.activeFilter a { color: #1ABC9C; }
-
-				@media (max-width: 991px) {
-					.demos-filter { text-align: center; }
-
-					.demos-filter li {
-						float: left;
-						width: 33.3%;
-						padding: 0 20px;
-					}
-				}
-
-				@media (max-width: 767px) {
-					.demos-filter li { width: 50%; }
-				}
-
-				#rev_slider_15_1_wrapper .tp-loader.spinner3 { background-color: #333333 !important; }
-				#rev_slider_15_1 .uranus.tparrows {
-					width:50px;
-					height:50px;
-					background:rgba(255,255,255,0);
-				}
-				#rev_slider_15_1 .uranus.tparrows:before {
-					width:50px;
-					height:50px;
-					line-height:50px;
-					font-size:40px;
-					transition:all 0.3s;
-					-webkit-transition:all 0.3s;
-				}
-				#rev_slider_15_1 .uranus.tparrows:hover:before{opacity:0.75; }
+			#rev_slider_15_1_wrapper .tp-loader.spinner3 { background-color: #333333 !important; }
+			#rev_slider_15_1 .uranus.tparrows {
+				width:50px;
+				height:50px;
+				background:rgba(255,255,255,0);
+			}
+			#rev_slider_15_1 .uranus.tparrows:before {
+				width:50px;
+				height:50px;
+				line-height:50px;
+				font-size:40px;
+				transition:all 0.3s;
+				-webkit-transition:all 0.3s;
+			}
+			#rev_slider_15_1 .uranus.tparrows:hover:before{opacity:0.75; }
 
 
-			</style>
-		<?php endif; ?>
+		</style>
 
 
 	</head>
@@ -187,9 +108,13 @@
 		<script type="text/javascript" src="{{ asset('/frontend/js/jquery.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('/frontend/js/plugins.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('/frontend/js/functions.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/addons/revolution.addon.snow.min.js') }}"></script>
+
+		
 		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/jquery.themepunch.tools.min.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/jquery.themepunch.revolution.min.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/addons/revolution.addon.slicey.min.js') }}"></script>
+
 		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.actions.min.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.carousel.min.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.kenburn.min.js') }}"></script>
@@ -204,83 +129,97 @@
 			
 		<script type="text/javascript">
 			var tpj=jQuery;
-			var revapi31;
+
+			var revapi15;
 			tpj(document).ready(function() {
-				if(tpj("#rev_slider_31_1").revolution == undefined){
-					revslider_showDoubleJqueryError("#rev_slider_31_1");
+				if(tpj("#rev_slider_15_1").revolution == undefined){
+					revslider_showDoubleJqueryError("#rev_slider_15_1");
 				}else{
-					revapi31 = tpj("#rev_slider_31_1").show().revolution({
+					revapi15 = tpj("#rev_slider_15_1").show().revolution({
 						sliderType:"standard",
 						jsFileLocation:"include/rs-plugin/js/",
-						sliderLayout:"fullwidth",
+						sliderLayout:"fullscreen",
 						dottedOverlay:"none",
-						delay:6000,
+						delay:9000,
+						snow: {
+							startSlide: "first",
+							endSlide: "last",
+							maxNum: "400",
+							minSize: "0.2",
+							maxSize: "6",
+							minOpacity: "0.3",
+							maxOpacity: "1",
+							minSpeed: "30",
+							maxSpeed: "100",
+							minSinus: "1",
+							maxSinus: "100",
+						},
 						navigation: {
-							keyboardNavigation:"on",
-							keyboard_direction: "horizontal",
+							keyboardNavigation:"off",
+							keyboard_direction: "vertical",
 							mouseScrollNavigation:"off",
-                         	mouseScrollReverse:"default",
+							 mouseScrollReverse:"default",
 							onHoverStop:"off",
+							touch:{
+								touchenabled:"on",
+								swipe_threshold: 75,
+								swipe_min_touches: 1,
+								swipe_direction: "horizontal",
+								drag_block_vertical: false
+							}
+							,
 							arrows: {
 								style:"uranus",
 								enable:true,
-								hide_onmobile: true,
+								hide_onmobile:false,
 								hide_onleave:false,
 								tmp:'',
 								left: {
 									h_align:"left",
 									v_align:"center",
-									h_offset:-40,
-	                                v_offset:0
+									h_offset:10,
+									v_offset:0
 								},
 								right: {
 									h_align:"right",
 									v_align:"center",
-									h_offset:-40,
-	                                v_offset:0
+									h_offset:10,
+									v_offset:0
 								}
 							}
-							,
-							bullets: {
-								enable:true,
-								hide_onmobile:false,
-								style:"hermes",
-								hide_onleave:false,
-								direction:"horizontal",
-								h_align:"center",
-								v_align:"bottom",
-								h_offset:0,
-								v_offset:20,
-	                            space:5,
-								tmp:''
-							},
-							touch: {
- 
-						        touchenabled: 'on',
-						        swipe_threshold: 75,
-						        swipe_min_touches: 1,
-						        swipe_direction: 'horizontal',
-						        drag_block_vertical: true
-						 
-						    }
 						},
 						responsiveLevels:[1240,1024,778,480],
 						visibilityLevels:[1240,1024,778,480],
 						gridwidth:[1240,1024,778,480],
-						gridheight:[700,650,550,550],
+						gridheight:[868,768,960,720],
 						lazyType:"none",
+						scrolleffect: {
+							blur:"on",
+							maxblur:"20",
+							on_slidebg:"on",
+							direction:"top",
+							multiplicator:"2",
+							multiplicator_layers:"2",
+							tilt:"10",
+							disable_on_mobile:"off",
+						},
+						parallax: {
+							type:"scroll",
+							origo:"slidercenter",
+							speed:400,
+							levels:[5,10,15,20,25,30,35,40,45,46,47,48,49,50,51,55],
+						},
 						shadow:0,
-						spinner:"off",
+						spinner:"spinner3",
 						stopLoop:"off",
 						stopAfterLoops:-1,
 						stopAtSlide:-1,
-						disableProgressBar:"on",
 						shuffle:"off",
 						autoHeight:"off",
 						fullScreenAutoWidth:"off",
 						fullScreenAlignForce:"off",
 						fullScreenOffsetContainer: "",
-						fullScreenOffset: "0px",
+						fullScreenOffset: "0",
 						hideThumbsOnMobile:"off",
 						hideSliderAtLimit:0,
 						hideCaptionAtLimit:0,
@@ -294,16 +233,8 @@
 					});
 				}
 
-	            if(revapi31) revapi31.revSliderSlicey();
-
-	            revapi31.bind("revolution.slide.onloaded",function (e) {
-					setTimeout( function(){ SEMICOLON.slider.sliderParallaxDimensions(); }, 200 );
-				});
-
-				revapi31.bind("revolution.slide.onchange",function (e,data) {
-					SEMICOLON.slider.revolutionSliderMenu();
-				});
-			});	
+				RsSnowAddOn(tpj, revapi15);
+			});	/*ready*/
 		</script>
 		
 		<script type="text/javascript">

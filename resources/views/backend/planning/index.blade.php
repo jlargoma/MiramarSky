@@ -629,19 +629,20 @@
             <div class="col-md-5 col-xs-12">
                 <div class="panel">
                     <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="collapse">
-                     <li><a href="#tab1" data-toggle="tab" role="tab"><?php echo ucfirst($date->copy()->formatLocalized('%B %Y'))?></a>
-                     </li>
-                     <li><a href="#tab2" data-toggle="tab" role="tab"><?php echo ucfirst($date->addMonth()->formatLocalized('%B %Y'))?> </a>
-                     </li>
-                     <li><a href="#tab3" data-toggle="tab" role="tab"><?php echo ucfirst($date->addMonth()->formatLocalized('%B %Y'))?> </a>
-                     </li>
-                     <li><a href="#tab4" data-toggle="tab" role="tab"><?php echo ucfirst($date->addMonth()->formatLocalized('%B %Y'))?> </a>
-                     </li>
+                        <?php $dateAux = $date->copy(); ?>
+                        <?php for ($i=1; $i <= 4 ; $i++) :?>
+                            <li <?php if($i == 1 ){ echo "class='active'";} ?>>
+                                <a href="#tab<?php echo $i?>" data-toggle="tab" role="tab">
+                                    <?php echo ucfirst($dateAux->copy()->formatLocalized('%B %Y'))?>
+                                </a>
+                            </li>
+                            <?php $dateAux->addMonth(); ?>
+                        <?php endfor; ?>
                     </ul>
                     <div class="tab-content">
-                        <?php $date=$date->subMonth(3); ?>
-                        <?php for ($z=1; $z < 5; $z++):?>
-                        <div class="tab-pane " id="tab<?php echo $z ?>">
+                        
+                        <?php for ($z=1; $z <= 4; $z++):?>
+                        <div class="tab-pane <?php if($z == 1){ echo 'active';} ?>" id="tab<?php echo $z ?>">
                             <div class="row">
                                 <div class="col-md-12">
                                     <table class="fc-border-separate" style="width: 100%">
