@@ -1,100 +1,97 @@
 @extends('layouts.master_pages')
+<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
+<link rel="stylesheet" href="{{ asset('/frontend/css/components/radio-checkbox.css')}}" type="text/css" />
 
+<style type="text/css">
+	label{
+		color: white!important
+	}
+</style>
 @section('title') Apartamento de lujo en Sierra Nevada @endsection
 
+
+@section('slider')
+
+<section id="slider" class="revslider-wrap clearfix">
+
+	<div class="rev_slider_wrapper" style="background-color:#eef0f1;padding:0px;">
+		<!-- START REVOLUTION SLIDER 5.3.1.6 fullscreen mode -->
+		<div id="rev_slider_15_1" class="rev_slider fullscreenbanner" style="display:none;" data-version="5.3.1.6">
+			<ul>
+				<?php foreach ($slides as $key => $slide): ?>
+					<!-- SLIDE  -->
+					<li class="dark" data-index="rs-3<?php echo $key+1?>" data-transition="slidehorizontal" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off"  data-easein="default" data-easeout="default" data-masterspeed="2000"  data-thumb="{{ asset('/img/miramarski/galerias/apartamento-lujo')}}/<?php echo $slide->getFilename() ?>"  data-rotate="0"  data-fstransition="slidehorizontal" data-fsmasterspeed="1000" data-fsslotamount="7" data-saveperformance="off"  data-title="One" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
+						<!-- MAIN IMAGE -->
+						<img src="{{ asset('/img/miramarski/galerias/apartamento-lujo')}}/<?php echo $slide->getFilename() ?>"  alt="<?php echo $slide->getFilename() ?>"  data-bgposition="<?php if($mobile->isMobile()){ echo 'cover'; }else{ echo 'center center'; }?>" data-kenburns="on" data-duration="20000" data-ease="Linear.easeNone" data-scalestart="130" data-scaleend="100" data-rotatestart="0" data-rotateend="0" data-offsetstart="0 0" data-offsetend="0 0" data-bgparallax="13" class="rev-slidebg" data-no-retina>
+	                    <div class="tp-caption tp-shape tp-shapewrapper   tp-resizeme"
+							id="slide-3<?php echo $key+1?>-layer-<?php echo $key+1?>"
+							data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
+							data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']"
+							data-width="full"
+							data-height="full"
+							data-whitespace="nowrap"
+							data-transform_idle="o:1;"
+
+							data-transform_in="z:0;rX:0deg;rY:0;rZ:0;sX:1.5;sY:1.5;skX:0;skY:0;opacity:0;s:1500;e:Power3.easeOut;"
+							data-transform_out="auto:auto;s:1000;"
+							data-mask_in="x:0px;y:0px;s:inherit;e:inherit;"
+							data-start="0"
+							data-basealign="slide"
+							data-responsive_offset="on"
+
+							style="z-index: 5;background-color:rgba(0, 0, 0, 0.35);border-color:rgba(0, 0, 0, 1.00);">
+						</div>
+					</li>
+				<?php endforeach ?>
+			</ul>
+			<div class="tp-bannertimer" style="height: 10px; background-color: rgba(255, 255, 255, 0.25);"></div>	</div>
+		</div><!-- END REVOLUTION SLIDER -->
+	</div><!-- END REVOLUTION SLIDER WRAPPER -->
+
+</section>
+
+@endsection
+
 @section('content')
-	<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
-	<link rel="stylesheet" href="{{ asset('/frontend/css/components/radio-checkbox.css')}}" type="text/css" />
-
-	<style type="text/css">
-		#logo a.standard-logo, #logo img{
-			display: none;
-		}
-		#logo a.retina-logo, #logo a.retina-logo img{
-			display: block;
-		}
-
-		#logo a.retina-logo img{
-			content:url("{{ asset ('frontend/images/logo-dark.png')}}");
-		}
-		label{
-			color: white!important
-		}
-	</style>
+	
 	<section id="content">
 
-		<div class="row clearfix push-20">
+		<div class="container clearfix push-20">
+			<div class="row" style="margin-top: 40px;">
+				<h2 class="center hidden-sm hidden-xs psuh-20">APARTAMENTO DE LUJO 2 DORMITORIOS</h2>
+				<h2 class="center hidden-lg hidden-md push-10">APTO. DE LUJO 2 DORM</h2>
 
-			<div class="col-sm-6 col-padding">
-				<div class="fslider" data-easing="easeInQuad">
-					<div class="flexslider">
-						<div class="slider-wrap">
-							<?php foreach ($slides as $slide): ?>
-								
-							
-							<div class="slide" data-thumb="{{ asset('/img/miramarski/galerias/apartamento-lujo')}}/<?php echo $slide->getFilename() ?>">
-								<a href="#">
-									<img src="{{ asset('/img/miramarski/galerias/apartamento-lujo')}}/<?php echo $slide->getFilename() ?>" alt="<?php echo $slide->getFilename () ?>">
-									<!-- <div class="flex-caption slider-caption-bg"><?php echo $slide->getFilename () ?></div> -->
-								</a>
-							</div>
-							<?php endforeach ?>
-						</div>
-					</div>
-				</div>
-			</div>
+				<div class="row clearfix center push-30">
 
-			<div class="col-sm-6 col-padding">
-				<div>
-					<div class="heading-block">
-						<h3>APARTAMENTO DE LUJO 2 DORMITORIOS</h3>
-						<h5>
-							<div class="product-rating">
-								<i class="text-warning icon-star3"></i>
-								<i class="text-warning icon-star3"></i>
-								<i class="text-warning icon-star3"></i>
-								<i class="text-warning icon-star3"></i>
-								<i class="text-warning icon-star3"></i>
-							</div>
-						</h5>
-					</div>
+					<p class="font-s18 ls-15 miramar font-w300 text-justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero quod consequuntur quibusdam, enim expedita sed quia nesciunt incidunt accusamus necessitatibus modi adipisci officia libero accusantium esse hic, obcaecati, ullam, laboriosam!</p>
 
-					<div class="row clearfix center push-30">
+					<p class="font-s18 ls-15 miramar font-w300 text-justify hidden-sm hidden-xs">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti vero, animi suscipit id facere officia. Aspernatur, quo, quos nisi dolorum aperiam fugiat deserunt velit rerum laudantium cum magnam excepturi quod, fuga architecto provident, cupiditate delectus voluptate eaque! Sit neque ut eum, voluptatibus odit cum dolorum ipsa voluptates inventore cumque a.</p>
 
-						<p class="font-s18 ls-15 miramar font-w300 text-justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero quod consequuntur quibusdam, enim expedita sed quia nesciunt incidunt accusamus necessitatibus modi adipisci officia libero accusantium esse hic, obcaecati, ullam, laboriosam!</p>
-
-						<p class="font-s18 ls-15 miramar font-w300 text-justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti vero, animi suscipit id facere officia. Aspernatur, quo, quos nisi dolorum aperiam fugiat deserunt velit rerum laudantium cum magnam excepturi quod, fuga architecto provident, cupiditate delectus voluptate eaque! Sit neque ut eum, voluptatibus odit cum dolorum ipsa voluptates inventore cumque a.</p>
-
-						<p class="font-s18 ls-15 miramar font-w300 text-justify">
-							<span class="text-black font-w300">
-								<i class="fa fa-wifi"></i> Wifi
-							</span> &nbsp;&nbsp;
-							<span class="text-black font-w300">
-								<i class="fa fa-tv"></i> 43"
-							</span> &nbsp;&nbsp;
-							<span class="text-black font-w300">
-								<i class="fa fa-paw"></i> Mascotas
-							</span> &nbsp;&nbsp;
-							<span class="text-black font-w300">
-								<i class="fa fa-key"></i> Llaves
-							</span> &nbsp;&nbsp;
-							<span class="text-black font-w300">
-								<i class="fa fa-bed"></i> Camas
-							</span> &nbsp;&nbsp;
-							<span class="text-black font-w300">
-								<i class="fa fa-car"></i> Parking
-							</span> &nbsp;&nbsp;
-						</p>
-						
-						<button id="showFromBook" class="button button-desc button-3d button-rounded bg-bluesky center">¡Reserva YA!</button>
-
-					</div>
-
+					<p class="font-s18 ls-15 miramar font-w300 text-justify">
+						<span class="text-black font-w300">
+							<i class="fa fa-wifi"></i>Wifi
+						</span> &nbsp;&nbsp;
+						<span class="text-black font-w300">
+							<i class="fa fa-tv"></i>43"
+						</span> &nbsp;&nbsp;
+						<span class="text-black font-w300">
+							<i class="fa fa-paw"></i>Mascotas
+						</span> &nbsp;&nbsp;
+						<span class="text-black font-w300">
+							<i class="fa fa-key"></i>Llaves
+						</span> &nbsp;&nbsp;
+						<span class="text-black font-w300">
+							<i class="fa fa-bed"></i>Camas
+						</span> &nbsp;&nbsp;
+						<span class="text-black font-w300">
+							<i class="fa fa-car"></i>Parking
+						</span> &nbsp;&nbsp;
+					</p>
 					
+					<button id="showFromBook" class="button button-desc button-3d button-rounded bg-bluesky center">¡Reserva YA!</button>
 
-				</div>
+				</div>	
 			</div>
-
 		</div>
 		
 		<div id="content-form-book" class="row bg-bluesky push-30" style="display: none;">

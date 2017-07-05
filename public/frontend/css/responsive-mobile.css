@@ -342,7 +342,7 @@
 		max-width: none;
 		text-align: center;
 		border: 0 !important;
-		padding: 20px !important;
+		padding: 0 20px !important;
 	}
 
 	#logo a.standard-logo { display: inline-block; }
@@ -355,11 +355,11 @@
 	#primary-menu-trigger {
 		opacity: 1;
 		pointer-events: auto;
-		top: 50px; /*25*/
+		top: 30px; /*25*/
 		margin-top: 0;
 		left: 15px;/*0;*/
 		z-index: 1;
-		border: 2px solid black;
+		border: 2px solid white;
 	}
 
 	#primary-menu .container #primary-menu-trigger {

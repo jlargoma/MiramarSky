@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="es-ES">
 	<head>
-		<meta name="description" content="Evolutio es un centro de entrenamiento, actividad física y salud de Villaviciosa de Odón, muy cerca de Móstoles, que cuenta con expertos en nutrición deportiva y fisioterapia.">
+		<meta name="description" content="">
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -17,10 +17,10 @@
 		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/magnific-popup.css')}}" />
 
 		<?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
-			<link rel="stylesheet" href="{{ asset ('/frontend/css/dark-mobile.css')}}" type="text/css" />
+			<!-- <link rel="stylesheet" href="{{ asset ('/frontend/css/dark-mobile.css')}}" type="text/css" /> -->
 			<link rel="stylesheet" href="{{ asset ('/frontend/css/responsive-mobile.css')}}" type="text/css" />
 		<?php else: ?>
-			<link rel="stylesheet" href="{{ asset ('/frontend/css/dark.css')}}" type="text/css" />
+			<!-- <link rel="stylesheet" href="{{ asset ('/frontend/css/dark.css')}}" type="text/css" /> -->
 			<link rel="stylesheet" href="{{ asset ('/frontend/css/responsive.css')}}" type="text/css" />
 		<?php endif; ?>
 
@@ -108,22 +108,20 @@
 		<script type="text/javascript" src="{{ asset('/frontend/js/jquery.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('/frontend/js/plugins.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('/frontend/js/functions.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/addons/revolution.addon.snow.min.js') }}"></script>
-
 		
-		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/jquery.themepunch.tools.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/jquery.themepunch.revolution.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/addons/revolution.addon.slicey.min.js') }}"></script>
+		<script type="text/javascript" src="/frontend/include/rs-plugin/js/jquery.themepunch.tools.min.js"></script>
+		<script type="text/javascript" src="/frontend/include/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
+		<script type="text/javascript" src="/frontend/include/rs-plugin/js/addons/revolution.addon.snow.min.js"></script>
 
-		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.actions.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.carousel.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.kenburn.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.layeranimation.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.migration.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.navigation.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.parallax.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.slideanims.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.video.min.js') }}"></script>
+		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.actions.min.js"></script>
+		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.carousel.min.js"></script>
+		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.kenburn.min.js"></script>
+		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.layeranimation.min.js"></script>
+		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.migration.min.js"></script>
+		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.navigation.min.js"></script>
+		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.parallax.min.js"></script>
+		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.slideanims.min.js"></script>
+		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.video.min.js"></script>
 
 		<script type="text/javascript" src="{{ asset('/js/typed.js')}}"></script>
 			
@@ -137,8 +135,8 @@
 				}else{
 					revapi15 = tpj("#rev_slider_15_1").show().revolution({
 						sliderType:"standard",
-						jsFileLocation:"include/rs-plugin/js/",
-						sliderLayout:"fullscreen",
+						jsFileLocation:"/frontend/include/rs-plugin/js/",
+						sliderLayout:"fullwidth",
 						dottedOverlay:"none",
 						delay:9000,
 						snow: {
@@ -155,10 +153,10 @@
 							maxSinus: "100",
 						},
 						navigation: {
-							keyboardNavigation:"off",
-							keyboard_direction: "vertical",
+							keyboardNavigation:"on",
+							keyboard_direction: "horizontal",
 							mouseScrollNavigation:"off",
-							 mouseScrollReverse:"default",
+							mouseScrollReverse:"default",
 							onHoverStop:"off",
 							touch:{
 								touchenabled:"on",
@@ -191,7 +189,7 @@
 						responsiveLevels:[1240,1024,778,480],
 						visibilityLevels:[1240,1024,778,480],
 						gridwidth:[1240,1024,778,480],
-						gridheight:[868,768,960,720],
+						gridheight:[650,650,550,550],
 						lazyType:"none",
 						scrolleffect: {
 							blur:"on",
@@ -210,7 +208,7 @@
 							levels:[5,10,15,20,25,30,35,40,45,46,47,48,49,50,51,55],
 						},
 						shadow:0,
-						spinner:"spinner3",
+						spinner:"off",
 						stopLoop:"off",
 						stopAfterLoops:-1,
 						stopAtSlide:-1,
@@ -222,6 +220,7 @@
 						fullScreenOffset: "0",
 						hideThumbsOnMobile:"off",
 						hideSliderAtLimit:0,
+						hideProgressBar:true,
 						hideCaptionAtLimit:0,
 						hideAllCaptionAtLilmit:0,
 						debugMode:false,
