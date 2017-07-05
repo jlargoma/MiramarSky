@@ -53,34 +53,38 @@
             </div>
         </div>
 
-        <div class="col-md-12">
+        <div class="col-md-4">
             <div class="clearfix"></div>
                 <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
 
                     <thead>
-                        <th class ="text-center bg-complete text-white"> Habitacion    </th>
+                        <th class ="text-center bg-complete text-white"> Nombre    </th>
+                        <th class ="text-center bg-complete text-white"> Apartamento    </th>
                         <th class ="text-center bg-complete text-white"> Tipo de apto. </th>
-                        <th class ="text-center bg-complete text-white"> Total a pagar </th>
-                        <th class ="text-center bg-complete text-white"> Total pagado  </th>
-                        <th class ="text-center bg-complete text-white"> Total deuda   </th>
+                        <th class ="text-center bg-complete text-white"> Generado </th>
+                        <th class ="text-center bg-complete text-white"> Pagado  </th>
+                        <th class ="text-center bg-complete text-white"> Pendiente   </th>
+                        <th class ="text-center bg-complete text-white"> Pendiente   </th>
+                        <th class ="text-center bg-complete text-white"> Pendiente   </th>
                     </thead>
                     <tbody>
                         <?php foreach ($rooms as $room): ?>
                           <tr style="margin: 0px">
+                            <td> <?php echo $room->user->name ?></td>
                             <td class="text-center"><a class="update-payments" type="button" data-debt="<?php echo $debt[$room->id] ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments" title="Añadir pago" ><?php echo $room->nameRoom ?></a></td>
                             <td class="text-center"><?php echo $room->typeAptos->name ?></td>
                             <td class="text-center">
                               <?php if (isset($total[$room->id])): ?>
                                 <?php echo number_format($total[$room->id],2,',','.')." €" ?>
                               <?php else: ?>
-                                  No hay reservas para este apartamento
+                                  -----
                               <?php endif ?>
                             </td>
                             <td class="text-center">
                               <?php if (isset($totalPayment[$room->id])): ?>
                                 <?php echo number_format($totalPayment[$room->id],2,',','.')." €" ?>
                               <?php else: ?>
-                                  No hay pagos para este apartamento
+                                  -----
                               <?php endif ?>
                             </td>
                             <td class="text-center pendiente">
@@ -90,6 +94,8 @@
                                   --------
                               <?php endif ?>
                             </td>
+                            <td></td>
+                            <td></td>
                           </tr>
                           
                         <?php endforeach ?>

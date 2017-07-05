@@ -15,12 +15,24 @@
 @endsection
     
 @section('content')
-
+<style>
+  tbody>tr>td{
+    padding: 10px!important;
+    margin: 10px!important;
+  }
+</style>
 <div class="container-fluid padding-25 sm-padding-10">
     <div class="row">
         <div class="col-md-12">
-            <div class="clearfix"></div>
-                <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch">
+            <div class="pull-left">
+                <div class="col-xs-12 ">
+                  <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
+                </div>
+              </div>
+
+              <div class="clearfix"></div>
+
+              <table class="table table-hover demo-table-search table-responsive table-striped" id="tableWithSearch">
 
                     <thead>
                         <th class ="text-center bg-complete text-white"> Reserva    </th>
@@ -34,7 +46,7 @@
                             <?php foreach ($pagos as $pago): ?>
                                 
                                 <tr>
-                                    <td class="text-center"><a class="update-book" data-id="<?php echo $pago->book_id ?>"  title="Editar Reserva"  href="{{url ('reservas/update')}}/<?php echo $pago->book_id ?>"><?php echo $pago->book_id ?></a></td>
+                                    <td class="text-center"><a class="update-book" data-id="<?php echo $pago->book_id ?>"  title="Editar Reserva"  href="{{url ('reservas/update')}}/<?php echo $pago->book_id ?>"><?php echo $pago->book->customer->name ?></a></td>
                                     <td class="text-center"><?php echo $pago->import ?></td>                                    
                                     <td class="text-center"><?php echo $book->getTypeCobro($pago->type) ?></td>
                                     <td class="text-center"><?php echo $pago->comment ?></td>

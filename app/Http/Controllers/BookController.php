@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use \Carbon\Carbon;
 use Auth;
+use Mail;
 use Illuminate\Routing\Controller;
 
 setlocale(LC_TIME, "ES");
@@ -186,7 +187,6 @@ class BookController extends Controller
                 
                 }
         }
-
 
     /**
      * Update the specified resource in storage.
@@ -470,112 +470,18 @@ class BookController extends Controller
                 }
             }
 
-    // Pagina de propietario
-        public function owned()
-            {
-                $firstDayOfTheYear = new Carbon('first day of September 2016');
-                
-                $mes = array();
-                $arrayReservas = array();
-                $arrayMonths = array();
+    public function sendJaime(Request $request)
+        {
+            $book = \App\Book::find($request->id);
+            Mail::send('backend.emails.jaime',['book' => $book], function ($message) use ($book) {
+                                $message->from('jbaz@daimonconsulting.com', 'Miramarski');
 
-                $total = 0;
-                $apto = 0;
-                $park = 0;
-                $lujo = 0;
+                                $message->to($book->customer->email);
+                                $message->subject('Correo a Jaime');
+                            });
 
-                $room = \App\Rooms::where('owned', Auth::user()->id)->first();
-
-                $reservas = \App\Book::whereIn('type_book',[2,7,8])->where('room_id',$room->id)->orderBy('start', 'ASC')->get();
-
-                foreach ($reservas as $reserva) {
-                    $dia = Carbon::createFromFormat('Y-m-d',$reserva->start);
-                    $start = Carbon::createFromFormat('Y-m-d',$reserva->start);
-                    $finish = Carbon::createFromFormat('Y-m-d',$reserva->finish);
-                    $diferencia = $start->diffInDays($finish);
-                    for ($i=0; $i <= $diferencia; $i++) {
-                        $arrayReservas[$reserva->room_id][$dia->copy()->format('Y')][$dia->copy()->format('n')][$dia->copy()->format('j')] = $reserva;
-                        $dia = $dia->addDay();
-                    }
-                }
-
-                for ($i=1; $i <= 12; $i++) { 
-                    $mes[$firstDayOfTheYear->copy()->format('n')] = $firstDayOfTheYear->copy()->format('M Y');
-                    $firstDayOfTheYear = $firstDayOfTheYear->addMonth();
-                }
-
-                for ($i=1; $i <= 12; $i++) { 
-                    
-                    $startMonth = $firstDayOfTheYear->copy()->startOfMonth();
-                    $endMonth   = $firstDayOfTheYear->copy()->endOfMonth();
-                    $countDays  = $endMonth->diffInDays($startMonth);
-                    $day        = $startMonth;
-
-
-                    for ($j=1; $j <= $countDays+1 ; $j++) { 
-                            $arrayMonths[$firstDayOfTheYear->copy()->format('n')] = $day->format('d');     
-
-                            $day = $day->addDay();
-                    }
-                    
-                    $firstDayOfTheYear->addMonth();                                    
-
-                }
-                $books = \App\Book::where('room_id', $room->id)->orderBy('start','ASC')->get();
-
-                
-                foreach ($books as $book) {
-                    $total +=  $book->cost_total;
-                    $apto += $book->cost_apto;
-                    $park += $book->cost_park;
-                    $lujo += $book->cost_lujo;
-                }
-
-                return view('backend.owned.index',[
-                                                    'user'        => \App\User::find(Auth::user()->id),
-                                                    'room'        => $room,
-                                                    'books'       => $books,
-                                                    'mes'         => $mes,
-                                                    'reservas'    => $arrayReservas,
-                                                    'date'        => new Carbon('first day of September 2016'),
-                                                    'arrayMonths' => $arrayMonths,
-                                                    'total'       => $total,
-                                                    'apto'       => $apto,
-                                                    'park'       => $park,
-                                                    'lujo'       => $lujo,
-                                                    ]);
-            }
-
-        public function bloqOwned(Request $request)
-            {
-                
-                $room = \App\Rooms::where('owned', Auth::user()->id)->first();
-
-                $book = new \App\Book();
-                if ($book->existDate($request->start,$request->finish,$room->id)) {
-                    $customer = \App\Customers::where('name' , 'Bloqueo '.Auth::user()->name)->first();
-                    if (count($customer) > 0) {
-                        echo "Ya existe ese usuario";
-                        $book->user_id = Auth::user()->id;
-                        
-                    }else{
-                        $bloqueo = new \App\Customers();
-                        $bloqueo->user_id = Auth::user()->id;
-                        $bloqueo->name = 'Bloqueo '.Auth::user()->name;
-
-                        $bloqueo->save();
-
-                        $book->user_id = Auth::user()->id;
-                        $book->customer_id = $bloqueo->id;
-                        $book->room_id = $room->id;
-                        $book->start = Carbon::CreateFromFormat('d/m/Y',$request->start);
-                        $book->finish = Carbon::CreateFromFormat('d/m/Y',$request->finish);
-                        $book->type_book = 7;
-
-                        $book->save();
-                    }
-                }else{
-                    echo "ya hay una reserva";
-                }
-            }
+            $book->send = 1;
+            $book->save();
+            return 'OK';
+        }
 }

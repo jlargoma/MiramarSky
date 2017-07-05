@@ -96,6 +96,7 @@
         td{
             margin: 0px;
             padding: 0px!important;
+            vertical-align: middle!important;
         }
         a {
             color: black;
@@ -113,7 +114,8 @@
                     <div class="col-xs-12 col-md-2 pull-right">
                         <select id="date" class="form-control">
                             <?php $fecha = $date->copy()->startOfYear(); ?>
-                            <?php for ($i=1; $i <= 24; $i++): ?>
+
+                            <?php for ($i=1; $i <= 12; $i++): ?>
                                 <?php if( $date->copy()->format('n') == $i ){ $selected = "selected"; }else{$selected = "";} ?>
                                 <option value="<?php echo $fecha->format('d-m-Y'); ?>" <?php echo $selected ?>>
                                     <?php echo ucfirst($fecha->formatLocalized('%B')); ?>  <?php echo $fecha->formatLocalized('%Y'); ?> 
@@ -281,7 +283,7 @@
                             
                                     <div class="clearfix"></div>
         
-                                    <table class="table table-hover demo-table-search table-responsive" id="tableWithSearch" >
+                                    <table class="table table-hover demo-table-search table-responsive table-striped " id="tableWithSearch" >
                                         <thead>
                                             <tr>   
                                                 <th class ="text-center bg-complete text-white" style="width:5%!important"> Cobros </th>
@@ -391,9 +393,11 @@
                                                                 <?php endif ?> -->
                                                                 
                                                                 <?php if ($book->send == 0): ?>
-                                                                    <a class="btn btn-tag btn-primary" ><i class=" pg-mail"></i></a>
+                                                                    <a class="btn btn-tag btn-primary sendJaime" title="Enviar Email a Jaime" data-id="<?php echo $book->id ?>"><i class=" pg-mail"></i></a>
                                                                     </a>
                                                                 <?php else: ?>
+                                                                    <a class="btn btn-tag btn-danger" title="enviado" disabled data-id="<?php echo $book->id ?>"><i class=" pg-mail "></i></a>
+                                                                    </a>
                                                                 <?php endif ?>
                                                                 
                                                             </div>
@@ -416,7 +420,7 @@
                                 <div class="clearfix"></div>
 
                                 <div class="col-md-12">
-                                    <table class="table table-hover demo-table-search table-responsive" id="tableWithSearch2" >
+                                    <table class="table table-hover demo-table-search table-responsive table-striped" id="tableWithSearch2" >
                                         <thead>
                                             <tr>
                                                 <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
@@ -517,7 +521,7 @@
                                 
                                 <div class="clearfix"></div>
 
-                                <table class="table table-hover demo-table-search table-responsive" id="tableWithSearch3" >
+                                <table class="table table-hover demo-table-search table-responsive table-striped" id="tableWithSearch3" >
                                     <thead>
                                         <tr>   
                                             <th class ="text-center bg-complete text-white" style="width:5%"> Cobros </th>
@@ -921,6 +925,13 @@
                 window.location = '/admin/reservas/'+month;
             });
             
+            $('.sendJaime').click(function(event) {
+                var id = $(this).attr('data-id');
+                console.log(id);
+                $.get('/admin/reservas/sendJaime', {id: id}).success(function( data ) {
+                    alert(data);
+                });
+            });
         });
 
     </script>

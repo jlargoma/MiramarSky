@@ -36,19 +36,19 @@
 <div class="container-fluid padding-25 sm-padding-10">
     <div class="row">
 
-        <div class="col-md-8">
+        <div class="col-md-8 cols-xs-12 col-sm-12">
             <div class="pull-left">
               <div class="col-xs-12 ">
                 <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
               </div>
             </div>
             <div class="clearfix"></div>
-            <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch">
+            <table class="table table-hover demo-table-search table-responsive table-striped" id="tableWithSearch">
                 <thead>
                     <tr>
                         <th class ="text-center hidden">                  ID            </th>
-                        <th class ="text-center bg-complete text-white">  Nombre        </th>
-                        <th class ="text-center bg-complete text-white">  Piso          </th>
+                        <th class ="text-center bg-complete text-white">  Nick        </th>
+                        <th class ="text-center bg-complete text-white">  Nombre          </th>
                         <th class ="text-center bg-complete text-white">  Tamaño          </th>
                         <th class ="text-center bg-complete text-white">  Tipo        </th>
                         <th class ="text-center bg-complete text-white">  Propietario   </th>
@@ -123,7 +123,8 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-4" style="border:1px solid black">
+        
+        <div class="col-md-4 cols-xs-12 col-sm-12" style="border:1px solid black">
             <div class="row">
                 <div class="col-md-12">
                     <div class="sm-m-l-5 sm-m-r-5">

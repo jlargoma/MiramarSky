@@ -225,32 +225,34 @@ class Book extends Model
 
     // Funcion para cambiar la reserva de habitacion o estado
         public function changeBook($status,$room,$book)
-            {
+            {   
+
                 if (!empty($status)) {
                     $this->type_book = $status;
                     switch ($status) {
                         case '1':
-                            Mail::send('backend.emails.reservado',['book' => $book], function ($message) {
+
+                            Mail::send('backend.emails.reservado',['book' => $book], function ($message) use ($book) {
                                     $message->from('jbaz@daimonconsulting.com', 'Miramarski');
 
-                                    $message->to('jbaz@daimonconsulting.com');
+                                    $message->to($book->customer->email);
                                     $message->subject('Correo de reserva');
                                 });
                             break;
                         case '2':
-                            Mail::send('backend.emails.confirmado',['book' => $book], function ($message) {
+                            Mail::send('backend.emails.confirmado',['book' => $book], function ($message) use ($book) {
                                     $message->from('jbaz@daimonconsulting.com', 'Miramarski');
 
-                                    $message->to('jbaz@daimonconsulting.com');
-                                    $message->subject('Correo del confirmacion del pago parcial');
+                                    $message->to($book->customer->email);
+                                    $message->subject('Correo de confirmacion del pago parcial');
                                 });
 
                             break;
                         case '4':
-                            Mail::send('backend.emails.cancelado',['book' => $book], function ($message) {
+                            Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
                                     $message->from('jbaz@daimonconsulting.com', 'Miramarski');
 
-                                    $message->to('jbaz@daimonconsulting.com');
+                                    $message->to($book->customer->email);
                                     $message->subject('Correo de denegado');
                                 });  
 

@@ -91,7 +91,6 @@ class CustomersController extends Controller
         $id                   = $request->input('id');
         $customerUpadate          = \App\Customers::find($id);
 
-        $customerUpadate->name      = $request->input('name');
         $customerUpadate->email     = $request->input('email');
         $customerUpadate->phone     = $request->input('phone');
         $customerUpadate->comments  = $request->input('comments');

@@ -106,10 +106,29 @@
 						</li>
 
 						<li class="m-t-10 ">
-							<a href="{{ url('admin/liquidacion') }}" class="detailed">
-								<span class="title">Liquidacion</span>
-							</a>
-							<span class="{{ Request::path() == '/clientes' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa  fa-line-chart"></i></span>
+							<a href="javascript:;"><span class="title">Liquidacion</span>
+							<span class="arrow"></span></a>
+							<span class="icon-thumbnail"><i class="fa  fa-line-chart"></i></span>
+								<ul class="sub-menu" style="display: none;">
+									<li>
+										<a href="{{ url('admin/liquidacion') }}" class="detailed">
+											<span class="title">Liquidacion</span>
+										</a>
+										<span class="{{ Request::path() == '/admin/liquidacion' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa  fa-line-chart"></i></span>
+									</li>
+									<li>
+										<a href="{{ url('admin/liquidacion-apartamentos') }}" class="detailed">
+											<span class="title">Liquidacion Apartamentos</span>
+										</a>
+										<span class="{{ Request::path() == '/admin/liquidacion-apartamentos' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa  fa-line-chart"></i></span>
+									</li>
+									<li>
+										<a href="{{ url('admin/estadisticas') }}" class="detailed">
+											<span class="title">Estadisticas</span>
+										</a>
+										<span class="{{ Request::path() == '/admin/estadisticas' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa  fa-line-chart"></i></span>
+									</li>
+								</ul>
 						</li>
 					</ul>
 					<div class="clearfix"></div>

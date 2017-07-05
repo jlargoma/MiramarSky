@@ -37,6 +37,7 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 	Route::get('admin/reservas/update/{id}' , 'BookController@update');	
 	Route::post('admin/reservas/saveUpdate/{id}' , 'BookController@saveUpdate');	
 	Route::get('admin/reservas/changeBook/{id}' , 'BookController@changeBook');
+	Route::get('admin/reservas/sendJaime' , 'BookController@sendJaime');
 	Route::get('admin/reservas/getPriceBook' , 'BookController@getPriceBook');
 	Route::get('admin/reservas/getCostBook' , 'BookController@getCostBook');
 	Route::get('admin/reservas/getPricePark' , 'BookController@getPricePark');
@@ -75,6 +76,7 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 	Route::get('admin/apartamentos/delete/{id}', 'RoomsController@delete');
 	Route::get('admin/apartamentos/getPaxPerRooms/{id}', 'RoomsController@getPaxPerRooms');
 	Route::get('admin/apartamentos/uploadfile', 'RoomsController@uploadFile');
+
 // Prices
 	Route::get('admin/precios' ,['middleware' => 'authSubAdmin','uses' =>  'PricesController@index']);
 	Route::get('admin/precios/update', 'PricesController@update');
@@ -107,9 +109,11 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 
 //Liquidacion
 	Route::get('admin/liquidacion' , 'LiquidacionController@index');
+	Route::get('admin/liquidacion-apartamentos' , 'LiquidacionController@apto');
+	Route::get('admin/estadisticas' , 'LiquidacionController@stadistics');
 
 //Propietario
-	Route::get('admin/propietario' , 'BookController@owned');
-	Route::post('admin/propietario/bloquear' , 'BookController@bloqOwned');
+	Route::get('admin/propietario' , 'OwnedController@index');
+	Route::post('admin/propietario/bloquear' , 'OwnedController@bloqOwned');
 
 });

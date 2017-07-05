@@ -19,20 +19,21 @@
 <div class="container-fluid padding-25 sm-padding-10">
     <div class="row">
 
-        <div class="col-md-8">
+        <div class="col-md-5">
             <div class="pull-left">
                 <div class="col-xs-12 ">
                     <input type="text" id="search-table2" class="form-control pull-right" placeholder="Buscar">
                 </div>
             </div>
             <div class="clearfix"></div>
-                <table class="table table-hover demo-table-search table-responsive" id="tableWithSearch2" >
+                <table class="table table-hover demo-table-search table-responsive table-striped" id="tableWithSearch2" >
                     <thead>
                         <tr>
                             <th class ="text-center hidden">    id      </th>
+                            <th class ="text-center bg-complete text-white"> Nombre    </th> 
                             <th class ="text-center bg-complete text-white"> Inicio  </th>
                             <th class ="text-center bg-complete text-white"> Fin     </th>
-                            <th class ="text-center bg-complete text-white"> Tipo    </th>                  
+                                             
                             <th class ="text-center bg-complete text-white"> Eliminar  </th>
 
                         </tr>
@@ -40,6 +41,9 @@
                     <tbody>
                         <?php foreach ($seasons as $season): ?>
                             <tr>
+                                <td class="text-center">
+                                    <?php echo $season->typeSeasons->name ?>
+                                </td>  
                                 <td class="text-center" hidden><?php echo $season->id ?></td>
                                 <td class="text-center">
                                     <?php  echo date('d-M-Y',strtotime($season->start_date))?>
@@ -47,9 +51,7 @@
                                 <td class="text-center">
                                     <?php echo date('d-M-Y',strtotime($season->finish_date)) ?>
                                 </td>
-                                <td class="text-center">
-                                    <?php echo $season->typeSeasons->name ?>
-                                </td>              
+                                            
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <a href="{{ url('temporadas/delete/')}}/<?php echo $season->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Temporada" onclick="return confirm('¿Quieres eliminar la temporada?');">
@@ -84,7 +86,7 @@
                             </div>
                             <div class="panel-body">
                                 <div class="col-md-6">
-                                    <form role="form"  action="{{ url('temporadas/create-type') }}" method="post">
+                                    <form role="form"  action="{{ url('/admin/temporadas/create-type') }}" method="post">
                                         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                         <div class="input-group transparent">
                                             <span class="input-group-addon">

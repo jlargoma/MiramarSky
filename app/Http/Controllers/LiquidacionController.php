@@ -16,18 +16,23 @@ class LiquidacionController extends Controller
      */
    
     public function index($month="")
-    {   
-        $liquidacion = new \App\Liquidacion();
-        if (empty($month)) {
-            $date = new Carbon('first day of September 2016');
-        }else{
-            $date = $month;
+        {   
+            $liquidacion = new \App\Liquidacion();
+            if (empty($month)) {
+                $date = new Carbon('first day of September 2016');
+            }else{
+                $date = $month;
+            }
+            $books = \App\Book::where('start' , '>=' , $date)->get();
+            return view('backend/sales/index',  [
+                                                    'books' => $books,
+                                                ]);
         }
-        $books = \App\Book::where('start' , '>=' , $date)->get();
-        return view('backend/sales/index',  [
-                                                'books' => $books,
-                                            ]);
-    }
+
+    public function apto()
+        {
+            return view('backend/sales/liquidacion_apto');
+        }
 
     /**
      * Show the form for creating a new resource.

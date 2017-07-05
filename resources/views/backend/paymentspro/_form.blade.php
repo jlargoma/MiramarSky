@@ -58,7 +58,7 @@
                     </div>
 
                     <div class="col-md-9">
-                        <div class="col-md-12">
+                        <div class="col-md-8">
                             <div class="panel-heading">
                                 <div class="panel-title">
                                    Resumen de pagos
@@ -70,6 +70,7 @@
                                         <th class ="text-center bg-complete text-white">Fecha</th>
                                         <th class ="text-center bg-complete text-white">Importe</th>
                                         <th class ="text-center bg-complete text-white">Comentario</th>
+                                        <th class ="text-center bg-complete text-white">Metodo</th>
                                     </thead>
                                     <tbody>
                                     <?php if (count($payments) > 0): ?>
@@ -85,6 +86,9 @@
                                                 <td class="text-center">
                                                     <?php echo $payment->comment ?>
                                                 </td>
+                                                <td class="text-center">
+                                                    0€
+                                                </td>
                                             </tr>
                                         <?php endforeach ?>
                                     <?php else: ?>
@@ -96,7 +100,8 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div> 
+                        </div>
+                        <div style="clear: both;"></div> 
                         <div>
                             <h2>Falta por pagar <?php echo number_format($debt,2,',','.') ?> €</h2>
                         </div>  
