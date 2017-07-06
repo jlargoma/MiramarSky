@@ -56,19 +56,19 @@ setlocale(LC_TIME, "es_ES");
 
     <div class="row">
         <div class="col-md-12">
-        	<div class="col-md-6">
+        	<div class="col-md-6 pull-right">
 
         			<table class="table table-hover demo-table-search table-responsive">
 						<thead>
-							<th class ="text-center bg-complete text-white" >Total</th>
-							<th class ="text-center bg-complete text-white" >Coste total</th>
-							<th class ="text-center bg-complete text-white" >C. banco</th>
-							<th class ="text-center bg-complete text-white" >C. Jorge</th>
-							<th class ="text-center bg-complete text-white" >Pendiente </th>
-							<th class ="text-center bg-complete text-white" >C. Jaime</th>
-							<th class ="text-center bg-complete text-white" >B. Jorge</th>
-							<th class ="text-center bg-complete text-white" >B. Jaime</th>
-							<th class ="text-center bg-complete text-white" >Limpieza</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">Total</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">Coste total</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">C. banco</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">C. Jorge</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">C. Jaime</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">Pendiente </th>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">B. Jorge</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">B. Jaime</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">Limpieza</th>
 						</thead>
 						<tbody>
 							<tr>
@@ -77,9 +77,9 @@ setlocale(LC_TIME, "es_ES");
 								<td class="text-center"><?php echo number_format($totales["banco"],2,',','.') ?></td>
 								<td class="text-center"><?php echo number_format($totales["jorge"],2,',','.') ?></td>
 								<td class="text-center"><?php echo number_format($totales["jaime"],2,',','.') ?></td>
+								<td class="text-center"><?php echo number_format($totales["pendiente"],2,',','.') ?></td>
 								<td class="text-center"><?php echo number_format($totales["benJorge"],2,',','.') ?></td>
 								<td class="text-center"><?php echo number_format($totales["benJaime"],2,',','.') ?></td>
-								<td class="text-center"><?php echo number_format($totales["pendiente"],2,',','.') ?></td>
 								<td class="text-center"><?php echo number_format($totales["limpieza"],2,',','.') ?></td>
 							</tr>
 						</tbody>

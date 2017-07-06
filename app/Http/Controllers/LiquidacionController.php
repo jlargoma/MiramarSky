@@ -34,28 +34,29 @@ class LiquidacionController extends Controller
             }else{
                 $date = $month;
             }
-            $books = \App\Book::where('start' , '>=' , $date)->get();
+            $books = \App\Book::where('start' , '>=' , $date)->where('type_book',2)->get();
+
             foreach ($books as $key => $book) {
                 if ($key == 0) {
                     $totales["total"] = $book->total_price;
-                    $totales["coste"] = $book->total_price;
-                    $totales["banco"] = $book->total_price;
-                    $totales["jorge"] = $book->total_price;
-                    $totales["jaime"] = $book->total_price;
+                    $totales["coste"] = $book->cost_total;
+                    $totales["banco"] = $book->getPayment(2);
+                    $totales["jorge"] = $book->getPayment(0);
+                    $totales["jaime"] = $book->getPayment(1);
                     $totales["benJorge"] = $book->total_price;
                     $totales["benJaime"] = $book->total_price;
-                    $totales["pendiente"] = $book->total_price;
-                    $totales["limpieza"] = $book->total_price;
+                    $totales["pendiente"] = $book->getPayment(4);
+                    $totales["limpieza"] = $book->sup_limp;
                 }
                 $totales["total"] += $book->total_price;
-                $totales["coste"] += $book->total_price;
-                $totales["banco"] += $book->total_price;
-                $totales["jorge"] += $book->total_price;
-                $totales["jaime"] += $book->total_price;
+                $totales["coste"] += $book->cost_total;
+                $totales["banco"] += $book->getPayment(2);
+                $totales["jorge"] += $book->getPayment(0);
+                $totales["jaime"] += $book->getPayment(1);
                 $totales["benJorge"] += $book->total_price;
                 $totales["benJaime"] += $book->total_price;
-                $totales["pendiente"] += $book->total_price;
-                $totales["limpieza"] += $book->total_price;
+                $totales["pendiente"] += $book->getPayment(4);
+                $totales["limpieza"] += $book->sup_limp;
  
             }
 
