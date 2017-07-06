@@ -14,7 +14,9 @@
                 <label>*Telefono</label>
                 <input type="text" class="sm-form-control only-numbers" name="telefono" id="telefono" placeholder="Teléfono..." maxlength="9" required="">
             </div>
+            
 			<div class="hidden-xs hidden-sm" style="clear: both;"></div>
+
             <div class="form-group col-sm-12 col-xs-6 col-md-3 white">
                 <label style="display: inherit!important;">*Entrada - Salida</label>
                 <div class="input-group">
@@ -43,18 +45,18 @@
                 </p>
             </div>
             
-            <div class="form-group col-sm-12 col-xs-6 col-md-3" style="padding: 0">
+            <div class="form-group col-sm-12 col-xs-4 col-md-3" style="padding: 0">
                 <label style="display: inline!important;" class="col-md-12 parking white">* Tipo Apto</label>
                 <div class="col-md-6">
 					<input id="apto-2dorm" class="radio-style" name="apto" type="radio" checked="" value="2dorm">
-					<label for="apto-2dorm" class="radio-style-3-label">2 dorm</label>
+					<label for="apto-2dorm" class="radio-style-3-label">2 dor</label>
 				</div>
 				<div class="col-md-6">
 					<input id="apto-estudio" class="radio-style" name="apto" type="radio" value="estudio">
-					<label for="apto-estudio" class="radio-style-3-label">Estudio</label>
+					<label for="apto-estudio" class="radio-style-3-label">Est.</label>
 				</div>
             </div>
-            <div class="form-group col-sm-12 col-xs-6 col-md-2">
+            <div class="form-group col-sm-12 col-xs-4 col-md-2">
                 <label style="display: inline!important;" class="col-md-12 luxury white">*lujo</label>
                 <div class="col-md-6"> 
 					<input id="luxury-yes" class="radio-style" name="luxury" type="radio" checked="" value="si">
@@ -65,7 +67,7 @@
 					<label for="luxury-no" class="radio-style-3-label">No</label>
 				</div>
             </div>
-            <div class="form-group col-sm-12 col-xs-6 col-md-2">
+            <div class="form-group col-sm-12 col-xs-4 col-md-2">
                 <label style="display: inline!important;" class="col-md-12 parking white">*Parking</label>
                 <div class="col-md-6">
 					<input id="parking-yes" class="radio-style" name="parking" type="radio" checked="" value="si">

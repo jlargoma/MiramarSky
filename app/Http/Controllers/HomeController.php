@@ -153,9 +153,11 @@ class HomeController extends Controller
         }
 
         if ($request->input('parking') == 'si') {
-            $parking = 15 * $countDays;
+            $priceParking = 15 * $countDays;
+            $parking = 1;
         }else{
-            $parking = 0;
+            $priceParking = 0;
+            $parking = 4;
         }
 
         if ($request->input('luxury') == 'si') {
@@ -164,7 +166,7 @@ class HomeController extends Controller
             $luxury = 0;
         }
         
-        $total =  $price + $parking + $limp + $luxury;  
+        $total =  $price + $priceParking + $limp + $luxury;  
 
 
         return view('frontend.bookStatus.response', [
@@ -173,10 +175,12 @@ class HomeController extends Controller
                                                         'nigths'  => $countDays,
                                                         'apto'    => ($request->input('apto') == '2dorm')?'Apartamento': 'estudio',
                                                         'name'    => $request->input('name'),
+                                                        'phone'   => $request->input('phone'),
                                                         'email'   => $request->input('email'),
                                                         'start'   => $start,
                                                         'finish'  => $finish,
                                                         'parking' => $parking,
+                                                        'priceParking' => $priceParking,
                                                         'luxury'  => $luxury,
                                                         'total'   => $total,
                                                         'comment' => $request->input('comment'),

@@ -9,6 +9,11 @@
        
 		<?php if (!$mobile->isMobile()): ?>
 		<!-- DESKTOP -->
+			<style type="text/css">
+				#content-book-response label.white{
+					color: black!important;
+				}
+			</style>
 	       	<section class="page-section">
 
 	   			<div id="banner-offert" class="button button-full center tright footer-stick line-promo" style="padding: 0;;margin-bottom: 0px!important;"  data-animate="bounceIn">
@@ -24,34 +29,26 @@
 	               		
 					</div>
 	   			</div>
-	       		<div id="content-book" class="container clearfix push-10" style="display: none;">
-	       			<div class="tabs advanced-real-estate-tabs clearfix">
+	   			<div class="row">
+	   				<div id="content-book" class="container clearfix push-10" style="display: none;">
+	   					<div class="tabs advanced-real-estate-tabs clearfix">
 
-	       				<div class="tab-container">
-	       					<div class="container clearfix">
-	       						<div class="tab-content clearfix" id="tab-properties">
-	       							@include('frontend._formBook')
-	       						</div>
-	       					</div>
-	       				</div>
+	   						<div class="tab-container">
+	   							<div class="container clearfix">
+	   								<div class="tab-content clearfix" id="content-book-response">
+										<div class="col-xs-12">
+											<h3 class="text-center">FORMULARIO DE RESERVA</h3>
+										</div>
 
-	       			</div>
-	       		</div>
-	       		<div class="container container-mobile clearfix push-20">
-	       			<?php if (!$mobile->isMobile()): ?>
-	       			<!-- <div class="col-md-12 col-xs-12 push-20 hidden-xs hidden-sm">
-	       				<a href="{{ url('/contacto') }}">
-	       					<img class="img-responsive" alt="plane en forma 10 semanas" src="{{ asset('/assets/images/gym/EVOLUTIO-BANNER-PLAN-EN-FORMA.jpg') }}"/>
-	       				</a>
-	       			</div> -->
-	       			<?php else: ?>
-	       			<!-- <div class="col-xs-12 push-20 hidden-lg hidden-md">
-	       				<a href="{{ url('/contacto') }}">
-	       					<img class="img-responsive" alt="plane en forma 10 semanas" src="{{ asset('/assets/images/gym/EVOLUTIO-BANNER-PLAN-EN-FORMA-mobile.png') }}"/>
-	       				</a>
-	       			</div> -->
-	       			<?php endif; ?>
-	       		</div>
+	   									@include('frontend._formBook')
+	   								</div>
+	   							</div>
+	   						</div>
+
+	   					</div>
+	   				</div>
+	   			</div>
+
 	   			<div class="row push-20">
 	   				<h2 class="text-center black font-w300">
 	   					NUESTROS <span class="font-w800 green ">APARTAMENTOS</span>
