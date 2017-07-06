@@ -188,7 +188,16 @@ class BookController extends Controller
                                 $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
 
                                 if($book->save()){
-                                    return redirect()->back();
+
+                                    /* Notificacion via email */
+                                    if ( $request->input('from') ){
+                                        MailController::sendEmailBookSuccess( $book, 1);
+                                        return view('frontend.bookStatus.bookOk');
+                                    }else{
+                                        MailController::sendEmailBookSuccess( $book, 0);
+                                        return redirect()->back();
+                                    }
+
                                 };
                         };
                     

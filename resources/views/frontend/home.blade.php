@@ -10,8 +10,8 @@
 		<?php if (!$mobile->isMobile()): ?>
 		<!-- DESKTOP -->
 			<style type="text/css">
-				#content-book-response label.white{
-					color: black!important;
+				#content-book-response label.white, #content-book-response label{
+					color: white!important;
 				}
 			</style>
 	       	<section class="page-section">
@@ -29,15 +29,15 @@
 	               		
 					</div>
 	   			</div>
-	   			<div class="row">
+	   			<div class="row" style="background-color: #3F51B5;">
 	   				<div id="content-book" class="container clearfix push-10" style="display: none;">
 	   					<div class="tabs advanced-real-estate-tabs clearfix">
 
-	   						<div class="tab-container">
+	   						<div class="tab-container" style="padding: 20px 0; background-color: #3F51B5;">
 	   							<div class="container clearfix">
 	   								<div class="tab-content clearfix" id="content-book-response">
 										<div class="col-xs-12">
-											<h3 class="text-center">FORMULARIO DE RESERVA</h3>
+											<h3 class="text-center white">FORMULARIO DE RESERVA</h3>
 										</div>
 
 	   									@include('frontend._formBook')
@@ -301,26 +301,26 @@
 	});
 	$('#form-book-apto-lujo').submit(function(event) {
 
-			event.preventDefault();
+		event.preventDefault();
 
-			var _token   = $('input[name="_token"]').val();
-			var name     = $('input[name="name"]').val();
-			var email    = $('input[name="email"]').val();
-			var phone    = $('input[name="telefono"]').val();
-			var date     = $('input[name="date"]').val();
-			var quantity = $('select[name="quantity"]').val();
-			var apto     = $('input[name="apto"]').val();
-			var luxury   = $('input[name="luxury"]').val();
-			var parking  = $('input[name="parking"]').val();
-			var comment  = $('textarea[name="comment"]').val();
+		var _token   = $('input[name="_token"]').val();
+		var name     = $('input[name="name"]').val();
+		var email    = $('input[name="email"]').val();
+		var phone    = $('input[name="telefono"]').val();
+		var date     = $('input[name="date"]').val();
+		var quantity = $('select[name="quantity"]').val();
+		var apto     = $('input[name="apto"]').val();
+		var luxury   = $('input[name="luxury"]').val();
+		var parking  = $('input[name="parking"]').val();
+		var comment  = $('textarea[name="comment"]').val();
 
-			var url = $(this).attr('action');
+		var url = $(this).attr('action');
 
-			$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   date : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
+		$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   date : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
 
-				$('#content-book-response').empty().append(data);
-			});
-
+			$('#content-book-response').empty().append(data);
 		});
+
+	});
 </script>	
 @endsection

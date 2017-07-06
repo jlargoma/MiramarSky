@@ -1,4 +1,4 @@
-<div class="col-xs-12">
+<div class="col-xs-12" id="content-response">
 	<div class="col-xs-12">
 		<h2 class="white text-center" style="text-transform: uppercase;">Solicita tu reserva</h2>
 	</div>
@@ -20,7 +20,7 @@
 			Precio total de la solicitud de reserva<br> <span class="font-w800" style="font-size: 48px;"><?php echo $total ?>€</span>
 		</p>
 
-		<form method="post" action="{{url('/admin/reservas/create')}}">
+		<form method="post" action="{{url('/admin/reservas/create')}}" id="confirm-book">
     		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
     		<input type="hidden" name="newroom" value="<?php echo $id_apto; ?>">
     		<input type="hidden" name="name" value="<?php echo $name; ?>">
@@ -31,6 +31,7 @@
     		<input type="hidden" name="pax" value="<?php echo $pax; ?>">
     		<input type="hidden" name="nigths" value="<?php echo $nigths; ?>">
     		<input type="hidden" name="comments" value="<?php echo $comment; ?>">
+    		<input type="hidden" name="from" value="frontend">
     		<input type="hidden" name="parking" value="<?php echo $parking; ?>">
     		<input type="hidden" name="agencia" value="0">
     		<input type="hidden" name="book_comments" value="">
@@ -40,3 +41,47 @@
         
     </div>
 </div>
+<script type="text/javascript">
+	$('#confirm-book').submit(function(event) {
+
+		event.preventDefault();
+
+		var _token        = $('input[name="_token"]').val();
+		var newroom       = $('input[name="newroom"]').val();
+		var name          = $('input[name="name"]').val();
+		var email         = $('input[name="email"]').val();
+		var phone         = $('input[name="phone"]').val();
+		var start         = $('input[name="start"]').val();
+		var finish        = $('input[name="finish"]').val();
+		var pax           = $('input[name="pax"]').val();
+		var nigths        = $('input[name="nigths"]').val();
+		var comments      = $('input[name="comments"]').val();
+		var from          = $('input[name="from"]').val();
+		var parking       = $('input[name="parking"]').val();
+		var agencia       = $('input[name="agencia"]').val();
+		var book_comments = $('input[name="book_comments"]').val();
+
+		var url = $(this).attr('action');
+
+		$.post( url , {
+						_token : _token,
+						newroom : newroom,
+						name : name,
+						email : email,
+						phone : phone,
+						start : start,
+						finish : finish,
+						pax : pax,
+						nigths : nigths,
+						comments : comments,
+						from : from,
+						parking : parking,
+						agencia : agencia,
+						book_comments : book_comments
+					}, function(data) {
+
+				$('#content-response').empty().append(data);
+		});
+
+	});
+</script>

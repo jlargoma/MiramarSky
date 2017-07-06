@@ -24,6 +24,7 @@ Route::get('/contacto','HomeController@contacto');
 Route::post('/getPriceBook','HomeController@getPriceBook');
 
 Route::post('admin/reservas/create' , 'BookController@create');
+Route::get('/test' , 'MailController@sendEmailBookSuccess');
 // Route::get('/admin/propietario',['middleware' => 'authSubAdmin','uses' => 'Admin\BackendController@index']);
 // Route::get('/admin/propietario',['middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
 
