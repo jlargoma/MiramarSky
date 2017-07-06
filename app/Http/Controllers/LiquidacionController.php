@@ -17,6 +17,17 @@ class LiquidacionController extends Controller
    
     public function index($month="")
         {   
+            $totales = [
+                            "total" => [],
+                            "coste" => [],
+                            "banco" => [],
+                            "jorge" => [],
+                            "jaime" => [],
+                            "benJorge" => [],
+                            "benJaime" => [],
+                            "pendiente" => [],
+                            "limpieza" => [],
+                        ];
             $liquidacion = new \App\Liquidacion();
             if (empty($month)) {
                 $date = new Carbon('first day of September 2016');
@@ -24,8 +35,33 @@ class LiquidacionController extends Controller
                 $date = $month;
             }
             $books = \App\Book::where('start' , '>=' , $date)->get();
+            foreach ($books as $key => $book) {
+                if ($key == 0) {
+                    $totales["total"] = $book->total_price;
+                    $totales["coste"] = $book->total_price;
+                    $totales["banco"] = $book->total_price;
+                    $totales["jorge"] = $book->total_price;
+                    $totales["jaime"] = $book->total_price;
+                    $totales["benJorge"] = $book->total_price;
+                    $totales["benJaime"] = $book->total_price;
+                    $totales["pendiente"] = $book->total_price;
+                    $totales["limpieza"] = $book->total_price;
+                }
+                $totales["total"] += $book->total_price;
+                $totales["coste"] += $book->total_price;
+                $totales["banco"] += $book->total_price;
+                $totales["jorge"] += $book->total_price;
+                $totales["jaime"] += $book->total_price;
+                $totales["benJorge"] += $book->total_price;
+                $totales["benJaime"] += $book->total_price;
+                $totales["pendiente"] += $book->total_price;
+                $totales["limpieza"] += $book->total_price;
+ 
+            }
+
             return view('backend/sales/index',  [
-                                                    'books' => $books,
+                                                    'books'   => $books,
+                                                    'totales' => $totales,
                                                 ]);
         }
 

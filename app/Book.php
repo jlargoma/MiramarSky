@@ -390,15 +390,15 @@ class Book extends Model
                 switch ($room->commission) {
                     case '0':
                         //Jorge
-                        $beneficio = $ben;
+                        $beneficio = 0;
                         break;
                     case '1':
                         //Propietario
-                        $beneficio = $ben * 0.9;
+                        $beneficio = $ben * 0.1;
                         break;
                     case '2':
                         //Riesgo
-                        $beneficio = $ben * 0.65;
+                        $beneficio = $ben * 0.35;
                         break;
                     case '3':
                         $beneficio = 0;

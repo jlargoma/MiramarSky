@@ -1,6 +1,6 @@
 @extends('layouts.admin-master')
 
-@section('title') Liquidacion @endsection
+@section('title') Liquidacion de Apartamentos @endsection
 
 @section('externalScripts') 
 	

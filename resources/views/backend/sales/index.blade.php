@@ -56,6 +56,36 @@ setlocale(LC_TIME, "es_ES");
 
     <div class="row">
         <div class="col-md-12">
+        	<div class="col-md-6">
+
+        			<table class="table table-hover demo-table-search table-responsive">
+						<thead>
+							<th class ="text-center bg-complete text-white" >Total</th>
+							<th class ="text-center bg-complete text-white" >Coste total</th>
+							<th class ="text-center bg-complete text-white" >C. banco</th>
+							<th class ="text-center bg-complete text-white" >C. Jorge</th>
+							<th class ="text-center bg-complete text-white" >Pendiente </th>
+							<th class ="text-center bg-complete text-white" >C. Jaime</th>
+							<th class ="text-center bg-complete text-white" >B. Jorge</th>
+							<th class ="text-center bg-complete text-white" >B. Jaime</th>
+							<th class ="text-center bg-complete text-white" >Limpieza</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="text-center"><?php echo number_format($totales["total"],2,',','.') ?></td>
+								<td class="text-center"><?php echo number_format($totales["coste"],2,',','.') ?></td>
+								<td class="text-center"><?php echo number_format($totales["banco"],2,',','.') ?></td>
+								<td class="text-center"><?php echo number_format($totales["jorge"],2,',','.') ?></td>
+								<td class="text-center"><?php echo number_format($totales["jaime"],2,',','.') ?></td>
+								<td class="text-center"><?php echo number_format($totales["benJorge"],2,',','.') ?></td>
+								<td class="text-center"><?php echo number_format($totales["benJaime"],2,',','.') ?></td>
+								<td class="text-center"><?php echo number_format($totales["pendiente"],2,',','.') ?></td>
+								<td class="text-center"><?php echo number_format($totales["limpieza"],2,',','.') ?></td>
+							</tr>
+						</tbody>
+        			</table>
+        	</div>
+        	<div style="clear: both;"></div>
 			<div class="tab-content">
 				<div class="pull-left">
 				        <div class="col-xs-12 ">
