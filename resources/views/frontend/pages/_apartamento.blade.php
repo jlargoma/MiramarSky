@@ -7,7 +7,7 @@
 		color: white!important
 	}
 </style>
-@section('title') Apartamento de lujo en Sierra Nevada @endsection
+@section('title') {{ $aptoHeading }} en Sierra Nevada @endsection
 
 
 @section('slider')
@@ -20,9 +20,9 @@
 			<ul>
 				<?php foreach ($slides as $key => $slide): ?>
 					<!-- SLIDE  -->
-					<li class="dark" data-index="rs-3<?php echo $key+1?>" data-transition="slidehorizontal" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off"  data-easein="default" data-easeout="default" data-masterspeed="2000"  data-thumb="{{ asset('/img/miramarski/galerias/apartamento-lujo')}}/<?php echo $slide->getFilename() ?>"  data-rotate="0"  data-fstransition="slidehorizontal" data-fsmasterspeed="1000" data-fsslotamount="7" data-saveperformance="off"  data-title="One" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
+					<li class="dark" data-index="rs-3<?php echo $key+1?>" data-transition="slidehorizontal" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off"  data-easein="default" data-easeout="default" data-masterspeed="2000"  data-thumb="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>"  data-rotate="0"  data-fstransition="slidehorizontal" data-fsmasterspeed="1000" data-fsslotamount="7" data-saveperformance="off"  data-title="One" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
 						<!-- MAIN IMAGE -->
-						<img src="{{ asset('/img/miramarski/galerias/apartamento-lujo')}}/<?php echo $slide->getFilename() ?>"  alt="<?php echo $slide->getFilename() ?>"  data-bgposition="<?php if($mobile->isMobile()){ echo 'cover'; }else{ echo 'center center'; }?>" data-kenburns="on" data-duration="20000" data-ease="Linear.easeNone" data-scalestart="130" data-scaleend="100" data-rotatestart="0" data-rotateend="0" data-offsetstart="0 0" data-offsetend="0 0" data-bgparallax="13" class="rev-slidebg" data-no-retina>
+						<img src="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>"  alt="<?php echo $slide->getFilename() ?>"  data-bgposition="<?php if($mobile->isMobile()){ echo 'cover'; }else{ echo 'center center'; }?>" data-kenburns="on" data-duration="20000" data-ease="Linear.easeNone" data-scalestart="130" data-scaleend="100" data-rotatestart="0" data-rotateend="0" data-offsetstart="0 0" data-offsetend="0 0" data-bgparallax="13" class="rev-slidebg" data-no-retina>
 	                    <div class="tp-caption tp-shape tp-shapewrapper   tp-resizeme"
 							id="slide-3<?php echo $key+1?>-layer-<?php echo $key+1?>"
 							data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
@@ -58,37 +58,24 @@
 
 		<div class="container clearfix push-20">
 			<div class="row" style="margin-top: 40px;">
-				<h2 class="center hidden-sm hidden-xs psuh-20">APARTAMENTO DE LUJO 2 DORMITORIOS</h2>
-				<h2 class="center hidden-lg hidden-md push-10">APTO. DE LUJO 2 DORM</h2>
+				<h2 class="center hidden-sm hidden-xs psuh-20"><?php echo strtoupper($aptoHeading); ?></h2>
+				<h2 class="center hidden-lg hidden-md push-10"><?php echo strtoupper($aptoHeadingMobile); ?></h2>
+				
+				
 
 				<div class="row clearfix center push-30">
 
-					<p class="font-s18 ls-15 miramar font-w300 text-justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero quod consequuntur quibusdam, enim expedita sed quia nesciunt incidunt accusamus necessitatibus modi adipisci officia libero accusantium esse hic, obcaecati, ullam, laboriosam!</p>
-
-					<p class="font-s18 ls-15 miramar font-w300 text-justify hidden-sm hidden-xs">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti vero, animi suscipit id facere officia. Aspernatur, quo, quos nisi dolorum aperiam fugiat deserunt velit rerum laudantium cum magnam excepturi quod, fuga architecto provident, cupiditate delectus voluptate eaque! Sit neque ut eum, voluptatibus odit cum dolorum ipsa voluptates inventore cumque a.</p>
-
-					<p class="font-s18 ls-15 miramar font-w300 text-justify">
-						<span class="text-black font-w300">
-							<i class="fa fa-wifi"></i>Wifi
-						</span> &nbsp;&nbsp;
-						<span class="text-black font-w300">
-							<i class="fa fa-tv"></i>43"
-						</span> &nbsp;&nbsp;
-						<span class="text-black font-w300">
-							<i class="fa fa-paw"></i>Mascotas
-						</span> &nbsp;&nbsp;
-						<span class="text-black font-w300">
-							<i class="fa fa-key"></i>Llaves
-						</span> &nbsp;&nbsp;
-						<span class="text-black font-w300">
-							<i class="fa fa-bed"></i>Camas
-						</span> &nbsp;&nbsp;
-						<span class="text-black font-w300">
-							<i class="fa fa-car"></i>Parking
-						</span> &nbsp;&nbsp;
-					</p>
+					<?php if ($typeApto == 1): ?>
+						@include('frontend.pages._infoAptoLujo')
+					<?php elseif($typeApto == 2): ?>
+						@include('frontend.pages._infoAptoStandard')
+					<?php elseif($typeApto == 3): ?>
+						@include('frontend.pages._infoEstudioLujo')
+					<?php elseif($typeApto == 4): ?>
+						@include('frontend.pages._infoEstudioStandard')
+					<?php endif ?>
 					
-					<button id="showFromBook" class="button button-desc button-3d button-rounded bg-bluesky center">¡Reserva YA!</button>
+					<button id="showFromBook" class="button button-desc button-3d button-rounded bg-bluesky center white">¡Reserva YA!</button>
 
 				</div>	
 			</div>
@@ -111,51 +98,30 @@
 				</h3>
 			</div>
 			<div class="col-xs-12">
-				<div class="col-md-4 ">
-					<div class="col-xs-12 not-padding  container-image-box push-mobile-20">
-						<div class="col-xs-12 not-padding push-0">
-							<a href="{{url('/apartamentos/estudio-lujo-sierra-nevada')}}">
-								<img class="img-responsive" src="{{ asset('/img/miramarski/small/estudio-lujo-sierra-nevada.jpg')}}"  alt="Estudio de lujo sierra nevada"/>
+				<?php foreach ($aptos as $key => $apartamento): ?>
+					<?php if ($apartamento != $url): ?>
+						<div class="col-md-4 ">
+							<a href="{{url('/apartamentos')}}/<?php echo $apartamento ?>">
+								<div class="col-xs-12 not-padding  container-image-box push-mobile-20">
+									<div class="col-xs-12 not-padding push-0">
+										
+											<img class="img-responsive" src="/img/miramarski/small/<?php echo $apartamento ?>.jpg"  alt="<?php echo str_replace('-', ' ', $apartamento) ?>"/>
+										</a>
+									</div>
+									<div class="col-xs-12 not-padding text-right overlay-text">
+										<h2 class="font-w600 center push-10 text-center text white font-s24" >
+											<?php 
+												$title    = str_replace('-', ' ', $apartamento);
+												$title    = str_replace(' sierra nevada', '', $title);
+											?>
+											<?php echo strtoupper($title ) ?>
+										</h2>
+									</div>
+								</div>
 							</a>
 						</div>
-						<div class="col-xs-12 not-padding text-right overlay-text">
-							<h2 class="font-w600 center push-10 text-center text font-s24" >
-								<a class="white text-white" href="{{url('/apartamentos/estudio-lujo-sierra-nevada')}}">ESTUDIO DE LUJO</a>
-							</h2>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-md-4 push-mobile-20">
-					<div class="col-xs-12 not-padding  container-image-box push-mobile-20">
-						<div class="col-xs-12 not-padding push-0">
-							<a href="{{url('/apartamentos/apartamento-standard-sierra-nevada')}}">
-								<img class="img-responsive imga" src="{{ asset('/img/miramarski/small/apartamento-standar-sierra-nevada.jpg')}}"  alt="Apartamento standard sierra nevada"/>
-							</a>
-						</div>
-						<div class="col-xs-12 not-padding text-right overlay-text">
-							<h2 class="font-w600 center push-10 text-center text font-s24" >
-								<a class="white text-white" href="{{url('/apartamentos/apartamento-standard-sierra-nevada')}}">APARTAMENTO STANDARD</a>
-							</h2>
-						</div>
-					</div>
-				</div>
-
-				<div class="col-md-4 push-mobile-20">
-					<div class="col-xs-12 not-padding  container-image-box push-mobile-20">
-						<div class="col-xs-12 not-padding push-0">
-							<a href="{{url('/apartamentos/estudio-standard-sierra-nevada')}}">
-								<img class="img-responsive" src="{{ asset('/img/miramarski/small/estudio-standard-sierra-nevada.jpg')}}"  alt="Estudio standard sierra nevada"/>
-							</a>
-						</div>
-						<div class="col-xs-12 not-padding text-right overlay-text">
-							<h2 class="font-w600 center push-10 text-center text font-s24" >
-								<a class="white text-white" href="{{url('/apartamentos/estudio-standard-sierra-nevada')}}">ESTUDIO STANDARD</a>
-							</h2>
-						</div>
-					</div>
-				</div>
-
+					<?php endif ?>
+				<?php endforeach ?>
 			</div>
 		</div>
 	</section>

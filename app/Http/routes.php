@@ -14,12 +14,10 @@ Route::auth();
 
 // Route::get('/',['middleware' => 'authSubAdmin','middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
 Route::get('/','HomeController@index');
-Route::get('/apartamentos/apartamento-lujo-sierra-nevada','HomeController@apartamentoLujo');
-Route::get('/apartamentos/estudio-lujo-sierra-nevada','HomeController@estudioLujo');
-Route::get('/apartamentos/apartamento-standard-sierra-nevada','HomeController@apartamentoStandard');
-Route::get('/apartamentos/estudio-standard-sierra-nevada','HomeController@estudioStandard');
+Route::get('/apartamentos/{apto}','HomeController@apartamento');
 Route::get('/edificio-miramarski-sierra-nevada','HomeController@edificio');
 Route::get('/contacto','HomeController@contacto');
+Route::post('/contacto-form','HomeController@formContacto');
 
 Route::post('/getPriceBook','HomeController@getPriceBook');
 

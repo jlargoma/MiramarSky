@@ -39,32 +39,83 @@ class HomeController extends Controller
     }
 
 
-    public function apartamentoLujo(){
-        $slides = File::allFiles(public_path().'/img/miramarski/galerias/apartamento-lujo');
-        $mobile = new Mobile();
-        return view('frontend.pages._apartamentoLujo', [ 'slides' => $slides, 'mobile'   => $mobile,]);
-    }
-    public function estudioLujo(){
+    public function apartamento($apto){
+        $url     = $apto;
+        $apto    = str_replace('-', ' ', $apto);
+        $apto    = str_replace(' sierra nevada', '', $apto);
 
-       
-    }
-    public function apartamentoStandard(){
 
-        $slides = File::allFiles(public_path().'/img/miramarski/galerias/apartamento-standard');
-        $mobile = new Mobile();
-        return view('frontend.pages._apartamentoStandard', [ 'slides' => $slides, 'mobile'   => $mobile,]);
-    }
-    public function estudioStandard(){
 
-        // return view('frontend.pages._estudioStandard');
+        switch ($apto) {
+            case 'apartamento lujo':
+                $aptoHeading       = "Apartamento de lujo 2 DORM";
+                $aptoHeadingMobile = "Apto de lujo 2 DORM";
+
+                $typeApto = 1;
+                break;
+            
+            case 'estudio lujo':
+                $aptoHeading       = "Estudio de lujo";
+                $aptoHeadingMobile = "Estudio de lujo";
+
+                $typeApto = 2;
+                break;
+            
+            case 'apartamento standard':
+                $aptoHeading       = "Apartamento Standard";
+                $aptoHeadingMobile = "Apto Standard";
+
+                $typeApto = 3;
+                break;
+            
+            case 'estudio standard':
+                $aptoHeading       = "Estudio Standard";
+                $aptoHeadingMobile = "Estudio Standard";
+
+                $typeApto = 4;
+                break;            
+        }
+
+
+        $slides = File::allFiles(public_path().'/img/miramarski/galerias/'.$url); 
+        $aptos  = ['apartamento-lujo-sierra-nevada', 'estudio-lujo-sierra-nevada','apartamento-standard-sierra-nevada','estudio-standard-sierra-nevada'];
+
+        return view('frontend.pages._apartamento', [ 
+                                                        'slides'            => $slides, 
+                                                        'mobile'            => new Mobile(),
+                                                        'aptoHeading'       => $aptoHeading,
+                                                        'aptoHeadingMobile' => $aptoHeadingMobile,
+                                                        'typeApto'          => $typeApto,
+                                                        'aptos'             => $aptos,
+                                                        'url'               => $url,
+                                                    ]);
     }
+    
     public function edificio(){
 
         // return view('frontend.pages._edificio');
     }
     public function contacto(){
+        return view('frontend.contacto', ['mobile' => new Mobile(),]);
+    }
 
-        return view('frontend.contacto');
+    public function formContacto(Request $request){
+        
+        $data['name']    = $request->input('name');
+        $data['email']   = $request->input('email');
+        $data['phone']   = $request->input('phone');
+        $data['subject'] = $request->input('subject');
+        $data['message'] = $request->input('message');
+
+
+        $contact = MailController::sendContactFormEmail($data);
+
+        if ( $contact ) {
+            return view('frontend.responses.success');
+        }else{
+            return view('frontend.responses.error');
+
+        }
     }
 
 

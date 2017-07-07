@@ -42,4 +42,19 @@ class MailController extends Controller
 
     }
 
+
+        public static function sendContactFormEmail($data)
+        {
+        	
+    		$contact = Mail::send(['html' => 'frontend.emails.contact'],[ 'data' => $data,], function ($message) use ($data) {
+	            $message->from($data['email'], $data['name']);
+	            $message->to('iavila@daimonconsulting.com'); /* $data['email'] */
+	            $message->subject('Formulario de contacto MiramarSKI');
+	        });
+
+
+    		return $contact;
+
+        }
+
 }

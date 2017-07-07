@@ -59,7 +59,7 @@
 	   						<a href="{{url('/apartamentos/apartamento-lujo-sierra-nevada')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
-	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/small/apto-lujo-sierra-nevada.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
+	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/small/apartamento-lujo-sierra-nevada.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
 		   								<h2 class="font-w600 center push-10 text-center text font-s24 white" >APARTAMENTO DE LUJO
@@ -76,8 +76,7 @@
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 		   								
-		   									<img class="img-responsive" src="{{ asset('/img/miramarski/small/estudio-lujo-sierra-nevada.jpg')}}"  alt="Estudio de lujo sierra nevada"/>
-		   								</a>
+	   									<img class="img-responsive" src="{{ asset('/img/miramarski/small/estudio-lujo-sierra-nevada.jpg')}}"  alt="Estudio de lujo sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
 		   								<h2 class="font-w600 center push-10 text-center text font-s24 white" >
@@ -109,7 +108,6 @@
 		   							<div class="col-xs-12 not-padding push-0">
 		   								
 		   									<img class="img-responsive" src="{{ asset('/img/miramarski/small/estudio-standard-sierra-nevada.jpg')}}"  alt="Estudio standard sierra nevada"/>
-		   								</a>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
 		   								<h2 class="font-w600 center push-10 text-center text font-s24 white" >
@@ -125,10 +123,10 @@
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 		   								
-		   									<img class="img-responsive" src="{{ asset('/img/miramarski/small/edificio-miramarski-sierra-nevada.jpg')}}"  alt="Estudio standard sierra nevada"/>
+	   									<img class="img-responsive" src="{{ asset('/img/miramarski/small/edificio-miramarski-sierra-nevada.jpg')}}"  alt="Estudio standard sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
-		   								<h2 class="font-w600 center push-10 text-center text font-s24" >
+		   								<h2 class="font-w600 center push-10 text-center text font-s24 white" >
 		   									EL EDIFICIO
 		   								</h2>
 		   							</div>
