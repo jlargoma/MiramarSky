@@ -43,11 +43,10 @@ class PaymentsProController extends Controller
 
             foreach ($paymentspro as $payments) {
                 if (isset($total_payments[$payments->room_id])) {
-                  $total_payments[$payments->room_id] += $payments->import;
+                    $total_payments[$payments->room_id] += $payments->import;
                 }else{
                     $total_payments[$payments->room_id] = $payments->import;
                 }
-                
             }
 
             $total_debt = array();
@@ -62,9 +61,11 @@ class PaymentsProController extends Controller
                 }
             }
 
+
+
             return view('backend/paymentspro/index',[
                                                         'date'         => $date->subMonth(),
-                                                        'rooms'        => \App\Rooms::all(),
+                                                        'rooms'        => \App\Rooms::where('nameRoom', '!=','o')->get(),
                                                         'total'        => $total,
                                                         'totalPayment' => $total_payments,
                                                         'debt'         => $total_debt,
@@ -79,7 +80,7 @@ class PaymentsProController extends Controller
     public function create(Request $request)
     {
         //
-        echo "<pre>";
+
         $fecha = Carbon::now();
         $paymentPro = new \App\PaymentsPro();
 
@@ -87,6 +88,7 @@ class PaymentsProController extends Controller
         $paymentPro->import      = $request->import;
         $paymentPro->comment     = $request->comment;
         $paymentPro->datePayment = $fecha->format('Y-m-d');
+        $paymentPro->type        = $request->type;
 
         if ($paymentPro->save()) {
            return redirect()->action('PaymentsProController@index');
@@ -135,17 +137,52 @@ class PaymentsProController extends Controller
      */
     public function update($id,$month = "", Request $request)
     {
+        $typePayment = new \App\PaymentsPro();
+        $total = 0;
+        $banco = 0;
+        $metalico = 0;
 
-        $room = \App\Rooms::find($id);
+        $room  = \App\Rooms::find($id);
         $month = Carbon::createFromFormat('Y',$month);
-        $date = $month->copy()->addMonth(6);
+        $date  = $month->copy()->addMonth(2);
 
         $payments = \App\PaymentsPro::where('room_id',$id)->where('datePayment','>',$date->copy())->where('datePayment','<',$date->copy()->addYear())->get();
 
+        foreach ($payments as $payment) {
+            if ($payment->type == 1) {
+                if (isset($metalico)) {
+                    $metalico += $payment->import;
+                }else{
+                    $metalico = $payment->import;
+                }
+            }elseif($payment->type == 2){
+                if (isset($banco)) {
+                    $banco += $payment->import;
+                }else{
+                    $banco = $payment->import;
+                }
+            }
+        }
+
+        $books = \App\Book::where('start','>',$date->copy())->where('start','<',$date->copy()->addYear())->where('room_id',$id)->get();
+
+        foreach ($books as $book) {
+            if (isset($total)) {
+                $total += $book->cost_total;
+            }else{
+                $total = $book->cost_total;
+            }
+        }
+        $deuda = ($total - $request->debt)/$total*100;
         return view('backend/paymentspro/_form',  [
-                                                'room' => $room,
-                                                'payments' => $payments,
-                                                'debt' => $request->debt,
+                                                'room'        => $room,
+                                                'payments'    => $payments,
+                                                'debt'        => $request->debt,
+                                                'total'       => $total,
+                                                'deuda'       => $deuda,
+                                                'typePayment' => $typePayment,
+                                                'metalico'    => $metalico,
+                                                'banco'       => $banco,
                                             ]);
     }
 

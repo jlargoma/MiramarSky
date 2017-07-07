@@ -38,8 +38,8 @@
                         <tr>
                             <td class="text-center font-montserrat" hidden><?php echo $customer->id ?></td>
                             <td class="text-center font-montserrat">
-                               <!-- <input type="text" class="editables name-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->name?>" style="border-style: none none solid"> -->
-                               <?php echo $customer->name ?>
+                               <input type="text" class="editables name-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->name?>" style="border-style: none none solid">
+                               <!-- <?php echo $customer->name ?> -->
                             </td>
                             <td class="text-center font-montserrat">
                                 <input type="text" class="editables email-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->email?>" style="border-style: none none solid">
@@ -155,7 +155,7 @@
         $(document).ready(function() {
             $('.update-customer').click(function(event) {
                 var id = $(this).attr('data-id');
-                $.get('clientes/update/'+id, function(data) {
+                $.get('/admin/clientes/update/'+id, function(data) {
                     $('.modal-body').empty().append(data);
                 });
             });
@@ -168,7 +168,7 @@
                 var phone = $('.phone-'+id).val();
                 var comments = $('.comments-'+id).val();
 
-                $.get('clientes/save', {  id: id, name: name, email: email, phone: phone, comments: comments}, function(data) {
+                $.get('/admin/clientes/save', {  id: id, name: name, email: email, phone: phone, comments: comments}, function(data) {
                     alert(data);
                 });
             });

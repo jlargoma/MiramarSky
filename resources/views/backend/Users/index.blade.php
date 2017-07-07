@@ -44,7 +44,7 @@
                                 <td class="text-center hidden">
                                     <input type="text" name="<?php echo $user->id?>" value="<?php echo $user->id?>">
                                 </td>
-                                <td class="text-center "><a class="btn btn-tag update-user" type="button"  data-id="<?php echo $user->id ?>" data-toggle="modal" data-target="#myModal" title="Editar Usuario" ><?php echo $user->name?></a>
+                                <td class="text-left "><a class="btn btn-complete update-user" type="button"  data-id="<?php echo $user->id ?>" data-toggle="modal" data-target="#myModal" title="Editar Usuario" ><?php echo $user->name?></a>
                                 </td>
                                 <td class="text-center "><?php echo $user->phone?>
                                 </td>
@@ -58,7 +58,7 @@
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <!--  -->
-                                        <a href="{{ url('usuarios/delete/')}}/<?php echo $user->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Usuario" onclick="return confirm('¿Quieres eliminar el usuario?');">
+                                        <a href="{{ url('/admin/usuarios/delete/')}}/<?php echo $user->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Usuario" onclick="return confirm('¿Quieres eliminar el usuario?');">
                                             <i class="fa fa-trash-o"></i>
                                         </a>
                                     </div>
@@ -92,7 +92,7 @@
                             </div>
                             <div class="panel-body">
                                 <div class="col-md-12">
-                                    <form role="form"  action="{{ url('usuarios/create') }}" method="post">
+                                    <form role="form"  action="{{ url('/admin/usuarios/create') }}" method="post">
                                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                         <div class="input-group transparent">
                                             <span class="input-group-addon">
@@ -119,6 +119,7 @@
                                                 <option value="Limpieza">Limpieza</option>
                                                 <option value="Agente">Agente</option>
                                                 <option value="Propietario">Propietario</option>
+                                                <option value="Recepcionista">Recepcionista</option>
                                             </select>
                                         </div>
                                             <br>
@@ -185,7 +186,7 @@
         $(document).ready(function() {
             $('.update-user').click(function(event) {
                 var id = $(this).attr('data-id');
-                $.get('usuarios/update/'+id, function(data) {
+                $.get('/admin/usuarios/update/'+id, function(data) {
                     $('.modal-body').empty().append(data);
                 });
             });
@@ -196,7 +197,7 @@
                 var name = $('.name-user-'+id).val();
                 var email = $('.email-user-'+id).val();
 
-                $.get('usuarios/ajax', {  id: id, name: name, email: email}, function(data) {
+                $.get('/admin/usuarios/ajax', {  id: id, name: name, email: email}, function(data) {
                     alert(data);
                 });
             });

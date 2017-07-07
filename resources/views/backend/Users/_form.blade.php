@@ -46,6 +46,7 @@
                                 <option value="Limpieza">Limpieza</option>
                                 <option value="Agente">Agente</option>
                                 <option value="Propietario">Propietario</option>
+                                <option value="Recepcionista">Recepcionista</option>
                             </select>
                         </div>
                             <br>

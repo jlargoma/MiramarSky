@@ -50,6 +50,16 @@
                                     </div>
                                     <br>
                                     <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-euro"></i>
+                                        </span>
+                                            <select class="full-width" data-init-plugin="select2" name="type">
+                                                <option value="1"><?php echo $typePayment->getPaymentType(1) ?></option>
+                                                <option value="2"><?php echo $typePayment->getPaymentType(2) ?></option>
+                                            </select>
+                                    </div>
+                                    <br>
+                                    <div class="input-group">
                                         <button class="btn btn-complete" type="submit">Guardar</button>
                                     </div>
                                 </form>
@@ -87,7 +97,7 @@
                                                     <?php echo $payment->comment ?>
                                                 </td>
                                                 <td class="text-center">
-                                                    0€
+                                                    <?php echo $typePayment->getPaymentType($payment->type) ?>
                                                 </td>
                                             </tr>
                                         <?php endforeach ?>
@@ -101,10 +111,42 @@
                                 </table>
                             </div>
                         </div>
+
+                        <div class="col-md-4">
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                   Grafica de pagos
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
+                                    <thead >
+                                        <th class ="text-center bg-complete text-white" style="width:<?php echo $deuda."%" ?>!important"><?php echo number_format($total - $debt,2,',','.') ?></th>
+                                        <th class ="text-center bg-secondary text-black" style="width:<?php echo 100-$deuda."%" ?>!important"><?php echo number_format($debt,2,',','.') ?></th>
+                                    </thead>
+                                </table>
+                            </div>
+                            <br>
+                            <div class="panel-body">
+                                <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
+                                    <thead >
+                                        <tr>
+                                            <th class ="text-center bg-complete text-white">Metalico</th>
+                                            <th class="text-center "><?php echo $metalico ?></th>
+                                        </tr>
+                                        <tr>
+                                            <th class ="text-center bg-complete text-white">Banco</th>
+                                            <th class="text-center "><?php echo $banco ?></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
                         <div style="clear: both;"></div> 
                         <div>
                             <h2>Falta por pagar <?php echo number_format($debt,2,',','.') ?> €</h2>
                         </div>  
+                        
                     </div>
                     
                 </div>

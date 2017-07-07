@@ -7,7 +7,8 @@
     <link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
     <link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
-
+    </script>
+    <script type="text/javascript" src="/assets/js/canvasjs/canvasjs.min.js"></script>
     <style>
 
       td{      
@@ -39,6 +40,7 @@
 <div class="container-fluid padding-25 sm-padding-10">
     <div class="row">
         <div class="col-md-12 col-xs-12 push-20">
+
             <div class="col-xs-12 col-md-2 pull-right">
                 <select id="date" class="form-control">
                     <?php $fecha = $date->copy()->subYear(); ?>
@@ -52,7 +54,23 @@
                 </select>
             </div>
         </div>
-
+        <div class="col-md-4">
+           <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSea">
+              <thead>
+                  <th class ="text-center bg-complete text-white"> Generado    </th>
+                  <th class ="text-center bg-complete text-white"> Pagado    </th>
+                  <th class ="text-center bg-complete text-white"> Pendiente    </th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-center"><?php echo number_format(array_sum($total),2,',','.') ?> €</td>
+                  <td class="text-center"><?php echo number_format(array_sum($totalPayment),2,',','.') ?> €</td>
+                  <td class="text-center"><?php echo number_format(array_sum($debt),2,',','.') ?> €</td>
+                </tr>
+              </tbody>
+           </table>
+        </div>
+        <div style="clear: both"></div>
         <div class="col-md-4">
             <div class="clearfix"></div>
                 <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
@@ -104,6 +122,12 @@
                 </table>
 
         </div>
+        <div class="col-md-8">
+            <div class="pull-right" id="chartContainer" style="height: 300px; width: 73%;"></div>
+            
+
+        </div>
+            
     </div>
 </div>
 
@@ -140,24 +164,8 @@
    <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
 
   <script type="text/javascript">
-      // var colorPendienteCobro = function(){
-      //   var pendientes  = $('.pendiente');
-
-
-      //   for(ind in pendientes){
-            
-      //       var pendCobro = pendientes[ind];
-
-      //       if ($(pendCobro).text() == '0,00 €') {
-      //         $(pendCobro).addClass("blue");
-      //       }else{
-      //         $(pendCobro).addClass("red");
-      //       };
-      //   }
-      // }
-
     $(document).ready(function() {
-        
+
         $('.update-payments').click(function(event) {
             var debt = $(this).attr('data-debt');
             var id   = $(this).attr('data-id');
@@ -172,12 +180,57 @@
             var month = $(this).val();
             window.location = '/admin/pagos-propietarios/'+month;
         });
-        
-      colorPendienteCobro();
-      $('.dataTables_paginate').click(function(event) {
-        colorPendienteCobro();
-      });
+
+
     });
+    window.onload = function () {
+       var chart = new CanvasJS.Chart("chartContainer",
+       {
+         title:{
+         text: "Grafico  de pagos a propietarios"
+         },
+         axisX: {
+                labelAngle: -90,
+              },
+           data: [
+         {
+
+           type: "stackedColumn",
+           dataPoints: [
+           <?php foreach ($rooms as $room): ?>
+              <?php if (isset($totalPayment[$room->id])): ?>
+                {  y: <?php echo $totalPayment[$room->id] ?> , label: "<?php echo $room->nameRoom ?>"},
+              <?php else: ?>
+                {  y: 0 , label: "<?php echo $room->nameRoom ?>"},
+              <?php endif ?>
+             
+           <?php endforeach ?>
+
+           ]
+         },  {
+          indexLabel: "#total",
+          indexLabelPlacement: "outside",  
+          indexLabelOrientation: "vertical",
+           type: "stackedColumn",
+            dataPoints: [
+           <?php foreach ($rooms as $room): ?>
+              <?php if (isset($total[$room->id])): ?>
+                {  y: <?php echo $total[$room->id] ?> , label: "<?php echo $room->nameRoom ?>"},
+              <?php else: ?>
+                {  y: 0 , label: "<?php echo $room->nameRoom ?>"},
+              <?php endif ?>
+             
+           <?php endforeach ?>
+
+           ]
+         }
+         ]
+       });
+
+       chart.render();
+     }
+
+
   </script>
 
 
