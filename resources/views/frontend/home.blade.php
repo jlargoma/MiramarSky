@@ -91,7 +91,7 @@
 							<a href="{{url('/apartamentos/apartamento-standard-sierra-nevada')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
-	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/small/apartamento-standar-sierra-nevada.jpg')}}"  alt="Apartamento standard sierra nevada"/>
+	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/small/apartamento-standard-sierra-nevada.jpg')}}"  alt="Apartamento standard sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
 		   								<h2 class="font-w600 center push-10 text-center text font-s24 white" >
