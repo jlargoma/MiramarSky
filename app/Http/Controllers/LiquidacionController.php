@@ -70,7 +70,10 @@ class LiquidacionController extends Controller
         {
             return view('backend/sales/liquidacion_apto');
         }
-
+    public function perdidas()
+        {
+            return view ('backend/sales/perdidas_ganancias');
+        }
     /**
      * Show the form for creating a new resource.
      *

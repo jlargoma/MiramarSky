@@ -110,6 +110,8 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 	Route::get('admin/liquidacion' , 'LiquidacionController@index');
 	Route::get('admin/liquidacion-apartamentos' , 'LiquidacionController@apto');
 	Route::get('admin/estadisticas' , 'LiquidacionController@stadistics');
+	Route::get('admin/perdidas-ganancias' , 'LiquidacionController@perdidas');
+	
 
 //Propietario
 	Route::get('admin/propietario' , 'OwnedController@index');
