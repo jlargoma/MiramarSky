@@ -97,7 +97,7 @@
                                                     <?php echo $payment->comment ?>
                                                 </td>
                                                 <td class="text-center">
-                                                    <?php echo $typePayment->getPaymentType($payment->type) ?>
+                                                    <?php echo $typePayment->getPaymentType(1) ?>
                                                 </td>
                                             </tr>
                                         <?php endforeach ?>
@@ -143,9 +143,9 @@
                             </div>
                         </div>
                         <div style="clear: both;"></div> 
-                        <div>
+                        <!-- <div>
                             <h2>Falta por pagar <?php echo number_format($debt,2,',','.') ?> €</h2>
-                        </div>  
+                        </div> -->  
                         
                     </div>
                     

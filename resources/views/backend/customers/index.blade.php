@@ -13,10 +13,10 @@
 
 <div class="container-fluid padding-25 sm-padding-10">
     <div class="row">
-        <div class="col-md-12 col-xs-12">
+        <div class="col-md-12 col-xs-12 text-center">
             <h2>Clientes</h2>
         </div>
-        <div class="col-md-8 col-xs-12">
+        <div class="col-md-9 col-xs-12">
             <div class="pull-left">
               <div class="col-xs-12 ">
                 <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
@@ -38,18 +38,18 @@
                         <tr>
                             <td class="text-center font-montserrat" hidden><?php echo $customer->id ?></td>
                             <td class="text-center font-montserrat">
-                               <input type="text" class="editables name-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->name?>" style="border-style: none none solid">
+                               <input type="text" class="editables name-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->name?>" >
                                <!-- <?php echo $customer->name ?> -->
                             </td>
                             <td class="text-center font-montserrat">
-                                <input type="text" class="editables email-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->email?>" style="border-style: none none solid">
+                                <input type="text" class="editables email-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->email?>" >
                             </td>
                             <td class="text-center font-montserrat">
-                                <input type="number" class="editables phone-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->phone?>" style="border-style: none none solid">
+                                <input type="number" class="editables phone-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->phone?>" >
                                
                             </td>
                             <td class="text-center font-montserrat">
-                                <input type="text" class="editables comments-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->comments?>" style="border-style: none none solid;width: 85%">
+                                <input type="text" class="editables comments-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->comments?>" style="width: 85%;height: 20px">
                                 
                             </td>
                         </tr>
@@ -58,7 +58,7 @@
             </table>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="sm-m-l-5 sm-m-r-5">
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                     <div class="panel panel-default">

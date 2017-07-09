@@ -18,16 +18,13 @@
 <div class="container-fluid padding-25 sm-padding-10">
     <div class="row">
         <div class="col-md-12">
+            <div class="col-md-12 text-center">
+                <h2>Precios de habitaciones y extras</h2>
+            </div>
             <div class="clearfix"></div>
-            <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="collapse">
-                <li class="active"><a href="#tabPrices" data-toggle="tab" role="tab">Ocupacion</a>
-                </li>
-                <li><a href="#tabExtras" data-toggle="tab" role="tab">Extras </a>
-                </li>
-            </ul>
             <div class="tab-content">
 
-                <div class="tab-pane active" id="tabPrices">
+                <div class="col-md-12">
                     <table class="table table-hover  table-responsive-block" >
                         <thead>
                             <tr>
@@ -55,10 +52,10 @@
                                         <?php $price =  \App\Prices::where('occupation', $i)->where('season', $season->id )->first(); ?>
                                         <?php if ( count($price) > 0): ?>
                                                         <td class="text-center" style="border-left: 1px solid #48b0f7">
-                                                            <input class="editable price-<?php echo $price->id?>" type="text" name="cost" data-id="<?php echo $price->id ?>" value="<?php echo $price->price ?>" style="width: 100%;text-align: center;border-style: none none solid">
+                                                            <input class="editable price-<?php echo $price->id?>" type="text" name="cost" data-id="<?php echo $price->id ?>" value="<?php echo $price->price ?>" style="width: 100%;text-align: center;border-style: none none">
                                                         </td>
                                                         <td class="text-center">
-                                                            <input class="editable cost-<?php echo $price->id?>" type="text" name="cost" data-id="<?php echo $price->id ?>" value="<?php echo $price->cost ?>" style="width: 100%;text-align: center;border-style: none none solid">
+                                                            <input class="editable cost-<?php echo $price->id?>" type="text" name="cost" data-id="<?php echo $price->id ?>" value="<?php echo $price->cost ?>" style="width: 100%;text-align: center;border-style: none none">
                                                         </td>
                                                         <td class="text-center" style="border-right: : 1px solid #48b0f7">
                                                             <?php if ($price->price == 0 || $price->cost == 0): ?>
@@ -81,7 +78,7 @@
                     </table>
                 </div>
 
-                <div class="tab-pane " id="tabExtras">
+                <div class="col-md-12">
                     <div class="col-md-8">
                         <table class="table table-hover  table-responsive-block" >
                             <thead>
@@ -97,10 +94,10 @@
                                     <tr>
                                         <td class="text-center" style="border-left: 1px solid #48b0f7"><?php echo $extra->name ?></td>
                                         <td class="text-center" style="border-left: 1px solid #48b0f7">
-                                            <input class="extra-editable extra-price-<?php echo $extra->id?>" type="text" name="cost" data-id="<?php echo $extra->id ?>" value="<?php echo $extra->price ?>" style="width: 100%;text-align: center;border-style: none none solid">
+                                            <input class="extra-editable extra-price-<?php echo $extra->id?>" type="text" name="cost" data-id="<?php echo $extra->id ?>" value="<?php echo $extra->price ?>" style="width: 100%;text-align: center;border-style: none none">
                                         </td>
                                         <td class="text-center" style="border-left: 1px solid #48b0f7">
-                                            <input class="extra-editable extra-cost-<?php echo $extra->id?>" type="text" name="cost" data-id="<?php echo $extra->id ?>" value="<?php echo $extra->cost ?>" style="width: 100%;text-align: center;border-style: none none solid">
+                                            <input class="extra-editable extra-cost-<?php echo $extra->id?>" type="text" name="cost" data-id="<?php echo $extra->id ?>" value="<?php echo $extra->cost ?>" style="width: 100%;text-align: center;border-style: none none">
                                         </td>
                                         <td class="text-center" style="border-left: 1px solid #48b0f7">
                                             <?php $ben = ( ($extra->price * 100) / $extra->cost)-100; ?>
@@ -188,7 +185,7 @@
                                     <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false" style="height: 0px;">
                                         <div class="panel-body">
                                             <div class="panel panel-default">                                
-                                                <form role="form"  action="{{ url('precios/createExtras') }}" method="post">
+                                                <form role="form"  action="{{ url('/admin/precios/createExtras') }}" method="post">
                                                     <div class="panel-body">
                                                         <div class="col-md-12">
                                                             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">

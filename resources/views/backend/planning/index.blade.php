@@ -17,6 +17,7 @@
 @section('content')
 <?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
     <style type="text/css">
+
         .Reservado{
             background-color: #0DAD9E !important;
             color: black;
@@ -110,8 +111,12 @@
 
     <div class="container-fluid padding-10 sm-padding-10">
         <div class="row">
+                <div class="col-md-12 text-center">
+                    <h2>Planning de reservas</h2>
+                </div>
                 <div class="col-md-12 col-xs-12 push-20">
                     <div class="col-xs-12 col-md-2 pull-right">
+                        Fechas:
                         <select id="date" class="form-control">
                             <?php $fecha = $date->copy()->startOfYear(); ?>
 
@@ -125,10 +130,11 @@
                         </select>
                     </div>
                 </div>
+                <br><br>
             <div class="col-md-7 col-xs-12">
                 <div class="panel">
                     <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="collapse">
-                        <li class="nuevo"><a href="#tabNueva" data-toggle="tab" role="tab" ><i class="fa fa-plus-circle fa-3x" style="color:green" aria-hidden="true"></i></a>
+                        <li class="nuevo"><a href="#tabNueva" data-toggle="tab" role="tab" ><i class="fa fa-plus-circle fa-2x" style="color:green" aria-hidden="true"></i></a>
                         </li>
                         <li class="active" ><a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes </a>
                         </li>
@@ -204,8 +210,8 @@
                                                             <?php endforeach ?>
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-2">
-                                                        <label>Park</label>
+                                                    <div class="col-md-1">
+                                                        <label>Parking</label>
                                                         <select class=" form-control parking"  name="parking">
                                                             <?php for ($i=1; $i <= 4 ; $i++): ?>
                                                                 <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
@@ -222,7 +228,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="input-group col-md-12">
-                                                    <div class="col-md-1">                                                        
+                                                    <div class="col-md-2">                                                        
                                                         <label>Cost Agencia</label>
                                                         <input type="text" class="agencia form-control" name="agencia" value="0">
                                                     </div>
@@ -240,11 +246,11 @@
                                                     </div> 
                                                     <div class="col-md-3">
                                                         <label>Coste</label>
-                                                        <input type="text" class="form-control cost" name="cost" value="" disabled style="width: 100%">
+                                                        <input type="text" class="form-control cost" name="cost" value="" disabled style="width: 100%;color: black">
                                                     </div>
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-2">
                                                         <label>Beneficio</label>
-                                                        <input type="text" class="form-control beneficio" name="beneficio" value="" disabled style="width: 100%">
+                                                        <input type="text" class="form-control beneficio" name="beneficio" value="" disabled style="width: 100%;color: black">
                                                     </div>
                                                 </div>
                                                 <br>
@@ -874,7 +880,9 @@
                 var costPark = 0;
                 var pricePark = 0;
                 var agencia = 0;
-                $.get('/apartamentos/getPaxPerRooms/'+room).success(function( data ){
+                $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
+                    console.log(data);
+                    console.log(pax);
                     if (pax < data) {
                         $('.pax').attr('style' , 'background-color:red');
                         $('.book_comments').empty();

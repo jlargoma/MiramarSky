@@ -13,7 +13,7 @@
 @section('content')
 <div class="container-fluid padding-25 sm-padding-10">
     <div class="row">
-        <div class="col-md-12 col-xs-12">
+        <div class="col-md-12 col-xs-12 text-center">
             <h2>Usuarios</h2>
         </div>
         <div class="col-md-8">
@@ -34,7 +34,7 @@
                             <th class ="text-center bg-complete text-white" style="width: 25%">Telefono</th>
                             <th class ="text-center bg-complete text-white" style="width: 15%"> Tipo</th>
                             <th class ="text-center bg-complete text-white" style="width: 35%">Email</th>
-                            <th class ="text-center bg-complete text-white" style="width: 25%">Eliminar</th>
+                            <th class ="text-center bg-complete text-white" style="width: 25%">Modificar</th>
 
                         </tr>
                     </thead>
@@ -44,7 +44,7 @@
                                 <td class="text-center hidden">
                                     <input type="text" name="<?php echo $user->id?>" value="<?php echo $user->id?>">
                                 </td>
-                                <td class="text-left "><a class="btn btn-complete update-user" type="button"  data-id="<?php echo $user->id ?>" data-toggle="modal" data-target="#myModal" title="Editar Usuario" ><?php echo $user->name?></a>
+                                <td class="text-center "><?php echo $user->name?>
                                 </td>
                                 <td class="text-center "><?php echo $user->phone?>
                                 </td>
@@ -58,8 +58,9 @@
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <!--  -->
-                                        <a href="{{ url('/admin/usuarios/delete/')}}/<?php echo $user->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Usuario" onclick="return confirm('¿Quieres eliminar el usuario?');">
-                                            <i class="fa fa-trash-o"></i>
+                                        <a class="btn btn-tag btn-complete update-user" type="button"  data-id="<?php echo $user->id ?>" data-toggle="modal" data-target="#myModal" title="Editar Usuario" >
+                                        <!-- <a href="{{ url('/admin/usuarios/delete/')}}/<?php echo $user->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Usuario" onclick="return confirm('¿Quieres eliminar el usuario?');"> -->
+                                            <i class="fa fa-pencil"></i>
                                         </a>
                                     </div>
                                 </td>

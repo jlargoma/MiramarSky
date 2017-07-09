@@ -35,7 +35,9 @@
 
 <div class="container-fluid padding-25 sm-padding-10">
     <div class="row">
-
+        <div class="col-md-12 text-center">
+            <h2>Apartamentos</h2>
+        </div>
         <div class="col-md-8 cols-xs-12 col-sm-12">
             <div class="pull-left">
               <div class="col-xs-12 ">
@@ -43,7 +45,7 @@
               </div>
             </div>
             <div class="clearfix"></div>
-            <table class="table table-hover demo-table-search table-responsive table-striped" id="tableWithSearch">
+            <table class="table table-hover demo-table-search table-responsive " id="tableWithSearch">
                 <thead>
                     <tr>
                         <th class ="text-center hidden">                  ID            </th>
@@ -85,10 +87,10 @@
                                <?php echo $room->user->name?>
                            </td>    
                            <td class="text-center">
-                                <input class="editable minOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->minOcu?>" style="width: 100%;text-align: center;border-style: none none solid">
+                                <input class="editable minOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->minOcu?>" style="width: 100%;text-align: center;border-style: none none ">
                            </td>  
                            <td class="text-center">
-                               <input class="editable maxOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->maxOcu?>" style="width: 100%;text-align: center;border-style: none none solid">
+                               <input class="editable maxOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->maxOcu?>" style="width: 100%;text-align: center;border-style: none none">
                            </td> 
                            <td class="text-center">
                                <?php if ($room->luxury == 0): ?>
@@ -279,7 +281,7 @@
                                                                 <br>
                                                             <div class="input-group">
                                                                 <span class="input-group-addon">
-                                                                    Tamaño de apartamento
+                                                                    Tipo de apartamento
                                                                 </span>
                                                                 <select class="full-width" data-init-plugin="select2" name="type">
                                                                         <option></option>

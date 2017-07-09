@@ -39,6 +39,9 @@
 
 <div class="container-fluid padding-25 sm-padding-10">
     <div class="row">
+        <div class="col-md-12 text-center">
+            <h2>Pagos a propietarios</h2>
+        </div>
         <div class="col-md-12 col-xs-12 push-20">
 
             <div class="col-xs-12 col-md-2 pull-right">
@@ -54,7 +57,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 col-md-offset-1">
            <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSea">
               <thead>
                   <th class ="text-center bg-complete text-white"> Generado    </th>
@@ -77,8 +80,8 @@
 
                     <thead>
                         <th class ="text-center bg-complete text-white"> Nombre    </th>
-                        <th class ="text-center bg-complete text-white"> Apartamento    </th>
-                        <th class ="text-center bg-complete text-white"> Tipo de apto. </th>
+                        <th class ="text-center bg-complete text-white"> Nick    </th>
+                        <th class ="text-center bg-complete text-white"> Tipo </th>
                         <th class ="text-center bg-complete text-white"> Generado </th>
                         <th class ="text-center bg-complete text-white"> Pagado  </th>
                         <th class ="text-center bg-complete text-white"> Pendiente   </th>
@@ -89,7 +92,7 @@
                         <?php foreach ($rooms as $room): ?>
                           <tr style="margin: 0px">
                             <td> <?php echo $room->user->name ?></td>
-                            <td class="text-center"><a class="update-payments" type="button" data-debt="<?php echo $debt[$room->id] ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments" title="Añadir pago" ><?php echo $room->nameRoom ?></a></td>
+                            <td class="text-center"><a style="cursor: pointer" class="update-payments" type="button" data-debt="<?php echo $debt[$room->id] ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments" title="Añadir pago" ><?php echo $room->nameRoom ?></a></td>
                             <td class="text-center"><?php echo $room->typeAptos->name ?></td>
                             <td class="text-center">
                               <?php if (isset($total[$room->id])): ?>

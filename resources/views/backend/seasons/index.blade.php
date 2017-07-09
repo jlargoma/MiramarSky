@@ -54,7 +54,7 @@
                                             
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <a href="{{ url('temporadas/delete/')}}/<?php echo $season->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Temporada" onclick="return confirm('¿Quieres eliminar la temporada?');">
+                                        <a href="{{ url('/admin/temporadas/delete/')}}/<?php echo $season->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Temporada" onclick="return confirm('¿Quieres eliminar la temporada?');">
                                             <i class="fa fa-trash"></i>
                                         </a>                                     
                                     </div>
@@ -129,7 +129,7 @@
                                         <div class="panel-title col-md-6">Temporada
                                         </div>
                                     </div>
-                                    <form role="form"  action="{{ url('temporadas/create') }}" method="post">
+                                    <form role="form"  action="{{ url('/admin/temporadas/create') }}" method="post">
                                         <div class="panel-body">
                                             <div class="col-md-12">
                                                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
