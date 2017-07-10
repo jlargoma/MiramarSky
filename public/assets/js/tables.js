@@ -61,21 +61,16 @@
     var initDetailedViewTable = function() {
 
         var _format = function(d) {
+            var tel = d[2];
             // `d` is the original data object for the row
-            return '<table class="table table-inline">' +
-                '<tr>' +
-                '<td>Learn from real test data <span class="label label-important">ALERT!</span></td>' +
-                '<td>USD 1000</td>' +
-                '</tr>' +
-                '<tr>' +
-                '<td>PSDs included</td>' +
-                '<td>USD 3000</td>' +
-                '</tr>' +
-                '<tr>' +
-                '<td>Extra info</td>' +
-                '<td>USD 2400</td>' +
-                '</tr>' +
-                '</table>';
+            return '<table class="table table-inline" style="margin:0px">' +
+                    '<tr>' +
+                    '<td><a href="tel:'+tel+'"><i class="fa fa-phone"></i></a></td>' +
+                    '<td><i class="fa fa-home"></i></td>' +
+                    '<td><i class="fa fa-users"></i></td>' +
+                    '</tr>' +
+                    '</table>';
+            
         }
 
 

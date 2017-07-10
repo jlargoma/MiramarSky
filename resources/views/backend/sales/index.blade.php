@@ -53,8 +53,10 @@ setlocale(LC_TIME, "es_ES");
 
 <div class="container-fluid padding-5 sm-padding-10">
 
-
     <div class="row">
+    	<div class="col-md-12 text-center">
+    		<h2>Liquidación</h2>
+    	</div>
         <div class="col-md-12">
         	<div class="col-md-6 pull-right">
 

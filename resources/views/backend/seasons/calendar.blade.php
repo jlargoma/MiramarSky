@@ -673,7 +673,7 @@
 </div>
 
 <div style="clear: both;"></div>
-<?php for ($j=0; $j < 12; $j++):
+<?php for ($j=0; $j < 8; $j++):
 
 	$startMonth = $date->copy()->startOfMonth();
 	$endMonth = $date->copy()->endOfMonth();

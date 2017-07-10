@@ -32,6 +32,7 @@
         color: blue;
       }
     </style>
+    
 @endsection
 <?php setlocale(LC_TIME, "ES"); ?>
 <?php setlocale(LC_TIME, "es_ES");?>  
@@ -126,7 +127,7 @@
 
         </div>
         <div class="col-md-8">
-            <div class="pull-right" id="chartContainer" style="height: 300px; width: 73%;"></div>
+            <div class="pull-right" id="chartContainer" style="height: 700px; width: 73%;"></div>
             
 
         </div>
@@ -189,45 +190,61 @@
     window.onload = function () {
        var chart = new CanvasJS.Chart("chartContainer",
        {
-         title:{
-         text: "Grafico  de pagos a propietarios"
-         },
-         axisX: {
-                labelAngle: -90,
-              },
+          title:{
+                  text: "Grafico  de pagos a propietarios"
+                  },
+          axisX: {
+                  labelAngle: -90,
+                  labelFontSize: 15,
+                  },
+          axisY: {
+                  title: "Porcentaje",
+                  labelFontSize: 15,
+                  },
+          dataPointWidth: 25,
            data: [
-         {
+                    {
+                      type: "stackedColumn100",
+                      legendText: "Pagado",
+                      showInLegend: "true",
+                      indexLabel: "{y}",
+                      indexLabelOrientation: "vertical",
+                      indexLabelFontColor: "black",
+                      color: "Green",
+                      bevelEnabled: true,
 
-           type: "stackedColumn",
-           dataPoints: [
-           <?php foreach ($rooms as $room): ?>
-              <?php if (isset($totalPayment[$room->id])): ?>
-                {  y: <?php echo $totalPayment[$room->id] ?> , label: "<?php echo $room->nameRoom ?>"},
-              <?php else: ?>
-                {  y: 0 , label: "<?php echo $room->nameRoom ?>"},
-              <?php endif ?>
-             
-           <?php endforeach ?>
+                      dataPoints: [
+                                   <?php foreach ($rooms as $room): ?>
+                                      <?php if (isset($totalPayment[$room->id])): ?>
+                                        {  y: <?php echo $totalPayment[$room->id] ?> , label: "<?php echo $room->nameRoom ?>"},
+                                      <?php else: ?>
+                                        {  y: 0 , label: "<?php echo $room->nameRoom ?>"},
+                                      <?php endif ?>
+                                     
+                                   <?php endforeach ?>
 
-           ]
-         },  {
-          indexLabel: "#total",
-          indexLabelPlacement: "outside",  
-          indexLabelOrientation: "vertical",
-           type: "stackedColumn",
-            dataPoints: [
-           <?php foreach ($rooms as $room): ?>
-              <?php if (isset($total[$room->id])): ?>
-                {  y: <?php echo $total[$room->id] ?> , label: "<?php echo $room->nameRoom ?>"},
-              <?php else: ?>
-                {  y: 0 , label: "<?php echo $room->nameRoom ?>"},
-              <?php endif ?>
-             
-           <?php endforeach ?>
-
-           ]
-         }
-         ]
+                                  ]
+                    },  
+                    {
+                      indexLabel: "#total",
+                      legendText: "Deuda",
+                      showInLegend: "true",
+                      indexLabelPlacement: "outside", 
+                      indexLabelOrientation: "vertical",
+                      indexLabelFontColor: "black",
+                      type: "stackedColumn100",
+                      color:"LightCoral ",
+                      dataPoints: [
+                                    <?php foreach ($rooms as $room): ?>
+                                      <?php if (isset($debt[$room->id])): ?>
+                                        {  y: <?php echo $debt[$room->id] ?> , label: "<?php echo $room->nameRoom ?>"},
+                                      <?php else: ?>
+                                        {  y: 0 , label: "<?php echo $room->nameRoom ?>"},
+                                      <?php endif ?>
+                                    <?php endforeach ?>
+                                  ]
+                    }
+                  ]
        });
 
        chart.render();

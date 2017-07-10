@@ -42,6 +42,7 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 	Route::get('admin/reservas/getPricePark' , 'BookController@getPricePark');
 	Route::get('admin/reservas/getCostPark' , 'BookController@getCostPark');
 	Route::get('admin/reservas/{month?}' , 'BookController@index');
+	Route::get('admin/reservas/reserva/{id}' , 'BookController@tabReserva');
 
 	
 // Usuarios
@@ -109,7 +110,7 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 //Liquidacion
 	Route::get('admin/liquidacion' , 'LiquidacionController@index');
 	Route::get('admin/liquidacion-apartamentos' , 'LiquidacionController@apto');
-	Route::get('admin/estadisticas' , 'LiquidacionController@stadistics');
+	Route::get('admin/estadisticas' , 'LiquidacionController@Statistics');
 	Route::get('admin/perdidas-ganancias' , 'LiquidacionController@perdidas');
 	
 

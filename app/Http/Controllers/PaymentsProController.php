@@ -65,7 +65,7 @@ class PaymentsProController extends Controller
 
             return view('backend/paymentspro/index',[
                                                         'date'         => $date->subMonth(),
-                                                        'rooms'        => \App\Rooms::where('nameRoom', '!=','o')->get(),
+                                                        'rooms'        => \App\Rooms::whereNotIn('id',[106,107,108,109,111,112,113,126,134])->get(),
                                                         'total'        => $total,
                                                         'totalPayment' => $total_payments,
                                                         'debt'         => $total_debt,
@@ -149,13 +149,13 @@ class PaymentsProController extends Controller
         $payments = \App\PaymentsPro::where('room_id',$id)->where('datePayment','>',$date->copy())->where('datePayment','<',$date->copy()->addYear())->get();
 
         foreach ($payments as $payment) {
-            if ($payment->type == 1) {
+            if ($payment->type == 1 || $payment->type == 2) {
                 if (isset($metalico)) {
                     $metalico += $payment->import;
                 }else{
                     $metalico = $payment->import;
                 }
-            }elseif($payment->type == 2){
+            }elseif($payment->type == 3){
                 if (isset($banco)) {
                     $banco += $payment->import;
                 }else{
@@ -174,6 +174,7 @@ class PaymentsProController extends Controller
             }
         }
         $deuda = ($total - $request->debt)/$total*100;
+
         return view('backend/paymentspro/_form',  [
                                                 'room'        => $room,
                                                 'payments'    => $payments,

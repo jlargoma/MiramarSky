@@ -9,6 +9,7 @@ use \Carbon\Carbon;
 use Auth;
 use Mail;
 use Illuminate\Routing\Controller;
+use App\Classes\Mobile;
 
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
@@ -103,8 +104,9 @@ class BookController extends Controller
                     $arrayBooks["especiales"][] = $book;
                 }
             }
-
-            return view('backend/planning/index',[
+            $mobile = new Mobile();
+            if (!$mobile->isMobile()){
+                return view('backend/planning/index',[
                                                     'arrayBooks'    => $arrayBooks,
                                                     'arrayMonths'   => $arrayMonths,
                                                     'rooms'         => \App\Rooms::all(),
@@ -118,6 +120,22 @@ class BookController extends Controller
                                                     'pagos'         => \App\Payments::all(),
                                                     'days'          => $arrayDays,
                                                     ]);
+            }else{
+                return view('backend/planning/index_mobile',[
+                                                    'arrayBooks'    => $arrayBooks,
+                                                    'arrayMonths'   => $arrayMonths,
+                                                    'rooms'         => \App\Rooms::all(),
+                                                    'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->orderBy('name','DESC')->get(),
+                                                    'arrayReservas' => $arrayReservas,
+                                                    'mes'           => $mes,
+                                                    'date'          => $date->subMonth(),
+                                                    'book'          => new \App\Book(),
+                                                    'extras'        => \App\Extras::all(),
+                                                    'payment'       => $totalPayments,
+                                                    'pagos'         => \App\Payments::all(),
+                                                    'days'          => $arrayDays,
+                                                    ]);
+            }
         }
 
     /**
@@ -488,6 +506,11 @@ class BookController extends Controller
                 }
             }
 
+    //Funcion para coger la reserva mobil
+        public function tabReserva($id){
+            $book = \App\Book::find($id);
+            return $book;
+        }
     public function sendJaime(Request $request)
         {
             $book = \App\Book::find($request->id);

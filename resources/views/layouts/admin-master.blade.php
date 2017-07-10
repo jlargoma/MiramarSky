@@ -128,6 +128,12 @@
 										</a>
 										<span class="{{ Request::path() == '/admin/estadisticas' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa  fa-line-chart"></i></span>
 									</li>
+									<li>
+										<a href="{{ url('admin/perdidas-ganancias') }}" class="detailed">
+											<span class="title">Perdidas y Ganancias</span>
+										</a>
+										<span class="{{ Request::path() == '/admin/perdidas-ganancias' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa  fa-line-chart"></i></span>
+									</li>
 								</ul>
 						</li>
 					</ul>

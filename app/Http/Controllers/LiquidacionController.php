@@ -74,6 +74,11 @@ class LiquidacionController extends Controller
         {
             return view ('backend/sales/perdidas_ganancias');
         }
+    public function statistics()
+        {
+            return view ('backend/sales/statistics');
+        }
+
     /**
      * Show the form for creating a new resource.
      *

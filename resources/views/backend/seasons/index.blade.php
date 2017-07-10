@@ -18,7 +18,9 @@
 
 <div class="container-fluid padding-25 sm-padding-10">
     <div class="row">
-
+        <div class="col-md-12 text-center">
+            <h2>Temporadas</h2>
+        </div>
         <div class="col-md-5">
             <div class="pull-left">
                 <div class="col-xs-12 ">
@@ -64,6 +66,13 @@
                     </tbody>
                 </table>
         </div>
+        <div class="col-md-7">
+            @include('backend.seasons.calendar')
+        </div>
+        
+    </div>
+    <div class="row">
+
         <div class="col-md-4">
             <div class="sm-m-l-5 sm-m-r-5">
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -163,12 +172,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="row">
-
-        <div class="col-md-12">
-            @include('backend.seasons.calendar')
         </div>
     </div>
 </div>

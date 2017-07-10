@@ -39,7 +39,7 @@
                                         <span class="input-group-addon">
                                             <i class="fa fa-eur"></i>
                                         </span>
-                                            <input type="number" class="form-control" name="import" placeholder="Importe" required="" aria-required="true" aria-invalid="false">
+                                            <input type="text" class="form-control" name="import" placeholder="Importe" required="" aria-required="true" aria-invalid="false">
                                     </div>
                                         <br>
                                     <div class="input-group">
@@ -56,6 +56,7 @@
                                             <select class="full-width" data-init-plugin="select2" name="type">
                                                 <option value="1"><?php echo $typePayment->getPaymentType(1) ?></option>
                                                 <option value="2"><?php echo $typePayment->getPaymentType(2) ?></option>
+                                                <option value="3"><?php echo $typePayment->getPaymentType(3) ?></option>
                                             </select>
                                     </div>
                                     <br>
@@ -97,7 +98,7 @@
                                                     <?php echo $payment->comment ?>
                                                 </td>
                                                 <td class="text-center">
-                                                    <?php echo $typePayment->getPaymentType(1) ?>
+                                                    <?php echo $typePayment->getPaymentType($payment->type) ?>
                                                 </td>
                                             </tr>
                                         <?php endforeach ?>
@@ -122,7 +123,11 @@
                                 <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
                                     <thead >
                                         <th class ="text-center bg-complete text-white" style="width:<?php echo $deuda."%" ?>!important"><?php echo number_format($total - $debt,2,',','.') ?></th>
-                                        <th class ="text-center bg-secondary text-black" style="width:<?php echo 100-$deuda."%" ?>!important"><?php echo number_format($debt,2,',','.') ?></th>
+                                        <?php if ($debt == 0): ?>
+                                        <?php else: ?>
+                                            <th class ="text-center bg-secondary text-black" style="width:<?php echo 100-$deuda."%" ?>!important"><?php echo number_format($debt,2,',','.') ?></th>
+                                        <?php endif ?>
+                                        
                                     </thead>
                                 </table>
                             </div>
