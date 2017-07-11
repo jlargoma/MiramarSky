@@ -25,7 +25,7 @@
       .table.table-condensed.table-detailed > thead > tr > th{font-size: 12px!important;margin: 0px!important;padding: 0px!important}
       .fc-border-separate>tbody >tr >td{min-width: 15px!important}
       .table.table-condensed.table-detailed > tbody > tr > td:first-child:before{ display: none!important;}
-      .bg-white{ margin: 0px!important;padding: 0px!important;border-bottom: 0.5px solid;}
+      .bg-white{ margin: 0px!important;padding: 2px!important;border-bottom: 0.5px solid;font-size: 10px!important}
       .reservas{padding: 0px!important;margin-top: 5px;}
 
       .Reservado{
@@ -169,10 +169,10 @@
 
                 <div class="col-xs-12 tipo-reservas text-center text-white" id="pendientes" style="background-color: grey;color: black">PENDIENTES</div>
                   <div class="col-md-12 col-xs-12 reservas pendientes" style="display: none;">
-                    <div class="col-xs-3 text-center bg-complete text-white">NOMBRE</div>
-                    <div class="col-xs-2 text-center bg-complete text-white">IN</div>
-                    <div class="col-xs-2 text-center bg-complete text-white">OUT</div>
-                    <div class="col-xs-5 text-center bg-complete text-white">PVP</div>
+                    <div class="col-xs-3 text-center bg-complete text-white"><b>NOMBRE</b></div>
+                    <div class="col-xs-2 text-center bg-complete text-white"><b>IN</b></div>
+                    <div class="col-xs-2 text-center bg-complete text-white"><b>OUT</b></div>
+                    <div class="col-xs-5 text-center bg-complete text-white"><b>PVP</b></div>
                     <div style="clear: both;"></div>
                     <?php foreach ($arrayBooks["nuevas"] as $key => $book): ?>
                       <div class="desplegable" id="<?php echo $book->id ?>">
@@ -232,10 +232,10 @@
 
                 <div class="col-xs-12 tipo-reservas text-center text-white" id="especiales" style="background-color: grey;color: black;margin-top: 5px">ESPECIALES</div>
                   <div class="col-md-12 col-xs-12 reservas especiales" style="display: none">
-                    <div class="col-xs-3 text-center bg-complete text-white">NOMBRE</div>
-                    <div class="col-xs-3 text-center bg-complete text-white">IN</div>
-                    <div class="col-xs-3 text-center bg-complete text-white">OUT</div>
-                    <div class="col-xs-3 text-center bg-complete text-white">PVP</div>
+                    <div class="col-xs-3 text-center bg-complete text-white"><b>NOMBRE</b></div>
+                    <div class="col-xs-3 text-center bg-complete text-white"><b>IN</b></div>
+                    <div class="col-xs-3 text-center bg-complete text-white"><b>OUT</b></div>
+                    <div class="col-xs-3 text-center bg-complete text-white"><b>PVP</b></div>
                     <div style="clear: both;"></div>
                     <?php foreach ($arrayBooks["especiales"] as $key => $book): ?>
                       <div class="desplegable" id="<?php echo $book->id ?>">
@@ -294,10 +294,10 @@
               <!-- Div pagadas -->
                 <div class="col-xs-12 tipo-reservas text-center text-white" id="pagadas" style="background-color: grey;color: black;margin-top: 5px">PAGADAS</div>
                   <div class="col-md-12 col-xs-12 reservas pagadas" style="display: none;">
-                    <div class="col-xs-3 text-center bg-complete text-white">NOMBRE</div>
-                    <div class="col-xs-2 text-center bg-complete text-white">IN</div>
-                    <div class="col-xs-2 text-center bg-complete text-white">OUT</div>
-                    <div class="col-xs-5 text-center bg-complete text-white">PVP/COBRADO</div>
+                    <div class="col-xs-3 text-center bg-complete text-white"><b>NOMBRE</b></div>
+                    <div class="col-xs-2 text-center bg-complete text-white"><b>IN</b></div>
+                    <div class="col-xs-2 text-center bg-complete text-white"><b>OUT</b></div>
+                    <div class="col-xs-5 text-center bg-complete text-white"><b>PVP/COBRADO</b></div>
                     <div style="clear: both;"></div>
                     <?php foreach ($arrayBooks["pagadas"] as $key => $book): ?>
                       <div class="desplegable" id="<?php echo $book->id ?>">
@@ -314,7 +314,7 @@
                               echo $finish->formatLocalized('%d %b');
                           ?>
                         </div>
-                        <div class="col-xs-5 text-center bg-white"><?php echo $book->total_price ?>€/
+                        <div class="col-xs-5 text-center bg-white"><?php echo number_format($book->total_price,2,',','.') ?>€/
                                                                     <?php if (isset($payment[$book->id])): ?>
                                                                         <b style="color: red"><?php echo $payment[$book->id] ?>€</b>
                                                                     <?php else: ?>
@@ -549,7 +549,7 @@
         }
         
       });
-      
+
     $('#date').change(function(event) {
         
         var month = $(this).val();
