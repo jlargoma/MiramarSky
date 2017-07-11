@@ -39,9 +39,6 @@
 						<li>
 							<a class="map" href="https://www.google.es/maps/place/Av.+Quitapesares,+20,+28670+Villaviciosa+de+Od%C3%B3n,+Madrid/@40.3500423,-3.9011227,17z/data=!3m1!4b1!4m5!3m4!1s0xd418e238472183f:0x5217e4e5e7d47fd3!8m2!3d40.3500423!4d-3.898934" ><i class="fa fa-map-marker fa-2x"></i></a>
 						</li>
-						<li>
-							<a class="phone" href="tel:911723217"><i class="fa fa-phone fa-2x"></i></a>
-						</li>
 					</ul>
 				</div>
 			</div>
@@ -73,6 +70,11 @@
 			<nav id="primary-menu" class="with-arrows">
 
 				<ul>
+					<?php if (Request::path() != '/'): ?>
+						<li>
+							<a href="{{ url('/') }}"><div>Home</div></a></li>
+						</li>
+					<?php endif ?>
 					<li class="mega-menu"><a href="#"><div>Apartamentos</div></a>
 						<div class="mega-menu-content style-2 clearfix">
 							<ul class="mega-menu-column col-md-6">
@@ -104,9 +106,9 @@
 							</ul>
 						</div>
 					</li>
-					<li>
+					<!-- <li>
 						<a href="{{ url('/reserva') }}"><div>Reserva</div></a></li>
-					</li>
+					</li> -->
 					<li>
 						<a href="{{ url('/actividades') }}"><div>Actividades</div></a></li>
 					</li>

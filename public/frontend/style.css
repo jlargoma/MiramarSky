@@ -14281,9 +14281,25 @@ td.clases h3.name{
 .line-promo{
 	letter-spacing: 0; 
 	line-height: 1;
-    background: #3F51B5!important;
+    /*background: #3F51B5!important;*/
+    /*color: white!important;*/
+    background: white!important;
+    color: #3F51B5!important;
+
+}
+#banner-offert{
+	background: #3F51B5!important;
+    color: white!important;
+    padding: 45px 35px;
+}
+#banner-offert:hover{
+	background: #3F51B5!important;
     color: white!important;
 }
+
+
+
+
 .line-promo .button.button-desc.button-border.button-rounded.center{
 	border-color: #FFF;
 	color: #FFF;

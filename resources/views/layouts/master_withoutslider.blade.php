@@ -45,7 +45,7 @@
 	</style>
 </head>
 
-<body class="stretched">
+<body class="stretched no-transition">
 
 	<!-- Document Wrapper
 	============================================= -->

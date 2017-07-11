@@ -20,19 +20,19 @@
             <div class="form-group col-sm-12 col-xs-6 col-md-3 white">
                 <label style="display: inherit!important;">*Entrada - Salida</label>
                 <div class="input-group">
-                    <input type="text" class="sm-form-control daterange1" id="date"   name="date" required>
+                    <input type="text" class="sm-form-control daterange1" id="date"   name="date" required style="cursor: pointer;">
                 </div>
                 <p class="help-block white hidden-sm hidden-xs" style="line-height:1.2">La entrada es a partir de la 16:00 pm
                     <br><b>* ESTANCIA MÍNIMA: 2 NOCHES</b>
                 </p>
             </div>
-            <div class="form-group col-sm-12 col-xs-6 col-md-2 white">
+            <div class="form-group col-sm-12 col-xs-6 col-md-1 white">
            		<label style="display: inherit!important;">*Ocupantes</label>
             	<div class="quantity center clearfix divcenter">
 					<!-- <input type="button" value="-" class="minus black" style=" color: black;">
 					<input id="quantity" type="text" name="quantity" value="4" class="qty" style="background: white; color: black;"> -->
                     <select id="quantity" class="sm-form-control" name="quantity">
-                        <?php for ($i = 1;  $i < 8 ; $i++): ?>
+                        <?php for ($i = 1;  $i <= 8 ; $i++): ?>
                             <option value="<?php echo $i ?>"><?php echo $i ?></option>
                         <?php endfor ?>
                     </select>
@@ -40,9 +40,9 @@
 				</div>
                 
                 <p class="help-block white hidden-sm hidden-xs" style="line-height:1.2">Máximo 8 personas</p>
-                <p class="help-block white hidden-sm hidden-xs" style="color: white; line-height:1.2;">    
+               <!--  <p class="help-block white hidden-sm hidden-xs" style="color: white; line-height:1.2;">    
                     <b>* SOLICITAR APTO DOS DORM 6 PAX</b>
-                </p>
+                </p> -->
             </div>
             
             <div class="form-group col-sm-12 col-xs-4 col-md-3" style="padding: 0">

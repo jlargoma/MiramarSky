@@ -1,4 +1,5 @@
 @extends('layouts.master')
+@section('title')Alquiler de apartamentos de lujo en Sierra Nievada a pie de pista @endsection
 
 @section('content')
 <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
@@ -16,24 +17,27 @@
 			</style>
 	       	<section class="page-section">
 
-	   			<div id="banner-offert" class="button button-full center tright footer-stick line-promo" style="padding: 0;;margin-bottom: 0px!important;"  data-animate="bounceIn">
+	   			<div id="line-banner-offert"  class=" center tright footer-stick line-promo" style="padding: 0;margin-bottom: 0px!important;">
 	   				<div class="row" style="padding: 0 15px;">
 	   					
-	   					<div id class="col-xs-12 center  font-w300 text-center" style="padding: 20px 0">
-			                <div id="typed-strings">
-							  	<p><span class="font-w800">SOLICITA TU RESERVA</span> ¡COMIENZA TUS VACACIONES YA!</p>
+	   					<div class="col-xs-12 center  font-w300 text-center" style="padding: 20px 0">
+			                
+			                <div id="banner-offert" class="button button-desc button-border button-rounded center">
+				               SOLICITA TU RESERVA
 			                </div>
-			                <span id="typed" style="white-space:pre;"></span>
-			                <div id="btn-hover-banner" class="button button-desc button-border button-rounded center">RESERVAR YA!</div>
 		              	</div>
 	               		
 					</div>
 	   			</div>
 	   			<div class="row" style="background-color: #3F51B5;">
+	   				
 	   				<div id="content-book" class="container clearfix push-10" style="display: none;">
 	   					<div class="tabs advanced-real-estate-tabs clearfix">
 
 	   						<div class="tab-container" style="padding: 20px 0; background-color: #3F51B5;">
+	   							<div id="close-form-book" style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
+	   								<span class="white text-white"><i class="fa fa-times fa-2x"></i></span>
+	   							</div>
 	   							<div class="container clearfix">
 	   								<div class="tab-content clearfix" id="content-book-response">
 										<div class="col-xs-12">
@@ -49,7 +53,7 @@
 	   				</div>
 	   			</div>
 
-	   			<div class="row push-20">
+	   			<div class="row push-20" style="margin-top: 20px;">
 	   				<h2 class="text-center black font-w300">
 	   					NUESTROS <span class="font-w800 green ">APARTAMENTOS</span>
 	   				</h2>
@@ -140,9 +144,7 @@
 
 	       		<div class="row clearfix common-height">
 
-	       			<div class="col-md-6 center col-padding hidden-sm hidden-xs" style="background: url({{ asset('/img/miramarski/Piso-8D-11.jpg') }}) center center / cover no-repeat; ">
-	       				<div>&nbsp;</div>
-	       			</div>
+	       			
 
 	       			<div class="col-md-6 center col-padding" style="background-color: rgb(255, 255, 255); height: 674px;">
 	       				<div>
@@ -164,6 +166,10 @@
 	       				</div>
 	       			</div>
 
+	       			<div class="col-md-6 center col-padding hidden-sm hidden-xs" style="background: url({{ asset('/img/miramarski/Piso-8D-11.jpg') }}) center center / cover no-repeat; ">
+	       				<div>&nbsp;</div>
+	       			</div>
+
 	       		</div>
 	       	</section>
    		<!-- END DESKTOP -->
@@ -175,19 +181,37 @@
 				}
 			</style>
 	       	<section class="page-section push-30" style="letter-spacing: 0;line-height: 1;background: #3f51b5!important;color: #fff!important;">
-	   			<div id="banner-offert" class="button button-full center tright footer-stick line-promo" style="padding: 0;margin-bottom: 0px!important;"  data-animate="bounceIn">
+	   			<div id="line-banner-offert"  class=" center tright footer-stick line-promo" style="padding: 0;margin-bottom: 0px!important;">
 	   				<div class="row" style="padding: 0 15px;">
 	   					
-	   					<div id class="col-xs-12 center  font-w300 text-center" style="padding: 20px 0">
-			                <div id="btn-hover-banner" class="button button-desc button-border button-rounded center">RESERVAR YA!</div>
+	   					<div class="col-xs-12 center  font-w300 text-center" style="padding: 20px 0">
+			                
+			                <div id="banner-offert" class="button button-desc button-border button-rounded center">
+				               SOLICITA TU RESERVA
+			                </div>
 		              	</div>
 	               		
 					</div>
 	   			</div>
+	   			<div class="row" style="background-color: #3F51B5;">
+	   				
+	   				<div id="content-book" class="container container-mobile clearfix push-10" style="display: none;">
+	   					<div class="tabs advanced-real-estate-tabs clearfix">
 
-	   			<div id="content-book" class="container-mobile clearfix " style="display: none;">
-	   				<div class="tabs advanced-real-estate-tabs clearfix" id="content-book-response">
-						@include('frontend._formBook')	
+	   						<div class="tab-container" style="padding: 20px 0; background-color: #3F51B5;">
+	   							<div id="close-form-book" style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
+	   								<span class="white text-white"><i class="fa fa-times fa-2x"></i></span>
+	   							</div>
+	   								<div class="tab-content clearfix" id="content-book-response">
+										<div class="col-xs-12">
+											<h3 class="text-center white">FORMULARIO DE RESERVA</h3>
+										</div>
+
+	   									@include('frontend._formBook')
+	   								</div>
+	   						</div>
+
+	   					</div>
 	   				</div>
 	   			</div>
 
@@ -292,7 +316,36 @@
 			"applyClass": "button-color",
 			"cancelClass": "button-light",
 		 	locale: {
-		      format: 'DD/MM/YYYY'
+		      format: 'DD/MM/YYYY',
+		      "applyLabel": "Aplicar",
+		        "cancelLabel": "Cancelar",
+		        "fromLabel": "From",
+		        "toLabel": "To",
+		        "customRangeLabel": "Custom",
+		        "daysOfWeek": [
+		            "Do",
+		            "Lu",
+		            "Mar",
+		            "Mi",
+		            "Ju",
+		            "Vi",
+		            "Sa"
+		        ],
+		        "monthNames": [
+		            "Enero",
+		            "Febrero",
+		            "Marzo",
+		            "Abril",
+		            "Mayo",
+		            "Junio",
+		            "Julio",
+		            "Agosto",
+		            "Septiembre",
+		            "Octubre",
+		            "Noviembre",
+		            "Diciembre"
+		        ],
+		        "firstDay": 1,
 		    },
 		    
 		});
@@ -319,6 +372,25 @@
 			$('#content-book-response').empty().append(data);
 		});
 
+	});
+
+	$('#banner-offert').click(function(event) {
+		$('#content-book').show('400');
+		$('#banner-offert').hide();
+		$('#line-banner-offert').hide();
+
+		$('html, body').animate({
+		       scrollTop: $("#content-book").offset().top - 60
+		   }, 2000);
+	});
+
+	$('#close-form-book').click(function(event) {
+		$('#banner-offert').show();
+		$('#line-banner-offert').show();
+		$('#content-book').hide('100');
+			$('html, body').animate({
+			       scrollTop: $("body").offset().top
+			   }, 2000);
 	});
 </script>	
 @endsection

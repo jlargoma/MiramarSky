@@ -80,7 +80,9 @@ class HomeController extends Controller
         $slides = File::allFiles(public_path().'/img/miramarski/galerias/'.$url); 
         $aptos  = ['apartamento-lujo-sierra-nevada', 'estudio-lujo-sierra-nevada','apartamento-standard-sierra-nevada','estudio-standard-sierra-nevada'];
 
-        return view('frontend.pages._apartamento', [ 
+
+        if ($url == "apartamento-standard-sierra-nevada") {
+             return view('frontend.pages._apartamento2', [ 
                                                         'slides'            => $slides, 
                                                         'mobile'            => new Mobile(),
                                                         'aptoHeading'       => $aptoHeading,
@@ -89,6 +91,19 @@ class HomeController extends Controller
                                                         'aptos'             => $aptos,
                                                         'url'               => $url,
                                                     ]);
+        }else{
+            return view('frontend.pages._apartamento', [ 
+                                                            'slides'            => $slides, 
+                                                            'mobile'            => new Mobile(),
+                                                            'aptoHeading'       => $aptoHeading,
+                                                            'aptoHeadingMobile' => $aptoHeadingMobile,
+                                                            'typeApto'          => $typeApto,
+                                                            'aptos'             => $aptos,
+                                                            'url'               => $url,
+                                                        ]);
+        }
+
+       
     }
     
     public function edificio(){
@@ -224,7 +239,7 @@ class HomeController extends Controller
                                                         'id_apto' => $roomAssigned,
                                                         'pax'     => $pax,
                                                         'nigths'  => $countDays,
-                                                        'apto'    => ($request->input('apto') == '2dorm')?'Apartamento': 'estudio',
+                                                        'apto'    => ($request->input('apto') == '2dorm')?'Apto 2 DORM': 'Estudio',
                                                         'name'    => $request->input('name'),
                                                         'phone'   => $request->input('phone'),
                                                         'email'   => $request->input('email'),

@@ -14,7 +14,7 @@
 
 				<div class="clear"></div>
 
-				<i class="fa fa-envelope"></i><a href="mailto:info@apartamentosierranevada.net">info@apartamentosierranevada.net</a> <span class="middot">·</span> <i class="fa fa-phone"></i> <a href="tel:XXXXXXXXX" style="font-size: 17px">XXXXXXXXX</a> 
+				<i class="fa fa-envelope"></i><a href="mailto:info@apartamentosierranevada.net">info@apartamentosierranevada.net</a> <span class="middot">
 			</div>
 
 		</div>
