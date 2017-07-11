@@ -24,6 +24,8 @@
       .table.table-condensed.table-detailed > tbody > tr > td{font-size: 10px!important;margin: 0px!important;padding: 0px!important}
       .table.table-condensed.table-detailed > thead > tr > th{font-size: 12px!important;margin: 0px!important;padding: 0px!important}
       .table.table-condensed.table-detailed > tbody > tr > td:first-child:before{ display: none!important;}
+      .bg-white{ margin: 0px!important;padding: 0px!important;border-bottom: 0.5px solid;}
+
       /*.row-details{pointer-events: none;}*/
     </style>
 @section('content')
@@ -88,6 +90,65 @@
                   </tbody>
                 </table>
               </div>
+              <div class="col-md-12 col-xs-12">
+                <div class="col-xs-3 text-center bg-complete text-white">NOMBRE</div>
+                <div class="col-xs-3 text-center bg-complete text-white">IN</div>
+                <div class="col-xs-3 text-center bg-complete text-white">OUT</div>
+                <div class="col-xs-3 text-center bg-complete text-white">PVP</div>
+                <div style="clear: both;"></div>
+                <?php foreach ($arrayBooks["nuevas"] as $key => $book): ?>
+                  <div class="desplegable" id="<?php echo $book->id ?>">
+                    <div class="col-xs-3 text-center bg-white nombre" ><?php echo substr($book->customer['name'] , 0,7) ?></div>
+                    <div class="col-xs-3 text-center bg-white">
+                      <?php
+                          $start = Carbon::createFromFormat('Y-m-d',$book->start);
+                          echo $start->formatLocalized('%d %b');
+                      ?>
+                    </div>
+                    <div class="col-xs-3 text-center bg-white">
+                      <?php
+                          $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
+                          echo $finish->formatLocalized('%d %b');
+                      ?>
+                    </div>
+                    <div class="col-xs-3 text-center bg-white"><?php echo $book->total_price ?></div>
+                  </div>
+                  <div style="clear: both;"></div>
+                  <div style="display:none" class="oculto" id="div-<?php echo $book->id; ?>">
+                      <div class="col-xs-1"><a href="tel:<?php echo $book->customer['phone'] ?>"><i class="fa fa-phone fa-2x"></i></a></div>
+                      <div class="col-xs-1"><a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><i class="fa fa-pencil fa-2x"></i></a></div>
+                      <div class="col-xs-3">
+                          <select class="room" data-id="<?php echo $book->id ?>" >
+                              
+                              <?php foreach ($rooms as $room): ?>
+                                  <?php if ($room->id == $book->room_id): ?>
+                                      <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
+                                          <?php echo substr($room->name,0,5) ?>
+                                      </option>
+                                  <?php else:?>
+                                      <option value="<?php echo $room->id ?>"><?php echo substr($room->name,0,5) ?></option>
+                                  <?php endif ?>
+                              <?php endforeach ?>
+
+                          </select>
+                      </div>
+                      <div class="col-xs-5">
+                          <select class="status form-control" data-id="<?php echo $book->id ?>" >
+                              <?php for ($i=1; $i < 9; $i++): ?> 
+                                  <?php if ($i == $book->type_book): ?>
+                                      <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
+                                  <?php else: ?>
+                                      <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
+                                  <?php endif ?>                                          
+                                   
+                              <?php endfor; ?>
+                          </select>
+                      </div>
+
+                  </div>
+                  <div style="clear: both;"></div>
+                <?php endforeach ?>
+              </div>
             </div>
           </div>
           <!-- END PANEL -->
@@ -135,6 +196,14 @@
 
 <script>     
 
+  $(document).ready(function() {            
+    $(".oculto").hide();              
+      $(".desplegable").click(function(){
+        var id = $(this).attr('id');
+        $('.oculto').hide();
+        $('#div-'+id).show();
+      });
+  });
 
   
 </script>
