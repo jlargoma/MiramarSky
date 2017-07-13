@@ -282,10 +282,10 @@
                         <div class="tab-pane active" id="tabPendientes">
                             <div class="row column-seperation">
                                 <div class="pull-left">
-                                        <div class="col-xs-12 ">
-                                            <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
-                                        </div>
+                                    <div class="col-xs-12 ">
+                                        <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
                                     </div>
+                                </div>
                             
                                     <div class="clearfix"></div>
         

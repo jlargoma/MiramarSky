@@ -93,7 +93,7 @@ class BookController extends Controller
             } 
 
             $start = new Carbon('first day of September 2016');
-            $books = \App\Book::where('start','>',$start)->orderBy('start','desc')->get();
+            $books = \App\Book::where('start','>',$start)->orderBy('start','ASC')->get();
 
             foreach ($books as $key => $book) {
                 if ($book->type_book == 1 || $book->type_book == 3 || $book->type_book == 4 || $book->type_book == 5 || $book->type_book == 6 ) {

@@ -62,11 +62,14 @@
 
         var _format = function(d) {
             var tel = d[2];
+            var price = d[7];
             // `d` is the original data object for the row
             return '<table class="table table-inline" style="margin:0px">' +
                     '<tr>' +
-                    '<td><a href="tel:'+tel+'"><i class="fa fa-phone"></i></a></td>' +
-                    '<td><i class="fa fa-home"></i></td>' +
+                    '<td><a href="tel:'+tel+'"><i class="fa fa-phone fa-2x"></i></a></td>' +
+                    '<td>'+price+' €</td>' +
+                    '<td><i class="fa fa-users"></i></td>' +
+                    '<td><i class="fa fa-users"></i></td>' +
                     '<td><i class="fa fa-users"></i></td>' +
                     '</tr>' +
                     '</table>';
@@ -79,7 +82,7 @@
         table.DataTable({
             "sDom": "t",
             "scrollCollapse": true,
-            "paging": false,
+            "paging": true,
             "bSort": false
         });
 
