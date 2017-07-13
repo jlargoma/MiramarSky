@@ -116,12 +116,121 @@
             </div>
             <div class="panel-body">
 
-            
+            <!-- <div class="table-responsive">
+              <table class="table table-hover table-condensed table-detailed" id="detailedTable">
+                <thead>
+                  <tr>
+                    <th class="text-center bg-complete text-white" hidden="">ID</th>
+                    <th class="text-center bg-complete text-white" style="width:25%">Nombre</th>
+                    <th class="text-center bg-complete text-white" hidden>Telefono</th>
+                    <th class="text-center bg-complete text-white">In</th>
+                    <th class="text-center bg-complete text-white">Out</th>
+                    <th class="text-center bg-complete text-white">Pax</th>
+                    <th class="text-center bg-complete text-white">Pax</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php foreach ($arrayBooks["nuevas"] as $book): ?>
+                    <tr> 
+                        <td hidden><?php echo $book->id ?></td>
+                        <td class="v-align-middle semi-bold text-center"><?php echo $book->customer['name']  ?></td>
+                        <td class="v-align-middle semi-bold text-center" hidden><?php echo $book->customer['phone']  ?></td>
+                        <td class="v-align-middle semi-bold text-center">
+                          <?php
+                              $start = Carbon::createFromFormat('Y-m-d',$book->start);
+                              echo $start->formatLocalized('%d %b');
+                          ?>
+                        </td>
+                        <td class="v-align-middle semi-bold text-center">
+                          <?php
+                              $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
+                              echo $finish->formatLocalized('%d %b');
+                          ?>
+                        </td>
+                        <td class="v-align-middle semi-bold text-center"><?php echo $book->pax ?></td>
+                        <td class="v-align-middle semi-bold text-center">
+                          <select class="room" data-id="<?php echo $book->id ?>" >                                                              
+                            <?php foreach ($rooms as $room): ?>
+                                <?php if ($room->id == $book->room_id): ?>
+                                    <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
+                                        <?php echo substr($room->name,0,5) ?>
+                                    </option>
+                                <?php else:?>
+                                    <option value="<?php echo $room->id ?>"><?php echo substr($room->name,0,5) ?></option>
+                                <?php endif ?>
+                            <?php endforeach ?>
+                          </select>
+                        </td>
+                    </tr>
+                  <?php endforeach ?>
+                </tbody>
+              </table>
+            </div> -->
               
               <!-- Div de pendientes -->
         
                 <div class="col-xs-12 tipo-reservas text-center text-white" id="pendientes" style="background-color: grey;color: black">PENDIENTES</div>
+                  
+                  <!-- <div class="col-md-12 col-xs-12 reservas pendientes" style="display: none;">
+                    <div class="col-xs-3 text-center bg-complete text-white"><b>NOMBRE</b></div>
+                    <div class="col-xs-2 text-center bg-complete text-white"><b>IN</b></div>
+                    <div class="col-xs-2 text-center bg-complete text-white"><b>OUT</b></div>
+                    <div class="col-xs-5 text-center bg-complete text-white"><b>PVP</b></div>
+                    <div style="clear: both;"></div>
+                    <?php foreach ($arrayBooks["nuevas"] as $key => $book): ?>
+                      <div class="desplegable" id="<?php echo $book->id ?>">
+                        <div class="col-xs-3 text-center bg-white nombre" ><?php echo substr($book->customer['name'] , 0,7) ?></div>
+                        <div class="col-xs-2 text-center bg-white">
+                          <?php
+                              $start = Carbon::createFromFormat('Y-m-d',$book->start);
+                              echo $start->formatLocalized('%d %b');
+                          ?>
+                        </div>
+                        <div class="col-xs-2 text-center bg-white">
+                          <?php
+                              $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
+                              echo $finish->formatLocalized('%d %b');
+                          ?>
+                        </div>
+                        <div class="col-xs-5 text-center bg-white"><?php echo $book->total_price ?>€</div>
+                      </div>
+                      <div style="clear: both;"></div>
+                      <div style="display:none" class="oculto" id="div-<?php echo $book->id; ?>">
+                          <div class="col-xs-2"><a href="tel:<?php echo $book->customer['phone'] ?>"><i class="fa fa-phone fa-2x"></i></a></div>
+                          <div class="col-xs-2"><a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><i class="fa fa-pencil fa-2x"></i></a></div>
+                          <div class="col-xs-3">
+                              <select class="room" data-id="<?php echo $book->id ?>" >
+                                  
+                                  <?php foreach ($rooms as $room): ?>
+                                      <?php if ($room->id == $book->room_id): ?>
+                                          <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
+                                              <?php echo substr($room->name,0,5) ?>
+                                          </option>
+                                      <?php else:?>
+                                          <option value="<?php echo $room->id ?>"><?php echo substr($room->name,0,5) ?></option>
+                                      <?php endif ?>
+                                  <?php endforeach ?>
 
+                              </select>
+                          </div>
+                          <div class="col-xs-5">
+                              <select class="status form-control" data-id="<?php echo $book->id ?>" >
+                                  <?php for ($i=1; $i < 9; $i++): ?> 
+                                      <?php if ($i == $book->type_book): ?>
+                                          <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
+                                      <?php else: ?>
+                                          <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
+                                      <?php endif ?>                                          
+                                       
+                                  <?php endfor; ?>
+                              </select>
+                          </div>
+
+                      </div>
+                      <div style="clear: both;"></div>
+                    <?php endforeach ?>
+                  </div>  -->
+                  
                   <div class="col-md-12 col-xs-12 reservas pendientes" style="display: none">
                     
                      <!--  <table class="table table-hover table-condensed table-detailed" id="detailedTable">
@@ -389,84 +498,84 @@
                             <tbody>
                                 <?php foreach ($arrayBooks["pagadas"] as $book): ?>
                                   <tr>
-                                      <td class ="text-center">                                                    
-                                          <?php if (isset($payment[$book->id])): ?>
-                                              <?php if ($payment[$book->id] == 0): ?>
-                                              <?php else:?>
-                                                  <p><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></p>
-                                                  <div class="progress ">
-                                                  <div class="progress-bar progress-bar-danger" style="width:<?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?>"></div>
-                                                  </div>                                                            
-                                              <?php endif; ?>
-                                          <?php else: ?>
-                                          <?php endif ?>
-                                      </td> 
-                                      <td class ="text-center">
-                                              <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo substr($book->customer['name'], 0,10)  ?></a>                                                        
-                                      </td>
+                                    <td class ="text-center">                                                    
+                                        <?php if (isset($payment[$book->id])): ?>
+                                            <?php if ($payment[$book->id] == 0): ?>
+                                            <?php else:?>
+                                                <p><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></p>
+                                                <div class="progress ">
+                                                <div class="progress-bar progress-bar-danger" style="width:<?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?>"></div>
+                                                </div>                                                            
+                                            <?php endif; ?>
+                                        <?php else: ?>
+                                        <?php endif ?>
+                                    </td> 
+                                    <td class ="text-center">
+                                            <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo substr($book->customer['name'], 0,10)  ?></a>                                                        
+                                    </td>
 
-                                      <td class ="text-center"><a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone fa-2x"></i></td>
-                                      <td class ="text-center"><?php echo $book->pax ?></td>
-                                      <td class ="text-center">
-                                          <select class="room" data-id="<?php echo $book->id ?>" >
-                                              
-                                              <?php foreach ($rooms as $room): ?>
-                                                  <?php if ($room->id == $book->room_id): ?>
-                                                      <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                                          <?php echo substr($room->name,0,5) ?>
-                                                      </option>
-                                                  <?php else:?>
-                                                      <option value="<?php echo $room->id ?>"><?php echo substr($room->name,0,5) ?></option>
-                                                  <?php endif ?>
-                                              <?php endforeach ?>
+                                    <td class ="text-center"><a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone fa-2x"></i></td>
+                                    <td class ="text-center"><?php echo $book->pax ?></td>
+                                    <td class ="text-center">
+                                        <select class="room" data-id="<?php echo $book->id ?>" >
+                                            
+                                            <?php foreach ($rooms as $room): ?>
+                                                <?php if ($room->id == $book->room_id): ?>
+                                                    <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
+                                                        <?php echo substr($room->name,0,5) ?>
+                                                    </option>
+                                                <?php else:?>
+                                                    <option value="<?php echo $room->id ?>"><?php echo substr($room->name,0,5) ?></option>
+                                                <?php endif ?>
+                                            <?php endforeach ?>
 
-                                          </select>
-                                      </td>
-                                      <td class ="text-center" style="width: 20%!important">
-                                          <?php
-                                              $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                              echo $start->formatLocalized('%d %b');
-                                          ?>
-                                      </td>
-                                      <td class ="text-center" style="width: 20%!important">
-                                          <?php
-                                              $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                              echo $finish->formatLocalized('%d %b');
-                                          ?>
-                                      </td>
-                                      <td class ="text-center"><?php echo $book->nigths ?></td>
-                                      <td class ="text-center"><?php echo $book->total_price."€" ?><br>
-                                                              <?php if (isset($payment[$book->id])): ?>
-                                                                  <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
-                                                              <?php else: ?>
-                                                              <?php endif ?>
-                                      </td>
-                                      <td class ="text-center">
-                                          <select class="status form-control" data-id="<?php echo $book->id ?>" >
-                                              <?php for ($i=1; $i < 9; $i++): ?> 
-                                                  <?php if ($i == $book->type_book): ?>
-                                                      <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
-                                                  <?php else: ?>
-                                                      <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
-                                                  <?php endif ?>                                          
-                                                   
-                                              <?php endfor; ?>
-                                          </select>
-                                      </td>
-                                      <td>
-                                          <div class="btn-group col-md-6">
-                                              <!--  -->
-                                              <!-- <?php if ($book->customer['phone'] != 0): ?>
-                                                      <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->customer['phone'] ?>"><i class="pg-phone"></i>
-                                                      </a>
-                                              <?php endif ?> -->
-                                              
-                                              <?php if ($book->send == 0): ?>
-                                                  <a class="btn btn-tag btn-primary" ><i class=" pg-mail"></i></a>
-                                                  </a>
-                                              <?php else: ?>
-                                              <?php endif ?>
-                                      </td>
+                                        </select>
+                                    </td>
+                                    <td class ="text-center" style="width: 20%!important">
+                                        <?php
+                                            $start = Carbon::createFromFormat('Y-m-d',$book->start);
+                                            echo $start->formatLocalized('%d %b');
+                                        ?>
+                                    </td>
+                                    <td class ="text-center" style="width: 20%!important">
+                                        <?php
+                                            $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
+                                            echo $finish->formatLocalized('%d %b');
+                                        ?>
+                                    </td>
+                                    <td class ="text-center"><?php echo $book->nigths ?></td>
+                                    <td class ="text-center"><?php echo $book->total_price."€" ?><br>
+                                                            <?php if (isset($payment[$book->id])): ?>
+                                                                <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
+                                                            <?php else: ?>
+                                                            <?php endif ?>
+                                    </td>
+                                    <td class ="text-center">
+                                        <select class="status form-control" data-id="<?php echo $book->id ?>" >
+                                            <?php for ($i=1; $i < 9; $i++): ?> 
+                                                <?php if ($i == $book->type_book): ?>
+                                                    <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
+                                                <?php else: ?>
+                                                    <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
+                                                <?php endif ?>                                          
+                                                 
+                                            <?php endfor; ?>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group col-md-6">
+                                            <!--  -->
+                                            <!-- <?php if ($book->customer['phone'] != 0): ?>
+                                                    <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->customer['phone'] ?>"><i class="pg-phone"></i>
+                                                    </a>
+                                            <?php endif ?> -->
+                                            
+                                            <?php if ($book->send == 0): ?>
+                                                <a class="btn btn-tag btn-primary" ><i class=" pg-mail"></i></a>
+                                                </a>
+                                            <?php else: ?>
+                                            <?php endif ?>
+                                    </td>
                                   </tr>
                                 <?php endforeach ?>
                             </tbody>
