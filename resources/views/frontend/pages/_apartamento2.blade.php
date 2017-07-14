@@ -21,47 +21,52 @@
 				<h2 class="center hidden-sm hidden-xs psuh-20"><?php echo strtoupper($aptoHeading); ?></h2>
 				<h2 class="center hidden-lg hidden-md push-10"><?php echo strtoupper($aptoHeadingMobile); ?></h2>
 				
-				<div class="col-xs-12 push-20">
-					<div class="fslider" data-easing="easeInQuad">
-						<div class="flexslider">
-							<div class="slider-wrap">
-								<?php foreach ($slides as $key => $slide): ?>
-									<div class="slide" data-thumb="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>">
-										<a href="#">
-											<img src="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>" alt="<?php echo $slide->getFilename() ?>" style="max-height: 400px;">
-											<div class="flex-caption slider-caption-bg"><?php echo $slide->getFilename() ?></div>
-										</a>
-									</div>
-								<?php endforeach ?>
-							</div>
+			</div>
+		</div>
+		
+		<div class="row clearfix  push-30">
+			<div class="col-xs-12 col-md-6">
+				<div class="fslider" data-easing="easeInQuad">
+					<div class="flexslider">
+						<div class="slider-wrap">
+							<?php foreach ($slides as $key => $slide): ?>
+								<div class="slide" data-thumb="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>">
+									<a href="#">
+										<img src="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>" alt="<?php echo $slide->getFilename() ?>" style="max-height: 500px;">
+										<div class="flex-caption slider-caption-bg"><?php echo $slide->getFilename() ?></div>
+									</a>
+								</div>
+							<?php endforeach ?>
 						</div>
 					</div>
 				</div>
+			</div>
 
-				<div class="col-xs-12 clearfix center push-30">
+			<div class="col-xs-12 col-md-6 clearfix center">
 
-					<?php if ($typeApto == 1): ?>
-						@include('frontend.pages._infoAptoLujo')
-					<?php elseif($typeApto == 2): ?>
-						@include('frontend.pages._infoAptoStandard')
-					<?php elseif($typeApto == 3): ?>
-						@include('frontend.pages._infoEstudioLujo')
-					<?php elseif($typeApto == 4): ?>
-						@include('frontend.pages._infoEstudioStandard')
-					<?php endif ?>
+					<div class="col-md-12">
+						<?php if ($typeApto == 1): ?>
+							@include('frontend.pages._infoAptoLujo')
+						<?php elseif($typeApto == 2): ?>
+							@include('frontend.pages._infoAptoStandard')
+						<?php elseif($typeApto == 3): ?>
+							@include('frontend.pages._infoEstudioLujo')
+						<?php elseif($typeApto == 4): ?>
+							@include('frontend.pages._infoEstudioStandard')
+						<?php endif ?>
+					</div>
 					
 					<button id="showFromBook" class="button button-desc button-3d button-rounded bg-bluesky center white">¡Reserva YA!</button>
 
-				</div>	
 			</div>
 		</div>
 		
 		<div id="content-form-book" class="row bg-bluesky push-30" style="display: none;">
 			<span style="padding: 0 5px; cursor: pointer; opacity: 1; margin-right: 20px; margin-top: 10px;" class="close pull-right white text-white"><i class="fa fa-times"></i></span>
-			<div class="col-xs-12 col-md-6 hidden-sm hidden-xs" style=" min-height: 535px">
+			<div class="col-xs-12 col-md-5 hidden-sm hidden-xs" style=" min-height: 535px">
 				<img src="{{asset('/img/miramarski/esquiadores.png')}}" class="img-responsive" style="position: absolute; bottom: 0">
 			</div>
-			<div id="content-book-response" class="col-xs-12 col-md-6" style="">
+			<div id="content-book-response" class="col-xs-12 col-md-7" style="">
 				@include('frontend._formBook')
             </div>
 		</div>
