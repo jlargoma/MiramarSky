@@ -39,11 +39,9 @@ class Seasons extends Model
 
     public static function getSeason($start)
         {
-            // echo $start." ";
 
             $season = \App\Seasons::where('start_date' , '<=' , $start )
                                     ->where('finish_date', '>=' , $start)->get();
-
             return $season[0]->type;
         }
 }

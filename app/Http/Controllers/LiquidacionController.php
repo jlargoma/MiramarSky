@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use \Carbon\Carbon;
+use App\Classes\Mobile;
+
 
 class LiquidacionController extends Controller
 {
@@ -60,10 +62,18 @@ class LiquidacionController extends Controller
  
             }
 
-            return view('backend/sales/index',  [
-                                                    'books'   => $books,
-                                                    'totales' => $totales,
-                                                ]);
+            $mobile = new Mobile();
+            if (!$mobile->isMobile()){
+                return view('backend/sales/index',  [
+                                                        'books'   => $books,
+                                                        'totales' => $totales,
+                                                    ]);
+            }else{
+                return view('backend/sales/index_mobile',  [
+                                                        'books'   => $books,
+                                                        'totales' => $totales,
+                                                    ]);
+            }
         }
 
     public function apto()

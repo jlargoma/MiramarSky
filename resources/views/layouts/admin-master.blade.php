@@ -41,9 +41,9 @@
 			<nav class="page-sidebar" data-pages="sidebar">
 				<!-- END SIDEBAR MENU TOP TRAY CONTENT-->
 				<!-- BEGIN SIDEBAR MENU HEADER-->
-				<div class="sidebar-header">
+				<!-- <div class="sidebar-header">
 					<a href="{{ url('admin') }}"><img src="{{asset ('assets/img/logo_white.png') }}" alt="logo" class="brand" data-src="{{asset ('assets/img/logo_white.png') }}" data-src-retina="{{asset ('assets/img/logo_white_2x.png') }}" width="78" height="22"></a>
-				</div>
+				</div> -->
 				<!-- END SIDEBAR MENU HEADER-->
 				<!-- START SIDEBAR MENU -->
 				<div class="sidebar-menu">
@@ -156,27 +156,27 @@
 					<div class="pull-left full-height visible-sm visible-xs">
 						<!-- START ACTION BAR -->
 						<div class="header-inner">
-							<a href="#" class="btn-link toggle-sidebar visible-sm-inline-block visible-xs-inline-block padding-5" data-toggle="sidebar">
+							<a  class="btn-link toggle-sidebar visible-sm-inline-block visible-xs-inline-block padding-5" data-toggle="sidebar">
 								<span class="icon-set menu-hambuger"></span>
 							</a>
 						</div>
 						<!-- END ACTION BAR -->
 					</div>
-					<div class="pull-center hidden-md hidden-lg">
+					<!-- <div class="pull-center hidden-md hidden-lg">
 						<div class="header-inner">
 							<div class="brand inline">
 								<img src="{{asset ('assets/img/logo.png') }}" alt="logo" data-src="{{asset ('assets/img/logo.png') }}" data-src-retina="{{asset ('assets/img/logo_2x.png') }}" width="78" height="22">
 							</div>
 						</div>
-					</div>
+					</div> -->
 					<!-- RIGHT SIDE -->
 					<div class="pull-right full-height visible-sm visible-xs">
 						<!-- START ACTION BAR -->
-						<div class="header-inner">
+						<!-- <div class="header-inner">
 							<a href="#" class="btn-link visible-sm-inline-block visible-xs-inline-block" data-toggle="quickview" data-toggle-element="#quickview">
 								<span class="icon-set menu-hambuger-plus"></span>
 							</a>
-						</div>
+						</div> -->
 						<!-- END ACTION BAR -->
 					</div>
 				</div>

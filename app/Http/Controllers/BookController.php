@@ -235,13 +235,24 @@ class BookController extends Controller
         {
          $book = \App\Book::find($id);
 
-         return view('backend/planning/update',  [
-                                                    'book'   => $book ,
-                                                    'rooms'  => \App\Rooms::all(),
-                                                    'extras' => \App\Extras::all(),
-                                                    'payments' => \App\Payments::where('book_id',$book->id)->get(),
-                                                    'typecobro' => new \App\Book(),
-                                                ]);
+            $mobile = new Mobile();
+                if (!$mobile->isMobile()){
+                    return view('backend/planning/update',  [
+                                                                'book'   => $book ,
+                                                                'rooms'  => \App\Rooms::all(),
+                                                                'extras' => \App\Extras::all(),
+                                                                'payments' => \App\Payments::where('book_id',$book->id)->get(),
+                                                                'typecobro' => new \App\Book(),
+                                                            ]);
+                }else{
+                    return view('backend/planning/update_mobile',  [
+                                                                'book'   => $book ,
+                                                                'rooms'  => \App\Rooms::all(),
+                                                                'extras' => \App\Extras::all(),
+                                                                'payments' => \App\Payments::where('book_id',$book->id)->get(),
+                                                                'typecobro' => new \App\Book(),
+                                                            ]);
+                }
         }
 
     public function changeBook(Request $request, $id)
@@ -281,6 +292,7 @@ class BookController extends Controller
 
             $paxPerRoom = \App\Rooms::getPaxRooms($request->pax,$request->room);
 
+
             $pax = $request->pax;
             if ($paxPerRoom > $request->pax) {
                 $pax = $paxPerRoom;
@@ -288,9 +300,11 @@ class BookController extends Controller
 
             $price = 0;
 
+
             for ($i=1; $i <= $countDays; $i++) { 
 
                 $seasonActive = \App\Seasons::getSeason($start->copy());
+
                 $prices = \App\Prices::where('season' ,  $seasonActive)
                                     ->where('occupation', $pax)->get();
 
@@ -337,7 +351,7 @@ class BookController extends Controller
     //Funcion para actualizar la reserva
         public function saveUpdate(Request $request, $id)
             {
-                echo "<pre>";
+                // echo "<pre>";
                 $book = \App\Book::find($id);
                 $room = \App\Rooms::find($request->newroom);
 
@@ -346,13 +360,13 @@ class BookController extends Controller
                 $book->room_id       = $request->newroom;
                 $book->start         = Carbon::createFromFormat('d/m/Y',$request->start);
                 $book->finish        = Carbon::createFromFormat('d/m/Y',$request->finish);
-                $book->comment       = $request->comments ;
+                $book->comment       = $request->comments;
                 $book->book_comments = $request->book_comments;
                 $book->pax           = $request->pax;
                 $book->nigths        = $request->nigths;
-                $book->sup_limp      = ($room->typeApto == 1) ? 30 : 50;
+                $book->sup_limp      = ($room->typeApto == 1) ? 35 : 50;
                 $book->sup_park      = $book->getPricePark($request->parking,$request->nigths);
-                $book->type_park     = $request->parking ;
+                $book->type_park     = $request->parking;
                 $book->cost_park     = $book->getCostPark($request->parking,$request->nigths);
                 $book->sup_lujo      = ($room->luxury == 1) ? 50 : 0;
                 $book->cost_lujo     = ($room->luxury == 1) ? 40 : 0;
@@ -360,7 +374,7 @@ class BookController extends Controller
                 $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo;
                 $book->total_price   = $request->total;
                 $book->total_ben     = $book->total_price - $book->cost_total;
-                $book->extra         = $request->extra ;
+                $book->extra         = $request->extra;
                 $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
                 $book->ben_jorge     = $book->getBenJorge($book->total_ben,$room->id);
                 $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);

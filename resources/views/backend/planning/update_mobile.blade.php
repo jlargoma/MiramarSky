@@ -3,7 +3,7 @@
 @section('title') Administrador de reservas MiramarSKI @endsection
 
 @section('externalScripts') 
-<link href="/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" media="screen" />
+<link rel="stylesheet" href="/assets/plugins/select2/css/select2.min.css">
 <link rel="stylesheet" href="/assets/plugins/select2/js/select2.css">
 
 @endsection
@@ -21,7 +21,7 @@
                 ?>
             </h2>
         </div>
-        <div class="col-md-8">
+        <div class="col-xs-12">
             <div class="panel">
                 <form role="form"  action="{{ url('/admin/reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post" >
                             
@@ -36,13 +36,13 @@
 
                         <div class="input-group col-md-12">
                             <input class="form-control" type="hidden"  name="customer_id" value="<?php echo $book->customer->id ?>">
-                            <div class="col-md-4">
+                            <div class="col-xs-12">
                                 Nombre: <input class="form-control" type="text" name="name" value="<?php echo $book->customer->name ?>" disabled>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-xs-12">
                                 Email: <input class="form-control" type="email" name="email" value="<?php echo $book->customer->email ?>" disabled>  
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-xs-12">
                                 Telefono: <input class="form-control" type="number" name="phone" value="<?php echo $book->customer->phone ?>" disabled> 
                             </div>  
                             <div style="clear: both;"></div>
@@ -70,16 +70,16 @@
                                         <input id="finish" type="text" class="input-sm form-control" name="finish" data-date-format="dd-mm-yyyy" value="<?php $finish = Carbon::createFromFormat('Y-m-d',$book->finish) ;echo $finish->format('d/m/Y') ?>">
                                     </div>
                                 </div>
-                                <div class="col-md-1">
-                                    <label>noches</label>
+                                <div class="col-xs-6">
+                                    <label>Noches</label>
                                     <input type="text" class="form-control nigths" name="nigths" style="width: 100%" value="<?php echo $book->nigths ?>">
                                 </div> 
-                                <div class="col-md-1">
+                                <div class="col-xs-6">
                                     <label>Pax</label>
                                     <input  type="text" class="form-control full-width pax" name="pax" style="width: 100%" value="<?php echo $book->pax ?>">
                                         
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-xs-6">
                                     <label>Apartamento</label>
                                     <select class="form-control full-width newroom" data-init-plugin="select2" name="newroom" id="newroom">
                                         <?php foreach ($rooms as $room): ?>
@@ -91,7 +91,7 @@
                                         <?php endforeach ?>
                                     </select>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-xs-6">
                                     <label>Park</label>
                                     <select class=" form-control full-width parking" data-init-plugin="select2" name="parking">
                                         <?php for ($i=1; $i <= 4 ; $i++): ?>
@@ -102,7 +102,7 @@
                                             <?php endif ?>
                                         <?php endfor;?>
                                     </select>
-                                </div>
+                                </div><br><br>
                                 <?php if (count($payments) > 0): ?>
                                 
                                 <?php else: ?>
@@ -113,20 +113,21 @@
                                 <?php endif ?>
                                 
                             </div>
+                            <br>
                             <div class="input-group col-md-12">
-                                <div class="col-md-3">
+                                <div class="col-xs-6">
                                     <label>Extras</label>
                                     <input type="text" class="form-control extra" name="extra" value="<?php echo $book->extra ?>">
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-xs-6">
                                     <label>Total</label>
                                     <input type="text" class="form-control total" name="total" value="<?php echo $book->total_price ?>" style="width: 100%">
                                 </div> 
-                                <div class="col-md-3">
+                                <div class="col-xs-6">
                                     <label>Coste</label>
                                     <input type="text" class="form-control cost" name="cost" value="<?php echo $book->cost_total ?>" disabled style="width: 100%">
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-xs-6">
                                     <label>Beneficio</label>
                                     <input type="text" class="form-control beneficio" name="beneficio" value="<?php echo $book->total_ben ?>" disabled style="width: 100%">
                                 </div>
@@ -148,14 +149,14 @@
                                 
                             </div> 
                             <br>
-                            <div class="input-group col-md-12">
+                            <div class="input-group col-xs-12 text-center">
                                 <button class="btn btn-complete" type="submit">Guardar</button>
                             </div>                        
                     </div>
                 </form> 
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-xs-12">
             <div class="panel">
                 <div>
                     <div class="panel-heading">
@@ -163,14 +164,14 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        <div class="col-md-12">
-                            <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
+                        <div class="col-md-12 table-responsive">
+                            <table class="table table-hover dataTable no-footer" >
                                 <thead>
                                     <tr>
-                                        <th class ="text-center bg-complete text-white" style="width:25%">fecha</th>
-                                        <th class ="text-center bg-complete text-white" style="width:25%">importe</th>
-                                        <th class ="text-center bg-complete text-white" style="width:25%">comentario</th>
-                                        <th class ="text-center bg-complete text-white" style="width:25%">Tipo</th>                           
+                                        <th class ="text-center bg-complete text-white" >fecha</th>
+                                        <th class ="text-center bg-complete text-white" >importe</th>
+                                        <th class ="text-center bg-complete text-white" >comentario</th>
+                                        <th class ="text-center bg-complete text-white" >Tipo</th>                           
                                     </tr>
                                 </thead>
                                 <tbody><?php $total = 0; ?>
@@ -219,8 +220,8 @@
                                         <?php endif ?>
                                     <?php else: ?>
                                         <tr>
-                                            <td class ="text-center">
-                                                <div class="input-daterange input-group" id="datepicker-range">
+                                            <td class ="text-center" style="padding: 25px 0px 0px 0px;">
+                                                <div class="input-daterange input-group" id="datepicker-range" style="width: 100%">
                                                     <input type="text" class="input-sm form-control fecha-cobro" name="start" data-date-format="dd-mm-yyyy" value="<?php $hoy = Carbon::now() ;echo $hoy->format('d/m/Y') ?>">
                                                 </div>
                                             </td>
@@ -254,7 +255,10 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <input type="button" name="cobrar" class="cobrar form-control btn btn-complete active" value="Cobrar" data-id="<?php echo $book->id ?>">
+                            <div class="col-xs-12 text-center">
+                                <input type="button" name="cobrar" class="cobrar form-control  btn btn-complete active" value="Cobrar" data-id="<?php echo $book->id ?>">
+                            </div>
+                            
                         </div>
                     </div>
 
@@ -267,7 +271,8 @@
 
 @section('scripts')
 <script src="/assets/plugins/select2/select2.full.min.js"></script>
-<script type="text/javascript">
+    
+    <script type="text/javascript">
         $(document).ready(function() {          
 
             var start  = 0;
