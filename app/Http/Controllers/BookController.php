@@ -35,12 +35,12 @@ class BookController extends Controller
             if ( empty($month) ) {
                 $date = Carbon::now();
             }else{
-                $month = Carbon::createFromFormat('d-m-Y',$month);
+                $month = Carbon::createFromFormat('Y',$month);
                 $date = $month->copy();
 
             }
 
-            $firstDayOfTheYear = new Carbon('first day of September 2016');
+            $firstDayOfTheYear = new Carbon('first day of September '.$date->copy()->format('Y'));
 
             $arrayBooks = [
                             "nuevas" => [], 
@@ -68,7 +68,7 @@ class BookController extends Controller
                 $firstDayOfTheYear = $firstDayOfTheYear->addMonth();
             }
 
-            $firstDayOfTheYear = new Carbon('first day of September 2016');
+            $firstDayOfTheYear = new Carbon('first day of September '.$date->copy()->format('Y'));
             $book = new \App\Book();
             for ($i=1; $i <= 12; $i++) { 
                 

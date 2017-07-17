@@ -110,10 +110,22 @@
             background-color: rgba(0,0,0,0.2);
             color: red;
         }
+         {
+            background-color: red;
+        }
+        li.active{
+            background-color: red;
+        }
+        .active>a{
+            color: white!important;
+        }
+        .bg-info-light>li>a{
+            color: white;
+        }
     </style>
     
     <div class="container-fluid padding-10 sm-padding-10">
-        <div class="row">
+        <div class="row bg-white">
             <div class="col-md-6">
                 <div class="col-md-4 col-xs-12">
                     <canvas id="barChart" style="width: 100%; height: 250px;"></canvas>
@@ -245,35 +257,45 @@
                 </div>
             </div>
             <div class="col-md-12 text-center">
-                <h2>Planning de reservas</h2>
+                <h2><b>Planning de reservas</b></h2>
+                Fechas:
+                <select id="date" >
+                    <?php $fecha = $inicio->copy(); ?>
+
+                    <?php for ($i=1; $i <= 4; $i++): ?>
+                        <?php if( $date->copy()->format('Y') == $fecha->format('Y') ){ $selected = "selected"; }else{$selected = "";} ?>
+                        <option value="<?php echo $fecha->copy()->format('Y'); ?>" <?php echo $selected ?>>
+                            <?php echo $fecha->copy()->subYear()->format('Y')."-".$fecha->copy()->format('Y'); ?> 
+                        </option>
+                        <?php $fecha->addYear(); ?>
+                    <?php endfor; ?>
+                </select>
             </div>
             <div class="col-md-12 col-xs-12 push-20">
                 <div class="col-xs-12 col-md-2 pull-right">
-                    Fechas:
-                    <select id="date" class="form-control">
-                        <?php $fecha = $inicio->copy()->submonth(); ?>
-
-                        <?php for ($i=1; $i <= 14; $i++): ?>
-                            
-                            <option value="<?php echo $fecha->format('d-m-Y'); ?>" >
-                                <?php echo ucfirst($fecha->formatLocalized('%B')); ?>  <?php echo $fecha->formatLocalized('%Y'); ?> 
-                            </option>
-                            <?php $fecha->addMonth(); ?>
-                        <?php endfor; ?>
-                    </select>
+                    
                 </div>
             </div>
             <br><br>
             <div class="col-md-7 col-xs-12">
                 <div class="panel">
-                    <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="collapse">
+                    <ul class="nav nav-tabs nav-tabs-simple bg-info-light " role="tablist" data-init-reponsive-tabs="collapse">
                         <li class="nuevo"><a href="#tabNueva" data-toggle="tab" role="tab" ><i class="fa fa-plus-circle fa-2x" style="color:green" aria-hidden="true"></i></a>
                         </li>
-                        <li class="active" ><a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes </a>
+                        <li class="active" >
+                            <a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes 
+                                <span class="badge"><?php echo count($arrayBooks["nuevas"]) ?></span>
+                            </a>
                         </li>
-                        <li><a href="#tabEspeciales" data-toggle="tab" role="tab">Especiales </a>
+                        <li>
+                            <a href="#tabEspeciales" data-toggle="tab" role="tab">Especiales
+                                <span class="badge"><?php echo count($arrayBooks["especiales"]) ?></span>
+                            </a>
                         </li>
-                        <li><a href="#tabPagadas" data-toggle="tab" role="tab">Confirmadas </a>
+                        <li>
+                            <a href="#tabPagadas" data-toggle="tab" role="tab">Confirmadas 
+                                <span class="badge"><?php echo count($arrayBooks["pagadas"]) ?></span>
+                            </a>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -422,13 +444,12 @@
                             
                                     <div class="clearfix"></div>
         
-                                    <table class="table table-hover demo-table-search table-responsive table-striped " id="tableWithSearch" >
+                                    <table class="table  demo-table-search table-responsive table-striped " id="tableWithSearch" >
                                         <thead>
                                             <tr>   
-                                                <th class ="text-center bg-complete text-white" style="width:5%!important"> Cobros </th>
                                                 <th class ="text-center bg-complete text-white" style="width:20%!important">  Cliente     </th>
                                                 <th class ="text-center bg-complete text-white" style="width:10%">  Telefono     </th>
-                                                <th class ="text-center bg-complete text-white" style="width:2%">   P         </th>
+                                                <th class ="text-center bg-complete text-white" style="width:2%">   Pax         </th>
                                                 <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
                                                 <th class ="text-center bg-complete text-white" style="width:5%!important">  IN     </th>
                                                 <th class ="text-center bg-complete text-white" style="width:5%!important">  OUT      </th>
@@ -440,23 +461,7 @@
                                         </thead>
                                         <tbody>
                                             <?php foreach ($arrayBooks["nuevas"] as $book): ?>
-                                                    <tr>
-                                                        <td class ="text-center ">
-                                                            <?php if (isset($payment[$book->id])): ?>
-                                                                <?php if ($payment[$book->id] == 0): ?>
-                                                                <?php else:?>
-                                                                    <!-- input class="progress-circle" data-pages-progress="circle" value="<?php echo number_format(100/($book->total_price/$payment[$book->id]),0) ?>" type="hidden">
-                                                                    <?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?> -->
-                                                                        <p><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></p>
-
-                                                                        <div class="progress ">
-                                                                        <div class="progress-bar progress-bar-danger" style="width:<?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?>"></div>
-                                                                        </div> 
-                                                                                                                               
-                                                                <?php endif; ?>
-                                                            <?php else: ?>
-                                                            <?php endif ?> 
-                                                        </td> 
+                                                    <tr> 
 
                                                         <td class ="text-center">
 
@@ -562,16 +567,16 @@
                                     <table class="table table-hover demo-table-search table-responsive table-striped" id="tableWithSearch2" >
                                         <thead>
                                             <tr>
-                                                <th class ="text-center bg-complete text-white" style="width:10%">  Cliente     </th>
-                                                <th class ="text-center bg-complete text-white" style="width:5%">   Telefono    </th>
-                                                <th class ="text-center bg-complete text-white" style="width:2%">   Pax         </th>
-                                                <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
-                                                <th class ="text-center bg-complete text-white" style="width:11%!important">  IN     </th>
-                                                <th class ="text-center bg-complete text-white" style="width:11%!important">  OUT      </th>
-                                                <th class ="text-center bg-complete text-white" style="width:5%">   Noc         </th>
-                                                <th class ="text-center bg-complete text-white">                    Precio      </th>
-                                                <th class ="text-center bg-complete text-white" style="width:17%">   Estado      </th>
-                                                <th class ="text-center bg-complete text-white">                    Acciones    </th>
+                                                <th class ="text-center bg-warning text-white" style="width:10%">  Cliente     </th>
+                                                <th class ="text-center bg-warning text-white" style="width:5%">   Telefono    </th>
+                                                <th class ="text-center bg-warning text-white" style="width:2%">   Pax         </th>
+                                                <th class ="text-center bg-warning text-white" style="width:5%">   Apart       </th>
+                                                <th class ="text-center bg-warning text-white" style="width:11%!important">  IN     </th>
+                                                <th class ="text-center bg-warning text-white" style="width:11%!important">  OUT      </th>
+                                                <th class ="text-center bg-warning text-white" style="width:5%">   Noc         </th>
+                                                <th class ="text-center bg-warning text-white">                    Precio      </th>
+                                                <th class ="text-center bg-warning text-white" style="width:17%">   Estado      </th>
+                                                <th class ="text-center bg-warning text-white">                    Acciones    </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -663,17 +668,17 @@
                                 <table class="table table-hover demo-table-search table-responsive table-striped" id="tableWithSearch3" >
                                     <thead>
                                         <tr>   
-                                            <th class ="text-center bg-complete text-white" style="width:5%"> Cobros </th>
-                                            <th class ="text-center bg-complete text-white" style="width:5%">  Cliente     </th>
-                                            <th class ="text-center bg-complete text-white" style="width:5%">  Telefono     </th>
-                                            <th class ="text-center bg-complete text-white" style="width:2%">   Pax         </th>
-                                            <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
-                                            <th class ="text-center bg-complete text-white" style="width:20%!important">  IN     </th>
-                                            <th class ="text-center bg-complete text-white" style="width:20%!important">  OUT      </th>
-                                            <th class ="text-center bg-complete text-white" style="width:5%">   Noc         </th>
-                                            <th class ="text-center bg-complete text-white" style="width:5%">   Precio      </th>
-                                            <th class ="text-center bg-complete text-white" style="width:5%">   Estado      </th>
-                                            <th class ="text-center bg-complete text-white" style="width:5%">   Acciones    </th>
+                                            <th class ="text-center bg-danger text-white" style="width:5%"> Cobros </th>
+                                            <th class ="text-center bg-danger text-white" style="width:5%">  Cliente     </th>
+                                            <th class ="text-center bg-danger text-white" style="width:5%">  Telefono     </th>
+                                            <th class ="text-center bg-danger text-white" style="width:2%">   Pax         </th>
+                                            <th class ="text-center bg-danger text-white" style="width:5%">   Apart       </th>
+                                            <th class ="text-center bg-danger text-white" style="width:20%!important">  IN     </th>
+                                            <th class ="text-center bg-danger text-white" style="width:20%!important">  OUT      </th>
+                                            <th class ="text-center bg-danger text-white" style="width:5%">   Noc         </th>
+                                            <th class ="text-center bg-danger text-white" style="width:5%">   Precio      </th>
+                                            <th class ="text-center bg-danger text-white" style="width:5%">   Estado      </th>
+                                            <th class ="text-center bg-danger text-white" style="width:5%">   Acciones    </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -771,7 +776,7 @@
         
             <div class="col-md-5 col-xs-12">
                 <div class="panel">
-                    <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="collapse">
+                    <ul class="nav nav-tabs nav-tabs-simple bg-info-light" role="tablist" data-init-reponsive-tabs="collapse">
                         <?php $dateAux = $date->copy(); ?>
                         <?php for ($i=1; $i <= 4 ; $i++) :?>
                             <li <?php if($i == 1 ){ echo "class='active'";} ?>>
@@ -948,7 +953,6 @@
                     var status = "";
                 }
                 $.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
-                    alert(data);
                     // window.location.reload();
                 });
             });
@@ -1124,7 +1128,7 @@
                 };
 
                 var myBarChart = new Chart('barChart', {
-                    type: 'line',
+                    type: 'bar',
                     data: data,
                 });
 

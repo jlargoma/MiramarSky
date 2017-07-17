@@ -31,7 +31,7 @@ class PaymentsController extends Controller
     public function create(Request $request)
     {
         $payment = new \App\Payments();
-
+        
         $date = Carbon::createFromFormat('d/m/Y' ,$request->date);
         $payment->book_id = $request->id;
         $payment->datePayment = $date;
