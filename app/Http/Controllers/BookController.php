@@ -24,11 +24,14 @@ class BookController extends Controller
     public function index($month = "")
         {
 
-            $mes = array();
+            $mes           = array();
             $arrayReservas = array();
             $totalPayments = array();
-            $arrayMonths = array();
-            $arrayDays = array();
+            $arrayMonths   = array();
+            $arrayDays     = array();
+            $arrayTotales  = array();
+            $arrayPruebas  = array();
+
             if ( empty($month) ) {
                 $date = Carbon::now();
             }else{
@@ -92,8 +95,14 @@ class BookController extends Controller
                 $totalPayments[$pago->book_id] = $pago->import;
             } 
 
-            $start = new Carbon('first day of September 2016');
-            $books = \App\Book::where('start','>',$start)->orderBy('start','ASC')->get();
+            if ($date->copy()->format('n') >= 9) {
+                $start = new Carbon('first day of September '.$date->copy()->format('Y'));
+            }else{
+                $start = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            }
+
+
+            $books = \App\Book::where('start','>',$start)->where('finish','<',$start->copy()->addYear())->orderBy('start','ASC')->get();
 
             foreach ($books as $key => $book) {
                 if ($book->type_book == 1 || $book->type_book == 3 || $book->type_book == 4 || $book->type_book == 5 || $book->type_book == 6 ) {
@@ -102,40 +111,64 @@ class BookController extends Controller
                     $arrayBooks["pagadas"][] = $book;
                 } elseif($book->type_book == 7 || $book->type_book == 8){
                     $arrayBooks["especiales"][] = $book;
+                } 
+            }
+
+            
+            $books = \App\Book::whereIn('type_book', [2,7,8])->get();
+
+            foreach ($books as $book) {
+                $fecha = Carbon::createFromFormat('Y-m-d',$book->start);
+                if ($fecha->copy()->format('n') >= 9) {
+                    if(isset($arrayTotales[$fecha->copy()->format('Y')])){
+                        $arrayTotales[$fecha->copy()->format('Y')] += $book->total_price;
+                    }else{
+                        $arrayTotales[$fecha->copy()->format('Y')] = $book->total_price;
+                    }
+                }else{
+                    if(isset($arrayTotales[$fecha->copy()->subYear()->format('Y')])){
+                        $arrayTotales[$fecha->copy()->subYear()->format('Y')] += $book->total_price;
+                    }else{
+                        $arrayTotales[$fecha->copy()->subYear()->format('Y')] = $book->total_price;
+                    }
                 }
             }
+
             $mobile = new Mobile();
-            if (!$mobile->isMobile()){
-                return view('backend/planning/index',[
-                                                    'arrayBooks'    => $arrayBooks,
-                                                    'arrayMonths'   => $arrayMonths,
-                                                    'rooms'         => \App\Rooms::all(),
-                                                    'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->orderBy('name','DESC')->get(),
-                                                    'arrayReservas' => $arrayReservas,
-                                                    'mes'           => $mes,
-                                                    'date'          => $date->subMonth(),
-                                                    'book'          => new \App\Book(),
-                                                    'extras'        => \App\Extras::all(),
-                                                    'payment'       => $totalPayments,
-                                                    'pagos'         => \App\Payments::all(),
-                                                    'days'          => $arrayDays,
-                                                    ]);
-            }else{
-                return view('backend/planning/index_mobile',[
-                                                    'arrayBooks'    => $arrayBooks,
-                                                    'arrayMonths'   => $arrayMonths,
-                                                    'rooms'         => \App\Rooms::all(),
-                                                    'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->orderBy('name','DESC')->get(),
-                                                    'arrayReservas' => $arrayReservas,
-                                                    'mes'           => $mes,
-                                                    'date'          => $date->subMonth(),
-                                                    'book'          => new \App\Book(),
-                                                    'extras'        => \App\Extras::all(),
-                                                    'payment'       => $totalPayments,
-                                                    'pagos'         => \App\Payments::all(),
-                                                    'days'          => $arrayDays,
-                                                    ]);
-            }
+
+                if (!$mobile->isMobile()){
+                    return view('backend/planning/index',[
+                                                        'arrayBooks'    => $arrayBooks,
+                                                        'arrayMonths'   => $arrayMonths,
+                                                        'arrayTotales'  => $arrayTotales,
+                                                        'rooms'         => \App\Rooms::all(),
+                                                        'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->orderBy('name','DESC')->get(),
+                                                        'arrayReservas' => $arrayReservas,
+                                                        'mes'           => $mes,
+                                                        'date'          => $date,
+                                                        'book'          => new \App\Book(),
+                                                        'extras'        => \App\Extras::all(),
+                                                        'payment'       => $totalPayments,
+                                                        'pagos'         => \App\Payments::all(),
+                                                        'days'          => $arrayDays,
+                                                        'inicio'        => $start,
+                                                        ]);
+                }else{
+                    return view('backend/planning/index_mobile',[
+                                                        'arrayBooks'    => $arrayBooks,
+                                                        'arrayMonths'   => $arrayMonths,
+                                                        'rooms'         => \App\Rooms::all(),
+                                                        'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->orderBy('name','DESC')->get(),
+                                                        'arrayReservas' => $arrayReservas,
+                                                        'mes'           => $mes,
+                                                        'date'          => $date->subMonth(),
+                                                        'book'          => new \App\Book(),
+                                                        'extras'        => \App\Extras::all(),
+                                                        'payment'       => $totalPayments,
+                                                        'pagos'         => \App\Payments::all(),
+                                                        'days'          => $arrayDays,
+                                                        ]);
+                }
         }
 
     /**

@@ -11,6 +11,9 @@
     <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
     <link href="/assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" media="screen">
     <link href="/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" media="screen">
+    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
 
 @endsection
     
@@ -108,29 +111,159 @@
             color: red;
         }
     </style>
-
+    
     <div class="container-fluid padding-10 sm-padding-10">
         <div class="row">
-                <div class="col-md-12 text-center">
-                    <h2>Planning de reservas</h2>
+            <div class="col-md-6">
+                <div class="col-md-4 col-xs-12">
+                    <canvas id="barChart" style="width: 100%; height: 250px;"></canvas>
                 </div>
-                <div class="col-md-12 col-xs-12 push-20">
-                    <div class="col-xs-12 col-md-2 pull-right">
-                        Fechas:
-                        <select id="date" class="form-control">
-                            <?php $fecha = $date->copy()->startOfYear(); ?>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-5 m-b-10">
+                        <div class="widget-8 panel no-border bg-success no-margin widget-loader-bar">
+                            <div class="container-xs-height full-height">
+                                <div class="row-xs-height">
+                                    <div class="col-xs-height col-top">
+                                        <div class="panel-heading top-left top-right">
+                                            <div class="panel-title text-black hint-text">
+                                                <span class="font-montserrat fs-11 all-caps">Ingresos de la temporada 
+                                                    <?php if ($date->copy()->format('n') >= 9): ?>
+                                                        <?php echo $date->copy()->format('Y') ?>-<?php echo $date->copy()->addYear()->format('Y') ?>
+                                                    <?php else: ?>
+                                                        <?php echo $date->copy()->subYear()->format('Y') ?>-<?php echo $date->copy()->format('Y') ?>
+                                                    <?php endif ?>
+                                                </span>
+                                            </div>                                    
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-xs-height ">
+                                    <div class="col-xs-height col-top relative">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="p-l-20">
+                                                    <h3 class="no-margin p-b-5 text-white">
+                                                        <?php if ($date->copy()->format('n') >= 9): ?>
+                                                            <?php echo number_format($arrayTotales[$date->copy()->format('Y')],2,',','.') ?> €
+                                                        <?php else: ?>
+                                                            <?php echo number_format($arrayTotales[$date->copy()->subYear()->format('Y')],2,',','.') ?> €
+                                                        <?php endif ?>                                            
+                                                    </h3>
+                                                    <p class="small hint-text m-t-5">
+                                                        <span class="label  font-montserrat m-r-5">60%</span>Higher
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                            </div>
+                                        </div>
 
-                            <?php for ($i=1; $i <= 12; $i++): ?>
-                                <?php if( $date->copy()->format('n') == $i ){ $selected = "selected"; }else{$selected = "";} ?>
-                                <option value="<?php echo $fecha->format('d-m-Y'); ?>" <?php echo $selected ?>>
-                                    <?php echo ucfirst($fecha->formatLocalized('%B')); ?>  <?php echo $fecha->formatLocalized('%Y'); ?> 
-                                </option>
-                                <?php $fecha->addMonth(); ?>
-                            <?php endfor; ?>
-                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5 m-b-10">
+                        <div class="widget-9 panel no-border bg-primary no-margin widget-loader-bar">
+                            <div class="container-xs-height full-height">
+                                <div class="row-xs-height">
+                                    <div class="col-xs-height col-top">
+                                        <div class="panel-heading  top-left top-right">
+                                            <div class="panel-title text-black">
+                                                <span class="font-montserrat fs-11 all-caps">Comparativa de la temporada 
+                                                    <?php if ($date->copy()->format('n') >= 9): ?>
+                                                        <?php echo $date->copy()->subYear()->format('Y') ?>-<?php echo $date->copy()->format('Y') ?>
+                                                    <?php else: ?>
+                                                        <?php echo $date->copy()->subYear(2)->format('Y') ?>-<?php echo $date->copy()->subYear()->format('Y') ?>
+                                                    <?php endif ?>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-xs-height">
+                                    <div class="col-xs-height col-top">
+                                        <div class="p-l-20 p-t-15">
+                                            <h3 class="no-margin p-b-5 text-white">                                                
+                                                    <?php if ($date->copy()->format('n') >= 9): ?>
+                                                        <?php if (isset($arrayTotales[$date->copy()->subYear()->format('Y')])): ?>
+                                                            <?php echo number_format($arrayTotales[$date->copy()->subYear()->format('Y')],2,',','.') ?> €
+                                                        <?php else: ?>
+                                                            No Hay reservas este año
+                                                        <?php endif ?>
+                                                    <?php else: ?>
+                                                        <?php if (isset($arrayTotales[$date->copy()->subYear(2)->format('Y')])): ?>
+                                                            <?php echo number_format($arrayTotales[$date->copy()->subYear(2)->format('Y')],2,',','.') ?> €
+                                                        <?php else: ?>
+                                                            No Hay reservas este año
+                                                        <?php endif ?>
+                                                    <?php endif ?> 
+                                                
+                                            </h3>
+                                            <span class="small hint-text">
+                                                <?php $totalcomparativa = 0; ?>
+                                                <?php if ($date->copy()->format('n') >= 9): ?>
+                                                    <?php if (isset($arrayTotales[$date->copy()->format('Y')]) && isset($arrayTotales[$date->copy()->subYear()->format('Y')]) ) : ?>
+                                                        <?php $totalcomparativa = number_format(($arrayTotales[$date->copy()->format('Y')]-$arrayTotales[$date->copy()->subYear()->format('Y')])/$arrayTotales[$date->copy()->subYear()->format('Y')] *100,2) ?>
+                                                        <?php echo $totalcomparativa ?>% 
+                                                        <?php if ($totalcomparativa > 100): ?>
+                                                            <i class="fa fa-arrow-up text-success fa-2x"></i>
+                                                        <?php else: ?>
+                                                            <i class="fa fa-arrow-down text-danger fa-2x"></i>
+                                                        <?php endif ?>   
+                                                    <?php else: ?>
+                                                        No Hay reservas este año
+                                                    <?php endif ?>
+                                                <?php elseif (isset($arrayTotales[$date->copy()->subYear()->format('Y')]) && isset($arrayTotales[$date->copy()->subYear(2)->format('Y')]) ) : ?>
+                                                    <?php $totalcomparativa = number_format(($arrayTotales[$date->copy()->subYear()->format('Y')]-$arrayTotales[$date->copy()->subYear(2)->format('Y')])/$arrayTotales[$date->copy()->subYear(2)->format('Y')] *100,2) ?>
+                                                    <?php echo $totalcomparativa ?>% 
+                                                    <?php if ($totalcomparativa > 100): ?>
+                                                        <i class="fa fa-arrow-up text-success fa-2x"></i>
+                                                    <?php else: ?>
+                                                        <i class="fa fa-arrow-down text-danger fa-2x"></i>
+                                                    <?php endif ?>   
+                                                <?php endif ?>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row-xs-height">
+                                    <div class="col-xs-height col-bottom">
+                                        <div class="progress progress-small m-b-20">
+
+                                        <div class="progress-bar progress-bar-white" style="width:<?php echo $totalcomparativa ?>%"></div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <br><br>
+            </div>
+            <div class="col-md-12 text-center">
+                <h2>Planning de reservas</h2>
+            </div>
+            <div class="col-md-12 col-xs-12 push-20">
+                <div class="col-xs-12 col-md-2 pull-right">
+                    Fechas:
+                    <select id="date" class="form-control">
+                        <?php $fecha = $inicio->copy()->submonth(); ?>
+
+                        <?php for ($i=1; $i <= 14; $i++): ?>
+                            
+                            <option value="<?php echo $fecha->format('d-m-Y'); ?>" >
+                                <?php echo ucfirst($fecha->formatLocalized('%B')); ?>  <?php echo $fecha->formatLocalized('%Y'); ?> 
+                            </option>
+                            <?php $fecha->addMonth(); ?>
+                        <?php endfor; ?>
+                    </select>
+                </div>
+            </div>
+            <br><br>
             <div class="col-md-7 col-xs-12">
                 <div class="panel">
                     <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="collapse">
@@ -940,6 +1073,61 @@
                     alert(data);
                 });
             });
+
+
+
+                var data = {
+                    labels: [
+                                <?php foreach ($arrayTotales as $key => $value): ?>
+                                    <?php echo "'".$key."'," ?>
+                                <?php endforeach ?>
+                            ],
+                    datasets: [
+                        {
+                            label: "Ingresos por Año",
+                            backgroundColor: [
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                            ],
+                            borderColor: [
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(54, 162, 235, 1)',
+                            ],
+                            borderWidth: 1,
+                            data: [
+                                    <?php foreach ($arrayTotales as $key => $value): ?>
+                                        <?php echo "'".$value."'," ?>
+                                    <?php endforeach ?>
+                                    ],
+                        }
+                    ]
+                };
+
+                var myBarChart = new Chart('barChart', {
+                    type: 'line',
+                    data: data,
+                });
+
         });
 
     </script>
