@@ -76,9 +76,6 @@
             background-color: rgba(0,0,0,0.2);
             color: red;
         }
-         {
-            background-color: red;
-        }
         li.active{
             background-color: red;
         }
@@ -246,19 +243,19 @@
             <div class="col-md-7 col-xs-12">
                 <div class="panel">
                     <ul class="nav nav-tabs nav-tabs-simple bg-info-light " role="tablist" data-init-reponsive-tabs="collapse">
-                        <li class="nuevo"><a href="#tabNueva" data-toggle="tab" role="tab" ><i class="fa fa-plus-circle fa-2x" style="color:green;background-color: white;border-radius: 10px" aria-hidden="true"></i></a>
+                        <li style="background-color: white"><a href="#tabNueva" data-toggle="tab" role="tab" ><i class="fa fa-plus-circle fa-2x" style="color:green;background-color: white;border-radius: 10px" aria-hidden="true"></i></a>
                         </li>
-                        <li class="active" >
+                        <li class="active Reservado" >
                             <a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes 
                                 <span class="badge"><?php echo count($arrayBooks["nuevas"]) ?></span>
                             </a>
                         </li>
-                        <li>
+                        <li class="Bloqueado">
                             <a href="#tabEspeciales" data-toggle="tab" role="tab">Especiales
                                 <span class="badge"><?php echo count($arrayBooks["especiales"]) ?></span>
                             </a>
                         </li>
-                        <li>
+                        <li class="Pagada-la-señal">
                             <a href="#tabPagadas" data-toggle="tab" role="tab">Confirmadas 
                                 <span class="badge"><?php echo count($arrayBooks["pagadas"]) ?></span>
                             </a>
@@ -413,16 +410,16 @@
                                     <table class="table  demo-table-search table-responsive table-striped " id="tableWithSearch" >
                                         <thead>
                                             <tr>   
-                                                <th class ="text-center bg-complete text-white" style="width:20%!important">  Cliente     </th>
-                                                <th class ="text-center bg-complete text-white" style="width:10%">  Telefono     </th>
-                                                <th class ="text-center bg-complete text-white" style="width:2%">   Pax         </th>
-                                                <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
-                                                <th class ="text-center bg-complete text-white" style="width:5%!important">  IN     </th>
-                                                <th class ="text-center bg-complete text-white" style="width:5%!important">  OUT      </th>
-                                                <th class ="text-center bg-complete text-white" style="width:5%">   Noc         </th>
-                                                <th class ="text-center bg-complete text-white">                    Precio      </th>
-                                                <th class ="text-center bg-complete text-white" style="width:5%">   Estado      </th>
-                                                <th class ="text-center bg-complete text-white">                    A  </th>
+                                                <th class ="text-center Reservado text-white" style="width:20%!important">  Cliente     </th>
+                                                <th class ="text-center Reservado text-white" style="width:10%">  Telefono     </th>
+                                                <th class ="text-center Reservado text-white" style="width:2%">   Pax         </th>
+                                                <th class ="text-center Reservado text-white" style="width:5%">   Apart       </th>
+                                                <th class ="text-center Reservado text-white" style="width:5%!important">  IN     </th>
+                                                <th class ="text-center Reservado text-white" style="width:5%!important">  OUT      </th>
+                                                <th class ="text-center Reservado text-white" style="width:5%">   Noc         </th>
+                                                <th class ="text-center Reservado text-white">                    Precio      </th>
+                                                <th class ="text-center Reservado text-white" style="width:5%">   Estado      </th>
+                                                <th class ="text-center Reservado text-white">                    A  </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -436,7 +433,7 @@
 
                                                         <td class ="text-center"> 
                                                             <?php if ($book->customer->phone != 0): ?>
-                                                                <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?>
+                                                                <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?>
                                                             <?php else: ?>
                                                             <?php endif ?>
                                                         </td>
@@ -530,16 +527,16 @@
                                     <table class="table table-hover demo-table-search table-responsive table-striped" id="tableWithSearch2" >
                                         <thead>
                                             <tr>
-                                                <th class ="text-center bg-warning text-white" style="width:10%">  Cliente     </th>
-                                                <th class ="text-center bg-warning text-white" style="width:5%">   Telefono    </th>
-                                                <th class ="text-center bg-warning text-white" style="width:2%">   Pax         </th>
-                                                <th class ="text-center bg-warning text-white" style="width:5%">   Apart       </th>
-                                                <th class ="text-center bg-warning text-white" style="width:11%!important">  IN     </th>
-                                                <th class ="text-center bg-warning text-white" style="width:11%!important">  OUT      </th>
-                                                <th class ="text-center bg-warning text-white" style="width:5%">   Noc         </th>
-                                                <th class ="text-center bg-warning text-white">                    Precio      </th>
-                                                <th class ="text-center bg-warning text-white" style="width:17%">   Estado      </th>
-                                                <th class ="text-center bg-warning text-white">                    Acciones    </th>
+                                                <th class ="text-center Bloqueado text-white" style="width:10%">  Cliente     </th>
+                                                <th class ="text-center Bloqueado text-white" style="width:5%">   Telefono    </th>
+                                                <th class ="text-center Bloqueado text-white" style="width:2%">   Pax         </th>
+                                                <th class ="text-center Bloqueado text-white" style="width:5%">   Apart       </th>
+                                                <th class ="text-center Bloqueado text-white" style="width:11%!important">  IN     </th>
+                                                <th class ="text-center Bloqueado text-white" style="width:11%!important">  OUT      </th>
+                                                <th class ="text-center Bloqueado text-white" style="width:5%">   Noc         </th>
+                                                <th class ="text-center Bloqueado text-white">                    Precio      </th>
+                                                <th class ="text-center Bloqueado text-white" style="width:17%">   Estado      </th>
+                                                <th class ="text-center Bloqueado text-white">                    Acciones    </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -631,17 +628,17 @@
                                 <table class="table table-hover demo-table-search table-responsive table-striped" id="tableWithSearch3" >
                                     <thead>
                                         <tr>   
-                                            <th class ="text-center bg-danger text-white" style="width:5%"> Cobros </th>
-                                            <th class ="text-center bg-danger text-white" style="width:5%">  Cliente     </th>
-                                            <th class ="text-center bg-danger text-white" style="width:5%">  Telefono     </th>
-                                            <th class ="text-center bg-danger text-white" style="width:2%">   Pax         </th>
-                                            <th class ="text-center bg-danger text-white" style="width:5%">   Apart       </th>
-                                            <th class ="text-center bg-danger text-white" style="width:20%!important">  IN     </th>
-                                            <th class ="text-center bg-danger text-white" style="width:20%!important">  OUT      </th>
-                                            <th class ="text-center bg-danger text-white" style="width:5%">   Noc         </th>
-                                            <th class ="text-center bg-danger text-white" style="width:5%">   Precio      </th>
-                                            <th class ="text-center bg-danger text-white" style="width:5%">   Estado      </th>
-                                            <th class ="text-center bg-danger text-white" style="width:5%">   Acciones    </th>
+                                            <th class ="text-center Pagada-la-señal text-white" style="width:5%"> Cobros </th>
+                                            <th class ="text-center Pagada-la-señal text-white" style="width:5%">  Cliente     </th>
+                                            <th class ="text-center Pagada-la-señal text-white" style="width:5%">  Telefono     </th>
+                                            <th class ="text-center Pagada-la-señal text-white" style="width:2%">   Pax         </th>
+                                            <th class ="text-center Pagada-la-señal text-white" style="width:5%">   Apart       </th>
+                                            <th class ="text-center Pagada-la-señal text-white" style="width:20%!important">  IN     </th>
+                                            <th class ="text-center Pagada-la-señal text-white" style="width:20%!important">  OUT      </th>
+                                            <th class ="text-center Pagada-la-señal text-white" style="width:5%">   Noc         </th>
+                                            <th class ="text-center Pagada-la-señal text-white" style="width:5%">   Precio      </th>
+                                            <th class ="text-center Pagada-la-señal text-white" style="width:5%">   Estado      </th>
+                                            <th class ="text-center Pagada-la-señal text-white" style="width:5%">   Acciones    </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -712,7 +709,6 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <div class="col-md-6 <?php echo $book->getStatus($book->type_book) ?>" style="    position: relative;height: 30px;width: 30px;border-radius:50%">&nbsp;</div>
                                                         <div class="btn-group col-md-6">
                                                             <!--  -->
                                                             <!-- <?php if ($book->customer['phone'] != 0): ?>
