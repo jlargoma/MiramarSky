@@ -15,10 +15,8 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
 
-@endsection
+    <?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
     
-@section('content')
-<?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
     <style type="text/css">
 
         .Reservado{
@@ -26,72 +24,40 @@
             color: black;
         }
         .Reservado.start{
-            background: red; /* For browsers that do not support gradients */
-            background: -webkit-linear-gradient(left, white, green); /* For Safari 5.1 to 6.0 */
-            background: -o-linear-gradient(right, white, green); /* For Opera 11.1 to 12.0 */
-            background: -moz-linear-gradient(right, white, green); /* For Firefox 3.6 to 15 */
-            background: linear-gradient(to right, white, green); /* Standard syntax */
+            background: rgba(0,255,0,0.5); /* For browsers that do not support gradients */
         }
         .Reservado.end{
-            background: red; /* For browsers that do not support gradients */
-            background: -webkit-linear-gradient(left, green, white); /* For Safari 5.1 to 6.0 */
-            background: -o-linear-gradient(right, green, white); /* For Opera 11.1 to 12.0 */
-            background: -moz-linear-gradient(right, green, white); /* For Firefox 3.6 to 15 */
-            background: linear-gradient(to right, green, white); /* Standard syntax */
+            background: rgba(0,255,0,0.5); /* For browsers that do not support gradients */
         }
         .Pagada-la-señal{
             background-color: #F77975  !important;
             color: black;
         }
         .Pagada-la-señal.start{
-            background: red; /* For browsers that do not support gradients */
-            background: -webkit-linear-gradient(left, yellow , red); /* For Safari 5.1 to 6.0 */
-            background: -o-linear-gradient(right, yellow, red); /* For Opera 11.1 to 12.0 */
-            background: -moz-linear-gradient(right, yellow, red); /* For Firefox 3.6 to 15 */
-            background: linear-gradient(to right, yellow , red); /* Standard syntax */
+            background: rgba(255,0,0,0.5); /* For browsers that do not support gradients */
         }
         .Pagada-la-señal.end{
-            background: red; /* For browsers that do not support gradients */
-            background: -webkit-linear-gradient(left, red , yellow); /* For Safari 5.1 to 6.0 */
-            background: -o-linear-gradient(right, red, yellow); /* For Opera 11.1 to 12.0 */
-            background: -moz-linear-gradient(right, red, yellow); /* For Firefox 3.6 to 15 */
-            background: linear-gradient(to right, red , yellow); /* Standard syntax */
+            background: rgba(255,0,0,0.5); /* For browsers that do not support gradients */
         }
         .Bloqueado{
             background-color: #F9D975 !important;
             color: black;
         }
         .Bloqueado.start{
-            background: red; /* For browsers that do not support gradients */
-            background: -webkit-linear-gradient(left, white, yellow); /* For Safari 5.1 to 6.0 */
-            background: -o-linear-gradient(right, white, yellow); /* For Opera 11.1 to 12.0 */
-            background: -moz-linear-gradient(right, white, yellow); /* For Firefox 3.6 to 15 */
-            background: linear-gradient(to right, white, yellow); /* Standard syntax */
+            background: rgba(255,255,0,0.5); /* For browsers that do not support gradients */
         }
         .Bloqueado.end{
-            background: red; /* For browsers that do not support gradients */
-            background: -webkit-linear-gradient(left, yellow, white); /* For Safari 5.1 to 6.0 */
-            background: -o-linear-gradient(right, yellow, white); /* For Opera 11.1 to 12.0 */
-            background: -moz-linear-gradient(right, yellow, white); /* For Firefox 3.6 to 15 */
-            background: linear-gradient(to right, yellow, white); /* Standard syntax */
+            background: rgba(255,255,0,0.5);
         }
         .SubComunidad{
             background-color: #8A7DBE !important;
             color: black;
         }
         .SubComunidad.start{
-            background: red; /* For browsers that do not support gradients */
-            background: -webkit-linear-gradient(left, white, purple); /* For Safari 5.1 to 6.0 */
-            background: -o-linear-gradient(right, white, purple); /* For Opera 11.1 to 12.0 */
-            background: -moz-linear-gradient(right, white, purple); /* For Firefox 3.6 to 15 */
-            background: linear-gradient(to right, white, purple); /* Standard syntax */
+            background: rgba(138,125,190,0.5);
         }
         .SubComunidad.end{
-            background: red; /* For browsers that do not support gradients */
-            background: -webkit-linear-gradient(left, purple, white); /* For Safari 5.1 to 6.0 */
-            background: -o-linear-gradient(right, purple, white); /* For Opera 11.1 to 12.0 */
-            background: -moz-linear-gradient(right, purple, white); /* For Firefox 3.6 to 15 */
-            background: linear-gradient(to right, purple, white); /* Standard syntax */
+            background: rgba(138,125,190,0.5);
         }
         .botones{
             padding-top: 0px!important;
@@ -123,6 +89,11 @@
             color: white;
         }
     </style>
+
+@endsection
+    
+@section('content')
+
     
     <div class="container-fluid padding-10 sm-padding-10">
         <div class="row bg-white">
@@ -271,16 +242,11 @@
                     <?php endfor; ?>
                 </select>
             </div>
-            <div class="col-md-12 col-xs-12 push-20">
-                <div class="col-xs-12 col-md-2 pull-right">
-                    
-                </div>
-            </div>
             <br><br>
             <div class="col-md-7 col-xs-12">
                 <div class="panel">
                     <ul class="nav nav-tabs nav-tabs-simple bg-info-light " role="tablist" data-init-reponsive-tabs="collapse">
-                        <li class="nuevo"><a href="#tabNueva" data-toggle="tab" role="tab" ><i class="fa fa-plus-circle fa-2x" style="color:green" aria-hidden="true"></i></a>
+                        <li class="nuevo"><a href="#tabNueva" data-toggle="tab" role="tab" ><i class="fa fa-plus-circle fa-2x" style="color:green;background-color: white;border-radius: 10px" aria-hidden="true"></i></a>
                         </li>
                         <li class="active" >
                             <a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes 
@@ -510,10 +476,7 @@
                                                         <td class ="text-center"><?php echo $book->nigths ?></td>
 
                                                         <td class ="text-center"><?php echo $book->total_price."€" ?><br>
-                                                                                <?php if (isset($payment[$book->id])): ?>
-                                                                                    <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
-                                                                                <?php else: ?>
-                                                                                <?php endif ?>
+                                                                                
                                                         </td>
 
                                                         <td class ="text-center">
@@ -777,11 +740,11 @@
             <div class="col-md-5 col-xs-12">
                 <div class="panel">
                     <ul class="nav nav-tabs nav-tabs-simple bg-info-light" role="tablist" data-init-reponsive-tabs="collapse">
-                        <?php $dateAux = $date->copy(); ?>
-                        <?php for ($i=1; $i <= 4 ; $i++) :?>
+                        <?php $dateAux = $inicio->copy(); ?>
+                        <?php for ($i=1; $i <= 9 ; $i++) :?>
                             <li <?php if($i == 1 ){ echo "class='active'";} ?>>
-                                <a href="#tab<?php echo $i?>" data-toggle="tab" role="tab">
-                                    <?php echo ucfirst($dateAux->copy()->formatLocalized('%B %Y'))?>
+                                <a href="#tab<?php echo $i?>" data-toggle="tab" role="tab" style="padding:10px">
+                                    <?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>
                                 </a>
                             </li>
                             <?php $dateAux->addMonth(); ?>
@@ -789,7 +752,7 @@
                     </ul>
                     <div class="tab-content">
                         
-                        <?php for ($z=1; $z <= 4; $z++):?>
+                        <?php for ($z=1; $z <= 9; $z++):?>
                         <div class="tab-pane <?php if($z == 1){ echo 'active';} ?>" id="tab<?php echo $z ?>">
                             <div class="row">
                                 <div class="col-md-12">
@@ -797,12 +760,12 @@
                                        <thead>
                                             <tr >
                                                 <td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
-                                                    <?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
+                                                    <?php echo  ucfirst($inicio->copy()->formatLocalized('%B %Y'))?>
                                                 </td> 
                                             </tr>
                                             <tr>
                                                 <td rowspan="2" style="width: 1%!important"></td>
-                                                    <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
+                                                    <?php for ($i=1; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
                                                         <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
                                                             <?php echo $i?> 
                                                         </td> 
@@ -810,9 +773,9 @@
                                             </tr>
                                             <tr>
                                                 
-                                                <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-                                                    <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$date->copy()->format('n')][$i]?>">
-                                                        <?php echo $days[$date->copy()->format('n')][$i]?> 
+                                                <?php for ($i=1; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
+                                                    <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$inicio->copy()->format('n')][$i]?>">
+                                                        <?php echo $days[$inicio->copy()->format('n')][$i]?> 
                                                     </td> 
                                                  <?php endfor; ?> 
                                             </tr>
@@ -821,25 +784,25 @@
                                        
                                             <?php foreach ($roomscalendar as $room): ?>
                                                 <tr>
-                                                    <?php $date = $date->startOfMonth() ?>
+                                                    <?php $inicio = $inicio->startOfMonth() ?>
                                                     <td class="text-center"><b><?php echo substr($room->nameRoom, 0,5)?></b></td>
                                                         
-                                                    <?php for ($i=01; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
+                                                    <?php for ($i=01; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
 
-                                                            <?php if (isset($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i])): ?>
-                                                                <?php if ($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->start == $date->copy()->format('Y-m-d')): ?>
+                                                            <?php if (isset($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i])): ?>
+                                                                <?php if ($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->start == $inicio->copy()->format('Y-m-d')): ?>
                                                                         <td style='border:1px solid grey;width: 3%'>
                                                                             <div style="width: 50%;float: left;">
                                                                                 &nbsp;
                                                                             </div>
-                                                                            <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?> start" style="width: 50%;float: left;">
+                                                                            <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> start" style="width: 50%;float: left;">
                                                                                 &nbsp;
                                                                             </div>
 
                                                                         </td>    
-                                                                <?php elseif($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->finish == $date->copy()->format('Y-m-d')): ?>
+                                                                <?php elseif($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->finish == $inicio->copy()->format('Y-m-d')): ?>
                                                                         <td style='border:1px solid grey;width: 3%'>
-                                                                            <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?> end" style="width: 50%;float: left;">
+                                                                            <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> end" style="width: 50%;float: left;">
                                                                                 &nbsp;
                                                                             </div>
                                                                             <div style="width: 50%;float: left;">
@@ -850,9 +813,20 @@
                                                                         </td>
                                                                 <?php else: ?>
                                                                     
-                                                                        <td style='border:1px solid grey;width: 3%' title="<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->customer['name'] ?>" class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?>">
+                                                                        <td 
+                                                                            style='border:1px solid grey;width: 3%' 
+                                                                            title="
+                                                                                <?php echo $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->customer['name'] ?> 
 
-                                                                       <a href="{{url ('/admin/reservas/update')}}/<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->id ?>">
+                                                                                <?php echo 'PVP:'.$arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->total_price ?>
+                                                                                <?php if (isset($payment[$arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->id])): ?>
+                                                                                    <?php echo 'PEND:'.($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->total_price - $payment[$arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->id])?>
+                                                                                <?php else: ?>
+                                                                                <?php endif ?>" 
+                                                                                class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?>"
+                                                                        >
+
+                                                                       <a href="{{url ('/admin/reservas/upinicio')}}/<?php echo $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->id ?>">
                                                                            <div style="width: 100%;height: 100%">
                                                                                &nbsp;
                                                                            </div>
@@ -862,14 +836,14 @@
 
                                                                 <?php endif ?>
                                                             <?php else: ?>
-                                                                <td class="<?php echo $days[$date->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
+                                                                <td class="<?php echo $days[$inicio->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
                                                                     
                                                                 </td>
                                                             <?php endif; ?>
-                                                            <?php if ($date->copy()->format('d') != $arrayMonths[$date->copy()->format('n')]): ?>
-                                                                <?php $date = $date->addDay(); ?>
+                                                            <?php if ($inicio->copy()->format('d') != $arrayMonths[$inicio->copy()->format('n')]): ?>
+                                                                <?php $inicio = $inicio->addDay(); ?>
                                                             <?php else: ?>
-                                                                <?php $date = $date->startOfMonth() ?>
+                                                                <?php $inicio = $inicio->startOfMonth() ?>
                                                             <?php endif ?>
                                                         
                                                     <?php endfor; ?> 
@@ -878,7 +852,7 @@
                                             <?php endforeach; ?>
                                        </tbody>
                                     </table>
-                                    <?php $date = $date->addMonth(); ?>
+                                    <?php $inicio = $inicio->addMonth(); ?>
                                 </div>
                             </div>
                         </div>
@@ -956,28 +930,6 @@
                     // window.location.reload();
                 });
             });
-            /* $('#status, #room').change(function(event) { */
-            // $('.status, .room').change(function(event) {
-            //     var id = $(this).attr('data-id');
-            //     /* var room = $('#room').val();*/
-            //     console.log($(this).attr('class'));
-            //     var clase = $(this).attr('class');
-
-            //     if (clase == "status form-control") {
-            //        var status = $(this).val();
-            //     }else{
-            //         var status = "";
-            //     }if(clase == "room"){
-            //         var room = $(this).val();
-            //     }else{
-            //         var room = "";
-            //     }
-            //     /* $.get('/admin/apartamentos/update/'+id, {  id: id, status:status, room:room }, function(data) { */
-            //     // $.get('//admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
-            //     //     alert(data);
-            //     //     window.location.reload();
-            //     // });
-            // });
 
             var start  = 0;
             var finish = 0;

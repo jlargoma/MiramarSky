@@ -151,12 +151,12 @@ class BookController extends Controller
                                                         'payment'       => $totalPayments,
                                                         'pagos'         => \App\Payments::all(),
                                                         'days'          => $arrayDays,
-                                                        'inicio'        => $start,
+                                                        'inicio'        => $start,                                                        
                                                         ]);
                 }else{
                     return view('backend/planning/index_mobile',[
                                                         'arrayBooks'    => $arrayBooks,
-                                                        'arrayMonths'   => $arrayMonths,
+                                                        'arrayMonths'   => $arrayMonths,     
                                                         'rooms'         => \App\Rooms::all(),
                                                         'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->orderBy('name','DESC')->get(),
                                                         'arrayReservas' => $arrayReservas,
@@ -166,7 +166,9 @@ class BookController extends Controller
                                                         'extras'        => \App\Extras::all(),
                                                         'payment'       => $totalPayments,
                                                         'pagos'         => \App\Payments::all(),
-                                                        'days'          => $arrayDays,
+                                                        'days'          => $arrayDays, 
+                                                        'inicio'        => $start,                                                        
+                                                                                                               
                                                         ]);
                 }
         }

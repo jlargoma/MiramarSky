@@ -7,7 +7,8 @@
     <link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
     <link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
-
+  
+    <link href="{{ asset('/pages/css/pages-icons.css') }}" rel="stylesheet" type="text/css">
     <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
     <link href="/assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" media="screen">
     <link href="/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" media="screen">
@@ -49,15 +50,15 @@
                 <thead>
                     <tr>
                         <th class ="text-center hidden">                  ID            </th>
-                        <th class ="text-center bg-complete text-white">  Nick        </th>
-                        <th class ="text-center bg-complete text-white">  Nombre          </th>
+                        <th class ="text-center bg-complete text-white" style="width: 10%">  Nick        </th>
+                        <th class ="text-center bg-complete text-white" style="width: 10%">  Nombre          </th>
+                        <th class ="text-center bg-complete text-white" style="width: 10%">  Ocu min </th>
+                        <th class ="text-center bg-complete text-white" style="width: 10%">  Ocu max </th>
                         <th class ="text-center bg-complete text-white">  Tamaño          </th>
+                        <th class ="text-center bg-complete text-white">  Lujo          </th>                        
                         <th class ="text-center bg-complete text-white">  Tipo        </th>
                         <th class ="text-center bg-complete text-white">  Propietario   </th>
-                        <th class ="text-center bg-complete text-white">  Ocupacion min </th>
-                        <th class ="text-center bg-complete text-white">  Ocupacion max </th>
-                        <th class ="text-center bg-complete text-white">  Lujo          </th>                        
-                        <th class ="text-center bg-complete text-white">  Editar        </th>
+                        <th class ="text-center bg-complete text-white" style="width: 10%">  Editar        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,8 +72,26 @@
                                <?php echo $room->nameRoom?>
                            </td>
                            <td class="text-center">
+                                <input class="editable minOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->minOcu?>" style="width: 100%;text-align: center;border-style: none none ">
+                           </td>  
+                           <td class="text-center">
+                               <input class="editable maxOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->maxOcu?>" style="width: 100%;text-align: center;border-style: none none">
+                           </td> 
+                           <td class="text-center">
                                <?php echo $room->sizeRooms->name?>
                            </td>
+                           <td class="text-center">
+                               <?php if ($room->luxury == 0): ?>
+                                   <span class="input-group-addon bg-transparent">
+                                        <input type="checkbox" class="editable" data-id="<?php echo $room->id ?>" name="luxury" data-init-plugin="switchery" data-size="small" data-color="primary" />
+                                    </span>
+                               <?php else: ?>
+                                   <span class="input-group-addon bg-transparent">
+                                        <input type="checkbox" class="editable" data-id="<?php echo $room->id ?>" name="luxury" data-init-plugin="switchery" data-size="small" data-color="primary" checked="checked" />
+                                    </span>
+                               <?php endif ?>
+                               
+                           </td> 
                            <td class="text-center">
                               <select class="type" class="form-control" data-id="<?php echo $room->id ?>">
                                 <?php foreach ($tipos as $tipo): ?>
@@ -85,39 +104,26 @@
                            </td>
                            <td class="text-center">
                                <?php echo $room->user->name?>
-                           </td>    
-                           <td class="text-center">
-                                <input class="editable minOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->minOcu?>" style="width: 100%;text-align: center;border-style: none none ">
-                           </td>  
-                           <td class="text-center">
-                               <input class="editable maxOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->maxOcu?>" style="width: 100%;text-align: center;border-style: none none">
-                           </td> 
-                           <td class="text-center">
-                               <?php if ($room->luxury == 0): ?>
-                                   <span class="input-group-addon bg-transparent">
-                                        <input type="checkbox" class="editable" data-id="<?php echo $room->id ?>" name="luxury" data-init-plugin="switchery" data-size="small" data-color="primary" />
-                                    </span>
-                               <?php else: ?>
-                                   <span class="input-group-addon bg-transparent">
-                                        <input type="checkbox" class="editable" data-id="<?php echo $room->id ?>" name="luxury" data-init-plugin="switchery" data-size="small" data-color="primary" checked="checked" />
-                                    </span>
-                               <?php endif ?>
-                               
-                           </td>                      
+                           </td>             
                            <td class="text-center">
                                <div class="btn-group">
                                    <!--  -->
-                                   <form action="apartamentos/uploadfile" method="post" >
-                                        <input type="hidden" name="id" value="<?php echo $room->id ?>">
-                                        <a class="fileUpload btn btn-tag btn-success">
-                                            <i class="fa fa-file-image-o" aria-hidden="true"></i>
-                                            <input type="file" class="upload" data-id="<?php echo $room->id ?>"/>
-                                        </a>
-                                   </form>
+                                  <div class="col-md-6">
+                                    <form action="apartamentos/uploadfile" method="post" >
+                                      <input type="hidden" name="id" value="<?php echo $room->id ?>">
+                                      <a class="fileUpload btn btn-tag btn-success">
+                                        <i class="fa fa-file-image-o" aria-hidden="true"></i>
+                                          <input type="file" class="upload" data-id="<?php echo $room->id ?>"/>
+                                      </a>
+                                    </form>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <a href="{{ url('/admin/apartamentos/delete/')}}/<?php echo $room->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Apartamento" onclick="return confirm('¿Quieres eliminar el apartamento?');">
+                                        <i class="fa fa-trash"></i>
+                                    </a> 
+                                  </div> 
                                    
-                                   <a href="{{ url('/admin/apartamentos/delete/')}}/<?php echo $room->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Apartamento" onclick="return confirm('¿Quieres eliminar el apartamento?');">
-                                       <i class="fa fa-trash"></i>
-                                   </a>                                     
+                                                                       
                                </div>
                            </td>
                        </tr>
@@ -126,7 +132,7 @@
             </table>
         </div>
         
-        <div class="col-md-4 cols-xs-12 col-sm-12" style="border:1px solid black">
+        <div class="col-md-4 cols-xs-12 col-sm-12 " style="border:1px solid black;margin-top: 40px;">
             <div class="row">
                 <div class="col-md-12">
                     <div class="sm-m-l-5 sm-m-r-5">
@@ -135,7 +141,7 @@
                                 <div class="panel-heading" role="tab" id="headingOne">
                                     <h4 class="panel-title">
                                         <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                            Tamaño
+                                            Crear Tamaño
                                         </a>
                                       </h4>
                                 </div>
@@ -176,7 +182,7 @@
                                 <div class="panel-heading" role="tab" id="headingThree">
                                     <h4 class="panel-title">
                                         <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                            Tipo de apartamento
+                                            Crear Tipo de apartamento
                                         </a>
                                     </h4>
                                 </div>
@@ -217,7 +223,7 @@
                                 <div class="panel-heading" role="tab" id="headingThree">
                                     <h4 class="panel-title">
                                         <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                            Apartamento
+                                            Crear Apartamento
                                         </a>
                                     </h4>
                                 </div>
