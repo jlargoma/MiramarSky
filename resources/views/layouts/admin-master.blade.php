@@ -35,10 +35,10 @@
 	    <link href="assets/plugins/codrops-dialogFx/dialog.ie.css" rel="stylesheet" type="text/css" media="screen" />
 	    <![endif]-->
 	</head>
-	<body class="fixed-header dashboard">
+	<body class="fixed-header   windows desktop pace-done sidebar-visible menu-pin">
 	<!-- <body class="fixed-header dashboard  windows desktop sidebar-visible pace-done menu-pin"> -->
 		<?php if (Auth::user()->role == 'admin' || Auth::user()->role == 'subadmin'): ?>
-			<nav class="page-sidebar" data-pages="sidebar">
+			<nav class="page-sidebar" data-pages="sidebar" style="width: 134px!important">
 				<!-- END SIDEBAR MENU TOP TRAY CONTENT-->
 				<!-- BEGIN SIDEBAR MENU HEADER-->
 				<!-- <div class="sidebar-header">
@@ -51,32 +51,34 @@
 					<ul class="menu-items">
 
 						<li class="m-t-10 ">
-							<a href="{{ url('admin/reservas') }}" class="detailed">
-								<span class="title">Planning</span>
+							<a href="{{ url('admin/reservas') }}" class="detailed" >
+								
 								<!-- <span class="details">12 New Updates</span> -->
+							
+							<span class="{{ Request::path() == '/reservas' ? 'bg-success' : '' }} icon-thumbnail" title="Planing"><i class="pg-calender"></i></span>
 							</a>
-							<span class="{{ Request::path() == '/reservas' ? 'bg-success' : '' }} icon-thumbnail"><i class="pg-calender"></i></span>
 						</li>
 						
 						<li class="m-t-10 ">
 							<a href="{{ url('admin/apartamentos') }}" class="detailed">
-								<span class="title">Apartamentos</span>
+								
+								<span class="{{ Request::path() == '/apartamentos' ? 'bg-success' : '' }} icon-thumbnail" title="Apartamentos"><i class="pg-home"></i></span>
+
 							</a>
-							<span class="{{ Request::path() == '/apartamentos' ? 'bg-success' : '' }} icon-thumbnail"><i class="pg-home"></i></span>
 						</li>
 
 						<li class="m-t-10 ">
 							<a href="{{ url('admin/precios') }}" class="detailed">
-								<span class="title">Precios</span>
+							
+								<span class="{{ Request::path() == '/precios' ? 'bg-success' : '' }} icon-thumbnail" title="Precios"><i class="fa fa-eur"></i></span>
 							</a>
-							<span class="{{ Request::path() == '/precios' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa fa-eur"></i></span>
 						</li>
 
 						<li class="m-t-10 ">
 							<a href="{{ url('admin/temporadas') }}" class="detailed">
-								<span class="title">Temporadas</span>
+								
+								<span class="{{ Request::path() == '/temporadas' ? 'bg-success' : '' }} icon-thumbnail" title="Temporadas"><i class=" pg-clock"></i></span>
 							</a>
-							<span class="{{ Request::path() == '/temporadas' ? 'bg-success' : '' }} icon-thumbnail"><i class=" pg-clock"></i></span>
 						</li>
 						
 						<!-- <li class="m-t-10 ">
@@ -87,52 +89,46 @@
 						</li> -->
 						<li class="m-t-10 ">
 							<a href="{{ url('admin/pagos-propietarios') }}" class="detailed">
-								<span class="title">Pagos de propietarios</span>
+								
+								<span class="{{ Request::path() == '/pagos-propietarios' ? 'bg-success' : '' }} icon-thumbnail" title="pagos a propietarios"><i class="fa fa-money"></i></span>
 							</a>
-							<span class="{{ Request::path() == '/pagos-propietarios' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa fa-money"></i></span>
 						</li>
 						<li class="m-t-10 ">
 							<a href="{{ url('admin/usuarios') }}" class="detailed">
-								<span class="title">Usuarios</span>
+								<span class="{{ Request::path() == '/usuarios' ? 'bg-success' : '' }} icon-thumbnail" title="Usuarios"><i class="fa fa-user"></i></span>
 							</a>
-							<span class="{{ Request::path() == '/usuarios' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa fa-user"></i></span>
 						</li>
 
 						<li class="m-t-10 ">
 							<a href="{{ url('admin/clientes') }}" class="detailed">
-								<span class="title">Clientes</span>
+								
+							<span class="{{ Request::path() == '/clientes' ? 'bg-success' : '' }} icon-thumbnail" title="Clientes"><i class="fa  fa-users"></i></span>
 							</a>
-							<span class="{{ Request::path() == '/clientes' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa  fa-users"></i></span>
 						</li>
 
 						<li class="m-t-10 ">
-							<a href="javascript:;"><span class="title">Liquidacion</span>
-							<span class="arrow"></span></a>
-							<span class="icon-thumbnail"><i class="fa  fa-line-chart"></i></span>
+							<a href="javascript:;">
+							<span class="icon-thumbnail"><i class="fa  fa-line-chart"></i></span></a>
 								<ul class="sub-menu" style="display: none;">
 									<li>
 										<a href="{{ url('admin/liquidacion') }}" class="detailed">
-											<span class="title">Liquidacion</span>
+											<span class="{{ Request::path() == '/admin/liquidacion' ? 'bg-success' : '' }} icon-thumbnail" title="Liquidacion"><i class="fa  fa-line-chart"></i></span>
 										</a>
-										<span class="{{ Request::path() == '/admin/liquidacion' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa  fa-line-chart"></i></span>
 									</li>
 									<li>
 										<a href="{{ url('admin/liquidacion-apartamentos') }}" class="detailed">
-											<span class="title">Liquidacion Apartamentos</span>
+											<span class="{{ Request::path() == '/admin/liquidacion-apartamentos' ? 'bg-success' : '' }} icon-thumbnail" title="Liquidacion Apartamentos"><i class="fa  fa-line-chart"></i></span>
 										</a>
-										<span class="{{ Request::path() == '/admin/liquidacion-apartamentos' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa  fa-line-chart"></i></span>
 									</li>
 									<li>
 										<a href="{{ url('admin/estadisticas') }}" class="detailed">
-											<span class="title">Estadisticas</span>
+											<span class="{{ Request::path() == '/admin/estadisticas' ? 'bg-success' : '' }} icon-thumbnail" title="Estadisticas"><i class="fa  fa-line-chart"></i></span>
 										</a>
-										<span class="{{ Request::path() == '/admin/estadisticas' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa  fa-line-chart"></i></span>
 									</li>
 									<li>
 										<a href="{{ url('admin/perdidas-ganancias') }}" class="detailed">
-											<span class="title">Perdidas y Ganancias</span>
+											<span class="{{ Request::path() == '/admin/perdidas-ganancias' ? 'bg-success' : '' }} icon-thumbnail" title="Perdidas y Ganancias"><i class="fa  fa-line-chart"></i></span>
 										</a>
-										<span class="{{ Request::path() == '/admin/perdidas-ganancias' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa  fa-line-chart"></i></span>
 									</li>
 								</ul>
 						</li>
@@ -182,14 +178,7 @@
 				</div>
 				<!-- END MOBILE CONTROLS -->
 				<div class=" pull-left sm-table hidden-xs hidden-sm">
-					<div class="header-inner">
-						<div class="brand inline">
-							<img src="{{asset ('assets/img/miramar-logo-t.png') }}" alt="logo" data-src="{{asset ('assets/img/miramar-logo-t.png') }}" data-src-retina="{{asset ('assets/img/miramar-logo-t.png') }}" width="50" height="43">
-						</div>
-						<!-- START NOTIFICATION LIST -->
-						<!-- END NOTIFICATIONS LIST -->
-						<a href="#" class="search-link" data-toggle="search"><i class="pg-search"></i>Type anywhere to <span class="bold">search</span></a> 
-					</div>
+					
 				</div>
 				<div class=" pull-right">
 					<div class="header-inner">
@@ -220,7 +209,7 @@
 			<!-- START CONTAINER FLUID -->
 			<div class="page-content-wrapper ">
 				<!-- START CONTENT -->
-				<div class="content sm-gutter">
+				<div class="content sm-gutter" style="padding-left: 134px!important">
 
 						@yield('content')
 				</div>
