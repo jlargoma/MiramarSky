@@ -1,9 +1,8 @@
-<div class="col-xs-12" id="content-response">
+<div class="row" id="content-response">
 	<div class="col-xs-12">
 		<h2 class="white text-center" style="text-transform: uppercase;">Solicita tu reserva</h2>
 	</div>
-	<div class="col-xs-12 col-md-12">
-		<h3 class="white" style="text-transform: uppercase;"">Revisa los datos de tu reserva</h3>
+	<div class="col-xs-12 col-md-12 not-padding">
 		<div class="col-md-6">
 			<p class="white push-10 font-s18 font-w300">Tipo de apartamento: <span class="font-w800"><?php echo $apto ?></span></p>
 			<p class="white push-10 font-s18 font-w300">Email de contacto: <span class="font-w800"><?php echo $email ?></span></p>
@@ -43,11 +42,11 @@
 	    		<input type="hidden" name="agencia" value="0">
 	    		<input type="hidden" name="book_comments" value="">
 				
-				<button type="submit" class="button button-3d button-xlarge button-rounded button-green white button-light" style="line-height: 1;letter-spacing: 1px;">Confirmar<br>reserva</button>
+				<button type="submit" class="button button-rounded button-reveal button-large button-green tright  center hvr-grow-shadow " style="line-height: 1;letter-spacing: 1px;"><i class="icon-angle-right"></i><span>SOLICITA TU RESERVA</span></button>
 			</form>
 		</div>
         <div class="col-md-6 col-xs-12">
-        	<a href="{{ url('/') }}" class="button button-3d button-xlarge button-rounded button-red white button-light">Cancelar</a>
+        	<a href="{{ url('/') }}" class="button button-rounded button-reveal button-large button-red tright  center hvr-grow-shadow "><i class="icon-angle-right"></i><span>Cancelar</span></a>
         </div>
     </div>
 </div>

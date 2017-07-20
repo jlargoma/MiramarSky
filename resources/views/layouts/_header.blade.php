@@ -56,73 +56,82 @@
 		<div class="container container-mobile clearfix">
 
 			<div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
-
-			<!-- Logo
-			============================================= -->
-			
-			<div id="logo">
-				<a href="{{url('/')}}" class="standard-logo" data-dark-logo="{{ asset ('frontend/images/logo-dark.png')}}" data-sticky-logo="{{ asset ('frontend/images/logo-dark.png')}}" data-mobile-logo="{{ asset ('frontend/images/logo.png')}}"><img src="{{ asset ('frontend/images/logo.png')}}" alt="Logo"></a>
-				<a href="{{url('/')}}" class="retina-logo" data-dark-logo="{{ asset ('frontend/images/logo-dark.png')}}" data-sticky-logo="{{ asset ('frontend/images/logo-dark.png')}}" data-mobile-logo="{{ asset ('frontend/images/logo.png')}}"><img src="{{ asset ('frontend/images/logo.png')}}" alt="Logo"></a>
-			</div>
-
-			<!-- Primary Navigation
-			============================================= -->
-			<nav id="primary-menu" class="with-arrows">
-
-				<ul>
-					<?php if (Request::path() != '/'): ?>
-						<li>
-							<a href="{{ url('/') }}"><div>Home</div></a></li>
-						</li>
-					<?php endif ?>
-					<li class="mega-menu"><a href="#"><div>Apartamentos</div></a>
-						<div class="mega-menu-content style-2 clearfix">
-							<ul class="mega-menu-column col-md-6">
-								<li class="mega-menu-title"><a href="#" class="font-w600 green"><div>Apartamentos</div></a>
-									<ul>
-										
-										<li>
-											<a class="font-w600" href="{{ url('/apartamentos/apartamento-lujo-sierra-nevada')}}"><div>Apartamento de lujo</div></a>
-										</li>
-
-										<li>
-											<a class="font-w300" href="{{ url('/apartamentos/apartamento-standard-sierra-nevada')}}"><div>Apartamento Standard</div></a>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<ul class="mega-menu-column col-md-6">
-								<li class="mega-menu-title"><a href="#" class="font-w600 green"><div>Estudios</div></a>
-									<ul>
-										<li>
-											<a class="font-w300" href="{{ url('/apartamentos/estudio-lujo-sierra-nevada')}}"><div>Estudio de lujo</div></a>
-										</li>
-										
-										<li>
-											<a class="font-w300" href="{{ url('/apartamentos/estudio-standard-sierra-nevada')}}"><div>Estudio Standard</div></a>
-										</li>
-									</ul>
-								</li>
-							</ul>
-						</div>
-					</li>
-					<!-- <li>
-						<a href="{{ url('/reserva') }}"><div>Reserva</div></a></li>
-					</li> -->
-					<li>
-						<a href="{{ url('/actividades') }}"><div>Actividades</div></a></li>
-					</li>
+			<div>
+				<div>
+					<!-- Logo
+					============================================= -->
 					
-					<li>
-						<a href="{{url('/edificio-miramarski-sierra-nevada')}}"><div>El edificio</div></a>
-					</li>
-					<li>
-						<a href="{{ url('/contacto') }}"><div>Contacto</div></a></li>
-					</li>
-				</ul>
+					<!-- <div id="logo">
+						<a href="{{url('/')}}" class="standard-logo" data-dark-logo="{{ asset ('frontend/images/logo-dark.png')}}" data-sticky-logo="{{ asset ('frontend/images/logo-dark.png')}}" data-mobile-logo="{{ asset ('frontend/images/logo.png')}}"><img src="{{ asset ('frontend/images/logo.png')}}" alt="Logo"></a>
+						<a href="{{url('/')}}" class="retina-logo" data-dark-logo="{{ asset ('frontend/images/logo-dark.png')}}" data-sticky-logo="{{ asset ('frontend/images/logo-dark.png')}}" data-mobile-logo="{{ asset ('frontend/images/logo.png')}}"><img src="{{ asset ('frontend/images/logo.png')}}" alt="Logo"></a>
+					</div> -->
+				</div>
+				<div>
+					
+					<!-- Primary Navigation
+					============================================= -->
+					<nav id="primary-menu" class="with-arrows style-2 center">
 
-			</nav><!-- #primary-menu end -->
+						<ul>
+							<?php if (Request::path() != '/'): ?>
+								<li>
+									<a  href="{{ url('/') }}"><div style="text-align: center; font-size: 18px;"><i class="fa fa-home fa-2x" style="margin-right: 0;"></i></div></a></li>
+								</li>
+							<?php endif ?>
+							<li class="mega-menu"><a href="#"><div>Apartamentos</div></a>
+								<div class="mega-menu-content style-2 clearfix">
+									<ul class="mega-menu-column col-md-6">
+										<li class="mega-menu-title"><a href="#" class="font-w600 green"><div>Apartamentos</div></a>
+											<ul>
+												
+												<li>
+													<a class="font-w600" href="{{ url('/apartamentos/apartamento-lujo-sierra-nevada')}}"><div>Apartamento de lujo</div></a>
+												</li>
 
+												<li>
+													<a class="font-w300" href="{{ url('/apartamentos/apartamento-standard-sierra-nevada')}}"><div>Apartamento Standard</div></a>
+												</li>
+											</ul>
+										</li>
+									</ul>
+									<ul class="mega-menu-column col-md-6">
+										<li class="mega-menu-title"><a href="#" class="font-w600 green"><div>Estudios</div></a>
+											<ul>
+												<li>
+													<a class="font-w300" href="{{ url('/apartamentos/estudio-lujo-sierra-nevada')}}"><div>Estudio de lujo</div></a>
+												</li>
+												
+												<li>
+													<a class="font-w300" href="{{ url('/apartamentos/estudio-standard-sierra-nevada')}}"><div>Estudio Standard</div></a>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+							</li>
+							<!-- <li>
+								<a href="{{ url('/reserva') }}"><div>Reserva</div></a></li>
+							</li> -->
+							<li>
+								<a href="{{ url('/actividades') }}"><div>¿Qué hacer en sierra nevada?</div></a></li>
+							</li>
+							
+							<li >
+								<!-- <a href="#"><div>Reservar</div></a> -->
+								<a class="menu-booking" href="#" data-href="#wrapper"><div>Reservar</div></a>
+							</li>
+							<li>
+								<a href="{{ url('/contacto') }}"><div>Contacto</div></a></li>
+							</li>
+						</ul>
+
+					</nav><!-- #primary-menu end -->
+
+				</div>
+				<div></div>
+
+			</div>
+			
 		</div>
 
 	</div>

@@ -1233,7 +1233,8 @@ body.no-superfish #primary-menu li:hover > .mega-menu-content { display: block; 
 	border-top: 2px solid #3F51B5;
 	height: auto;
 	z-index: 199;
-	top: 100%;
+	top: 65px;
+	/*top: 100%;*/
 	left: auto;
 	margin: 0;
 }
@@ -1402,7 +1403,7 @@ body.stretched #header.full-header #primary-menu ul li.mega-menu .mega-menu-cont
 #primary-menu.style-2 {
 	float: none;
 	max-width: none;
-	border-top: 1px solid #F5F5F5;
+	/*border-top: 1px solid #F5F5F5;*/
 }
 
 #primary-menu.style-2 > div > ul { float: left; }
@@ -14290,13 +14291,18 @@ td.clases h3.name{
 #banner-offert{
 	background: #3F51B5!important;
     color: white!important;
+    line-height: 0!important;
     padding: 45px 35px;
 }
-#banner-offert:hover{
+#banner-offert i{
+	line-height: 90px!important;
+	height: 90px!important;
+}
+/*#banner-offert:hover{
 	background: #3F51B5!important;
     color: white!important;
 }
-
+*/
 
 
 
@@ -14378,6 +14384,7 @@ h2.text {
   margin-bottom: 0;
   line-height: 1;
   text-shadow: 1px 1px #000;
+  border-color: white!important;
 }
 
 p.text {
@@ -14624,6 +14631,14 @@ p.text {
 }
 
 
+@media (min-width: 1024px){
+
+
+	#primary-menu.style-2 ul{
+		border-top: 2px solid white;
+		border-bottom: 2px solid white;
+	}
+}
 
 /* REAL STATE CSS */
 
@@ -14692,7 +14707,7 @@ p.text {
 
 	#header,
 	#header-wrap,
-	#logo img { height: 80px; }
+	#logo img { height: 85px; }
 
 	#header-wrap {
 		-webkit-transition: background-color .3s ease;

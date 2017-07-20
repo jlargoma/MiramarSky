@@ -81,27 +81,16 @@ class HomeController extends Controller
         $aptos  = ['apartamento-lujo-sierra-nevada', 'estudio-lujo-sierra-nevada','apartamento-standard-sierra-nevada','estudio-standard-sierra-nevada'];
 
 
-        if ($url == "apartamento-standard-sierra-nevada") {
-             return view('frontend.pages._apartamento2', [ 
-                                                        'slides'            => $slides, 
-                                                        'mobile'            => new Mobile(),
-                                                        'aptoHeading'       => $aptoHeading,
-                                                        'aptoHeadingMobile' => $aptoHeadingMobile,
-                                                        'typeApto'          => $typeApto,
-                                                        'aptos'             => $aptos,
-                                                        'url'               => $url,
-                                                    ]);
-        }else{
-            return view('frontend.pages._apartamento', [ 
-                                                            'slides'            => $slides, 
-                                                            'mobile'            => new Mobile(),
-                                                            'aptoHeading'       => $aptoHeading,
-                                                            'aptoHeadingMobile' => $aptoHeadingMobile,
-                                                            'typeApto'          => $typeApto,
-                                                            'aptos'             => $aptos,
-                                                            'url'               => $url,
-                                                        ]);
-        }
+        return view('frontend.pages._apartamento2', [ 
+                                                    'slides'            => $slides, 
+                                                    'mobile'            => new Mobile(),
+                                                    'aptoHeading'       => $aptoHeading,
+                                                    'aptoHeadingMobile' => $aptoHeadingMobile,
+                                                    'typeApto'          => $typeApto,
+                                                    'aptos'             => $aptos,
+                                                    'url'               => $url,
+                                                ]);
+        
 
        
     }

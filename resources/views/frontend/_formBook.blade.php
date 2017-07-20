@@ -3,22 +3,22 @@
     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
     <div class="col-md-12">
-            <div class="form-group col-sm-12 col-xs-6 col-md-4 col-lg-4 white">
+            <div class="form-group col-sm-12 col-xs-6 col-md-6 col-lg-6 white">
                 <label>*Nombre</label>
                 <input type="text" class="sm-form-control" name="name" id="nombre" placeholder="Nombre..." maxlength="40" required="">
             </div>
-            <div class="form-group col-sm-12 col-xs-6 col-md-4 col-lg-4 white">
+            <div class="form-group col-sm-12 col-xs-6 col-md-6 col-lg-6 white">
                 <label>*Email</label>
                 <input type="email" class="sm-form-control"  name="email" id="email" placeholder="Email..." maxlength="40" required="">
             </div>
-            <div class="form-group col-sm-12 col-xs-6 col-md-4 col-lg-4 white">
+            <div class="form-group col-sm-12 col-xs-6 col-md-6 col-lg-6 white">
                 <label>*Telefono</label>
                 <input type="text" class="sm-form-control only-numbers" name="telefono" id="telefono" placeholder="Teléfono..." maxlength="9" required="">
             </div>
             
-			<div class="hidden-xs hidden-sm" style="clear: both;"></div>
+			
 
-            <div class="form-group col-sm-12 col-xs-6 col-md-3 white">
+            <div class="form-group col-sm-12 col-xs-6 col-md-6 white">
                 <label style="display: inherit!important;">*Entrada - Salida</label>
                 <div class="input-group">
                     <input type="text" class="sm-form-control daterange1" id="date"   name="date" required style="cursor: pointer;">
@@ -27,7 +27,10 @@
                     <br><b>* ESTANCIA MÍNIMA: 2 NOCHES</b>
                 </p>
             </div>
-            <div class="form-group col-sm-12 col-xs-6 col-md-1 white">
+
+            <div class="hidden-xs hidden-sm" style="clear: both;"></div>
+
+            <div class="form-group col-sm-12 col-xs-6 col-md-3 white">
            		<label style="display: inherit!important;">*Ocupantes</label>
             	<div class="quantity center clearfix divcenter">
 					<!-- <input type="button" value="-" class="minus black" style=" color: black;">
@@ -57,7 +60,7 @@
 					<label for="apto-estudio" class="radio-style-3-label">Est.</label>
 				</div>
             </div>
-            <div class="form-group col-sm-12 col-xs-4 col-md-2">
+            <div class="form-group col-sm-12 col-xs-4 col-md-3">
                 <label style="display: inline!important;" class="col-md-12 luxury white">*lujo</label>
                 <div class="col-md-6"> 
 					<input id="luxury-yes" class="radio-style" name="luxury" type="radio" checked="" value="si">
@@ -68,7 +71,7 @@
 					<label for="luxury-no" class="radio-style-3-label">No</label>
 				</div>
             </div>
-            <div class="form-group col-sm-12 col-xs-4 col-md-2">
+            <div class="form-group col-sm-12 col-xs-4 col-md-3">
                 <label style="display: inline!important;" class="col-md-12 parking white">*Parking</label>
                 <div class="col-md-6">
 					<input id="parking-yes" class="radio-style" name="parking" type="radio" checked="" value="si">
