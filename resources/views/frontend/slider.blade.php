@@ -137,6 +137,7 @@
 
 						style="z-index: 15; white-space: normal; font-size: 30px; line-height: 40px; font-weight: 800; color: rgba(255, 255, 255, 1.00); display: block;font-family:Poppins; text-shadow: 1px 1px #000;">DISFRUTA DE TUS VACACIONES
 					</div>
+					
 				</li>
 				<!-- SLIDE  -->
 				<li class="dark" data-index="rs-36" data-transition="slidehorizontal" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off"  data-easein="default" data-easeout="default" data-masterspeed="2000"  data-thumb="{{asset('/img/miramarski/television-chimenea-apartamento-sierra-nevada.jpg')}}"  data-rotate="0"  data-saveperformance="off"  data-title="Two" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
@@ -408,32 +409,34 @@
 					</div>
 				</li>
 			</ul>
-			<!-- <div style="" class="tp-static-layers">
+			<div style="" class="tp-static-layers">
+					<!-- <a id="banner-offert" class="button button-rounded button-reveal button-large button-red tright  center hvr-grow-shadow ">
+		               <i class="icon-angle-right"></i><span>SOLICITA TU RESERVA</span>
+	                </a> -->
+				<button class="tp-caption rev-btn  tp-static-layer button button-rounded button-reveal button-large button-red tright  center hvr-grow-shadow menu-booking"		 
+		 			id="slider-15-layer-18"
+					data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
+					data-y="['bottom','bottom','bottom','bottom']" data-voffset="['30','30','30','30']"
+					data-width="none"
+					data-height="none"
+					data-whitespace="nowrap"
 
-					<a class="tp-caption rev-btn  tp-static-layer"
-			 			href="http://themeforest.net/item/canvas-the-multipurpose-html5-template/9228123?ref=SemiColonWeb&license=regular&open_purchase_for_item_id=9228123&purchasable=source" target="_blank"			 id="slider-15-layer-18"
-						 data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-						 data-y="['bottom','bottom','bottom','bottom']" data-voffset="['30','30','30','30']"
-									data-width="none"
-						data-height="none"
-						data-whitespace="nowrap"
+					data-type="button"
+					data-actions=''
+					data-basealign="slide"
+					data-responsive_offset="off"
+					data-responsive="off"
+					data-startslide="0"
+					data-endslide="2"
+					data-frames='[{"delay":1600,"speed":1000,"frame":"0","from":"y:20px;sX:1.5;sY:1.5;opacity:0;fb:10px;","to":"o:1;fb:0;","ease":"Power4.easeOut"},{"delay":"wait","speed":1000,"frame":"999","to":"opacity:0;fb:10px;","ease":"Power4.easeOut"},{"frame":"hover","speed":"0","ease":"Linear.easeNone","to":"o:1;rX:0;rY:0;rZ:0;z:0;fb:0;","style":"c:rgba(0, 0, 0, 1.00);bg:rgba(255, 255, 255, 1.00);"}]'
+					data-textAlign="['inherit','inherit','inherit','inherit']"
+					data-paddingtop="[35,0,0,0]"
+					data-paddingright="[35,35,35,35]"
+					data-paddingbottom="[35,0,0,0]"
+					data-paddingleft="[35,35,35,35]"
 
-						data-type="button"
-						data-actions=''
-						data-basealign="slide"
-						data-responsive_offset="off"
-						data-responsive="off"
-						data-startslide="0"
-						data-endslide="2"
-						data-frames='[{"delay":1600,"speed":1000,"frame":"0","from":"y:20px;sX:1.5;sY:1.5;opacity:0;fb:10px;","to":"o:1;fb:0;","ease":"Power4.easeOut"},{"delay":"wait","speed":1000,"frame":"999","to":"opacity:0;fb:10px;","ease":"Power4.easeOut"},{"frame":"hover","speed":"0","ease":"Linear.easeNone","to":"o:1;rX:0;rY:0;rZ:0;z:0;fb:0;","style":"c:rgba(0, 0, 0, 1.00);bg:rgba(255, 255, 255, 1.00);"}]'
-						data-textAlign="['inherit','inherit','inherit','inherit']"
-						data-paddingtop="[0,0,0,0]"
-						data-paddingright="[35,35,35,35]"
-						data-paddingbottom="[0,0,0,0]"
-						data-paddingleft="[35,35,35,35]"
-
-						style="z-index: 8; white-space: nowrap; font-size: 15px; line-height: 50px; font-weight: 700; color: rgba(255, 255, 255, 1.00);font-family:Poppins;background-color:rgba(255, 255, 255, 0);border-color:rgba(255, 255, 255, 1.00);border-style:solid;border-width:2px 2px 2px 2px;border-radius:30px 30px 30px 30px;outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;text-decoration: none;">Need a Licence? </a>
-			</div> -->
+					style="z-index: 8;"> <i class="icon-angle-right"></i><span>SOLICITA TU RESERVA</span> </button>
+			</div>
 			<div class="tp-bannertimer" style="height: 10px; background-color: rgba(255, 255, 255, 0.25);"></div>	</div>
 		</div><!-- END REVOLUTION SLIDER -->
 	</div><!-- END REVOLUTION SLIDER WRAPPER -->

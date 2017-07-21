@@ -14288,15 +14288,18 @@ td.clases h3.name{
     color: #3F51B5!important;
 
 }
-#banner-offert{
-	background: #3F51B5!important;
+#banner-offert, #slider-15-layer-18{
+	background: #4cb53f!important;
     color: white!important;
     line-height: 0!important;
     padding: 45px 35px;
 }
-#banner-offert i{
-	line-height: 90px!important;
-	height: 90px!important;
+#banner-offert i, #slider-15-layer-18 i{
+	line-height: 70px!important;
+	height: 70px!important;
+}
+.black{
+	color: black!important;
 }
 /*#banner-offert:hover{
 	background: #3F51B5!important;

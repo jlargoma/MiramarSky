@@ -21,91 +21,80 @@
 					color: white!important;
 				}
 			</style>
-	       	<section class="page-section">
-
-	   			<div id="line-banner-offert"  class=" center tright footer-stick line-promo" style="padding: 0;margin-bottom: 0px!important;">
-	   				<div class="row" style="padding: 0 15px;">
-	   					
-	   					<div class="col-xs-12 center  font-w300 text-center" style="padding: 20px 0">
-			                <!-- center hvr-grow-shadow button-reveal -->
-			                <button id="banner-offert" class="button button-rounded button-reveal button-large button-red tright  center hvr-grow-shadow ">
-				               <i class="icon-angle-right"></i><span>SOLICITA TU RESERVA</span>
-			                </button>
-		              	</div>
-	               		
-					</div>
-	   			</div>
-	   			<div class="row" style="background-color: #3F51B5;">
+			<div class="row clearfix" style="background-color: #3F51B5;">
 	   				
-	   				<div id="content-book" class="container clearfix push-10" style="display: none;">
-	   					<div class="tabs advanced-real-estate-tabs clearfix">
+   				<div id="content-book" class="container clearfix push-10" style="display: none;">
+   					<div class="tabs advanced-real-estate-tabs clearfix">
 
-	   						<div class="tab-container" style="padding: 20px 0; background-color: #3F51B5;">
-	   							<div id="close-form-book" style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
-	   								<span class="white text-white"><i class="fa fa-times fa-2x"></i></span>
-	   							</div>
-	   							<div class="container clearfix">
-	   								<div class="tab-content clearfix">
-	   									<div class="col-md-6">
-											<div class="col-xs-12">
-												<h3 class="text-center white">FORMULARIO DE RESERVA</h3>
-											</div>
+   						<div class="tab-container" style="padding: 20px 0; background-color: #3F51B5;">
+   							<div id="close-form-book" style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
+   								<span class="white text-white"><i class="fa fa-times fa-2x"></i></span>
+   							</div>
+   							<div class="container clearfix">
+   								<div class="tab-content clearfix">
+   									<div class="col-md-6">
+										<div class="col-xs-12">
+											<h3 class="text-center white">FORMULARIO DE RESERVA</h3>
+										</div>
 
-		   									@include('frontend._formBook')
-	   									</div>
-	   									<div class="col-md-6"  id="content-book-response" style="display: none;">
-	   										
-	   									</div>
+	   									@include('frontend._formBook')
+   									</div>
+   									<div class="col-md-6"  id="content-book-response" style="display: none;">
+   										
+   									</div>
 
-										
-	   								</div>
-	   							</div>
-	   						</div>
+									
+   								</div>
+   							</div>
+   						</div>
 
-	   					</div>
-	   				</div>
-	   			</div>
+   					</div>
+   				</div>
+   			</div>
+   			<div style="clear: both;"></div>
+	       	<section class="page-section parallax nomargin noborder" style="background-image: url('/img/miramarski/panel2.png'); background-color:white; background-size: cover" data-stellar-background-ratio="0.4">
 
-				
-				<div class="row clearfix common-height">
+				<div class="col-xs-12" style="margin: 100px 0;">
+					<div class="col-xs-12 ">
 
-	       			
+		       			
+					
+		       			<div class="col-md-6 center " style="">
+		       				<div>
+		       					<div class="heading-block nobottomborder black" style="margin-bottom: 20px">
+		       						<h1 class="font-w800 black" style="letter-spacing: 0; font-size: 26px;">APARTAMENTOS DE LUJO <br>EN SIERRA NEVADA A PIE DE PISTA</h1>
+		       					</div>
+		       					<p class="lead  text-justify black ls-15 font-s18 black">
+		       						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
+		       						<span class="font-w600 text-center black">Lorem ipsum dolor sit amet</span>
 
-	       			<div class="col-md-6 center col-padding" style="background-color: rgb(255, 255, 255); height: 674px;">
-	       				<div>
-	       					<div class="heading-block nobottomborder" style="margin-bottom: 20px">
-	       						<h3 class="green">¿QUE HACEMOS?</h3>
+		       					</p>
+		       					<h2 class="font-w600 text-left nobottommargin black">Lorem ipsum dolor sit amet</h2>
+		       					<h4 class="text-left black">consectetur adipiscing elit</h4>
+		       					<p class="lead  text-justify black ls-15 font-s18 black">
+		       						Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+		       					</p>
+		       				</div>
+		       			</div>
+
+		       			<div class="col-md-6 center  hidden-sm hidden-xs" >
+	       					<div id="oc-slider" class="owl-carousel carousel-widget" data-margin="0" data-items="1" data-animate-in="zoomIn" data-speed="450" data-animate-out="fadeOut">
+
+	       						<a href="#"><img src="{{ asset('/img/miramarski/exteriores.jpg') }}" alt="Slide 1"></a>
+	       						<a href="#"><img src="{{ asset('/img/miramarski/cama-principal-apartamento-sierra-nevada.jpg') }}" alt="Slide 2"></a>
+	       						<a href="#"><img src="{{ asset('/img/miramarski/salon-miramar-apartamento-sierra-nevada.jpg') }}" alt="Slide 3"></a>
+	       						<a href="#"><img src="{{ asset('/img/miramarski/television-chimenea-apartamento-sierra-nevada.jpg') }}" alt="Slide 4"></a>
+
 	       					</div>
-	       					<p class="lead  text-justify black ls-15">
-	       						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
-	       						<span class="green font-w600 text-center">Lorem ipsum dolor sit amet</span>
+		       			</div>
 
-	       					</p>
-	       					<h2 class="green font-w600 text-left nobottommargin">Lorem ipsum dolor sit amet</h2>
-	       					<h4 class="text-left">consectetur adipiscing elit</h4>
-	       					<p class="lead  text-justify black ls-15">
-	       						Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
-	       					</p>
-	       				</div>
-	       			</div>
-
-	       			<div class="col-md-6 center col-padding hidden-sm hidden-xs" >
-       					<div id="oc-slider" class="owl-carousel carousel-widget" data-margin="0" data-items="1" data-animate-in="zoomIn" data-speed="450" data-animate-out="fadeOut">
-
-       						<a href="#"><img src="{{ asset('/img/miramarski/exteriores.jpg') }}" alt="Slide 1"></a>
-       						<a href="#"><img src="{{ asset('/img/miramarski/cama-principal-apartamento-sierra-nevada.jpg') }}" alt="Slide 2"></a>
-       						<a href="#"><img src="{{ asset('/img/miramarski/salon-miramar-apartamento-sierra-nevada.jpg') }}" alt="Slide 3"></a>
-       						<a href="#"><img src="{{ asset('/img/miramarski/television-chimenea-apartamento-sierra-nevada.jpg') }}" alt="Slide 4"></a>
-
-       					</div>
-	       			</div>
-
-	       		</div>
-
-
+		       		</div>
+				</div>
+			</section>
+			<section class="page-section">
 	   			<div class="row push-30" style="margin-top: 20px;">
 	   				<h2 class="text-center black font-w300">
-	   					NUESTROS <span class="font-w800 green ">APARTAMENTOS</span>
+	   					GALERÍA DE <span class="font-w800 green ">APARTAMENTOS</span>
 	   				</h2>
 	   				<div class="col-md-12 col-xs-12">
 

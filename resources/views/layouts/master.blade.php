@@ -189,7 +189,7 @@
 						responsiveLevels:[1240,1024,778,480],
 						visibilityLevels:[1240,1024,778,480],
 						gridwidth:[1240,1024,778,480],
-						gridheight:[650,650,550,550],
+						gridheight:[750,650,550,550],
 						lazyType:"none",
 						scrolleffect: {
 							blur:"on",
