@@ -135,19 +135,20 @@ class HomeController extends Controller
         $roomAssigned = 111;
         if ($request->input('apto') == '2dorm' && $request->input('luxury') == 'si') {
             
-            $rooms = \App\Rooms::where('typeApto', 2)->where('luxury', 1)->get();
+            $rooms = \App\Rooms::where('typeApto', 2)->where('luxury', 1)->orderBy('order', 'ASC')->get();
+
             if ( count($rooms) > 0) {
-                foreach ($rooms as $key => $room) {
-                    if ( \App\Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'), $room->id) ) {
-                        $roomAssigned =  $room->id;
-                        break;
+                    foreach ($rooms as $key => $room) {
+                        if ( \App\Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'), $room->id) ) {
+                            $roomAssigned =  $room->id;
+                            break;
+                        }
                     }
-                }
             }
 
             $limp = 50;
         }elseif($request->input('apto') == '2dorm' && $request->input('luxury') == 'no'){
-            $rooms = \App\Rooms::where('typeApto', 2)->where('luxury', 0)->get();
+            $rooms = \App\Rooms::where('typeApto', 2)->where('luxury', 0)->orderBy('order', 'ASC')->get();
 
             if ( count($rooms) > 0) {
                 foreach ($rooms as $key => $room) {
@@ -159,7 +160,7 @@ class HomeController extends Controller
             }
             $limp = 50;
         }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'si'){
-            $rooms = \App\Rooms::where('typeApto', 1)->where('luxury', 1)->get();
+            $rooms = \App\Rooms::where('typeApto', 1)->where('luxury', 1)->orderBy('order', 'ASC')->get();
             if ( count($rooms) > 0) {
                 foreach ($rooms as $key => $room) {
                     if ( \App\Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'), $room->id) ) {
@@ -173,7 +174,7 @@ class HomeController extends Controller
 
 
         }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'no'){
-            $rooms = \App\Rooms::where('typeApto', 1)->where('luxury', 0)->get();
+            $rooms = \App\Rooms::where('typeApto', 1)->where('luxury', 0)->orderBy('order', 'ASC')->get();
 
             if ( count($rooms) > 0) {
                 foreach ($rooms as $key => $room) {

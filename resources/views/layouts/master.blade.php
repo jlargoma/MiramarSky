@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="es-ES">
 	<head>
-		<meta name="description" content="">
+		<meta name="description" content="Apartamentos de lujo en Sierra Nievada a pie de pista , sin remontes ni autobuses">
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -27,6 +27,10 @@
 		<link rel="stylesheet" href="{{ asset ('/frontend/colors.php?color=3F51B5')}}" type="text/css" />
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/> 
 		
+		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/css/settings.css')}}" media="screen" />
+		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/css/layers.css')}}">
+		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/css/navigation.css')}}">
+
 		<title>@yield('title')</title>
 		
 
@@ -72,6 +76,7 @@
 				width:50px;
 				height:50px;
 				background:rgba(255,255,255,0);
+				z-index: 60;
 			}
 			#rev_slider_15_1 .uranus.tparrows:before {
 				width:50px;
@@ -123,6 +128,7 @@
 		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.slideanims.min.js"></script>
 		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.video.min.js"></script>
 
+		<script type="text/javascript" src="{{ asset('/frontend/js/scrollreveal.js')}}"></script>
 		<script type="text/javascript" src="{{ asset('/js/typed.js')}}"></script>
 			
 		<script type="text/javascript">
@@ -138,20 +144,23 @@
 						jsFileLocation:"/frontend/include/rs-plugin/js/",
 						sliderLayout:"fullwidth",
 						dottedOverlay:"none",
-						delay:9000,
-						snow: {
-							startSlide: "first",
-							endSlide: "last",
-							maxNum: "400",
-							minSize: "0.2",
-							maxSize: "6",
-							minOpacity: "0.3",
-							maxOpacity: "1",
-							minSpeed: "30",
-							maxSpeed: "100",
-							minSinus: "1",
-							maxSinus: "100",
-						},
+						delay:2500,
+
+						<?php if (!$mobile->isMobile() || !$mobile->isTablet()): ?>
+							snow: {
+								startSlide: "first",
+								endSlide: "last",
+								maxNum: "400",
+								minSize: "0.2",
+								maxSize: "6",
+								minOpacity: "0.3",
+								maxOpacity: "1",
+								minSpeed: "30",
+								maxSpeed: "100",
+								minSinus: "1",
+								maxSinus: "100",
+							},
+						<?php endif; ?>
 						navigation: {
 							keyboardNavigation:"on",
 							keyboard_direction: "horizontal",
@@ -175,21 +184,34 @@
 								left: {
 									h_align:"left",
 									v_align:"center",
-									h_offset:10,
+									h_offset:-10,
 									v_offset:0
 								},
 								right: {
 									h_align:"right",
 									v_align:"center",
-									h_offset:10,
+									h_offset:-10,
 									v_offset:0
 								}
-							}
+							},
+							bullets: {
+	                            enable: true,
+	                            hide_onmobile: true,
+	                            style: "uranus",
+	                            hide_onleave: false,
+	                            direction: "horizontal",
+	                            h_align: "center",
+	                            v_align: "bottom",
+	                            h_offset: 0,
+	                            v_offset: 10,
+	                            space: 5,
+	                            tmp: '<span class="tp-bullet-inner"></span>'
+	                        }
 						},
 						responsiveLevels:[1240,1024,778,480],
 						visibilityLevels:[1240,1024,778,480],
 						gridwidth:[1240,1024,778,480],
-						gridheight:[750,650,550,550],
+						gridheight:[780,650,550,550],
 						lazyType:"none",
 						scrolleffect: {
 							blur:"on",
@@ -234,9 +256,12 @@
 
 				RsSnowAddOn(tpj, revapi15);
 			});	/*ready*/
+
 		</script>
-
-
+		<script>
+			window.sr = ScrollReveal();
+			sr.reveal('.fadeInAppear', { duration: 1000 }, 50);
+		</script>
 		@yield('scripts')
 	</body>
-	</html>
+</html>

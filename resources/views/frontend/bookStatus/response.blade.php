@@ -1,18 +1,18 @@
-<div class="row" id="content-response">
+<div class="col-xs-12" id="content-response">
 	<div class="col-xs-12">
 		<h2 class="white text-center" style="text-transform: uppercase;">Solicita tu reserva</h2>
 	</div>
 	<div class="col-xs-12 col-md-12 not-padding">
 		<div class="col-md-6">
-			<p class="white push-10 font-s18 font-w300">Tipo de apartamento: <span class="font-w800"><?php echo $apto ?></span></p>
+			<p class="white push-10 font-s18 font-w300">Tipo de apartamento: <span class="font-w800"><?php echo $apto ?>(<?php echo $id_apto ?>)</span></p>
 			<p class="white push-10 font-s18 font-w300">Email de contacto: <span class="font-w800"><?php echo $email ?></span></p>
 			<p class="white push-10 font-s18 font-w300">Noches: <span class="font-w800"><?php echo $nigths ?></span></p>
 			<p class="white push-10 font-s18 font-w300">Suplemento lujo: <span class="font-w800"><?php echo $luxury ?>€</span></p>
 		</div>
 		<div class="col-md-6">
 			<p class="white push-10 font-s18 font-w300">A nombre de: <span class="font-w800"><?php echo $name ?></span></p>
-			<p class="white push-10 font-s18 font-w300">Entrada / Salida: <span class="font-w800"><?php echo $start->copy()->format('d-m-Y') ?> - <?php echo $finish->copy()->format('d-m-Y') ?></span></p>
-			<p class="white push-10 font-s18 font-w300">Suplemento parking: <span class="font-w800"><?php echo $priceParking ?>€</span></p>
+			<p class="white push-10 font-s18 font-w300">Entrada / Salida: <br><span class="font-w800"><?php echo $start->copy()->format('d-m-Y') ?> - <?php echo $finish->copy()->format('d-m-Y') ?></span></p>
+			<p class="white push-10 font-s18 font-w300">Parking: <span class="font-w800"><?php echo $priceParking ?>€</span></p>
 		</div>
 		
 		<div class="col-md-12">
@@ -89,7 +89,7 @@
 						book_comments : book_comments
 					}, function(data) {
 
-				$('#content-response').empty().append(data);
+				$('#content-response').empty().append(data).fadeIn('300');
 		});
 
 	});

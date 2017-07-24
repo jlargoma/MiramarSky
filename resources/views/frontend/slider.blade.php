@@ -110,7 +110,7 @@
 
 						style="z-index: 15; white-space: normal; font-size: 30px; line-height: 40px; font-weight: 300; color: rgba(255, 255, 255, 1.00); display: block;font-family:Poppins; text-shadow: 1px 1px #000;">Sin escaleras, sin remolques
 					</div>
-					<div class="tp-caption   tp-resizeme"
+					<div class="tp-caption hidden-xs hidden-sm  tp-resizeme"
 						id="slide-35-layer-2"
 						data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
 						data-y="['center','center','center','center']" data-voffset="['150','150','200','150']"
@@ -246,7 +246,7 @@
 
 						style="z-index: 15; white-space: normal; font-size: 30px; line-height: 40px; font-weight: 300; color: rgba(255, 255, 255, 1.00); display: block;font-family:Poppins; text-shadow: 1px 1px #000;">A dos minutos de Plz. Andalucía
 					</div>
-					<div class="tp-caption   tp-resizeme"
+					<div class="tp-caption  hidden-xs hidden-sm tp-resizeme"
 						id="slide-35-layer-2"
 						data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
 						data-y="['center','center','center','center']" data-voffset="['110','110','200','150']"
@@ -380,7 +380,7 @@
 
 						style="z-index: 15; white-space: normal; font-size: 30px; line-height: 40px; font-weight: 300; color: rgba(255, 255, 255, 1.00); display: block;font-family:Poppins; text-shadow: 1px 1px #000;">Entrega de llaves en mano, Piscina climatizada
 					</div>
-					<div class="tp-caption   tp-resizeme"
+					<div class="tp-caption hidden-xs hidden-sm  tp-resizeme"
 						id="slide-35-layer-2"
 						data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
 						data-y="['center','center','center','center']" data-voffset="['130','130','200','150']"
@@ -416,7 +416,7 @@
 				<button class="tp-caption rev-btn  tp-static-layer button button-rounded button-reveal button-large button-red tright  center hvr-grow-shadow menu-booking"		 
 		 			id="slider-15-layer-18"
 					data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-					data-y="['bottom','bottom','bottom','bottom']" data-voffset="['30','30','30','30']"
+					data-y="['bottom','bottom','bottom','bottom']" data-voffset="['100','60','60','50']"
 					data-width="none"
 					data-height="none"
 					data-whitespace="nowrap"
