@@ -97,6 +97,9 @@
         .nav-tabs > li > a:hover, .nav-tabs > li > a:focus{
             color: white!important;
         }
+        .nav-tabs-simple > li:after {
+            background-color: blue;
+        }
     </style>
 
 @endsection
