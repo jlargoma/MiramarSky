@@ -1,4 +1,4 @@
-<footer id="footer"  style="border-top: none!important;background-color: #e8e8e8;">
+<footer id="footer"  style="border-top: none!important;background-color: #e8e8e8; margin-top: 30px!important;">
 	<!-- Copyrights
 	============================================= -->
 	<div id="copyrights"  style="background-color: #e8e8e8;">

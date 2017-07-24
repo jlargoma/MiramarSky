@@ -52,7 +52,7 @@
    				</div>
    			</div>
    			<div style="clear: both;"></div>
-	       	<section class="page-section parallax nomargin noborder" style="background-image: url('/img/miramarski/panel2.png'); background-color:white; background-size: cover" data-stellar-background-ratio="0.4">
+	       	<section class="page-section parallax nomargin noborder" style="background-image: url('/img/miramarski/panel2.jpg'); background-color:white; background-size: cover" data-stellar-background-ratio="0.4">
 
 				<div class="col-xs-12" style="margin: 100px 0;">
 					<div class="col-xs-12 ">
@@ -163,42 +163,42 @@
 	   				</div>
 	   			</div>
 	       			
-				<div class="row push-20" style="margin-top: 20px;">
+				<div class="container push-20" style="margin-top: 20px;">
 	   				<h2 class="text-center black font-w300">
 	   					OTROS <span class="font-w800 green ">SERVICIOS</span>
 	   				</h2>
 	   				<div class="col-md-12 col-xs-12">
 
-	   					<div class="image-box col-xs-12 push-mobile-20 ">
+	   					<div class="col-md-4 col-xs-12 push-mobile-20 ">
 	   						<a href="#">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/estacion.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
-		   								<h2 class="font-w200 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 90px 105px;">LA ESTACIÓN
+		   								<h2 class="font-w200 center push-10 text-center text font-s24 white" >DESCUENTOS
 		   								</h2>
 		   							</div>
 		   						</div>
 	   						</a>
 	   					</div>
 					
-						<div class="image-box col-xs-12 push-mobile-20 ">
+						<div class="col-md-4 col-xs-12 push-mobile-20 ">
 							<a href="#">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/fortfait.jpg')}}"  alt="Apartamento standard sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
-		   								<h2 class="font-w200 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 100px 105px;">
-		   									FORTFAIT
+		   								<h2 class="font-w200 center push-10 text-center text font-s24 white" >
+		   									ALQUILER DE MATERIAL
 		   								</h2>
 		   							</div>
 		   						</div>
 							</a>
 	   					</div>
 
-	   					<div class="image-box col-xs-12 push-mobile-20 ">
+	   					<div class="col-md-4 col-xs-12 push-mobile-20 ">
 		   					<a href="#">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
@@ -206,41 +206,8 @@
 	   									<img class="img-responsive" src="{{ asset('/img/miramarski/small/estudio-lujo-sierra-nevada.jpg')}}"  alt="Estudio de lujo sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
-		   								<h2 class="font-w200 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 100px 105px;">
-		   									RESERVAS
-		   								</h2>
-		   							</div>
-		   						</div>
-		   					</a>
-	   					</div>
-
-	   					
-	   					<div class="image-box col-xs-12 push-mobile-20 ">
-	   						<a href="#">
-		   						<div class="col-xs-12 not-padding  container-image-box">
-		   							<div class="col-xs-12 not-padding push-0">
-		   								
-	   									<img class="img-responsive" src="{{ asset('/img/miramarski/actividadessn.jpg')}}"  alt="Estudio standard sierra nevada"/>
-		   							</div>
-		   							<div class="col-xs-12 not-padding text-right overlay-text">
-		   								<h2 class="font-w200 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 90px 85px;">
-		   									ACTIVIDADES SN
-		   								</h2>
-		   							</div>
-		   						</div>
-		   					</a>
-	   					</div>
-	   					
-	   					<div class="image-box col-xs-12 push-mobile-20 ">
-	   						<a href="#">
-		   						<div class="col-xs-12 not-padding  container-image-box">
-		   							<div class="col-xs-12 not-padding push-0">
-		   								
-	   									<img class="img-responsive" src="{{ asset('/img/miramarski/eventos.jpg')}}"  alt="Estudio standard sierra nevada"/>
-		   							</div>
-		   							<div class="col-xs-12 not-padding text-right overlay-text">
-		   								<h2 class="font-w200 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 100px 105px;">
-		   									Eventos
+		   								<h2 class="font-w200 center push-10 text-center text font-s24 white">
+		   									¿QUÉ HACER EN SIERRA NEVADA?
 		   								</h2>
 		   							</div>
 		   						</div>
