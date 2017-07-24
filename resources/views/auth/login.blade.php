@@ -38,23 +38,24 @@
   <body class="fixed-header ">
     <div class="login-wrapper ">
       <!-- START Login Background Pic Wrapper-->
-      <div class="bg-pic">
+      <div class="bg-pic" >
         <!-- START Background Pic-->
-        <img src="assets/img/terraza-sierra-nevada.jpg" data-src="assets/img/terraza-sierra-nevada.jpg" data-src-retina="assets/img/terraza-sierra-nevada.jpg" alt="" class="lazy" style="opacity: 1 !important;width: 85%!important">
+        <img src="assets/img/terraza-sierra-nevada.jpg" data-src="assets/img/terraza-sierra-nevada.jpg" data-src-retina="assets/img/terraza-sierra-nevada.jpg" alt="" class="lazy" style="opacity: 1 !important;width: 100%!important;float: right;">
         <!-- END Background Pic-->
         <!-- START Background Caption-->
         <div class="bg-caption pull-bottom sm-pull-bottom text-white p-l-20 m-b-20">
-          <h2 class="semi-bold text-white">
-					Apartamentos MIRAMAR SKI</h2>
+          
         </div>
         <!-- END Background Caption-->
       </div>
       <!-- END Login Background Pic Wrapper-->
+
       <!-- START Login Right Container-->
-      <div class="login-container bg-white">
+      <div class="login-container " style="float: left;">
         <div class="p-l-50 m-l-20 p-r-50 m-r-20 p-t-50 m-t-30 sm-p-l-15 sm-p-r-15 sm-p-t-40">
-          
-          <p class="p-t-35">Logueate para acceder a tu cuenta</p>
+          <h2 class="semi-bold text-white" > Gestion MIRAMAR SKI </h2>
+
+          <p class="p-t-35 text-white">Logueate para acceder a tu cuenta</p>
           <!-- START Login Form -->
           <form id="form-login" class="p-t-15" role="form" method="POST" action="{{ url('/login') }}">
             {{ csrf_field() }}
@@ -93,6 +94,7 @@
         </div>
       </div>
       <!-- END Login Right Container-->
+
     </div>
     <!-- START OVERLAY -->
     <div class="overlay hide" data-pages="search">

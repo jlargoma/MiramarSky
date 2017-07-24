@@ -76,14 +76,26 @@
             background-color: rgba(0,0,0,0.2);
             color: red;
         }
-        li.active{
-            background-color: red;
-        }
         .active>a{
             color: white!important;
         }
         .bg-info-light>li>a{
             color: white;
+        }
+        .active.res{
+            background-color: #0DAD9E !important; 
+        }
+        .active.bloq{
+            background-color: #F9D975 !important; 
+        }
+        .active.pag{
+            background-color: #F77975 !important; 
+        }
+        .res,.bloq,.pag{
+            background-color: #626c75;
+        }
+        .nav-tabs > li > a:hover, .nav-tabs > li > a:focus{
+            color: white!important;
         }
     </style>
 
@@ -245,17 +257,17 @@
                     <ul class="nav nav-tabs nav-tabs-simple bg-info-light " role="tablist" data-init-reponsive-tabs="collapse">
                         <li style="background-color: white"><a href="#tabNueva" data-toggle="tab" role="tab" ><i class="fa fa-plus-circle fa-2x" style="color:green;background-color: white;border-radius: 10px" aria-hidden="true"></i></a>
                         </li>
-                        <li class="active Reservado" >
+                        <li class="active res" >
                             <a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes 
                                 <span class="badge"><?php echo count($arrayBooks["nuevas"]) ?></span>
                             </a>
                         </li>
-                        <li class="Bloqueado">
+                        <li class="bloq">
                             <a href="#tabEspeciales" data-toggle="tab" role="tab">Especiales
                                 <span class="badge"><?php echo count($arrayBooks["especiales"]) ?></span>
                             </a>
                         </li>
-                        <li class="Pagada-la-señal">
+                        <li class="pag">
                             <a href="#tabPagadas" data-toggle="tab" role="tab">Confirmadas 
                                 <span class="badge"><?php echo count($arrayBooks["pagadas"]) ?></span>
                             </a>
