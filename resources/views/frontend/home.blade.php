@@ -52,27 +52,30 @@
    				</div>
    			</div>
    			<div style="clear: both;"></div>
-	       	<section class="page-section parallax nomargin noborder" style="background-image: url('/img/miramarski/panel2.jpg'); background-color:white; background-size: cover" data-stellar-background-ratio="0.4">
+	       	<section class="row full-screen noborder" style="background-image: url('/img/miramarski/mountain.jpg'); background-color:white; background-size: cover; background-position:50%;">
 
 				<div class="col-xs-12" style="margin: 100px 0;">
 					<div class="col-xs-12 ">
-
-		       			
 					
-		       			<div class="col-md-6 center " style="">
+		       			<div class="col-md-6 center fadeInUp animated" data-animation="fadeInUp">
 		       				<div>
-		       					<div class="heading-block nobottomborder black" style="margin-bottom: 20px">
-		       						<h1 class="font-w800 black" style="letter-spacing: 0; font-size: 26px;">APARTAMENTOS DE LUJO <br>EN SIERRA NEVADA A PIE DE PISTA</h1>
+		       					<div class="heading-block  black" style="margin-bottom: 20px">
+		       						<h1 class="font-w800 black" style="letter-spacing: 0; font-size: 26px;">APARTAMENTOS DE LUJO A PIE DE PISTA</h1>
 		       					</div>
-		       					<p class="lead  text-justify black ls-15 font-s18 black">
-		       						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br><br>
-		       						<span class="font-w600 text-center black">Lorem ipsum dolor sit amet</span>
+		       					<p class="lead  text-justify black ls-15 font-s16 black">
+		       						Todos nuestros Apartamentos están en el Edificio Miramar Ski, situado <b>en la zona baja de Sierra Nevada</b>. Tienen excelentes vistas y todos disponen del equipamiento completo.
 
 		       					</p>
-		       					<h2 class="font-w600 text-left nobottommargin black">Lorem ipsum dolor sit amet</h2>
-		       					<h4 class="text-left black">consectetur adipiscing elit</h4>
-		       					<p class="lead  text-justify black ls-15 font-s18 black">
-		       						Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+		       					<h2 class="font-w300 text-left nobottommargin black push-20" style="line-height: 1"> El edificio tiene salida directa a las pistas, <span class="font-w800 black">solo tienes que salir de casa y esquiar!!</span></h2>
+
+		       					<p class="lead  text-justify black ls-15 font-s16 black">
+		       						Se encuentran <b>a 5 minutos andando de la plaza de Andalucía</b>, centro neurálgico de la estación.<br>
+		       						Muy cerca, a pocos metros, tienes varios supermercados, bares y restaurantes, lo que es muy importante para que disfrutes tus vacaciones sin tener que coger el coche ni remontes, Nuestro edificio Miramar Ski es <b>uno de los edificios más modernos de Sierra Nevada</b> (2006).<br>
+									Tenemos <b>apartamentos con dos habitaciones</b> ( ocupación 6 / 8 pers) y también <b>estudios</b> (ocupación 4 / 5 pers), Dentro de estos dos modelos, podrás  elegir entre los estándar y de lujo, que están recién reformados.<br><br>
+									<b>En todas las reservas las sabanas y toallas están incluidas</b><br><br>
+									Queremos ofrecerte un servicio especial, por eso incluimos en todas nuestras reservas un obsequio de bienvenida. <br><br>
+									<b>En el botón de reserva  podrás calcular el coste de tu petición y si lo consideras hacer tu solicitud de disponibilidad.</b>
+
 		       					</p>
 		       				</div>
 		       			</div>
@@ -80,10 +83,10 @@
 		       			<div class="col-md-6 center  hidden-sm hidden-xs" >
 	       					<div id="oc-slider" class="owl-carousel carousel-widget" data-margin="0" data-items="1" data-animate-in="zoomIn" data-speed="450" data-animate-out="fadeOut">
 
-	       						<a href="#"><img src="{{ asset('/img/miramarski/exteriores.jpg') }}" alt="Slide 1"></a>
-	       						<a href="#"><img src="{{ asset('/img/miramarski/cama-principal-apartamento-sierra-nevada.jpg') }}" alt="Slide 2"></a>
-	       						<a href="#"><img src="{{ asset('/img/miramarski/salon-miramar-apartamento-sierra-nevada.jpg') }}" alt="Slide 3"></a>
-	       						<a href="#"><img src="{{ asset('/img/miramarski/television-chimenea-apartamento-sierra-nevada.jpg') }}" alt="Slide 4"></a>
+	       						<a href="#"><img src="{{ asset('/img/miramarski/exteriores.jpg') }}" alt="Slide 1" style="height: 450px;"></a>
+	       						<a href="#"><img src="{{ asset('/img/miramarski/cama-principal-apartamento-sierra-nevada.jpg') }}" alt="Slide 2" style="height: 450px;"></a>
+	       						<a href="#"><img src="{{ asset('/img/miramarski/salon-miramar-apartamento-sierra-nevada.jpg') }}" alt="Slide 3" style="height: 450px;"></a>
+	       						<a href="#"><img src="{{ asset('/img/miramarski/television-chimenea-apartamento-sierra-nevada.jpg') }}" alt="Slide 4" style="height: 450px;"></a>
 
 	       					</div>
 		       			</div>
@@ -98,7 +101,7 @@
 	   				</h2>
 	   				<div class="col-md-12 col-xs-12">
 
-	   					<div class="col-md-3 col-xs-12 push-mobile-20 ">
+	   					<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect">
 	   						<a href="{{url('/apartamentos/apartamento-lujo-sierra-nevada')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
@@ -112,7 +115,7 @@
 	   						</a>
 	   					</div>
 					
-						<div class="col-md-3 col-xs-12 push-mobile-20 ">
+						<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect">
 							<a href="{{url('/apartamentos/apartamento-standard-sierra-nevada')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
@@ -127,7 +130,7 @@
 							</a>
 	   					</div>
 
-	   					<div class="col-md-3 col-xs-12 push-mobile-20 ">
+	   					<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect">
 		   					<a href="{{url('/apartamentos/estudio-lujo-sierra-nevada')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
@@ -144,7 +147,7 @@
 	   					</div>
 
 	   					
-	   					<div class="col-md-3 col-xs-12 push-mobile-20 ">
+	   					<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect">
 	   						<a href="{{url('/apartamentos/estudio-standard-sierra-nevada')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
@@ -169,7 +172,7 @@
 	   				</h2>
 	   				<div class="col-md-12 col-xs-12">
 
-	   					<div class="col-md-4 col-xs-12 push-mobile-20 ">
+	   					<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
 	   						<a href="#">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
@@ -183,7 +186,7 @@
 	   						</a>
 	   					</div>
 					
-						<div class="col-md-4 col-xs-12 push-mobile-20 ">
+						<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
 							<a href="#">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
@@ -198,7 +201,7 @@
 							</a>
 	   					</div>
 
-	   					<div class="col-md-4 col-xs-12 push-mobile-20 ">
+	   					<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
 		   					<a href="#">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">

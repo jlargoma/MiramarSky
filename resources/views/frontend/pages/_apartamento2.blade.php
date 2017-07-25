@@ -45,7 +45,7 @@
 
 			<div class="col-xs-12 col-md-6 clearfix center">
 
-					<div class="col-md-12">
+					<div class="col-md-12 push-20">
 						<?php if ($typeApto == 1): ?>
 							@include('frontend.pages._infoAptoLujo')
 						<?php elseif($typeApto == 2): ?>
@@ -57,7 +57,7 @@
 						<?php endif ?>
 					</div>
 					
-					<button id="showFromBook" class="button button-desc button-3d button-rounded bg-bluesky center white">¡Reserva YA!</button>
+					<button id="showFromBook" class="button button-desc button-3d button-rounded bg-bluesky center white" style="background-color: #4cb53f!important">¡Reserva YA!</button>
 
 			</div>
 		</div>

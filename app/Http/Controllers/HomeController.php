@@ -48,28 +48,28 @@ class HomeController extends Controller
 
         switch ($apto) {
             case 'apartamento lujo':
-                $aptoHeading       = "Apartamento de lujo 2 DORM";
+                $aptoHeading       = "APARTAMENTOS DOS DORM - DE LUJO ";
                 $aptoHeadingMobile = "Apto de lujo 2 DORM";
 
                 $typeApto = 1;
                 break;
             
             case 'estudio lujo':
-                $aptoHeading       = "Estudio de lujo";
+                $aptoHeading       = "ESTUDIOS – DE LUJO";
                 $aptoHeadingMobile = "Estudio de lujo";
-
-                $typeApto = 2;
-                break;
-            
-            case 'apartamento standard':
-                $aptoHeading       = "Apartamento Standard";
-                $aptoHeadingMobile = "Apto Standard";
 
                 $typeApto = 3;
                 break;
             
+            case 'apartamento standard':
+                $aptoHeading       = "APARTAMENTOS DOS DORM - ESTADAR ";
+                $aptoHeadingMobile = "Apto Standard";
+
+                $typeApto = 2;
+                break;
+            
             case 'estudio standard':
-                $aptoHeading       = "Estudio Standard";
+                $aptoHeading       = "ESTUDIOS – ESTANDAR";
                 $aptoHeadingMobile = "Estudio Standard";
 
                 $typeApto = 4;

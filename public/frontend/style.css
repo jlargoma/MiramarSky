@@ -14528,7 +14528,49 @@ p.text {
 	text-decoration: underline;
 }
 
+.hover-effect{
 
+	-webkit-transition: all 1s ease;
+	    -moz-transition: all 1s ease;
+	    -ms-transition: all 1s ease;
+	    -o-transition: all 1s ease;
+	    transition: all 1s ease;
+	    -webkit-transform: scale(1);
+	    -moz-transform: scale(1);
+	    -ms-transform: scale(1);
+	    -o-transform: scale(1);
+	    transform: scale(1);
+}
+
+.hover-effect:hover{
+
+	-webkit-transition: all 0.7s ease;
+	    -moz-transition: all 0.7s ease;
+	    -ms-transition: all 0.7s ease;
+	    -o-transition: all 0.7s ease;
+	    transition: all 0.7s ease;
+	    -webkit-transform: scale(1.10);
+	    -moz-transform: scale(1.10);
+	    -ms-transform: scale(1.10);
+	    -o-transform: scale(1.10);
+	    transform: scale(1.10);
+}
+
+.properties{
+	list-style: none;
+	width: 100%;
+}
+.properties li{
+	float: left;
+	margin: 0 10px;
+	padding: 10px 5px;
+}
+.properties li:first-child{
+	margin-left: 0;
+}
+.properties li:last-child{
+	margin-right: 0;
+}
 @media (max-width: 768px) {
 	#top-bar{
 		/*display: none!important;*/
