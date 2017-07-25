@@ -21,770 +21,284 @@
 
 <?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
 
-    <style>
-      .table.table-hover.demo-table-search.table-responsive.table-striped > tbody > tr > td{font-size: 10px!important;padding: 10px!important}
-      .table.table-hover.demo-table-search.table-responsive.table-striped > thead > tr > th{font-size: 12px!important;padding: 10px!important}
-      .fc-border-separate>tbody >tr >td{min-width: 15px!important}
-      .bg-white{ margin: 0px!important;padding: 2px!important;border-bottom: 0.5px solid;font-size: 10px!important}
-      .reservas{padding: 0px!important;margin-top: 5px;}
+    <style type="text/css">
+        
+        /* Estados */
+          .Reservado{
+              background-color: green !important;
+              color: black;
+          }
+          .Pagada-la-señal{
+              background-color: red  !important;
+              color: black;
+          }
+          .Bloqueado{
+              background-color: orange !important;
+              color: black;
+          }
+          .SubComunidad{
+              background-color: rgba(138,125,190,1) !important;
+              color: black;
+          }
+        /* Estados */
 
-      .Reservado{
-          background-color: #0DAD9E !important;
-          color: black;
-      }
-      .Reservado.start{
-          background: red; /* For browsers that do not support gradients */
-          background: -webkit-linear-gradient(left, white, green); /* For Safari 5.1 to 6.0 */
-          background: -o-linear-gradient(right, white, green); /* For Opera 11.1 to 12.0 */
-          background: -moz-linear-gradient(right, white, green); /* For Firefox 3.6 to 15 */
-          background: linear-gradient(to right, white, green); /* Standard syntax */
-      }
-      .Reservado.end{
-          background: red; /* For browsers that do not support gradients */
-          background: -webkit-linear-gradient(left, green, white); /* For Safari 5.1 to 6.0 */
-          background: -o-linear-gradient(right, green, white); /* For Opera 11.1 to 12.0 */
-          background: -moz-linear-gradient(right, green, white); /* For Firefox 3.6 to 15 */
-          background: linear-gradient(to right, green, white); /* Standard syntax */
-      }
-      .Pagada-la-señal{
-          background-color: #F77975  !important;
-          color: black;
-      }
-      .Pagada-la-señal.start{
-          background: red; /* For browsers that do not support gradients */
-          background: -webkit-linear-gradient(left, yellow , red); /* For Safari 5.1 to 6.0 */
-          background: -o-linear-gradient(right, yellow, red); /* For Opera 11.1 to 12.0 */
-          background: -moz-linear-gradient(right, yellow, red); /* For Firefox 3.6 to 15 */
-          background: linear-gradient(to right, yellow , red); /* Standard syntax */
-      }
-      .Pagada-la-señal.end{
-          background: red; /* For browsers that do not support gradients */
-          background: -webkit-linear-gradient(left, red , yellow); /* For Safari 5.1 to 6.0 */
-          background: -o-linear-gradient(right, red, yellow); /* For Opera 11.1 to 12.0 */
-          background: -moz-linear-gradient(right, red, yellow); /* For Firefox 3.6 to 15 */
-          background: linear-gradient(to right, red , yellow); /* Standard syntax */
-      }
-      .Bloqueado{
-          background-color: #F9D975 !important;
-          color: black;
-      }
-      .Bloqueado.start{
-          background: red; /* For browsers that do not support gradients */
-          background: -webkit-linear-gradient(left, white, yellow); /* For Safari 5.1 to 6.0 */
-          background: -o-linear-gradient(right, white, yellow); /* For Opera 11.1 to 12.0 */
-          background: -moz-linear-gradient(right, white, yellow); /* For Firefox 3.6 to 15 */
-          background: linear-gradient(to right, white, yellow); /* Standard syntax */
-      }
-      .Bloqueado.end{
-          background: red; /* For browsers that do not support gradients */
-          background: -webkit-linear-gradient(left, yellow, white); /* For Safari 5.1 to 6.0 */
-          background: -o-linear-gradient(right, yellow, white); /* For Opera 11.1 to 12.0 */
-          background: -moz-linear-gradient(right, yellow, white); /* For Firefox 3.6 to 15 */
-          background: linear-gradient(to right, yellow, white); /* Standard syntax */
-      }
-      .SubComunidad{
-          background-color: #8A7DBE !important;
-          color: black;
-      }
-      .SubComunidad.start{
-          background: red; /* For browsers that do not support gradients */
-          background: -webkit-linear-gradient(left, white, purple); /* For Safari 5.1 to 6.0 */
-          background: -o-linear-gradient(right, white, purple); /* For Opera 11.1 to 12.0 */
-          background: -moz-linear-gradient(right, white, purple); /* For Firefox 3.6 to 15 */
-          background: linear-gradient(to right, white, purple); /* Standard syntax */
-      }
-      .SubComunidad.end{
-          background: red; /* For browsers that do not support gradients */
-          background: -webkit-linear-gradient(left, purple, white); /* For Safari 5.1 to 6.0 */
-          background: -o-linear-gradient(right, purple, white); /* For Opera 11.1 to 12.0 */
-          background: -moz-linear-gradient(right, purple, white); /* For Firefox 3.6 to 15 */
-          background: linear-gradient(to right, purple, white); /* Standard syntax */
-      }
-      /*.row-details{pointer-events: none;}*/
+        .botones{
+            padding-top: 0px!important;
+            padding-bottom: 0px!important;
+        }
+        td{
+            margin: 0px;
+            padding: 0px!important;
+            vertical-align: middle!important;
+        }
+        a {
+            color: black;
+            cursor: pointer;
+        }
+
+        .S, .D{
+            background-color: rgba(0,0,0,0.2);
+            color: red;
+        }
+        .active>a{
+            color: white!important;
+        }
+        .bg-info-light{
+          background-color: white!important
+        }
+        .bg-info-light>li>a{
+            color: black!important;
+        }
+        .active.res{
+            background-color: green !important; 
+        }
+        .active.bloq{
+            background-color: orange !important; 
+        }
+        .active.pag{
+            background-color: red !important; 
+        }
+        .res,.bloq,.pag{
+            background-color: white;
+        }
+        .nav-tabs > li > a:hover, .nav-tabs > li > a:focus{
+            color: black!important;
+        }
+        .row{margin: -2px!important;}
+        .rev.nav-tabs-simple > li a, .rev.nav-tabs-simple > li a:hover, .rev.nav-tabs-simple > li a:focus {padding:5px!important; }
+       
+        /* Bordes de seccion */          
+          .panel.resv,.panel.in-out{border: 5px solid blue;}
+          .active.resv,.active.cob{border: 5px solid blue;}
+        /* Bordes de seccion */
+
     </style>
 
 @section('content')
 
     <div class="container-fluid container-fixed-lg">
       <div class="row">
-        <div class="col-md-8">
-          <!-- START PANEL -->
-          <div class="panel panel-transparent">
-            <div class="panel-heading text-center">
-              <div class="panel-title">Planing de reservas
-              </div>
-            </div>
-            <div class="panel-body">
-
-            <!-- <div class="table-responsive">
-              <table class="table table-hover table-condensed table-detailed" id="detailedTable">
-                <thead>
-                  <tr>
-                    <th class="text-center bg-complete text-white" hidden="">ID</th>
-                    <th class="text-center bg-complete text-white" style="width:25%">Nombre</th>
-                    <th class="text-center bg-complete text-white" hidden>Telefono</th>
-                    <th class="text-center bg-complete text-white">In</th>
-                    <th class="text-center bg-complete text-white">Out</th>
-                    <th class="text-center bg-complete text-white">Pax</th>
-                    <th class="text-center bg-complete text-white">Pax</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php foreach ($arrayBooks["nuevas"] as $book): ?>
-                    <tr> 
-                        <td hidden><?php echo $book->id ?></td>
-                        <td class="v-align-middle semi-bold text-center"><?php echo $book->customer['name']  ?></td>
-                        <td class="v-align-middle semi-bold text-center" hidden><?php echo $book->customer['phone']  ?></td>
-                        <td class="v-align-middle semi-bold text-center">
-                          <?php
-                              $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                              echo $start->formatLocalized('%d %b');
-                          ?>
-                        </td>
-                        <td class="v-align-middle semi-bold text-center">
-                          <?php
-                              $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                              echo $finish->formatLocalized('%d %b');
-                          ?>
-                        </td>
-                        <td class="v-align-middle semi-bold text-center"><?php echo $book->pax ?></td>
-                        <td class="v-align-middle semi-bold text-center">
-                          <select class="room" data-id="<?php echo $book->id ?>" >                                                              
-                            <?php foreach ($rooms as $room): ?>
-                                <?php if ($room->id == $book->room_id): ?>
-                                    <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                        <?php echo substr($room->name,0,5) ?>
-                                    </option>
-                                <?php else:?>
-                                    <option value="<?php echo $room->id ?>"><?php echo substr($room->name,0,5) ?></option>
-                                <?php endif ?>
-                            <?php endforeach ?>
-                          </select>
-                        </td>
-                    </tr>
-                  <?php endforeach ?>
-                </tbody>
-              </table>
-            </div> -->
-              
-              <!-- Div de pendientes -->
-        
-                <div class="col-xs-12 tipo-reservas text-center text-white" id="pendientes" style="background-color: grey;color: black">PENDIENTES</div>
-                  
-                  <!-- <div class="col-md-12 col-xs-12 reservas pendientes" style="display: none;">
-                    <div class="col-xs-3 text-center bg-complete text-white"><b>NOMBRE</b></div>
-                    <div class="col-xs-2 text-center bg-complete text-white"><b>IN</b></div>
-                    <div class="col-xs-2 text-center bg-complete text-white"><b>OUT</b></div>
-                    <div class="col-xs-5 text-center bg-complete text-white"><b>PVP</b></div>
-                    <div style="clear: both;"></div>
-                    <?php foreach ($arrayBooks["nuevas"] as $key => $book): ?>
-                      <div class="desplegable" id="<?php echo $book->id ?>">
-                        <div class="col-xs-3 text-center bg-white nombre" ><?php echo substr($book->customer['name'] , 0,7) ?></div>
-                        <div class="col-xs-2 text-center bg-white">
-                          <?php
-                              $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                              echo $start->formatLocalized('%d %b');
-                          ?>
-                        </div>
-                        <div class="col-xs-2 text-center bg-white">
-                          <?php
-                              $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                              echo $finish->formatLocalized('%d %b');
-                          ?>
-                        </div>
-                        <div class="col-xs-5 text-center bg-white"><?php echo $book->total_price ?>€</div>
-                      </div>
-                      <div style="clear: both;"></div>
-                      <div style="display:none" class="oculto" id="div-<?php echo $book->id; ?>">
-                          <div class="col-xs-2"><a href="tel:<?php echo $book->customer['phone'] ?>"><i class="fa fa-phone fa-2x"></i></a></div>
-                          <div class="col-xs-2"><a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><i class="fa fa-pencil fa-2x"></i></a></div>
-                          <div class="col-xs-3">
-                              <select class="room" data-id="<?php echo $book->id ?>" >
-                                  
-                                  <?php foreach ($rooms as $room): ?>
-                                      <?php if ($room->id == $book->room_id): ?>
-                                          <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                              <?php echo substr($room->name,0,5) ?>
-                                          </option>
-                                      <?php else:?>
-                                          <option value="<?php echo $room->id ?>"><?php echo substr($room->name,0,5) ?></option>
-                                      <?php endif ?>
-                                  <?php endforeach ?>
-
-                              </select>
-                          </div>
-                          <div class="col-xs-5">
-                              <select class="status form-control" data-id="<?php echo $book->id ?>" >
-                                  <?php for ($i=1; $i < 9; $i++): ?> 
-                                      <?php if ($i == $book->type_book): ?>
-                                          <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
-                                      <?php else: ?>
-                                          <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
-                                      <?php endif ?>                                          
-                                       
-                                  <?php endfor; ?>
-                              </select>
-                          </div>
-
-                      </div>
-                      <div style="clear: both;"></div>
-                    <?php endforeach ?>
-                  </div>  -->
-                  
-                  <div class="col-md-12 col-xs-12 reservas pendientes" style="display: none">
-                    
-                     <!--  <table class="table table-hover table-condensed table-detailed" id="detailedTable">
-                        <thead>
-                          <tr>
-                            <th class="text-center bg-complete text-white" hidden="">ID</th>
-                            <th class="text-center bg-complete text-white" >Nombre</th>
-                            <th class="text-center bg-complete text-white" hidden>Telefono</th>
-                            <th class="text-center bg-complete text-white">In</th>
-                            <th class="text-center bg-complete text-white">Out</th>
-                            <th class="text-center bg-complete text-white">Pax</th>
-                            <th class="text-center bg-complete text-white">Apto</th>
-                            <th class="text-center bg-complete text-white" hidden="">PVP</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <?php foreach ($arrayBooks["nuevas"] as $book): ?>
-                            <tr> 
-                                <td hidden><?php echo $book->id ?></td>
-                                <td class="v-align-middle semi-bold text-center"><?php echo $book->customer['name']  ?></td>
-                                <td class="v-align-middle semi-bold text-center" hidden><?php echo $book->customer['phone']  ?></td>
-                                <td class="v-align-middle semi-bold text-center">
-                                  <?php
-                                      $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                      echo $start->formatLocalized('%d %b');
-                                  ?>
-                                </td>
-                                <td class="v-align-middle semi-bold text-center">
-                                  <?php
-                                      $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                      echo $finish->formatLocalized('%d %b');
-                                  ?>
-                                </td>
-                                <td class="v-align-middle semi-bold text-center"><?php echo $book->pax ?></td>
-                                <td class="v-align-middle semi-bold text-center">
-                                  <select class="room" data-id="<?php echo $book->id ?>" >                                                              
-                                    <?php foreach ($rooms as $room): ?>
-                                        <?php if ($room->id == $book->room_id): ?>
-                                            <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                                <?php echo substr($room->name,0,5) ?>
-                                            </option>
-                                        <?php else:?>
-                                            <option value="<?php echo $room->id ?>"><?php echo substr($room->name,0,5) ?></option>
-                                        <?php endif ?>
-                                    <?php endforeach ?>
-                                  </select>
-                                </td>
-                                <td class="v-align-middle semi-bold text-center" hidden><?php echo $book->total_price ?></td>
-
-                            </tr>
-                          <?php endforeach ?>
-                        </tbody>
-                      </table> -->
-                      <div class="table-responsive">
-                        <div class="pull-left">
-                            <div class="col-xs-12 ">
-                                <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
-                            </div>
-                        </div>
-                        
-                        <div class="clearfix"></div>
-                        <table class="table table-hover demo-table-search table-responsive table-striped " id="tableWithSearch" >
-                            <thead>
-                                <tr> 
-                                    <th class ="text-center bg-complete text-white" style="width:20%!important">  C     </th>
-                                    <th class ="text-center bg-complete text-white" style="width:10%">  T     </th>
-                                    <th class ="text-center bg-complete text-white" style="width:2%">   P         </th>
-                                    <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
-                                    <th class ="text-center bg-complete text-white" style="width:5%!important">  IN     </th>
-                                    <th class ="text-center bg-complete text-white" style="width:5%!important">  OUT      </th>
-                                    <th class ="text-center bg-complete text-white" style="width:5%">   Noc         </th>
-                                    <th class ="text-center bg-complete text-white">                    Precio      </th>
-                                    <th class ="text-center bg-complete text-white" style="width:5%">   Estado      </th>
-                                    <th class ="text-center bg-complete text-white">                    A  </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($arrayBooks["nuevas"] as $book): ?>
-                                        <tr> 
-
-                                            <td class ="text-center">
-
-                                                    <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo $book->customer['name']  ?></a>                                                        
-                                            </td>
-
-                                            <td class ="text-center"> 
-                                                <?php if ($book->customer->phone != 0): ?>
-                                                    <a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone fa-2x"></i>
-                                                <?php else: ?>
-                                                <?php endif ?>
-                                            </td>
-
-                                            <td class ="text-center"><?php echo $book->pax ?></td>
-
-                                            <td class ="text-center">
-                                                <select class="room" data-id="<?php echo $book->id ?>" >
-                                                    
-                                                    <?php foreach ($rooms as $room): ?>
-                                                        <?php if ($room->id == $book->room_id): ?>
-                                                            <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                                                <?php echo substr($room->name,0,5) ?>
-                                                            </option>
-                                                        <?php else:?>
-                                                            <option value="<?php echo $room->id ?>"><?php echo substr($room->name,0,5) ?></option>
-                                                        <?php endif ?>
-                                                    <?php endforeach ?>
-
-                                                </select>
-                                            </td>
-
-                                            <td class ="text-center" style="width: 20%!important">
-                                                <?php
-                                                    $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                                    echo $start->formatLocalized('%d %b');
-                                                ?>
-                                            </td>
-
-                                            <td class ="text-center" style="width: 20%!important">
-                                                <?php
-                                                    $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                                    echo $finish->formatLocalized('%d %b');
-                                                ?>
-                                            </td>
-
-                                            <td class ="text-center"><?php echo $book->nigths ?></td>
-
-                                            <td class ="text-center"><?php echo $book->total_price."€" ?><br>
-                                                                    <?php if (isset($payment[$book->id])): ?>
-                                                                        <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
-                                                                    <?php else: ?>
-                                                                    <?php endif ?>
-                                            </td>
-
-                                            <td class ="text-center">
-                                                <select class="status form-control" data-id="<?php echo $book->id ?>" >
-                                                    <?php for ($i=1; $i < 9; $i++): ?> 
-                                                        <?php if ($i == $book->type_book): ?>
-                                                            <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
-                                                        <?php else: ?>
-                                                            <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
-                                                        <?php endif ?>                                          
-                                                         
-                                                    <?php endfor; ?>
-                                                </select>
-                                            </td>
-
-                                            <td>                                                        
-                                                    <!--  -->
-                                                    <!-- <?php if ($book->customer['phone'] != 0): ?>
-                                                            <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->customer['phone'] ?>"><i class="pg-phone"></i>
-                                                            </a>
-                                                    <?php endif ?> -->
-                                                    
-                                                    <?php if ($book->send == 0): ?>
-                                                        <a class="btn btn-tag btn-primary sendJaime" title="Enviar Email a Jaime" data-id="<?php echo $book->id ?>"><i class=" pg-mail"></i></a>
-                                                        </a>
-                                                    <?php else: ?>
-                                                        <a class="btn btn-tag btn-danger" title="enviado" disabled data-id="<?php echo $book->id ?>"><i class=" pg-mail "></i></a>
-                                                        </a>
-                                                    <?php endif ?>
-                                                    
-                                                </div>
-                                            </td>
-                                        </tr>
-                                <?php endforeach ?>
-                            </tbody>
-                        </table> 
-                      </div>
-                      
-                  </div> 
-
-              <!-- Div de Especiales -->
-
-                <div class="col-xs-12 tipo-reservas text-center text-white" id="especiales" style="background-color: grey;color: black;margin-top: 5px">ESPECIALES</div>
-                  <div class="col-md-12 col-xs-12 reservas especiales" style="display: none">
-                    <div class="col-xs-3 text-center bg-complete text-white"><b>NOMBRE</b></div>
-                    <div class="col-xs-3 text-center bg-complete text-white"><b>IN</b></div>
-                    <div class="col-xs-3 text-center bg-complete text-white"><b>OUT</b></div>
-                    <div class="col-xs-3 text-center bg-complete text-white"><b>PVP</b></div>
-                    <div style="clear: both;"></div>
-                    <?php foreach ($arrayBooks["especiales"] as $key => $book): ?>
-                      <div class="desplegable" id="<?php echo $book->id ?>">
-                        <div class="col-xs-3 text-center bg-white nombre" ><?php echo substr($book->customer['name'] , 0,7) ?></div>
-                        <div class="col-xs-3 text-center bg-white">
-                          <?php
-                              $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                              echo $start->formatLocalized('%d %b');
-                          ?>
-                        </div>
-                        <div class="col-xs-3 text-center bg-white">
-                          <?php
-                              $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                              echo $finish->formatLocalized('%d %b');
-                          ?>
-                        </div>
-                        <div class="col-xs-3 text-center bg-white"><?php echo $book->total_price ?>€</div>
-                      </div>
-                      <div style="clear: both;"></div>
-                      <div style="display:none" class="oculto" id="div-<?php echo $book->id; ?>">
-                          <div class="col-xs-2"><a href="tel:<?php echo $book->customer['phone'] ?>"><i class="fa fa-phone fa-2x"></i></a></div>
-                          <div class="col-xs-2"><a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><i class="fa fa-pencil fa-2x"></i></a></div>
-                          <div class="col-xs-3">
-                              <select class="room" data-id="<?php echo $book->id ?>" >
-                                  
-                                  <?php foreach ($rooms as $room): ?>
-                                      <?php if ($room->id == $book->room_id): ?>
-                                          <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                              <?php echo substr($room->name,0,5) ?>
-                                          </option>
-                                      <?php else:?>
-                                          <option value="<?php echo $room->id ?>"><?php echo substr($room->name,0,5) ?></option>
-                                      <?php endif ?>
-                                  <?php endforeach ?>
-
-                              </select>
-                          </div>
-                          <div class="col-xs-5">
-                              <select class="status form-control" data-id="<?php echo $book->id ?>" >
-                                  <?php for ($i=1; $i < 9; $i++): ?> 
-                                      <?php if ($i == $book->type_book): ?>
-                                          <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
-                                      <?php else: ?>
-                                          <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
-                                      <?php endif ?>                                          
-                                       
-                                  <?php endfor; ?>
-                              </select>
-                          </div>
-
-                      </div>
-                      <div style="clear: both;"></div>
-                    <?php endforeach ?>
+        <div class="panel" style="margin-bottom: 0px!important">
+          <ul class="nav nav-tabs nav-tabs-simple bg-info-light " role="tablist" data-init-reponsive-tabs="collapse">
+              <li class="active resv" >
+                  <a href="#reservas" data-toggle="tab" role="tab" style="font-size: 11px!important"> RESERVAS </a>
+              </li>
+              <li class="cob">
+                  <a href="#cobros" data-toggle="tab" role="tab" style="font-size: 11px!important"> COBROS </a>
+              </li>
+              <li>
+                <a href="#calendario"> <i class="fa fa-calendar " aria-hidden="true" style="font-size: 15px!important"></i> </a>
+              </li>
+              <li style="background-color: white">
+                <a href="#tabNueva" data-toggle="tab" role="tab" >
+                  <i class="fa fa-plus-circle " style="color:green;font-size: 15px!important" aria-hidden="true"></i>
+                </a>
+              </li>
+          </ul>
+        </div>
+        <div class="tab-content ">
+          <div class="tab-pane active" id="reservas">
+              <div class="row column-seperation ">
+                  <div class="panel resv">
+                    <ul class="nav nav-tabs nav-tabs-simple bg-info-light rev" role="tablist" data-init-reponsive-tabs="collapse">
+                        <li class="active res" >
+                            <a href="#tabPendientes" data-toggle="tab" role="tab" style="font-size: 11px;">Pendientes 
+                                <span class="badge"><?php echo count($arrayBooks["nuevas"]) ?></span>
+                            </a>
+                        </li>
+                        <li class="bloq">
+                            <a href="#tabEspeciales" data-toggle="tab" role="tab" style="font-size: 11px;">Especiales
+                                <span class="badge"><?php echo count($arrayBooks["especiales"]) ?></span>
+                            </a>
+                        </li>
+                        <li class="pag">
+                            <a href="#tabPagadas" data-toggle="tab" role="tab" style="font-size: 11px;">Confirmadas 
+                                <span class="badge"><?php echo count($arrayBooks["pagadas"]) ?></span>
+                            </a>
+                        </li>
+                    </ul>
                   </div>
-              
-              <!-- Div pagadas -->
-                
-                <div class="col-xs-12 tipo-reservas text-center text-white" id="pagadas" style="background-color: grey;color: black;margin-top: 5px">PAGADAS</div>
-                  
-                  <div class="col-md-12 col-xs-12 reservas pagadas table-responsive" style="display: none;">
-                    <div class="row">
-                        <div class="pull-left">
-                            <div class="col-xs-12 ">
-                                <input type="text" id="search-table3" class="form-control pull-right" placeholder="Buscar">
-                            </div>
+                  <div class="tab-content ">
+                    <div class="tab-pane active table-responsive" id="tabPendientes">
+                        <div class="container column-seperation ">
+                           
                         </div>
-                        
-                        <div class="clearfix"></div>
-
-                        <table class="table table-hover demo-table-search table-responsive table-striped " id="tableWithSearch3" >
-                            <thead>
-                                <tr>   
-                                    <th class ="text-center bg-complete text-white" style="width:5%"> Cobros </th>
-                                    <th class ="text-center bg-complete text-white" style="width:5%">  Cliente     </th>
-                                    <th class ="text-center bg-complete text-white" style="width:5%">  Telefono     </th>
-                                    <th class ="text-center bg-complete text-white" style="width:2%">   Pax         </th>
-                                    <th class ="text-center bg-complete text-white" style="width:5%">   Apart       </th>
-                                    <th class ="text-center bg-complete text-white" style="width:20%!important">  IN     </th>
-                                    <th class ="text-center bg-complete text-white" style="width:20%!important">  OUT      </th>
-                                    <th class ="text-center bg-complete text-white" style="width:5%">   Noc         </th>
-                                    <th class ="text-center bg-complete text-white" style="width:5%">   Precio      </th>
-                                    <th class ="text-center bg-complete text-white" style="width:5%">   Estado      </th>
-                                    <th class ="text-center bg-complete text-white" style="width:5%">   Acciones    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($arrayBooks["pagadas"] as $book): ?>
-                                  <tr>
-                                    <td class ="text-center">                                                    
-                                        <?php if (isset($payment[$book->id])): ?>
-                                            <?php if ($payment[$book->id] == 0): ?>
-                                            <?php else:?>
-                                                <p><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></p>
-                                                <div class="progress ">
-                                                <div class="progress-bar progress-bar-danger" style="width:<?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?>"></div>
-                                                </div>                                                            
-                                            <?php endif; ?>
-                                        <?php else: ?>
-                                        <?php endif ?>
-                                    </td> 
-                                    <td class ="text-center">
-                                            <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo substr($book->customer['name'], 0,10)  ?></a>                                                        
-                                    </td>
-
-                                    <td class ="text-center"><a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone fa-2x"></i></td>
-                                    <td class ="text-center"><?php echo $book->pax ?></td>
-                                    <td class ="text-center">
-                                        <select class="room" data-id="<?php echo $book->id ?>" >
-                                            
-                                            <?php foreach ($rooms as $room): ?>
-                                                <?php if ($room->id == $book->room_id): ?>
-                                                    <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                                        <?php echo substr($room->name,0,5) ?>
-                                                    </option>
-                                                <?php else:?>
-                                                    <option value="<?php echo $room->id ?>"><?php echo substr($room->name,0,5) ?></option>
-                                                <?php endif ?>
-                                            <?php endforeach ?>
-
-                                        </select>
-                                    </td>
-                                    <td class ="text-center" style="width: 20%!important">
-                                        <?php
-                                            $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                            echo $start->formatLocalized('%d %b');
-                                        ?>
-                                    </td>
-                                    <td class ="text-center" style="width: 20%!important">
-                                        <?php
-                                            $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                            echo $finish->formatLocalized('%d %b');
-                                        ?>
-                                    </td>
-                                    <td class ="text-center"><?php echo $book->nigths ?></td>
-                                    <td class ="text-center"><?php echo $book->total_price."€" ?><br>
-                                                            <?php if (isset($payment[$book->id])): ?>
-                                                                <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
-                                                            <?php else: ?>
-                                                            <?php endif ?>
-                                    </td>
-                                    <td class ="text-center">
-                                        <select class="status form-control" data-id="<?php echo $book->id ?>" >
-                                            <?php for ($i=1; $i < 9; $i++): ?> 
-                                                <?php if ($i == $book->type_book): ?>
-                                                    <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
-                                                <?php else: ?>
-                                                    <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
-                                                <?php endif ?>                                          
-                                                 
-                                            <?php endfor; ?>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <div class="btn-group col-md-6">
-                                            <!--  -->
-                                            <!-- <?php if ($book->customer['phone'] != 0): ?>
-                                                    <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->customer['phone'] ?>"><i class="pg-phone"></i>
-                                                    </a>
-                                            <?php endif ?> -->
-                                            
-                                            <?php if ($book->send == 0): ?>
-                                                <a class="btn btn-tag btn-primary" ><i class=" pg-mail"></i></a>
-                                                </a>
-                                            <?php else: ?>
-                                            <?php endif ?>
-                                    </td>
-                                  </tr>
-                                <?php endforeach ?>
-                            </tbody>
-                        </table>  
+                    </div>
+                    <div class="tab-pane table-responsive" id="tabEspeciales">
+                        <div class="container column-seperation ">
+                          <div>
+                            Prueba b
+                          </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane table-responsive" id="tabPagadas">
+                        <div class="container column-seperation ">
+                          <div>
+                            Prueba C
+                          </div>
+                        </div>
                     </div>
                   </div>
-                  <!-- <div class="col-md-12 col-xs-12 reservas pagadas" style="display: none;">
-                    <div class="col-xs-3 text-center bg-complete text-white"><b>NOMBRE</b></div>
-                    <div class="col-xs-2 text-center bg-complete text-white"><b>IN</b></div>
-                    <div class="col-xs-2 text-center bg-complete text-white"><b>OUT</b></div>
-                    <div class="col-xs-5 text-center bg-complete text-white"><b>PVP/COBRADO</b></div>
-                    <div style="clear: both;"></div>
-                    <?php foreach ($arrayBooks["pagadas"] as $key => $book): ?>
-                      <div class="desplegable" id="<?php echo $book->id ?>">
-                        <div class="col-xs-3 text-center bg-white nombre" ><?php echo substr($book->customer['name'] , 0,7) ?></div>
-                        <div class="col-xs-2 text-center bg-white">
-                          <?php
-                              $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                              echo $start->formatLocalized('%d %b');
-                          ?>
-                        </div>
-                        <div class="col-xs-2 text-center bg-white">
-                          <?php
-                              $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                              echo $finish->formatLocalized('%d %b');
-                          ?>
-                        </div>
-                        <div class="col-xs-5 text-center bg-white"><?php echo number_format($book->total_price,2,',','.') ?>€/
-                                                                    <?php if (isset($payment[$book->id])): ?>
-                                                                        <b style="color: red"><?php echo $payment[$book->id] ?>€</b>
-                                                                    <?php else: ?>
-                                                                    <?php endif ?>
-                        </div>
-                      </div>
-                      <div style="clear: both;"></div>
-                      <div style="display:none" class="oculto" id="div-<?php echo $book->id; ?>">
-                          <div class="col-xs-2"><a href="tel:<?php echo $book->customer['phone'] ?>"><i class="fa fa-phone fa-2x"></i></a></div>
-                          <div class="col-xs-2"><a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><i class="fa fa-pencil fa-2x"></i></a></div>
-                          <div class="col-xs-3">
-                              <select class="room" data-id="<?php echo $book->id ?>" >
-                                  
-                                  <?php foreach ($rooms as $room): ?>
-                                      <?php if ($room->id == $book->room_id): ?>
-                                          <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                              <?php echo substr($room->name,0,5) ?>
-                                          </option>
-                                      <?php else:?>
-                                          <option value="<?php echo $room->id ?>"><?php echo substr($room->name,0,5) ?></option>
-                                      <?php endif ?>
-                                  <?php endforeach ?>
+              </div>
+          </div>
 
-                              </select>
-                          </div>
-                          <div class="col-xs-5">
-                              <select class="status form-control" data-id="<?php echo $book->id ?>" >
-                                  <?php for ($i=1; $i < 9; $i++): ?> 
-                                      <?php if ($i == $book->type_book): ?>
-                                          <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
-                                      <?php else: ?>
-                                          <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
-                                      <?php endif ?>                                          
-                                       
-                                  <?php endfor; ?>
-                              </select>
-                          </div>
-
-                      </div>
-                      <div style="clear: both;"></div>
-                    <?php endforeach ?>
-                  </div> -->
-            
-              <!-- Calendario de reservas -->
-              
-              <div class="col-md-12 col-xs-12 sm-padding-10">
-                  <div class="col-xs-12 col-md-2 pull-right">
-                      Fechas:
-                      <select id="date" class="form-control">
-                          <?php $fecha = $date->copy()->startOfYear(); ?>
-
-                          <?php for ($i=1; $i <= 12; $i++): ?>
-                              <?php if( $date->copy()->format('n') == $i ){ $selected = "selected"; }else{$selected = "";} ?>
-                              <option value="<?php echo $fecha->format('d-m-Y'); ?>" <?php echo $selected ?>>
-                                  <?php echo ucfirst($fecha->formatLocalized('%B')); ?>  <?php echo $fecha->formatLocalized('%Y'); ?> 
-                              </option>
-                              <?php $fecha->addMonth(); ?>
-                          <?php endfor; ?>
-                      </select>
+          <div class="tab-pane" id="cobros">
+              <div class="row column-seperation">
+                  <div class="panel in-out">
+                    <ul class="nav nav-tabs nav-tabs-simple bg-info-light rev" role="tablist" data-init-reponsive-tabs="collapse">
+                        <li class="active in text-center res" style="width: 50%">
+                            <a href="#tabIn" data-toggle="tab" role="tab" style="font-size: 11px;">IN
+                            </a>
+                        </li>
+                        <li class="out text-center pag"  style="width: 50%">
+                            <a href="#tabOut" data-toggle="tab" role="tab" style="font-size: 11px;">OUT
+                            </a>
+                        </li>
+                    </ul>
+                  </div>
+                  <div class="tab-content">
+                    <div class="tab-pane active table-responsive" id="reservas">
+                      
+                    </div>
                   </div>
               </div>
-
-              <div class="col-md-5 col-xs-12">
-                  <div class="panel">
-                      <ul class="nav nav-tabs nav-tabs-simple" role="tablist" data-init-reponsive-tabs="collapse">
-                          <?php $dateAux = $date->copy(); ?>
-                          <?php for ($i=1; $i <= 4 ; $i++) :?>
-                              <li <?php if($i == 1 ){ echo "class='active'";} ?>>
-                                  <a href="#tab<?php echo $i?>" data-toggle="tab" role="tab">
-                                      <?php echo substr(ucfirst($dateAux->copy()->formatLocalized('%B')),0,3)?>
-                                  </a>
-                              </li>
-                              <?php $dateAux->addMonth(); ?>
-                          <?php endfor; ?>
-                      </ul>
-                      <div class="tab-content">
-                          
-                          <?php for ($z=1; $z <= 4; $z++):?>
-                          <div class="table-responsive tab-pane <?php if($z == 1){ echo 'active';} ?>" id="tab<?php echo $z ?>">
-                              <div class="row">
-                                  <div class="col-md-12">
-                                      <table class="fc-border-separate" style="width: 100%">
-                                         <thead>
-                                              <tr >
-                                                  <td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
-                                                      <?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
-                                                  </td> 
-                                              </tr>
-                                              <tr>
-                                                  <td rowspan="2" style="width: 1%!important"></td>
-                                                      <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-                                                          <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
-                                                              <?php echo $i?> 
-                                                          </td> 
-                                                       <?php endfor; ?>
-                                              </tr>
-                                              <tr>
-                                                  
-                                                  <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-                                                      <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$date->copy()->format('n')][$i]?>">
-                                                          <?php echo $days[$date->copy()->format('n')][$i]?> 
-                                                      </td> 
-                                                   <?php endfor; ?> 
-                                              </tr>
-                                         </thead>
-                                         <tbody>
-                                         
-                                              <?php foreach ($roomscalendar as $room): ?>
-                                                  <tr>
-                                                      <?php $date = $date->startOfMonth() ?>
-                                                      <td class="text-center"><b><?php echo substr($room->nameRoom, 0,5)?></b></td>
-                                                          
-                                                      <?php for ($i=01; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-
-                                                              <?php if (isset($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i])): ?>
-                                                                  <?php if ($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->start == $date->copy()->format('Y-m-d')): ?>
-                                                                          <td style='border:1px solid grey;width: 3%'>
-                                                                              <div style="width: 50%;float: left;">
-                                                                                  &nbsp;
-                                                                              </div>
-                                                                              <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?> start" style="width: 50%;float: left;">
-                                                                                  &nbsp;
-                                                                              </div>
-
-                                                                          </td>    
-                                                                  <?php elseif($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->finish == $date->copy()->format('Y-m-d')): ?>
-                                                                          <td style='border:1px solid grey;width: 3%'>
-                                                                              <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?> end" style="width: 50%;float: left;">
-                                                                                  &nbsp;
-                                                                              </div>
-                                                                              <div style="width: 50%;float: left;">
-                                                                                  &nbsp;
-                                                                              </div>
-                                                                              
-
-                                                                          </td>
-                                                                  <?php else: ?>
-                                                                      
-                                                                          <td style='border:1px solid grey;width: 3%' title="<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->customer['name'] ?>" class="<?php echo $book->getStatus($arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?>">
-
-                                                                         <a href="{{url ('/admin/reservas/update')}}/<?php echo $arrayReservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->id ?>">
-                                                                             <div style="width: 100%;height: 100%">
-                                                                                 &nbsp;
-                                                                             </div>
-                                                                         </a>
-
-                                                                      </td>
-
-                                                                  <?php endif ?>
-                                                              <?php else: ?>
-                                                                  <td class="<?php echo $days[$date->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
-                                                                      
-                                                                  </td>
-                                                              <?php endif; ?>
-                                                              <?php if ($date->copy()->format('d') != $arrayMonths[$date->copy()->format('n')]): ?>
-                                                                  <?php $date = $date->addDay(); ?>
-                                                              <?php else: ?>
-                                                                  <?php $date = $date->startOfMonth() ?>
-                                                              <?php endif ?>
-                                                          
-                                                      <?php endfor; ?> 
-                                                  </tr>
-                                                  
-                                              <?php endforeach; ?>
-                                         </tbody>
-                                      </table>
-                                      <?php $date = $date->addMonth(); ?>
-                                  </div>
-                              </div>
-                          </div>
-                          <?php endfor; ?>
-                          
-                      </div>
-                  </div>    
-              </div>
-              
-            </div>
-
-            
           </div>
-          <!-- END PANEL -->
+
+        </div>
+        <div id="calendario" style="border-top: 5px solid black">
+          <div class="container">
+            <div class="panel">
+                <ul class="nav nav-tabs nav-tabs-simple bg-info-light" role="tablist" data-init-reponsive-tabs="collapse">
+                    <?php $dateAux = $inicio->copy(); ?>
+                    <?php for ($i=1; $i <= 5 ; $i++) :?>
+                        <li <?php if($i == 1 ){ echo "class='active'";} ?> style="width:20%!important">
+                            <a href="#tab<?php echo $i?>" data-toggle="tab" role="tab" style="padding:5px;font-size: 17px;">
+                                <?php echo ucfirst($dateAux->copy()->formatLocalized('%b'))?>
+                            </a>
+                        </li>
+                        <?php $dateAux->addMonth(); ?>
+                    <?php endfor; ?>
+                </ul>
+                <div class="tab-content">
+                    
+                    <?php for ($z=1; $z <= 4; $z++):?>
+                    <div class="table-responsive tab-pane <?php if($z == 1){ echo 'active';} ?>" id="tab<?php echo $z ?>" style="padding-bottom: 10px">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="fc-border-separate" style="width: 100%">
+                                   <thead>
+                                        <tr >
+                                            <td class="text-center" colspan="<?php echo $arrayMonths[$inicio->copy()->format('n')]+1 ?>">
+                                                <?php echo  ucfirst($inicio->copy()->formatLocalized('%B %Y'))?>
+                                            </td> 
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="2" style="width: 1%!important"></td>
+                                                <?php for ($i=1; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
+                                                    <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
+                                                        <?php echo $i?> 
+                                                    </td> 
+                                                 <?php endfor; ?>
+                                        </tr>
+                                        <tr>
+                                            
+                                            <?php for ($i=1; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
+                                                <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$inicio->copy()->format('n')][$i]?>">
+                                                    <?php echo $days[$inicio->copy()->format('n')][$i]?> 
+                                                </td> 
+                                             <?php endfor; ?> 
+                                        </tr>
+                                   </thead>
+                                   <tbody>
+                                   
+                                        <?php foreach ($roomscalendar as $room): ?>
+                                            <tr>
+                                                <?php $date = $inicio->startOfMonth() ?>
+                                                <td class="text-center"><b><?php echo substr($room->nameRoom, 0,5)?></b></td>
+                                                    
+                                                <?php for ($i=01; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
+
+                                                        <?php if (isset($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i])): ?>
+                                                            <?php if ($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->start == $inicio->copy()->format('Y-m-d')): ?>
+                                                                    <td style='border:1px solid grey;width: 3%'>
+                                                                        <div style="width: 50%;float: left;">
+                                                                            &nbsp;
+                                                                        </div>
+                                                                        <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> start" style="width: 50%;float: left;">
+                                                                            &nbsp;
+                                                                        </div>
+
+                                                                    </td>    
+                                                            <?php elseif($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->finish == $inicio->copy()->format('Y-m-d')): ?>
+                                                                    <td style='border:1px solid grey;width: 3%'>
+                                                                        <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> end" style="width: 50%;float: left;">
+                                                                            &nbsp;
+                                                                        </div>
+                                                                        <div style="width: 50%;float: left;">
+                                                                            &nbsp;
+                                                                        </div>
+                                                                        
+
+                                                                    </td>
+                                                            <?php else: ?>
+                                                                
+                                                                    <td style='border:1px solid grey;width: 3%' title="<?php echo $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->customer['name'] ?>" class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?>">
+
+                                                                   <a href="{{url ('/admin/reservas/update')}}/<?php echo $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->id ?>">
+                                                                       <div style="width: 100%;height: 100%">
+                                                                           &nbsp;
+                                                                       </div>
+                                                                   </a>
+
+                                                                </td>
+
+                                                            <?php endif ?>
+                                                        <?php else: ?>
+                                                            <td class="<?php echo $days[$inicio->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
+                                                                
+                                                            </td>
+                                                        <?php endif; ?>
+                                                        <?php if ($inicio->copy()->format('d') != $arrayMonths[$inicio->copy()->format('n')]): ?>
+                                                            <?php $date = $inicio->addDay(); ?>
+                                                        <?php else: ?>
+                                                            <?php $date = $inicio->startOfMonth() ?>
+                                                        <?php endif ?>
+                                                    
+                                                <?php endfor; ?> 
+                                            </tr>
+                                            
+                                        <?php endforeach; ?>
+                                   </tbody>
+                                </table>
+                                <?php $date = $date->addMonth(); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endfor; ?>
+                    
+                </div>
+            </div> 
+          </div>
         </div>
       </div>
     </div>
@@ -841,7 +355,14 @@
         }
         
       });
+                  
+        $(".cob").click(function(){
+            $('#calendario').hide();
+        });
 
+        $(".resv").click(function(){
+            $('#calendario').show();
+        });
     $(".reservas").hide();              
       $(".tipo-reservas").click(function(){
         var id = $(this).attr('id');

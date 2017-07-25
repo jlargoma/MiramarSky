@@ -20,44 +20,20 @@
     <style type="text/css">
 
         .Reservado{
-            background-color: #0DAD9E !important;
+            background-color: green !important;
             color: black;
-        }
-        .Reservado.start{
-            background: rgba(0,255,0,0.5); /* For browsers that do not support gradients */
-        }
-        .Reservado.end{
-            background: rgba(0,255,0,0.5); /* For browsers that do not support gradients */
         }
         .Pagada-la-señal{
-            background-color: #F77975  !important;
+            background-color: red  !important;
             color: black;
-        }
-        .Pagada-la-señal.start{
-            background: rgba(255,0,0,0.5); /* For browsers that do not support gradients */
-        }
-        .Pagada-la-señal.end{
-            background: rgba(255,0,0,0.5); /* For browsers that do not support gradients */
         }
         .Bloqueado{
             background-color: #F9D975 !important;
             color: black;
         }
-        .Bloqueado.start{
-            background: rgba(255,255,0,0.5); /* For browsers that do not support gradients */
-        }
-        .Bloqueado.end{
-            background: rgba(255,255,0,0.5);
-        }
         .SubComunidad{
-            background-color: #8A7DBE !important;
+            background-color: rgba(138,125,190,1) !important;
             color: black;
-        }
-        .SubComunidad.start{
-            background: rgba(138,125,190,0.5);
-        }
-        .SubComunidad.end{
-            background: rgba(138,125,190,0.5);
         }
         .botones{
             padding-top: 0px!important;
@@ -83,22 +59,19 @@
             color: white;
         }
         .active.res{
-            background-color: #0DAD9E !important; 
+            background-color: green !important; 
         }
         .active.bloq{
             background-color: #F9D975 !important; 
         }
         .active.pag{
-            background-color: #F77975 !important; 
+            background-color: red !important; 
         }
         .res,.bloq,.pag{
             background-color: #626c75;
         }
         .nav-tabs > li > a:hover, .nav-tabs > li > a:focus{
             color: white!important;
-        }
-        .nav-tabs-simple > li:after {
-            background-color: blue;
         }
     </style>
 

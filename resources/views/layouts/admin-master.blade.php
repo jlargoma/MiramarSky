@@ -34,6 +34,10 @@
 	    <!--[if lte IE 9]>
 	    <link href="assets/plugins/codrops-dialogFx/dialog.ie.css" rel="stylesheet" type="text/css" media="screen" />
 	    <![endif]-->
+	   	<?php 
+   			use App\Classes\Mobile; 
+   			$mobile = new Mobile();
+	   	?>
 	</head>
 	<body class="fixed-header   windows desktop pace-done sidebar-visible menu-pin">
 	<!-- <body class="fixed-header dashboard  windows desktop sidebar-visible pace-done menu-pin"> -->
@@ -209,7 +213,12 @@
 			<!-- START CONTAINER FLUID -->
 			<div class="page-content-wrapper ">
 				<!-- START CONTENT -->
-				<div class="content sm-gutter" style="padding-left: 134px!important">
+				<?php if (!$mobile->isMobile()): ?>
+					<div class="content sm-gutter" style="padding-left: 134px!important">
+				<?php else: ?>
+					<div class="content sm-gutter">
+				<?php endif ?>
+				
 
 						@yield('content')
 				</div>

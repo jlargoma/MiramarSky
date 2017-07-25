@@ -167,7 +167,7 @@ class BookController extends Controller
                                                         'payment'       => $totalPayments,
                                                         'pagos'         => \App\Payments::all(),
                                                         'days'          => $arrayDays, 
-                                                        'inicio'        => $start,                                                        
+                                                        'inicio'        => $start->addMonth(3),                                                        
                                                                                                                
                                                         ]);
                 }
