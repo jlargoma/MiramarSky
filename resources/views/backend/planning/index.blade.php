@@ -1002,8 +1002,8 @@
 
             $('#date').change(function(event) {
                 
-                var month = $(this).val();
-                window.location = '/admin/reservas/'+month;
+                var year = $(this).val();
+                window.location = '/admin/reservas/'+year;
             });
             
             $('.sendJaime').click(function(event) {

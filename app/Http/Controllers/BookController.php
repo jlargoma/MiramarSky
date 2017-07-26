@@ -21,7 +21,7 @@ class BookController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($month = "")
+    public function index($year = "")
         {
 
             $mes           = array();
@@ -31,16 +31,16 @@ class BookController extends Controller
             $arrayDays     = array();
             $arrayTotales  = array();
             $arrayPruebas  = array();
+            $mobile = new Mobile();
 
-            if ( empty($month) ) {
+            if ( empty($year) ) {
                 $date = Carbon::now();
             }else{
-                $month = Carbon::createFromFormat('Y',$month);
-                $date = $month->copy();
+                $year = Carbon::createFromFormat('Y',$year);
+                $date = $year->copy();
 
             }
 
-            $firstDayOfTheYear = new Carbon('first day of September '.$date->copy()->format('Y'));
 
             $arrayBooks = [
                             "nuevas" => [], 
@@ -63,15 +63,12 @@ class BookController extends Controller
                 }
             }
 
-            for ($i=1; $i <= 12; $i++) { 
-                $mes[$firstDayOfTheYear->copy()->format('n')] = $firstDayOfTheYear->copy()->format('M Y');
-                $firstDayOfTheYear = $firstDayOfTheYear->addMonth();
-            }
-
             $firstDayOfTheYear = new Carbon('first day of September '.$date->copy()->format('Y'));
             $book = new \App\Book();
+
             for ($i=1; $i <= 12; $i++) { 
-                
+                $mes[$firstDayOfTheYear->copy()->format('n')] = $firstDayOfTheYear->copy()->format('M Y');
+
                 $startMonth = $firstDayOfTheYear->copy()->startOfMonth();
                 $endMonth   = $firstDayOfTheYear->copy()->endOfMonth();
                 $countDays  = $endMonth->diffInDays($startMonth);
@@ -91,9 +88,9 @@ class BookController extends Controller
 
             $pagos = \App\Payments::all();
 
-            foreach ($pagos as $pago) {
-                $totalPayments[$pago->book_id] = $pago->import;
-            } 
+                foreach ($pagos as $pago) {
+                    $totalPayments[$pago->book_id] = $pago->import;
+                } 
 
             if ($date->copy()->format('n') >= 9) {
                 $start = new Carbon('first day of September '.$date->copy()->format('Y'));
@@ -101,9 +98,14 @@ class BookController extends Controller
                 $start = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
             }
 
-
-            $books = \App\Book::where('start','>',$start)->where('finish','<',$start->copy()->addYear())->orderBy('start','ASC')->get();
-
+            if(!$mobile->isMobile()){
+                $books = \App\Book::where('start','>',$start)->where('finish','<',$start->copy()->addYear())->orderBy('start','ASC')->get();
+            }else{
+                $date = Carbon::now();
+                $books = \App\Book::where('start','>=',$date->copy()->subMonth())->where('finish','<',$start->copy()->addYear())->orderBy('start','ASC')->get();
+                $proxIn = \App\Book::where('start','>=',$date->copy()->subWeek())->where('finish','<',$start->copy()->addWeek())->where('type_book',2)->orderBy('start','ASC')->get();
+                $proxOut = \App\Book::where('start','>=',$date->copy()->subWeek())->where('finish','<',$start->copy()->addWeek())->where('type_book',2)->orderBy('start','ASC')->get();
+            }
             foreach ($books as $key => $book) {
                 if ($book->type_book == 1 || $book->type_book == 3 || $book->type_book == 4 || $book->type_book == 5 || $book->type_book == 6 ) {
                     $arrayBooks["nuevas"][] = $book;
@@ -134,7 +136,7 @@ class BookController extends Controller
                 }
             }
 
-            $mobile = new Mobile();
+            
 
                 if (!$mobile->isMobile()){
                     return view('backend/planning/index',[
@@ -167,7 +169,9 @@ class BookController extends Controller
                                                         'payment'       => $totalPayments,
                                                         'pagos'         => \App\Payments::all(),
                                                         'days'          => $arrayDays, 
-                                                        'inicio'        => $start->addMonth(3),                                                        
+                                                        'inicio'        => $start->addMonth(3),
+                                                        'proxIn'        => \App\Book::all(),
+                                                        'proxOut'       => $proxOut,                                                        
                                                                                                                
                                                         ]);
                 }
@@ -382,7 +386,6 @@ class BookController extends Controller
             return $cost;  
         }
 
-
     //Funcion para actualizar la reserva
         public function saveUpdate(Request $request, $id)
             {
@@ -559,6 +562,32 @@ class BookController extends Controller
         public function tabReserva($id){
             $book = \App\Book::find($id);
             return $book;
+        }
+    
+
+    //Funcion para Cobrar desde movil
+    public function cobroBook($id)
+        {
+            $book = \App\Book::find($id);
+            $payments = \App\Payments::where('book_id', $id)->get();
+            $pending = 0;
+
+            foreach ($payments as $payment) {
+                $pending += $payment->import;
+            }
+
+            return view('backend/planning/_updateCobro',[
+                                                            'book'    => $book,
+                                                            'pending' => $pending,
+                                                        ]);
+        }
+    public function saveCobro(Request $request)
+        {
+            echo "<pre>";
+            print_r($request->id);
+            print_r($request->fecha);
+            print_r($request->import);
+            die();
         }
     public function sendJaime(Request $request)
         {

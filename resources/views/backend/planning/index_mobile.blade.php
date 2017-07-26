@@ -19,7 +19,7 @@
   <![endif]-->
 @endsection
 
-<?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
+<?php setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); use \Carbon\Carbon;?>
 
     <style type="text/css">
         
@@ -91,7 +91,6 @@
           .panel.resv,.panel.in-out{border: 5px solid blue;}
           .active.resv,.active.cob{border: 5px solid blue;}
         /* Bordes de seccion */
-
     </style>
 
 @section('content')
@@ -141,20 +140,107 @@
                   <div class="tab-content ">
                     <div class="tab-pane active table-responsive" id="tabPendientes">
                         <div class="container column-seperation ">
-                           
+                          <table class="table table-hover dataTable no-footer">
+                            <thead>
+                              <th class="Reservado text-white text-center">Nombre</th>
+                              <th class="Reservado text-white text-center" style="min-width:35px">In</th>
+                              <th class="Reservado text-white text-center" style="min-width:35px ">Out</th>
+                              <th class="Reservado text-white text-center">Pax</th>
+                              <th class="Reservado text-white text-center">Tel</th>
+                              <th class="Reservado text-white text-center" style="min-width:100px">Apart</th>
+                              <th class="Reservado text-white text-center"><i class="fa fa-moon-o"></i></th>
+                              <th class="Reservado text-white text-center" style="min-width:50px">PVP</th>
+                              <th class="Reservado text-white text-center" style="min-width:100px">Estado</th>
+                            </thead>
+                            <tbody>
+                              <?php foreach ($arrayBooks["nuevas"] as $nueva): ?>
+                                <tr>
+                                  <td class="text-center"><?php echo $nueva->customer->name ?></td>
+                                  <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->start)->format('d-M') ?></td>
+                                  <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->finish)->format('d-M') ?></td>
+                                  <td class="text-center"><?php echo $nueva->pax ?></td>
+                                  <td class="text-center"><a href="tel:<?php echo $nueva->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
+                                  <td class="text-center"><?php echo $nueva->room->name ?></td>
+                                  <td class="text-center"><?php echo $nueva->nigths ?></td>
+                                  <td class="text-center"><?php echo $nueva->total_price ?> €</td>
+                                  <td class="text-center"><?php echo $nueva->getStatus($nueva->type_book) ?></td>
+                                </tr>
+                              <?php endforeach ?>
+                            </tbody>
+                          </table>
                         </div>
                     </div>
                     <div class="tab-pane table-responsive" id="tabEspeciales">
                         <div class="container column-seperation ">
                           <div>
-                            Prueba b
+                            <table class="table table-hover dataTable no-footer">
+                              <thead>
+                                <th class="Bloqueado text-white text-center">Nombre</th>
+                                <th class="Bloqueado text-white text-center" style="min-width:35px">In</th>
+                                <th class="Bloqueado text-white text-center" style="min-width:35px ">Out</th>
+                                <th class="Bloqueado text-white text-center">Pax</th>
+                                <th class="Bloqueado text-white text-center">Tel</th>
+                                <th class="Bloqueado text-white text-center" style="min-width:100px">Apart</th>
+                                <th class="Bloqueado text-white text-center"><i class="fa fa-moon-o"></i></th>
+                                <th class="Bloqueado text-white text-center" style="min-width:50px">PVP</th>
+                                <th class="Bloqueado text-white text-center" style="min-width:100px">Estado</th>
+                              </thead>
+                              <tbody>
+                                <?php foreach ($arrayBooks["especiales"] as $nueva): ?>
+                                  <tr>
+                                    <td class="text-center"><?php echo $nueva->customer->name ?></td>
+                                    <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->start)->format('d-M') ?></td>
+                                    <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->finish)->format('d-M') ?></td>
+                                    <td class="text-center"><?php echo $nueva->pax ?></td>
+                                    <td class="text-center"><a href="tel:<?php echo $nueva->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
+                                    <td class="text-center"><?php echo $nueva->room->name ?></td>
+                                    <td class="text-center"><?php echo $nueva->nigths ?></td>
+                                    <td class="text-center"><?php echo $nueva->total_price ?> €</td>
+                                    <td class="text-center"><?php echo $nueva->getStatus($nueva->type_book) ?></td>
+                                  </tr>
+                                <?php endforeach ?>
+                              </tbody>
+                            </table>
                           </div>
                         </div>
                     </div>
                     <div class="tab-pane table-responsive" id="tabPagadas">
                         <div class="container column-seperation ">
                           <div>
-                            Prueba C
+                            <table class="table table-hover dataTable no-footer">
+                              <thead>
+                                <th class="Pagada-la-señal text-white text-center">Nombre</th>
+                                <th class="Pagada-la-señal text-white text-center" style="min-width:35px">In</th>
+                                <th class="Pagada-la-señal text-white text-center" style="min-width:35px ">Out</th>
+                                <th class="Pagada-la-señal text-white text-center">Pax</th>
+                                <th class="Pagada-la-señal text-white text-center">Tel</th>
+                                <th class="Pagada-la-señal text-white text-center" style="min-width:100px">Apart</th>
+                                <th class="Pagada-la-señal text-white text-center"><i class="fa fa-moon-o"></i></th>
+                                <th class="Pagada-la-señal text-white text-center" style="min-width:50px">PVP</th>
+                                <th class="Pagada-la-señal text-white text-center" style="min-width:100px">Estado</th>
+                              </thead>
+                              <tbody>
+                                <?php foreach ($arrayBooks["pagadas"] as $nueva): ?>
+                                  <tr>
+                                    <td class="text-center"><?php echo $nueva->customer->name ?></td>
+                                    <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->start)->format('d-M') ?></td>
+                                    <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->finish)->format('d-M') ?></td>
+                                    <td class="text-center"><?php echo $nueva->pax ?></td>
+                                    <td class="text-center"><a href="tel:<?php echo $nueva->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
+                                    <td class="text-center"><?php echo $nueva->room->name ?></td>
+                                    <td class="text-center"><?php echo $nueva->nigths ?></td>
+                                    <td class="text-center">
+                                      <?php echo $nueva->total_price ?> €<br>
+                                      <?php if (isset($payment[$book->id])): ?>
+                                          <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
+                                      <?php else: ?>
+                                      <?php endif ?>
+                                    </td>
+                                    <td class="text-center"><?php echo $nueva->getStatus($nueva->type_book) ?></td>
+                                  </tr>
+                                <?php endforeach ?>
+                              </tbody>
+                            </table>
                           </div>
                         </div>
                     </div>
@@ -177,133 +263,195 @@
                     </ul>
                   </div>
                   <div class="tab-content">
-                    <div class="tab-pane active table-responsive" id="reservas">
-                      
+                    <div class="tab-pane active table-responsive" id="tabIn">
+                        <table class="table table-hover dataTable no-footer">
+                          <thead>
+                            <th class="bg-success text-white text-center">Nombre</th>
+                            <th class="bg-success text-white text-center">In</th>
+                            <th class="bg-success text-white text-center">Out</th>
+                            <th class="bg-success text-white text-center">Pendiente</th>
+                            <th class="bg-success text-white text-center">Cobrar</th>
+                          </thead>
+                          <tbody>
+                            <?php foreach ($proxIn as $book): ?>
+                              <tr>
+                                <td class="text-center"><?php echo $book->customer->name ?></td>
+                                <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?></td>
+                                <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
+                                <td class="text-center">
+                                  <?php if (isset($payment[$book->id])): ?>
+                                    <?php echo $payment[$book->id] ?>
+                                  <?php endif ?>
+                                  
+                                  
+                                </td>
+                                <td class="text-center"><a class="btn btn-tag btn-complete cobro" data-id="<?php echo $book->id ?>" type="button" data-toggle="modal" data-target="#myModal"><i class="fa fa-usd"></i></a></td>
+                              </tr>
+                            <?php endforeach ?>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane table-responsive" id="tabOut">
+                        <table class="table table-hover dataTable no-footer">
+                          <thead>
+                            <th class="bg-warning text-white text-center">Nombre</th>
+                            <th class="bg-warning text-white text-center">In</th>
+                            <th class="bg-warning text-white text-center">Out</th>
+                            <th class="bg-warning text-white text-center">Pendiente</th>
+                            <th class="bg-warning text-white text-center">Cobrar</th>
+                          </thead>
+                          <tbody>
+                          </tbody>
+                        </table>
                     </div>
                   </div>
               </div>
           </div>
 
         </div>
-        <div id="calendario" style="border-top: 5px solid black">
-          <div class="container">
-            <div class="panel">
-                <ul class="nav nav-tabs nav-tabs-simple bg-info-light" role="tablist" data-init-reponsive-tabs="collapse">
-                    <?php $dateAux = $inicio->copy(); ?>
-                    <?php for ($i=1; $i <= 5 ; $i++) :?>
-                        <li <?php if($i == 1 ){ echo "class='active'";} ?> style="width:20%!important">
-                            <a href="#tab<?php echo $i?>" data-toggle="tab" role="tab" style="padding:5px;font-size: 17px;">
-                                <?php echo ucfirst($dateAux->copy()->formatLocalized('%b'))?>
-                            </a>
-                        </li>
-                        <?php $dateAux->addMonth(); ?>
-                    <?php endfor; ?>
-                </ul>
-                <div class="tab-content">
-                    
-                    <?php for ($z=1; $z <= 4; $z++):?>
-                    <div class="table-responsive tab-pane <?php if($z == 1){ echo 'active';} ?>" id="tab<?php echo $z ?>" style="padding-bottom: 10px">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="fc-border-separate" style="width: 100%">
-                                   <thead>
-                                        <tr >
-                                            <td class="text-center" colspan="<?php echo $arrayMonths[$inicio->copy()->format('n')]+1 ?>">
-                                                <?php echo  ucfirst($inicio->copy()->formatLocalized('%B %Y'))?>
-                                            </td> 
-                                        </tr>
-                                        <tr>
-                                            <td rowspan="2" style="width: 1%!important"></td>
-                                                <?php for ($i=1; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
-                                                    <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
-                                                        <?php echo $i?> 
-                                                    </td> 
-                                                 <?php endfor; ?>
-                                        </tr>
-                                        <tr>
-                                            
-                                            <?php for ($i=1; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
-                                                <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$inicio->copy()->format('n')][$i]?>">
-                                                    <?php echo $days[$inicio->copy()->format('n')][$i]?> 
-                                                </td> 
-                                             <?php endfor; ?> 
-                                        </tr>
-                                   </thead>
-                                   <tbody>
-                                   
-                                        <?php foreach ($roomscalendar as $room): ?>
-                                            <tr>
-                                                <?php $date = $inicio->startOfMonth() ?>
-                                                <td class="text-center"><b><?php echo substr($room->nameRoom, 0,5)?></b></td>
-                                                    
-                                                <?php for ($i=01; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
 
-                                                        <?php if (isset($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i])): ?>
-                                                            <?php if ($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->start == $inicio->copy()->format('Y-m-d')): ?>
-                                                                    <td style='border:1px solid grey;width: 3%'>
-                                                                        <div style="width: 50%;float: left;">
-                                                                            &nbsp;
-                                                                        </div>
-                                                                        <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> start" style="width: 50%;float: left;">
-                                                                            &nbsp;
-                                                                        </div>
+        <!-- Calendario -->
+          <div id="calendario" style="border-top: 5px solid black">
+            <div class="container">
+              <div class="panel">
+                  <ul class="nav nav-tabs nav-tabs-simple bg-info-light" role="tablist" data-init-reponsive-tabs="collapse">
+                      <?php $dateAux = $inicio->copy(); ?>
+                      <?php for ($i=1; $i <= 5 ; $i++) :?>
+                          <li <?php if($i == 1 ){ echo "class='active'";} ?> style="width:20%!important">
+                              <a href="#tab<?php echo $i?>" data-toggle="tab" role="tab" style="padding:5px;font-size: 17px;">
+                                  <?php echo ucfirst($dateAux->copy()->formatLocalized('%b'))?>
+                              </a>
+                          </li>
+                          <?php $dateAux->addMonth(); ?>
+                      <?php endfor; ?>
+                  </ul>
+                  <div class="tab-content">
+                      
+                      <?php for ($z=1; $z <= 5; $z++):?>
+                      <div class="table-responsive tab-pane <?php if($z == 1){ echo 'active';} ?>" id="tab<?php echo $z ?>" style="padding-bottom: 10px">
+                          <div class="row">
+                              <div class="col-md-12">
+                                  <table class="fc-border-separate" style="width: 100%">
+                                     <thead>
+                                          <tr>
+                                              <td class="text-center" colspan="<?php echo $arrayMonths[$inicio->copy()->format('n')]+1 ?>">
+                                                  <?php echo  ucfirst($inicio->copy()->formatLocalized('%B %Y'))?>
+                                              </td> 
+                                          </tr>
+                                          <tr>
+                                              <td rowspan="2" style="width: 1%!important"></td>
+                                              <?php for ($i=1; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
+                                                  <td style='border:1px solid black;width: 3%;font-size: 10px;min-width: 12px' class="text-center">
+                                                      <?php echo $i?> 
+                                                  </td> 
+                                               <?php endfor; ?>
+                                          </tr>
+                                          <tr>
+                                              
+                                              <?php for ($i=1; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
+                                                  <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$inicio->copy()->format('n')][$i]?>">
+                                                      <?php echo $days[$inicio->copy()->format('n')][$i]?> 
+                                                  </td> 
+                                               <?php endfor; ?> 
+                                          </tr>
+                                     </thead>
+                                     <tbody>
+                                     
+                                          <?php foreach ($roomscalendar as $room): ?>
+                                              <tr>
+                                                  <?php $date = $inicio->startOfMonth() ?>
+                                                  <td class="text-center"><b><?php echo substr($room->nameRoom, 0,5)?></b></td>
+                                                      
+                                                  <?php for ($i=01; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
 
-                                                                    </td>    
-                                                            <?php elseif($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->finish == $inicio->copy()->format('Y-m-d')): ?>
-                                                                    <td style='border:1px solid grey;width: 3%'>
-                                                                        <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> end" style="width: 50%;float: left;">
-                                                                            &nbsp;
-                                                                        </div>
-                                                                        <div style="width: 50%;float: left;">
-                                                                            &nbsp;
-                                                                        </div>
-                                                                        
+                                                          <?php if (isset($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i])): ?>
+                                                              <?php if ($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->start == $inicio->copy()->format('Y-m-d')): ?>
+                                                                      <td style='border:1px solid grey;width: 3%'>
+                                                                          <div style="width: 50%;float: left;">
+                                                                              &nbsp;
+                                                                          </div>
+                                                                          <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> start" style="width: 50%;float: left;">
+                                                                              &nbsp;
+                                                                          </div>
 
-                                                                    </td>
-                                                            <?php else: ?>
-                                                                
-                                                                    <td style='border:1px solid grey;width: 3%' title="<?php echo $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->customer['name'] ?>" class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?>">
+                                                                      </td>    
+                                                              <?php elseif($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->finish == $inicio->copy()->format('Y-m-d')): ?>
+                                                                      <td style='border:1px solid grey;width: 3%'>
+                                                                          <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> end" style="width: 50%;float: left;">
+                                                                              &nbsp;
+                                                                          </div>
+                                                                          <div style="width: 50%;float: left;">
+                                                                              &nbsp;
+                                                                          </div>
+                                                                          
 
-                                                                   <a href="{{url ('/admin/reservas/update')}}/<?php echo $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->id ?>">
-                                                                       <div style="width: 100%;height: 100%">
-                                                                           &nbsp;
-                                                                       </div>
-                                                                   </a>
+                                                                      </td>
+                                                              <?php else: ?>
+                                                                  
+                                                                      <td style='border:1px solid grey;width: 3%' title="<?php echo $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->customer['name'] ?>" class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?>">
 
-                                                                </td>
+                                                                     <a href="{{url ('/admin/reservas/update')}}/<?php echo $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->id ?>">
+                                                                         <div style="width: 100%;height: 100%">
+                                                                             &nbsp;
+                                                                         </div>
+                                                                     </a>
 
-                                                            <?php endif ?>
-                                                        <?php else: ?>
-                                                            <td class="<?php echo $days[$inicio->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
-                                                                
-                                                            </td>
-                                                        <?php endif; ?>
-                                                        <?php if ($inicio->copy()->format('d') != $arrayMonths[$inicio->copy()->format('n')]): ?>
-                                                            <?php $date = $inicio->addDay(); ?>
-                                                        <?php else: ?>
-                                                            <?php $date = $inicio->startOfMonth() ?>
-                                                        <?php endif ?>
-                                                    
-                                                <?php endfor; ?> 
-                                            </tr>
-                                            
-                                        <?php endforeach; ?>
-                                   </tbody>
-                                </table>
-                                <?php $date = $date->addMonth(); ?>
-                            </div>
-                        </div>
-                    </div>
-                    <?php endfor; ?>
-                    
-                </div>
-            </div> 
+                                                                  </td>
+
+                                                              <?php endif ?>
+                                                          <?php else: ?>
+                                                              <td class="<?php echo $days[$inicio->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
+                                                                  
+                                                              </td>
+                                                          <?php endif; ?>
+                                                          <?php if ($inicio->copy()->format('d') != $arrayMonths[$inicio->copy()->format('n')]): ?>
+                                                              <?php $date = $inicio->addDay(); ?>
+                                                          <?php else: ?>
+                                                              <?php $date = $inicio->startOfMonth() ?>
+                                                          <?php endif ?>
+                                                      
+                                                  <?php endfor; ?> 
+                                              </tr>
+                                              
+                                          <?php endforeach; ?>
+                                     </tbody>
+                                  </table>
+                                  <?php $date = $date->addMonth(); ?>
+                              </div>
+                          </div>
+                      </div>
+                      <?php endfor; ?>
+                      
+                  </div>
+              </div> 
+            </div>
           </div>
-        </div>
+        <!-- Calendario -->
+
       </div>
     </div>
 
+<!-- Modal de cobros -->
+  <div class="modal fade slide-up disable-scroll in" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content-wrapper">
+        <div class="modal-content">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-50"></i>
+          </button>
+          <div class="container-xs-height full-height">
+            <div class="row-xs-height">
+              <div class="modal-body col-xs-height col-middle text-center   ">
 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+<!-- Modal de Cobros -->
 
 @endsection
 
@@ -343,44 +491,30 @@
 
 <script>     
 
-  $(document).ready(function() {            
-    $(".oculto").hide();              
-      $(".desplegable").click(function(){
-        var id = $(this).attr('id');
-        if ($('#div-'+id).is(":visible")) {
-          $('.oculto').hide();
-        }else{
-          $('.oculto').hide();
-        $('#div-'+id).show();
-        }
-        
-      });
-                  
-        $(".cob").click(function(){
-            $('#calendario').hide();
-        });
+  $(document).ready(function() {                    
+   
+    $(".cob").click(function(){
+        $('#calendario').hide();
+    });
 
-        $(".resv").click(function(){
-            $('#calendario').show();
-        });
-    $(".reservas").hide();              
-      $(".tipo-reservas").click(function(){
-        var id = $(this).attr('id');
-        if ($('.'+id).is(":visible")) {
-          $('.reservas').hide();
-        }else{
-          $('.reservas').hide();
-        $('.'+id).show();
-        }
-        
-      });
+    $(".resv").click(function(){
+        $('#calendario').show();
+    });
 
     $('#date').change(function(event) {
         
         var month = $(this).val();
         window.location = '/admin/reservas/'+month;
     });
-
+    // Mdoal
+      $('.cobro').click(function(event) {
+          var id = $(this).attr('data-id');
+          $.get('/admin/reservas/cobrar/'+id, function(data) {
+              $('.modal-body').empty().append(data);
+          });
+      });
+    // Modal
+    
     $('.status,.room').change(function(event) {
         var id = $(this).attr('data-id');
         var clase = $(this).attr('class');

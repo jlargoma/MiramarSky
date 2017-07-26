@@ -41,8 +41,11 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 	Route::get('admin/reservas/getCostBook' , 'BookController@getCostBook');
 	Route::get('admin/reservas/getPricePark' , 'BookController@getPricePark');
 	Route::get('admin/reservas/getCostPark' , 'BookController@getCostPark');
-	Route::get('admin/reservas/{month?}' , 'BookController@index');
+	Route::get('admin/reservas/saveCobro' , 'BookController@saveCobro');
+	Route::get('admin/reservas/{year?}' , 'BookController@index');
 	Route::get('admin/reservas/reserva/{id}' , 'BookController@tabReserva');
+	Route::get('admin/reservas/cobrar/{id}' , 'BookController@cobroBook');
+
 
 	
 // Usuarios
