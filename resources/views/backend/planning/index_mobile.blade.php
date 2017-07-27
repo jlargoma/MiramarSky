@@ -155,7 +155,7 @@
                             <tbody>
                               <?php foreach ($arrayBooks["nuevas"] as $nueva): ?>
                                 <tr>
-                                  <td class="text-center"><?php echo $nueva->customer->name ?></td>
+                                  <td class="text-center"><a href="{{url ('/admin/reservas/update')}}/<?php echo $nueva->id ?>"><?php echo $nueva->customer->name ?></a></td>
                                   <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->start)->format('d-M') ?></td>
                                   <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->finish)->format('d-M') ?></td>
                                   <td class="text-center"><?php echo $nueva->pax ?></td>
@@ -280,10 +280,10 @@
                                 <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
                                 <td class="text-center">
                                   <?php if (isset($payment[$book->id])): ?>
-                                    <?php echo $payment[$book->id] ?>
+                                    <?php echo number_format($book->total_price - $payment[$book->id],2,',','.') ?> €
+                                  <?php else: ?>
+                                    <?php echo number_format($book->total_price,2,',','.') ?> €
                                   <?php endif ?>
-                                  
-                                  
                                 </td>
                                 <td class="text-center"><a class="btn btn-tag btn-complete cobro" data-id="<?php echo $book->id ?>" type="button" data-toggle="modal" data-target="#myModal"><i class="fa fa-usd"></i></a></td>
                               </tr>
@@ -294,13 +294,28 @@
                     <div class="tab-pane table-responsive" id="tabOut">
                         <table class="table table-hover dataTable no-footer">
                           <thead>
-                            <th class="bg-warning text-white text-center">Nombre</th>
-                            <th class="bg-warning text-white text-center">In</th>
-                            <th class="bg-warning text-white text-center">Out</th>
-                            <th class="bg-warning text-white text-center">Pendiente</th>
-                            <th class="bg-warning text-white text-center">Cobrar</th>
+                            <th class="bg-success text-white text-center">Nombre</th>
+                            <th class="bg-success text-white text-center">In</th>
+                            <th class="bg-success text-white text-center">Out</th>
+                            <th class="bg-success text-white text-center">Pendiente</th>
+                            <th class="bg-success text-white text-center">Cobrar</th>
                           </thead>
                           <tbody>
+                            <?php foreach ($proxOut as $book): ?>
+                              <tr>
+                                <td class="text-center"><?php echo $book->customer->name ?></td>
+                                <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?></td>
+                                <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
+                                <td class="text-center">
+                                  <?php if (isset($payment[$book->id])): ?>
+                                    <?php echo number_format($book->total_price - $payment[$book->id],2,',','.') ?> €
+                                  <?php else: ?>
+                                    <?php echo number_format($book->total_price,2,',','.') ?> €
+                                  <?php endif ?>
+                                </td>
+                                <td class="text-center"><a class="btn btn-tag btn-complete cobro" data-id="<?php echo $book->id ?>" type="button" data-toggle="modal" data-target="#myModal"><i class="fa fa-usd"></i></a></td>
+                              </tr>
+                            <?php endforeach ?>
                           </tbody>
                         </table>
                     </div>

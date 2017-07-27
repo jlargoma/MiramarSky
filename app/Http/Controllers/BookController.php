@@ -89,7 +89,12 @@ class BookController extends Controller
             $pagos = \App\Payments::all();
 
                 foreach ($pagos as $pago) {
-                    $totalPayments[$pago->book_id] = $pago->import;
+                    if (isset($totalPayments[$pago->book_id])) {
+                        $totalPayments[$pago->book_id] += $pago->import;
+                    }else{
+                        $totalPayments[$pago->book_id] = $pago->import;
+                    }
+                    
                 } 
 
             if ($date->copy()->format('n') >= 9) {
@@ -101,10 +106,10 @@ class BookController extends Controller
             if(!$mobile->isMobile()){
                 $books = \App\Book::where('start','>',$start)->where('finish','<',$start->copy()->addYear())->orderBy('start','ASC')->get();
             }else{
-                $date = Carbon::now();
-                $books = \App\Book::where('start','>=',$date->copy()->subMonth())->where('finish','<',$start->copy()->addYear())->orderBy('start','ASC')->get();
-                $proxIn = \App\Book::where('start','>=',$date->copy()->subWeek())->where('finish','<',$start->copy()->addWeek())->where('type_book',2)->orderBy('start','ASC')->get();
-                $proxOut = \App\Book::where('start','>=',$date->copy()->subWeek())->where('finish','<',$start->copy()->addWeek())->where('type_book',2)->orderBy('start','ASC')->get();
+                // $date = Carbon::now();
+                $books = \App\Book::where('start','>=',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->orderBy('start','ASC')->get();
+                $proxIn = \App\Book::where('start','>=',$date->copy()->subWeek())->where('finish','<',$date->copy()->addWeek())->where('type_book',2)->orderBy('start','ASC')->get();
+                $proxOut = \App\Book::where('start','>=',$date->copy()->subWeek())->where('finish','<',$date->copy()->addWeek())->where('type_book',2)->orderBy('start','ASC')->get();
             }
             foreach ($books as $key => $book) {
                 if ($book->type_book == 1 || $book->type_book == 3 || $book->type_book == 4 || $book->type_book == 5 || $book->type_book == 6 ) {
@@ -170,7 +175,7 @@ class BookController extends Controller
                                                         'pagos'         => \App\Payments::all(),
                                                         'days'          => $arrayDays, 
                                                         'inicio'        => $start->addMonth(3),
-                                                        'proxIn'        => \App\Book::all(),
+                                                        'proxIn'        => $proxIn,
                                                         'proxOut'       => $proxOut,                                                        
                                                                                                                
                                                         ]);
@@ -566,29 +571,37 @@ class BookController extends Controller
     
 
     //Funcion para Cobrar desde movil
-    public function cobroBook($id)
-        {
-            $book = \App\Book::find($id);
-            $payments = \App\Payments::where('book_id', $id)->get();
-            $pending = 0;
+        public function cobroBook($id)
+            {
+                $book = \App\Book::find($id);
+                $payments = \App\Payments::where('book_id', $id)->get();
+                $pending = 0;
 
-            foreach ($payments as $payment) {
-                $pending += $payment->import;
+                foreach ($payments as $payment) {
+                    $pending += $payment->import;
+                }
+
+                return view('backend/planning/_updateCobro',[
+                                                                'book'    => $book,
+                                                                'pending' => $pending,
+                                                            ]);
             }
 
-            return view('backend/planning/_updateCobro',[
-                                                            'book'    => $book,
-                                                            'pending' => $pending,
-                                                        ]);
-        }
     public function saveCobro(Request $request)
         {
-            echo "<pre>";
-            print_r($request->id);
-            print_r($request->fecha);
-            print_r($request->import);
-            die();
+            $payment = new \App\Payments();
+
+            $payment->book_id = $request->id;
+            $payment->datePayment = Carbon::CreateFromFormat('d-m-Y',$request->fecha);
+            $payment->import = $request->import;
+            $payment->type = $request->tipo;
+
+            if ($payment->save()) {
+                return redirect()->action('BookController@index');
+            }
+            
         }
+    
     public function sendJaime(Request $request)
         {
             $book = \App\Book::find($request->id);

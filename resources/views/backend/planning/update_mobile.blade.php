@@ -13,11 +13,10 @@
 <div class="container-fluid padding-10 sm-padding-10">
     <div class="row">
         <div class="col-md-12 col-xs-12 text-center">
-            <h2>Actualizar reserva  de <?php echo "<b>".$book->customer->name."</b>" ?> 
+            <h2>Reserva  de <?php echo "<b>".$book->customer->name."</b>" ?> 
                 creada el 
-                <?php 
-                    $fecha = Carbon::createFromFormat('Y-m-d H:i:s' ,$book->created_at);
-                    echo $fecha->format('d-m-Y'); 
+                <?php         
+                    echo Carbon::createFromFormat('Y-m-d H:i:s' ,$book->created_at)->format('d-m-Y'); 
                 ?>
             </h2>
         </div>

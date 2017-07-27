@@ -20,6 +20,15 @@
 					Importe:<br>
 					<input type="number" name="import" class="form-control">
 				</div>
+				<div class="col-xs-12 m-t-10 text-left">
+					Metodo de pago:<br>
+					<select name="tipo" id="tipo">
+						<?php for ($i=0; $i <= 2 ; $i++):?>
+							<option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
+						<?php endfor; ?>
+					</select>
+				</div>
+				<div style="clear: both;"></div>
 				<div class="text-center">
 					<input type="submit" class="btn btn-success  m-t-10">
 				</div>
