@@ -175,7 +175,7 @@ class BookController extends Controller
                                                         'pagos'         => \App\Payments::all(),
                                                         'days'          => $arrayDays, 
                                                         'inicio'        => $start->addMonth(3),
-                                                        'proxIn'        => $proxIn,
+                                                        'proxIn'        => \App\Book::all(),
                                                         'proxOut'       => $proxOut,                                                        
                                                                                                                
                                                         ]);
@@ -598,6 +598,21 @@ class BookController extends Controller
 
             if ($payment->save()) {
                 return redirect()->action('BookController@index');
+            }
+            
+        }
+
+    public function saveFianza(Request $request)
+        {
+            $fianza = new \App\Bail();
+
+            $fianza->id_book = $request->id;
+            $fianza->date_in = Carbon::CreateFromFormat('d-m-Y',$request->fecha);
+            $fianza->import_in = $request->fianza;
+            $fianza->comment_in = $request->comentario;
+
+            if ($fianza->save()) {
+                
             }
             
         }

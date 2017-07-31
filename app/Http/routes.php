@@ -10,6 +10,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+
 Route::auth();
 
 // Route::get('/',['middleware' => 'authSubAdmin','middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
@@ -42,6 +43,7 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 	Route::get('admin/reservas/getPricePark' , 'BookController@getPricePark');
 	Route::get('admin/reservas/getCostPark' , 'BookController@getCostPark');
 	Route::get('admin/reservas/saveCobro' , 'BookController@saveCobro');
+	Route::get('admin/reservas/saveFianza' , 'BookController@saveFianza');
 	Route::get('admin/reservas/{year?}' , 'BookController@index');
 	Route::get('admin/reservas/reserva/{id}' , 'BookController@tabReserva');
 	Route::get('admin/reservas/cobrar/{id}' , 'BookController@cobroBook');

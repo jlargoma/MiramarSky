@@ -264,18 +264,21 @@
                   </div>
                   <div class="tab-content">
                     <div class="tab-pane active table-responsive" id="tabIn">
-                        <table class="table table-hover dataTable no-footer">
+                        <table class="table table-striped dataTable no-footer">
                           <thead>
                             <th class="bg-success text-white text-center">Nombre</th>
                             <th class="bg-success text-white text-center">In</th>
                             <th class="bg-success text-white text-center">Out</th>
                             <th class="bg-success text-white text-center">Pendiente</th>
-                            <th class="bg-success text-white text-center">Cobrar</th>
                           </thead>
                           <tbody>
                             <?php foreach ($proxIn as $book): ?>
                               <tr>
-                                <td class="text-center"><?php echo $book->customer->name ?></td>
+                                <td class="text-center">
+                                  <a class="cobro" data-id="<?php echo $book->id ?>" data-toggle="modal" data-target="#myModal">
+                                    <?php echo substr($book->customer->name,0,10) ?>
+                                  </a>
+                                </td>
                                 <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?></td>
                                 <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
                                 <td class="text-center">
@@ -285,25 +288,27 @@
                                     <?php echo number_format($book->total_price,2,',','.') ?> €
                                   <?php endif ?>
                                 </td>
-                                <td class="text-center"><a class="btn btn-tag btn-complete cobro" data-id="<?php echo $book->id ?>" type="button" data-toggle="modal" data-target="#myModal"><i class="fa fa-usd"></i></a></td>
                               </tr>
                             <?php endforeach ?>
                           </tbody>
                         </table>
                     </div>
                     <div class="tab-pane table-responsive" id="tabOut">
-                        <table class="table table-hover dataTable no-footer">
+                        <table class="table table-striped dataTable no-footer">
                           <thead>
                             <th class="bg-success text-white text-center">Nombre</th>
                             <th class="bg-success text-white text-center">In</th>
                             <th class="bg-success text-white text-center">Out</th>
                             <th class="bg-success text-white text-center">Pendiente</th>
-                            <th class="bg-success text-white text-center">Cobrar</th>
                           </thead>
                           <tbody>
                             <?php foreach ($proxOut as $book): ?>
                               <tr>
-                                <td class="text-center"><?php echo $book->customer->name ?></td>
+                                <td class="text-center">
+                                  <a class="cobro" data-id="<?php echo $book->id ?>" data-toggle="modal" data-target="#myModal">
+                                    <?php echo substr($book->customer->name,0,10) ?>
+                                  </a>
+                                </td>
                                 <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?></td>
                                 <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
                                 <td class="text-center">
@@ -313,7 +318,6 @@
                                     <?php echo number_format($book->total_price,2,',','.') ?> €
                                   <?php endif ?>
                                 </td>
-                                <td class="text-center"><a class="btn btn-tag btn-complete cobro" data-id="<?php echo $book->id ?>" type="button" data-toggle="modal" data-target="#myModal"><i class="fa fa-usd"></i></a></td>
                               </tr>
                             <?php endforeach ?>
                           </tbody>
@@ -455,7 +459,7 @@
           </button>
           <div class="container-xs-height full-height">
             <div class="row-xs-height">
-              <div class="modal-body col-xs-height col-middle text-center   ">
+              <div class="modal-body col-xs-height col-middle text-center p-0">
 
               </div>
             </div>

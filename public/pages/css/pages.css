@@ -11788,6 +11788,13 @@ Main components
 /* Generic Padding Helpers 
 ------------------------------------
 */
+.p-0{
+    padding-top: 0px!important;
+    padding-right: 0px!important;
+    padding-left: 0px!important;
+    padding-bottom: 0px!important;
+}
+
 .p-t-0 {
   padding-top: 0px !important;
 }
@@ -12106,6 +12113,12 @@ Main components
 /* Generic Margin Helpers
 ------------------------------------
  */
+.m-0{
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-bottom: 0px;
+}
 .m-t-0 {
   margin-top: 0px;
 }
