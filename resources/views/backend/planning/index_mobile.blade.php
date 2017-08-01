@@ -89,7 +89,7 @@
        
         /* Bordes de seccion */          
           .panel.resv,.panel.in-out{border: 5px solid blue;}
-          .active.resv,.active.cob{border: 5px solid blue;}
+          .active.resv > a,.active.cob > a{color: blue!important;}
         /* Bordes de seccion */
     </style>
 
@@ -99,7 +99,7 @@
       <div class="row">
         <div class="panel" style="margin-bottom: 0px!important">
           <ul class="nav nav-tabs nav-tabs-simple bg-info-light " role="tablist" data-init-reponsive-tabs="collapse">
-              <li class="active resv" >
+              <li class="resv active " >
                   <a href="#reservas" data-toggle="tab" role="tab" style="font-size: 11px!important"> RESERVAS </a>
               </li>
               <li class="cob">
