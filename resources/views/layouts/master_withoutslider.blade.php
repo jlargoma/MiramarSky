@@ -70,6 +70,50 @@
 	<!-- Footer Scripts
 	============================================= -->
 	<script type="text/javascript" src="/frontend/js/functions.js"></script>
+	<script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
+	<script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
+	<script type="text/javascript">
+		$(function() {
+			$(".daterange1").daterangepicker({
+				"buttonClasses": "button button-rounded button-mini nomargin",
+				"applyClass": "button-color",
+				"cancelClass": "button-light",
+			 	locale: {
+			      format: 'DD/MM/YYYY',
+			      "applyLabel": "Aplicar",
+			        "cancelLabel": "Cancelar",
+			        "fromLabel": "From",
+			        "toLabel": "To",
+			        "customRangeLabel": "Custom",
+			        "daysOfWeek": [
+			            "Do",
+			            "Lu",
+			            "Mar",
+			            "Mi",
+			            "Ju",
+			            "Vi",
+			            "Sa"
+			        ],
+			        "monthNames": [
+			            "Enero",
+			            "Febrero",
+			            "Marzo",
+			            "Abril",
+			            "Mayo",
+			            "Junio",
+			            "Julio",
+			            "Agosto",
+			            "Septiembre",
+			            "Octubre",
+			            "Noviembre",
+			            "Diciembre"
+			        ],
+			        "firstDay": 1,
+			    },
+			    
+			});
+		});
+	</script>	
 	@yield('scripts')
 </body>
 </html>

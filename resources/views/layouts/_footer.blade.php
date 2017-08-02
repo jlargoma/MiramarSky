@@ -48,15 +48,14 @@
 		<div class="container clearfix">
 
 			<div class="col_half" style="color: #666">
-				Copyrights © 2016 - <?php echo date('Y') ?> Todos los derechos reservados.<br>
-				<div class="copyright-links"><a href="#" style="color: #666">Terminos de uso</a> / <a href="#" style="color: #666">Política de privacidad</a></div>
+				Copyrights © 2017 Todos los derechos reservados.<br>
 			</div>
 
 			<div class="col_half col_last tright">
 
 				<div class="clear"></div>
 
-				<i class="fa fa-envelope"></i><a href="mailto:info@apartamentosierranevada.net"> info@apartamentosierranevada.net</a> <span class="middot">
+				<i class="fa fa-envelope"></i><a href="mailto:reservas@apartamentosierranevada.net"> reservas@apartamentosierranevada.net</a> <span class="middot">
 			</div>
 
 		</div>

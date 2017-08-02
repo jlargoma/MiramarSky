@@ -30,7 +30,8 @@
 		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/css/settings.css')}}" media="screen" />
 		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/css/layers.css')}}">
 		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/css/navigation.css')}}">
-
+		
+		<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
 		<title>@yield('title')</title>
 		
 
@@ -124,7 +125,67 @@
 		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.navigation.min.js"></script>
 		<script type="text/javascript" src="{{ asset('/frontend/js/scrollreveal.js')}}"></script>
 		<script type="text/javascript" src="{{ asset('/js/typed.js')}}"></script>
-			
+		<script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
+		<script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
+		<script type="text/javascript">
+			$(function() {
+				$(".daterange1").daterangepicker({
+					"buttonClasses": "button button-rounded button-mini nomargin",
+					"applyClass": "button-color",
+					"cancelClass": "button-light",
+				 	locale: {
+				      format: 'DD/MM/YYYY',
+				      "applyLabel": "Aplicar",
+				        "cancelLabel": "Cancelar",
+				        "fromLabel": "From",
+				        "toLabel": "To",
+				        "customRangeLabel": "Custom",
+				        "daysOfWeek": [
+				            "Do",
+				            "Lu",
+				            "Mar",
+				            "Mi",
+				            "Ju",
+				            "Vi",
+				            "Sa"
+				        ],
+				        "monthNames": [
+				            "Enero",
+				            "Febrero",
+				            "Marzo",
+				            "Abril",
+				            "Mayo",
+				            "Junio",
+				            "Julio",
+				            "Agosto",
+				            "Septiembre",
+				            "Octubre",
+				            "Noviembre",
+				            "Diciembre"
+				        ],
+				        "firstDay": 1,
+				    },
+				    
+				});
+			});
+			$(document).ready(function() {
+		    $(".only-numbers").keydown(function (e) {
+		        // Allow: backspace, delete, tab, escape, enter and .
+		        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+		             // Allow: Ctrl+A, Command+A
+		            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
+		             // Allow: home, end, left, right, down, up
+		            (e.keyCode >= 35 && e.keyCode <= 40)) {
+		                 // let it happen, don't do anything
+		                 return;
+		        }
+		        // Ensure that it is a number and stop the keypress
+		        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+		            e.preventDefault();
+		        }
+		    });
+		});
+		</script>	
 		<script type="text/javascript">
 			var tpj = jQuery;
 

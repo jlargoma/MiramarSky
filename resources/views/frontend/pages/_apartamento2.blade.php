@@ -56,7 +56,7 @@
 							<?php foreach ($slides as $key => $slide): ?>
 								<div class="slide" data-thumb="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>">
 									<a href="#">
-										<img src="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>" alt="<?php echo $slide->getFilename() ?>" style="max-height: 500px;">
+										<img src="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>" alt="<?php echo $slide->getFilename() ?>" style="max-height: 530px;">
 										<div class="flex-caption slider-caption-bg"><?php echo $slide->getFilename() ?></div>
 									</a>
 								</div>
@@ -111,7 +111,7 @@
 		<div class="col-xs-12">
 			<?php foreach ($aptos as $key => $apartamento): ?>
 				<?php if ($apartamento != $url): ?>
-					<div class="col-md-4 not-padding-mobile">
+					<div class="col-md-4 not-padding-mobile hover-effect">
 						<a href="{{url('/apartamentos')}}/<?php echo $apartamento ?>">
 							<div class="col-xs-12 not-padding  container-image-box push-mobile-20">
 								<div class="col-xs-12 not-padding push-0">
@@ -119,7 +119,7 @@
 									<img class="img-responsive" src="/img/miramarski/small/<?php echo $apartamento ?>.jpg"  alt="<?php echo str_replace('-', ' ', $apartamento) ?>"/>
 								</div>
 								<div class="col-xs-12 not-padding text-right overlay-text">
-									<h2 class="font-w600 center push-10 text-center text white font-s24" >
+									<h2 class="font-w600 center push-10 text-center text white font-s24 hvr-reveal" >
 										<?php 
 											$title    = str_replace('-', ' ', $apartamento);
 											$title    = str_replace(' sierra nevada', '', $title);

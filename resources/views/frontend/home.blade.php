@@ -2,7 +2,7 @@
 @section('title')Apartamentos de lujo en Sierra Nievada a pie de pista @endsection
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
+
 <link href="{{ asset('/frontend/hover.css')}}" rel="stylesheet" media="all">
 <link rel="stylesheet" href="{{ asset('/frontend/css/components/radio-checkbox.css')}}" type="text/css" />
 <style type="text/css">
@@ -369,58 +369,7 @@
 
 @section('scripts')
 <script type="text/javascript" src="https://cdn.rawgit.com/nnattawat/flip/master/dist/jquery.flip.min.js"></script>
-<script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
-<script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
 <script type="text/javascript">
-	$(function() {
-		// .daterange1
-		$(".daterange1").daterangepicker({
-			"buttonClasses": "button button-rounded button-mini nomargin",
-			"applyClass": "button-color",
-			"cancelClass": "button-light",
-		 	locale: {
-		      format: 'DD/MM/YYYY',
-		      "applyLabel": "Aplicar",
-		        "cancelLabel": "Cancelar",
-		        "fromLabel": "From",
-		        "toLabel": "To",
-		        "customRangeLabel": "Custom",
-		        "daysOfWeek": [
-		            "Do",
-		            "Lu",
-		            "Mar",
-		            "Mi",
-		            "Ju",
-		            "Vi",
-		            "Sa"
-		        ],
-		        "monthNames": [
-		            "Enero",
-		            "Febrero",
-		            "Marzo",
-		            "Abril",
-		            "Mayo",
-		            "Junio",
-		            "Julio",
-		            "Agosto",
-		            "Septiembre",
-		            "Octubre",
-		            "Noviembre",
-		            "Diciembre"
-		        ],
-		        "firstDay": 1,
-		    },
-		    
-		});
-	});
-	<?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
-		$('#date').click(function(event) {
-			event.preventDefault();
-			$('html, body').animate({
-			       scrollTop: $("#date").offset().top - 40
-			   }, 2000);
-		});
-	<?php endif; ?>
 	$('#form-book-apto-lujo').submit(function(event) {
 
 		event.preventDefault();
