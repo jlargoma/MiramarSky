@@ -4,11 +4,34 @@
 
 <style type="text/css">
 	#primary-menu ul li  a{
-		color: #3F51B5!important
+		color: #3F51B5!important;
+	}
+	#primary-menu ul li  a div{
+		text-align: left!important;
 	}
 	label{
 		color: white!important
 	}
+	@media (max-width: 768px){
+		.container-mobile{
+			padding: 0!important
+		}
+		#primary-menu{
+			padding: 40px 15px 0 15px;
+		}
+		#primary-menu-trigger {
+		    color: #3F51B5!important;
+		    top: 5px!important;
+		    left: 5px!important;
+		    border: 2px solid #3F51B5!important;
+		}
+		.container-image-box img{
+			height: 180px!important;
+		}
+
+		
+	}
+	
 </style>
 @section('metadescription') {{ $aptoHeading }} en Sierra Nevada @endsection
 @section('title') {{ $aptoHeading }} en Sierra Nevada @endsection
@@ -17,10 +40,10 @@
 	
 	<section id="content">
 
-		<div class="container clearfix push-20">
-			<div class="row" style="margin-top: 40px;">
+		<div class="container container-mobile clearfix push-0">
+			<div class="row">
 				<h1 class="center hidden-sm hidden-xs psuh-20"><?php echo strtoupper($aptoHeading); ?></h2>
-				<h1 class="center hidden-lg hidden-md push-10"><?php echo strtoupper($aptoHeadingMobile); ?></h2>
+				<h1 class="center hidden-lg hidden-md green push-10"><?php echo strtoupper($aptoHeadingMobile); ?></h2>
 				
 			</div>
 		</div>
@@ -45,27 +68,32 @@
 
 			<div class="col-xs-12 col-md-6 clearfix center">
 
-					<div class="col-md-12 push-20">
-						<?php if ($typeApto == 1): ?>
-							@include('frontend.pages._infoAptoLujo')
-						<?php elseif($typeApto == 2): ?>
-							@include('frontend.pages._infoAptoStandard')
-						<?php elseif($typeApto == 3): ?>
-							@include('frontend.pages._infoEstudioLujo')
-						<?php elseif($typeApto == 4): ?>
-							@include('frontend.pages._infoEstudioStandard')
-						<?php endif ?>
-					</div>
-					
+				<div class="col-md-12 push-0 not-padding-mobile">
+					<?php if ($typeApto == 1): ?>
+						@include('frontend.pages._infoAptoLujo')
+					<?php elseif($typeApto == 2): ?>
+						@include('frontend.pages._infoAptoStandard')
+					<?php elseif($typeApto == 3): ?>
+						@include('frontend.pages._infoEstudioLujo')
+					<?php elseif($typeApto == 4): ?>
+						@include('frontend.pages._infoEstudioStandard')
+					<?php endif ?>
+				</div>
+				
+				<?php if (!$mobile->isMobile()): ?>
 					<button id="showFromBook" class="button button-desc button-3d button-rounded bg-bluesky center white" style="background-color: #4cb53f!important">¡Reserva YA!</button>
 
-			</div>
+				<?php endif; ?>
+			</div>¡
 		</div>
 		
-		<div id="content-form-book" class="row bg-bluesky push-30" style="display: none; padding: 40px 0 0">
+		<div id="content-form-book" class="row bg-bluesky push-30" style="display: none; padding: 0px 0 40px 0">
 			<span style="padding: 0 5px; cursor: pointer; opacity: 1; margin-right: 20px; margin-top: 10px;" class="close pull-right white text-white"><i class="fa fa-times"></i></span>
 			<div class="col-xs-12 col-md-4 hidden-sm hidden-xs" style=" min-height: 535px">
 				<img src="{{asset('/img/miramarski/esquiadores.png')}}" class="img-responsive" style="position: absolute; bottom: 0">
+			</div>
+			<div class="col-xs-12 col-md-4 hidden-lg hidden-md" >
+				<h4 class="text-center white">SOLICITA TU RESERVA</h4>
 			</div>
 			<div  class="col-xs-12 col-md-4" >
 				@include('frontend._formBook')
@@ -75,38 +103,41 @@
             </div>
 		</div>
 
-		<div class="container container-mobile clearfix">
-			<div class="col-xs-12">
-				<h3 class="text-center font-w300">
-					OTROS <span class="green font-w800">APARTAMENTOS</span>
-				</h3>
-			</div>
-			<div class="col-xs-12">
-				<?php foreach ($aptos as $key => $apartamento): ?>
-					<?php if ($apartamento != $url): ?>
-						<div class="col-md-4 ">
-							<a href="{{url('/apartamentos')}}/<?php echo $apartamento ?>">
-								<div class="col-xs-12 not-padding  container-image-box push-mobile-20">
-									<div class="col-xs-12 not-padding push-0">
-										
-											<img class="img-responsive" src="/img/miramarski/small/<?php echo $apartamento ?>.jpg"  alt="<?php echo str_replace('-', ' ', $apartamento) ?>"/>
-										</a>
-									</div>
-									<div class="col-xs-12 not-padding text-right overlay-text">
-										<h2 class="font-w600 center push-10 text-center text white font-s24" >
-											<?php 
-												$title    = str_replace('-', ' ', $apartamento);
-												$title    = str_replace(' sierra nevada', '', $title);
-											?>
-											<?php echo strtoupper($title ) ?>
-										</h2>
-									</div>
+		<div class="col-xs-12">
+			<h3 class="text-center font-w300">
+				OTROS <span class="green font-w800">APARTAMENTOS</span>
+			</h3>
+		</div>
+		<div class="col-xs-12">
+			<?php foreach ($aptos as $key => $apartamento): ?>
+				<?php if ($apartamento != $url): ?>
+					<div class="col-md-4 not-padding-mobile">
+						<a href="{{url('/apartamentos')}}/<?php echo $apartamento ?>">
+							<div class="col-xs-12 not-padding  container-image-box push-mobile-20">
+								<div class="col-xs-12 not-padding push-0">
+									
+									<img class="img-responsive" src="/img/miramarski/small/<?php echo $apartamento ?>.jpg"  alt="<?php echo str_replace('-', ' ', $apartamento) ?>"/>
 								</div>
-							</a>
-						</div>
-					<?php endif ?>
-				<?php endforeach ?>
-			</div>
+								<div class="col-xs-12 not-padding text-right overlay-text">
+									<h2 class="font-w600 center push-10 text-center text white font-s24" >
+										<?php 
+											$title    = str_replace('-', ' ', $apartamento);
+											$title    = str_replace(' sierra nevada', '', $title);
+										?>
+										<?php echo strtoupper($title ) ?>
+									</h2>
+								</div>
+							</div>
+						</a>
+					</div>
+				<?php endif ?>
+			<?php endforeach ?>
+		</div>
+
+
+		<div id="fixed-book" class="col-xs-12 text-center center hidden-lg hidden-md bg-white" style="position: fixed; bottom: 0px; width: 100%; background-color: #FFF!important; padding: 15px;">
+			<button id="showFromBook" class="button button-desc button-3d button-rounded bg-bluesky center white" style="background-color: #4cb53f!important; width: 60%; margin: 0px auto;z-index: 90">¡Reserva YA!</button>
+
 		</div>
 	</section>
 	
@@ -130,13 +161,32 @@
 		});
 	});
 
+	<?php if (!$mobile->isMobile()): ?>
 
-	$('#showFromBook').click(function(event) {
-		$('#content-form-book').slideDown('400');
-		$('html,body').animate({
-		        scrollTop: $("#content-form-book").offset().top - 80},
-        'slow');
-	});
+		$('#showFromBook').click(function(event) {
+			$('#content-form-book').slideDown('400');
+			$('html,body').animate({
+			        scrollTop: $("#content-form-book").offset().top - 80},
+	        'slow');
+		});
+	<?php else: ?>
+
+		$('#showFromBook').click(function(event) {
+			$('#content-form-book').slideDown('400');
+			$('html,body').animate({
+			        scrollTop: $("#content-form-book").offset().top},
+	        'slow');
+	        setTimeout(function(){
+	        	$('#fixed-book').fadeOut();
+	        }, 1000);
+        	
+
+		});
+
+		$(window).scroll(function(event) {
+			$('#fixed-book').fadeIn();
+		});
+	<?php endif; ?>
 
 	$('span.close').click(function(event) {
 		$('#content-form-book').hide('400');

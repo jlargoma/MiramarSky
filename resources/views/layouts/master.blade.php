@@ -116,65 +116,41 @@
 		
 		<script type="text/javascript" src="/frontend/include/rs-plugin/js/jquery.themepunch.tools.min.js"></script>
 		<script type="text/javascript" src="/frontend/include/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
-		<script type="text/javascript" src="/frontend/include/rs-plugin/js/addons/revolution.addon.snow.min.js"></script>
 
-		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.actions.min.js"></script>
-		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.carousel.min.js"></script>
-		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.kenburn.min.js"></script>
-		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.layeranimation.min.js"></script>
-		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.migration.min.js"></script>
-		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.navigation.min.js"></script>
-		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.parallax.min.js"></script>
-		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.slideanims.min.js"></script>
 		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.video.min.js"></script>
-
+		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.slideanims.min.js"></script>
+		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.actions.min.js"></script>
+		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.layeranimation.min.js"></script>
+		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.navigation.min.js"></script>
 		<script type="text/javascript" src="{{ asset('/frontend/js/scrollreveal.js')}}"></script>
 		<script type="text/javascript" src="{{ asset('/js/typed.js')}}"></script>
 			
 		<script type="text/javascript">
-			var tpj=jQuery;
+			var tpj = jQuery;
 
-			var revapi15;
+			var revapi202;
 			tpj(document).ready(function() {
-				if(tpj("#rev_slider_15_1").revolution == undefined){
-					revslider_showDoubleJqueryError("#rev_slider_15_1");
-				}else{
-					revapi15 = tpj("#rev_slider_15_1").show().revolution({
-						sliderType:"standard",
-						jsFileLocation:"/frontend/include/rs-plugin/js/",
-						sliderLayout:"fullwidth",
-						dottedOverlay:"none",
-						delay:2500,
-
-						<?php if (!$mobile->isMobile() || !$mobile->isTablet()): ?>
-							snow: {
-								startSlide: "first",
-								endSlide: "last",
-								maxNum: "400",
-								minSize: "0.2",
-								maxSize: "6",
-								minOpacity: "0.3",
-								maxOpacity: "1",
-								minSpeed: "30",
-								maxSpeed: "100",
-								minSinus: "1",
-								maxSinus: "100",
-							},
-						<?php endif; ?>
+				if (tpj("#rev_slider_202_1").revolution == undefined) {
+					revslider_showDoubleJqueryError("#rev_slider_202_1");
+				} else {
+					revapi202 = tpj("#rev_slider_202_1").show().revolution({
+						sliderType: "standard",
+						jsFileLocation: "/forntend/include/rs-plugin/js/",
+						sliderLayout: "fullwidth",
+						dottedOverlay: "none",
+						delay: 9000,
 						navigation: {
-							keyboardNavigation:"on",
+							keyboardNavigation: "off",
 							keyboard_direction: "horizontal",
-							mouseScrollNavigation:"off",
-							mouseScrollReverse:"default",
-							onHoverStop:"off",
-							touch:{
-								touchenabled:"on",
+							mouseScrollNavigation: "off",
+							onHoverStop: "off",
+							touch: {
+								touchenabled: "on",
 								swipe_threshold: 75,
-								swipe_min_touches: 1,
+								swipe_min_touches: 50,
 								swipe_direction: "horizontal",
 								drag_block_vertical: false
-							}
-							,
+							},
 							arrows: {
 								style:"uranus",
 								enable:true,
@@ -195,68 +171,67 @@
 								}
 							},
 							bullets: {
-	                            enable: true,
-	                            hide_onmobile: true,
-	                            style: "uranus",
-	                            hide_onleave: false,
-	                            direction: "horizontal",
-	                            h_align: "center",
-	                            v_align: "bottom",
-	                            h_offset: 0,
-	                            v_offset: 10,
-	                            space: 5,
-	                            tmp: '<span class="tp-bullet-inner"></span>'
-	                        }
+								enable: true,
+								hide_onmobile: false,
+								style: "zeus",
+								hide_onleave: false,
+								direction: "horizontal",
+								h_align: "center",
+								v_align: "bottom",
+								h_offset: 0,
+								v_offset: 30,
+								space: 5,
+								tmp: '<span class="tp-bullet-inner"></span>'
+							}
 						},
-						responsiveLevels:[1240,1024,778,480],
-						visibilityLevels:[1240,1024,778,480],
-						gridwidth:[1240,1024,778,480],
-						gridheight:[780,650,550,550],
-						lazyType:"none",
-						scrolleffect: {
-							blur:"on",
-							maxblur:"20",
-							on_slidebg:"on",
-							direction:"top",
-							multiplicator:"2",
-							multiplicator_layers:"2",
-							tilt:"10",
-							disable_on_mobile:"off",
-						},
-						parallax: {
-							type:"scroll",
-							origo:"slidercenter",
-							speed:400,
-							levels:[5,10,15,20,25,30,35,40,45,46,47,48,49,50,51,55],
-						},
-						shadow:0,
-						spinner:"off",
-						stopLoop:"off",
-						stopAfterLoops:-1,
-						stopAtSlide:-1,
-						shuffle:"off",
-						autoHeight:"off",
-						fullScreenAutoWidth:"off",
-						fullScreenAlignForce:"off",
+						responsiveLevels: [1240, 1024, 778, 480],
+						visibilityLevels: [1240, 1024, 778, 480],
+						gridwidth: [1240, 1024, 778, 480],
+						gridheight: [700, 768, 960, 600],
+						lazyType: "none",
+						shadow: 0,
+						spinner: "off",
+						stopLoop: "on",
+						stopAfterLoops: 0,
+						stopAtSlide: 1,
+						shuffle: "off",
+						autoHeight: "off",
+						fullScreenAutoWidth: "off",
+						fullScreenAlignForce: "off",
 						fullScreenOffsetContainer: "",
-						fullScreenOffset: "0",
-						hideThumbsOnMobile:"off",
-						hideSliderAtLimit:0,
-						hideProgressBar:true,
-						hideCaptionAtLimit:0,
-						hideAllCaptionAtLilmit:0,
-						debugMode:false,
+						fullScreenOffset: "",
+						disableProgressBar: "on",
+						hideThumbsOnMobile: "off",
+						hideSliderAtLimit: 0,
+						hideCaptionAtLimit: 0,
+						hideAllCaptionAtLilmit: 0,
+						debugMode: false,
 						fallbacks: {
-							simplifyAll:"off",
-							nextSlideOnWindowFocus:"off",
-							disableFocusListener:false,
+							simplifyAll: "off",
+							nextSlideOnWindowFocus: "off",
+							disableFocusListener: false,
+						}
+					});
+					revapi202.bind("revolution.slide.onchange",function (e,data) {
+						if( $(window).width() > 992 ) {
+							if( $('#slider ul > li').eq(data.slideIndex-1).hasClass('dark') ){
+								$('#header.transparent-header:not(.sticky-header,.semi-transparent)').addClass('dark');
+								$('#header.transparent-header.sticky-header,#header.transparent-header.semi-transparent.sticky-header').removeClass('dark');
+								$('#header-wrap').removeClass('not-dark');
+							} else {
+								if( $('body').hasClass('dark') ) {
+									$('#header.transparent-header:not(.semi-transparent)').removeClass('dark');
+									$('#header.transparent-header:not(.sticky-header,.semi-transparent)').find('#header-wrap').addClass('not-dark');
+								} else {
+									$('#header.transparent-header:not(.semi-transparent)').removeClass('dark');
+									$('#header-wrap').removeClass('not-dark');
+								}
+							}
+							SEMICOLON.header.logo();
 						}
 					});
 				}
-
-				RsSnowAddOn(tpj, revapi15);
-			});	/*ready*/
-
+			}); /*ready*/
 		</script>
 		<script>
 			window.sr = ScrollReveal();

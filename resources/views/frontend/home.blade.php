@@ -9,6 +9,18 @@
 	.hvr-reveal:before{
 		border-color: white!important;
 	}
+	@media (max-width: 768px){
+		#primary-menu.style-2 {
+		    background-color: transparent;
+		}
+		#primary-menu{
+			padding: 40px 15px 0 15px;
+		}
+		#primary-menu-trigger {
+		    top: 5px!important;
+		    left: 5px!important;
+		}
+	}
 </style>
 <section id="content">
 
@@ -257,24 +269,34 @@
 			<section  class="page-section" style="letter-spacing: 0;line-height: 1; ">
 				<div class="col-xs-12" style="background-color: #3F51B5;">
 					<div class="col-xs-12" style="padding: 40px 0 0">
-						<div class="heading-block center nobottomborder" style="margin-bottom: 20px">
-							<h3 class=" white">EL edificio y los aptos</h3>
-						</div>
-						<p class="lead  text-justify ls-15 white text-white">
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-						</p>
-						<p class="lead  text-center ls-15 white">
-							<span class="font-w600 text-center white">Lorem ipsum dolor sit amet</span>
-						</p>
-						<div class="col-xs-12 push-30">
+						<div class="row white" style="margin-bottom: 20px">
+       						<h1 class="font-w800 white center font-s18" style="letter-spacing: 0; margin-bottom: 0">APARTAMENTOS DE LUJO A PIE DE PISTA</h1>
+       					</div>
+       					<p class="lead  text-justify white ls-15 font-s14 white">
+       						Todos nuestros Apartamentos están en el Edificio Miramar Ski, situado <b>en la zona baja de Sierra Nevada</b>. Tienen excelentes vistas y todos disponen del equipamiento completo.
+
+       					</p>
+       					<h2 class="font-w300 text-center nobottommargin white push-20" style="line-height: 1"> El edificio tiene salida directa a las pistas, <span class="font-w800 white">solo tienes que salir de casa y esquiar!!</span></h2>
+
+       					<p class="lead  text-justify white ls-15 font-s14 white">
+       						Se encuentran <b>a 5 minutos andando de la plaza de Andalucía</b>, centro neurálgico de la estación.<br>
+       						Muy cerca, a pocos metros, tienes varios supermercados, bares y restaurantes, lo que es muy importante para que disfrutes tus vacaciones sin tener que coger el coche ni remontes, Nuestro edificio Miramar Ski es <b>uno de los edificios más modernos de Sierra Nevada</b> (2006).<br>
+
+							<!-- Tenemos <b>apartamentos con dos habitaciones</b> ( ocupación 6 / 8 pers) y también <b>estudios</b> (ocupación 4 / 5 pers), Dentro de estos dos modelos, podrás  elegir entre los estándar y de lujo, que están recién reformados.<br><br>
+							<b>En todas las reservas las sabanas y toallas están incluidas</b><br><br>
+							Queremos ofrecerte un servicio especial, por eso incluimos en todas nuestras reservas un obsequio de bienvenida. <br><br>
+							<b>En el botón de reserva  podrás calcular el coste de tu petición y si lo consideras hacer tu solicitud de disponibilidad.</b>
+ -->
+       					</p>
+						<div class="col-xs-12 not-padding push-30">
 							<div id="oc-slider" class="owl-carousel carousel-widget" data-margin="0" data-items="1" data-animate-in="zoomIn" data-speed="450" data-animate-out="fadeOut">
 
-								<a href="#"><img src="{{ asset('/img/miramarski/exteriores.jpg') }}" alt="Slide 1"></a>
-								<a href="#"><img src="{{ asset('/img/miramarski/cama-principal-apartamento-sierra-nevada.jpg') }}" alt="Slide 2"></a>
-								<a href="#"><img src="{{ asset('/img/miramarski/salon-miramar-apartamento-sierra-nevada.jpg') }}" alt="Slide 3"></a>
-								<a href="#"><img src="{{ asset('/img/miramarski/television-chimenea-apartamento-sierra-nevada.jpg') }}" alt="Slide 4"></a>
+	       						<a href="#"><img src="{{ asset('/img/miramarski/exteriores.jpg') }}" alt="Slide 1" style="height: 200px;"></a>
+	       						<a href="#"><img src="{{ asset('/img/miramarski/cama-principal-apartamento-sierra-nevada.jpg') }}" alt="Slide 2" style="height: 200px;"></a>
+	       						<a href="#"><img src="{{ asset('/img/miramarski/salon-miramar-apartamento-sierra-nevada.jpg') }}" alt="Slide 3" style="height: 200px;"></a>
+	       						<a href="#"><img src="{{ asset('/img/miramarski/television-chimenea-apartamento-sierra-nevada.jpg') }}" alt="Slide 4" style="height: 200px;"></a>
 
-							</div>
+	       					</div>
 						</div>
 					</div>
 
@@ -283,38 +305,34 @@
 			</section>
 			<div style="clear: both;"></div>
 			<section  class="page-section" style="letter-spacing: 0;line-height: 1; margin: 45px 0;">
-				<div class="heading-block center">
+				<div class="heading-block center push-20">
 					<h3 class="green">GALERÍA DE APARTAMENTOS</h3>
 				</div>
 				<div class=" row fadeInAppear">
-					<a href="{{url('/apartamentos/apartamento-lujo-sierra-nevada')}}" >
+					<a href="{{url('/apartamentos/apartamento-lujo-sierra-nevada')}}"  class=" hover-effect"> 
 						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apartamento-lujo-sierra-nevada/a-panoramica.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 1px 1px #000;">APARTAMENTO DE LUJO</h3>
-							<span  class="text-center white text-white" style="text-shadow: 1px 1px #000;">Lorem ipsum dolor sit amet</span>
 						</div>
 					</a>
 				</div>
 				<div class=" row fadeInAppear">
-					<a href="{{url('/apartamentos/apartamento-standard-sierra-nevada')}}" >
+					<a href="{{url('/apartamentos/apartamento-standard-sierra-nevada')}}"  class=" hover-effect"> 
 						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apartamento-standard-sierra-nevada/salon5-min.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 1px 1px #000;">APARTAMENTO STANDARD</h3>
-							<span  class="text-center white text-white" style="text-shadow: 1px 1px #000;">Lorem ipsum dolor sit amet</span>
 						</div>
 					</a>
 				</div>
 				<div class=" row fadeInAppear">
-					<a href="{{url('/apartamentos/estudio-lujo-sierra-nevada')}}">
+					<a href="{{url('/apartamentos/estudio-lujo-sierra-nevada')}}" class=" hover-effect"> 
 						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apartamento-lujo-sierra-nevada/a-panoramica.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 1px 1px #000;">ESTUDIO DE LUJO</h3>
-							<span  class="text-center white text-white" style="text-shadow: 1px 1px #000;">Lorem ipsum dolor sit amet</span>
 						</div>
 					</a>
 				</div>
 				<div class=" row fadeInAppear">
-					<a href="{{url('/apartamentos/estudio-standard-sierra-nevada')}}">
+					<a href="{{url('/apartamentos/estudio-standard-sierra-nevada')}}" class=" hover-effect"> 
 						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apartamento-lujo-sierra-nevada/salon.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 1px 1px #000;">ESTUDIO STANDARD</h3>
-							<span  class="text-center white text-white" style="text-shadow: 1px 1px #000;">Lorem ipsum dolor sit amet</span>
 						</div>
 					</a>
 				</div>
@@ -329,7 +347,7 @@
 					
 
 					<a href="{{url('/actividades')}}" >
-						<div class="section parallax-effect nomargin noborder center" style="background-image: url({{ asset('/img/miramarski/banners/actividades.jpg') }}); padding: 80px 0; height: 265px;" data-stellar-background-ratio="0.4">
+						<div class="section nomargin noborder center" style="background-image: url({{ asset('/img/miramarski/banners/actividades.jpg') }}); padding: 80px 0; height: 265px;" data-stellar-background-ratio="0.4">
 								<h3 class="h2 text-center white text-white font-w800" style="text-shadow: 1px 1px #000;">¿QUÉ HACER EN SIERRA NEVADA?</h3>
 								<span  class="text-center white text-white" style="text-shadow: 1px 1px #000;">Lorem ipsum dolor sit amet</span>
 						</div>

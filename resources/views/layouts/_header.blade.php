@@ -75,7 +75,7 @@
 						<ul>
 							<?php if (Request::path() != '/'): ?>
 								<li>
-									<a  href="{{ url('/') }}"><div style="text-align: center; font-size: 18px;"><i class="fa fa-home fa-2x" style="margin-right: 0;"></i></div></a></li>
+									<a  href="{{ url('/') }}"><div style="text-align: center; font-size: 18px;"><i class="fa fa-home fa-2x" style="margin-right: 0;"></i> </div></a></li>
 								</li>
 							<?php endif ?>
 							<li class="mega-menu"><a href="#"><div>Apartamentos</div></a>
