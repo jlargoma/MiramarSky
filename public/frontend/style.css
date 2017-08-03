@@ -14593,45 +14593,63 @@ p.text {
     margin: 0!important;
 }
 
-#form-book-apto-lujo input,#form-book-apto-lujo textarea{
-		color: white;
-		background: rgba(255,255,255,0.35)!important;
-		border-top: 0px!important; 
-		border-left: 0px!important; 
-		border-right: 0px!important; 
-		border-bottom: 3px solid white;
-	}
-	#form-book-apto-lujo select {
-		color: black;
-		background: rgba(255,255,255,0.35)!important;
-		border-top: 0px!important; 
-		border-left: 0px!important; 
-		border-right: 0px!important; 
-		border-bottom: 3px solid white;
-	}
-	#form-book-apto-lujo label{
-		width: 100%;
-		text-align: center;
-		margin-bottom: 0px;
-	}
+#form-book-apto-lujo input, #form-book-apto-lujo textarea{
+	color: white;
+	background: rgba(255,255,255,0.35)!important;
+	border-top: 0px!important; 
+	border-left: 0px!important; 
+	border-right: 0px!important; 
+	border-bottom: 3px solid white;
+}
+#form-book-apto-lujo select {
+	color: black;
+	background: rgba(255,255,255,0.35)!important;
+	border-top: 0px!important; 
+	border-left: 0px!important; 
+	border-right: 0px!important; 
+	border-bottom: 3px solid white;
+}
+#form-book-apto-lujo label{
+	width: 100%;
+	text-align: center;
+	margin-bottom: 0px;
+}
 
-	#form-book-apto-lujo input ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-	    color:    #FFF;
-	}
-	#form-book-apto-lujo input :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-	   color:    #FFF;
-	   opacity:  1;
-	}
-	#form-book-apto-lujo input ::-moz-placeholder { /* Mozilla Firefox 19+ */
-	   color:    #FFF;
-	   opacity:  1;
-	}
-	#form-book-apto-lujo input :-ms-input-placeholder { /* Internet Explorer 10-11 */
-	   color:    #FFF;
-	}
-	#form-book-apto-lujo input ::-ms-input-placeholder { /* Microsoft Edge */
-	   color:    #FFF;
-	}
+#form-book-apto-lujo input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #FFF;
+}
+#form-book-apto-lujo input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #FFF;
+   opacity:  1;
+}
+#form-book-apto-lujo input::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #FFF;
+   opacity:  1;
+}
+#form-book-apto-lujo input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #FFF;
+}
+#form-book-apto-lujo input::-ms-input-placeholder { /* Microsoft Edge */
+   color:    #FFF;
+}
+
+#form-book-apto-lujo textarea::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #FFF;
+}
+#form-book-apto-lujo textarea:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #FFF;
+   opacity:  1;
+}
+#form-book-apto-lujo textarea::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #FFF;
+   opacity:  1;
+}
+#form-book-apto-lujo textarea:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:    #909;
+}
+#form-book-apto-lujo textarea::-ms-input-placeholder { /* Microsoft Edge */
+   color:    #909;
+}
 @media (max-width: 768px) {
 	.properties{
 		float: left;

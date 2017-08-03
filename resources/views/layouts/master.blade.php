@@ -123,6 +123,7 @@
 		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.actions.min.js"></script>
 		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.layeranimation.min.js"></script>
 		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.navigation.min.js"></script>
+		<script src="https://cdn.rawgit.com/nnattawat/flip/master/dist/jquery.flip.min.js"></script>
 		<script type="text/javascript" src="{{ asset('/frontend/js/scrollreveal.js')}}"></script>
 		<script type="text/javascript" src="{{ asset('/js/typed.js')}}"></script>
 		<script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>

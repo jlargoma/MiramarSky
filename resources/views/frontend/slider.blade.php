@@ -11,8 +11,8 @@
 					<!-- LAYERS -->
 
 					<!-- LAYER NR. 1 -->
-					<div class="tp-caption tp-shape tp-shapewrapper " id="slide-672-layer-1" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']" data-width="full" data-height="full" data-whitespace="nowrap" data-transform_idle="o:1;" data-transform_in="opacity:0;s:1000;e:Power2.easeInOut;" data-transform_out="opacity:0;s:1000;s:1000;" data-start="0" data-basealign="slide" data-responsive_offset="off" data-responsive="off" style="z-index: 5;background-color:rgba(0, 0, 0, 0.35);border-color:rgba(0, 0, 0, 0);">
-					</div>
+					<!-- <div class="tp-caption tp-shape tp-shapewrapper " id="slide-672-layer-1" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']" data-width="full" data-height="full" data-whitespace="nowrap" data-transform_idle="o:1;" data-transform_in="opacity:0;s:1000;e:Power2.easeInOut;" data-transform_out="opacity:0;s:1000;s:1000;" data-start="0" data-basealign="slide" data-responsive_offset="off" data-responsive="off" style="z-index: 5;background-color:rgba(0, 0, 0, 0.35);border-color:rgba(0, 0, 0, 0);">
+					</div> -->
 
 					<!-- LAYER NR. 2 -->
 					<div class="tp-caption Concept-SubTitle   tp-resizeme rs-parallaxlevel-2" id="slide-672-layer-4" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['-65','-65','-57','-54']" data-fontsize="['25','25','20','20']" data-lineheight="['25','25','20','20']" data-width="none" data-height="none" data-whitespace="nowrap" data-transform_idle="o:1;" data-transform_in="z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;s:1500;e:Power3.easeInOut;" data-transform_out="x:left(R);s:1000;e:Power3.easeIn;s:1000;e:Power3.easeIn;" data-start="1500" data-splitin="none" data-splitout="none" data-responsive_offset="on" style="z-index: 6; white-space: nowrap;text-shadow: 1px 1px #000;">A pie de pista en Sierra Nevada
@@ -35,8 +35,8 @@
 					<!-- LAYERS -->
 
 					<!-- LAYER NR. 1 -->
-					<div class="tp-caption tp-shape tp-shapewrapper " id="slide-673-layer-1" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']" data-width="full" data-height="full" data-whitespace="nowrap" data-transform_idle="o:1;" data-transform_in="opacity:0;s:1000;e:Power2.easeInOut;" data-transform_out="opacity:0;s:1000;s:1000;" data-start="0" data-basealign="slide" data-responsive_offset="off" data-responsive="off" style="z-index: 5;background-color:rgba(0, 0, 0, 0.35);border-color:rgba(0, 0, 0, 0);">
-					</div>
+					<!-- <div class="tp-caption tp-shape tp-shapewrapper " id="slide-673-layer-1" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']" data-width="full" data-height="full" data-whitespace="nowrap" data-transform_idle="o:1;" data-transform_in="opacity:0;s:1000;e:Power2.easeInOut;" data-transform_out="opacity:0;s:1000;s:1000;" data-start="0" data-basealign="slide" data-responsive_offset="off" data-responsive="off" style="z-index: 5;background-color:rgba(0, 0, 0, 0.35);border-color:rgba(0, 0, 0, 0);">
+					</div> -->
 
 					<!-- LAYER NR. 2 -->
 					<div class="tp-caption Concept-SubTitle   tp-resizeme rs-parallaxlevel-2" id="slide-673-layer-4" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['-65','-65','-57','-54']" data-fontsize="['25','25','20','20']" data-lineheight="['25','25','20','20']" data-width="none" data-height="none" data-whitespace="nowrap" data-transform_idle="o:1;" data-transform_in="z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;s:1500;e:Power3.easeInOut;" data-transform_out="x:left(R);s:1000;e:Power3.easeIn;s:1000;e:Power3.easeIn;" data-start="1500" data-splitin="none" data-splitout="none" data-responsive_offset="on" style="z-index: 6; white-space: nowrap;text-shadow: 1px 1px #000;">El mejor edificio de Sierra Nevada
@@ -59,8 +59,8 @@
 					<!-- LAYERS -->
 
 					<!-- LAYER NR. 1 -->
-					<div class="tp-caption tp-shape tp-shapewrapper " id="slide-674-layer-1" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']" data-width="full" data-height="full" data-whitespace="nowrap" data-transform_idle="o:1;" data-transform_in="opacity:0;s:1000;e:Power2.easeInOut;" data-transform_out="opacity:0;s:1000;s:1000;" data-start="bytrigger" data-basealign="slide" data-responsive_offset="off" data-responsive="off" data-end="bytrigger" data-lasttriggerstate="keep" style="z-index: 5;background-color:rgba(255, 255, 255, 0.35);border-color:rgba(0, 0, 0, 0);">
-					</div>
+					<!-- <div class="tp-caption tp-shape tp-shapewrapper " id="slide-674-layer-1" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']" data-width="full" data-height="full" data-whitespace="nowrap" data-transform_idle="o:1;" data-transform_in="opacity:0;s:1000;e:Power2.easeInOut;" data-transform_out="opacity:0;s:1000;s:1000;" data-start="bytrigger" data-basealign="slide" data-responsive_offset="off" data-responsive="off" data-end="bytrigger" data-lasttriggerstate="keep" style="z-index: 5;background-color:rgba(255, 255, 255, 0.35);border-color:rgba(0, 0, 0, 0);">
+					</div> -->
 
 					<!-- LAYER NR. 2 -->
 					<div class="tp-caption Concept-SubTitle   tp-resizeme rs-parallaxlevel-2" id="slide-674-layer-4" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['-65','-65','-57','-74']" data-fontsize="['25','25','20','20']" data-lineheight="['25','25','20','20']" data-width="none" data-height="none" data-whitespace="nowrap" data-transform_idle="o:1;" data-transform_in="z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;s:1500;e:Power3.easeInOut;" data-transform_out="x:left(R);s:1000;e:Power3.easeIn;s:1000;e:Power3.easeIn;" data-start="1500" data-splitin="none" data-splitout="none" data-responsive_offset="on" style="z-index: 6; white-space: nowrap;text-shadow: 1px 1px #000;">Servicio de lujo

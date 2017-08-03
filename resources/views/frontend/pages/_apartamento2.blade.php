@@ -12,6 +12,9 @@
 	label{
 		color: white!important
 	}
+	#content-form-book {
+    	padding: 40px 15px;
+	}
 	@media (max-width: 768px){
 		.container-mobile{
 			padding: 0!important
@@ -29,7 +32,12 @@
 			height: 180px!important;
 		}
 
-		
+		#content-form-book {
+			padding: 0px 0 40px 0
+		}
+		.daterangepicker {
+		    top: 135%!important;
+		}
 	}
 	
 </style>
@@ -86,8 +94,8 @@
 				<?php endif; ?>
 			</div>¡
 		</div>
-		
-		<div id="content-form-book" class="row bg-bluesky push-30" style="display: none; padding: 0px 0 40px 0">
+		<?php if (!$mobile->isMobile()): ?>
+		<div id="content-form-book" class="row bg-bluesky push-30" style="display: none; ">
 			<span style="padding: 0 5px; cursor: pointer; opacity: 1; margin-right: 20px; margin-top: 10px;" class="close pull-right white text-white"><i class="fa fa-times"></i></span>
 			<div class="col-xs-12 col-md-4 hidden-sm hidden-xs" style=" min-height: 535px">
 				<img src="{{asset('/img/miramarski/esquiadores.png')}}" class="img-responsive" style="position: absolute; bottom: 0">
@@ -96,12 +104,27 @@
 				<h4 class="text-center white">SOLICITA TU RESERVA</h4>
 			</div>
 			<div  class="col-xs-12 col-md-4" >
+				<h4 class="text-center white hidden-xs hidden-sm">SOLICITA TU RESERVA</h4>
 				@include('frontend._formBook')
             </div>
             <div id="content-book-response" class="col-xs-12 col-md-4" >
             	
             </div>
 		</div>
+		<?php else: ?>
+			<div id="content-form-book" class="row bg-bluesky push-30" style="display: none; ">
+				<span style="padding: 0 5px; cursor: pointer; opacity: 1; margin-right: 20px; margin-top: 10px;" class="close pull-right white text-white"><i class="fa fa-times"></i></span>
+				<div class="col-xs-12 col-md-4 hidden-sm hidden-xs" style=" min-height: 535px">
+					<img src="{{asset('/img/miramarski/esquiadores.png')}}" class="img-responsive" style="position: absolute; bottom: 0">
+				</div>
+	            <div id="content-book-response" class="col-xs-12 col-md-4" >
+	            	<div class="col-xs-12 col-md-4 hidden-lg hidden-md" >
+	            		<h4 class="text-center white">SOLICITA TU RESERVA</h4>
+	            	</div>
+	            	@include('frontend._formBook')
+	            </div>
+			</div>
+		<?php endif; ?>
 
 		<div class="col-xs-12">
 			<h3 class="text-center font-w300">
@@ -148,19 +171,6 @@
 <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
 <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
 <script type="text/javascript">
-	$(function() {
-		// .daterange1
-		$(".daterange1").daterangepicker({
-			"buttonClasses": "button button-rounded button-mini nomargin",
-			"applyClass": "button-color",
-			"cancelClass": "button-light",
-		 	locale: {
-		      format: 'DD/MM/YYYY'
-		    },
-		    
-		});
-	});
-
 	<?php if (!$mobile->isMobile()): ?>
 
 		$('#showFromBook').click(function(event) {
@@ -221,7 +231,7 @@
 		});
 
 		$('#form-book-apto-lujo').submit(function(event) {
-
+			$('#fixed-book').hide();
 			event.preventDefault();
 
 			var _token   = $('input[name="_token"]').val();
@@ -236,10 +246,12 @@
 			var comment  = $('textarea[name="comment"]').val();
 
 			var url = $(this).attr('action');
+			$('#content-book-response').fadeOut('500');
 
 			$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   date : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
 
-				$('#content-book-response').empty().append(data);
+				$('#content-book-response').empty();
+				$('#content-book-response').append(data).fadeIn('500');
 			});
 
 		});

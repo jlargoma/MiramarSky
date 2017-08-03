@@ -25,7 +25,7 @@
 		<p class="white push-10 font-s18 font-w300 text-center">
 			Precio total de la solicitud de reserva<br> <span class="font-w800" style="font-size: 48px;"><?php echo $total ?>€</span>
 		</p>
-		<div class="col-md-6 col-xs-12">
+		<div class="col-md-7 col-xs-12">
 			<form method="post" action="{{url('/admin/reservas/create')}}" id="confirm-book">
 	    		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 	    		<input type="hidden" name="newroom" value="<?php echo $id_apto; ?>">
@@ -42,10 +42,10 @@
 	    		<input type="hidden" name="agencia" value="0">
 	    		<input type="hidden" name="book_comments" value="">
 				
-				<button type="submit" class="button button-rounded button-reveal button-large button-green tright  center hvr-grow-shadow " style="line-height: 1;letter-spacing: 1px;"><i class="icon-angle-right"></i><span>SOLICITA TU RESERVA</span></button>
+				<button type="submit" class="button button-rounded button-reveal button-large button-green tright  center hvr-grow-shadow " style="line-height: 1.3;letter-spacing: 1px; width: 100%;"><i class="icon-angle-right"></i><span>SOLICITAR RESERVA</span></button>
 			</form>
 		</div>
-        <div class="col-md-6 col-xs-12">
+        <div class="col-md-5 col-xs-12">
         	<a href="{{ url('/') }}" class="button button-rounded button-reveal button-large button-red tright  center hvr-grow-shadow "><i class="icon-angle-right"></i><span>Cancelar</span></a>
         </div>
     </div>

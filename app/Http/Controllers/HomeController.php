@@ -244,6 +244,16 @@ class HomeController extends Controller
 
     }
 
+
+    public function terminos()
+    {
+        return view('frontend.terminos', [ 'mobile' => new Mobile() ]);
+    }
+    
+    public function politicaPrivacidad(){
+        return view('frontend.privacidad', [ 'mobile' => new Mobile() ]);
+    }
+
 }
 
 

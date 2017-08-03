@@ -34,14 +34,14 @@
 				}
 			</style>
 			<div class="row clearfix" style="background-color: #3F51B5;">
-	   				
+   				<div id="close-form-book" style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
+   					<span class="white text-white"><i class="fa fa-times fa-2x"></i></span>
+   				</div>
    				<div id="content-book" class="container clearfix push-10" style="display: none;">
    					<div class="tabs advanced-real-estate-tabs clearfix">
 
    						<div class="tab-container" style="padding: 20px 0; background-color: #3F51B5;">
-   							<div id="close-form-book" style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
-   								<span class="white text-white"><i class="fa fa-times fa-2x"></i></span>
-   							</div>
+   							
    							<div class="container clearfix">
    								<div class="tab-content clearfix">
    									<div class="col-md-6">
@@ -51,11 +51,7 @@
 
 	   									@include('frontend._formBook')
    									</div>
-   									<div class="col-md-6"  id="content-book-response" style="display: none;">
-   										
-   									</div>
-
-									
+   									<div class="col-md-6"  id="content-book-response"></div>
    								</div>
    							</div>
    						</div>
@@ -252,11 +248,12 @@
 	   								<span class="white text-white"><i class="fa fa-times fa-2x"></i></span>
 	   							</div>
 	   								<div class="tab-content clearfix" id="content-book-response">
-										<div class="col-xs-12">
+										<div class="row">
 											<h3 class="text-center white">FORMULARIO DE RESERVA</h3>
 										</div>
 
-	   									@include('frontend._formBook')
+										@include('frontend._formBook')
+	   									
 	   								</div>
 	   						</div>
 
@@ -370,9 +367,13 @@
 @section('scripts')
 <script type="text/javascript" src="https://cdn.rawgit.com/nnattawat/flip/master/dist/jquery.flip.min.js"></script>
 <script type="text/javascript">
+
+
 	$('#form-book-apto-lujo').submit(function(event) {
 
 		event.preventDefault();
+
+		
 
 		var _token   = $('input[name="_token"]').val();
 		var name     = $('input[name="name"]').val();
@@ -387,12 +388,18 @@
 
 		var url = $(this).attr('action');
 
-		$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   date : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
+		$('#content-book-response').fadeOut('500');
 
-			$('#content-book-response').empty().append(data).fadeIn('300');
+		$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   date : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
+			
+			$('#content-book-response').empty();
+			$('#content-book-response').append(data).fadeIn('500');
+			
+
 		});
 
 	});
+	
 	<?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
 		$('#banner-offert, .menu-booking').click(function(event) {
 			$('#content-book').show('400');
@@ -410,10 +417,12 @@
 			$('#line-banner-offert').hide();
 
 			$('html, body').animate({
-			       scrollTop: $("#content-book").offset().top - 60
+			       scrollTop: $("#content-book").offset().top - 85
 			   }, 2000);
 		});
 	<?php endif; ?>
+
+
 	$('#close-form-book').click(function(event) {
 		$('#banner-offert').show();
 		$('#line-banner-offert').show();

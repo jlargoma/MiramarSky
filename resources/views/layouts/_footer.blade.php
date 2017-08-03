@@ -34,9 +34,9 @@
 						AYUDA Y MÁS
 					</h4>
 					<ul class="toggle-footer list-group bullet center" style="list-style: none;">
-						<li><a href="#" style="color: #666">Términos y condiciones</a></li>
-						<li><a href="#" style="color: #666">Política de cookies</a></li>
-						<li><a href="#" style="color: #666">Política de privacidad</a></li>
+						<li><a href="{{ url('/terminos-condiciones') }}" style="color: #666">Términos y condiciones</a></li>
+						<li><a href="{{ url('/politica-cookies') }}" style="color: #666">Política de cookies</a></li>
+						<li><a href="{{ url('/politica-privacidad') }}" style="color: #666">Política de privacidad</a></li>
 						<li><a href="#" style="color: #666">Preguntas frecuentes</a></li>
 					</ul>
 				</div>

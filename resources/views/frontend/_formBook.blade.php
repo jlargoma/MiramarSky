@@ -21,7 +21,7 @@
             <div class="form-group col-sm-12 col-xs-6 col-md-6 white">
                 <label style="display: inherit!important;">*Entrada - Salida</label>
                 <div class="input-group">
-                    <input type="text" class="sm-form-control daterange1" id="date"   name="date" required style="cursor: pointer;">
+                    <input type="text" class="sm-form-control daterange1" id="date"   name="date" required style="cursor: pointer;text-align: center;">
                 </div>
                 <p class="help-block white hidden-sm hidden-xs" style="line-height:1.2">La entrada es a partir de la 16:00 pm
                     <br><b>* ESTANCIA MÍNIMA: 2 NOCHES</b>
@@ -93,31 +93,7 @@
     </div>
 </form>
 <?php else: ?>
-    <style type="text/css">
-        @media screen and (max-width: 767px){
-            .daterangepicker{
-                left: 55px!important
-            }
-
-            ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-                color:    #FFFFFF;
-            }
-            :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-               color:    #FFFFFF;
-               opacity:  1;
-            }
-            ::-moz-placeholder { /* Mozilla Firefox 19+ */
-               color:    #FFFFFF;
-               opacity:  1;
-            }
-            :-ms-input-placeholder { /* Internet Explorer 10-11 */
-               color:    #FFFFFF;
-            }
-            ::-ms-input-placeholder { /* Microsoft Edge */
-               color:    #FFFFFF;
-            }
-        }
-    </style>
+    
     <form id="form-book-apto-lujo" action="{{url('/getPriceBook')}}" method="post">
         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
@@ -135,7 +111,7 @@
                 
                 <div class="form-group col-sm-12 col-xs-12 col-md-3 white">
                     <label style="display: inherit!important;">*Entrada - Salida</label>
-                    <input type="text" class="sm-form-control daterange1" id="date"   name="date" required style="cursor: pointer;">
+                    <input type="text" class="sm-form-control daterange1" id="date"   name="date" required style="cursor: pointer;text-align: center;">
 
                     <p class="help-block white center" style="line-height:1.2">La entrada es a partir de la 16:00 pm
                         <br><b>* ESTANCIA MÍNIMA: 2 NOCHES</b>

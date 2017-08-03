@@ -383,3 +383,18 @@
 		}
 	}
 
+@media screen and (max-width: 767px){
+	.daterangepicker td.off, .daterangepicker td.off.in-range, .daterangepicker td.off.start-date, .daterangepicker td.off.end-date {
+	  padding: 0;
+	}
+	.daterangepicker td, .daterangepicker th{
+		padding: 2px!important;
+	}
+	.daterangepicker{
+		left: 12%!important;
+		top: 75%!important;
+	}
+	.daterangepicker.opensright:before, .daterangepicker.opensright:after{
+		display: none!important
+	}
+}
