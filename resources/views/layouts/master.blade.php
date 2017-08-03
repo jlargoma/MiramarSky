@@ -95,7 +95,7 @@
 
 	</head>
 
-	<body class="stretched no-transition not-dark">
+	<body class="stretched not-dark">
 
 		<div id="wrapper" class="clearfix">
 			
