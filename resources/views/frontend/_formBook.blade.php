@@ -21,7 +21,7 @@
             <div class="form-group col-sm-12 col-xs-6 col-md-6 white">
                 <label style="display: inherit!important;">*Entrada - Salida</label>
                 <div class="input-group">
-                    <input type="text" class="sm-form-control daterange1" id="date"   name="date" required style="cursor: pointer;text-align: center;">
+                    <input type="text" class="sm-form-control daterange1" id="date"   name="date" required style="cursor: pointer;text-align: center;" readonly="">
                 </div>
                 <p class="help-block white hidden-sm hidden-xs" style="line-height:1.2">La entrada es a partir de la 16:00 pm
                     <br><b>* ESTANCIA MÍNIMA: 2 NOCHES</b>
@@ -111,7 +111,7 @@
                 
                 <div class="form-group col-sm-12 col-xs-12 col-md-3 white">
                     <label style="display: inherit!important;">*Entrada - Salida</label>
-                    <input type="text" class="sm-form-control daterange1" id="date"   name="date" required style="cursor: pointer;text-align: center;">
+                    <input type="text" class="sm-form-control daterange1" id="date"   name="date" required style="cursor: pointer;text-align: center;" readonly="">
 
                     <p class="help-block white center" style="line-height:1.2">La entrada es a partir de la 16:00 pm
                         <br><b>* ESTANCIA MÍNIMA: 2 NOCHES</b>
