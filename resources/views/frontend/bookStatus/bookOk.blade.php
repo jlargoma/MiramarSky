@@ -1,4 +1,4 @@
-<div class="col-ppadding">
+<div class="col-padding">
 	<div class="heading-block center nobottomborder nobottommargin">
 		<h2 class="white">Muchas gracias!</h2>
 		<span class="white">Tu solicitud será atendida lo mas rapido posible.</span>

@@ -5,7 +5,7 @@
 		<div id="rev_slider_202_1" class="rev_slider fullscreenbanner" style="display:none;" data-version="5.1.1RC">
 			<ul>
 				<!-- SLIDE  -->
-				<li data-index="rs-672" class="dark" data-transition="slidingoverlayhorizontal" data-slotamount="default" data-easein="default" data-easeout="default" data-masterspeed="default" data-thumb="{{asset('/img/miramarski/cama-principal-apartamento-sierra-nevada.jpg')}}" data-rotate="0" data-saveperformance="off" data-title="Web Show" data-description="">
+				<li data-index="rs-672" class="dark" data-transition="slidehorizontal" data-slotamount="default" data-easein="default" data-easeout="default" data-masterspeed="default" data-thumb="{{asset('/img/miramarski/cama-principal-apartamento-sierra-nevada.jpg')}}" data-rotate="0" data-saveperformance="off" data-title="Web Show" data-description="">
 					<!-- MAIN IMAGE -->
 					<img src="{{asset('/img/miramarski/cama-principal-apartamento-sierra-nevada.jpg')}}" alt="" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
 					<!-- LAYERS -->
@@ -29,7 +29,7 @@
 					
 				</li>
 				<!-- SLIDE  -->
-				<li data-index="rs-673" class="dark" data-transition="slidingoverlayhorizontal" data-slotamount="default" data-easein="default" data-easeout="default" data-masterspeed="default" data-thumb="{{asset('/img/miramarski/television-chimenea-apartamento-sierra-nevada.jpg')}}" data-rotate="0" data-saveperformance="off" data-title="Web Show" data-description="">
+				<li data-index="rs-673" class="dark" data-transition="slidehorizontal" data-slotamount="default" data-easein="default" data-easeout="default" data-masterspeed="default" data-thumb="{{asset('/img/miramarski/television-chimenea-apartamento-sierra-nevada.jpg')}}" data-rotate="0" data-saveperformance="off" data-title="Web Show" data-description="">
 					<!-- MAIN IMAGE -->
 					<img src="{{asset('/img/miramarski/television-chimenea-apartamento-sierra-nevada.jpg')}}" alt="" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
 					<!-- LAYERS -->
@@ -53,7 +53,7 @@
 					
 				</li>
 				<!-- SLIDE  -->
-				<li data-index="rs-674" data-transition="slidingoverlayhorizontal" data-slotamount="default" data-easein="default" data-easeout="default" data-masterspeed="default" data-thumb="{{asset('/img/miramarski/salon-miramar-apartamento-sierra-nevada.jpg')}}" data-rotate="0" data-saveperformance="off" data-title="Unlock Power" data-description="">
+				<li data-index="rs-674" data-transition="slidehorizontal" data-slotamount="default" data-easein="default" data-easeout="default" data-masterspeed="default" data-thumb="{{asset('/img/miramarski/salon-miramar-apartamento-sierra-nevada.jpg')}}" data-rotate="0" data-saveperformance="off" data-title="Unlock Power" data-description="">
 					<!-- MAIN IMAGE -->
 					<img src="{{asset('/img/miramarski/salon-miramar-apartamento-sierra-nevada.jpg')}}" alt="" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
 					<!-- LAYERS -->

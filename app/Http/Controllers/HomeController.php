@@ -125,7 +125,7 @@ class HomeController extends Controller
 
     static function getPriceBook(Request $request){
 
-        
+
         $date = explode('-', $request->input('date'));
        
         $start = Carbon::createFromFormat('d/m/Y' , trim($date[0]));
@@ -145,7 +145,7 @@ class HomeController extends Controller
                         }
                     }
             }
-
+            $typeApto  = "2 DORM Lujo";
             $limp = 50;
         }elseif($request->input('apto') == '2dorm' && $request->input('luxury') == 'no'){
             $rooms = \App\Rooms::where('typeApto', 2)->where('luxury', 0)->orderBy('order', 'ASC')->get();
@@ -158,6 +158,7 @@ class HomeController extends Controller
                     }
                 }
             }
+            $typeApto  = "2 DORM estandar";
             $limp = 50;
         }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'si'){
             $rooms = \App\Rooms::where('typeApto', 1)->where('luxury', 1)->orderBy('order', 'ASC')->get();
@@ -171,7 +172,7 @@ class HomeController extends Controller
             }
             /* $room = 116;  A definir por jorge */
             $limp = 35;
-
+            $typeApto  = "Estudio Lujo";
 
         }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'no'){
             $rooms = \App\Rooms::where('typeApto', 1)->where('luxury', 0)->orderBy('order', 'ASC')->get();
@@ -184,6 +185,7 @@ class HomeController extends Controller
                     }
                 }
             }
+            $typeApto  = "Estudio estandar";
             $limp = 35;
         }
 
@@ -200,6 +202,9 @@ class HomeController extends Controller
         for ($i=1; $i <= $countDays; $i++) { 
 
             $seasonActive = \App\Seasons::getSeason($start->copy());
+            if ($seasonActive == null) {
+               $seasonActive = 0;
+            }
             $prices = \App\Prices::where('season' ,  $seasonActive)
                                 ->where('occupation', $pax)->get();
 
@@ -225,23 +230,31 @@ class HomeController extends Controller
         $total =  $price + $priceParking + $limp + $luxury;  
 
 
-        return view('frontend.bookStatus.response', [
-                                                        'id_apto' => $roomAssigned,
-                                                        'pax'     => $pax,
-                                                        'nigths'  => $countDays,
-                                                        'apto'    => ($request->input('apto') == '2dorm')?'Apto 2 DORM': 'Estudio',
-                                                        'name'    => $request->input('name'),
-                                                        'phone'   => $request->input('phone'),
-                                                        'email'   => $request->input('email'),
-                                                        'start'   => $start,
-                                                        'finish'  => $finish,
-                                                        'parking' => $parking,
-                                                        'priceParking' => $priceParking,
-                                                        'luxury'  => $luxury,
-                                                        'total'   => $total,
-                                                        'comment' => $request->input('comment'),
-                                                    ]);
 
+        if ($seasonActive != 0) {
+            return view('frontend.bookStatus.response', [
+                                                            'id_apto' => $roomAssigned,
+                                                            'pax'     => $pax,
+                                                            'nigths'  => $countDays,
+                                                            'apto'    => $typeApto,
+                                                            'name'    => $request->input('name'),
+                                                            'phone'   => $request->input('phone'),
+                                                            'email'   => $request->input('email'),
+                                                            'start'   => $start,
+                                                            'finish'  => $finish,
+                                                            'parking' => $parking,
+                                                            'priceParking' => $priceParking,
+                                                            'luxury'  => $luxury,
+                                                            'total'   => $total,
+                                                            'comment' => $request->input('comment'),
+                                                        ]);
+
+        } else {
+            return view('frontend.bookStatus.bookError');
+        }
+        
+
+        
     }
 
 
