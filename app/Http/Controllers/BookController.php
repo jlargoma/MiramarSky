@@ -176,7 +176,7 @@ class BookController extends Controller
                                                         'days'          => $arrayDays, 
                                                         'inicio'        => $start->addMonth(3),
                                                         'proxIn'        => \App\Book::all(),
-                                                        'proxOut'       => $proxOut,                                                        
+                                                        'proxOut'       => \App\Book::all(),                                                        
                                                                                                                
                                                         ]);
                 }

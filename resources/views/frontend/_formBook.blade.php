@@ -23,15 +23,15 @@
                 <div class="input-group">
                     <input type="text" class="sm-form-control daterange1" id="date"   name="date" required style="cursor: pointer;text-align: center;" readonly="">
                 </div>
-                <p class="help-block white hidden-sm hidden-xs" style="line-height:1.2">La entrada es a partir de la 16:00 pm
-                    <br><b>* ESTANCIA MÍNIMA: 2 NOCHES</b>
+                <p class="help-block white hidden-sm hidden-xs" style="line-height:1.2">
+                    <b>* ESTANCIA MÍNIMA: 2 NOCHES</b>
                 </p>
             </div>
 
             <div class="hidden-xs hidden-sm" style="clear: both;"></div>
 
             <div class="form-group col-sm-12 col-xs-6 col-md-3 white">
-           		<label style="display: inherit!important;">*Ocupantes</label>
+           		<label style="display: inherit!important;">*Personas</label>
             	<div class="quantity center clearfix divcenter">
 					<!-- <input type="button" value="-" class="minus black" style=" color: black;">
 					<input id="quantity" type="text" name="quantity" value="4" class="qty" style="background: white; color: black;"> -->
@@ -43,7 +43,7 @@
 					<!-- <input type="button" value="+" class="plus black" style=" color: black;"> -->
 				</div>
                 
-                <p class="help-block white hidden-sm hidden-xs" style="line-height:1.2">Máximo 8 personas</p>
+                <p class="help-block white hidden-sm hidden-xs" style="line-height:1.2">Máx 8 pers</p>
                <!--  <p class="help-block white hidden-sm hidden-xs" style="color: white; line-height:1.2;">    
                     <b>* SOLICITAR APTO DOS DORM 6 PAX</b>
                 </p> -->
@@ -53,7 +53,7 @@
                 <label style="display: inline!important;" class="col-md-12 parking white">* Tipo Apto</label>
                 <div class="col-md-6">
 					<input id="apto-2dorm" class="radio-style" name="apto" type="radio" checked="" value="2dorm">
-					<label for="apto-2dorm" class="radio-style-3-label">2 dor</label>
+					<label for="apto-2dorm" class="radio-style-3-label">2Dor</label>
 				</div>
 				<div class="col-md-6">
 					<input id="apto-estudio" class="radio-style" name="apto" type="radio" value="estudio">

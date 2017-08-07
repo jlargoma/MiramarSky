@@ -62,23 +62,69 @@
    			<div style="clear: both;"></div>
 	       	<section class="row full-screen noborder" style="background-image: url('/img/miramarski/mountain.jpg'); background-color:white; background-size: cover; background-position:50%;">
 
-				<div class="col-xs-12" style="margin: 100px 0;">
+				<div class="col-xs-12">
 					<div class="col-xs-12 ">
 					
 		       			<div class="col-md-6 center fadeInUp animated" data-animation="fadeInUp">
 		       				<div>
 		       					<div class="heading-block  black" style="margin-bottom: 20px">
-		       						<h1 class="font-w800 black" style="letter-spacing: 0; font-size: 26px;">APARTAMENTOS DE LUJO A PIE DE PISTA</h1>
+		       						<h1 class="font-w800 black" style="letter-spacing: 0; font-size: 26px;">APARTAMENTOS DE LUJO <span class="font-w800 green">A PIE DE PISTA</span></h1>
 		       					</div>
-		       					<p class="lead  text-justify black ls-15 font-s16 black">
+		       					<p class="lead  text-justify black ls-15 font-s14 black">
 		       						Todos nuestros Apartamentos están en el Edificio Miramar Ski, situado <b>en la zona baja de Sierra Nevada</b>. Tienen excelentes vistas y todos disponen del equipamiento completo.
 
 		       					</p>
-		       					<h2 class="font-w300 text-left nobottommargin black push-20" style="line-height: 1"> El edificio tiene salida directa a las pistas, <span class="font-w800 black">solo tienes que salir de casa y esquiar!!</span></h2>
-
-		       					<p class="lead  text-justify black ls-15 font-s16 black">
-		       						Se encuentran <b>a 5 minutos andando de la plaza de Andalucía</b>, centro neurálgico de la estación.<br>
-		       						Muy cerca, a pocos metros, tienes varios supermercados, bares y restaurantes, lo que es muy importante para que disfrutes tus vacaciones sin tener que coger el coche ni remontes, Nuestro edificio Miramar Ski es <b>uno de los edificios más modernos de Sierra Nevada</b> (2006).<br>
+		       					<h2 class="font-w300 text-left nobottommargin black push-18" style="line-height: 1;font-size: 18px!important"><span class="font-w800 black"> El edificio tiene salida directa a las pistas, solo tienes que salir de casa y esquiar!!</span></h2><br>
+								<ul class="properties" >
+									<li>
+										<a href="#" class="property">
+											<img src="{{ asset('/img/miramarski/iconos/small/cocina.png') }}" /> Cocina 
+										</a>
+									</li>
+									<li>
+										<a href="#" class="property">
+											<img src="{{ asset('/img/miramarski/iconos/small/ducha.png') }}" /> Baño 
+										</a>
+									</li>
+									<li>
+										<a href="#" class="property">
+											<img src="{{ asset('/img/miramarski/iconos/small/calefaccion.png') }}" /> Calefacción 
+										</a>
+									</li>
+									<li>
+										<a href="#" class="property">
+											<img src="{{ asset('/img/miramarski/iconos/small/tv.png') }}" /> TV 
+										</a>
+									</li>
+									<li>
+										<a href="#" class="property">
+											<img src="{{ asset('/img/miramarski/iconos/small/lavavajillas.png') }}" /> Lavavajillas 
+										</a>
+									</li>
+									<li>
+										<a href="#" class="property">
+											<img src="{{ asset('/img/miramarski/iconos/small/microondas.png') }}" /> Microondas 
+										</a>
+									</li>
+									<li>
+										<a href="#" class="property">
+											<img src="{{ asset('/img/miramarski/iconos/small/guardaesqui.png') }}" /> guardaesquís 
+										</a>
+									</li>
+									<li>
+										<a href="#" class="property">
+											<img src="{{ asset('/img/miramarski/iconos/small/ropa-toallas.png') }}" /> Ropa y toallas 
+										</a>
+									</li>
+									<li>
+										<a href="#" class="property">
+											<img src="{{ asset('/img/miramarski/iconos/small/mascotas.png') }}" /> Mascotas 
+										</a>
+									</li>
+								</ul>
+		       					<p class="lead  text-justify black ls-15 font-s14 black">
+		       						Se encuentran <b>a 5 minutos andando de la plaza de Andalucía</b>, centro neurálgico de la estación.<br><br>
+		       						Muy cerca, a pocos metros, tienes varios supermercados, bares y restaurantes, lo que es muy importante para que disfrutes tus vacaciones sin tener que coger el coche ni remontes, Nuestro edificio Miramar Ski es <b>uno de los edificios más modernos de Sierra Nevada</b> (2006).<br><br>
 									Tenemos <b>apartamentos con dos habitaciones</b> ( ocupación 6 / 8 pers) y también <b>estudios</b> (ocupación 4 / 5 pers), Dentro de estos dos modelos, podrás  elegir entre los estándar y de lujo, que están recién reformados.<br><br>
 									<b>En todas las reservas las sabanas y toallas están incluidas</b><br><br>
 									Queremos ofrecerte un servicio especial, por eso incluimos en todas nuestras reservas un obsequio de bienvenida. <br><br>
@@ -88,7 +134,7 @@
 		       				</div>
 		       			</div>
 
-		       			<div class="col-md-6 center  hidden-sm hidden-xs" >
+		       			<div class="col-md-5 col-md-offset-1 center  hidden-sm hidden-xs" style="margin:72px 60px">
 	       					<div id="oc-slider" class="owl-carousel carousel-widget" data-margin="0" data-items="1" data-animate-in="zoomIn" data-speed="450" data-animate-out="fadeOut">
 
 	       						<a href="#"><img src="{{ asset('/img/miramarski/exteriores.jpg') }}" alt="Slide 1" style="height: 450px;"></a>
@@ -181,13 +227,13 @@
 	   				<div class="col-md-12 col-xs-12">
 
 	   					<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
-	   						<a href="#">
+	   						<a href="https:\\www.apartamentosierranevada.net/forfait.php" target="_blank">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
-	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/estacion.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
+	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/descuento forfait.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
-		   								<h2 class="font-w200 center push-10 text-center text font-s24 white" >DESCUENTOS
+		   								<h2 class="font-w200 center push-10 text-center text font-s24 white" >DESCUENTOS <span class="font-w800 white">EN FORFAIT</span>
 		   								</h2>
 		   							</div>
 		   						</div>
@@ -202,7 +248,7 @@
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
 		   								<h2 class="font-w200 center push-10 text-center text font-s24 white" >
-		   									ALQUILER DE MATERIAL
+		   									DESCUENTOS<span class="font-w800 white"> ALQUILER MATERIAL<span class="font-w800 white">
 		   								</h2>
 		   							</div>
 		   						</div>
@@ -214,7 +260,7 @@
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 		   								
-	   									<img class="img-responsive" src="{{ asset('/img/miramarski/small/estudio-lujo-sierra-nevada.jpg')}}"  alt="Estudio de lujo sierra nevada"/>
+	   									<img class="img-responsive" src="{{ asset('/img/miramarski/ski con niños.jpg')}}"  alt="Estudio de lujo sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
 		   								<h2 class="font-w200 center push-10 text-center text font-s24 white">
@@ -229,6 +275,7 @@
 	       		
 	       	</section>
    		<!-- END DESKTOP -->
+		
 		<?php else: ?>
 		<!-- MOBILE -->
 			<style type="text/css">
@@ -265,19 +312,70 @@
 			
 			<section  class="page-section" style="letter-spacing: 0;line-height: 1; ">
 				<div class="col-xs-12" style="background-color: #3F51B5;">
-					<div class="col-xs-12" style="padding: 40px 0 0">
+					<div class="col-xs-12" style="padding: 27px 0 0">
 						<div class="row white" style="margin-bottom: 20px">
-       						<h1 class="font-w800 white center font-s18" style="letter-spacing: 0; margin-bottom: 0">APARTAMENTOS DE LUJO A PIE DE PISTA</h1>
+       						<h1 class="font-w800 white center font-s16" style="letter-spacing: 0; margin-bottom: 0">APARTAMENTOS DE LUJO A PIE DE PISTA</h1>
        					</div>
        					<p class="lead  text-justify white ls-15 font-s14 white">
        						Todos nuestros Apartamentos están en el Edificio Miramar Ski, situado <b>en la zona baja de Sierra Nevada</b>. Tienen excelentes vistas y todos disponen del equipamiento completo.
 
        					</p>
-       					<h2 class="font-w300 text-center nobottommargin white push-20" style="line-height: 1"> El edificio tiene salida directa a las pistas, <span class="font-w800 white">solo tienes que salir de casa y esquiar!!</span></h2>
-
+       					<h2 class="font-w300 text-center nobottommargin white push-20" style="line-height: 1;font-size: 19px!important"> <span class="font-w800 white">El edificio tiene salida directa a las pistas,</span> solo tienes que salir de casa y esquiar!!</h2>
+						<br>
+						<ul class="properties" >
+							<li>
+								<a href="#" class="property">
+									<img src="{{ asset('/img/miramarski/iconos/small/cocina.png') }}" /> Cocina 
+								</a>
+							</li>
+							<li>
+								<a href="#" class="property">
+									<img src="{{ asset('/img/miramarski/iconos/small/ducha.png') }}" /> Baño 
+								</a>
+							</li>
+							<li>
+								<a href="#" class="property">
+									<img src="{{ asset('/img/miramarski/iconos/small/calefaccion.png') }}" /> Calefacción 
+								</a>
+							</li>
+							<li>
+								<a href="#" class="property">
+									<img src="{{ asset('/img/miramarski/iconos/small/tv.png') }}" /> TV 
+								</a>
+							</li>
+							<li>
+								<a href="#" class="property">
+									<img src="{{ asset('/img/miramarski/iconos/small/lavavajillas.png') }}" /> Lavavajillas 
+								</a>
+							</li>
+							<li>
+								<a href="#" class="property">
+									<img src="{{ asset('/img/miramarski/iconos/small/microondas.png') }}" /> Microondas 
+								</a>
+							</li>
+							<li>
+								<a href="#" class="property">
+									<img src="{{ asset('/img/miramarski/iconos/small/guardaesqui.png') }}" /> guardaesquís 
+								</a>
+							</li>
+							<li>
+								<a href="#" class="property">
+									<img src="{{ asset('/img/miramarski/iconos/small/ropa-toallas.png') }}" /> Ropa y toallas 
+								</a>
+							</li>
+							<li>
+								<a href="#" class="property">
+									<img src="{{ asset('/img/miramarski/iconos/small/mascotas.png') }}" /> Mascotas 
+								</a>
+							</li>
+						</ul>
+						<br>
        					<p class="lead  text-justify white ls-15 font-s14 white">
-       						Se encuentran <b>a 5 minutos andando de la plaza de Andalucía</b>, centro neurálgico de la estación.<br>
-       						Muy cerca, a pocos metros, tienes varios supermercados, bares y restaurantes, lo que es muy importante para que disfrutes tus vacaciones sin tener que coger el coche ni remontes, Nuestro edificio Miramar Ski es <b>uno de los edificios más modernos de Sierra Nevada</b> (2006).<br>
+       						Se encuentran <b>a 5 minutos andando de la plaza de Andalucía</b>, centro neurálgico de la estación.<br><br>
+       						Muy cerca, a pocos metros, tienes varios supermercados, bares y restaurantes, lo que es muy importante para que disfrutes tus vacaciones sin tener que coger el coche ni remontes, Nuestro edificio Miramar Ski es <b>uno de los edificios más modernos de Sierra Nevada</b> (2006).<br><br>
+							Tenemos <b>apartamentos con dos habitaciones</b> ( ocupación 6 / 8 pers) y también <b>estudios</b> (ocupación 4 / 5 pers), Dentro de estos dos modelos, podrás  elegir entre los estándar y de lujo, que están recién reformados.<br><br>
+							<b>En todas las reservas las sabanas y toallas están incluidas</b><br><br>
+							Queremos ofrecerte un servicio especial, por eso incluimos en todas nuestras reservas un obsequio de bienvenida. <br><br>							
 
 							<!-- Tenemos <b>apartamentos con dos habitaciones</b> ( ocupación 6 / 8 pers) y también <b>estudios</b> (ocupación 4 / 5 pers), Dentro de estos dos modelos, podrás  elegir entre los estándar y de lujo, que están recién reformados.<br><br>
 							<b>En todas las reservas las sabanas y toallas están incluidas</b><br><br>
@@ -285,7 +383,7 @@
 							<b>En el botón de reserva  podrás calcular el coste de tu petición y si lo consideras hacer tu solicitud de disponibilidad.</b>
  -->
        					</p>
-						<div class="col-xs-12 not-padding push-30">
+						<div class="col-xs-12 not-padding push-30" style="margin-bottom:0px!important; ">
 							<div id="oc-slider" class="owl-carousel carousel-widget" data-margin="0" data-items="1" data-animate-in="zoomIn" data-speed="450" data-animate-out="fadeOut">
 
 	       						<a href="#"><img src="{{ asset('/img/miramarski/exteriores.jpg') }}" alt="Slide 1" style="height: 200px;"></a>
@@ -295,6 +393,9 @@
 
 	       					</div>
 						</div>
+						<p class="lead  text-justify white ls-15 font-s14 white" >
+							<b>En el botón de reserva  podrás calcular el coste de tu petición y si lo consideras hacer tu solicitud de disponibilidad.</b>
+						</p>
 					</div>
 
 				</div>
@@ -346,7 +447,7 @@
 					<a href="{{url('/actividades')}}" >
 						<div class="section nomargin noborder center" style="background-image: url({{ asset('/img/miramarski/banners/actividades.jpg') }}); padding: 80px 0; height: 265px;" data-stellar-background-ratio="0.4">
 								<h3 class="h2 text-center white text-white font-w800" style="text-shadow: 1px 1px #000;">¿QUÉ HACER EN SIERRA NEVADA?</h3>
-								<span  class="text-center white text-white" style="text-shadow: 1px 1px #000;">Lorem ipsum dolor sit amet</span>
+								<span  class="text-center white text-white" style="text-shadow: 1px 1px #000;"></span>
 						</div>
 					</a>
 

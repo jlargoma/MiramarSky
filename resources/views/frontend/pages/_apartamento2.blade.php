@@ -65,7 +65,7 @@
 								<div class="slide" data-thumb="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>">
 									<a href="#">
 										<img src="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>" alt="<?php echo $slide->getFilename() ?>" style="max-height: 530px;">
-										<div class="flex-caption slider-caption-bg"><?php echo $slide->getFilename() ?></div>
+										<!-- <div class="flex-caption slider-caption-bg"><?php echo $slide->getFilename() ?></div> -->
 									</a>
 								</div>
 							<?php endforeach ?>

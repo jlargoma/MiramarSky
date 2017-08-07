@@ -27,7 +27,7 @@
 							</div>
 							<h4 class="text-center" >
 								<a href="#" data-toggle="modal" data-target=".mapa" style="cursor: pointer;color: white">
-									<i class="icon-map"></i> COMO LLEGAR
+									<i class="fa fa-map-marker "></i> COMO LLEGAR
 								</a>
 							</h4>
 						</div>

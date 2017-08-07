@@ -149,7 +149,7 @@
 
 					Al efectuar la reserva de un alojamiento entrarán en vigor las condiciones generales arriba indicadas que regirán el contrato de alquiler de alojamiento de temporada existente entre Usted y la Propiedad. apartamentosierranevada.net actúa como intermediaria entre el inquilino y el propietario del alojamiento y es responsable de la correcta ejecución de la mediación, que se efectúa según las leyes vigentes. <br><br>
 
-					Estas condiciones generales junto con los precios indicados se consideran válidas, salvo error tipográfico, desde el 25/11/2015 hasta el 04/05/2016 y sustituyen las anteriores condiciones publicadas. Las presentes condiciones generales y el contrato entre Ud. y la Propiedad se regirán, interpretarán y se ejecutarán según la ley española sometiéndose a los tribunales de Madrid , España.<br><br>
+					Estas condiciones generales junto con los precios indicados se consideran válidas, salvo error tipográfico, desde el 25/11/2015. Las presentes condiciones generales y el contrato entre Ud. y la Propiedad se regirán, interpretarán y se ejecutarán según la ley española sometiéndose a los tribunales de Madrid , España.<br><br>
 
 
 				</p>

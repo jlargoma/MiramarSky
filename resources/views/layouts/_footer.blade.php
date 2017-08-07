@@ -3,7 +3,7 @@
 	============================================= -->
 	<div id="copyrights"  style="background-color: #e8e8e8;">
 		<div class="container clearfix">
-			<div class="col-md-4">
+			<div class="col-md-3">
 			    <div class="block footer-block block">
     				<h4 class="title_block push-10 black font-w800 center">
 						¿QUÉ HACER EN SIERRA NEVADA?
@@ -15,7 +15,7 @@
 					</ul>
 				</div>
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-3">
 			    <div class="block footer-block block">
     				<h4 class="title_block push-10 black font-w800 center">
 						APARTAMENTOS
@@ -28,7 +28,7 @@
 					</ul>
 				</div>
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-3">
 			    <div class="block footer-block block">
     				<h4 class="title_block push-10 black font-w800 center">
 						AYUDA Y MÁS
@@ -41,6 +41,21 @@
 					</ul>
 				</div>
 			</div>
+			<div class="col-md-3">
+			    <div class="block footer-block block">
+    				<h4 class="title_block push-10 black font-w800 center">
+						COMO LLEGAR
+					</h4>
+					<ul class="toggle-footer list-group bullet center" style="list-style: none;">
+						<li>
+							<a href="#" data-toggle="modal" data-target=".mapa" style="cursor: pointer;color: black">
+								<i class="fa fa-map-marker "></i> Ubicación GPS
+							</a>
+						</li>
+					</ul>
+
+				</div>
+			</div>
 		</div>
 
 
@@ -51,12 +66,12 @@
 				Copyrights © 2017 Todos los derechos reservados.<br>
 			</div>
 
-			<div class="col_half col_last tright">
+			<!-- <div class="col_half col_last tright">
 
 				<div class="clear"></div>
 
 				<i class="fa fa-envelope"></i><a href="mailto:reservas@apartamentosierranevada.net"> reservas@apartamentosierranevada.net</a> <span class="middot">
-			</div>
+			</div> -->
 
 		</div>
 

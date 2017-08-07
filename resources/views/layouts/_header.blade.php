@@ -37,7 +37,7 @@
 						</li>
 
 						<li>
-							<a class="map" href="https://www.google.es/maps/place/Av.+Quitapesares,+20,+28670+Villaviciosa+de+Od%C3%B3n,+Madrid/@40.3500423,-3.9011227,17z/data=!3m1!4b1!4m5!3m4!1s0xd418e238472183f:0x5217e4e5e7d47fd3!8m2!3d40.3500423!4d-3.898934" ><i class="fa fa-map-marker fa-2x"></i></a>
+							<a class="map" href="https://www.google.com/maps?ll=37.093311,-3.396972&z=17&t=m&hl=es-ES&gl=ES&mapclient=embed&cid=335969053959651753" target="_blank"><i class="fa fa-map-marker fa-2x"></i></a>
 						</li>
 					</ul>
 				</div>
@@ -75,7 +75,7 @@
 						<ul>
 							<?php if (Request::path() != '/'): ?>
 								<li>
-									<a  href="{{ url('/') }}"><div style="text-align: center; font-size: 18px;"><i class="fa fa-home fa-2x" style="margin-right: 0;"></i> </div></a></li>
+									<a  href="{{ url('/') }}"><div style="text-align: center; font-size: 18px;"><i class="fa fa-home fa-2x" style="margin-right: 0;font-size: 20px!important"></i> </div></a></li>
 								</li>
 							<?php endif ?>
 							<li class="mega-menu"><a href="#"><div>Apartamentos</div></a>
