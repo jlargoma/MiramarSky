@@ -3,12 +3,13 @@
 	<div class="col-xs-12"><h3><?php echo $book->customer->name ?> <a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a></h3></div>
 
 	<div>
-		<b>Entrada :</b> <?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%B') ?>
-		<b>Salida : </b><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%B') ?><br>
+		<b>Reserva :</b> <?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?><b style="font-size: 15px">-</b><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?><br>
+		<b>Apto : </b> <?php echo $book->room->name ?> <b> Pax :</b><?php echo $book->pax ?>
+		<br><br>
 		<b>PVP : </b><?php echo number_format($book->total_price,2,',','.') ?> €
 		<b>Pendiente : </b>
 			<?php if ($book->total_price - $pending > 0): ?>
-				<b style="color:red"><?php echo number_format($book->total_price - $pending,2,',','.') ?> €</b><br>
+				<b style="color:red;" class="bg-success"><?php echo number_format($book->total_price - $pending,2,',','.') ?> €</b><br>
 			<?php else: ?>
 				<?php echo number_format($book->total_price - $pending,2,',','.') ?> €<br>
 			<?php endif ?>

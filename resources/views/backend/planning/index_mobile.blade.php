@@ -55,7 +55,7 @@
             color: black;
             cursor: pointer;
         }
-
+        .table thead tr th { padding-top: 1px!important;padding-bottom: 1px!important;}
         .S, .D{
             background-color: rgba(0,0,0,0.2);
             color: red;
@@ -88,8 +88,8 @@
         .rev.nav-tabs-simple > li a, .rev.nav-tabs-simple > li a:hover, .rev.nav-tabs-simple > li a:focus {padding:5px!important; }
        
         /* Bordes de seccion */          
-          .panel.resv,.panel.in-out{border: 5px solid blue;}
-          .active.resv > a,.active.cob > a{color: blue!important;}
+          .active.resv > a,.active.cob > a{color: blue!important;font-weight: bold }
+
         /* Bordes de seccion */
     </style>
 
@@ -103,14 +103,14 @@
                   <a href="#reservas" data-toggle="tab" role="tab" style="font-size: 11px!important"> RESERVAS </a>
               </li>
               <li class="cob">
-                  <a href="#cobros" data-toggle="tab" role="tab" style="font-size: 11px!important"> COBROS </a>
+                  <a href="#cobros" data-toggle="tab" role="tab" style="font-size: 11px!important"> RECEPCION </a>
               </li>
               <li>
                 <a href="#calendario"> <i class="fa fa-calendar " aria-hidden="true" style="font-size: 15px!important"></i> </a>
               </li>
               <li style="background-color: white">
                 <a href="#tabNueva" data-toggle="tab" role="tab" >
-                  <i class="fa fa-plus-circle " style="color:green;font-size: 15px!important" aria-hidden="true"></i>
+                  <i class="fa fa-plus-circle " style="color:green;font-size: 19px!important" aria-hidden="true"></i>
                 </a>
               </li>
           </ul>
@@ -120,17 +120,17 @@
               <div class="row column-seperation ">
                   <div class="panel resv">
                     <ul class="nav nav-tabs nav-tabs-simple bg-info-light rev" role="tablist" data-init-reponsive-tabs="collapse">
-                        <li class="active res" >
+                        <li class="active resv" >
                             <a href="#tabPendientes" data-toggle="tab" role="tab" style="font-size: 11px;">Pendientes 
                                 <span class="badge"><?php echo count($arrayBooks["nuevas"]) ?></span>
                             </a>
                         </li>
-                        <li class="bloq">
+                        <li class="resv">
                             <a href="#tabEspeciales" data-toggle="tab" role="tab" style="font-size: 11px;">Especiales
                                 <span class="badge"><?php echo count($arrayBooks["especiales"]) ?></span>
                             </a>
                         </li>
-                        <li class="pag">
+                        <li class="resv">
                             <a href="#tabPagadas" data-toggle="tab" role="tab" style="font-size: 11px;">Confirmadas 
                                 <span class="badge"><?php echo count($arrayBooks["pagadas"]) ?></span>
                             </a>
@@ -252,12 +252,12 @@
               <div class="row column-seperation">
                   <div class="panel in-out">
                     <ul class="nav nav-tabs nav-tabs-simple bg-info-light rev" role="tablist" data-init-reponsive-tabs="collapse">
-                        <li class="active in text-center res" style="width: 50%">
-                            <a href="#tabIn" data-toggle="tab" role="tab" style="font-size: 11px;">IN
+                        <li class="active in text-center resv" style="width: 50%">
+                            <a href="#tabIn" data-toggle="tab" role="tab" style="font-size: 11px;">CHECK IN
                             </a>
                         </li>
-                        <li class="out text-center pag"  style="width: 50%">
-                            <a href="#tabOut" data-toggle="tab" role="tab" style="font-size: 11px;">OUT
+                        <li class="out text-center resv"  style="width: 50%">
+                            <a href="#tabOut" data-toggle="tab" role="tab" style="font-size: 11px;">CHECK OUT
                             </a>
                         </li>
                     </ul>
@@ -269,6 +269,8 @@
                             <th class="bg-success text-white text-center">Nombre</th>
                             <th class="bg-success text-white text-center">In</th>
                             <th class="bg-success text-white text-center">Out</th>
+                            <th class="bg-success text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i> In</th>
+                            <th class="bg-success text-white text-center">Apto</th>
                             <th class="bg-success text-white text-center">Pendiente</th>
                           </thead>
                           <tbody>
@@ -281,6 +283,8 @@
                                 </td>
                                 <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?></td>
                                 <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
+                                <td class="text-center">Hora</td>
+                                <td class="text-center">Apto</td>
                                 <td class="text-center">
                                   <?php if (isset($payment[$book->id])): ?>
                                     <?php echo number_format($book->total_price - $payment[$book->id],2,',','.') ?> €
@@ -299,6 +303,8 @@
                             <th class="bg-success text-white text-center">Nombre</th>
                             <th class="bg-success text-white text-center">In</th>
                             <th class="bg-success text-white text-center">Out</th>
+                            <th class="bg-success text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i> Out</th>
+                            <th class="bg-success text-white text-center">Apto</th>
                             <th class="bg-success text-white text-center">Pendiente</th>
                           </thead>
                           <tbody>
@@ -311,6 +317,7 @@
                                 </td>
                                 <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?></td>
                                 <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
+
                                 <td class="text-center">
                                   <?php if (isset($payment[$book->id])): ?>
                                     <?php echo number_format($book->total_price - $payment[$book->id],2,',','.') ?> €

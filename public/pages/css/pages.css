@@ -5250,7 +5250,7 @@ body > .pgn-wrapper {
   -webkit-backface-visibility: hidden;
   width: 100%;
   display: block;
-  background-color: #f55753;
+  background-color: blue;
   height: 0px;
   content: '';
   z-index: 125;

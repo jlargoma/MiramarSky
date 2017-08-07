@@ -7,61 +7,55 @@
 <link rel="stylesheet" href="/assets/plugins/select2/js/select2.css">
 
 @endsection
-    
+
 @section('content')
 <?php use \Carbon\Carbon; ?>
-<div class="container-fluid padding-10 sm-padding-10">
+<div class="container-fluid padding-10 sm-padding-10" style="background-color: rgba(0,0,255,0.1)">
     <div class="row">
         <div class="col-md-12 col-xs-12 text-center">
-            <h2>Reserva  de <?php echo "<b>".$book->customer->name."</b>" ?> 
-                creada el 
-                <?php         
-                    echo Carbon::createFromFormat('Y-m-d H:i:s' ,$book->created_at)->format('d-m-Y'); 
-                ?>
-            </h2>
+            <p style="font-size: 14px">
+                <br>
+                Estado : <?php echo $book->getStatus($book->type_book) ?> 
+                <!-- Desplegable -->
+            </p>
         </div>
+        <hr>
         <div class="col-xs-12">
             <div class="panel">
                 <form role="form"  action="{{ url('/admin/reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post" >
                             
                     <!-- Seccion Cliente -->
-                    <div class="panel-heading">
-                        <div class="panel-title">
-                            Cliente
-                        </div>
-                    </div>
 
-                    <div class="panel-body">
+                    <div class="panel-body" style="padding: 0px 0px 0px 0px;">
 
-                        <div class="input-group col-md-12">
+                        <div class="input-group col-xs-12">
                             <input class="form-control" type="hidden"  name="customer_id" value="<?php echo $book->customer->id ?>">
-                            <div class="col-xs-12">
-                                Nombre: <input class="form-control" type="text" name="name" value="<?php echo $book->customer->name ?>" disabled>
+                            <div class="col-xs-6">
+                               <input class="form-control" type="text" name="name" value="<?php echo $book->customer->name ?>" disabled>
                             </div>
-                            <div class="col-xs-12">
-                                Email: <input class="form-control" type="email" name="email" value="<?php echo $book->customer->email ?>" disabled>  
+                            <div class="col-xs-4">
+                                <input class="form-control" type="number" name="phone" value="<?php echo $book->customer->phone ?>" disabled> 
+                            </div> 
+                            <div class="col-xs-1">
+                                <a href="tel:<?php echo $book->customer->phone ?>" class="text-right"><i class="fa fa-phone fa-2x"></i></a>
                             </div>
+                            <br><br>
                             <div class="col-xs-12">
-                                Telefono: <input class="form-control" type="number" name="phone" value="<?php echo $book->customer->phone ?>" disabled> 
-                            </div>  
+                                <input class="form-control" type="email" name="email" value="<?php echo $book->customer->email ?>" disabled>  
+                            </div>
+                             
                             <div style="clear: both;"></div>
                         </div>                                            
                     </div>
 
                     <!-- Seccion Reserva -->
-                    <div class="panel-heading">
-                        <div class="panel-title">
-                            Reserva
-                        </div>
-                    </div>
-
-                    <div class="panel-body">
+                    <br>
+                    <div class="panel-body" style="padding: 0px 0px 0px 0px;">
                         
                         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
                             <div class="input-group col-md-12">
                                 <div class="col-md-4">
-                                    <label>Entrada</label>
                                     <div class="input-daterange input-group" id="datepicker-range">
 
                                         <input id="start" type="text" class="input-sm form-control" name="start" data-date-format="dd-mm-yyyy" value="<?php $start = Carbon::createFromFormat('Y-m-d',$book->start) ;echo $start->format('d/m/Y') ?>">
@@ -69,12 +63,12 @@
                                         <input id="finish" type="text" class="input-sm form-control" name="finish" data-date-format="dd-mm-yyyy" value="<?php $finish = Carbon::createFromFormat('Y-m-d',$book->finish) ;echo $finish->format('d/m/Y') ?>">
                                     </div>
                                 </div>
-                                <div class="col-xs-6">
-                                    <label>Noches</label>
-                                    <input type="text" class="form-control nigths" name="nigths" style="width: 100%" value="<?php echo $book->nigths ?>">
+                                <div class="col-xs-3">
+                                    <label><i class="fa fa-moon-o"></i></label>
+                                    <input type="text" class="nigths" name="nigths" style="width: 100%" value="<?php echo $book->nigths ?>" disabled style="border:none">
                                 </div> 
-                                <div class="col-xs-6">
-                                    <label>Pax</label>
+                                <div class="col-xs-3">
+                                    <label><i class="fa fa-user"></i></label>
                                     <input  type="text" class="form-control full-width pax" name="pax" style="width: 100%" value="<?php echo $book->pax ?>">
                                         
                                 </div>
@@ -90,7 +84,7 @@
                                         <?php endforeach ?>
                                     </select>
                                 </div>
-                                <div class="col-xs-6">
+                                <div class="col-xs-5">
                                     <label>Park</label>
                                     <select class=" form-control full-width parking" data-init-plugin="select2" name="parking">
                                         <?php for ($i=1; $i <= 4 ; $i++): ?>
@@ -101,56 +95,74 @@
                                             <?php endif ?>
                                         <?php endfor;?>
                                     </select>
-                                </div><br><br>
-                                <?php if (count($payments) > 0): ?>
-                                
-                                <?php else: ?>
-                                    <div class="col-md-2" style="height: 100%">
-                                        <input type="button" name="recalcular" class="recalcular form-control btn btn-complete active" value="Recalcular">
-                                        
-                                    </div>
-                                <?php endif ?>
-                                
+                                </div>
+                                <div class="col-xs-5">
+                                    <label><i class="fa fa-star"></i><i class="fa fa-star"></i></label>
+                                    <select class=" form-control full-width parking" data-init-plugin="select2" name="parking">
+                                        <?php for ($i=1; $i <= 4 ; $i++): ?>
+                                            <?php if ($i == $book->type_park): ?>
+                                                <option value="<?php echo $i ?>" selected><?php echo $book->getParking($i) ?></option>
+                                            <?php else: ?>
+                                                <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
+                                            <?php endif ?>
+                                        <?php endfor;?>
+                                    </select>
+                                </div>
                             </div>
-                            <br>
                             <div class="input-group col-md-12">
-                                <div class="col-xs-6">
+                                <div class="col-xs-12">
                                     <label>Extras</label>
                                     <input type="text" class="form-control extra" name="extra" value="<?php echo $book->extra ?>">
                                 </div>
-                                <div class="col-xs-6">
+                                <hr/>
+                                <div class="col-xs-4">
                                     <label>Total</label>
                                     <input type="text" class="form-control total" name="total" value="<?php echo $book->total_price ?>" style="width: 100%">
                                 </div> 
-                                <div class="col-xs-6">
+                                <div class="col-xs-4">
                                     <label>Coste</label>
                                     <input type="text" class="form-control cost" name="cost" value="<?php echo $book->cost_total ?>" disabled style="width: 100%">
                                 </div>
-                                <div class="col-xs-6">
+                                <div class="col-xs-3">
                                     <label>Beneficio</label>
                                     <input type="text" class="form-control beneficio" name="beneficio" value="<?php echo $book->total_ben ?>" disabled style="width: 100%">
                                 </div>
                             </div>
                             <br>
+                                <div class="col-md-2 text-center" style="height: 100%">
+                                    <input type="button" name="recalcular" class="recalcular btn btn-complete active" value="Recalcular">
+                                    
+                                </div>
+                            <br>
                             <div class="input-group col-md-12">
-                                <div class="col-md-5">
-                                    <label>Comentarios Usuario</label>
-                                    <textarea class="form-control" name="comments" style="width: 100%" ><?php echo $book->comment ?>
-                                    </textarea>
-                                </div>
-                                <div class="col-md-5">
-                                    <label>Comentarios reserva</label>
-                                    <textarea class="form-control" name="book_comments" style="width: 100%"><?php echo $book->book_comments ?> 
-                                    </textarea>
-                                </div>
+                                <?php if ($book->comment == ""): ?>
+                                <?php else: ?>
+                                    <div class="col-xs-12">
+                                        <label>Comentarios Usuario</label>
+                                        <textarea class="form-control" name="comments" style="width: 100%" rows="4"><?php echo $book->comment ?>
+                                        </textarea>
+                                    </div>
+                                <?php endif ?>
+                                
+                                <!-- Añadir boton para escribir comentario interno -->
+
+                                <?php if ($book->book_comments == ""): ?>
+                                <?php else: ?>
+                                    <div class="col-xs-12">
+                                        <label>Comentarios Interna</label>
+                                        <textarea class="form-control" name="comments" style="width: 100%" rows="4"><?php echo $book->book_comments ?>
+                                        </textarea>
+                                    </div>
+                                <?php endif ?>
                             </div> 
                             <div class="input-group col-md-12">
                                 
                             </div> 
                             <br>
                             <div class="input-group col-xs-12 text-center">
-                                <button class="btn btn-complete" type="submit">Guardar</button>
-                            </div>                        
+                                <button class="form-control btn btn-complete active" type="submit" style="width: 90%;margin-left: 5%"><p style="font-size: 22px">Guardar</p></button>
+                            </div>   
+                            <br>                    
                     </div>
                 </form> 
             </div>
@@ -158,8 +170,19 @@
         <div class="col-xs-12">
             <div class="panel">
                 <div>
-                    <div class="panel-heading">
-                        <div class="panel-title col-md-12">Cobros
+                    <div class="panel-heading ">
+                        <div class="col-xs-4 bg-primary text-white text-center">
+                            Total:<br>
+                            <?php echo $book->total_price ?>
+                        </div>
+                        <div class="col-xs-4 bg-primary text-white text-center">
+                            Cobrado:<br>
+                            <?php echo $book->total_price ?>
+                        </div>
+                        <div class="col-xs-4 bg-primary text-white text-center">
+                            Pendiente:<br>
+                            <!-- si esta pendiente nada,.si esta de mas +X -->
+                            -<?php echo $book->total_price ?>
                         </div>
                     </div>
                     <div class="panel-body">
@@ -167,10 +190,10 @@
                             <table class="table table-hover dataTable no-footer" >
                                 <thead>
                                     <tr>
-                                        <th class ="text-center bg-complete text-white" >fecha</th>
-                                        <th class ="text-center bg-complete text-white" >importe</th>
-                                        <th class ="text-center bg-complete text-white" >comentario</th>
-                                        <th class ="text-center bg-complete text-white" >Tipo</th>                           
+                                        <th class ="text-center" >fecha</th>
+                                        <th class ="text-center" >importe</th>
+                                        <th class ="text-center" >Tipo</th>
+                                        <th class ="text-center" >comentario</th>
                                     </tr>
                                 </thead>
                                 <tbody><?php $total = 0; ?>
@@ -185,7 +208,7 @@
                                                     ?>
                                                 </td>
                                                 <td class ="text-center">
-                                                    <input class="editable payment-<?php echo $payment->id?>" type="text" name="cost" data-id="<?php echo $payment->id ?>" value="<?php echo $payment->import ?>" style="width: 50%;text-align: center;border-style: none none solid">€
+                                                <input class="editable payment-<?php echo $payment->id?> form-control" type="text" name="cost" data-id="<?php echo $payment->id ?>" value="<?php echo $payment->import ?>" style="width: 50%;text-align: center;">€
                                                 </td>
                                                 <td class ="text-center"><?php echo $payment->comment ?></td>
                                                 <td class ="text-center"><?php echo $typecobro->getTypeCobro($payment->type) ?> </td>
@@ -200,11 +223,9 @@
                                                     </div>
                                                 </td>
                                                 <td class ="text-center">
-                                                    <input class="importe" type="text" name="importe"  style="width: 100%;text-align: center;border-style: none none solid">
+                                                    <input class="importe form-control" type="text" name="importe"   style="width: 100%;text-align: center;">
                                                 </td>
-                                                <td class ="text-center"> 
-                                                    <input class="comment" type="text" name="comment"  style="width: 100%;text-align: center;border-style: none none solid">
-                                                </td>
+                                                
                                                 <td class="text-center">
                                                     <select class="full-width select2-hidden-accessible type_payment" data-init-plugin="select2" name="type_payment"  tabindex="-1" aria-hidden="true">
                                                         <?php for ($i=0; $i < 3 ; $i++): ?>
@@ -212,6 +233,9 @@
                             
                                                         <?php endfor ;?>
                                                     </select>
+                                                </td>
+                                                <td class ="text-center"> 
+                                                <input class="comment" type="text" name="comment"  style="width: 100%;text-align: center;">
                                                 </td>
                                             </tr>
                                         <?php else: ?>
@@ -225,11 +249,9 @@
                                                 </div>
                                             </td>
                                             <td class ="text-center">
-                                                <input class="importe" type="text" name="importe"  style="width: 100%;text-align: center;border-style: none none solid">
+                                            <input class="importe form-control" type="text" name="importe"  style="width: 100%;text-align: center;">
                                             </td>
-                                            <td class ="text-center"> 
-                                                <input class="comment" type="text" name="comment"  style="width: 100%;text-align: center;border-style: none none solid">
-                                            </td>
+                                            
                                             <td class="text-center">
                                                 <select class="full-width select2-hidden-accessible type_payment" data-init-plugin="select2" name="type_payment"  tabindex="-1" aria-hidden="true">
                                                     <?php for ($i=0; $i < 3 ; $i++): ?>
@@ -238,9 +260,12 @@
                                                     <?php endfor ;?>
                                                 </select>
                                             </td>
+                                            <td class ="text-center"> 
+                                            <input class="comment" type="text" name="comment"  style="width: 100%;text-align: center;">
+                                            </td>
                                         </tr>
                                     <?php endif ?>
-                                    <tr>
+<!--                                     <tr>
                                         <?php if ($total < $book->total_price): ?>
                                             <td class="text-center" colspan="2">Falta</td>
                                             <td class="text-center" ><?php echo $total-$book->total_price ?>€</td>
@@ -251,11 +276,11 @@
                                             <td class="text-center" colspan="4">Al corriente de pago</td>
                                         <?php endif ?>
                                         
-                                    </tr>
+                                    </tr> -->
                                 </tbody>
                             </table>
                             <div class="col-xs-12 text-center">
-                                <input type="button" name="cobrar" class="cobrar form-control  btn btn-complete active" value="Cobrar" data-id="<?php echo $book->id ?>">
+                                <input type="button" name="cobrar" class="cobrar form-control  btn btn-primary active" value="Cobrar" data-id="<?php echo $book->id ?>">
                             </div>
                             
                         </div>
