@@ -78,6 +78,47 @@
 								<ul class="properties" >
 									<li>
 										<a href="#" class="property">
+											<img src="{{ asset('/img/miramarski/iconos/small/teleesqui.png') }}" /> A pie de pista 
+										</a>
+									</li>
+									<li>
+										<a href="#" class="property">
+											<img src="{{ asset('/img/miramarski/iconos/small/parking.png') }}" /> Parking cubierto 
+										</a>
+									</li>
+									<li>
+										<a href="#" class="property">
+											<img src="{{ asset('/img/miramarski/iconos/small/ascensor.png') }}" /> Ascensor 
+										</a>
+									</li>
+									<li>
+										<a href="#" class="property">
+											<img src="{{ asset('/img/miramarski/iconos/small/piscina.png') }}" /> Piscina climatizada 
+										</a>
+									</li>
+									<li>
+										<a href="#" class="property">
+											<img src="{{ asset('/img/miramarski/iconos/small/gimnasio.png') }}" /> gimnasio 
+										</a>
+									</li>
+									<li>
+										<a href="#" class="property">
+											<img src="{{ asset('/img/miramarski/iconos/small/guardaesqui.png') }}" /> Guarda Esqíes 
+										</a>
+									</li>
+									<div style="clear: both;"></div>
+									<li>
+										<a href="#" class="property">
+											<img src="{{ asset('/img/miramarski/iconos/small/mascotas.png') }}" /> Prohibido mascotas 
+										</a>
+									</li>
+									<li>
+										<a href="#" class="property">
+											<img src="{{ asset('/img/miramarski/iconos/small/ropa-toallas.png') }}" /> Ropa y toallas 
+										</a>
+									</li>
+									<li>
+										<a href="#" class="property">
 											<img src="{{ asset('/img/miramarski/iconos/small/cocina.png') }}" /> Cocina 
 										</a>
 									</li>
@@ -88,37 +129,12 @@
 									</li>
 									<li>
 										<a href="#" class="property">
-											<img src="{{ asset('/img/miramarski/iconos/small/calefaccion.png') }}" /> Calefacción 
+											<img src="{{ asset('/img/miramarski/iconos/small/calefaccion.png') }}" /> Calefaccion 
 										</a>
 									</li>
 									<li>
 										<a href="#" class="property">
-											<img src="{{ asset('/img/miramarski/iconos/small/tv.png') }}" /> TV 
-										</a>
-									</li>
-									<li>
-										<a href="#" class="property">
-											<img src="{{ asset('/img/miramarski/iconos/small/lavavajillas.png') }}" /> Lavavajillas 
-										</a>
-									</li>
-									<li>
-										<a href="#" class="property">
-											<img src="{{ asset('/img/miramarski/iconos/small/microondas.png') }}" /> Microondas 
-										</a>
-									</li>
-									<li>
-										<a href="#" class="property">
-											<img src="{{ asset('/img/miramarski/iconos/small/guardaesqui.png') }}" /> guardaesquís 
-										</a>
-									</li>
-									<li>
-										<a href="#" class="property">
-											<img src="{{ asset('/img/miramarski/iconos/small/ropa-toallas.png') }}" /> Ropa y toallas 
-										</a>
-									</li>
-									<li>
-										<a href="#" class="property">
-											<img src="{{ asset('/img/miramarski/iconos/small/mascotas.png') }}" /> Mascotas 
+											<img src="{{ asset('/img/miramarski/iconos/small/shopping.png') }}" /> Shopping 
 										</a>
 									</li>
 								</ul>
@@ -137,10 +153,10 @@
 		       			<div class="col-md-5 col-md-offset-1 center  hidden-sm hidden-xs" style="margin:72px 60px">
 	       					<div id="oc-slider" class="owl-carousel carousel-widget" data-margin="0" data-items="1" data-animate-in="zoomIn" data-speed="450" data-animate-out="fadeOut">
 
-	       						<a href="#"><img src="{{ asset('/img/miramarski/exteriores.jpg') }}" alt="Slide 1" style="height: 450px;"></a>
-	       						<a href="#"><img src="{{ asset('/img/miramarski/cama-principal-apartamento-sierra-nevada.jpg') }}" alt="Slide 2" style="height: 450px;"></a>
-	       						<a href="#"><img src="{{ asset('/img/miramarski/salon-miramar-apartamento-sierra-nevada.jpg') }}" alt="Slide 3" style="height: 450px;"></a>
-	       						<a href="#"><img src="{{ asset('/img/miramarski/television-chimenea-apartamento-sierra-nevada.jpg') }}" alt="Slide 4" style="height: 450px;"></a>
+	       						<a href="#"><img src="{{ asset('/img/miramarski/edificio/alquiler_apartamento_sierra_nevada_a_pie_de_pista.jpg') }}" alt="Slide 1" style="height: 450px;"></a>
+	       						<a href="#"><img src="{{ asset('/img/miramarski/edificio/alquiler-apartamento-lujo-edificio-miramar-sierra-nevada.jpg') }}" alt="Slide 2" style="height: 450px;"></a>
+	       						<a href="#"><img src="{{ asset('/img/miramarski/edificio/apartamento_sierra_nevada_a_pie_de_pista.jpg') }}" alt="Slide 3" style="height: 450px;"></a>
+	       						<a href="#"><img src="{{ asset('/img/miramarski/edificio/miramarski_ALQUILER_ APARTAMENTO_SIERRA_NEVADA.jpg') }}" alt="Slide 4" style="height: 450px;"></a>
 
 	       					</div>
 		       			</div>
@@ -324,48 +340,63 @@
 						<br>
 						<ul class="properties" >
 							<li>
-								<a href="#" class="property">
-									<img src="{{ asset('/img/miramarski/iconos/small/cocina.png') }}" /> Cocina 
+								<a class="property" style="color: white">
+									<img src="{{ asset('/img/miramarski/iconos/small/white-piepista.png') }}" /> A pie de pista 
 								</a>
 							</li>
 							<li>
-								<a href="#" class="property">
-									<img src="{{ asset('/img/miramarski/iconos/small/ducha.png') }}" /> Baño 
+								<a class="property" style="color: white">
+									<img src="{{ asset('/img/miramarski/iconos/small/white-parking.png') }}" /> Parking cubierto 
 								</a>
 							</li>
 							<li>
-								<a href="#" class="property">
-									<img src="{{ asset('/img/miramarski/iconos/small/calefaccion.png') }}" /> Calefacción 
+								<a class="property" style="color: white">
+									<img src="{{ asset('/img/miramarski/iconos/small/white-ascensor.png') }}" /> Ascensor 
 								</a>
 							</li>
 							<li>
-								<a href="#" class="property">
-									<img src="{{ asset('/img/miramarski/iconos/small/tv.png') }}" /> TV 
+								<a class="property" style="color: white">
+									<img src="{{ asset('/img/miramarski/iconos/small/white-piscina.png') }}" /> Piscina climatizada 
 								</a>
 							</li>
 							<li>
-								<a href="#" class="property">
-									<img src="{{ asset('/img/miramarski/iconos/small/lavavajillas.png') }}" /> Lavavajillas 
+								<a class="property" style="color: white">
+									<img src="{{ asset('/img/miramarski/iconos/small/white-gimnasio.png') }}" /> Gimnasio 
 								</a>
 							</li>
 							<li>
-								<a href="#" class="property">
-									<img src="{{ asset('/img/miramarski/iconos/small/microondas.png') }}" /> Microondas 
+								<a class="property" style="color: white">
+									<img src="{{ asset('/img/miramarski/iconos/small/white-guardaesqui.png') }}" /> Guardaesquies 
 								</a>
 							</li>
 							<li>
-								<a href="#" class="property">
-									<img src="{{ asset('/img/miramarski/iconos/small/guardaesqui.png') }}" /> guardaesquís 
+								<a class="property" style="color: white">
+									<img src="{{ asset('/img/miramarski/iconos/small/white-mascotas.png') }}" /> Prohibido mascotas 
 								</a>
 							</li>
 							<li>
-								<a href="#" class="property">
-									<img src="{{ asset('/img/miramarski/iconos/small/ropa-toallas.png') }}" /> Ropa y toallas 
+								<a class="property" style="color: white">
+									<img src="{{ asset('/img/miramarski/iconos/small/white-ropa-toallas.png') }}" /> Ropa y toallas 
 								</a>
 							</li>
 							<li>
-								<a href="#" class="property">
-									<img src="{{ asset('/img/miramarski/iconos/small/mascotas.png') }}" /> Mascotas 
+								<a class="property" style="color: white">
+									<img src="{{ asset('/img/miramarski/iconos/small/white-cocina.png') }}" /> Cocina 
+								</a>
+							</li>
+							<li>
+								<a class="property" style="color: white">
+									<img src="{{ asset('/img/miramarski/iconos/small/white-ducha.png') }}" /> Baño 
+								</a>
+							</li>
+							<li>
+								<a class="property" style="color: white">
+									<img src="{{ asset('/img/miramarski/iconos/small/white-calefaccion.png') }}" /> Calefacción 
+								</a>
+							</li>
+							<li>
+								<a class="property" style="color: white">
+									<img src="{{ asset('/img/miramarski/iconos/small/white-shopping.png') }}" /> Shopping 
 								</a>
 							</li>
 						</ul>
@@ -381,7 +412,7 @@
 							<b>En todas las reservas las sabanas y toallas están incluidas</b><br><br>
 							Queremos ofrecerte un servicio especial, por eso incluimos en todas nuestras reservas un obsequio de bienvenida. <br><br>
 							<b>En el botón de reserva  podrás calcular el coste de tu petición y si lo consideras hacer tu solicitud de disponibilidad.</b>
- -->
+ 							-->
        					</p>
 						<div class="col-xs-12 not-padding push-30" style="margin-bottom:0px!important; ">
 							<div id="oc-slider" class="owl-carousel carousel-widget" data-margin="0" data-items="1" data-animate-in="zoomIn" data-speed="450" data-animate-out="fadeOut">
