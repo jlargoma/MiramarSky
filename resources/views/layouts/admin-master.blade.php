@@ -39,114 +39,109 @@
    			$mobile = new Mobile();
 	   	?>
 	</head>
-	<body class="fixed-header   windows desktop pace-done sidebar-visible menu-pin">
-	<!-- <body class="fixed-header dashboard  windows desktop sidebar-visible pace-done menu-pin"> -->
-		<?php if (Auth::user()->role == 'admin' || Auth::user()->role == 'subadmin'): ?>
-			<nav class="page-sidebar" data-pages="sidebar" style="width: 134px!important">
-				<!-- END SIDEBAR MENU TOP TRAY CONTENT-->
-				<!-- BEGIN SIDEBAR MENU HEADER-->
-				<!-- <div class="sidebar-header">
-					<a href="{{ url('admin') }}"><img src="{{asset ('assets/img/logo_white.png') }}" alt="logo" class="brand" data-src="{{asset ('assets/img/logo_white.png') }}" data-src-retina="{{asset ('assets/img/logo_white_2x.png') }}" width="78" height="22"></a>
-				</div> -->
-				<!-- END SIDEBAR MENU HEADER-->
-				<!-- START SIDEBAR MENU -->
-				<div class="sidebar-menu">
-					<!-- BEGIN SIDEBAR MENU ITEMS-->
-					<ul class="menu-items">
+	<body class="fixed-header ">
 
-						<li class="m-t-10 ">
-							<a href="{{ url('admin/reservas') }}" class="detailed" >
-								
-								<!-- <span class="details">12 New Updates</span> -->
+		<nav class="page-sidebar" data-pages="sidebar" style="width: 134px!important">
+			<!-- END SIDEBAR MENU TOP TRAY CONTENT-->
+			<!-- BEGIN SIDEBAR MENU HEADER-->
+			<!-- <div class="sidebar-header">
+				<a href="{{ url('admin') }}"><img src="{{asset ('assets/img/logo_white.png') }}" alt="logo" class="brand" data-src="{{asset ('assets/img/logo_white.png') }}" data-src-retina="{{asset ('assets/img/logo_white_2x.png') }}" width="78" height="22"></a>
+			</div> -->
+			<!-- END SIDEBAR MENU HEADER-->
+			<!-- START SIDEBAR MENU -->
+			<div class="sidebar-menu">
+				<!-- BEGIN SIDEBAR MENU ITEMS-->
+				<ul class="menu-items">
+
+					<li class="m-t-10 ">
+						<a href="{{ url('admin/reservas') }}" class="detailed" >
 							
-							<span class="{{ Request::path() == '/reservas' ? 'bg-success' : '' }} icon-thumbnail" title="Planing"><i class="pg-calender"></i></span>
-							</a>
-						</li>
+							<!-- <span class="details">12 New Updates</span> -->
 						
-						<li class="m-t-10 ">
-							<a href="{{ url('admin/apartamentos') }}" class="detailed">
-								
-								<span class="{{ Request::path() == '/apartamentos' ? 'bg-success' : '' }} icon-thumbnail" title="Apartamentos"><i class="pg-home"></i></span>
-
-							</a>
-						</li>
-
-						<li class="m-t-10 ">
-							<a href="{{ url('admin/precios') }}" class="detailed">
+						<span class="{{ Request::path() == '/reservas' ? 'bg-success' : '' }} icon-thumbnail" title="Planing"><i class="pg-calender"></i></span>
+						</a>
+					</li>
+					
+					<li class="m-t-10 ">
+						<a href="{{ url('admin/apartamentos') }}" class="detailed">
 							
-								<span class="{{ Request::path() == '/precios' ? 'bg-success' : '' }} icon-thumbnail" title="Precios"><i class="fa fa-eur"></i></span>
-							</a>
-						</li>
+							<span class="{{ Request::path() == '/apartamentos' ? 'bg-success' : '' }} icon-thumbnail" title="Apartamentos"><i class="pg-home"></i></span>
 
-						<li class="m-t-10 ">
-							<a href="{{ url('admin/temporadas') }}" class="detailed">
-								
-								<span class="{{ Request::path() == '/temporadas' ? 'bg-success' : '' }} icon-thumbnail" title="Temporadas"><i class=" pg-clock"></i></span>
-							</a>
-						</li>
+						</a>
+					</li>
+
+					<li class="m-t-10 ">
+						<a href="{{ url('admin/precios') }}" class="detailed">
 						
-						<!-- <li class="m-t-10 ">
-							<a href="{{ url('admin/pagos') }}" class="detailed">
-								<span class="title">Pagos de reservas</span>
-							</a>
-							<span class="{{ Request::path() == '/pagos' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa fa-money"></i></span>
-						</li> -->
-						<li class="m-t-10 ">
-							<a href="{{ url('admin/pagos-propietarios') }}" class="detailed">
-								
-								<span class="{{ Request::path() == '/pagos-propietarios' ? 'bg-success' : '' }} icon-thumbnail" title="pagos a propietarios"><i class="fa fa-money"></i></span>
-							</a>
-						</li>
-						<li class="m-t-10 ">
-							<a href="{{ url('admin/usuarios') }}" class="detailed">
-								<span class="{{ Request::path() == '/usuarios' ? 'bg-success' : '' }} icon-thumbnail" title="Usuarios"><i class="fa fa-user"></i></span>
-							</a>
-						</li>
+							<span class="{{ Request::path() == '/precios' ? 'bg-success' : '' }} icon-thumbnail" title="Precios"><i class="fa fa-eur"></i></span>
+						</a>
+					</li>
 
-						<li class="m-t-10 ">
-							<a href="{{ url('admin/clientes') }}" class="detailed">
-								
-							<span class="{{ Request::path() == '/clientes' ? 'bg-success' : '' }} icon-thumbnail" title="Clientes"><i class="fa  fa-users"></i></span>
-							</a>
-						</li>
+					<li class="m-t-10 ">
+						<a href="{{ url('admin/temporadas') }}" class="detailed">
+							
+							<span class="{{ Request::path() == '/temporadas' ? 'bg-success' : '' }} icon-thumbnail" title="Temporadas"><i class=" pg-clock"></i></span>
+						</a>
+					</li>
+					
+					<!-- <li class="m-t-10 ">
+						<a href="{{ url('admin/pagos') }}" class="detailed">
+							<span class="title">Pagos de reservas</span>
+						</a>
+						<span class="{{ Request::path() == '/pagos' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa fa-money"></i></span>
+					</li> -->
+					<li class="m-t-10 ">
+						<a href="{{ url('admin/pagos-propietarios') }}" class="detailed">
+							
+							<span class="{{ Request::path() == '/pagos-propietarios' ? 'bg-success' : '' }} icon-thumbnail" title="pagos a propietarios"><i class="fa fa-money"></i></span>
+						</a>
+					</li>
+					<li class="m-t-10 ">
+						<a href="{{ url('admin/usuarios') }}" class="detailed">
+							<span class="{{ Request::path() == '/usuarios' ? 'bg-success' : '' }} icon-thumbnail" title="Usuarios"><i class="fa fa-user"></i></span>
+						</a>
+					</li>
 
-						<li class="m-t-10 ">
-							<a href="javascript:;">
-							<span class="icon-thumbnail"><i class="fa  fa-line-chart"></i></span></a>
-								<ul class="sub-menu" style="display: none;">
-									<li>
-										<a href="{{ url('admin/liquidacion') }}" class="detailed">
-											<span class="{{ Request::path() == '/admin/liquidacion' ? 'bg-success' : '' }} icon-thumbnail" title="Liquidacion"><i class="fa  fa-line-chart"></i></span>
-										</a>
-									</li>
-									<li>
-										<a href="{{ url('admin/liquidacion-apartamentos') }}" class="detailed">
-											<span class="{{ Request::path() == '/admin/liquidacion-apartamentos' ? 'bg-success' : '' }} icon-thumbnail" title="Liquidacion Apartamentos"><i class="fa  fa-line-chart"></i></span>
-										</a>
-									</li>
-									<li>
-										<a href="{{ url('admin/estadisticas') }}" class="detailed">
-											<span class="{{ Request::path() == '/admin/estadisticas' ? 'bg-success' : '' }} icon-thumbnail" title="Estadisticas"><i class="fa  fa-line-chart"></i></span>
-										</a>
-									</li>
-									<li>
-										<a href="{{ url('admin/perdidas-ganancias') }}" class="detailed">
-											<span class="{{ Request::path() == '/admin/perdidas-ganancias' ? 'bg-success' : '' }} icon-thumbnail" title="Perdidas y Ganancias"><i class="fa  fa-line-chart"></i></span>
-										</a>
-									</li>
-								</ul>
-						</li>
-					</ul>
-					<div class="clearfix"></div>
-				</div>
-				<!-- END SIDEBAR MENU -->
-			</nav>
-		<?php else: ?>
-		<?php endif ?>
-		<!-- BEGIN SIDEBPANEL-->
-		
-		<!-- END SIDEBAR -->
-		<!-- START PAGE-CONTAINER -->
+					<li class="m-t-10 ">
+						<a href="{{ url('admin/clientes') }}" class="detailed">
+							
+						<span class="{{ Request::path() == '/clientes' ? 'bg-success' : '' }} icon-thumbnail" title="Clientes"><i class="fa  fa-users"></i></span>
+						</a>
+					</li>
+
+					<li class="m-t-10 ">
+						<a href="javascript:;">
+						<span class="icon-thumbnail"><i class="fa  fa-line-chart"></i></span></a>
+							<ul class="sub-menu" style="display: none;">
+								<li>
+									<a href="{{ url('admin/liquidacion') }}" class="detailed">
+										<span class="{{ Request::path() == '/admin/liquidacion' ? 'bg-success' : '' }} icon-thumbnail" title="Liquidacion"><i class="fa  fa-line-chart"></i></span>
+									</a>
+								</li>
+								<li>
+									<a href="{{ url('admin/liquidacion-apartamentos') }}" class="detailed">
+										<span class="{{ Request::path() == '/admin/liquidacion-apartamentos' ? 'bg-success' : '' }} icon-thumbnail" title="Liquidacion Apartamentos"><i class="fa  fa-line-chart"></i></span>
+									</a>
+								</li>
+								<li>
+									<a href="{{ url('admin/estadisticas') }}" class="detailed">
+										<span class="{{ Request::path() == '/admin/estadisticas' ? 'bg-success' : '' }} icon-thumbnail" title="Estadisticas"><i class="fa  fa-line-chart"></i></span>
+									</a>
+								</li>
+								<li>
+									<a href="{{ url('admin/perdidas-ganancias') }}" class="detailed">
+										<span class="{{ Request::path() == '/admin/perdidas-ganancias' ? 'bg-success' : '' }} icon-thumbnail" title="Perdidas y Ganancias"><i class="fa  fa-line-chart"></i></span>
+									</a>
+								</li>
+							</ul>
+					</li>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<!-- END SIDEBAR MENU -->
+		</nav>
+
+
 		<div class="page-container ">
 			<!-- START HEADER -->
 			<div class="header ">
@@ -162,92 +157,25 @@
 						</div>
 						<!-- END ACTION BAR -->
 					</div>
-					<!-- <div class="pull-center hidden-md hidden-lg">
+					<div class="pull-center hidden-md hidden-lg">
 						<div class="header-inner">
-							<div class="brand inline">
-								<img src="{{asset ('assets/img/logo.png') }}" alt="logo" data-src="{{asset ('assets/img/logo.png') }}" data-src-retina="{{asset ('assets/img/logo_2x.png') }}" width="78" height="22">
-							</div>
+							@yield('headerbuttons')
 						</div>
-					</div> -->
-					<!-- RIGHT SIDE -->
+					</div>
+
 					<div class="pull-right full-height visible-sm visible-xs">
 						<!-- START ACTION BAR -->
-						<!-- <div class="header-inner">
+						<div class="header-inner">
 							<a href="#" class="btn-link visible-sm-inline-block visible-xs-inline-block" data-toggle="quickview" data-toggle-element="#quickview">
 								<span class="icon-set menu-hambuger-plus"></span>
 							</a>
-						</div> -->
+						</div>
 						<!-- END ACTION BAR -->
 					</div>
-				</div>
-				<!-- END MOBILE CONTROLS -->
-				<div class=" pull-left sm-table hidden-xs hidden-sm">
-					
-				</div>
-				<div class=" pull-right">
-					<div class="header-inner">
-						<a href="#" class="btn-link icon-set menu-hambuger-plus m-l-20 sm-no-margin hidden-sm hidden-xs" data-toggle="quickview" data-toggle-element="#quickview"></a>
-					</div>
-				</div>
-				<div class=" pull-right">
-					<!-- START User Info-->
-					<div class="visible-lg visible-md m-t-10">
-						<div class="pull-left p-r-10 p-t-10 fs-16 font-heading">
-							<button class="profile-dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<span class="semi-bold">{{ Auth::user()->name }}</span>
-							</button>
-							<ul class="dropdown-menu profile-dropdown" role="menu">
-								</li>
-								<li class="bg-master-lighter">
-									<a href="{{ url('logout') }}" class="clearfix">
-										<span class="pull-left">Logout</span>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<!-- END User Info-->
+
 				</div>
 			</div>
-			<!-- END HEADER -->
-			<!-- START CONTAINER FLUID -->
-			<div class="page-content-wrapper ">
-				<!-- START CONTENT -->
-				<?php if (!$mobile->isMobile()): ?>
-					<div class="content sm-gutter" style="padding-left: 134px!important">
-				<?php else: ?>
-					<div class="content sm-gutter">
-				<?php endif ?>
-				
-
-						@yield('content')
-				</div>
-				<!-- END CONTENT -->
-			</div>
 		</div>
-		<!-- END CONTAINER FLUID -->
-	</div>
-	<!-- FOOTER -->
-	<!-- <div class="container-fluid container-fixed-lg footer">
-		<div class="copyright sm-text-center">
-			<p class="small no-margin pull-left sm-pull-reset">
-				<span class="hint-text">Copyright &copy; 2014 </span>
-				<span class="font-montserrat">REVOX</span>.
-				<span class="hint-text">All rights reserved. </span>
-				<span class="sm-block"><a href="#" class="m-l-10 m-r-10">Terms of use</a> | <a href="#" class="m-l-10">Privacy Policy</a></span>
-			</p>
-			<p class="small no-margin pull-right sm-pull-reset">
-				<a href="#">Hand-crafted</a> <span class="hint-text">&amp; Made with Love ®</span>
-			</p>
-			<div class="clearfix"></div>
-		</div>
-	</div> -->
-	<!-- END FOOTER -->
-</div>
-	<!-- END PAGE CONTENT WRAPPER -->
-	<!-- END PAGE CONTAINER -->
-
-			
 		<!-- BEGIN VENDOR JS -->
 		<script src="{{ asset('assets/plugins/pace/pace.min.js') }}" type="text/javascript"></script>
 		<script src="{{ asset('assets/plugins/jquery/jquery-1.11.1.min.js') }}" type="text/javascript"></script>

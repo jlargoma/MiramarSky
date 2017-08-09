@@ -79,11 +79,11 @@
               <div class="col-md-6 no-padding">
                 <div class="checkbox ">
                   <input type="checkbox" value="1" id="checkbox1">
-                  <label for="checkbox1">Recuerdame</label>
+                  <label for="checkbox1" class="text-white">Recuerdame</label>
                 </div>
               </div>
               <div class="col-md-6 text-right">
-                <a href="{{ url('/password/reset') }}" class="text-info small">Olvide mi contraseña</a>
+                <a href="{{ url('/password/reset') }}" class=" small text-white">Olvide mi contraseña</a>
               </div>
             </div>
             <!-- END Form Control-->
