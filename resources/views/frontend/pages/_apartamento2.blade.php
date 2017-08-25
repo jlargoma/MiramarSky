@@ -38,6 +38,12 @@
 		.daterangepicker {
 		    top: 135%!important;
 		}
+		.img{
+			max-height: 530px;
+		}
+		.button.button-desc.button-3d{
+			background-color: #4cb53f!important;
+		}
 	}
 	
 </style>
@@ -62,12 +68,23 @@
 					<div class="flexslider">
 						<div class="slider-wrap">
 							<?php foreach ($slides as $key => $slide): ?>
-								<div class="slide" data-thumb="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>">
-									<a href="#">
-										<img src="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>" alt="<?php echo $slide->getFilename() ?>" style="max-height: 530px;">
-										<!-- <div class="flex-caption slider-caption-bg"><?php echo $slide->getFilename() ?></div> -->
-									</a>
-								</div>
+								<?php $fotos = explode(",", $slide->getFilename()) ?>
+								<?php if (isset($fotos[1])): ?>
+									<div class="slide" data-thumb="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $fotos[1] ?>">
+										<a>
+											<img class="img" src="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>" alt="<?php echo $fotos[2] ?>" title="<?php echo $fotos[3] ?>" >
+											<!-- <div class="flex-caption slider-caption-bg"><?php echo $slide->getFilename() ?></div> -->
+										</a>
+									</div>
+								<?php else: ?>
+									<div class="slide" data-thumb="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename()  ?>">
+										<a>
+											<img class="img" src="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>" alt="<?php echo $slide->getFilename()  ?>" title="<?php echo $slide->getFilename()  ?>" >
+											<!-- <div class="flex-caption slider-caption-bg"><?php echo $slide->getFilename() ?></div> -->
+										</a>
+									</div>
+								<?php endif ?>
+								
 							<?php endforeach ?>
 						</div>
 					</div>
@@ -89,14 +106,14 @@
 				</div>
 				
 				<?php if (!$mobile->isMobile()): ?>
-					<button id="showFromBook" class="button button-desc button-3d button-rounded bg-bluesky center white" style="background-color: #4cb53f!important">¡Reserva YA!</button>
+					<button id="showFromBook" class="button button-desc button-3d button-rounded bg-bluesky center white" >¡Reserva YA!</button>
 
 				<?php endif; ?>
 			</div>¡
 		</div>
 		<?php if (!$mobile->isMobile()): ?>
 		<div id="content-form-book" class="row bg-bluesky push-30" style="display: none; ">
-			<span style="padding: 0 5px; cursor: pointer; opacity: 1; margin-right: 20px; margin-top: 10px;" class="close pull-right white text-white"><i class="fa fa-times"></i></span>
+			<span style="padding: 0 5px; cursor: pointer; opacity: 1" class="close pull-right white text-white sm-m-r-20 sm-m-t-10"><i class="fa fa-times"></i></span>
 			<div class="col-xs-12 col-md-4 hidden-sm hidden-xs" style=" min-height: 535px">
 				<img src="{{asset('/img/miramarski/esquiadores.png')}}" class="img-responsive" style="position: absolute; bottom: 0">
 			</div>

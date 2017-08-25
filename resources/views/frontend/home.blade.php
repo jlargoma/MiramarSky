@@ -77,63 +77,63 @@
 		       					<h2 class="font-w300 text-left nobottommargin black push-18" style="line-height: 1;font-size: 18px!important"><span class="font-w800 black"> El edificio tiene salida directa a las pistas, solo tienes que salir de casa y esquiar!!</span></h2><br>
 								<ul class="properties" >
 									<li>
-										<a href="#" class="property">
+										<a  class="property">
 											<img src="{{ asset('/img/miramarski/iconos/small/teleesqui.png') }}" /> A pie de pista 
 										</a>
 									</li>
 									<li>
-										<a href="#" class="property">
+										<a  class="property">
 											<img src="{{ asset('/img/miramarski/iconos/small/parking.png') }}" /> Parking cubierto 
 										</a>
 									</li>
 									<li>
-										<a href="#" class="property">
+										<a  class="property">
 											<img src="{{ asset('/img/miramarski/iconos/small/ascensor.png') }}" /> Ascensor 
 										</a>
 									</li>
 									<li>
-										<a href="#" class="property">
+										<a  class="property">
 											<img src="{{ asset('/img/miramarski/iconos/small/piscina.png') }}" /> Piscina climatizada 
 										</a>
 									</li>
 									<li>
-										<a href="#" class="property">
+										<a  class="property">
 											<img src="{{ asset('/img/miramarski/iconos/small/gimnasio.png') }}" /> gimnasio 
 										</a>
 									</li>
 									<li>
-										<a href="#" class="property">
+										<a  class="property">
 											<img src="{{ asset('/img/miramarski/iconos/small/guardaesqui.png') }}" /> Guarda Esqíes 
 										</a>
 									</li>
 									<div style="clear: both;"></div>
 									<li>
-										<a href="#" class="property">
+										<a  class="property">
 											<img src="{{ asset('/img/miramarski/iconos/small/mascotas.png') }}" /> Prohibido mascotas 
 										</a>
 									</li>
 									<li>
-										<a href="#" class="property">
+										<a  class="property">
 											<img src="{{ asset('/img/miramarski/iconos/small/ropa-toallas.png') }}" /> Ropa y toallas 
 										</a>
 									</li>
 									<li>
-										<a href="#" class="property">
+										<a  class="property">
 											<img src="{{ asset('/img/miramarski/iconos/small/cocina.png') }}" /> Cocina 
 										</a>
 									</li>
 									<li>
-										<a href="#" class="property">
+										<a  class="property">
 											<img src="{{ asset('/img/miramarski/iconos/small/ducha.png') }}" /> Baño 
 										</a>
 									</li>
 									<li>
-										<a href="#" class="property">
+										<a  class="property">
 											<img src="{{ asset('/img/miramarski/iconos/small/calefaccion.png') }}" /> Calefaccion 
 										</a>
 									</li>
 									<li>
-										<a href="#" class="property">
+										<a  class="property">
 											<img src="{{ asset('/img/miramarski/iconos/small/shopping.png') }}" /> Shopping 
 										</a>
 									</li>
@@ -153,10 +153,10 @@
 		       			<div class="col-md-5 col-md-offset-1 center  hidden-sm hidden-xs" style="margin:72px 60px">
 	       					<div id="oc-slider" class="owl-carousel carousel-widget" data-margin="0" data-items="1" data-animate-in="zoomIn" data-speed="450" data-animate-out="fadeOut">
 
-	       						<a href="#"><img src="{{ asset('/img/miramarski/edificio/alquiler_apartamento_sierra_nevada_a_pie_de_pista.jpg') }}" alt="Slide 1" style="height: 450px;"></a>
-	       						<a href="#"><img src="{{ asset('/img/miramarski/edificio/alquiler-apartamento-lujo-edificio-miramar-sierra-nevada.jpg') }}" alt="Slide 2" style="height: 450px;"></a>
-	       						<a href="#"><img src="{{ asset('/img/miramarski/edificio/apartamento_sierra_nevada_a_pie_de_pista.jpg') }}" alt="Slide 3" style="height: 450px;"></a>
-	       						<a href="#"><img src="{{ asset('/img/miramarski/edificio/miramarski_ALQUILER_ APARTAMENTO_SIERRA_NEVADA.jpg') }}" alt="Slide 4" style="height: 450px;"></a>
+	       						<a ><img src="{{ asset('/img/miramarski/edificio/alquiler_apartamento_sierra_nevada_a_pie_de_pista.jpg') }}" alt="Slide 1" style="height: 450px;"></a>
+	       						<a ><img src="{{ asset('/img/miramarski/edificio/alquiler-apartamento-lujo-edificio-miramar-sierra-nevada.jpg') }}" alt="Slide 2" style="height: 450px;"></a>
+	       						<a ><img src="{{ asset('/img/miramarski/edificio/apartamento_sierra_nevada_a_pie_de_pista.jpg') }}" alt="Slide 3" style="height: 450px;"></a>
+	       						<a ><img src="{{ asset('/img/miramarski/edificio/miramarski_ALQUILER_ APARTAMENTO_SIERRA_NEVADA.jpg') }}" alt="Slide 4" style="height: 450px;"></a>
 
 	       					</div>
 		       			</div>

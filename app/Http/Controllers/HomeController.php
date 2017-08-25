@@ -62,7 +62,7 @@ class HomeController extends Controller
                 break;
             
             case 'apartamento standard':
-                $aptoHeading       = "APARTAMENTOS DOS DORM - ESTADAR ";
+                $aptoHeading       = "APARTAMENTOS DOS DORM - ESTANDAR ";
                 $aptoHeadingMobile = "Apto Standard";
 
                 $typeApto = 2;

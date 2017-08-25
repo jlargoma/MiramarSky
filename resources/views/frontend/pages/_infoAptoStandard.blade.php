@@ -26,67 +26,67 @@
 	<p class="font-s16 ls-15 miramar font-w300 text-justify push-30">
 		<ul class="properties" >
 			<li>
-				<a href="#" class="property">
+				<a class="property">
 					<img src="{{ asset('/img/miramarski/iconos/small/apto.png') }}" /> Apto entero 
 				</a>
 			</li>
 			<li>
-				<a href="#" class="property">
+				<a class="property">
 					<img src="{{ asset('/img/miramarski/iconos/small/huespedes.png') }}" /> 6/8 Huéspedes 
 				</a>
 			</li>
 			<li>
-				<a href="#" class="property">
+				<a class="property">
 					<img src="{{ asset('/img/miramarski/iconos/small/dormitorios.png') }}" /> 2 Dormitorios 
 				</a>
 			</li>
 			<li>
-				<a href="#" class="property">
+				<a class="property">
 					<img src="{{ asset('/img/miramarski/iconos/small/apto.png') }}" /> 8 Camas 
 				</a>
 			</li>
 			<li>
-				<a href="#" class="property">
+				<a class="property">
 					<img src="{{ asset('/img/miramarski/iconos/small/cocina.png') }}" /> Cocina 
 				</a>
 			</li>
 			<li>
-				<a href="#" class="property">
+				<a class="property">
 					<img src="{{ asset('/img/miramarski/iconos/small/ducha.png') }}" /> Baño 
 				</a>
 			</li>
 			<li>
-				<a href="#" class="property">
+				<a class="property">
 					<img src="{{ asset('/img/miramarski/iconos/small/calefaccion.png') }}" /> Calefacción 
 				</a>
 			</li>
 			<li>
-				<a href="#" class="property">
+				<a class="property">
 					<img src="{{ asset('/img/miramarski/iconos/small/tv.png') }}" /> TV 
 				</a>
 			</li>
 			<li>
-				<a href="#" class="property">
+				<a class="property">
 					<img src="{{ asset('/img/miramarski/iconos/small/lavavajillas.png') }}" /> Lavavajillas 
 				</a>
 			</li>
 			<li>
-				<a href="#" class="property">
+				<a class="property">
 					<img src="{{ asset('/img/miramarski/iconos/small/microondas.png') }}" /> Microondas 
 				</a>
 			</li>
 			<li>
-				<a href="#" class="property">
+				<a class="property">
 					<img src="{{ asset('/img/miramarski/iconos/small/guardaesqui.png') }}" /> guardaesquís 
 				</a>
 			</li>
 			<li>
-				<a href="#" class="property">
+				<a class="property">
 					<img src="{{ asset('/img/miramarski/iconos/small/ropa-toallas.png') }}" /> Ropa y toallas 
 				</a>
 			</li>
 			<li>
-				<a href="#" class="property">
+				<a class="property">
 					<img src="{{ asset('/img/miramarski/iconos/small/mascotas.png') }}" /> Mascotas 
 				</a>
 			</li>
