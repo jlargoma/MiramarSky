@@ -10,26 +10,28 @@
 		<link href="//fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700,800,900|Roboto+Condensed:400|Poppins:600%2C400" rel="stylesheet" type="text/css" />
  	
 		
-		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/bootstrap.css')}}" />
+		<!-- <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/bootstrap.css')}}" />
 		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/style.css')}}" />
 		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/font-icons.css')}}" />
 		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/animate.css')}}" />
-		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/magnific-popup.css')}}" />
+		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/magnific-popup.css')}}" /> -->
+		
+		<link rel="stylesheet" href="{{ asset ('/css/app.css')}}" type="text/css" />
 
 		<?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
-			<!-- <link rel="stylesheet" href="{{ asset ('/frontend/css/dark-mobile.css')}}" type="text/css" /> -->
 			<link rel="stylesheet" href="{{ asset ('/frontend/css/responsive-mobile.css')}}" type="text/css" />
 		<?php else: ?>
-			<!-- <link rel="stylesheet" href="{{ asset ('/frontend/css/dark.css')}}" type="text/css" /> -->
 			<link rel="stylesheet" href="{{ asset ('/frontend/css/responsive.css')}}" type="text/css" />
 		<?php endif; ?>
 
 		<link rel="stylesheet" href="{{ asset ('/frontend/colors.php?color=3F51B5')}}" type="text/css" />
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/> 
 		
-		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/css/settings.css')}}" media="screen" />
+		<!-- <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/css/settings.css')}}" media="screen" />
 		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/css/layers.css')}}">
-		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/css/navigation.css')}}">
+		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/css/navigation.css')}}"> -->
+
+		<link rel="stylesheet" href="{{ asset ('/css/slider.css')}}" type="text/css" />
 		
 		<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
 		<title>@yield('title')</title>
@@ -108,10 +110,28 @@
 			@include('layouts._footer')
 
 		</div>
-		<div id="gotoTop" class="fa fa-chevron-up"></div>
-		<!-- <script type="text/javascript" src="{{ asset('/js/scripts.js')}}"></script> -->
 
-		<script type="text/javascript" src="{{ asset('/frontend/js/jquery.js') }}"></script>
+		<div class="modal fade mapa" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-body">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel">COMO LLEGAR</h4>
+						</div>
+						<div class="modal-body">
+							<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3182.495919630369!2d-3.3991606847018305!3d37.09331097988919!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd71dd38d505f85f%3A0x4a99a1314ca01a9!2sAlquiler+Apartamento+de+Lujo+Sierra+Nevada+-+Edif+Miramar+Ski!5e0!3m2!1ses!2ses!4v1499417977280" width="800" height="600" frameborder="0" style="border:0" allowfullscreen></iframe>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="gotoTop" class="fa fa-chevron-up"></div>
+		<script type="text/javascript" src="{{ asset('/js/scripts.js')}}"></script>
+
+		<script type="text/javascript" src="{{ asset('/js/scripts-slider.js')}}"></script>
+
+		<!-- <script type="text/javascript" src="{{ asset('/frontend/js/jquery.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('/frontend/js/plugins.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('/frontend/js/functions.js') }}"></script>
 		
@@ -122,10 +142,12 @@
 		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.slideanims.min.js"></script>
 		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.actions.min.js"></script>
 		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.layeranimation.min.js"></script>
-		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.navigation.min.js"></script>
-		<script src="https://cdn.rawgit.com/nnattawat/flip/master/dist/jquery.flip.min.js"></script>
+		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.navigation.min.js"></script> -->
+
+
 		<script type="text/javascript" src="{{ asset('/frontend/js/scrollreveal.js')}}"></script>
-		<script type="text/javascript" src="{{ asset('/js/typed.js')}}"></script>
+
+
 		<script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
 		<script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
 		<script type="text/javascript">

@@ -65,8 +65,8 @@
 				<div class="col-xs-12">
 					<div class="col-xs-12 ">
 					
-		       			<div class="col-md-6 center fadeInUp animated" data-animation="fadeInUp">
-		       				<div>
+		       			<div class="col-md-6 center fadeInUp animated" data-animation="fadeInUp" style="padding: 40px 15px;">
+		       				<div class="col-xs-12 push-20">
 		       					<div class="heading-block  black" style="margin-bottom: 20px">
 		       						<h1 class="font-w800 black" style="letter-spacing: 0; font-size: 26px;">APARTAMENTOS DE LUJO <span class="font-w800 green">A PIE DE PISTA</span></h1>
 		       					</div>
@@ -74,70 +74,10 @@
 		       						Todos nuestros Apartamentos están en el Edificio Miramar Ski, situado <b>en la zona baja de Sierra Nevada</b>. Tienen excelentes vistas y todos disponen del equipamiento completo.
 
 		       					</p>
-		       					<h2 class="font-w300 text-left nobottommargin black push-18" style="line-height: 1;font-size: 18px!important"><span class="font-w800 black"> El edificio tiene salida directa a las pistas, solo tienes que salir de casa y esquiar!!</span></h2><br>
-								<ul class="properties" >
-									<li>
-										<a  class="property">
-											<img src="{{ asset('/img/miramarski/iconos/small/teleesqui.png') }}" /> A pie de pista 
-										</a>
-									</li>
-									<li>
-										<a  class="property">
-											<img src="{{ asset('/img/miramarski/iconos/small/parking.png') }}" /> Parking cubierto 
-										</a>
-									</li>
-									<li>
-										<a  class="property">
-											<img src="{{ asset('/img/miramarski/iconos/small/ascensor.png') }}" /> Ascensor 
-										</a>
-									</li>
-									<li>
-										<a  class="property">
-											<img src="{{ asset('/img/miramarski/iconos/small/piscina.png') }}" /> Piscina climatizada 
-										</a>
-									</li>
-									<li>
-										<a  class="property">
-											<img src="{{ asset('/img/miramarski/iconos/small/gimnasio.png') }}" /> gimnasio 
-										</a>
-									</li>
-									<li>
-										<a  class="property">
-											<img src="{{ asset('/img/miramarski/iconos/small/guardaesqui.png') }}" /> Guarda Esqíes 
-										</a>
-									</li>
-									<div style="clear: both;"></div>
-									<li>
-										<a  class="property">
-											<img src="{{ asset('/img/miramarski/iconos/small/mascotas.png') }}" /> Prohibido mascotas 
-										</a>
-									</li>
-									<li>
-										<a  class="property">
-											<img src="{{ asset('/img/miramarski/iconos/small/ropa-toallas.png') }}" /> Ropa y toallas 
-										</a>
-									</li>
-									<li>
-										<a  class="property">
-											<img src="{{ asset('/img/miramarski/iconos/small/cocina.png') }}" /> Cocina 
-										</a>
-									</li>
-									<li>
-										<a  class="property">
-											<img src="{{ asset('/img/miramarski/iconos/small/ducha.png') }}" /> Baño 
-										</a>
-									</li>
-									<li>
-										<a  class="property">
-											<img src="{{ asset('/img/miramarski/iconos/small/calefaccion.png') }}" /> Calefaccion 
-										</a>
-									</li>
-									<li>
-										<a  class="property">
-											<img src="{{ asset('/img/miramarski/iconos/small/shopping.png') }}" /> Shopping 
-										</a>
-									</li>
-								</ul>
+		       					<h2 class="font-w300 text-center black push-18" style="line-height: 1;font-size: 18px!important; text-transform: uppercase;">
+		       						<span class="font-w800 black"> El edificio tiene salida directa a las pistas, solo tienes que salir de casa y esquiar!!</span>
+		       					</h2>
+								
 		       					<p class="lead  text-justify black ls-15 font-s14 black">
 		       						Se encuentran <b>a 5 minutos andando de la plaza de Andalucía</b>, centro neurálgico de la estación.<br><br>
 		       						Muy cerca, a pocos metros, tienes varios supermercados, bares y restaurantes, lo que es muy importante para que disfrutes tus vacaciones sin tener que coger el coche ni remontes, Nuestro edificio Miramar Ski es <b>uno de los edificios más modernos de Sierra Nevada</b> (2006).<br><br>
@@ -148,6 +88,75 @@
 
 		       					</p>
 		       				</div>
+		       				<div class="col-xs-12 clearfix">
+
+				       			<div id="oc-clients" class="owl-carousel image-carousel carousel-widget" data-margin="60" data-loop="true" data-nav="false" data-autoplay="3000" data-pagi="false" data-items-xxs="2" data-items-xs="3" data-items-sm="4" data-items-md="6" data-items-lg="8">
+
+				       				<div class="oc-item">
+				       					<a class="pc-characteristics">
+				       						<img src="{{ asset('/img/miramarski/iconos/small/teleesqui.png') }}" /> A pie de pista 
+				       					</a>
+				       				</div>
+				       				<div class="oc-item">
+				       					<a class="pc-characteristics">
+				       						<img src="{{ asset('/img/miramarski/iconos/small/parking.png') }}" /> Parking cubierto 
+				       					</a>
+				       				</div>
+				       				<div class="oc-item">
+				       					<a class="pc-characteristics">
+				       						<img src="{{ asset('/img/miramarski/iconos/small/ascensor.png') }}" /> Ascensor 
+				       					</a>
+				       				</div>
+				       				<div class="oc-item">
+				       					<a class="pc-characteristics">
+				       						<img src="{{ asset('/img/miramarski/iconos/small/piscina.png') }}" /> Piscina climatizada 
+				       					</a>
+				       				</div>
+				       				<div class="oc-item">
+				       					<a class="pc-characteristics">
+				       						<img src="{{ asset('/img/miramarski/iconos/small/gimnasio.png') }}" /> gimnasio 
+				       					</a>
+				       				</div>
+				       				<div class="oc-item">
+				       					<a class="pc-characteristics">
+				       						<img src="{{ asset('/img/miramarski/iconos/small/guardaesqui.png') }}" /> Guarda Esqíes 
+				       					</a>
+				       				</div>
+				       				<div class="oc-item">
+				       					<a class="pc-characteristics">
+				       						<img src="{{ asset('/img/miramarski/iconos/small/mascotas.png') }}" /> Prohibido mascotas 
+				       					</a>
+				       				</div>
+				       				<div class="oc-item">
+				       					<a class="pc-characteristics">
+				       						<img src="{{ asset('/img/miramarski/iconos/small/ropa-toallas.png') }}" /> Ropa y toallas 
+				       					</a>
+				       				</div>
+				       				<div class="oc-item">
+				       					<a class="pc-characteristics">
+				       						<img src="{{ asset('/img/miramarski/iconos/small/cocina.png') }}" /> Cocina 
+				       					</a>
+				       				</div>
+				       				<div class="oc-item">
+				       					<a class="pc-characteristics">
+				       						<img src="{{ asset('/img/miramarski/iconos/small/ducha.png') }}" /> Baño 
+				       					</a>
+				       				</div>
+				       				<div class="oc-item">
+				       					<a class="pc-characteristics">
+				       						<img src="{{ asset('/img/miramarski/iconos/small/calefaccion.png') }}" /> Calefaccion 
+				       					</a>
+				       				</div>
+				       				<div class="oc-item">
+				       					<a class="pc-characteristics">
+				       						<img src="{{ asset('/img/miramarski/iconos/small/shopping.png') }}" /> Shopping 
+				       					</a>
+				       				</div>
+
+				       			</div>
+
+
+	       					</div>
 		       			</div>
 
 		       			<div class="col-md-5 col-md-offset-1 center  hidden-sm hidden-xs" style="margin:72px 60px">
@@ -337,70 +346,77 @@
 
        					</p>
        					<h2 class="font-w300 text-center nobottommargin white push-20" style="line-height: 1;font-size: 19px!important"> <span class="font-w800 white">El edificio tiene salida directa a las pistas,</span> solo tienes que salir de casa y esquiar!!</h2>
-						<br>
-						<ul class="properties" >
-							<li>
-								<a class="property" style="color: white">
-									<img src="{{ asset('/img/miramarski/iconos/small/white-piepista.png') }}" /> A pie de pista 
-								</a>
-							</li>
-							<li>
-								<a class="property" style="color: white">
-									<img src="{{ asset('/img/miramarski/iconos/small/white-parking.png') }}" /> Parking cubierto 
-								</a>
-							</li>
-							<li>
-								<a class="property" style="color: white">
-									<img src="{{ asset('/img/miramarski/iconos/small/white-ascensor.png') }}" /> Ascensor 
-								</a>
-							</li>
-							<li>
-								<a class="property" style="color: white">
-									<img src="{{ asset('/img/miramarski/iconos/small/white-piscina.png') }}" /> Piscina climatizada 
-								</a>
-							</li>
-							<li>
-								<a class="property" style="color: white">
-									<img src="{{ asset('/img/miramarski/iconos/small/white-gimnasio.png') }}" /> Gimnasio 
-								</a>
-							</li>
-							<li>
-								<a class="property" style="color: white">
-									<img src="{{ asset('/img/miramarski/iconos/small/white-guardaesqui.png') }}" /> Guardaesquies 
-								</a>
-							</li>
-							<li>
-								<a class="property" style="color: white">
-									<img src="{{ asset('/img/miramarski/iconos/small/white-mascotas.png') }}" /> Prohibido mascotas 
-								</a>
-							</li>
-							<li>
-								<a class="property" style="color: white">
-									<img src="{{ asset('/img/miramarski/iconos/small/white-ropa-toallas.png') }}" /> Ropa y toallas 
-								</a>
-							</li>
-							<li>
-								<a class="property" style="color: white">
-									<img src="{{ asset('/img/miramarski/iconos/small/white-cocina.png') }}" /> Cocina 
-								</a>
-							</li>
-							<li>
-								<a class="property" style="color: white">
-									<img src="{{ asset('/img/miramarski/iconos/small/white-ducha.png') }}" /> Baño 
-								</a>
-							</li>
-							<li>
-								<a class="property" style="color: white">
-									<img src="{{ asset('/img/miramarski/iconos/small/white-calefaccion.png') }}" /> Calefacción 
-								</a>
-							</li>
-							<li>
-								<a class="property" style="color: white">
-									<img src="{{ asset('/img/miramarski/iconos/small/white-shopping.png') }}" /> Shopping 
-								</a>
-							</li>
-						</ul>
-						<br>
+
+	       				<div class="col-xs-12 clearfix">
+
+			       			<div id="oc-clients" class="owl-carousel image-carousel carousel-widget" data-margin="60" data-loop="true" data-nav="false" data-autoplay="3000" data-pagi="false" data-items-xxs="4" data-items-xs="4" data-items-sm="6" data-items-md="6" data-items-lg="8">
+
+			       				<div class="oc-item">
+			       					<a class="pc-characteristics white center">
+			       						<img src="{{ asset('/img/miramarski/iconos/small/white-piepista.png') }}" /><br> A pie de pista 
+			       					</a>
+			       				</div>
+			       				<div class="oc-item">
+			       					<a class="pc-characteristics white center">
+			       						<img src="{{ asset('/img/miramarski/iconos/small/white-parking.png') }}" /> Parking cubierto 
+			       					</a>
+			       				</div>
+			       				<div class="oc-item">
+			       					<a class="pc-characteristics white center">
+			       						<img src="{{ asset('/img/miramarski/iconos/small/white-ascensor.png') }}" /> Ascensor 
+			       					</a>
+			       				</div>
+			       				<div class="oc-item">
+			       					<a class="pc-characteristics white center">
+			       						<img src="{{ asset('/img/miramarski/iconos/small/white-piscina.png') }}" /> Piscina climatizada 
+			       					</a>
+			       				</div>
+			       				<div class="oc-item">
+			       					<a class="pc-characteristics white center">
+			       						<img src="{{ asset('/img/miramarski/iconos/small/white-gimnasio.png') }}" /> gimnasio 
+			       					</a>
+			       				</div>
+			       				<div class="oc-item">
+			       					<a class="pc-characteristics white center">
+			       						<img src="{{ asset('/img/miramarski/iconos/small/white-guardaesqui.png') }}" /> Guarda Esqíes 
+			       					</a>
+			       				</div>
+			       				<div class="oc-item">
+			       					<a class="pc-characteristics white center">
+			       						<img src="{{ asset('/img/miramarski/iconos/small/white-mascotas.png') }}" /> Prohibido mascotas 
+			       					</a>
+			       				</div>
+			       				<div class="oc-item">
+			       					<a class="pc-characteristics white center">
+			       						<img src="{{ asset('/img/miramarski/iconos/small/white-ropa-toallas.png') }}" /> Ropa y toallas 
+			       					</a>
+			       				</div>
+			       				<div class="oc-item">
+			       					<a class="pc-characteristics white center">
+			       						<img src="{{ asset('/img/miramarski/iconos/small/white-cocina.png') }}" /> Cocina 
+			       					</a>
+			       				</div>
+			       				<div class="oc-item">
+			       					<a class="pc-characteristics white center">
+			       						<img src="{{ asset('/img/miramarski/iconos/small/white-ducha.png') }}" /> Baño 
+			       					</a>
+			       				</div>
+			       				<div class="oc-item">
+			       					<a class="pc-characteristics white center">
+			       						<img src="{{ asset('/img/miramarski/iconos/small/white-calefaccion.png') }}" /> Calefaccion 
+			       					</a>
+			       				</div>
+			       				<div class="oc-item">
+			       					<a class="pc-characteristics white center">
+			       						<img src="{{ asset('/img/miramarski/iconos/small/white-shopping.png') }}" /> Shopping 
+			       					</a>
+			       				</div>
+
+			       			</div>
+
+
+       					</div>
+
        					<p class="lead  text-justify white ls-15 font-s14 white">
        						Se encuentran <b>a 5 minutos andando de la plaza de Andalucía</b>, centro neurálgico de la estación.<br><br>
        						Muy cerca, a pocos metros, tienes varios supermercados, bares y restaurantes, lo que es muy importante para que disfrutes tus vacaciones sin tener que coger el coche ni remontes, Nuestro edificio Miramar Ski es <b>uno de los edificios más modernos de Sierra Nevada</b> (2006).<br><br>
@@ -439,28 +455,28 @@
 				</div>
 				<div class=" row fadeInAppear">
 					<a href="{{url('/apartamentos/apartamento-lujo-sierra-nevada')}}"  class=" hover-effect"> 
-						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apartamento-lujo-sierra-nevada/a-panoramica.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
+						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apto-lujo.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 1px 1px #000;">APARTAMENTO DE LUJO</h3>
 						</div>
 					</a>
 				</div>
 				<div class=" row fadeInAppear">
 					<a href="{{url('/apartamentos/apartamento-standard-sierra-nevada')}}"  class=" hover-effect"> 
-						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apartamento-standard-sierra-nevada/salon5-min.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
+						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apto-standard.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 1px 1px #000;">APARTAMENTO STANDARD</h3>
 						</div>
 					</a>
 				</div>
 				<div class=" row fadeInAppear">
 					<a href="{{url('/apartamentos/estudio-lujo-sierra-nevada')}}" class=" hover-effect"> 
-						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apartamento-lujo-sierra-nevada/a-panoramica.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
+						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/estudio-lujo.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 1px 1px #000;">ESTUDIO DE LUJO</h3>
 						</div>
 					</a>
 				</div>
 				<div class=" row fadeInAppear">
 					<a href="{{url('/apartamentos/estudio-standard-sierra-nevada')}}" class=" hover-effect"> 
-						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apartamento-lujo-sierra-nevada/salon.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
+						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/estudio-standard.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 1px 1px #000;">ESTUDIO STANDARD</h3>
 						</div>
 					</a>
@@ -476,8 +492,8 @@
 					
 
 					<a href="{{url('/actividades')}}" >
-						<div class="section nomargin noborder center" style="background-image: url({{ asset('/img/miramarski/banners/actividades.jpg') }}); padding: 80px 0; height: 265px;" data-stellar-background-ratio="0.4">
-								<h3 class="h2 text-center white text-white font-w800" style="text-shadow: 1px 1px #000;">¿QUÉ HACER EN SIERRA NEVADA?</h3>
+						<div class="section nomargin noborder center" style="background-image: url({{ asset('/img/miramarski/banners/actividades.jpg') }}); padding: 60px 0;" data-stellar-background-ratio="0.4">
+								<h3 class="h3 text-center white text-white font-w800" style="text-shadow: 1px 1px #000;">¿QUÉ HACER EN SIERRA NEVADA?</h3>
 								<span  class="text-center white text-white" style="text-shadow: 1px 1px #000;"></span>
 						</div>
 					</a>
