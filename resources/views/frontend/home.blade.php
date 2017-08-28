@@ -38,25 +38,25 @@
    					<span class="white text-white"><i class="fa fa-times fa-2x"></i></span>
    				</div>
    				<div id="content-book" class="container clearfix push-10" style="display: none;">
-   					<div class="tabs advanced-real-estate-tabs clearfix">
-
-   						<div class="tab-container" style="padding: 20px 0; background-color: #3F51B5;">
    							
-   							<div class="container clearfix">
-   								<div class="tab-content clearfix">
-   									<div class="col-md-6">
-										<div class="col-xs-12">
-											<h3 class="text-center white">FORMULARIO DE RESERVA</h3>
+						<div class="container clearfix"  style="padding: 20px 0; background-color: #3F51B5;">
+							<div class="row">
+								<div class="col-md-6 col-md-offset-3">
+									<div class="row" id="content-book-response">
+										<div class="front" style="min-height: 550px;">
+											<div class="col-xs-12">
+												<h3 class="text-center white">FORMULARIO DE RESERVA</h3>
+											</div>
+
+		   									@include('frontend._formBook')
 										</div>
-
-	   									@include('frontend._formBook')
-   									</div>
-   									<div class="col-md-6"  id="content-book-response"></div>
-   								</div>
-   							</div>
-   						</div>
-
-   					</div>
+										<div class="back" style="background-color: #3F51B5; min-height: 550px;">
+											
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
    				</div>
    			</div>
    			<div style="clear: both;"></div>
@@ -187,7 +187,7 @@
 	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/small/apartamento-lujo-sierra-nevada.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
-		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 90px 105px;">APARTAMENTO DE LUJO
+		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 90px 105px;">APARTAMENTO 2 DORMITORIOS DE LUJO
 		   								</h2>
 		   							</div>
 		   						</div>
@@ -202,7 +202,7 @@
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
 		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 90px 105px;">
-		   									APARTAMENTO STANDARD
+		   									APARTAMENTO 2 DORMITORIOS STANDARD
 		   								</h2>
 		   							</div>
 		   						</div>
@@ -353,7 +353,7 @@
 
 			       				<div class="oc-item">
 			       					<a class="pc-characteristics white center">
-			       						<img src="{{ asset('/img/miramarski/iconos/small/white-piepista.png') }}" /><br> A pie de pista 
+			       						<img src="{{ asset('/img/miramarski/iconos/small/white-piepista.png') }}" /> A pie de pista 
 			       					</a>
 			       				</div>
 			       				<div class="oc-item">
@@ -368,12 +368,12 @@
 			       				</div>
 			       				<div class="oc-item">
 			       					<a class="pc-characteristics white center">
-			       						<img src="{{ asset('/img/miramarski/iconos/small/white-piscina.png') }}" /> Piscina climatizada 
+			       						<img src="{{ asset('/img/miramarski/iconos/small/white-piscina.png') }}" /> Piscina  
 			       					</a>
 			       				</div>
 			       				<div class="oc-item">
 			       					<a class="pc-characteristics white center">
-			       						<img src="{{ asset('/img/miramarski/iconos/small/white-gimnasio.png') }}" /> gimnasio 
+			       						<img src="{{ asset('/img/miramarski/iconos/small/white-gimnasio.png') }}" /> Gimnasio 
 			       					</a>
 			       				</div>
 			       				<div class="oc-item">
@@ -383,7 +383,7 @@
 			       				</div>
 			       				<div class="oc-item">
 			       					<a class="pc-characteristics white center">
-			       						<img src="{{ asset('/img/miramarski/iconos/small/white-mascotas.png') }}" /> Prohibido mascotas 
+			       						<img src="{{ asset('/img/miramarski/iconos/small/white-mascotas.png') }}" /> No mascotas 
 			       					</a>
 			       				</div>
 			       				<div class="oc-item">
@@ -456,14 +456,14 @@
 				<div class=" row fadeInAppear">
 					<a href="{{url('/apartamentos/apartamento-lujo-sierra-nevada')}}"  class=" hover-effect"> 
 						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apto-lujo.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
-							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 1px 1px #000;">APARTAMENTO DE LUJO</h3>
+							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 1px 1px #000;">2 DORMITORIOS<br> DE LUJO</h3>
 						</div>
 					</a>
 				</div>
 				<div class=" row fadeInAppear">
 					<a href="{{url('/apartamentos/apartamento-standard-sierra-nevada')}}"  class=" hover-effect"> 
 						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apto-standard.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
-							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 1px 1px #000;">APARTAMENTO STANDARD</h3>
+							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 1px 1px #000;">2 DORMITORIOS STANDARD</h3>
 						</div>
 					</a>
 				</div>
@@ -485,22 +485,56 @@
 			<section  class="page-section" style="letter-spacing: 0;line-height: 1; margin: 45px 0;">
 				
 				<div class="row">
-					<div class="heading-block center">
-						<h3 class="green">OTROS SERVICIOS</h3>
-					</div>
+					<h2 class="text-center black font-w300">
+	   					OTROS <span class="font-w800 green ">SERVICIOS</span>
+	   				</h2>
+	   				<div class="col-md-12 col-xs-12">
 
+	   					<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
+	   						<a href="https:\\www.apartamentosierranevada.net/forfait.php" target="_blank">
+		   						<div class="col-xs-12 not-padding  container-image-box">
+		   							<div class="col-xs-12 not-padding push-0">
+	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/descuento-forfait.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
+		   							</div>
+		   							<div class="col-xs-12 not-padding text-right overlay-text">
+		   								<h2 class="font-w200 center push-10 text-center text font-s24 white" >DESCUENTOS <span class="font-w800 white">EN FORFAIT</span>
+		   								</h2>
+		   							</div>
+		   						</div>
+	   						</a>
+	   					</div>
 					
+						<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
+							<a href="#">
+		   						<div class="col-xs-12 not-padding  container-image-box">
+		   							<div class="col-xs-12 not-padding push-0">
+	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/fortfait.jpg')}}"  alt="Apartamento standard sierra nevada"/>
+		   							</div>
+		   							<div class="col-xs-12 not-padding text-right overlay-text">
+		   								<h2 class="font-w200 center push-10 text-center text font-s24 white" >
+		   									DESCUENTOS<span class="font-w800 white"> ALQUILER MATERIAL<span class="font-w800 white">
+		   								</h2>
+		   							</div>
+		   						</div>
+							</a>
+	   					</div>
 
-					<a href="{{url('/actividades')}}" >
-						<div class="section nomargin noborder center" style="background-image: url({{ asset('/img/miramarski/banners/actividades.jpg') }}); padding: 60px 0;" data-stellar-background-ratio="0.4">
-								<h3 class="h3 text-center white text-white font-w800" style="text-shadow: 1px 1px #000;">¿QUÉ HACER EN SIERRA NEVADA?</h3>
-								<span  class="text-center white text-white" style="text-shadow: 1px 1px #000;"></span>
-						</div>
-					</a>
-
-					<a href="{{ url('/forfait') }}">
-						<img src="{{asset('/img/miramarski/banners/descuentos.jpg')}}" class="img-responsive" />
-					</a>
+	   					<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
+		   					<a href="#">
+		   						<div class="col-xs-12 not-padding  container-image-box">
+		   							<div class="col-xs-12 not-padding push-0">
+		   								
+	   									<img class="img-responsive" src="{{ asset('/img/miramarski/ski-con-niños.jpg')}}"  alt="Estudio de lujo sierra nevada"/>
+		   							</div>
+		   							<div class="col-xs-12 not-padding text-right overlay-text">
+		   								<h2 class="font-w200 center push-10 text-center text font-s24 white">
+		   									¿QUÉ HACER EN SIERRA NEVADA?
+		   								</h2>
+		   							</div>
+		   						</div>
+		   					</a>
+	   					</div>
+	   				</div>
 				</div>
 
 			</section>
@@ -515,13 +549,22 @@
 @section('scripts')
 <script type="text/javascript" src="https://cdn.rawgit.com/nnattawat/flip/master/dist/jquery.flip.min.js"></script>
 <script type="text/javascript">
+	
+	$("#content-book-response").flip({
+	  trigger: 'manual'
+	});
+
+	function unflip() {
+
+		$("#content-book-response").flip(false);
+		$('#content-book-response .back').empty();
+	}
 
 
 	$('#form-book-apto-lujo').submit(function(event) {
 
 		event.preventDefault();
 
-		
 
 		var _token   = $('input[name="_token"]').val();
 		var name     = $('input[name="name"]').val();
@@ -536,13 +579,11 @@
 
 		var url = $(this).attr('action');
 
-		$('#content-book-response').fadeOut('500');
-
 		$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   date : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
 			
-			$('#content-book-response').empty();
-			$('#content-book-response').append(data).fadeIn('500');
-			
+			$('#content-book-response .back').empty();
+			$('#content-book-response .back').append(data);
+			$("#content-book-response").flip(true);
 
 		});
 

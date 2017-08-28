@@ -130,6 +130,7 @@
 		<script type="text/javascript" src="{{ asset('/js/scripts.js')}}"></script>
 
 		<script type="text/javascript" src="{{ asset('/js/scripts-slider.js')}}"></script>
+		<script type="text/javascript" src="{{ asset('/js/flip.js')}}"></script>
 
 		<!-- <script type="text/javascript" src="{{ asset('/frontend/js/jquery.js') }}"></script>
 		<script type="text/javascript" src="{{ asset('/frontend/js/plugins.js') }}"></script>
@@ -209,6 +210,8 @@
 		    });
 		});
 		</script>	
+
+
 		<script type="text/javascript">
 			var tpj = jQuery;
 
@@ -320,6 +323,11 @@
 		<script>
 			window.sr = ScrollReveal();
 			sr.reveal('.fadeInAppear', { duration: 1000 }, 50);
+		</script>
+
+
+		<script type="text/javascript">
+			
 		</script>
 		@yield('scripts')
 	</body>

@@ -66,7 +66,7 @@
 			</form>
 		</div>
         <div class="col-md-5 col-xs-12">
-        	<a href="{{ url('/') }}" class="button button-rounded button-reveal button-large button-red tright  center hvr-grow-shadow "><i class="icon-angle-right"></i><span>Cancelar</span></a>
+        	<button onclick="unflip()" class="button button-rounded button-reveal button-large button-red tright  center hvr-grow-shadow "><i class="icon-angle-right"></i><span>Cancelar</span></button>
         </div>
     </div>
 </div>
