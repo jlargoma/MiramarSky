@@ -255,7 +255,7 @@
 	   						<a href="https:\\www.apartamentosierranevada.net/forfait.php" target="_blank">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
-	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/descuento forfait.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
+	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/descuento-forfait.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
 		   								<h2 class="font-w200 center push-10 text-center text font-s24 white" >DESCUENTOS <span class="font-w800 white">EN FORFAIT</span>
@@ -285,7 +285,7 @@
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 		   								
-	   									<img class="img-responsive" src="{{ asset('/img/miramarski/ski con niños.jpg')}}"  alt="Estudio de lujo sierra nevada"/>
+	   									<img class="img-responsive" src="{{ asset('/img/miramarski/ski-con-niños.jpg')}}"  alt="Estudio de lujo sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
 		   								<h2 class="font-w200 center push-10 text-center text font-s24 white">
@@ -431,7 +431,7 @@
  							-->
        					</p>
 						<div class="col-xs-12 not-padding push-30" style="margin-bottom:0px!important; ">
-							<div id="oc-slider" class="owl-carousel carousel-widget" data-margin="0" data-items="1" data-animate-in="zoomIn" data-speed="450" data-animate-out="fadeOut">
+							<div id="oc-slider" class="owl-carousel carousel-widget " data-margin="0" data-items="1" data-animate-in="zoomIn" data-speed="450" data-animate-out="fadeOut">
 
 	       						<a href="#"><img src="{{ asset('/img/miramarski/exteriores.jpg') }}" alt="Slide 1" style="height: 200px;"></a>
 	       						<a href="#"><img src="{{ asset('/img/miramarski/cama-principal-apartamento-sierra-nevada.jpg') }}" alt="Slide 2" style="height: 200px;"></a>
