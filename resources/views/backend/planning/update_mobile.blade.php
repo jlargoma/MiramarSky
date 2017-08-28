@@ -27,7 +27,7 @@
                     <!-- Seccion Cliente -->
 
                     <div class="panel-body" style="padding: 0px 0px 0px 0px;">
-
+                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                         <div class="input-group col-xs-12">
                             <input class="form-control" type="hidden"  name="customer_id" value="<?php echo $book->customer->id ?>">
                             <div class="col-xs-6">
@@ -52,7 +52,7 @@
                     <br>
                     <div class="panel-body" style="padding: 0px 0px 0px 0px;">
                         
-                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                        
 
                             <div class="input-group col-md-12">
                                 <div class="col-md-4">
@@ -265,7 +265,7 @@
                                             </td>
                                         </tr>
                                     <?php endif ?>
-<!--                                     <tr>
+                                    <!-- <tr>
                                         <?php if ($total < $book->total_price): ?>
                                             <td class="text-center" colspan="2">Falta</td>
                                             <td class="text-center" ><?php echo $total-$book->total_price ?>€</td>

@@ -14185,4 +14185,7 @@ Main components
     opacity: 0.8;
     background-size: 114px 29px;
   }
+  .clear-both{
+    clear: both;
+  }
 }
