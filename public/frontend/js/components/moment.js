@@ -639,7 +639,7 @@
         return this._months[m.month()];
     }
 
-    var defaultLocaleMonthsShort = 'Ene_Feb_Mar_Abr_May_Jun_Jul_Ago_Sep_Oct_Nov_Dic'.split('_');
+    var defaultLocaleMonthsShort = 'Jan_Feb_Mar_Abr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_');
     function localeMonthsShort (m) {
         return this._monthsShort[m.month()];
     }

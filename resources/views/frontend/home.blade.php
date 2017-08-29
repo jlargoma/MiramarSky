@@ -613,7 +613,7 @@
 			$('#line-banner-offert').show();
 			$('#content-book').hide('100');
 			$('#desc-section').show();
-			$('#content-book-response .front').empty().load('/getFormBook');
+			unflip();
 			
 			$('html, body').animate({
 		       scrollTop: $("body").offset().top
@@ -637,10 +637,10 @@
 			$('#line-banner-offert').show();
 			$('#content-book').hide('100');
 			
-			$('#content-book-response').empty().load('/getFormBook');
-				$('html, body').animate({
-				       scrollTop: $("body").offset().top
-				   }, 2000);
+			unflip();
+			$('html, body').animate({
+			       scrollTop: $("body").offset().top
+			   }, 2000);
 		});
 	<?php endif; ?>
 

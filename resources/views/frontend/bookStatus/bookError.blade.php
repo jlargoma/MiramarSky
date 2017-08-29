@@ -8,3 +8,6 @@
 		<span class="white">Por favor intentelo de nuevo con otras fechas.</span>
 	</div>
 </div>
+<div class="col-xs-12">
+	<button onclick="unflip()" class="button button-rounded button-reveal button-large button-red tright  center hvr-grow-shadow "><i class="icon-angle-right"></i><span>volver</span></button>
+</div>

@@ -112,7 +112,7 @@
 			</div>¡
 		</div>
 		<?php if (!$mobile->isMobile()): ?>
-		<div id="content-form-book" class="row bg-bluesky push-30" style="display: none; background-image: url({{asset('/img/miramarski/esquiadores.png')}}); background-position: left bottom; background-repeat: no-repeat; background-size: contain">
+		<div id="content-form-book" class="row bg-bluesky push-30" style="display: none; background-image: url({{asset('/img/miramarski/esquiadores.png')}}); background-position: left bottom; background-repeat: no-repeat; background-size: 45%;">
 
 			<span style="padding: 0 5px; cursor: pointer; opacity: 1" class="close pull-right white text-white sm-m-r-20 sm-m-t-10">
 				<i class="fa fa-times"></i>
@@ -121,7 +121,7 @@
 			<div class="container clearfix">
 				<div class="col-md-6 col-md-offset-3">
 					<div class="row" id="content-book-response">
-						<div class="front" style="height: 550px!important;">
+						<div class="front" style="max-height: 520px!important;">
 							<div class="col-xs-12">
 								<h3 class="text-center white">FORMULARIO DE RESERVA</h3>
 							</div>
@@ -129,7 +129,7 @@
 								@include('frontend._formBook')
 							</div>
 						</div>
-						<div class="back" style="background-color: #3F51B5; height: 550px!important;">
+						<div class="back" style="background-color: #3F51B5; max-height: 520px!important;">
 							
 						</div>
 					</div>
@@ -137,17 +137,29 @@
 			</div>
 		</div>
 		<?php else: ?>
-			<div id="content-form-book" class="row bg-bluesky push-30" style="display: none; ">
-				<span style="padding: 0 5px; cursor: pointer; opacity: 1; margin-right: 20px; margin-top: 10px;" class="close pull-right white text-white"><i class="fa fa-times"></i></span>
-				<div class="col-xs-12 col-md-4 hidden-sm hidden-xs" style=" min-height: 535px">
-					<img src="{{asset('/img/miramarski/esquiadores.png')}}" class="img-responsive" style="position: absolute; bottom: 0">
+			<div id="content-form-book" class="col-xs-12 bg-bluesky push-30" style="display: none;">
+
+				<span style="padding: 0 5px; cursor: pointer; opacity: 1" class="close pull-right white text-white sm-m-r-20 sm-m-t-10">
+					<i class="fa fa-times"></i>
+				</span>
+				
+				<div class="container-mobile clearfix" style="margin-top: 10px;">
+					<div class="col-md-6 col-md-offset-3">
+						<div class="row" id="content-book-response">
+							<div class="front" style="max-height: 520px!important;">
+								<div class="col-xs-12">
+									<h3 class="text-center white">FORMULARIO DE RESERVA</h3>
+								</div>
+								<div id="form-content">
+									@include('frontend._formBook')
+								</div>
+							</div>
+							<div class="back" style="background-color: #3F51B5; max-height: 520px!important;">
+								
+							</div>
+						</div>
+					</div>
 				</div>
-	            <div id="content-book-response" class="col-xs-12 col-md-4" >
-	            	<div class="col-xs-12 col-md-4 hidden-lg hidden-md" >
-	            		<h4 class="text-center white">SOLICITA TU RESERVA</h4>
-	            	</div>
-	            	@include('frontend._formBook')
-	            </div>
 			</div>
 		<?php endif; ?>
 
@@ -226,6 +238,7 @@
 
 	$('span.close').click(function(event) {
 		$('#content-form-book').hide('400');
+		unflip();
 		$('html,body').animate({
 		        scrollTop: $("body").offset().top},
         'slow');
