@@ -116,9 +116,9 @@ class LiquidacionController extends Controller
                 if ($i == 0) {
                     $leyenda = "['Mes',";
                 }elseif($i == count($arrayYear)){
-                    $leyenda .= $años[count($arrayYear)]."],";
+                    $leyenda .= "'".$años[count($arrayYear)-1]."'],";
                 }else{
-                    $leyenda .= $años[$i-1].",";
+                    $leyenda .= "'".$años[$i-1]."',";
                 }
             }
             // Mes
@@ -133,8 +133,14 @@ class LiquidacionController extends Controller
 
             //Segundo Año
             foreach ($arrayMonth as $key => $stats) {
-                $arrayStadisticas[$key] .= ($key+5)."],";
+                $arrayStadisticas[$key] .= ($key+5).",";
             }
+
+            //Tercer  Año
+            foreach ($arrayMonth as $key => $stats) {
+                $arrayStadisticas[$key] .= ($key+6)."],";
+            }
+            
 
 
             return view ('backend/sales/statistics',[

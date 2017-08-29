@@ -51,10 +51,7 @@
     	</div>
         <div class="col-md-12">
 			<div class="tab-content">
-					<pre>
-						<?php print_r($leyenda) ?>
-				  <div id="curve_chart" style="width: 900px; height: 500px"></div>
-
+				<div id="curve_chart" style="width: 900px; height: 500px"></div>
 			</div>
         </div>
     </div>
@@ -69,10 +66,12 @@
 
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Mes', 'Sales', 'Expenses'],
-          	<?php foreach ($estadisticas as $mes): ?>
-				<?php echo $mes?>
-			<?php endforeach ?>
+          // ['Mes', 'Sales', 'Expenses'],
+          <?php echo $leyenda;?>
+   			<?php foreach ($estadisticas as $key => $mes): ?>
+   				<?php echo $mes ?>
+   			<?php endforeach ?>
+			['Noviembre',2,5,7],
         ]);
 
         var options = {
