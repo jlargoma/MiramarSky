@@ -76,7 +76,13 @@ class Book extends Model
 
                 return $parking = $array[$parking];
             }
-   
+    // Para poner nombre al suplemento de lujo en la reserva
+        static function getSupLujo($lujo)
+            {
+                $array = [1 =>"No", 2 =>"Gratis",3 =>"50 %",4 =>"Si"];
+
+                return  $supLujo = $array[$lujo];
+            }
     //Para poner nombre a la agencia//
        static function getAgency($agency)
             {
@@ -222,7 +228,46 @@ class Book extends Model
                     }
                 return $supPark;
             }
-
+    //Funcion para el precio del Suplemento de Lujo
+        static function getPriceLujo($lujo)
+            {
+                $supLujo = 0;
+                switch ($lujo) {
+                        case 1:
+                            $supLujo = 0;
+                             break;
+                        case 2:
+                            $supLujo = 0;
+                            break;
+                        case 3:
+                            $supLujo = 50/2;
+                            break;
+                        case 4:
+                            $supLujo = 50;
+                            break;
+                    }
+                return $supLujo;
+            }
+    //Funcion para el precio del Suplemento de Lujo
+        static function getCostLujo($lujo)
+            {
+                $supLujo = 0;
+                switch ($lujo) {
+                        case 1:
+                            $supLujo = 0;
+                             break;
+                        case 2:
+                            $supLujo = 0;
+                            break;
+                        case 3:
+                            $supLujo = 40/2;
+                            break;
+                        case 4:
+                            $supLujo = 40;
+                            break;
+                    }
+                return $supLujo;
+            }
     // Funcion para cambiar la reserva de habitacion o estado
         public function changeBook($status,$room,$book)
             {   

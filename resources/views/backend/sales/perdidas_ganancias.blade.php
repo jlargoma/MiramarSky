@@ -6,6 +6,10 @@
 
 @section('title') Cuenta de perdidas y ganancias @endsection
 
+@section('headerButtoms')
+	@include('layouts/headerbuttoms')
+@endsection
+
 @section('content')
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>

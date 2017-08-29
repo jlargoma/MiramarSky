@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use \Carbon\Carbon;
 use App\Classes\Mobile;
-
+setlocale(LC_TIME, "ES"); 
+setlocale(LC_TIME, "es_ES");
 
 class LiquidacionController extends Controller
 {
@@ -86,7 +87,62 @@ class LiquidacionController extends Controller
         }
     public function statistics()
         {
-            return view ('backend/sales/statistics');
+            $arrayMonth = ["Noviembre","Diciembre","Enero","Febrero","Marzo","Abril"];
+            $arrayStadisticas = array();
+            $arrayYear = array();
+            $años = array();
+            $books = \App\Book::where('type_book',2)->get();
+            
+            foreach ($books as $book) {
+                $fecha = Carbon::CreateFromFormat('Y-m-d',$book->start);
+                
+                if ($fecha->format('m')< 11 ) {
+                    $año = ($fecha->format('Y')-1)."-".($fecha->format('Y'));
+                }else{
+                    $año = ($fecha->format('Y'))."-".($fecha->format('Y')+1);
+                }
+                if (isset($arrayYear[$año])) {
+                    $arrayYear[$año] += $book->total_price;
+                }else{
+                    $arrayYear[$año] = $book->total_price;
+                }
+
+            }
+            foreach ($arrayYear as $key => $value){
+                $años[] = $key;
+            }
+
+            for ($i=0; $i <= count($arrayYear) ; $i++) { 
+                if ($i == 0) {
+                    $leyenda = "['Mes',";
+                }elseif($i == count($arrayYear)){
+                    $leyenda .= $años[count($arrayYear)]."],";
+                }else{
+                    $leyenda .= $años[$i-1].",";
+                }
+            }
+            // Mes
+            foreach ($arrayMonth as $key => $stats) {
+                $arrayStadisticas[$key] = "['".$stats."',";
+            }
+
+            //Primer Año
+            foreach ($arrayMonth as $key => $stats) {
+                $arrayStadisticas[$key] .= "0,";
+            }
+
+            //Segundo Año
+            foreach ($arrayMonth as $key => $stats) {
+                $arrayStadisticas[$key] .= ($key+5)."],";
+            }
+
+
+            return view ('backend/sales/statistics',[
+                                                        'meses' => $arrayMonth,
+                                                        'estadisticas' => $arrayStadisticas,
+                                                        'arrayYear' => $arrayYear,
+                                                        'leyenda' => $leyenda,
+                                                    ]);
         }
 
     /**

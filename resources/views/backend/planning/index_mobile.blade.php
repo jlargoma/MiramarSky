@@ -350,156 +350,173 @@
 							        	</div>
 							        	<div class="clear"></div>
 							        	
-							        	<div class="col-xs-12">
+							        	<div class="col-xs-12 sm-p-l-0 sm-p-r-0">
 							        	    <div class="panel">
 		        	    			        	<form class="form-horizontal" action="{{ url('/admin/reservas/create') }}" method="post">
 		        	    			        		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 		        	    			        		<div class="col-xs-12 col-md-12 push-20">
 		        	    			        			<p class="text-center">Cliente</p>
 		        	    			        		</div>
-		        	    			                <div style="padding: 0px 0px 0px 0px;">
-		        	    			                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-		        	    			                    <div class="input-group col-xs-12">
-		        	    			                        <div class="col-xs-6">
-		        	    			                           <input class="form-control" type="text" name="name" value="" placeholder="Nombre">
-		        	    			                        </div>
-		        	    			                        <div class="col-xs-6">
-		        	    			                            <input class="form-control" type="number" name="phone" value="" placeholder="Telefono"> 
-		        	    			                        </div>
-		        	    			                        <br><br>
-		        	    			                        <div class="col-xs-12">
-		        	    			                            <input class="form-control" type="email" name="email" value="" placeholder="Email">  
-		        	    			                        </div>
-		        	    			                         
-		        	    			                        <div style="clear: both;"></div>
-		        	    			                    </div>                                            
-		        	    			                </div>
-													<br>
-													<div class="col-xs-12 col-md-12 push-20">
-														<p class="text-center">Reserva</p>
-													</div>
-        <!-- Icono en la misma linea -->
-        	    			                		<div style="padding: 0px 0px 0px 0px;">
-    	    			                		        
-	    			                		            <div class="col-md-4">
-	    			                		                <div class="input-daterange input-group" id="datepicker-range">
+	        	    			                <div style="padding: 0px 0px 0px 0px;">
+	        	    			                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+	        	    			                    <div class="input-group col-xs-12">
+	        	    			                        <div class="col-xs-6">
+	        	    			                           <input class="form-control" type="text" name="name" value="" placeholder="Nombre">
+	        	    			                        </div>
+	        	    			                        <div class="col-xs-6">
+	        	    			                            <input class="form-control" type="number" name="phone" value="" placeholder="Telefono"> 
+	        	    			                        </div>
+	        	    			                        <br><br>
+	        	    			                        <div class="col-xs-12">
+	        	    			                            <input class="form-control" type="email" name="email" value="" placeholder="Email">  
+	        	    			                        </div>
+	        	    			                         
+	        	    			                        <div style="clear: both;"></div>
+	        	    			                    </div>                                            
+	        	    			                </div>
+            													<br>
+            													<div class="col-xs-12 col-md-12 push-20">
+            														<p class="text-center">Reserva</p>
+            													</div>
+      	    			                		<div style="padding: 0px 0px 0px 0px;">
+  	    			                		        
+    			                		            <div class="col-md-4">
+    			                		                <div class="input-daterange input-group" id="datepicker-range">
 
-	    			                		                    <input id="start" type="text" class="input-sm form-control" name="start" data-date-format="dd-mm-yyyy" value="">
-	    			                		                    <span class="input-group-addon">Hasta</span>
-	    			                		                    <input id="finish" type="text" class="input-sm form-control" name="finish" data-date-format="dd-mm-yyyy" value="">
-	    			                		                </div>
-	    			                		            </div>
+    			                		                    <input id="start" type="text" class="input-sm form-control" name="start" data-date-format="dd-mm-yyyy" value="">
+    			                		                    <span class="input-group-addon">Hasta</span>
+    			                		                    <input id="finish" type="text" class="input-sm form-control" name="finish" data-date-format="dd-mm-yyyy" value="">
+    			                		                </div>
+    			                		            </div>
 
-	    			                		            <br>
+    			                		            <br>
 
-	    			                		            <div class="col-xs-3">
-	    			                		                <label style="float: left"><i class="fa fa-moon-o"></i></label>
-	    			                		                <input type="text" class="nigths" name="nigths" style="width: 100%;float:right;" value="" disabled style="border:none">
-	    			                		            </div> 
+    			                		            <div class="col-xs-3 " >
+    			                		                <label class="sm-pull-left"><i class="fa fa-moon-o"></i></label>
+    			                		                <input type="text" class="nigths sm-pull-right" name="nigths" style="width: 60%" disabled style="border:none">
+    			                		            </div> 
 
-	    			                		            <div class="col-xs-3">
-	    			                		                <label><i class="fa fa-user"></i></label>
-	    			                		                <input  type="text" class="form-control full-width pax" name="pax" style="width: 100%" value="<?php echo $book->pax ?>">	    			                		                   
-	    			                		            </div>
-                                            
-	    			                		            <div class="col-xs-6">
-	    			                		                
-	    			                		                <select class="form-control full-width newroom" data-init-plugin="select2" name="newroom" id="newroom">
-	    			                		                    <?php foreach ($rooms as $room): ?>
-	    			                		                        <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
-	    			                		                    <?php endforeach ?>
-	    			                		                </select>
-	    			                		            </div>
+    			                		            <div class="col-xs-3 sm-padding-0">
+                                              <div class="col-xs-3 sm-padding-0">
+                                                <label class="sm-pull-left"><i class="fa fa-user"></i></label>
+                                              </div>
+    			                		                <div class="col-xs-8 sm-padding-0">
+                                                <input  type="text" class="form-control full-width pax sm-pull-right" name="pax"> 
+                                              </div>		                		                   
+    			                		            </div>
+                                          
+    			                		            <div class="col-xs-6 sm-padding-0">
+                                            <div class="col-xs-3">
+                                               <label ><i class="fa fa-home" aria-hidden="true"></i></label>
+                                            </div>
+  			                		                <div class="col-xs-8 sm-padding-0">
+                                              <select class="form-control full-width newroom" data-init-plugin="select2" name="newroom" id="newroom" >
+                                                <?php foreach ($rooms as $room): ?>
+                                                    <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
+                                                <?php endforeach ?>
+                                            </select>
+                                            </div>
+    			                		            </div>
 
-	    			                		            <div class="col-xs-5 col-xs-offset-1">
-	    			                		                <label>Park</label>
-	    			                		                <select class=" form-control full-width parking" data-init-plugin="select2" name="parking">
-	    			                		                    <?php for ($i=1; $i <= 4 ; $i++): ?>
-	    			                		                        <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
-	    			                		                    <?php endfor;?>
-	    			                		                </select>
-	    			                		            </div>
+                                          <div class="clear-both"></div><br>
 
-	    			                		            <div class="col-xs-5">
-	    			                		                <label><i class="fa fa-star"></i><i class="fa fa-star"></i></label>
-	    			                		                <select class=" form-control full-width parking" data-init-plugin="select2" name="lujo">
-	    			                		                    <?php for ($i=1; $i <= 4 ; $i++): ?>
-	    			                		                        <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
-	    			                		                    <?php endfor;?>
-	    			                		                </select>
-	    			                		            </div>
+    			                		            <div class="col-xs-5 col-xs-offset-1 sm-padding-0 sm-no-margin">
+  			                		                <div class="col-xs-3">
+                                              <label >P</label>      
+                                            </div>
+                                            <div class="col-xs-8 sm-padding-0">
+                                              <select class=" form-control full-width parking" data-init-plugin="select2" name="parking">
+                                                <?php for ($i=1; $i <= 4 ; $i++): ?>
+                                                    <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
+                                                <?php endfor;?>
+                                            </select>
+                                            </div>
+    			                		            </div>
 
-	    			                		            <div class="clear-both"></div>
+    			                		            <div class="col-xs-7">
+                                            <div class="col-xs-3">
+                                              <label><i class="fa fa-star"></i></label>
+                                            </div>
+  			                		                <div class="col-xs-8 sm-no-padding sm-no-margin">
+                                              <select class=" form-control full-width Suplujo" data-init-plugin="select2" name="Suplujo">
+                                                <?php for ($i=1; $i <= 4 ; $i++): ?>
+                                                    <option value="<?php echo $i ?>"><?php echo $book->getSupLujo($i) ?></option>
+                                                <?php endfor;?>
+                                            </select>
+                                            </div>
+    			                		            </div>
 
-	    			                		            <div class="col-xs-5 col-xs-offset-1">                                                        
-	    			                		                <label>Cost Agencia</label>
-	    			                		                <input type="text" class="agencia form-control" name="agencia" value="0">
-	    			                		            </div>
+    			                		            <div class="clear-both"></div>
 
-	    			                		            <div class="col-xs-5">
-	    			                		                <label>Agencia</label>
-	    			                		                <select class=" form-control full-width agency" data-init-plugin="select2" name="agency">
-	    			                		                    <?php for ($i=1; $i <= 2 ; $i++): ?>
-	    			                		                        <option value="<?php echo $i ?>"><?php echo $book->getAgency($i) ?></option>
-	    			                		                    <?php endfor;?>
-	    			                		                </select>
-	    			                		            </div>
-    	    			                		        
-	    			                		            <div class="col-xs-5 col-xs-offset-1">
-	    			                		                <label>Extras</label>
-	    			                		                <select class="full-width select2-hidden-accessible" data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true">
-	    			                		                    <?php foreach ($extras as $extra): ?>
-	    			                		                        <option value="<?php echo $extra->id ?>"><?php echo $extra->name ?></option>
-	    			                		                    <?php endforeach ?>
-	    			                		                </select>
-	    			                		            </div>
+    			                		            <div class="col-xs-5 col-xs-offset-1">                                                        
+    			                		                <label>Cost Agencia</label>
+    			                		                <input type="text" class="agencia form-control pvpAgencia" name="agencia" >
+    			                		            </div>
 
-	    			                		            <div class="col-xs-5">
-	    			                		                <label>PVP Extras</label>
-	    			                		                <input type="text" class="pvp-exctra form-control" name="pvp-extra" disabled>
-	    			                		            </div>
+    			                		            <div class="col-xs-5">
+    			                		                <label>Agencia</label>
+    			                		                <select class=" form-control full-width agency" data-init-plugin="select2" name="agency">
+    			                		                    <?php for ($i=1; $i <= 2 ; $i++): ?>
+    			                		                        <option value="<?php echo $i ?>"><?php echo $book->getAgency($i) ?></option>
+    			                		                    <?php endfor;?>
+    			                		                </select>
+    			                		            </div>
+  	    			                		        
+    			                		            <div class="col-xs-5 col-xs-offset-1">
+    			                		                <label>Extras</label>
+    			                		                <select class="full-width select2-hidden-accessible extras" data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true">
+    			                		                    <?php foreach ($extras as $extra): ?>
+    			                		                        <option value="<?php echo $extra->id ?>"><?php echo $extra->name ?></option>
+    			                		                    <?php endforeach ?>
+    			                		                </select>
+    			                		            </div>
 
-	    			                		            <div class="col-xs-4">
-	    			                		                <label>Total</label>
-	    			                		                <input type="text" class="form-control total" name="total" value="<?php echo $book->total_price ?>" style="width: 100%">
-	    			                		            </div> 
+    			                		            <div class="col-xs-5">
+    			                		                <label>PVP Extras</label>
+    			                		                <input type="text" class="pvp-exctra form-control" name="pvp-extra" disabled>
+    			                		            </div>
 
-	    			                		            <div class="col-xs-4">
-	    			                		                <label>Coste</label>
-	    			                		                <input type="text" class="form-control cost" name="cost" value="<?php echo $book->cost_total ?>" disabled style="width: 100%">
-	    			                		            </div>
+    			                		            <div class="col-xs-4">
+    			                		                <label>Total</label>
+    			                		                <input type="text" class="form-control total" name="total" value="<?php echo $book->total_price ?>" style="width: 100%">
+    			                		            </div> 
 
-	    			                		            <div class="col-xs-4">
-	    			                		                <label>Beneficio</label>
-	    			                		                <input type="text" class="form-control beneficio" name="beneficio" value="<?php echo $book->total_ben ?>" disabled style="width: 100%">
-	    			                		            </div>
-    	    			                		            </div>
-    	    			                		        <br><br>
-    	    			                		        <div class="input-group col-md-12">
+    			                		            <div class="col-xs-4">
+    			                		                <label>Coste</label>
+    			                		                <input type="text" class="form-control cost" name="cost" value="<?php echo $book->cost_total ?>" disabled style="width: 100%">
+    			                		            </div>
 
-	    			                		                <div class="col-xs-12">
-	    			                		                    <label>Comentarios Usuario</label>
-	    			                		                    <textarea class="form-control" name="comments" style="width: 100%" rows="4">
-	    			                		                    </textarea>
-	    			                		                </div>
-    	    			                		            
-    	    			                		            <!-- Añadir boton para escribir comentario interno -->
+    			                		            <div class="col-xs-4">
+    			                		                <label>Beneficio</label>
+    			                		                <input type="text" class="form-control beneficio" name="beneficio" value="<?php echo $book->total_ben ?>" disabled style="width: 100%">
+    			                		            </div>
+  	    			                		            </div>
+  	    			                		        <br><br>
+  	    			                		        <div class="input-group col-md-12">
 
-	    			                		                <div class="col-xs-12">
-	    			                		                    <label>Comentarios Internos</label>
-	    			                		                    <textarea class="form-control" name="book_comments" style="width: 100%" rows="4">
-	    			                		                    </textarea>
-	    			                		                </div>
-    	    			                		        </div> 
-    	    			                		        <div class="input-group col-md-12">
-    	    			                		            
-    	    			                		        </div> 
-    	    			                		        <br>
-    	    			                		        <div class="input-group col-xs-12 text-center">
-    	    			                		            <button class="form-control btn btn-complete active" type="submit" style="width: 90%;margin-left: 5%"><p style="font-size: 22px">Guardar</p></button>
-    	    			                		        </div>   
-    	    			                		        <br>                    
-        	    			                		</div>
+    			                		                <div class="col-xs-12">
+    			                		                    <label>Comentarios Usuario</label>
+    			                		                    <textarea class="form-control" name="comments" style="width: 100%" rows="4">
+    			                		                    </textarea>
+    			                		                </div>
+  	    			                		            
+  	    			                		            <!-- Añadir boton para escribir comentario interno -->
+
+    			                		                <div class="col-xs-12">
+    			                		                    <label>Comentarios Internos</label>
+    			                		                    <textarea class="form-control" name="book_comments" style="width: 100%" rows="4">
+    			                		                    </textarea>
+    			                		                </div>
+  	    			                		        </div> 
+  	    			                		        <div class="input-group col-md-12">
+  	    			                		            
+  	    			                		        </div> 
+  	    			                		        <br>
+  	    			                		        <div class="input-group col-xs-12 text-center">
+  	    			                		            <button class="form-control btn btn-complete active" type="submit" style="width: 90%;margin-left: 5%"><p style="font-size: 22px">Guardar</p></button>
+  	    			                		        </div>   
+  	    			                		        <br>                    
+      	    			                		</div>
 		        	    			        	</form>
 							        	    </div>
 							        	</div>
@@ -514,121 +531,121 @@
   		</div>
 
   		<!-- Calendario -->
-  		<div id="calendario" style="border-top: 5px solid black">
-  			<div class="container">
-  				<div class="panel">
-  					<ul class="nav nav-tabs nav-tabs-simple bg-info-light" role="tablist" data-init-reponsive-tabs="collapse">
-  						<?php $dateAux = $inicio->copy(); ?>
-  						<?php for ($i=1; $i <= 5 ; $i++) :?>
-  							<li <?php if($i == 1 ){ echo "class='active'";} ?> style="width:20%!important">
-  								<a href="#tab<?php echo $i?>" data-toggle="tab" role="tab" style="padding:5px;font-size: 17px;">
-  									<?php echo ucfirst($dateAux->copy()->formatLocalized('%b'))?>
-  								</a>
-  							</li>
-  							<?php $dateAux->addMonth(); ?>
-  						<?php endfor; ?>
-  					</ul>
-  					<div class="tab-content">
+    		<div id="calendario" style="border-top: 5px solid black">
+    			<div class="container">
+    				<div class="panel">
+    					<ul class="nav nav-tabs nav-tabs-simple bg-info-light" role="tablist" data-init-reponsive-tabs="collapse">
+    						<?php $dateAux = $inicio->copy(); ?>
+    						<?php for ($i=1; $i <= 5 ; $i++) :?>
+    							<li <?php if($i == 1 ){ echo "class='active'";} ?> style="width:20%!important">
+    								<a href="#tab<?php echo $i?>" data-toggle="tab" role="tab" style="padding:5px;font-size: 17px;">
+    									<?php echo ucfirst($dateAux->copy()->formatLocalized('%b'))?>
+    								</a>
+    							</li>
+    							<?php $dateAux->addMonth(); ?>
+    						<?php endfor; ?>
+    					</ul>
+    					<div class="tab-content">
 
-  						<?php for ($z=1; $z <= 5; $z++):?>
-  							<div class="table-responsive tab-pane <?php if($z == 1){ echo 'active';} ?>" id="tab<?php echo $z ?>" style="padding-bottom: 10px">
-  								<div class="row">
-  									<div class="col-md-12">
-  										<table class="fc-border-separate" style="width: 100%">
-  											<thead>
-  												<tr>
-  													<td class="text-center" colspan="<?php echo $arrayMonths[$inicio->copy()->format('n')]+1 ?>">
-  														<?php echo  ucfirst($inicio->copy()->formatLocalized('%B %Y'))?>
-  													</td> 
-  												</tr>
-  												<tr>
-  													<td rowspan="2" style="width: 1%!important"></td>
-  													<?php for ($i=1; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
-  														<td style='border:1px solid black;width: 3%;font-size: 10px;min-width: 12px' class="text-center">
-  															<?php echo $i?> 
-  														</td> 
-  													<?php endfor; ?>
-  												</tr>
-  												<tr>
+    						<?php for ($z=1; $z <= 5; $z++):?>
+    							<div class="table-responsive tab-pane <?php if($z == 1){ echo 'active';} ?>" id="tab<?php echo $z ?>" style="padding-bottom: 10px">
+    								<div class="row">
+    									<div class="col-md-12">
+    										<table class="fc-border-separate" style="width: 100%">
+    											<thead>
+    												<tr>
+    													<td class="text-center" colspan="<?php echo $arrayMonths[$inicio->copy()->format('n')]+1 ?>">
+    														<?php echo  ucfirst($inicio->copy()->formatLocalized('%B %Y'))?>
+    													</td> 
+    												</tr>
+    												<tr>
+    													<td rowspan="2" style="width: 1%!important"></td>
+    													<?php for ($i=1; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
+    														<td style='border:1px solid black;width: 3%;font-size: 10px;min-width: 12px' class="text-center">
+    															<?php echo $i?> 
+    														</td> 
+    													<?php endfor; ?>
+    												</tr>
+    												<tr>
 
-  													<?php for ($i=1; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
-  														<td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$inicio->copy()->format('n')][$i]?>">
-  															<?php echo $days[$inicio->copy()->format('n')][$i]?> 
-  														</td> 
-  													<?php endfor; ?> 
-  												</tr>
-  											</thead>
-  											<tbody>
+    													<?php for ($i=1; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
+    														<td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$inicio->copy()->format('n')][$i]?>">
+    															<?php echo $days[$inicio->copy()->format('n')][$i]?> 
+    														</td> 
+    													<?php endfor; ?> 
+    												</tr>
+    											</thead>
+    											<tbody>
 
-  												<?php foreach ($roomscalendar as $room): ?>
-  													<tr>
-  														<?php $date = $inicio->startOfMonth() ?>
-  														<td class="text-center"><b><?php echo substr($room->nameRoom, 0,5)?></b></td>
+    												<?php foreach ($roomscalendar as $room): ?>
+    													<tr>
+    														<?php $date = $inicio->startOfMonth() ?>
+    														<td class="text-center"><b><?php echo substr($room->nameRoom, 0,5)?></b></td>
 
-  														<?php for ($i=01; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
+    														<?php for ($i=01; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
 
-  															<?php if (isset($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i])): ?>
-  																<?php if ($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->start == $inicio->copy()->format('Y-m-d')): ?>
-  																	<td style='border:1px solid grey;width: 3%'>
-  																		<div style="width: 50%;float: left;">
-  																			&nbsp;
-  																		</div>
-  																		<div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> start" style="width: 50%;float: left;">
-  																			&nbsp;
-  																		</div>
+    															<?php if (isset($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i])): ?>
+    																<?php if ($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->start == $inicio->copy()->format('Y-m-d')): ?>
+    																	<td style='border:1px solid grey;width: 3%'>
+    																		<div style="width: 50%;float: left;">
+    																			&nbsp;
+    																		</div>
+    																		<div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> start" style="width: 50%;float: left;">
+    																			&nbsp;
+    																		</div>
 
-  																	</td>    
-  																<?php elseif($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->finish == $inicio->copy()->format('Y-m-d')): ?>
-  																	<td style='border:1px solid grey;width: 3%'>
-  																		<div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> end" style="width: 50%;float: left;">
-  																			&nbsp;
-  																		</div>
-  																		<div style="width: 50%;float: left;">
-  																			&nbsp;
-  																		</div>
+    																	</td>    
+    																<?php elseif($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->finish == $inicio->copy()->format('Y-m-d')): ?>
+    																	<td style='border:1px solid grey;width: 3%'>
+    																		<div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> end" style="width: 50%;float: left;">
+    																			&nbsp;
+    																		</div>
+    																		<div style="width: 50%;float: left;">
+    																			&nbsp;
+    																		</div>
 
 
-  																	</td>
-  																<?php else: ?>
+    																	</td>
+    																<?php else: ?>
 
-  																	<td style='border:1px solid grey;width: 3%' title="<?php echo $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->customer['name'] ?>" class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?>">
+    																	<td style='border:1px solid grey;width: 3%' title="<?php echo $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->customer['name'] ?>" class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?>">
 
-  																		<a href="{{url ('/admin/reservas/update')}}/<?php echo $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->id ?>">
-  																			<div style="width: 100%;height: 100%">
-  																				&nbsp;
-  																			</div>
-  																		</a>
+    																		<a href="{{url ('/admin/reservas/update')}}/<?php echo $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->id ?>">
+    																			<div style="width: 100%;height: 100%">
+    																				&nbsp;
+    																			</div>
+    																		</a>
 
-  																	</td>
+    																	</td>
 
-  																<?php endif ?>
-  															<?php else: ?>
-  																<td class="<?php echo $days[$inicio->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
+    																<?php endif ?>
+    															<?php else: ?>
+    																<td class="<?php echo $days[$inicio->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
 
-  																</td>
-  															<?php endif; ?>
-  															<?php if ($inicio->copy()->format('d') != $arrayMonths[$inicio->copy()->format('n')]): ?>
-  																<?php $date = $inicio->addDay(); ?>
-  															<?php else: ?>
-  																<?php $date = $inicio->startOfMonth() ?>
-  															<?php endif ?>
+    																</td>
+    															<?php endif; ?>
+    															<?php if ($inicio->copy()->format('d') != $arrayMonths[$inicio->copy()->format('n')]): ?>
+    																<?php $date = $inicio->addDay(); ?>
+    															<?php else: ?>
+    																<?php $date = $inicio->startOfMonth() ?>
+    															<?php endif ?>
 
-  														<?php endfor; ?> 
-  													</tr>
+    														<?php endfor; ?> 
+    													</tr>
 
-  												<?php endforeach; ?>
-  											</tbody>
-  										</table>
-  										<?php $date = $date->addMonth(); ?>
-  									</div>
-  								</div>
-  							</div>
-  						<?php endfor; ?>
+    												<?php endforeach; ?>
+    											</tbody>
+    										</table>
+    										<?php $date = $date->addMonth(); ?>
+    									</div>
+    								</div>
+    							</div>
+    						<?php endfor; ?>
 
-  					</div>
-  				</div> 
-  			</div>
-  		</div>
+    					</div>
+    				</div> 
+    			</div>
+    		</div>
   		<!-- Calendario -->
 
   	</div>
@@ -763,18 +780,19 @@
     	}
     });
 
-    $('#newroom, .pax, .parking, .agencia').change(function(event){ 
+    $('#newroom, .pax, .parking').change(function(event){ 
 
     	var room = $('#newroom').val();
     	var pax = $('.pax').val();
     	var park = $('.parking').val();
+      var lujo = $('.Suplujo').val();
     	var beneficio = 0;
     	var costPark = 0;
     	var pricePark = 0;
+      var costLujo = 0;
+      var priceLujo = 0;
     	var agencia = 0;
     	$.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
-    		console.log(data);
-    		console.log(pax);
     		if (pax < data) {
     			$('.pax').attr('style' , 'background-color:red');
     			$('.book_comments').empty();
@@ -787,42 +805,64 @@
 
     	$.get('/admin/reservas/getPricePark', {park: park, noches: diferencia}).success(function( data ) {
     		pricePark = data;
-    		$.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-    			price = data;
+        $.get
+          $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+      			price = data;
 
-    			price = (parseFloat(price) + parseFloat(pricePark));
-    			$('.total').empty();
-    			$('.total').val(price);
-    			$.get('/admin/reservas/getCostPark', {park: park, noches: diferencia}).success(function( data ) {
-    				costPark = data;
-    				$.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-    					cost = data;
-    					agencia = $('.agencia').val();
-    					cost = (parseFloat(cost) + parseFloat(costPark) + parseFloat(agencia));
-    					$('.cost').empty();
-    					$('.cost').val(cost);
-    					beneficio = price - cost;
-    					$('.beneficio').empty;
-    					$('.beneficio').val(beneficio);
-    				});
-    			});
-    		});
-    	});  
+      			price = (parseFloat(price) + parseFloat(pricePark));
+      			$('.total').empty();
+      			$('.total').val(price);
+      			
+            $.get('/admin/reservas/getCostPark', {park: park, noches: diferencia}).success(function( data ) {
+      				costPark = data;
+              console.log('costepark '+costPark);
+      				$.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+      					cost = data;
+      					cost = (parseFloat(cost) + parseFloat(costPark));
+      					$('.cost').empty();
+      					$('.cost').val(cost);
+      					beneficio = price - cost;
+      					$('.beneficio').empty;
+      					$('.beneficio').val(beneficio);
+      				});
+
+      			});
+
+      		});
+
+    	});
+
     });
-    
+
+    $('.pvpAgencia').change(function(event) {
+      var price = $('.total').val();
+      var cost = $('.cost').val();
+      var pvp = $('.pvpAgencia').val();
+      var cost = (parseFloat(cost) + parseFloat(pvp));
+      var beneficio = (parseFloat(price) - parseFloat(cost) - parseFloat(pvp));
+      $('.cost').empty;
+      $('.cost').val(cost);
+      $('.beneficio').empty;
+      $('.beneficio').val(beneficio);
+    });
+
+    $('.extras').change(function(event) {
+      var extras = (this).val();
+      alert(extras);
+    });
+
     $('.total').change(function(event) {
     	var price = $(this).val();
     	var cost = $('.cost').val();
     	var beneficio = (parseFloat(price) - parseFloat(cost));
-    	console.log(beneficio);
     	$('.beneficio').empty;
     	$('.beneficio').val(beneficio);
     });
 
+
     
     $('.sendJaime').click(function(event) {
     	var id = $(this).attr('data-id');
-    	console.log(id);
     	$.get('/admin/reservas/sendJaime', {id: id}).success(function( data ) {
     		alert(data);
     	});

@@ -10,6 +10,10 @@
 
 @endsection
 
+@section('headerButtoms')
+	@include('layouts/headerbuttoms')
+@endsection
+
 @section('content')
 <?php use \Carbon\Carbon; ?>
 

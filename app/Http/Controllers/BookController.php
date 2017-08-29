@@ -175,8 +175,8 @@ class BookController extends Controller
                                                         'pagos'         => \App\Payments::all(),
                                                         'days'          => $arrayDays, 
                                                         'inicio'        => $start->addMonth(3),
-                                                        'proxIn'        => \App\Book::all(),
-                                                        'proxOut'       => \App\Book::all(),                                                        
+                                                        'proxIn'        => $proxIn,
+                                                        'proxOut'       => $proxOut,                                                        
                                                                                                                
                                                         ]);
                 }
@@ -189,10 +189,14 @@ class BookController extends Controller
      */
     public function create(Request $request)
         {
-
+            
             $book = new \App\Book();
             $extraPrice = 0 ;
             $extraCost  = 0;
+
+            echo "<pre>";
+            print_r($request->input('Suplujo'));
+            die();
 
             if ($request->input('extras') != "") {
                 foreach ($request->input('extras') as $extra) {
@@ -231,8 +235,8 @@ class BookController extends Controller
 
 
                                 $book->cost_park     = $book->getCostPark($request->input('parking'),$request->input('nigths'));
-                                $book->sup_lujo      = ($room->luxury == 1) ? 50 : 0;
-                                $book->cost_lujo     = ($room->luxury == 1) ? 40 : 0;
+                                $book->sup_lujo      = $book->getPriceLujo($request->input('Suplujo'));
+                                $book->cost_lujo     = $book->getCostLujo($request->input('Suplujo'));
                                 $book->cost_apto     = $book->getCostBook($request->input('start'),$request->input('finish'),$request->input('pax'),$request->input('newroom'));
                                 $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->agency + $extraCost + $book->agency;
 
@@ -430,9 +434,6 @@ class BookController extends Controller
     //Funcion para el precio del Aparcamiento
         static function getPricePark(Request $request)
             {
-                print_r($request->park);
-                // print_r($request->noches);
-                die();
                 $supPark = 0;
                 switch ($request->park) {
                         case 1:
@@ -471,7 +472,48 @@ class BookController extends Controller
                     }
                 return $supPark;
             }
-    
+    //Funcion para el precio del Suplemento de Lujo
+        static function getPriceLujo($lujo)
+            {
+                $supLujo = 0;
+                switch ($lujo) {
+                        case 1:
+                            $supLujo = 0;
+                             break;
+                        case 2:
+                            $supLujo = 0;
+                            break;
+                        case 3:
+                            $supLujo = 50/2;
+                            break;
+                        case 4:
+                            $supLujo = 50;
+                            break;
+                    }
+                return $supLujo;
+            }
+
+    //Funcion para el precio del Suplemento de Lujo
+        static function getCostLujo($lujo)
+            {
+                $supLujo = 0;
+                switch ($lujo) {
+                        case 1:
+                            $supLujo = 0;
+                             break;
+                        case 2:
+                            $supLujo = 0;
+                            break;
+                        case 3:
+                            $supLujo = 40/2;
+                            break;
+                        case 4:
+                            $supLujo = 40;
+                            break;
+                    }
+                return $supLujo;
+            }
+
     // Funcion para la migracion de la base antigua  a la nuevas
         // public function getBaseDatos()
         //     {

@@ -109,32 +109,12 @@
 							<span class="{{ Request::path() == '/clientes' ? 'bg-success' : '' }} icon-thumbnail" title="Clientes"><i class="fa  fa-users"></i></span>
 							</a>
 						</li>
-
+						
 						<li class="m-t-10 ">
-							<a href="javascript:;">
-							<span class="icon-thumbnail"><i class="fa  fa-line-chart"></i></span></a>
-								<ul class="sub-menu" style="display: none;">
-									<li>
-										<a href="{{ url('admin/liquidacion') }}" class="detailed">
-											<span class="{{ Request::path() == '/admin/liquidacion' ? 'bg-success' : '' }} icon-thumbnail" title="Liquidacion"><i class="fa  fa-line-chart"></i></span>
-										</a>
-									</li>
-									<li>
-										<a href="{{ url('admin/liquidacion-apartamentos') }}" class="detailed">
-											<span class="{{ Request::path() == '/admin/liquidacion-apartamentos' ? 'bg-success' : '' }} icon-thumbnail" title="Liquidacion Apartamentos"><i class="fa  fa-line-chart"></i></span>
-										</a>
-									</li>
-									<li>
-										<a href="{{ url('admin/estadisticas') }}" class="detailed">
-											<span class="{{ Request::path() == '/admin/estadisticas' ? 'bg-success' : '' }} icon-thumbnail" title="Estadisticas"><i class="fa  fa-line-chart"></i></span>
-										</a>
-									</li>
-									<li>
-										<a href="{{ url('admin/perdidas-ganancias') }}" class="detailed">
-											<span class="{{ Request::path() == '/admin/perdidas-ganancias' ? 'bg-success' : '' }} icon-thumbnail" title="Perdidas y Ganancias"><i class="fa  fa-line-chart"></i></span>
-										</a>
-									</li>
-								</ul>
+							<a href="{{ url('admin/liquidacion') }}" class="detailed">
+								
+							<span class="{{ Request::path() == '/admin/liquidacion' ? 'bg-success' : '' }} icon-thumbnail" title="Liquidacion"><i class="fa  fa-line-chart"></i></span>
+							</a>
 						</li>
 					</ul>
 					<div class="clearfix"></div>
@@ -149,7 +129,12 @@
 		<!-- START PAGE-CONTAINER -->
 		<div class="page-container ">
 			<!-- START HEADER -->
-			<div class="header ">
+			<div class="header "> 
+				<div style="padding-left: 134px!important">
+					<div>
+						@yield('headerButtoms') 
+					</div>
+				</div>
 				<!-- START MOBILE CONTROLS -->
 				<div class="container-fluid relative">
 					<!-- LEFT SIDE -->
@@ -162,6 +147,12 @@
 						</div>
 						<!-- END ACTION BAR -->
 					</div>
+					<div class="pull-left full-height visible-sm visible-xs">
+						<!-- START ACTION BAR -->
+						
+						<!-- END ACTION BAR -->
+					</div>
+					
 					<!-- <div class="pull-center hidden-md hidden-lg">
 						<div class="header-inner">
 							<div class="brand inline">
@@ -172,11 +163,11 @@
 					<!-- RIGHT SIDE -->
 					<div class="pull-right full-height visible-sm visible-xs">
 						<!-- START ACTION BAR -->
-						<!-- <div class="header-inner">
+						<div class="header-inner">
 							<a href="#" class="btn-link visible-sm-inline-block visible-xs-inline-block" data-toggle="quickview" data-toggle-element="#quickview">
 								<span class="icon-set menu-hambuger-plus"></span>
 							</a>
-						</div> -->
+						</div>
 						<!-- END ACTION BAR -->
 					</div>
 				</div>
