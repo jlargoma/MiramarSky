@@ -26,6 +26,7 @@ Route::get('/politica-privacidad','HomeController@politicaPrivacidad');
 
 
 Route::post('/getPriceBook','HomeController@getPriceBook');
+Route::get('/getFormBook','HomeController@form');
 
 Route::post('admin/reservas/create' , 'BookController@create');
 Route::get('/test' , 'MailController@sendEmailBookSuccess');

@@ -158,7 +158,7 @@
 					"applyClass": "button-color",
 					"cancelClass": "button-light",
 				 	locale: {
-				      format: 'DD/MM/YYYY',
+				      format: 'DD MMM, YYYY',
 				      "applyLabel": "Aplicar",
 				        "cancelLabel": "Cancelar",
 				        "fromLabel": "From",

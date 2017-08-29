@@ -128,8 +128,8 @@ class HomeController extends Controller
 
         $date = explode('-', $request->input('date'));
        
-        $start = Carbon::createFromFormat('d/m/Y' , trim($date[0]));
-        $finish = Carbon::createFromFormat('d/m/Y' , trim($date[1]));
+        $start = Carbon::createFromFormat('d M, Y' , trim($date[0]));
+        $finish = Carbon::createFromFormat('d M, Y' , trim($date[1]));
         $countDays = $finish->diffInDays($start);
 
         $roomAssigned = 111;
@@ -257,6 +257,10 @@ class HomeController extends Controller
         
     }
 
+    public function form()
+    {
+        return view('frontend._formBook', [ 'mobile' => new Mobile() ]);
+    }
 
     public function terminos()
     {

@@ -106,27 +106,35 @@
 				</div>
 				
 				<?php if (!$mobile->isMobile()): ?>
-					<button id="showFromBook" class="button button-desc button-3d button-rounded bg-bluesky center white" >¡Reserva YA!</button>
+					<button id="showFormBook" class="button button-desc button-3d button-rounded bg-bluesky center white" >¡Reserva YA!</button>
 
 				<?php endif; ?>
 			</div>¡
 		</div>
 		<?php if (!$mobile->isMobile()): ?>
-		<div id="content-form-book" class="row bg-bluesky push-30" style="display: none; ">
-			<span style="padding: 0 5px; cursor: pointer; opacity: 1" class="close pull-right white text-white sm-m-r-20 sm-m-t-10"><i class="fa fa-times"></i></span>
-			<div class="col-xs-12 col-md-4 hidden-sm hidden-xs" style=" min-height: 535px">
-				<img src="{{asset('/img/miramarski/esquiadores.png')}}" class="img-responsive" style="position: absolute; bottom: 0">
+		<div id="content-form-book" class="row bg-bluesky push-30" style="display: none; background-image: url({{asset('/img/miramarski/esquiadores.png')}}); background-position: left bottom; background-repeat: no-repeat; background-size: contain">
+
+			<span style="padding: 0 5px; cursor: pointer; opacity: 1" class="close pull-right white text-white sm-m-r-20 sm-m-t-10">
+				<i class="fa fa-times"></i>
+			</span>
+
+			<div class="container clearfix">
+				<div class="col-md-6 col-md-offset-3">
+					<div class="row" id="content-book-response">
+						<div class="front" style="height: 550px!important;">
+							<div class="col-xs-12">
+								<h3 class="text-center white">FORMULARIO DE RESERVA</h3>
+							</div>
+							<div id="form-content">
+								@include('frontend._formBook')
+							</div>
+						</div>
+						<div class="back" style="background-color: #3F51B5; height: 550px!important;">
+							
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="col-xs-12 col-md-4 hidden-lg hidden-md" >
-				<h4 class="text-center white">SOLICITA TU RESERVA</h4>
-			</div>
-			<div  class="col-xs-12 col-md-4" >
-				<h4 class="text-center white hidden-xs hidden-sm">SOLICITA TU RESERVA</h4>
-				@include('frontend._formBook')
-            </div>
-            <div id="content-book-response" class="col-xs-12 col-md-4" >
-            	
-            </div>
 		</div>
 		<?php else: ?>
 			<div id="content-form-book" class="row bg-bluesky push-30" style="display: none; ">
@@ -176,21 +184,19 @@
 
 
 		<div id="fixed-book" class="col-xs-12 text-center center hidden-lg hidden-md bg-white" style="position: fixed; bottom: 0px; width: 100%; background-color: #FFF!important; padding: 15px;">
-			<button id="showFromBook" class="button button-desc button-3d button-rounded bg-bluesky center white" style="background-color: #4cb53f!important; width: 60%; margin: 0px auto;z-index: 90">¡Reserva YA!</button>
+			<button id="showFormBook" class="button button-desc button-3d button-rounded bg-bluesky center white" style="background-color: #4cb53f!important; width: 60%; margin: 0px auto;z-index: 90">¡Reserva YA!</button>
 
 		</div>
 	</section>
 	
 @endsection
 @section('scripts')
-
-<script type="text/javascript" src="https://cdn.rawgit.com/nnattawat/flip/master/dist/jquery.flip.min.js"></script>
 <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
 <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
 <script type="text/javascript">
 	<?php if (!$mobile->isMobile()): ?>
 
-		$('#showFromBook').click(function(event) {
+		$('#showFormBook').click(function(event) {
 			$('#content-form-book').slideDown('400');
 			$('html,body').animate({
 			        scrollTop: $("#content-form-book").offset().top - 80},
@@ -198,7 +204,7 @@
 		});
 	<?php else: ?>
 
-		$('#showFromBook').click(function(event) {
+		$('#showFormBook').click(function(event) {
 			$('#content-form-book').slideDown('400');
 			$('html,body').animate({
 			        scrollTop: $("#content-form-book").offset().top},
@@ -226,54 +232,67 @@
 	});
 
 
-		$(".only-numbers").keydown(function (e) {	    
-	       	if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||	         
-	           	(e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 	         
-	           	(e.keyCode >= 35 && e.keyCode <= 40)) {	             
-	                return;
-	       	}	     
-	       	if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-	           e.preventDefault();
-	       	}
-	   	});
+	$(".only-numbers").keydown(function (e) {	    
+       	if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||	         
+           	(e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 	         
+           	(e.keyCode >= 35 && e.keyCode <= 40)) {	             
+                return;
+       	}	     
+       	if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+           e.preventDefault();
+       	}
+   	});
 
-		$('#quantity').change(function(event) {
-			var val = parseInt($(this).val());
-			if ( val >= 5) {
-				$('#apto-estudio').attr('disabled',true);
-				$('#apto-estudio').hide();	
+	$('#quantity').change(function(event) {
+		var val = parseInt($(this).val());
+		if ( val >= 5) {
+			$('#apto-estudio').attr('disabled',true);
+			$('#apto-estudio').hide();	
 
-			}else{
-				
-				$('#apto-estudio').attr('disabled',false);
-				$('#apto-estudio').show();
-			}
+		}else{
+			
+			$('#apto-estudio').attr('disabled',false);
+			$('#apto-estudio').show();
+		}
+	});
+
+	$("#content-book-response").flip({
+	  trigger: 'manual'
+	});
+
+	function unflip() {
+
+		$("#content-book-response").flip(false);
+		$('#content-book-response .back').empty();
+	}
+
+
+	$('#form-book-apto-lujo').submit(function(event) {
+
+		event.preventDefault();
+
+
+		var _token   = $('input[name="_token"]').val();
+		var name     = $('input[name="name"]').val();
+		var email    = $('input[name="email"]').val();
+		var phone    = $('input[name="telefono"]').val();
+		var date     = $('input[name="date"]').val();
+		var quantity = $('select[name="quantity"]').val();
+		var apto     = $('input:radio[name="apto"]:checked').val();
+		var luxury   = $('input:radio[name="luxury"]:checked').val();
+		var parking  = $('input:radio[name="parking"]:checked').val();
+		var comment  = $('textarea[name="comment"]').val();
+
+		var url = $(this).attr('action');
+
+		$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   date : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
+			
+			$('#content-book-response .back').empty();
+			$('#content-book-response .back').append(data);
+			$("#content-book-response").flip(true);
+
 		});
 
-		$('#form-book-apto-lujo').submit(function(event) {
-			$('#fixed-book').hide();
-			event.preventDefault();
-
-			var _token   = $('input[name="_token"]').val();
-			var name     = $('input[name="name"]').val();
-			var email    = $('input[name="email"]').val();
-			var phone    = $('input[name="telefono"]').val();
-			var date     = $('input[name="date"]').val();
-			var quantity = $('select[name="quantity"]').val();
-			var apto     = $('input:radio[name="apto"]:checked').val();
-			var luxury   = $('input:radio[name="luxury"]:checked').val();
-			var parking  = $('input:radio[name="parking"]:checked').val();
-			var comment  = $('textarea[name="comment"]').val();
-
-			var url = $(this).attr('action');
-			$('#content-book-response').fadeOut('500');
-
-			$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   date : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
-
-				$('#content-book-response').empty();
-				$('#content-book-response').append(data).fadeIn('500');
-			});
-
-		});
+	});
 </script>	
 @endsection

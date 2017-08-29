@@ -33,30 +33,30 @@
 					color: white!important;
 				}
 			</style>
-			<div class="row clearfix" style="background-color: #3F51B5;">
+			<div class="row clearfix" style="background-color: #3F51B5; background-image: url({{asset('/img/miramarski/esquiadores.png')}}); background-position: left bottom; background-repeat: no-repeat; background-size: contain">
    				<div id="close-form-book" style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
    					<span class="white text-white"><i class="fa fa-times fa-2x"></i></span>
    				</div>
-   				<div id="content-book" class="container clearfix push-10" style="display: none;">
-   							
-						<div class="container clearfix"  style="padding: 20px 0; background-color: #3F51B5;">
-							<div class="row">
-								<div class="col-md-6 col-md-offset-3">
-									<div class="row" id="content-book-response">
-										<div class="front" style="min-height: 550px;">
-											<div class="col-xs-12">
-												<h3 class="text-center white">FORMULARIO DE RESERVA</h3>
-											</div>
-
-		   									@include('frontend._formBook')
+   				<div id="content-book" class="container clearfix push-10" style="display: none; ">	
+					<div class="container clearfix"  style="padding: 20px 0;">
+						<div class="row">
+							<div class="col-md-6 col-md-offset-3">
+								<div class="row" id="content-book-response">
+									<div class="front" style="min-height: 550px;">
+										<div class="col-xs-12">
+											<h3 class="text-center white">FORMULARIO DE RESERVA</h3>
 										</div>
-										<div class="back" style="background-color: #3F51B5; min-height: 550px;">
-											
-										</div>
+										<div id="form-content">
+	   										@include('frontend._formBook')
+	   									</div>
+									</div>
+									<div class="back" style="background-color: #3F51B5; min-height: 550px;">
+										
 									</div>
 								</div>
 							</div>
 						</div>
+					</div>
    				</div>
    			</div>
    			<div style="clear: both;"></div>
@@ -90,7 +90,7 @@
 		       				</div>
 		       				<div class="col-xs-12 clearfix">
 
-				       			<div id="oc-clients" class="owl-carousel image-carousel carousel-widget" data-margin="60" data-loop="true" data-nav="false" data-autoplay="3000" data-pagi="false" data-items-xxs="2" data-items-xs="3" data-items-sm="4" data-items-md="6" data-items-lg="8">
+				       			<div id="oc-clients" class="owl-carousel image-carousel carousel-widget" data-margin="60" data-loop="true" data-nav="false" data-autoplay="1000" data-pagi="false" data-items-xxs="2" data-items-xs="3" data-items-sm="4" data-items-md="6" data-items-lg="8">
 
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
@@ -187,7 +187,7 @@
 	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/small/apartamento-lujo-sierra-nevada.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
-		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 90px 105px;">APARTAMENTO 2 DORMITORIOS DE LUJO
+		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 65px 85px;width: 90%;">APARTAMENTO<br>2 DORMITORIOS DE LUJO
 		   								</h2>
 		   							</div>
 		   						</div>
@@ -201,8 +201,8 @@
 	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/small/apartamento-standard-sierra-nevada.jpg')}}"  alt="Apartamento standard sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
-		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 90px 105px;">
-		   									APARTAMENTO 2 DORMITORIOS STANDARD
+		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 65px 85px;width: 90%;">
+		   									APARTAMENTO<br>2 DORMITORIOS STANDARD
 		   								</h2>
 		   							</div>
 		   						</div>
@@ -312,30 +312,35 @@
 	   		
 	   			<div class="row" style="background-color: #3F51B5;">
 	   				
-	   				<div id="content-book" class="container container-mobile clearfix push-10" style="display: none;">
-	   					<div class="tabs advanced-real-estate-tabs clearfix">
-
-	   						<div class="tab-container" style="padding: 20px 0; background-color: #3F51B5;">
-	   							<div id="close-form-book" style="position: absolute; top: 0; right: 20px; z-index: 50;  cursor: pointer;">
-	   								<span class="white text-white"><i class="fa fa-times fa-2x"></i></span>
-	   							</div>
-	   								<div class="tab-content clearfix" id="content-book-response">
-										<div class="row">
-											<h3 class="text-center white">FORMULARIO DE RESERVA</h3>
+	   				<div id="content-book" class="container-mobile clearfix push-10" style="display: none; ">	
+	   					<div id="close-form-book" style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
+		   					<span class="white text-white"><i class="fa fa-times fa-2x"></i></span>
+		   				</div>
+						<div class="container clearfix"  style="padding: 20px 0;">
+							<div class="row">
+								<div class="col-md-6 col-md-offset-3">
+									<div class="row" id="content-book-response">
+										<div class="front" style="min-height: 550px;">
+											<div class="col-xs-12">
+												<h3 class="text-center white">FORMULARIO DE RESERVA</h3>
+											</div>
+											<div id="form-content">
+		   										@include('frontend._formBook')
+		   									</div>
 										</div>
-
-										@include('frontend._formBook')
-	   									
-	   								</div>
-	   						</div>
-
-	   					</div>
+										<div class="back" style="background-color: #3F51B5; min-height: 550px;">
+											
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 	   				</div>
 	   			</div>
 
 	       	</section>
 			
-			<section  class="page-section" style="letter-spacing: 0;line-height: 1; ">
+			<section id="desc-section" class="page-section" style="letter-spacing: 0;line-height: 1; ">
 				<div class="col-xs-12" style="background-color: #3F51B5;">
 					<div class="col-xs-12" style="padding: 27px 0 0">
 						<div class="row white" style="margin-bottom: 20px">
@@ -448,7 +453,9 @@
 				</div>
 				
 			</section>
+
 			<div style="clear: both;"></div>
+
 			<section  class="page-section" style="letter-spacing: 0;line-height: 1; margin: 45px 0;">
 				<div class="heading-block center push-20">
 					<h3 class="green">GALERÍA DE APARTAMENTOS</h3>
@@ -482,6 +489,7 @@
 					</a>
 				</div>
 			</section>
+
 			<section  class="page-section" style="letter-spacing: 0;line-height: 1; margin: 45px 0;">
 				
 				<div class="row">
@@ -594,11 +602,24 @@
 			$('#content-book').show('400');
 			$('#banner-offert').hide();
 			$('#line-banner-offert').hide();
-
+			$('#desc-section').hide();
 			$('html, body').animate({
 			       scrollTop: $("#content-book").offset().top 
 			   }, 2000);
 		});
+
+		$('#close-form-book').click(function(event) {
+			$('#banner-offert').show();
+			$('#line-banner-offert').show();
+			$('#content-book').hide('100');
+			$('#desc-section').show();
+			$('#content-book-response .front').empty().load('/getFormBook');
+			
+			$('html, body').animate({
+		       scrollTop: $("body").offset().top
+		   	}, 2000);
+		});
+
 	<?php else: ?>
 		$('#banner-offert, .menu-booking').click(function(event) {
 			$('#content-book').show('400');
@@ -609,17 +630,22 @@
 			       scrollTop: $("#content-book").offset().top - 85
 			   }, 2000);
 		});
+
+
+		$('#close-form-book').click(function(event) {
+			$('#banner-offert').show();
+			$('#line-banner-offert').show();
+			$('#content-book').hide('100');
+			
+			$('#content-book-response').empty().load('/getFormBook');
+				$('html, body').animate({
+				       scrollTop: $("body").offset().top
+				   }, 2000);
+		});
 	<?php endif; ?>
 
 
-	$('#close-form-book').click(function(event) {
-		$('#banner-offert').show();
-		$('#line-banner-offert').show();
-		$('#content-book').hide('100');
-			$('html, body').animate({
-			       scrollTop: $("body").offset().top
-			   }, 2000);
-	});
+	
 
 
 </script>	

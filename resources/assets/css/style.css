@@ -14660,7 +14660,18 @@ p.text {
 	margin: 0px auto;
 	margin-bottom: 5px;
 }
+
+.applyBtn.button-color{
+	background-color: #4cb53f!important;
+}
+.cancelBtn.button-light{
+	background-color: #e8e8e8!important;
+	color: black!important;
+}
 @media (max-width: 768px) {
+	.back{
+		min-height: 600px;
+	}
 	.properties{
 		float: left;
 	}
