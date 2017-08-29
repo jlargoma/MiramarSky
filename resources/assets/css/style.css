@@ -14670,7 +14670,7 @@ p.text {
 }
 @media (max-width: 768px) {
 	.back{
-		min-height: 600px;
+		min-height: 600px!important;
 	}
 	.properties{
 		float: left;
