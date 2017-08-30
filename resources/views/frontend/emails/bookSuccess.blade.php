@@ -106,11 +106,11 @@
   	 	  									<b>Fecha Salida:</b> <?php echo date('d-m-Y', strtotime($data->finish)) ?> <br>
   	 	  									<b>Noches: </b> <?php echo $data->nigths ?> <br>
   	 	  									<b>Ocupantes: </b> <?php echo $data->pax ?> <br>
-  	 	  									<b>Suplemento parking: </b> <?php echo $data->sup_parking ?> €<br>
-  	 	  									<b>Suplemento lujo:  <?php echo $data->sup_lujo ?> €</b><br>
+  	 	  									<b>Suplemento parking: </b> <?php echo number_format($data->sup_park,0,'','.') ?> €<br>
+  	 	  									<b>Suplemento lujo:  <?php echo number_format($data->sup_lujo,0,'','.') ?> €</b><br>
   	 	  									<b>Comentarios: </b>  <?php echo $data->comment ?> € <br>
 
-  	 	  									<h2 style="text-align: center"><b>Precio total solicitud: </b>  <?php echo $data->total_price ?> €</h2> <br>
+  	 	  									<h2 style="text-align: center"><b>Precio total solicitud: </b>  <?php echo number_format($data->total_price,0,'','.') ?> €</h2> <br>
 
   	 	  								</td>
   	 	  							</tr>

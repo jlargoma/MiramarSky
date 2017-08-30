@@ -194,10 +194,6 @@ class BookController extends Controller
             $extraPrice = 0 ;
             $extraCost  = 0;
 
-            echo "<pre>";
-            print_r($request->input('Suplujo'));
-            die();
-
             if ($request->input('extras') != "") {
                 foreach ($request->input('extras') as $extra) {
                    $precios = \App\Extras::find($extra);
@@ -230,13 +226,13 @@ class BookController extends Controller
                                 $book->sup_limp      = ($room->typeApto == 1) ? 35 : 50;
 
 
-                                $book->sup_park      = $book->getPricePark($request->input('parking'),$request->input('nigths'));
+                                $book->sup_park      = $this->getPricePark($request->input('parking'), $request->input('nigths'));
                                 $book->type_park     = $request->input('parking');
 
 
-                                $book->cost_park     = $book->getCostPark($request->input('parking'),$request->input('nigths'));
-                                $book->sup_lujo      = $book->getPriceLujo($request->input('Suplujo'));
-                                $book->cost_lujo     = $book->getCostLujo($request->input('Suplujo'));
+                                $book->cost_park     = $this->getCostPark($request->input('parking'),$request->input('nigths'));
+                                $book->sup_lujo      = $this->getPriceLujo($request->input('Suplujo'));
+                                $book->cost_lujo     = $this->getCostLujo($request->input('Suplujo'));
                                 $book->cost_apto     = $book->getCostBook($request->input('start'),$request->input('finish'),$request->input('pax'),$request->input('newroom'));
                                 $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->agency + $extraCost + $book->agency;
 
@@ -253,8 +249,8 @@ class BookController extends Controller
                                 $book->ben_jorge     = $book->getBenJorge($book->total_ben,$room->id);
                                 $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
 
-                                if($book->save()){
 
+                                if($book->save()){
                                     /* Notificacion via email */
                                     if ( $request->input('from') ){
                                         MailController::sendEmailBookSuccess( $book, 1);
@@ -412,9 +408,9 @@ class BookController extends Controller
                 $book->pax           = $request->pax;
                 $book->nigths        = $request->nigths;
                 $book->sup_limp      = ($room->typeApto == 1) ? 35 : 50;
-                $book->sup_park      = $book->getPricePark($request->parking,$request->nigths);
+                $book->sup_park      = $this->getPricePark($request->parking,$request->nigths);
                 $book->type_park     = $request->parking;
-                $book->cost_park     = $book->getCostPark($request->parking,$request->nigths);
+                $book->cost_park     = $this->getCostPark($request->parking,$request->nigths);
                 $book->sup_lujo      = ($room->luxury == 1) ? 50 : 0;
                 $book->cost_lujo     = ($room->luxury == 1) ? 40 : 0;
                 $book->cost_apto     = $book->getCostBook($request->start,$request->finish,$request->pax,$request->newroom);
@@ -432,18 +428,18 @@ class BookController extends Controller
             }
 
     //Funcion para el precio del Aparcamiento
-        static function getPricePark(Request $request)
+        static function getPricePark($parking, $nights)
             {
                 $supPark = 0;
-                switch ($request->park) {
+                switch ($parking) {
                         case 1:
-                            $supPark = 15 * $request->noches;
+                            $supPark = 15 * $nights;
                             break;
                         case 2:
                             $supPark = 0;
                             break;
                         case 3:
-                            $supPark = (15 * $request->noches) / 2;
+                            $supPark = (15 * $nights) / 2;
                             break;
                         case 4:
                             $supPark = 0;
@@ -453,18 +449,18 @@ class BookController extends Controller
             }
     
     //Funcion para el coste del Aparcamiento
-        static function getCostPark(Request $request)
+        static function getCostPark($parking, $nights)
             {
                 $supPark = 0;
-                switch ($request->park) {
+                switch ($parking) {
                         case 1:
-                            $supPark = 13.5 * $request->noches;
+                            $supPark = 13.5 * $nights;
                             break;
                         case 2:
                             $supPark = 0;
                             break;
                         case 3:
-                            $supPark = (13.5 * $request->noches) / 2;
+                            $supPark = (13.5 * $nights) / 2;
                             break;
                         case 4:
                             $supPark = 0;
@@ -476,7 +472,11 @@ class BookController extends Controller
         static function getPriceLujo($lujo)
             {
                 $supLujo = 0;
-                switch ($lujo) {
+                if ($lujo > 4) {
+                    $supLujo = $lujo;
+                }else{
+
+                    switch ($lujo) {
                         case 1:
                             $supLujo = 0;
                              break;
@@ -490,6 +490,7 @@ class BookController extends Controller
                             $supLujo = 50;
                             break;
                     }
+                }
                 return $supLujo;
             }
 
@@ -497,20 +498,25 @@ class BookController extends Controller
         static function getCostLujo($lujo)
             {
                 $supLujo = 0;
-                switch ($lujo) {
-                        case 1:
-                            $supLujo = 0;
-                             break;
-                        case 2:
-                            $supLujo = 0;
-                            break;
-                        case 3:
-                            $supLujo = 40/2;
-                            break;
-                        case 4:
-                            $supLujo = 40;
-                            break;
-                    }
+                if ($lujo > 4) {
+                    $supLujo = $lujo - 10;
+                } else {
+                    switch ($lujo) {
+                            case 1:
+                                $supLujo = 0;
+                                 break;
+                            case 2:
+                                $supLujo = 0;
+                                break;
+                            case 3:
+                                $supLujo = 40/2;
+                                break;
+                            case 4:
+                                $supLujo = 40;
+                                break;
+                        }
+                }
+                
                 return $supLujo;
             }
 

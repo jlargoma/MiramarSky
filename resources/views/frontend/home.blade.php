@@ -33,11 +33,11 @@
 					color: white!important;
 				}
 			</style>
-			<div class="row clearfix" style="background-color: #3F51B5; background-image: url({{asset('/img/miramarski/esquiadores.png')}}); background-position: left bottom; background-repeat: no-repeat; background-size: contain">
+			<div class="row clearfix" style="background-color: #3F51B5; background-image: url({{asset('/img/miramarski/esquiadores.png')}}); background-position: left bottom; background-repeat: no-repeat; background-size: 50%;">
    				<div id="close-form-book" style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
    					<span class="white text-white"><i class="fa fa-times fa-2x"></i></span>
    				</div>
-   				<div id="content-book" class="container clearfix push-10" style="display: none; ">	
+   				<div id="content-book" class="container clearfix push-10" style="display: none; min-height: 615px;">	
 					<div class="container clearfix"  style="padding: 20px 0;">
 						<div class="row">
 							<div class="col-md-6 col-md-offset-3">
@@ -70,21 +70,35 @@
 		       					<div class="heading-block  black" style="margin-bottom: 20px">
 		       						<h1 class="font-w800 black" style="letter-spacing: 0; font-size: 26px;">APARTAMENTOS DE LUJO <span class="font-w800 green">A PIE DE PISTA</span></h1>
 		       					</div>
-		       					<p class="lead  text-justify black ls-15 font-s14 black">
+		       					<p class="lead  text-justify black font-s14 black" style="line-height: 1.2">
 		       						Todos nuestros Apartamentos están en el Edificio Miramar Ski, situado <b>en la zona baja de Sierra Nevada</b>. Tienen excelentes vistas y todos disponen del equipamiento completo.
 
 		       					</p>
-		       					<h2 class="font-w300 text-center black push-18" style="line-height: 1;font-size: 18px!important; text-transform: uppercase;">
+		       					<h2 class="font-w300 text-center black push-18" style="line-height: 1;font-size: 16px!important; text-transform: uppercase;">
 		       						<span class="font-w800 black"> El edificio tiene salida directa a las pistas, solo tienes que salir de casa y esquiar!!</span>
 		       					</h2>
 								
-		       					<p class="lead  text-justify black ls-15 font-s14 black">
-		       						Se encuentran <b>a 5 minutos andando de la plaza de Andalucía</b>, centro neurálgico de la estación.<br><br>
-		       						Muy cerca, a pocos metros, tienes varios supermercados, bares y restaurantes, lo que es muy importante para que disfrutes tus vacaciones sin tener que coger el coche ni remontes, Nuestro edificio Miramar Ski es <b>uno de los edificios más modernos de Sierra Nevada</b> (2006).<br><br>
-									Tenemos <b>apartamentos con dos habitaciones</b> ( ocupación 6 / 8 pers) y también <b>estudios</b> (ocupación 4 / 5 pers), Dentro de estos dos modelos, podrás  elegir entre los estándar y de lujo, que están recién reformados.<br><br>
+		       					<p class="lead  text-justify black font-s14 black" style="line-height: 1.2">
+		       						Se encuentran <b>a 5 minutos andando de la plaza de Andalucía</b>, en Pradollano centro neurálgico de la estación.<br><br>
+
+									<b>Piscina climatizada, gimnasio, parking cubierto, taquilla guardaesquis, acceso directo a las pistas.</b>
+
+		       						A pocos metros, tienes varios supermercados, bares y restaurantes, lo que es muy importante para que disfrutes tus vacaciones sin tener que coger el coche ni remontes<br><br>
+
+		       						Nuestro edificio Miramar Ski es <b>uno de los edificios más modernos de Sierra Nevada</b> (2006).<br><br>
+
+									Tenemos disponibles <b>apartamentos con dos habitaciones</b> ( ocupación 6 / 8 pers) y también <b>estudios</b> (ocupación 4 / 5 pers).<br><br>
+
+									Dentro de estos dos modelos, podrás  elegir entre los estándar y de lujo, que están recién reformados.<br><br>
+
 									<b>En todas las reservas las sabanas y toallas están incluidas</b><br><br>
+
 									Queremos ofrecerte un servicio especial, por eso incluimos en todas nuestras reservas un obsequio de bienvenida. <br><br>
-									<b>En el botón de reserva  podrás calcular el coste de tu petición y si lo consideras hacer tu solicitud de disponibilidad.</b>
+
+									<b>Para tu comodidad, te llevamos los fortfaits a tu apartamento para evitarle las largas filas de la temporada alta</b><br><br>
+									
+
+									<b>En el botón de <span class="menu-booking">reserva</span>  podrás calcular el coste de tu petición y si lo consideras hacer tu solicitud de disponibilidad.</b>
 
 		       					</p>
 		       				</div>
@@ -160,14 +174,51 @@
 		       			</div>
 
 		       			<div class="col-md-5 col-md-offset-1 center  hidden-sm hidden-xs" style="margin:72px 60px">
-	       					<div id="oc-slider" class="owl-carousel carousel-widget" data-margin="0" data-items="1" data-animate-in="zoomIn" data-speed="450" data-animate-out="fadeOut">
 
-	       						<a ><img src="{{ asset('/img/miramarski/edificio/alquiler_apartamento_sierra_nevada_a_pie_de_pista.jpg') }}" alt="Slide 1" style="height: 450px;"></a>
-	       						<a ><img src="{{ asset('/img/miramarski/edificio/alquiler-apartamento-lujo-edificio-miramar-sierra-nevada.jpg') }}" alt="Slide 2" style="height: 450px;"></a>
-	       						<a ><img src="{{ asset('/img/miramarski/edificio/apartamento_sierra_nevada_a_pie_de_pista.jpg') }}" alt="Slide 3" style="height: 450px;"></a>
-	       						<a ><img src="{{ asset('/img/miramarski/edificio/miramarski_ALQUILER_ APARTAMENTO_SIERRA_NEVADA.jpg') }}" alt="Slide 4" style="height: 450px;"></a>
+	       					<div class="fslider" data-easing="easeInQuad">
+								<div class="flexslider">
+									<div class="slider-wrap">
+										<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/piscina_climatizadalquiler_apartamento_sierra_nevada_miraramarski.jpg') }}">
+											<a href="#">
+												<img src="{{ asset('/img/miramarski/edificio/piscina_climatizadalquiler_apartamento_sierra_nevada_miraramarski.jpg') }}" alt="Slide 1" style="height: 450px;">
+												<div class="flex-caption slider-caption-bg">Fotos del edificio</div>
+											</a>
+										</div>
+										<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/alquiler-apartamento-lujo-edificio-miramar-sierra-nevada.jpg') }}">
+											<a href="#">
+												<img src="{{ asset('/img/miramarski/edificio/alquiler-apartamento-lujo-edificio-miramar-sierra-nevada.jpg') }}" alt="Slide 2" style="height: 450px;">
+												<div class="flex-caption slider-caption-bg slider-caption-bg-light slider-caption-top-left">Fotos del edificio</div>
+											</a>
+										</div>
+										<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/alquiler_apartamento_sierra_nevada_a_pie_de_pista.jpg') }}">
+											<a href="#">
+												<img src="{{ asset('/img/miramarski/edificio/alquiler_apartamento_sierra_nevada_a_pie_de_pista.jpg') }}" alt="Slide 3" style="height: 450px;">
+												<div class="flex-caption slider-caption-bg slider-caption-top-right">Fotos del edificio</div>
+											</a>
+										</div>
+										<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/gimnasio_sierra_nevada_miramarski.jpg') }}">
+											<a href="#">
+												<img src="{{ asset('/img/miramarski/edificio/gimnasio_sierra_nevada_miramarski.jpg') }}" alt="Slide 4" style="height: 450px;">
+												<div class="flex-caption slider-caption-bg slider-caption-bg-light slider-caption-bottom-right">Fotos del edificio</div>
+											</a>
+										</div>
+										
+										<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/miramarski_ALQUILER_ APARTAMENTO_SIERRA_NEVADA.jpg') }}">
+											<a href="#">
+												<img src="{{ asset('/img/miramarski/edificio/miramarski_ALQUILER_ APARTAMENTO_SIERRA_NEVADA.jpg') }}" alt="Slide 4" style="height: 450px;">
+												<div class="flex-caption slider-caption-bg slider-caption-bg-light slider-caption-bottom-right">Fotos del edificio</div>
+											</a>
+										</div>
 
-	       					</div>
+										<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/apartamento_sierra_nevada_a_pie_de_pista.jpg') }}">
+											<a href="#">
+												<img src="{{ asset('/img/miramarski/edificio/apartamento_sierra_nevada_a_pie_de_pista.jpg') }}" alt="Slide 4" style="height: 450px;">
+												<div class="flex-caption slider-caption-bg slider-caption-bg-light slider-caption-bottom-right">Fotos del edificio</div>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
 		       			</div>
 
 		       		</div>
@@ -252,7 +303,7 @@
 	   				<div class="col-md-12 col-xs-12">
 
 	   					<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
-	   						<a href="https:\\www.apartamentosierranevada.net/forfait.php" target="_blank">
+	   						<a href="{{ url('/forfait')}}" target="_blank">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/descuento-forfait.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
@@ -422,28 +473,74 @@
 
        					</div>
 
-       					<p class="lead  text-justify white ls-15 font-s14 white">
-       						Se encuentran <b>a 5 minutos andando de la plaza de Andalucía</b>, centro neurálgico de la estación.<br><br>
-       						Muy cerca, a pocos metros, tienes varios supermercados, bares y restaurantes, lo que es muy importante para que disfrutes tus vacaciones sin tener que coger el coche ni remontes, Nuestro edificio Miramar Ski es <b>uno de los edificios más modernos de Sierra Nevada</b> (2006).<br><br>
-							Tenemos <b>apartamentos con dos habitaciones</b> ( ocupación 6 / 8 pers) y también <b>estudios</b> (ocupación 4 / 5 pers), Dentro de estos dos modelos, podrás  elegir entre los estándar y de lujo, que están recién reformados.<br><br>
-							<b>En todas las reservas las sabanas y toallas están incluidas</b><br><br>
-							Queremos ofrecerte un servicio especial, por eso incluimos en todas nuestras reservas un obsequio de bienvenida. <br><br>							
+       					<p class="lead  text-justify black font-s12 black" style="line-height: 1.2">
+       						Se encuentran <b>a 5 minutos andando de la plaza de Andalucía</b>, en Pradollano centro neurálgico de la estación.<br><br>
 
-							<!-- Tenemos <b>apartamentos con dos habitaciones</b> ( ocupación 6 / 8 pers) y también <b>estudios</b> (ocupación 4 / 5 pers), Dentro de estos dos modelos, podrás  elegir entre los estándar y de lujo, que están recién reformados.<br><br>
+							<b>Piscina climatizada, gimnasio, parking cubierto, taquilla guardaesquis, acceso directo a las pistas.</b>
+
+       						A pocos metros, tienes varios supermercados, bares y restaurantes, lo que es muy importante para que disfrutes tus vacaciones sin tener que coger el coche ni remontes<br><br>
+
+       						Nuestro edificio Miramar Ski es <b>uno de los edificios más modernos de Sierra Nevada</b> (2006).<br><br>
+
+							Tenemos disponibles <b>apartamentos con dos habitaciones</b> ( ocupación 6 / 8 pers) y también <b>estudios</b> (ocupación 4 / 5 pers).<br><br>
+
+							Dentro de estos dos modelos, podrás  elegir entre los estándar y de lujo, que están recién reformados.<br><br>
+
 							<b>En todas las reservas las sabanas y toallas están incluidas</b><br><br>
+
 							Queremos ofrecerte un servicio especial, por eso incluimos en todas nuestras reservas un obsequio de bienvenida. <br><br>
-							<b>En el botón de reserva  podrás calcular el coste de tu petición y si lo consideras hacer tu solicitud de disponibilidad.</b>
- 							-->
+
+							<b>Para tu comodidad, te llevamos los fortfaits a tu apartamento para evitarle las largas filas de la temporada alta</b><br><br>
+							
+
+							<b>En el botón de <span class="menu-booking">reserva</span>  podrás calcular el coste de tu petición y si lo consideras hacer tu solicitud de disponibilidad.</b>
+
        					</p>
 						<div class="col-xs-12 not-padding push-30" style="margin-bottom:0px!important; ">
-							<div id="oc-slider" class="owl-carousel carousel-widget " data-margin="0" data-items="1" data-animate-in="zoomIn" data-speed="450" data-animate-out="fadeOut">
+	       					<div class="fslider" data-easing="easeInQuad">
+								<div class="flexslider">
+									<div class="slider-wrap">
+										<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/piscina_climatizadalquiler_apartamento_sierra_nevada_miraramarski.jpg') }}">
+											<a href="#">
+												<img src="{{ asset('/img/miramarski/edificio/piscina_climatizadalquiler_apartamento_sierra_nevada_miraramarski.jpg') }}" alt="Slide 1" style="height: 450px;">
+												<div class="flex-caption slider-caption-bg">Fotos del edificio</div>
+											</a>
+										</div>
+										<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/alquiler-apartamento-lujo-edificio-miramar-sierra-nevada.jpg') }}">
+											<a href="#">
+												<img src="{{ asset('/img/miramarski/edificio/alquiler-apartamento-lujo-edificio-miramar-sierra-nevada.jpg') }}" alt="Slide 2" style="height: 450px;">
+												<div class="flex-caption slider-caption-bg slider-caption-bg-light slider-caption-top-left">Fotos del edificio</div>
+											</a>
+										</div>
+										<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/alquiler_apartamento_sierra_nevada_a_pie_de_pista.jpg') }}">
+											<a href="#">
+												<img src="{{ asset('/img/miramarski/edificio/alquiler_apartamento_sierra_nevada_a_pie_de_pista.jpg') }}" alt="Slide 3" style="height: 450px;">
+												<div class="flex-caption slider-caption-bg slider-caption-top-right">Fotos del edificio</div>
+											</a>
+										</div>
+										<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/gimnasio_sierra_nevada_miramarski.jpg') }}">
+											<a href="#">
+												<img src="{{ asset('/img/miramarski/edificio/gimnasio_sierra_nevada_miramarski.jpg') }}" alt="Slide 4" style="height: 450px;">
+												<div class="flex-caption slider-caption-bg slider-caption-bg-light slider-caption-bottom-right">Fotos del edificio</div>
+											</a>
+										</div>
+										
+										<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/miramarski_ALQUILER_ APARTAMENTO_SIERRA_NEVADA.jpg') }}">
+											<a href="#">
+												<img src="{{ asset('/img/miramarski/edificio/miramarski_ALQUILER_ APARTAMENTO_SIERRA_NEVADA.jpg') }}" alt="Slide 4" style="height: 450px;">
+												<div class="flex-caption slider-caption-bg slider-caption-bg-light slider-caption-bottom-right">Fotos del edificio</div>
+											</a>
+										</div>
 
-	       						<a href="#"><img src="{{ asset('/img/miramarski/exteriores.jpg') }}" alt="Slide 1" style="height: 200px;"></a>
-	       						<a href="#"><img src="{{ asset('/img/miramarski/cama-principal-apartamento-sierra-nevada.jpg') }}" alt="Slide 2" style="height: 200px;"></a>
-	       						<a href="#"><img src="{{ asset('/img/miramarski/salon-miramar-apartamento-sierra-nevada.jpg') }}" alt="Slide 3" style="height: 200px;"></a>
-	       						<a href="#"><img src="{{ asset('/img/miramarski/television-chimenea-apartamento-sierra-nevada.jpg') }}" alt="Slide 4" style="height: 200px;"></a>
-
-	       					</div>
+										<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/apartamento_sierra_nevada_a_pie_de_pista.jpg') }}">
+											<a href="#">
+												<img src="{{ asset('/img/miramarski/edificio/apartamento_sierra_nevada_a_pie_de_pista.jpg') }}" alt="Slide 4" style="height: 450px;">
+												<div class="flex-caption slider-caption-bg slider-caption-bg-light slider-caption-bottom-right">Fotos del edificio</div>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 						<p class="lead  text-justify white ls-15 font-s14 white" >
 							<b>En el botón de reserva  podrás calcular el coste de tu petición y si lo consideras hacer tu solicitud de disponibilidad.</b>
@@ -499,7 +596,7 @@
 	   				<div class="col-md-12 col-xs-12">
 
 	   					<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
-	   						<a href="https:\\www.apartamentosierranevada.net/forfait.php" target="_blank">
+	   						<a href="{{ url('/forfait')}}" target="_blank">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/descuento-forfait.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
@@ -548,105 +645,31 @@
 			</section>
 		<!-- END MOBILE -->
 		<?php endif; ?>
+
+			<section class="page-section" style="margin-top: 60px;">
+				<div class="container container-mobile clearfix">
+					<div class="row">
+						<div class="col-xs-12">
+							<p class="text-justify black font-s16 font-w300">
+								<span class="font-w600 font-s18">Sabemos lo importante que son tus vacaciones de esqui, por eso cuidamos cada detalle al máximo, intentando siempre conseguir que tu estancia sea lo más agradable posible.</span>
+								<br><br>
+								<b>En nuestra web encontraras una oferta de calidad</b>, en Sierra Nevada la oferta de alojamiento es muy dispar puediendo encontrarse apartamentos muy viejos y en mal estado,<b> no es nuestro caso, <u>todos nuestros apartamentos se revisan y actualizan cada temporada</u></b>
+								<br><br>
+								Nuestros apartamentos ( de dos dormitorios y estudios) están ubicados en la mejor zona, Tu experiencia será de máximo confort: <b> Piscina climatizada, gimnasio, ascensor , taquilla guarda esquíes, Parking cubierto, ropa de cama incluida</b>.
+								<br><br>
+								<b>A pie de pista... Sin coger remontes. El acceso a las pistas es directo, todo pensado ara que disfrutes.</b>
+								<br><br>
+								Tambien <b>te ofrecemos nuestros descuentos para la compra de Forfaits, ofertas en alquiler de material y packs cobinados con cursillos de Ski.</b>
+								<br><br>
+								Si quieres saber más información sobre la estación de Sierra Nevada consulta nuestro <b><a href="{{url('/activiades')}}">blog</a></b>,  encontraras información sobre la estación, cosas que hacer,actividades de esqui y de a preski,  que visitar, como divertirte con los niños, bares y restaurantes de la estación y de Padrollano….etc
+							</p>
+						</div>
+					</div>
+				</div>
+
+			</section>
     </div>
     
 </section>
 @endsection
 
-
-@section('scripts')
-<script type="text/javascript" src="https://cdn.rawgit.com/nnattawat/flip/master/dist/jquery.flip.min.js"></script>
-<script type="text/javascript">
-	
-	$("#content-book-response").flip({
-	  trigger: 'manual'
-	});
-
-	function unflip() {
-
-		$("#content-book-response").flip(false);
-		$('#content-book-response .back').empty();
-	}
-
-
-	$('#form-book-apto-lujo').submit(function(event) {
-
-		event.preventDefault();
-
-
-		var _token   = $('input[name="_token"]').val();
-		var name     = $('input[name="name"]').val();
-		var email    = $('input[name="email"]').val();
-		var phone    = $('input[name="telefono"]').val();
-		var date     = $('input[name="date"]').val();
-		var quantity = $('select[name="quantity"]').val();
-		var apto     = $('input:radio[name="apto"]:checked').val();
-		var luxury   = $('input:radio[name="luxury"]:checked').val();
-		var parking  = $('input:radio[name="parking"]:checked').val();
-		var comment  = $('textarea[name="comment"]').val();
-
-		var url = $(this).attr('action');
-
-		$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   date : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
-			
-			$('#content-book-response .back').empty();
-			$('#content-book-response .back').append(data);
-			$("#content-book-response").flip(true);
-
-		});
-
-	});
-	
-	<?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
-		$('#banner-offert, .menu-booking').click(function(event) {
-			$('#content-book').show('400');
-			$('#banner-offert').hide();
-			$('#line-banner-offert').hide();
-			$('#desc-section').hide();
-			$('html, body').animate({
-			       scrollTop: $("#content-book").offset().top 
-			   }, 2000);
-		});
-
-		$('#close-form-book').click(function(event) {
-			$('#banner-offert').show();
-			$('#line-banner-offert').show();
-			$('#content-book').hide('100');
-			$('#desc-section').show();
-			unflip();
-			
-			$('html, body').animate({
-		       scrollTop: $("body").offset().top
-		   	}, 2000);
-		});
-
-	<?php else: ?>
-		$('#banner-offert, .menu-booking').click(function(event) {
-			$('#content-book').show('400');
-			$('#banner-offert').hide();
-			$('#line-banner-offert').hide();
-
-			$('html, body').animate({
-			       scrollTop: $("#content-book").offset().top - 85
-			   }, 2000);
-		});
-
-
-		$('#close-form-book').click(function(event) {
-			$('#banner-offert').show();
-			$('#line-banner-offert').show();
-			$('#content-book').hide('100');
-			
-			unflip();
-			$('html, body').animate({
-			       scrollTop: $("body").offset().top
-			   }, 2000);
-		});
-	<?php endif; ?>
-
-
-	
-
-
-</script>	
-@endsection

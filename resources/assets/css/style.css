@@ -14671,8 +14671,13 @@ p.text {
 	color: black!important;
 }
 
-
+#bar-content{
+	min-height: 615px;
+}
 @media (max-width: 768px) {
+	#bar-content{
+		min-height: auto;
+	}
 	.back{
 		min-height: 600px!important;
 	}

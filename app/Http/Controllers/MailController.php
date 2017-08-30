@@ -12,6 +12,8 @@ class MailController extends Controller
 {
     public static function sendEmailBookSuccess( $data ,$admin = 0)
     {
+
+
     	if ($admin == 0) {
 
     		/* Cliente */

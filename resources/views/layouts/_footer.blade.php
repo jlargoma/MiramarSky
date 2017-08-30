@@ -12,6 +12,7 @@
 						<li><a href="{{ url('/actividades/informacion-interes') }}" style="color: #666">Información de interes</a></li>
 						<li><a href="{{ url('/actividades/en-familia') }}" style="color: #666">Familia / Niños</a></li>
 						<li><a href="{{ url('/actividades/restaurantes') }}" style="color: #666">Restaurantes y bares</a></li>
+						<li><a href="{{ url('/actividades/la-estacion') }}" style="color: #666">La estación</a></li>
 					</ul>
 				</div>
 			</div>

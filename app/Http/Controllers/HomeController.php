@@ -128,8 +128,8 @@ class HomeController extends Controller
 
         $date = explode('-', $request->input('date'));
        
-        $start = Carbon::createFromFormat('d M, Y' , trim($date[0]));
-        $finish = Carbon::createFromFormat('d M, Y' , trim($date[1]));
+        $start = Carbon::createFromFormat('d M, y' , trim($date[0]));
+        $finish = Carbon::createFromFormat('d M, y' , trim($date[1]));
         $countDays = $finish->diffInDays($start);
 
         $roomAssigned = 111;

@@ -23,7 +23,7 @@
                 <div class="input-group">
                     <input type="text" class="sm-form-control daterange1" id="date"   name="date" required style="cursor: pointer;text-align: center;" readonly="">
                 </div>
-                <p class="help-block white" style="display:none;line-height:1.2">
+                <p  class="help-block min-days" style="display:none;line-height:1.2;color:red;">
                     <b>* ESTANCIA MÍNIMA: 2 NOCHES</b>
                 </p>
             </div>
@@ -113,8 +113,8 @@
                     <label style="display: inherit!important;">*Entrada - Salida</label>
                     <input type="text" class="sm-form-control daterange1" id="date"   name="date" required style="cursor: pointer;text-align: center;" readonly="">
 
-                    <p class="help-block white center" style="display:none;line-height:1.2">La entrada es a partir de la 16:00 pm
-                        <br><b>* ESTANCIA MÍNIMA: 2 NOCHES</b>
+                    <p  class="help-block min-days" style="display:none;line-height:1.2;color:red;">
+                        <b>* ESTANCIA MÍNIMA: 2 NOCHES</b>
                     </p>
                 </div>
 
