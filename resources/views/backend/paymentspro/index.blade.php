@@ -34,6 +34,12 @@
     </style>
     
 @endsection
+
+@section('headerButtoms')
+  @include('layouts/headerbuttoms')
+@endsection
+
+
 <?php setlocale(LC_TIME, "ES"); ?>
 <?php setlocale(LC_TIME, "es_ES");?>  
 @section('content')
@@ -61,13 +67,17 @@
         <div class="col-md-4 col-md-offset-1">
            <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSea">
               <thead>
-                  <th class ="text-center bg-complete text-white"> Generado    </th>
+                  <th class ="text-center bg-complete text-white"> PVP    </th>
+                  <th class ="text-center bg-complete text-white"> Coste    </th>
+                  <th class ="text-center bg-complete text-white"> Beneficio    </th>
                   <th class ="text-center bg-complete text-white"> Pagado    </th>
                   <th class ="text-center bg-complete text-white"> Pendiente    </th>
               </thead>
               <tbody>
                 <tr>
-                  <td class="text-center"><?php echo number_format(array_sum($total),2,',','.') ?> €</td>
+                  <td class="text-center"><?php echo number_format(array_sum($totalPVP),2,',','.') ?> €</td>
+                  <td class="text-center"><?php echo number_format(array_sum($totalCost),2,',','.') ?> €</td>
+                  <td class="text-center"><?php echo number_format((array_sum($totalPVP) - array_sum($totalCost)),2,',','.') ?> €</td>
                   <td class="text-center"><?php echo number_format(array_sum($totalPayment),2,',','.') ?> €</td>
                   <td class="text-center"><?php echo number_format(array_sum($debt),2,',','.') ?> €</td>
                 </tr>
@@ -75,7 +85,7 @@
            </table>
         </div>
         <div style="clear: both"></div>
-        <div class="col-md-4">
+        <div class="col-md-7">
             <div class="clearfix"></div>
                 <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
 
@@ -83,11 +93,14 @@
                         <th class ="text-center bg-complete text-white"> Nombre    </th>
                         <th class ="text-center bg-complete text-white"> Nick    </th>
                         <th class ="text-center bg-complete text-white"> Tipo </th>
-                        <th class ="text-center bg-complete text-white"> Generado </th>
+                        <th class ="text-center bg-complete text-white" style="width: 20%!important"> PVP&nbsp;&nbsp;  </th>
+                        <th class ="text-center bg-complete text-white"> Coste </th>
+                        <th class ="text-center bg-complete text-white"> Beneficio </th>
+                        <th class ="text-center bg-complete text-white"> % Ben </th>
                         <th class ="text-center bg-complete text-white"> Pagado  </th>
                         <th class ="text-center bg-complete text-white"> Pendiente   </th>
-                        <th class ="text-center bg-complete text-white"> Pendiente   </th>
-                        <th class ="text-center bg-complete text-white"> Pendiente   </th>
+                        <!-- <th class ="text-center bg-complete text-white"> Pendiente   </th>
+                        <th class ="text-center bg-complete text-white"> Pendiente   </th> -->
                     </thead>
                     <tbody>
                         <?php foreach ($rooms as $room): ?>
@@ -96,8 +109,29 @@
                             <td class="text-center"><a style="cursor: pointer" class="update-payments" type="button" data-debt="<?php echo $debt[$room->id] ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments" title="Añadir pago" ><?php echo $room->nameRoom ?></a></td>
                             <td class="text-center"><?php echo $room->typeAptos->name ?></td>
                             <td class="text-center">
-                              <?php if (isset($total[$room->id])): ?>
-                                <?php echo number_format($total[$room->id],2,',','.')." €" ?>
+                              <?php if (isset($totalPVP[$room->id])): ?>
+                                <?php echo number_format($totalPVP[$room->id],2,',','.')." €" ?>
+                              <?php else: ?>
+                                  -----
+                              <?php endif ?>
+                            </td>
+                            <td class="text-center">
+                              <?php if (isset($totalCost[$room->id])): ?>
+                                <?php echo number_format($totalCost[$room->id],2,',','.')." €" ?>
+                              <?php else: ?>
+                                  -----
+                              <?php endif ?>
+                            </td>
+                            <td class="text-center">
+                              <?php if (isset($totalCost[$room->id]) && isset($totalPVP[$room->id])): ?>
+                                <?php echo number_format((($totalPVP[$room->id]) - ($totalCost[$room->id])),2,',','.') ?> €
+                              <?php else: ?>
+                                  -----
+                              <?php endif ?>
+                            </td>
+                            <td class="text-center">
+                              <?php if (isset($totalCost[$room->id]) && isset($totalPVP[$room->id])): ?>
+                                <?php echo number_format((($totalPVP[$room->id]-$totalCost[$room->id])/$totalPVP[$room->id]*100),2,',','.') ?> %
                               <?php else: ?>
                                   -----
                               <?php endif ?>
@@ -116,8 +150,8 @@
                                   --------
                               <?php endif ?>
                             </td>
-                            <td></td>
-                            <td></td>
+                            <!-- <td></td>
+                            <td></td> -->
                           </tr>
                           
                         <?php endforeach ?>
@@ -126,7 +160,7 @@
                 </table>
 
         </div>
-        <div class="col-md-8">
+        <div class="col-md-5">
             <div class="pull-right" id="chartContainer" style="height: 700px; width: 73%;"></div>
             
 

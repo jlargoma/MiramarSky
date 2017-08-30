@@ -51,6 +51,16 @@
     	</div>
         <div class="col-md-12">
 			<div class="tab-content">
+				<pre>
+					<?php foreach ($años as $key => $año): ?>
+						<?php foreach ($meses as $key => $mes): ?>
+							<?php foreach ($arrayBooks as $clave => $book): ?>
+								<?php if (isset($arrayBooks[$año][$key][$clave])): ?>
+								<?php echo $año." ".$key." " ?>
+								<?php endif ?>
+							<?php endforeach ?>
+						<?php endforeach ?>
+					<?php endforeach ?>
 				<div id="curve_chart" style="width: 900px; height: 500px"></div>
 			</div>
         </div>
@@ -68,9 +78,7 @@
         var data = google.visualization.arrayToDataTable([
           // ['Mes', 'Sales', 'Expenses'],
           <?php echo $leyenda;?>
-   			<?php foreach ($estadisticas as $key => $mes): ?>
-   				<?php echo $mes ?>
-   			<?php endforeach ?>
+   			
 			['Noviembre',2,5,7],
         ]);
 

@@ -87,12 +87,14 @@ class LiquidacionController extends Controller
         }
     public function statistics()
         {
-            $arrayMonth = ["Noviembre","Diciembre","Enero","Febrero","Marzo","Abril"];
+            $arrayMonth = [11 => "Noviembre",12 =>"Diciembre",1 => "Enero", 2 => "Febrero",3 => "Marzo",4=> "Abril"];
             $arrayStadisticas = array();
             $arrayYear = array();
             $años = array();
-            $books = \App\Book::where('type_book',2)->get();
-            
+            $books = \App\Book::where('type_book',2)->where('start','<','2016-05-01')->get();
+            $arrayBooks = array();
+
+            //Para sacar las reservas por temporada
             foreach ($books as $book) {
                 $fecha = Carbon::CreateFromFormat('Y-m-d',$book->start);
                 
@@ -107,39 +109,44 @@ class LiquidacionController extends Controller
                     $arrayYear[$año] = $book->total_price;
                 }
 
+                $arrayBooks[$año][$fecha->format('n')][] = $book;
+
             }
-            foreach ($arrayYear as $key => $value){
+
+            //Para sacar los nombres de la temporada
+            foreach ($arrayBooks as $key => $value){
                 $años[] = $key;
             }
 
-            for ($i=0; $i <= count($arrayYear) ; $i++) { 
+            //Para sacar la leyenda del grafico
+            for ($i=0; $i <= count($arrayBooks) ; $i++) { 
                 if ($i == 0) {
                     $leyenda = "['Mes',";
-                }elseif($i == count($arrayYear)){
-                    $leyenda .= "'".$años[count($arrayYear)-1]."'],";
+                }elseif($i == count($arrayBooks)){
+                    $leyenda .= "'".$años[count($arrayBooks)-1]."'],";
                 }else{
                     $leyenda .= "'".$años[$i-1]."',";
                 }
             }
-            // Mes
-            foreach ($arrayMonth as $key => $stats) {
-                $arrayStadisticas[$key] = "['".$stats."',";
-            }
+            // // Mes
+            // foreach ($arrayMonth as $key => $stats) {
+            //     $arrayStadisticas[$key] = "['".$stats."',";
+            // }
 
-            //Primer Año
-            foreach ($arrayMonth as $key => $stats) {
-                $arrayStadisticas[$key] .= "0,";
-            }
+            // //Primer Año
+            // foreach ($arrayMonth as $key => $stats) {
+            //     $arrayStadisticas[$key] .= "0,";
+            // }
 
-            //Segundo Año
-            foreach ($arrayMonth as $key => $stats) {
-                $arrayStadisticas[$key] .= ($key+5).",";
-            }
+            // //Segundo Año
+            // foreach ($arrayMonth as $key => $stats) {
+            //     $arrayStadisticas[$key] .= ($key+5).",";
+            // }
 
-            //Tercer  Año
-            foreach ($arrayMonth as $key => $stats) {
-                $arrayStadisticas[$key] .= ($key+6)."],";
-            }
+            // //Tercer  Año
+            // foreach ($arrayMonth as $key => $stats) {
+            //     $arrayStadisticas[$key] .= ($key+6)."],";
+            // }
             
 
 
@@ -148,6 +155,8 @@ class LiquidacionController extends Controller
                                                         'estadisticas' => $arrayStadisticas,
                                                         'arrayYear' => $arrayYear,
                                                         'leyenda' => $leyenda,
+                                                        'arrayBooks' => $arrayBooks,
+                                                        'años' => $años
                                                     ]);
         }
 

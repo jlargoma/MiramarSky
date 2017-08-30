@@ -2810,7 +2810,7 @@ hr.dotted {
   background-color: #232b31;
 }
 .bg-info-light {
-  background-color: #626c75;
+  background-color: rgba(98,108,117,0.5);
 }
 .bg-info-lighter {
   background-color: #d8dadc;
@@ -5250,7 +5250,7 @@ body > .pgn-wrapper {
   -webkit-backface-visibility: hidden;
   width: 100%;
   display: block;
-  background-color: blue;
+  /*background-color: blue;*/
   height: 0px;
   content: '';
   z-index: 125;

@@ -4,7 +4,7 @@
     <link href="/assets/plugins/bootstrap-tag/bootstrap-tagsinput.css" rel="stylesheet" type="text/css" />
     <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
     <link href="/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" media="screen">
-
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> 
 
 <style type="text/css">
     .input-group{
@@ -42,13 +42,7 @@
                                             <input type="text" class="form-control" name="import" placeholder="Importe" required="" aria-required="true" aria-invalid="false">
                                     </div>
                                         <br>
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            <i class="pg-comment"></i>
-                                        </span>
-                                            <input type="text" placeholder="Comentario" id="comment" name="comment" class="form-control">
-                                    </div>
-                                    <br>
+                                    
                                     <div class="input-group">
                                         <span class="input-group-addon">
                                             <i class="fa fa-euro"></i>
@@ -58,6 +52,13 @@
                                                 <option value="2"><?php echo $typePayment->getPaymentType(2) ?></option>
                                                 <option value="3"><?php echo $typePayment->getPaymentType(3) ?></option>
                                             </select>
+                                    </div>
+                                    <br>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="pg-comment"></i>
+                                        </span>
+                                            <input type="text" placeholder="Comentario" id="comment" name="comment" class="form-control">
                                     </div>
                                     <br>
                                     <div class="input-group">
@@ -80,8 +81,8 @@
                                     <thead >
                                         <th class ="text-center bg-complete text-white">Fecha</th>
                                         <th class ="text-center bg-complete text-white">Importe</th>
-                                        <th class ="text-center bg-complete text-white">Comentario</th>
                                         <th class ="text-center bg-complete text-white">Metodo</th>
+                                        <th class ="text-center bg-complete text-white">Comentario</th>                                        
                                     </thead>
                                     <tbody>
                                     <?php if (count($payments) > 0): ?>
@@ -94,11 +95,12 @@
                                                 <td class="text-center">
                                                     <?php echo $payment->import ?>
                                                 </td>
-                                                <td class="text-center">
-                                                    <?php echo $payment->comment ?>
-                                                </td>
+                                                
                                                 <td class="text-center">
                                                     <?php echo $typePayment->getPaymentType($payment->type) ?>
+                                                </td>
+                                                <td class="text-center">
+                                                    <?php echo $payment->comment ?>
                                                 </td>
                                             </tr>
                                         <?php endforeach ?>
@@ -168,5 +170,6 @@
 <script src="/assets/plugins/moment/moment.min.js"></script>
 <script src="/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
 <script src="/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
+
 
 

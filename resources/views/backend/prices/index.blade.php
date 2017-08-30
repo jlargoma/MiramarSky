@@ -12,14 +12,25 @@
 
 @section('content')
 
+<style>
+    .Alta{
+        background: red;
+    }
+    .Media{
+        background-color: orange;
+    }
+    .Baja{
+        background-color: purple;
 
+    }
+</style>
 
 
 <div class="container-fluid padding-25 sm-padding-10">
     <div class="row">
         <div class="col-md-12">
             <div class="col-md-12 text-center">
-                <h2>Precios de habitaciones y extras</h2>
+                <h2>Precios de Apartamentos</h2>
             </div>
             <div class="clearfix"></div>
             <div class="tab-content">
@@ -30,7 +41,7 @@
                             <tr>
                                 <th class ="text-center bg-complete text-white" style="width: 1%" rowspan="2"> Ocupación  </th>
                                 <?php foreach ($seasons as $key => $season): ?>
-                                    <th class ="text-center bg-complete text-white" style="width: 20%" colspan="3"> <?php echo $season->name ?> </th>
+                                    <th class ="text-center bg-complete text-white <?php echo $season->name ?>" style="width: 20%" colspan="3"> <?php echo $season->name ?> </th>
                                 <?php endforeach ?>
                             </tr>
                             <tr>                          
@@ -77,7 +88,13 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
 
+            <div class="col-md-12 text-center">
+                <h2>Precios de Extras</h2>
+            </div>
+            <div class="clearfix"></div>
+            <div class="tab-content">
                 <div class="col-md-12">
                     <div class="col-md-8">
                         <table class="table table-hover  table-responsive-block" >
@@ -283,7 +300,7 @@
                 var cost  = $('.cost-'+id).val();
 
                 $.get('precios/update', {  id: id, price: price,cost: cost}, function(data) {
-                    alert(data);
+                    // alert(data);
                     window.location.reload();
                 });
 
@@ -295,7 +312,7 @@
                 var extracost  = $('.extra-cost-'+id).val();
 
                 $.get('precios/updateExtra', {  id: id, extraprice: extraprice,extracost: extracost}, function(data) {
-                    alert(data);
+                    // alert(data);
                     window.location.reload();
                 });
 

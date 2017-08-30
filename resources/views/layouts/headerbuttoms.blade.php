@@ -19,6 +19,16 @@
 	    </a>
 	<?php endif ?>
 
+	<?php if (Request::path() == "admin/pagos-propietarios"): ?>
+		<a class="text-white btn btn-sm btn-success font-s16 font-w300" style="padding: 10px 15px;line-height: 15px;" disabled>
+		    Pagos a propietarios
+	    </a>
+	<?php else: ?>
+		<a href="{{url('admin/pagos-propietarios')}}" class="text-white btn btn-sm btn-primary font-s16 font-w300" style="padding: 10px 15px;line-height: 15px;">
+		    Pagos a propietarios
+	    </a>
+	<?php endif ?>
+
 	<?php if (Request::path() == "admin/estadisticas"): ?>
 		<a class="text-white btn btn-sm btn-success font-s16 font-w300" style="padding: 10px 15px;line-height: 15px;" disabled>
 		    Estadisticas

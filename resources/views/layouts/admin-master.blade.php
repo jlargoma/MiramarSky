@@ -92,12 +92,6 @@
 							<span class="{{ Request::path() == '/pagos' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa fa-money"></i></span>
 						</li> -->
 						<li class="m-t-10 ">
-							<a href="{{ url('admin/pagos-propietarios') }}" class="detailed">
-								
-								<span class="{{ Request::path() == '/pagos-propietarios' ? 'bg-success' : '' }} icon-thumbnail" title="pagos a propietarios"><i class="fa fa-money"></i></span>
-							</a>
-						</li>
-						<li class="m-t-10 ">
 							<a href="{{ url('admin/usuarios') }}" class="detailed">
 								<span class="{{ Request::path() == '/usuarios' ? 'bg-success' : '' }} icon-thumbnail" title="Usuarios"><i class="fa fa-user"></i></span>
 							</a>

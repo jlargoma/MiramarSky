@@ -27,13 +27,15 @@ class PaymentsProController extends Controller
 
             $books = \App\Book::where('start','>',$date->copy())->where('start','<',$date->copy()->addYear())->get();
 
-            $total = array();
-
+            $totalCost = array();
+            $totalPVP = array();
             foreach ($books as $book) {
-                if (isset($total[$book->room_id])) {
-                  $total[$book->room_id] += $book->cost_total;
+                if (isset($totalCost[$book->room_id])) {
+                  $totalCost[$book->room_id] += $book->cost_total;
+                  $totalPVP[$book->room_id] += $book->total_price;
                 }else{
-                    $total[$book->room_id] = $book->cost_total;
+                    $totalCost[$book->room_id] = $book->cost_total;
+                    $totalPVP[$book->room_id] = $book->total_price;
                 }  
             }
 
@@ -52,10 +54,10 @@ class PaymentsProController extends Controller
             $total_debt = array();
             $rooms = \App\Rooms::all();
             foreach ($rooms as $room) {
-                if (isset($total_payments[$room->id]) && isset($total[$room->id]) ) {
-                    $total_debt[$room->id] = $total[$room->id] - $total_payments[$room->id] ;
-                }elseif(!isset($total_payments[$room->id]) && isset($total[$room->id])){
-                    $total_debt[$room->id] = $total[$room->id];
+                if (isset($total_payments[$room->id]) && isset($totalCost[$room->id]) ) {
+                    $total_debt[$room->id] = $totalCost[$room->id] - $total_payments[$room->id] ;
+                }elseif(!isset($total_payments[$room->id]) && isset($totalCost[$room->id])){
+                    $total_debt[$room->id] = $totalCost[$room->id];
                 }else{
                     $total_debt[$room->id] = 0;
                 }
@@ -66,7 +68,8 @@ class PaymentsProController extends Controller
             return view('backend/paymentspro/index',[
                                                         'date'         => $date->subMonth(),
                                                         'rooms'        => \App\Rooms::whereNotIn('id',[106,107,108,109,111,112,113,126,134])->get(),
-                                                        'total'        => $total,
+                                                        'totalCost'    => $totalCost,
+                                                        'totalPVP'     => $totalPVP,
                                                         'totalPayment' => $total_payments,
                                                         'debt'         => $total_debt,
                                                         ]);

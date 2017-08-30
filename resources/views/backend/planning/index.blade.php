@@ -68,7 +68,7 @@
             background-color: red !important; 
         }
         .res,.bloq,.pag{
-            background-color: #626c75;
+            background-color: rgba(98,108,117,0.5);
         }
         .nav-tabs > li > a:hover, .nav-tabs > li > a:focus{
             color: white!important;
@@ -234,7 +234,7 @@
             <div class="col-md-7 col-xs-12">
                 <div class="panel">
                     <ul class="nav nav-tabs nav-tabs-simple bg-info-light " role="tablist" data-init-reponsive-tabs="collapse">
-                        <li style="background-color: white"><a href="#tabNueva" data-toggle="tab" role="tab" ><i class="fa fa-plus-circle fa-2x" style="color:green;background-color: white;border-radius: 10px" aria-hidden="true"></i></a>
+                        <li style="background-color: white"><a href="#tabNueva" data-toggle="tab" role="tab" style="padding: 0px"><i class="fa fa-plus-circle fa-5x" style="color:green;background-color: white;border-radius: 10px" aria-hidden="true"></i></a>
                         </li>
                         <li class="active res" >
                             <a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes 
