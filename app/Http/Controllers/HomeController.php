@@ -11,7 +11,7 @@ use Mail;
 use App\Classes\Mobile;
 use URL;
 use File;
-
+use Route;
 class HomeController extends Controller
 {
 
@@ -271,6 +271,8 @@ class HomeController extends Controller
         return view('frontend.privacidad', [ 'mobile' => new Mobile() ]);
     }
 
+
+ 
 }
 
 

@@ -183,8 +183,9 @@
 		$('#content-form-book').hide('400');
 		unflip();
 		$('html, body').animate({
-	    		       scrollTop: $("body").offset().top
-	    		   }, 2000);
+	       scrollTop: $("body").offset().top
+	   }, 2000);
+		$('#fixed-book').fadeIn();
 	});
 
 	<?php if (!$mobile->isMobile()): ?>
@@ -202,18 +203,9 @@
 			$('html,body').animate({
 			        scrollTop: $("#content-form-book").offset().top},
 	        'slow');
-	        setTimeout(function(){
-	        	$('#fixed-book').fadeOut();
-	        }, 1000);
-        	
 
-		});
+        	$('#fixed-book').fadeOut();
 
-		$(window).scroll(function(event) {
-			if (!$('content-form-book').is(':visible')) {
-			  	$('#fixed-book').fadeIn();
-			}
-			
 		});
 	<?php endif; ?>
 </script>	

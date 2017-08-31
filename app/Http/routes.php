@@ -15,6 +15,7 @@ Route::auth();
 
 // Route::get('/',['middleware' => 'authSubAdmin','middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
 Route::get('/','HomeController@index');
+Route::get('/sitemap','HomeController@siteMap');
 Route::get('/apartamentos/{apto}','HomeController@apartamento');
 Route::get('/edificio-miramarski-sierra-nevada','HomeController@edificio');
 Route::get('/contacto','HomeController@contacto');
@@ -29,7 +30,7 @@ Route::post('/getPriceBook','HomeController@getPriceBook');
 Route::get('/getFormBook','HomeController@form');
 
 Route::post('admin/reservas/create' , 'BookController@create');
-Route::get('/test' , 'MailController@sendEmailBookSuccess');
+// Route::get('/test' , 'MailController@sendEmailBookSuccess');
 // Route::get('/admin/propietario',['middleware' => 'authSubAdmin','uses' => 'Admin\BackendController@index']);
 // Route::get('/admin/propietario',['middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
 

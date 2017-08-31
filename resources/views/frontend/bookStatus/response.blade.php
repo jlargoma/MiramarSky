@@ -3,25 +3,32 @@
 		<h2 class="white text-center" style="text-transform: uppercase;">Solicita tu reserva</h2>
 	</div>
 	<div class="col-xs-12 col-md-12 not-padding">
-		
-		<div class="col-md-7 col-xs-8">
-			<p class="white push-10 font-s18 font-w300">Nombre:</p>
-			<p class="white push-10 font-s18 font-w300">Apartamento:</p>
-			<p class="white push-10 font-s18 font-w300">Noches:</p>
-			<p class="white push-10 font-s18 font-w300">Fechas: <b><?php echo $start->copy()->format('d-M') ?> - <?php echo $finish->copy()->format('d-M') ?></b></p>
-			<p class="white push-10 font-s18 font-w300">Sup. Lujo:<?php if($luxury > 0): ?>(SI)<?php else: ?>(NO)<?php endif; ?></p>
-			<p class="white push-10 font-s18 font-w300">Parking:<?php if($priceParking > 0): ?>(SI)<?php else: ?>(NO)<?php endif; ?></p>
+				
+		<div class="row push-20">
+			<span class="white push-10 font-s18 font-w300 pull-left">Nombre:</span>
+			<span class="font-w800 white center push-10 font-s18 pull-right"><?php echo ucfirst($name) ?></span>
 		</div>
 
-		<div class="col-md-5 col-xs-4">
-			<p class="white center push-10 font-s18 font-w300"><span class="font-w800"><?php echo ucfirst($name) ?></span></p>
-			<p class="white center push-10 font-s18 font-w300"><span class="font-w800"><?php echo $apto ?></span></p>
-			<p class="white center push-10 font-s18 font-w300"><span class="font-w800"><?php echo $nigths ?></span> Noches</p>
-			<p class="white center push-10 font-s18 font-w300"><span class="font-w800"><?php echo number_format($total-($luxury + $priceParking),0,'','.')  ?>€</span></p>
-			<p class="white center push-10 font-s18 font-w300"><span class="font-w800"><?php echo number_format($luxury,0,'','.')?>€</span></p>
-			<p class="white center push-10 font-s18 font-w300"><span class="font-w800"><?php echo number_format($priceParking,0,'','.')?>€</span></p>
+		<div class="row push-20">
+			<span class="white push-10 font-s18 font-w300 pull-left">Apartamento:</span>
+			<span class="font-w800 white center push-10 font-s18 font-w300 pull-right"><?php echo $apto ?></span>
 		</div>
-		
+		<div class="row push-20">
+			<span class="white push-10 font-s18 font-w300 pull-left">Noches:</span>
+			<span class="white center push-10 font-s18 font-w300 pull-right"><span class="font-w800"><?php echo $nigths ?></span> Noches</span>
+		</div>
+		<div class="row push-20">
+			<span class="white push-10 font-s18 font-w300 pull-left">Fechas:</span> 
+			<span class="white push-10 font-s18 font-w300 pull-right"><b><?php echo $start->copy()->format('d-M') ?> - <?php echo $finish->copy()->format('d-M') ?></b></span>
+		</div>
+		<div class="row push-20">
+			<span class="white push-10 font-s18 font-w300 pull-left">Sup. Lujo:<?php if($luxury > 0): ?>(SI)<?php else: ?>(NO)<?php endif; ?></span>
+			<span class="white center push-10 font-s18 font-w300 pull-right"><span class="font-w800"><?php echo number_format($luxury,0,'','.')?>€</span></span>
+		</div>
+		<div class="row push-20">
+			<span class="white push-10 font-s18 font-w300 pull-left">Parking:<?php if($priceParking > 0): ?>(SI)<?php else: ?>(NO)<?php endif; ?></span>
+			<span class="white center push-10 font-s18 font-w300 pull-right"><span class="font-w800"><?php echo number_format($priceParking,0,'','.')?>€</span></span>
+		</div>
 	</div>
 	<div class="line" style="margin-bottom: 10px;"></div>
 
