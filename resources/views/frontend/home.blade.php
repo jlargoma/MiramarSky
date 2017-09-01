@@ -346,7 +346,7 @@
 	       						<br><br>
 	       						Tambien <b>te ofrecemos nuestros descuentos para la compra de Forfaits, ofertas en alquiler de material y packs cobinados con cursillos de Ski.</b>
 	       						<br><br>
-	       						Si quieres saber más información sobre la estación de Sierra Nevada consulta nuestro <b><a href="{{url('/activiades')}}">blog</a></b>,  encontraras información sobre la estación, cosas que hacer,actividades de esqui y de a preski,  que visitar, como divertirte con los niños, bares y restaurantes de la estación y de Padrollano….etc
+	       						Si quieres saber más información sobre la estación de Sierra Nevada consulta nuestro <b><a href="{{url('/actividades')}}">blog</a></b>,  encontraras información sobre la estación, cosas que hacer,actividades de esqui y de a preski,  que visitar, como divertirte con los niños, bares y restaurantes de la estación y de Padrollano….etc
 	       					</p>
 	       				</div>
 	       			</div>
@@ -647,7 +647,7 @@
 						<br><br>
 						Tambien <b>te ofrecemos nuestros descuentos para la compra de Forfaits, ofertas en alquiler de material y packs cobinados con cursillos de Ski.</b>
 						<br><br>
-						Si quieres saber más información sobre la estación de Sierra Nevada <b><a href="{{url('/activiades')}}">consulta nuestro blog</a></b>,  encontraras información sobre la estación, cosas que hacer,actividades de esqui y de a preski,  que visitar, como divertirte con los niños, bares y restaurantes de la estación y de Padrollano….etc
+						Si quieres saber más información sobre la estación de Sierra Nevada <b><a href="{{url('/actividades')}}">consulta nuestro blog</a></b>,  encontraras información sobre la estación, cosas que hacer,actividades de esqui y de a preski,  que visitar, como divertirte con los niños, bares y restaurantes de la estación y de Padrollano….etc
 					</p>
 				</div>
 
