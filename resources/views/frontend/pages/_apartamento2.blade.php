@@ -36,7 +36,8 @@
 			padding: 0px 0 40px 0
 		}
 		.daterangepicker {
-		    top: 135%!important;
+			position: fixed!important;
+		    top: 15%!important;
 		}
 		.img{
 			max-height: 530px;
