@@ -22,6 +22,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+        $slides = File::allFiles(public_path().'/img/miramarski/edificio/'); 
         $val = $request->cookie('showPopup');
         if ( !empty($val) ){
             $cookie = $request->cookie('showPopup');
@@ -35,6 +36,7 @@ class HomeController extends Controller
         return view('frontend.home', [
                             'cookie'   => $cookie,
                             'mobile'   => $mobile,
+                            'slidesEdificio'   => $slides,
                             ]);
     }
 

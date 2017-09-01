@@ -2,7 +2,6 @@
 @section('title')Apartamentos de lujo en Sierra Nievada a pie de pista @endsection
 
 @section('content')
-
 <link href="{{ asset('/frontend/hover.css')}}" rel="stylesheet" media="all">
 <link rel="stylesheet" href="{{ asset('/frontend/css/components/radio-checkbox.css')}}" type="text/css" />
 <style type="text/css">
@@ -178,44 +177,25 @@
 	       					<div class="fslider" data-easing="easeInQuad">
 								<div class="flexslider">
 									<div class="slider-wrap">
-										<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/piscina_climatizadalquiler_apartamento_sierra_nevada_miraramarski.jpg') }}">
-											<a href="#">
-												<img src="{{ asset('/img/miramarski/edificio/piscina_climatizadalquiler_apartamento_sierra_nevada_miraramarski.jpg') }}" alt="Slide 1" style="height: 450px;">
-												<div class="flex-caption slider-caption-bg">Fotos del edificio</div>
-											</a>
-										</div>
-										<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/alquiler-apartamento-lujo-edificio-miramar-sierra-nevada.jpg') }}">
-											<a href="#">
-												<img src="{{ asset('/img/miramarski/edificio/alquiler-apartamento-lujo-edificio-miramar-sierra-nevada.jpg') }}" alt="Slide 2" style="height: 450px;">
-												<div class="flex-caption slider-caption-bg">Fotos del edificio</div>
-											</a>
-										</div>
-										<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/alquiler_apartamento_sierra_nevada_a_pie_de_pista.jpg') }}">
-											<a href="#">
-												<img src="{{ asset('/img/miramarski/edificio/alquiler_apartamento_sierra_nevada_a_pie_de_pista.jpg') }}" alt="Slide 3" style="height: 450px;">
-												<div class="flex-caption slider-caption-bg">Fotos del edificio</div>
-											</a>
-										</div>
-										<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/gimnasio_sierra_nevada_miramarski.jpg') }}">
-											<a href="#">
-												<img src="{{ asset('/img/miramarski/edificio/gimnasio_sierra_nevada_miramarski.jpg') }}" alt="Slide 4" style="height: 450px;">
-												<div class="flex-caption slider-caption-bg">Fotos del edificio</div>
-											</a>
-										</div>
-										
-										<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/miramarski_ALQUILER_ APARTAMENTO_SIERRA_NEVADA.jpg') }}">
-											<a href="#">
-												<img src="{{ asset('/img/miramarski/edificio/miramarski_ALQUILER_ APARTAMENTO_SIERRA_NEVADA.jpg') }}" alt="Slide 4" style="height: 450px;">
-												<div class="flex-caption slider-caption-bg">Fotos del edificio</div>
-											</a>
-										</div>
 
-										<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/apartamento_sierra_nevada_a_pie_de_pista.jpg') }}">
-											<a href="#">
-												<img src="{{ asset('/img/miramarski/edificio/apartamento_sierra_nevada_a_pie_de_pista.jpg') }}" alt="Slide 4" style="height: 450px;">
-												<div class="flex-caption slider-caption-bg">Fotos del edificio</div>
-											</a>
-										</div>
+										<?php foreach ($slidesEdificio as $key => $slide): ?>
+											<?php $fotos = explode(",", $slide->getFilename()) ?>
+											<?php if (isset($fotos[1])): ?>
+												<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/piscina_climatizadalquiler_apartamento_sierra_nevada_miraramarski.jpg') }}">
+													<a href="#">
+														<img src="{{ asset('/img/miramarski/edificio/')}}/<?php echo $slide->getFilename() ?>" alt="<?php echo $fotos[2] ?>" title="<?php echo $fotos[3] ?>" style="height: 450px;">
+														<div class="flex-caption slider-caption-bg">Fotos del edificio</div>
+													</a>
+												</div>
+											<?php else: ?>
+												<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/piscina_climatizadalquiler_apartamento_sierra_nevada_miraramarski.jpg') }}">
+													<a href="#">
+														<img src="{{ asset('/img/miramarski/edificio/')}}/<?php echo $slide->getFilename() ?>" alt="<?php echo $fotos[2] ?>" title="<?php echo $fotos[3] ?>" style="height: 450px;">
+														<div class="flex-caption slider-caption-bg">Fotos del edificio</div>
+													</a>
+												</div>
+											<?php endif ?>
+										<?php endforeach ?>
 									</div>
 								</div>
 							</div>
@@ -528,44 +508,25 @@
        					<div class="fslider" data-easing="easeInQuad">
 							<div class="flexslider">
 								<div class="slider-wrap">
-									<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/piscina_climatizadalquiler_apartamento_sierra_nevada_miraramarski.jpg') }}">
-										<a href="#">
-											<img src="{{ asset('/img/miramarski/edificio/piscina_climatizadalquiler_apartamento_sierra_nevada_miraramarski.jpg') }}" alt="Slide 1" style="height: 250px;">
-											<div class="flex-caption slider-caption-bg">Fotos del edificio</div>
-										</a>
-									</div>
-									<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/alquiler-apartamento-lujo-edificio-miramar-sierra-nevada.jpg') }}">
-										<a href="#">
-											<img src="{{ asset('/img/miramarski/edificio/alquiler-apartamento-lujo-edificio-miramar-sierra-nevada.jpg') }}" alt="Slide 2" style="height: 250px;">
-											<div class="flex-caption slider-caption-bg slider-caption-bg-light slider-caption-top-left">Fotos del edificio</div>
-										</a>
-									</div>
-									<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/alquiler_apartamento_sierra_nevada_a_pie_de_pista.jpg') }}">
-										<a href="#">
-											<img src="{{ asset('/img/miramarski/edificio/alquiler_apartamento_sierra_nevada_a_pie_de_pista.jpg') }}" alt="Slide 3" style="height: 250px;">
-											<div class="flex-caption slider-caption-bg slider-caption-top-right">Fotos del edificio</div>
-										</a>
-									</div>
-									<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/gimnasio_sierra_nevada_miramarski.jpg') }}">
-										<a href="#">
-											<img src="{{ asset('/img/miramarski/edificio/gimnasio_sierra_nevada_miramarski.jpg') }}" alt="Slide 4" style="height: 250px;">
-											<div class="flex-caption slider-caption-bg slider-caption-bg-light slider-caption-bottom-right">Fotos del edificio</div>
-										</a>
-									</div>
-									
-									<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/miramarski_ALQUILER_ APARTAMENTO_SIERRA_NEVADA.jpg') }}">
-										<a href="#">
-											<img src="{{ asset('/img/miramarski/edificio/miramarski_ALQUILER_ APARTAMENTO_SIERRA_NEVADA.jpg') }}" alt="Slide 4" style="height: 250px;">
-											<div class="flex-caption slider-caption-bg slider-caption-bg-light slider-caption-bottom-right">Fotos del edificio</div>
-										</a>
-									</div>
 
-									<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/apartamento_sierra_nevada_a_pie_de_pista.jpg') }}">
-										<a href="#">
-											<img src="{{ asset('/img/miramarski/edificio/apartamento_sierra_nevada_a_pie_de_pista.jpg') }}" alt="Slide 4" style="height: 250px;">
-											<div class="flex-caption slider-caption-bg slider-caption-bg-light slider-caption-bottom-right">Fotos del edificio</div>
-										</a>
-									</div>
+									<?php foreach ($slidesEdificio as $key => $slide): ?>
+										<?php $fotos = explode(",", $slide->getFilename()) ?>
+										<?php if (isset($fotos[1])): ?>
+											<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/piscina_climatizadalquiler_apartamento_sierra_nevada_miraramarski.jpg') }}">
+												<a href="#">
+													<img src="{{ asset('/img/miramarski/edificio/')}}/<?php echo $slide->getFilename() ?>" alt="<?php echo $fotos[2] ?>" title="<?php echo $fotos[3] ?>" style="height: 250px;">
+													<div class="flex-caption slider-caption-bg">Fotos del edificio</div>
+												</a>
+											</div>
+										<?php else: ?>
+											<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/piscina_climatizadalquiler_apartamento_sierra_nevada_miraramarski.jpg') }}">
+												<a href="#">
+													<img src="{{ asset('/img/miramarski/edificio/')}}/<?php echo $slide->getFilename() ?>" alt="<?php echo $fotos[2] ?>" title="<?php echo $fotos[3] ?>" style="height: 250px;">
+													<div class="flex-caption slider-caption-bg">Fotos del edificio</div>
+												</a>
+											</div>
+										<?php endif ?>
+									<?php endforeach ?>
 								</div>
 							</div>
 						</div>
