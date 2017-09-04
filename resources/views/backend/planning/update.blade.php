@@ -1,4 +1,4 @@
-R@extends('layouts.admin-master')
+@extends('layouts.admin-master')
 
 @section('title') Administrador de reservas MiramarSKI @endsection
 

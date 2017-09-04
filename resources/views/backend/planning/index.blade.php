@@ -73,6 +73,10 @@
         .nav-tabs > li > a:hover, .nav-tabs > li > a:focus{
             color: white!important;
         }
+
+        .fechas > li.active{
+            background-color: red;
+        }
     </style>
 
 @endsection
@@ -216,25 +220,28 @@
                 </div>
             </div>
             <div class="col-md-12 text-center">
-                <h2><b>Planning de reservas</b></h2>
-                Fechas:
-                <select id="date" >
-                    <?php $fecha = $inicio->copy(); ?>
+                <div class="col-md-6 col-md-offset-4"><h2><b>Planning de reservas</b></h2></div>
+                <div class="col-md-2 m-t-20">
+                    Fechas:
+                    <select id="date" >
+                        <?php $fecha = $inicio->copy(); ?>
 
-                    <?php for ($i=1; $i <= 4; $i++): ?>
-                        <?php if( $date->copy()->format('Y') == $fecha->format('Y') ){ $selected = "selected"; }else{$selected = "";} ?>
-                        <option value="<?php echo $fecha->copy()->format('Y'); ?>" <?php echo $selected ?>>
-                            <?php echo $fecha->copy()->subYear()->format('Y')."-".$fecha->copy()->format('Y'); ?> 
-                        </option>
-                        <?php $fecha->addYear(); ?>
-                    <?php endfor; ?>
-                </select>
+                        <?php for ($i=1; $i <= 4; $i++): ?>
+                            <?php if( $date->copy()->format('Y') == $fecha->format('Y') ){ $selected = "selected"; }else{$selected = "";} ?>
+                            <option value="<?php echo $fecha->copy()->format('Y'); ?>" <?php echo $selected ?>>
+                                <?php echo $fecha->copy()->subYear()->format('Y')."-".$fecha->copy()->format('Y'); ?> 
+                            </option>
+                            <?php $fecha->addYear(); ?>
+                        <?php endfor; ?>
+                    </select>
+                </div>
+                
             </div>
             <br><br>
             <div class="col-md-7 col-xs-12">
                 <div class="panel">
                     <ul class="nav nav-tabs nav-tabs-simple bg-info-light " role="tablist" data-init-reponsive-tabs="collapse">
-                        <li style="background-color: white"><a href="#tabNueva" data-toggle="tab" role="tab" style="padding: 0px"><i class="fa fa-plus-circle fa-5x" style="color:green;background-color: white;border-radius: 10px" aria-hidden="true"></i></a>
+                        <li style="background-color: white"><a href="#tabNueva" data-toggle="tab" role="tab" style="padding: 0px;background-color: green;"><i class="fa fa-plus-circle fa-4x" style="color:white;border-radius: 10px" aria-hidden="true"></i></a>
                         </li>
                         <li class="active res" >
                             <a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes 
@@ -256,7 +263,7 @@
 
                         <div class="tab-pane " id="tabNueva">
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-8">
                                     <form role="form"  action="{{ url('/admin/reservas/create') }}" method="post">
                                         
                                         <!-- Seccion Cliente -->
@@ -384,6 +391,9 @@
                                                 </div>                        
                                         </div>
                                     </form>
+                                </div>
+                                <div class="col-md-4">
+                                    
                                 </div>
                             </div>
                         </div>
@@ -619,7 +629,6 @@
                                 <table class="table table-hover demo-table-search table-responsive table-striped" id="tableWithSearch3" >
                                     <thead>
                                         <tr>   
-                                            <th class ="text-center Pagada-la-señal text-white" style="width:5%"> Cobros </th>
                                             <th class ="text-center Pagada-la-señal text-white" style="width:5%">  Cliente     </th>
                                             <th class ="text-center Pagada-la-señal text-white" style="width:5%">  Telefono     </th>
                                             <th class ="text-center Pagada-la-señal text-white" style="width:2%">   Pax         </th>
@@ -627,7 +636,7 @@
                                             <th class ="text-center Pagada-la-señal text-white" style="width:20%!important">  IN     </th>
                                             <th class ="text-center Pagada-la-señal text-white" style="width:20%!important">  OUT      </th>
                                             <th class ="text-center Pagada-la-señal text-white" style="width:5%">   Noc         </th>
-                                            <th class ="text-center Pagada-la-señal text-white" style="width:5%">   Precio      </th>
+                                            <th class ="text-center Pagada-la-señal text-white" style="width:35%!important">Precio&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </th>
                                             <th class ="text-center Pagada-la-señal text-white" style="width:5%">   Estado      </th>
                                             <th class ="text-center Pagada-la-señal text-white" style="width:5%">   Acciones    </th>
                                         </tr>
@@ -635,18 +644,6 @@
                                     <tbody>
                                         <?php foreach ($arrayBooks["pagadas"] as $book): ?>
                                                 <tr>
-                                                    <td class ="text-center">                                                    
-                                                        <?php if (isset($payment[$book->id])): ?>
-                                                            <?php if ($payment[$book->id] == 0): ?>
-                                                            <?php else:?>
-                                                                <p><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></p>
-                                                                <div class="progress ">
-                                                                <div class="progress-bar progress-bar-danger" style="width:<?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?>"></div>
-                                                                </div>                                                            
-                                                            <?php endif; ?>
-                                                        <?php else: ?>
-                                                        <?php endif ?>
-                                                    </td> 
                                                     <td class ="text-center">
                                                             <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo substr($book->customer['name'], 0,10)  ?></a>                                                        
                                                     </td>
@@ -681,11 +678,31 @@
                                                         ?>
                                                     </td>
                                                     <td class ="text-center"><?php echo $book->nigths ?></td>
-                                                    <td class ="text-center"><?php echo $book->total_price."€" ?><br>
-                                                                            <?php if (isset($payment[$book->id])): ?>
-                                                                                <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
-                                                                            <?php else: ?>
-                                                                            <?php endif ?>
+                                                    <td class ="text-center">
+                                                        <div class="col-md-6">
+                                                            <?php echo $book->total_price."€" ?><br>
+                                                            <?php if (isset($payment[$book->id])): ?>
+                                                                <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
+                                                            <?php else: ?>
+                                                            <?php endif ?>
+                                                        </div>
+                                                        <?php if (isset($payment[$book->id])): ?>
+                                                            <?php if ($payment[$book->id] == 0): ?>
+                                                                <div class="col-md-6 bg-primary">
+                                                                0%
+                                                                </div>
+                                                            <?php else:?>
+                                                                <div class="col-md-6 bg-danger">
+                                                                    <p class="text-white"><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></p>
+                                                                </div> 
+                                                                                                                           
+                                                            <?php endif; ?>
+                                                        <?php else: ?>
+                                                            <div class="col-md-6 bg-primary">
+                                                                0%
+                                                                </div>
+                                                        <?php endif ?>
+                                                                        
                                                     </td>
                                                     <td class ="text-center">
                                                         <select class="status form-control" data-id="<?php echo $book->id ?>" >
@@ -726,7 +743,7 @@
         
             <div class="col-md-5 col-xs-12">
                 <div class="panel">
-                    <ul class="nav nav-tabs nav-tabs-simple bg-info-light" role="tablist" data-init-reponsive-tabs="collapse">
+                    <ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
                         <?php $dateAux = $inicio->copy(); ?>
                         <?php for ($i=1; $i <= 9 ; $i++) :?>
                             <li <?php if($i == 1 ){ echo "class='active'";} ?>>
@@ -1101,7 +1118,7 @@
                 };
 
                 var myBarChart = new Chart('barChart', {
-                    type: 'bar',
+                    type: 'line',
                     data: data,
                 });
 

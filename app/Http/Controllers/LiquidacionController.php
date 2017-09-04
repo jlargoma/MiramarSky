@@ -21,15 +21,20 @@ class LiquidacionController extends Controller
     public function index($month="")
         {   
             $totales = [
-                            "total" => [],
-                            "coste" => [],
-                            "banco" => [],
-                            "jorge" => [],
-                            "jaime" => [],
-                            "benJorge" => [],
-                            "benJaime" => [],
-                            "pendiente" => [],
-                            "limpieza" => [],
+                            "total"        => [],
+                            "coste"        => [],
+                            "banco"        => [],
+                            "jorge"        => [],
+                            "jaime"        => [],
+                            "costeApto"    => [],
+                            "costePark"    => [],
+                            "costeLujo"    => [],
+                            "costeLimp"    => [],
+                            "costeAgencia" => [],
+                            "benJorge"     => [],
+                            "benJaime"     => [],
+                            "pendiente"    => [],
+                            "beneficio"    =>[],
                         ];
             $liquidacion = new \App\Liquidacion();
             if (empty($month)) {
@@ -46,20 +51,32 @@ class LiquidacionController extends Controller
                     $totales["banco"] = $book->getPayment(2);
                     $totales["jorge"] = $book->getPayment(0);
                     $totales["jaime"] = $book->getPayment(1);
+                    $totales["costeApto"] = $book->cost_apto;
+                    $totales["costePark"] = $book->cost_park;
+                    $totales["costeLujo"] = $book->cost_lujo;
+                    $totales["costeLimp"] = $book->sup_limp;
+                    $totales["costeAgencia"] = $book->pvpAgency;
                     $totales["benJorge"] = $book->total_price;
                     $totales["benJaime"] = $book->total_price;
                     $totales["pendiente"] = $book->getPayment(4);
                     $totales["limpieza"] = $book->sup_limp;
+                    $totales["beneficio"] = $book->total_ben;
                 }
                 $totales["total"] += $book->total_price;
                 $totales["coste"] += $book->cost_total;
                 $totales["banco"] += $book->getPayment(2);
                 $totales["jorge"] += $book->getPayment(0);
                 $totales["jaime"] += $book->getPayment(1);
+                $totales["costeApto"] += $book->cost_apto;
+                $totales["costePark"] += $book->cost_park;
+                $totales["costeLujo"] += $book->cost_lujo;
+                $totales["costeLimp"] += $book->sup_limp;
+                $totales["costeAgencia"] += $book->pvpAgency;
                 $totales["benJorge"] += $book->total_price;
                 $totales["benJaime"] += $book->total_price;
                 $totales["pendiente"] += $book->getPayment(4);
                 $totales["limpieza"] += $book->sup_limp;
+                $totales["beneficio"] += $book->total_ben;
  
             }
 

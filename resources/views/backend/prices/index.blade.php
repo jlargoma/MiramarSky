@@ -20,7 +20,7 @@
         background-color: orange;
     }
     .Baja{
-        background-color: purple;
+        background-color: #b5e61d;
 
     }
 </style>
@@ -30,7 +30,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="col-md-12 text-center">
-                <h2>Precios de Apartamentos</h2>
+                <h2>Precios de Temporadas</h2>
             </div>
             <div class="clearfix"></div>
             <div class="tab-content">
@@ -39,16 +39,16 @@
                     <table class="table table-hover  table-responsive-block" >
                         <thead>
                             <tr>
-                                <th class ="text-center bg-complete text-white" style="width: 1%" rowspan="2"> Ocupación  </th>
+                                <th class ="text-center bg-white text-complete" style="width: 1%" rowspan="2"> Ocupación  </th>
                                 <?php foreach ($seasons as $key => $season): ?>
                                     <th class ="text-center bg-complete text-white <?php echo $season->name ?>" style="width: 20%" colspan="3"> <?php echo $season->name ?> </th>
                                 <?php endforeach ?>
                             </tr>
                             <tr>                          
                                 <?php foreach ($seasons as $key => $season): ?>
-                                    <th class ="text-center bg-complete text-white" style="width: 5%" >PVP</th>
-                                    <th class ="text-center bg-complete text-white" style="width: 5%">Cost</th>
-                                    <th class ="text-center bg-complete text-white" style="width: 5%">% Ben</th>
+                                    <th class ="text-center bg-complete text-white <?php echo $season->name ?>" style="width: 5%" >PVP</th>
+                                    <th class ="text-center bg-complete text-white <?php echo $season->name ?>" style="width: 5%">Cost</th>
+                                    <th class ="text-center bg-complete text-white <?php echo $season->name ?>" style="width: 5%">% Ben</th>
                                 <?php endforeach ?>
                             </tr>
                         </thead>

@@ -21,7 +21,9 @@
 	.pagos{
 		background-color: rgba(255,255,255,0.5)!important;
 	}
-
+	.beneficio{
+		background-color: rgba(181,230,29,0.5)!important;
+	}
 	td[class$="bi"] {border-left: 1px solid black;}
 	td[class$="bf"] {border-right: 1px solid black;}
 	
@@ -59,37 +61,80 @@ setlocale(LC_TIME, "es_ES");
 
     <div class="row">
     	<div class="col-md-12 text-center">
-    		<h2>Liquidación</h2>
+    		<h2>Liquidación por reservas</h2>
     	</div>
         <div class="col-md-12">
-        	<div class="col-md-6 pull-right">
-
-        			<table class="table table-hover demo-table-search table-responsive">
+        	<div class="col-md-12 pull-right">
+				<div class="col-md-3">
+					<table class="table table-hover demo-table-search table-responsive">
 						<thead>
 							<th class ="text-center bg-complete text-white" style="width: 10%!important">Total</th>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">Coste total</th>
 							<th class ="text-center bg-complete text-white" style="width: 10%!important">C. banco</th>
 							<th class ="text-center bg-complete text-white" style="width: 10%!important">C. Jorge</th>
 							<th class ="text-center bg-complete text-white" style="width: 10%!important">C. Jaime</th>
 							<th class ="text-center bg-complete text-white" style="width: 10%!important">Pendiente </th>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">B. Jorge</th>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">B. Jaime</th>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">Limpieza</th>
 						</thead>
 						<tbody>
 							<tr>
 								<td class="text-center"><?php echo number_format($totales["total"],2,',','.') ?></td>
-								<td class="text-center"><?php echo number_format($totales["coste"],2,',','.') ?></td>
 								<td class="text-center"><?php echo number_format($totales["banco"],2,',','.') ?></td>
 								<td class="text-center"><?php echo number_format($totales["jorge"],2,',','.') ?></td>
 								<td class="text-center"><?php echo number_format($totales["jaime"],2,',','.') ?></td>
 								<td class="text-center"><?php echo number_format($totales["pendiente"],2,',','.') ?></td>
-								<td class="text-center"><?php echo number_format($totales["benJorge"],2,',','.') ?></td>
-								<td class="text-center"><?php echo number_format($totales["benJaime"],2,',','.') ?></td>
-								<td class="text-center"><?php echo number_format($totales["limpieza"],2,',','.') ?></td>
 							</tr>
 						</tbody>
-        			</table>
+	    			</table>
+				</div>
+    			<div class="col-md-2">
+	    			<table class="table table-hover demo-table-search table-responsive">
+						<thead>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">Beneficio</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">Benº </th>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="text-center beneficio"><?php echo number_format($totales["beneficio"],2,',','.') ?></td>
+								<td class="text-center beneficio"><?php echo number_format(($totales["beneficio"]/$totales["total"])*100,2,',','.') ?>%</td>
+							</tr>
+						</tbody>
+	    			</table>
+	    		</div>
+				<div class="col-md-5">
+	    			<table class="table table-hover demo-table-search table-responsive">
+						<thead>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">Coste total</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">Coste Apto </th>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">Coste Park</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">Coste Lujo</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">Coste Limpieza</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">Coste Agencia</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="text-center"><?php echo number_format($totales["coste"],2,',','.') ?></td>
+								<td class="text-center"><?php echo number_format($totales["costeApto"],2,',','.') ?></td>
+								<td class="text-center"><?php echo number_format($totales["costePark"],2,',','.') ?></td>
+								<td class="text-center"><?php echo number_format($totales["costeLujo"],2,',','.') ?></td>
+								<td class="text-center"><?php echo number_format($totales["costeLimp"],2,',','.') ?></td>
+								<td class="text-center"><?php echo number_format($totales["costeAgencia"],2,',','.') ?></td>
+							</tr>
+						</tbody>
+	    			</table>
+				</div>
+				<div class="col-md-2">
+	    			<table class="table table-hover demo-table-search table-responsive">
+						<thead>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">B. Jorge</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">B. Jaime</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="text-center"><?php echo number_format($totales["benJorge"],2,',','.') ?></td>
+								<td class="text-center"><?php echo number_format($totales["benJaime"],2,',','.') ?></td>
+							</tr>
+						</tbody>
+	    			</table>
+    			</div>
         	</div>
         	<div style="clear: both;"></div>
 			<div class="tab-content">
@@ -154,9 +199,9 @@ setlocale(LC_TIME, "es_ES");
 				        			<td class="text-center pagos"><?php echo number_format($book->getPayment(0),2,',','.'); ?> €</td>
 				        			<td class="text-center pagos"><?php echo number_format($book->getPayment(1),2,',','.'); ?> €</td>
 									<td class="text-center pagos pendiente"><?php echo number_format(($book->total_price - $book->getPayment(4)),2,',','.')." €"; ?></td>
-				        			<td class="text-center coste bi" style="border-left: 1px solid black;"><?php echo number_format($book->total_ben,2,',','.') ?> €</td>
-				        			<td class="text-center coste"><?php echo number_format($book->inc_percent,0)." %" ?></td>
-				        			<td class="text-center coste"><?php echo number_format($book->cost_total,2,',','.')?> €</td>
+				        			<td class="text-center beneficio bi" style="border-left: 1px solid black;"><?php echo number_format($book->total_ben,2,',','.') ?> €</td>
+				        			<td class="text-center beneficio bf"><?php echo number_format($book->inc_percent,0)." %" ?></td>
+				        			<td class="text-center coste bi "><?php echo number_format($book->cost_total,2,',','.')?> €</td>
 				        			<td class="text-center coste"><?php echo number_format($book->cost_apto,2,',','.')?> €</td>
 				        			<td class="text-center coste"><?php echo number_format($book->cost_park,2,',','.')?> €</td>
 				        			<td class="text-center coste" ><?php echo number_format($book->cost_lujo,2,',','.')?> €</td>
