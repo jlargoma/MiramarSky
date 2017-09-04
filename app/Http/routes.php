@@ -24,6 +24,7 @@ Route::post('/contacto-form','HomeController@formContacto');
 Route::get('/terminos-condiciones','HomeController@terminos');
 Route::get('/politica-cookies','HomeController@politicaPrivacidad');
 Route::get('/politica-privacidad','HomeController@politicaPrivacidad');
+Route::get('/el-tiempo','HomeController@tiempo');
 
 
 Route::post('/getPriceBook','HomeController@getPriceBook');

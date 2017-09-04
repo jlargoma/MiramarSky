@@ -274,6 +274,15 @@ class HomeController extends Controller
     }
 
 
+    public function tiempo()
+    {
+        $aptos  = ['apartamento-lujo-sierra-nevada', 'estudio-lujo-sierra-nevada','apartamento-standard-sierra-nevada','estudio-standard-sierra-nevada'];
+
+        return view('frontend.tiempo', [ 
+                                        'mobile' => new Mobile() ,
+                                        'aptos'  => $aptos,
+                                    ]);
+    }
  
 }
 

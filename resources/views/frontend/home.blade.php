@@ -335,18 +335,18 @@
 	       		<div class="container container-mobile clearfix">
 	       			<div class="row">
 	       				<div class="col-xs-12">
-	       					<p class="text-justify black font-s16 font-w300">
-	       						<span class="font-w600 font-s18">Sabemos lo importante que son tus vacaciones de esqui, por eso cuidamos cada detalle al máximo, intentando siempre conseguir que tu estancia sea lo más agradable posible.</span>
+	       					<p class="text-justify black font-s14 font-w300" style="line-height: 1.3">
+	       						<span class="font-w600 font-s16">Sabemos lo importante que son tus vacaciones de esqui, por eso cuidamos cada detalle al máximo, intentando siempre conseguir que tu estancia sea lo más agradable posible.</span>
 	       						<br><br>
 	       						<b>En nuestra web encontraras una oferta de calidad</b>, en Sierra Nevada la oferta de alojamiento es muy dispar puediendo encontrarse apartamentos muy viejos y en mal estado,<b> no es nuestro caso, <u>todos nuestros apartamentos se revisan y actualizan cada temporada</u></b>
 	       						<br><br>
-	       						Nuestros apartamentos ( de dos dormitorios y estudios) están ubicados en la mejor zona, Tu experiencia será de máximo confort: <b> Piscina climatizada, gimnasio, ascensor , taquilla guarda esquíes, Parking cubierto, ropa de cama incluida</b>.
+	       						Nuestros apartamentos ( de dos dormitorios y estudios) están ubicados en la mejor zona, Tu experiencia será de máximo confort:<br> <b> Piscina climatizada, gimnasio, ascensor , taquilla guarda esquíes, Parking cubierto, ropa de cama incluida</b>.
 	       						<br><br>
-	       						<b>A pie de pista... Sin coger remontes. El acceso a las pistas es directo, todo pensado ara que disfrutes.</b>
+	       						<b>A pie de pista... Sin coger remontes. El acceso a las pistas es directo, todo pensado para que disfrutes.</b>
 	       						<br><br>
 	       						Tambien <b>te ofrecemos nuestros descuentos para la compra de Forfaits, ofertas en alquiler de material y packs cobinados con cursillos de Ski.</b>
 	       						<br><br>
-	       						Si quieres saber más información sobre la estación de Sierra Nevada consulta nuestro <b><a href="{{url('/actividades')}}">blog</a></b>,  encontraras información sobre la estación, cosas que hacer,actividades de esqui y de a preski,  que visitar, como divertirte con los niños, bares y restaurantes de la estación y de Padrollano….etc
+	       						Si quieres saber más información sobre la estación de Sierra Nevada <b><a href="{{url('/actividades')}}">consulta nuestro blog</a></b>,  encontraras información sobre la estación, cosas que hacer,actividades de esqui y de a preski,  que visitar, como divertirte con los niños, bares y restaurantes de la estación y de Padrollano….etc
 	       					</p>
 	       				</div>
 	       			</div>
@@ -543,28 +543,28 @@
 				<div class="heading-block center push-20">
 					<h3 class="green">GALERÍA DE APARTAMENTOS</h3>
 				</div>
-				<div class=" row animatable fadeInDown">
+				<div class=" row animatable" data-aos="zoom-in">
 					<a href="{{url('/apartamentos/apartamento-lujo-sierra-nevada')}}" > 
 						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apto-lujo.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 1px 1px #000;">2 DORMITORIOS<br> DE LUJO</h3>
 						</div>
 					</a>
 				</div>
-				<div class=" row animatable fadeInDown">
+				<div class=" row animatable" data-aos="zoom-in">
 					<a href="{{url('/apartamentos/apartamento-standard-sierra-nevada')}}" > 
 						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apto-standard.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 1px 1px #000;">2 DORMITORIOS STANDARD</h3>
 						</div>
 					</a>
 				</div>
-				<div class=" row animatable fadeInDown">
+				<div class=" row animatable" data-aos="zoom-in">
 					<a href="{{url('/apartamentos/estudio-lujo-sierra-nevada')}}"> 
 						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/estudio-lujo.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 1px 1px #000;">ESTUDIO DE LUJO</h3>
 						</div>
 					</a>
 				</div>
-				<div class=" row animatable fadeInDown">
+				<div class=" row animatable" data-aos="zoom-in">
 					<a href="{{url('/apartamentos/estudio-standard-sierra-nevada')}}"> 
 						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/estudio-standard.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 1px 1px #000;">ESTUDIO STANDARD</h3>
@@ -637,9 +637,9 @@
 						<br><br>
 						<b>En nuestra web encontraras una oferta de calidad</b>, en Sierra Nevada la oferta de alojamiento es muy dispar puediendo encontrarse apartamentos muy viejos y en mal estado,<b> no es nuestro caso, <u>todos nuestros apartamentos se revisan y actualizan cada temporada</u></b>
 						<br><br>
-						Nuestros apartamentos ( de dos dormitorios y estudios) están ubicados en la mejor zona, Tu experiencia será de máximo confort: <b> Piscina climatizada, gimnasio, ascensor , taquilla guarda esquíes, Parking cubierto, ropa de cama incluida</b>.
+						Nuestros apartamentos ( de dos dormitorios y estudios) están ubicados en la mejor zona, Tu experiencia será de máximo confort:<br> <b> Piscina climatizada, gimnasio, ascensor , taquilla guarda esquíes, Parking cubierto, ropa de cama incluida</b>.
 						<br><br>
-						<b>A pie de pista... Sin coger remontes. El acceso a las pistas es directo, todo pensado ara que disfrutes.</b>
+						<b>A pie de pista... Sin coger remontes. El acceso a las pistas es directo, todo pensado para que disfrutes.</b>
 						<br><br>
 						Tambien <b>te ofrecemos nuestros descuentos para la compra de Forfaits, ofertas en alquiler de material y packs cobinados con cursillos de Ski.</b>
 						<br><br>

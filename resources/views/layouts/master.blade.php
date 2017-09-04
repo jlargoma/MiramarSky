@@ -9,13 +9,6 @@
 		<link href="//fonts.googleapis.com/css?family=Open+Sans%3A800|Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700,800,900|Crete+Round:400italic" rel="stylesheet" type="text/css" />
 		<link href="//fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700,800,900|Roboto+Condensed:400|Poppins:600%2C400" rel="stylesheet" type="text/css" />
  	
-		
-		<!-- <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/bootstrap.css')}}" />
-		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/style.css')}}" />
-		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/font-icons.css')}}" />
-		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/animate.css')}}" />
-		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/magnific-popup.css')}}" /> -->
-		
 		<link rel="stylesheet" href="{{ asset ('/css/app.css')}}" type="text/css" />
 
 		<?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
@@ -26,13 +19,10 @@
 
 		<link rel="stylesheet" href="{{ asset ('/frontend/colors.php?color=3F51B5')}}" type="text/css" />
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/> 
-		
-		<!-- <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/css/settings.css')}}" media="screen" />
-		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/css/layers.css')}}">
-		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/css/navigation.css')}}"> -->
 
 		<link rel="stylesheet" href="{{ asset ('/css/slider.css')}}" type="text/css" />
 		
+		<link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
 		<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
 		<title>@yield('title')</title>
 		
@@ -132,21 +122,9 @@
 		<script type="text/javascript" src="{{ asset('/js/scripts-slider.js')}}"></script>
 		<script type="text/javascript" src="{{ asset('/js/flip.js')}}"></script>
 
-		<!-- <script type="text/javascript" src="{{ asset('/frontend/js/jquery.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('/frontend/js/plugins.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('/frontend/js/functions.js') }}"></script>
-		
-		<script type="text/javascript" src="/frontend/include/rs-plugin/js/jquery.themepunch.tools.min.js"></script>
-		<script type="text/javascript" src="/frontend/include/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
-
-		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.video.min.js"></script>
-		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.slideanims.min.js"></script>
-		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.actions.min.js"></script>
-		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.layeranimation.min.js"></script>
-		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.navigation.min.js"></script> -->
-
 		<script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
 		<script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
+		<script src="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.js"></script>
 
 		<?php /* view para todos los scripts generales de la pagina*/ ?>
 		@include('layouts._generalScripts')
@@ -260,35 +238,8 @@
 			}); /*ready*/
 		</script>
 
-		<script type="text/javascript">
-
-			
-			jQuery(function($) {			 
-			  var doAnimations = function() {					   
-			    var offset = $(window).scrollTop() + $(window).height(),
-			        $animatables = $('.animatable');					   
-			        $animatables.each(function(i) {
-			       var $animatable = $(this);			 			     
-			            if (($animatable.offset().top + $animatable.height() + 50) < offset) {			   			       
-			        if (!$animatable.hasClass('animate-in')) {
-			          $animatable.removeClass('animate-out').css('top', $animatable.css('top')).addClass('animate-in');
-			        }
-
-			            }			 			     
-			      else if (($animatable.offset().top + $animatable.height() + 50) > offset) {			   			       
-			        if ($animatable.hasClass('animate-in')) {
-			          $animatable.removeClass('animate-in').css('top', $animatable.css('top')).addClass('animate-out');
-			        }
-
-			      }
-
-			    });
-
-			    };			 
-			    $(window).on('scroll', doAnimations);
-			  $(window).trigger('scroll');
-
-			});
+		<script>
+			AOS.init();
 		</script>
 		@yield('scripts')
 	</body>
