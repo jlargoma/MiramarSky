@@ -145,10 +145,6 @@
 		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.layeranimation.min.js"></script>
 		<script type="text/javascript" src="/frontend/include/rs-plugin/js/extensions/revolution.extension.navigation.min.js"></script> -->
 
-
-		<script type="text/javascript" src="{{ asset('/frontend/js/scrollreveal.js')}}"></script>
-
-
 		<script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
 		<script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
 
@@ -263,14 +259,36 @@
 				}
 			}); /*ready*/
 		</script>
-		<script>
-			window.sr = ScrollReveal();
-			sr.reveal('.fadeInAppear', { duration: 1000 }, 50);
-		</script>
-
 
 		<script type="text/javascript">
+
 			
+			jQuery(function($) {			 
+			  var doAnimations = function() {					   
+			    var offset = $(window).scrollTop() + $(window).height(),
+			        $animatables = $('.animatable');					   
+			        $animatables.each(function(i) {
+			       var $animatable = $(this);			 			     
+			            if (($animatable.offset().top + $animatable.height() + 50) < offset) {			   			       
+			        if (!$animatable.hasClass('animate-in')) {
+			          $animatable.removeClass('animate-out').css('top', $animatable.css('top')).addClass('animate-in');
+			        }
+
+			            }			 			     
+			      else if (($animatable.offset().top + $animatable.height() + 50) > offset) {			   			       
+			        if ($animatable.hasClass('animate-in')) {
+			          $animatable.removeClass('animate-in').css('top', $animatable.css('top')).addClass('animate-out');
+			        }
+
+			      }
+
+			    });
+
+			    };			 
+			    $(window).on('scroll', doAnimations);
+			  $(window).trigger('scroll');
+
+			});
 		</script>
 		@yield('scripts')
 	</body>
