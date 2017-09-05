@@ -661,14 +661,14 @@
 	use Carbon\Carbon; 
 ?>
 <div class="col-md-12 m-b-20">
-	<div class="col-md-1">
-		<div class="Alta col-md-1 col-xs-6">&nbsp;</div><div class=" col-md-6 col-xs-6">Alta</div>	               
+	<div class="col-md-1 col-xs-12">
+		<div class="Alta col-md-1 col-xs-2">&nbsp;</div><div class=" col-md-6 col-xs-6">Alta</div>	               
 	</div>
-	<div class="col-md-1">
-		<div class="Media col-md-1 col-xs-6">&nbsp;</div><div class=" col-md-6 col-xs-6">Media</div>	               
+	<div class="col-md-1 col-xs-12">
+		<div class="Media col-md-1 col-xs-2">&nbsp;</div><div class=" col-md-6 col-xs-6">Media</div>	               
 	</div>
-	<div class="col-md-1">
-		<div class="Baja col-md-1 col-xs-6">&nbsp;</div><div class=" col-md-6 col-xs-6">Baja</div>	               
+	<div class="col-md-1 col-xs-12">
+		<div class="Baja col-md-1 col-xs-2">&nbsp;</div><div class=" col-md-6 col-xs-6">Baja</div>	               
 	</div> 
 </div>
 
