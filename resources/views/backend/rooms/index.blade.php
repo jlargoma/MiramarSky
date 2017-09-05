@@ -34,7 +34,7 @@
     
 @section('content')
 
-<div class="container-fluid padding-25 sm-padding-10">
+<div class="container-fluid padding-25 sm-padding-10 table-responsive">
     <div class="row">
         <div class="col-md-12 text-center">
             <h2>Apartamentos</h2>
