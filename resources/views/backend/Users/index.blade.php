@@ -10,7 +10,7 @@
 
 @endsection
     
-@section('content')
+@section('content') 
 <div class="container-fluid padding-25 sm-padding-10">
     <div class="row">
         <div class="col-md-12 col-xs-12 text-center">
