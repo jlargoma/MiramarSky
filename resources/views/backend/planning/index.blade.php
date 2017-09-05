@@ -868,7 +868,7 @@
 
         </div>
     </div>
-
+<a href="{{ url('/admin/pdf/pdf-reserva') }}">Reserva pdf</a>
 <div class="modal fade slide-up disable-scroll in" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content-wrapper">

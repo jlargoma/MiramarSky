@@ -99,7 +99,7 @@
   	<div class="row">
   		<div class="panel" style="margin-bottom: 0px!important">
   			<ul class="nav nav-tabs nav-tabs-simple bg-info-light " role="tablist" data-init-reponsive-tabs="collapse">
-  				<li class="resv  " >
+  				<li class="resv  active" >
   					<a href="#reservas" data-toggle="tab" role="tab" style="font-size: 11px!important"> RESERVAS </a>
   				</li>
   				<li class="cob">
@@ -108,7 +108,7 @@
   				<li>
   					<a href="#calendario"> <i class="fa fa-calendar " aria-hidden="true" style="font-size: 15px!important"></i> </a>
   				</li>
-  				<li class="active" style="background-color: white">
+  				<li class="" style="background-color: white">
   					<a href="#tabNueva" data-toggle="tab" role="tab" >
   						<i class="fa fa-plus-circle " style="color:green;font-size: 19px!important" aria-hidden="true"></i>
   					</a>
@@ -116,7 +116,7 @@
   			</ul>
   		</div>
   		<div class="tab-content ">
-  			<div class="tab-pane " id="reservas">
+  			<div class="tab-pane active" id="reservas">
   				<div class="row column-seperation ">
   					<div class="panel resv">
   						<ul class="nav nav-tabs nav-tabs-simple bg-info-light rev" role="tablist" data-init-reponsive-tabs="collapse">
@@ -204,7 +204,7 @@
   								</div>
   							</div>
   						</div>
-  						<div class="tab-pane table-responsive" id="tabPagadas">
+  						<div class="tab-pane table-responsive " id="tabPagadas">
   							<div class="container column-seperation ">
   								<div>
   									<table class="table table-hover dataTable no-footer">
@@ -334,7 +334,7 @@
   				</div>
   			</div>
 
-  			<div class="tab-pane active" id="tabNueva">
+  			<div class="tab-pane " id="tabNueva">
 				<div class="row column-seperation ">
 					<div class="row">
 					    <div class="col-md-12 push-30">

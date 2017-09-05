@@ -15,7 +15,10 @@
         "symfony/css-selector": "2.8.*|3.0.*",
         "symfony/dom-crawler": "2.8.*|3.0.*",
         "graham-campbell/htmlmin": "^4.0",
-        "barryvdh/laravel-dompdf": "^0.7.1"
+        "barryvdh/laravel-dompdf": "^0.7.1",
+        "h4cc/wkhtmltopdf-amd64": "0.12.x",
+        "h4cc/wkhtmltoimage-amd64": "0.12.x",
+        "barryvdh/laravel-snappy": "0.2.x"
     },
     "autoload": {
         "classmap": [

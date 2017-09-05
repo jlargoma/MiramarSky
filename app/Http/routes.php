@@ -134,3 +134,7 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 	Route::post('admin/propietario/bloquear' , 'OwnedController@bloqOwned');
 
 });
+
+//PDF´s
+
+	Route::get('admin/pdf/pdf-reserva/{id}','PdfController@invoice');

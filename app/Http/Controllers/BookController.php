@@ -108,8 +108,8 @@ class BookController extends Controller
             }else{
                 // $date = Carbon::now();
                 $books = \App\Book::where('start','>=',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->orderBy('start','ASC')->get();
-                $proxIn = \App\Book::where('start','>=',$date->copy()->subWeek())->where('finish','<',$date->copy()->addWeek())->where('type_book',2)->orderBy('start','ASC')->get();
-                $proxOut = \App\Book::where('start','>=',$date->copy()->subWeek())->where('finish','<',$date->copy()->addWeek())->where('type_book',2)->orderBy('start','ASC')->get();
+                $proxIn = \App\Book::where('start','>=',$date->copy()->subWeek())->where('type_book',2)->orderBy('start','ASC')->get();
+                $proxOut = \App\Book::where('start','>=',$date->copy()->subWeek())->where('type_book',2)->orderBy('start','ASC')->get();
             }
             foreach ($books as $key => $book) {
                 if ($book->type_book == 1 || $book->type_book == 3 || $book->type_book == 4 || $book->type_book == 5 || $book->type_book == 6 ) {

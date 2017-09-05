@@ -1,6 +1,11 @@
 <?php setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); use \Carbon\Carbon;?>
 <div>
-	<div class="col-xs-12"><h3><?php echo $book->customer->name ?> <a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a></h3></div>
+	<div class="col-xs-12">
+		<h3><?php echo $book->customer->name ?> 
+			<a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a>
+			<a href="{{ url('/admin/pdf/pdf-reserva') }}/<?php echo $book->id ?>"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
+		</h3>
+	</div>
 
 	<div>
 		<b>Reserva :</b> <?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?><b style="font-size: 15px">-</b><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?><br>

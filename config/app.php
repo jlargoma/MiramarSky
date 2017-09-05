@@ -149,6 +149,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         GrahamCampbell\HTMLMin\HTMLMinServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        // Barryvdh\Snappy\ServiceProvider::class,
 
         /*
          * Application Service Providers...
