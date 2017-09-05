@@ -58,7 +58,7 @@
             </table>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-3 col-xs-12">
             <div class="sm-m-l-5 sm-m-r-5">
                 <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                     <div class="panel panel-default">
