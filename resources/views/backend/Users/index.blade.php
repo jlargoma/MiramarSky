@@ -16,7 +16,7 @@
         <div class="col-md-12 col-xs-12 text-center">
             <h2>Usuarios</h2>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-8 table-responsive">
             <div class="pull-left">
                 <div class="col-xs-12 " >
                     <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
@@ -26,7 +26,7 @@
             <?php if (count($users) > 0): ?>
                 
                
-                <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch">
+                <table class="table table-hover demo-table-search table-responsive " id="tableWithSearch">
                     <thead>
                         <tr>
                             <th class ="text-center hidden" style="width: 25%">id</th>
