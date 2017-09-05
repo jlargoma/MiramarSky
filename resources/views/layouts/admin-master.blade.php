@@ -39,81 +39,39 @@
    			$mobile = new Mobile();
 	   	?>
 	</head>
-	<body class="fixed-header   windows desktop pace-done sidebar-visible menu-pin">
+	<body class="fixed-header   windows desktop pace-done sidebar-visible menu-pin" style="padding-top:0px!important">
 	<!-- <body class="fixed-header dashboard  windows desktop sidebar-visible pace-done menu-pin"> -->
+		
 		<?php if (Auth::user()->role == 'admin' || Auth::user()->role == 'subadmin'): ?>
-			<nav class="page-sidebar" data-pages="sidebar" style="width: 134px!important">
-				<!-- END SIDEBAR MENU TOP TRAY CONTENT-->
-				<!-- BEGIN SIDEBAR MENU HEADER-->
-				<!-- <div class="sidebar-header">
-					<a href="{{ url('admin') }}"><img src="{{asset ('assets/img/logo_white.png') }}" alt="logo" class="brand" data-src="{{asset ('assets/img/logo_white.png') }}" data-src-retina="{{asset ('assets/img/logo_white_2x.png') }}" width="78" height="22"></a>
-				</div> -->
-				<!-- END SIDEBAR MENU HEADER-->
-				<!-- START SIDEBAR MENU -->
-				<div class="sidebar-menu">
-					<!-- BEGIN SIDEBAR MENU ITEMS-->
-					<ul class="menu-items">
+			<nav class="navbar navbar-inverse" role="navigation">
+			    <div class="navbar-header">
+			        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			            <span class="icon-bar"></span>
+			            <span class="icon-bar"></span>
+			            <span class="icon-bar"></span>
+			        </button>    
+			    </div>
+			    <div class="navbar-collapse collapse">
+			        <ul class="nav navbar-nav navbar-left">
+			        	<li class="{{ Request::path() == 'admin/reservas' ? 'active' : '' }}"><a href="{{ url('admin/reservas') }}" class="detailed" >Reservas</a></li>
+				      	<li class="{{ Request::path() == 'admin/apartamentos' ? 'active' : '' }}"><a href="{{ url('admin/apartamentos') }}" class="detailed">Apartamentos</a></li>
+				      	<li class="{{ Request::path() == 'admin/precios' ? 'active' : '' }}"><a href="{{ url('admin/precios') }}" class="detailed">Precios</a></li>
+				      	<li class="{{ Request::path() == 'admin/temporadas' ? 'active' : '' }}"><a href="{{ url('admin/temporadas') }}" class="detailed">Temporadas</a></li>
+				      	<li class="{{ Request::path() == 'admin/usuarios' ? 'active' : '' }}"><a href="{{ url('admin/usuarios') }}" class="detailed">Usuarios</a></li>
+				      	<li class="{{ Request::path() == 'admin/clientes' ? 'active' : '' }}"><a href="{{ url('admin/clientes') }}" class="detailed">Clientes</a></li>
+				      	<li class="{{ Request::path() == 'admin/liquidacion' || Request::path() == 'admin/liquidacion-apartamentos' || Request::path() == 'admin/pagos-propietarios' || Request::path() == 'admin/pagos-estadisticas' || Request::path() == 'admin/perdidas-ganancias' ? 'active' : '' }}"><a href="{{ url('admin/liquidacion') }}" class="detailed">Liquidacion</a></li>
+			        </ul>
+			        <ul class="nav navbar-nav navbar-right">
+			            <li><a href="#signuplink">Signup</a></li>
+			            <li><a href="#loginlink">Login</a></li>
+			        </ul>
+			    </div>
+			    <?php if (Request::path() == 'admin/liquidacion' || Request::path() == 'admin/liquidacion-apartamentos' || Request::path() == 'admin/pagos-propietarios' || Request::path() == 'admin/pagos-estadisticas' || Request::path() == 'admin/perdidas-ganancias' ): ?>
+				    <div class="navbar-collapse collapse">
+		    	        @yield('headerButtoms') 
+				    </div>
+			    <?php endif ?>
 
-						<li class="m-t-10 ">
-							<a href="{{ url('admin/reservas') }}" class="detailed" >
-								
-								<!-- <span class="details">12 New Updates</span> -->
-							
-							<span class="{{ Request::path() == '/reservas' ? 'bg-success' : '' }} icon-thumbnail" title="Planing"><i class="pg-calender"></i></span>
-							</a>
-						</li>
-						
-						<li class="m-t-10 ">
-							<a href="{{ url('admin/apartamentos') }}" class="detailed">
-								
-								<span class="{{ Request::path() == '/apartamentos' ? 'bg-success' : '' }} icon-thumbnail" title="Apartamentos"><i class="pg-home"></i></span>
-
-							</a>
-						</li>
-
-						<li class="m-t-10 ">
-							<a href="{{ url('admin/precios') }}" class="detailed">
-							
-								<span class="{{ Request::path() == '/precios' ? 'bg-success' : '' }} icon-thumbnail" title="Precios"><i class="fa fa-eur"></i></span>
-							</a>
-						</li>
-
-						<li class="m-t-10 ">
-							<a href="{{ url('admin/temporadas') }}" class="detailed">
-								
-								<span class="{{ Request::path() == '/temporadas' ? 'bg-success' : '' }} icon-thumbnail" title="Temporadas"><i class=" pg-clock"></i></span>
-							</a>
-						</li>
-						
-						<!-- <li class="m-t-10 ">
-							<a href="{{ url('admin/pagos') }}" class="detailed">
-								<span class="title">Pagos de reservas</span>
-							</a>
-							<span class="{{ Request::path() == '/pagos' ? 'bg-success' : '' }} icon-thumbnail"><i class="fa fa-money"></i></span>
-						</li> -->
-						<li class="m-t-10 ">
-							<a href="{{ url('admin/usuarios') }}" class="detailed">
-								<span class="{{ Request::path() == '/usuarios' ? 'bg-success' : '' }} icon-thumbnail" title="Usuarios"><i class="fa fa-user"></i></span>
-							</a>
-						</li>
-
-						<li class="m-t-10 ">
-							<a href="{{ url('admin/clientes') }}" class="detailed">
-								
-							<span class="{{ Request::path() == '/clientes' ? 'bg-success' : '' }} icon-thumbnail" title="Clientes"><i class="fa  fa-users"></i></span>
-							</a>
-						</li>
-						
-						<li class="m-t-10 ">
-							<a href="{{ url('admin/liquidacion') }}" class="detailed">
-								
-							<span class="{{ Request::path() == '/admin/liquidacion' ? 'bg-success' : '' }} icon-thumbnail" title="Liquidacion"><i class="fa  fa-line-chart"></i></span>
-							</a>
-						</li>
-					</ul>
-					<div class="clearfix"></div>
-				</div>
-				<!-- END SIDEBAR MENU -->
 			</nav>
 		<?php else: ?>
 		<?php endif ?>
@@ -121,95 +79,15 @@
 		
 		<!-- END SIDEBAR -->
 		<!-- START PAGE-CONTAINER -->
-		<div class="page-container ">
-			<!-- START HEADER -->
-			<div class="header "> 
-				<div style="padding-left: 134px!important">
-					<div>
-						@yield('headerButtoms') 
-					</div>
-				</div>
-				<!-- START MOBILE CONTROLS -->
-				<div class="container-fluid relative">
-					<!-- LEFT SIDE -->
-					<div class="pull-left full-height visible-sm visible-xs">
-						<!-- START ACTION BAR -->
-						<div class="header-inner">
-							<a  class="btn-link toggle-sidebar visible-sm-inline-block visible-xs-inline-block padding-5" data-toggle="sidebar">
-								<span class="icon-set menu-hambuger"></span>
-							</a>
-						</div>
-						<!-- END ACTION BAR -->
-					</div>
-					<div class="pull-left full-height visible-sm visible-xs">
-						<!-- START ACTION BAR -->
-						
-						<!-- END ACTION BAR -->
-					</div>
-					
-					<!-- <div class="pull-center hidden-md hidden-lg">
-						<div class="header-inner">
-							<div class="brand inline">
-								<img src="{{asset ('assets/img/logo.png') }}" alt="logo" data-src="{{asset ('assets/img/logo.png') }}" data-src-retina="{{asset ('assets/img/logo_2x.png') }}" width="78" height="22">
-							</div>
-						</div>
-					</div> -->
-					<!-- RIGHT SIDE -->
-					<div class="pull-right full-height visible-sm visible-xs">
-						<!-- START ACTION BAR -->
-						<div class="header-inner">
-							<a href="#" class="btn-link visible-sm-inline-block visible-xs-inline-block" data-toggle="quickview" data-toggle-element="#quickview">
-								<span class="icon-set menu-hambuger-plus"></span>
-							</a>
-						</div>
-						<!-- END ACTION BAR -->
-					</div>
-				</div>
-				<!-- END MOBILE CONTROLS -->
-				<div class=" pull-left sm-table hidden-xs hidden-sm">
-					
-				</div>
-				<div class=" pull-right">
-					<div class="header-inner">
-						<a href="#" class="btn-link icon-set menu-hambuger-plus m-l-20 sm-no-margin hidden-sm hidden-xs" data-toggle="quickview" data-toggle-element="#quickview"></a>
-					</div>
-				</div>
-				<div class=" pull-right">
-					<!-- START User Info-->
-					<div class="visible-lg visible-md m-t-10">
-						<div class="pull-left p-r-10 p-t-10 fs-16 font-heading">
-							<button class="profile-dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<span class="semi-bold">{{ Auth::user()->name }}</span>
-							</button>
-							<ul class="dropdown-menu profile-dropdown" role="menu">
-								</li>
-								<li class="bg-master-lighter">
-									<a href="{{ url('logout') }}" class="clearfix">
-										<span class="pull-left">Logout</span>
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<!-- END User Info-->
-				</div>
-			</div>
-			<!-- END HEADER -->
-			<!-- START CONTAINER FLUID -->
-			<div class="page-content-wrapper ">
-				<!-- START CONTENT -->
-				<?php if (!$mobile->isMobile()): ?>
-					<div class="content sm-gutter" style="padding-left: 134px!important">
-				<?php else: ?>
-					<div class="content sm-gutter">
-				<?php endif ?>
-				
+			<div class="page-container ">			
+				<div class="page-content-wrapper ">
 
+					<div class="content sm-gutter " style="padding-left: 0px!important;padding-top: 0px!important;">
 						@yield('content')
+					</div>
+					<!-- END CONTENT -->
 				</div>
-				<!-- END CONTENT -->
 			</div>
-		</div>
 		<!-- END CONTAINER FLUID -->
 	</div>
 	<!-- FOOTER -->

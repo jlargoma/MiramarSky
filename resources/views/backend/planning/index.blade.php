@@ -220,9 +220,7 @@
                 </div>
             </div>
             <div class="col-md-12 text-center">
-                <div class="col-md-6 col-md-offset-4"><h2><b>Planning de reservas</b></h2></div>
-                <div class="col-md-2 m-t-20">
-                    Fechas:
+                <div class="col-md-6 col-md-offset-4"><h2><b>Planning de reservas</b>  Fechas:
                     <select id="date" >
                         <?php $fecha = $inicio->copy(); ?>
 
@@ -233,8 +231,7 @@
                             </option>
                             <?php $fecha->addYear(); ?>
                         <?php endfor; ?>
-                    </select>
-                </div>
+                    </select></h2></div>
                 
             </div>
             <br><br>
@@ -868,7 +865,7 @@
 
         </div>
     </div>
-<a href="{{ url('/admin/pdf/pdf-reserva') }}">Reserva pdf</a>
+
 <div class="modal fade slide-up disable-scroll in" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content-wrapper">
