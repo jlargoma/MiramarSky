@@ -32,7 +32,7 @@
             color: black;
         }
         .SubComunidad{
-            background-color: rgba(138,125,190,1) !important;
+            background-color: rgba(0,100,255,0.5) !important;
             color: black;
         }
         .botones{
@@ -247,9 +247,9 @@
             <div class="col-md-7 col-xs-12">
                 <div class="panel">
                     <ul class="nav nav-tabs nav-tabs-simple bg-info-light " role="tablist" data-init-reponsive-tabs="collapse">
-                        <li class="active" style="background-color: #889096;width: 50px" ><a href="#tabNueva" data-toggle="tab" role="tab" style="padding: 0px;"><i class="fa fa-plus-circle fa-4x" style="color:white;border-radius: 10px;background-color: green;" aria-hidden="true"></i></a>
+                        <li class="" style="background-color: #889096;width: 50px" ><a href="#tabNueva" data-toggle="tab" role="tab" style="padding: 0px;"><i class="fa fa-plus-circle fa-4x" style="color:white;border-radius: 10px;background-color: green;" aria-hidden="true"></i></a>
                         </li>
-                        <li class=" res" >
+                        <li class="active res" >
                             <a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes 
                                 <span class="badge"><?php echo count($arrayBooks["nuevas"]) ?></span>
                             </a>
@@ -267,7 +267,7 @@
                     </ul>
                     <div class="tab-content">
 
-                        <div class="tab-pane active" id="tabNueva">
+                        <div class="tab-pane " id="tabNueva">
                             <div class="row">
                                 <div class="col-md-10">
                                     <form role="form"  action="{{ url('/admin/reservas/create') }}" method="post">
@@ -445,7 +445,7 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane" id="tabPendientes">
+                        <div class="tab-pane active" id="tabPendientes">
                             <div class="row column-seperation">
                                 <div class="pull-left">
                                     <div class="col-xs-12 ">
@@ -467,7 +467,7 @@
                                                 <th class ="text-center Reservado text-white" style="width:5%">   Noc         </th>
                                                 <th class ="text-center Reservado text-white">                    Precio      </th>
                                                 <th class ="text-center Reservado text-white" style="width:5%">   Estado      </th>
-                                                <th class ="text-center Reservado text-white">                    A  </th>
+                                                <th class ="text-center Reservado text-white">A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -551,6 +551,9 @@
                                                                     <a class="btn btn-tag btn-danger" title="enviado" disabled data-id="<?php echo $book->id ?>"><i class=" pg-mail "></i></a>
                                                                     </a>
                                                                 <?php endif ?>
+                                                                <a href="{{ url('/admin/reservas/delete/')}}/<?php echo $book->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </a>
                                                                 
                                                             </div>
                                                         </td>
@@ -654,6 +657,9 @@
                                                                     </a>
                                                                 <?php else: ?>
                                                                 <?php endif ?>
+                                                                <a href="{{ url('/admin/reservas/delete/')}}/<?php echo $book->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </a>
                                                         </td>
                                                     </tr>
                                             <?php endforeach ?>
@@ -877,7 +883,7 @@
                                                                                 class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?>"
                                                                         >
 
-                                                                       <a href="{{url ('/admin/reservas/upinicio')}}/<?php echo $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->id ?>">
+                                                                       <a href="{{url ('/admin/reservas/update')}}/<?php echo $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->id ?>">
                                                                            <div style="width: 100%;height: 100%">
                                                                                &nbsp;
                                                                            </div>
@@ -978,7 +984,7 @@
                     var status = "";
                 }
                 $.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
-                    // window.location.reload();
+                    window.location.reload();
                 });
             });
 
@@ -1011,14 +1017,17 @@
                 }
             });
 
-            $('#newroom, .pax, .parking, .agencia').change(function(event){ 
+            $('#newroom, .pax, .parking, .agencia, .type_luxury').change(function(event){ 
 
                 var room = $('#newroom').val();
                 var pax = $('.pax').val();
                 var park = $('.parking').val();
+                var lujo = $('.type_luxury').val();
                 var beneficio = 0;
                 var costPark = 0;
                 var pricePark = 0;
+                var costLujo = 0;
+                var priceLujo = 0;
                 var agencia = 0;
                 var beneficio_ = 0;
                 $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
@@ -1036,29 +1045,38 @@
 
                 $.get('/admin/reservas/getPricePark', {park: park, noches: diferencia}).success(function( data ) {
                     pricePark = data;
-                    $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                        price = data;
-                        
-                        price = (parseFloat(price) + parseFloat(pricePark));
-                        $('.total').empty();
-                        $('.total').val(price);
-                            $.get('/admin/reservas/getCostPark', {park: park, noches: diferencia}).success(function( data ) {
-                                costPark = data;
-                                    $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                                        cost = data;
-                                        agencia = $('.agencia').val();
-                                        cost = (parseFloat(cost) + parseFloat(costPark) + parseFloat(agencia));
-                                        $('.cost').empty();
-                                        $('.cost').val(cost);
-                                        beneficio = price - cost;
-                                        $('.beneficio').empty;
-                                        $('.beneficio').val(beneficio);
-                                        beneficio_ = (beneficio / price)*100
-                                        $('.beneficio-text').empty;
-                                        $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
+                    $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
+                        priceLujo = data;
+                        $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                            price = data;
+                            
+                            price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
+                            $('.total').empty();
+                            $('.total').val(price);
+                                $.get('/admin/reservas/getCostPark', {park: park, noches: diferencia}).success(function( data ) {
+                                    costPark = data;
+                                    $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
+                                        costLujo = data;
+                                        $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                                            cost = data;
+                                            agencia = $('.agencia').val();
+                                            if (agencia == "") {
+                                                agencia = 0;
+                                            }
+                                            cost = (parseFloat(cost) + parseFloat(costPark) + parseFloat(agencia) + parseFloat(costLujo));
+                                            $('.cost').empty();
+                                            $('.cost').val(cost);
+                                            beneficio = price - cost;
+                                            $('.beneficio').empty;
+                                            $('.beneficio').val(beneficio);
+                                            beneficio_ = (beneficio / price)*100
+                                            $('.beneficio-text').empty;
+                                            $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
 
+                                        });
                                     });
-                            });
+                                });
+                        });
                     });
                 });  
             });

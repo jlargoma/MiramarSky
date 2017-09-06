@@ -41,6 +41,7 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 //Planing 
 	
 	Route::get('admin/reservas/new' , 'BookController@newBook');
+	Route::get('admin/reservas/delete/{id}' , 'BookController@delete');
 	// Route::post('admin/reservas/create' , 'BookController@create');
 	Route::get('admin/reservas/update/{id}' , 'BookController@update');	
 	Route::post('admin/reservas/saveUpdate/{id}' , 'BookController@saveUpdate');	
@@ -52,6 +53,8 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 	Route::get('admin/reservas/getCostPark' , 'BookController@getCostPark');
 	Route::get('admin/reservas/getPriceLujo' , 'BookController@getPriceLujo');
 	Route::get('admin/reservas/getCostLujo' , 'BookController@getCostLujo');
+	Route::get('admin/reservas/getPriceLujoAdmin' , 'BookController@getPriceLujoAdmin');
+	Route::get('admin/reservas/getCostLujoAdmin' , 'BookController@getCostLujoAdmin');
 	Route::get('admin/reservas/saveCobro' , 'BookController@saveCobro');
 	Route::get('admin/reservas/saveFianza' , 'BookController@saveFianza');
 	Route::get('admin/reservas/{year?}' , 'BookController@index');

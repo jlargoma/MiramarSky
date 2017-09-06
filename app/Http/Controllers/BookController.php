@@ -164,8 +164,8 @@ class BookController extends Controller
                     return view('backend/planning/index_mobile',[
                                                         'arrayBooks'    => $arrayBooks,
                                                         'arrayMonths'   => $arrayMonths,     
-                                                        'rooms'         => \App\Rooms::all(),
-                                                        'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->orderBy('name','DESC')->get(),
+                                                        'rooms'         => \App\Rooms::where('state','=',1)->get(),
+                                                        'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->where('state','=',1)->orderBy('name','DESC')->get(),
                                                         'arrayReservas' => $arrayReservas,
                                                         'mes'           => $mes,
                                                         'date'          => $date->subMonth(),
@@ -189,7 +189,9 @@ class BookController extends Controller
      */
     public function create(Request $request)
         {
-            
+            echo "<pre>";
+            print_r($request->input('nigths'));
+            die();
             $book = new \App\Book();
             $extraPrice = 0 ;
             $extraCost  = 0;
@@ -226,11 +228,11 @@ class BookController extends Controller
                                 $book->sup_limp      = ($room->typeApto == 1) ? 35 : 50;
 
 
-                                $book->sup_park      = $this->getPricePark($request->input('parking'), $request->input('nigths'));
+                                $book->sup_park      = $this->getPriceParkController($request->input('parking'), $request->input('nigths'));
                                 $book->type_park     = $request->input('parking');
 
 
-                                $book->cost_park     = $this->getCostPark($request->input('parking'),$request->input('nigths'));
+                                $book->cost_park     = $this->getCostParkController($request->input('parking'),$request->input('nigths'));
                                 $book->sup_lujo      = $this->getPriceLujo($request->input('Suplujo'));
                                 $book->cost_lujo     = $this->getCostLujo($request->input('Suplujo'));
                                 $book->cost_apto     = $book->getCostBook($request->input('start'),$request->input('finish'),$request->input('pax'),$request->input('newroom'));
@@ -448,6 +450,28 @@ class BookController extends Controller
                     }
                 return $supPark;
             }
+
+    //Funcion para el precio del Aparcamiento
+        static function getPriceParkController($park,$noches)
+            {   
+                
+                $supPark = 0;
+                switch ($park) {
+                        case 1:
+                            $supPark = 15 * $noches;
+                            break;
+                        case 2:
+                            $supPark = 0;
+                            break;
+                        case 3:
+                            $supPark = (15 * $noches) / 2;
+                            break;
+                        case 4:
+                            $supPark = 0;
+                            break;
+                    }
+                return $supPark;
+            }
     
     //Funcion para el coste del Aparcamiento
         static function getCostPark(Request $request)
@@ -470,6 +494,28 @@ class BookController extends Controller
                     }
                 return $supPark;
             }
+    //Funcion para el coste del Aparcamiento
+        static function getCostParkController($park,$noches)
+            {   
+
+                $supPark = 0;
+                switch ($park) {
+                        case 1:
+                            $supPark = 13.5 * $noches;
+                            break;
+                        case 2:
+                            $supPark = 0;
+                            break;
+                        case 3:
+                            $supPark = (13.5 * $noches) / 2;
+                            break;
+                        case 4:
+                            $supPark = 0;
+                            break;
+                    }
+                return $supPark;
+            }
+
     //Funcion para el precio del Suplemento de Lujo
         static function getPriceLujo($lujo)
             {
@@ -492,6 +538,27 @@ class BookController extends Controller
                             $supLujo = 50;
                             break;
                     }
+                }
+                return $supLujo;
+            }
+    //Funcion para el precio del Suplemento de Lujo desde Admin
+        static function getPriceLujoAdmin(Request $request)
+            {
+                $supLujo = 0;
+
+                switch ($request->lujo) {
+                    case 1:
+                        $supLujo = 0;
+                         break;
+                    case 2:
+                        $supLujo = 0;
+                        break;
+                    case 3:
+                        $supLujo = 50/2;
+                        break;
+                    case 4:
+                        $supLujo = 50;
+                        break;
                 }
                 return $supLujo;
             }
@@ -518,6 +585,27 @@ class BookController extends Controller
                                 break;
                         }
                 }
+                
+                return $supLujo;
+            }
+    //Funcion para el precio del Suplemento de Lujo desde Admin
+        static function getCostLujoAdmin(Request $request)
+            {
+                $supLujo = 0;
+                switch ($request->lujo) {
+                        case 1:
+                            $supLujo = 0;
+                             break;
+                        case 2:
+                            $supLujo = 0;
+                            break;
+                        case 3:
+                            $supLujo = 40/2;
+                            break;
+                        case 4:
+                            $supLujo = 40;
+                            break;
+                    }
                 
                 return $supLujo;
             }
@@ -683,4 +771,14 @@ class BookController extends Controller
             $book->save();
             return 'OK';
         }
+
+    public function delete($id)
+    {
+        $book = \App\Book::find($id);
+
+        if ($book->delete()) {
+                return redirect()->action('BookController@index');
+            }
+
+    }
 }

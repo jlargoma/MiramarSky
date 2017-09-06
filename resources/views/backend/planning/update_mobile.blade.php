@@ -14,10 +14,20 @@
     <div class="row">
         <div class="col-md-12 col-xs-12 text-center">
             <p style="font-size: 14px">
-                <br>
-                Estado : <?php echo $book->getStatus($book->type_book) ?> 
+
+                Estado :   <select class="status form-control" data-id="<?php echo $book->id ?>" style="width: 50%;float: right;">
+                                        <?php for ($i=1; $i < 9; $i++): ?> 
+                                            <?php if ($i == $book->type_book): ?>
+                                                <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
+                                            <?php else: ?>
+                                                <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
+                                            <?php endif ?>                                          
+                                             
+                                        <?php endfor; ?>
+                                    </select>
                 <!-- Desplegable -->
             </p>
+          
         </div>
         <hr>
         <div class="col-xs-12">

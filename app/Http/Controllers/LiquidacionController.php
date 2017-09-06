@@ -118,6 +118,7 @@ class LiquidacionController extends Controller
             }
 
             $rooms = \App\Rooms::all();
+            $pendientes = array();
             $apartamentos = [   
                                 "room"      => [],
                                 "noches"    => [],
@@ -142,10 +143,21 @@ class LiquidacionController extends Controller
                     $apartamentos['costes'][$book->room_id]   = $book->cost_total;
                 }
             }
+
+            $pagos = \App\PaymentsPro::where('datePayment' , '>=' , $date)->where('datePayment', '<=', $date->copy()->AddYear()->SubMonth())->get();
+
+            foreach ($pagos as $pago) {
+                if (isset($pendientes[$pago->room_id])) {
+                    $pendientes[$pago->room_id] += $pago->import;
+                }else{
+                    $pendientes[$pago->room_id] = $pago->import;
+                }
+            }
             return view('backend/sales/liquidacion_apto',[
                                                             'rooms' => $rooms,
                                                             'apartamentos' => $apartamentos,
                                                             'temporada' => $date,
+                                                            'pendientes' => $pendientes,
                                                             ]);
         }
     public function perdidas()

@@ -66,7 +66,13 @@
 		        					<td class="text-center"><?php echo $room->name ?></td>
 		        					<td class="text-center"><?php echo $apartamentos["noches"][$room->id]?></td>
 		        					<td class="text-center"><?php echo number_format($apartamentos["pvp"][$room->id],2,',','.')?>€</td>
-		        					<td class="text-center"><?php echo $apartamentos["noches"][$room->id]?></td>
+		        					<td class="text-center">
+		        						<?php if (isset($pendientes[$room->id])): ?>
+		        							<?php echo number_format($pendientes[$room->id],2,',','.') ?>€
+		        						<?php else: ?>
+		        							-----
+		        						<?php endif ?>
+		        					</td>
 		        					<td class="text-center"><?php echo number_format($apartamentos["ingresos"][$room->id],2,',','.')?>€</td>
 		        					<td class="text-center"><?php echo number_format($apartamentos["ingresos"][$room->id]/$apartamentos["pvp"][$room->id]*100,2,',','.')?>%</td>
 		        					<td class="text-center"><?php echo number_format($apartamentos["costes"][$room->id],2,',','.')?>€</td>
