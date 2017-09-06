@@ -88,7 +88,7 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 	Route::post('admin/apartamentos/create', 'RoomsController@create');
 	Route::post('admin/apartamentos/create-type', 'RoomsController@createType');
 	Route::post('admin/apartamentos/create-size', 'RoomsController@createSize');
-	Route::get('admin/apartamentos/delete/{id}', 'RoomsController@delete');
+	Route::get('admin/apartamentos/state', 'RoomsController@state');
 	Route::get('admin/apartamentos/getPaxPerRooms/{id}', 'RoomsController@getPaxPerRooms');
 	Route::get('admin/apartamentos/uploadfile', 'RoomsController@uploadFile');
 
@@ -123,8 +123,8 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 
 
 //Liquidacion
-	Route::get('admin/liquidacion' , 'LiquidacionController@index');
-	Route::get('admin/liquidacion-apartamentos' , 'LiquidacionController@apto');
+	Route::get('admin/liquidacion/{year?}' , 'LiquidacionController@index');
+	Route::get('admin/liquidacion-apartamentos/{year?}' , 'LiquidacionController@apto');
 	Route::get('admin/estadisticas' , 'LiquidacionController@Statistics');
 	Route::get('admin/perdidas-ganancias' , 'LiquidacionController@perdidas');
 	

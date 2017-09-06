@@ -41,7 +41,6 @@
 	</head>
 	<body class="fixed-header   windows desktop pace-done sidebar-visible menu-pin" style="padding-top:0px!important">
 	<!-- <body class="fixed-header dashboard  windows desktop sidebar-visible pace-done menu-pin"> -->
-		
 		<?php if (Auth::user()->role == 'admin' || Auth::user()->role == 'subadmin'): ?>
 			<nav class="navbar navbar-inverse" role="navigation">
 			    <div class="navbar-header">
@@ -63,10 +62,10 @@
 			        </ul>
 			        <ul class="nav navbar-nav navbar-right">
 			            <li><a href="#signuplink">Signup</a></li>
-			            <li><a href="#loginlink">Login</a></li>
+			            <li><a href="{{url ('/logout')}}">Log Out</a></li>
 			        </ul>
 			    </div>
-			    <?php if (Request::path() == 'admin/liquidacion' || Request::path() == 'admin/liquidacion-apartamentos' || Request::path() == 'admin/pagos-propietarios' || Request::path() == 'admin/pagos-estadisticas' || Request::path() == 'admin/perdidas-ganancias' ): ?>
+			    <?php if (stristr(Request::path(), 'liquidacion') == TRUE || Request::path() == 'admin/liquidacion-apartamentos' || Request::path() == 'admin/pagos-propietarios' || Request::path() == 'admin/pagos-estadisticas' || Request::path() == 'admin/perdidas-ganancias' ): ?>
 				    <div class="navbar-collapse collapse">
 		    	        @yield('headerButtoms') 
 				    </div>

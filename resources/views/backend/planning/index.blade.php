@@ -77,6 +77,9 @@
         .fechas > li.active{
             background-color: red;
         }
+        .nav-tabs ~ .tab-content{
+            padding: 0px;
+        }
     </style>
 
 @endsection
@@ -220,27 +223,33 @@
                 </div>
             </div>
             <div class="col-md-12 text-center">
-                <div class="col-md-6 col-md-offset-4"><h2><b>Planning de reservas</b>  Fechas:
-                    <select id="date" >
-                        <?php $fecha = $inicio->copy(); ?>
-
-                        <?php for ($i=1; $i <= 4; $i++): ?>
-                            <?php if( $date->copy()->format('Y') == $fecha->format('Y') ){ $selected = "selected"; }else{$selected = "";} ?>
-                            <option value="<?php echo $fecha->copy()->format('Y'); ?>" <?php echo $selected ?>>
-                                <?php echo $fecha->copy()->subYear()->format('Y')."-".$fecha->copy()->format('Y'); ?> 
-                            </option>
-                            <?php $fecha->addYear(); ?>
-                        <?php endfor; ?>
-                    </select></h2></div>
+                <div class="col-md-6 col-md-offset-4">
+                    <h2><b>Planning de reservas</b>  Fechas:
+                        
+                        <select id="date" >
+                            <?php $fecha = $inicio->copy()->SubYear(2); ?>
+                            <?php if ($fecha->copy()->format('Y') < 2015): ?>
+                                <?php $fecha = new Carbon('first day of September 2015'); ?>
+                            <?php endif ?>
+                        
+                            <?php for ($i=1; $i <= 4; $i++): ?>                           
+                                <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $date->copy()->format('Y') == $fecha->format('Y') ? 'selected' : '' }}>
+                                    <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
+                                </option>
+                                <?php $fecha->addYear(); ?>
+                            <?php endfor; ?>
+                        </select>
+                    </h2>
+                </div>
                 
             </div>
             <br><br>
             <div class="col-md-7 col-xs-12">
                 <div class="panel">
                     <ul class="nav nav-tabs nav-tabs-simple bg-info-light " role="tablist" data-init-reponsive-tabs="collapse">
-                        <li style="background-color: white"><a href="#tabNueva" data-toggle="tab" role="tab" style="padding: 0px;background-color: green;"><i class="fa fa-plus-circle fa-4x" style="color:white;border-radius: 10px" aria-hidden="true"></i></a>
+                        <li class="active" style="background-color: #889096;width: 50px" ><a href="#tabNueva" data-toggle="tab" role="tab" style="padding: 0px;"><i class="fa fa-plus-circle fa-4x" style="color:white;border-radius: 10px;background-color: green;" aria-hidden="true"></i></a>
                         </li>
-                        <li class="active res" >
+                        <li class=" res" >
                             <a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes 
                                 <span class="badge"><?php echo count($arrayBooks["nuevas"]) ?></span>
                             </a>
@@ -258,11 +267,11 @@
                     </ul>
                     <div class="tab-content">
 
-                        <div class="tab-pane " id="tabNueva">
+                        <div class="tab-pane active" id="tabNueva">
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-10">
                                     <form role="form"  action="{{ url('/admin/reservas/create') }}" method="post">
-                                        
+                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                         <!-- Seccion Cliente -->
                                         <div class="panel-heading">
                                             <div class="panel-title">
@@ -295,7 +304,7 @@
 
                                         <div class="panel-body">
                                             
-                                            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                            
 
                                                 <div class="input-group col-md-12">
                                                     <div class="col-md-4">
@@ -306,11 +315,11 @@
                                                             <input id="finish" type="text" class="input-sm form-control" name="finish" data-date-format="dd-mm-yyyy">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-1">
+                                                    <div class="col-md-2">
                                                         <label>Noches</label>
                                                         <input type="text" class="form-control nigths" name="nigths" value="" style="width: 100%">
                                                     </div> 
-                                                    <div class="col-md-1">
+                                                    <div class="col-md-2">
                                                         <label>Pax</label>
                                                         <input  type="text" class="form-control full-width pax" name="pax" style="width: 100%">
                                                             
@@ -323,7 +332,7 @@
                                                             <?php endforeach ?>
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-1">
+                                                    <div class="col-md-2">
                                                         <label>Parking</label>
                                                         <select class=" form-control parking"  name="parking">
                                                             <?php for ($i=1; $i <= 4 ; $i++): ?>
@@ -331,6 +340,9 @@
                                                             <?php endfor;?>
                                                         </select>
                                                     </div>
+                                                    
+                                                </div>
+                                                <div class="input-group col-md-12">
                                                     <div class="col-md-2">
                                                         <label>Extras</label>
                                                         <select class="full-width select2-hidden-accessible" data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true">
@@ -339,8 +351,6 @@
                                                             <?php endforeach ?>
                                                         </select>
                                                     </div>
-                                                </div>
-                                                <div class="input-group col-md-12">
                                                     <div class="col-md-2">                                                        
                                                         <label>Cost Agencia</label>
                                                         <input type="text" class="agencia form-control" name="agencia" value="0">
@@ -353,29 +363,25 @@
                                                             <?php endfor;?>
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-3">
-                                                        <label>Total</label>
-                                                        <input type="text" class="form-control total" name="total" value="" style="width: 100%">
-                                                    </div> 
-                                                    <div class="col-md-3">
-                                                        <label>Coste</label>
-                                                        <input type="text" class="form-control cost" name="cost" value="" disabled style="width: 100%;color: black">
-                                                    </div>
                                                     <div class="col-md-2">
-                                                        <label>Beneficio</label>
-                                                        <input type="text" class="form-control beneficio" name="beneficio" value="" disabled style="width: 100%;color: black">
+                                                        <label>Sup. Lujo</label>
+                                                        <select class=" form-control full-width type_luxury" data-init-plugin="select2" name="type_luxury">
+                                                            <?php for ($i=1; $i <= 4 ; $i++): ?>
+                                                                <option value="<?php echo $i ?>"><?php echo $book->getSupLujo($i) ?></option>
+                                                            <?php endfor;?>
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <br>
                                                 <div class="input-group col-md-12">
                                                     <div class="col-md-6">
                                                         <label>Comentarios Usuario</label>
-                                                        <textarea class="form-control" name="comments" style="width: 100%">
+                                                        <textarea class="form-control" name="comments" rows="5" style="width: 80%">
                                                         </textarea>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label>Comentarios reserva</label>
-                                                        <textarea class="form-control book_comments" name="book_comments" style="width: 100%">
+                                                        <textarea class="form-control book_comments" name="book_comments" rows="5" style="width: 80%">
                                                         </textarea>
                                                     </div>
                                                 </div> 
@@ -383,19 +389,63 @@
                                                     
                                                 </div> 
                                                 <br>
-                                                <div class="input-group col-md-12">
-                                                    <button class="btn btn-complete" type="submit">Guardar</button>
+                                                <div class="input-group col-md-12 text-center">
+                                                    <button class="btn btn-complete" type="submit" style="width: 50%;min-height: 50px">Guardar</button>
                                                 </div>                        
                                         </div>
                                     </form>
                                 </div>
-                                <div class="col-md-4">
-                                    
+                                <div class="col-md-2">
+
+                                    <div class="col-md-12" style="padding: 0px">
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                Cotización de Reserva
+                                            </div>
+                                        </div>
+                                        <table>
+
+                                            <tbody>
+                                                <tr class="text-white" style="background-color: #b5e61d">
+                                                    <th style="padding-left: 5px">PVP</th>
+                                                    <th style="padding-right: 5px;padding-left: 5px">
+                                                        <input type="text" class="form-control total m-t-10 m-b-10 " name="total" value="" style="width: 100%;background-color: #b5e61d;border:none">
+                                                    </th>
+                                                </tr>
+                                                <tr class=" text-white m-t-5" style="background-color: #99D9EA">
+                                                    <th style="padding-left: 5px">COSTE</th>
+                                                    <th style="padding-right: 5px;padding-left: 5px">
+                                                        <input type="text" class="form-control cost m-t-10 m-b-10 " name="cost" value="" disabled style="width: 100%;color: black;background: #99D9EA;border:none">
+                                                    </th>
+                                                </tr>
+                                                <tr class="text-white m-t-5" style="background-color: #ff7f27">
+                                                    <th style="padding-left: 5px">BENº</th>
+                                                    <th style="padding-right: 5px;padding-left: 5px">
+                                                        <input type="text" class="form-control beneficio m-t-10 m-b-10 " name="beneficio" value="" disabled style="width: 100%;color: black;background: #ff7f27;border:none">
+                                                    </th>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-12" >
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                Beneficio
+                                            </div>
+                                        </div>
+                                        <!-- <div class="progress" style="min-height: 20px">
+                                            <div class="progress-bar " role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
+                                                70%
+                                            </div>
+                                        </div> -->
+                                        <div style="float: left"><input class="progress-circle beneficio%" data-pages-progress="circle" value="75" type="hidden" data-color="complete" style="width: 100px;height: 100px;"></div>
+                                        <div class="m-t-10 m-l-10 beneficio-text" style="position: absolute;">75%</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="tab-pane active" id="tabPendientes">
+                        <div class="tab-pane" id="tabPendientes">
                             <div class="row column-seperation">
                                 <div class="pull-left">
                                     <div class="col-xs-12 ">
@@ -685,12 +735,12 @@
                                                         </div>
                                                         <?php if (isset($payment[$book->id])): ?>
                                                             <?php if ($payment[$book->id] == 0): ?>
-                                                                <div class="col-md-6 bg-primary">
+                                                                <div class="col-md-6 bg-primary m-t-10">
                                                                 0%
                                                                 </div>
                                                             <?php else:?>
                                                                 <div class="col-md-6 bg-danger">
-                                                                    <p class="text-white"><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></p>
+                                                                    <p class="text-white m-t-10"><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></p>
                                                                 </div> 
                                                                                                                            
                                                             <?php endif; ?>
@@ -743,7 +793,7 @@
                     <ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
                         <?php $dateAux = $inicio->copy(); ?>
                         <?php for ($i=1; $i <= 9 ; $i++) :?>
-                            <li <?php if($i == 1 ){ echo "class='active'";} ?>>
+                            <li <?php if($i == 4 ){ echo "class='active'";} ?>>
                                 <a href="#tab<?php echo $i?>" data-toggle="tab" role="tab" style="padding:10px">
                                     <?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>
                                 </a>
@@ -754,7 +804,7 @@
                     <div class="tab-content">
                         
                         <?php for ($z=1; $z <= 9; $z++):?>
-                        <div class="tab-pane <?php if($z == 1){ echo 'active';} ?>" id="tab<?php echo $z ?>">
+                        <div class="tab-pane <?php if($z == 4){ echo 'active';} ?>" id="tab<?php echo $z ?>">
                             <div class="row">
                                 <div class="col-md-12">
                                     <table class="fc-border-separate" style="width: 100%">
@@ -970,6 +1020,7 @@
                 var costPark = 0;
                 var pricePark = 0;
                 var agencia = 0;
+                var beneficio_ = 0;
                 $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
                     console.log(data);
                     console.log(pax);
@@ -1002,6 +1053,10 @@
                                         beneficio = price - cost;
                                         $('.beneficio').empty;
                                         $('.beneficio').val(beneficio);
+                                        beneficio_ = (beneficio / price)*100
+                                        $('.beneficio-text').empty;
+                                        $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
+
                                     });
                             });
                     });
@@ -1121,7 +1176,14 @@
 
 
         });
-
+            jQuery(document).on('ready', function () {
+            jQuery('.mybar_in_view').waypoint(function() {
+            jQuery(this).yjsgroundprogress();
+            }, {
+            offset: '100%',
+            triggerOnce:true
+            });
+            });
     </script>
 
 @endsection

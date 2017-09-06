@@ -17,6 +17,7 @@ class OwnedController extends Controller
      */
     public function index()
     {
+
         $firstDayOfTheYear = new Carbon('first day of September 2016');
         
         $mes = array();

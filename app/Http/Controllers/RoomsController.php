@@ -160,11 +160,18 @@ class RoomsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function delete($id)
+    public function state(Request $request)
     {
-        $room = \App\Rooms::find($id);
-        if ( $room->delete() ) {
-            return redirect()->action('RoomsController@index');
+        $room = \App\Rooms::find($request->id);
+        $book = \App\Book::where('room_id','=',$request->id)->where('start','>','2017-09-01')->get();
+
+        if (count($book) > 0) {
+            return 0;
+        }else{
+            $room->state = $request->state;
+               if ( $room->save() ) {
+                    return 1;
+               }
         }
     }
     

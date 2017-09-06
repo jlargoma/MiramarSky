@@ -18,8 +18,9 @@ class LiquidacionController extends Controller
      * @return \Illuminate\Http\Response
      */
    
-    public function index($month="")
+    public function index($year="")
         {   
+            $now = Carbon::now();
             $totales = [
                             "total"        => [],
                             "coste"        => [],
@@ -37,12 +38,17 @@ class LiquidacionController extends Controller
                             "beneficio"    =>[],
                         ];
             $liquidacion = new \App\Liquidacion();
-            if (empty($month)) {
-                $date = new Carbon('first day of September 2016');
+            if (empty($year)) {
+                if ($now->copy()->format('n') >= 9) {
+                    $date = new Carbon('first day of September '.$now->copy()->format('Y'));
+                }else{
+                    $date = new Carbon('first day of September '.$now->copy()->subYear()->format('Y'));
+                }
+                
             }else{
-                $date = $month;
+                $date = new Carbon('first day of September '.$year);
             }
-            $books = \App\Book::where('start' , '>=' , $date)->where('type_book',2)->get();
+            $books = \App\Book::where('start' , '>=' , $date)->where('start', '<=', $date->copy()->AddYear()->SubMonth())->where('type_book',2)->get();
 
             foreach ($books as $key => $book) {
                 if ($key == 0) {
@@ -85,18 +91,62 @@ class LiquidacionController extends Controller
                 return view('backend/sales/index',  [
                                                         'books'   => $books,
                                                         'totales' => $totales,
+                                                        'temporada' => $date,
                                                     ]);
             }else{
                 return view('backend/sales/index_mobile',  [
                                                         'books'   => $books,
                                                         'totales' => $totales,
+                                                        'temporada' => $date,
                                                     ]);
             }
         }
 
-    public function apto()
+    public function apto($year = "")
         {
-            return view('backend/sales/liquidacion_apto');
+            $now = Carbon::now();
+
+            if (empty($year)) {
+                if ($now->copy()->format('n') >= 9) {
+                    $date = new Carbon('first day of September '.$now->copy()->format('Y'));
+                }else{
+                    $date = new Carbon('first day of September '.$now->copy()->subYear()->format('Y'));
+                }
+                
+            }else{
+                $date = new Carbon('first day of September '.$year);
+            }
+
+            $rooms = \App\Rooms::all();
+            $apartamentos = [   
+                                "room"      => [],
+                                "noches"    => [],
+                                "pvp"       => [],
+                                "pendiente" => [],
+                                "ingresos"  => [],
+                                "%ben"      => [],
+                                "costes"    => [],
+                            ];
+            $books = \App\Book::where('type_book',2)->where('start' , '>=' , $date)->where('start', '<=', $date->copy()->AddYear()->SubMonth())->get();
+
+            foreach ($books as $key => $book) {
+                if (isset($apartamentos["noches"][$book->room_id])) {
+                    $apartamentos["noches"][$book->room_id]   += $book->nigths;
+                    $apartamentos["pvp"][$book->room_id]      += $book->total_price;
+                    $apartamentos['ingresos'][$book->room_id] += $book->total_ben;
+                    $apartamentos['costes'][$book->room_id]   += $book->cost_total;
+                }else{
+                    $apartamentos["noches"][$book->room_id]   = $book->nigths;
+                    $apartamentos["pvp"][$book->room_id]      = $book->total_price;
+                    $apartamentos['ingresos'][$book->room_id] = $book->total_ben;
+                    $apartamentos['costes'][$book->room_id]   = $book->cost_total;
+                }
+            }
+            return view('backend/sales/liquidacion_apto',[
+                                                            'rooms' => $rooms,
+                                                            'apartamentos' => $apartamentos,
+                                                            'temporada' => $date,
+                                                            ]);
         }
     public function perdidas()
         {

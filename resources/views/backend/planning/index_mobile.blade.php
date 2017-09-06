@@ -60,6 +60,7 @@
   		background-color: rgba(0,0,0,0.2);
   		color: red;
   	}
+
   	.active>a{
   		color: white!important;
   	}
@@ -81,9 +82,7 @@
   	.res,.bloq,.pag{
   		background-color: white;
   	}
-  	.nav-tabs > li > a:hover, .nav-tabs > li > a:focus{
-  		color: black!important;
-  	}
+  	
   	.row{margin: -2px!important;}
   	.rev.nav-tabs-simple > li a, .rev.nav-tabs-simple > li a:hover, .rev.nav-tabs-simple > li a:focus {padding:5px!important; }
 
@@ -252,11 +251,11 @@
   				<div class="row column-seperation">
   					<div class="panel in-out">
   						<ul class="nav nav-tabs nav-tabs-simple bg-info-light rev" role="tablist" data-init-reponsive-tabs="collapse">
-  							<li class="active in text-center resv" style="width: 50%">
+  							<li class="active in text-center cob" style="width: 50%">
   								<a href="#tabIn" data-toggle="tab" role="tab" style="font-size: 11px;">CHECK IN
   								</a>
   							</li>
-  							<li class="out text-center resv"  style="width: 50%">
+  							<li class="out text-center cob"  style="width: 50%">
   								<a href="#tabOut" data-toggle="tab" role="tab" style="font-size: 11px;">CHECK OUT
   								</a>
   							</li>
@@ -287,9 +286,9 @@
   											<td class="text-center">Apto</td>
   											<td class="text-center">
   												<?php if (isset($payment[$book->id])): ?>
-  													<?php echo number_format($book->total_price - $payment[$book->id],2,',','.') ?> €
+  													<p style="{{ $book->total_price - $payment[$book->id] > 0 ? 'color:red' : '' }}"><?php echo number_format($book->total_price - $payment[$book->id],2,',','.') ?> €</p>
   												<?php else: ?>
-  													<?php echo number_format($book->total_price,2,',','.') ?> €
+  													<p style="color:red"><?php echo number_format($book->total_price,2,',','.') ?> €<p>
   												<?php endif ?>
   											</td>
   										</tr>
@@ -656,7 +655,7 @@
   	<div class="modal-dialog modal-md">
   		<div class="modal-content-wrapper">
   			<div class="modal-content">
-  				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-50"></i>
+  				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-50" style="font-size: 35px"></i>
   				</button>
   				<div class="container-xs-height full-height">
   					<div class="row-xs-height">

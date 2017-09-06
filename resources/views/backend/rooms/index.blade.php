@@ -58,7 +58,7 @@
                         <th class ="text-center bg-complete text-white">  Lujo          </th>                        
                         <th class ="text-center bg-complete text-white">  Tipo        </th>
                         <th class ="text-center bg-complete text-white">  Propietario   </th>
-                        <th class ="text-center bg-complete text-white" style="width: 10%">  Editar        </th>
+                        <th class ="text-center bg-complete text-white" style="width: 10%">  Estado </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -106,8 +106,8 @@
                                <?php echo $room->user->name?>
                            </td>             
                            <td class="text-center">
-                               <div class="btn-group">
-                                   <!--  -->
+                               <!-- <div class="btn-group">
+                                
                                   <div class="col-md-6">
                                     <form action="apartamentos/uploadfile" method="post" >
                                       <input type="hidden" name="id" value="<?php echo $room->id ?>">
@@ -118,13 +118,22 @@
                                     </form>
                                   </div>
                                   <div class="col-md-6">
-                                    <a href="{{ url('/admin/apartamentos/delete/')}}/<?php echo $room->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Apartamento" onclick="return confirm('¿Quieres eliminar el apartamento?');">
+                                    <a href="{{ url('/admin/apartamentos/state/')}}/<?php echo $room->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Deshabilitar Apartamento" onclick="return confirm('¿Quieres Deshabilitar el apartamento?');">
                                         <i class="fa fa-trash"></i>
                                     </a> 
                                   </div> 
                                    
                                                                        
-                               </div>
+                               </div> -->
+                               <?php if ($room->state == 0): ?>
+                                   <span class="input-group-addon bg-transparent">
+                                        <input type="checkbox" class="estado" data-id="<?php echo $room->id ?>" name="state" data-init-plugin="switchery" data-size="small" data-color="success">
+                                    </span>
+                               <?php else: ?>
+                                   <span class="input-group-addon bg-transparent">
+                                        <input type="checkbox" class="estado" data-id="<?php echo $room->id ?>" name="state" data-init-plugin="switchery" data-size="small" data-color="success" checked="checked" />
+                                    </span>
+                               <?php endif ?>
                            </td>
                        </tr>
                    <?php endforeach ?>
@@ -366,6 +375,26 @@
                 console.log(minOcu);
                 $.get('/admin/apartamentos/update', {  id: id, luxury: luxury, maxOcu: maxOcu, minOcu: minOcu}, function(data) {
                     alert(data)
+                });
+            });
+
+            $('.estado').change(function(event) {
+                var id = $(this).attr('data-id');
+                var state = $(this).is(':checked');
+                
+                if (state == true) {
+                    state = 1;
+                }else{
+                    state = 0;
+                }
+
+                $.get('/admin/apartamentos/state', {  id: id, state: state}, function(data) {
+                    if (data == 0) {
+                      alert('No se puede cambiar')
+                      location.reload();
+                    }else{
+                      location.reload();
+                    }
                 });
             });
 

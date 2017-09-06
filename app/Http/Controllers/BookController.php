@@ -48,7 +48,7 @@ class BookController extends Controller
                             "especiales" => []
                             ];
 
-            $apartamentos = \App\Rooms::all();
+            $apartamentos = \App\Rooms::where('state','=',1);
 
             $reservas = \App\Book::whereIn('type_book',[1,2,7,8])->orderBy('start', 'ASC')->get();
 
@@ -148,8 +148,8 @@ class BookController extends Controller
                                                         'arrayBooks'    => $arrayBooks,
                                                         'arrayMonths'   => $arrayMonths,
                                                         'arrayTotales'  => $arrayTotales,
-                                                        'rooms'         => \App\Rooms::all(),
-                                                        'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->orderBy('name','DESC')->get(),
+                                                        'rooms'         => \App\Rooms::where('state','=',1)->get(),
+                                                        'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->where('state','=',1)->orderBy('name','DESC')->get(),
                                                         'arrayReservas' => $arrayReservas,
                                                         'mes'           => $mes,
                                                         'date'          => $date,
@@ -428,18 +428,19 @@ class BookController extends Controller
             }
 
     //Funcion para el precio del Aparcamiento
-        static function getPricePark($parking, $nights)
-            {
+        static function getPricePark(Request $request)
+            {   
+                
                 $supPark = 0;
-                switch ($parking) {
+                switch ($request->park) {
                         case 1:
-                            $supPark = 15 * $nights;
+                            $supPark = 15 * $request->noches;
                             break;
                         case 2:
                             $supPark = 0;
                             break;
                         case 3:
-                            $supPark = (15 * $nights) / 2;
+                            $supPark = (15 * $request->noches) / 2;
                             break;
                         case 4:
                             $supPark = 0;
@@ -449,18 +450,19 @@ class BookController extends Controller
             }
     
     //Funcion para el coste del Aparcamiento
-        static function getCostPark($parking, $nights)
-            {
+        static function getCostPark(Request $request)
+            {   
+
                 $supPark = 0;
-                switch ($parking) {
+                switch ($request->park) {
                         case 1:
-                            $supPark = 13.5 * $nights;
+                            $supPark = 13.5 * $request->noches;
                             break;
                         case 2:
                             $supPark = 0;
                             break;
                         case 3:
-                            $supPark = (13.5 * $nights) / 2;
+                            $supPark = (13.5 * $request->noches) / 2;
                             break;
                         case 4:
                             $supPark = 0;
@@ -632,6 +634,7 @@ class BookController extends Controller
                 return view('backend/planning/_updateCobro',[
                                                                 'book'    => $book,
                                                                 'pending' => $pending,
+                                                                'payments' => $payments,
                                                             ]);
             }
 
@@ -658,9 +661,10 @@ class BookController extends Controller
             $fianza->date_in = Carbon::CreateFromFormat('d-m-Y',$request->fecha);
             $fianza->import_in = $request->fianza;
             $fianza->comment_in = $request->comentario;
+            $fianza->type = $request->tipo;
 
             if ($fianza->save()) {
-                
+                return redirect()->action('BookController@index');
             }
             
         }

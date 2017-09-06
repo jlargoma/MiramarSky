@@ -22,7 +22,7 @@
 		background-color: rgba(255,255,255,0.5)!important;
 	}
 	.beneficio{
-		background-color: rgba(181,230,29,0.5)!important;
+		background-color: rgba(181,230,29,0.2)!important;
 	}
 	td[class$="bi"] {border-left: 1px solid black;}
 	td[class$="bf"] {border-right: 1px solid black;}
@@ -61,7 +61,23 @@ setlocale(LC_TIME, "es_ES");
 
     <div class="row">
     	<div class="col-md-12 text-center">
-    		<h2>Liquidación por reservas</h2>
+    		<h2>Liquidación por reservas <?php echo $temporada->copy()->format('Y')."-".$temporada->copy()->AddYear()->format('Y') ?> 
+				<select id="date" >
+					<?php $fecha = $temporada->copy()->SubYear(2); ?>
+					<?php if ($fecha->copy()->format('Y') < 2015): ?>
+						<?php $fecha = new Carbon('first day of September 2015'); ?>
+					<?php else: ?>
+						
+					<?php endif ?>
+				
+                    <?php for ($i=1; $i <= 4; $i++): ?>                           
+                        <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $temporada->copy()->format('Y') == $fecha->copy()->format('Y') ? 'selected' : '' }}>
+                            <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
+                        </option>
+                        <?php $fecha->addYear(); ?>
+                    <?php endfor; ?>
+                </select>
+            </h2>
     	</div>
         <div class="col-md-12">
         	<div class="col-md-12 pull-right">
@@ -140,13 +156,13 @@ setlocale(LC_TIME, "es_ES");
 			<div class="tab-content">
 				<div class="pull-left">
 				        <div class="col-xs-12 ">
-				            <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
+				            <input type="text" id="search-tableLiquidacion" class="form-control pull-right" placeholder="Buscar">
 				        </div>
 				    </div>
 				
 				    <div class="clearfix"></div>
 			    <div class="tab-pane active" id="tabPrices">
-			        <table class="table table-hover demo-table-search table-responsive" id="tableWithSearch" >
+			        <table class="table table-hover demo-table-search table-responsive" id="tableWithSearchLiquidacion" >
 			        	<thead >
 			        		<th class ="text-center bg-complete text-white" style="width: 7%">Nombre</th>
 			        		<th class ="text-center bg-complete text-white" style="width: 5%">Pax</th>
@@ -280,6 +296,10 @@ setlocale(LC_TIME, "es_ES");
 		colorPendienteCobro();
 		$('.dataTables_paginate').click(function(event) {
 			colorPendienteCobro();
+		});
+		$('#date').change(function(event) {
+			var year = $(this).val();
+			window.location = '/admin/liquidacion/'+year;
 		});
 	});
 </script>

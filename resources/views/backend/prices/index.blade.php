@@ -35,8 +35,8 @@
             <div class="clearfix"></div>
             <div class="tab-content">
 
-                <div class="col-md-12">
-                    <table class="table table-hover  table-responsive-block" >
+                <div class="col-md-12 table-responsive">
+                    <table class="table table-hover  table-responsive" >
                         <thead>
                             <tr>
                                 <th class ="text-center bg-white text-complete" style="width: 1%" rowspan="2"> Ocupación  </th>
@@ -46,9 +46,9 @@
                             </tr>
                             <tr>                          
                                 <?php foreach ($seasons as $key => $season): ?>
-                                    <th class ="text-center bg-complete text-white <?php echo $season->name ?>" style="width: 5%" >PVP</th>
-                                    <th class ="text-center bg-complete text-white <?php echo $season->name ?>" style="width: 5%">Cost</th>
-                                    <th class ="text-center bg-complete text-white <?php echo $season->name ?>" style="width: 5%">% Ben</th>
+                                    <th class ="text-center bg-complete text-white <?php echo $season->name ?>" style="width: 10%" >PVP</th>
+                                    <th class ="text-center bg-complete text-white <?php echo $season->name ?>" style="width: 10%">Cost</th>
+                                    <th class ="text-center bg-complete text-white <?php echo $season->name ?>" style="width: 10%">% Ben</th>
                                 <?php endforeach ?>
                             </tr>
                         </thead>
