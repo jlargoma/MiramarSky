@@ -3,8 +3,16 @@
 @section('title') Administrador de reservas MiramarSKI @endsection
 
 @section('externalScripts') 
-<link href="/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" media="screen" />
-<link rel="stylesheet" href="/assets/plugins/select2/js/select2.css">
+<link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
+<link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
+
+<link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
+<link href="/assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" media="screen">
+<link href="/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" media="screen">
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
 
 @endsection
     
@@ -21,12 +29,12 @@
                 ?>
             </h2>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-7">
 
-            <div class="col-md-8">  
+            <div class="col-md-9">  
                 <div class="panel">
                     <form role="form"  action="{{ url('/admin/reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post" >
-                                
+                            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                         <!-- Seccion Cliente -->
                         <div class="panel-heading">
                             <div class="panel-title">
@@ -35,7 +43,7 @@
                         </div>
                     
                         <div class="panel-body">
-
+            
                             <div class="input-group col-md-12">
                                 <input class="form-control" type="hidden"  name="customer_id" value="<?php echo $book->customer->id ?>">
                                 <div class="col-md-4">
@@ -59,90 +67,86 @@
                         </div>
 
                         <div class="panel-body">
-                            
-                            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-
                                 <div class="input-group col-md-12">
-                                    <div class="col-md-5">
+                                    <div class="col-md-4">
                                         <label>Entrada</label>
-                                        <div class="input-daterange input-group" id="datepicker-range">
-
-                                            <input id="start" type="text" class="input-sm form-control" name="start" data-date-format="dd-mm-yyyy" value="<?php $start = Carbon::createFromFormat('Y-m-d',$book->start) ;echo $start->format('d/m/Y') ?>">
-                                            <span class="input-group-addon">Hasta</span>
-                                            <input id="finish" type="text" class="input-sm form-control" name="finish" data-date-format="dd-mm-yyyy" value="<?php $finish = Carbon::createFromFormat('Y-m-d',$book->finish) ;echo $finish->format('d/m/Y') ?>">
+                                        <div class="input-prepend input-group">
+                                          <span class="add-on input-group-addon"><i
+                                                        class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                                          <input type="text" style="width: 100%" name="reservation" id="daterangepicker" class="form-control" value="<?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->format('d/m/Y').'- '.Carbon::CreateFromFormat('Y-m-d',$book->finish)->format('d/m/Y') ?>" />
                                         </div>
                                     </div>
-                                    <div class="col-md-1" style="width: 9%!important">
-                                        <label>noches</label>
-                                        <input type="text" class="form-control nigths" name="nigths" style="width: 100%" value="<?php echo $book->nigths ?>">
+                                    <div class="col-md-2">
+                                        <label>Noches</label>
+                                        <input type="text" class="form-control nigths" name="nigths" value="<?php echo $book->nigths ?>" style="width: 100%">
                                     </div> 
-                                    <div class="col-md-1" style="width: 9%!important">
+                                    <div class="col-md-2">
                                         <label>Pax</label>
                                         <input  type="text" class="form-control full-width pax" name="pax" style="width: 100%" value="<?php echo $book->pax ?>">
                                             
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <label>Apartamento</label>
                                         <select class="form-control full-width newroom" data-init-plugin="select2" name="newroom" id="newroom">
                                             <?php foreach ($rooms as $room): ?>
-                                                <?php if ($room->id == $book->room_id): ?>
-                                                    <option value="<?php echo $room->id ?>" selected><?php echo $room->name ?></option>
-                                                <?php else: ?>
-                                                    <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
-                                                <?php endif ?>
+                                                <option value="<?php echo $room->id ?>" {{ $room->id == $book->room_id ? 'selected' : '' }}><?php echo $room->name ?></option>
                                             <?php endforeach ?>
                                         </select>
                                     </div>
-                                    <div class="col-md-1" style="width: 15%!important">
-                                        <label>Park</label>
-                                        <select class=" form-control full-width parking" data-init-plugin="select2" name="parking">
+                                    <div class="col-md-2">
+                                        <label>Parking</label>
+                                        <select class=" form-control parking"  name="parking">
                                             <?php for ($i=1; $i <= 4 ; $i++): ?>
-                                                <?php if ($i == $book->type_park): ?>
-                                                    <option value="<?php echo $i ?>" selected><?php echo $book->getParking($i) ?></option>
-                                                <?php else: ?>
-                                                    <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
-                                                <?php endif ?>
+                                                <option value="<?php echo $i ?>" {{ $book->type_park == $i ? 'selected' : '' }}><?php echo $book->getParking($i) ?></option>
                                             <?php endfor;?>
                                         </select>
                                     </div>
-                                    <?php if (count($payments) > 0): ?>
-                                    
-                                    <?php else: ?>
-                                        <div class="col-md-2" style="height: 100%">
-                                            <input type="button" name="recalcular" class="recalcular form-control btn btn-complete active" value="Recalcular">
-                                            
-                                        </div>
-                                    <?php endif ?>
                                     
                                 </div>
                                 <div class="input-group col-md-12">
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <label>Extras</label>
-                                        <input type="text" class="form-control extra" name="extra" value="<?php echo $book->extra ?>">
+                                        <select class="full-width select2-hidden-accessible" data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true">
+                                            <?php foreach ($extras as $extra): ?>
+                                                <option value="<?php echo $extra->id ?>"><?php echo $extra->name ?></option>
+                                            <?php endforeach ?>
+                                        </select>
                                     </div>
-                                    <div class="col-md-3">
-                                        <label>Total</label>
-                                        <input type="text" class="form-control total" name="total" value="<?php echo $book->total_price ?>" style="width: 100%">
-                                    </div> 
-                                    <div class="col-md-3">
-                                        <label>Coste</label>
-                                        <input type="text" class="form-control cost" name="cost" value="<?php echo $book->cost_total ?>" disabled style="width: 100%">
+                                    <div class="col-md-2">
+                                        <label>Agencia</label>
+                                        <select class=" form-control full-width agency" data-init-plugin="select2" name="agency">
+                                            <?php for ($i=0; $i <= 2 ; $i++): ?>
+                                                    <option value="<?php echo $i ?>" {{ $book->agency == $i ? 'selected' : '' }}><?php echo $book->getAgency($i) ?></option>
+                                            <?php endfor;?>
+                                        </select>
                                     </div>
-                                    <div class="col-md-3">
-                                        <label>Beneficio</label>
-                                        <input type="text" class="form-control beneficio" name="beneficio" value="<?php echo $book->total_ben ?>" disabled style="width: 100%">
+                                    <div class="col-md-2">                                                        
+                                        <label>Cost Agencia</label>
+                                        <input type="text" class="agencia form-control" name="agencia" value="<?php echo $book->pvpAgency ?>">
+                                    </div>
+                                    
+                                    <div class="col-md-2">
+                                        <label>Sup. Lujo</label>
+                                        <select class=" form-control full-width type_luxury" data-init-plugin="select2" name="type_luxury">
+                                            <?php for ($i=1; $i <= 4 ; $i++): ?>
+                                                <option value="<?php echo $i ?>" {{ $book->type_luxury == $i ? 'selected' : '' }}><?php echo $book->getSupLujo($i) ?></option>
+                                            <?php endfor;?>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="button" class="recalcular btn btn-primary" value="recalcular" style="margin-top: 25px;">
                                     </div>
                                 </div>
                                 <br>
                                 <div class="input-group col-md-12">
                                     <div class="col-md-6">
-                                        <label>Comentarios Cliente</label>
-                                        <textarea class="form-control" name="comments" style="width: 100%;height: 100px" ><?php echo $book->comment ?>
+                                        <label>Comentarios Usuario</label>
+                                        <textarea class="form-control" name="comments" rows="5" style="width: 80%">
                                         </textarea>
                                     </div>
                                     <div class="col-md-6">
-                                        <label>Comentarios Internos</label>
-                                        <textarea class="form-control" name="book_comments" style="width: 100%;height: 100px"><?php echo $book->book_comments ?> 
+                                        <label>Comentarios reserva</label>
+                                        <textarea class="form-control book_comments" name="book_comments" rows="5" style="width: 80%">
                                         </textarea>
                                     </div>
                                 </div> 
@@ -150,120 +154,63 @@
                                     
                                 </div> 
                                 <br>
-                                <div class="input-group col-md-12">
-                                    <button class="btn btn-complete" type="submit">Guardar</button>
+                                <div class="input-group col-md-12 text-center">
+                                    <button class="btn btn-complete" type="submit" style="width: 50%;min-height: 50px">Guardar</button>
                                 </div>                        
                         </div>
-                    
+                        
+                        
+
                     </form> 
                 </div>
             </div>
 
-            <div class="col-md-4">
-                <div class="panel">
-                    <div class="col-md-6 m-b-10">
-                        <div class="widget-8 panel no-border bg-success no-margin widget-loader-bar" style="height: 100px!important">
-                            <div class="container-xs-height full-height">
-                                <div class="row-xs-height">
-                                    <div class="col-xs-height col-top">
-                                        <div class="panel-heading top-left top-right text-center">
-                                            <div class="panel-title text-black hint-text ">
-                                                <span class="font-montserrat fs-11 all-caps">
-                                                    PVP
-                                                </span>
-                                            </div>                                    
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-xs-height ">
-                                    <div class="col-xs-height col-top relative">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="p-l-20 text-center">
-                                                    <h3 class="no-margin p-b-5 text-white">
-                                                        <?php echo $book->total_price ?> €                                           
-                                                    </h3>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
+            <div class="col-md-3">
+                <div class="col-md-12" style="padding: 0px">
+                    <div class="panel-heading">
+                        <div class="panel-title col-md-12">Cotizacion
                         </div>
                     </div>
+                    <table>
 
-                    <div class="col-md-6 m-b-10">
-                        <div class="widget-8 panel no-border bg-success no-margin widget-loader-bar" style="height: 100px!important">
-                            <div class="container-xs-height full-height">
-                                <div class="row-xs-height">
-                                    <div class="col-xs-height col-top">
-                                        <div class="panel-heading top-left top-right text-center">
-                                            <div class="panel-title text-black hint-text ">
-                                                <span class="font-montserrat fs-11 all-caps">
-                                                    Coste
-                                                </span>
-                                            </div>                                    
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-xs-height ">
-                                    <div class="col-xs-height col-top relative">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="p-l-20 text-center">
-                                                    <h3 class="no-margin p-b-5 text-white">
-                                                        <?php echo $book->cost_total ?> €                                          
-                                                    </h3>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
+                        <tbody>
+                            <tr class="text-white" style="background-color: #10CFBD">
+                                <th style="padding-left: 5px">PVP</th>
+                                <th style="padding-right: 5px;padding-left: 5px">
+                                    <input type="text" class="form-control total m-t-10 m-b-10 " name="total" value="<?php echo $book->total_price ?>" style="width: 100%;background-color: #10CFBD;border:none">
+                                </th>
+                            </tr>
+                            <tr class=" text-white m-t-5" style="background-color: #99D9EA">
+                                <th style="padding-left: 5px">COSTE</th>
+                                <th style="padding-right: 5px;padding-left: 5px">
+                                    <input type="text" class="form-control cost m-t-10 m-b-10 " name="cost" value="<?php echo $book->cost_total ?>" disabled style="width: 100%;color: black;background: #99D9EA;border:none">
+                                </th>
+                            </tr>
+                            <tr class="text-white m-t-5" style="background-color: #ff7f27">
+                                <th style="padding-left: 5px">BENº</th>
+                                <th style="padding-right: 5px;padding-left: 5px">
+                                    <input type="text" class="form-control beneficio m-t-10 m-b-10 " name="beneficio" value="<?php echo $book->total_ben ?>" disabled style="width: 100%;color: black;background: #ff7f27;border:none">
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 m-t-5" >
+                    
+                    <!-- <div class="progress" style="min-height: 20px">
+                        <div class="progress-bar " role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
+                            70%
                         </div>
-                    </div>
-
-                    <div class="col-md-6 m-b-10">
-                        <div class="widget-8 panel no-border bg-success no-margin widget-loader-bar" style="height: 100px!important">
-                            <div class="container-xs-height full-height">
-                                <div class="row-xs-height">
-                                    <div class="col-xs-height col-top">
-                                        <div class="panel-heading top-left top-right text-center">
-                                            <div class="panel-title text-black hint-text ">
-                                                <span class="font-montserrat fs-11 all-caps">
-                                                    Beneficio
-                                                </span>
-                                            </div>                                    
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-xs-height ">
-                                    <div class="col-xs-height col-top relative">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="p-l-20 text-center">
-                                                    <h3 class="no-margin p-b-5 text-white beneficio">
-                                                        <?php echo $book->total_ben ?> €                                          
-                                                    </h3>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                    </div> -->
+                    <div style="float: left"><input class="progress-circle beneficio%" data-pages-progress="circle" value="<?php echo $book->inc_percent ?>" type="hidden" data-color="complete" style="width: 100px;height: 100px;"></div>
+                    <div class="m-t-10 m-l-10 beneficio-text" style="position: absolute;"><?php echo number_format($book->inc_percent,0) ?>%</div>
                 </div>
             </div>
 
 
         
         </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="panel">
                 <div>
                     <div class="panel-heading">
@@ -271,14 +218,16 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        <div class="col-md-12">
-                            <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
+                        <div class="col-md-12 text-center">
+                            <table class="table table-hover demo-table-search table-responsive-block" >
                                 <thead>
                                     <tr>
-                                        <th class ="text-center bg-complete text-white" style="width:35%">fecha</th>
-                                        <th class ="text-center bg-complete text-white" style="width:30%">importe</th>
-                                        <th class ="text-center bg-complete text-white" style="width:25%">Tipo</th>                           
-                                        <th class ="text-center bg-complete text-white" style="width:15%">comentario</th>
+                                        <th class ="text-center bg-success text-white" style="width:25%">fecha</th>
+                                        <th class ="text-center bg-success text-white" style="width:25%">importe</th>
+                                        <th class ="text-center bg-success text-white" style="width:30%">Tipo</th>                           
+                                        <th class ="text-center bg-success text-white" style="width:20%">comentario</th>
+                                        <th class ="text-center bg-success text-white" style="width:20%">Eliminar</th>
+
                                     </tr>
                                 </thead>
                                 <tbody><?php $total = 0; ?>
@@ -298,6 +247,11 @@
                                                 <td class ="text-center"><?php echo $typecobro->getTypeCobro($payment->type) ?> </td>
 
                                                 <td class ="text-center"><?php echo $payment->comment ?></td>
+                                                <td>
+                                                    <a href="{{ url('/admin/reservas/deleteCobro/')}}/<?php echo $payment->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Cobro" onclick="return confirm('¿Quieres Eliminar el obro?');">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                </td>
                                             </tr>
                                             <?php $total = $total + $payment->import ?>
                                         <?php endforeach ?>
@@ -312,7 +266,7 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <select class="full-width select2-hidden-accessible type_payment" data-init-plugin="select2" name="type_payment"  tabindex="-1" aria-hidden="true">
-                                                        <?php for ($i=0; $i < 3 ; $i++): ?>
+                                                        <?php for ($i=0; $i < 4 ; $i++): ?>
                                                             <?php if (Auth::user()->id == 39 && $i == 2): ?>
                                                                 <option value="<?php echo $i ?>" selected><?php echo $book->getTypeCobro($i) ?></option>
                                                             <?php elseif (Auth::user()->id == 28 && $i == 1):?>
@@ -327,6 +281,11 @@
                                                 </td>
                                                 <td class ="text-center"> 
                                                     <input class="comment" type="text" name="comment"  style="width: 100%;text-align: center;border-style: none">
+                                                </td>
+                                                <td>
+                                                    <a href="{{ url('/admin/reservas/deleteCobro/')}}/<?php echo $payment->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Cobro" onclick="return confirm('¿Quieres Eliminar el obro?');">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
                                                 </td>
                                                 
                                             </tr>
@@ -355,12 +314,13 @@
                                         </tr>
                                     <?php endif ?>
                                     <tr>
+                                        <td></td>
                                         <?php if ($total < $book->total_price): ?>
-                                            <td class="text-center" colspan="3">Pendiente de pago</td>
-                                            <td class="text-center" ><?php echo $total-$book->total_price ?>€</td>
+                                            <td class="text-center" ><p style="color:red;font-weight: bold;"><?php echo $total-$book->total_price ?>€</p></td>
+                                            <td class="text-center" colspan="2">Pendiente de pago</td>
                                         <?php elseif($total > $book->total_price): ?>
-                                            <td class="text-center" colspan="3">Sobrante</td>
                                             <td class="text-center" ><?php echo $total-$book->total_price ?>€</td>
+                                            <td class="text-center" colspan="2">Sobrante</td>
                                         <?php else: ?>
                                             <td class="text-center" colspan="4">Al corriente de pago</td>
                                         <?php endif ?>
@@ -368,8 +328,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-
-                            <input type="button" name="cobrar" class="cobrar form-control btn btn-complete active" value="Cobrar" data-id="<?php echo $book->id ?>">
+                            <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="Cobrar" data-id="<?php echo $book->id ?>" style="width: 50%;min-height: 50px">                            
                         </div>
                     </div>
 
@@ -382,7 +341,28 @@
 @endsection
 
 @section('scripts')
-<script src="/assets/plugins/select2/select2.full.min.js"></script>
+<script src="/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
+<script src="/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
+<script src="/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
+<script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
+<script type="text/javascript" src="/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
+
+<script src="/assets/plugins/bootstrap3-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
+<script type="text/javascript" src="/assets/plugins/dropzone/dropzone.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/bootstrap-tag/bootstrap-tagsinput.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/jquery-inputmask/jquery.inputmask.min.js"></script>
+<script src="/assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
+<script src="/assets/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+<script src="/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
+<script src="/assets/plugins/summernote/js/summernote.min.js" type="text/javascript"></script>
+<script src="/assets/plugins/moment/moment.min.js"></script>
+<script src="/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
+<script src="/assets/plugins/bootstrap-typehead/typeahead.bundle.min.js"></script>
+<script src="/assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
+<script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
 <script type="text/javascript">
         $(document).ready(function() {          
 
@@ -392,27 +372,18 @@
             var price = 0;
             var cost = 0;
 
+            $('.pax').click(function(event) {
+                var fechas = $('#daterangepicker').val();
+                var info = fechas.split('-');
+                var inicio = info[0];
+                var final = info[1];
+                console.log(inicio);
+                var start = new Date(inicio.substring(3,5) + '/' + inicio.substring(0,2) + '/' + inicio.substring(6,10));
+                var finish = new Date(final.substring(4,6)+ '/' +  final.substring(1,3)+ '/' + final.substring(7,11));
+                var timeDiff = Math.abs(finish.getTime() - start.getTime());
+                var noches = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                $('.nigths').val(noches);
 
-            $('#start').change(function(event) {
-                start= $(this).val();
-                var info = start.split('/');
-                start = info[1] + '/' + info[0] + '/' + info[2];
-                if (finish != 0) {
-                    diferencia = Math.floor((  Date.parse(finish)- Date.parse(start) ) / 86400000);
-                    $('.nigths').empty();
-                    $('.nigths').html(diferencia);
-                }
-            });
-
-            $('#finish').change(function(event) {
-                finish= $(this).val();
-                var info = finish.split('/');
-                finish = info[1] + '/' + info[0] + '/' + info[2];           
-                if (start != 0) {
-                    diferencia = Math.floor((  Date.parse(finish)- Date.parse(start) ) / 86400000);
-                    $('.nigths').empty();
-                    $('.nigths').val(diferencia);
-                }
             });
 
             $('.recalcular').click(function(event){ 
@@ -424,15 +395,19 @@
                 var costPark = 0;
                 var pricePark = 0;
                 var diferencia = 0;
-                start= $('#start').val();
-                var info = start.split('/');
-                start = info[1] + '/' + info[0] + '/' + info[2];
 
-                finish= $('#finish').val();
-                var info = finish.split('/');
-                finish = info[1] + '/' + info[0] + '/' + info[2]; 
+                var fechas = $('#daterangepicker').val();
+                var info = fechas.split('-');
+                var inicio = info[0];
+                var final = info[1];
+                console.log(inicio);
+                var start = new Date(inicio.substring(3,5) + '/' + inicio.substring(0,2) + '/' + inicio.substring(6,10));
+                var finish = new Date(final.substring(4,6)+ '/' +  final.substring(1,3)+ '/' + final.substring(7,11));
+                var timeDiff = Math.abs(finish.getTime() - start.getTime());
+                var noches = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                start = inicio.substring(3,5) + '/' + inicio.substring(0,2) + '/' + inicio.substring(6,10);
+                finish = final.substring(4,6)+ '/' +  final.substring(1,3)+ '/' + final.substring(7,11); 
 
-                diferencia = Math.floor((  Date.parse(finish)- Date.parse(start) ) / 86400000);       
                 $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
                     if (pax < data) {
                         $('.pax').attr('style' , 'background-color:red');
@@ -440,25 +415,41 @@
                         $('.pax').removeAttr('style');
                     }
                 });
-                $.get('/admin/reservas/getPricePark', {park: park, noches: diferencia}).success(function( data ) {
+                $.get('/admin/reservas/getPricePark', {park: park, noches: noches}).success(function( data ) {
                     pricePark = data;
-                    $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                        price = data;
-                        price = (parseFloat(price) + parseFloat(pricePark));
-                        $('.total').empty();
-                        $('.total').val(price);
-                            $.get('/admin/reservas/getCostPark', {park: park, noches: diferencia}).success(function( data ) {
-                                costPark = data;
-                                    $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                                        cost = data;
-                                        cost = (parseFloat(cost) + parseFloat(costPark));
-                                        $('.cost').empty();
-                                        $('.cost').val(cost);
-                                        beneficio = price - cost;
-                                        $('.beneficio').empty;
-                                        $('.beneficio').val(beneficio);
+                    $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
+                        priceLujo = data;
+
+                        $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                            price = data;
+                            
+                            price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
+                            $('.total').empty();
+                            $('.total').val(price);
+                                $.get('/admin/reservas/getCostPark', {park: park, noches: noches}).success(function( data ) {
+                                    costPark = data;
+                                    $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
+                                        costLujo = data;
+                                        $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                                            cost = data;
+                                            agencia = $('.agencia').val();
+                                            if (agencia == "") {
+                                                agencia = 0;
+                                            }
+                                            cost = (parseFloat(cost) + parseFloat(costPark) + parseFloat(agencia) + parseFloat(costLujo));
+                                            $('.cost').empty();
+                                            $('.cost').val(cost);
+                                            beneficio = price - cost;
+                                            $('.beneficio').empty;
+                                            $('.beneficio').val(beneficio);
+                                            beneficio_ = (beneficio / price)*100
+                                            $('.beneficio-text').empty;
+                                            $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
+
+                                        });
                                     });
-                            });
+                                });
+                        });
                     });
                 });
                 
@@ -479,12 +470,10 @@
                 var importe = $('.importe').val();
                 var comment = $('.comment').val();
                 var type = $('.type_payment').val();
-                console.log(type);
                 if (importe == 0) {
                    
                 }else{
                     $.get('/admin/pagos/create', {id: id, date: date, importe: importe, comment: comment, type: type}).success(function( data ) {
-                        alert(data);
                         window.location.reload();
                     });
                 }

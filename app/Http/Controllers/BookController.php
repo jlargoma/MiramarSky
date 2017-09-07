@@ -189,9 +189,13 @@ class BookController extends Controller
      */
     public function create(Request $request)
         {
-            echo "<pre>";
-            print_r($request->input('nigths'));
-            die();
+            $fechas = $request->reservation;
+            $info = explode('-', $fechas);
+            $inicio = $info[0];
+            $final = $info[1];
+            $start = substr($inicio,0,10);
+            $finish = substr($final,1,10);
+
             $book = new \App\Book();
             $extraPrice = 0 ;
             $extraCost  = 0;
@@ -203,7 +207,7 @@ class BookController extends Controller
                    $extraCost += $precios->cost;
                 }
             }
-                if ($book->existDate($request->input('start'),$request->input('finish'), $request->input('newroom'))) {
+                if ($book->existDate($start,$finish, $request->input('newroom'))) {
                     //creacion del cliente
                         $customer = new \App\Customers();
                         $customer->user_id = (Auth::check())?Auth::user()->id:23;
@@ -216,8 +220,8 @@ class BookController extends Controller
                                 $book->user_id       = $customer->user_id;
                                 $book->customer_id   = $customer->id;
                                 $book->room_id       = $request->input('newroom');
-                                $book->start         = Carbon::createFromFormat('d/m/Y',$request->input('start'));
-                                $book->finish        = Carbon::createFromFormat('d/m/Y',$request->input('finish'));
+                                $book->start         = Carbon::createFromFormat('d/m/Y',$start);
+                                $book->finish        = Carbon::createFromFormat('d/m/Y',$finish);
                                 $book->comment       = $request->input('comments');
                                 $book->book_comments = $request->input('book_comments');
                                 $book->type_book     = 3;
@@ -235,10 +239,10 @@ class BookController extends Controller
                                 $book->cost_park     = $this->getCostParkController($request->input('parking'),$request->input('nigths'));
                                 $book->sup_lujo      = $this->getPriceLujo($request->input('Suplujo'));
                                 $book->cost_lujo     = $this->getCostLujo($request->input('Suplujo'));
-                                $book->cost_apto     = $book->getCostBook($request->input('start'),$request->input('finish'),$request->input('pax'),$request->input('newroom'));
+                                $book->cost_apto     = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
                                 $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->agency + $extraCost + $book->agency;
 
-                                $book->total_price   = $book->getPriceBook($request->input('start'),$request->input('finish'),$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo + $extraPrice + $book->sup_limp;
+                                $book->total_price   = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo + $extraPrice + $book->sup_limp;
 
 
                                 $book->total_ben     = $book->total_price - $book->cost_total;
@@ -494,6 +498,7 @@ class BookController extends Controller
                     }
                 return $supPark;
             }
+    
     //Funcion para el coste del Aparcamiento
         static function getCostParkController($park,$noches)
             {   
@@ -541,6 +546,7 @@ class BookController extends Controller
                 }
                 return $supLujo;
             }
+    
     //Funcion para el precio del Suplemento de Lujo desde Admin
         static function getPriceLujoAdmin(Request $request)
             {
@@ -588,6 +594,7 @@ class BookController extends Controller
                 
                 return $supLujo;
             }
+   
     //Funcion para el precio del Suplemento de Lujo desde Admin
         static function getCostLujoAdmin(Request $request)
             {
@@ -707,7 +714,6 @@ class BookController extends Controller
             return $book;
         }
     
-
     //Funcion para Cobrar desde movil
         public function cobroBook($id)
             {
@@ -726,20 +732,32 @@ class BookController extends Controller
                                                             ]);
             }
 
-    public function saveCobro(Request $request)
-        {
-            $payment = new \App\Payments();
+    // Funcion para Cobrar
+        public function saveCobro(Request $request)
+            {
+                $payment = new \App\Payments();
 
-            $payment->book_id = $request->id;
-            $payment->datePayment = Carbon::CreateFromFormat('d-m-Y',$request->fecha);
-            $payment->import = $request->import;
-            $payment->type = $request->tipo;
+                $payment->book_id = $request->id;
+                $payment->datePayment = Carbon::CreateFromFormat('d-m-Y',$request->fecha);
+                $payment->import = $request->import;
+                $payment->type = $request->tipo;
 
-            if ($payment->save()) {
-                return redirect()->action('BookController@index');
+                if ($payment->save()) {
+                    return redirect()->action('BookController@index');
+                }
+                
             }
-            
-        }
+
+    // Funcion para elminar cobro
+        public function deleteCobro($id)
+            {
+                $payment = \App\Payments::find($id);
+
+                if ($payment->delete()) {
+                    return redirect()->back();
+                }
+                
+            }
 
     public function saveFianza(Request $request)
         {

@@ -15,6 +15,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
 
+
     <?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
     
     <style type="text/css">
@@ -28,7 +29,7 @@
             color: black;
         }
         .Bloqueado{
-            background-color: #F9D975 !important;
+            background-color: orange !important;
             color: black;
         }
         .SubComunidad{
@@ -62,7 +63,7 @@
             background-color: green !important; 
         }
         .active.bloq{
-            background-color: #F9D975 !important; 
+            background-color: orange !important; 
         }
         .active.pag{
             background-color: red !important; 
@@ -226,7 +227,8 @@
                 <div class="col-md-6 col-md-offset-4">
                     <h2><b>Planning de reservas</b>  Fechas:
                         
-                        <select id="date" >
+                        
+                        <select id="fecha" >
                             <?php $fecha = $inicio->copy()->SubYear(2); ?>
                             <?php if ($fecha->copy()->format('Y') < 2015): ?>
                                 <?php $fecha = new Carbon('first day of September 2015'); ?>
@@ -247,7 +249,7 @@
             <div class="col-md-7 col-xs-12">
                 <div class="panel">
                     <ul class="nav nav-tabs nav-tabs-simple bg-info-light " role="tablist" data-init-reponsive-tabs="collapse">
-                        <li class="" style="background-color: #889096;width: 50px" ><a href="#tabNueva" data-toggle="tab" role="tab" style="padding: 0px;"><i class="fa fa-plus-circle fa-4x" style="color:white;border-radius: 10px;background-color: green;" aria-hidden="true"></i></a>
+                        <li class="" style="background-color: #889096;width: 50px" ><a href="#tabNueva" data-toggle="tab" role="tab" style="padding: 0px;"><img src="{{ asset('/img/miramarski/plus_icon.png') }}" width="50px!important" /></a>
                         </li>
                         <li class="active res" >
                             <a href="#tabPendientes" data-toggle="tab" role="tab">Pendientes 
@@ -309,10 +311,10 @@
                                                 <div class="input-group col-md-12">
                                                     <div class="col-md-4">
                                                         <label>Entrada</label>
-                                                        <div class="input-daterange input-group" id="datepicker-range">
-                                                            <input id="start" type="text" class="input-sm form-control" name="start" data-date-format="dd-mm-yyyy">
-                                                            <span class="input-group-addon">Hasta</span>
-                                                            <input id="finish" type="text" class="input-sm form-control" name="finish" data-date-format="dd-mm-yyyy">
+                                                        <div class="input-prepend input-group">
+                                                          <span class="add-on input-group-addon"><i
+                                                                        class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                                                          <input type="text" style="width: 100%" name="reservation" id="daterangepicker" class="form-control" value="" />
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2">
@@ -321,7 +323,7 @@
                                                     </div> 
                                                     <div class="col-md-2">
                                                         <label>Pax</label>
-                                                        <input  type="text" class="form-control full-width pax" name="pax" style="width: 100%">
+                                                        <input type="text" data-v-min="0" data-v-max="8" class="autonumeric form-control full-width pax">
                                                             
                                                     </div>
                                                     <div class="col-md-2">
@@ -351,18 +353,24 @@
                                                             <?php endforeach ?>
                                                         </select>
                                                     </div>
+                                                    <div class="col-md-2">
+                                                        <label>Agencia</label>
+                                                        <select class=" form-control full-width agency" data-init-plugin="select2" name="agency">
+                                                            <?php for ($i=0; $i <= 2 ; $i++): ?>
+                                                                <?php if ($i == 0): ?>
+                                                                    <option></option>
+                                                                <?php else: ?>
+                                                                    <option value="<?php echo $i ?>"><?php echo $book->getAgency($i) ?></option>
+                                                                <?php endif ?>
+                                                                
+                                                            <?php endfor;?>
+                                                        </select>
+                                                    </div>
                                                     <div class="col-md-2">                                                        
                                                         <label>Cost Agencia</label>
                                                         <input type="text" class="agencia form-control" name="agencia" value="0">
                                                     </div>
-                                                    <div class="col-md-2">
-                                                        <label>Agencia</label>
-                                                        <select class=" form-control full-width agency" data-init-plugin="select2" name="agency">
-                                                            <?php for ($i=1; $i <= 2 ; $i++): ?>
-                                                                <option value="<?php echo $i ?>"><?php echo $book->getAgency($i) ?></option>
-                                                            <?php endfor;?>
-                                                        </select>
-                                                    </div>
+                                                    
                                                     <div class="col-md-2">
                                                         <label>Sup. Lujo</label>
                                                         <select class=" form-control full-width type_luxury" data-init-plugin="select2" name="type_luxury">
@@ -400,16 +408,16 @@
                                     <div class="col-md-12" style="padding: 0px">
                                         <div class="panel-heading">
                                             <div class="panel-title">
-                                                Cotización de Reserva
+                                                Cotización
                                             </div>
                                         </div>
                                         <table>
 
                                             <tbody>
-                                                <tr class="text-white" style="background-color: #b5e61d">
+                                                <tr class="text-white" style="background-color: #10CFBD">
                                                     <th style="padding-left: 5px">PVP</th>
                                                     <th style="padding-right: 5px;padding-left: 5px">
-                                                        <input type="text" class="form-control total m-t-10 m-b-10 " name="total" value="" style="width: 100%;background-color: #b5e61d;border:none">
+                                                        <input type="text" class="form-control total m-t-10 m-b-10 " name="total" value="" style="width: 100%;background-color: #10CFBD;border:none">
                                                     </th>
                                                 </tr>
                                                 <tr class=" text-white m-t-5" style="background-color: #99D9EA">
@@ -427,19 +435,15 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="col-md-12" >
-                                        <div class="panel-heading">
-                                            <div class="panel-title">
-                                                Beneficio
-                                            </div>
-                                        </div>
+                                    <div class="col-md-12 m-t-5" >
+                                        
                                         <!-- <div class="progress" style="min-height: 20px">
                                             <div class="progress-bar " role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
                                                 70%
                                             </div>
                                         </div> -->
                                         <div style="float: left"><input class="progress-circle beneficio%" data-pages-progress="circle" value="75" type="hidden" data-color="complete" style="width: 100px;height: 100px;"></div>
-                                        <div class="m-t-10 m-l-10 beneficio-text" style="position: absolute;">75%</div>
+                                        <div class="m-t-10 m-l-10 beneficio-text" style="position: absolute;">0%</div>
                                     </div>
                                 </div>
                             </div>
@@ -544,13 +548,13 @@
                                                                         </a>
                                                                 <?php endif ?> -->
                                                                 
-                                                                <?php if ($book->send == 0): ?>
+                                                               <!--  <?php if ($book->send == 0): ?>
                                                                     <a class="btn btn-tag btn-primary sendJaime" title="Enviar Email a Jaime" data-id="<?php echo $book->id ?>"><i class=" pg-mail"></i></a>
                                                                     </a>
                                                                 <?php else: ?>
                                                                     <a class="btn btn-tag btn-danger" title="enviado" disabled data-id="<?php echo $book->id ?>"><i class=" pg-mail "></i></a>
                                                                     </a>
-                                                                <?php endif ?>
+                                                                <?php endif ?> -->
                                                                 <a href="{{ url('/admin/reservas/delete/')}}/<?php echo $book->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
                                                                     <i class="fa fa-trash"></i>
                                                                 </a>
@@ -652,11 +656,11 @@
                                                                         </a>
                                                                 <?php endif ?> -->
                                                                 
-                                                                <?php if ($book->send == 0): ?>
+                                                                <!-- <?php if ($book->send == 0): ?>
                                                                     <a class="btn btn-tag btn-primary" ><i class=" pg-mail"></i></a>
                                                                     </a>
                                                                 <?php else: ?>
-                                                                <?php endif ?>
+                                                                <?php endif ?> -->
                                                                 <a href="{{ url('/admin/reservas/delete/')}}/<?php echo $book->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
                                                                     <i class="fa fa-trash"></i>
                                                                 </a>
@@ -777,11 +781,11 @@
                                                                     </a>
                                                             <?php endif ?> -->
                                                             
-                                                            <?php if ($book->send == 0): ?>
+                                                            <!-- <?php if ($book->send == 0): ?>
                                                                 <a class="btn btn-tag btn-primary" ><i class=" pg-mail"></i></a>
                                                                 </a>
                                                             <?php else: ?>
-                                                            <?php endif ?>
+                                                            <?php endif ?> -->
                                                     </td>
                                                 </tr>
                                         <?php endforeach ?>
@@ -969,7 +973,9 @@
    <script src="/assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
    <script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
 
+        
     <script type="text/javascript">
+
         $(document).ready(function() {          
 
             $('.status,.room').change(function(event) {
@@ -990,31 +996,22 @@
 
             var start  = 0;
             var finish = 0;
-            var diferencia = 0;
+            var noches = 0;
             var price = 0;
             var cost = 0;
 
+            $('.pax').click(function(event) {
+                var fechas = $('#daterangepicker').val();
+                var info = fechas.split('-');
+                var inicio = info[0];
+                var final = info[1];
+                console.log(inicio);
+                var start = new Date(inicio.substring(3,5) + '/' + inicio.substring(0,2) + '/' + inicio.substring(6,10));
+                var finish = new Date(final.substring(4,6)+ '/' +  final.substring(1,3)+ '/' + final.substring(7,11));
+                var timeDiff = Math.abs(finish.getTime() - start.getTime());
+                var noches = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                $('.nigths').val(noches);
 
-            $('#start').change(function(event) {
-                start= $(this).val();
-                var info = start.split('/');
-                start = info[1] + '/' + info[0] + '/' + info[2];
-                if (finish != 0) {
-                    diferencia = Math.floor((  Date.parse(finish)- Date.parse(start) ) / 86400000);
-                    $('.nigths').empty();
-                    $('.nigths').html(diferencia);
-                }
-            });
-
-            $('#finish').change(function(event) {
-                finish= $(this).val();
-                var info = finish.split('/');
-                finish = info[1] + '/' + info[0] + '/' + info[2];           
-                if (start != 0) {
-                    diferencia = Math.floor((  Date.parse(finish)- Date.parse(start) ) / 86400000);
-                    $('.nigths').empty();
-                    $('.nigths').val(diferencia);
-                }
             });
 
             $('#newroom, .pax, .parking, .agencia, .type_luxury').change(function(event){ 
@@ -1030,9 +1027,22 @@
                 var priceLujo = 0;
                 var agencia = 0;
                 var beneficio_ = 0;
+
+                var fechas = $('#daterangepicker').val();
+                var info = fechas.split('-');
+                var inicio = info[0];
+                var final = info[1];
+                console.log(inicio);
+                var start = new Date(inicio.substring(3,5) + '/' + inicio.substring(0,2) + '/' + inicio.substring(6,10));
+                var finish = new Date(final.substring(4,6)+ '/' +  final.substring(1,3)+ '/' + final.substring(7,11));
+                var timeDiff = Math.abs(finish.getTime() - start.getTime());
+                var noches = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                start = inicio.substring(3,5) + '/' + inicio.substring(0,2) + '/' + inicio.substring(6,10);
+                finish = final.substring(4,6)+ '/' +  final.substring(1,3)+ '/' + final.substring(7,11);
+               
+
                 $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
-                    console.log(data);
-                    console.log(pax);
+
                     if (pax < data) {
                         $('.pax').attr('style' , 'background-color:red');
                         $('.book_comments').empty();
@@ -1043,17 +1053,18 @@
                     }
                 });
 
-                $.get('/admin/reservas/getPricePark', {park: park, noches: diferencia}).success(function( data ) {
+                $.get('/admin/reservas/getPricePark', {park: park, noches: noches}).success(function( data ) {
                     pricePark = data;
                     $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
                         priceLujo = data;
+
                         $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
                             price = data;
                             
                             price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
                             $('.total').empty();
                             $('.total').val(price);
-                                $.get('/admin/reservas/getCostPark', {park: park, noches: diferencia}).success(function( data ) {
+                                $.get('/admin/reservas/getCostPark', {park: park, noches: noches}).success(function( data ) {
                                     costPark = data;
                                     $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
                                         costLujo = data;
@@ -1090,7 +1101,7 @@
                 $('.beneficio').val(beneficio);
             });
 
-            $('#date').change(function(event) {
+            $('#fecha').change(function(event) {
                 
                 var year = $(this).val();
                 window.location = '/admin/reservas/'+year;
@@ -1100,7 +1111,7 @@
                 var id = $(this).attr('data-id');
                 console.log(id);
                 $.get('/admin/reservas/sendJaime', {id: id}).success(function( data ) {
-                    alert(data);
+
                 });
             });
 

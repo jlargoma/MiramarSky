@@ -64,7 +64,7 @@ class Book extends Model
     //Para poner nombre al tipo de cobro//
        static function getTypeCobro($typePayment)
             {
-                $array = [0 =>"Metalico Jorge", 1 =>"Metalico Jaime",2 =>"Banco"];
+                $array = [0 =>"Metalico Jorge", 1 =>"Metalico Jaime",2 =>"Banco Jorge",3=>"Banco Jaime"];
 
                 return $typePayment = $array[$typePayment];
             }
@@ -86,7 +86,7 @@ class Book extends Model
     //Para poner nombre a la agencia//
        static function getAgency($agency)
             {
-                $array = [1 =>"Booking", 2 =>"Trivago"];
+                $array = [0=>"" ,1 =>"Booking", 2 =>"Trivago"];
 
                 return $agency = $array[$agency];
             }
@@ -94,6 +94,7 @@ class Book extends Model
     //Para comprobar el dia de la reserva en el calendario
         static function existDate($start,$finish,$room)
             {   
+
             	if ($room >= 5) {
                     
                     $books = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,7,8])->get();
@@ -101,7 +102,7 @@ class Book extends Model
                     $existFinish = False;        
                     $requestStart = Carbon::createFromFormat('d/m/Y',$start);
                     $requestFinish = Carbon::createFromFormat('d/m/Y',$finish);
-
+                    
                     foreach ($books as $book) {
                         if ($existStart == False && $existFinish == False) {
                             $start = Carbon::createFromFormat('Y-m-d', $book->start);

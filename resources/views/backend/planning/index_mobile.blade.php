@@ -88,6 +88,7 @@
 
   	/* Bordes de seccion */          
   	.active.resv > a,.active.cob > a{color: blue!important;font-weight: bold }
+    
 
   	/* Bordes de seccion */
   </style>
@@ -98,18 +99,18 @@
   	<div class="row">
   		<div class="panel" style="margin-bottom: 0px!important">
   			<ul class="nav nav-tabs nav-tabs-simple bg-info-light " role="tablist" data-init-reponsive-tabs="collapse">
-  				<li class="resv  active" >
-  					<a href="#reservas" data-toggle="tab" role="tab" style="font-size: 11px!important"> RESERVAS </a>
+  				<li class="resv  active"  style="width: 25%;margin-left: 10px;margin-right: 10px;">
+  					<a href="#reservas" data-toggle="tab" role="tab" style="font-size: 15px!important;padding-left: 2px;padding-right: 2px"> RESERVAS </a>
   				</li>
-  				<li class="cob">
-  					<a href="#cobros" data-toggle="tab" role="tab" style="font-size: 11px!important"> RECEPCION </a>
+  				<li class="cob text-center" style="width: 30%;margin-left: 10px;margin-right: 10px;">
+  					<a href="#cobros" data-toggle="tab" role="tab" style="font-size: 15px!important;padding-left: 2px;padding-right: 2px"> RECEPCION </a>
   				</li>
-  				<li>
-  					<a href="#calendario"> <i class="fa fa-calendar " aria-hidden="true" style="font-size: 15px!important"></i> </a>
+  				<li class="text-center" style="width: 17%">
+  					<a href="#calendario"> <i class="fa fa-calendar " aria-hidden="true" style="font-size: 24px!important;padding-left: 2px;padding-right: 2px"></i> </a>
   				</li>
-  				<li class="" style="background-color: white">
-  					<a href="#tabNueva" data-toggle="tab" role="tab" >
-  						<i class="fa fa-plus-circle " style="color:green;font-size: 19px!important" aria-hidden="true"></i>
+  				<li class=" text-center" style="background-color: white;width: 13%">
+  					<a href="#tabNueva" data-toggle="tab" role="tab" style="padding-left: 2px;padding-right: 2px">
+  						<i class="fa fa-plus-circle " style="color:green;font-size: 24!important" aria-hidden="true"></i>
   					</a>
   				</li>
   			</ul>

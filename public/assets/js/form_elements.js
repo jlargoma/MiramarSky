@@ -70,9 +70,9 @@
         $('#daterangepicker').daterangepicker({
             timePicker: true,
             timePickerIncrement: 30,
-            format: 'MM/DD/YYYY h:mm A'
+            format: 'DD/MM/YYYY'
         }, function(start, end, label) {
-            console.log(start.toISOString(), end.toISOString(), label);
+            console.log(start, end, label);
         });
 
         /* Time picker

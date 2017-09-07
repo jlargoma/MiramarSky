@@ -61,6 +61,7 @@
 									<td><?php echo Carbon::CreateFromFormat('Y-m-d',$pago->datePayment)->format('d-m-Y') ?></td>
 									<td><?php echo number_format($pago->import,2,',','.') ?>€</td>
 									<td><?php echo $book->getTypeCobro($pago->type) ?></td>
+									
 								</tr>
 							<?php endforeach ?>
 						</tbody>

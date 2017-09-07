@@ -28,12 +28,27 @@
 		<link href="{{ asset('/assets/plugins/jquery-metrojs/MetroJs.css') }}" rel="stylesheet" type="text/css" media="screen" />
 		<link href="{{ asset('/pages/css/pages-icons.css') }}" rel="stylesheet" type="text/css">
 		<link class="main-stylesheet" href="{{ asset('/pages/css/pages.css') }}" rel="stylesheet" type="text/css" />
+	
 
 
 		@yield('externalScripts')
 	    <!--[if lte IE 9]>
 	    <link href="assets/plugins/codrops-dialogFx/dialog.ie.css" rel="stylesheet" type="text/css" media="screen" />
 	    <![endif]-->
+	   	<style>
+	   		.navbar-inverse {
+	   		  background-color: #B0B5B9;
+	   		  border-color: #B0B5B9;
+	   		}
+	   		.navbar-inverse .navbar-nav>li>a {
+	   		    color: white;
+	   		    font-weight: bold;
+	   		    font-size: 15px;
+	   		}
+	   		.navbar {
+	   			margin-bottom: 0px;
+	   		}
+	   	</style>
 	   	<?php 
    			use App\Classes\Mobile; 
    			$mobile = new Mobile();
@@ -61,7 +76,6 @@
 				      	<li class="{{ Request::path() == 'admin/liquidacion' || Request::path() == 'admin/liquidacion-apartamentos' || Request::path() == 'admin/pagos-propietarios' || Request::path() == 'admin/pagos-estadisticas' || Request::path() == 'admin/perdidas-ganancias' ? 'active' : '' }}"><a href="{{ url('admin/liquidacion') }}" class="detailed">Liquidacion</a></li>
 			        </ul>
 			        <ul class="nav navbar-nav navbar-right">
-			            <li><a href="#signuplink">Signup</a></li>
 			            <li><a href="{{url ('/logout')}}">Log Out</a></li>
 			        </ul>
 			    </div>

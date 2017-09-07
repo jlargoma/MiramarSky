@@ -16,7 +16,7 @@ class SeasonsController extends Controller
      */
     public function index()
     {
-        $date = new Carbon('first day of September 2016');
+        $date = new Carbon('first day of September 2017');
         return view('backend/seasons/index',[
                     'seasons'  => \App\Seasons::all(),
                     'newtypeSeasons' => \App\TypeSeasons::all(),

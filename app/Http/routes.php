@@ -56,6 +56,7 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 	Route::get('admin/reservas/getPriceLujoAdmin' , 'BookController@getPriceLujoAdmin');
 	Route::get('admin/reservas/getCostLujoAdmin' , 'BookController@getCostLujoAdmin');
 	Route::get('admin/reservas/saveCobro' , 'BookController@saveCobro');
+	Route::get('admin/reservas/deleteCobro/{id}' , 'BookController@deleteCobro');
 	Route::get('admin/reservas/saveFianza' , 'BookController@saveFianza');
 	Route::get('admin/reservas/{year?}' , 'BookController@index');
 	Route::get('admin/reservas/reserva/{id}' , 'BookController@tabReserva');
