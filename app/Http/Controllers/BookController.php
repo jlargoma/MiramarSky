@@ -200,6 +200,9 @@ class BookController extends Controller
             $extraPrice = 0 ;
             $extraCost  = 0;
 
+            echo "<pre>";
+            print_r($request->input());
+            die();
             if ($request->input('extras') != "") {
                 foreach ($request->input('extras') as $extra) {
                    $precios = \App\Extras::find($extra);

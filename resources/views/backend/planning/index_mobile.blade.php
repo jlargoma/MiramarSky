@@ -3,17 +3,16 @@
 @section('title') Administrador de reservas MiramarSKI @endsection
 
 @section('externalScripts') 
-<link href="/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" />
-<link href="/assets/plugins/bootstrapv3/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-<link href="/assets/plugins/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css" />
-<link href="/assets/plugins/jquery-scrollbar/jquery.scrollbar.css" rel="stylesheet" type="text/css" media="screen" />
-<link href="/assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" media="screen" />
-<link href="/assets/plugins/switchery/css/switchery.min.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
 <link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
-<link href="/pages/css/pages-icons.css" rel="stylesheet" type="text/css">
-<link class="main-stylesheet" href="/pages/css/pages.css" rel="stylesheet" type="text/css" />
+
+<link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
+<link href="/assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" media="screen">
+<link href="/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" media="screen">
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
     <!--[if lte IE 9]>
   <link href="/assets/plugins/codrops-dialogFx/dialog.ie.css" rel="stylesheet" type="text/css" media="screen" />
   <![endif]-->
@@ -155,15 +154,17 @@
   									<tbody>
   										<?php foreach ($arrayBooks["nuevas"] as $nueva): ?>
   											<tr>
-  												<td class="text-center"><a href="{{url ('/admin/reservas/update')}}/<?php echo $nueva->id ?>"><?php echo $nueva->customer->name ?></a></td>
-  												<td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->start)->format('d-M') ?></td>
-  												<td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->finish)->format('d-M') ?></td>
-  												<td class="text-center"><?php echo $nueva->pax ?></td>
-  												<td class="text-center"><a href="tel:<?php echo $nueva->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
-  												<td class="text-center"><?php echo $nueva->room->name ?></td>
-  												<td class="text-center"><?php echo $nueva->nigths ?></td>
-  												<td class="text-center"><?php echo $nueva->total_price ?> €</td>
-  												<td class="text-center"><?php echo $nueva->getStatus($nueva->type_book) ?></td>
+  												<td class="text-center sm-p-t-10 sm-p-b-10">
+                            <a href="{{url ('/admin/reservas/update')}}/<?php echo $nueva->id ?>"><?php echo $nueva->customer->name ?></a>
+                          </td>
+  												<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->start)->format('d-M') ?></td>
+  												<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->finish)->format('d-M') ?></td>
+  												<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $nueva->pax ?></td>
+  												<td class="text-center sm-p-t-10 sm-p-b-10"><a href="tel:<?php echo $nueva->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
+  												<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $nueva->room->name ?></td>
+  												<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $nueva->nigths ?></td>
+  												<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $nueva->total_price ?> €</td>
+  												<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $nueva->getStatus($nueva->type_book) ?></td>
   											</tr>
   										<?php endforeach ?>
   									</tbody>
@@ -188,15 +189,15 @@
   										<tbody>
   											<?php foreach ($arrayBooks["especiales"] as $especial): ?>
   												<tr>
-  													<td class="text-center"><?php echo $especial->customer->name ?></td>
-  													<td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$especial->start)->format('d-M') ?></td>
-  													<td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$especial->finish)->format('d-M') ?></td>
-  													<td class="text-center"><?php echo $especial->pax ?></td>
-  													<td class="text-center"><a href="tel:<?php echo $especial->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
-  													<td class="text-center"><?php echo $especial->room->name ?></td>
-  													<td class="text-center"><?php echo $especial->nigths ?></td>
-  													<td class="text-center"><?php echo $especial->total_price ?> €</td>
-  													<td class="text-center"><?php echo $especial->getStatus($especial->type_book) ?></td>
+  													<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $especial->customer->name ?></td>
+  													<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$especial->start)->format('d-M') ?></td>
+  													<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$especial->finish)->format('d-M') ?></td>
+  													<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $especial->pax ?></td>
+  													<td class="text-center sm-p-t-10 sm-p-b-10"><a href="tel:<?php echo $especial->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
+  													<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $especial->room->name ?></td>
+  													<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $especial->nigths ?></td>
+  													<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $especial->total_price ?> €</td>
+  													<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $especial->getStatus($especial->type_book) ?></td>
   												</tr>
   											<?php endforeach ?>
   										</tbody>
@@ -222,21 +223,21 @@
   										<tbody>
   											<?php foreach ($arrayBooks["pagadas"] as $pagada): ?>
   												<tr>
-  													<td class="text-center"><a href="{{url ('/admin/reservas/update')}}/<?php echo $pagada->id ?>"><?php echo $pagada->customer->name ?></a></td>
-  													<td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$pagada->start)->format('d-M') ?></td>
-  													<td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$pagada->finish)->format('d-M') ?></td>
-  													<td class="text-center"><?php echo $pagada->pax ?></td>
-  													<td class="text-center"><a href="tel:<?php echo $pagada->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
-  													<td class="text-center"><?php echo $pagada->room->name ?></td>
-  													<td class="text-center"><?php echo $pagada->nigths ?></td>
-  													<td class="text-center">
+  													<td class="text-center sm-p-t-10 sm-p-b-10"><a href="{{url ('/admin/reservas/update')}}/<?php echo $pagada->id ?>"><?php echo $pagada->customer->name ?></a></td>
+  													<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$pagada->start)->format('d-M') ?></td>
+  													<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$pagada->finish)->format('d-M') ?></td>
+  													<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $pagada->pax ?></td>
+  													<td class="text-center sm-p-t-10 sm-p-b-10"><a href="tel:<?php echo $pagada->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
+  													<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $pagada->room->name ?></td>
+  													<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $pagada->nigths ?></td>
+  													<td class="text-center sm-p-t-10 sm-p-b-10">
   														<?php echo $pagada->total_price ?> €<br>
   														<?php if (isset($payment[$book->id])): ?>
   															<?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
   														<?php else: ?>
   														<?php endif ?>
   													</td>
-  													<td class="text-center"><?php echo $pagada->getStatus($pagada->type_book) ?></td>
+  													<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $pagada->getStatus($pagada->type_book) ?></td>
   												</tr>
   											<?php endforeach ?>
   										</tbody>
@@ -276,16 +277,16 @@
   								<tbody>
   									<?php foreach ($proxIn as $book): ?>
   										<tr>
-  											<td class="text-center">
+  											<td class="text-center sm-p-t-10 sm-p-b-10">
   												<a class="cobro" data-id="<?php echo $book->id ?>" data-toggle="modal" data-target="#myModal">
   													<?php echo substr($book->customer->name,0,10) ?>
   												</a>
   											</td>
-  											<td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?></td>
-  											<td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
-  											<td class="text-center">Hora</td>
-  											<td class="text-center">Apto</td>
-  											<td class="text-center">
+  											<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?></td>
+  											<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
+  											<td class="text-center sm-p-t-10 sm-p-b-10">Hora</td>
+  											<td class="text-center sm-p-t-10 sm-p-b-10">Apto</td>
+  											<td class="text-center sm-p-t-10 sm-p-b-10">
   												<?php if (isset($payment[$book->id])): ?>
   													<p style="{{ $book->total_price - $payment[$book->id] > 0 ? 'color:red' : '' }}"><?php echo number_format($book->total_price - $payment[$book->id],2,',','.') ?> €</p>
   												<?php else: ?>
@@ -310,15 +311,15 @@
   								<tbody>
   									<?php foreach ($proxOut as $book): ?>
   										<tr>
-  											<td class="text-center">
+  											<td class="text-center sm-p-t-10 sm-p-b-10">
   												<a class="cobro" data-id="<?php echo $book->id ?>" data-toggle="modal" data-target="#myModal">
   													<?php echo substr($book->customer->name,0,10) ?>
   												</a>
   											</td>
-  											<td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?></td>
-  											<td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
+  											<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?></td>
+  											<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
 
-  											<td class="text-center">
+  											<td class="text-center sm-p-t-10 sm-p-b-10">
   												<?php if (isset($payment[$book->id])): ?>
   													<?php echo number_format($book->total_price - $payment[$book->id],2,',','.') ?> €
   												<?php else: ?>
@@ -381,19 +382,19 @@
       	    			                		<div style="padding: 0px 0px 0px 0px;">
   	    			                		        
     			                		            <div class="col-md-4">
-    			                		                <div class="input-daterange input-group" id="datepicker-range">
-
-    			                		                    <input id="start" type="text" class="input-sm form-control" name="start" data-date-format="dd-mm-yyyy" value="">
-    			                		                    <span class="input-group-addon">Hasta</span>
-    			                		                    <input id="finish" type="text" class="input-sm form-control" name="finish" data-date-format="dd-mm-yyyy" value="">
-    			                		                </div>
-    			                		            </div>
+                                              <label>Entrada</label>
+                                              <div class="input-prepend input-group">
+                                                <span class="add-on input-group-addon"><i
+                                                              class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                                                <input type="text" style="width: 100%" name="reservation" id="daterangepicker" class="form-control" value="" />
+                                              </div>
+                                          </div>
 
     			                		            <br>
 
     			                		            <div class="col-xs-3 " >
     			                		                <label class="sm-pull-left"><i class="fa fa-moon-o"></i></label>
-    			                		                <input type="text" class="nigths sm-pull-right" name="nigths" id="nigths" style="width: 60%" disabled style="border:none">
+    			                		                <input type="text" class="nigths sm-pull-right" name="nigths" id="nigths" style="width: 60%" style="border:none">
     			                		            </div> 
 
     			                		            <div class="col-xs-3 sm-padding-0">
@@ -450,12 +451,13 @@
 
     			                		            <div class="col-xs-5 col-xs-offset-1">                                                        
     			                		                <label>Cost Agencia</label>
-    			                		                <input type="text" class="agencia form-control pvpAgencia" name="agencia" >
+    			                		                <input type="text" class="agencia form-control pvpAgencia" name="agencia" value="0">
     			                		            </div>
 
     			                		            <div class="col-xs-5">
     			                		                <label>Agencia</label>
     			                		                <select class=" form-control full-width agency" data-init-plugin="select2" name="agency">
+                                                      <option value="0"></option>
     			                		                    <?php for ($i=1; $i <= 2 ; $i++): ?>
     			                		                        <option value="<?php echo $i ?>"><?php echo $book->getAgency($i) ?></option>
     			                		                    <?php endfor;?>
@@ -680,206 +682,165 @@
 
   <!-- END OVERLAY -->
   <!-- BEGIN VENDOR JS -->
-  <script src="/assets/plugins/pace/pace.min.js" type="text/javascript"></script>
-  <script src="/assets/plugins/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
-  <script src="/assets/plugins/modernizr.custom.js" type="text/javascript"></script>
-  <script src="/assets/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-  <script src="/assets/plugins/bootstrapv3/js/bootstrap.min.js" type="text/javascript"></script>
-  <script src="/assets/plugins/jquery/jquery-easy.js" type="text/javascript"></script>
-  <script src="/assets/plugins/jquery-unveil/jquery.unveil.min.js" type="text/javascript"></script>
-  <script src="/assets/plugins/jquery-bez/jquery.bez.min.js"></script>
-  <script src="/assets/plugins/jquery-ios-list/jquery.ioslist.min.js" type="text/javascript"></script>
-  <script src="/assets/plugins/jquery-actual/jquery.actual.min.js"></script>
-  <script src="/assets/plugins/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-  <script type="text/javascript" src="/assets/plugins/select2/js/select2.full.min.js"></script>
-  <script type="text/javascript" src="/assets/plugins/classie/classie.js"></script>
-  <script src="/assets/plugins/switchery/js/switchery.min.js" type="text/javascript"></script>
   <script src="/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
   <script src="/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
   <script src="/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
   <script src="/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
   <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
   <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
-  <!-- END VENDOR JS -->
-  <!-- BEGIN CORE TEMPLATE JS -->
-  <script src="/pages/js/pages.min.js"></script>
-  <!-- END CORE TEMPLATE JS -->
-  <!-- BEGIN PAGE LEVEL JS -->
-  <script src="/assets/js/tables.js" type="text/javascript"></script>
-  <script src="/assets/js/scripts.js" type="text/javascript"></script>
+
+  <script src="/assets/plugins/bootstrap3-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+  <script type="text/javascript" src="/assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
+  <script type="text/javascript" src="/assets/plugins/dropzone/dropzone.min.js"></script>
+  <script type="text/javascript" src="/assets/plugins/bootstrap-tag/bootstrap-tagsinput.min.js"></script>
+  <script type="text/javascript" src="/assets/plugins/jquery-inputmask/jquery.inputmask.min.js"></script>
+  <script src="/assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
+  <script src="/assets/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+  <script src="/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
+  <script src="/assets/plugins/summernote/js/summernote.min.js" type="text/javascript"></script>
+  <script src="/assets/plugins/moment/moment.min.js"></script>
+  <script src="/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+  <script src="/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
+  <script src="/assets/plugins/bootstrap-typehead/typeahead.bundle.min.js"></script>
+  <script src="/assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
+  <script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
   <!-- END PAGE LEVEL JS -->
 
-  <script>     
+  <script type="text/javascript">
 
-  	$(document).ready(function() {                    
+      $(document).ready(function() {          
 
-  		$(".cob").click(function(){
-  			$('#calendario').hide();
-  		});
+          $('.status,.room').change(function(event) {
+              var id = $(this).attr('data-id');
+              var clase = $(this).attr('class');
+              
+              if (clase == 'status form-control') {
+                  var status = $(this).val();
+                  var room = "";
+              }else if(clase == 'room'){
+                  var room = $(this).val();
+                  var status = "";
+              }
+              $.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
+                  window.location.reload();
+              });
+          });
 
-  		$(".resv").click(function(){
-  			$('#calendario').show();
-  		});
+          var start  = 0;
+          var finish = 0;
+          var noches = 0;
+          var price = 0;
+          var cost = 0;
 
-  		$('#date').change(function(event) {
+          $('.pax').click(function(event) {
+              var fechas = $('#daterangepicker').val();
+              var info = fechas.split('-');
+              var inicio = info[0];
+              var final = info[1];
+              console.log(inicio);
+              var start = new Date(inicio.substring(3,5) + '/' + inicio.substring(0,2) + '/' + inicio.substring(6,10));
+              var finish = new Date(final.substring(4,6)+ '/' +  final.substring(1,3)+ '/' + final.substring(7,11));
+              var timeDiff = Math.abs(finish.getTime() - start.getTime());
+              var noches = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+              $('.nigths').val(noches);
 
-  			var month = $(this).val();
-  			window.location = '/admin/reservas/'+month;
-  		});
-    // Mdoal
-    $('.cobro').click(function(event) {
-    	var id = $(this).attr('data-id');
-    	$.get('/admin/reservas/cobrar/'+id, function(data) {
-    		$('.modal-body').empty().append(data);
-    	});
-    });
-    // Modal
-    
-    $('.status,.room').change(function(event) {
-    	var id = $(this).attr('data-id');
-    	var clase = $(this).attr('class');
+          });
 
-    	if (clase == 'status form-control') {
-    		var status = $(this).val();
-    		var room = "";
-    	}else if(clase == 'room'){
-    		var room = $(this).val();
-    		var status = "";
-    	}
-    	$.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
-    		alert(data);
-    	});
-    });
+          $('#newroom, .pax, .parking, .agencia, .type_luxury').change(function(event){ 
 
-    var start  = 0;
-    var finish = 0;
-    var diferencia = 0;
-    var price = 0;
-    var cost = 0;
+              var room = $('#newroom').val();
+              var pax = $('.pax').val();
+              var park = $('.parking').val();
+              var lujo = $('.type_luxury').val();
+              var beneficio = 0;
+              var costPark = 0;
+              var pricePark = 0;
+              var costLujo = 0;
+              var priceLujo = 0;
+              var agencia = 0;
+              var beneficio_ = 0;
 
+              var fechas = $('#daterangepicker').val();
+              var info = fechas.split('-');
+              var inicio = info[0];
+              var final = info[1];
+              console.log(inicio);
+              var start = new Date(inicio.substring(3,5) + '/' + inicio.substring(0,2) + '/' + inicio.substring(6,10));
+              var finish = new Date(final.substring(4,6)+ '/' +  final.substring(1,3)+ '/' + final.substring(7,11));
+              var timeDiff = Math.abs(finish.getTime() - start.getTime());
+              var noches = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+              start = inicio.substring(3,5) + '/' + inicio.substring(0,2) + '/' + inicio.substring(6,10);
+              finish = final.substring(4,6)+ '/' +  final.substring(1,3)+ '/' + final.substring(7,11);
+             
 
-    $('#start').change(function(event) {
-    	start= $(this).val();
-    	var info = start.split('/');
-    	start = info[1] + '/' + info[0] + '/' + info[2];
-    	if (finish != 0) {
-    		diferencia = Math.floor((  Date.parse(finish)- Date.parse(start) ) / 86400000);
-    		$('.nigths').empty();
-    		$('.nigths').html(diferencia);
-    	}
-    });
+              $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
 
-    $('#finish').change(function(event) {
-    	finish= $(this).val();
-    	var info = finish.split('/');
-    	finish = info[1] + '/' + info[0] + '/' + info[2];           
-    	if (start != 0) {
-    		diferencia = Math.floor((  Date.parse(finish)- Date.parse(start) ) / 86400000);
-    		$('.nigths').empty();
-    		$('.nigths').val(diferencia);
-    	}
-    });
+                  if (pax < data) {
+                      $('.pax').attr('style' , 'background-color:red');
+                      $('.book_comments').empty();
+                      $('.book_comments').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
+                  }else{
+                      $('.book_comments').empty();
+                      $('.pax').removeAttr('style');
+                  }
+              });
 
-    $('#newroom, .pax, .parking, .pvpagencia, .type_luxury').change(function(event){ 
+              $.get('/admin/reservas/getPricePark', {park: park, noches: noches}).success(function( data ) {
+                  pricePark = data;
+                  $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
+                      priceLujo = data;
 
-        var room = $('#newroom').val();
-        var pax = $('.pax').val();
-        var park = $('.parking').val();
-        var lujo = $('.type_luxury').val();
-        var beneficio = 0;
-        var costPark = 0;
-        var pricePark = 0;
-        var costLujo = 0;
-        var priceLujo = 0;
-        var agencia = 0;
-        var beneficio_ = 0;
-        $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
-            console.log(data);
-            console.log(pax);
-            if (pax < data) {
-                $('.pax').attr('style' , 'background-color:red');
-                $('.book_comments').empty();
-                $('.book_comments').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
-            }else{
-                $('.book_comments').empty();
-                $('.pax').removeAttr('style');
-            }
-        });
+                      $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                          price = data;
+                          
+                          price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
+                          $('.total').empty();
+                          $('.total').val(price);
+                              $.get('/admin/reservas/getCostPark', {park: park, noches: noches}).success(function( data ) {
+                                  costPark = data;
+                                  $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
+                                      costLujo = data;
+                                      $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                                          cost = data;
+                                          agencia = $('.agencia').val();
+                                          if (agencia == "") {
+                                              agencia = 0;
+                                          }
+                                          cost = (parseFloat(cost) + parseFloat(costPark) + parseFloat(agencia) + parseFloat(costLujo));
+                                          $('.cost').empty();
+                                          $('.cost').val(cost);
+                                          beneficio = price - cost;
+                                          $('.beneficio').empty;
+                                          $('.beneficio').val(beneficio);
+                                          beneficio_ = (beneficio / price)*100
+                                          $('.beneficio-text').empty;
+                                          $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
 
-        $.get('/admin/reservas/getPricePark', {park: park, noches: diferencia}).success(function( data ) {
-            pricePark = data;
-            $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
-                priceLujo = data;
-                $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                    price = data;
-                    
-                    price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
-                    $('.total').empty();
-                    $('.total').val(price);
-                        $.get('/admin/reservas/getCostPark', {park: park, noches: diferencia}).success(function( data ) {
-                            costPark = data;
-                            $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
-                                costLujo = data;
-                                $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                                    cost = data;
-                                    agencia = $('.pvpagencia').val();
-                                    if (agencia == "") {
-                                        agencia = 0;
-                                    }
-                                    cost = (parseFloat(cost) + parseFloat(costPark) + parseFloat(agencia) + parseFloat(costLujo));
-                                    $('.cost').empty();
-                                    $('.cost').val(cost);
-                                    beneficio = price - cost;
-                                    $('.beneficio').empty;
-                                    $('.beneficio').val(beneficio);
-                                    beneficio_ = (beneficio / price)*100
-                                    $('.beneficio-text').empty;
-                                    $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
+                                      });
+                                  });
+                              });
+                      });
+                  });
+              });  
+          });
+          
+          $('.total').change(function(event) {
+              var price = $(this).val();
+              var cost = $('.cost').val();
+              var beneficio = (parseFloat(price) - parseFloat(cost));
+              console.log(beneficio);
+              $('.beneficio').empty;
+              $('.beneficio').val(beneficio);
+          });
 
-                                });
-                            });
-                        });
-                });
-            });
-        });  
-    });
-
-    $('.pvpAgencia').change(function(event) {
-      var price = $('.total').val();
-      var cost = $('.cost').val();
-      var pvp = $('.pvpAgencia').val();
-      var cost = (parseFloat(cost) + parseFloat(pvp));
-      var beneficio = (parseFloat(price) - parseFloat(cost) - parseFloat(pvp));
-      $('.cost').empty;
-      $('.cost').val(cost);
-      $('.beneficio').empty;
-      $('.beneficio').val(beneficio);
-    });
-
-    $('.extras').change(function(event) {
-      var extras = (this).val();
-      alert(extras);
-    });
-
-    $('.total').change(function(event) {
-    	var price = $(this).val();
-    	var cost = $('.cost').val();
-    	var beneficio = (parseFloat(price) - parseFloat(cost));
-    	$('.beneficio').empty;
-    	$('.beneficio').val(beneficio);
-    });
+          $('#fecha').change(function(event) {
+              
+              var year = $(this).val();
+              window.location = '/admin/reservas/'+year;
+          });
 
 
-    
-    $('.sendJaime').click(function(event) {
-    	var id = $(this).attr('data-id');
-    	$.get('/admin/reservas/sendJaime', {id: id}).success(function( data ) {
-    		alert(data);
-    	});
-    });
-});
-
-
-</script>
+      });
+  </script>
 
 @endsection

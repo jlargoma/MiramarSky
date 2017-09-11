@@ -29,7 +29,12 @@ class OwnedController extends Controller
         $park = 0;
         $lujo = 0;
 
-        $room = \App\Rooms::where('owned', Auth::user()->id)->first();
+        if (Auth::user()->id != 39 && Auth::user()->id != 1 && Auth::user()->id != 23) {
+            $room = \App\Rooms::where('owned', Auth::user()->id)->first();
+            
+        }else{
+            $room = \App\Rooms::where('owned', 39)->first();
+        }
 
         $reservas = \App\Book::whereIn('type_book',[2,7,8])->where('room_id',$room->id)->orderBy('start', 'ASC')->get();
 

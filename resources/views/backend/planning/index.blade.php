@@ -81,6 +81,9 @@
         .nav-tabs ~ .tab-content{
             padding: 0px;
         }
+        .paginate_button.active>a{
+            color: black!important;
+        }
     </style>
 
 @endsection
@@ -88,7 +91,7 @@
 @section('content')
 
     
-    <div class="container-fluid padding-10 sm-padding-10">
+    <div class="container-fluid  sm-padding-10 p-l-10 p-r-10 p-t-5">
         <div class="row bg-white">
             <div class="col-md-6">
                 <div class="col-md-4 col-xs-12">
@@ -317,7 +320,7 @@
                                                           <input type="text" style="width: 100%" name="reservation" id="daterangepicker" class="form-control" value="" />
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-2">
+                                                    <div class="col-md-1">
                                                         <label>Noches</label>
                                                         <input type="text" class="form-control nigths" name="nigths" value="" style="width: 100%">
                                                     </div> 
@@ -334,15 +337,22 @@
                                                             <?php endforeach ?>
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-2">
+                                                    <div class="col-md-1">
                                                         <label>Parking</label>
-                                                        <select class=" form-control parking"  name="parking">
+                                                        <select class=" form-control full-width parking"  name="parking">
                                                             <?php for ($i=1; $i <= 4 ; $i++): ?>
                                                                 <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
                                                             <?php endfor;?>
                                                         </select>
                                                     </div>
-                                                    
+                                                    <div class="col-md-2">
+                                                        <label>Sup. Lujo</label>
+                                                        <select class=" form-control full-width type_luxury" data-init-plugin="select2" name="type_luxury">
+                                                            <?php for ($i=1; $i <= 4 ; $i++): ?>
+                                                                <option value="<?php echo $i ?>"><?php echo $book->getSupLujo($i) ?></option>
+                                                            <?php endfor;?>
+                                                        </select>
+                                                    </div>                                                    
                                                 </div>
                                                 <div class="input-group col-md-12">
                                                     <div class="col-md-2">
@@ -371,14 +381,7 @@
                                                         <input type="text" class="agencia form-control" name="agencia" value="0">
                                                     </div>
                                                     
-                                                    <div class="col-md-2">
-                                                        <label>Sup. Lujo</label>
-                                                        <select class=" form-control full-width type_luxury" data-init-plugin="select2" name="type_luxury">
-                                                            <?php for ($i=1; $i <= 4 ; $i++): ?>
-                                                                <option value="<?php echo $i ?>"><?php echo $book->getSupLujo($i) ?></option>
-                                                            <?php endfor;?>
-                                                        </select>
-                                                    </div>
+                                                    
                                                 </div>
                                                 <br>
                                                 <div class="input-group col-md-12">
@@ -417,33 +420,28 @@
                                                 <tr class="text-white" style="background-color: #10CFBD">
                                                     <th style="padding-left: 5px">PVP</th>
                                                     <th style="padding-right: 5px;padding-left: 5px">
-                                                        <input type="text" class="form-control total m-t-10 m-b-10 " name="total" value="" style="width: 100%;background-color: #10CFBD;border:none">
+                                                        <input type="text" class="form-control total m-t-10 m-b-10 text-white" name="total" value="" style="width: 100%;background-color: #10CFBD;border:none;font-weight: bold">
                                                     </th>
                                                 </tr>
                                                 <tr class=" text-white m-t-5" style="background-color: #99D9EA">
                                                     <th style="padding-left: 5px">COSTE</th>
                                                     <th style="padding-right: 5px;padding-left: 5px">
-                                                        <input type="text" class="form-control cost m-t-10 m-b-10 " name="cost" value="" disabled style="width: 100%;color: black;background: #99D9EA;border:none">
+                                                        <input type="text" class="form-control cost m-t-10 m-b-10 text-white" name="cost" value="" disabled style="width: 100%;color: black;background: #99D9EA;border:none;font-weight: bold">
                                                     </th>
                                                 </tr>
                                                 <tr class="text-white m-t-5" style="background-color: #ff7f27">
                                                     <th style="padding-left: 5px">BENº</th>
                                                     <th style="padding-right: 5px;padding-left: 5px">
-                                                        <input type="text" class="form-control beneficio m-t-10 m-b-10 " name="beneficio" value="" disabled style="width: 100%;color: black;background: #ff7f27;border:none">
+                                                        <div class="col-md-7 p-r-0 p-l-0">
+                                                            <input type="text" class="form-control beneficio m-t-10 m-b-10 text-white" name="beneficio" value="" disabled style="width: 100%;color: black;background: #ff7f27;border:none;font-weight: bold">
+                                                        </div>
+                                                        <div class="col-md-2 m-t-5"><div class="m-t-10 m-l-10 beneficio-text">0%</div></div>
+                                                        
                                                     </th>
+                                                    
                                                 </tr>
                                             </tbody>
                                         </table>
-                                    </div>
-                                    <div class="col-md-12 m-t-5" >
-                                        
-                                        <!-- <div class="progress" style="min-height: 20px">
-                                            <div class="progress-bar " role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
-                                                70%
-                                            </div>
-                                        </div> -->
-                                        <div style="float: left"><input class="progress-circle beneficio%" data-pages-progress="circle" value="75" type="hidden" data-color="complete" style="width: 100px;height: 100px;"></div>
-                                        <div class="m-t-10 m-l-10 beneficio-text" style="position: absolute;">0%</div>
                                     </div>
                                 </div>
                             </div>
@@ -1059,7 +1057,7 @@
                         priceLujo = data;
 
                         $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                            price = data;
+                            price = data.toLocaleString();
                             
                             price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
                             $('.total').empty();
