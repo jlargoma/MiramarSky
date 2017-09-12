@@ -219,7 +219,7 @@
                                                                 <td class="text-center"><?php echo number_format($ventasOld["Ben"][4],2,',','.') ?></td>
                                                             </tr>
                                                             <tr>
-                                                                <th class="text-center bg-complete text-white">Comparativa Ventas</th>
+                                                                <th class="text-center bg-complete text-white">Comp. Ventas</th>
                                                                 <td class="text-center">
                                                                     <?php echo number_format($ventas["Ventas"][12]-$ventasOld["Ventas"][12],2,',','.');
                                                                         echo ($ventas["Ventas"][12]-$ventasOld["Ventas"][12] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
@@ -247,7 +247,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <th class="text-center bg-complete text-white">Comparativa Benº</th>
+                                                                <th class="text-center bg-complete text-white">Comp. Benº</th>
                                                                 <td class="text-center">
                                                                     <?php echo number_format($ventas["Ben"][12]-$ventasOld["Ben"][12],2,',','.');
                                                                         echo ($ventas["Ben"][12]-$ventasOld["Ben"][12] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
