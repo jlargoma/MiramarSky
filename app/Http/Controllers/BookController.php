@@ -247,24 +247,24 @@ class BookController extends Controller
                                 $book->book_comments = $request->input('book_comments');
                                 $book->type_book     = 3;
                                 $book->pax           = $request->input('pax');
-                                $book->nigths        = $request->input('nigths');
+                                $book->nigths        = $request->input('noches');
                                 $book->agency        = $request->input('agency');
-                                $book->PVPAgencia        = $request->input('agencia');
-
+                                $book->PVPAgencia    = $request->input('agencia');
+                                
                                 $room                = \App\Rooms::find($request->input('newroom'));
                                 $book->sup_limp      = ($room->typeApto == 1) ? 35 : 50;
-
-
-                                $book->sup_park      = $this->getPriceParkController($request->input('parking'), $request->input('nigths'));
+                                
+                                
+                                $book->sup_park      = $this->getPriceParkController($request->input('parking'), $request->input('noches'));
                                 $book->type_park     = $request->input('parking');
-
-
-                                $book->cost_park     = $this->getCostParkController($request->input('parking'),$request->input('nigths'));
+                                
+                                
+                                $book->cost_park     = $this->getCostParkController($request->input('parking'),$request->input('noches'));
                                 $book->type_luxury   = $request->input('type_luxury');
                                 $book->sup_lujo      = $this->getPriceLujo($request->input('type_luxury'));
                                 $book->cost_lujo     = $this->getCostLujo($request->input('type_luxury'));
                                 $book->cost_apto     = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
-                                $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->agency + $extraCost + $book->agency;
+                                $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
 
                                 $book->total_price   = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo + $extraPrice + $book->sup_limp;
 
@@ -430,7 +430,6 @@ class BookController extends Controller
     //Funcion para actualizar la reserva
         public function saveUpdate(Request $request, $id)
             {
-                echo "<pre>";
                 $fechas = $request->reservation;
                 $info = explode('-', $fechas);
                 $inicio = $info[0];
@@ -472,7 +471,7 @@ class BookController extends Controller
                 $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
 
                 if ($book->save()) {
-                    return redirect()->action('BookController@index');
+                    return redirect('admin/reservas/update/'.$id);
                 }
             }
 

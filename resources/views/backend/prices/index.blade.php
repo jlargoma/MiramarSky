@@ -14,15 +14,16 @@
 
 <style>
     .Alta{
-        background: red;
+        background: #f0513c;
     }
     .Media{
-        background-color: lightblue;
+        background-color: #127bbd;
     }
     .Baja{
-        background-color: #b5e61d;
+        background-color: #91b85d;
 
     }
+
 </style>
 
 

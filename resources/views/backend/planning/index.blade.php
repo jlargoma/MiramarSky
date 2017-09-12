@@ -86,6 +86,14 @@
         }
         .fa-arrow-down{color:red;}
         .fa-arrow-up{color:green;}
+
+        hr.reserva {border: 0; height: 4px; margin-top: 20px;background:black; text-align: center;}
+        hr.reserva:after {content:"Datos de la Reserva"; position: relative; top: -12px; display: inline-block; width: 160px; height: 24px; padding: 0;border: 2px solid black; border-radius: 24px; background: black; color: white; font-size: 12px; line-height: 24px; }
+
+        hr.cliente {border: 0; height: 4px; margin-top: 20px;background:black; text-align: center;}
+        hr.cliente:after {content:"Datos del Cliente"; position: relative; top: -12px; display: inline-block; width: 150px; height: 24px; padding: 0;border: 2px solid black; border-radius: 24px; background: black; color: white; font-size: 12px; line-height: 24px; }
+
+
     </style>
 
 @endsection
@@ -340,8 +348,8 @@
                                         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                         <!-- Seccion Cliente -->
                                         <div class="panel-heading">
-                                            <div class="panel-title">
-                                                Datos del cliente
+                                            <div class="panel-title col-md-12">
+                                                <hr class="cliente">
                                             </div>
                                         </div>
 
@@ -362,9 +370,9 @@
                                         </div>
 
                                         <!-- Seccion Reserva -->
-                                        <div class="panel-heading">
-                                            <div class="panel-title">
-                                                Crear reserva
+                                        <div class="panel-heading p-t-0">
+                                            <div class="panel-title col-md-12">
+                                                <hr class="reserva">
                                             </div>
                                         </div>
 
@@ -383,9 +391,10 @@
                                                     </div>
                                                     <div class="col-md-1">
                                                         <label>Noches</label>
-                                                        <input type="text" class="form-control nigths" name="nigths" value="" style="width: 100%">
+                                                        <input type="text" class="form-control nigths" name="noches" value="" style="width: 100%;display:none">
+                                                        <input type="text" class="form-control nigths" name="nigths" value="" disabled style="width: 100%">
                                                     </div> 
-                                                    <div class="col-md-2">
+                                                    <div class="col-md-1">
                                                         <label>Pax</label>
                                                         <input type="text" data-v-min="0" data-v-max="8" name="pax" class="autonumeric form-control full-width pax">
                                                             
@@ -398,9 +407,9 @@
                                                             <?php endforeach ?>
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-1">
+                                                    <div class="col-md-2">
                                                         <label>Parking</label>
-                                                        <select class=" form-control full-width parking"  name="parking">
+                                                        <select class=" form-control full-width parking"  data-init-plugin="select2" name="parking">
                                                             <?php for ($i=1; $i <= 4 ; $i++): ?>
                                                                 <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
                                                             <?php endfor;?>
@@ -415,7 +424,7 @@
                                                         </select>
                                                     </div>                                                    
                                                 </div>
-                                                <div class="input-group col-md-12">
+                                                <div class="input-group col-md-12 m-t-20">
                                                     <div class="col-md-2">
                                                         <label>Extras</label>
                                                         <select class="full-width select2-hidden-accessible" data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true">
@@ -481,20 +490,20 @@
                                                 <tr class="text-white" style="background-color: #0c685f">
                                                     <th style="padding-left: 5px">PVP</th>
                                                     <th style="padding-right: 5px;padding-left: 5px">
-                                                        <input type="text" class="form-control total m-t-10 m-b-10 text-white" name="total" value="" style="width: 100%;background-color: #0c685f;border:none;font-weight: bold">
+                                                        <input type="text" class="form-control total m-t-10 m-b-10 text-white" name="total" value="" style="width: 100%;background-color: #0c685f;border:none;font-weight: bold;font-size: 17px">
                                                     </th>
                                                 </tr>
                                                 <tr class=" text-white m-t-5" style="background-color: #99D9EA">
                                                     <th style="padding-left: 5px">COSTE</th>
                                                     <th style="padding-right: 5px;padding-left: 5px">
-                                                        <input type="text" class="form-control cost m-t-10 m-b-10 text-white" name="cost" value="" disabled style="width: 100%;color: black;background: #99D9EA;border:none;font-weight: bold">
+                                                        <input type="text" class="form-control cost m-t-10 m-b-10 text-white" name="cost" value="" disabled style="width: 100%;color: black;background: #99D9EA;border:none;font-weight: bold;font-size: 17px">
                                                     </th>
                                                 </tr>
                                                 <tr class="text-white m-t-5" style="background-color: #ff7f27">
                                                     <th style="padding-left: 5px">BENº</th>
                                                     <th style="padding-right: 5px;padding-left: 5px">
                                                         <div class="col-md-7 p-r-0 p-l-0">
-                                                            <input type="text" class="form-control beneficio m-t-10 m-b-10 text-white" name="beneficio" value="" disabled style="width: 100%;color: black;background: #ff7f27;border:none;font-weight: bold">
+                                                            <input type="text" class="form-control beneficio m-t-10 m-b-10 text-white" name="beneficio" value="" disabled style="width: 100%;color: black;background: #ff7f27;border:none;font-weight: bold;font-size: 17px">
                                                         </div>
                                                         <div class="col-md-2 m-t-5"><div class="m-t-10 m-l-10 beneficio-text">0%</div></div>
                                                         
@@ -748,13 +757,13 @@
                                             <th class ="text-center Pagada-la-señal text-white" style="width:5%">  Cliente     </th>
                                             <th class ="text-center Pagada-la-señal text-white" style="width:5%">  Telefono     </th>
                                             <th class ="text-center Pagada-la-señal text-white" style="width:2%">   Pax         </th>
-                                            <th class ="text-center Pagada-la-señal text-white" style="width:5%">   Apart       </th>
-                                            <th class ="text-center Pagada-la-señal text-white" style="width:20%!important">  IN     </th>
-                                            <th class ="text-center Pagada-la-señal text-white" style="width:20%!important">  OUT      </th>
+                                            <th class ="text-center Pagada-la-señal text-white" style="width:25%!important">   Apart&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;       </th>
+                                            <th class ="text-center Pagada-la-señal text-white" style="width:50px!important">  IN     </th>
+                                            <th class ="text-center Pagada-la-señal text-white" style="width:50px!important">  OUT      </th>
                                             <th class ="text-center Pagada-la-señal text-white" style="width:5%">   Noc         </th>
-                                            <th class ="text-center Pagada-la-señal text-white" style="width:35%!important">Precio&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </th>
-                                            <th class ="text-center Pagada-la-señal text-white" style="width:5%">   Estado      </th>
-                                            <th class ="text-center Pagada-la-señal text-white" style="width:5%">   Acciones    </th>
+                                            <th class ="text-center Pagada-la-señal text-white" style="width:35%!important">Precio&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                            <th class ="text-center Pagada-la-señal text-white" style="width:5%">   Estado&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      </th>
+                                            <!-- <th class ="text-center Pagada-la-señal text-white" style="width:5%">   Acciones    </th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -767,7 +776,7 @@
                                                     <td class ="text-center"><?php echo $book->customer->phone ?></td>
                                                     <td class ="text-center"><?php echo $book->pax ?></td>
                                                     <td class ="text-center">
-                                                        <select class="room" data-id="<?php echo $book->id ?>" >
+                                                        <select class=" form-control full-width room" data-init-plugin="select2" data-id="<?php echo $book->id ?>" >
                                                             
                                                             <?php foreach ($rooms as $room): ?>
                                                                 <?php if ($room->id == $book->room_id): ?>
@@ -795,7 +804,7 @@
                                                     </td>
                                                     <td class ="text-center"><?php echo $book->nigths ?></td>
                                                     <td class ="text-center">
-                                                        <div class="col-md-6">
+                                                        <div class="col-md-5 m-r-15">
                                                             <?php echo $book->total_price."€" ?><br>
                                                             <?php if (isset($payment[$book->id])): ?>
                                                                 <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
@@ -804,24 +813,24 @@
                                                         </div>
                                                         <?php if (isset($payment[$book->id])): ?>
                                                             <?php if ($payment[$book->id] == 0): ?>
-                                                                <div class="col-md-6 bg-primary m-t-10">
+                                                                <div class="col-md-5 bg-primary m-t-10 m-r-15">
                                                                 0%
                                                                 </div>
                                                             <?php else:?>
-                                                                <div class="col-md-6 bg-danger">
+                                                                <div class="col-md-5 bg-danger m-r-15">
                                                                     <p class="text-white m-t-10"><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></p>
                                                                 </div> 
                                                                                                                            
                                                             <?php endif; ?>
                                                         <?php else: ?>
-                                                            <div class="col-md-6 bg-primary">
+                                                            <div class="col-md-5 bg-success">
                                                                 0%
                                                                 </div>
                                                         <?php endif ?>
                                                                         
                                                     </td>
                                                     <td class ="text-center">
-                                                        <select class="status form-control" data-id="<?php echo $book->id ?>" >
+                                                        <select class=" form-control full-width status" data-init-plugin="select2" data-id="<?php echo $book->id ?>" >
                                                             <?php for ($i=1; $i < 9; $i++): ?> 
                                                                 <?php if ($i == $book->type_book): ?>
                                                                     <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
@@ -832,8 +841,8 @@
                                                             <?php endfor; ?>
                                                         </select>
                                                     </td>
-                                                    <td>
-                                                        <div class="btn-group col-md-6">
+                                                    <!-- <td> -->
+                                                        <!-- <div class="btn-group col-md-6"> -->
                                                             <!--  -->
                                                             <!-- <?php if ($book->customer['phone'] != 0): ?>
                                                                     <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->customer['phone'] ?>"><i class="pg-phone"></i>
@@ -845,7 +854,7 @@
                                                                 </a>
                                                             <?php else: ?>
                                                             <?php endif ?> -->
-                                                    </td>
+                                                    <!-- </td> -->
                                                 </tr>
                                         <?php endforeach ?>
                                     </tbody>

@@ -14,6 +14,14 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
 
+<style>
+    hr.cliente {border: 0; height: 4px; margin-top: 20px;background:black; text-align: center;}
+    hr.cliente:after {content:"Datos del Cliente"; position: relative; top: -12px; display: inline-block; width: 160px; height: 24px; padding: 0;border: 2px solid black; border-radius: 24px; background: black; color: white; font-size: 12px; line-height: 24px; }
+
+    hr.reserva {border: 0; height: 4px; margin-top: 20px;background:black; text-align: center;}
+    hr.reserva:after {content:"Datos de la Reserva"; position: relative; top: -12px; display: inline-block; width: 160px; height: 24px; padding: 0;border: 2px solid black; border-radius: 24px; background: black; color: white; font-size: 12px; line-height: 24px; }
+
+</style>
 @endsection
     
 @section('content')
@@ -27,6 +35,7 @@
                     $fecha = Carbon::createFromFormat('Y-m-d H:i:s' ,$book->created_at);
                     echo $fecha->format('d-m-Y'); 
                 ?>
+                .Creado por <?php echo "<b>".strtoupper($book->user->name)."</b>" ?>
             </h2>
         </div>
         <div class="col-md-7">
@@ -36,9 +45,9 @@
                     <form role="form"  action="{{ url('/admin/reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post" >
                             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                         <!-- Seccion Cliente -->
-                        <div class="panel-heading">
-                            <div class="panel-title">
-                                Cliente
+                        <div class="panel-heading col-md-12">
+                            <div class="panel-title col-md-12">
+                                <hr class="cliente">
                             </div>
                         </div>
                     
@@ -61,8 +70,8 @@
 
                         <!-- Seccion Reserva -->
                         <div class="panel-heading">
-                            <div class="panel-title">
-                                Reserva
+                            <div class="panel-title col-md-12">
+                                <hr class="reserva">
                             </div>
                         </div>
 
@@ -177,22 +186,22 @@
                             <tr class="text-white" style="background-color: #0c685f">
                                 <th style="padding-left: 5px">PVP</th>
                                 <th style="padding-right: 5px;padding-left: 5px">
-                                    <input type="text" class="form-control total m-t-10 m-b-10 text-white" name="total" value="<?php echo $book->total_price ?>" style="width: 100%;background-color: #0c685f;border:none;font-weight: bold">
+                                    <input type="text" class="form-control total m-t-10 m-b-10 text-white" name="total" value="<?php echo $book->total_price ?>" style="width: 100%;background-color: #0c685f;border:none;font-weight: bold;font-size:20px">
                                 </th>
                             </tr>
                             <tr class=" text-white m-t-5" style="background-color: #99D9EA">
                                 <th style="padding-left: 5px">COSTE</th>
                                 <th style="padding-right: 5px;padding-left: 5px">
-                                    <input type="text" class="form-control cost m-t-10 m-b-10 text-white" name="cost" value="<?php echo $book->cost_total ?>" style="width: 100%;color: black;background: #99D9EA;border:none;font-weight: bold">
+                                    <input type="text" class="form-control cost m-t-10 m-b-10 text-white" name="cost" value="<?php echo $book->cost_total ?>" style="width: 100%;color: black;background: #99D9EA;border:none;font-weight: bold;font-size:20px">
                                 </th>
                             </tr>
                             <tr class="text-white m-t-5" style="background-color: #ff7f27">
                                 <th style="padding-left: 5px">BENº</th>
                                 <th style="padding-right: 5px;padding-left: 5px">
                                     <div class="col-md-7 p-r-0 p-l-0">
-                                        <input type="text" class="form-control beneficio m-t-10 m-b-10 text-white" name="beneficio" value="<?php echo $book->total_ben ?>" style="width: 100%;color: black;background: #ff7f27;border:none;font-weight: bold">
+                                        <input type="text" class="form-control beneficio m-t-10 m-b-10 text-white" name="beneficio" value="<?php echo $book->total_ben ?>" style="width: 100%;color: black;background: #ff7f27;border:none;font-weight: bold;font-size:20px">
                                     </div>
-                                    <div class="col-md-2 m-t-5"><div class="m-t-10 m-l-10 beneficio-text">0%</div></div>
+                                    <div class="col-md-2 m-t-5"><div class="m-t-10 m-l-10 beneficio-text"><?php echo number_format($book->inc_percent,0)."%" ?></div></div>
                                     
                                 </th>
                                 
@@ -231,18 +240,18 @@
                                         
                                         <?php foreach ($payments as $payment): ?>
                                             <tr>
-                                                <td class ="text-center">
+                                                <td class ="text-center p-t-25">
                                                     <?php 
                                                         $fecha = new Carbon($payment->datePayment);
                                                         echo $fecha->format('d-m-Y') 
                                                     ?>
                                                 </td>
                                                 <td class ="text-center">
-                                                    <input class="editable payment-<?php echo $payment->id?>" type="text" name="cost" data-id="<?php echo $payment->id ?>" value="<?php echo $payment->import ?>" style="width: 50%;text-align: center;border-style: none none ">€
+                                                    <input class="editable payment-<?php echo $payment->id?> m-t-5" type="text" name="cost" data-id="<?php echo $payment->id ?>" value="<?php echo $payment->import ?>" style="width: 50%;text-align: center;border-style: none none ">€
                                                 </td>
-                                                <td class ="text-center"><?php echo $typecobro->getTypeCobro($payment->type) ?> </td>
+                                                <td class ="text-center p-t-25"><?php echo $typecobro->getTypeCobro($payment->type) ?> </td>
 
-                                                <td class ="text-center"><?php echo $payment->comment ?></td>
+                                                <td class ="text-center p-t-25"><?php echo $payment->comment ?></td>
                                                 <td>
                                                     <a href="{{ url('/admin/reservas/deleteCobro/')}}/<?php echo $payment->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Cobro" onclick="return confirm('¿Quieres Eliminar el obro?');">
                                                         <i class="fa fa-trash"></i>
@@ -258,7 +267,7 @@
                                                     </div>
                                                 </td>
                                                 <td class ="text-center">
-                                                    <input class="importe" type="text" name="importe"  style="width: 100%;text-align: center;border-style: none none ">
+                                                    <input class="importe m-t-5" type="text" name="importe"  style="width: 100%;text-align: center;border-style: none none ">
                                                 </td>
                                                 <td class="text-center">
                                                     <select class="full-width select2-hidden-accessible type_payment" data-init-plugin="select2" name="type_payment"  tabindex="-1" aria-hidden="true">
@@ -290,7 +299,7 @@
                                                 </div>
                                             </td>
                                             <td class ="text-center">
-                                                <input class="importe" type="text" name="importe"  style="width: 100%;text-align: center;border-style: none">
+                                                <input class="importe m-t-5" type="text" name="importe"  style="width: 100%;text-align: center;border-style: none">
                                             </td>
                                             <td class="text-center">
                                                 <select class="full-width select2-hidden-accessible type_payment" data-init-plugin="select2" name="type_payment"  tabindex="-1" aria-hidden="true">
@@ -301,7 +310,7 @@
                                                 </select>
                                             </td>
                                             <td class ="text-center"> 
-                                                <input class="comment" type="text" name="comment"  style="width: 100%;text-align: center;border-style: none">
+                                                <input class="comment m-t-5" type="text" name="comment"  style="width: 100%;text-align: center;border-style: none">
                                             </td>
                                             
                                         </tr>
@@ -309,10 +318,10 @@
                                     <tr>
                                         <td></td>
                                         <?php if ($total < $book->total_price): ?>
-                                            <td class="text-center" ><p style="color:red;font-weight: bold;"><?php echo $total-$book->total_price ?>€</p></td>
+                                            <td class="text-center" ><p style="color:red;font-weight: bold;font-size:15px"><?php echo $total-$book->total_price ?>€</p></td>
                                             <td class="text-center" colspan="2">Pendiente de pago</td>
                                         <?php elseif($total > $book->total_price): ?>
-                                            <td class="text-center" ><?php echo $total-$book->total_price ?>€</td>
+                                            <td class="text-center" ><p style="color:black;font-weight: bold;font-size:15px"><?php echo $total-$book->total_price ?>€</p></td>
                                             <td class="text-center" colspan="2">Sobrante</td>
                                         <?php else: ?>
                                             <td class="text-center" colspan="4">Al corriente de pago</td>

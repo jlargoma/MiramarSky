@@ -45,6 +45,11 @@ class Book extends Model
                 return $this->hasMany('\App\Payments', 'book_id', 'id');
             }
 
+        public function user()
+            {
+                return $this->hasOne('\App\User', 'id', 'user_id');
+            }
+
     //Para poner nombre al dia del calendario//
        static function getDayWeek($dayweek)
             {
@@ -72,7 +77,7 @@ class Book extends Model
     //Para poner nombre al parking de la reserva//
         static function getParking($parking)
             {
-                $array = [1 =>"Si", 2 =>"Gratis",3 =>"50 %",4 =>"No"];
+                $array = [1 =>"Si", 2 =>"No",3 =>"Gratis",4 =>"50 %"];
 
                 return $parking = $array[$parking];
             }
@@ -80,7 +85,7 @@ class Book extends Model
     // Para poner nombre al suplemento de lujo en la reserva
         static function getSupLujo($lujo)
             {
-                $array = [1 =>"No", 2 =>"Gratis",3 =>"50 %",4 =>"Si"];
+                $array = [1 =>"Si", 2 =>"No",3 =>"Gratis",4 =>"50 %"];
 
                 return  $supLujo = $array[$lujo];
             }

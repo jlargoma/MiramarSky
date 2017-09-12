@@ -7,14 +7,17 @@
 	}
 
 	.Alta{
-		background-color: red;
+		background-color: #f0513c;
+		color: white;
 	}
 	.Media{
-		background-color: orange;
+		background-color: #127bbd;
+		color: white;
 		
 	}
 	.Baja{
-		background-color: #b5e61d;
+		background-color: #91b85d;
+		color: white;
 		
 	}
 	.sub{

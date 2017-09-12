@@ -68,110 +68,109 @@
         </div>
         <div class="col-md-7">
             @include('backend.seasons.calendar')
-        </div>
-        
-    </div>
-    <div class="row">
+            <div class="row">
 
-        <div class="col-md-4">
-            <div class="sm-m-l-5 sm-m-r-5">
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingOne">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
-                                    Tipo de temporada
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-                                <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <div class="panel-title col-md-6">Agregar Tipo Temporada
+                <div class="col-md-4">
+                    <div class="sm-m-l-5 sm-m-r-5">
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                                            Tipo de temporada
+                                        </a>
+                                    </h4>
                                 </div>
-                                <div class="panel-title col-md-6">Temporada
-                                </div>
-                            </div>
-                            <div class="panel-body">
-                                <div class="col-md-6">
-                                    <form role="form"  action="{{ url('/admin/temporadas/create-type') }}" method="post">
-                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                        <div class="input-group transparent">
-                                            <span class="input-group-addon">
-                                                <i class="fa fa-user"></i>
-                                            </span>
-                                            <input type="text" class="form-control" name="name" placeholder="nombre" required="" aria-required="true" aria-invalid="false">
-                                        </div>
-                                            <br>
-                                        <div class="input-group">
-                                            <button class="btn btn-complete" type="submit">Guardar</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="col-md-6">
-                                <?php foreach ($newtypeSeasons as $newtypeSeason): ?>
-                                    <div>
-                                        <?php echo $newtypeSeason->name ?>
-                                    </div>
-                                <?php endforeach ?>
-                                </div>
-                            </div>
-                        </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="sm-m-l-5 sm-m-r-5">
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingTwo">
-                            <h4 class="panel-title">
-                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    Temporada
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-                                <div class="panel panel-default">
+                                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">
+                                    <div class="panel-body">
+                                        <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <div class="panel-title col-md-6">Agregar Temporada
+                                        <div class="panel-title col-md-6">Agregar Tipo Temporada
                                         </div>
                                         <div class="panel-title col-md-6">Temporada
                                         </div>
                                     </div>
-                                    <form role="form"  action="{{ url('/admin/temporadas/create') }}" method="post">
-                                        <div class="panel-body">
-                                            <div class="col-md-12">
+                                    <div class="panel-body">
+                                        <div class="col-md-6">
+                                            <form role="form"  action="{{ url('/admin/temporadas/create-type') }}" method="post">
                                                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                                 <div class="input-group transparent">
                                                     <span class="input-group-addon">
-                                                        <i class="pg-plus_circle"></i>
+                                                        <i class="fa fa-user"></i>
                                                     </span>
-                                                    <select class="full-width" data-init-plugin="select2" name="type">
-                                                        <?php foreach ($typeSeasons as $typeSeason): ?>
-                                                             <option value="<?php echo $typeSeason->id ?>"><?php echo $typeSeason->name ?></option>
-                                                        <?php endforeach ?>
-                                                    </select>
+                                                    <input type="text" class="form-control" name="name" placeholder="nombre" required="" aria-required="true" aria-invalid="false">
                                                 </div>
-                                                <br>
-                                                <div class="input-daterange input-group" id="datepicker-range">
-
-                                                    <input id="start" type="text" class="input-sm form-control" name="start" data-date-format="dd-mm-yyyy">
-                                                    <span class="input-group-addon">Hasta</span>
-                                                    <input id="finish" type="text" class="input-sm form-control" name="finish" data-date-format="dd-mm-yyyy">
-                                                </div>
-                                                <br>
+                                                    <br>
                                                 <div class="input-group">
                                                     <button class="btn btn-complete" type="submit">Guardar</button>
                                                 </div>
-                                            </div>
+                                            </form>
                                         </div>
-                                    </form>
+                                        <div class="col-md-6">
+                                        <?php foreach ($newtypeSeasons as $newtypeSeason): ?>
+                                            <div>
+                                                <?php echo $newtypeSeason->name ?>
+                                            </div>
+                                        <?php endforeach ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="sm-m-l-5 sm-m-r-5">
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingTwo">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            Temporada
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false" style="height: 0px;">
+                                    <div class="panel-body">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <div class="panel-title col-md-6">Agregar Temporada
+                                                </div>
+                                                <div class="panel-title col-md-6">Temporada
+                                                </div>
+                                            </div>
+                                            <form role="form"  action="{{ url('/admin/temporadas/create') }}" method="post">
+                                                <div class="panel-body">
+                                                    <div class="col-md-12">
+                                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                                        <div class="input-group transparent">
+                                                            <span class="input-group-addon">
+                                                                <i class="pg-plus_circle"></i>
+                                                            </span>
+                                                            <select class="full-width" data-init-plugin="select2" name="type">
+                                                                <?php foreach ($typeSeasons as $typeSeason): ?>
+                                                                     <option value="<?php echo $typeSeason->id ?>"><?php echo $typeSeason->name ?></option>
+                                                                <?php endforeach ?>
+                                                            </select>
+                                                        </div>
+                                                        <br>
+                                                        <div class="input-daterange input-group" id="datepicker-range">
+
+                                                            <input id="start" type="text" class="input-sm form-control" name="start" data-date-format="dd-mm-yyyy">
+                                                            <span class="input-group-addon">Hasta</span>
+                                                            <input id="finish" type="text" class="input-sm form-control" name="finish" data-date-format="dd-mm-yyyy">
+                                                        </div>
+                                                        <br>
+                                                        <div class="input-group">
+                                                            <button class="btn btn-complete" type="submit">Guardar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -179,7 +178,9 @@
                 </div>
             </div>
         </div>
+        
     </div>
+    
 </div>
 
 @endsection
