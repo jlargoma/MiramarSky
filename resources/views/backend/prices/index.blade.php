@@ -17,7 +17,7 @@
         background: red;
     }
     .Media{
-        background-color: orange;
+        background-color: lightblue;
     }
     .Baja{
         background-color: #b5e61d;
@@ -250,6 +250,7 @@
 </div>
 
 
+
 <div class="modal fade" id="modal-prices" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -272,6 +273,8 @@
 @endsection
 
 @section('scripts')
+    
+
 
     <script src="/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
     <script src="/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>

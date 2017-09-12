@@ -374,7 +374,6 @@
                 
                 console.log(minOcu);
                 $.get('/admin/apartamentos/update', {  id: id, luxury: luxury, maxOcu: maxOcu, minOcu: minOcu}, function(data) {
-                    alert(data)
                 });
             });
 
@@ -403,7 +402,6 @@
               var tipo = $(this).val();
 
               $.get('/admin/apartamentos/update-type', {  id: id, tipo: tipo}, function(data) {
-                  alert(data)
                   location.reload();
               });
 

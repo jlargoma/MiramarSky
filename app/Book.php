@@ -76,6 +76,7 @@ class Book extends Model
 
                 return $parking = $array[$parking];
             }
+    
     // Para poner nombre al suplemento de lujo en la reserva
         static function getSupLujo($lujo)
             {
@@ -83,6 +84,7 @@ class Book extends Model
 
                 return  $supLujo = $array[$lujo];
             }
+    
     //Para poner nombre a la agencia//
        static function getAgency($agency)
             {
@@ -229,6 +231,7 @@ class Book extends Model
                     }
                 return $supPark;
             }
+   
     //Funcion para el precio del Suplemento de Lujo
         static function getPriceLujo($lujo)
             {
@@ -249,6 +252,7 @@ class Book extends Model
                     }
                 return $supLujo;
             }
+    
     //Funcion para el precio del Suplemento de Lujo
         static function getCostLujo($lujo)
             {
@@ -269,6 +273,7 @@ class Book extends Model
                     }
                 return $supLujo;
             }
+    
     // Funcion para cambiar la reserva de habitacion o estado
         public function changeBook($status,$room,$book)
             {   
@@ -484,5 +489,40 @@ class Book extends Model
                 
             }
 
+    // Funcion para Sacar Ventas por temporada
+        public  function getVentas($year)
+            {
+                $ventas = [
+                            "Ventas" => [],
+                            "Ben"    => [],
+                            ];
 
+                $date = Carbon::CreateFromFormat('Y-m-d',$year);
+                $books = \App\Book::where('type_book',2)->where('start','>=', $date->copy()->format('Y-m-d'))->where('start','<=',$date->copy()->addYear()->format('Y-m-d'))->get();
+
+                foreach ($books as $book) {
+                    $mes = Carbon::createFromFormat('Y-m-d',$book->start);
+                    $posicion = $mes->format('n');
+                    if ($posicion == 9 || $posicion == 10 || $posicion == 11) {
+                        $posicion = 12;
+                    }else if( $posicion == 5 || $posicion == 6){
+                        $posicion = "04";
+                    }
+                    if (isset($ventas["Ventas"][$posicion])) {
+                        $ventas["Ventas"][$posicion] += $book->total_price;
+                        $ventas["Ben"][$posicion] += $book->total_ben;
+                    }else{
+                        $ventas["Ventas"][$posicion] = $book->total_price;
+                        $ventas["Ben"][$posicion] = $book->total_ben;
+                    }
+                    
+                }
+                if (isset($ventas["Ventas"][12])) {}else{$ventas["Ventas"][12] = "0";$ventas["Ben"][12] = "0";}
+                if (isset($ventas["Ventas"][01])) {}else{$ventas["Ventas"][01] = "0";$ventas["Ben"][01] = "0";}
+                if (isset($ventas["Ventas"][02])) {}else{$ventas["Ventas"][02] = "0";$ventas["Ben"][02] = "0";}
+                if (isset($ventas["Ventas"][03])) {}else{$ventas["Ventas"][03] = "0";$ventas["Ben"][03] = "0";}
+                if (isset($ventas["Ventas"][04])) {}else{$ventas["Ventas"][04] = "0";$ventas["Ben"][04] = "0";}
+
+                return $ventas;
+            }
 }

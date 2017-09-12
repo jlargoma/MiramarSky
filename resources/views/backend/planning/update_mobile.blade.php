@@ -181,18 +181,18 @@
             <div class="panel">
                 <div>
                     <div class="panel-heading ">
-                        <div class="col-xs-4 bg-primary text-white text-center">
+                        <div class="col-xs-4 bg-success text-white text-center">
                             Total:<br>
-                            <?php echo $book->total_price ?>
+                            <?php echo number_format($book->total_price,2,',','.') ?>
                         </div>
-                        <div class="col-xs-4 bg-primary text-white text-center">
+                        <div class="col-xs-4 bg-success text-white text-center">
                             Cobrado:<br>
-                            <?php echo $book->total_price ?>
+                            <?php echo number_format($totalpayment,2,',','.') ?>
                         </div>
-                        <div class="col-xs-4 bg-primary text-white text-center">
+                        <div class="col-xs-4 bg-success text-white text-center">
                             Pendiente:<br>
                             <!-- si esta pendiente nada,.si esta de mas +X -->
-                            -<?php echo $book->total_price ?>
+                            <?php echo ($book->total_price-$totalpayment) >= 0 ? "-" : "+";echo number_format($book->total_price-$totalpayment,2,',','.') ?>
                         </div>
                     </div>
                     <div class="panel-body">
@@ -290,7 +290,7 @@
                                 </tbody>
                             </table>
                             <div class="col-xs-12 text-center">
-                                <input type="button" name="cobrar" class="cobrar form-control  btn btn-primary active" value="Cobrar" data-id="<?php echo $book->id ?>">
+                                <input type="button" name="cobrar" class="cobrar form-control  btn btn-success active" value="Cobrar" data-id="<?php echo $book->id ?>">
                             </div>
                             
                         </div>
@@ -308,6 +308,23 @@
     
     <script type="text/javascript">
         $(document).ready(function() {          
+
+            $('.status,.room').change(function(event) {
+                var id = $(this).attr('data-id');
+                var clase = $(this).attr('class');
+                
+                if (clase == 'status form-control') {
+                    var status = $(this).val();
+                    var room = "";
+                }else if(clase == 'room'){
+                    var room = $(this).val();
+                    var status = "";
+                }
+                $.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
+                    window.location.reload();
+                });
+            });
+
 
             var start  = 0;
             var finish = 0;

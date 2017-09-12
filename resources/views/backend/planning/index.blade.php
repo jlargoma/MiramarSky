@@ -84,38 +84,79 @@
         .paginate_button.active>a{
             color: black!important;
         }
+        .fa-arrow-down{color:red;}
+        .fa-arrow-up{color:green;}
     </style>
 
 @endsection
     
 @section('content')
 
-    
     <div class="container-fluid  sm-padding-10 p-l-10 p-r-10 p-t-5">
         <div class="row bg-white">
-            <div class="col-md-6">
-                <div class="col-md-4 col-xs-12">
+            <div class="col-md-2">
+                <div class="col-md-12 col-xs-12">
                     <canvas id="barChart" style="width: 100%; height: 250px;"></canvas>
                 </div>
-                <div class="col-md-6 col-xs-12">
-                    <canvas id="mixchart" style="width: 100%; height: 250px;"></canvas>
+            </div>
+            <div class="col-md-2 m-t-50">
+                <div class="col-md-12">
+                    <table>
+                        <thead>
+                            <th colspan="2">
+                                Ingresos de la temporada  <?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?>                            
+                            </th>
+                        </thead>
+                        <tr>
+                            <td>Ventas Temporada</td>
+                            <td>
+                                <?php echo number_format($arrayTotales[$inicio->copy()->format('Y')],2,',','.') ?> €                            
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Pend Cobro</td>
+                            <td><?php echo number_format($arrayTotales[$inicio->copy()->format('Y')]-$paymentSeason["total"],2,',','.')?></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-12 m-t-20">
+                    <table>
+                        <thead>
+                            <th colspan="2">
+                                Cobros de la temporada <?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?>
+                            </th>
+                        </thead>
+                        <tr>
+                            <td>Cash</td>
+                            <td><?php echo number_format($paymentSeason["cash"],2,',','.')?>€</td>
+                        </tr>
+                        <tr>
+                            <td>Banco</td>
+                            <td><?php echo number_format($paymentSeason["banco"],2,',','.')?>€</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3 m-t-20">
+                <div class="col-xs-12 not-padding push-20">
+                    <?php if ($paymentSeason["total"] == 0): ?>
+                        <h3>No hay pagos</h3>
+                    <?php else: ?>
+                    <div id="piechart" ></div>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="col-md-5">
                 <div class="row">
-                    <div class="col-md-5 m-b-10">
-                        <div class="widget-8 panel no-border bg-success no-margin widget-loader-bar">
+                    <div class="col-md-12 m-b-10">
+                        <div class="widget-8 panel no-border bg-success no-margin widget-loader-bar" style="min-height: 300px;">
                             <div class="container-xs-height full-height">
                                 <div class="row-xs-height">
                                     <div class="col-xs-height col-top">
                                         <div class="panel-heading top-left top-right">
                                             <div class="panel-title text-black hint-text">
-                                                <span class="font-montserrat fs-11 all-caps">Ingresos de la temporada 
-                                                    <?php if ($date->copy()->format('n') >= 9): ?>
-                                                        <?php echo $date->copy()->format('Y') ?>-<?php echo $date->copy()->addYear()->format('Y') ?>
-                                                    <?php else: ?>
-                                                        <?php echo $date->copy()->subYear()->format('Y') ?>-<?php echo $date->copy()->format('Y') ?>
-                                                    <?php endif ?>
+                                                <span class="font-montserrat fs-11 all-caps">Ingresos de la temporada
+                                                    <?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?>
                                                 </span>
                                             </div>                                    
                                         </div>
@@ -124,101 +165,121 @@
                                 <div class="row-xs-height ">
                                     <div class="col-xs-height col-top relative">
                                         <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="p-l-20">
-                                                    <h3 class="no-margin p-b-5 text-white">
-                                                        <?php if ($date->copy()->format('n') >= 9): ?>
-                                                            <?php echo number_format($arrayTotales[$date->copy()->format('Y')],2,',','.') ?> €
-                                                        <?php else: ?>
-                                                            <?php echo number_format($arrayTotales[$date->copy()->subYear()->format('Y')],2,',','.') ?> €
-                                                        <?php endif ?>                                            
-                                                    </h3>
-                                                    <p class="small hint-text m-t-5">
-                                                        <span class="label  font-montserrat m-r-5">60%</span>Higher
-                                                    </p>
+                                            <div class="col-sm-12">
+                                                <div class="p-l-20 p-r-20">
+                                                    <table class="table table-hover demo-table-search table-responsive " >
+                                                        <thead>
+                                                            <th class="text-center bg-complete text-white">&nbsp;</th>
+                                                            <th class="text-center bg-complete text-white">Nov/Dic</th>
+                                                            <th class="text-center bg-complete text-white">Ene</th>
+                                                            <th class="text-center bg-complete text-white">Feb</th>
+                                                            <th class="text-center bg-complete text-white">Mar</th>
+                                                            <th class="text-center bg-complete text-white">Abr/May</th>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="text-center">Ventas</td>
+                                                                <td class="text-center"><?php echo number_format($ventas["Ventas"][12],2,',','.')?></td>
+                                                                <td class="text-center"><?php echo number_format($ventas["Ventas"][1],2,',','.')?></td>
+                                                                <td class="text-center"><?php echo number_format($ventas["Ventas"][2],2,',','.')?></td>
+                                                                <td class="text-center"><?php echo number_format($ventas["Ventas"][3],2,',','.')?></td>
+                                                                <td class="text-center"><?php echo number_format($ventas["Ventas"][4],2,',','.')?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center">Benº</td>
+                                                                <td class="text-center"><?php echo number_format($ventas["Ben"][12],2,',','.')?></td>
+                                                                <td class="text-center"><?php echo number_format($ventas["Ben"][1],2,',','.')?></td>
+                                                                <td class="text-center"><?php echo number_format($ventas["Ben"][2],2,',','.')?></td>
+                                                                <td class="text-center"><?php echo number_format($ventas["Ben"][3],2,',','.')?></td>
+                                                                <td class="text-center"><?php echo number_format($ventas["Ben"][4],2,',','.')?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="text-center bg-complete text-white">
+                                                                    <?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?> </th>
+                                                                    <th class="text-center bg-complete text-white">Nov/Dic</th>
+                                                                    <th class="text-center bg-complete text-white">Ene</th>
+                                                                    <th class="text-center bg-complete text-white">Feb</th>
+                                                                    <th class="text-center bg-complete text-white">Mar</th>
+                                                                    <th class="text-center bg-complete text-white">Abr/May</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center">Ventas</td>
+                                                                <td class="text-center"><?php echo number_format($ventasOld["Ventas"][12],2,',','.') ?></td>
+                                                                <td class="text-center"><?php echo number_format($ventasOld["Ventas"][1],2,',','.') ?></td>
+                                                                <td class="text-center"><?php echo number_format($ventasOld["Ventas"][2],2,',','.') ?></td>
+                                                                <td class="text-center"><?php echo number_format($ventasOld["Ventas"][3],2,',','.') ?></td>
+                                                                <td class="text-center"><?php echo number_format($ventasOld["Ventas"][4],2,',','.') ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center">Benº</td>
+                                                                <td class="text-center"><?php echo number_format($ventasOld["Ben"][12],2,',','.') ?></td>
+                                                                <td class="text-center"><?php echo number_format($ventasOld["Ben"][1],2,',','.') ?></td>
+                                                                <td class="text-center"><?php echo number_format($ventasOld["Ben"][2],2,',','.') ?></td>
+                                                                <td class="text-center"><?php echo number_format($ventasOld["Ben"][3],2,',','.') ?></td>
+                                                                <td class="text-center"><?php echo number_format($ventasOld["Ben"][4],2,',','.') ?></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="text-center bg-complete text-white">Comparativa Ventas</th>
+                                                                <td class="text-center">
+                                                                    <?php echo number_format($ventas["Ventas"][12]-$ventasOld["Ventas"][12],2,',','.');
+                                                                        echo ($ventas["Ventas"][12]-$ventasOld["Ventas"][12] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                                         ?>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <?php echo number_format($ventas["Ventas"][1]-$ventasOld["Ventas"][1],2,',','.');
+                                                                        echo ($ventas["Ventas"][1]-$ventasOld["Ventas"][1] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                                         ?>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <?php echo number_format($ventas["Ventas"][2]-$ventasOld["Ventas"][2],2,',','.');
+                                                                        echo ($ventas["Ventas"][2]-$ventasOld["Ventas"][2] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                                         ?>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <?php echo number_format($ventas["Ventas"][3]-$ventasOld["Ventas"][3],2,',','.');
+                                                                        echo ($ventas["Ventas"][3]-$ventasOld["Ventas"][3] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                                         ?>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <?php echo number_format($ventas["Ventas"][4]-$ventasOld["Ventas"][4],2,',','.');
+                                                                        echo ($ventas["Ventas"][4]-$ventasOld["Ventas"][4] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                                         ?>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="text-center bg-complete text-white">Comparativa Benº</th>
+                                                                <td class="text-center">
+                                                                    <?php echo number_format($ventas["Ben"][12]-$ventasOld["Ben"][12],2,',','.');
+                                                                        echo ($ventas["Ben"][12]-$ventasOld["Ben"][12] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                                         ?>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <?php echo number_format($ventas["Ben"][1]-$ventasOld["Ben"][1],2,',','.');
+                                                                        echo ($ventas["Ben"][1]-$ventasOld["Ben"][1] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                                         ?>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <?php echo number_format($ventas["Ben"][2]-$ventasOld["Ben"][2],2,',','.');
+                                                                        echo ($ventas["Ben"][2]-$ventasOld["Ben"][2] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                                         ?>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <?php echo number_format($ventas["Ben"][3]-$ventasOld["Ben"][3],2,',','.');
+                                                                        echo ($ventas["Ben"][3]-$ventasOld["Ben"][3] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                                         ?>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <?php echo number_format($ventas["Ben"][4]-$ventasOld["Ben"][4],2,',','.');
+                                                                        echo ($ventas["Ben"][4]-$ventasOld["Ben"][4] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                                         ?>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6">
-                                            </div>
                                         </div>
 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-5 m-b-10">
-                        <div class="widget-9 panel no-border bg-primary no-margin widget-loader-bar">
-                            <div class="container-xs-height full-height">
-                                <div class="row-xs-height">
-                                    <div class="col-xs-height col-top">
-                                        <div class="panel-heading  top-left top-right">
-                                            <div class="panel-title text-black">
-                                                <span class="font-montserrat fs-11 all-caps">Comparativa de la temporada 
-                                                    <?php if ($date->copy()->format('n') >= 9): ?>
-                                                        <?php echo $date->copy()->subYear()->format('Y') ?>-<?php echo $date->copy()->format('Y') ?>
-                                                    <?php else: ?>
-                                                        <?php echo $date->copy()->subYear(2)->format('Y') ?>-<?php echo $date->copy()->subYear()->format('Y') ?>
-                                                    <?php endif ?>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-xs-height">
-                                    <div class="col-xs-height col-top">
-                                        <div class="p-l-20 p-t-15">
-                                            <h3 class="no-margin p-b-5 text-white">                                                
-                                                    <?php if ($date->copy()->format('n') >= 9): ?>
-                                                        <?php if (isset($arrayTotales[$date->copy()->subYear()->format('Y')])): ?>
-                                                            <?php echo number_format($arrayTotales[$date->copy()->subYear()->format('Y')],2,',','.') ?> €
-                                                        <?php else: ?>
-                                                            No Hay reservas este año
-                                                        <?php endif ?>
-                                                    <?php else: ?>
-                                                        <?php if (isset($arrayTotales[$date->copy()->subYear(2)->format('Y')])): ?>
-                                                            <?php echo number_format($arrayTotales[$date->copy()->subYear(2)->format('Y')],2,',','.') ?> €
-                                                        <?php else: ?>
-                                                            No Hay reservas este año
-                                                        <?php endif ?>
-                                                    <?php endif ?> 
-                                                
-                                            </h3>
-                                            <span class="small hint-text">
-                                                <?php $totalcomparativa = 0; ?>
-                                                <?php if ($date->copy()->format('n') >= 9): ?>
-                                                    <?php if (isset($arrayTotales[$date->copy()->format('Y')]) && isset($arrayTotales[$date->copy()->subYear()->format('Y')]) ) : ?>
-                                                        <?php $totalcomparativa = number_format(($arrayTotales[$date->copy()->format('Y')]-$arrayTotales[$date->copy()->subYear()->format('Y')])/$arrayTotales[$date->copy()->subYear()->format('Y')] *100,2) ?>
-                                                        <?php echo $totalcomparativa ?>% 
-                                                        <?php if ($totalcomparativa > 100): ?>
-                                                            <i class="fa fa-arrow-up text-success fa-2x"></i>
-                                                        <?php else: ?>
-                                                            <i class="fa fa-arrow-down text-danger fa-2x"></i>
-                                                        <?php endif ?>   
-                                                    <?php else: ?>
-                                                        No Hay reservas este año
-                                                    <?php endif ?>
-                                                <?php elseif (isset($arrayTotales[$date->copy()->subYear()->format('Y')]) && isset($arrayTotales[$date->copy()->subYear(2)->format('Y')]) ) : ?>
-                                                    <?php $totalcomparativa = number_format(($arrayTotales[$date->copy()->subYear()->format('Y')]-$arrayTotales[$date->copy()->subYear(2)->format('Y')])/$arrayTotales[$date->copy()->subYear(2)->format('Y')] *100,2) ?>
-                                                    <?php echo $totalcomparativa ?>% 
-                                                    <?php if ($totalcomparativa > 100): ?>
-                                                        <i class="fa fa-arrow-up text-success fa-2x"></i>
-                                                    <?php else: ?>
-                                                        <i class="fa fa-arrow-down text-danger fa-2x"></i>
-                                                    <?php endif ?>   
-                                                <?php endif ?>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-xs-height">
-                                    <div class="col-xs-height col-bottom">
-                                        <div class="progress progress-small m-b-20">
-
-                                        <div class="progress-bar progress-bar-white" style="width:<?php echo $totalcomparativa ?>%"></div>
-
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -326,7 +387,7 @@
                                                     </div> 
                                                     <div class="col-md-2">
                                                         <label>Pax</label>
-                                                        <input type="text" data-v-min="0" data-v-max="8" class="autonumeric form-control full-width pax">
+                                                        <input type="text" data-v-min="0" data-v-max="8" name="pax" class="autonumeric form-control full-width pax">
                                                             
                                                     </div>
                                                     <div class="col-md-2">
@@ -417,10 +478,10 @@
                                         <table>
 
                                             <tbody>
-                                                <tr class="text-white" style="background-color: #10CFBD">
+                                                <tr class="text-white" style="background-color: #0c685f">
                                                     <th style="padding-left: 5px">PVP</th>
                                                     <th style="padding-right: 5px;padding-left: 5px">
-                                                        <input type="text" class="form-control total m-t-10 m-b-10 text-white" name="total" value="" style="width: 100%;background-color: #10CFBD;border:none;font-weight: bold">
+                                                        <input type="text" class="form-control total m-t-10 m-b-10 text-white" name="total" value="" style="width: 100%;background-color: #0c685f;border:none;font-weight: bold">
                                                     </th>
                                                 </tr>
                                                 <tr class=" text-white m-t-5" style="background-color: #99D9EA">
@@ -947,7 +1008,8 @@
 @endsection
 
 @section('scripts')
-
+    
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
    <script src="/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
    <script src="/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
    <script src="/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
@@ -1159,32 +1221,14 @@
                         {
                             label: "Ingresos por Año",
                             backgroundColor: [
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
+                                <?php foreach ($arrayTotales as $key => $value): ?>
+                                    'rgba(54, 162, 235, 0.2)',
+                                <?php endforeach ?>
                             ],
                             borderColor: [
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(54, 162, 235, 1)',
-                                'rgba(54, 162, 235, 1)',
+                                <?php foreach ($arrayTotales as $key => $value): ?>
+                                    'rgba(54, 162, 235, 1)',
+                                <?php endforeach ?>
                             ],
                             borderWidth: 1,
                             data: [
@@ -1200,6 +1244,27 @@
                     type: 'line',
                     data: data,
                 });
+
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(drawChart);
+
+                    function drawChart() {
+
+                      var data = google.visualization.arrayToDataTable([
+                        ['Tipo', 'Cantidad'],
+                        ['Cash',     <?php echo $paymentSeason["cash"] ?>],
+                        ['Banco',    <?php echo $paymentSeason["banco"] ?>]
+                      ]);
+
+                      var options = {
+                        title: 'Metodos de pago '
+                      };
+
+                      var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+                      chart.draw(data, options);
+                    }
+
 
 
         });

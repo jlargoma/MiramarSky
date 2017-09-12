@@ -88,7 +88,7 @@
   	/* Bordes de seccion */          
   	.active.resv > a,.active.cob > a{color: blue!important;font-weight: bold }
     
-
+    .fechas > li.active{background-color: red;}
   	/* Bordes de seccion */
   </style>
 
@@ -164,7 +164,18 @@
   												<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $nueva->room->name ?></td>
   												<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $nueva->nigths ?></td>
   												<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $nueva->total_price ?> €</td>
-  												<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $nueva->getStatus($nueva->type_book) ?></td>
+  												<td class="text-center sm-p-t-10 sm-p-b-10 sm-p-l-10 sm-p-r-10">
+                            <select class="status form-control" data-id="<?php echo $book->id ?>" >
+                              <?php for ($i=1; $i < 9; $i++): ?> 
+                                  <?php if ($i == $book->type_book): ?>
+                                      <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
+                                  <?php else: ?>
+                                      <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
+                                  <?php endif ?>                                          
+                                   
+                              <?php endfor; ?>
+                            </select>
+                          </td>
   											</tr>
   										<?php endforeach ?>
   									</tbody>
@@ -197,7 +208,18 @@
   													<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $especial->room->name ?></td>
   													<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $especial->nigths ?></td>
   													<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $especial->total_price ?> €</td>
-  													<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $especial->getStatus($especial->type_book) ?></td>
+		                        <td class="text-center sm-p-t-10 sm-p-b-10 sm-p-l-10 sm-p-r-10">
+                              <select class="status form-control" data-id="<?php echo $book->id ?>" >
+                                <?php for ($i=1; $i < 9; $i++): ?> 
+                                    <?php if ($i == $book->type_book): ?>
+                                        <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
+                                    <?php else: ?>
+                                        <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
+                                    <?php endif ?>                                          
+                                     
+                                <?php endfor; ?>
+                              </select>
+                            </td>
   												</tr>
   											<?php endforeach ?>
   										</tbody>
@@ -237,7 +259,18 @@
   														<?php else: ?>
   														<?php endif ?>
   													</td>
-  													<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $pagada->getStatus($pagada->type_book) ?></td>
+		                        <td class="text-center sm-p-t-10 sm-p-b-10 sm-p-l-10 sm-p-r-10">
+                              <select class="status form-control" data-id="<?php echo $book->id ?>" >
+                                <?php for ($i=1; $i < 9; $i++): ?> 
+                                    <?php if ($i == $book->type_book): ?>
+                                        <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
+                                    <?php else: ?>
+                                        <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
+                                    <?php endif ?>                                          
+                                     
+                                <?php endfor; ?>
+                              </select>
+                            </td>
   												</tr>
   											<?php endforeach ?>
   										</tbody>
@@ -478,21 +511,22 @@
     			                		                <input type="text" class="pvp-exctra form-control" name="pvp-extra" disabled>
     			                		            </div>
 
-    			                		            <div class="col-xs-4">
-    			                		                <label>Total</label>
-    			                		                <input type="text" class="form-control total" name="total" value="<?php echo $book->total_price ?>" style="width: 100%">
+    			                		            <div class="col-xs-4 m-t-10 p-b-10 text-white" style="background-color: #0c685f">
+    			                		                <label>PVP</label>
+    			                		                <input type="text" class="form-control total text-white" name="total" value="" style="font-weight: bold;width: 100%;border:none;background: #0c685f">
     			                		            </div> 
 
-    			                		            <div class="col-xs-4">
-    			                		                <label>Coste</label>
-    			                		                <input type="text" class="form-control cost" name="cost" value="<?php echo $book->cost_total ?>" disabled style="width: 100%">
+    			                		            <div class="col-xs-4 m-t-10 p-b-10 text-white" style="background-color: #99D9EA">
+    			                		                <label>COSTE</label>
+    			                		                <input type="text" class="form-control cost text-white" name="cost" value="" disabled style="font-weight: bold;width: 100%;border:none;background: #99D9EA">
     			                		            </div>
 
-    			                		            <div class="col-xs-4">
-    			                		                <label>Beneficio</label>
-    			                		                <input type="text" class="form-control beneficio" name="beneficio" value="<?php echo $book->total_ben ?>" disabled style="width: 100%">
+    			                		            <div class="col-xs-4 m-t-10 p-b-10 text-white" style="background-color: #ff7f27">
+    			                		                <label>BENº</label>
+    			                		                <input type="text" class="form-control beneficio text-white" name="beneficio" value="" disabled style="font-weight: bold;width: 100%;border:none;background: #ff7f27">
     			                		            </div>
-  	    			                		            </div>
+                                          
+  	    			                		    </div>
   	    			                		        <br><br>
   	    			                		        <div class="input-group col-md-12">
 
@@ -536,7 +570,7 @@
     		<div id="calendario" style="border-top: 5px solid black">
     			<div class="container">
     				<div class="panel">
-    					<ul class="nav nav-tabs nav-tabs-simple bg-info-light" role="tablist" data-init-reponsive-tabs="collapse">
+    					<ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
     						<?php $dateAux = $inicio->copy(); ?>
     						<?php for ($i=1; $i <= 5 ; $i++) :?>
     							<li <?php if($i == 1 ){ echo "class='active'";} ?> style="width:20%!important">
@@ -726,6 +760,15 @@
               });
           });
 
+          // Mdoal
+          $('.cobro').click(function(event) {
+            var id = $(this).attr('data-id');
+            $.get('/admin/reservas/cobrar/'+id, function(data) {
+              $('.modal-body').empty().append(data);
+            });
+          });
+          // Modal
+          // 
           var start  = 0;
           var finish = 0;
           var noches = 0;

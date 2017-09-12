@@ -1,3 +1,5 @@
+
+
 <?php setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); use \Carbon\Carbon;?>
 <div>
 	<div class="col-xs-12">
@@ -129,9 +131,10 @@
 				</div>
 				<div style="clear: both;"></div>
 				<div class="text-center">
-					<input type="submit" class="btn btn-success  m-t-10" value="Fianza">
+					<input type="submit" class="btn btn-primary  m-t-10" value="Fianza">
 				</div>
 			</form>
 		</div>
 	</div>
 </div>
+

@@ -86,16 +86,30 @@ class BookController extends Controller
 
             
 
-            $pagos = \App\Payments::all();
+            $pagos = \App\Payments::where('datePayment','>',$date->copy()->format('Y-m-d'))->where('datePayment','<',$date->copy()->addYear()->format('Y-m-d'))->get();
+            $paymentSeason = [
+                                "cash" => 0,
+                                "banco" =>0,
+                                "total" => 0,
+                                ];
 
-                foreach ($pagos as $pago) {
-                    if (isset($totalPayments[$pago->book_id])) {
-                        $totalPayments[$pago->book_id] += $pago->import;
-                    }else{
-                        $totalPayments[$pago->book_id] = $pago->import;
-                    }
-                    
-                } 
+            foreach ($pagos as $pago) {
+                if (isset($totalPayments[$pago->book_id])) {
+                    $totalPayments[$pago->book_id] += $pago->import;
+                }else{
+                    $totalPayments[$pago->book_id] = $pago->import;
+                }
+                if ($pago->type == 0 || $pago->type == 1) {
+                    $paymentSeason["cash"] += $pago->import;
+                }else{
+                    $paymentSeason["banco"] += $pago->import;
+                }
+                $paymentSeason["total"] += $pago->import;                
+            } 
+            
+            $ventas = $book->getVentas($date->copy()->format('Y-m-d'));
+
+            $ventasOld = $book->getVentas($date->copy()->subYear()->format('Y-m-d'));
 
             if ($date->copy()->format('n') >= 9) {
                 $start = new Carbon('first day of September '.$date->copy()->format('Y'));
@@ -122,7 +136,7 @@ class BookController extends Controller
             }
 
             
-            $books = \App\Book::whereIn('type_book', [2,7,8])->get();
+            $books = \App\Book::whereIn('type_book', [2])->get();
 
             foreach ($books as $book) {
                 $fecha = Carbon::createFromFormat('Y-m-d',$book->start);
@@ -145,20 +159,23 @@ class BookController extends Controller
 
                 if (!$mobile->isMobile()){
                     return view('backend/planning/index',[
-                                                        'arrayBooks'    => $arrayBooks,
-                                                        'arrayMonths'   => $arrayMonths,
-                                                        'arrayTotales'  => $arrayTotales,
-                                                        'rooms'         => \App\Rooms::where('state','=',1)->get(),
-                                                        'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->where('state','=',1)->orderBy('name','DESC')->get(),
-                                                        'arrayReservas' => $arrayReservas,
-                                                        'mes'           => $mes,
-                                                        'date'          => $date,
-                                                        'book'          => new \App\Book(),
-                                                        'extras'        => \App\Extras::all(),
-                                                        'payment'       => $totalPayments,
-                                                        'pagos'         => \App\Payments::all(),
-                                                        'days'          => $arrayDays,
-                                                        'inicio'        => $start,                                                        
+                                                            'arrayBooks'    => $arrayBooks,
+                                                            'arrayMonths'   => $arrayMonths,
+                                                            'arrayTotales'  => $arrayTotales,
+                                                            'rooms'         => \App\Rooms::where('state','=',1)->get(),
+                                                            'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->where('state','=',1)->orderBy('name','DESC')->get(),
+                                                            'arrayReservas' => $arrayReservas,
+                                                            'mes'           => $mes,
+                                                            'date'          => $date,
+                                                            'book'          => new \App\Book(),
+                                                            'extras'        => \App\Extras::all(),
+                                                            'payment'       => $totalPayments,
+                                                            'pagos'         => \App\Payments::all(),
+                                                            'days'          => $arrayDays,
+                                                            'inicio'        => $start, 
+                                                            'paymentSeason' =>$paymentSeason,
+                                                            'ventas'        => $ventas,                                                       
+                                                            'ventasOld'        => $ventasOld,                                                       
                                                         ]);
                 }else{
                     return view('backend/planning/index_mobile',[
@@ -176,7 +193,8 @@ class BookController extends Controller
                                                         'days'          => $arrayDays, 
                                                         'inicio'        => $start->addMonth(3),
                                                         'proxIn'        => $proxIn,
-                                                        'proxOut'       => $proxOut,                                                        
+                                                        'proxOut'       => $proxOut,
+                                                        'paymentSeason' =>$paymentSeason,                                                      
                                                                                                                
                                                         ]);
                 }
@@ -200,9 +218,9 @@ class BookController extends Controller
             $extraPrice = 0 ;
             $extraCost  = 0;
 
-            echo "<pre>";
-            print_r($request->input());
-            die();
+            // echo "<pre>";
+            // print_r($request->input());
+            // die();
             if ($request->input('extras') != "") {
                 foreach ($request->input('extras') as $extra) {
                    $precios = \App\Extras::find($extra);
@@ -230,7 +248,9 @@ class BookController extends Controller
                                 $book->type_book     = 3;
                                 $book->pax           = $request->input('pax');
                                 $book->nigths        = $request->input('nigths');
-                                $book->agency        = $request->input('agencia');
+                                $book->agency        = $request->input('agency');
+                                $book->PVPAgencia        = $request->input('agencia');
+
                                 $room                = \App\Rooms::find($request->input('newroom'));
                                 $book->sup_limp      = ($room->typeApto == 1) ? 35 : 50;
 
@@ -240,8 +260,9 @@ class BookController extends Controller
 
 
                                 $book->cost_park     = $this->getCostParkController($request->input('parking'),$request->input('nigths'));
-                                $book->sup_lujo      = $this->getPriceLujo($request->input('Suplujo'));
-                                $book->cost_lujo     = $this->getCostLujo($request->input('Suplujo'));
+                                $book->type_luxury   = $request->input('type_luxury');
+                                $book->sup_lujo      = $this->getPriceLujo($request->input('type_luxury'));
+                                $book->cost_lujo     = $this->getCostLujo($request->input('type_luxury'));
                                 $book->cost_apto     = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
                                 $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->agency + $extraCost + $book->agency;
 
@@ -286,24 +307,30 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
         {
-         $book = \App\Book::find($id);
-
+            $book = \App\Book::find($id);
+            $payments = \App\Payments::where('book_id',$book->id)->get();
+            $totalpayment = 0;
+            foreach ($payments as $payment) {
+                $totalpayment = $totalpayment + $payment->import;
+            }
             $mobile = new Mobile();
                 if (!$mobile->isMobile()){
                     return view('backend/planning/update',  [
                                                                 'book'   => $book ,
                                                                 'rooms'  => \App\Rooms::all(),
                                                                 'extras' => \App\Extras::all(),
-                                                                'payments' => \App\Payments::where('book_id',$book->id)->get(),
+                                                                'payments' => $payments,
                                                                 'typecobro' => new \App\Book(),
+                                                                'totalpayment' => $totalpayment,
                                                             ]);
                 }else{
                     return view('backend/planning/update_mobile',  [
                                                                 'book'   => $book ,
                                                                 'rooms'  => \App\Rooms::all(),
                                                                 'extras' => \App\Extras::all(),
-                                                                'payments' => \App\Payments::where('book_id',$book->id)->get(),
+                                                                'payments' => $payments,
                                                                 'typecobro' => new \App\Book(),
+                                                                'totalpayment' => $totalpayment,
                                                             ]);
                 }
         }
@@ -403,27 +430,40 @@ class BookController extends Controller
     //Funcion para actualizar la reserva
         public function saveUpdate(Request $request, $id)
             {
-                // echo "<pre>";
+                echo "<pre>";
+                $fechas = $request->reservation;
+                $info = explode('-', $fechas);
+                $inicio = $info[0];
+                $final = $info[1];
+                $start = substr($inicio,0,10);
+                $finish = substr($final,1,10);
+
+
+
                 $book = \App\Book::find($id);
                 $room = \App\Rooms::find($request->newroom);
 
                 $book->user_id       = Auth::user()->id;
                 $book->customer_id   = $request->customer_id;
                 $book->room_id       = $request->newroom;
-                $book->start         = Carbon::createFromFormat('d/m/Y',$request->start);
-                $book->finish        = Carbon::createFromFormat('d/m/Y',$request->finish);
+                $book->start         = Carbon::createFromFormat('d/m/Y',$start);
+                $book->finish        = Carbon::createFromFormat('d/m/Y',$finish);
                 $book->comment       = $request->comments;
                 $book->book_comments = $request->book_comments;
                 $book->pax           = $request->pax;
                 $book->nigths        = $request->nigths;
                 $book->sup_limp      = ($room->typeApto == 1) ? 35 : 50;
-                $book->sup_park      = $this->getPricePark($request->parking,$request->nigths);
+                $book->sup_park      = $book->getPricePark($request->parking,$request->nigths);
                 $book->type_park     = $request->parking;
-                $book->cost_park     = $this->getCostPark($request->parking,$request->nigths);
-                $book->sup_lujo      = ($room->luxury == 1) ? 50 : 0;
-                $book->cost_lujo     = ($room->luxury == 1) ? 40 : 0;
-                $book->cost_apto     = $book->getCostBook($request->start,$request->finish,$request->pax,$request->newroom);
+                 
+                $book->cost_park     = $book->getCostPark($request->parking,$request->nigths);
+
+                $book->sup_lujo      = $this->getPriceLujo($request->input('type_luxury'));
+                $book->cost_lujo     = $this->getCostLujo($request->input('type_luxury'));
+                
+                $book->cost_apto     = $book->getCostBook($start,$finish,$request->pax,$request->newroom);
                 $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo;
+                
                 $book->total_price   = $request->total;
                 $book->total_ben     = $book->total_price - $book->cost_total;
                 $book->extra         = $request->extra;
@@ -696,20 +736,6 @@ class BookController extends Controller
                 }
             }
 
-    //Funcion para cambiar el estado de los type_book
-
-        public function changeBooks()
-            {
-
-                $books = \App\Book::where('type_book',1)->get();
-
-                foreach ($books as $book) {
-                    $book->type_book = 2;
-
-                    $book->save();
-                    echo "cambiada<br>";
-                }
-            }
 
     //Funcion para coger la reserva mobil
         public function tabReserva($id){

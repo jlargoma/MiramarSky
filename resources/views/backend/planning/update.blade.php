@@ -47,13 +47,13 @@
                             <div class="input-group col-md-12">
                                 <input class="form-control" type="hidden"  name="customer_id" value="<?php echo $book->customer->id ?>">
                                 <div class="col-md-4">
-                                    Nombre: <input class="form-control" type="text" name="name" value="<?php echo $book->customer->name ?>" disabled>
+                                    Nombre: <input class="form-control cliente" type="text" name="name" value="<?php echo $book->customer->name ?>" data-id="<?php echo $book->customer->id ?>">
                                 </div>
                                 <div class="col-md-4">
-                                    Email: <input class="form-control" type="email" name="email" value="<?php echo $book->customer->email ?>" disabled>  
+                                    Email: <input class="form-control cliente" type="email" name="email" value="<?php echo $book->customer->email ?>" data-id="<?php echo $book->customer->id ?>">  
                                 </div>
                                 <div class="col-md-2">
-                                    Telefono: <input class="form-control" type="number" name="phone" value="<?php echo $book->customer->phone ?>" disabled> 
+                                    Telefono: <input class="form-control cliente" type="number" name="phone" value="<?php echo $book->customer->phone ?>" data-id="<?php echo $book->customer->id ?>"> 
                                 </div>  
                                 <div style="clear: both;"></div>
                             </div>                                            
@@ -112,6 +112,10 @@
                                             <?php endforeach ?>
                                         </select>
                                     </div>
+                                    <div class="col-md-2">                                                        
+                                        <label>Cost Agencia</label>
+                                        <input type="text" class="agencia form-control" name="agencia" value="<?php echo $book->PVPAgencia ?>">
+                                    </div>
                                     <div class="col-md-2">
                                         <label>Agencia</label>
                                         <select class=" form-control full-width agency" data-init-plugin="select2" name="agency">
@@ -120,10 +124,7 @@
                                             <?php endfor;?>
                                         </select>
                                     </div>
-                                    <div class="col-md-2">                                                        
-                                        <label>Cost Agencia</label>
-                                        <input type="text" class="agencia form-control" name="agencia" value="<?php echo $book->pvpAgency ?>">
-                                    </div>
+                                    
                                     
                                     <div class="col-md-2">
                                         <label>Sup. Lujo</label>
@@ -161,7 +162,7 @@
                         
                         
 
-                    </form> 
+                    
                 </div>
             </div>
 
@@ -172,40 +173,35 @@
                         </div>
                     </div>
                     <table>
-
                         <tbody>
-                            <tr class="text-white" style="background-color: #10CFBD">
+                            <tr class="text-white" style="background-color: #0c685f">
                                 <th style="padding-left: 5px">PVP</th>
                                 <th style="padding-right: 5px;padding-left: 5px">
-                                    <input type="text" class="form-control total m-t-10 m-b-10 " name="total" value="<?php echo $book->total_price ?>" style="width: 100%;background-color: #10CFBD;border:none">
+                                    <input type="text" class="form-control total m-t-10 m-b-10 text-white" name="total" value="<?php echo $book->total_price ?>" style="width: 100%;background-color: #0c685f;border:none;font-weight: bold">
                                 </th>
                             </tr>
                             <tr class=" text-white m-t-5" style="background-color: #99D9EA">
                                 <th style="padding-left: 5px">COSTE</th>
                                 <th style="padding-right: 5px;padding-left: 5px">
-                                    <input type="text" class="form-control cost m-t-10 m-b-10 " name="cost" value="<?php echo $book->cost_total ?>" disabled style="width: 100%;color: black;background: #99D9EA;border:none">
+                                    <input type="text" class="form-control cost m-t-10 m-b-10 text-white" name="cost" value="<?php echo $book->cost_total ?>" style="width: 100%;color: black;background: #99D9EA;border:none;font-weight: bold">
                                 </th>
                             </tr>
                             <tr class="text-white m-t-5" style="background-color: #ff7f27">
                                 <th style="padding-left: 5px">BENº</th>
                                 <th style="padding-right: 5px;padding-left: 5px">
-                                    <input type="text" class="form-control beneficio m-t-10 m-b-10 " name="beneficio" value="<?php echo $book->total_ben ?>" disabled style="width: 100%;color: black;background: #ff7f27;border:none">
+                                    <div class="col-md-7 p-r-0 p-l-0">
+                                        <input type="text" class="form-control beneficio m-t-10 m-b-10 text-white" name="beneficio" value="<?php echo $book->total_ben ?>" style="width: 100%;color: black;background: #ff7f27;border:none;font-weight: bold">
+                                    </div>
+                                    <div class="col-md-2 m-t-5"><div class="m-t-10 m-l-10 beneficio-text">0%</div></div>
+                                    
                                 </th>
+                                
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="col-md-12 m-t-5" >
-                    
-                    <!-- <div class="progress" style="min-height: 20px">
-                        <div class="progress-bar " role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%">
-                            70%
-                        </div>
-                    </div> -->
-                    <div style="float: left"><input class="progress-circle beneficio%" data-pages-progress="circle" value="<?php echo $book->inc_percent ?>" type="hidden" data-color="complete" style="width: 100px;height: 100px;"></div>
-                    <div class="m-t-10 m-l-10 beneficio-text" style="position: absolute;"><?php echo number_format($book->inc_percent,0) ?>%</div>
-                </div>
             </div>
+            </form> 
 
 
         
@@ -283,9 +279,6 @@
                                                     <input class="comment" type="text" name="comment"  style="width: 100%;text-align: center;border-style: none">
                                                 </td>
                                                 <td>
-                                                    <a href="{{ url('/admin/reservas/deleteCobro/')}}/<?php echo $payment->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Cobro" onclick="return confirm('¿Quieres Eliminar el obro?');">
-                                                        <i class="fa fa-trash"></i>
-                                                    </a>
                                                 </td>
                                                 
                                             </tr>
@@ -391,6 +384,7 @@
                 var room = $('#newroom').val();
                 var pax = $('.pax').val();
                 var park = $('.parking').val();
+                var lujo = $('.type_luxury').val();
                 var beneficio = 0;
                 var costPark = 0;
                 var pricePark = 0;
@@ -461,7 +455,7 @@
                 var beneficio = (parseFloat(price) - parseFloat(cost));
                 console.log(beneficio);
                 $('.beneficio').empty;
-                $('.beneficio').text(beneficio+"€");
+                $('.beneficio').val(beneficio);
             });
             
             $('.cobrar').click(function(event){ 
@@ -488,6 +482,15 @@
                     window.location.reload();
                 });
 
+            });
+
+            $('.cliente').change(function(event) {
+                var id = $(this).attr('data-id');;
+                var name = $('[name=name]').val();
+                var email = $('[name=email]').val();
+                var phone = $('[name=phone]').val();
+                $.get('/admin/clientes/save', { id: id,  name: name, email: email,phone: phone}, function(data) {
+                });
             });
         });
 
