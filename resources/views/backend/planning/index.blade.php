@@ -93,7 +93,19 @@
         hr.cliente {border: 0; height: 4px; margin-top: 20px;background:black; text-align: center;}
         hr.cliente:after {content:"Datos del Cliente"; position: relative; top: -12px; display: inline-block; width: 150px; height: 24px; padding: 0;border: 2px solid black; border-radius: 24px; background: black; color: white; font-size: 12px; line-height: 24px; }
 
-
+        .ingresos_temp{
+            background: #99bce7!important;
+            color: white!important;
+            text-align: center;
+        }
+        .cobros_temp{
+            background: #2dcdaf!important;
+            color: white!important;
+            text-align: center;
+        }
+        .table.table-hover tbody tr:hover td {
+            background: #99bce7 !important;
+        }
     </style>
 
 @endsection
@@ -107,191 +119,177 @@
                     <canvas id="barChart" style="width: 100%; height: 250px;"></canvas>
                 </div>
             </div>
-            <div class="col-md-2 m-t-50">
+            <div class="col-md-2 m-t-40">
                 <div class="col-md-12">
-                    <table>
+                    <table class="table table-hover demo-table-search table-responsive " >
                         <thead>
-                            <th colspan="2">
-                                Ingresos de la temporada  <?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?>                            
-                            </th>
+                            <th class="ingresos_temp"  colspan="2">Ingresos Temporada <?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?></th>
                         </thead>
                         <tr>
-                            <td>Ventas Temporada</td>
-                            <td>
-                                <?php echo number_format($arrayTotales[$inicio->copy()->format('Y')],2,',','.') ?> €                            
-                            </td>
+                            <td class="ingresos_temp">Ventas Temporada</td>
+                            <td class="ingresos_temp"> <?php echo number_format($arrayTotales[$inicio->copy()->format('Y')],2,',','.') ?> € </td>
                         </tr>
                         <tr>
-                            <td>Pend Cobro</td>
-                            <td><?php echo number_format($arrayTotales[$inicio->copy()->format('Y')]-$paymentSeason["total"],2,',','.')?></td>
+                            <td class="ingresos_temp">Total Cobrado</td>
+                            <td class="ingresos_temp"><?php echo ($paymentSeason["total"]) ? number_format($paymentSeason["total"],2,',','.') : "---" ?></td>
+                        </tr>
+                        <tr>
+                            <td class="ingresos_temp">Pend Cobro</td>
+                            <td class="ingresos_temp"><?php echo number_format($arrayTotales[$inicio->copy()->format('Y')]-$paymentSeason["total"],2,',','.')?></td>
                         </tr>
                     </table>
+                    <div class="col-xs-12 not-padding push-20">
+                        <div id="pieIng" ></div>
+                    </div>
                 </div>
-                <div class="col-md-12 m-t-20">
-                    <table>
-                        <thead>
-                            <th colspan="2">
-                                Cobros de la temporada <?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?>
-                            </th>
-                        </thead>
-                        <tr>
-                            <td>Cash</td>
-                            <td><?php echo number_format($paymentSeason["cash"],2,',','.')?>€</td>
-                        </tr>
-                        <tr>
-                            <td>Banco</td>
-                            <td><?php echo number_format($paymentSeason["banco"],2,',','.')?>€</td>
-                        </tr>
-                    </table>
-                </div>
+                
             </div>
             <div class="col-md-3 m-t-20">
+                <div class="col-md-12 m-t-20">
+                    <table class="table table-hover demo-table-search table-responsive " >
+                        <thead>
+                            <th class="cobros_temp"  colspan="2">Cobros de la temporada <?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?></th>
+                        </thead>
+                        <tr>
+                            <td class="cobros_temp">Banco</td>
+                            <td class="cobros_temp"><?php echo number_format($paymentSeason["banco"],2,',','.')?>€</td>
+                            
+                        </tr>
+                        <tr>
+                            <td class="cobros_temp">Cash</td>
+                            <td class="cobros_temp"><?php echo number_format($paymentSeason["cash"],2,',','.')?>€</td>
+                        </tr>
+                        <thead>
+                            <th class="cobros_temp">Total Cobrado</th>
+                            <th class="cobros_temp"> <?php echo number_format($paymentSeason["banco"]+$paymentSeason["cash"],2,',','.') ?> € </th>
+                        </thead>
+                    </table>
+                </div>
                 <div class="col-xs-12 not-padding push-20">
                     <?php if ($paymentSeason["total"] == 0): ?>
                         <h3>No hay pagos</h3>
                     <?php else: ?>
-                    <div id="piechart" ></div>
+                    <div id="pieCob" ></div>
                     <?php endif; ?>
                 </div>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-5 ">
                 <div class="row">
-                    <div class="col-md-12 m-b-10">
-                        <div class="widget-8 panel no-border bg-success no-margin widget-loader-bar" style="min-height: 300px;">
-                            <div class="container-xs-height full-height">
-                                <div class="row-xs-height">
-                                    <div class="col-xs-height col-top">
-                                        <div class="panel-heading top-left top-right">
-                                            <div class="panel-title text-black hint-text">
-                                                <span class="font-montserrat fs-11 all-caps">Ingresos de la temporada
-                                                    <?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?>
-                                                </span>
-                                            </div>                                    
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-xs-height ">
-                                    <div class="col-xs-height col-top relative">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="p-l-20 p-r-20">
-                                                    <table class="table table-hover demo-table-search table-responsive " >
-                                                        <thead>
-                                                            <th class="text-center bg-complete text-white">&nbsp;</th>
-                                                            <th class="text-center bg-complete text-white">Nov/Dic</th>
-                                                            <th class="text-center bg-complete text-white">Ene</th>
-                                                            <th class="text-center bg-complete text-white">Feb</th>
-                                                            <th class="text-center bg-complete text-white">Mar</th>
-                                                            <th class="text-center bg-complete text-white">Abr/May</th>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td class="text-center">Ventas</td>
-                                                                <td class="text-center"><?php echo number_format($ventas["Ventas"][12],2,',','.')?></td>
-                                                                <td class="text-center"><?php echo number_format($ventas["Ventas"][1],2,',','.')?></td>
-                                                                <td class="text-center"><?php echo number_format($ventas["Ventas"][2],2,',','.')?></td>
-                                                                <td class="text-center"><?php echo number_format($ventas["Ventas"][3],2,',','.')?></td>
-                                                                <td class="text-center"><?php echo number_format($ventas["Ventas"][4],2,',','.')?></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="text-center">Benº</td>
-                                                                <td class="text-center"><?php echo number_format($ventas["Ben"][12],2,',','.')?></td>
-                                                                <td class="text-center"><?php echo number_format($ventas["Ben"][1],2,',','.')?></td>
-                                                                <td class="text-center"><?php echo number_format($ventas["Ben"][2],2,',','.')?></td>
-                                                                <td class="text-center"><?php echo number_format($ventas["Ben"][3],2,',','.')?></td>
-                                                                <td class="text-center"><?php echo number_format($ventas["Ben"][4],2,',','.')?></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th class="text-center bg-complete text-white">
-                                                                    <?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?> </th>
-                                                                    <th class="text-center bg-complete text-white">Nov/Dic</th>
-                                                                    <th class="text-center bg-complete text-white">Ene</th>
-                                                                    <th class="text-center bg-complete text-white">Feb</th>
-                                                                    <th class="text-center bg-complete text-white">Mar</th>
-                                                                    <th class="text-center bg-complete text-white">Abr/May</th>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="text-center">Ventas</td>
-                                                                <td class="text-center"><?php echo number_format($ventasOld["Ventas"][12],2,',','.') ?></td>
-                                                                <td class="text-center"><?php echo number_format($ventasOld["Ventas"][1],2,',','.') ?></td>
-                                                                <td class="text-center"><?php echo number_format($ventasOld["Ventas"][2],2,',','.') ?></td>
-                                                                <td class="text-center"><?php echo number_format($ventasOld["Ventas"][3],2,',','.') ?></td>
-                                                                <td class="text-center"><?php echo number_format($ventasOld["Ventas"][4],2,',','.') ?></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="text-center">Benº</td>
-                                                                <td class="text-center"><?php echo number_format($ventasOld["Ben"][12],2,',','.') ?></td>
-                                                                <td class="text-center"><?php echo number_format($ventasOld["Ben"][1],2,',','.') ?></td>
-                                                                <td class="text-center"><?php echo number_format($ventasOld["Ben"][2],2,',','.') ?></td>
-                                                                <td class="text-center"><?php echo number_format($ventasOld["Ben"][3],2,',','.') ?></td>
-                                                                <td class="text-center"><?php echo number_format($ventasOld["Ben"][4],2,',','.') ?></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th class="text-center bg-complete text-white">Comp. Ventas</th>
-                                                                <td class="text-center">
-                                                                    <?php echo number_format($ventas["Ventas"][12]-$ventasOld["Ventas"][12],2,',','.');
-                                                                        echo ($ventas["Ventas"][12]-$ventasOld["Ventas"][12] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                                         ?>
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    <?php echo number_format($ventas["Ventas"][1]-$ventasOld["Ventas"][1],2,',','.');
-                                                                        echo ($ventas["Ventas"][1]-$ventasOld["Ventas"][1] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                                         ?>
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    <?php echo number_format($ventas["Ventas"][2]-$ventasOld["Ventas"][2],2,',','.');
-                                                                        echo ($ventas["Ventas"][2]-$ventasOld["Ventas"][2] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                                         ?>
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    <?php echo number_format($ventas["Ventas"][3]-$ventasOld["Ventas"][3],2,',','.');
-                                                                        echo ($ventas["Ventas"][3]-$ventasOld["Ventas"][3] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                                         ?>
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    <?php echo number_format($ventas["Ventas"][4]-$ventasOld["Ventas"][4],2,',','.');
-                                                                        echo ($ventas["Ventas"][4]-$ventasOld["Ventas"][4] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                                         ?>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th class="text-center bg-complete text-white">Comp. Benº</th>
-                                                                <td class="text-center">
-                                                                    <?php echo number_format($ventas["Ben"][12]-$ventasOld["Ben"][12],2,',','.');
-                                                                        echo ($ventas["Ben"][12]-$ventasOld["Ben"][12] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                                         ?>
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    <?php echo number_format($ventas["Ben"][1]-$ventasOld["Ben"][1],2,',','.');
-                                                                        echo ($ventas["Ben"][1]-$ventasOld["Ben"][1] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                                         ?>
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    <?php echo number_format($ventas["Ben"][2]-$ventasOld["Ben"][2],2,',','.');
-                                                                        echo ($ventas["Ben"][2]-$ventasOld["Ben"][2] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                                         ?>
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    <?php echo number_format($ventas["Ben"][3]-$ventasOld["Ben"][3],2,',','.');
-                                                                        echo ($ventas["Ben"][3]-$ventasOld["Ben"][3] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                                         ?>
-                                                                </td>
-                                                                <td class="text-center">
-                                                                    <?php echo number_format($ventas["Ben"][4]-$ventasOld["Ben"][4],2,',','.');
-                                                                        echo ($ventas["Ben"][4]-$ventasOld["Ben"][4] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                                         ?>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="p-l-20 p-r-20">
+                        <table class="table table-hover demo-table-search table-responsive " >
+                            <thead>
+                                <th class="text-center bg-complete text-white" colspan="6">Ingresos de la temporada <?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?></th>
+                            </thead>
+                            <thead>
+                                <th class="text-center bg-complete text-white">&nbsp;</th>
+                                <th class="text-center bg-complete text-white">Nov/Dic</th>
+                                <th class="text-center bg-complete text-white">Ene</th>
+                                <th class="text-center bg-complete text-white">Feb</th>
+                                <th class="text-center bg-complete text-white">Mar</th>
+                                <th class="text-center bg-complete text-white">Abr/May</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-center p-t-5 p-b-5">Ventas</td>
+                                    <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][12],2,',','.')?></td>
+                                    <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][1],2,',','.')?></td>
+                                    <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][2],2,',','.')?></td>
+                                    <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][3],2,',','.')?></td>
+                                    <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][4],2,',','.')?></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center p-t-5 p-b-5">Benº</td>
+                                    <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][12],2,',','.')?></td>
+                                    <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][1],2,',','.')?></td>
+                                    <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][2],2,',','.')?></td>
+                                    <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][3],2,',','.')?></td>
+                                    <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][4],2,',','.')?></td>
+                                </tr>
+                                <thead>
+                                    <th colspan="6" class="ingresos_temp"><?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?> </th>
+                                </thead>
+                                <tr>
+                                    <th class="text-center ingresos_temp text-white"></th>
+                                        <th class="text-center ingresos_temp text-white">Nov/Dic</th>
+                                        <th class="text-center ingresos_temp text-white">Ene</th>
+                                        <th class="text-center ingresos_temp text-white">Feb</th>
+                                        <th class="text-center ingresos_temp text-white">Mar</th>
+                                        <th class="text-center ingresos_temp text-white">Abr/May</th>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">Ventas</td>
+                                    <td class="text-center"><?php echo number_format($ventasOld["Ventas"][12],2,',','.') ?></td>
+                                    <td class="text-center"><?php echo number_format($ventasOld["Ventas"][1],2,',','.') ?></td>
+                                    <td class="text-center"><?php echo number_format($ventasOld["Ventas"][2],2,',','.') ?></td>
+                                    <td class="text-center"><?php echo number_format($ventasOld["Ventas"][3],2,',','.') ?></td>
+                                    <td class="text-center"><?php echo number_format($ventasOld["Ventas"][4],2,',','.') ?></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">Benº</td>
+                                    <td class="text-center"><?php echo number_format($ventasOld["Ben"][12],2,',','.') ?></td>
+                                    <td class="text-center"><?php echo number_format($ventasOld["Ben"][1],2,',','.') ?></td>
+                                    <td class="text-center"><?php echo number_format($ventasOld["Ben"][2],2,',','.') ?></td>
+                                    <td class="text-center"><?php echo number_format($ventasOld["Ben"][3],2,',','.') ?></td>
+                                    <td class="text-center"><?php echo number_format($ventasOld["Ben"][4],2,',','.') ?></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-center bg-complete text-white">Comp. Ventas</th>
+                                    <td class="text-center">
+                                        <?php echo number_format($ventas["Ventas"][12]-$ventasOld["Ventas"][12],2,',','.');
+                                            echo ($ventas["Ventas"][12]-$ventasOld["Ventas"][12] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                             ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php echo number_format($ventas["Ventas"][1]-$ventasOld["Ventas"][1],2,',','.');
+                                            echo ($ventas["Ventas"][1]-$ventasOld["Ventas"][1] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                             ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php echo number_format($ventas["Ventas"][2]-$ventasOld["Ventas"][2],2,',','.');
+                                            echo ($ventas["Ventas"][2]-$ventasOld["Ventas"][2] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                             ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php echo number_format($ventas["Ventas"][3]-$ventasOld["Ventas"][3],2,',','.');
+                                            echo ($ventas["Ventas"][3]-$ventasOld["Ventas"][3] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                             ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php echo number_format($ventas["Ventas"][4]-$ventasOld["Ventas"][4],2,',','.');
+                                            echo ($ventas["Ventas"][4]-$ventasOld["Ventas"][4] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                             ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="text-center bg-complete text-white">Comp. Benº</th>
+                                    <td class="text-center">
+                                        <?php echo number_format($ventas["Ben"][12]-$ventasOld["Ben"][12],2,',','.');
+                                            echo ($ventas["Ben"][12]-$ventasOld["Ben"][12] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                             ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php echo number_format($ventas["Ben"][1]-$ventasOld["Ben"][1],2,',','.');
+                                            echo ($ventas["Ben"][1]-$ventasOld["Ben"][1] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                             ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php echo number_format($ventas["Ben"][2]-$ventasOld["Ben"][2],2,',','.');
+                                            echo ($ventas["Ben"][2]-$ventasOld["Ben"][2] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                             ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php echo number_format($ventas["Ben"][3]-$ventasOld["Ben"][3],2,',','.');
+                                            echo ($ventas["Ben"][3]-$ventasOld["Ben"][3] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                             ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php echo number_format($ventas["Ben"][4]-$ventasOld["Ben"][4],2,',','.');
+                                            echo ($ventas["Ben"][4]-$ventasOld["Ben"][4] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                             ?>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -1257,7 +1255,7 @@
                 google.charts.load('current', {'packages':['corechart']});
                 google.charts.setOnLoadCallback(drawChart);
 
-                    function drawChart() {
+                    function drawChartCob() {
 
                       var data = google.visualization.arrayToDataTable([
                         ['Tipo', 'Cantidad'],
@@ -1269,22 +1267,33 @@
                         title: 'Metodos de pago '
                       };
 
-                      var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                      var chart = new google.visualization.PieChart(document.getElementById('pieCob'));
+
+                      chart.draw(data, options);
+                    }
+
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(drawChart);
+
+                    function drawChart() {
+
+                      var data = google.visualization.arrayToDataTable([
+                        ['Tipo', 'Cantidad'],
+                        ['Pend',   <?php echo $arrayTotales[$inicio->copy()->subYear()->format('Y')]-$paymentSeason["total"] ?>],
+                        ['Cob',    <?php echo $paymentSeason["total"] ?>]
+                      ]);
+
+                      var options = {
+                        title: 'Metodos de pago '
+                      };
+
+                      var chart = new google.visualization.PieChart(document.getElementById('pieIng'));
 
                       chart.draw(data, options);
                     }
 
 
-
         });
-            jQuery(document).on('ready', function () {
-            jQuery('.mybar_in_view').waypoint(function() {
-            jQuery(this).yjsgroundprogress();
-            }, {
-            offset: '100%',
-            triggerOnce:true
-            });
-            });
     </script>
 
 @endsection
