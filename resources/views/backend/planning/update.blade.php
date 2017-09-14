@@ -4,13 +4,12 @@
 
 @section('externalScripts') 
 <link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
-<link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
 <link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="/assets/css/font-icons.css" rel="stylesheet" type="text/css" />
 
 <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
-<link href="/assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" media="screen">
-<link href="/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" media="screen">
 
+<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
 
@@ -80,9 +79,7 @@
                                     <div class="col-md-4">
                                         <label>Entrada</label>
                                         <div class="input-prepend input-group">
-                                          <span class="add-on input-group-addon"><i
-                                                        class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                                          <input type="text" style="width: 100%" name="reservation" id="daterangepicker" class="form-control" value="<?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->format('d/m/Y').'- '.Carbon::CreateFromFormat('Y-m-d',$book->finish)->format('d/m/Y') ?>" />
+                                          <input type="text" class="sm-form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;   " readonly="">
                                         </div>
                                     </div>
                                     <div class="col-md-2">
@@ -343,29 +340,74 @@
 @endsection
 
 @section('scripts')
-<script src="/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
-<script src="/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
-<script src="/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
-<script src="/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
-<script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
-<script type="text/javascript" src="/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
+ <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+ <script src="/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
+ <script src="/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
+ <script src="/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
+ <script src="/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
+ <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
+ <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
+ <script type="text/javascript" src="/assets/js/canvasjs.min.js"></script>
+ 
+
+ <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
+ <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
+
 
 <script src="/assets/plugins/bootstrap3-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 <script type="text/javascript" src="/assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
-<script type="text/javascript" src="/assets/plugins/dropzone/dropzone.min.js"></script>
 <script type="text/javascript" src="/assets/plugins/bootstrap-tag/bootstrap-tagsinput.min.js"></script>
 <script type="text/javascript" src="/assets/plugins/jquery-inputmask/jquery.inputmask.min.js"></script>
 <script src="/assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
 <script src="/assets/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
-<script src="/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
 <script src="/assets/plugins/summernote/js/summernote.min.js" type="text/javascript"></script>
 <script src="/assets/plugins/moment/moment.min.js"></script>
-<script src="/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-<script src="/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
 <script src="/assets/plugins/bootstrap-typehead/typeahead.bundle.min.js"></script>
 <script src="/assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
 <script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
+
 <script type="text/javascript">
+    $(function() {
+      $(".daterange1").daterangepicker({
+        "buttonClasses": "button button-rounded button-mini nomargin",
+        "applyClass": "button-color",
+        "cancelClass": "button-light",
+        locale: {
+            format: 'DD MMM, YY',
+            "applyLabel": "Aplicar",
+              "cancelLabel": "Cancelar",
+              "fromLabel": "From",
+              "toLabel": "To",
+              "customRangeLabel": "Custom",
+              "daysOfWeek": [
+                  "Do",
+                  "Lu",
+                  "Mar",
+                  "Mi",
+                  "Ju",
+                  "Vi",
+                  "Sa"
+              ],
+              "monthNames": [
+                  "Enero",
+                  "Febrero",
+                  "Marzo",
+                  "Abril",
+                  "Mayo",
+                  "Junio",
+                  "Julio",
+                  "Agosto",
+                  "Septiembre",
+                  "Octubre",
+                  "Noviembre",
+                  "Diciembre"
+              ],
+              "firstDay": 1,
+          },
+          
+      });
+    });
+
         $(document).ready(function() {          
 
             var start  = 0;
@@ -374,17 +416,18 @@
             var price = 0;
             var cost = 0;
 
-            $('.pax').click(function(event) {
-                var fechas = $('#daterangepicker').val();
-                var info = fechas.split('-');
-                var inicio = info[0];
-                var final = info[1];
-                console.log(inicio);
-                var start = new Date(inicio.substring(3,5) + '/' + inicio.substring(0,2) + '/' + inicio.substring(6,10));
-                var finish = new Date(final.substring(4,6)+ '/' +  final.substring(1,3)+ '/' + final.substring(7,11));
-                var timeDiff = Math.abs(finish.getTime() - start.getTime());
-                var noches = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-                $('.nigths').val(noches);
+            $('.daterange1').change(function(event) {
+                var date = $(this).val();
+
+                var arrayDates = date.split('-');
+
+                var date1 = new Date(arrayDates[0]);
+                var start = date1.getTime();
+                console.log(date1.toLocaleDateString());
+                var date2 = new Date(arrayDates[1]);
+                var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                $('.nigths').val(diffDays);
 
             });
 
@@ -399,17 +442,16 @@
                 var pricePark = 0;
                 var diferencia = 0;
 
-                var fechas = $('#daterangepicker').val();
-                var info = fechas.split('-');
-                var inicio = info[0];
-                var final = info[1];
-                console.log(inicio);
-                var start = new Date(inicio.substring(3,5) + '/' + inicio.substring(0,2) + '/' + inicio.substring(6,10));
-                var finish = new Date(final.substring(4,6)+ '/' +  final.substring(1,3)+ '/' + final.substring(7,11));
-                var timeDiff = Math.abs(finish.getTime() - start.getTime());
-                var noches = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-                start = inicio.substring(3,5) + '/' + inicio.substring(0,2) + '/' + inicio.substring(6,10);
-                finish = final.substring(4,6)+ '/' +  final.substring(1,3)+ '/' + final.substring(7,11); 
+                var date = $('.daterange1').val();
+
+                var arrayDates = date.split('-');
+                var date1 = new Date(arrayDates[0]);
+                var date2 = new Date(arrayDates[1]);
+                var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                
+                var start = date1.toLocaleDateString();
+                var finish = date2.toLocaleDateString();
 
                 $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
                     if (pax < data) {
@@ -418,7 +460,7 @@
                         $('.pax').removeAttr('style');
                     }
                 });
-                $.get('/admin/reservas/getPricePark', {park: park, noches: noches}).success(function( data ) {
+                $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays}).success(function( data ) {
                     pricePark = data;
                     $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
                         priceLujo = data;
@@ -429,7 +471,7 @@
                             price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
                             $('.total').empty();
                             $('.total').val(price);
-                                $.get('/admin/reservas/getCostPark', {park: park, noches: noches}).success(function( data ) {
+                                $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays}).success(function( data ) {
                                     costPark = data;
                                     $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
                                         costLujo = data;

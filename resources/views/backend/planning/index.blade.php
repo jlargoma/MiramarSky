@@ -4,17 +4,17 @@
 
 @section('externalScripts') 
 
-    <link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="/assets/css/font-icons.css" rel="stylesheet" type="text/css" />
 
-    <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
-    <link href="/assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" media="screen">
-    <link href="/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" media="screen">
-    
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
 
+<link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
+
+<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
 
     <?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
     
@@ -121,7 +121,7 @@
             </div>
             <div class="col-md-2 m-t-40">
                 <div class="col-md-12">
-                    <table class="table table-hover demo-table-search table-responsive " >
+                    <table class="table table-hover demo-table-search table-responsive " style="min-height: 137px" >
                         <thead>
                             <th class="ingresos_temp"  colspan="2">Ingresos Temporada <?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?></th>
                         </thead>
@@ -139,7 +139,7 @@
                         </tr>
                     </table>
                     <div class="col-xs-12 not-padding push-20">
-                        <div id="pieIng" ></div>
+                        <canvas id="pie-ing" ></canvas>
                     </div>
                 </div>
                 
@@ -166,11 +166,7 @@
                     </table>
                 </div>
                 <div class="col-xs-12 not-padding push-20">
-                    <?php if ($paymentSeason["total"] == 0): ?>
-                        <h3>No hay pagos</h3>
-                    <?php else: ?>
-                    <div id="pieCob" ></div>
-                    <?php endif; ?>
+                    <canvas id="pie-cob" style="max-height: 245px!important;max-width: 245px!important" ></canvas>
                 </div>
             </div>
             <div class="col-md-5 ">
@@ -206,7 +202,7 @@
                                     <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][4],2,',','.')?></td>
                                 </tr>
                                 <thead>
-                                    <th colspan="6" class="ingresos_temp"><?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?> </th>
+                                    <th colspan="6" class="ingresos_temp">Ingresos de la temporada <?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?> </th>
                                 </thead>
                                 <tr>
                                     <th class="text-center ingresos_temp text-white"></th>
@@ -312,8 +308,7 @@
                             <?php endfor; ?>
                         </select>
                     </h2>
-                </div>
-                
+                </div>        
             </div>
             <br><br>
             <div class="col-md-7 col-xs-12">
@@ -384,13 +379,13 @@
                                                         <div class="input-prepend input-group">
                                                           <span class="add-on input-group-addon"><i
                                                                         class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                                                          <input type="text" style="width: 100%" name="reservation" id="daterangepicker" class="form-control" value="" />
+                                                          <input type="text" class="sm-form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;   " readonly="">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-1">
                                                         <label>Noches</label>
-                                                        <input type="text" class="form-control nigths" name="noches" value="" style="width: 100%;display:none">
-                                                        <input type="text" class="form-control nigths" name="nigths" value="" disabled style="width: 100%">
+                                                        <input type="text" class="form-control nigths" name="nigths" value="" style="width: 100%;display:none">
+                                                        <input type="text" class="form-control nigths" name="noches" value="" disabled style="width: 100%">
                                                     </div> 
                                                     <div class="col-md-1">
                                                         <label>Pax</label>
@@ -996,15 +991,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content-wrapper">
         <div class="modal-content">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-50"></i>
-            </button>
-            <div class="container-xs-height full-height">
-                <div class="row-xs-height">
-                    <div class="modal-body col-xs-height col-middle text-center">
-
-                    </div>
-                </div>
-            </div>
+            
         </div>
     </div>
     <!-- /.modal-content -->
@@ -1017,31 +1004,75 @@
 @section('scripts')
     
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-   <script src="/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
-   <script src="/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
-   <script src="/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
-   <script src="/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
-   <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
-   <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
+    <script src="/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
+    <script src="/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
+    <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
+    <script type="text/javascript" src="/assets/js/canvasjs.min.js"></script>
+    
+
+    <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
+    <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
+
 
    <script src="/assets/plugins/bootstrap3-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
    <script type="text/javascript" src="/assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
-   <script type="text/javascript" src="/assets/plugins/dropzone/dropzone.min.js"></script>
    <script type="text/javascript" src="/assets/plugins/bootstrap-tag/bootstrap-tagsinput.min.js"></script>
    <script type="text/javascript" src="/assets/plugins/jquery-inputmask/jquery.inputmask.min.js"></script>
    <script src="/assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
    <script src="/assets/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
-   <script src="/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
    <script src="/assets/plugins/summernote/js/summernote.min.js" type="text/javascript"></script>
    <script src="/assets/plugins/moment/moment.min.js"></script>
-   <script src="/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-   <script src="/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
    <script src="/assets/plugins/bootstrap-typehead/typeahead.bundle.min.js"></script>
    <script src="/assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
    <script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
 
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
         
     <script type="text/javascript">
+
+        $(function() {
+          $(".daterange1").daterangepicker({
+            "buttonClasses": "button button-rounded button-mini nomargin",
+            "applyClass": "button-color",
+            "cancelClass": "button-light",
+            locale: {
+                format: 'DD MMM, YY',
+                "applyLabel": "Aplicar",
+                  "cancelLabel": "Cancelar",
+                  "fromLabel": "From",
+                  "toLabel": "To",
+                  "customRangeLabel": "Custom",
+                  "daysOfWeek": [
+                      "Do",
+                      "Lu",
+                      "Mar",
+                      "Mi",
+                      "Ju",
+                      "Vi",
+                      "Sa"
+                  ],
+                  "monthNames": [
+                      "Enero",
+                      "Febrero",
+                      "Marzo",
+                      "Abril",
+                      "Mayo",
+                      "Junio",
+                      "Julio",
+                      "Agosto",
+                      "Septiembre",
+                      "Octubre",
+                      "Noviembre",
+                      "Diciembre"
+                  ],
+                  "firstDay": 1,
+              },
+              
+          });
+        });
 
         $(document).ready(function() {          
 
@@ -1056,9 +1087,19 @@
                     var room = $(this).val();
                     var status = "";
                 }
-                $.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
-                    window.location.reload();
-                });
+                if (status == 5) {
+                    $('#myModal').modal({
+                        show: 'false'
+                    }); 
+                   $.get('/admin/reservas/ansbyemail/'+id, function(data) {
+                       $('.modal-content').empty().append(data);
+                   });
+                }else{
+                   $.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
+                       window.location.reload();
+                   }); 
+                }
+                
             });
 
             var start  = 0;
@@ -1067,19 +1108,21 @@
             var price = 0;
             var cost = 0;
 
-            $('.pax').click(function(event) {
-                var fechas = $('#daterangepicker').val();
-                var info = fechas.split('-');
-                var inicio = info[0];
-                var final = info[1];
-                console.log(inicio);
-                var start = new Date(inicio.substring(3,5) + '/' + inicio.substring(0,2) + '/' + inicio.substring(6,10));
-                var finish = new Date(final.substring(4,6)+ '/' +  final.substring(1,3)+ '/' + final.substring(7,11));
-                var timeDiff = Math.abs(finish.getTime() - start.getTime());
-                var noches = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-                $('.nigths').val(noches);
+            $('.daterange1').change(function(event) {
+                var date = $(this).val();
+
+                var arrayDates = date.split('-');
+
+                var date1 = new Date(arrayDates[0]);
+                var start = date1.getTime();
+                console.log(date1.toLocaleDateString());
+                var date2 = new Date(arrayDates[1]);
+                var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                $('.nigths').val(diffDays);
 
             });
+
 
             $('#newroom, .pax, .parking, .agencia, .type_luxury').change(function(event){ 
 
@@ -1095,18 +1138,16 @@
                 var agencia = 0;
                 var beneficio_ = 0;
 
-                var fechas = $('#daterangepicker').val();
-                var info = fechas.split('-');
-                var inicio = info[0];
-                var final = info[1];
-                console.log(inicio);
-                var start = new Date(inicio.substring(3,5) + '/' + inicio.substring(0,2) + '/' + inicio.substring(6,10));
-                var finish = new Date(final.substring(4,6)+ '/' +  final.substring(1,3)+ '/' + final.substring(7,11));
-                var timeDiff = Math.abs(finish.getTime() - start.getTime());
-                var noches = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-                start = inicio.substring(3,5) + '/' + inicio.substring(0,2) + '/' + inicio.substring(6,10);
-                finish = final.substring(4,6)+ '/' +  final.substring(1,3)+ '/' + final.substring(7,11);
-               
+                var date = $('.daterange1').val();
+
+                var arrayDates = date.split('-');
+                var date1 = new Date(arrayDates[0]);
+                var date2 = new Date(arrayDates[1]);
+                var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                
+                var start = date1.toLocaleDateString();
+                var finish = date2.toLocaleDateString();
 
                 $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
 
@@ -1120,18 +1161,19 @@
                     }
                 });
 
-                $.get('/admin/reservas/getPricePark', {park: park, noches: noches}).success(function( data ) {
+                $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays}).success(function( data ) {
                     pricePark = data;
+                    console.log(data)
                     $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
                         priceLujo = data;
 
                         $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                            price = data.toLocaleString();
+                            price = data;
                             
                             price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
                             $('.total').empty();
                             $('.total').val(price);
-                                $.get('/admin/reservas/getCostPark', {park: park, noches: noches}).success(function( data ) {
+                                $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays}).success(function( data ) {
                                     costPark = data;
                                     $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
                                         costLujo = data;
@@ -1182,42 +1224,7 @@
                 });
             });
 
-            nv.addGraph(function() {
-                var chart = nv.models.multiBarChart()
-                  .transitionDuration(350)
-                  .reduceXTicks(true)   //If 'false', every single x-axis tick label will be rendered.
-                  .rotateLabels(0)      //Angle to rotate x-axis labels.
-                  .showControls(true)   //Allow user to switch between 'Grouped' and 'Stacked' mode.
-                  .groupSpacing(0.1)    //Distance between each group of bars.
-                ;
-
-                chart.xAxis
-                    .tickFormat(d3.format(',f'));
-
-                chart.yAxis
-                    .tickFormat(d3.format(',.1f'));
-
-                d3.select('#chart1 svg')
-                    .datum(exampleData())
-                    .call(chart);
-
-                nv.utils.windowResize(chart.update);
-
-                return chart;
-            });
-
             //Generate some nice data.
-            function exampleData() {
-              return stream_layers(3,10+Math.random()*100,.1).map(function(data, i) {
-                return {
-                  key: 'Stream #' + i,
-                  values: data
-                };
-              });
-            }
-
-
-
                 var data = {
                     labels: [
                                 <?php foreach ($arrayTotales as $key => $value): ?>
@@ -1252,48 +1259,44 @@
                     data: data,
                 });
 
-                google.charts.load('current', {'packages':['corechart']});
-                google.charts.setOnLoadCallback(drawChart);
-
-                    function drawChartCob() {
-
-                      var data = google.visualization.arrayToDataTable([
-                        ['Tipo', 'Cantidad'],
-                        ['Cash',     <?php echo $paymentSeason["cash"] ?>],
-                        ['Banco',    <?php echo $paymentSeason["banco"] ?>]
-                      ]);
-
-                      var options = {
-                        title: 'Metodos de pago '
-                      };
-
-                      var chart = new google.visualization.PieChart(document.getElementById('pieCob'));
-
-                      chart.draw(data, options);
-                    }
-
-                google.charts.load('current', {'packages':['corechart']});
-                google.charts.setOnLoadCallback(drawChart);
-
-                    function drawChart() {
-
-                      var data = google.visualization.arrayToDataTable([
-                        ['Tipo', 'Cantidad'],
-                        ['Pend',   <?php echo $arrayTotales[$inicio->copy()->subYear()->format('Y')]-$paymentSeason["total"] ?>],
-                        ['Cob',    <?php echo $paymentSeason["total"] ?>]
-                      ]);
-
-                      var options = {
-                        title: 'Metodos de pago '
-                      };
-
-                      var chart = new google.visualization.PieChart(document.getElementById('pieIng'));
-
-                      chart.draw(data, options);
-                    }
-
-
         });
+    </script>
+
+    <script type="text/javascript">  
+        new Chart(document.getElementById("pie-ing"), {
+            type: 'pie',
+            data: {
+              labels: ["Pend", "Cob"],
+              datasets: [{
+                backgroundColor: ["#99BCE7", "#295d9b"],
+                data: [<?php echo ($arrayTotales[$inicio->copy()->subYear()->format('Y')]-$paymentSeason["total"]) ;?>,<?php echo $paymentSeason["total"]?>]
+              }]
+            },
+            options: {
+              title: {
+                display: true,
+                text: 'Ingresos Temporada <?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?>'
+              }
+            }
+        });
+
+        new Chart(document.getElementById("pie-cob"), {
+            type: 'pie',
+            data: {
+              labels: ["Banco", "Cash"],
+              datasets: [{
+                backgroundColor: ["#2dcdaf", "#0d967b"],
+                data: [<?php echo ($paymentSeason["banco"]) ;?>,<?php echo $paymentSeason["cash"]?>]
+              }]
+            },
+            options: {
+              title: {
+                display: true,
+                text: 'Cobros Temporada <?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?>'
+              }
+            }
+        });
+
     </script>
 
 @endsection

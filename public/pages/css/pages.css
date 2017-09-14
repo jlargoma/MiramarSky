@@ -7125,7 +7125,7 @@ https://github.com/m3wolf/bootstrap3-timepicker
 /* Daterangepicker
 http://www.dangrossman.info/
 */
-.daterangepicker {
+/*.daterangepicker {
   background: #fff;
 }
 .daterangepicker .calendar .calendar-date {
@@ -7146,7 +7146,7 @@ http://www.dangrossman.info/
 .daterangepicker td.active:hover {
   background-color: #6d5cae;
   border-color: #6d5cae;
-}
+}*/
 /* Select2
 http://ivaynberg.github.io/select2/
 */

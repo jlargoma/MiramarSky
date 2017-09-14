@@ -6,11 +6,12 @@
 <link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
 <link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="/assets/css/font-icons.css" rel="stylesheet" type="text/css" />
 
 <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
-<link href="/assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" media="screen">
-<link href="/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" media="screen">
 
+<link href="/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" media="screen">
+<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
     <!--[if lte IE 9]>
@@ -90,6 +91,11 @@
     
     .fechas > li.active{background-color: red;}
   	/* Bordes de seccion */
+
+    .daterangepicker.dropdown-menu.show-calendar.opensright {
+        left: 12%!important;
+        top: 61%!important;
+    }
   </style>
 
   @section('content')
@@ -104,10 +110,10 @@
   				<li class="cob text-center" style="width: 30%;margin-left: 10px;margin-right: 10px;">
   					<a href="#cobros" data-toggle="tab" role="tab" style="font-size: 15px!important;padding-left: 2px;padding-right: 2px"> RECEPCION </a>
   				</li>
-  				<li class="text-center" style="width: 17%">
+  				<li class="calend text-center" style="width: 17%">
   					<a href="#calendario"> <i class="fa fa-calendar " aria-hidden="true" style="font-size: 24px!important;padding-left: 2px;padding-right: 2px"></i> </a>
   				</li>
-  				<li class=" text-center" style="background-color: white;width: 13%">
+  				<li class="newBook text-center" style="background-color: white;width: 13%">
   					<a href="#tabNueva" data-toggle="tab" role="tab" style="padding-left: 2px;padding-right: 2px">
   						<i class="fa fa-plus-circle " style="color:green;font-size: 24!important" aria-hidden="true"></i>
   					</a>
@@ -374,7 +380,7 @@
 					    <div class="col-md-12 push-30">
 					        <div class="col-md-12">
 							    <div class="row">
-							        <div class="container-fluid padding-10 sm-padding-10" style="background-color: rgba(0,0,255,0.1)">
+							        <div class="container-fluid padding-10 sm-padding-10" style="background-color: rgba(0,0,10,0.1)">
 							        	<div class="col-md-12 col-xs-12 text-center">
 							        	    <p style="font-size: 14px">
 							        	        <br>
@@ -414,43 +420,46 @@
             													</div>
       	    			                		<div style="padding: 0px 0px 0px 0px;">
   	    			                		        
-    			                		            <div class="col-md-4">
-                                              <label>Entrada</label>
-                                              <div class="input-prepend input-group">
-                                                <span class="add-on input-group-addon"><i
-                                                              class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                                                <input type="text" style="width: 100%" name="reservation" id="daterangepicker" class="form-control" value="" />
+    			                		            <div class="col-xs-12">
+                                              <label class="sm-pull-left">Entrada</label>
+                                              <div class="input-prepend input-group p-l-20">
+                                                <!-- <input type="text" style="width: 100%" name="reservation" id="daterangepicker" class="form-control" value="" /> -->
+                                                <input type="text" class="sm-form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;   " readonly="">
                                               </div>
                                           </div>
-
-    			                		            <br>
-
-    			                		            <div class="col-xs-3 " >
-    			                		                <label class="sm-pull-left"><i class="fa fa-moon-o"></i></label>
-    			                		                <input type="text" class="nigths sm-pull-right" name="nigths" id="nigths" style="width: 60%" style="border:none">
-    			                		            </div> 
-
-    			                		            <div class="col-xs-3 sm-padding-0">
-                                              <div class="col-xs-3 sm-padding-0">
-                                                <label class="sm-pull-left"><i class="fa fa-user"></i></label>
+                                            <div class="col-xs-3  m-t-10" >
+                                                <label class="sm-pull-left m-t-5"><i class="fa fa-moon-o"></i></label>
+                                                <div class="input-prepend input-group">
+                                                  <input type="text" class="nigths sm-pull-right" name="nigths" id="nigths" disabled style="width: 60%" style="border:none">
+                                                  <input type="text" hidden class="nigths sm-pull-right" name="nigths" >
+                                                </div>
+                                            </div> 
+                                            <div class="col-xs-3 sm-padding-0 m-t-10">
+                                                <div class="col-xs-3 sm-padding-0">
+                                                  <label class="sm-pull-left m-t-5"><i class="fa fa-user"></i></label>
+                                                </div>
+                                                <div class="col-xs-8 sm-padding-0">
+                                                  <select name="pax" id="" class="form-control full-width pax sm-pull-right">
+                                                    <?php for ($i=1; $i < 9; $i++):?>
+                                                      <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                                                    <?php endfor ?>
+                                                  </select>
+                                                </div>                                           
+                                            </div>
+                                            
+                                            <div class="col-xs-6 sm-padding-0 m-t-10">
+                                              <div class="col-xs-3">
+                                                 <label class="sm-pull-left m-t-5"><i class="fa fa-home" aria-hidden="true"></i></label>
                                               </div>
-    			                		                <div class="col-xs-8 sm-padding-0">
-                                                <input  type="text" class="form-control full-width pax sm-pull-right" name="pax"> 
-                                              </div>		                		                   
-    			                		            </div>
-                                          
-    			                		            <div class="col-xs-6 sm-padding-0">
-                                            <div class="col-xs-3">
-                                               <label ><i class="fa fa-home" aria-hidden="true"></i></label>
+                                              <div class="col-xs-8 sm-padding-0">
+                                                <select class="form-control full-width newroom" name="newroom" id="newroom" >
+                                                  <?php foreach ($rooms as $room): ?>
+                                                      <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
+                                                  <?php endforeach ?>
+                                              </select>
+                                              </div>
                                             </div>
-  			                		                <div class="col-xs-8 sm-padding-0">
-                                              <select class="form-control full-width newroom" data-init-plugin="select2" name="newroom" id="newroom" >
-                                                <?php foreach ($rooms as $room): ?>
-                                                    <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
-                                                <?php endforeach ?>
-                                            </select>
-                                            </div>
-    			                		            </div>
+    			                		            
 
                                           <div class="clear-both"></div><br>
 
@@ -722,7 +731,10 @@
   <script src="/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
   <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
   <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
-
+  
+  <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
+  <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
+  
   <script src="/assets/plugins/bootstrap3-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
   <script type="text/javascript" src="/assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
   <script type="text/javascript" src="/assets/plugins/dropzone/dropzone.min.js"></script>
@@ -733,7 +745,6 @@
   <script src="/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
   <script src="/assets/plugins/summernote/js/summernote.min.js" type="text/javascript"></script>
   <script src="/assets/plugins/moment/moment.min.js"></script>
-  <script src="/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
   <script src="/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
   <script src="/assets/plugins/bootstrap-typehead/typeahead.bundle.min.js"></script>
   <script src="/assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
@@ -741,8 +752,57 @@
   <!-- END PAGE LEVEL JS -->
 
   <script type="text/javascript">
+      $(function() {
+        $(".daterange1").daterangepicker({
+          "buttonClasses": "button button-rounded button-mini nomargin",
+          "applyClass": "button-color",
+          "cancelClass": "button-light",
+          locale: {
+              format: 'DD MMM, YY',
+              "applyLabel": "Aplicar",
+                "cancelLabel": "Cancelar",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "daysOfWeek": [
+                    "Do",
+                    "Lu",
+                    "Mar",
+                    "Mi",
+                    "Ju",
+                    "Vi",
+                    "Sa"
+                ],
+                "monthNames": [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre"
+                ],
+                "firstDay": 1,
+            },
+            
+        });
+      });
 
       $(document).ready(function() {          
+
+          $('.cob , .newBook').click(function(event) {
+            $('#calendario').hide();
+          });
+
+          $('.resv , .calend').click(function(event) {
+            $('#calendario').show();
+          });
+
 
           $('.status,.room').change(function(event) {
               var id = $(this).attr('data-id');
@@ -768,26 +828,28 @@
             });
           });
           // Modal
-          // 
+          
           var start  = 0;
           var finish = 0;
           var noches = 0;
           var price = 0;
           var cost = 0;
 
-          $('.pax').click(function(event) {
-              var fechas = $('#daterangepicker').val();
-              var info = fechas.split('-');
-              var inicio = info[0];
-              var final = info[1];
-              console.log(inicio);
-              var start = new Date(inicio.substring(3,5) + '/' + inicio.substring(0,2) + '/' + inicio.substring(6,10));
-              var finish = new Date(final.substring(4,6)+ '/' +  final.substring(1,3)+ '/' + final.substring(7,11));
-              var timeDiff = Math.abs(finish.getTime() - start.getTime());
-              var noches = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-              $('.nigths').val(noches);
+          $('.daterange1').change(function(event) {
+              var date = $(this).val();
+
+              var arrayDates = date.split('-');
+
+              var date1 = new Date(arrayDates[0]);
+              var start = date1.getTime();
+              console.log(date1.toLocaleDateString());
+              var date2 = new Date(arrayDates[1]);
+              var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+              var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+              $('.nigths').val(diffDays);
 
           });
+
 
           $('#newroom, .pax, .parking, .agencia, .type_luxury').change(function(event){ 
 
@@ -803,18 +865,16 @@
               var agencia = 0;
               var beneficio_ = 0;
 
-              var fechas = $('#daterangepicker').val();
-              var info = fechas.split('-');
-              var inicio = info[0];
-              var final = info[1];
-              console.log(inicio);
-              var start = new Date(inicio.substring(3,5) + '/' + inicio.substring(0,2) + '/' + inicio.substring(6,10));
-              var finish = new Date(final.substring(4,6)+ '/' +  final.substring(1,3)+ '/' + final.substring(7,11));
-              var timeDiff = Math.abs(finish.getTime() - start.getTime());
-              var noches = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-              start = inicio.substring(3,5) + '/' + inicio.substring(0,2) + '/' + inicio.substring(6,10);
-              finish = final.substring(4,6)+ '/' +  final.substring(1,3)+ '/' + final.substring(7,11);
-             
+              var date = $('.daterange1').val();
+
+              var arrayDates = date.split('-');
+              var date1 = new Date(arrayDates[0]);
+              var date2 = new Date(arrayDates[1]);
+              var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+              var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+              
+              var start = date1.toLocaleDateString();
+              var finish = date2.toLocaleDateString();
 
               $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
 
@@ -828,8 +888,9 @@
                   }
               });
 
-              $.get('/admin/reservas/getPricePark', {park: park, noches: noches}).success(function( data ) {
+              $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays}).success(function( data ) {
                   pricePark = data;
+                  console.log(data)
                   $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
                       priceLujo = data;
 
@@ -839,7 +900,7 @@
                           price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
                           $('.total').empty();
                           $('.total').val(price);
-                              $.get('/admin/reservas/getCostPark', {park: park, noches: noches}).success(function( data ) {
+                              $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays}).success(function( data ) {
                                   costPark = data;
                                   $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
                                       costLujo = data;
@@ -880,10 +941,9 @@
               
               var year = $(this).val();
               window.location = '/admin/reservas/'+year;
-          });
-
-
+          });          
       });
+      
   </script>
 
 @endsection

@@ -207,13 +207,11 @@ class BookController extends Controller
      */
     public function create(Request $request)
         {
-            $fechas = $request->reservation;
-            $info = explode('-', $fechas);
-            $inicio = $info[0];
-            $final = $info[1];
-            $start = substr($inicio,0,10);
-            $finish = substr($final,1,10);
 
+            $date = explode('-', $request->input('fechas'));
+       
+            $start = Carbon::createFromFormat('d M, y' , trim($date[0]))->format('d/m/Y');
+            $finish = Carbon::createFromFormat('d M, y' , trim($date[1]))->format('d/m/Y');
             $book = new \App\Book();
             $extraPrice = 0 ;
             $extraCost  = 0;
@@ -247,7 +245,7 @@ class BookController extends Controller
                                 $book->book_comments = $request->input('book_comments');
                                 $book->type_book     = 3;
                                 $book->pax           = $request->input('pax');
-                                $book->nigths        = $request->input('noches');
+                                $book->nigths        = $request->input('nigths');
                                 $book->agency        = $request->input('agency');
                                 $book->PVPAgencia    = $request->input('agencia');
                                 
@@ -255,11 +253,11 @@ class BookController extends Controller
                                 $book->sup_limp      = ($room->typeApto == 1) ? 35 : 50;
                                 
                                 
-                                $book->sup_park      = $this->getPriceParkController($request->input('parking'), $request->input('noches'));
+                                $book->sup_park      = $this->getPriceParkController($request->input('parking'), $request->input('nigths'));
                                 $book->type_park     = $request->input('parking');
                                 
                                 
-                                $book->cost_park     = $this->getCostParkController($request->input('parking'),$request->input('noches'));
+                                $book->cost_park     = $this->getCostParkController($request->input('parking'),$request->input('nigths'));
                                 $book->type_luxury   = $request->input('type_luxury');
                                 $book->sup_lujo      = $this->getPriceLujo($request->input('type_luxury'));
                                 $book->cost_lujo     = $this->getCostLujo($request->input('type_luxury'));
@@ -365,8 +363,8 @@ class BookController extends Controller
     static function getPriceBook(Request $request)
         {
 
-            $start = Carbon::createFromFormat('m/d/Y' , $request->start);
-            $finish = Carbon::createFromFormat('m/d/Y' , $request->finish);
+            $start = Carbon::createFromFormat('d/m/Y' , $request->start);
+            $finish = Carbon::createFromFormat('d/m/Y' , $request->finish);
             $countDays = $finish->diffInDays($start);
 
 
@@ -400,8 +398,8 @@ class BookController extends Controller
     static function getCostBook(Request $request)
         {
 
-            $start = Carbon::createFromFormat('m/d/Y' , $request->start);
-            $finish = Carbon::createFromFormat('m/d/Y' , $request->finish);
+            $start = Carbon::createFromFormat('d/m/Y' , $request->start);
+            $finish = Carbon::createFromFormat('d/m/Y' , $request->finish);
             $countDays = $finish->diffInDays($start);
 
 
@@ -488,10 +486,10 @@ class BookController extends Controller
                             $supPark = 0;
                             break;
                         case 3:
-                            $supPark = (15 * $request->noches) / 2;
+                            $supPark = 0;
                             break;
                         case 4:
-                            $supPark = 0;
+                            $supPark = (15 * $request->noches) / 2;
                             break;
                     }
                 return $supPark;
@@ -510,10 +508,10 @@ class BookController extends Controller
                             $supPark = 0;
                             break;
                         case 3:
-                            $supPark = (15 * $noches) / 2;
+                            $supPark = 0;
                             break;
                         case 4:
-                            $supPark = 0;
+                            $supPark = (15 * $noches) / 2;
                             break;
                     }
                 return $supPark;
@@ -532,10 +530,10 @@ class BookController extends Controller
                             $supPark = 0;
                             break;
                         case 3:
-                            $supPark = (13.5 * $request->noches) / 2;
+                            $supPark = 0;
                             break;
                         case 4:
-                            $supPark = 0;
+                            $supPark = (13.5 * $request->noches) / 2;
                             break;
                     }
                 return $supPark;
@@ -554,10 +552,10 @@ class BookController extends Controller
                             $supPark = 0;
                             break;
                         case 3:
-                            $supPark = (13.5 * $noches) / 2;
+                            $supPark = 0;
                             break;
                         case 4:
-                            $supPark = 0;
+                            $supPark = (13.5 * $noches) / 2;
                             break;
                     }
                 return $supPark;
@@ -573,16 +571,16 @@ class BookController extends Controller
 
                     switch ($lujo) {
                         case 1:
-                            $supLujo = 0;
+                            $supLujo = 50;
                              break;
                         case 2:
                             $supLujo = 0;
                             break;
                         case 3:
-                            $supLujo = 50/2;
+                            $supLujo = 0;
                             break;
                         case 4:
-                            $supLujo = 50;
+                            $supLujo = 50/2;
                             break;
                     }
                 }
@@ -596,16 +594,16 @@ class BookController extends Controller
 
                 switch ($request->lujo) {
                     case 1:
-                        $supLujo = 0;
+                        $supLujo = 50;
                          break;
                     case 2:
                         $supLujo = 0;
                         break;
                     case 3:
-                        $supLujo = 50/2;
+                        $supLujo = 0;
                         break;
                     case 4:
-                        $supLujo = 50;
+                        $supLujo = 50/2;
                         break;
                 }
                 return $supLujo;
@@ -626,10 +624,10 @@ class BookController extends Controller
                                 $supLujo = 0;
                                 break;
                             case 3:
-                                $supLujo = 40/2;
+                                $supLujo = 40;
                                 break;
                             case 4:
-                                $supLujo = 40;
+                                $supLujo = 40/2;
                                 break;
                         }
                 }
@@ -649,10 +647,10 @@ class BookController extends Controller
                             $supLujo = 0;
                             break;
                         case 3:
-                            $supLujo = 40/2;
+                            $supLujo = 40;
                             break;
                         case 4:
-                            $supLujo = 40;
+                            $supLujo = 40/2;
                             break;
                     }
                 
@@ -735,7 +733,6 @@ class BookController extends Controller
                 }
             }
 
-
     //Funcion para coger la reserva mobil
         public function tabReserva($id){
             $book = \App\Book::find($id);
@@ -787,22 +784,24 @@ class BookController extends Controller
                 
             }
 
-    public function saveFianza(Request $request)
-        {
-            $fianza = new \App\Bail();
+    //Funcion para gguardar Fianza
+        public function saveFianza(Request $request)
+            {
+                $fianza = new \App\Bail();
 
-            $fianza->id_book = $request->id;
-            $fianza->date_in = Carbon::CreateFromFormat('d-m-Y',$request->fecha);
-            $fianza->import_in = $request->fianza;
-            $fianza->comment_in = $request->comentario;
-            $fianza->type = $request->tipo;
+                $fianza->id_book = $request->id;
+                $fianza->date_in = Carbon::CreateFromFormat('d-m-Y',$request->fecha);
+                $fianza->import_in = $request->fianza;
+                $fianza->comment_in = $request->comentario;
+                $fianza->type = $request->tipo;
 
-            if ($fianza->save()) {
-                return redirect()->action('BookController@index');
+                if ($fianza->save()) {
+                    return redirect()->action('BookController@index');
+                }
+                
             }
-            
-        }
     
+
     public function sendJaime(Request $request)
         {
             $book = \App\Book::find($request->id);
@@ -817,7 +816,14 @@ class BookController extends Controller
             $book->save();
             return 'OK';
         }
+    public function ansbyemail($id)
+        {
+            $book = \App\Book::find($id);
 
+            return view('backend/planning/_answerdByEmail',  [
+                                                                'book' => $book
+                                                            ]);
+        }
     public function delete($id)
     {
         $book = \App\Book::find($id);
