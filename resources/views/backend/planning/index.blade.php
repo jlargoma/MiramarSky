@@ -114,7 +114,7 @@
 
     <div class="container-fluid  sm-padding-10 p-l-10 p-r-10 p-t-5">
         <div class="row bg-white">
-            <div class="col-md-2 m-l-50 m-t-20">
+            <div class="col-md-2 m-t-20">
                 <div class="col-md-12 col-xs-12">
                     <canvas id="barChart" style="width: 100%; height: 250px;"></canvas>
                 </div>
@@ -144,7 +144,7 @@
                 </div>
                 
             </div>
-            <div class="col-md-2 m-t-20 m-r-50">
+            <div class="col-md-2 m-t-20">
                 <div class="col-md-12">
                     <table class="table table-hover demo-table-search table-responsive " >
                         <thead>
@@ -169,12 +169,12 @@
                     <canvas id="pie-cob" style="max-height: 245px!important;max-width: 245px!important" ></canvas>
                 </div>
             </div>
-            <div class="col-md-5 m-t-20">
+            <div class="col-md-6 m-t-20">
                 <div class="row">
-                    <div class="p-l-20 p-r-20">
+                    <div>
                         <table class="table table-hover demo-table-search table-responsive " >
                             <thead>
-                                <th class="text-center bg-complete text-white" colspan="6">Ingresos de la temporada <?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?></th>
+                                <th class="text-center bg-complete text-white" colspan="7">Ingresos de la temporada <?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?></th>
                             </thead>
                             <thead>
                                 <th class="text-center bg-complete text-white">&nbsp;</th>
@@ -183,6 +183,7 @@
                                 <th class="text-center bg-complete text-white">Feb</th>
                                 <th class="text-center bg-complete text-white">Mar</th>
                                 <th class="text-center bg-complete text-white">Abr/May</th>
+                                <th class="text-center bg-complete text-white">Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                             </thead>
                             <tbody>
                                 <tr>
@@ -192,6 +193,7 @@
                                     <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][2],2,',','.')?></td>
                                     <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][3],2,',','.')?></td>
                                     <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][4],2,',','.')?></td>
+                                    <td class="text-center p-t-5 p-b-5"><?php echo number_format(array_sum($ventas["Ventas"]),2,',','.')?></td>
                                 </tr>
                                 <tr>
                                     <th class="text-center p-t-5 p-b-5">Benº</th>
@@ -200,9 +202,10 @@
                                     <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][2],2,',','.')?></td>
                                     <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][3],2,',','.')?></td>
                                     <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][4],2,',','.')?></td>
+                                    <td class="text-center p-t-5 p-b-5"><?php echo number_format(array_sum($ventas["Ben"]),2,',','.')?></td>
                                 </tr>
                                 <thead>
-                                    <th colspan="6" class="ingresos_temp">Ingresos de la temporada <?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?> </th>
+                                    <th colspan="7" class="ingresos_temp">Ingresos de la temporada <?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?> </th>
                                 </thead>
                                 <tr>
                                     <th class="text-center ingresos_temp text-white"></th>
@@ -211,6 +214,7 @@
                                     <th class="text-center ingresos_temp text-white">Feb</th>
                                     <th class="text-center ingresos_temp text-white">Mar</th>
                                     <th class="text-center ingresos_temp text-white">Abr/May</th>
+                                    <th class="text-center ingresos_temp text-white">Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                                 </tr>
                                 <tr>
                                     <th class="text-center">Ventas</th>
@@ -219,6 +223,7 @@
                                     <td class="text-center"><?php echo number_format($ventasOld["Ventas"][2],2,',','.') ?></td>
                                     <td class="text-center"><?php echo number_format($ventasOld["Ventas"][3],2,',','.') ?></td>
                                     <td class="text-center"><?php echo number_format($ventasOld["Ventas"][4],2,',','.') ?></td>
+                                    <td class="text-center"><?php echo number_format(array_sum($ventasOld["Ventas"]),2,',','.') ?></td>
                                 </tr>
                                 <tr>
                                     <th class="text-center">Benº</th>
@@ -227,10 +232,20 @@
                                     <td class="text-center"><?php echo number_format($ventasOld["Ben"][2],2,',','.') ?></td>
                                     <td class="text-center"><?php echo number_format($ventasOld["Ben"][3],2,',','.') ?></td>
                                     <td class="text-center"><?php echo number_format($ventasOld["Ben"][4],2,',','.') ?></td>
+                                    <td class="text-center"><?php echo number_format(array_sum($ventasOld["Ben"]),2,',','.') ?></td>
                                 </tr>
                                 <thead>
-                                    <th colspan="6" class="comparativa bg-primary text-center text-white" >Comparativa de la temporada <?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?> </th>
+                                    <th colspan="7" class="comparativa bg-primary text-center text-white" >Comparativa de la temporada <?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?> </th>
                                 </thead>
+                                <tr>
+                                    <th class="text-center  bg-primary text-white"></th>
+                                    <th class="text-center  bg-primary text-white">Nov/Dic</th>
+                                    <th class="text-center  bg-primary text-white">Ene</th>
+                                    <th class="text-center  bg-primary text-white">Feb</th>
+                                    <th class="text-center  bg-primary text-white">Mar</th>
+                                    <th class="text-center  bg-primary text-white">Abr/May</th>
+                                    <th class="text-center  bg-primary text-white">Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                </tr>
                                 <tr>
                                     <th class="text-center">Comp. Ventas</th>
                                     <td class="text-center">
@@ -256,6 +271,11 @@
                                     <td class="text-center">
                                         <?php echo number_format($ventas["Ventas"][4]-$ventasOld["Ventas"][4],2,',','.');
                                             echo ($ventas["Ventas"][4]-$ventasOld["Ventas"][4] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                             ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php echo number_format(array_sum($ventas["Ventas"])-array_sum($ventasOld["Ventas"]),2,',','.');
+                                            echo (array_sum($ventas["Ventas"])-array_sum($ventasOld["Ventas"]) > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
                                              ?>
                                     </td>
                                 </tr>
@@ -284,6 +304,11 @@
                                     <td class="text-center">
                                         <?php echo number_format($ventas["Ben"][4]-$ventasOld["Ben"][4],2,',','.');
                                             echo ($ventas["Ben"][4]-$ventasOld["Ben"][4] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                             ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php echo number_format(array_sum($ventas["Ben"])-array_sum($ventasOld["Ben"]),2,',','.');
+                                            echo (array_sum($ventas["Ben"])-array_sum($ventasOld["Ben"]) > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
                                              ?>
                                     </td>
                                 </tr>
@@ -415,7 +440,7 @@
                                                         <label>Sup. Lujo</label>
                                                         <select class=" form-control full-width type_luxury" data-init-plugin="select2" name="type_luxury">
                                                             <?php for ($i=1; $i <= 4 ; $i++): ?>
-                                                                <option value="<?php echo $i ?>"><?php echo $book->getSupLujo($i) ?></option>
+                                                                <option class="luxury-<?php echo $i ?>" value="<?php echo $i ?>"><?php echo $book->getSupLujo($i) ?></option>
                                                             <?php endfor;?>
                                                         </select>
                                                     </div>                                                    

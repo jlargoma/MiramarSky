@@ -207,7 +207,7 @@ class BookController extends Controller
      */
     public function create(Request $request)
         {
-
+            echo "<pre>";
             $date = explode('-', $request->input('fechas'));
        
             $start = Carbon::createFromFormat('d M, y' , trim($date[0]))->format('d/m/Y');
@@ -216,9 +216,7 @@ class BookController extends Controller
             $extraPrice = 0 ;
             $extraCost  = 0;
 
-            // echo "<pre>";
-            // print_r($request->input());
-            // die();
+            
             if ($request->input('extras') != "") {
                 foreach ($request->input('extras') as $extra) {
                    $precios = \App\Extras::find($extra);
@@ -226,14 +224,14 @@ class BookController extends Controller
                    $extraCost += $precios->cost;
                 }
             }
-                if ($book->existDate($start,$finish, $request->input('newroom'))) {
-                    //creacion del cliente
+            
+                    //createacion del cliente
                         $customer = new \App\Customers();
                         $customer->user_id = (Auth::check())?Auth::user()->id:23;
                         $customer->name = $request->input('name');
                         $customer->email = $request->input('email');
                         $customer->phone = $request->input('phone');
-                        
+
                         if($customer->save()){
                             //Creacion de la reserva
                                 $book->user_id       = $customer->user_id;
@@ -291,10 +289,8 @@ class BookController extends Controller
                                 };
                         };
                     
-                    
-                }else{
-                
-                }
+
+            return redirect('admin/reservas');
         }
 
     /**

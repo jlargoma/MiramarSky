@@ -46,10 +46,6 @@
 </style>
 @endsection
 
-@section('headerButtoms')
-	@include('layouts/headerbuttoms')
-@endsection
-
 @section('content')
 <?php use \Carbon\Carbon; 
 setlocale(LC_TIME, "ES");
@@ -175,7 +171,7 @@ setlocale(LC_TIME, "es_ES");
 			        		<th class ="text-center bg-complete text-white" style="width: 5%">Cob <br> Jorge</th>
 			        		<th class ="text-center bg-complete text-white" style="width: 5%">Cob <br> Jaime</th>
 			        		<th class ="text-center bg-complete text-white" style="width: 5%">Pend</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Ingreso <br> Total</th>
+			        		<th class ="text-center bg-complete text-white" style="width: 5%">Ingreso <br> Neto</th>
 			        		<th class ="text-center bg-complete text-white" style="width: 5%">%Ben</th>
 			        		<th class ="text-center bg-complete text-white" style="width: 5%">Coste <br> Total</th>
 			        		<th class ="text-center bg-complete text-white" style="width: 5%">Coste <br> Apto</th>

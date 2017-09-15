@@ -139,7 +139,7 @@ setlocale(LC_TIME, "es_ES");
 		<div style="clear: both;"></div>
 		<br>
 		<?php if (count($room) > 0): ?>
-			<div class="col-md-3 col-md-offset-3">
+			<div class="col-md-2 col-md-offset-4">
 				<table class="table table-hover  no-footer" id="basicTable" role="grid">
 					<thead>
 						<th class ="text-center bg-complete text-white">Ingresos</th>
@@ -172,7 +172,7 @@ setlocale(LC_TIME, "es_ES");
 						<th class ="text-center bg-complete text-white" style="width: 5%">Personas</th>
 						<th class ="text-center bg-complete text-white">Entrada</th>
 						<th class ="text-center bg-complete text-white">Salida</th>
-						<th class ="text-center bg-complete text-white">Total</th>
+						<th class ="text-center bg-complete text-white">Ingresos</th>
 						<th class ="text-center bg-complete text-white">Apto</th>
 						<th class ="text-center bg-complete text-white">Parking</th>
 						<?php if ($room->luxury == 1): ?>

@@ -80,7 +80,13 @@
 				      	<li class="{{ Request::path() == 'admin/temporadas' ? 'active' : '' }}"><a href="{{ url('admin/temporadas') }}" class="detailed">Temporadas</a></li>
 				      	<li class="{{ Request::path() == 'admin/usuarios' ? 'active' : '' }}"><a href="{{ url('admin/usuarios') }}" class="detailed">Usuarios</a></li>
 				      	<li class="{{ Request::path() == 'admin/clientes' ? 'active' : '' }}"><a href="{{ url('admin/clientes') }}" class="detailed">Clientes</a></li>
-				      	<li class="{{ Request::path() == 'admin/liquidacion' || Request::path() == 'admin/liquidacion-apartamentos' || Request::path() == 'admin/pagos-propietarios' || Request::path() == 'admin/pagos-estadisticas' || Request::path() == 'admin/perdidas-ganancias' ? 'active' : '' }}"><a href="{{ url('admin/liquidacion') }}" class="detailed">Liquidacion</a></li>
+				      	<li class="{{ Request::path() == 'admin/liquidacion'  ? 'active' : '' }}"><a href="{{ url('admin/liquidacion') }}" class="detailed">Liquidacion</a></li>
+				      	<li class="{{ Request::path() == 'admin/liquidacion-apartamentos'  ? 'active' : '' }}"><a href="{{ url('admin/liquidacion-apartamentos') }}" class="detailed">Liquidacion de apartamentos</a></li>
+				      	<li class="{{ Request::path() == 'admin/pagos-propietarios'  ? 'active' : '' }}"><a href="{{ url('admin/pagos-propietarios') }}" class="detailed">Pagos a propietarios</a></li>
+				      	<li class="{{ Request::path() == 'admin/estadisticas'  ? 'active' : '' }}"><a href="{{ url('admin/estadisticas') }}" class="detailed">Estadisticas</a></li>
+				      	<li class="{{ Request::path() == 'admin/perdidas-ganancias'  ? 'active' : '' }}"><a href="{{ url('admin/perdidas-ganancias') }}" class="detailed">P & G</a></li>
+				      	<li class="{{ Request::path() == 'admin/propietario'  ? 'active' : '' }}"><a href="{{ url('admin/propietario') }}" class="detailed">Propietario</a></li>
+
 			        </ul>
 			        <ul class="nav navbar-nav navbar-right">
 			            <li><a href="{{url ('/logout')}}">Log Out</a></li>

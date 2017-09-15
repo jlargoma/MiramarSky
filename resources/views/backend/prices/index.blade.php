@@ -23,6 +23,9 @@
         background-color: #91b85d;
 
     }
+    .extras{
+        background-color: rgb(150,150,150);
+    }
     
 </style>
 
@@ -97,27 +100,27 @@
             <div class="clearfix"></div>
             <div class="tab-content">
                 <div class="col-md-12">
-                    <div class="col-md-8">
+                    <div class="col-md-4">
                         <table class="table table-hover  table-responsive-block" >
                             <thead>
                                 <tr>
-                                    <th class ="text-center bg-complete text-white" style="width: 1%"> Nombre  </th>                          
-                                    <th class ="text-center bg-complete text-white" style="width: 5%" >PVP</th>
-                                    <th class ="text-center bg-complete text-white" style="width: 5%">Cost</th>
-                                    <th class ="text-center bg-complete text-white" style="width: 5%">% Ben</th>
+                                    <th class ="text-center extras text-white" style="width: 1%"> Nombre  </th>                          
+                                    <th class ="text-center extras text-white" style="width: 5%" >PVP</th>
+                                    <th class ="text-center extras text-white" style="width: 5%">Cost</th>
+                                    <th class ="text-center extras text-white" style="width: 5%">% Ben</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($extras as $extra): ?>
                                     <tr>
-                                        <td class="text-center" style="border-left: 1px solid #48b0f7"><?php echo $extra->name ?></td>
-                                        <td class="text-center" style="border-left: 1px solid #48b0f7">
+                                        <td class="text-center" ><?php echo $extra->name ?></td>
+                                        <td class="text-center" >
                                             <input class="extra-editable extra-price-<?php echo $extra->id?>" type="text" name="cost" data-id="<?php echo $extra->id ?>" value="<?php echo $extra->price ?>" style="width: 100%;text-align: center;border-style: none none">
                                         </td>
-                                        <td class="text-center" style="border-left: 1px solid #48b0f7">
+                                        <td class="text-center" >
                                             <input class="extra-editable extra-cost-<?php echo $extra->id?>" type="text" name="cost" data-id="<?php echo $extra->id ?>" value="<?php echo $extra->cost ?>" style="width: 100%;text-align: center;border-style: none none">
                                         </td>
-                                        <td class="text-center" style="border-left: 1px solid #48b0f7">
+                                        <td class="text-center" >
                                             <?php $ben = ( ($extra->price * 100) / $extra->cost)-100; ?>
                                             <?php echo number_format($ben, 2 , ',', '.') ?>%
                                         </td>
@@ -126,7 +129,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="sm-m-l-5 sm-m-r-5">
                             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                                 <!-- <div class="panel panel-default">

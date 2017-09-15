@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <form role="form"  action="{{ url('usuarios/saveupdate') }}" method="post">
+                    <form role="form"  action="{{ url('/admin/usuarios/saveupdate') }}" method="post">
                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                     <input type="hidden" name="id" value="<?php echo $user->id ?>">
                         <div class="input-group transparent">

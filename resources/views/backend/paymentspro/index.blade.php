@@ -35,9 +35,6 @@
     
 @endsection
 
-@section('headerButtoms')
-  @include('layouts/headerbuttoms')
-@endsection
 
 
 <?php setlocale(LC_TIME, "ES"); ?>
@@ -71,8 +68,8 @@
         <div class="col-md-4 col-md-offset-1">
            <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSea">
               <thead>
-                  <th class ="text-center bg-complete text-white"> PVP    </th>
-                  <th class ="text-center bg-complete text-white"> Coste    </th>
+                  <th class ="text-center bg-complete text-white"> Ingreso    </th>
+                  <th class ="text-center bg-complete text-white"> Coste Apto   </th>
                   <th class ="text-center bg-complete text-white"> Beneficio    </th>
                   <th class ="text-center bg-complete text-white"> Pagado    </th>
                   <th class ="text-center bg-complete text-white"> Pendiente    </th>
