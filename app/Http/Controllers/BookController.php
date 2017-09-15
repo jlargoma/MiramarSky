@@ -816,6 +816,25 @@ class BookController extends Controller
             $book->save();
             return 'OK';
         }
+    
+    public function sendEmail(Request $request)
+        {
+            echo "<pre>";
+            print_r($request->input());
+            die();
+            $book = \App\Book::find($request->id);
+            Mail::send('backend.emails.jaime',['book' => $book], function ($message) use ($book) {
+                                $message->from('jbaz@daimonconsulting.com', 'Miramarski');
+
+                                $message->to($book->customer->email);
+                                $message->subject('Correo a Jaime');
+                            });
+
+            $book->send = 1;
+            $book->save();
+            return 'OK';
+        }
+
     public function ansbyemail($id)
         {
             $book = \App\Book::find($id);
@@ -824,13 +843,14 @@ class BookController extends Controller
                                                                 'book' => $book
                                                             ]);
         }
+    
     public function delete($id)
-    {
-        $book = \App\Book::find($id);
+        {
+            $book = \App\Book::find($id);
 
-        if ($book->delete()) {
-                return redirect()->action('BookController@index');
-            }
+            if ($book->delete()) {
+                    return redirect()->action('BookController@index');
+                }
 
-    }
+        }
 }
