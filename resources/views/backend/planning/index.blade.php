@@ -21,11 +21,11 @@
     <style type="text/css">
 
         .Reservado{
-            background-color: green !important;
+            background-color: #295d9b !important;
             color: black;
         }
         .Pagada-la-señal{
-            background-color: red  !important;
+            background-color: green  !important;
             color: black;
         }
         .Bloqueado{
@@ -60,13 +60,13 @@
             color: white;
         }
         .active.res{
-            background-color: green !important; 
+            background-color: #295d9b !important; 
         }
         .active.bloq{
             background-color: orange !important; 
         }
         .active.pag{
-            background-color: red !important; 
+            background-color: green !important; 
         }
         .res,.bloq,.pag{
             background-color: rgba(98,108,117,0.5);
@@ -76,7 +76,7 @@
         }
 
         .fechas > li.active{
-            background-color: red;
+            background-color: rgb(81,81,81);
         }
         .nav-tabs ~ .tab-content{
             padding: 0px;

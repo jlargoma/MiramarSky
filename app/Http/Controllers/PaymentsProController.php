@@ -39,7 +39,7 @@ class PaymentsProController extends Controller
                 }  
             }
 
-            $paymentspro = \App\PaymentsPro::where('datePayment','>',$date->copy())->where('datePayment','<',$date->copy()->addYear())->get();
+            $paymentspro = \App\Paymentspro::where('datePayment','>',$date->copy())->where('datePayment','<',$date->copy()->addYear())->get();
 
             $total_payments = array();
 
@@ -85,7 +85,7 @@ class PaymentsProController extends Controller
         //
 
         $fecha = Carbon::now();
-        $paymentPro = new \App\PaymentsPro();
+        $paymentPro = new \App\Paymentspro();
 
         $paymentPro->room_id     = $request->id;
         $paymentPro->import      = $request->import;
@@ -140,7 +140,7 @@ class PaymentsProController extends Controller
      */
     public function update($id,$month = "", Request $request)
     {
-        $typePayment = new \App\PaymentsPro();
+        $typePayment = new \App\Paymentspro();
         $total = 0;
         $banco = 0;
         $metalico = 0;
@@ -149,7 +149,7 @@ class PaymentsProController extends Controller
         $month = Carbon::createFromFormat('Y',$month);
         $date  = $month->copy()->addMonth(2);
 
-        $payments = \App\PaymentsPro::where('room_id',$id)->where('datePayment','>',$date->copy())->where('datePayment','<',$date->copy()->addYear())->get();
+        $payments = \App\Paymentspro::where('room_id',$id)->where('datePayment','>',$date->copy())->where('datePayment','<',$date->copy()->addYear())->get();
 
         foreach ($payments as $payment) {
             if ($payment->type == 1 || $payment->type == 2) {

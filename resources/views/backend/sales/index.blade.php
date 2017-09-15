@@ -22,7 +22,7 @@
 		background-color: rgba(255,255,255,0.5)!important;
 	}
 	.beneficio{
-		background-color: rgba(181,230,29,0.2)!important;
+		background-color: rgba(153,188,231,0.4)!important;
 	}
 	td[class$="bi"] {border-left: 1px solid black;}
 	td[class$="bf"] {border-right: 1px solid black;}

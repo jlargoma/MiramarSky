@@ -48,6 +48,13 @@
 	   		.navbar {
 	   			margin-bottom: 0px;
 	   		}
+	   		.navbar-toggle {
+	   			float: left!important;
+	   			margin-left: 10px!important;
+	   		}
+	   		.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover{
+	   			background: rgb(81,81,81);
+	   		}
 	   	</style>
 	   	<?php 
    			use App\Classes\Mobile; 

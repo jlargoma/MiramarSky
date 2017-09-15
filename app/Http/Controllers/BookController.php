@@ -819,7 +819,7 @@ class BookController extends Controller
     public function sendEmail(Request $request)
         {
             echo "<pre>";
-            print_r($request->input());
+            print_r($request->all());
             die();
             $book = \App\Book::find($request->id);
             Mail::send('backend.emails.jaime',['book' => $book], function ($message) use ($book) {

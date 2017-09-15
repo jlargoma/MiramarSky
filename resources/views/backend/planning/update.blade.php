@@ -321,7 +321,8 @@
                                             <td class="text-center" ><p style="color:black;font-weight: bold;font-size:15px"><?php echo $total-$book->total_price ?>€</p></td>
                                             <td class="text-center" colspan="2">Sobrante</td>
                                         <?php else: ?>
-                                            <td class="text-center" colspan="4">Al corriente de pago</td>
+                                            <td class="text-center" ><p style="color:black;font-weight: bold;font-size:15px">0€</p></td>
+                                            <td class="text-center" colspan="2">Al corriente de pago</td>
                                         <?php endif ?>
                                         
                                     </tr>
@@ -504,9 +505,12 @@
                 var price = $(this).val();
                 var cost = $('.cost').val();
                 var beneficio = (parseFloat(price) - parseFloat(cost));
-                console.log(beneficio);
                 $('.beneficio').empty;
                 $('.beneficio').val(beneficio);
+                var comentario = $('.book_comments').val();
+                alert(comentario);
+                $('.book_comments').empty();
+                $('.book_comments').html(comentario + '\nEl PVP era '+<?php echo $book->total_price?> +' se vende en '+ price ) ; 
             });
             
             $('.cobrar').click(function(event){ 

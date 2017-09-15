@@ -144,7 +144,7 @@ class LiquidacionController extends Controller
                 }
             }
 
-            $pagos = \App\PaymentsPro::where('datePayment' , '>=' , $date)->where('datePayment', '<=', $date->copy()->AddYear()->SubMonth())->get();
+            $pagos = \App\Paymentspro::where('datePayment' , '>=' , $date)->where('datePayment', '<=', $date->copy()->AddYear()->SubMonth())->get();
 
             foreach ($pagos as $pago) {
                 if (isset($pendientes[$pago->room_id])) {

@@ -25,11 +25,11 @@
 
   	/* Estados */
   	.Reservado{
-  		background-color: green !important;
+  		background-color: #295d9b !important;
   		color: black;
   	}
   	.Pagada-la-señal{
-  		background-color: red  !important;
+  		background-color: green  !important;
   		color: black;
   	}
   	.Bloqueado{
@@ -71,13 +71,13 @@
   		color: black!important;
   	}
   	.active.res{
-  		background-color: green !important; 
+  		background-color: #295d9b !important; 
   	}
   	.active.bloq{
   		background-color: orange !important; 
   	}
   	.active.pag{
-  		background-color: red !important; 
+  		background-color: green !important; 
   	}
   	.res,.bloq,.pag{
   		background-color: white;
@@ -88,10 +88,17 @@
 
   	/* Bordes de seccion */          
   	.active.resv > a,.active.cob > a{color: blue!important;font-weight: bold }
-    
-    .fechas > li.active{background-color: red;}
+    .fechas >li >a {
+      color: white!important;
+    }
+    .fechas > li.active{background-color: rgb(81,81,81);}
   	/* Bordes de seccion */
-
+  .fechas >li {
+      background-color: #B0B5B9;
+      border-color: #B0B5B9;
+  }
+  pages.css:220
+  .na
     .daterangepicker.dropdown-menu.show-calendar.opensright {
         left: 12%!important;
         top: 61%!important;
