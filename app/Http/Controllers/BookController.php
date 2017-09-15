@@ -278,13 +278,18 @@ class BookController extends Controller
 
                                 if($book->save()){
                                     /* Notificacion via email */
-                                    if ( $request->input('from') ){
-                                        MailController::sendEmailBookSuccess( $book, 1);
-                                        return view('frontend.bookStatus.bookOk');
+                                    if ($customer->email) {
+                                       // if ( $request->input('from') ){
+                                       //      MailController::sendEmailBookSuccess( $book, 1);
+                                       //      return view('frontend.bookStatus.bookOk');
+                                       //  }else{
+                                       //      MailController::sendEmailBookSuccess( $book, 0);
+                                       //      return redirect()->back();
+                                       //  }
                                     }else{
-                                        MailController::sendEmailBookSuccess( $book, 0);
-                                        return redirect()->back();
+                                        
                                     }
+                                    
 
                                 };
                         };
