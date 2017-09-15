@@ -47,21 +47,26 @@
 <div class="container-fluid padding-25 sm-padding-10">
     <div class="row">
         <div class="col-md-12 text-center">
-            <h2>Pagos a propietarios</h2>
+          <?php echo $date ?>
+            <h2>Pagos a propietarios
+              <select id="fechas">
+                <?php $fecha = $date->copy()->subYear(); ?>
+                <?php for ($i=1; $i <= 3; $i++): ?>
+                  <?php echo $date->copy()->format('Y') ?>
+                  <?php echo $fecha->copy()->format('Y') ?>
+                    <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $date->copy()->format('Y') == $fecha->format('Y') ? 'selected' : '' }}>
+                        <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
+                    </option>
+                    <?php $fecha->addYear(); ?>
+                <?php endfor; ?>
+            </select>
+          </h2>
+
         </div>
         <div class="col-md-12 col-xs-12 push-20">
 
             <div class="col-xs-12 col-md-2 pull-right">
-                <select id="date" class="form-control">
-                    <?php $fecha = $date->copy()->subYear(); ?>
-                    <?php for ($i=1; $i <= 3; $i++): ?>
-                        <?php if( $date->copy()->format('Y') == $fecha->format('Y') ){ $selected = "selected"; }else{$selected = "";} ?>
-                        <option value="<?php echo $fecha->copy()->format('Y'); ?>" <?php echo $selected ?>>
-                            <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
-                        </option>
-                        <?php $fecha->addYear(); ?>
-                    <?php endfor; ?>
-                </select>
+                
             </div>
         </div>
         <div class="col-md-4 col-md-offset-1">
@@ -160,11 +165,11 @@
                 </table>
 
         </div>
-        <div class="col-md-5">
+        <!-- <div class="col-md-5">
             <div class="pull-right" id="chartContainer" style="height: 700px; width: 73%;"></div>
             
 
-        </div>
+        </div> -->
             
     </div>
 </div>
@@ -213,7 +218,7 @@
             });
         });
 
-        $('#date').change(function(event) {
+        $('#fechas').change(function(event) {
             
             var month = $(this).val();
             window.location = '/admin/pagos-propietarios/'+month;

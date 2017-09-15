@@ -14,15 +14,21 @@ class PaymentsProController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($month = "")
+    public function index($year = "")
         {
 
-            if ( empty($month) ) {
-                $date = Carbon::createFromDate(2016, 9, 1);
+            if ( empty($year) ) {
+                $date = Carbon::now();
             }else{
-                $month = Carbon::createFromFormat('Y',$month);
-                $date = $month->copy()->addMonth(6);
+                $year = Carbon::createFromFormat('Y',$year);
+                $date = $year->copy();
 
+            }
+
+            if ($date->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+            }else{
+                $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
             }
 
             $books = \App\Book::where('start','>',$date->copy())->where('start','<',$date->copy()->addYear())->get();
@@ -66,7 +72,7 @@ class PaymentsProController extends Controller
 
 
             return view('backend/paymentspro/index',[
-                                                        'date'         => $date->subMonth(),
+                                                        'date'         => $date,
                                                         'rooms'        => \App\Rooms::whereNotIn('id',[106,107,108,109,111,112,113,126,134])->get(),
                                                         'totalCost'    => $totalCost,
                                                         'totalPVP'     => $totalPVP,
@@ -170,13 +176,15 @@ class PaymentsProController extends Controller
         $books = \App\Book::where('start','>',$date->copy())->where('start','<',$date->copy()->addYear())->where('room_id',$id)->get();
 
         foreach ($books as $book) {
-            if (isset($total)) {
                 $total += $book->cost_total;
-            }else{
-                $total = $book->cost_total;
-            }
+
         }
-        $deuda = ($total - $request->debt)/$total*100;
+        if ($total > 0 && $request->debt > 0) {
+           $deuda = ($total - $request->debt)/$total*100;
+        }else{
+            $deuda = $total;
+        }
+        
 
         return view('backend/paymentspro/_form',  [
                                                 'room'        => $room,

@@ -48,9 +48,9 @@
                                             <i class="fa fa-euro"></i>
                                         </span>
                                             <select class="full-width" data-init-plugin="select2" name="type" style="    min-height: 30px;">
-                                                <option value="1"><?php echo $typePayment->getPaymentType(1) ?></option>
-                                                <option value="2"><?php echo $typePayment->getPaymentType(2) ?></option>
-                                                <option value="3"><?php echo $typePayment->getPaymentType(3) ?></option>
+                                                <?php for ($i=1; $i <= 4 ; $i++): ?>
+                                                    <option value="<?php echo $i ?>"><?php echo $typePayment->getPaymentType($i) ?></option>
+                                                <?php endfor; ?>
                                             </select>
                                     </div>
                                     <br>
@@ -97,7 +97,7 @@
                                                 </td>
                                                 
                                                 <td class="text-center">
-                                                    <?php echo $typePayment->getPaymentType($payment->type) ?>
+                                                    <?php echo $payment->getPaymentType($payment->type) ?>
                                                 </td>
                                                 <td class="text-center">
                                                     <?php echo $payment->comment ?>
@@ -124,6 +124,9 @@
                             <div class="panel-body">
                                 <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
                                     <thead >
+                                        <?php if ($deuda != 0): ?>
+                                            <th class ="text-center bg-success " style="width:<?php echo $deuda."%" ?>!important"><?php echo number_format($total - $debt,2,',','.') ?></th>
+                                        <?php endif ?>
                                         <th class ="text-center bg-success " style="width:<?php echo $deuda."%" ?>!important"><?php echo number_format($total - $debt,2,',','.') ?></th>
                                         <?php if ($debt == 0): ?>
                                         <?php else: ?>
