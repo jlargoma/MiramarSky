@@ -362,11 +362,10 @@ class BookController extends Controller
 
     static function getPriceBook(Request $request)
         {
-
+            
             $start = Carbon::createFromFormat('d/m/Y' , $request->start);
             $finish = Carbon::createFromFormat('d/m/Y' , $request->finish);
             $countDays = $finish->diffInDays($start);
-
 
             $paxPerRoom = \App\Rooms::getPaxRooms($request->pax,$request->room);
 
@@ -381,7 +380,7 @@ class BookController extends Controller
 
             for ($i=1; $i <= $countDays; $i++) { 
 
-                $seasonActive = \App\Seasons::getSeason($start->copy());
+                $seasonActive = \App\Seasons::getSeason($start->copy()->format('Y-m-d'));
 
                 $prices = \App\Prices::where('season' ,  $seasonActive)
                                     ->where('occupation', $pax)->get();

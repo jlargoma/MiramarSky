@@ -114,12 +114,12 @@
 
     <div class="container-fluid  sm-padding-10 p-l-10 p-r-10 p-t-5">
         <div class="row bg-white">
-            <div class="col-md-2">
+            <div class="col-md-2 m-l-50 m-t-20">
                 <div class="col-md-12 col-xs-12">
                     <canvas id="barChart" style="width: 100%; height: 250px;"></canvas>
                 </div>
             </div>
-            <div class="col-md-2 m-t-40">
+            <div class="col-md-2 m-t-20">
                 <div class="col-md-12">
                     <table class="table table-hover demo-table-search table-responsive " style="min-height: 137px" >
                         <thead>
@@ -133,10 +133,10 @@
                             <td class="ingresos_temp">Total Cobrado</td>
                             <td class="ingresos_temp"><?php echo ($paymentSeason["total"]) ? number_format($paymentSeason["total"],2,',','.') : "---" ?></td>
                         </tr>
-                        <tr>
-                            <td class="ingresos_temp">Pend Cobro</td>
-                            <td class="ingresos_temp"><?php echo number_format($arrayTotales[$inicio->copy()->format('Y')]-$paymentSeason["total"],2,',','.')?></td>
-                        </tr>
+                        <thead>
+                            <th class="ingresos_temp">Pend Cobro</th>
+                            <th class="ingresos_temp"><?php echo number_format($arrayTotales[$inicio->copy()->format('Y')]-$paymentSeason["total"],2,',','.')?></th>
+                        </thead>
                     </table>
                     <div class="col-xs-12 not-padding push-20">
                         <canvas id="pie-ing" ></canvas>
@@ -144,11 +144,11 @@
                 </div>
                 
             </div>
-            <div class="col-md-3 m-t-20">
-                <div class="col-md-12 m-t-20">
+            <div class="col-md-2 m-t-20 m-r-50">
+                <div class="col-md-12">
                     <table class="table table-hover demo-table-search table-responsive " >
                         <thead>
-                            <th class="cobros_temp"  colspan="2">Cobros de la temporada <?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?></th>
+                            <th class="cobros_temp"  colspan="2">Cobros temporada <?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?></th>
                         </thead>
                         <tr>
                             <td class="cobros_temp">Banco</td>
@@ -169,7 +169,7 @@
                     <canvas id="pie-cob" style="max-height: 245px!important;max-width: 245px!important" ></canvas>
                 </div>
             </div>
-            <div class="col-md-5 ">
+            <div class="col-md-5 m-t-20">
                 <div class="row">
                     <div class="p-l-20 p-r-20">
                         <table class="table table-hover demo-table-search table-responsive " >
@@ -186,7 +186,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="text-center p-t-5 p-b-5">Ventas</td>
+                                    <th class="text-center p-t-5 p-b-5">Ventas</th>
                                     <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][12],2,',','.')?></td>
                                     <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][1],2,',','.')?></td>
                                     <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][2],2,',','.')?></td>
@@ -194,7 +194,7 @@
                                     <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][4],2,',','.')?></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center p-t-5 p-b-5">Benº</td>
+                                    <th class="text-center p-t-5 p-b-5">Benº</th>
                                     <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][12],2,',','.')?></td>
                                     <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][1],2,',','.')?></td>
                                     <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][2],2,',','.')?></td>
@@ -206,14 +206,14 @@
                                 </thead>
                                 <tr>
                                     <th class="text-center ingresos_temp text-white"></th>
-                                        <th class="text-center ingresos_temp text-white">Nov/Dic</th>
-                                        <th class="text-center ingresos_temp text-white">Ene</th>
-                                        <th class="text-center ingresos_temp text-white">Feb</th>
-                                        <th class="text-center ingresos_temp text-white">Mar</th>
-                                        <th class="text-center ingresos_temp text-white">Abr/May</th>
+                                    <th class="text-center ingresos_temp text-white">Nov/Dic</th>
+                                    <th class="text-center ingresos_temp text-white">Ene</th>
+                                    <th class="text-center ingresos_temp text-white">Feb</th>
+                                    <th class="text-center ingresos_temp text-white">Mar</th>
+                                    <th class="text-center ingresos_temp text-white">Abr/May</th>
                                 </tr>
                                 <tr>
-                                    <td class="text-center">Ventas</td>
+                                    <th class="text-center">Ventas</th>
                                     <td class="text-center"><?php echo number_format($ventasOld["Ventas"][12],2,',','.') ?></td>
                                     <td class="text-center"><?php echo number_format($ventasOld["Ventas"][1],2,',','.') ?></td>
                                     <td class="text-center"><?php echo number_format($ventasOld["Ventas"][2],2,',','.') ?></td>
@@ -221,15 +221,18 @@
                                     <td class="text-center"><?php echo number_format($ventasOld["Ventas"][4],2,',','.') ?></td>
                                 </tr>
                                 <tr>
-                                    <td class="text-center">Benº</td>
+                                    <th class="text-center">Benº</th>
                                     <td class="text-center"><?php echo number_format($ventasOld["Ben"][12],2,',','.') ?></td>
                                     <td class="text-center"><?php echo number_format($ventasOld["Ben"][1],2,',','.') ?></td>
                                     <td class="text-center"><?php echo number_format($ventasOld["Ben"][2],2,',','.') ?></td>
                                     <td class="text-center"><?php echo number_format($ventasOld["Ben"][3],2,',','.') ?></td>
                                     <td class="text-center"><?php echo number_format($ventasOld["Ben"][4],2,',','.') ?></td>
                                 </tr>
+                                <thead>
+                                    <th colspan="6" class="comparativa bg-primary text-center text-white" >Comparativa de la temporada <?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?> </th>
+                                </thead>
                                 <tr>
-                                    <th class="text-center bg-complete text-white">Comp. Ventas</th>
+                                    <th class="text-center">Comp. Ventas</th>
                                     <td class="text-center">
                                         <?php echo number_format($ventas["Ventas"][12]-$ventasOld["Ventas"][12],2,',','.');
                                             echo ($ventas["Ventas"][12]-$ventasOld["Ventas"][12] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
@@ -257,7 +260,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-center bg-complete text-white">Comp. Benº</th>
+                                    <th class="text-center">Comp. Benº</th>
                                     <td class="text-center">
                                         <?php echo number_format($ventas["Ben"][12]-$ventasOld["Ben"][12],2,',','.');
                                             echo ($ventas["Ben"][12]-$ventasOld["Ben"][12] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
@@ -300,7 +303,7 @@
                                 <?php $fecha = new Carbon('first day of September 2015'); ?>
                             <?php endif ?>
                         
-                            <?php for ($i=1; $i <= 4; $i++): ?>                           
+                            <?php for ($i=1; $i <= 3; $i++): ?>                           
                                 <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $date->copy()->format('Y') == $fecha->format('Y') ? 'selected' : '' }}>
                                     <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
                                 </option>
@@ -586,17 +589,16 @@
                                                         <td class ="text-center"><?php echo $book->nigths ?></td>
 
                                                         <td class ="text-center"><?php echo $book->total_price."€" ?><br>
-                                                                                
                                                         </td>
 
                                                         <td class ="text-center">
                                                             <select class="status form-control" data-id="<?php echo $book->id ?>" >
+
                                                                 <?php for ($i=1; $i < 9; $i++): ?> 
-                                                                    <?php if ($i == $book->type_book): ?>
-                                                                        <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
-                                                                    <?php else: ?>
-                                                                        <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
-                                                                    <?php endif ?>                                          
+                                                                    <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
+                                                                            <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
+                                                                            value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
+                                                                            <?php echo $book->getStatus($i) ?></option>                                    
                                                                      
                                                                 <?php endfor; ?>
                                                             </select>
@@ -701,11 +703,10 @@
                                                         <td class ="text-center">
                                                             <select class="status form-control" data-id="<?php echo $book->id ?>" >
                                                                 <?php for ($i=1; $i < 9; $i++): ?> 
-                                                                    <?php if ($i == $book->type_book): ?>
-                                                                        <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
-                                                                    <?php else: ?>
-                                                                        <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
-                                                                    <?php endif ?>                                          
+                                                                    <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
+                                                                            <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
+                                                                            value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
+                                                                            <?php echo $book->getStatus($i) ?></option>                                    
                                                                      
                                                                 <?php endfor; ?>
                                                             </select>
@@ -769,7 +770,7 @@
                                                     <td class ="text-center"><?php echo $book->customer->phone ?></td>
                                                     <td class ="text-center"><?php echo $book->pax ?></td>
                                                     <td class ="text-center">
-                                                        <select class=" form-control full-width room" data-init-plugin="select2" data-id="<?php echo $book->id ?>" >
+                                                        <select class="room" class="form-control" data-id="<?php echo $book->id ?>" >
                                                             
                                                             <?php foreach ($rooms as $room): ?>
                                                                 <?php if ($room->id == $book->room_id): ?>
@@ -823,13 +824,12 @@
                                                                         
                                                     </td>
                                                     <td class ="text-center">
-                                                        <select class=" form-control full-width status" data-init-plugin="select2" data-id="<?php echo $book->id ?>" >
+                                                        <select class="status form-control" data-id="<?php echo $book->id ?>" >
                                                             <?php for ($i=1; $i < 9; $i++): ?> 
-                                                                <?php if ($i == $book->type_book): ?>
-                                                                    <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
-                                                                <?php else: ?>
-                                                                    <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
-                                                                <?php endif ?>                                          
+                                                                <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
+                                                                        <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
+                                                                        value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
+                                                                        <?php echo $book->getStatus($i) ?></option>                                    
                                                                  
                                                             <?php endfor; ?>
                                                         </select>
@@ -1163,7 +1163,6 @@
 
                 $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays}).success(function( data ) {
                     pricePark = data;
-                    console.log(data)
                     $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
                         priceLujo = data;
 
@@ -1229,20 +1228,16 @@
                     labels: [
                                 <?php foreach ($arrayTotales as $key => $value): ?>
                                     <?php echo "'".$key."'," ?>
-                                <?php endforeach ?>
+                                <?php endforeach ?>2018,2019
                             ],
                     datasets: [
                         {
                             label: "Ingresos por Año",
                             backgroundColor: [
-                                <?php foreach ($arrayTotales as $key => $value): ?>
-                                    'rgba(54, 162, 235, 0.2)',
-                                <?php endforeach ?>
+                                 'rgba(54, 162, 235, 0.2)',
                             ],
                             borderColor: [
-                                <?php foreach ($arrayTotales as $key => $value): ?>
-                                    'rgba(54, 162, 235, 1)',
-                                <?php endforeach ?>
+                                'rgba(54, 162, 235, 1)',
                             ],
                             borderWidth: 1,
                             data: [
