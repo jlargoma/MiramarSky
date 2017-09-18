@@ -58,6 +58,7 @@
                         <th class ="text-center bg-complete text-white">  Lujo          </th>                        
                         <th class ="text-center bg-complete text-white">  Tipo        </th>
                         <th class ="text-center bg-complete text-white">  Propietario   </th>
+                        <th class ="text-center bg-complete text-white">  Orden   </th>
                         <th class ="text-center bg-complete text-white" style="width: 10%">  Estado </th>
                     </tr>
                 </thead>
@@ -69,7 +70,7 @@
                                <?php echo $room->name?>
                            </td>
                            <td class="text-center">
-                               <?php echo $room->nameRoom?>
+                               <input class="nameRoom nameRoom-<?php echo $room->nameRoom?>" type="text" name="nameRoom" data-id="<?php echo $room->id ?>" value="<?php echo $room->nameRoom?>" style="width: 100%;text-align: center;border-style: none none ">
                            </td>
                            <td class="text-center">
                                 <input class="editable minOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->minOcu?>" style="width: 100%;text-align: center;border-style: none none ">
@@ -78,18 +79,18 @@
                                <input class="editable maxOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->maxOcu?>" style="width: 100%;text-align: center;border-style: none none">
                            </td> 
                            <td class="text-center">
-                               <?php echo $room->sizeRooms->name?>
+                               <select class="type" class="form-control" data-id="<?php echo $room->id ?>">
+                                 <?php foreach ($sizes as $size): ?>                                   
+                                     <option value="<?php echo $size->id; ?>" <?php echo ($size->id == $room->sizeApto) ? "selected" : "" ?>>
+                                         <?php echo $size->name ?>
+                                     </option>
+                                 <?php endforeach ?>
+                               </select>
                            </td>
                            <td class="text-center">
-                               <?php if ($room->luxury == 0): ?>
-                                   <span class="input-group-addon bg-transparent">
-                                        <input type="checkbox" class="editable" data-id="<?php echo $room->id ?>" name="luxury" data-init-plugin="switchery" data-size="small" data-color="primary" />
-                                    </span>
-                               <?php else: ?>
-                                   <span class="input-group-addon bg-transparent">
-                                        <input type="checkbox" class="editable" data-id="<?php echo $room->id ?>" name="luxury" data-init-plugin="switchery" data-size="small" data-color="primary" checked="checked" />
-                                    </span>
-                               <?php endif ?>
+                               <span class="input-group-addon bg-transparent">
+                                    <input type="checkbox" class="editable" data-id="<?php echo $room->id ?>" name="luxury" data-init-plugin="switchery" data-size="small" data-color="primary" <?php echo ($room->luxury == 0) ? "" : "checked" ?>/>
+                                </span>
                                
                            </td> 
                            <td class="text-center">
@@ -104,6 +105,10 @@
                            </td>
                            <td class="text-center">
                                <?php echo $room->user->name?>
+                           </td> 
+                           <td class="text-center">
+                              <p style="display: none"><?php echo $room->order ?></p>
+                               <input class="orden order-<?php echo $room->id?>" type="text" name="orden" data-id="<?php echo $room->id ?>" value="<?php echo $room->order?>" style="width: 100%;text-align: center;border-style: none none">
                            </td>             
                            <td class="text-center">
                                <!-- <div class="btn-group">
@@ -125,15 +130,9 @@
                                    
                                                                        
                                </div> -->
-                               <?php if ($room->state == 0): ?>
                                    <span class="input-group-addon bg-transparent">
-                                        <input type="checkbox" class="estado" data-id="<?php echo $room->id ?>" name="state" data-init-plugin="switchery" data-size="small" data-color="success">
+                                        <input type="checkbox" class="estado" data-id="<?php echo $room->id ?>" name="state" data-init-plugin="switchery" data-size="small" data-color="success" <?php echo ($room->state == 0) ? "" : "checked" ?>> 
                                     </span>
-                               <?php else: ?>
-                                   <span class="input-group-addon bg-transparent">
-                                        <input type="checkbox" class="estado" data-id="<?php echo $room->id ?>" name="state" data-init-plugin="switchery" data-size="small" data-color="success" checked="checked" />
-                                    </span>
-                               <?php endif ?>
                            </td>
                        </tr>
                    <?php endforeach ?>
@@ -396,12 +395,28 @@
                     }
                 });
             });
+            $('.nameRoom').change(function(event) {
+              var id = $(this).attr('data-id');
+              var name = $(this).val();
 
+              $.get('/admin/apartamentos/update-name', {  id: id, name: name}, function(data) {
+                  location.reload();
+              });
+            });
             $('.type').change(function(event) {
               var id = $(this).attr('data-id');
               var tipo = $(this).val();
 
               $.get('/admin/apartamentos/update-type', {  id: id, tipo: tipo}, function(data) {
+                  location.reload();
+              });
+
+            });
+            $('.orden').change(function(event) {
+              var id = $(this).attr('data-id');
+              var orden = $(this).val();
+
+              $.get('/admin/apartamentos/update-order', {  id: id, orden: orden}, function(data) {
                   location.reload();
               });
 
