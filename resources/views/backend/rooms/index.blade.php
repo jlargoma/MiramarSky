@@ -356,79 +356,86 @@
     <script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
 
    <script type="text/javascript">
-       
-       $(document).ready(function() {
-            $('.editable').change(function(event) {
-                var id = $(this).attr('data-id');
-                var luxury = $(this).is(':checked');
-                
-                if (luxury == true) {
-                    luxury = 1;
+
+      function changeRooms(){
+        $('.editable').change(function(event) {
+            var id = $(this).attr('data-id');
+            var luxury = $(this).is(':checked');
+            
+            if (luxury == true) {
+                luxury = 1;
+            }else{
+                luxury = 0;
+            }
+
+            var minOcu = $('.minOcu-'+id).val();
+            var maxOcu = $('.maxOcu-'+id).val();
+            
+            console.log(minOcu);
+            $.get('/admin/apartamentos/update', {  id: id, luxury: luxury, maxOcu: maxOcu, minOcu: minOcu}, function(data) {
+            });
+        });
+
+        $('.estado').change(function(event) {
+            var id = $(this).attr('data-id');
+            var state = $(this).is(':checked');
+            
+            if (state == true) {
+                state = 1;
+            }else{
+                state = 0;
+            }
+
+            $.get('/admin/apartamentos/state', {  id: id, state: state}, function(data) {
+                if (data == 0) {
+                  alert('No se puede cambiar')
+                  location.reload();
                 }else{
-                    luxury = 0;
+                  location.reload();
                 }
-
-                var minOcu = $('.minOcu-'+id).val();
-                var maxOcu = $('.maxOcu-'+id).val();
-                
-                console.log(minOcu);
-                $.get('/admin/apartamentos/update', {  id: id, luxury: luxury, maxOcu: maxOcu, minOcu: minOcu}, function(data) {
-                });
             });
+        });
+        $('.nameRoom').change(function(event) {
+          var id = $(this).attr('data-id');
+          var name = $(this).val();
 
-            $('.estado').change(function(event) {
-                var id = $(this).attr('data-id');
-                var state = $(this).is(':checked');
-                
-                if (state == true) {
-                    state = 1;
-                }else{
-                    state = 0;
-                }
+          $.get('/admin/apartamentos/update-name', {  id: id, name: name}, function(data) {
+              location.reload();
+          });
+        });
+        $('.sizes').change(function(event) {
+          var id = $(this).attr('data-id');
+          var size = $(this).val();
 
-                $.get('/admin/apartamentos/state', {  id: id, state: state}, function(data) {
-                    if (data == 0) {
-                      alert('No se puede cambiar')
-                      location.reload();
-                    }else{
-                      location.reload();
-                    }
-                });
-            });
-            $('.nameRoom').change(function(event) {
-              var id = $(this).attr('data-id');
-              var name = $(this).val();
+          $.get('/admin/apartamentos/update-size', {  id: id, size: size}, function(data) {
+              location.reload();
+          });
+        });
+        $('.type').change(function(event) {
+          var id = $(this).attr('data-id');
+          var tipo = $(this).val();
 
-              $.get('/admin/apartamentos/update-name', {  id: id, name: name}, function(data) {
-                  location.reload();
-              });
-            });
-            $('.sizes').change(function(event) {
-              var id = $(this).attr('data-id');
-              var size = $(this).val();
+          $.get('/admin/apartamentos/update-type', {  id: id, tipo: tipo}, function(data) {
+              location.reload();
+          });
 
-              $.get('/admin/apartamentos/update-size', {  id: id, size: size}, function(data) {
-                  location.reload();
-              });
-            });
-            $('.type').change(function(event) {
-              var id = $(this).attr('data-id');
-              var tipo = $(this).val();
+        });
+        $('.orden').change(function(event) {
+          var id = $(this).attr('data-id');
+          var orden = $(this).val();
 
-              $.get('/admin/apartamentos/update-type', {  id: id, tipo: tipo}, function(data) {
-                  location.reload();
-              });
+          $.get('/admin/apartamentos/update-order', {  id: id, orden: orden}, function(data) {
+              location.reload();
+          });
 
-            });
-            $('.orden').change(function(event) {
-              var id = $(this).attr('data-id');
-              var orden = $(this).val();
+        });
+       }
 
-              $.get('/admin/apartamentos/update-order', {  id: id, orden: orden}, function(data) {
-                  location.reload();
-              });
-
-            });
+      $(document).ready(function() {
+         changeRooms();
+         $('.dataTables_paginate').click(function(event) {
+          changeRooms();
+         });
        });
    </script>
 @endsection
