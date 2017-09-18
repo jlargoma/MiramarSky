@@ -392,7 +392,7 @@ class BookController extends Controller
             }
 
 
-            return $price + $supLimp;
+            return $price + $suplimp;
         }
 
     static function getCostBook(Request $request)
@@ -425,7 +425,7 @@ class BookController extends Controller
             }
 
 
-            return $cost + $supLimp;
+            return $cost + $suplimp;
         }
 
     //Funcion para actualizar la reserva
