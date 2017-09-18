@@ -206,97 +206,97 @@ class BookController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
-        {
-            $date = explode('-', $request->input('fechas'));
+    {
+        $date = explode('-', $request->input('fechas'));
 
-            $start = Carbon::createFromFormat('d M, y' , trim($date[0]))->format('d/m/Y');
-            $finish = Carbon::createFromFormat('d M, y' , trim($date[1]))->format('d/m/Y');
-            $book = new \App\Book();
-            $extraPrice = 0 ;
-            $extraCost  = 0;
+        $start = Carbon::createFromFormat('d M, y' , trim($date[0]))->format('d/m/Y');
+        $finish = Carbon::createFromFormat('d M, y' , trim($date[1]))->format('d/m/Y');
+        $book = new \App\Book();
+        $extraPrice = 0 ;
+        $extraCost  = 0;
 
 
-            if ($request->input('extras') != "") {
-                foreach ($request->input('extras') as $extra) {
-                   $precios = \App\Extras::find($extra);
-                   $extraPrice += $precios->price;
-                   $extraCost += $precios->cost;
-                }
+        if ($request->input('extras') != "") {
+            foreach ($request->input('extras') as $extra) {
+               $precios = \App\Extras::find($extra);
+               $extraPrice += $precios->price;
+               $extraCost += $precios->cost;
             }
-
-                    //createacion del cliente
-                        $customer = new \App\Customers();
-                        $customer->user_id = (Auth::check())?Auth::user()->id:23;
-                        $customer->name = $request->input('name');
-                        $customer->email = $request->input('email');
-                        $customer->phone = $request->input('phone');
-
-                        if($customer->save()){
-                            //Creacion de la reserva
-                                $book->user_id       = $customer->user_id;
-                                $book->customer_id   = $customer->id;
-                                $book->room_id       = $request->input('newroom');
-                                $book->start         = Carbon::createFromFormat('d/m/Y',$start);
-                                $book->finish        = Carbon::createFromFormat('d/m/Y',$finish);
-                                $book->comment       = $request->input('comments');
-                                $book->book_comments = $request->input('book_comments');
-                                $book->type_book     = 3;
-                                $book->pax           = $request->input('pax');
-                                $book->nigths        = $request->input('nigths');
-                                $book->agency        = $request->input('agency');
-                                $book->PVPAgencia    = $request->input('agencia');
-
-                                $room                = \App\Rooms::find($request->input('newroom'));
-                                $book->sup_limp      = ($room->typeApto == 1) ? 30 : 50;
-
-
-                                $book->sup_park      = $this->getPriceParkController($request->input('parking'), $request->input('nigths'));
-                                $book->type_park     = $request->input('parking');
-
-
-                                $book->cost_park     = $this->getCostParkController($request->input('parking'),$request->input('nigths'));
-                                $book->type_luxury   = $request->input('type_luxury');
-                                $book->sup_lujo      = $this->getPriceLujo($request->input('type_luxury'));
-                                $book->cost_lujo     = $this->getCostLujo($request->input('type_luxury'));
-                                $book->cost_apto     = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
-                                $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
-
-                                $book->total_price   = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo + $extraPrice;
-
-
-                                $book->total_ben     = $book->total_price - $book->cost_total;
-
-
-                                $book->extraPrice    = $extraPrice;
-                                $book->extraCost     = $extraCost;
-                                //Porcentaje de beneficio
-                                $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
-                                $book->ben_jorge     = $book->getBenJorge($book->total_ben,$room->id);
-                                $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
-
-
-                                if($book->save()){
-                                    /* Notificacion via email */
-                                    if ($customer->email) {
-                                       if ( $request->input('from') ){
-                                            MailController::sendEmailBookSuccess( $book, 1);
-                                            return view('frontend.bookStatus.bookOk');
-                                        }
-                                        else{
-                                            // MailController::sendEmailBookSuccess( $book, 0);
-                                            return redirect()->back();
-                                        }
-                                    }else{
-
-                                    }
-
-
-                                };
-                        };
-
-
-            return redirect('admin/reservas');
         }
+
+        //createacion del cliente
+            $customer = new \App\Customers();
+            $customer->user_id = (Auth::check())?Auth::user()->id:23;
+            $customer->name = $request->input('name');
+            $customer->email = $request->input('email');
+            $customer->phone = $request->input('phone');
+
+            if($customer->save()){
+                //Creacion de la reserva
+                    $book->user_id       = $customer->user_id;
+                    $book->customer_id   = $customer->id;
+                    $book->room_id       = $request->input('newroom');
+                    $book->start         = Carbon::createFromFormat('d/m/Y',$start);
+                    $book->finish        = Carbon::createFromFormat('d/m/Y',$finish);
+                    $book->comment       = $request->input('comments');
+                    $book->book_comments = $request->input('book_comments');
+                    $book->type_book     = 3;
+                    $book->pax           = $request->input('pax');
+                    $book->nigths        = $request->input('nigths');
+                    $book->agency        = $request->input('agency');
+                    $book->PVPAgencia    = $request->input('agencia');
+
+                    $room                = \App\Rooms::find($request->input('newroom'));
+                    $book->sup_limp      = ($room->typeApto == 1) ? 30 : 50;
+
+
+                    $book->sup_park      = $this->getPriceParkController($request->input('parking'), $request->input('nigths'));
+                    $book->type_park     = $request->input('parking');
+
+
+                    $book->cost_park     = $this->getCostParkController($request->input('parking'),$request->input('nigths'));
+                    $book->type_luxury   = $request->input('type_luxury');
+                    $book->sup_lujo      = $this->getPriceLujo($request->input('type_luxury'));
+                    $book->cost_lujo     = $this->getCostLujo($request->input('type_luxury'));
+                    $book->cost_apto     = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
+                    $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
+
+                    $book->total_price   = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo + $extraPrice;
+
+
+                    $book->total_ben     = $book->total_price - $book->cost_total;
+
+
+                    $book->extraPrice    = $extraPrice;
+                    $book->extraCost     = $extraCost;
+                    //Porcentaje de beneficio
+                    $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
+                    $book->ben_jorge     = $book->getBenJorge($book->total_ben,$room->id);
+                    $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
+
+
+                    if($book->save()){
+                        /* Notificacion via email */
+                        if ($customer->email) {
+                           if ( $request->input('from') ){
+                                MailController::sendEmailBookSuccess( $book, 1);
+                                return view('frontend.bookStatus.bookOk');
+                            }
+                            else{
+                                // MailController::sendEmailBookSuccess( $book, 0);
+                                return redirect()->back();
+                            }
+                        }else{
+
+                        }
+
+
+                    };
+            };
+
+
+        return redirect('admin/reservas');
+    }
 
     /**
      * Update the specified resource in storage.
@@ -387,12 +387,12 @@ class BookController extends Controller
                                     ->where('occupation', $pax)->get();
 
                 foreach ($prices as $precio) {
-                    $price = $price + $precio->price + $supLimp;
+                    $price = $price + $precio->price ;
                 }
             }
 
 
-            return $price;
+            return $price + $supLimp;
         }
 
     static function getCostBook(Request $request)
@@ -420,12 +420,12 @@ class BookController extends Controller
                                     ->where('occupation', $pax)->get();
 
                 foreach ($costs as $key => $precio) {
-                    $cost = $cost + $precio->cost + $supLimp;
+                    $cost = $cost + $precio->cost ;
                 }
             }
 
 
-            return $cost;
+            return $cost + $supLimp;
         }
 
     //Funcion para actualizar la reserva
