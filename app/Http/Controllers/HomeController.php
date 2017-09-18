@@ -231,7 +231,11 @@ class HomeController extends Controller
         
         $total =  $price + $priceParking + $limp + $luxury;  
 
-
+        // echo "<pre>";
+        // print_r($price); echo "<br>";
+        // print_r($priceParking); echo "<br>";
+        // print_r($limp); echo "<br>";
+        // print_r($luxury); echo "<br>";
 
         if ($seasonActive != 0) {
             return view('frontend.bookStatus.response', [

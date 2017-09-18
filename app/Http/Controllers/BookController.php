@@ -247,7 +247,7 @@ class BookController extends Controller
                     $book->PVPAgencia    = $request->input('agencia');
 
                     $room                = \App\Rooms::find($request->input('newroom'));
-                    $book->sup_limp      = ($room->typeApto == 1) ? 30 : 50;
+                    $book->sup_limp      = ($room->sizeApto == 1) ? 30 : 50;
 
 
                     $book->sup_park      = $this->getPriceParkController($request->input('parking'), $request->input('nigths'));
@@ -261,7 +261,7 @@ class BookController extends Controller
                     $book->cost_apto     = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
                     $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
 
-                    $book->total_price   = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo + $extraPrice;
+                    $book->total_price   = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
 
 
                     $book->total_ben     = $book->total_price - $book->cost_total;
@@ -273,7 +273,6 @@ class BookController extends Controller
                     $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
                     $book->ben_jorge     = $book->getBenJorge($book->total_ben,$room->id);
                     $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
-
 
                     if($book->save()){
                         /* Notificacion via email */
@@ -392,7 +391,7 @@ class BookController extends Controller
             }
 
 
-            return $price + $supLimp;
+            return $price;
         }
 
     static function getCostBook(Request $request)
@@ -425,7 +424,7 @@ class BookController extends Controller
             }
 
 
-            return $cost + $supLimp;
+            return $cost;
         }
 
     //Funcion para actualizar la reserva
