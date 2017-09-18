@@ -79,7 +79,7 @@
                                <input class="editable maxOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->maxOcu?>" style="width: 100%;text-align: center;border-style: none none">
                            </td> 
                            <td class="text-center">
-                               <select class="type" class="form-control" data-id="<?php echo $room->id ?>">
+                               <select class="sizes" class="form-control" data-id="<?php echo $room->id ?>">
                                  <?php foreach ($sizes as $size): ?>                                   
                                      <option value="<?php echo $size->id; ?>" <?php echo ($size->id == $room->sizeApto) ? "selected" : "" ?>>
                                          <?php echo $size->name ?>
@@ -400,6 +400,14 @@
               var name = $(this).val();
 
               $.get('/admin/apartamentos/update-name', {  id: id, name: name}, function(data) {
+                  location.reload();
+              });
+            });
+            $('.sizes').change(function(event) {
+              var id = $(this).attr('data-id');
+              var size = $(this).val();
+
+              $.get('/admin/apartamentos/update-size', {  id: id, size: size}, function(data) {
                   location.reload();
               });
             });

@@ -16,7 +16,7 @@ class RoomsController extends Controller
     public function index()
     {
         return view('backend/rooms/index',[
-                    'rooms' => \App\Rooms::all(),
+                    'rooms' => \App\Rooms::orderBy('order','ASC')->get(),
                     'sizes'  => \App\SizeRooms::all(),
                     'types'  => \App\TypeApto::all(),
                     'tipos'  => \App\TypeApto::all(),
@@ -170,6 +170,16 @@ class RoomsController extends Controller
             $id                   = $request->id;
             $roomUpdate          = \App\Rooms::find($id);
             $roomUpdate->order = $request->orden;
+            if ($roomUpdate->save()) {
+                }
+        }
+
+    // Funcion para cambiar el Tamaño
+        public function updateSize(Request $request)
+        {
+            $id                   = $request->id;
+            $roomUpdate          = \App\Rooms::find($id);
+            $roomUpdate->sizeApto = $request->size;
             if ($roomUpdate->save()) {
                 }
         }

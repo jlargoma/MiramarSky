@@ -92,6 +92,7 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 	Route::get('admin/apartamentos/update-type', 'RoomsController@updateType');
 	Route::get('admin/apartamentos/update-name', 'RoomsController@updateName');
 	Route::get('admin/apartamentos/update-order', 'RoomsController@updateOrder');
+	Route::get('admin/apartamentos/update-size', 'RoomsController@updateSize');
 	Route::post('admin/apartamentos/saveupdate', 'RoomsController@saveUpdate');
 	Route::post('admin/apartamentos/create', 'RoomsController@create');
 	Route::post('admin/apartamentos/create-type', 'RoomsController@createType');
