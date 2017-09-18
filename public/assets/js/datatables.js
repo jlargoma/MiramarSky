@@ -80,6 +80,31 @@
             table.fnFilter($(this).val());
         });
     }
+
+    var initTableWithSearchRoom = function() {
+        var table = $('#tableWithSearchRoom');
+
+        var settings = {
+            "order": [7, 'asc'],
+            "sDom": "<t><'row'<p i>>",
+            "destroy": true,
+            "scrollCollapse": false,
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ ",
+                "sInfo": "Mostrando <b>_START_ de _END_</b> de _TOTAL_"
+            },
+            "iDisplayLength": 30
+        };
+
+        table.dataTable(settings);
+
+        // search box for table
+        $('#search-tableRoom').keyup(function() {
+            table.fnFilter($(this).val());
+        });
+    }
+
+
     var initTableWithSearchLiquidacion = function() {
         var table = $('#tableWithSearchLiquidacion');
 
@@ -200,6 +225,7 @@
     initTableWithSearch();
     initTableWithSearch2();
     initTableWithSearch3();
+    initTableWithSearchRoom();
     initTableWithSearchLiquidacion();
     initTableWithDynamicRows();
     initTableWithExportOptions();

@@ -42,11 +42,11 @@
         <div class="col-md-8 cols-xs-12 col-sm-12">
             <div class="pull-left">
               <div class="col-xs-12 ">
-                <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
+                <input type="text" id="search-tableRoom" class="form-control pull-right" placeholder="Buscar">
               </div>
             </div>
             <div class="clearfix"></div>
-            <table class="table table-hover demo-table-search table-responsive " id="tableWithSearch">
+            <table class="table table-hover demo-table-search table-responsive " id="tableWithSearchRoom">
                 <thead>
                     <tr>
                         <th class ="text-center hidden">                  ID            </th>
@@ -339,9 +339,7 @@
     <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
     <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
 
-    <script src="/assets/plugins/bootstrap3-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
     <script type="text/javascript" src="/assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
-    <script type="text/javascript" src="/assets/plugins/dropzone/dropzone.min.js"></script>
     <script type="text/javascript" src="/assets/plugins/bootstrap-tag/bootstrap-tagsinput.min.js"></script>
     <script type="text/javascript" src="/assets/plugins/jquery-inputmask/jquery.inputmask.min.js"></script>
     <script src="/assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
