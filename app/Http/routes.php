@@ -81,7 +81,7 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 	Route::get('admin/clientes/update', 'CustomersController@update');
 	Route::get('admin/clientes/save', 'CustomersController@save');
 	Route::post('admin/clientes/create', 'CustomersController@create');
-	Route::get('admin/clientes/delete/{id}', 'CustomersController@delete');
+	Route::get('admin/clientes/delete/{id}', 'CustomersController@delete'); 
 
 // Rooms
 	Route::get('admin/apartamentos' , 'RoomsController@index');
@@ -90,6 +90,8 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 	Route::get('admin/apartamentos/new-size', 'RoomsController@newSizeRoom');
 	Route::get('admin/apartamentos/update', 'RoomsController@update');
 	Route::get('admin/apartamentos/update-type', 'RoomsController@updateType');
+	Route::get('admin/apartamentos/update-name', 'RoomsController@updateName');
+	Route::get('admin/apartamentos/update-order', 'RoomsController@updateOrder');
 	Route::post('admin/apartamentos/saveupdate', 'RoomsController@saveUpdate');
 	Route::post('admin/apartamentos/create', 'RoomsController@create');
 	Route::post('admin/apartamentos/create-type', 'RoomsController@createType');

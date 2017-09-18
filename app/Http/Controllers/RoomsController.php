@@ -154,6 +154,26 @@ class RoomsController extends Controller
             echo "Cambiada!!";
         }
     }
+    // Funcion para cambiar el nombre del apartamento
+        public function updateName(Request $request)
+            {
+                $id                   = $request->id;
+                $roomUpdate          = \App\Rooms::find($id);
+                $roomUpdate->nameRoom = $request->name;
+                if ($roomUpdate->save()) {
+                    }
+            }
+
+    // Funcion para cambiar el orden
+        public function updateOrder(Request $request)
+        {
+            $id                   = $request->id;
+            $roomUpdate          = \App\Rooms::find($id);
+            $roomUpdate->order = $request->orden;
+            if ($roomUpdate->save()) {
+                }
+        }
+
     /**
      * Remove the specified resource from storage.
      *
