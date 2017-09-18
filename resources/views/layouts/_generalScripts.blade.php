@@ -169,7 +169,8 @@
 
 	    	if (value <= 4) {
 	    		$("#apto-estudio").attr('checked', 'checked');
-	    	}else{
+	    	}
+	    	if (value > 4) {
 	    		$("#apto-2dorm").attr('checked', 'checked');
 
 	    	}
