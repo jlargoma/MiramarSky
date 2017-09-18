@@ -8,7 +8,7 @@
 <link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="/assets/css/font-icons.css" rel="stylesheet" type="text/css" />
 
-<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
+<script src="/assets/plugins/summernote/css/summernote.css"></script>
 
 <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
 
@@ -1013,7 +1013,7 @@
     </div>
 
 <div class="modal fade slide-up disable-scroll in" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-md">
     <div class="modal-content-wrapper">
         <div class="modal-content">
             
@@ -1054,7 +1054,7 @@
    <script src="/assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
    <script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
 
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
+   <script src="/assets/plugins/summernote/js/summernote.js"></script>
         
     <script type="text/javascript">
 

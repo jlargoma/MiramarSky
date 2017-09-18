@@ -5089,7 +5089,7 @@
       $editable.html(dom.html($holder) || dom.emptyPara);
 
       //031. create codable
-      $('<textarea class="note-codable"></textarea>').prependTo($editor);
+      $('<textarea name="texarea" class="note-codable"></textarea>').prependTo($editor);
 
       var langInfo = $.summernote.lang[options.lang];
 
