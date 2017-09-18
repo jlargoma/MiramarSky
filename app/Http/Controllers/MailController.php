@@ -26,6 +26,11 @@ class MailController extends Controller
     	}else{
 
     		/* Cliente */
+
+    		echo "<pre>";
+    		print_r($data);
+    		die();
+
 			Mail::send(['html' => 'frontend.emails.bookSuccess'],[ 'data' => $data, 'admin' => 0], function ($message) use ($data) {
 	            $message->from('info@apartamentosierranevada.com', 'Miramarski Apartamento de lujo');
 	            $message->to($data->customer->email); /* $data['email'] */

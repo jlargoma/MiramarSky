@@ -89,7 +89,7 @@
 
 	    	var url = $(this).attr('action');
 
-	    	$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   date : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
+	    	$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   fechas : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
 	    		
 	    		$('#content-book-response .back').empty();
 	    		$('#content-book-response .back').append(data);

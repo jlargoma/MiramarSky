@@ -15,7 +15,7 @@
 	</div>
 </div>
 <script type="text/javascript">
-	setTimeout(function() {
-		$('#close-form-book, span.close').trigger('click');
-	}, 3000);
+	// setTimeout(function() {
+	// 	$('#close-form-book, span.close').trigger('click');
+	// }, 3000);
 </script>
