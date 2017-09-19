@@ -402,7 +402,7 @@
 		   										@include('frontend._formBook')
 		   									</div>
 										</div>
-										<div class="back" style="background-color: #3F51B5; min-height: 550px;">
+										<div class="back degradado-background1" style="min-height: 550px;">
 											
 										</div>
 									</div>

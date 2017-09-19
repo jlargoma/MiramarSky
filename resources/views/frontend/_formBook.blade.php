@@ -97,7 +97,7 @@
     <form id="form-book-apto-lujo" action="{{url('/getPriceBook')}}" method="post">
         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
-        <div class="col-md-12 not-padding-mobile">
+        <div class="col-md-12">
                 <div class="form-group col-sm-12 col-xs-12 col-md-4 col-lg-4 white">
                     <input type="text" class="sm-form-control" name="name" id="nombre" placeholder="Nombre..." maxlength="40" required="">
                 </div>
