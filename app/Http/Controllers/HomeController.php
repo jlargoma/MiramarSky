@@ -203,7 +203,7 @@ class HomeController extends Controller
 
         for ($i=1; $i <= $countDays; $i++) { 
 
-            $seasonActive = \App\Seasons::getSeason($start->copy());
+            $seasonActive = \App\Seasons::getSeason($start->copy()->format('Y-m-d'));
             if ($seasonActive == null) {
                $seasonActive = 0;
             }
