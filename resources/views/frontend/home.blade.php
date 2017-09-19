@@ -8,9 +8,9 @@
 	.hvr-reveal:before{
 		border-color: white!important;
 	}
-	@media (max-width: 768px){
+	@media (max-width: 768px){ 
 		#primary-menu.style-2 {
-		    background-color: transparent;
+		    background-color: transparent; 
 		}
 		#primary-menu{
 			padding: 40px 15px 0 15px;
