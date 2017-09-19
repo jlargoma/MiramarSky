@@ -317,6 +317,7 @@ class BookController extends Controller
                                                                 'book'   => $book ,
                                                                 'rooms'  => \App\Rooms::all(),
                                                                 'extras' => \App\Extras::all(),
+                                                                'start' => Carbon::createFromFormat('Y-m-d',$book->start)->format('d M,y'),
                                                                 'payments' => $payments,
                                                                 'typecobro' => new \App\Book(),
                                                                 'totalpayment' => $totalpayment,
@@ -430,12 +431,13 @@ class BookController extends Controller
     //Funcion para actualizar la reserva
         public function saveUpdate(Request $request, $id)
             {
-                $fechas = $request->reservation;
-                $info = explode('-', $fechas);
-                $inicio = $info[0];
-                $final = $info[1];
-                $start = substr($inicio,0,10);
-                $finish = substr($final,1,10);
+                $date = explode('-', $request->input('fechas'));
+
+                $start = Carbon::createFromFormat('d M, y' , trim($date[0]))->format('d/m/Y');
+                $finish = Carbon::createFromFormat('d M, y' , trim($date[1]))->format('d/m/Y');
+                $book = new \App\Book();
+                $extraPrice = 0 ;
+                $extraCost  = 0;
 
 
 

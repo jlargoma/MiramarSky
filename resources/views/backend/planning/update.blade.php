@@ -19,7 +19,12 @@
 
     hr.reserva {border: 0; height: 4px; margin-top: 20px;background:black; text-align: center;}
     hr.reserva:after {content:"Datos de la Reserva"; position: relative; top: -12px; display: inline-block; width: 160px; height: 24px; padding: 0;border: 2px solid black; border-radius: 24px; background: black; color: white; font-size: 12px; line-height: 24px; }
+    
+    hr.cotizacion {border: 0; height: 4px; margin-top: 20px;background:black; text-align: center;}
+    hr.cotizacion:after {content:"Cotizacion"; position: relative; top: -12px; display: inline-block; width: 86px; height: 24px; padding: 0;border: 2px solid black; border-radius: 24px; background: black; color: white; font-size: 12px; line-height: 24px; }
 
+    hr.cobros {border: 0; height: 4px; margin-top: 20px;background:black; text-align: center;}
+    hr.cobros:after {content:"Cobros"; position: relative; top: -12px; display: inline-block; width: 86px; height: 24px; padding: 0;border: 2px solid black; border-radius: 24px; background: black; color: white; font-size: 12px; line-height: 24px; }
 </style>
 @endsection
     
@@ -79,7 +84,7 @@
                                     <div class="col-md-4">
                                         <label>Entrada</label>
                                         <div class="input-prepend input-group">
-                                          <input type="text" class="sm-form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;   " readonly="">
+                                          <input type="text" class="sm-form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;" readonly="">
                                         </div>
                                     </div>
                                     <div class="col-md-2">
@@ -174,10 +179,14 @@
 
             <div class="col-md-3">
                 <div class="col-md-12" style="padding: 0px">
-                    <div class="panel-heading">
-                        <div class="panel-title col-md-12">Cotizacion
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <div class="panel-title col-md-12">
+                                <hr class="cotizacion">
+                            </div>
                         </div>
                     </div>
+                    
                     <table>
                         <tbody>
                             <tr class="text-white" style="background-color: #0c685f">
@@ -216,7 +225,8 @@
             <div class="panel">
                 <div>
                     <div class="panel-heading">
-                        <div class="panel-title col-md-12">Cobros
+                        <div class="panel-title col-md-12">
+                            <hr class="cobros">
                         </div>
                     </div>
                     <div class="panel-body">
