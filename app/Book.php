@@ -140,9 +140,9 @@ class Book extends Model
                 $finish = Carbon::createFromFormat('d/m/Y' , $finish);
                 $countDays = $finish->diffInDays($start);
 
-
                 $paxPerRoom = \App\Rooms::getPaxRooms($pax,$room);
-
+                $room = \App\Rooms::find($room);
+                $suplimp =  ($room->sizeApto == 1 )? 30 : 50 ;
                 $pax = $pax;
                 if ($paxPerRoom > $pax) {
                     $pax = $paxPerRoom;
@@ -150,49 +150,55 @@ class Book extends Model
 
                 $price = 0;
 
-                for ($i=1; $i <= $countDays; $i++) { 
 
-                    $seasonActive = \App\Seasons::getSeason($start->copy());
+                for ($i=1; $i <= $countDays; $i++) {
+
+                    $seasonActive = \App\Seasons::getSeason($start->copy()->format('Y-m-d'));
+
                     $prices = \App\Prices::where('season' ,  $seasonActive)
                                         ->where('occupation', $pax)->get();
 
                     foreach ($prices as $precio) {
-                        $price = $price + $precio->price;
+                        $price = $price + $precio->price ;
                     }
                 }
 
 
-                return $price; 
+                return $price;
             }
     
     // Funcion para comprobar el precio de la reserva
         static function getCostBook($start,$finish,$pax,$room)
-            {   
+            {
+
+
+                $start = Carbon::createFromFormat('d/m/Y' , $start);
+                $finish = Carbon::createFromFormat('d/m/Y' , $finish);
+                $countDays = $finish->diffInDays($start);
+
+
+                $paxPerRoom = \App\Rooms::getPaxRooms($pax,$room);
                 
-               $start = Carbon::createFromFormat('d/m/Y' , $start);
-               $finish = Carbon::createFromFormat('d/m/Y' , $finish);
-               $countDays = $finish->diffInDays($start);
+                $room = \App\Rooms::find($room);
+                $suplimp =  ($room->sizeApto == 1 )? 30 : 40 ;
 
+                $pax = $pax;
+                if ($paxPerRoom > $pax) {
+                    $pax = $paxPerRoom;
+                }
+                $cost = 0;
+                for ($i=1; $i <= $countDays; $i++) {
 
-               $paxPerRoom = \App\Rooms::getPaxRooms($pax,$room);
+                    $seasonActive = \App\Seasons::getSeason($start->copy()->format('Y-m-d'));
+                    $costs = \App\Prices::where('season' ,  $seasonActive)
+                                        ->where('occupation', $pax)->get();
 
-               if ($paxPerRoom > $pax) {
-                   $pax = $paxPerRoom;
-               }
-               $cost = 0;
-               for ($i=1; $i <= $countDays; $i++) { 
+                    foreach ($costs as $precio) {
+                        $cost = $cost + $precio->cost ;
+                    }
+                }
 
-                   $seasonActive = \App\Seasons::getSeason($start->copy());
-                   $costs = \App\Prices::where('season' ,  $seasonActive)
-                                       ->where('occupation', $pax)->get();
-
-                   foreach ($costs as $key => $precio) {
-                       $cost = $cost + $precio->cost;
-                   }
-               }
-
-
-               return $cost;  
+                return $cost;
             }
 
     //Funcion para el precio del Aparcamiento

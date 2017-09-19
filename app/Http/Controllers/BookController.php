@@ -391,11 +391,12 @@ class BookController extends Controller
             }
 
 
-            return $price;
+            return $price + $suplimp;
         }
 
     static function getCostBook(Request $request)
         {
+
 
             $start = Carbon::createFromFormat('d/m/Y' , $request->start);
             $finish = Carbon::createFromFormat('d/m/Y' , $request->finish);
@@ -414,17 +415,16 @@ class BookController extends Controller
             $cost = 0;
             for ($i=1; $i <= $countDays; $i++) {
 
-                $seasonActive = \App\Seasons::getSeason($start->copy());
+                $seasonActive = \App\Seasons::getSeason($start->copy()->format('Y-m-d'));
                 $costs = \App\Prices::where('season' ,  $seasonActive)
                                     ->where('occupation', $pax)->get();
 
-                foreach ($costs as $key => $precio) {
+                foreach ($costs as $precio) {
                     $cost = $cost + $precio->cost ;
                 }
             }
 
-
-            return $cost;
+            return $cost + $suplimp;
         }
 
     //Funcion para actualizar la reserva
