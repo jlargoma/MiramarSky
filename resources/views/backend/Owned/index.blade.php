@@ -97,8 +97,30 @@ setlocale(LC_TIME, "es_ES");
 	        cursor: pointer;
 	    }
 	</style>
+
 <div class="container-fluid padding-10 sm-padding-10">
     <div class="row">
+    	<div class="col-md-12 text-center">
+    	    <div class="col-md-6 col-md-offset-4">
+    	        <h2><b>Planning de reservas</b>  Fechas:
+    	            
+    	            
+    	            <select id="fecha" >
+    	                <?php $fecha = $date->copy()->SubYear(); ?>
+    	                <?php if ($fecha->copy()->format('Y') < 2015): ?>
+    	                    <?php $fecha = new Carbon('first day of September 2015'); ?>
+    	                <?php endif ?>
+    	            
+    	                <?php for ($i=1; $i <= 3; $i++): ?>                           
+    	                    <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $date->copy()->format('Y') == $fecha->format('Y') ? 'selected' : '' }}>
+    	                        <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
+    	                    </option>
+    	                    <?php $fecha->addYear(); ?>
+    	                <?php endfor; ?>
+    	            </select>
+    	        </h2>
+    	    </div>        
+    	</div>
 		<div class="text-center"><h1 class="text-complete"><?php echo strtoupper($user->name) ?></h1></div>
 		<div class="col-md-3">
 			<button class="bloq-fecha">Bloquear Fechas</button>
@@ -331,6 +353,11 @@ setlocale(LC_TIME, "es_ES");
 				    } else {
 				        x.style.display = 'none';
 				    }
+			});
+			$('#fecha').change(function(event) {
+			    
+			    var year = $(this).val();
+			    window.location = '/admin/propietario/'+year;
 			});
 		});
 		

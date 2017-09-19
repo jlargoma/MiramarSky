@@ -93,15 +93,12 @@
     }
     .fechas > li.active{background-color: rgb(81,81,81);}
   	/* Bordes de seccion */
-  .fechas >li {
-      background-color: #B0B5B9;
-      border-color: #B0B5B9;
-  }
-  pages.css:220
-  .na
-    .daterangepicker.dropdown-menu.show-calendar.opensright {
-        left: 12%!important;
-        top: 61%!important;
+    .fechas >li {
+        background-color: #B0B5B9;
+        border-color: #B0B5B9;
+    }
+    .daterangepicker{
+      top: 59%!important;
     }
   </style>
 
@@ -428,31 +425,19 @@
       	    			                		<div style="padding: 0px 0px 0px 0px;">
   	    			                		        
     			                		            <div class="col-xs-12">
-                                              <label class="sm-pull-left">Entrada</label>
-                                              <div class="input-prepend input-group p-l-20">
-                                                <!-- <input type="text" style="width: 100%" name="reservation" id="daterangepicker" class="form-control" value="" /> -->
-                                                <input type="text" class="sm-form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;   " readonly="">
+                                              <div class="input-prepend input-group col-xs-12">
+                                                <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;   " readonly="">
                                               </div>
                                           </div>
-                                            <div class="col-xs-3  m-t-10" >
-                                                <label class="sm-pull-left m-t-5"><i class="fa fa-moon-o"></i></label>
-                                                <div class="input-prepend input-group">
-                                                  <input type="text" class="nigths sm-pull-right" name="nigths" id="nigths" disabled style="width: 60%" style="border:none">
-                                                  <input type="text" hidden class="nigths sm-pull-right" name="nigths" >
-                                                </div>
-                                            </div> 
-                                            <div class="col-xs-3 sm-padding-0 m-t-10">
-                                                <div class="col-xs-3 sm-padding-0">
-                                                  <label class="sm-pull-left m-t-5"><i class="fa fa-user"></i></label>
-                                                </div>
-                                                <div class="col-xs-8 sm-padding-0">
-                                                  <select name="pax" id="" class="form-control full-width pax sm-pull-right">
-                                                    <?php for ($i=1; $i < 9; $i++):?>
-                                                      <option value="<?php echo $i ?>"><?php echo $i ?></option>
-                                                    <?php endfor ?>
-                                                  </select>
-                                                </div>                                           
-                                            </div>
+                                          <div class="col-xs-3 m-t-10">
+                                              <label><i class="fa fa-moon-o"></i></label>
+                                              <input type="text" class="form-control nigths" name="nigths" value="" style="width: 100%;display:none">
+                                              <input type="text" class="form-control nigths" name="noches" value="<?php echo $book->nigths ?>" disabled style="width: 100%">
+                                          </div> 
+                                          <div class="col-xs-3 m-t-10">
+                                              <label><i class="fa fa-user"></i></label>
+                                              <input type="text" data-v-min="0" data-v-max="10" class="autonumeric form-control">                                              
+                                          </div>
                                             
                                             <div class="col-xs-6 sm-padding-0 m-t-10">
                                               <div class="col-xs-3">
@@ -756,6 +741,8 @@
   <script src="/assets/plugins/bootstrap-typehead/typeahead.bundle.min.js"></script>
   <script src="/assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
   <script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
+    <script type="text/javascript" src="/assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
+
   <!-- END PAGE LEVEL JS -->
 
   <script type="text/javascript">

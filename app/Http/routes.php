@@ -139,7 +139,7 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 	
 
 //Propietario
-	Route::get('admin/propietario' , 'OwnedController@index');
+	Route::get('admin/propietario/{year?}' , 'OwnedController@index');
 	Route::post('admin/propietario/bloquear' , 'OwnedController@bloqOwned');
 
 });

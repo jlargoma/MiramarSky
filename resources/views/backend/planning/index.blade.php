@@ -92,6 +92,10 @@
 
         hr.cliente {border: 0; height: 4px; margin-top: 20px;background:black; text-align: center;}
         hr.cliente:after {content:"Datos del Cliente"; position: relative; top: -12px; display: inline-block; width: 150px; height: 24px; padding: 0;border: 2px solid black; border-radius: 24px; background: black; color: white; font-size: 12px; line-height: 24px; }
+        
+        hr.cotizacion {border: 0; height: 4px; margin-top: 20px;background:black; text-align: center;}
+        hr.cotizacion:after {content:"Cotizacion"; position: relative; top: -12px; display: inline-block; width: 86px; height: 24px; padding: 0;border: 2px solid black; border-radius: 24px; background: black; color: white; font-size: 12px; line-height: 24px; }
+
 
         .ingresos_temp{
             background: #99bce7!important;
@@ -418,6 +422,7 @@
                                                     <div class="col-md-1">
                                                         <label>Pax</label>
                                                         <input type="text" data-v-min="0" data-v-max="8" name="pax" class="autonumeric form-control full-width pax">
+
                                                             
                                                     </div>
                                                     <div class="col-md-2">
@@ -500,9 +505,11 @@
                                 <div class="col-md-2">
 
                                     <div class="col-md-12" style="padding: 0px">
-                                        <div class="panel-heading">
-                                            <div class="panel-title">
-                                                Cotización
+                                        <div class="panel">
+                                            <div class="panel-heading">
+                                                <div class="panel-title col-md-12">
+                                                    <hr class="cotizacion">
+                                                </div>
                                             </div>
                                         </div>
                                         <table>
@@ -1036,25 +1043,28 @@
     <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
     <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
     <script type="text/javascript" src="/assets/js/canvasjs.min.js"></script>
-    
+        
 
     <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
     <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
 
 
-   <script src="/assets/plugins/bootstrap3-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
-   <script type="text/javascript" src="/assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
-   <script type="text/javascript" src="/assets/plugins/bootstrap-tag/bootstrap-tagsinput.min.js"></script>
-   <script type="text/javascript" src="/assets/plugins/jquery-inputmask/jquery.inputmask.min.js"></script>
-   <script src="/assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
-   <script src="/assets/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
-   <script src="/assets/plugins/summernote/js/summernote.min.js" type="text/javascript"></script>
-   <script src="/assets/plugins/moment/moment.min.js"></script>
-   <script src="/assets/plugins/bootstrap-typehead/typeahead.bundle.min.js"></script>
-   <script src="/assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
-   <script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
+    <script src="/assets/plugins/bootstrap3-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+    <script type="text/javascript" src="/assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
+    <script type="text/javascript" src="/assets/plugins/bootstrap-tag/bootstrap-tagsinput.min.js"></script>
+    <script type="text/javascript" src="/assets/plugins/jquery-inputmask/jquery.inputmask.min.js"></script>
+    <script src="/assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
+    <script src="/assets/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="/assets/plugins/summernote/js/summernote.min.js" type="text/javascript"></script>
+    <script src="/assets/plugins/moment/moment.min.js"></script>
+    <script src="/assets/plugins/bootstrap-typehead/typeahead.bundle.min.js"></script>
+    <script src="/assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
+    <script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
 
-   <script src="/assets/plugins/summernote/js/summernote.js"></script>
+    <script src="/assets/plugins/summernote/js/summernote.js"></script>
+    <script type="text/javascript" src="//assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
+    
+
         
     <script type="text/javascript">
 

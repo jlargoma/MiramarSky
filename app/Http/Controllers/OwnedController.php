@@ -15,10 +15,17 @@ class OwnedController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($year = "")
     {
+        if ( empty($year) ) {
+            $date = Carbon::now();
+        }else{
+            $year = Carbon::createFromFormat('Y',$year);
+            $date = $year->copy();
 
-        $firstDayOfTheYear = new Carbon('first day of September 2016');
+        }
+        
+        $firstDayOfTheYear = new Carbon('first day of September '.$date->copy()->format('Y'));
         
         $mes = array();
         $arrayReservas = array();
