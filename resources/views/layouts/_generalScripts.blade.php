@@ -165,14 +165,15 @@
 	    });
 
 	    $('#quantity').change(function(event) {
-	    	var value = $(this).val();
+	    	var pax = $(this).val();
 
-	    	if (value <= 4) {
-	    		$("#apto-estudio").attr('checked', 'checked');
-	    	}
-	    	if (value > 4) {
-	    		$("#apto-2dorm").attr('checked', 'checked');
+	    	if (pax <= 4) {
+	    		$("#apto-estudio").trigger('click');
+	    		$("#apto-estudio").show();
 
+	    	}else if (pax > 4) {
+	    		$(".apto-2dorm").trigger('click');
+	    		$("#apto-estudio").hide();
 	    	}
 	    });
 

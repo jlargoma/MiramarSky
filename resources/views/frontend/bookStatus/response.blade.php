@@ -17,6 +17,12 @@
 			<span class="white push-10 font-s18 font-w300 pull-left">Nombre:</span>
 			<span class="font-w800 white center push-10 font-s18 pull-right"><?php echo ucfirst($name) ?></span>
 		</div>
+		<div class="row push-20">
+			<span class="white push-10 font-s18 font-w300 pull-left">Numº Pers:</span>
+			<span class="font-w800 white center push-10 font-s18 pull-right">
+				<?php echo $pax ?> <?php if ($pax == 1 ): ?>Per<?php else: ?>Pers <?php endif ?>	
+			</span>
+		</div>
 
 		<div class="row push-20">
 			<span class="white push-10 font-s18 font-w300 pull-left">Apartamento:</span>

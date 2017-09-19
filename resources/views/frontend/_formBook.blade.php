@@ -52,22 +52,22 @@
             <div class="form-group col-sm-12 col-xs-4 col-md-3" style="padding: 0">
                 <label style="display: inline!important;" class="col-md-12 parking white">* Tipo Apto</label>
                 <div class="col-md-6">
-					<input id="apto-2dorm" class="radio-style" name="apto" type="radio" checked="" value="2dorm">
+					<input id="apto-2dorm" class="radio-style apto-2dorm form-control" name="apto" type="radio" value="2dorm">
 					<label for="apto-2dorm" class="radio-style-3-label">2Dor</label>
 				</div>
 				<div class="col-md-6">
-					<input id="apto-estudio" class="radio-style" name="apto" type="radio" value="estudio">
+					<input id="apto-estudio" class="radio-style apto-estudio form-control" name="apto" type="radio" value="estudio">
 					<label for="apto-estudio" class="radio-style-3-label">Est.</label>
 				</div>
             </div>
             <div class="form-group col-sm-12 col-xs-4 col-md-3">
                 <label style="display: inline!important;" class="col-md-12 luxury white">*lujo</label>
                 <div class="col-md-6"> 
-					<input id="luxury-yes" class="radio-style" name="luxury" type="radio" checked="" value="si">
+					<input id="luxury-yes" class="radio-style" name="luxury" type="radio"  value="si">
 					<label for="luxury-yes" class="radio-style-3-label">Si</label>
 				</div>
 				<div class="col-md-6">
-					<input id="luxury-no" class="radio-style" name="luxury" type="radio" value="no">
+					<input id="luxury-no" class="radio-style" name="luxury" type="radio" value="no" checked="">
 					<label for="luxury-no" class="radio-style-3-label">No</label>
 				</div>
             </div>
@@ -97,7 +97,7 @@
     <form id="form-book-apto-lujo" action="{{url('/getPriceBook')}}" method="post">
         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
-        <div class="col-md-12">
+        <div class="col-md-12 not-padding-mobile">
                 <div class="form-group col-sm-12 col-xs-12 col-md-4 col-lg-4 white">
                     <input type="text" class="sm-form-control" name="name" id="nombre" placeholder="Nombre..." maxlength="40" required="">
                 </div>
@@ -134,12 +134,12 @@
                 <div class="form-group col-sm-12 col-xs-7 col-md-3" style="padding: 0">
                     <label class="col-md-12 parking white">* Tipo Apto</label>
                     <div class="col-xs-6 not-padding-mobile">
-                        <input id="apto-2dorm" class="radio-style" name="apto" type="radio" checked="" value="2dorm">
-                        <label for="apto-2dorm" class="radio-style-3-label">2 dorm</label>
+                        <input id="apto-2dorm" class="apto-2dorm radio-style" name="apto" type="radio" checked="" value="2dorm">
+                        <label for="apto-2dorm" class="radio-style-3-label" style="font-size: 12px;">2 dorm</label>
                     </div>
                     <div class="col-xs-6 not-padding-mobile">
-                        <input id="apto-estudio" class="radio-style" name="apto" type="radio" value="estudio">
-                        <label for="apto-estudio" class="radio-style-3-label">Estud.</label>
+                        <input id="apto-estudio" class="apto-estudio radio-style" name="apto" type="radio" value="estudio">
+                        <label for="apto-estudio" class="radio-style-3-label" style="font-size: 12px;">Estud.</label>
                     </div>
                 </div>
 
@@ -157,13 +157,13 @@
                     </div>
                 </div>
                 <div class="form-group col-sm-12 col-xs-6 col-md-2">
-                    <label class="col-md-12 luxury white">*lujo</label>
+                    <label class="col-md-12 luxury white">* sup. lujo</label>
                     <div class="col-xs-6 not-padding-mobile"> 
-                        <input id="luxury-yes" class="radio-style" name="luxury" type="radio" checked="" value="si">
+                        <input id="luxury-yes" class="radio-style" name="luxury" type="radio" value="si">
                         <label for="luxury-yes" class="radio-style-3-label">Si</label>
                     </div>
                     <div class="col-xs-6 not-padding-mobile">
-                        <input id="luxury-no" class="radio-style" name="luxury" type="radio" value="no">
+                        <input id="luxury-no" class="radio-style" name="luxury" type="radio" value="no" checked="" >
                         <label for="luxury-no" class="radio-style-3-label">No</label>
                     </div>
                 </div>

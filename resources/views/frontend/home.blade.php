@@ -312,7 +312,7 @@
 	   					</div>
 
 	   					<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
-		   					<a href="#">
+		   					<a href="{{ url('/actividades')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 		   								
@@ -361,10 +361,30 @@
 				label{
 					color: white!important
 				}
+				.degradado-background1{
+					background: rgba(251,0,71,1);
+					background: -moz-linear-gradient(45deg, rgba(251,0,71,1) 0%, rgba(167,12,245,1) 53%, rgba(167,12,245,1) 54%, rgba(167,12,245,1) 69%, rgba(48,49,199,1) 100%);
+					background: -webkit-gradient(left bottom, right top, color-stop(0%, rgba(251,0,71,1)), color-stop(53%, rgba(167,12,245,1)), color-stop(54%, rgba(167,12,245,1)), color-stop(69%, rgba(167,12,245,1)), color-stop(100%, rgba(48,49,199,1)));
+					background: -webkit-linear-gradient(45deg, rgba(251,0,71,1) 0%, rgba(167,12,245,1) 53%, rgba(167,12,245,1) 54%, rgba(167,12,245,1) 69%, rgba(48,49,199,1) 100%);
+					background: -o-linear-gradient(45deg, rgba(251,0,71,1) 0%, rgba(167,12,245,1) 53%, rgba(167,12,245,1) 54%, rgba(167,12,245,1) 69%, rgba(48,49,199,1) 100%);
+					background: -ms-linear-gradient(45deg, rgba(251,0,71,1) 0%, rgba(167,12,245,1) 53%, rgba(167,12,245,1) 54%, rgba(167,12,245,1) 69%, rgba(48,49,199,1) 100%);
+					background: linear-gradient(45deg, rgba(251,0,71,1) 0%, rgba(167,12,245,1) 53%, rgba(167,12,245,1) 54%, rgba(167,12,245,1) 69%, rgba(48,49,199,1) 100%);
+					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fb0047', endColorstr='#3031c7', GradientType=1 );
+				}
+				.degradado-background2{
+					background: rgba(251,0,71,1);
+					background: -moz-linear-gradient(45deg, rgba(251,0,71,1) 0%, rgba(185,12,212,1) 31%, rgba(167,12,245,1) 50%, rgba(167,12,245,1) 63%, rgba(48,49,199,1) 100%);
+					background: -webkit-gradient(left bottom, right top, color-stop(0%, rgba(251,0,71,1)), color-stop(31%, rgba(185,12,212,1)), color-stop(50%, rgba(167,12,245,1)), color-stop(63%, rgba(167,12,245,1)), color-stop(100%, rgba(48,49,199,1)));
+					background: -webkit-linear-gradient(45deg, rgba(251,0,71,1) 0%, rgba(185,12,212,1) 31%, rgba(167,12,245,1) 50%, rgba(167,12,245,1) 63%, rgba(48,49,199,1) 100%);
+					background: -o-linear-gradient(45deg, rgba(251,0,71,1) 0%, rgba(185,12,212,1) 31%, rgba(167,12,245,1) 50%, rgba(167,12,245,1) 63%, rgba(48,49,199,1) 100%);
+					background: -ms-linear-gradient(45deg, rgba(251,0,71,1) 0%, rgba(185,12,212,1) 31%, rgba(167,12,245,1) 50%, rgba(167,12,245,1) 63%, rgba(48,49,199,1) 100%);
+					background: linear-gradient(45deg, rgba(251,0,71,1) 0%, rgba(185,12,212,1) 31%, rgba(167,12,245,1) 50%, rgba(167,12,245,1) 63%, rgba(48,49,199,1) 100%);
+					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fb0047', endColorstr='#3031c7', GradientType=1 );
+				}
 			</style>
-	       	<section class="page-section" style="letter-spacing: 0;line-height: 1;background: #3f51b5!important;color: #fff!important;">
+	       	<section class="page-section degradado-background1" style="letter-spacing: 0;line-height: 1;color: #fff!important;">
 	   		
-	   			<div class="row" style="background-color: #3F51B5;">
+	   			<div class="row degradado-background1" style="">
 	   				
 	   				<div id="content-book" class="container-mobile clearfix push-10" style="display: none; ">	
 	   					<div id="close-form-book" style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
@@ -395,7 +415,7 @@
 	       	</section>
 			
 			<section id="desc-section" class="page-section" style="letter-spacing: 0;line-height: 1; ">
-				<div class="col-xs-12" style="padding: 30px 0 0; background-color: #3F51B5;">
+				<div class="col-xs-12 degradado-background2" style="padding: 30px 0 0;">
 					<div class="col-xs-12 white" style="margin-bottom: 20px">
    						<h1 class="font-w800 white center " style="letter-spacing: 0; margin-bottom: 10px; line-height: 1;font-size: 24px">
    							APARTAMENTOS DE LUJO<br>A PIE DE PISTA
@@ -611,7 +631,7 @@
 	   					</div>
 
 	   					<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
-		   					<a href="#">
+		   					<a href="{{ url('/actividades')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 		   								
@@ -648,6 +668,8 @@
 				</div>
 
 			</section>
+
+
 		<!-- END MOBILE -->
 		<?php endif; ?>
 
