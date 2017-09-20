@@ -93,24 +93,26 @@
   	 	  						<table width="100%" border="0" cellspacing="0" cellpadding="0">
   	 	  							<tr>
   	 	  								<td class="h2" style="color: #3F51B5">
-  	 	  									Hola <?php echo $data->customer->name ?>, hemos recibido tu solicitud  con los siguientes datos
+  	 	  									Hola <b><?php echo $data->customer->name ?></b>, hemos recibido tu solicitud  con los siguientes datos<br><br>
+  	 	  									<b>Nos pondremos en contacto contigo lo antes posible, para informarte sobre la disponibilidad para tus fechas elegidas.</b>
   	 	  								</td>
   	 	  							</tr>
   	 	  							<tr>
   	 	  								<td class="bodycopy" style="color: #000">
-  	 	  									A continuación tienes los detalles de tu reserva:<br><br>
-  	 	  									<b>Nombre: </b> <?php echo $data->customer->name ?> <br>
-  	 	  									<b>Teléfono: </b> <?php echo $data->customer->phone ?> <br>
-  	 	  									<b>Email:</b> <?php echo $data->customer->email ?> <br>
-  	 	  									<b>Fecha Entrada:</b> <?php echo date('d-m-Y', strtotime($data->start)) ?> <br>
-  	 	  									<b>Fecha Salida:</b> <?php echo date('d-m-Y', strtotime($data->finish)) ?> <br>
-  	 	  									<b>Noches: </b> <?php echo $data->nigths ?> <br>
-  	 	  									<b>Ocupantes: </b> <?php echo $data->pax ?> <br>
-  	 	  									<b>Suplemento parking: </b> <?php echo number_format($data->sup_park,0,'','.') ?> €<br>
-  	 	  									<b>Suplemento lujo:  <?php echo number_format($data->sup_lujo,0,'','.') ?> €</b><br>
-  	 	  									<b>Comentarios: </b>  <?php echo $data->comment ?> € <br>
+											Nombre: 			<b><?php echo $data->customer->name ?></b> <br>
+											Teléfono:  			<b><?php echo $data->customer->phone ?></b> <br>
+											Email: 				<b><?php echo $data->customer->email ?></b> <br>
+											Fecha Entrada: 		<b><?php echo date('d-m-Y', strtotime($data->start)) ?></b> <br>
+											Fecha Salida: 		<b><?php echo date('d-m-Y', strtotime($data->finish)) ?></b> <br>
+											Noches:  			<b><?php echo $data->nigths ?></b> <br>
+											Ocupantes: 			<b><?php echo $data->pax ?></b> <br>
+											Suplemento parking: <b><?php echo number_format($data->sup_park,0,'','.') ?> €</b> <br>
+											Suplemento lujo: 	<b><?php echo number_format($data->sup_lujo,0,'','.') ?> €</b> <br>
+											Comentarios: 		<b><?php echo $data->comment ?> € </b><br>
 
-  	 	  									<h2 style="text-align: center"><b>Precio total solicitud: </b>  <?php echo number_format($data->total_price,0,'','.') ?> €</h2> <br>
+  	 	  									<h2 style="text-align: center">
+  	 	  										<b>Precio total solicitud: </b>  <?php echo number_format($data->total_price,0,'','.') ?> €
+  	 	  									</h2> <br>
 
   	 	  								</td>
   	 	  							</tr>
@@ -130,9 +132,9 @@
   	 		                				<table width="100%" border="0" cellspacing="0" cellpadding="0">
   	 		                					<tr>
   	 		                						<td class="bodycopy" style="color: #000">
-  	 		                							En breve nos pondremos en contacto contigo para informarte de la disponibilidad.<br><br>
+  	 		                							Gracias por confiarnos tus vacaciones, haremos todo lo posible para que pases unos días agradables. <br><br>
 
-  	 		                							Un cordial saludo de parte de <b>apartamentosierranevada.net</b>
+  	 		                							<a href="//apartamentosierranevada.net">apartamentosierranevada.net</a>
   	 		                						</td>
   	 		                					</tr>
 

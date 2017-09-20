@@ -1,38 +1,41 @@
 <?php if (!$mobile->isMobile()): ?>
-	<p class="font-s16 ls-15 miramar font-w300 text-justify">
-		Al entrar a la vivienda se encontrará con un luminoso y amplio salón comedor con cocina. La zona comedor es muy luminosa y soleada gracias a ventanales de arriba a abajo que le permitirán disfrutar de la magnífica luz de las montañas de Sierra Nevada. La cocina está completamente equipada con todo lo que necesita para vivir una estadía muy agradable.<br>
-		En el salón encontramos  un sofá cama que se convierte en 2 camas individuales, un televisor de pantalla plana y reproductor de DVD.<br><br>
+	<p class="push-10 font-s16 miramar font-w300 text-justify" style="letter-spacing: -1px; line-height: 1.3"><b>Los apartamentos dos dormitorios</b>, <b><u>tienen capacidad para alojar entre 6 y 8 personas</u></b> según cada caso. <br><br>
+		Al entrar a la vivienda se encontrará con un luminoso y amplio salón comedor con cocina<br><br>
 
-		Las puertas acristaladas dejan pasar abundante luz natural y le dan acceso a la terraza, donde le esperan 2 cómodas butacas, donde tomar el sol  mirando las pistas de esquí es simplemente ideal.<br><br>
+		<!-- <b><u>Todos los apartamentos (lujo y estándar) tienen la misma distribución y mismos metros útiles.</u></b>.<br><br>
+
+		La zona comedor es muy luminosa y soleada gracias a ventanales de arriba a abajo que le permitirán disfrutar de la magnífica luz de las montañas de Sierra Nevada. <br><br>
+ -->
+		<b><u>La cocina está completamente equipada</u></b> con todo lo que necesita para vivir una estadía muy agradable.<br><br>
+
+		En el salón encontramos un sofá cama que se convierte en cama de matrimonio.
 	</p>
 
-	<!-- <p class="font-s16 ls-15 miramar font-w300 text-justify hidden-sm hidden-xs"><b>Estos apartamentos cuentan con dos dormitorios</b>, pudiendo alojarse entre 6 y 8 personas según cada caso.</p>
-	<p class="font-s16 ls-15 miramar font-w300 text-justify" style="padding: 0 15px">
-		<ul class="text-left miramar font-s16" style="list-style: none;">
-			<li class=" miramar font-s16"><b>*</b> <span class="font-w300">Habitación principal con cama de matrimonio </span></li>
-			<li class=" miramar font-s16"><b>*</b> <span class="font-w300">Habitación secundaría: con dos camas en litera (en algunas apartamentos hay 3 camas)</span></li>
-			<li class=" miramar font-s16"><b>*</b> <span class="font-w300">Sofá cama de matrimonio en el salón </span></li>
+		<ul class="text-left miramar font-s16" style="list-style: none;padding: 0 15px">
+			<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Habitación principal</u> con cama de matrimonio </span></li>
+			<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Habitación secundaría</u>: con dos camas en litera (en algunas apartamentos hay 3 camas)</span></li>
+			<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Sofá cama</u> de matrimonio en el salón </span></li>
 			<li class=" miramar font-s16"><b>*</b> <span class="font-w300">Cama adicional en salón</span></li>
 		</ul>
-	</p> -->	
-	<p class="font-s16 ls-15 miramar font-w300 text-justify" >
-		Todos los apartamentos cuentan con un baño completo y cocina.<br><br>
-		<b>Encendemos la calefacción el día de tu llegada</b>, para que cuando hagas el check in todo este confortable.<br>
+	<p class="push-10 font-s16 miramar font-w300 text-justify" style="letter-spacing: -1px; line-height: 1.3">
+		<!-- Nuestro edificio (Miramaski) <b>es uno de los más modernos de Sierra Nevada</b>, cuenta con las siguientes comodidades<br><br> -->
+		<b><u>Piscina climatizada, gimnasio, parking cubierto, taquilla guardaesquis, acceso directo a las pistas.</u></b><br><br>
 
-		<b>En todas las reservas las sabanas y toallas están incluidas.</b>
+		A pocos metros, tienes varios supermercados, bares y restaurantes<br><br>
 
+		<b><u>Encendemos la calefacción el día de tu llegada</u></b>, para que cuando hagas el check in todo este confortable.
+		<br><br>
+		<!-- En todas las reservas las <b><u>sabanas y toallas están incluidas</u></b>.<br><br> -->
+
+		El edificio Miramarski <b><u>está a pie de Pistas</u></b>,  sales esquiando desde el propio edificio sin tener que coger ningún remonte. Se encuentran situados en la zona baja de la estación, <b> a 5 minutos andando de Pradollano (  plaza de Andalucía)</b>, zona donde se encuentran todos los restaurantes y tiendas de la estación.<br><br>
+
+		Queremos ayudarte con todos los detalles de tu viaje, por eso nos ocupamos de conseguir el mejor <a href="{{ url('/forfait')}}"><b><u>descuento en Forfaits, cursillos de esquí y alquiler de material para nuestros clientes</u></b></a>
 	</p>
-
 	<p class="font-s16 ls-15 miramar font-w300 text-justify push-30">
 		<ul class="properties" >
 			<li>
 				<a class="property">
-					<img src="{{ asset('/img/miramarski/iconos/small/apto.png') }}" /> Apto entero 
-				</a>
-			</li>
-			<li>
-				<a class="property">
-					<img src="{{ asset('/img/miramarski/iconos/small/huespedes.png') }}" /> 6/8 Huéspedes 
+					<img src="{{ asset('/img/miramarski/iconos/small/huespedes.png') }}" /> 6/8 Camas
 				</a>
 			</li>
 			<li>
@@ -114,29 +117,38 @@
 
 				<div class="tab-content clearfix ui-tabs-panel ui-widget-content ui-corner-bottom" id="tabs-29" aria-labelledby="ui-id-13" role="tabpanel" aria-hidden="false">
 					<div class="col-xs-12">
-						<p class="font-s16 ls-15 miramar font-w300 text-justify">
-							Al entrar a la vivienda se encontrará con un luminoso y amplio salón comedor con cocina. La zona comedor es muy luminosa y soleada gracias a ventanales de arriba a abajo que le permitirán disfrutar de la magnífica luz de las montañas de Sierra Nevada. La cocina está completamente equipada con todo lo que necesita para vivir una estadía muy agradable.<br>
-							En el salón encontramos  un sofá cama que se convierte en 2 camas individuales, un televisor de pantalla plana y reproductor de DVD.<br><br>
+							<p class="push-10 font-s16 miramar font-w300 text-justify" style="letter-spacing: -1px; line-height: 1.3"><b>Los apartamentos dos dormitorios</b>, <b><u>tienen capacidad para alojar entre 6 y 8 personas</u></b> según cada caso. <br><br>
+								Al entrar a la vivienda se encontrará con un luminoso y amplio salón comedor con cocina<br><br>
 
-							Las puertas acristaladas dejan pasar abundante luz natural y le dan acceso a la terraza, donde le esperan 2 cómodas butacas, donde tomar el sol  mirando las pistas de esquí es simplemente ideal.<br><br>
-						</p>
+								<!-- <b><u>Todos los apartamentos (lujo y estándar) tienen la misma distribución y mismos metros útiles.</u></b>.<br><br>
 
-						<!-- <p class="font-s16 ls-15 miramar font-w300 text-justify hidden-sm hidden-xs"><b>Estos apartamentos cuentan con dos dormitorios</b>, pudiendo alojarse entre 6 y 8 personas según cada caso.</p>
-						<p class="font-s16 ls-15 miramar font-w300 text-justify" style="padding: 0 15px">
-							<ul class="text-left miramar font-s16" style="list-style: none;">
-								<li class=" miramar font-s16"><b>*</b> <span class="font-w300">Habitación principal con cama de matrimonio </span></li>
-								<li class=" miramar font-s16"><b>*</b> <span class="font-w300">Habitación secundaría: con dos camas en litera (en algunas apartamentos hay 3 camas)</span></li>
-								<li class=" miramar font-s16"><b>*</b> <span class="font-w300">Sofá cama de matrimonio en el salón </span></li>
-								<li class=" miramar font-s16"><b>*</b> <span class="font-w300">Cama adicional en salón</span></li>
-							</ul>
-						</p> -->	
-						<p class="font-s16 ls-15 miramar font-w300 text-justify" >
-							Todos los apartamentos cuentan con un baño completo y cocina.<br><br>
-							<b>Encendemos la calefacción el día de tu llegada</b>, para que cuando hagas el check in todo este confortable.<br>
+								La zona comedor es muy luminosa y soleada gracias a ventanales de arriba a abajo que le permitirán disfrutar de la magnífica luz de las montañas de Sierra Nevada. <br><br>
+						 -->
+								<b><u>La cocina está completamente equipada</u></b> con todo lo que necesita para vivir una estadía muy agradable.<br><br>
 
-							<b>En todas las reservas las sabanas y toallas están incluidas.</b>
+								En el salón encontramos un sofá cama que se convierte en cama de matrimonio.
+							</p>
 
-						</p>
+								<ul class="text-left miramar font-s16" style="list-style: none;padding: 0 15px">
+									<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Habitación principal</u> con cama de matrimonio </span></li>
+									<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Habitación secundaría</u>: con dos camas en litera (en algunas apartamentos hay 3 camas)</span></li>
+									<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Sofá cama</u> de matrimonio en el salón </span></li>
+									<li class=" miramar font-s16"><b>*</b> <span class="font-w300">Cama adicional en salón</span></li>
+								</ul>
+							<p class="push-10 font-s16 miramar font-w300 text-justify" style="letter-spacing: -1px; line-height: 1.3">
+								<!-- Nuestro edificio (Miramaski) <b>es uno de los más modernos de Sierra Nevada</b>, cuenta con las siguientes comodidades<br><br> -->
+								<b><u>Piscina climatizada, gimnasio, parking cubierto, taquilla guardaesquis, acceso directo a las pistas.</u></b><br><br>
+
+								A pocos metros, tienes varios supermercados, bares y restaurantes<br><br>
+
+								<b><u>Encendemos la calefacción el día de tu llegada</u></b>, para que cuando hagas el check in todo este confortable.
+								<br><br>
+								<!-- En todas las reservas las <b><u>sabanas y toallas están incluidas</u></b>.<br><br> -->
+
+								El edificio Miramarski <b><u>está a pie de Pistas</u></b>,  sales esquiando desde el propio edificio sin tener que coger ningún remonte. Se encuentran situados en la zona baja de la estación, <b> a 5 minutos andando de Pradollano (  plaza de Andalucía)</b>, zona donde se encuentran todos los restaurantes y tiendas de la estación.<br><br>
+
+								Queremos ayudarte con todos los detalles de tu viaje, por eso nos ocupamos de conseguir el mejor <a href="{{ url('/forfait')}}"><b><u>descuento en Forfaits, cursillos de esquí y alquiler de material para nuestros clientes</u></b></a>
+							</p>
 					</div>
 				</div>
 				<div class="tab-content clearfix ui-tabs-panel ui-widget-content ui-corner-bottom" id="tabs-30" aria-labelledby="ui-id-14" role="tabpanel" aria-hidden="true" style="display: none;">
@@ -145,12 +157,7 @@
 							<ul class="properties" >
 								<li>
 									<a href="#" class="property">
-										<img src="{{ asset('/img/miramarski/iconos/small/apto.png') }}" /> Apto entero 
-									</a>
-								</li>
-								<li>
-									<a href="#" class="property">
-										<img src="{{ asset('/img/miramarski/iconos/small/huespedes.png') }}" /> 6/8 Huéspedes 
+										<img src="{{ asset('/img/miramarski/iconos/small/huespedes.png') }}" /> 6/8 Camas
 									</a>
 								</li>
 								<li>

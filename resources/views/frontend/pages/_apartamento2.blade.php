@@ -45,6 +45,10 @@
 		.button.button-desc.button-3d{
 			background-color: #4cb53f!important;
 		}
+
+		.img.img-slider-apto{
+			height: 250px!important;
+		}
 	}
 	
 </style>
@@ -73,14 +77,14 @@
 								<?php if (isset($fotos[1])): ?>
 									<div class="slide" data-thumb="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $fotos[1] ?>">
 										<a>
-											<img class="img" src="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>" alt="<?php echo $fotos[2] ?>" title="<?php echo $fotos[3] ?>" >
+											<img class="img img-slider-apto" src="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>" alt="<?php echo $fotos[2] ?>" title="<?php echo $fotos[3] ?>" style="height: 600px">
 											<!-- <div class="flex-caption slider-caption-bg"><?php echo $slide->getFilename() ?></div> -->
 										</a>
 									</div>
 								<?php else: ?>
 									<div class="slide" data-thumb="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename()  ?>">
 										<a>
-											<img class="img" src="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>" alt="<?php echo $slide->getFilename()  ?>" title="<?php echo $slide->getFilename()  ?>" >
+											<img class="img img-slider-apto" src="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>" alt="<?php echo $slide->getFilename()  ?>" title="<?php echo $slide->getFilename()  ?>" style="height: 600px">
 											<!-- <div class="flex-caption slider-caption-bg"><?php echo $slide->getFilename() ?></div> -->
 										</a>
 									</div>

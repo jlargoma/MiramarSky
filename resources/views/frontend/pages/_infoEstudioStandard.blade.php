@@ -1,42 +1,42 @@
 
 
 <?php if (!$mobile->isMobile()): ?>
-	<p class="font-s18 ls-15 miramar font-w300 text-justify"><b>Los estudios son en una única pieza, no tienen habitación</b>, aunque las camas litera se encuentran en el pasillo, lo que ayuda a separar ambos ambientes.</p>
-
-	<p class="font-s18 ls-15 miramar font-w300 text-justify"><b>Los estudios de Lujo están recién reformados</b></p>
-
-	<p class="font-s18 ls-15 miramar font-w300 text-justify hidden-sm hidden-xs">la superficie útil  es de 35 m aproximadamente, <b>pueden alojarse entre 4  o 5  personas según cada caso</b>. <br>
-	Cuentan con todo el equipamiento necesario para hacer su estancia agradable y con el máximo confort.
-	</p>
-
-	<p class="font-s18 ls-15 miramar font-w300 text-justify"><b>Estos apartamentos cuentan con dos dormitorios</b></p>
-	<p class="font-s18 ls-15 miramar font-w300 text-justify" style="padding: 0 15px">
-		<ul class="text-left miramar font-s18" style="list-style: none;">
-			<li class=" miramar font-s18"><b>*</b> <span class="font-w300">Con dos camas en litera  </span></li>
-			<li class=" miramar font-s18"><b>*</b> <span class="font-w300">Sofá cama de matrimonio en el salón </span></li>
-			<li class=" miramar font-s18"><b>*</b> <span class="font-w300">Todos los estudios cuentan con un baño completo y cocina</span></li>
+	<p class="font-s16 ls-15 miramar font-w300 text-justify push-10">
+		<b><u>Los estudios son en una única pieza, no tienen habitación independiente.</u></b><br><br>
+		<b><u>Tienen capacidad para 4 ó 5 personas</u></b> ( en algunos casos), cuentan con una  superficie útil es de 35 m aproximadamente.<br><br>
+		Los estudios disponen de todo el equipamiento necesario para hacer su estancia agradable y con el máximo confort.<br><br>
+		Las camas litera se encuentran en el pasillo, lo que ayuda a separar ambos ambientes. Su distribución es la siguiente: 
+		<ul class="text-left miramar font-s16" style="list-style: none;padding: 0 15px">
+			<li class=" miramar font-s16"><b>*</b> <span class="font-w300">Dos camas en litera (se encuentran en el pasillo)  </span></li>
+			<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Sofá cama</u> de matrimonio en el salón </span></li>
+			<li class=" miramar font-s16"><b>*</b> <span class="font-w300">Todos los estudios cuentan con un baño completo y cocina.</span></li>
 		</ul>
+	</p>
+	<p class="push-10 font-s16 miramar font-w300 text-justify" style="letter-spacing: -1px; line-height: 1.3">
+		Nuestro edificio (Miramaski) <b>es uno de los más modernos de Sierra Nevada</b>, cuenta con las siguientes comodidades<br><br>
+		<b><u>Piscina climatizada, gimnasio, parking cubierto, taquilla guardaesquis, acceso directo a las pistas.</u></b><br><br>
+
+		A pocos metros, tienes varios supermercados, bares y restaurantes<br><br>
+
+		<b><u>Encendemos la calefacción el día de tu llegada</u></b>, para que cuando hagas el check in todo este confortable.
+		<br><br>
+		En todas las reservas las <b><u>sabanas y toallas están incluidas</u></b>.<br><br>
+
+		El edificio Miramarski <b><u>está a pie de Pistas</u></b>,  sales esquiando desde el propio edificio sin tener que coger ningún remonte. Se encuentran situados en la zona baja de la estación, <b> a 5 minutos andando de Pradollano (  plaza de Andalucía)</b>, zona donde se encuentran todos los restaurantes y tiendas de la estación.<br><br>
+
+		Queremos ayudarte con todos los detalles de tu viaje, por eso nos ocupamos de conseguir el mejor <a href="{{ url('/forfait')}}"><b><u>descuento en Forfaits, cursillos de esquí y alquiler de material para nuestros clientes</u></b></a>
 	</p>
 	<p class="font-s16 ls-15 miramar font-w300 text-justify push-30">
 		<ul class="properties" >
 			<li>
 				<a class="property">
-					<img src="{{ asset('/img/miramarski/iconos/small/apto.png') }}" /> Apto entero 
+					<img src="{{ asset('/img/miramarski/iconos/small/huespedes.png') }}" /> 4/5 Camas 
 				</a>
 			</li>
+			
 			<li>
 				<a class="property">
-					<img src="{{ asset('/img/miramarski/iconos/small/huespedes.png') }}" /> 6/8 Huéspedes 
-				</a>
-			</li>
-			<li>
-				<a class="property">
-					<img src="{{ asset('/img/miramarski/iconos/small/dormitorios.png') }}" /> 2 Dormitorios 
-				</a>
-			</li>
-			<li>
-				<a class="property">
-					<img src="{{ asset('/img/miramarski/iconos/small/apto.png') }}" /> 8 Camas 
+					<img src="{{ asset('/img/miramarski/iconos/small/apto.png') }}" /> 4 Camas 
 				</a>
 			</li>
 			<li>
@@ -47,11 +47,6 @@
 			<li>
 				<a class="property">
 					<img src="{{ asset('/img/miramarski/iconos/small/ducha.png') }}" /> Baño 
-				</a>
-			</li>
-			<li>
-				<a class="property">
-					<img src="{{ asset('/img/miramarski/iconos/small/chimenea.png') }}" /> Chimenea 
 				</a>
 			</li>
 			<li>
@@ -67,11 +62,6 @@
 			<li>
 				<a class="property">
 					<img src="{{ asset('/img/miramarski/iconos/small/lavavajillas.png') }}" /> Lavavajillas 
-				</a>
-			</li>
-			<li>
-				<a class="property">
-					<img src="{{ asset('/img/miramarski/iconos/small/secador.png') }}" /> Secado 
 				</a>
 			</li>
 			<li>
@@ -118,22 +108,31 @@
 
 				<div class="tab-content clearfix ui-tabs-panel ui-widget-content ui-corner-bottom" id="tabs-29" aria-labelledby="ui-id-13" role="tabpanel" aria-hidden="false">
 					<div class="col-xs-12">
-						<p class="font-s18 ls-15 miramar font-w300 text-justify"><b>Los estudios son en una única pieza, no tienen habitación</b>, aunque las camas litera se encuentran en el pasillo, lo que ayuda a separar ambos ambientes.</p>
+						<p class="font-s16 ls-15 miramar font-w300 text-justify push-10">
+								<b><u>Los estudios son en una única pieza, no tienen habitación independiente.</u></b><br><br>
+								<b><u>Tienen capacidad para 4 ó 5 personas</u></b> ( en algunos casos), cuentan con una  superficie útil es de 35 m aproximadamente.<br><br>
+								Los estudios disponen de todo el equipamiento necesario para hacer su estancia agradable y con el máximo confort.<br><br>
+								Las camas litera se encuentran en el pasillo, lo que ayuda a separar ambos ambientes. Su distribución es la siguiente: 
+								<ul class="text-left miramar font-s16" style="list-style: none;padding: 0 15px">
+									<li class=" miramar font-s16"><b>*</b> <span class="font-w300">Dos camas en litera (se encuentran en el pasillo)  </span></li>
+									<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Sofá cama</u> de matrimonio en el salón </span></li>
+									<li class=" miramar font-s16"><b>*</b> <span class="font-w300">Todos los estudios cuentan con un baño completo y cocina.</span></li>
+								</ul>
+							</p>
+							<p class="push-10 font-s16 miramar font-w300 text-justify" style="letter-spacing: -1px; line-height: 1.3">
+								Nuestro edificio (Miramaski) <b>es uno de los más modernos de Sierra Nevada</b>, cuenta con las siguientes comodidades<br><br>
+								<b><u>Piscina climatizada, gimnasio, parking cubierto, taquilla guardaesquis, acceso directo a las pistas.</u></b><br><br>
 
-						<p class="font-s18 ls-15 miramar font-w300 text-justify"><b>Los estudios de Lujo están recién reformados</b></p>
+								A pocos metros, tienes varios supermercados, bares y restaurantes<br><br>
 
-						<p class="font-s18 ls-15 miramar font-w300 text-justify hidden-sm hidden-xs">la superficie útil  es de 35 m aproximadamente, <b>pueden alojarse entre 4  o 5  personas según cada caso</b>. <br>
-						Cuentan con todo el equipamiento necesario para hacer su estancia agradable y con el máximo confort.
-						</p>
+								<b><u>Encendemos la calefacción el día de tu llegada</u></b>, para que cuando hagas el check in todo este confortable.
+								<br><br>
+								En todas las reservas las <b><u>sabanas y toallas están incluidas</u></b>.<br><br>
 
-						<p class="font-s18 ls-15 miramar font-w300 text-justify"><b>Estos apartamentos cuentan con dos dormitorios</b></p>
-						<p class="font-s18 ls-15 miramar font-w300 text-justify" style="padding: 0 15px">
-							<ul class="text-left miramar font-s18" style="list-style: none;">
-								<li class=" miramar font-s18"><b>*</b> <span class="font-w300">Con dos camas en litera  </span></li>
-								<li class=" miramar font-s18"><b>*</b> <span class="font-w300">Sofá cama de matrimonio en el salón </span></li>
-								<li class=" miramar font-s18"><b>*</b> <span class="font-w300">Todos los estudios cuentan con un baño completo y cocina</span></li>
-							</ul>
-						</p>
+								El edificio Miramarski <b><u>está a pie de Pistas</u></b>,  sales esquiando desde el propio edificio sin tener que coger ningún remonte. Se encuentran situados en la zona baja de la estación, <b> a 5 minutos andando de Pradollano (  plaza de Andalucía)</b>, zona donde se encuentran todos los restaurantes y tiendas de la estación.<br><br>
+
+								Queremos ayudarte con todos los detalles de tu viaje, por eso nos ocupamos de conseguir el mejor <a href="{{ url('/forfait')}}"><b><u>descuento en Forfaits, cursillos de esquí y alquiler de material para nuestros clientes</u></b></a>
+							</p>
 					</div>
 				</div>
 				<div class="tab-content clearfix ui-tabs-panel ui-widget-content ui-corner-bottom" id="tabs-30" aria-labelledby="ui-id-14" role="tabpanel" aria-hidden="true" style="display: none;">
@@ -142,22 +141,12 @@
 							<ul class="properties" >
 								<li>
 									<a href="#" class="property">
-										<img src="{{ asset('/img/miramarski/iconos/small/apto.png') }}" /> Apto entero 
+										<img src="{{ asset('/img/miramarski/iconos/small/huespedes.png') }}" /> 4/5 Camas 
 									</a>
 								</li>
 								<li>
 									<a href="#" class="property">
-										<img src="{{ asset('/img/miramarski/iconos/small/huespedes.png') }}" /> 6/8 Huéspedes 
-									</a>
-								</li>
-								<li>
-									<a href="#" class="property">
-										<img src="{{ asset('/img/miramarski/iconos/small/dormitorios.png') }}" /> 2 Dormitorios 
-									</a>
-								</li>
-								<li>
-									<a href="#" class="property">
-										<img src="{{ asset('/img/miramarski/iconos/small/apto.png') }}" /> 8 Camas 
+										<img src="{{ asset('/img/miramarski/iconos/small/apto.png') }}" /> 4 Camas 
 									</a>
 								</li>
 								<li>
@@ -168,11 +157,6 @@
 								<li>
 									<a href="#" class="property">
 										<img src="{{ asset('/img/miramarski/iconos/small/ducha.png') }}" /> Baño 
-									</a>
-								</li>
-								<li>
-									<a href="#" class="property">
-										<img src="{{ asset('/img/miramarski/iconos/small/chimenea.png') }}" /> Chimenea 
 									</a>
 								</li>
 								<li>
@@ -188,11 +172,6 @@
 								<li>
 									<a href="#" class="property">
 										<img src="{{ asset('/img/miramarski/iconos/small/lavavajillas.png') }}" /> Lavavajillas 
-									</a>
-								</li>
-								<li>
-									<a href="#" class="property">
-										<img src="{{ asset('/img/miramarski/iconos/small/secador.png') }}" /> Secado 
 									</a>
 								</li>
 								<li>
