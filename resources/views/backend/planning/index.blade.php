@@ -20,8 +20,12 @@
     
     <style type="text/css">
 
-        .Reservado{
+        .Reservado-table{
             background-color: #295d9b !important;
+            color: black;
+        }
+        .Reservado{
+            background-color: rgba(0,100,255,0.2)  !important;
             color: black;
         }
         .Pagada-la-señal{
@@ -482,12 +486,12 @@
                                                 <br>
                                                 <div class="input-group col-md-12">
                                                     <div class="col-md-6">
-                                                        <label>Comentarios Usuario</label>
+                                                        <label>Comentarios Cliente</label>
                                                         <textarea class="form-control" name="comments" rows="5" style="width: 80%">
                                                         </textarea>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <label>Comentarios reserva</label>
+                                                        <label>Comentarios Internos</label>
                                                         <textarea class="form-control book_comments" name="book_comments" rows="5" style="width: 80%">
                                                         </textarea>
                                                     </div>
@@ -549,32 +553,33 @@
                             <div class="row column-seperation">
                                 <div class="pull-left">
                                     <div class="col-xs-12 ">
-                                        <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
+                                        <input type="text" id="searchPendientes" class="form-control pull-right" placeholder="Buscar">
                                     </div>
                                 </div>
                             
                                     <div class="clearfix"></div>
         
-                                    <table class="table  demo-table-search table-responsive table-striped " id="tableWithSearch" >
+                                    <table class="table  demo-table-search table-responsive table-striped " id="tablePendientes" >
                                         <thead>
-                                            <tr>   
-                                                <th class ="text-center Reservado text-white" style="width:20%!important">  Cliente     </th>
-                                                <th class ="text-center Reservado text-white" style="width:10%">  Telefono     </th>
-                                                <th class ="text-center Reservado text-white" style="width:2%">   Pax         </th>
-                                                <th class ="text-center Reservado text-white" style="width:5%">   Apart       </th>
-                                                <th class ="text-center Reservado text-white" style="width:5%!important">  IN     </th>
-                                                <th class ="text-center Reservado text-white" style="width:5%!important">  OUT      </th>
-                                                <th class ="text-center Reservado text-white" style="width:5%">   Noc         </th>
-                                                <th class ="text-center Reservado text-white">                    Precio      </th>
-                                                <th class ="text-center Reservado text-white" style="width:5%">   Estado      </th>
-                                                <th class ="text-center Reservado text-white">A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </th>
+                                            <tr>  
+                                                <th style="display: none">ID</th> 
+                                                <th class ="text-center Reservado-table text-white" style="width:20%!important">  Cliente     </th>
+                                                <th class ="text-center Reservado-table text-white" style="width:10%">  Telefono     </th>
+                                                <th class ="text-center Reservado-table text-white" style="width:2%">   Pax         </th>
+                                                <th class ="text-center Reservado-table text-white" style="width:5%">   Apart       </th>
+                                                <th class ="text-center Reservado-table text-white" style="width:5%!important">  IN     </th>
+                                                <th class ="text-center Reservado-table text-white" style="width:5%!important">  OUT      </th>
+                                                <th class ="text-center Reservado-table text-white" style="width:5%">   Noc         </th>
+                                                <th class ="text-center Reservado-table text-white">                    Precio      </th>
+                                                <th class ="text-center Reservado-table text-white" style="width:5%">   Estado      </th>
+                                                <th class ="text-center Reservado-table text-white">A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php foreach ($arrayBooks["nuevas"] as $book): ?>
                                                     <tr> 
-
-                                                        <td class ="text-center">
+                                                        <td style="display: none"><?php echo $book->id ?></td>
+                                                        <td class ="text-center" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>>
 
                                                                 <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo $book->customer['name']  ?></a>                                                        
                                                         </td>

@@ -25,6 +25,9 @@
 
     hr.cobros {border: 0; height: 4px; margin-top: 20px;background:black; text-align: center;}
     hr.cobros:after {content:"Cobros"; position: relative; top: -12px; display: inline-block; width: 86px; height: 24px; padding: 0;border: 2px solid black; border-radius: 24px; background: black; color: white; font-size: 12px; line-height: 24px; }
+
+    hr.estado {border: 0; height: 4px; margin-top: 20px;background:black; text-align: center;}
+    hr.estado:after {content:"Estado"; position: relative; top: -12px; display: inline-block; width: 86px; height: 24px; padding: 0;border: 2px solid black; border-radius: 24px; background: black; color: white; font-size: 12px; line-height: 24px; }
 </style>
 @endsection
     
@@ -33,14 +36,17 @@
 <div class="container-fluid padding-10 sm-padding-10">
     <div class="row">
         <div class="col-md-12 col-xs-12 ">
-            <h2><?php echo "<b>".$book->customer->name."</b>" ?> 
-                creada el 
-                <?php 
-                    $fecha = Carbon::createFromFormat('Y-m-d H:i:s' ,$book->created_at);
-                    echo $fecha->format('d-m-Y'); 
-                ?>
-                .Creado por <?php echo "<b>".strtoupper($book->user->name)."</b>" ?>
-            </h2>
+            <div class="col-md-4">
+                <h2><?php echo "<b>".strtoupper($book->customer->name)."</b>" ?> 
+                    creada el 
+                    <?php 
+                        $fecha = Carbon::createFromFormat('Y-m-d H:i:s' ,$book->created_at);
+                        echo $fecha->format('d-m-Y H:i'); 
+                    ?>.
+                </h2>
+            </div>
+            
+            <h2 style="float: left">Creado por <?php echo "<b>".strtoupper($book->user->name)."</b>" ?></h2>
         </div>
         <div class="col-md-7">
 
@@ -66,7 +72,7 @@
                                     Email: <input class="form-control cliente" type="email" name="email" value="<?php echo $book->customer->email ?>" data-id="<?php echo $book->customer->id ?>">  
                                 </div>
                                 <div class="col-md-2">
-                                    Telefono: <input class="form-control cliente" type="number" name="phone" value="<?php echo $book->customer->phone ?>" data-id="<?php echo $book->customer->id ?>"> 
+                                    Telefono: <input class="form-control cliente" type="text" name="phone" value="<?php echo $book->customer->phone ?>" data-id="<?php echo $book->customer->id ?>"> 
                                 </div>  
                                 <div style="clear: both;"></div>
                             </div>                                            
@@ -87,11 +93,11 @@
                                           <input type="text" class="sm-form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;" readonly="">
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-1 p-l-0">
                                         <label>Noches</label>
                                         <input type="text" class="form-control nigths" name="nigths" value="<?php echo $book->nigths ?>" style="width: 100%">
                                     </div> 
-                                    <div class="col-md-2">
+                                    <div class="col-md-1 p-l-0">
                                         <label>Pax</label>
                                         <input  type="text" class="form-control full-width pax" name="pax" style="width: 100%" value="<?php echo $book->pax ?>">
                                             
@@ -104,7 +110,7 @@
                                             <?php endforeach ?>
                                         </select>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-1 p-l-0 p-r-0">
                                         <label>Parking</label>
                                         <select class=" form-control parking"  name="parking">
                                             <?php for ($i=1; $i <= 4 ; $i++): ?>
@@ -112,7 +118,14 @@
                                             <?php endfor;?>
                                         </select>
                                     </div>
-                                    
+                                    <div class="col-md-2">
+                                        <label>Sup. Lujo</label>
+                                        <select class=" form-control full-width type_luxury" data-init-plugin="select" name="type_luxury">
+                                            <?php for ($i=1; $i <= 4 ; $i++): ?>
+                                                <option value="<?php echo $i ?>" {{ $book->type_luxury == $i ? 'selected' : '' }}><?php echo $book->getSupLujo($i) ?></option>
+                                            <?php endfor;?>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="input-group col-md-12">
                                     <div class="col-md-2">
@@ -135,29 +148,16 @@
                                             <?php endfor;?>
                                         </select>
                                     </div>
-                                    
-                                    
-                                    <div class="col-md-2">
-                                        <label>Sup. Lujo</label>
-                                        <select class=" form-control full-width type_luxury" data-init-plugin="select2" name="type_luxury">
-                                            <?php for ($i=1; $i <= 4 ; $i++): ?>
-                                                <option value="<?php echo $i ?>" {{ $book->type_luxury == $i ? 'selected' : '' }}><?php echo $book->getSupLujo($i) ?></option>
-                                            <?php endfor;?>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <input type="button" class="recalcular btn btn-primary" value="recalcular" style="margin-top: 25px;">
-                                    </div>
                                 </div>
                                 <br>
                                 <div class="input-group col-md-12">
                                     <div class="col-md-6">
-                                        <label>Comentarios Usuario</label>
+                                        <label>Comentarios Cliente </label>
                                         <textarea class="form-control" name="comments" rows="5" style="width: 80%">
                                         </textarea>
                                     </div>
                                     <div class="col-md-6">
-                                        <label>Comentarios reserva</label>
+                                        <label>Comentarios Internos</label>
                                         <textarea class="form-control book_comments" name="book_comments" rows="5" style="width: 80%">
                                         </textarea>
                                     </div>
@@ -178,7 +178,28 @@
             </div>
 
             <div class="col-md-3">
-                <div class="col-md-12" style="padding: 0px">
+                <div class="col-md-12">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <div class="panel-title col-md-12">
+                                <hr class="estado">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <select class="status form-control" data-id="<?php echo $book->id ?>" >
+
+                        <?php for ($i=1; $i < 9; $i++): ?> 
+                            <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
+                                    <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
+                                    value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
+                                    <?php echo $book->getStatus($i) ?></option>                                    
+                             
+                        <?php endfor; ?>
+                    </select>
+                </div>
+                <div class="col-md-12 m-t-40" style="padding: 0px">
                     <div class="panel">
                         <div class="panel-heading">
                             <div class="panel-title col-md-12">
@@ -442,7 +463,7 @@
 
             });
 
-            $('.recalcular').click(function(event){ 
+            $('#newroom, .pax, .parking, .agencia, .type_luxury').click(function(event){ 
 
                 var room = $('#newroom').val();
                 var pax = $('.pax').val();
@@ -556,6 +577,32 @@
                 var phone = $('[name=phone]').val();
                 $.get('/admin/clientes/save', { id: id,  name: name, email: email,phone: phone}, function(data) {
                 });
+            });
+
+            $('.status,.room').change(function(event) {
+                var id = $(this).attr('data-id');
+                var clase = $(this).attr('class');
+                
+                if (clase == 'status form-control') {
+                    var status = $(this).val();
+                    var room = "";
+                }else if(clase == 'room'){
+                    var room = $(this).val();
+                    var status = "";
+                }
+                if (status == 5) {
+                    $('#myModal').modal({
+                        show: 'false'
+                    }); 
+                   $.get('/admin/reservas/ansbyemail/'+id, function(data) {
+                       $('.modal-content').empty().append(data);
+                   });
+                }else{
+                   $.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
+                       window.location.reload();
+                   }); 
+                }
+                
             });
         });
 

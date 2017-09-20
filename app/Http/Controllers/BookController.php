@@ -818,25 +818,23 @@ class BookController extends Controller
 
             $book->send = 1;
             $book->save();
-            return 'OK';
+          
         }
 
     public function sendEmail(Request $request)
         {
-            echo "<pre>";
-            print_r($request->all());
-            die();
             $book = \App\Book::find($request->id);
             Mail::send('backend.emails.jaime',['book' => $book], function ($message) use ($book) {
                                 $message->from('jbaz@daimonconsulting.com', 'Miramarski');
 
                                 $message->to($book->customer->email);
-                                $message->subject('Correo a Jaime');
+                                $message->subject('Correo Contestado ');
                             });
 
             $book->send = 1;
+            $book->type_book = 5;
             $book->save();
-            return 'OK';
+            return redirect()->back();
         }
 
     public function ansbyemail($id)

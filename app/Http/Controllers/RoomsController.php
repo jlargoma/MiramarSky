@@ -35,6 +35,7 @@ class RoomsController extends Controller
     {
         $room = new \App\Rooms();
 
+
         if($request->input('luxury') == "on"){
             $luxury = 1;
         }
@@ -45,9 +46,11 @@ class RoomsController extends Controller
         $room->nameRoom = $request->input('nameRoom');
         $room->owned = $request->input('owner');
         $room->typeApto = $request->input('type');
-        $room->sizeRoom = $request->input('sizeRoom');
+        $room->sizeApto = $request->input('sizeRoom');
         $room->luxury = $luxury;
-  
+        $room->order = 99;
+        $room->state = 1;
+
         if ($room->save()) {
             return redirect()->action('RoomsController@index');
         }

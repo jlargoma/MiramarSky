@@ -310,12 +310,12 @@ class Book extends Model
                                 });
 
                             break;
-                        case '4':
+                        case '6':
                             Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
                                     $message->from('jbaz@daimonconsulting.com', 'Miramarski');
 
                                     $message->to($book->customer->email);
-                                    $message->subject('Correo de denegado');
+                                    $message->subject('Correo de cancelada');
                                 });  
 
                             break;

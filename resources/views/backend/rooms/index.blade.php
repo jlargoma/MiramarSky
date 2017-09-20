@@ -51,7 +51,7 @@
                     <tr>
                         <th class ="text-center hidden">                  ID            </th>
                         <th class ="text-center bg-complete text-white" style="width: 10%">  Nick        </th>
-                        <th class ="text-center bg-complete text-white" style="width: 10%">  Nombre          </th>
+                        <th class ="text-center bg-complete text-white" style="width: 10%">  Piso          </th>
                         <th class ="text-center bg-complete text-white" style="width: 10%">  Ocu min </th>
                         <th class ="text-center bg-complete text-white" style="width: 10%">  Ocu max </th>
                         <th class ="text-center bg-complete text-white">  Tamaño          </th>
@@ -252,7 +252,7 @@
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-user"></i>
                                                                 </span>
-                                                                <input type="text" class="form-control" name="name" placeholder="Nombre" required="" aria-required="true" aria-invalid="false">
+                                                                <input type="text" class="form-control" name="name" placeholder="Nick" required="" aria-required="true" aria-invalid="false">
                                                             </div>
                                                                 <br>
                                                             <div class="input-group transparent">
@@ -301,6 +301,18 @@
                                                                         <option></option>
                                                                     <?php foreach ($types as $type): ?>
                                                                          <option value="<?php echo $type->id ?>"><?php echo $type->name ?></option>
+                                                                    <?php endforeach ?>
+                                                                </select>
+                                                            </div>
+                                                                <br>
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon">
+                                                                    Tamaño de apartamento
+                                                                </span>
+                                                                <select class="full-width" data-init-plugin="select2" name="sizeRoom">
+                                                                        <option></option>
+                                                                    <?php foreach ($sizes as $size): ?>
+                                                                         <option value="<?php echo $size->id ?>"><?php echo $size->name ?></option>
                                                                     <?php endforeach ?>
                                                                 </select>
                                                             </div>
