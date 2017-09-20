@@ -124,7 +124,7 @@ class LiquidacionController extends Controller
                                 "noches"    => [],
                                 "pvp"       => [],
                                 "pendiente" => [],
-                                "ingresos"  => [],
+                                "beneficio"  => [],
                                 "%ben"      => [],
                                 "costes"    => [],
                             ];
@@ -134,12 +134,12 @@ class LiquidacionController extends Controller
                 if (isset($apartamentos["noches"][$book->room_id])) {
                     $apartamentos["noches"][$book->room_id]   += $book->nigths;
                     $apartamentos["pvp"][$book->room_id]      += $book->total_price;
-                    $apartamentos['ingresos'][$book->room_id] += $book->total_ben;
+                    $apartamentos['beneficio'][$book->room_id] += $book->total_ben;
                     $apartamentos['costes'][$book->room_id]   += $book->cost_total;
                 }else{
                     $apartamentos["noches"][$book->room_id]   = $book->nigths;
                     $apartamentos["pvp"][$book->room_id]      = $book->total_price;
-                    $apartamentos['ingresos'][$book->room_id] = $book->total_ben;
+                    $apartamentos['beneficio'][$book->room_id] = $book->total_ben;
                     $apartamentos['costes'][$book->room_id]   = $book->cost_total;
                 }
             }

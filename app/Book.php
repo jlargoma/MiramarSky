@@ -308,7 +308,7 @@ class Book extends Model
                                     $message->to($book->customer->email);
                                     $message->subject('Correo de confirmacion del pago parcial');
                                 });
-
+ 
                             break;
                         case '6':
                             Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {

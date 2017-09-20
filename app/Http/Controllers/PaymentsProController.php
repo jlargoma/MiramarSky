@@ -157,6 +157,8 @@ class PaymentsProController extends Controller
 
         $payments = \App\Paymentspro::where('room_id',$id)->where('datePayment','>',$date->copy())->where('datePayment','<',$date->copy()->addYear())->get();
 
+        $pagado = 0;
+
         foreach ($payments as $payment) {
             if ($payment->type == 1 || $payment->type == 2) {
                 if (isset($metalico)) {
@@ -171,6 +173,7 @@ class PaymentsProController extends Controller
                     $banco = $payment->import;
                 }
             }
+            $pagado += $payment->import;
         }
 
         $books = \App\Book::where('start','>',$date->copy())->where('start','<',$date->copy()->addYear())->where('room_id',$id)->get();
@@ -195,6 +198,7 @@ class PaymentsProController extends Controller
                                                 'typePayment' => $typePayment,
                                                 'metalico'    => $metalico,
                                                 'banco'       => $banco,
+                                                'pagado'      => $pagado,
                                             ]);
     }
 

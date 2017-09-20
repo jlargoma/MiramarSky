@@ -139,7 +139,8 @@
                 "sLengthMenu": "_MENU_ ",
                 "sInfo": "Mostrando <b>_START_ de _END_</b> de _TOTAL_"
             },
-            "iDisplayLength": 50
+            "iDisplayLength": 50,
+            
         };
 
         table.dataTable(settings);

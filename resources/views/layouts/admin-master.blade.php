@@ -37,8 +37,8 @@
 	    <![endif]-->
 	   	<style>
 	   		.navbar-inverse {
-	   		  background-color: #B0B5B9;
-	   		  border-color: #B0B5B9;
+	   		  background-color: #B0B5B9!important;
+	   		  border-color: #B0B5B9!important;
 	   		}
 	   		.navbar-inverse .navbar-nav>li>a {
 	   		    color: white;
@@ -55,6 +55,7 @@
 	   		.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover{
 	   			background: rgb(81,81,81);
 	   		}
+
 	   	</style>
 	   	<?php 
    			use App\Classes\Mobile; 

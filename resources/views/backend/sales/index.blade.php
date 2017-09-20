@@ -43,6 +43,7 @@
 	.blue{
 		color: blue;
 	}
+	
 </style>
 @endsection
 

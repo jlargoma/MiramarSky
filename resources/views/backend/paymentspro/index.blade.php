@@ -15,7 +15,8 @@
         padding: 10px 5px!important;
       }
       .pagos{
-        background-color: rgba(255,255,255,0.5)!important;
+        background-color: rgba(200,200,200,0.5)!important;
+        font-weight: bold;
       }
 
       td[class$="bi"] {border-left: 1px solid black;}
@@ -31,10 +32,7 @@
       .blue{
         color: blue;
       }
-      .navbar-inverse {
-          background-color: #B0B5B9;
-          border-color: #B0B5B9;
-      }
+
     </style>
     
 @endsection
@@ -69,12 +67,13 @@
                 
             </div>
         </div>
-        <div class="col-md-4 col-md-offset-1">
+        <div class="col-md-4 col-md-offset-3">
            <table class="table table-hover demo-table-search table-block" id="tableWithSea">
               <thead>
                   <th class ="text-center bg-complete text-white"> PVP    </th>
                   <th class ="text-center bg-complete text-white"> Coste Apto   </th>
                   <th class ="text-center bg-complete text-white"> Beneficio    </th>
+                  <th class ="text-center bg-complete text-white"> Ben    </th>
                   <th class ="text-center bg-complete text-white"> Pagado    </th>
                   <th class ="text-center bg-complete text-white"> Pendiente    </th>
               </thead>
@@ -83,6 +82,7 @@
                   <td class="text-center"><?php echo number_format(array_sum($totalPVP),2,',','.') ?> €</td>
                   <td class="text-center"><?php echo number_format(array_sum($totalCost),2,',','.') ?> €</td>
                   <td class="text-center"><?php echo number_format((array_sum($totalPVP) - array_sum($totalCost)),2,',','.') ?> €</td>
+                  <td class="text-center"><?php echo number_format(((array_sum($totalPVP) - array_sum($totalCost))/array_sum($totalPVP) * 100 ),2,',','.') ?>%</td>
                   <td class="text-center"><?php echo number_format(array_sum($totalPayment),2,',','.') ?> €</td>
                   <td class="text-center"><?php echo number_format(array_sum($debt),2,',','.') ?> €</td>
                 </tr>
@@ -120,14 +120,14 @@
                                   -----
                               <?php endif ?>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center  pagos bi">
                               <?php if (isset($totalCost[$room->id])): ?>
                                 <?php echo number_format($totalCost[$room->id],2,',','.')." €" ?>
                               <?php else: ?>
                                   -----
                               <?php endif ?>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center  pagos bf" >
                               <?php if (isset($totalCost[$room->id]) && isset($totalPVP[$room->id])): ?>
                                 <?php echo number_format((($totalPVP[$room->id]) - ($totalCost[$room->id])),2,',','.') ?> €
                               <?php else: ?>

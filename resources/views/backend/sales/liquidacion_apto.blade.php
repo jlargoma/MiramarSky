@@ -4,15 +4,10 @@
 
 @section('externalScripts') 
 	
-	<link href="assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
-	<link href="assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
-	<link href="assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
+
 
 @endsection
 
-@section('headerButtoms')
-	@include('layouts/headerbuttoms')
-@endsection
 
 @section('content')
 <?php use \Carbon\Carbon; ?>
@@ -39,6 +34,29 @@
             </select>
 		</h2>
 	</div>
+	<div class="col-md-4 col-md-offset-2">
+	   <table class="table table-hover demo-table-search table-block" id="tableWithSea">
+	      <thead>
+	          
+	          <th class ="text-center bg-complete text-white"> PVP    </th>
+	          <th class ="text-center bg-complete text-white"> Pendiente   </th>
+	          <th class ="text-center bg-complete text-white"> Beneficio    </th>
+	          <th class ="text-center bg-complete text-white"> Ben    </th>
+	          <th class ="text-center bg-complete text-white"> Costes    </th>
+	      </thead>
+	      <tbody>
+	        <tr>
+	          
+	          <td><?php echo number_format(array_sum($apartamentos["pvp"]),2,',','.')?>€</td>
+	          <td><?php echo number_format(array_sum($pendientes),2,',','.')?>€</td>
+	          <td><?php echo number_format(array_sum($apartamentos["beneficio"]),2,',','.')?>€</td>
+	          <td><?php echo number_format(array_sum($apartamentos["beneficio"])/array_sum($apartamentos["pvp"])*100,2,',','.')?>€</td>
+	          <td><?php echo number_format(array_sum($apartamentos["costes"]),2,',','.')?>€</td>
+	        </tr>
+	      </tbody>
+	   </table>
+	</div>
+	<div style="clear: both;"></div>
     <div class="row">
         <div class="col-md-6">
 			<div class="pull-left">
@@ -55,7 +73,7 @@
 		        		<th class ="text-center bg-complete text-white">Noches</th>
 		        		<th class ="text-center bg-complete text-white">PVP</th>
 		        		<th class ="text-center bg-complete text-white">Pendiente</th>
-		        		<th class ="text-center bg-complete text-white">Ingresos</th>
+		        		<th class ="text-center bg-complete text-white">Beneficio</th>
 		        		<th class ="text-center bg-complete text-white">%Ben</th>
 		        		<th class ="text-center bg-complete text-white">Costes</th>
 		        	</thead>
@@ -73,8 +91,8 @@
 		        							-----
 		        						<?php endif ?>
 		        					</td>
-		        					<td class="text-center"><?php echo number_format($apartamentos["ingresos"][$room->id],2,',','.')?>€</td>
-		        					<td class="text-center"><?php echo number_format($apartamentos["ingresos"][$room->id]/$apartamentos["pvp"][$room->id]*100,2,',','.')?>%</td>
+		        					<td class="text-center"><?php echo number_format($apartamentos["beneficio"][$room->id],2,',','.')?>€</td>
+		        					<td class="text-center"><?php echo number_format($apartamentos["beneficio"][$room->id]/$apartamentos["pvp"][$room->id]*100,2,',','.')?>%</td>
 		        					<td class="text-center"><?php echo number_format($apartamentos["costes"][$room->id],2,',','.')?>€</td>
 		        				</tr>
 		        			<?php endif ?>
@@ -83,6 +101,9 @@
 		        	</tbody>
 		        </table>
 		    </div>
+        </div>
+        <div class="col-md-6">
+        	<canvas id="mixed-chart" ></canvas>
         </div>
     </div>
 </div>
@@ -97,36 +118,14 @@
 <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
 <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
 
-<script src="/assets/plugins/bootstrap3-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
-<script type="text/javascript" src="/assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
-<script type="text/javascript" src="/assets/plugins/dropzone/dropzone.min.js"></script>
-<script type="text/javascript" src="/assets/plugins/bootstrap-tag/bootstrap-tagsinput.min.js"></script>
-<script type="text/javascript" src="/assets/plugins/jquery-inputmask/jquery.inputmask.min.js"></script>
-<script src="/assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
-<script src="/assets/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
-<script src="/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
-<script src="/assets/plugins/summernote/js/summernote.min.js" type="text/javascript"></script>
 <script src="/assets/plugins/moment/moment.min.js"></script>
-<script src="/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-<script src="/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
-<script src="/assets/plugins/bootstrap-typehead/typeahead.bundle.min.js"></script>
-<script src="/assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
-<script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+
+
 
 <script type="text/javascript">
-		var colorPendienteCobro = function(){
-			var pendientes  = $('.pendiente');
 
-
-			for(ind in pendientes){
-	  			
-	  			var pendCobro = pendientes[ind];
-
-	  			if ($(pendCobro).text() == '0 €') {
-	  				$(pendCobro).css('color', 'blue');
-	  			};
-			}
-		}
 
 	$(document).ready(function() {
 		
@@ -135,7 +134,60 @@
 			window.location = '/admin/liquidacion-apartamentos/'+year;
 		});
 
-		colorPendienteCobro();
+		new Chart(document.getElementById("mixed-chart"), {
+		    type: 'bar',
+		    data: {
+		      labels: [
+		      	<?php foreach ($rooms as $room): ?>
+		      		<?php echo "'".$room->name."'," ?>
+		      	<?php endforeach ?>],
+		      datasets: [		     
+		        {
+		        	label: "PVP",
+		        	type: "line",
+		        	borderColor: "#8e5ea2",
+		        	data: [
+		        		<?php foreach ($rooms as $key => $room): ?>
+		        			<?php if (isset($apartamentos["pvp"][$room->id])): ?>
+		        				<?php echo "'".$apartamentos["pvp"][$room->id]."'"?>,
+		        			<?php else: ?>
+		        				'0',
+		        			<?php endif; ?>
+		        		<?php endforeach ?>
+		        		],
+		        	fill: false,
+		        },		        
+		        
+		        {
+		          label: "Beneficio",
+		          type: "bar",
+		          backgroundColor: "rgba(0,0,0,0.2)",
+		          backgroundColorHover: "#3e95cd",
+		          data: [
+		          		<?php foreach ($rooms as $key => $room): ?>
+		          			<?php if (isset($apartamentos["beneficio"][$room->id])): ?>
+		          				<?php echo "'".$apartamentos["beneficio"][$room->id]."'"?>,
+		          			<?php else: ?>
+		          				'0',
+		          			<?php endif; ?>
+		          		<?php endforeach ?>
+		          		],
+		        }
+		      ]
+		    },
+		    options: {
+		      title: {
+		        display: true,
+		        text: 'Relacion de PVP y Beneficio'
+		      },
+		      legend: { display: true },
+		      elements: {
+		              line: {
+		                tension: 0
+		              }
+		      }
+		    }
+		});
 	});
 </script>
 @endsection

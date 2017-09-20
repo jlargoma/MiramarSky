@@ -19,7 +19,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="panel-title">
-                        <h2> <?php echo $room->nameRoom." de ".$room->user->name ?></h2>
+                        <h2> <?php echo $room->nameRoom." de (".$room->user->name ?>)</h2>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -123,11 +123,14 @@
                             </div>
                             <div class="panel-body">
                                 <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
+                                    <thead>
+                                        <th class="text-center bg-complete text-white">Pagado</th>
+                                        <th class="text-center bg-complete text-white">Pendiente</th>
+                                    </thead>
                                     <thead >
                                         <?php if ($deuda != 0): ?>
-                                            <th class ="text-center bg-success " style="width:<?php echo $deuda."%" ?>!important"><?php echo number_format($total - $debt,2,',','.') ?></th>
+                                            <th class ="text-center bg-success " style="width:<?php echo $deuda."%" ?>!important"><?php echo number_format($pagado,2,',','.') ?></th>
                                         <?php endif ?>
-                                        <th class ="text-center bg-success " style="width:<?php echo $deuda."%" ?>!important"><?php echo number_format($total - $debt,2,',','.') ?></th>
                                         <?php if ($debt == 0): ?>
                                         <?php else: ?>
                                             <th class ="text-center bg-danger text-black" style="width:<?php echo 100-$deuda."%" ?>!important"><?php echo number_format($debt,2,',','.') ?></th>
@@ -142,11 +145,11 @@
                                     <thead >
                                         <tr>
                                             <th class ="text-center bg-complete text-white">Metalico</th>
-                                            <th class="text-center "><?php echo $metalico ?></th>
+                                            <th class="text-center "><?php echo number_format($metalico,2,',','.') ?></th>
                                         </tr>
                                         <tr>
                                             <th class ="text-center bg-complete text-white">Banco</th>
-                                            <th class="text-center "><?php echo $banco ?></th>
+                                            <th class="text-center "><?php echo number_format($banco,2,',','.') ?></th>
                                         </tr>
                                     </thead>
                                 </table>

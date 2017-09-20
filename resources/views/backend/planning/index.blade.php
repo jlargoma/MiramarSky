@@ -463,6 +463,10 @@
                                                             <?php endforeach ?>
                                                         </select>
                                                     </div>
+                                                    <div class="col-md-2">                                                        
+                                                        <label>Cost Agencia</label>
+                                                        <input type="text" class="agencia form-control" name="agencia" value="0">
+                                                    </div>
                                                     <div class="col-md-2">
                                                         <label>Agencia</label>
                                                         <select class=" form-control full-width agency" data-init-plugin="select2" name="agency">
@@ -476,10 +480,7 @@
                                                             <?php endfor;?>
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-2">                                                        
-                                                        <label>Cost Agencia</label>
-                                                        <input type="text" class="agencia form-control" name="agencia" value="0">
-                                                    </div>
+                                                    
                                                     
                                                     
                                                 </div>
@@ -563,15 +564,15 @@
                                         <thead>
                                             <tr>  
                                                 <th style="display: none">ID</th> 
-                                                <th class ="text-center Reservado-table text-white" style="width:20%!important">  Cliente     </th>
-                                                <th class ="text-center Reservado-table text-white" style="width:10%">  Telefono     </th>
-                                                <th class ="text-center Reservado-table text-white" style="width:2%">   Pax         </th>
-                                                <th class ="text-center Reservado-table text-white" style="width:5%">   Apart       </th>
-                                                <th class ="text-center Reservado-table text-white" style="width:5%!important">  IN     </th>
-                                                <th class ="text-center Reservado-table text-white" style="width:5%!important">  OUT      </th>
-                                                <th class ="text-center Reservado-table text-white" style="width:5%">   Noc         </th>
-                                                <th class ="text-center Reservado-table text-white">                    Precio      </th>
-                                                <th class ="text-center Reservado-table text-white" style="width:5%">   Estado      </th>
+                                                <th class ="text-center Reservado-table text-white" >   Cliente     </th>
+                                                <th class ="text-center Reservado-table text-white" >   Telefono     </th>
+                                                <th class ="text-center Reservado-table text-white" >   Pax         </th>
+                                                <th class ="text-center Reservado-table text-white" >   Apart       </th>
+                                                <th class ="text-center Reservado-table text-white" >   IN     </th>
+                                                <th class ="text-center Reservado-table text-white" >   OUT      </th>
+                                                <th class ="text-center Reservado-table text-white" >   Noc         </th>
+                                                <th class ="text-center Reservado-table text-white" >   Precio      </th>
+                                                <th class ="text-center Reservado-table text-white" >   Estado      </th>
                                                 <th class ="text-center Reservado-table text-white">A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </th>
                                             </tr>
                                         </thead>
@@ -655,11 +656,13 @@
                                                                     <a class="btn btn-tag btn-danger" title="enviado" disabled data-id="<?php echo $book->id ?>"><i class=" pg-mail "></i></a>
                                                                     </a>
                                                                 <?php endif ?> -->
+                                                            <div class="col-md-6">
                                                                 <a href="{{ url('/admin/reservas/delete/')}}/<?php echo $book->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
                                                                     <i class="fa fa-trash"></i>
                                                                 </a>
-                                                                
                                                             </div>
+                                                                
+
                                                         </td>
                                                     </tr>
                                             <?php endforeach ?>
