@@ -31,6 +31,10 @@
       .blue{
         color: blue;
       }
+      .navbar-inverse {
+          background-color: #B0B5B9;
+          border-color: #B0B5B9;
+      }
     </style>
     
 @endsection
@@ -66,9 +70,9 @@
             </div>
         </div>
         <div class="col-md-4 col-md-offset-1">
-           <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSea">
+           <table class="table table-hover demo-table-search table-block" id="tableWithSea">
               <thead>
-                  <th class ="text-center bg-complete text-white"> Ingreso    </th>
+                  <th class ="text-center bg-complete text-white"> PVP    </th>
                   <th class ="text-center bg-complete text-white"> Coste Apto   </th>
                   <th class ="text-center bg-complete text-white"> Beneficio    </th>
                   <th class ="text-center bg-complete text-white"> Pagado    </th>
@@ -88,14 +92,14 @@
         <div style="clear: both"></div>
         <div class="col-md-7">
             <div class="clearfix"></div>
-                <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
+                <table class="table table-hover demo-table-search table-block" id="tableWithSearch" >
 
                     <thead>
-                        <th class ="text-center bg-complete text-white"> Nombre    </th>
+                        <th class ="text-center bg-complete text-white"> Propietario    </th>
                         <th class ="text-center bg-complete text-white"> Nick    </th>
                         <th class ="text-center bg-complete text-white"> Tipo </th>
                         <th class ="text-center bg-complete text-white" style="width: 20%!important"> PVP&nbsp;&nbsp;  </th>
-                        <th class ="text-center bg-complete text-white"> Coste </th>
+                        <th class ="text-center bg-complete text-white"> Coste Apto </th>
                         <th class ="text-center bg-complete text-white"> Beneficio </th>
                         <th class ="text-center bg-complete text-white"> % Ben </th>
                         <th class ="text-center bg-complete text-white"> Pagado  </th>
