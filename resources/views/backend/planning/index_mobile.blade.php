@@ -4,13 +4,13 @@
 
 @section('externalScripts') 
 <link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
-<link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
 <link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="/assets/css/font-icons.css" rel="stylesheet" type="text/css" />
 
+<script src="/assets/plugins/summernote/css/summernote.css"></script>
+
 <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
 
-<link href="/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" media="screen">
 <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
@@ -24,10 +24,14 @@
   <style type="text/css">
 
   	/* Estados */
-  	.Reservado{
-  		background-color: #295d9b !important;
-  		color: black;
-  	}
+  	.Reservado-table{
+        background-color: #295d9b !important;
+        color: black;
+    }
+    .Reservado{
+        background-color: rgba(0,100,255,0.2)  !important;
+        color: black;
+    }
   	.Pagada-la-señal{
   		background-color: green  !important;
   		color: black;
@@ -151,15 +155,15 @@
   							<div class="container column-seperation ">
   								<table class="table table-hover dataTable no-footer">
   									<thead>
-  										<th class="Reservado text-white text-center">Nombre</th>
-  										<th class="Reservado text-white text-center" style="min-width:35px">In</th>
-  										<th class="Reservado text-white text-center" style="min-width:35px ">Out</th>
-  										<th class="Reservado text-white text-center">Pax</th>
-  										<th class="Reservado text-white text-center">Tel</th>
-  										<th class="Reservado text-white text-center" style="min-width:100px">Apart</th>
-  										<th class="Reservado text-white text-center"><i class="fa fa-moon-o"></i></th>
-  										<th class="Reservado text-white text-center" style="min-width:50px">PVP</th>
-  										<th class="Reservado text-white text-center" style="min-width:100px">Estado</th>
+  										<th class="Reservado-table text-white text-center">Nombre</th>
+  										<th class="Reservado-table text-white text-center" style="min-width:35px">In</th>
+  										<th class="Reservado-table text-white text-center" style="min-width:35px ">Out</th>
+  										<th class="Reservado-table text-white text-center">Pax</th>
+  										<th class="Reservado-table text-white text-center">Tel</th>
+  										<th class="Reservado-table text-white text-center" style="min-width:100px">Apart</th>
+  										<th class="Reservado-table text-white text-center"><i class="fa fa-moon-o"></i></th>
+  										<th class="Reservado-table text-white text-center" style="min-width:50px">PVP</th>
+  										<th class="Reservado-table text-white text-center" style="min-width:100px">Estado</th>
   									</thead>
   									<tbody>
   										<?php foreach ($arrayBooks["nuevas"] as $nueva): ?>
@@ -175,15 +179,15 @@
   												<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $nueva->nigths ?></td>
   												<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $nueva->total_price ?> €</td>
   												<td class="text-center sm-p-t-10 sm-p-b-10 sm-p-l-10 sm-p-r-10">
-                            <select class="status form-control" data-id="<?php echo $book->id ?>" >
-                              <?php for ($i=1; $i < 9; $i++): ?> 
-                                  <?php if ($i == $book->type_book): ?>
-                                      <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
-                                  <?php else: ?>
-                                      <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
-                                  <?php endif ?>                                          
-                                   
-                              <?php endfor; ?>
+                            <select class="status form-control" data-id="<?php echo $nueva->id ?>" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>>
+      
+                                <?php for ($i=1; $i < 9; $i++): ?> 
+                                    <option <?php echo $i == ($nueva->type_book) ? "selected" : ""; ?> 
+                                            <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
+                                            value="<?php echo $i ?>"  data-id="<?php echo $nueva->id ?>">
+                                            <?php echo $nueva->getStatus($i) ?></option>                                    
+                                     
+                                <?php endfor; ?>
                             </select>
                           </td>
   											</tr>
@@ -221,10 +225,10 @@
 		                        <td class="text-center sm-p-t-10 sm-p-b-10 sm-p-l-10 sm-p-r-10">
                               <select class="status form-control" data-id="<?php echo $book->id ?>" >
                                 <?php for ($i=1; $i < 9; $i++): ?> 
-                                    <?php if ($i == $book->type_book): ?>
-                                        <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
+                                    <?php if ($i == $especial->type_book): ?>
+                                        <option selected value="<?php echo $i ?>"  data-id="<?php echo $especial->id ?>"><?php echo $especial->getStatus($i) ?></option>
                                     <?php else: ?>
-                                        <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
+                                        <option value="<?php echo $i ?>"><?php echo $especial->getStatus($i) ?></option>
                                     <?php endif ?>                                          
                                      
                                 <?php endfor; ?>
@@ -270,12 +274,12 @@
   														<?php endif ?>
   													</td>
 		                        <td class="text-center sm-p-t-10 sm-p-b-10 sm-p-l-10 sm-p-r-10">
-                              <select class="status form-control" data-id="<?php echo $book->id ?>" >
+                              <select class="status form-control" data-id="<?php echo $pagada->id ?>" >
                                 <?php for ($i=1; $i < 9; $i++): ?> 
-                                    <?php if ($i == $book->type_book): ?>
-                                        <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
+                                    <?php if ($i == $pagada->type_book): ?>
+                                        <option selected value="<?php echo $i ?>"  data-id="<?php echo $pagada->id ?>"><?php echo $pagada->getStatus($i) ?></option>
                                     <?php else: ?>
-                                        <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
+                                        <option value="<?php echo $i ?>"><?php echo $pagada->getStatus($i) ?></option>
                                     <?php endif ?>                                          
                                      
                                 <?php endfor; ?>
@@ -717,31 +721,34 @@
 
   <!-- END OVERLAY -->
   <!-- BEGIN VENDOR JS -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
   <script src="/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
   <script src="/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
   <script src="/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
   <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
   <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
-  
+  <script type="text/javascript" src="/assets/js/canvasjs.min.js"></script>
+      
+
   <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
   <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
-  
+
+
   <script src="/assets/plugins/bootstrap3-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
   <script type="text/javascript" src="/assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
-  <script type="text/javascript" src="/assets/plugins/dropzone/dropzone.min.js"></script>
   <script type="text/javascript" src="/assets/plugins/bootstrap-tag/bootstrap-tagsinput.min.js"></script>
   <script type="text/javascript" src="/assets/plugins/jquery-inputmask/jquery.inputmask.min.js"></script>
   <script src="/assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
   <script src="/assets/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
-  <script src="/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js" type="text/javascript"></script>
   <script src="/assets/plugins/summernote/js/summernote.min.js" type="text/javascript"></script>
   <script src="/assets/plugins/moment/moment.min.js"></script>
-  <script src="/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
   <script src="/assets/plugins/bootstrap-typehead/typeahead.bundle.min.js"></script>
   <script src="/assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
   <script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
-    <script type="text/javascript" src="/assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
+
+  <script src="/assets/plugins/summernote/js/summernote.js"></script>
+  <script type="text/javascript" src="//assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
 
   <!-- END PAGE LEVEL JS -->
 

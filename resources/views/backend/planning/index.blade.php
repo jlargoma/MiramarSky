@@ -580,7 +580,7 @@
                                             <?php foreach ($arrayBooks["nuevas"] as $book): ?>
                                                     <tr> 
                                                         <td style="display: none"><?php echo $book->id ?></td>
-                                                        <td class ="text-center" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>>
+                                                        <td class ="text-center" >
 
                                                                 <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo $book->customer['name']  ?></a>                                                        
                                                         </td>
@@ -629,8 +629,8 @@
                                                         <td class ="text-center"><?php echo $book->total_price."€" ?><br>
                                                         </td>
 
-                                                        <td class ="text-center">
-                                                            <select class="status form-control" data-id="<?php echo $book->id ?>" >
+                                                        <td class ="text-center" >
+                                                            <select class="status form-control" data-id="<?php echo $book->id ?>" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>>
 
                                                                 <?php for ($i=1; $i < 9; $i++): ?> 
                                                                     <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
