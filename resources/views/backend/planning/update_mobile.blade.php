@@ -20,6 +20,9 @@
 
     hr.reserva {border: 0; height: 4px; margin-top: 20px;background:black; text-align: center;}
     hr.reserva:after {content:"Datos de la Reserva"; position: relative; top: -12px; display: inline-block; width: 160px; height: 24px; padding: 0;border: 2px solid black; border-radius: 24px; background: black; color: white; font-size: 12px; line-height: 24px; }
+    
+    hr.cobro {border: 0; height: 4px; margin-top: 20px;background:black; text-align: center;}
+    hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; display: inline-block; width: 160px; height: 24px; padding: 0;border: 2px solid black; border-radius: 24px; background: black; color: white; font-size: 12px; line-height: 24px; }
 
       .daterangepicker{
         top: 59%!important;
@@ -61,279 +64,307 @@
         <div class="col-xs-12 ">
             <div class="panel">
                 <form role="form"  action="{{ url('/admin/reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post" >
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
+                        <div class="panel panel-default">
+
+                            <div class="panel-heading" role="tab" id="Cliente">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#acordeonCliente" aria-expanded="false" aria-controls="acordeonCliente">
+                                        <hr class="cliente">
+                                    </a>
+                                </h4>
+                            </div>
+
+                            <div class="panel-heading" role="tab" id="Reserva">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#acordeonReserva" aria-expanded="false" aria-controls="acordeonReserva">
+                                        <hr class="reserva">
+                                    </a>
+                                </h4>
+                            </div>
                             
-                    <!-- Seccion Cliente -->
-                    <div class="panel-heading p-t-5">
-                        <div class="panel-title col-xs-12">
-                            <hr class="cliente">
+                            <div class="panel-heading" role="tab" id="Reserva">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#acordeonCobro" aria-expanded="false" aria-controls="acordeonCobro">
+                                        <hr class="cobro">
+                                    </a>
+                                </h4>
+                            </div>
+
+                            <div id="acordeonCliente" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false" style="height: 0px;">
+                                <div class="panel-body">
+                                    <div class="panel panel-default">                                
+                                        <div class="panel-body m-t-10" style="padding: 0px 0px 0px 0px;">
+                                            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                            <div class="input-group col-xs-12">
+                                                <input class="form-control" type="hidden"  name="customer_id" value="<?php echo $book->customer->id ?>">
+                                                <div class="col-xs-6">
+                                                   <input class="form-control cliente" type="text" name="name" value="<?php echo $book->customer->name ?>" data-id="<?php echo $book->customer->id ?>">
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <input class="form-control cliente" type="number" name="phone" value="<?php echo $book->customer->phone ?>" data-id="<?php echo $book->customer->id ?>"> 
+                                                </div>
+                                                <br><br>
+                                                <div class="col-xs-12">
+                                                    <input class="form-control cliente" type="email" name="email" value="<?php echo $book->customer->email ?>" data-id="<?php echo $book->customer->id ?>">    
+                                                </div>
+                                                 
+                                                <div style="clear: both;"></div>
+                                            </div>                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="acordeonReserva" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false" style="height: 0px;">
+                                <div class="panel-body">
+                                    <div class="panel panel-default">                                                                        
+                                        <div class="panel-body" style="padding: 0px 0px 0px 0px;">
+                                                <div class="input-group col-md-12">
+                                                    <div class="col-xs-12 m-t-20">
+                                                        <div class="input-prepend input-group col-xs-12">
+                                                          <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;   " readonly="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-3 m-t-10">
+                                                        <label><i class="fa fa-moon-o"></i></label>
+                                                        <input type="text" class="form-control nigths" name="nigths" value="" style="width: 100%;display:none">
+                                                        <input type="text" class="form-control nigths" name="noches" value="<?php echo $book->nigths ?>" disabled style="width: 100%">
+                                                    </div> 
+                                                    <div class="col-xs-3 m-t-10">
+                                                        <label><i class="fa fa-user"></i></label>
+                                                        <input  type="text" class="form-control full-width pax" name="pax" style="width: 100%" value="<?php echo $book->pax ?>">
+                                                            
+                                                    </div>
+                                                    <div class="col-xs-6 m-t-10">
+                                                        <label>Apartamento</label>
+                                                        <select class="form-control full-width newroom" data-init-plugin="select2" name="newroom" id="newroom">
+                                                            <?php foreach ($rooms as $room): ?>
+                                                                <?php if ($room->id == $book->room_id): ?>
+                                                                    <option value="<?php echo $room->id ?>" selected><?php echo $room->name ?></option>
+                                                                <?php else: ?>
+                                                                    <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
+                                                                <?php endif ?>
+                                                            <?php endforeach ?>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-xs-6 m-t-10">
+                                                        <label>Park</label>
+                                                        <select class=" form-control full-width parking" data-init-plugin="select2" name="parking">
+                                                            <?php for ($i=1; $i <= 4 ; $i++): ?>
+                                                                <?php if ($i == $book->type_park): ?>
+                                                                    <option value="<?php echo $i ?>" selected><?php echo $book->getParking($i) ?></option>
+                                                                <?php else: ?>
+                                                                    <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
+                                                                <?php endif ?>
+                                                            <?php endfor;?>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-xs-6 m-t-10">
+                                                        <label><i class="fa fa-star"></i><i class="fa fa-star"></i></label>
+                                                        <select class=" form-control full-width parking" data-init-plugin="select2" name="parking">
+                                                            <?php for ($i=1; $i <= 4 ; $i++): ?>
+                                                                <?php if ($i == $book->type_luxury): ?>
+                                                                    <option value="<?php echo $i ?>" selected><?php echo $book->getParking($i) ?></option>
+                                                                <?php else: ?>
+                                                                    <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
+                                                                <?php endif ?>
+                                                            <?php endfor;?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                    <div class="col-xs-6 m-t-10">                                                        
+                                                        <label>Cost Agencia</label>
+                                                        <input type="text" class="agencia form-control pvpAgencia" name="agencia" value="0">
+                                                    </div>
+
+                                                    <div class="col-xs-6 m-t-10">
+                                                        <label>Agencia</label>
+                                                        <select class=" form-control full-width agency" data-init-plugin="select2" name="agency">
+                                                      <option value="0"></option>
+                                                            <?php for ($i=1; $i <= 2 ; $i++): ?>
+                                                                <option value="<?php echo $i ?>" {{ $book->agency == $i ? 'selected' : '' }}><?php echo $book->getAgency($i) ?></option>
+                                                            <?php endfor;?>
+                                                        </select>
+                                                    </div>
+                                                <div style="clear: both;"></div>
+                                                <div class="col-xs-4 m-t-10 p-b-10 text-white" style="background-color: #0c685f">
+                                                    <label>PVP</label>
+                                                    <input type="text" class="form-control total text-white" name="total" value="<?php echo $book->total_price ?>" style="font-weight: bold;width: 100%;border:none;background: #0c685f">
+                                                </div> 
+
+                                                <div class="col-xs-4 m-t-10 p-b-10 text-white" style="background-color: #99D9EA">
+                                                    <label>COSTE</label>
+                                                    <input type="text" class="form-control cost text-white" name="cost" value="<?php echo $book->cost_total ?>" disabled style="font-weight: bold;width: 100%;border:none;background: #99D9EA">
+                                                </div>
+
+                                                <div class="col-xs-4 m-t-10 p-b-10 text-white" style="background-color: #ff7f27">
+                                                    <label>BENº</label>
+                                                    <input type="text" class="form-control beneficio text-white" name="beneficio" value="<?php echo $book->total_ben ?>" disabled style="font-weight: bold;width: 100%;border:none;background: #ff7f27">
+                                                </div>
+                                                <br>
+                                                <div class="input-group col-xs-12 m-t-10">
+                                                    <?php if ($book->comment == ""): ?>
+                                                    <?php else: ?>
+                                                        <div class="col-xs-12">
+                                                            <label>Comentarios Cliente</label>
+                                                            <textarea class="form-control" name="comments" style="width: 100%" rows="4"><?php echo $book->comment ?>
+                                                            </textarea>
+                                                        </div>
+                                                    <?php endif ?>
+                                                    
+                                                    <!-- Añadir boton para escribir comentario interno -->
+
+                                                    <?php if ($book->book_comments == ""): ?>
+                                                    <?php else: ?>
+                                                        <div class="col-xs-12">
+                                                            <label>Comentarios Interna</label>
+                                                            <textarea class="form-control" name="comments" style="width: 100%" rows="4"><?php echo $book->book_comments ?>
+                                                            </textarea>
+                                                        </div>
+                                                    <?php endif ?>
+                                                </div> 
+                                                <div class="input-group col-md-12">
+                                                    
+                                                </div> 
+                                                <br>
+                                                <div class="input-group col-xs-12 text-center">
+                                                    <button class="form-control btn btn-complete active" type="submit" style="width: 90%;margin-left: 5%"><p style="font-size: 22px">Guardar</p></button>
+                                                </div>   
+                                                <br>                    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="acordeonCobro" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false" style="height: 0px;">
+                                <div class="panel-body">
+                                    <div class="panel panel-default">                                                                        
+                                        <div class="panel-heading m-b-20">
+                                            <div class="col-xs-4 bg-success text-white text-center">
+                                                Total:<br>
+                                                <?php echo number_format($book->total_price,2,',','.') ?>
+                                            </div>
+                                            <div class="col-xs-4 bg-success text-white text-center">
+                                                Cobrado:<br>
+                                                <?php echo number_format($totalpayment,2,',','.') ?>
+                                            </div>
+                                            <div class="col-xs-4 bg-success text-white text-center">
+                                                Pendiente:<br>
+                                                <!-- si esta pendiente nada,.si esta de mas +X -->
+                                                <?php echo ($book->total_price-$totalpayment) >= 0 ? "-" : "+";echo number_format($book->total_price-$totalpayment,2,',','.') ?>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body ">
+                                            <div class="col-md-12 table-responsive p-b-20">
+                                                <table class="table table-hover dataTable no-footer" >
+                                                    <thead>
+                                                        <tr>
+                                                            <th class ="text-center" >fecha</th>
+                                                            <th class ="text-center" >importe</th>
+                                                            <th class ="text-center" >Tipo</th>
+                                                            <th class ="text-center" >comentario</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody><?php $total = 0; ?>
+                                                        <?php if (count($payments)>0): ?>
+                                                            
+                                                            <?php foreach ($payments as $payment): ?>
+                                                                <tr>
+                                                                    <td class ="text-center">
+                                                                        <?php 
+                                                                            $fecha = new Carbon($payment->datePayment);
+                                                                            echo $fecha->format('d-m-Y') 
+                                                                        ?>
+                                                                    </td>
+                                                                    <td class ="text-center">
+                                                                    <input class="editable payment-<?php echo $payment->id?> form-control" type="text" name="cost" data-id="<?php echo $payment->id ?>" value="<?php echo $payment->import ?>" style="width: 50%;text-align: center;">€
+                                                                    </td>
+                                                                    <td class ="text-center"><?php echo $payment->comment ?></td>
+                                                                    <td class ="text-center"><?php echo $typecobro->getTypeCobro($payment->type) ?> </td>
+                                                                </tr>
+                                                                <?php $total = $total + $payment->import ?>
+                                                            <?php endforeach ?>
+                                                            <?php if ($total < $book->total_price): ?>
+                                                                <tr>
+                                                                    <td class ="text-center">
+                                                                        <div class="input-daterange input-group" id="datepicker-range">
+                                                                            <input type="text" class="input-sm form-control fecha-cobro" name="start" data-date-format="dd-mm-yyyy" value="<?php $hoy = Carbon::now() ;echo $hoy->format('d/m/Y') ?>">
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class ="text-center">
+                                                                        <input class="importe form-control" type="text" name="importe"   style="width: 100%;text-align: center;">
+                                                                    </td>
+                                                                    
+                                                                    <td class="text-center">
+                                                                        <select class="full-width select2-hidden-accessible type_payment" data-init-plugin="select2" name="type_payment"  tabindex="-1" aria-hidden="true">
+                                                                            <?php for ($i=0; $i < 3 ; $i++): ?>
+                                                                               <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
+                                                
+                                                                            <?php endfor ;?>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td class ="text-center"> 
+                                                                    <input class="comment" type="text" name="comment"  style="width: 100%;text-align: center;">
+                                                                    </td>
+                                                                </tr>
+                                                            <?php else: ?>
+
+                                                            <?php endif ?>
+                                                        <?php else: ?>
+                                                            <tr>
+                                                                <td class ="text-center" style="padding: 25px 0px 0px 0px;">
+                                                                    <div class="input-daterange input-group" id="datepicker-range" style="width: 100%">
+                                                                        <input type="text" class="input-sm form-control fecha-cobro" name="start" data-date-format="dd-mm-yyyy" value="<?php $hoy = Carbon::now() ;echo $hoy->format('d/m/Y') ?>">
+                                                                    </div>
+                                                                </td>
+                                                                <td class ="text-center">
+                                                                <input class="importe form-control" type="text" name="importe"  style="width: 100%;text-align: center;">
+                                                                </td>
+                                                                
+                                                                <td class="text-center">
+                                                                    <select class="full-width select2-hidden-accessible type_payment" data-init-plugin="select2" name="type_payment"  tabindex="-1" aria-hidden="true">
+                                                                        <?php for ($i=0; $i < 3 ; $i++): ?>
+                                                                           <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
+                                                                    
+                                                                        <?php endfor ;?>
+                                                                    </select>
+                                                                </td>
+                                                                <td class ="text-center"> 
+                                                                <input class="comment" type="text" name="comment"  style="width: 100%;text-align: center;">
+                                                                </td>
+                                                            </tr>
+                                                        <?php endif ?>
+                                                        <!-- <tr>
+                                                            <?php if ($total < $book->total_price): ?>
+                                                                <td class="text-center" colspan="2">Falta</td>
+                                                                <td class="text-center" ><?php echo $total-$book->total_price ?>€</td>
+                                                            <?php elseif($total > $book->total_price): ?>
+                                                                <td class="text-center" colspan="2">Sobran</td>
+                                                                <td class="text-center" ><?php echo $total-$book->total_price ?>€</td>
+                                                            <?php else: ?>
+                                                                <td class="text-center" colspan="4">Al corriente de pago</td>
+                                                            <?php endif ?>
+                                                            
+                                                        </tr> -->
+                                                    </tbody>
+                                                </table>
+                                                <div class="col-xs-12 text-center">
+                                                    <input type="button" name="cobrar" class="cobrar form-control  btn btn-success active" value="Cobrar" data-id="<?php echo $book->id ?>">
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="panel-body m-t-10" style="padding: 0px 0px 0px 0px;">
-                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                        <div class="input-group col-xs-12">
-                            <input class="form-control" type="hidden"  name="customer_id" value="<?php echo $book->customer->id ?>">
-                            <div class="col-xs-6">
-                               <input class="form-control cliente" type="text" name="name" value="<?php echo $book->customer->name ?>" data-id="<?php echo $book->customer->id ?>">
-                            </div>
-                            <div class="col-xs-6">
-                                <input class="form-control cliente" type="number" name="phone" value="<?php echo $book->customer->phone ?>" data-id="<?php echo $book->customer->id ?>"> 
-                            </div>
-                            <br><br>
-                            <div class="col-xs-12">
-                                <input class="form-control cliente" type="email" name="email" value="<?php echo $book->customer->email ?>" data-id="<?php echo $book->customer->id ?>">    
-                            </div>
-                             
-                            <div style="clear: both;"></div>
-                        </div>                                            
                     </div>
 
                     <!-- Seccion Reserva -->
-                    <br>
-                    <div class="panel-heading p-t-5">
-                        <div class="panel-title col-xs-12">
-                            <hr class="reserva">
-                        </div>
-                    </div>
-                    <div class="panel-body" style="padding: 0px 0px 0px 0px;">
-                        
-                        
-
-                            <div class="input-group col-md-12">
-                                <div class="col-xs-12">
-                                    <div class="input-prepend input-group col-xs-12">
-                                      <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;   " readonly="">
-                                    </div>
-                                </div>
-                                <div class="col-xs-3 m-t-10">
-                                    <label><i class="fa fa-moon-o"></i></label>
-                                    <input type="text" class="form-control nigths" name="nigths" value="" style="width: 100%;display:none">
-                                    <input type="text" class="form-control nigths" name="noches" value="<?php echo $book->nigths ?>" disabled style="width: 100%">
-                                </div> 
-                                <div class="col-xs-3 m-t-10">
-                                    <label><i class="fa fa-user"></i></label>
-                                    <input  type="text" class="form-control full-width pax" name="pax" style="width: 100%" value="<?php echo $book->pax ?>">
-                                        
-                                </div>
-                                <div class="col-xs-6 m-t-10">
-                                    <label>Apartamento</label>
-                                    <select class="form-control full-width newroom" data-init-plugin="select2" name="newroom" id="newroom">
-                                        <?php foreach ($rooms as $room): ?>
-                                            <?php if ($room->id == $book->room_id): ?>
-                                                <option value="<?php echo $room->id ?>" selected><?php echo $room->name ?></option>
-                                            <?php else: ?>
-                                                <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
-                                            <?php endif ?>
-                                        <?php endforeach ?>
-                                    </select>
-                                </div>
-                                <div class="col-xs-6 m-t-10">
-                                    <label>Park</label>
-                                    <select class=" form-control full-width parking" data-init-plugin="select2" name="parking">
-                                        <?php for ($i=1; $i <= 4 ; $i++): ?>
-                                            <?php if ($i == $book->type_park): ?>
-                                                <option value="<?php echo $i ?>" selected><?php echo $book->getParking($i) ?></option>
-                                            <?php else: ?>
-                                                <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
-                                            <?php endif ?>
-                                        <?php endfor;?>
-                                    </select>
-                                </div>
-                                <div class="col-xs-6 m-t-10">
-                                    <label><i class="fa fa-star"></i><i class="fa fa-star"></i></label>
-                                    <select class=" form-control full-width parking" data-init-plugin="select2" name="parking">
-                                        <?php for ($i=1; $i <= 4 ; $i++): ?>
-                                            <?php if ($i == $book->type_luxury): ?>
-                                                <option value="<?php echo $i ?>" selected><?php echo $book->getParking($i) ?></option>
-                                            <?php else: ?>
-                                                <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
-                                            <?php endif ?>
-                                        <?php endfor;?>
-                                    </select>
-                                </div>
-                            </div>
-                                <div class="col-xs-6 m-t-10">                                                        
-                                    <label>Cost Agencia</label>
-                                    <input type="text" class="agencia form-control pvpAgencia" name="agencia" value="0">
-                                </div>
-
-                                <div class="col-xs-6 m-t-10">
-                                    <label>Agencia</label>
-                                    <select class=" form-control full-width agency" data-init-plugin="select2" name="agency">
-                                  <option value="0"></option>
-                                        <?php for ($i=1; $i <= 2 ; $i++): ?>
-                                            <option value="<?php echo $i ?>" {{ $book->agency == $i ? 'selected' : '' }}><?php echo $book->getAgency($i) ?></option>
-                                        <?php endfor;?>
-                                    </select>
-                                </div>
-                            <div style="clear: both;"></div>
-                            <div class="col-xs-4 m-t-10 p-b-10 text-white" style="background-color: #0c685f">
-                                <label>PVP</label>
-                                <input type="text" class="form-control total text-white" name="total" value="<?php echo $book->total_price ?>" style="font-weight: bold;width: 100%;border:none;background: #0c685f">
-                            </div> 
-
-                            <div class="col-xs-4 m-t-10 p-b-10 text-white" style="background-color: #99D9EA">
-                                <label>COSTE</label>
-                                <input type="text" class="form-control cost text-white" name="cost" value="<?php echo $book->cost_total ?>" disabled style="font-weight: bold;width: 100%;border:none;background: #99D9EA">
-                            </div>
-
-                            <div class="col-xs-4 m-t-10 p-b-10 text-white" style="background-color: #ff7f27">
-                                <label>BENº</label>
-                                <input type="text" class="form-control beneficio text-white" name="beneficio" value="<?php echo $book->total_ben ?>" disabled style="font-weight: bold;width: 100%;border:none;background: #ff7f27">
-                            </div>
-                            <br>
-                            <div class="input-group col-xs-12 m-t-10">
-                                <?php if ($book->comment == ""): ?>
-                                <?php else: ?>
-                                    <div class="col-xs-12">
-                                        <label>Comentarios Usuario</label>
-                                        <textarea class="form-control" name="comments" style="width: 100%" rows="4"><?php echo $book->comment ?>
-                                        </textarea>
-                                    </div>
-                                <?php endif ?>
-                                
-                                <!-- Añadir boton para escribir comentario interno -->
-
-                                <?php if ($book->book_comments == ""): ?>
-                                <?php else: ?>
-                                    <div class="col-xs-12">
-                                        <label>Comentarios Interna</label>
-                                        <textarea class="form-control" name="comments" style="width: 100%" rows="4"><?php echo $book->book_comments ?>
-                                        </textarea>
-                                    </div>
-                                <?php endif ?>
-                            </div> 
-                            <div class="input-group col-md-12">
-                                
-                            </div> 
-                            <br>
-                            <div class="input-group col-xs-12 text-center">
-                                <button class="form-control btn btn-complete active" type="submit" style="width: 90%;margin-left: 5%"><p style="font-size: 22px">Guardar</p></button>
-                            </div>   
-                            <br>                    
-                    </div>
+                       
+                    <!-- Seccion Reserva -->
                 </form> 
-            </div>
-        </div>
-        <div class="col-xs-12">
-            <div class="panel">
-                <div>
-                    <div class="panel-heading ">
-                        <div class="col-xs-4 bg-success text-white text-center">
-                            Total:<br>
-                            <?php echo number_format($book->total_price,2,',','.') ?>
-                        </div>
-                        <div class="col-xs-4 bg-success text-white text-center">
-                            Cobrado:<br>
-                            <?php echo number_format($totalpayment,2,',','.') ?>
-                        </div>
-                        <div class="col-xs-4 bg-success text-white text-center">
-                            Pendiente:<br>
-                            <!-- si esta pendiente nada,.si esta de mas +X -->
-                            <?php echo ($book->total_price-$totalpayment) >= 0 ? "-" : "+";echo number_format($book->total_price-$totalpayment,2,',','.') ?>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <div class="col-md-12 table-responsive">
-                            <table class="table table-hover dataTable no-footer" >
-                                <thead>
-                                    <tr>
-                                        <th class ="text-center" >fecha</th>
-                                        <th class ="text-center" >importe</th>
-                                        <th class ="text-center" >Tipo</th>
-                                        <th class ="text-center" >comentario</th>
-                                    </tr>
-                                </thead>
-                                <tbody><?php $total = 0; ?>
-                                    <?php if (count($payments)>0): ?>
-                                        
-                                        <?php foreach ($payments as $payment): ?>
-                                            <tr>
-                                                <td class ="text-center">
-                                                    <?php 
-                                                        $fecha = new Carbon($payment->datePayment);
-                                                        echo $fecha->format('d-m-Y') 
-                                                    ?>
-                                                </td>
-                                                <td class ="text-center">
-                                                <input class="editable payment-<?php echo $payment->id?> form-control" type="text" name="cost" data-id="<?php echo $payment->id ?>" value="<?php echo $payment->import ?>" style="width: 50%;text-align: center;">€
-                                                </td>
-                                                <td class ="text-center"><?php echo $payment->comment ?></td>
-                                                <td class ="text-center"><?php echo $typecobro->getTypeCobro($payment->type) ?> </td>
-                                            </tr>
-                                            <?php $total = $total + $payment->import ?>
-                                        <?php endforeach ?>
-                                        <?php if ($total < $book->total_price): ?>
-                                            <tr>
-                                                <td class ="text-center">
-                                                    <div class="input-daterange input-group" id="datepicker-range">
-                                                        <input type="text" class="input-sm form-control fecha-cobro" name="start" data-date-format="dd-mm-yyyy" value="<?php $hoy = Carbon::now() ;echo $hoy->format('d/m/Y') ?>">
-                                                    </div>
-                                                </td>
-                                                <td class ="text-center">
-                                                    <input class="importe form-control" type="text" name="importe"   style="width: 100%;text-align: center;">
-                                                </td>
-                                                
-                                                <td class="text-center">
-                                                    <select class="full-width select2-hidden-accessible type_payment" data-init-plugin="select2" name="type_payment"  tabindex="-1" aria-hidden="true">
-                                                        <?php for ($i=0; $i < 3 ; $i++): ?>
-                                                           <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
-                            
-                                                        <?php endfor ;?>
-                                                    </select>
-                                                </td>
-                                                <td class ="text-center"> 
-                                                <input class="comment" type="text" name="comment"  style="width: 100%;text-align: center;">
-                                                </td>
-                                            </tr>
-                                        <?php else: ?>
-
-                                        <?php endif ?>
-                                    <?php else: ?>
-                                        <tr>
-                                            <td class ="text-center" style="padding: 25px 0px 0px 0px;">
-                                                <div class="input-daterange input-group" id="datepicker-range" style="width: 100%">
-                                                    <input type="text" class="input-sm form-control fecha-cobro" name="start" data-date-format="dd-mm-yyyy" value="<?php $hoy = Carbon::now() ;echo $hoy->format('d/m/Y') ?>">
-                                                </div>
-                                            </td>
-                                            <td class ="text-center">
-                                            <input class="importe form-control" type="text" name="importe"  style="width: 100%;text-align: center;">
-                                            </td>
-                                            
-                                            <td class="text-center">
-                                                <select class="full-width select2-hidden-accessible type_payment" data-init-plugin="select2" name="type_payment"  tabindex="-1" aria-hidden="true">
-                                                    <?php for ($i=0; $i < 3 ; $i++): ?>
-                                                       <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
-                                                
-                                                    <?php endfor ;?>
-                                                </select>
-                                            </td>
-                                            <td class ="text-center"> 
-                                            <input class="comment" type="text" name="comment"  style="width: 100%;text-align: center;">
-                                            </td>
-                                        </tr>
-                                    <?php endif ?>
-                                    <!-- <tr>
-                                        <?php if ($total < $book->total_price): ?>
-                                            <td class="text-center" colspan="2">Falta</td>
-                                            <td class="text-center" ><?php echo $total-$book->total_price ?>€</td>
-                                        <?php elseif($total > $book->total_price): ?>
-                                            <td class="text-center" colspan="2">Sobran</td>
-                                            <td class="text-center" ><?php echo $total-$book->total_price ?>€</td>
-                                        <?php else: ?>
-                                            <td class="text-center" colspan="4">Al corriente de pago</td>
-                                        <?php endif ?>
-                                        
-                                    </tr> -->
-                                </tbody>
-                            </table>
-                            <div class="col-xs-12 text-center">
-                                <input type="button" name="cobrar" class="cobrar form-control  btn btn-success active" value="Cobrar" data-id="<?php echo $book->id ?>">
-                            </div>
-                            
-                        </div>
-                    </div>
-
-                </div>
             </div>
         </div>
     </div>

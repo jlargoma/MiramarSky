@@ -131,70 +131,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="sm-m-l-5 sm-m-r-5">
-                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                                <!-- <div class="panel panel-default">
-                                    <div class="panel-heading" role="tab" id="headingOne">
-                                        <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
-                                                Agregar Ocupacion
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">
-                                        <div class="panel-body">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <div class="panel-title col-md-12">Agregar Ocupacion
-                                                    </div>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <div class="col-md-12">
-                                                        <form role="form"  action="{{ url('precios/create') }}" method="post">
-                                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                                            <div class="input-group transparent">
-                                                                <span class="input-group-addon">
-                                                                    <i class="fa fa-user"></i>
-                                                                </span>
-                                                                <input type="number" class="form-control" name="occupation" placeholder="Ocupacion" required="" aria-required="true" aria-invalid="false">
-                                                            </div>
-                                                                <br>
-                                                            <div class="input-group">
-                                                                <span class="input-group-addon">
-                                                                    <i class="pg-plus_circle"></i>
-                                                                </span>
-                                                                <select class="full-width" data-init-plugin="select2" name="season">
-                                                                    <option></option>
-                                                                    <?php foreach ($newseasons as $newseason): ?>
-                                                                        <option value="<?php echo $newseason->id ?>"><?php echo $newseason->name ?></option>
-                                                                    <?php endforeach ?>
-                                                                </select>
-                                                            </div>
-                                                                <br>
-                                                            <div class="input-group">
-                                                                <span class="input-group-addon">
-                                                                    <i class="fa fa-key"></i>
-                                                                </span>
-                                                                    <input type="number" class="form-control" name="price" placeholder="Precio" required="" aria-required="true" aria-invalid="false">
-                                                            </div>
-                                                                <br>
-                                                            <div class="input-group">
-                                                                <span class="input-group-addon">
-                                                                    <i class="pg-mail"></i>
-                                                                </span>
-                                                                    <input type="number" class="form-control" name="cost" placeholder="Coste" required="" aria-required="true" aria-invalid="false">
-                                                            </div>
-                                                                <br>
-                                                            <div class="input-group">
-                                                                <button class="btn btn-complete" type="submit">Guardar</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div> -->
+                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
                                 <div class="panel panel-default">
                                     <div class="panel-heading" role="tab" id="headingTwo">
                                         <h4 class="panel-title">

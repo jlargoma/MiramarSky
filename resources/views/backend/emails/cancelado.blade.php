@@ -1,7 +1,11 @@
-Hola <?php echo $book->customer->name ?> . Nos da mucha pena decirte que todos nuestros apartamentos estan completos para tu solicitud<br /><br />
 
-Prueba con otras fechas!!<br /><br />
-Esperamos poder atenderte en otra ocasión.<br /><br />          
-<br/>Un cordial saludo,<br/>
 
 Lo sentimos: no hay disponibilidad para tu solicitud  
+
+Hola <b><?php echo $book->customer->name ?>.<br> 
+
+Lo sentimos mucho, todos nuestros apartamentos están completos para tu solicitud.<br>
+
+Esperamos poder atenderte en otra ocasión.<br>
+
+Un cordial saludo,

@@ -34,69 +34,145 @@
         document.head.innerHTML += '<link rel="stylesheet" type="text/css" href="pages/css/windows.chrome.fix.css" />'
     }
     </script>
+  <?php 
+    use App\Classes\Mobile; 
+    $mobile = new Mobile();
+  ?>
+
   </head>
   <body class="fixed-header ">
-    <div class="login-wrapper ">
-      <!-- START Login Background Pic Wrapper-->
-      <div class="bg-pic" >
-        <!-- START Background Pic-->
-        <img src="assets/img/terraza-sierra-nevada.jpg" data-src="assets/img/terraza-sierra-nevada.jpg" data-src-retina="assets/img/terraza-sierra-nevada.jpg" alt="" class="lazy" style="opacity: 1 !important;width: 100%!important;float: right;">
-        <!-- END Background Pic-->
-        <!-- START Background Caption-->
-        <div class="bg-caption pull-bottom sm-pull-bottom text-white p-l-20 m-b-20">
-          
-        </div>
-        <!-- END Background Caption-->
-      </div>
-      <!-- END Login Background Pic Wrapper-->
+    <?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
+        <div class="login-wrapper ">
+          <!-- START Login Background Pic Wrapper-->
+          <div class="bg-pic" >
+            <!-- START Background Pic-->
 
-      <!-- START Login Right Container-->
-      <div class="login-container " style="float: left;background-color: rgba(0,0,0,0.1);">
-        <div class="p-l-50 m-l-20 p-r-50 m-r-20 p-t-50 m-t-30 sm-p-l-15 sm-p-r-15 sm-p-t-40">
-          <h2 class="semi-bold text-white" > Gestion MIRAMAR SKI </h2>
+            <img src="assets/img/terraza-sierra-nevada.jpg" data-src="assets/img/terraza-sierra-nevada.jpg" data-src-retina="assets/img/terraza-sierra-nevada.jpg" alt="" class="lazy" style="opacity: 1 !important;float: right;position:fixed">
+            <!-- END Background Pic-->
+            <!-- START Background Caption-->
+            <div class="bg-caption pull-bottom sm-pull-bottom text-white p-l-20 m-b-20">
+              
+            </div>
+            <!-- END Background Caption-->
+          </div>
+          <!-- END Login Background Pic Wrapper-->
 
-          <p class="p-t-35 text-white">Logueate para acceder a tu cuenta</p>
-          <!-- START Login Form -->
-          <form id="form-login" class="p-t-15" role="form" method="POST" action="{{ url('/login') }}">
-            {{ csrf_field() }}
-            <!-- START Form Control-->
-            <div class="form-group form-group-default">
-              <label>Email</label>
-              <div class="controls">
-                <input type="text" name="email" placeholder="Email" class="form-control" required>
-              </div>
-            </div>
-            <!-- END Form Control-->
-            <!-- START Form Control-->
-            <div class="form-group form-group-default">
-              <label>Password</label>
-              <div class="controls">
-                <input type="password" class="form-control" name="password" placeholder="Password" required>
-              </div>
-            </div>
-            <!-- START Form Control-->
-            <div class="row">
-              <div class="col-md-6 no-padding">
-                <div class="checkbox ">
-                  <input type="checkbox" value="1" id="checkbox1">
-                  <label for="checkbox1">Recuerdame</label>
+          <!-- START Login Right Container-->
+          <div class="login-container " style="float: left;background-color: rgba(0,0,0,0.1);">
+            <div class="p-l-50 m-l-20 p-r-50 m-r-20  m-t-10 sm-p-l-15 sm-p-r-15 sm-p-t-10">
+              <h2 class="semi-bold text-white" > Gestion MIRAMAR SKI </h2>
+
+              <p class="p-t-20 text-white bold">Logueate para acceder a tu cuenta</p>
+              <!-- START Login Form -->
+              <form id="form-login" class="p-t-15" role="form" method="POST" action="{{ url('/login') }}">
+                {{ csrf_field() }}
+                <!-- START Form Control-->
+                <div class="form-group form-group-default">
+                  <label>Email</label>
+                  <div class="controls">
+                    <input type="text" name="email" placeholder="Email" class="form-control" required>
+                  </div>
                 </div>
-              </div>
-              <div class="col-md-6 text-right">
-                <a href="{{ url('/password/reset') }}" class="text-info small">Olvide mi contraseña</a>
-              </div>
+                <!-- END Form Control-->
+                <!-- START Form Control-->
+                <div class="form-group form-group-default">
+                  <label>Password</label>
+                  <div class="controls">
+                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                  </div>
+                </div>
+                <!-- START Form Control-->
+                <div class="row">
+                  <div class="col-xs-4 no-padding">
+                    <div class="checkbox ">
+                      <input type="checkbox" value="1" id="checkbox1">
+                      <label for="checkbox1" class="bold text-white">Recuerdame</label>
+                    </div>
+                  </div>
+                  <div class="col-xs-8 text-right m-t-10">
+                    <a href="{{ url('/password/reset') }}" class="text-white bold">Olvide mi contraseña</a>
+                  </div>
+                </div>
+                <!-- END Form Control-->
+                <div class="col-xs-12 text-center">
+                  <button class="btn btn-primary btn-cons m-t-10" type="submit">Login </button>
+                </div>
+                
+              </form>
+
+              <!--END Login Form-->
             </div>
-            <!-- END Form Control-->
-            <button class="btn btn-primary btn-cons m-t-10" type="submit">Login </button>
-          </form>
+          </div>
+          <!-- END Login Right Container-->
 
-          <!--END Login Form-->
         </div>
-      </div>
-      <!-- END Login Right Container-->
+        
+    <?php else: ?>
+        
+        <div class="login-wrapper ">
+          <!-- START Login Background Pic Wrapper-->
+          <div class="bg-pic" >
+            <!-- START Background Pic-->
 
-    </div>
-    <!-- START OVERLAY -->
+            <img src="assets/img/terraza-sierra-nevada.jpg" data-src="assets/img/terraza-sierra-nevada.jpg" data-src-retina="assets/img/terraza-sierra-nevada.jpg" alt="" class="lazy" style="opacity: 1 !important;width: 100%!important;float: right;">
+            <!-- END Background Pic-->
+            <!-- START Background Caption-->
+            <div class="bg-caption pull-bottom sm-pull-bottom text-white p-l-20 m-b-20">
+              
+            </div>
+            <!-- END Background Caption-->
+          </div>
+          <!-- END Login Background Pic Wrapper-->
+
+          <!-- START Login Right Container-->
+          <div class="login-container " style="float: left;background-color: rgba(0,0,0,0.1);">
+            <div class="p-l-50 m-l-20 p-r-50 m-r-20 p-t-50 m-t-30 sm-p-l-15 sm-p-r-15 sm-p-t-40">
+              <h2 class="semi-bold text-white" > Gestion MIRAMAR SKI </h2>
+
+              <p class="p-t-35 text-white">Logueate para acceder a tu cuenta</p>
+              <!-- START Login Form -->
+              <form id="form-login" class="p-t-15" role="form" method="POST" action="{{ url('/login') }}">
+                {{ csrf_field() }}
+                <!-- START Form Control-->
+                <div class="form-group form-group-default">
+                  <label>Email</label>
+                  <div class="controls">
+                    <input type="text" name="email" placeholder="Email" class="form-control" required>
+                  </div>
+                </div>
+                <!-- END Form Control-->
+                <!-- START Form Control-->
+                <div class="form-group form-group-default">
+                  <label>Password</label>
+                  <div class="controls">
+                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                  </div>
+                </div>
+                <!-- START Form Control-->
+                <div class="row">
+                  <div class="col-md-6 no-padding">
+                    <div class="checkbox ">
+                      <input type="checkbox" value="1" id="checkbox1">
+                      <label for="checkbox1">Recuerdame</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6 text-right">
+                    <a href="{{ url('/password/reset') }}" class="text-info small">Olvide mi contraseña</a>
+                  </div>
+                </div>
+                <!-- END Form Control-->
+                <button class="btn btn-primary btn-cons m-t-10" type="submit">Login </button>
+              </form>
+
+              <!--END Login Form-->
+            </div>
+          </div>
+          <!-- END Login Right Container-->
+
+        </div>
+
+    <?php endif ?>
+      
     <div class="overlay hide" data-pages="search">
       <!-- BEGIN Overlay Content !-->
       <div class="overlay-content has-results m-t-20">
@@ -232,6 +308,7 @@
       </div>
       <!-- END Overlay Content !-->
     </div>
+
     <!-- END OVERLAY -->
     <!-- BEGIN VENDOR JS -->
     <script src="assets/plugins/pace/pace.min.js" type="text/javascript"></script>
