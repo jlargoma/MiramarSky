@@ -20,7 +20,7 @@
     
     <style type="text/css">
 
-        .Reservado-table{
+        .Reservado-table{ 
             background-color: #295d9b !important;
             color: black;
         }

@@ -10,7 +10,7 @@
     
             <div class="clearfix"></div>
 
-            <table class="table  demo-table-search table-responsive table-striped " id="tablePendientes" >
+            <table class="table  demo-table-search table-responsive table-striped m-l-10" id="tablePendientes" style="width: 99%">
                 <thead>
                     <tr>  
                         <th style="display: none">ID</th> 
@@ -45,7 +45,7 @@
                                 <td class ="text-center" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>><?php echo $book->pax ?></td>
 
                                 <td class ="text-center" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>>
-                                    <select class="room" data-id="<?php echo $book->id ?>" >
+                                    <select class="room" data-id="<?php echo $book->id ?>"  <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0) !important'":""; ?>>
                                         
                                         <?php foreach ($rooms as $room): ?>
                                             <?php if ($room->id == $book->room_id): ?>
@@ -80,7 +80,7 @@
                                 </td>
 
                                 <td class ="text-center" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?> >
-                                    <select class="status form-control" data-id="<?php echo $book->id ?>">
+                                    <select class="status" data-id="<?php echo $book->id ?>" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0) !important'":""; ?>>
 
                                         <?php for ($i=1; $i < 9; $i++): ?> 
                                             <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 

@@ -53,21 +53,26 @@
                             </div> 
                             <div class="col-md-1">
                                 <label>Pax</label>
-                                <input type="text" data-v-min="0" data-v-max="8" name="pax" class="autonumeric form-control full-width pax">
+                                <select name="pax" id="" style="min-height: 35px;">
+                                    <?php for ($i=1; $i < 8; $i++):?>
+                                        <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                                
 
                                     
                             </div>
                             <div class="col-md-2">
                                 <label>Apartamento</label>
-                                <select class="form-control full-width newroom" data-init-plugin="select2" name="newroom" id="newroom">
+                                <select class="newroom" name="newroom" id="newroom" style="min-height: 35px;">
                                     <?php foreach ($rooms as $room): ?>
                                         <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
                                     <?php endforeach ?>
                                 </select>
                             </div>
-                            <div class="col-md-2">
-                                <label>Parking</label>
-                                <select class=" form-control full-width parking"  data-init-plugin="select2" name="parking">
+                            <div class="col-md-2 p-l-40">
+                                <label>Parking</label><br>
+                                <select class="parking"  name="parking" style="min-height: 35px;">
                                     <?php for ($i=1; $i <= 4 ; $i++): ?>
                                         <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
                                     <?php endfor;?>
@@ -75,7 +80,7 @@
                             </div>
                             <div class="col-md-2">
                                 <label>Sup. Lujo</label>
-                                <select class=" form-control full-width type_luxury" data-init-plugin="select2" name="type_luxury">
+                                <select class="type_luxury" name="type_luxury" style="min-height: 35px;">
                                     <?php for ($i=1; $i <= 4 ; $i++): ?>
                                         <option class="luxury-<?php echo $i ?>" value="<?php echo $i ?>"><?php echo $book->getSupLujo($i) ?></option>
                                     <?php endfor;?>
@@ -83,18 +88,15 @@
                             </div>                                                    
                         </div>
                         <div class="input-group col-md-12 m-t-20">
-                            <div class="col-md-2">
+                            <!-- <div class="col-md-2">
                                 <label>Extras</label>
                                 <select class="full-width select2-hidden-accessible" data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true">
                                     <?php foreach ($extras as $extra): ?>
                                         <option value="<?php echo $extra->id ?>"><?php echo $extra->name ?></option>
                                     <?php endforeach ?>
                                 </select>
-                            </div>
-                            <div class="col-md-2">                                                        
-                                <label>Cost Agencia</label>
-                                <input type="text" class="agencia form-control" name="agencia" value="0">
-                            </div>
+                            </div> -->
+                            
                             <div class="col-md-2">
                                 <label>Agencia</label>
                                 <select class=" form-control full-width agency" data-init-plugin="select2" name="agency">
@@ -107,6 +109,10 @@
                                         
                                     <?php endfor;?>
                                 </select>
+                            </div>
+                            <div class="col-md-2">                                                        
+                                <label>Cost Agencia</label>
+                                <input type="text" class="agencia form-control" name="agencia" value="0">
                             </div>
                             
                             
