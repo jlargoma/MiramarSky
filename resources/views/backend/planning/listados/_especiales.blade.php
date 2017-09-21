@@ -70,7 +70,7 @@
                                                         <?php endif ?>
                                 </td>
                                 <td class ="text-center">
-                                    <select class="status form-control" data-id="<?php echo $book->id ?>" >
+                                    <select class="status" data-id="<?php echo $book->id ?>" >
                                         <?php for ($i=1; $i < 9; $i++): ?> 
                                             <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
                                                     <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>

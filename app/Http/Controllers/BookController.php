@@ -83,10 +83,15 @@ class BookController extends Controller
                 $firstDayOfTheYear->addMonth();
 
             }
+            if ($date->copy()->format('n') >= 9) {
+                $start = new Carbon('first day of September '.$date->copy()->format('Y'));
+            }else{
+                $start = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            }
 
 
 
-            $pagos = \App\Payments::where('datePayment','>',$date->copy()->format('Y-m-d'))->where('datePayment','<',$date->copy()->addYear()->format('Y-m-d'))->get();
+            $pagos = \App\Payments::where('datePayment','>=',$start->copy()->format('Y-m-d'))->where('datePayment','<=',$start->copy()->addYear()->format('Y-m-d'))->get();
             $paymentSeason = [
                                 "cash" => 0,
                                 "banco" =>0,
@@ -111,11 +116,7 @@ class BookController extends Controller
 
             $ventasOld = $book->getVentas($date->copy()->subYear()->format('Y-m-d'));
 
-            if ($date->copy()->format('n') >= 9) {
-                $start = new Carbon('first day of September '.$date->copy()->format('Y'));
-            }else{
-                $start = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
-            }
+            
 
             if(!$mobile->isMobile()){
                 $books = \App\Book::where('start','>',$start)->where('finish','<',$start->copy()->addYear())->orderBy('start','ASC')->get();
@@ -159,23 +160,23 @@ class BookController extends Controller
 
                 if (!$mobile->isMobile()){
                     return view('backend/planning/index',[
-                                                            'arrayBooks'    => $arrayBooks,
-                                                            'arrayMonths'   => $arrayMonths,
-                                                            'arrayTotales'  => $arrayTotales,
-                                                            'rooms'         => \App\Rooms::where('state','=',1)->get(),
-                                                            'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->where('state','=',1)->orderBy('name','DESC')->get(),
-                                                            'arrayReservas' => $arrayReservas,
-                                                            'mes'           => $mes,
-                                                            'date'          => $date,
-                                                            'book'          => new \App\Book(),
-                                                            'extras'        => \App\Extras::all(),
-                                                            'payment'       => $totalPayments,
-                                                            'pagos'         => \App\Payments::all(),
-                                                            'days'          => $arrayDays,
-                                                            'inicio'        => $start,
-                                                            'paymentSeason' =>$paymentSeason,
-                                                            'ventas'        => $ventas,
-                                                            'ventasOld'        => $ventasOld,
+                                                        'arrayBooks'    => $arrayBooks,
+                                                        'arrayMonths'   => $arrayMonths,
+                                                        'arrayTotales'  => $arrayTotales,
+                                                        'rooms'         => \App\Rooms::where('state','=',1)->get(),
+                                                        'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->where('state','=',1)->orderBy('name','DESC')->get(),
+                                                        'arrayReservas' => $arrayReservas,
+                                                        'mes'           => $mes,
+                                                        'date'          => $date,
+                                                        'book'          => new \App\Book(),
+                                                        'extras'        => \App\Extras::all(),
+                                                        'payment'       => $totalPayments,
+                                                        'pagos'         => \App\Payments::all(),
+                                                        'days'          => $arrayDays,
+                                                        'inicio'        => $start,
+                                                        'paymentSeason' =>$paymentSeason,
+                                                        'ventas'        => $ventas,
+                                                        'ventasOld'     => $ventasOld,
                                                         ]);
                 }else{
                     return view('backend/planning/index_mobile',[

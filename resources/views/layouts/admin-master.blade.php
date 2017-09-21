@@ -75,18 +75,30 @@
 			    </div>
 			    <div class="navbar-collapse collapse">
 			        <ul class="nav navbar-nav navbar-left">
+
 			        	<li class="{{ Request::path() == 'admin/reservas' ? 'active' : '' }}"><a href="{{ url('admin/reservas') }}" class="detailed" >Reservas</a></li>
-				      	<li class="{{ Request::path() == 'admin/apartamentos' ? 'active' : '' }}"><a href="{{ url('admin/apartamentos') }}" class="detailed">Apartamentos</a></li>
+
+			        	<li class="{{ Request::path() == 'admin/liquidacion'  ? 'active' : '' }}"><a href="{{ url('admin/liquidacion') }}" class="detailed">Liquidacion por reservas</a></li>
+
+			        	<li class="{{ Request::path() == 'admin/liquidacion-apartamentos'  ? 'active' : '' }}"><a href="{{ url('admin/liquidacion-apartamentos') }}" class="detailed">Liquidacion de apartamentos</a></li>
+
+			        	<li class="{{ Request::path() == 'admin/pagos-propietarios'  ? 'active' : '' }}"><a href="{{ url('admin/pagos-propietarios') }}" class="detailed">Pagos a propietarios</a></li>
+						
+						<li class="{{ Request::path() == 'admin/estadisticas'  ? 'active' : '' }}"><a href="{{ url('admin/estadisticas') }}" class="detailed">Estadisticas</a></li>
+
+						<li class="{{ Request::path() == 'admin/perdidas-ganancias'  ? 'active' : '' }}"><a href="{{ url('admin/perdidas-ganancias') }}" class="detailed">P & G</a></li>
+
+						<li class="{{ Request::path() == 'admin/propietario'  ? 'active' : '' }}"><a href="{{ url('admin/propietario') }}" class="detailed">Area Propietario</a></li>
+
 				      	<li class="{{ Request::path() == 'admin/precios' ? 'active' : '' }}"><a href="{{ url('admin/precios') }}" class="detailed">Precios</a></li>
+
 				      	<li class="{{ Request::path() == 'admin/temporadas' ? 'active' : '' }}"><a href="{{ url('admin/temporadas') }}" class="detailed">Temporadas</a></li>
+
 				      	<li class="{{ Request::path() == 'admin/usuarios' ? 'active' : '' }}"><a href="{{ url('admin/usuarios') }}" class="detailed">Usuarios</a></li>
+
 				      	<li class="{{ Request::path() == 'admin/clientes' ? 'active' : '' }}"><a href="{{ url('admin/clientes') }}" class="detailed">Clientes</a></li>
-				      	<li class="{{ Request::path() == 'admin/liquidacion'  ? 'active' : '' }}"><a href="{{ url('admin/liquidacion') }}" class="detailed">Liquidacion por reservas</a></li>
-				      	<li class="{{ Request::path() == 'admin/liquidacion-apartamentos'  ? 'active' : '' }}"><a href="{{ url('admin/liquidacion-apartamentos') }}" class="detailed">Liquidacion de apartamentos</a></li>
-				      	<li class="{{ Request::path() == 'admin/pagos-propietarios'  ? 'active' : '' }}"><a href="{{ url('admin/pagos-propietarios') }}" class="detailed">Pagos a propietarios</a></li>
-				      	<li class="{{ Request::path() == 'admin/estadisticas'  ? 'active' : '' }}"><a href="{{ url('admin/estadisticas') }}" class="detailed">Estadisticas</a></li>
-				      	<li class="{{ Request::path() == 'admin/perdidas-ganancias'  ? 'active' : '' }}"><a href="{{ url('admin/perdidas-ganancias') }}" class="detailed">P & G</a></li>
-				      	<li class="{{ Request::path() == 'admin/propietario'  ? 'active' : '' }}"><a href="{{ url('admin/propietario') }}" class="detailed">Area Propietario</a></li>
+
+				      	<li class="{{ Request::path() == 'admin/apartamentos' ? 'active' : '' }}"><a href="{{ url('admin/apartamentos') }}" class="detailed">Apartamentos</a></li>
 
 			        </ul>
 			        <ul class="nav navbar-nav navbar-right">

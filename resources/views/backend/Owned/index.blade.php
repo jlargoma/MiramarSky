@@ -29,55 +29,13 @@ setlocale(LC_TIME, "es_ES");
 	        background-color: #F77975  !important;
 	        color: black;
 	    }
-	    .Pagada-la-señal.start{
-	        background: red; /* For browsers that do not support gradients */
-	        background: -webkit-linear-gradient(left, yellow , red); /* For Safari 5.1 to 6.0 */
-	        background: -o-linear-gradient(right, yellow, red); /* For Opera 11.1 to 12.0 */
-	        background: -moz-linear-gradient(right, yellow, red); /* For Firefox 3.6 to 15 */
-	        background: linear-gradient(to right, yellow , red); /* Standard syntax */
-	    }
-	    .Pagada-la-señal.end{
-	        background: red; /* For browsers that do not support gradients */
-	        background: -webkit-linear-gradient(left, red , yellow); /* For Safari 5.1 to 6.0 */
-	        background: -o-linear-gradient(right, red, yellow); /* For Opera 11.1 to 12.0 */
-	        background: -moz-linear-gradient(right, red, yellow); /* For Firefox 3.6 to 15 */
-	        background: linear-gradient(to right, red , yellow); /* Standard syntax */
-	    }
 	    .Bloqueado{
 	        background-color: #F9D975 !important;
 	        color: black;
 	    }
-	    .Bloqueado.start{
-	        background: red; /* For browsers that do not support gradients */
-	        background: -webkit-linear-gradient(left, white, yellow); /* For Safari 5.1 to 6.0 */
-	        background: -o-linear-gradient(right, white, yellow); /* For Opera 11.1 to 12.0 */
-	        background: -moz-linear-gradient(right, white, yellow); /* For Firefox 3.6 to 15 */
-	        background: linear-gradient(to right, white, yellow); /* Standard syntax */
-	    }
-	    .Bloqueado.end{
-	        background: red; /* For browsers that do not support gradients */
-	        background: -webkit-linear-gradient(left, yellow, white); /* For Safari 5.1 to 6.0 */
-	        background: -o-linear-gradient(right, yellow, white); /* For Opera 11.1 to 12.0 */
-	        background: -moz-linear-gradient(right, yellow, white); /* For Firefox 3.6 to 15 */
-	        background: linear-gradient(to right, yellow, white); /* Standard syntax */
-	    }
 	    .SubComunidad{
 	        background-color: #8A7DBE !important;
 	        color: black;
-	    }
-	    .SubComunidad.start{
-	        background: red; /* For browsers that do not support gradients */
-	        background: -webkit-linear-gradient(left, white, purple); /* For Safari 5.1 to 6.0 */
-	        background: -o-linear-gradient(right, white, purple); /* For Opera 11.1 to 12.0 */
-	        background: -moz-linear-gradient(right, white, purple); /* For Firefox 3.6 to 15 */
-	        background: linear-gradient(to right, white, purple); /* Standard syntax */
-	    }
-	    .SubComunidad.end{
-	        background: red; /* For browsers that do not support gradients */
-	        background: -webkit-linear-gradient(left, purple, white); /* For Safari 5.1 to 6.0 */
-	        background: -o-linear-gradient(right, purple, white); /* For Opera 11.1 to 12.0 */
-	        background: -moz-linear-gradient(right, purple, white); /* For Firefox 3.6 to 15 */
-	        background: linear-gradient(to right, purple, white); /* Standard syntax */
 	    }
 
 	    .botones{
