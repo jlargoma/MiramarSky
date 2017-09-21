@@ -28,6 +28,8 @@
 
     hr.estado {border: 0; height: 4px; margin-top: 20px;background:black; text-align: center;}
     hr.estado:after {content:"Estado"; position: relative; top: -12px; display: inline-block; width: 86px; height: 24px; padding: 0;border: 2px solid black; border-radius: 24px; background: black; color: white; font-size: 12px; line-height: 24px; }
+    
+
 </style>
 @endsection
     
@@ -36,17 +38,17 @@
 <div class="container-fluid padding-10 sm-padding-10">
     <div class="row">
         <div class="col-md-12 col-xs-12 ">
-            <div class="col-md-5">
-                <h2><?php echo "<b>".strtoupper($book->customer->name)."</b>" ?> 
+            <div class="col-md-5 m-r-50 p-r-0">
+                <h4><?php echo "<b>".strtoupper($book->customer->name)."</b>" ?> 
                     creada el 
                     <?php 
                         $fecha = Carbon::createFromFormat('Y-m-d H:i:s' ,$book->created_at);
-                        echo $fecha->format('d-m-Y H:i'); 
+                        echo $fecha->copy()->format('d-m-Y').". Hora:".$fecha->copy()->format('H:m'); 
                     ?>.
-                </h2>
+                </h4>
             </div>
             
-            <h2 style="float: left">Creado por <?php echo "<b>".strtoupper($book->user->name)."</b>" ?></h2>
+            <h4 style="float: left">Creado por <?php echo "<b>".strtoupper($book->user->name)."</b>" ?></h4>
         </div>
         <div class="col-md-7">
 
@@ -128,14 +130,7 @@
                                     </div>
                                 </div>
                                 <div class="input-group col-md-12">
-                                    <div class="col-md-2">
-                                        <label>Extras</label>
-                                        <select class="full-width select2-hidden-accessible" data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true">
-                                            <?php foreach ($extras as $extra): ?>
-                                                <option value="<?php echo $extra->id ?>"><?php echo $extra->name ?></option>
-                                            <?php endforeach ?>
-                                        </select>
-                                    </div>
+                                    
                                     <div class="col-md-2">                                                        
                                         <label>Cost Agencia</label>
                                         <input type="text" class="agencia form-control" name="agencia" value="<?php echo $book->PVPAgencia ?>">
@@ -148,6 +143,14 @@
                                             <?php endfor;?>
                                         </select>
                                     </div>
+                                   <!--  <div class="col-md-2">
+                                        <label>Extras</label>
+                                        <select class="full-width select2-hidden-accessible" data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true">
+                                            <?php foreach ($extras as $extra): ?>
+                                                <option value="<?php echo $extra->id ?>"><?php echo $extra->name ?></option>
+                                            <?php endforeach ?>
+                                        </select>
+                                    </div> -->
                                 </div>
                                 <br>
                                 <div class="input-group col-md-12">
@@ -347,13 +350,13 @@
                                         <td></td>
                                         <?php if ($total < $book->total_price): ?>
                                             <td class="text-center" ><p style="color:red;font-weight: bold;font-size:15px"><?php echo $total-$book->total_price ?>€</p></td>
-                                            <td class="text-center" colspan="2">Pendiente de pago</td>
+                                            <td class="text-left" colspan="2"><p style="color:red;font-weight: bold;font-size:15px">Pendiente de pago</p></td>
                                         <?php elseif($total > $book->total_price): ?>
                                             <td class="text-center" ><p style="color:black;font-weight: bold;font-size:15px"><?php echo $total-$book->total_price ?>€</p></td>
-                                            <td class="text-center" colspan="2">Sobrante</td>
+                                            <td class="text-left" colspan="2">Sobrante</td>
                                         <?php else: ?>
                                             <td class="text-center" ><p style="color:black;font-weight: bold;font-size:15px">0€</p></td>
-                                            <td class="text-center" colspan="2">Al corriente de pago</td>
+                                            <td class="text-left" colspan="2">Al corriente de pago</td>
                                         <?php endif ?>
                                         
                                     </tr>

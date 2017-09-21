@@ -291,41 +291,75 @@ class Book extends Model
 
                 if (!empty($status)) {
                     $this->type_book = $status;
-                    switch ($status) {
-                        case '1':
 
-                            Mail::send('backend.emails.reservado',['book' => $book], function ($message) use ($book) {
-                                    $message->from('jbaz@daimonconsulting.com', 'Miramarski');
+                    $isRooms = \App\Book::where('room_id',$this->room_id)->get();
+                    $existStart = false;
+                    $existFinish = false;        
+                    $roomStart = Carbon::createFromFormat('Y-m-d',$this->start);
+                    $roomFinish = Carbon::createFromFormat('Y-m-d',$this->finish);
+                    foreach ($isRooms as $isRoom) {
+                        if ($existStart == false && $existFinish == false) {
+                            $start = Carbon::createFromFormat('Y-m-d', $isRoom->start);
+                            
+                            $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish); 
 
-                                    $message->to($book->customer->email);
-                                    $message->subject('Correo de reserva');
-                                });
+                            $existStart = Carbon::create(
+                                                            $roomStart->year,
+                                                            $roomStart->month,
+                                                            $roomStart->day)
+                                                        ->between($start->copy()->addDay(),$finish->copy()->subDay());
+
+                            $existFinish = Carbon::create(
+                                                            $roomFinish->year,
+                                                            $roomFinish->month,
+                                                            $roomFinish->day)
+                                                        ->between($start->copy()->addDay(),$finish->copy()->subDay());
+
+                        }else{
                             break;
-                        case '2':
-                            Mail::send('backend.emails.confirmado',['book' => $book], function ($message) use ($book) {
-                                    $message->from('jbaz@daimonconsulting.com', 'Miramarski');
-
-                                    $message->to($book->customer->email);
-                                    $message->subject('Correo de confirmacion del pago parcial');
-                                });
- 
-                            break;
-                        case '6':
-                            Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
-                                    $message->from('jbaz@daimonconsulting.com', 'Miramarski');
-
-                                    $message->to($book->customer->email);
-                                    $message->subject('Correo de cancelada');
-                                });  
-
-                            break;
-                        default:
-                            # code...
-                            break;
+                        }
+                        
                     }
-                    if ($this->save()) {
-                        return "Cambiado!";
+                    if ($existStart == false && $existFinish == false) {
+                        switch ($status) {
+                            case '1':
+
+                                Mail::send('backend.emails.reservado',['book' => $book], function ($message) use ($book) {
+                                        $message->from('jbaz@daimonconsulting.com', 'Miramarski');
+
+                                        $message->to($book->customer->email);
+                                        $message->subject('Correo de reserva');
+                                    });
+                                break;
+                            case '2':
+                                Mail::send('backend.emails.confirmado',['book' => $book], function ($message) use ($book) {
+                                        $message->from('jbaz@daimonconsulting.com', 'Miramarski');
+
+                                        $message->to($book->customer->email);
+                                        $message->subject('Correo de confirmacion del pago parcial');
+                                    });
+     
+                                break;
+                            case '6':
+                                Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
+                                        $message->from('jbaz@daimonconsulting.com', 'Miramarski');
+
+                                        $message->to($book->customer->email);
+                                        $message->subject('Correo de cancelada');
+                                    });  
+
+                                break;
+                            default:
+                                # code...
+                                break;
+                        }
+                        if ($this->save()) {
+                            return "Cambiado!";
+                        }
                     }
+                    else{
+
+                    };
                 }
                 if (!empty($room)) {
                     $isRooms = \App\Book::where('room_id',$room)->get();

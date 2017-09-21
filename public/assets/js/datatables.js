@@ -151,6 +151,30 @@
         });
     }
 
+    var initTableUser = function() {
+        var table = $('#tableUser');
+
+        var settings = {
+            "order": [0, 'desc'],
+            "sDom": "<t><'row'<p i>>",
+            "destroy": true,
+            "scrollCollapse": false,
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ ",
+                "sInfo": "Mostrando <b>_START_ de _END_</b> de _TOTAL_"
+            },
+            "iDisplayLength": 50,
+            
+        };
+
+        table.dataTable(settings);
+
+        // search box for table
+        $('#searchUser').keyup(function() {
+            table.fnFilter($(this).val());
+        });
+    }
+
     // Initialize datatable with ability to add rows dynamically
     var initTableWithDynamicRows = function() {
         var table = $('#tableWithDynamicRows');
@@ -251,6 +275,7 @@
     initTableWithSearch3();
     initTableWithSearchRoom();
     initTablePendientes();
+    initTableUser();
     initTableWithSearchLiquidacion();
     initTableWithDynamicRows();
     initTableWithExportOptions();

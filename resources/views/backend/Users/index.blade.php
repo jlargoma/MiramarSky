@@ -19,14 +19,14 @@
         <div class="col-md-8 table-responsive">
             <div class="pull-left">
                 <div class="col-xs-12 " >
-                    <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar">
+                    <input type="text" id="searchUser" class="form-control pull-right" placeholder="Buscar">
                 </div>
             </div>
             <div class="clearfix"></div>
             <?php if (count($users) > 0): ?>
                 
                
-                <table class="table table-hover demo-table-search table-responsive " id="tableWithSearch">
+                <table class="table table-hover demo-table-search table-responsive " id="tableUser">
                     <thead>
                         <tr>
                             <th class ="text-center hidden" style="width: 25%">id</th>

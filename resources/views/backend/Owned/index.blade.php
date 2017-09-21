@@ -22,7 +22,7 @@ setlocale(LC_TIME, "es_ES");
 			border-left: 2px solid black !important;
 			font-weight: bold;
 			color: black;
-			background-color: grey!important;
+			background-color: rgba(0,100,255,0.2) !important;
 		}
 
 	    .Pagada-la-señal{
@@ -79,6 +79,7 @@ setlocale(LC_TIME, "es_ES");
 	        background: -moz-linear-gradient(right, purple, white); /* For Firefox 3.6 to 15 */
 	        background: linear-gradient(to right, purple, white); /* Standard syntax */
 	    }
+
 	    .botones{
 	        padding-top: 0px!important;
 	        padding-bottom: 0px!important;
@@ -96,13 +97,39 @@ setlocale(LC_TIME, "es_ES");
 	        color: black;
 	        cursor: pointer;
 	    }
+	    .btn-success2{
+	    	background-color: rgb(70, 195, 123)!important; 
+	    	font-size: 20px !important; 
+	    	border: rgb(70, 195, 123) !important; 
+	    	box-shadow: rgba(70, 195, 123, 0.5) 0px 0px 3px 2px !important; 
+	    	display: inline-block;
+	    	color: white!important;
+	    }
+
+	    .bloq-cont{
+	    	padding: 30px;
+	    	border: 2px solid #999999;
+	    	-moz-border-radius: 6px;
+	    	-webkit-border-radius: 6px;
+	    	border-radius: 6px;
+	    	box-shadow: inset 1px 1px 0 white, 1px 1px 0 white;
+	    	background: #f7f7f7;
+	    	margin-top: 15px;
+	    }
+	    .btn-danger2{
+	    	display:none;font-size: 20px !important;
+	    	background-color: rgb(228, 22, 22)!important;
+	    	border: rgb(201, 53, 53) !important;
+	    	box-shadow: 0px 0px 3px 2px rgba(228, 22, 22, 0.5)!important;"
+	    	color: white!important;
+	    }
 	</style>
 
 <div class="container-fluid padding-10 sm-padding-10">
     <div class="row">
     	<div class="col-md-12 text-center">
     	    <div class="col-md-6 col-md-offset-4">
-    	        <h2><b>Planning de reservas</b>  Fechas:
+    	    	<h2><b>Planning de reservas</b>  Fechas:
     	            
     	            
     	            <select id="fecha" >
@@ -121,16 +148,19 @@ setlocale(LC_TIME, "es_ES");
     	        </h2>
     	    </div>        
     	</div>
+
 		<div class="text-center"><h1 class="text-complete"><?php echo strtoupper($user->name) ?></h1></div>
 		<div class="col-md-3">
-			<button class="bloq-fecha">Bloquear Fechas</button>
-			<button class="liquidacion">Bloquear Fechas</button>
+			<a id="cal-bloq" class="btn btn-success2 btn text-white" >Bloquear fechas</a>
+			<a id="cal-bloq2" class="btn btn-danger2 btn text-white" >cerrar</a>
+			<a id="cal-pago" class="btn btn-success2 btn text-white" >Liquidacion</a>
+			<a id="cal-pago2" class="btn btn-danger2 btn text-white" >cerrar</a>
 		</div>
 		<div style="clear: both;"></div>
 		<br>
 		<div class="col-md-3">
-			<div id="bloq" style="display: none">
-				<div class="col-md-12 padding-10" style="border: 1px solid  black;border-radius: 30px">
+			<div id="container-bloq" style="display:none;">
+				<div class="col-md-12 padding-10 bloq-cont">
 					<form role="form"  action="{{ url('/admin/propietario/bloquear') }}" method="post">
 						<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 						<div class="input-daterange input-group" id="datepicker-range">
@@ -149,10 +179,40 @@ setlocale(LC_TIME, "es_ES");
 		</div>
 		<div style="clear: both;"></div>
 		<br>
+
 		<div class="col-md-6">
-			<div id="liquidacion" style="display: none">
-				<div class="col-md-12 padding-10" style="border: 1px solid  black;border-radius: 30px">
+			<div id="container-pago" style="display:none;">
+				<div class="col-md-12 padding-10 liq-cont">
 					<table class="table table-hover  no-footer" id="basicTable" role="grid">
+						<thead>
+							<th class="bg-complete text-white text-center">Facturado</th>
+							<th class="bg-complete text-white text-center">Pagos</th>
+							<th class="bg-complete text-white text-center">Pagado</th>
+							<th class="bg-complete text-white text-center">Pendiente</th>
+						</thead>
+						<tbody>
+							<tr>
+								<?php if (count($pagos)> 0): ?>
+									<td class="text-center"><?php echo number_format($total,2,',','.'); ?>€</td>
+									<?php foreach ($pagos as $pago): ?>
+									<td>
+										<table style="width: 100%">
+											<tr>
+												<td style="border:none"><?php echo Carbon::createFromFormat('Y-m-d',$pago->datePayment)->format('d-m-Y')?></td>
+												<td style="border:none"><?php echo $pago->comment ?></td>
+												<td style="border:none"><?php echo $pago->import ?></td>
+											</tr>
+										</table>							
+									</td>
+										
+										
+									<?php endforeach ?>
+								<?php else: ?>
+									<td class="text-center" colspan="4">Aun no hay pagos realizados</td>
+								<?php endif ?>
+								
+							</tr>
+						</tbody>
 					</table>
 				</div>
 			</div>
@@ -164,7 +224,7 @@ setlocale(LC_TIME, "es_ES");
 			<div class="col-md-2 col-md-offset-4">
 				<table class="table table-hover  no-footer" id="basicTable" role="grid">
 					<thead>
-						<th class ="text-center bg-complete text-white">Ingresos</th>
+						<th class ="text-center bg-complete text-white">ING. PROP</th>
 						<th class ="text-center bg-complete text-white">Apto</th>
 						<th class ="text-center bg-complete text-white">Park</th>
 						<?php if ($room->luxury == 1): ?>
@@ -175,7 +235,7 @@ setlocale(LC_TIME, "es_ES");
 					<tbody>
 						<tr>
 							<td class="text-center"><?php echo number_format($total,2,',','.'); ?>€</td>
-							<td class="text-center"><?php echo number_format($apto,2,',','.'); ?>€</td>
+							<td class="text-center total"><?php echo number_format($apto,2,',','.'); ?>€</td>
 							<td class="text-center"><?php echo number_format($park,2,',','.'); ?>€</td>
 							<?php if ($room->luxury == 1): ?>
 								<td class="text-center"><?php echo number_format($lujo,2,',','.'); ?>€</td>
@@ -194,7 +254,7 @@ setlocale(LC_TIME, "es_ES");
 						<th class ="text-center bg-complete text-white" style="width: 5%">Personas</th>
 						<th class ="text-center bg-complete text-white">Entrada</th>
 						<th class ="text-center bg-complete text-white">Salida</th>
-						<th class ="text-center bg-complete text-white">Ingresos</th>
+						<th class ="text-center bg-complete text-white">ING. PROP</th>
 						<th class ="text-center bg-complete text-white">Apto</th>
 						<th class ="text-center bg-complete text-white">Parking</th>
 						<?php if ($room->luxury == 1): ?>
@@ -359,6 +419,45 @@ setlocale(LC_TIME, "es_ES");
 			    var year = $(this).val();
 			    window.location = '/admin/propietario/'+year;
 			});
+
+			$("#cal-bloq").on( "click", function() {
+				$("#cal-bloq").hide();
+				$("#cal-pago2").hide();				
+				$("#cal-pago").show();				
+				$("#cal-bloq2").show();
+				$('#container-bloq').show('swing');
+				$('#container-pago').hide('linear');				
+				$('#container-bloq').addClass('showed');
+			});
+			$("#cal-bloq2").on( "click", function() {
+				$("#cal-bloq").show();
+				$("#cal-pago2").hide();				
+				$("#cal-pago").show();				
+				$("#cal-bloq2").hide();
+				$('#container-bloq').hide('linear');
+				$('#container-bloq').removeClass('showed');
+			});
+
+			$("#cal-pago").on( "click", function() {
+				$("#cal-bloq").show();
+				$("#cal-pago2").show();				
+				$("#cal-pago").hide();				
+				$("#cal-bloq2").hide();
+				$('#container-pago').show('swing');
+				$('#container-bloq').hide('linear');
+
+				$('#container-pago').addClass('showed');
+			});
+			$("#cal-pago2").on( "click", function() {
+				$("#cal-bloq").show();
+				$("#cal-pago2").hide();				
+				$("#cal-pago").show();				
+				$("#cal-bloq2").hide();
+				$('#container-pago').hide('linear');
+				$('#container-pago').removeClass('showed');
+			});
+
+
 		});
 		
 	</script>

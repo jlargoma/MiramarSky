@@ -81,7 +81,7 @@ setlocale(LC_TIME, "es_ES");
 				<div class="col-md-3">
 					<table class="table table-hover demo-table-search table-responsive">
 						<thead>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">Total</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">PVP</th>
 							<th class ="text-center bg-complete text-white" style="width: 10%!important">C. banco</th>
 							<th class ="text-center bg-complete text-white" style="width: 10%!important">C. Jorge</th>
 							<th class ="text-center bg-complete text-white" style="width: 10%!important">C. Jaime</th>
@@ -101,7 +101,7 @@ setlocale(LC_TIME, "es_ES");
     			<div class="col-md-2">
 	    			<table class="table table-hover demo-table-search table-responsive">
 						<thead>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">Beneficio</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%!important">ING. NETO</th>
 							<th class ="text-center bg-complete text-white" style="width: 10%!important">Benº </th>
 						</thead>
 						<tbody>
@@ -206,15 +206,15 @@ setlocale(LC_TIME, "es_ES");
     									?>
 				        			</td>
 				        			<td class="text-center"><?php echo $book->nigths ?></td>
-				        			<td class="text-center"><?php echo number_format($book->total_price,2,',','.') ?> €</td>
+				        			<td class="text-center"><b><?php echo number_format($book->total_price,2,',','.') ?> €</b></td>
 
 				        			<td class="text-center pagos bi"><?php echo number_format($book->getPayment(2),2,',','.'); ?> €</td>
 				        			<td class="text-center pagos"><?php echo number_format($book->getPayment(0),2,',','.'); ?> €</td>
 				        			<td class="text-center pagos"><?php echo number_format($book->getPayment(1),2,',','.'); ?> €</td>
 									<td class="text-center pagos pendiente"><?php echo number_format(($book->total_price - $book->getPayment(4)),2,',','.')." €"; ?></td>
-				        			<td class="text-center beneficio bi" style="border-left: 1px solid black;"><?php echo number_format($book->total_ben,2,',','.') ?> €</td>
+				        			<td class="text-center beneficio bi" style="border-left: 1px solid black;"><b><?php echo number_format($book->total_ben,2,',','.') ?> €</b></td>
 				        			<td class="text-center beneficio bf"><?php echo number_format($book->inc_percent,0)." %" ?></td>
-				        			<td class="text-center coste bi "><?php echo number_format($book->cost_total,2,',','.')?> €</td>
+				        			<td class="text-center coste bi "><b><?php echo number_format($book->cost_total,2,',','.')?> €</b></td>
 				        			<td class="text-center coste"><?php echo number_format($book->cost_apto,2,',','.')?> €</td>
 				        			<td class="text-center coste"><?php echo number_format($book->cost_park,2,',','.')?> €</td>
 				        			<td class="text-center coste" ><?php echo number_format($book->cost_lujo,2,',','.')?> €</td>

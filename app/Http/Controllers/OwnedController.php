@@ -24,9 +24,15 @@ class OwnedController extends Controller
             $date = $year->copy();
 
         }
-        
-        $firstDayOfTheYear = new Carbon('first day of September '.$date->copy()->format('Y'));
-        
+
+        if ($date->copy()->format('n') >= 9) {
+            $firstDayOfTheYear = new Carbon('first day of September '.$date->copy()->format('Y'));
+            $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+        }else{
+            $firstDayOfTheYear = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+        }
+
         $mes = array();
         $arrayReservas = array();
         $arrayMonths = array();
@@ -43,7 +49,8 @@ class OwnedController extends Controller
             $room = \App\Rooms::where('owned', 39)->first();
         }
 
-        $reservas = \App\Book::whereIn('type_book',[2,7,8])->where('room_id',$room->id)->orderBy('start', 'ASC')->get();
+
+        $reservas = \App\Book::whereIn('type_book',[2,7,8])->where('room_id',$room->id)->where('start','>=',$firstDayOfTheYear->copy())->where('start','<=',$firstDayOfTheYear->copy()->addYear())->orderBy('start', 'ASC')->get();
 
         foreach ($reservas as $reserva) {
             $dia = Carbon::createFromFormat('Y-m-d',$reserva->start);
@@ -88,18 +95,23 @@ class OwnedController extends Controller
             $lujo += $book->cost_lujo;
         }
 
+
+        $paymentspro = \App\Paymentspro::where('room_id',$room->id)->where('datePayment','>=',$date->copy()->format('Y-m-d'))->where('datePayment','<=',$date->copy()->addYear()->format('Y-m-d'))->get();
+
+
         return view('backend.owned.index',[
                                             'user'        => \App\User::find(Auth::user()->id),
                                             'room'        => $room,
                                             'books'       => $books,
                                             'mes'         => $mes,
                                             'reservas'    => $arrayReservas,
-                                            'date'        => new Carbon('first day of September 2016'),
+                                            'date'        => $date,
                                             'arrayMonths' => $arrayMonths,
                                             'total'       => $total,
                                             'apto'       => $apto,
                                             'park'       => $park,
                                             'lujo'       => $lujo,
+                                            'pagos'      => $paymentspro,
                                             ]);
     }
 

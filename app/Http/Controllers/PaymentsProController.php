@@ -90,6 +90,7 @@ class PaymentsProController extends Controller
     {
         //
 
+
         $fecha = Carbon::now();
         $paymentPro = new \App\Paymentspro();
 

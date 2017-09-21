@@ -14,13 +14,17 @@
       td{      
         padding: 10px 5px!important;
       }
-      .pagos{
+      .costeApto{
+        background-color: rgba(200,200,200,0.5)!important;
+        font-weight: bold;
+      }
+      
+      .pendiente{
         background-color: rgba(200,200,200,0.5)!important;
         font-weight: bold;
       }
 
-      td[class$="bi"] {border-left: 1px solid black;}
-      td[class$="bf"] {border-right: 1px solid black;}
+      td[class$="bordes"] {border-left: 1px solid black;border-right: 1px solid black;}
       
       .coste{
         background-color: rgba(200,200,200,0.5)!important;
@@ -80,11 +84,11 @@
               <tbody>
                 <tr>
                   <td class="text-center"><?php echo number_format(array_sum($totalPVP),2,',','.') ?> €</td>
-                  <td class="text-center"><?php echo number_format(array_sum($totalCost),2,',','.') ?> €</td>
+                  <td class="text-center costeApto bordes"><b><?php echo number_format(array_sum($totalCost),2,',','.') ?> €</b></td>
                   <td class="text-center"><?php echo number_format((array_sum($totalPVP) - array_sum($totalCost)),2,',','.') ?> €</td>
                   <td class="text-center"><?php echo number_format(((array_sum($totalPVP) - array_sum($totalCost))/array_sum($totalPVP) * 100 ),2,',','.') ?>%</td>
                   <td class="text-center"><?php echo number_format(array_sum($totalPayment),2,',','.') ?> €</td>
-                  <td class="text-center"><?php echo number_format(array_sum($debt),2,',','.') ?> €</td>
+                  <td class="text-center pendiente bordes"><b><?php echo number_format(array_sum($debt),2,',','.') ?> €</b></td>
                 </tr>
               </tbody>
            </table>
@@ -110,7 +114,7 @@
                     <tbody>
                         <?php foreach ($rooms as $room): ?>
                           <tr style="margin: 0px">
-                            <td> <?php echo $room->user->name ?></td>
+                            <td><a style="cursor: pointer" class="update-payments" type="button" data-debt="<?php echo $debt[$room->id] ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments" title="Añadir pago" ><?php echo $room->user->name ?></a></td>
                             <td class="text-center"><a style="cursor: pointer" class="update-payments" type="button" data-debt="<?php echo $debt[$room->id] ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments" title="Añadir pago" ><?php echo $room->nameRoom ?></a></td>
                             <td class="text-center"><?php echo $room->typeAptos->name ?></td>
                             <td class="text-center">
@@ -120,14 +124,14 @@
                                   -----
                               <?php endif ?>
                             </td>
-                            <td class="text-center  pagos bi">
+                            <td class="text-center  costeApto bordes">
                               <?php if (isset($totalCost[$room->id])): ?>
                                 <?php echo number_format($totalCost[$room->id],2,',','.')." €" ?>
                               <?php else: ?>
                                   -----
                               <?php endif ?>
                             </td>
-                            <td class="text-center  pagos bf" >
+                            <td class="text-center   " >
                               <?php if (isset($totalCost[$room->id]) && isset($totalPVP[$room->id])): ?>
                                 <?php echo number_format((($totalPVP[$room->id]) - ($totalCost[$room->id])),2,',','.') ?> €
                               <?php else: ?>
@@ -148,7 +152,7 @@
                                   -----
                               <?php endif ?>
                             </td>
-                            <td class="text-center pendiente">
+                            <td class="text-center pendiente bordes">
                               <?php if (isset($debt[$room->id])): ?>
                                 <?php echo number_format($debt[$room->id],2,',','.')." €" ?>
                               <?php else: ?>
