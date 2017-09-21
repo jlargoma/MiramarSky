@@ -35,6 +35,7 @@
 	    <!--[if lte IE 9]>
 	    <link href="assets/plugins/codrops-dialogFx/dialog.ie.css" rel="stylesheet" type="text/css" media="screen" />
 	    <![endif]-->
+	    <link rel="stylesheet" type="text/css" href="{{ asset('/pages/css/custom.css')}}">
 	   	<style>
 	   		.navbar-inverse {
 	   		  background-color: #B0B5B9!important;
