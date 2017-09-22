@@ -168,18 +168,18 @@
   									<tbody>
   										<?php foreach ($arrayBooks["nuevas"] as $nueva): ?>
   											<tr>
-  												<td class="text-center sm-p-t-10 sm-p-b-10">
+  												<td class="text-center sm-p-t-10 sm-p-b-10" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>>
                             <a href="{{url ('/admin/reservas/update')}}/<?php echo $nueva->id ?>"><?php echo $nueva->customer->name ?></a>
                           </td>
-  												<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->start)->format('d-M') ?></td>
-  												<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->finish)->format('d-M') ?></td>
-  												<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $nueva->pax ?></td>
-  												<td class="text-center sm-p-t-10 sm-p-b-10"><a href="tel:<?php echo $nueva->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
-  												<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $nueva->room->name ?></td>
-  												<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $nueva->nigths ?></td>
-  												<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $nueva->total_price ?> €</td>
-  												<td class="text-center sm-p-t-10 sm-p-b-10 sm-p-l-10 sm-p-r-10">
-                            <select class="status form-control" data-id="<?php echo $nueva->id ?>" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>>
+  												<td class="text-center sm-p-t-10 sm-p-b-10" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->start)->format('d-M') ?></td>
+  												<td class="text-center sm-p-t-10 sm-p-b-10" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->finish)->format('d-M') ?></td>
+  												<td class="text-center sm-p-t-10 sm-p-b-10" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>><?php echo $nueva->pax ?></td>
+  												<td class="text-center sm-p-t-10 sm-p-b-10" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>><a href="tel:<?php echo $nueva->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
+  												<td class="text-center sm-p-t-10 sm-p-b-10" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>><?php echo $nueva->room->name ?></td>
+  												<td class="text-center sm-p-t-10 sm-p-b-10" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>><?php echo $nueva->nigths ?></td>
+  												<td class="text-center sm-p-t-10 sm-p-b-10" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>><?php echo $nueva->total_price ?> €</td>
+  												<td class="text-center sm-p-t-10 sm-p-b-10 sm-p-l-10 sm-p-r-10" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>>
+                            <select class="status" data-id="<?php echo $nueva->id ?>" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0) !important'":""; ?>>
       
                                 <?php for ($i=1; $i < 9; $i++): ?> 
                                     <option <?php echo $i == ($nueva->type_book) ? "selected" : ""; ?> 
@@ -439,16 +439,20 @@
                                               <input type="text" class="form-control nigths" name="noches" value="<?php echo $book->nigths ?>" disabled style="width: 100%">
                                           </div> 
                                           <div class="col-xs-3 m-t-10">
-                                              <label><i class="fa fa-user"></i></label>
-                                              <input type="text" data-v-min="0" data-v-max="10" class="autonumeric form-control">                                              
+                                              <label class="m-l-10"><i class="fa fa-user"></i></label><br>
+                                              <select name="pax" id="" style="min-height: 35px">
+                                                <?php for ($i=1; $i <= 8; $i++):?>
+                                                  <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                                                <?php endfor; ?>
+                                              </select>                                              
                                           </div>
                                             
-                                            <div class="col-xs-6 sm-padding-0 m-t-10">
+                                            <div class="col-xs-6 m-t-10">
                                               <div class="col-xs-3">
-                                                 <label class="sm-pull-left m-t-5"><i class="fa fa-home" aria-hidden="true"></i></label>
-                                              </div>
+                                                 <label class="sm-pull-left"><i class="fa fa-home" aria-hidden="true"></i></label>
+                                              </div><br>
                                               <div class="col-xs-8 sm-padding-0">
-                                                <select class="form-control full-width newroom" name="newroom" id="newroom" >
+                                                <select class="newroom minimal" name="newroom" id="newroom" style="min-height: 35px" >
                                                   <?php foreach ($rooms as $room): ?>
                                                       <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
                                                   <?php endforeach ?>
