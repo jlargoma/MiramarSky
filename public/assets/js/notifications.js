@@ -16,7 +16,7 @@
 
         $('.show-notification').click(function(e) {
             var button = $(this);
-            var style = $('.btn-notification-style.active').text(); // Type of notification
+            var style = 'Circle Notification'; // Type of notification
             var message = $('.notification-message').val(); // Message to display inside the notification
             var type = $('select.notification-type').val(); // Info, Success, Error etc
             var position = $('.tab-pane.active .position.active').attr('data-placement'); // Placement of the notification
@@ -45,7 +45,6 @@
                 // You have to provide the HTML for thumbnail 
                 $('body').pgNotification({
                     style: 'circle',
-                    title: 'John Doe',
                     message: message,
                     position: position,
                     timeout: 0,

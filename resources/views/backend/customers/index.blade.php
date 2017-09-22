@@ -16,6 +16,7 @@
         <div class="col-md-12 col-xs-12 text-center">
             <h2>Clientes</h2>
         </div>
+
         <div class="col-md-9 col-xs-12">
             <div class="pull-left">
               <div class="col-xs-12 ">
@@ -38,18 +39,18 @@
                         <tr>
                             <td class="text-center font-montserrat" hidden><?php echo $customer->id ?></td>
                             <td class="text-center font-montserrat">
-                               <input type="text" class="editables name-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->name?>" >
+                               <input type="text" class="editables form-control name-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->name?>" >
                                <!-- <?php echo $customer->name ?> -->
                             </td>
                             <td class="text-center font-montserrat">
-                                <input type="text" class="editables email-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->email?>" >
+                                <input type="text" class="editables form-control email-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->email?>" >
                             </td>
                             <td class="text-center font-montserrat">
-                                <input type="number" class="editables phone-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->phone?>" >
+                                <input type="number" class="editables form-control phone-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->phone?>" >
                                
                             </td>
                             <td class="text-center font-montserrat">
-                                <input type="text" class="editables comments-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->comments?>" style="width: 85%;height: 20px">
+                                <input type="text" class="editables form-control comments-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->comments?>" style="width: 85%;height: 20px">
                                 
                             </td>
                         </tr>
@@ -123,6 +124,16 @@
         </div>
     </div>
 </div>
+
+<form role="form">
+  <div class="form-group form-group-default required" style="display: none">
+    <label class="highlight">Message</label>
+    <input type="text" hidden="" class="form-control notification-message" placeholder="Type your message here" value="This notification looks so perfect!" required>
+  </div>
+  <button class="btn btn-success show-notification hidden" id="boton">Show</button>
+</form>
+
+
 <div class="modal fade slide-up disable-scroll in" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-md">
     <div class="modal-content-wrapper">
@@ -151,6 +162,10 @@
     <script src="/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
     <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
     <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
+
+    <script src="/assets/js/notifications.js" type="text/javascript"></script>
+    <script src="/assets/js/scripts.js" type="text/javascript"></script>
+
     <script type="text/javascript">
         $(document).ready(function() {
             $('.update-customer').click(function(event) {
@@ -169,8 +184,13 @@
                 var comments = $('.comments-'+id).val();
 
                 $.get('/admin/clientes/save', {  id: id, name: name, email: email, phone: phone, comments: comments}, function(data) {
-                    alert(data);
+                    $('.notification-message').val(data);
+                    document.getElementById("boton").click();
                 });
+            });
+
+            $('.boton-prueba').click(function(event) {
+                
             });
         });
     </script>
