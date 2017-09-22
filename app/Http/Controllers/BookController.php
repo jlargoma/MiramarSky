@@ -352,8 +352,8 @@ class BookController extends Controller
             if ( isset($request->status) && !empty($request->status)) {
                 $book = \App\Book::find($id);
 
-                if ($book->changeBook($request->status,"",$book)) {
-                    return "Estado cambiado";
+                if ($a = $book->changeBook($request->status,"",$book)) {
+                    return $a;
                 }else{
                     return "No se puede cambiar el estado";
                 }

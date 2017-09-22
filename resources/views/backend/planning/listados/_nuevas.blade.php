@@ -80,7 +80,7 @@
                             </div>
                             <div class="col-md-2">
                                 <label>Sup. Lujo</label>
-                                <select class="type_luxury" name="type_luxury" style="min-height: 35px;">
+                                <select class="type_luxury" id="type_luxury" name="type_luxury" style="min-height: 35px;">
                                     <?php for ($i=1; $i <= 4 ; $i++): ?>
                                         <option class="luxury-<?php echo $i ?>" value="<?php echo $i ?>"><?php echo $book->getSupLujo($i) ?></option>
                                     <?php endfor;?>

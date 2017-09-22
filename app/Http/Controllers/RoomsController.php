@@ -32,95 +32,62 @@ class RoomsController extends Controller
 
 
     public function create(Request $request)
-    {
-        $room = new \App\Rooms();
+        {
+            $room = new \App\Rooms();
 
 
-        if($request->input('luxury') == "on"){
-            $luxury = 1;
-        }
-        else{
-            $luxury = 0;
-        }
-        $room->name = $request->input('name');
-        $room->nameRoom = $request->input('nameRoom');
-        $room->owned = $request->input('owner');
-        $room->typeApto = $request->input('type');
-        $room->sizeApto = $request->input('sizeRoom');
-        $room->luxury = $luxury;
-        $room->order = 99;
-        $room->state = 1;
+            if($request->input('luxury') == "on"){
+                $luxury = 1;
+            }
+            else{
+                $luxury = 0;
+            }
+            $room->name = $request->input('name');
+            $room->nameRoom = $request->input('nameRoom');
+            $room->owned = $request->input('owner');
+            $room->typeApto = $request->input('type');
+            $room->sizeApto = $request->input('sizeRoom');
+            $room->luxury = $luxury;
+            $room->order = 99;
+            $room->state = 1;
 
-        if ($room->save()) {
-            return redirect()->action('RoomsController@index');
-        }
-    }
-
-    public function createType(Request $request)
-    {
-       $existTypeRoom = \App\TypeApto::where('name',$request->input('name'))->count();
-       if ($existTypeRoom == 0) {
-           $roomType = new \App\TypeApto();
-
-           $roomType->name = $request->input('name');
-           
-           if ($roomType->save()) {
-               return redirect()->action('RoomsController@index');
-           }
-       }else{
-           echo "Ya existe este tipo de apartamento";
-       }
-    }
-
-    public function createSize(Request $request)
-    {
-        $existTypeRoom = \App\SizeRooms::where('name',$request->input('name'))->count();
-        if ($existTypeRoom == 0) {
-            $roomType = new \App\SizeRooms();
-
-            $roomType->name = $request->input('name');
-            
-            if ($roomType->save()) {
+            if ($room->save()) {
                 return redirect()->action('RoomsController@index');
             }
-        }else{
-            echo "Ya existe este tipo de apartamento";
         }
-    }
+
+    public function createType(Request $request)
+        {
+           $existTypeRoom = \App\TypeApto::where('name',$request->input('name'))->count();
+           if ($existTypeRoom == 0) {
+               $roomType = new \App\TypeApto();
+
+               $roomType->name = $request->input('name');
+               
+               if ($roomType->save()) {
+                   return redirect()->action('RoomsController@index');
+               }
+           }else{
+               echo "Ya existe este tipo de apartamento";
+           }
+        }
+
+    public function createSize(Request $request)
+        {
+            $existTypeRoom = \App\SizeRooms::where('name',$request->input('name'))->count();
+            if ($existTypeRoom == 0) {
+                $roomType = new \App\SizeRooms();
+
+                $roomType->name = $request->input('name');
+                
+                if ($roomType->save()) {
+                    return redirect()->action('RoomsController@index');
+                }
+            }else{
+                echo "Ya existe este tipo de apartamento";
+            }
+        }
     
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -157,6 +124,7 @@ class RoomsController extends Controller
             echo "Cambiada!!";
         }
     }
+
     // Funcion para cambiar el nombre del apartamento
         public function updateName(Request $request)
             {
@@ -213,6 +181,14 @@ class RoomsController extends Controller
             $room = \App\Rooms::where('id', $room)->first();
             
             return $room->minOcu;    
+        }
+
+    public static function getLuxuryPerRooms($room)
+        {
+            
+            $room = \App\Rooms::where('id', $room)->first();
+            // echo "$room->luxury";
+            return $room->luxury;    
         }
 
     public function uploadFile(Request $request)

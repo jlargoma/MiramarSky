@@ -333,6 +333,7 @@ class Book extends Model
                                         $message->to('jbaz@daimonconsulting.com');
                                         $message->subject('Correo de reserva');
                                     });
+                                $mail = 1;
                                 break;
                             case '2':
                                 Mail::send('backend.emails.confirmado',['book' => $book], function ($message) use ($book) {
@@ -341,7 +342,7 @@ class Book extends Model
                                         $message->to($book->customer->email);
                                         $message->subject('Correo de confirmacion del pago parcial');
                                     });
-     
+                                $mail = 2;
                                 break;
                             case '6':
                                 Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
@@ -350,14 +351,20 @@ class Book extends Model
                                         $message->to($book->customer->email);
                                         $message->subject('Correo de cancelada');
                                     });  
-
+                                $mail = 6;
                                 break;
                             default:
                                 # code...
                                 break;
                         }
                         if ($this->save()) {
-                            return "Cambiado!";
+                            if ($mail == 1) {
+                                return "Email Reserva enviado";
+                            }elseif($mail == 2){
+                                return "Email Pagada la señal enviado";
+                            }elseif($mail == 6){
+                                return "Email Cancelado enviado";
+                            }
                         }
                     }
                     else{

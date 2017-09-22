@@ -669,13 +669,26 @@
 
             });
 
-
+            // $('#newroom').change(function(event) {
+            //     var room = $('#newroom').val();
+            //     $.get('/admin/apartamentos/getLuxuryPerRooms/'+room).success(function( data ){
+            //         if (data == 1) {
+            //             document.getElementById("type_luxury").selectedIndex = "0";
+                        
+            //         }else{
+            //             document.getElementById("type_luxury").selectedIndex = "1";
+                        
+            //         }
+            //     });
+            // });
             $('#newroom, .pax, .parking, .agencia, .type_luxury').change(function(event){ 
 
                 var room = $('#newroom').val();
                 var pax = $('.pax').val();
                 var park = $('.parking').val();
                 var lujo = $('.type_luxury').val();
+                console.log(lujo);
+
                 var beneficio = 0;
                 var costPark = 0;
                 var pricePark = 0;
@@ -706,6 +719,7 @@
                         $('.pax').removeAttr('style');
                     }
                 });
+                
 
                 $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays}).success(function( data ) {
                     pricePark = data;

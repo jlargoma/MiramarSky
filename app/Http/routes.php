@@ -99,6 +99,7 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 	Route::post('admin/apartamentos/create-size', 'RoomsController@createSize');
 	Route::get('admin/apartamentos/state', 'RoomsController@state');
 	Route::get('admin/apartamentos/getPaxPerRooms/{id}', 'RoomsController@getPaxPerRooms');
+	Route::get('admin/apartamentos/getLuxuryPerRooms/{id}', 'RoomsController@getLuxuryPerRooms');
 	Route::get('admin/apartamentos/uploadfile', 'RoomsController@uploadFile');
 
 // Prices
