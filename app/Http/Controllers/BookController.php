@@ -312,6 +312,8 @@ class BookController extends Controller
             foreach ($payments as $payment) {
                 $totalpayment = $totalpayment + $payment->import;
             }
+
+            
             $mobile = new Mobile();
                 if (!$mobile->isMobile()){
                     return view('backend/planning/update',  [
@@ -443,35 +445,40 @@ class BookController extends Controller
 
 
                 $book = \App\Book::find($id);
-                $room = \App\Rooms::find($request->newroom);
+                $room = \App\Rooms::find($request->input('newroom'));
 
                 $book->user_id       = Auth::user()->id;
-                $book->customer_id   = $request->customer_id;
-                $book->room_id       = $request->newroom;
+                $book->customer_id   = $request->input('customer_id');
+                $book->room_id       = $request->input('newroom');
                 $book->start         = Carbon::createFromFormat('d/m/Y',$start);
                 $book->finish        = Carbon::createFromFormat('d/m/Y',$finish);
-                $book->comment       = $request->comments;
-                $book->book_comments = $request->book_comments;
-                $book->pax           = $request->pax;
-                $book->nigths        = $request->nigths;
+                $book->comment       = trim($request->input('comments'));
+                $book->book_comments = trim($request->input('book_comments'));
+                $book->pax           = $request->input('pax');
+                $book->nigths        = $request->input('nigths');
                 $book->sup_limp      = ($room->typeApto == 1) ? 35 : 50;
-                $book->sup_park      = $book->getPricePark($request->parking,$request->nigths);
-                $book->type_park     = $request->parking;
+                $book->sup_park      = $book->getPricePark($request->input('parking'),$request->input('nigths'));
+                $book->type_park     = $request->input('parking');
 
                 $book->cost_park     = $book->getCostPark($request->parking,$request->nigths);
 
                 $book->sup_lujo      = $this->getPriceLujo($request->input('type_luxury'));
                 $book->cost_lujo     = $this->getCostLujo($request->input('type_luxury'));
 
-                $book->cost_apto     = $book->getCostBook($start,$finish,$request->pax,$request->newroom);
+                $book->cost_apto     = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
                 $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo;
 
-                $book->total_price   = $request->total;
+                $book->total_price   = $request->input('total');
                 $book->total_ben     = $book->total_price - $book->cost_total;
-                $book->extra         = $request->extra;
+                $book->extra         = $request->input('extra');
                 $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
                 $book->ben_jorge     = $book->getBenJorge($book->total_ben,$room->id);
                 $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
+
+
+                // echo "<pre>";
+                // print_r($book);
+                // die();
 
                 if ($book->save()) {
                     return redirect('admin/reservas/update/'.$id);

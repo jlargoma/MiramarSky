@@ -327,17 +327,16 @@ class Book extends Model
                             case '1':
 
                                 Mail::send('backend.emails.reservado',['book' => $book], function ($message) use ($book) {
-                                        $message->from('jbaz@daimonconsulting.com', 'Miramarski');
+                                        $message->from('reservas@apartamentosierranevada.net', 'Miramarski');
 
                                         $message->to($book->customer->email);
-                                        $message->to('jbaz@daimonconsulting.com');
                                         $message->subject('Correo de reserva');
                                     });
                                 $mail = 1;
                                 break;
                             case '2':
                                 Mail::send('backend.emails.confirmado',['book' => $book], function ($message) use ($book) {
-                                        $message->from('jbaz@daimonconsulting.com', 'Miramarski');
+                                        $message->from('reservas@apartamentosierranevada.net', 'Miramarski');
 
                                         $message->to($book->customer->email);
                                         $message->subject('Correo de confirmacion del pago parcial');
@@ -346,7 +345,7 @@ class Book extends Model
                                 break;
                             case '6':
                                 Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
-                                        $message->from('jbaz@daimonconsulting.com', 'Miramarski');
+                                        $message->from('reservas@apartamentosierranevada.net', 'Miramarski');
 
                                         $message->to($book->customer->email);
                                         $message->subject('Correo de cancelada');

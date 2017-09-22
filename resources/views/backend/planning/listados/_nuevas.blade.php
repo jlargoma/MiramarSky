@@ -53,7 +53,7 @@
                             </div> 
                             <div class="col-md-1">
                                 <label>Pax</label>
-                                <select name="pax" class="pax" id="" style="min-height: 35px;">
+                                <select name="pax" class="pax form-control" id="" >
                                     <?php for ($i=1; $i < 8; $i++):?>
                                         <option value="<?php echo $i ?>"><?php echo $i ?></option>
                                     <?php endfor; ?>
@@ -82,7 +82,7 @@
                                 <label>Sup. Lujo</label>
                                 <select class="type_luxury" id="type_luxury" name="type_luxury" style="min-height: 35px;">
                                     <?php for ($i=1; $i <= 4 ; $i++): ?>
-                                        <option class="luxury-<?php echo $i ?>" value="<?php echo $i ?>"><?php echo $book->getSupLujo($i) ?></option>
+                                        <option class="luxury" value="<?php echo $i ?>"><?php echo $book->getSupLujo($i) ?></option>
                                     <?php endfor;?>
                                 </select>
                             </div>                                                    

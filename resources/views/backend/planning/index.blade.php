@@ -612,6 +612,18 @@
           });
         });
 
+        // function calculate() {
+        //      var room = $('#newroom').val();
+        //         $.get('/admin/apartamentos/getLuxuryPerRooms/'+room).success(function( data ){
+        //             if (data == 1) {
+        //                 $("#type_luxury").val(1);
+
+        //             }else{
+        //                 $("#type_luxury").val(1);
+        //             }
+        //         });
+        // }
+
         $(document).ready(function() {          
 
             $('.status,.room').change(function(event) {
@@ -669,19 +681,17 @@
 
             });
 
+
+
             // $('#newroom').change(function(event) {
-            //     var room = $('#newroom').val();
-            //     $.get('/admin/apartamentos/getLuxuryPerRooms/'+room).success(function( data ){
-            //         if (data == 1) {
-            //             document.getElementById("type_luxury").selectedIndex = "0";
-                        
-            //         }else{
-            //             document.getElementById("type_luxury").selectedIndex = "1";
-                        
-            //         }
-            //     });
+            //    calculate();
             // });
+            
             $('#newroom, .pax, .parking, .agencia, .type_luxury').change(function(event){ 
+
+                // if ($(this).attr('id') == 'newroom') {
+                //     calculate();
+                // }
 
                 var room = $('#newroom').val();
                 var pax = $('.pax').val();

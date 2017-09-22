@@ -14186,6 +14186,6 @@ Main components
     background-size: 114px 29px;
   }
   .clear-both{
-    clear: both;
+    clear: both!important;
   }
 }

@@ -56,6 +56,7 @@
                 <form role="form"  action="{{ url('/admin/reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post" >
                     <!-- DATOS DEL CLIENTE -->
                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                    <input type="hidden" name="customer_id" value="<?php echo $book->customer->id ?>">
                     <div class="col-xs-12 bg-white padding-block">
                         <div class="col-xs-12 bg-black push-20">
                             <h4 class="text-center white">
@@ -140,7 +141,7 @@
                                 <label>Cost Agencia</label>
                                 <input type="text" class="agencia form-control" name="agencia" value="<?php echo $book->PVPAgencia ?>">
                             </div>
-
+                            <div style="clear: both;"></div>
                             <div class="col-md-6">
                                 <label>Extras</label>
                                 <select class="full-width form-control select2-hidden-accessible " data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true" style="cursor: pointer">
@@ -171,11 +172,13 @@
                         <div class="col-md-6 col-xs-12">
                             <label>Comentarios Cliente </label>
                             <textarea class="form-control" name="comments" rows="5" >
+                                <?php echo $book->comment ?>
                             </textarea>
                         </div>
                         <div class="col-md-6 col-xs-12">
                             <label>Comentarios Internos</label>
                             <textarea class="form-control book_comments" name="book_comments" rows="5" >
+                                <?php echo $book->book_comments ?>
                             </textarea>
                         </div>
                     </div>
