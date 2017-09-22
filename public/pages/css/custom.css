@@ -1,5 +1,5 @@
-.navbar-collapse.collapse{
-  background-color: #000;
+.navbar-collapse.collapse, .navbar.navbar-inverse,.navbar-inverse {
+  background-color: #000!important;
 }
 
 .font-s12{
@@ -161,4 +161,34 @@ input.beneficio{
 }
 .not-padding{
   padding: 0!important;
+}
+.applyBtn {
+  color: white;
+  padding: 10px 20px;
+  background: #357ebd;
+  border-radius: 3px;
+}
+.cancelBtn {
+  color: black;
+  padding: 10px 15px;
+  background: #e8e8e8;
+  border-radius: 3px;
+}
+@media only screen and (max-width: 767px){
+  input.total,
+  input.cost,
+  input.beneficio{
+    padding: 0;
+    font-size: 16px;
+  }
+  input.beneficio{
+    text-align: center;
+    width: 65%!important;
+  } 
+  .beneficio-text{
+    padding:13px 0!important;
+    width: 35%!important;
+    font-size: 16px!important;
+
+  }
 }

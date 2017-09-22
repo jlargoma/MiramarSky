@@ -23,15 +23,30 @@
 ?>
 <div class="container-fluid padding-10 sm-padding-10">
    <div class="row">
-       <div class="col-md-12 col-xs-12 center text-center push-30">
-        <div class="col-md-6 col-md-offset-3">
-            <h4>
-                <?php echo "<b>".strtoupper($book->customer->name)."</b>" ?> creada el 
-                <?php $fecha = Carbon::createFromFormat('Y-m-d H:i:s' ,$book->created_at);?>
-                <?php echo $fecha->copy()->format('d-m-Y')." Hora:".$fecha->copy()->format('H:m')?>
-            </h4>   
-            <hr style="color: black;">
-            <h5>Creado por <?php echo "<b>".strtoupper($book->user->name)."</b>" ?></h5>
+       <div class="col-md-12 col-xs-12 center text-left0">
+            <div class="col-md-6">
+                <div class="col-md-9">
+                    <h4>
+                        <?php echo "<b>".strtoupper($book->customer->name)."</b>" ?> creada el 
+                        <?php $fecha = Carbon::createFromFormat('Y-m-d H:i:s' ,$book->created_at);?>
+                        <?php echo $fecha->copy()->format('d-m-Y')." Hora:".$fecha->copy()->format('H:m')?>
+                    </h4>
+                    <h5>Creado por <?php echo "<b>".strtoupper($book->user->name)."</b>" ?></h5>
+                </div>
+                <div class="col-md-3" style="padding: 40px 0;">
+                    <select class="status form-control minimal" data-id="<?php echo $book->id ?>" >
+                        <?php for ($i=1; $i < 9; $i++): ?> 
+                            <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
+                            <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
+                            value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
+                                <?php echo $book->getStatus($i) ?>
+                                
+                            </option>                                    
+
+                        <?php endfor; ?>
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
     <div class="col-md-12 col-xs-12 center text-center">
@@ -40,7 +55,8 @@
             <div class="row">
                 <form role="form"  action="{{ url('/admin/reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post" >
                     <!-- DATOS DEL CLIENTE -->
-                    <div class="col-xs-12 push-40 bg-white padding-block">
+                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                    <div class="col-xs-12 bg-white padding-block">
                         <div class="col-xs-12 bg-black push-20">
                             <h4 class="text-center white">
                                 DATOS DEL CLIENTE
@@ -76,120 +92,103 @@
                                 <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;" value="<?php echo $start->format('d M, y') ?> - <?php echo $finish->format('d M, y') ?>" readonly="">
 
                             </div>
-                      </div>
-                      <div class="col-md-1 p-l-0">
-                        <label>Noches</label>
-                        <input type="text" class="form-control nigths" name="nigths" value="<?php echo $book->nigths ?>" style="width: 100%">
-                    </div> 
-                    <div class="col-md-1 p-l-0">
-                        <label>Pax</label>
-                        <input  type="text" class="form-control full-width pax" name="pax" style="width: 100%" value="<?php echo $book->pax ?>">
+                        </div>
+                        <div class="col-md-1 p-l-0">
+                            <label>Noches</label>
+                            <input type="text" class="form-control nigths" name="nigths" value="<?php echo $book->nigths ?>" style="width: 100%">
+                        </div> 
+                        <div class="col-md-1 p-l-0">
+                            <label>Pax</label>
+                            <input  type="text" class="form-control full-width pax" name="pax" style="width: 100%" value="<?php echo $book->pax ?>"> 
+                        </div>
+                        <div class="col-md-3">
+                            <label>Apartamento</label>
+                            <select class="form-control full-width newroom" data-init-plugin="select2" name="newroom" id="newroom">
+                                <?php foreach ($rooms as $room): ?>
+                                    <option value="<?php echo $room->id ?>" {{ $room->id == $book->room_id ? 'selected' : '' }}><?php echo $room->name ?></option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+                        <div class="col-md-1 p-l-0 p-r-0">
+                            <label>Parking</label>
+                            <select class=" form-control parking minimal"  name="parking">
+                                <?php for ($i=1; $i <= 4 ; $i++): ?>
+                                    <option value="<?php echo $i ?>" {{ $book->type_park == $i ? 'selected' : '' }}><?php echo $book->getParking($i) ?></option>
+                                <?php endfor;?>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label>Sup. Lujo</label>
+                            <select class=" form-control full-width type_luxury minimal" data-init-plugin="select" name="type_luxury">
+                                <?php for ($i=1; $i <= 4 ; $i++): ?>
+                                    <option value="<?php echo $i ?>" {{ $book->type_luxury == $i ? 'selected' : '' }}><?php echo $book->getSupLujo($i) ?></option>
+                                <?php endfor;?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 bg-white">
+                        <div class="col-xs-4 not-padding">
+                            <div class="col-md-6 col-xs-12 push-10">
+                                <label>Agencia</label>
+                                <select class="form-control full-width agency minimal" data-init-plugin="select2" name="agency">
+                                    <?php for ($i=0; $i <= 2 ; $i++): ?>
+                                        <option value="<?php echo $i ?>" {{ $book->agency == $i ? 'selected' : '' }}><?php echo $book->getAgency($i) ?></option>
+                                    <?php endfor;?>
+                                </select>
+                            </div>
+                            <div class="col-md-6 col-xs-12 push-10">                                                        
+                                <label>Cost Agencia</label>
+                                <input type="text" class="agencia form-control" name="agencia" value="<?php echo $book->PVPAgencia ?>">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Extras</label>
+                                <select class="full-width form-control select2-hidden-accessible " data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true" style="cursor: pointer">
+                                    <?php foreach ($extras as $extra): ?>
+                                        <option value="<?php echo $extra->id ?>"><?php echo $extra->name ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-8 not-padding">
+                            <div class="col-md-4 col-xs-12 text-center" style="background-color: #0c685f;">
+                                <label class="font-w800 text-white" for="">TOTAL</label>
+                                <input type="text" class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>">
+                            </div>
+                            <div class="col-md-4 col-xs-12 text-center" style="background: #99D9EA;">
+                                <label class="font-w800 text-white" for="">COSTE</label>
+                                <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost" value="<?php echo $book->cost_total ?>">
+                            </div>
+                            <div class="col-md-4 col-xs-12 text-center not-padding" style="background: #ff7f27;">
+                                <label class="font-w800 text-white" for="">BENEFICIO</label>
+                                <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>" style="width: 80%; float: left;">
+                                <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;"><?php echo number_format($book->inc_percent,0)."%" ?></div>
+                            </div>
+                        </div>
                         
                     </div>
-                    <div class="col-md-3">
-                        <label>Apartamento</label>
-                        <select class="form-control full-width newroom" data-init-plugin="select2" name="newroom" id="newroom">
-                            <?php foreach ($rooms as $room): ?>
-                                <option value="<?php echo $room->id ?>" {{ $room->id == $book->room_id ? 'selected' : '' }}><?php echo $room->name ?></option>
-                            <?php endforeach ?>
-                        </select>
+                    <div class="col-xs-12 bg-white padding-block">
+                        <div class="col-md-6 col-xs-12">
+                            <label>Comentarios Cliente </label>
+                            <textarea class="form-control" name="comments" rows="5" >
+                            </textarea>
+                        </div>
+                        <div class="col-md-6 col-xs-12">
+                            <label>Comentarios Internos</label>
+                            <textarea class="form-control book_comments" name="book_comments" rows="5" >
+                            </textarea>
+                        </div>
                     </div>
-                    <div class="col-md-1 p-l-0 p-r-0">
-                        <label>Parking</label>
-                        <select class=" form-control parking minimal"  name="parking">
-                            <?php for ($i=1; $i <= 4 ; $i++): ?>
-                                <option value="<?php echo $i ?>" {{ $book->type_park == $i ? 'selected' : '' }}><?php echo $book->getParking($i) ?></option>
-                            <?php endfor;?>
-                        </select>
+                    <div class="row push-40 bg-white padding-block">
+                        <div class="col-md-4 col-md-offset-4 text-center">
+                            <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;">Guardar</button>
+                        </div>  
                     </div>
-                    <div class="col-md-2">
-                        <label>Sup. Lujo</label>
-                        <select class=" form-control full-width type_luxury minimal" data-init-plugin="select" name="type_luxury">
-                            <?php for ($i=1; $i <= 4 ; $i++): ?>
-                                <option value="<?php echo $i ?>" {{ $book->type_luxury == $i ? 'selected' : '' }}><?php echo $book->getSupLujo($i) ?></option>
-                            <?php endfor;?>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-xs-12 bg-white padding-block">
-                    <div class="col-md-3 col-xs-12">                                                        
-                        <label>Cost Agencia</label>
-                        <input type="text" class="agencia form-control" name="agencia" value="<?php echo $book->PVPAgencia ?>">
-                    </div>
-                    <div class="col-md-3 col-xs-12">
-                        <label>Agencia</label>
-                        <select class="form-control full-width agency minimal" data-init-plugin="select2" name="agency">
-                            <?php for ($i=0; $i <= 2 ; $i++): ?>
-                                <option value="<?php echo $i ?>" {{ $book->agency == $i ? 'selected' : '' }}><?php echo $book->getAgency($i) ?></option>
-                            <?php endfor;?>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-xs-12 bg-white padding-block">
-                    <div class="col-md-6 col-xs-12">
-                        <label>Comentarios Cliente </label>
-                        <textarea class="form-control" name="comments" rows="5" >
-                        </textarea>
-                    </div>
-                    <div class="col-md-6 col-xs-12">
-                        <label>Comentarios Internos</label>
-                        <textarea class="form-control book_comments" name="book_comments" rows="5" >
-                        </textarea>
-                    </div>
-                </div>
-                <div class="row push-40 bg-white padding-block">
-                    <div class="col-md-4 col-md-offset-4 text-center">
-                        <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;">Guardar</button>
-                    </div>  
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-        
-    </div>
-    <div class="col-md-6 col-xs-12 padding-block">
-        <!-- COBROS -->
-        <div class="col-md-4 col-xs-12">
-            <div class="col-xs-12 bg-black push-20">
-                <h4 class="text-center white">
-                    DATOS DE LA RESERVA
-                </h4>
-            </div>
-            <div class="col-xs-12">
-                <select class="status form-control minimal" data-id="<?php echo $book->id ?>" >
-
-                    <?php for ($i=1; $i < 9; $i++): ?> 
-                        <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
-                            <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
-                            value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
-                            <?php echo $book->getStatus($i) ?></option>                                    
-
-                        <?php endfor; ?>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="col-xs-12 bg-black">
-                    <h4 class="text-center white">
-                        COTIZACIÓN
-                    </h4>
-                </div>
-                <div class="col-md-4 col-xs-12 text-center" style="background-color: #0c685f;">
-                    <label class="font-w800 text-white" for="">TOTAL</label>
-                    <input type="text" class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>">
-                </div>
-                <div class="col-md-4 col-xs-12 text-center" style="background: #99D9EA;">
-                    <label class="font-w800 text-white" for="">COSTE</label>
-                    <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost" value="<?php echo $book->cost_total ?>">
-                </div>
-                <div class="col-md-4 col-xs-12 text-center not-padding" style="background: #ff7f27;">
-                    <label class="font-w800 text-white" for="">BENEFICIO</label>
-                    <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>" style="width: 80%; float: left;">
-                    <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;"><?php echo number_format($book->inc_percent,0)."%" ?></div>
-                </div>
-            </div>
-
-
-            <div class="col-md-12 padding-block">
+        <div class="col-md-6 col-xs-12 padding-block">
+            <div class="col-md-12">
                 <div class="col-xs-12 bg-black push-0">
                     <h4 class="text-center white">
                         COBROS
@@ -284,32 +283,28 @@
                                 <input class="comment m-t-5" type="text" name="comment"  style="width: 100%;text-align: center;border-style: none">
                             </td>
                             
-                        </tr>
-                    <?php endif ?>
-                    <tr>
-                        <td></td>
-                        <?php if ($total < $book->total_price): ?>
-                            <td class="text-center" ><p style="color:red;font-weight: bold;font-size:15px"><?php echo $total-$book->total_price ?>€</p></td>
-                            <td class="text-left" colspan="2"><p style="color:red;font-weight: bold;font-size:15px">Pendiente de pago</p></td>
-                        <?php elseif($total > $book->total_price): ?>
-                            <td class="text-center" ><p style="color:black;font-weight: bold;font-size:15px"><?php echo $total-$book->total_price ?>€</p></td>
-                            <td class="text-left" colspan="2">Sobrante</td>
-                        <?php else: ?>
-                            <td class="text-center" ><p style="color:black;font-weight: bold;font-size:15px">0€</p></td>
-                            <td class="text-left" colspan="2">Al corriente de pago</td>
+                            </tr>
                         <?php endif ?>
-                        
-                    </tr>
-                </tbody>
-            </table>
-            <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="Cobrar" data-id="<?php echo $book->id ?>" style="width: 50%;min-height: 50px">                            
+                        <tr>
+                            <td></td>
+                            <?php if ($total < $book->total_price): ?>
+                                <td class="text-center" ><p style="color:red;font-weight: bold;font-size:15px"><?php echo $total-$book->total_price ?>€</p></td>
+                                <td class="text-left" colspan="2"><p style="color:red;font-weight: bold;font-size:15px">Pendiente de pago</p></td>
+                            <?php elseif($total > $book->total_price): ?>
+                                <td class="text-center" ><p style="color:black;font-weight: bold;font-size:15px"><?php echo $total-$book->total_price ?>€</p></td>
+                                <td class="text-left" colspan="2">Sobrante</td>
+                            <?php else: ?>
+                                <td class="text-center" ><p style="color:black;font-weight: bold;font-size:15px">0€</p></td>
+                                <td class="text-left" colspan="2">Al corriente de pago</td>
+                            <?php endif ?>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+                <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="Cobrar" data-id="<?php echo $book->id ?>" style="width: 50%;min-height: 50px">                            
+            </div>
         </div>
     </div>
-
-
-</div>
-</div>
-</div>
 </div>
 
 @endsection

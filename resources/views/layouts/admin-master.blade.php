@@ -37,10 +37,10 @@
 	    <![endif]-->
 	    <link rel="stylesheet" type="text/css" href="{{ asset('/pages/css/custom.css')}}">
 	   	<style>
-	   		.navbar-inverse {
+	   		/*.navbar-inverse {
 	   		  background-color: #B0B5B9!important;
 	   		  border-color: #B0B5B9!important;
-	   		}
+	   		}*/
 	   		.navbar-inverse .navbar-nav>li>a {
 	   		    color: white;
 	   		    font-weight: bold;
