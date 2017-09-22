@@ -49,7 +49,7 @@
                     position: position,
                     timeout: 0,
                     type: type,
-                    thumbnail: '<img width="40" height="40" style="display: inline-block;" src="assets/img/profiles/avatar2x.jpg" data-src="assets/img/profiles/avatar.jpg" data-src-retina="assets/img/profiles/avatar2x.jpg" alt="">'
+                    // thumbnail: '<img width="40" height="40" style="display: none;" src="assets/img/profiles/avatar2x.jpg" data-src="assets/img/profiles/avatar.jpg" data-src-retina="assets/img/profiles/avatar2x.jpg" alt="">'
                 }).show();
             } else if (style == 'Simple Alert') {
                 // Simple notification having bootstrap's .alert class

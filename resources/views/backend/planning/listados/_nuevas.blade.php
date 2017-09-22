@@ -53,7 +53,7 @@
                             </div> 
                             <div class="col-md-1">
                                 <label>Pax</label>
-                                <select name="pax" id="" style="min-height: 35px;">
+                                <select name="pax" class="pax" id="" style="min-height: 35px;">
                                     <?php for ($i=1; $i < 8; $i++):?>
                                         <option value="<?php echo $i ?>"><?php echo $i ?></option>
                                     <?php endfor; ?>

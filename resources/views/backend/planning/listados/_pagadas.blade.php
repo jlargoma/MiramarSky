@@ -2,7 +2,7 @@
 
 <div class="tab-pane" id="tabPagadas">
     <div class="row">
-        <div class="pull-left">
+        <div class="pull-left m-t-10 m-b-10">
             <div class="col-xs-12 ">
                 <input type="text" id="search-table3" class="form-control pull-right" placeholder="Buscar">
             </div>
@@ -90,13 +90,12 @@
                                                 
                             </td>
                             <td class ="text-center">
-                                <select class="status" data-id="<?php echo $book->id ?>" >
+                                <select class="status form-control" data-id="<?php echo $book->id ?>" >
                                     <?php for ($i=1; $i < 9; $i++): ?> 
                                         <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
                                                 <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
                                                 value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
                                                 <?php echo $book->getStatus($i) ?></option>                                    
-                                         
                                     <?php endfor; ?>
                                 </select>
                             </td>

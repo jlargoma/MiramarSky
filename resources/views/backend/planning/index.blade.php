@@ -511,6 +511,15 @@
         </div>
     </div>
 
+    <form role="form">
+      <div class="form-group form-group-default required" style="display: none">
+        <label class="highlight">Message</label>
+        <input type="text" hidden="" class="form-control notification-message" placeholder="Type your message here" value="This notification looks so perfect!" required>
+      </div>
+      <button class="btn btn-success show-notification hidden" id="boton">Show</button>
+    </form>
+
+
 <div class="modal fade slide-up disable-scroll in" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-md">
     <div class="modal-content-wrapper">
@@ -554,7 +563,9 @@
     <script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
 
     <script src="/assets/plugins/summernote/js/summernote.js"></script>
-    <script type="text/javascript" src="//assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
+    <script type="text/javascript" src="/assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
+
+    <script src="/assets/js/notifications.js" type="text/javascript"></script>
     
 
         
@@ -614,6 +625,8 @@
                     var room = $(this).val();
                     var status = "";
                 }
+
+
                 if (status == 5) {
                     $('#myModal').modal({
                         show: 'false'
@@ -623,7 +636,13 @@
                    });
                 }else{
                    $.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
-                       window.location.reload();
+                        $('.notification-message').val(data);
+                        document.getElementById("boton").click();
+                        if (data == "Ya hay una reserva para ese apartamento") {
+                            
+                        }else{
+                            setTimeout('document.location.reload()',5000);
+                        }                        
                    }); 
                 }
                 

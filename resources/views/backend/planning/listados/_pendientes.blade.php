@@ -2,7 +2,7 @@
 
 <div class="tab-pane active" id="tabPendientes">
     <div class="row column-seperation">
-        <div class="pull-left">
+        <div class="pull-left m-t-10 m-b-10">
             <div class="col-xs-12 ">
                 <input type="text" id="searchPendientes" class="form-control pull-right" placeholder="Buscar">
             </div>
@@ -80,7 +80,7 @@
                                 </td>
 
                                 <td class ="text-center" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?> >
-                                    <select class="status" data-id="<?php echo $book->id ?>" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0) !important'":""; ?>>
+                                    <select class="status form-control" data-id="<?php echo $book->id ?>" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0) !important'":""; ?>>
 
                                         <?php for ($i=1; $i < 9; $i++): ?> 
                                             <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 

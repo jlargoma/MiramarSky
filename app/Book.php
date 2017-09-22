@@ -292,7 +292,8 @@ class Book extends Model
                 if (!empty($status)) {
                     $this->type_book = $status;
 
-                    $isRooms = \App\Book::where('room_id',$this->room_id)->get();
+
+                    $isRooms = \App\Book::where('room_id',$this->room->id)->whereIn('type_book',[1,2,6,8])->get();
                     $existStart = false;
                     $existFinish = false;        
                     $roomStart = Carbon::createFromFormat('Y-m-d',$this->start);
@@ -320,6 +321,7 @@ class Book extends Model
                         }
                         
                     }
+
                     if ($existStart == false && $existFinish == false) {
                         switch ($status) {
                             case '1':
@@ -328,6 +330,7 @@ class Book extends Model
                                         $message->from('jbaz@daimonconsulting.com', 'Miramarski');
 
                                         $message->to($book->customer->email);
+                                        $message->to('jbaz@daimonconsulting.com');
                                         $message->subject('Correo de reserva');
                                     });
                                 break;
@@ -358,7 +361,7 @@ class Book extends Model
                         }
                     }
                     else{
-
+                        return false;
                     };
                 }
                 if (!empty($room)) {

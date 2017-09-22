@@ -4454,7 +4454,7 @@ body.menu-pin > .pgn-wrapper[data-position="bottom"] {
   -webkit-animation: fadeInCircle 0.3s ease forwards, resizeCircle 0.3s 0.4s cubic-bezier(0.25, 0.25, 0.4, 1.6) forwards;
   height: 60px;
   overflow: hidden;
-  padding: 6px 55px 6px 6px;
+  padding: 6px 35px 6px 6px;
   -webkit-transform: translateZ(0);
   position: relative;
 }

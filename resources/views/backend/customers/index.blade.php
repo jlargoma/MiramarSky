@@ -186,11 +186,8 @@
                 $.get('/admin/clientes/save', {  id: id, name: name, email: email, phone: phone, comments: comments}, function(data) {
                     $('.notification-message').val(data);
                     document.getElementById("boton").click();
+                    // setTimeout('document.location.reload()',5000);
                 });
-            });
-
-            $('.boton-prueba').click(function(event) {
-                
             });
         });
     </script>

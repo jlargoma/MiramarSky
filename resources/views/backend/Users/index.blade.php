@@ -153,6 +153,16 @@
         </div>
     </div>
 </div>
+
+<form role="form">
+  <div class="form-group form-group-default required" style="display: none">
+    <label class="highlight">Message</label>
+    <input type="text" hidden="" class="form-control notification-message" placeholder="Type your message here" value="This notification looks so perfect!" required>
+  </div>
+  <button class="btn btn-success show-notification hidden" id="boton">Show</button>
+</form>
+
+
 <div class="modal fade slide-up disable-scroll in" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-md">
     <div class="modal-content-wrapper">

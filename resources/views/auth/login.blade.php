@@ -47,7 +47,7 @@
           <div class="bg-pic" >
             <!-- START Background Pic-->
 
-            <img src="assets/img/terraza-sierra-nevada.jpg" data-src="assets/img/terraza-sierra-nevada.jpg" data-src-retina="assets/img/terraza-sierra-nevada.jpg" alt="" class="lazy" style="opacity: 1 !important;float: right;position:fixed">
+            <img src="assets/img/terraza-sierra-nevada.jpg" data-src="assets/img/terraza-sierra-nevada.jpg" data-src-retina="assets/img/terraza-sierra-nevada.jpg" alt="" class="lazy" style="opacity: 1 !important;float: right;position:initial;">
             <!-- END Background Pic-->
             <!-- START Background Caption-->
             <div class="bg-caption pull-bottom sm-pull-bottom text-white p-l-20 m-b-20">
