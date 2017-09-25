@@ -40,6 +40,7 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 
 //Planing 
 	
+	Route::get('admin/reservas/emails/{id}' , 'BookController@emails');
 	Route::get('admin/reservas/new' , 'BookController@newBook');
 	Route::get('admin/reservas/delete/{id}' , 'BookController@delete');
 	// Route::post('admin/reservas/create' , 'BookController@create');

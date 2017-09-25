@@ -814,11 +814,14 @@ class BookController extends Controller
             }
 
 
-    public function sendJaime(Request $request)
+    public function emails($id)
         {
-            $book = \App\Book::find($request->id);
+            $book = \App\Book::find($id);
+
+            return view('backend.emails.contestado',['book' => $book]);
+
             Mail::send('backend.emails.jaime',['book' => $book], function ($message) use ($book) {
-                                $message->from('jbaz@daimonconsulting.com', 'Miramarski');
+                                $message->from('reservas@daimonconsulting.com', 'Miramarski');
 
                                 $message->to($book->customer->email);
                                 $message->subject('Correo a Jaime');
@@ -832,8 +835,8 @@ class BookController extends Controller
     public function sendEmail(Request $request)
         {
             $book = \App\Book::find($request->id);
-            Mail::send('backend.emails.jaime',['book' => $book], function ($message) use ($book) {
-                                $message->from('jbaz@daimonconsulting.com', 'Miramarski');
+            Mail::send('backend.emails.contestado',['book' => $book], function ($message) use ($book) {
+                                $message->from('reservas@daimonconsulting.com', 'Miramarski');
 
                                 $message->to($book->customer->email);
                                 $message->subject('Correo Contestado ');

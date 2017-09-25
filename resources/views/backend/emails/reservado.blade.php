@@ -1,4 +1,4 @@
-Hola "<?php echo $book->customer->name ?> hemos bloqueado parcialmente un apartamento en respuesta a tu solicitud:<br/><br/>
+Hola "<?php echo $book->customer->name ?>" hemos bloqueado parcialmente un apartamento en respuesta a tu solicitud:<br/><br/>
 
 <hr/>
 <h2>Tiene hasta mañana a las 12:00 am para realizar el pago de la señal(25% del total) = <?php echo (int)((int)$book->total_price * 0.25) ;?>  a estos datos bancarios:

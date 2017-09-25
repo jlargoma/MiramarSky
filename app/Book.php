@@ -249,16 +249,16 @@ class Book extends Model
                 $supLujo = 0;
                 switch ($lujo) {
                         case 1:
-                            $supLujo = 0;
+                            $supLujo = 50;
                              break;
                         case 2:
                             $supLujo = 0;
                             break;
                         case 3:
-                            $supLujo = 50/2;
+                            $supLujo = 0;
                             break;
                         case 4:
-                            $supLujo = 50;
+                            $supLujo = 50/2;
                             break;
                     }
                 return $supLujo;
@@ -270,16 +270,16 @@ class Book extends Model
                 $supLujo = 0;
                 switch ($lujo) {
                         case 1:
-                            $supLujo = 0;
+                            $supLujo = 40;
                              break;
                         case 2:
                             $supLujo = 0;
                             break;
                         case 3:
-                            $supLujo = 40/2;
+                            $supLujo = 0;
                             break;
                         case 4:
-                            $supLujo = 40;
+                            $supLujo = 40/2;
                             break;
                     }
                 return $supLujo;
@@ -362,7 +362,7 @@ class Book extends Model
                             }elseif($mail == 2){
                                 return "Email Pagada la señal enviado";
                             }elseif($mail == 6){
-                                return "Email Cancelado enviado";
+                                return "Email de Cancelacion enviado";
                             }
                         }
                     }
