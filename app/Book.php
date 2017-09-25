@@ -319,10 +319,6 @@ class Book extends Model
                                                             $roomFinish->day)
                                                         ->between($start->copy(),$finish->copy());
                             if ($existStart == false && $existFinish == false) {
-                                if ( $roomStart->copy()->format('Y-m-d') > $start->copy() && $roomFinish->copy()->format('Y-m-d') < $finish->copy()) {
-                                    $existStart = true;         
-
-                                }
                                 
                             }
                         }else{
