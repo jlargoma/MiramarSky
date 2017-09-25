@@ -291,7 +291,8 @@ class Book extends Model
 
                 if (!empty($status)) {
                     $this->type_book = $status;
-
+                    echo $status;
+                    die();
                 
                     $isRooms = \App\Book::where('room_id',$this->room->id)->whereIn('type_book',[1,2,6,8])->where('id','!=' ,$this->id)->get();
 
