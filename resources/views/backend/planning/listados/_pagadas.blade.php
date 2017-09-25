@@ -82,7 +82,7 @@
                                                 
                             </td>
                             <td class ="text-center">
-                                <select class="status form-control minimal " data-id="<?php echo $book->id ?>" style="width: 95%">
+                                <select class="status form-control minimal" data-id="<?php echo $book->id ?>" style="width: 95%">
                                     <?php for ($i=1; $i < 9; $i++): ?> 
                                         <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
                                                 <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>

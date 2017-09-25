@@ -292,12 +292,15 @@ class Book extends Model
                 if (!empty($status)) {
                     $this->type_book = $status;
 
+                
+                    $isRooms = \App\Book::where('room_id',$this->room->id)->whereIn('type_book',[1,2,6,8])->where('id','!=' ,$this->id)->get();
 
-                    $isRooms = \App\Book::where('room_id',$this->room->id)->whereIn('type_book',[1,2,6,8])->get();
                     $existStart = false;
                     $existFinish = false;        
                     $roomStart = Carbon::createFromFormat('Y-m-d',$this->start);
                     $roomFinish = Carbon::createFromFormat('Y-m-d',$this->finish);
+
+
                     foreach ($isRooms as $isRoom) {
                         if ($existStart == false && $existFinish == false) {
                             $start = Carbon::createFromFormat('Y-m-d', $isRoom->start);
@@ -308,20 +311,25 @@ class Book extends Model
                                                             $roomStart->year,
                                                             $roomStart->month,
                                                             $roomStart->day)
-                                                        ->between($start->copy()->addDay(),$finish->copy()->subDay());
+                                                        ->between($start->copy(),$finish->copy());
 
                             $existFinish = Carbon::create(
                                                             $roomFinish->year,
                                                             $roomFinish->month,
                                                             $roomFinish->day)
-                                                        ->between($start->copy()->addDay(),$finish->copy()->subDay());
+                                                        ->between($start->copy(),$finish->copy());
+                            if ($existStart == false && $existFinish == false) {
+                                if ( $roomStart->copy()->format('Y-m-d') > $start->copy() && $roomFinish->copy()->format('Y-m-d') < $finish->copy()) {
+                                    $existStart = true;         
 
+                                }
+                                
+                            }
                         }else{
                             break;
                         }
                         
                     }
-
                     if ($existStart == false && $existFinish == false) {
                         switch ($status) {
                             case '1':

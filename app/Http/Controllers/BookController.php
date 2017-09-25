@@ -344,7 +344,7 @@ class BookController extends Controller
                 $book = \App\Book::find($id);
 
                 if ($book->changeBook("",$request->room,$book)) {
-                    return "OK";
+                    return "Apartamento cambiado";
                 }else{
                     return "Ya hay una reserva para ese apartamento";
                 }
