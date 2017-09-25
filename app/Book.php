@@ -291,27 +291,7 @@ class Book extends Model
 
                 if (!empty($status)) {
                     $this->type_book = $status;
-                    
-                    if ($this->save()) {
-                        if ($status == 1) {
-                            return "Email Reserva enviado";
-                        }elseif($status == 2){
-                            return "Email Pagada la señal enviado";
-                        }elseif($status == 3){
-                            return "Estado Sin Responder cambiado";
-                        }elseif($status == 4){
-                            return "Estado Denegado cambiado";
-                        }elseif($status == 5){
-                            return "Contestado por email";
-                        }elseif($status == 6){
-                            return "Email de Cancelacion enviado";
-                        }elseif($status == 7){
-                            return "Estado bloqueado cambiado";
-                        }elseif($status == 8){
-                            return "Estado subcomunidad cambiado";
-                        }
-                    }
-                    
+                
                     $isRooms = \App\Book::where('room_id',$this->room->id)->whereIn('type_book',[1,2,6,8])->where('id','!=' ,$this->id)->get();
 
                     $existStart = false;
