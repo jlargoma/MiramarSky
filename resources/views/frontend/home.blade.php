@@ -64,7 +64,7 @@
 				<div class="col-xs-12">
 					<div class="col-xs-12 ">
 					
-		       			<div class="col-md-6 center fadeInUp animated" data-animation="fadeInUp" style="padding: 40px 15px;">
+		       			<div class="col-lg-6 col-md-7 center fadeInUp animated" data-animation="fadeInUp" style="padding: 40px 15px;">
 		       				<div class="col-xs-12 push-20">
 		       					<div class="heading-block  black" style="margin-bottom: 20px">
 		       						<h1 class="font-w800 black" style="letter-spacing: 0; font-size: 26px;">APARTAMENTOS DE LUJO <span class="font-w800 green">A PIE DE PISTA</span></h1>
@@ -103,7 +103,7 @@
 		       				</div>
 		       				<div class="col-xs-12 clearfix">
 
-				       			<div id="oc-clients" class="owl-carousel image-carousel carousel-widget" data-margin="60" data-loop="true" data-nav="false" data-autoplay="1000" data-pagi="false" data-items-xxs="2" data-items-xs="3" data-items-sm="4" data-items-md="6" data-items-lg="8">
+				       			<div id="oc-clients" class="owl-carousel image-carousel carousel-widget" data-margin="60" data-loop="true" data-nav="false" data-autoplay="1000" data-pagi="false" data-items-xxs="2" data-items-xs="3" data-items-sm="6" data-items-md="8" data-items-lg="8">
 
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
@@ -172,7 +172,7 @@
 	       					</div>
 		       			</div>
 
-		       			<div class="col-md-5 col-md-offset-1 center  hidden-sm hidden-xs" style="margin:72px 60px">
+		       			<div class="col-lg-6 col-md-5 center  hidden-sm hidden-xs"  style="padding: 40px 15px;">
 
 	       					<div class="fslider" data-easing="easeInQuad">
 								<div class="flexslider">

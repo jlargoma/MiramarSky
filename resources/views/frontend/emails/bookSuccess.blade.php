@@ -51,24 +51,12 @@
   	 	          	<table bgcolor="#ffffff" class="content" align="center" cellpadding="0" cellspacing="0" border="0">
   	 	          		<tr>
   	 	          			<td bgcolor="#3F51B5" class="header">
-  	 	          				<table width="70" align="left" border="0" cellpadding="0" cellspacing="0">  
-  	 	          					<tr>
-  	 	          						<td height="70" style="padding: 0 20px 20px 0;">
-  	 	          							<img class="fix" src="{{asset('emails/images/icon.gif')}}" width="70" height="70" border="0" alt="" />
-  	 	          						</td>
-  	 	          					</tr>
-  	 	          				</table>
-  	 			                <!--[if (gte mso 9)|(IE)]>
-  	 			                    <table width="425" align="left" cellpadding="0" cellspacing="0" border="0">
-  	 			                      <tr>
-  	 			                        <td>
-  	 			                        	<![endif]-->
   	 	                    	<table class="col425" align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 425px;">  
   	 	                    		<tr>
   	 	                    			<td height="70">
   	 	                    				<table width="100%" border="0" cellspacing="0" cellpadding="0">
   	 	                    					<tr>
-  	 	                    						<td class="subhead" style="padding: 0 0 0 3px;">
+  	 	                    						<td class="subhead" style="padding: 0 0 0 3px; color: white;">
   	 	                    							apartamentosierranevada.net
   	 	                    						</td>
   	 	                    					</tr>
@@ -121,11 +109,6 @@
   	 	  				</tr>
   	 			  		<tr>
   	 					  	<td class="innerpadding borderbottom">
-  	 				          	<!--[if (gte mso 9)|(IE)]>
-  	 					            <table width="380" align="left" cellpadding="0" cellspacing="0" border="0">
-  	 					              <tr>
-  	 					                <td>
-  	 		                	<![endif]-->
   	 		                	<table class="col380" align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%;">  
   	 		                		<tr>
   	 		                			<td>
@@ -142,11 +125,6 @@
   	 		                			</td>
   	 		                		</tr>
   	 		                	</table>
-  	 			          		<!--[if (gte mso 9)|(IE)]>
-  	 					                </td>
-  	 			              		</tr>
-  	 			          		</table>
-  	 				          	<![endif]-->
   	 					      </td>
   	 				  	</tr>
   	 					<tr>
@@ -159,7 +137,7 @@
   	 							<table width="100%" border="0" cellspacing="0" cellpadding="0">
   	 								<tr>
   	 									<td align="center" class="footercopy" style="color: #FFF">
-  	 										&reg; Apartamentosierranevada.net, Copyright 2014<br/>
+  	 										&reg; Apartamentosierranevada.net, Copyright <?php echo  date('Y'); ?><br/>
   	 									</td>
   	 								</tr>
   	 							</table>
@@ -171,24 +149,12 @@
 		          	<table bgcolor="#ffffff" class="content" align="center" cellpadding="0" cellspacing="0" border="0">
 		          		<tr>
 		          			<td bgcolor="#3F51B5" class="header">
-		          				<table width="70" align="left" border="0" cellpadding="0" cellspacing="0">  
-		          					<tr>
-		          						<td height="70" style="padding: 0 20px 20px 0;">
-		          							<img class="fix" src="{{asset('emails/images/icon.gif')}}" width="70" height="70" border="0" alt="" />
-		          						</td>
-		          					</tr>
-		          				</table>
-				                <!--[if (gte mso 9)|(IE)]>
-				                    <table width="425" align="left" cellpadding="0" cellspacing="0" border="0">
-				                      <tr>
-				                        <td>
-				                        	<![endif]-->
 		                    	<table class="col425" align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 425px;">  
 		                    		<tr>
 		                    			<td height="70">
 		                    				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 		                    					<tr>
-		                    						<td class="subhead" style="padding: 0 0 0 3px;">
+		                    						<td class="subhead" style="padding: 0 0 0 3px; color: white;">
 		                    							apartamentosierranevada.net
 		                    						</td>
 		                    					</tr>
@@ -201,21 +167,11 @@
 		                    			</td>
 		                    		</tr>
 		                    	</table>
-		          				<!--[if (gte mso 9)|(IE)]>
-					                	</td>
-					              	</tr>
-					          	</table>
-					          	<![endif]-->
 		      				</td>
 		  				</tr>
 		  				<tr>
 		  					<td class="innerpadding borderbottom">
 		  						<table width="100%" border="0" cellspacing="0" cellpadding="0">
-		  							<tr>
-		  								<td class="h2" style="color: #3F51B5">
-		  									Hola Jorge, has recibido una nueva solicitud de reserva<br> con los siguientes datos
-		  								</td>
-		  							</tr>
 		  							<tr>
 		  								<td class="bodycopy" style="color: #000">
 		  									Detalles de la reserva:<br><br>
@@ -272,7 +228,7 @@
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 									<tr>
 										<td align="center" class="footercopy" style="color: #FFF">
-											&reg; Apartamentosierranevada.net, Copyright 2014<br/>
+											&reg; Apartamentosierranevada.net, Copyright <?php echo date('Y') ?><br/>
 										</td>
 									</tr>
 								</table>

@@ -39,7 +39,7 @@ class MailController extends Controller
 	            $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */
 	            $message->bcc('jlargo@mksport.es');
 	            $message->bcc('jlargoma@gmail.com');
-	            $message->subject('Nueva Solicitud de Reserva');
+	            $message->subject('Nueva Solicitud: '.$data->customer->name);
 	        });
 
 

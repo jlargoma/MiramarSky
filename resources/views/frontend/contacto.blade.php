@@ -175,7 +175,7 @@
 		<div class="container container-mobile center clearfix">
 
 			<div class="col-md-12 col-xs-12 not-padding-mobile">
-				<div class="col-md-4 col-md-offset-2 col-xs-12" style="margin: 25px  0 0 0;">
+				<div class="col-lg-4 col-lg-offset-2 col-md-6 col-xs-12" style="margin: 25px  0 0 0;">
 					<div class="col-xs-12  black-cover">
 						<div class="heading-block center">
 							
@@ -200,7 +200,7 @@
 
 				</div>
 				
-				<div class="col-md-4 col-xs-12" style="margin-bottom: 25px;">
+				<div class="col-lg-6 col-md-6 col-xs-12" style="margin-bottom: 25px;">
 					<div class="col-xs-12  black-cover" id="content-result-contact-form">
 						<div class="heading-block center white">
 							<h4 class="white">ENVIANOS TUS DUDAS</h4>
