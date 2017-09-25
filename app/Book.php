@@ -357,12 +357,22 @@ class Book extends Model
                                 break;
                         }
                         if ($this->save()) {
-                            if ($mail == 1) {
+                            if ($status == 1) {
                                 return "Email Reserva enviado";
-                            }elseif($mail == 2){
+                            }elseif($status == 2){
                                 return "Email Pagada la señal enviado";
-                            }elseif($mail == 6){
+                            }elseif($status == 3){
+                                return "Estado Sin Responder cambiado";
+                            }elseif($status == 4){
+                                return "Estado Denegado cambiado";
+                            }elseif($status == 5){
+                                return "Contestado por email";
+                            }elseif($status == 6){
                                 return "Email de Cancelacion enviado";
+                            }elseif($status == 7){
+                                return "Estado bloqueado cambiado";
+                            }elseif($status == 8){
+                                return "Estado subcomunidad cambiado";
                             }
                         }
                     }

@@ -2,28 +2,20 @@
 
 <div class="tab-pane active" id="tabPendientes">
     <div class="row column-seperation">
-        <div class="pull-left m-t-10 m-b-10">
-            <div class="col-xs-12 ">
-                <input type="text" id="searchPendientes" class="form-control pull-right" placeholder="Buscar">
-            </div>
-        </div>
-    
-            <div class="clearfix"></div>
-
-            <table class="table  demo-table-search table-responsive table-striped m-l-10" id="tablePendientes" style="width: 99%">
+            <table class="table  table-condensed table-striped m-l-10" >
                 <thead>
                     <tr>  
                         <th style="display: none">ID</th> 
                         <th class ="text-center Reservado-table text-white" >   Cliente     </th>
                         <th class ="text-center Reservado-table text-white" >   Telefono     </th>
-                        <th class ="text-center Reservado-table text-white" >   Pax         </th>
-                        <th class ="text-center Reservado-table text-white" >   Apart       </th>
-                        <th class ="text-center Reservado-table text-white" >   IN     </th>
-                        <th class ="text-center Reservado-table text-white" >   OUT      </th>
-                        <th class ="text-center Reservado-table text-white" >   Noc         </th>
+                        <th class ="text-center Reservado-table text-white" style="width: 7%!important">   Pax         </th>
+                        <th class ="text-center Reservado-table text-white" style="width: 10%!important">   Apart       </th>
+                        <th class ="text-center Reservado-table text-white" style="width: 6%!important">   IN     </th>
+                        <th class ="text-center Reservado-table text-white" style="width: 8%!important">   OUT      </th>
+                        <th class ="text-center Reservado-table text-white" style="width: 6%!important">  <i class="fa fa-moon-o"></i> </th>
                         <th class ="text-center Reservado-table text-white" >   Precio      </th>
-                        <th class ="text-center Reservado-table text-white" >   Estado      </th>
-                        <th class ="text-center Reservado-table text-white">A&nbsp;&nbsp;&nbsp;&nbsp;  </th>
+                        <th class ="text-center Reservado-table text-white" style="width: 17%!important">   Estado      </th>
+                        <th class ="text-center Reservado-table text-white" style="width: 6%!important">A</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,7 +37,7 @@
                                 <td class ="text-center" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>><?php echo $book->pax ?></td>
 
                                 <td class ="text-center" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>>
-                                    <select class="room" data-id="<?php echo $book->id ?>"  <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0) !important'":""; ?>>
+                                    <select class="room form-control minimal" data-id="<?php echo $book->id ?>"  <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0) !important'":""; ?>>
                                         
                                         <?php foreach ($rooms as $room): ?>
                                             <?php if ($room->id == $book->room_id): ?>
@@ -80,7 +72,7 @@
                                 </td>
 
                                 <td class ="text-center" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?> >
-                                    <select class="status form-control" data-id="<?php echo $book->id ?>" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0) !important'":""; ?>>
+                                    <select class="status form-control minimal" data-id="<?php echo $book->id ?>" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0) !important'":""; ?>>
 
                                         <?php for ($i=1; $i < 9; $i++): ?> 
                                             <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
@@ -106,7 +98,7 @@
                                             <a class="btn btn-tag btn-danger" title="enviado" disabled data-id="<?php echo $book->id ?>"><i class=" pg-mail "></i></a>
                                             </a>
                                         <?php endif ?> -->
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <a href="{{ url('/admin/reservas/delete/')}}/<?php echo $book->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
                                             <i class="fa fa-trash"></i>
                                         </a>

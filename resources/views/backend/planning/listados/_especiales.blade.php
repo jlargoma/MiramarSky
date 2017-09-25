@@ -2,28 +2,21 @@
 
 <div class="tab-pane " id="tabEspeciales">
     <div class="row">
-        <div class="pull-left m-t-10 m-b-10">        
-            <div class="col-xs-12 ">
-                <input type="text" id="search-table2" class="form-control pull-right" placeholder="Buscar">
-            </div>
-        </div>
-        
-        <div class="clearfix"></div>
-
         <div class="col-md-12">
-            <table class="table table-hover demo-table-search table-responsive table-striped" id="tableWithSearch2" >
+            <table class="table  table-condensed table-striped">
                 <thead>
-                    <tr>
-                        <th class ="text-center Bloqueado text-white" style="width:10%">  Cliente     </th>
-                        <th class ="text-center Bloqueado text-white" style="width:5%">   Telefono    </th>
-                        <th class ="text-center Bloqueado text-white" style="width:2%">   Pax         </th>
-                        <th class ="text-center Bloqueado text-white" style="width:5%">   Apart       </th>
-                        <th class ="text-center Bloqueado text-white" style="width:11%!important">  IN     </th>
-                        <th class ="text-center Bloqueado text-white" style="width:11%!important">  OUT      </th>
-                        <th class ="text-center Bloqueado text-white" style="width:5%">   Noc         </th>
-                        <th class ="text-center Bloqueado text-white">                    Precio      </th>
-                        <th class ="text-center Bloqueado text-white" style="width:17%">   Estado      </th>
-                        <th class ="text-center Bloqueado text-white">                    Acciones    </th>
+                    <tr>  
+                        <th style="display: none">ID</th> 
+                        <th class ="text-center Bloqueado text-white" >   Cliente     </th>
+                        <th class ="text-center Bloqueado text-white" >   Telefono     </th>
+                        <th class ="text-center Bloqueado text-white" style="width: 7%!important">   Pax         </th>
+                        <th class ="text-center Bloqueado text-white" style="width: 10%!important">   Apart       </th>
+                        <th class ="text-center Bloqueado text-white" style="width: 6%!important">   IN     </th>
+                        <th class ="text-center Bloqueado text-white" style="width: 8%!important">   OUT      </th>
+                        <th class ="text-center Bloqueado text-white" style="width: 6%!important">  <i class="fa fa-moon-o"></i> </th>
+                        <th class ="text-center Bloqueado text-white" >   Precio      </th>
+                        <th class ="text-center Bloqueado text-white" style="width: 17%!important">   Estado      </th>
+                        <th class ="text-center Bloqueado text-white" style="width: 6%!important">A</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,7 +29,7 @@
                                 <td class ="text-center"><?php echo $book->customer->phone ?></td>
                                 <td class ="text-center"><?php echo $book->pax ?></td>
                                 <td class ="text-center">
-                                    <select class="room" class="form-control" data-id="<?php echo $book->id ?>" >
+                                    <select class="room form-control minimal" data-id="<?php echo $book->id ?>" >
                                         
                                         <?php foreach ($rooms as $room): ?>
                                             <?php if ($room->id == $book->room_id): ?>
@@ -70,7 +63,7 @@
                                                         <?php endif ?>
                                 </td>
                                 <td class ="text-center">
-                                    <select class="status form-control" data-id="<?php echo $book->id ?>" >
+                                    <select class="status form-control minimal" data-id="<?php echo $book->id ?>" >
                                         <?php for ($i=1; $i < 9; $i++): ?> 
                                             <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
                                                     <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>

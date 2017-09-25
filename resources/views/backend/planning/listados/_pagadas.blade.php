@@ -2,27 +2,19 @@
 
 <div class="tab-pane" id="tabPagadas">
     <div class="row">
-        <div class="pull-left m-t-10 m-b-10">
-            <div class="col-xs-12 ">
-                <input type="text" id="search-table3" class="form-control pull-right" placeholder="Buscar">
-            </div>
-        </div>
-        
-        <div class="clearfix"></div>
-
-        <table class="table table-hover demo-table-search table-responsive table-striped" id="tableWithSearch3" style="width: 99%">
+        <table class="table  table-condensed table-striped">
             <thead>
                 <tr>   
-                    <th class ="text-center Pagada-la-señal text-white" style="width:5%">  Cliente     </th>
-                    <th class ="text-center Pagada-la-señal text-white" style="width:5%">  Telefono     </th>
-                    <th class ="text-center Pagada-la-señal text-white" style="width:2%">   Pax         </th>
-                    <th class ="text-center Pagada-la-señal text-white" style="width:25%!important">   Apart&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;       </th>
-                    <th class ="text-center Pagada-la-señal text-white" style="width:50px!important">  IN     </th>
-                    <th class ="text-center Pagada-la-señal text-white" style="width:50px!important">  OUT      </th>
-                    <th class ="text-center Pagada-la-señal text-white" style="width:5%">   Noc         </th>
-                    <th class ="text-center Pagada-la-señal text-white" style="width:35%!important">Precio&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                    <th class ="text-center Pagada-la-señal text-white" style="width:5%">   Estado&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      </th>
-                    <!-- <th class ="text-center Pagada-la-señal text-white" style="width:5%">   Acciones    </th> -->
+                    <th style="display: none">ID</th> 
+                    <th class ="text-center Pagada-la-señal text-white" style="width: 11%!important">   Cliente     </th>
+                    <th class ="text-center Pagada-la-señal text-white" style="width: 10%!important">   Telefono     </th>
+                    <th class ="text-center Pagada-la-señal text-white" style="width: 7%!important">   Pax         </th>
+                    <th class ="text-center Pagada-la-señal text-white" style="width: 10%!important">   Apart       </th>
+                    <th class ="text-center Pagada-la-señal text-white" style="width: 6%!important">   IN     </th>
+                    <th class ="text-center Pagada-la-señal text-white" style="width: 8%!important">   OUT      </th>
+                    <th class ="text-center Pagada-la-señal text-white" style="width: 5%!important">  <i class="fa fa-moon-o"></i> </th>
+                    <th class ="text-center Pagada-la-señal text-white" style="width: 17%!important">   Precio      </th>
+                    <th class ="text-center Pagada-la-señal text-white" style="width: 17%!important">   Estado      </th>
                 </tr>
             </thead>
             <tbody>
@@ -35,7 +27,7 @@
                             <td class ="text-center"><?php echo $book->customer->phone ?></td>
                             <td class ="text-center"><?php echo $book->pax ?></td>
                             <td class ="text-center">
-                                <select class="room" class="form-control" data-id="<?php echo $book->id ?>" >
+                                <select class="room form-control minimal" data-id="<?php echo $book->id ?>" >
                                     
                                     <?php foreach ($rooms as $room): ?>
                                         <?php if ($room->id == $book->room_id): ?>
@@ -63,7 +55,7 @@
                             </td>
                             <td class ="text-center"><?php echo $book->nigths ?></td>
                             <td class ="text-center">
-                                <div class="col-md-5 m-r-15">
+                                <div class="col-md-6">
                                     <?php echo $book->total_price."€" ?><br>
                                     <?php if (isset($payment[$book->id])): ?>
                                         <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
@@ -90,7 +82,7 @@
                                                 
                             </td>
                             <td class ="text-center">
-                                <select class="status form-control" data-id="<?php echo $book->id ?>" >
+                                <select class="status form-control minimal " data-id="<?php echo $book->id ?>" style="width: 95%">
                                     <?php for ($i=1; $i < 9; $i++): ?> 
                                         <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
                                                 <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
@@ -99,20 +91,6 @@
                                     <?php endfor; ?>
                                 </select>
                             </td>
-                            <!-- <td> -->
-                                <!-- <div class="btn-group col-md-6"> -->
-                                    <!--  -->
-                                    <!-- <?php if ($book->customer['phone'] != 0): ?>
-                                            <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->customer['phone'] ?>"><i class="pg-phone"></i>
-                                            </a>
-                                    <?php endif ?> -->
-                                    
-                                    <!-- <?php if ($book->send == 0): ?>
-                                        <a class="btn btn-tag btn-primary" ><i class=" pg-mail"></i></a>
-                                        </a>
-                                    <?php else: ?>
-                                    <?php endif ?> -->
-                            <!-- </td> -->
                         </tr>
                 <?php endforeach ?>
             </tbody>

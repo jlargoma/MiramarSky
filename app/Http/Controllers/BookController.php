@@ -119,10 +119,10 @@ class BookController extends Controller
             
 
             if(!$mobile->isMobile()){
-                $books = \App\Book::where('start','>',$start)->where('finish','<',$start->copy()->addYear())->orderBy('start','ASC')->get();
+                $books = \App\Book::where('start','>',$start)->where('finish','<',$start->copy()->addYear())->orderBy('created_at','DESC')->get();
             }else{
                 // $date = Carbon::now();
-                $books = \App\Book::where('start','>=',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->orderBy('start','ASC')->get();
+                $books = \App\Book::where('start','>=',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->orderBy('created_at','DESC')->get();
                 $proxIn = \App\Book::where('start','>=',$date->copy()->subWeek())->where('type_book',2)->orderBy('start','ASC')->get();
                 $proxOut = \App\Book::where('start','>=',$date->copy()->subWeek())->where('type_book',2)->orderBy('start','ASC')->get();
             }
