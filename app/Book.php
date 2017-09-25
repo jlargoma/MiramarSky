@@ -61,7 +61,7 @@ class Book extends Model
     //Para poner nombre al estado de la reserva//
 	   static function getStatus($status)
             {
-            	$array = [1 =>"Reservado", 2 =>"Pagada-la-señal",3 =>"SIN RESPONDER",4 =>"Denegado", 5 =>"Contestado(EMAIL)",6 =>"Cancelada", 7 =>"Bloqueado",8 =>"SubComunidad"];
+            	$array = [1 =>"Reservado", 2 =>"Pagada-la-señal",3 =>"SIN RESPONDER",4 =>"Bloqueado", 5 =>"Contestado(EMAIL)",6 =>"Cancelada", 7 =>"Reserva Propietario",8 =>"SubComunidad"];
 
             	return $status = $array[$status];
             }
