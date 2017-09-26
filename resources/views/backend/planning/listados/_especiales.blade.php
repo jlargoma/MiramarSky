@@ -3,7 +3,7 @@
 <div class="tab-pane " id="tabEspeciales">
     <div class="row">
         <div class="col-md-12">
-            <table class="table  table-condensed table-striped">
+            <table class="table  table-condensed table-striped" style="margin-top: 0;">
                 <thead>
                     <tr>  
                         <th style="display: none">ID</th> 

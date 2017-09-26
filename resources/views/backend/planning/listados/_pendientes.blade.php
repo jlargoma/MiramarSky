@@ -2,7 +2,7 @@
 
 <div class="tab-pane active" id="tabPendientes">
     <div class="row column-seperation">
-            <table class="table  table-condensed table-striped m-l-10" >
+            <table class="table  table-condensed table-striped" style="margin-top: 0;">
                 <thead>
                     <tr>  
                         <th style="display: none">ID</th> 

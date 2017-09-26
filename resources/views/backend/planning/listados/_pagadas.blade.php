@@ -2,7 +2,7 @@
 
 <div class="tab-pane" id="tabPagadas">
     <div class="row">
-        <table class="table  table-condensed table-striped">
+        <table class="table  table-condensed table-striped" style="margin-top: 0;">
             <thead>
                 <tr>   
                     <th style="display: none">ID</th> 

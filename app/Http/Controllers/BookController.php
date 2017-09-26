@@ -22,184 +22,184 @@ class BookController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index($year = "")
-        {
+    {
 
-            $mes           = array();
-            $arrayReservas = array();
-            $totalPayments = array();
-            $arrayMonths   = array();
-            $arrayDays     = array();
-            $arrayTotales  = array();
-            $arrayPruebas  = array();
-            $mobile = new Mobile();
+        $mes           = array();
+        $arrayReservas = array();
+        $totalPayments = array();
+        $arrayMonths   = array();
+        $arrayDays     = array();
+        $arrayTotales  = array();
+        $arrayPruebas  = array();
+        $mobile = new Mobile();
 
-            if ( empty($year) ) {
-                $date = Carbon::now();
-            }else{
-                $year = Carbon::createFromFormat('Y',$year);
-                $date = $year->copy();
+        if ( empty($year) ) {
+            $date = Carbon::now();
+        }else{
+            $year = Carbon::createFromFormat('Y',$year);
+            $date = $year->copy();
 
+        }
+
+
+        $arrayBooks = [
+                        "nuevas" => [],
+                        "pagadas" => [],
+                        "especiales" => []
+                        ];
+
+        $apartamentos = \App\Rooms::where('state','=',1);
+
+        $reservas = \App\Book::whereIn('type_book',[1,2,4,7,8])->orderBy('start', 'ASC')->get();
+
+        foreach ($reservas as $reserva) {
+            $dia = Carbon::createFromFormat('Y-m-d',$reserva->start);
+            $start = Carbon::createFromFormat('Y-m-d',$reserva->start);
+            $finish = Carbon::createFromFormat('Y-m-d',$reserva->finish);
+            $diferencia = $start->diffInDays($finish);
+            for ($i=0; $i <= $diferencia; $i++) {
+                $arrayReservas[$reserva->room_id][$dia->copy()->format('Y')][$dia->copy()->format('n')][$dia->copy()->format('j')] = $reserva;
+                $dia = $dia->addDay();
+            }
+        }
+
+        $firstDayOfTheYear = new Carbon('first day of September '.$date->copy()->format('Y'));
+        $book = new \App\Book();
+
+        for ($i=1; $i <= 12; $i++) {
+            $mes[$firstDayOfTheYear->copy()->format('n')] = $firstDayOfTheYear->copy()->format('M Y');
+
+            $startMonth = $firstDayOfTheYear->copy()->startOfMonth();
+            $endMonth   = $firstDayOfTheYear->copy()->endOfMonth();
+            $countDays  = $endMonth->diffInDays($startMonth);
+            $day        = $startMonth;
+
+            $arrayMonths[$firstDayOfTheYear->copy()->format('n')] = $day->copy()->format('t');
+            for ($j=1; $j <= $day->copy()->format('t') ; $j++) {
+                $arrayDays[$firstDayOfTheYear->copy()->format('n')][$j] = $book->getDayWeek($day->copy()->format('w'));
+                $day = $day->copy()->addDay();
             }
 
+            $firstDayOfTheYear->addMonth();
 
-            $arrayBooks = [
-                            "nuevas" => [],
-                            "pagadas" => [],
-                            "especiales" => []
+        }
+        if ($date->copy()->format('n') >= 9) {
+            $start = new Carbon('first day of September '.$date->copy()->format('Y'));
+        }else{
+            $start = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+        }
+
+
+
+        $pagos = \App\Payments::where('datePayment','>=',$start->copy()->format('Y-m-d'))->where('datePayment','<=',$start->copy()->addYear()->format('Y-m-d'))->get();
+        $paymentSeason = [
+                            "cash" => 0,
+                            "banco" =>0,
+                            "total" => 0,
                             ];
 
-            $apartamentos = \App\Rooms::where('state','=',1);
-
-            $reservas = \App\Book::whereIn('type_book',[1,2,4,7,8])->orderBy('start', 'ASC')->get();
-
-            foreach ($reservas as $reserva) {
-                $dia = Carbon::createFromFormat('Y-m-d',$reserva->start);
-                $start = Carbon::createFromFormat('Y-m-d',$reserva->start);
-                $finish = Carbon::createFromFormat('Y-m-d',$reserva->finish);
-                $diferencia = $start->diffInDays($finish);
-                for ($i=0; $i <= $diferencia; $i++) {
-                    $arrayReservas[$reserva->room_id][$dia->copy()->format('Y')][$dia->copy()->format('n')][$dia->copy()->format('j')] = $reserva;
-                    $dia = $dia->addDay();
-                }
-            }
-
-            $firstDayOfTheYear = new Carbon('first day of September '.$date->copy()->format('Y'));
-            $book = new \App\Book();
-
-            for ($i=1; $i <= 12; $i++) {
-                $mes[$firstDayOfTheYear->copy()->format('n')] = $firstDayOfTheYear->copy()->format('M Y');
-
-                $startMonth = $firstDayOfTheYear->copy()->startOfMonth();
-                $endMonth   = $firstDayOfTheYear->copy()->endOfMonth();
-                $countDays  = $endMonth->diffInDays($startMonth);
-                $day        = $startMonth;
-
-                $arrayMonths[$firstDayOfTheYear->copy()->format('n')] = $day->copy()->format('t');
-                for ($j=1; $j <= $day->copy()->format('t') ; $j++) {
-                    $arrayDays[$firstDayOfTheYear->copy()->format('n')][$j] = $book->getDayWeek($day->copy()->format('w'));
-                    $day = $day->copy()->addDay();
-                }
-
-                $firstDayOfTheYear->addMonth();
-
-            }
-            if ($date->copy()->format('n') >= 9) {
-                $start = new Carbon('first day of September '.$date->copy()->format('Y'));
+        foreach ($pagos as $pago) {
+            if (isset($totalPayments[$pago->book_id])) {
+                $totalPayments[$pago->book_id] += $pago->import;
             }else{
-                $start = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+                $totalPayments[$pago->book_id] = $pago->import;
             }
-
-
-
-            $pagos = \App\Payments::where('datePayment','>=',$start->copy()->format('Y-m-d'))->where('datePayment','<=',$start->copy()->addYear()->format('Y-m-d'))->get();
-            $paymentSeason = [
-                                "cash" => 0,
-                                "banco" =>0,
-                                "total" => 0,
-                                ];
-
-            foreach ($pagos as $pago) {
-                if (isset($totalPayments[$pago->book_id])) {
-                    $totalPayments[$pago->book_id] += $pago->import;
-                }else{
-                    $totalPayments[$pago->book_id] = $pago->import;
-                }
-                if ($pago->type == 0 || $pago->type == 1) {
-                    $paymentSeason["cash"] += $pago->import;
-                }else{
-                    $paymentSeason["banco"] += $pago->import;
-                }
-                $paymentSeason["total"] += $pago->import;
-            }
-
-            $ventas = $book->getVentas($date->copy()->format('Y-m-d'));
-
-            $ventasOld = $book->getVentas($date->copy()->subYear()->format('Y-m-d'));
-
-            
-
-            if(!$mobile->isMobile()){
-                $books = \App\Book::where('start','>',$start)->where('finish','<',$start->copy()->addYear())->orderBy('created_at','DESC')->get();
+            if ($pago->type == 0 || $pago->type == 1) {
+                $paymentSeason["cash"] += $pago->import;
             }else{
-                // $date = Carbon::now();
-                $books = \App\Book::where('start','>=',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->orderBy('created_at','DESC')->get();
-                $proxIn = \App\Book::where('start','>=',$date->copy()->subWeek())->where('type_book',2)->orderBy('start','ASC')->get();
-                $proxOut = \App\Book::where('start','>=',$date->copy()->subWeek())->where('type_book',2)->orderBy('start','ASC')->get();
+                $paymentSeason["banco"] += $pago->import;
             }
-            foreach ($books as $key => $book) {
-                if ($book->type_book == 1 || $book->type_book == 3 || $book->type_book == 4 || $book->type_book == 5 || $book->type_book == 6 ) {
-                    $arrayBooks["nuevas"][] = $book;
-                } elseif( $book->type_book == 2) {
-                    $arrayBooks["pagadas"][] = $book;
-                } elseif($book->type_book == 7 || $book->type_book == 8){
-                    $arrayBooks["especiales"][] = $book;
-                }
-            }
-
-
-            $books = \App\Book::whereIn('type_book', [2])->get();
-
-            foreach ($books as $book) {
-                $fecha = Carbon::createFromFormat('Y-m-d',$book->start);
-                if ($fecha->copy()->format('n') >= 9) {
-                    if(isset($arrayTotales[$fecha->copy()->format('Y')])){
-                        $arrayTotales[$fecha->copy()->format('Y')] += $book->total_price;
-                    }else{
-                        $arrayTotales[$fecha->copy()->format('Y')] = $book->total_price;
-                    }
-                }else{
-                    if(isset($arrayTotales[$fecha->copy()->subYear()->format('Y')])){
-                        $arrayTotales[$fecha->copy()->subYear()->format('Y')] += $book->total_price;
-                    }else{
-                        $arrayTotales[$fecha->copy()->subYear()->format('Y')] = $book->total_price;
-                    }
-                }
-            }
-
-
-
-                if (!$mobile->isMobile()){
-                    return view('backend/planning/index',[
-                                                        'arrayBooks'    => $arrayBooks,
-                                                        'arrayMonths'   => $arrayMonths,
-                                                        'arrayTotales'  => $arrayTotales,
-                                                        'rooms'         => \App\Rooms::where('state','=',1)->get(),
-                                                        'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->where('state','=',1)->orderBy('name','DESC')->get(),
-                                                        'arrayReservas' => $arrayReservas,
-                                                        'mes'           => $mes,
-                                                        'date'          => $date,
-                                                        'book'          => new \App\Book(),
-                                                        'extras'        => \App\Extras::all(),
-                                                        'payment'       => $totalPayments,
-                                                        'pagos'         => \App\Payments::all(),
-                                                        'days'          => $arrayDays,
-                                                        'inicio'        => $start,
-                                                        'paymentSeason' =>$paymentSeason,
-                                                        'ventas'        => $ventas,
-                                                        'ventasOld'     => $ventasOld,
-                                                        ]);
-                }else{
-                    return view('backend/planning/index_mobile',[
-                                                        'arrayBooks'    => $arrayBooks,
-                                                        'arrayMonths'   => $arrayMonths,
-                                                        'rooms'         => \App\Rooms::where('state','=',1)->get(),
-                                                        'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->where('state','=',1)->orderBy('name','DESC')->get(),
-                                                        'arrayReservas' => $arrayReservas,
-                                                        'mes'           => $mes,
-                                                        'date'          => $date->subMonth(),
-                                                        'book'          => new \App\Book(),
-                                                        'extras'        => \App\Extras::all(),
-                                                        'payment'       => $totalPayments,
-                                                        'pagos'         => \App\Payments::all(),
-                                                        'days'          => $arrayDays,
-                                                        'inicio'        => $start->addMonth(3),
-                                                        'proxIn'        => $proxIn,
-                                                        'proxOut'       => $proxOut,
-                                                        'paymentSeason' =>$paymentSeason,
-
-                                                        ]);
-                }
+            $paymentSeason["total"] += $pago->import;
         }
+
+        $ventas = $book->getVentas($date->copy()->format('Y-m-d'));
+
+        $ventasOld = $book->getVentas($date->copy()->subYear()->format('Y-m-d'));
+
+        
+
+        if(!$mobile->isMobile()){
+            $books = \App\Book::where('start','>',$start)->where('finish','<',$start->copy()->addYear())->orderBy('created_at','DESC')->get();
+        }else{
+            // $date = Carbon::now();
+            $books = \App\Book::where('start','>=',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->orderBy('created_at','DESC')->get();
+            $proxIn = \App\Book::where('start','>=',$date->copy()->subWeek())->where('type_book',2)->orderBy('start','ASC')->get();
+            $proxOut = \App\Book::where('start','>=',$date->copy()->subWeek())->where('type_book',2)->orderBy('start','ASC')->get();
+        }
+        foreach ($books as $key => $book) {
+            if ($book->type_book == 1 || $book->type_book == 3 || $book->type_book == 4 || $book->type_book == 5 || $book->type_book == 6 ) {
+                $arrayBooks["nuevas"][] = $book;
+            } elseif( $book->type_book == 2) {
+                $arrayBooks["pagadas"][] = $book;
+            } elseif($book->type_book == 7 || $book->type_book == 8){
+                $arrayBooks["especiales"][] = $book;
+            }
+        }
+
+
+        $books = \App\Book::whereIn('type_book', [2])->get();
+
+        foreach ($books as $book) {
+            $fecha = Carbon::createFromFormat('Y-m-d',$book->start);
+            if ($fecha->copy()->format('n') >= 9) {
+                if(isset($arrayTotales[$fecha->copy()->format('Y')])){
+                    $arrayTotales[$fecha->copy()->format('Y')] += $book->total_price;
+                }else{
+                    $arrayTotales[$fecha->copy()->format('Y')] = $book->total_price;
+                }
+            }else{
+                if(isset($arrayTotales[$fecha->copy()->subYear()->format('Y')])){
+                    $arrayTotales[$fecha->copy()->subYear()->format('Y')] += $book->total_price;
+                }else{
+                    $arrayTotales[$fecha->copy()->subYear()->format('Y')] = $book->total_price;
+                }
+            }
+        }
+
+
+
+            if (!$mobile->isMobile()){
+                return view('backend/planning/index',[
+                                                    'arrayBooks'    => $arrayBooks,
+                                                    'arrayMonths'   => $arrayMonths,
+                                                    'arrayTotales'  => $arrayTotales,
+                                                    'rooms'         => \App\Rooms::where('state','=',1)->get(),
+                                                    'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->where('state','=',1)->orderBy('name','DESC')->get(),
+                                                    'arrayReservas' => $arrayReservas,
+                                                    'mes'           => $mes,
+                                                    'date'          => $date,
+                                                    'book'          => new \App\Book(),
+                                                    'extras'        => \App\Extras::all(),
+                                                    'payment'       => $totalPayments,
+                                                    'pagos'         => \App\Payments::all(),
+                                                    'days'          => $arrayDays,
+                                                    'inicio'        => $start,
+                                                    'paymentSeason' =>$paymentSeason,
+                                                    'ventas'        => $ventas,
+                                                    'ventasOld'     => $ventasOld,
+                                                    ]);
+            }else{
+                return view('backend/planning/index_mobile',[
+                                                    'arrayBooks'    => $arrayBooks,
+                                                    'arrayMonths'   => $arrayMonths,
+                                                    'rooms'         => \App\Rooms::where('state','=',1)->get(),
+                                                    'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->where('state','=',1)->orderBy('name','DESC')->get(),
+                                                    'arrayReservas' => $arrayReservas,
+                                                    'mes'           => $mes,
+                                                    'date'          => $date->subMonth(),
+                                                    'book'          => new \App\Book(),
+                                                    'extras'        => \App\Extras::all(),
+                                                    'payment'       => $totalPayments,
+                                                    'pagos'         => \App\Payments::all(),
+                                                    'days'          => $arrayDays,
+                                                    'inicio'        => $start->addMonth(3),
+                                                    'proxIn'        => $proxIn,
+                                                    'proxOut'       => $proxOut,
+                                                    'paymentSeason' =>$paymentSeason,
+
+                                                    ]);
+            }
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -208,6 +208,11 @@ class BookController extends Controller
      */
     public function create(Request $request)
     {
+
+        // echo "<pre>";
+        // print_r($request->input());
+        // die();
+
         $date = explode('-', $request->input('fechas'));
 
         $start = Carbon::createFromFormat('d M, y' , trim($date[0]))->format('d/m/Y');
@@ -216,16 +221,16 @@ class BookController extends Controller
         $extraPrice = 0 ;
         $extraCost  = 0;
 
-
-        if ($request->input('extras') != "") {
-            foreach ($request->input('extras') as $extra) {
-               $precios = \App\Extras::find($extra);
-               $extraPrice += $precios->price;
-               $extraCost += $precios->cost;
+        if ( $request->input('from') ) {
+            if ($request->input('extras') != "") {
+                foreach ($request->input('extras') as $extra) {
+                   $precios = \App\Extras::find($extra);
+                   $extraPrice += $precios->price;
+                   $extraCost += $precios->cost;
+                }
             }
-        }
 
-        //createacion del cliente
+            //createacion del cliente
             $customer = new \App\Customers();
             $customer->user_id = (Auth::check())?Auth::user()->id:23;
             $customer->name = $request->input('name');
@@ -234,6 +239,93 @@ class BookController extends Controller
 
             if($customer->save()){
                 //Creacion de la reserva
+                $book->user_id       = $customer->user_id;
+                $book->customer_id   = $customer->id;
+                $book->room_id       = $request->input('newroom');
+                $book->start         = Carbon::createFromFormat('d/m/Y',$start);
+                $book->finish        = Carbon::createFromFormat('d/m/Y',$finish);
+                $book->comment       = $request->input('comments');
+                $book->book_comments = $request->input('book_comments');
+                $book->type_book     = ( $request->input('status') ) ? $request->input('status') : 3;
+                $book->pax           = $request->input('pax');
+                $book->nigths        = $request->input('nigths');
+                $book->agency        = $request->input('agency');
+                $book->PVPAgencia    = ( $request->input('agencia') )?$request->input('agencia'):0;
+
+                $room                = \App\Rooms::find($request->input('newroom'));
+                $book->sup_limp      = ($room->sizeApto == 1) ? 30 : 50;
+
+
+                $book->sup_park      = $this->getPriceParkController($request->input('parking'), $request->input('nigths'));
+                $book->type_park     = $request->input('parking');
+
+
+                $book->cost_park     = $this->getCostParkController($request->input('parking'),$request->input('nigths'));
+                $book->type_luxury   = $request->input('type_luxury');
+                $book->sup_lujo      = $this->getPriceLujo($request->input('type_luxury'));
+                $book->cost_lujo     = $this->getCostLujo($request->input('type_luxury'));
+                $book->cost_apto     = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
+                $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
+
+                $book->total_price   = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
+
+
+                $book->total_ben     = $book->total_price - $book->cost_total;
+
+
+                $book->extraPrice    = $extraPrice;
+                $book->extraCost     = $extraCost;
+                //Porcentaje de beneficio
+                $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
+                $book->ben_jorge     = $book->getBenJorge($book->total_ben,$room->id);
+                $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
+
+                if($book->save()){
+                    /* Notificacion via email */
+                    if ($customer->email) {
+                        MailController::sendEmailBookSuccess( $book, 1);
+                        return view('frontend.bookStatus.bookOk'); 
+                    }
+
+                };
+            };
+
+
+            return redirect('admin/reservas');
+        }else{
+            $isReservable  = 0;
+
+            if (in_array($request->input('status'), [1, 2, 4, 5, 7, 8])) {
+                
+                if ($book->existDate($start, $finish, $request->input('newroom'))) {
+                    $isReservable = 1;
+                }
+
+            }else{
+                $isReservable = 1;
+            }
+
+
+            if ( $isReservable == 1 ) {
+
+
+                if ($request->input('extras') != "") {
+                    foreach ($request->input('extras') as $extra) {
+                       $precios = \App\Extras::find($extra);
+                       $extraPrice += $precios->price;
+                       $extraCost += $precios->cost;
+                    }
+                }
+
+                //createacion del cliente
+                $customer = new \App\Customers();
+                $customer->user_id = (Auth::check())?Auth::user()->id:23;
+                $customer->name = $request->input('name');
+                $customer->email = $request->input('email');
+                $customer->phone = $request->input('phone');
+
+                if($customer->save()){
+                    //Creacion de la reserva
                     $book->user_id       = $customer->user_id;
                     $book->customer_id   = $customer->id;
                     $book->room_id       = $request->input('newroom');
@@ -241,11 +333,11 @@ class BookController extends Controller
                     $book->finish        = Carbon::createFromFormat('d/m/Y',$finish);
                     $book->comment       = $request->input('comments');
                     $book->book_comments = $request->input('book_comments');
-                    $book->type_book     = 3;
+                    $book->type_book     = ( $request->input('status') ) ? $request->input('status') : 3;
                     $book->pax           = $request->input('pax');
                     $book->nigths        = $request->input('nigths');
                     $book->agency        = $request->input('agency');
-                    $book->PVPAgencia    = $request->input('agencia');
+                    $book->PVPAgencia    = ( $request->input('agencia') )?$request->input('agencia'):0;
 
                     $room                = \App\Rooms::find($request->input('newroom'));
                     $book->sup_limp      = ($room->sizeApto == 1) ? 30 : 50;
@@ -276,26 +368,28 @@ class BookController extends Controller
                     $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
 
                     if($book->save()){
-                        /* Notificacion via email */
-                        if ($customer->email) {
-                           if ( $request->input('from') ){
-                                MailController::sendEmailBookSuccess( $book, 1);
-                                return view('frontend.bookStatus.bookOk');
-                            }
-                            else{
-                                // MailController::sendEmailBookSuccess( $book, 0);
-                                return redirect()->back();
-                            }
-                        }else{
-
-                        }
-
-
+                        // MailController::sendEmailBookSuccess( $book, 0);
+                        return redirect('admin/reservas');
+                    
                     };
-            };
+                };
+                
+            }else{
+                // echo "<pre>";
+                // print_r($request->input());
+                // die();
+                // echo "Error. Este apartamento ya tiene una reserva confirmada";
+                return view('backend/planning/_formBook',  [
+                                                                'request'   => (object) $request->input(),
+                                                                'book'      => new \App\Book(),
+                                                                'rooms'     => \App\Rooms::where('state','=',1)->get(),
+                                                            ]);
+
+            }
+        }
+        
 
 
-        return redirect('admin/reservas');
     }
 
     /**

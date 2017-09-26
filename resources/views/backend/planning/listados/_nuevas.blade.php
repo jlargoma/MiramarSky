@@ -1,185 +1,393 @@
-<div class="tab-pane " id="tabNueva">
-    <div class="row">
-        <div class="col-md-10">
-            <form role="form"  action="{{ url('/admin/reservas/create') }}" method="post">
-                <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                <!-- Seccion Cliente -->
-                <div class="panel-heading">
-                    <div class="panel-title col-md-12">
-                        <hr class="cliente">
-                    </div>
-                </div>
-
-                <div class="panel-body">
-
-                    <div class="input-group col-md-12">
-                        <div class="col-md-4">
-                            Nombre: <input class="form-control" type="text" name="name">
-                        </div>
-                        <div class="col-md-4">
-                            Email: <input class="form-control" type="email" name="email">  
-                        </div>
-                        <div class="col-md-4">
-                            Telefono: <input class="form-control" type="number" name="phone"> 
-                        </div>  
-                        <div style="clear: both;"></div>
-                    </div>                                            
-                </div>
-
-                <!-- Seccion Reserva -->
-                <div class="panel-heading p-t-0">
-                    <div class="panel-title col-md-12">
-                        <hr class="reserva">
-                    </div>
-                </div>
-
-                <div class="panel-body">
-                    
-                    
-
-                        <div class="input-group col-md-12">
-                            <div class="col-md-4">
-                                <label>Entrada</label>
-                                <div class="input-prepend input-group">
-                                  <span class="add-on input-group-addon"><i
-                                                class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                                  <input type="text" class="sm-form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;   " readonly="">
-                                </div>
-                            </div>
-                            <div class="col-md-1">
-                                <label>Noches</label>
-                                <input type="text" class="form-control nigths" name="nigths" value="" style="width: 100%;display:none">
-                                <input type="text" class="form-control nigths" name="noches" value="" disabled style="width: 100%">
-                            </div> 
-                            <div class="col-md-1">
-                                <label>Pax</label>
-                                <select name="pax" class="pax form-control" id="" >
-                                    <?php for ($i=1; $i < 8; $i++):?>
-                                        <option value="<?php echo $i ?>"><?php echo $i ?></option>
-                                    <?php endfor; ?>
-                                </select>
+<link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
+<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
+<style type="text/css" media="screen">
+    .daterangepicker{
+        z-index: 10000!important;
+    }
+</style>
+<div class="row padding-block">
+    <div class="col-xs-12 bg-black push-20">
+        <h4 class="text-center white">
+            NUEVA RESERVA
+        </h4>
+    </div>
+    <div class="col-md-12">
+        <form role="form"  action="{{ url('/admin/reservas/create') }}" method="post" >
+            <!-- DATOS DEL CLIENTE -->
+            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+            <div class="col-md-6 center text-left0">
+                <div class="col-md-4 m-t-10">
+                    <label for="status">Estado</label>
+                </div> 
+                <div class="col-md-8">
+                    <select name="status" class="status form-control minimal" data-id="<?php echo $book->id ?>" >
+                        <?php for ($i=1; $i < 9; $i++): ?> 
+                            <option <?php echo $i == 3 ? "selected" : ""; ?> 
+                            <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
+                            value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
+                                <?php echo $book->getStatus($i) ?>
                                 
+                            </option>                                    
 
-                                    
-                            </div>
-                            <div class="col-md-2">
-                                <label>Apartamento</label>
-                                <select class="newroom" name="newroom" id="newroom" style="min-height: 35px;">
-                                    <?php foreach ($rooms as $room): ?>
-                                        <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
-                                    <?php endforeach ?>
-                                </select>
-                            </div>
-                            <div class="col-md-2 p-l-40">
-                                <label>Parking</label><br>
-                                <select class="parking"  name="parking" style="min-height: 35px;">
-                                    <?php for ($i=1; $i <= 4 ; $i++): ?>
-                                        <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
-                                    <?php endfor;?>
-                                </select>
-                            </div>
-                            <div class="col-md-2">
-                                <label>Sup. Lujo</label>
-                                <select class="type_luxury" id="type_luxury" name="type_luxury" style="min-height: 35px;">
-                                    <?php for ($i=1; $i <= 4 ; $i++): ?>
-                                        <option class="luxury" value="<?php echo $i ?>"><?php echo $book->getSupLujo($i) ?></option>
-                                    <?php endfor;?>
-                                </select>
-                            </div>                                                    
-                        </div>
-                        <div class="input-group col-md-12 m-t-20">
-                            <!-- <div class="col-md-2">
-                                <label>Extras</label>
-                                <select class="full-width select2-hidden-accessible" data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true">
-                                    <?php foreach ($extras as $extra): ?>
-                                        <option value="<?php echo $extra->id ?>"><?php echo $extra->name ?></option>
-                                    <?php endforeach ?>
-                                </select>
-                            </div> -->
-                            
-                            <div class="col-md-2">
-                                <label>Agencia</label>
-                                <select class=" form-control full-width agency" data-init-plugin="select2" name="agency">
-                                    <?php for ($i=0; $i <= 2 ; $i++): ?>
-                                        <?php if ($i == 0): ?>
-                                            <option></option>
-                                        <?php else: ?>
-                                            <option value="<?php echo $i ?>"><?php echo $book->getAgency($i) ?></option>
-                                        <?php endif ?>
-                                        
-                                    <?php endfor;?>
-                                </select>
-                            </div>
-                            <div class="col-md-2">                                                        
-                                <label>Cost Agencia</label>
-                                <input type="text" class="agencia form-control" name="agencia" value="0">
-                            </div>
-                            
-                            
-                            
-                        </div>
-                        <br>
-                        <div class="input-group col-md-12">
-                            <div class="col-md-6">
-                                <label>Comentarios Cliente</label>
-                                <textarea class="form-control" name="comments" rows="5" style="width: 80%">
-                                </textarea>
-                            </div>
-                            <div class="col-md-6">
-                                <label>Comentarios Internos</label>
-                                <textarea class="form-control book_comments" name="book_comments" rows="5" style="width: 80%">
-                                </textarea>
-                            </div>
-                        </div> 
-                        <div class="input-group col-md-12">
-                            
-                        </div> 
-                        <br>
-                        <div class="input-group col-md-12 text-center">
-                            <button class="btn btn-complete" type="submit" style="width: 50%;min-height: 50px">Guardar</button>
-                        </div>                        
+                        <?php endfor; ?>
+                    </select>
                 </div>
-            </form>
-        </div>
-        <div class="col-md-2">
-
-            <div class="col-md-12" style="padding: 0px">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <div class="panel-title col-md-12">
-                            <hr class="cotizacion">
-                        </div>
-                    </div>
-                </div>
-                <table>
-
-                    <tbody>
-                        <tr class="text-white" style="background-color: #0c685f">
-                            <th style="padding-left: 5px">PVP</th>
-                            <th style="padding-right: 5px;padding-left: 5px">
-                                <input type="text" class="form-control total m-t-10 m-b-10 text-white" name="total" value="" style="width: 100%;background-color: #0c685f;border:none;font-weight: bold;font-size: 17px">
-                            </th>
-                        </tr>
-                        <tr class=" text-white m-t-5" style="background-color: #99D9EA">
-                            <th style="padding-left: 5px">COSTE</th>
-                            <th style="padding-right: 5px;padding-left: 5px">
-                                <input type="text" class="form-control cost m-t-10 m-b-10 text-white" name="cost" value="" disabled style="width: 100%;color: black;background: #99D9EA;border:none;font-weight: bold;font-size: 17px">
-                            </th>
-                        </tr>
-                        <tr class="text-white m-t-5" style="background-color: #ff7f27">
-                            <th style="padding-left: 5px">BENº</th>
-                            <th style="padding-right: 5px;padding-left: 5px">
-                                <div class="col-md-7 p-r-0 p-l-0">
-                                    <input type="text" class="form-control beneficio m-t-10 m-b-10 text-white" name="beneficio" value="" disabled style="width: 100%;color: black;background: #ff7f27;border:none;font-weight: bold;font-size: 17px">
-                                </div>
-                                <div class="col-md-2 m-t-5"><div class="m-t-10 m-l-10 beneficio-text">0%</div></div>
-                                
-                            </th>
-                            
-                        </tr>
-                    </tbody>
-                </table>
             </div>
-        </div>
+            <div class="col-xs-12 bg-white padding-block">
+                <div class="col-xs-12 bg-black push-20">
+                    <h4 class="text-center white">
+                        DATOS DEL CLIENTE
+                    </h4>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="name">Nombre</label> 
+                    <input class="form-control cliente" type="text" name="name">
+                </div>
+                <div class="col-md-4">
+                    <label for="email">Email</label> 
+                    <input class="form-control cliente" type="email" name="email" >
+                </div>
+                <div class="col-md-4">
+                    <label for="phone">Telefono</label> 
+                    <input class="form-control cliente" type="text" name="phone" >
+                </div>  
+            </div>
+            <!-- DATOS DE LA RESERVA -->
+            <div class="col-xs-12 bg-white padding-block">
+                <div class="col-xs-12 bg-black push-20">
+                    <h4 class="text-center white">
+                        DATOS DE LA RESERVA
+                    </h4>
+                </div>
+                <div class="col-md-3">
+                    <label>Entrada</label>
+                    <div class="input-prepend input-group">
+                    
+                        <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="">
+
+                    </div>
+                </div>
+                <div class="col-md-1 p-l-0">
+                    <label>Noches</label>
+                    <input type="text" class="form-control nigths" name="nigths" style="width: 100%">
+                </div> 
+                <div class="col-md-2 p-l-0">
+                    <label>Pax</label>
+                    <select class=" form-control pax minimal"  name="pax">
+                        <?php for ($i=1; $i <= 10 ; $i++): ?>
+                            <option value="<?php echo $i ?>">
+                                <?php echo $i ?>
+                            </option>
+                        <?php endfor;?>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label>Apartamento</label>
+                    <select class="form-control full-width newroom minimal" name="newroom" id="newroom">
+                        <?php foreach ($rooms as $room): ?>
+                            <option value="<?php echo $room->id ?>" data-luxury="<?php echo $room->luxury ?>">
+                                <?php echo $room->name ?>
+                            </option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+                <div class="col-md-1 p-l-0 p-r-0">
+                    <label>Parking</label>
+                    <select class=" form-control parking minimal"  name="parking">
+                        <?php for ($i=1; $i <= 4 ; $i++): ?>
+                            <option value="<?php echo $i ?>">
+                                <?php echo $book->getParking($i) ?>
+                            </option>
+                        <?php endfor;?>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label>Sup. Lujo</label>
+                    <select class=" form-control full-width type_luxury minimal" name="type_luxury">
+                        <?php for ($i=1; $i <= 4 ; $i++): ?>
+                            <option value="<?php echo $i ?>">
+                                <?php echo $book->getSupLujo($i) ?>
+                            </option>
+                        <?php endfor;?>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-12 bg-white">
+                <div class="col-xs-4 not-padding">
+                    <div class="col-md-6 col-xs-12 push-10">
+                        <label>Agencia</label>
+                        <select class="form-control full-width agency minimal" data-init-plugin="select2" name="agency">
+                            <?php for ($i=0; $i <= 2 ; $i++): ?>
+                                <option value="<?php echo $i ?>">
+                                    <?php echo $book->getAgency($i) ?>
+                                </option>
+                            <?php endfor;?>
+                        </select>
+                    </div>
+                    <div class="col-md-6 col-xs-12 push-10">                                                        
+                        <label>Cost Agencia</label>
+                        <input type="text" class="agencia form-control" name="agencia">
+                    </div>
+                    <div style="clear: both;"></div>
+                    <!-- <div class="col-md-6">
+                        <label>Extras</label>
+                        <select class="full-width form-control select2-hidden-accessible " data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true" style="cursor: pointer">
+                            <?php // foreach ($extras as $extra): ?>
+                                <option value="<?php // echo $extra->id ?>">
+                                    <?php // echo $extra->name ?>
+                                </option>
+                            <?php // endforeach ?>
+                        </select>
+                    </div> -->
+                </div>
+                <div class="col-xs-8 not-padding">
+                    <div class="col-md-4 col-xs-12 text-center" style="background-color: #0c685f;">
+                        <label class="font-w800 text-white" for="">TOTAL</label>
+                        <input type="text" class="form-control total m-t-10 m-b-10 white" name="total" >
+                    </div>
+                    <div class="col-md-4 col-xs-12 text-center" style="background: #99D9EA;">
+                        <label class="font-w800 text-white" for="">COSTE</label>
+                        <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost" >
+                    </div>
+                    <div class="col-md-4 col-xs-12 text-center not-padding" style="background: #ff7f27;">
+                        <label class="font-w800 text-white" for="">BENEFICIO</label>
+                        <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio"  style="width: 80%; float: left;">
+                        <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;">
+
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="col-xs-12 bg-white padding-block">
+                <div class="col-md-6 col-xs-12">
+                    <label>Comentarios Cliente </label>
+                    <textarea class="form-control" name="comments" rows="5" >
+                        
+                    </textarea>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <label>Comentarios Internos</label>
+                    <textarea class="form-control book_comments" name="book_comments" rows="5" >
+                        
+                    </textarea>
+                </div>
+            </div>
+            <div class="row bg-white padding-block">
+                <div class="col-md-4 col-md-offset-4 text-center">
+                    <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;" disabled>Guardar</button>
+                </div>  
+            </div>
+        </form>
     </div>
 </div>
+
+
+<script src="{{ asset('assets/plugins/jquery/jquery-1.11.1.min.js') }}" type="text/javascript"></script>
+<script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
+<script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
+<script type="text/javascript">
+
+        $(function() {
+          $(".daterange1").daterangepicker({
+            "buttonClasses": "button button-rounded button-mini nomargin",
+            "applyClass": "button-color",
+            "cancelClass": "button-light",
+            locale: {
+                format: 'DD MMM, YY',
+                "applyLabel": "Aplicar",
+                  "cancelLabel": "Cancelar",
+                  "fromLabel": "From",
+                  "toLabel": "To",
+                  "customRangeLabel": "Custom",
+                  "daysOfWeek": [
+                      "Do",
+                      "Lu",
+                      "Mar",
+                      "Mi",
+                      "Ju",
+                      "Vi",
+                      "Sa"
+                  ],
+                  "monthNames": [
+                      "Enero",
+                      "Febrero",
+                      "Marzo",
+                      "Abril",
+                      "Mayo",
+                      "Junio",
+                      "Julio",
+                      "Agosto",
+                      "Septiembre",
+                      "Octubre",
+                      "Noviembre",
+                      "Diciembre"
+                  ],
+                  "firstDay": 1,
+              },
+              
+          });
+        });
+
+        function calculate(){
+                var room = $('#newroom').val();
+                var pax = $('.pax').val();
+                var park = $('.parking').val();
+                var lujo = $('.type_luxury').val();
+
+                var beneficio = 0;
+                var costPark = 0;
+                var pricePark = 0;
+                var costLujo = 0;
+                var priceLujo = 0;
+                var agencia = 0;
+                var beneficio_ = 0;
+
+                var date = $('.daterange1').val();
+
+                var arrayDates = date.split('-');
+                var date1 = new Date(arrayDates[0]);
+                var date2 = new Date(arrayDates[1]);
+                var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                
+                var start = date1.toLocaleDateString();
+                var finish = date2.toLocaleDateString();
+
+                $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
+
+                    if (pax < data) {
+                        $('.pax').attr('style' , 'background-color:red');
+                        // $('.book_comments').empty();
+                        $('.book_comments').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
+                    }else{
+                        // $('.book_comments').empty();
+                        $('.pax').removeAttr('style');
+                    }
+                });
+                
+
+                $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays}).success(function( data ) {
+                    pricePark = data;
+                    $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
+                        priceLujo = data;
+
+                        $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                            price = data;
+                            
+                            price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
+                            $('.total').empty();
+                            $('.total').val(price);
+                                $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays}).success(function( data ) {
+                                    costPark = data;
+                                    $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
+                                        costLujo = data;
+                                        $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                                            cost = data;
+                                            agencia = $('.agencia').val();
+                                            if (agencia == "") {
+                                                agencia = 0;
+                                            }
+                                            cost = (parseFloat(cost) + parseFloat(costPark) + parseFloat(agencia) + parseFloat(costLujo));
+                                            $('.cost').empty();
+                                            $('.cost').val(cost);
+                                            beneficio = price - cost;
+                                            $('.beneficio').empty;
+                                            $('.beneficio').val(beneficio);
+                                            beneficio_ = (beneficio / price)*100
+                                            $('.beneficio-text').empty;
+                                            $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
+
+                                        });
+                                    });
+                                });
+                        });
+                    });
+                });  
+
+                $('.btn-complete').removeAttr('disabled');
+
+        }
+
+
+        $(document).ready(function() {          
+
+
+            var start  = 0;
+            var finish = 0;
+            var noches = 0;
+            var price = 0;
+            var cost = 0;
+
+            $('.daterange1').change(function(event) {
+                var date = $(this).val();
+
+                var arrayDates = date.split('-');
+
+                var date1 = new Date(arrayDates[0]);
+                var start = date1.getTime();
+
+                var date2 = new Date(arrayDates[1]);
+                var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                $('.nigths').val(diffDays);
+
+            });
+
+
+
+            
+            $('#newroom').change(function(event){ 
+
+                var dataLuxury = $('option:selected', this).attr('data-luxury');;
+
+                // alert(dataLuxury);
+                if (dataLuxury == 1) {
+                    $('.type_luxury option[value=1]').attr('selected','selected');
+                } else {
+                    $('.type_luxury option[value=2]').attr('selected','selected');
+                }
+
+
+                calculate();
+            });
+
+            $('.pax').change(function(event){ 
+                calculate();
+            });
+
+            $('.parking').change(function(event){ 
+                var commentBook = $('.book_comments').val();
+                $('.book_comments').empty();
+
+                calculate();
+                
+                $('.book_comments').text( $.trim(commentBook+'Parking: '+ $('option:selected', this).text())+"\n");
+            });
+
+            $('.type_luxury').change(function(event){ 
+                var commentBook = $('.book_comments').val();
+                $('.book_comments').empty();
+                calculate();
+                $('.book_comments').text( $.trim(commentBook+'Suplemento de lujo '+ $('option:selected', this).text())+"\n");
+            });
+
+            $('.agencia').change(function(event){ 
+                calculate();
+            });
+
+           
+                
+            
+            $('.total').change(function(event) {
+                var price = $(this).val();
+                var cost = $('.cost').val();
+                var beneficio = (parseFloat(price) - parseFloat(cost));
+                console.log(beneficio);
+                $('.beneficio').empty;
+                $('.beneficio').val(beneficio);
+            });
+
+        });
+</script>
