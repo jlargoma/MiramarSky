@@ -7,16 +7,16 @@
                 <thead>
                     <tr>  
                         <th style="display: none">ID</th> 
-                        <th class ="text-center Bloqueado text-white" >   Cliente     </th>
-                        <th class ="text-center Bloqueado text-white" >   Telefono     </th>
-                        <th class ="text-center Bloqueado text-white" style="width: 7%!important">   Pax         </th>
-                        <th class ="text-center Bloqueado text-white" style="width: 10%!important">   Apart       </th>
-                        <th class ="text-center Bloqueado text-white" style="width: 6%!important">   IN     </th>
-                        <th class ="text-center Bloqueado text-white" style="width: 8%!important">   OUT      </th>
-                        <th class ="text-center Bloqueado text-white" style="width: 6%!important">  <i class="fa fa-moon-o"></i> </th>
-                        <th class ="text-center Bloqueado text-white" >   Precio      </th>
-                        <th class ="text-center Bloqueado text-white" style="width: 17%!important">   Estado      </th>
-                        <th class ="text-center Bloqueado text-white" style="width: 6%!important">A</th>
+                        <th class ="text-center Reserva Propietario text-white" >   Cliente     </th>
+                        <th class ="text-center Reserva Propietario text-white" >   Telefono     </th>
+                        <th class ="text-center Reserva Propietario text-white" style="width: 7%!important">   Pax         </th>
+                        <th class ="text-center Reserva Propietario text-white" style="width: 10%!important">   Apart       </th>
+                        <th class ="text-center Reserva Propietario text-white" style="width: 6%!important">   IN     </th>
+                        <th class ="text-center Reserva Propietario text-white" style="width: 8%!important">   OUT      </th>
+                        <th class ="text-center Reserva Propietario text-white" style="width: 6%!important">  <i class="fa fa-moon-o"></i> </th>
+                        <th class ="text-center Reserva Propietario text-white" >   Precio      </th>
+                        <th class ="text-center Reserva Propietario text-white" style="width: 17%!important">   Estado      </th>
+                        <th class ="text-center Reserva Propietario text-white" style="width: 6%!important">A</th>
                     </tr>
                 </thead>
                 <tbody>

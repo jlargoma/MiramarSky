@@ -50,7 +50,7 @@ class BookController extends Controller
 
             $apartamentos = \App\Rooms::where('state','=',1);
 
-            $reservas = \App\Book::whereIn('type_book',[1,2,7,8])->orderBy('start', 'ASC')->get();
+            $reservas = \App\Book::whereIn('type_book',[1,2,4,7,8])->orderBy('start', 'ASC')->get();
 
             foreach ($reservas as $reserva) {
                 $dia = Carbon::createFromFormat('Y-m-d',$reserva->start);

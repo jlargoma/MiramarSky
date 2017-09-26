@@ -24,15 +24,12 @@
             background-color: #295d9b !important;
             color: black;
         }
-        .Reservado{
-            background-color: rgba(0,100,255,0.2)  !important;
-            color: black;
-        }
+
         .Pagada-la-señal{
             background-color: green  !important;
             color: black;
         }
-        .Bloqueado{
+        .Reserva.Propietario{
             background-color: orange !important;
             color: black;
         }
@@ -113,6 +110,28 @@
         }
         .table.table-hover tbody tr:hover td {
             background: #99bce7 !important;
+        }
+        .Reservado,.table.table-striped tbody tr.Reservado td {
+            background-color: rgba(0,100,255,0.2)  !important;
+            color: black;
+        }
+        .table.table-striped tbody tr.Reservado td select.minimal{
+            background-color: rgba(0,100,255,0.0)  !important;
+            color: black!important;
+            font-weight: bold!important;
+        }
+
+        .Bloqueado,.table.table-striped tbody tr.Bloqueado td {
+            background-color: rgba(0,100,255,0.2)  !important;
+            color: red;
+        }
+            
+        
+        .table.table-striped tbody tr.Bloqueado td select.minimal{
+            background-color: rgba(0,100,255,0.0)  !important;
+            color:red!important;
+            font-weight: bold!important;
+
         }
     </style>
 

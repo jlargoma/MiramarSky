@@ -303,7 +303,7 @@ class Book extends Model
                     foreach ($isRooms as $isRoom) {
                         if ($existStart == false && $existFinish == false) {
                             $start = Carbon::createFromFormat('Y-m-d', $isRoom->start);
-                            
+    
                             $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish); 
 
                             $existStart = Carbon::create(
@@ -317,9 +317,6 @@ class Book extends Model
                                                             $roomFinish->month,
                                                             $roomFinish->day)
                                                         ->between($start->copy(),$finish->copy());
-                            if ($existStart == false && $existFinish == false) {
-                                
-                            }
                         }else{
                             break;
                         }
@@ -335,7 +332,6 @@ class Book extends Model
                                         $message->to($book->customer->email);
                                         $message->subject('Correo de reserva');
                                     });
-                                $mail = 1;
                                 break;
                             case '2':
                                 Mail::send('backend.emails.confirmado',['book' => $book], function ($message) use ($book) {
@@ -344,7 +340,6 @@ class Book extends Model
                                         $message->to($book->customer->email);
                                         $message->subject('Correo de confirmacion del pago parcial');
                                     });
-                                $mail = 2;
                                 break;
                             case '6':
                                 Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
@@ -353,7 +348,6 @@ class Book extends Model
                                         $message->to($book->customer->email);
                                         $message->subject('Correo de cancelada');
                                     });  
-                                $mail = 6;
                                 break;
                             default:
                                 # code...
@@ -367,13 +361,13 @@ class Book extends Model
                             }elseif($status == 3){
                                 return "Estado Sin Responder cambiado";
                             }elseif($status == 4){
-                                return "Estado Denegado cambiado";
+                                return "Estado Bloqueado cambiado";
                             }elseif($status == 5){
                                 return "Contestado por email";
                             }elseif($status == 6){
                                 return "Email de Cancelacion enviado";
                             }elseif($status == 7){
-                                return "Estado bloqueado cambiado";
+                                return "Estado Reserva Propietario cambiado";
                             }elseif($status == 8){
                                 return "Estado subcomunidad cambiado";
                             }

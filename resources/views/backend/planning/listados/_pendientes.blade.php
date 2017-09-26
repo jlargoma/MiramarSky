@@ -20,24 +20,24 @@
                 </thead>
                 <tbody>
                     <?php foreach ($arrayBooks["nuevas"] as $book): ?>
-                            <tr > 
+                            <tr class="<?php echo ucwords($book->getStatus($book->type_book)) ;?>"> 
                                 <td style="display: none"><?php echo $book->id ?></td>
-                                <td class ="text-center" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?> >
+                                <td class ="text-center"  >
 
                                         <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo $book->customer['name']  ?></a>                                                        
                                 </td>
 
-                                <td class ="text-center" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?> > 
+                                <td class ="text-center"  > 
                                     <?php if ($book->customer->phone != 0): ?>
                                         <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?>
                                     <?php else: ?>
                                     <?php endif ?>
                                 </td>
 
-                                <td class ="text-center" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>><?php echo $book->pax ?></td>
+                                <td class ="text-center" ><?php echo $book->pax ?></td>
 
-                                <td class ="text-center" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>>
-                                    <select class="room form-control minimal" data-id="<?php echo $book->id ?>"  <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0) !important'":""; ?>>
+                                <td class ="text-center" >
+                                    <select class="room form-control minimal" data-id="<?php echo $book->id ?>"  >
                                         
                                         <?php foreach ($rooms as $room): ?>
                                             <?php if ($room->id == $book->room_id): ?>
@@ -52,27 +52,27 @@
                                     </select>
                                 </td>
 
-                                <td class ="text-center" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?> style="width: 20%!important">
+                                <td class ="text-center"  style="width: 20%!important">
                                     <?php
                                         $start = Carbon::createFromFormat('Y-m-d',$book->start);
                                         echo $start->formatLocalized('%d %b');
                                     ?>
                                 </td>
 
-                                <td class ="text-center" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?> style="width: 20%!important">
+                                <td class ="text-center"  style="width: 20%!important">
                                     <?php
                                         $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
                                         echo $finish->formatLocalized('%d %b');
                                     ?>
                                 </td>
 
-                                <td class ="text-center" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>><?php echo $book->nigths ?></td>
+                                <td class ="text-center" ><?php echo $book->nigths ?></td>
 
-                                <td class ="text-center" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>><?php echo $book->total_price."€" ?><br>
+                                <td class ="text-center" ><?php echo $book->total_price."€" ?><br>
                                 </td>
 
-                                <td class ="text-center" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?> >
-                                    <select class="status form-control minimal" data-id="<?php echo $book->id ?>" <?php echo ($book->type_book == 1) ? "style='background:rgba(0,100,255,0) !important'":""; ?>>
+                                <td class ="text-center"  >
+                                    <select class="status form-control minimal" data-id="<?php echo $book->id ?>" >
 
                                         <?php for ($i=1; $i < 9; $i++): ?> 
                                             <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
