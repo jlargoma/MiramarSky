@@ -114,12 +114,18 @@ class HomeController extends Controller
         $data['message'] = $request->input('message');
 
 
-        $contact = MailController::sendContactFormEmail($data);
+        $contact = Mail::send(['html' => 'frontend.emails.contact'],[ 'data' => $data,], function ($message) use ($data) {
+            $message->from($data['email'], $data['name']);
+            $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */
+            $message->bcc('jlargo@mksport.es');
+            $message->bcc('jlargoma@gmail.com');
+            $message->subject('Formulario de contacto MiramarSKI');
+        });
 
         if ( $contact ) {
-            return view('frontend.responses.success');
+            return view('frontend.contacto', ['mobile' => new Mobile(),'contacted' => 1]);
         }else{
-            return view('frontend.responses.error');
+            return view('frontend.contacto', ['mobile' => new Mobile(),'contacted' => 0]);
 
         }
     }

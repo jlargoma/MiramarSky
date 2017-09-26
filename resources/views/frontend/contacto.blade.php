@@ -86,51 +86,77 @@
 					</div>
 					
 					<div class="col-md-4 col-xs-12" style="margin-bottom: 25px;">
-						<div class="col-xs-12  black-cover" id="content-result-contact-form">
-							<div class="heading-block center ">
-								<h4>ENVIANOS TUS DUDAS</h4>
-								<!-- <span>Alquiler Apartamento de Lujo - Edif Miramar Ski</span> -->
-							</div>
-							<div class="col-xs-12 not-padding-mobile">
-								<div class="col-xs-12 not-padding-mobile text-center">
-									<div class="col-xs-12 not-padding" >
+						<?php if (!isset($contacted)): ?>
+							<div class="col-xs-12  black-cover" id="content-result-contact-form">
+								<div class="heading-block center ">
+									<h4 class="white">ENVIANOS TUS DUDAS</h4>
+									<!-- <span>Alquiler Apartamento de Lujo - Edif Miramar Ski</span> -->
+								</div>
+								<div class="col-xs-12 not-padding-mobile">
+									<div class="col-xs-12 not-padding-mobile text-center">
+										<div class="col-xs-12 not-padding" >
 
-										<div class="col-xs-12" >
-											<!-- action="{{url('/contacto')}}" method="post" -->
-											<form id="contact-form" method="post" action="{{url('/contacto-form')}}" class="form-horizontal">
-												{{ csrf_field() }}
-												<div class="col-md-6 col-xs-12 push-20">
-													<input type="text" id="name" name="name" class="sm-form-control" required placeholder="Nombre">
-												</div>
+											<div class="col-xs-12" >
+												<!-- action="{{url('/contacto')}}" method="post" -->
+												<form id="contact-form" method="post" action="{{url('/contacto-form')}}" class="form-horizontal">
+													{{ csrf_field() }}
+													<div class="col-md-6 col-xs-12 push-20">
+														<input type="text" id="name" name="name" class="sm-form-control" required placeholder="Nombre">
+													</div>
 
-												<div class="col-md-6 col-xs-12 push-20">
-													<input type="email" id="email" name="email"  class="email sm-form-control" required placeholder="Email">
-												</div>
+													<div class="col-md-6 col-xs-12 push-20">
+														<input type="email" id="email" name="email"  class="email sm-form-control" required placeholder="Email">
+													</div>
 
-												<div class="col-md-6 col-xs-12 push-20">
-													<input type="text" id="subject" name="subject"  class="sm-form-control" required placeholder="Asunto">
-												</div>
+													<div class="col-md-6 col-xs-12 push-20">
+														<input type="text" id="subject" name="subject"  class="sm-form-control" required placeholder="Asunto">
+													</div>
 
-												<div class="col-md-6 col-xs-12 push-20">
-													<input type="text" id="phone" name="phone" maxlength="9" class="sm-form-control only-numbers" required placeholder="Teléfono">
-												</div>
+													<div class="col-md-6 col-xs-12 push-20">
+														<input type="text" id="phone" name="phone" maxlength="9" class="sm-form-control only-numbers" required placeholder="Teléfono">
+													</div>
 
-												<div class="clear"></div>
+													<div class="clear"></div>
 
-												<div class="col-xs-12 push-20">
-													<textarea required class="required sm-form-control" id="message" name="message" rows="3" cols="30" aria-required="true" placeholder="Mensaje"></textarea>
-												</div>
+													<div class="col-xs-12 push-20">
+														<textarea required class="required sm-form-control" id="message" name="message" rows="3" cols="30" aria-required="true" placeholder="Mensaje"></textarea>
+													</div>
 
-												<div class="col-xs-12 center">
-													<button class="button button-3d nomargin" type="submit">Enviar</button>
-												</div>
+													<div class="col-xs-12 center">
+														<button class="button button-3d nomargin" type="submit">Enviar</button>
+													</div>
 
-											</form>
-										</div>
-									</div>						
+												</form>
+											</div>
+										</div>						
+									</div>
 								</div>
 							</div>
-						</div>
+						<?php else: ?>
+							<?php if ($contacted == 1): ?>
+								<div class="col-padding black-cover">
+
+									<div class="heading-block center nobottomborder nobottommargin">
+										<div class="col-xs-12 center white">
+											<i class="white fa fa-check-circle-o fa-5x"></i>
+										</div>
+										<h2 class="white">Muchas gracias!</h2>
+										<span class="white">Nos pondremos en contacto con la mayor brevedad posible.</span>
+									</div>
+								</div>
+							<?php else: ?>
+								<div class="col-padding black-cover">
+									<div class="heading-block center nobottomborder nobottommargin">
+										<div class="col-xs-12 center white">
+											<i class="white fa fa-exclamation-circle fa-5x"></i>
+										</div>
+										<h2 class="white">Lo sentimos!</h2>
+										<span class="white">Ha ocurrido algo inesperado, por favor intentalo de nuevo más tarde.</span>
+									</div>
+								</div>
+							<?php endif ?>
+						<?php endif ?>
+						
 
 					</div>
 
@@ -202,48 +228,78 @@
 				
 				<div class="col-lg-6 col-md-6 col-xs-12" style="margin-bottom: 25px;">
 					<div class="col-xs-12  black-cover" id="content-result-contact-form">
-						<div class="heading-block center white">
-							<h4 class="white">ENVIANOS TUS DUDAS</h4>
-							<!-- <span>Alquiler Apartamento de Lujo - Edif Miramar Ski</span> -->
-						</div>
+
 						<div class="col-xs-12 not-padding-mobile">
-							<div class="col-xs-12 not-padding-mobile text-center">
-								<div class="col-xs-12 not-padding" >
-
-									<div class="col-xs-12" >
-										<!-- action="{{url('/contacto')}}" method="post" -->
-										<form id="contact-form" method="post" action="{{url('/contacto-form')}}" class="form-horizontal">
-											{{ csrf_field() }}
-											<div class="col-md-6 col-xs-12 push-20">
-												<input type="text" id="name" name="name" class="sm-form-control" required placeholder="Nombre">
-											</div>
-
-											<div class="col-md-6 col-xs-12 push-20">
-												<input type="email" id="email" name="email"  class="email sm-form-control" required placeholder="Email">
-											</div>
-
-											<div class="col-md-6 col-xs-12 push-20">
-												<input type="text" id="subject" name="subject"  class="sm-form-control" required placeholder="Asunto">
-											</div>
-
-											<div class="col-md-6 col-xs-12 push-20">
-												<input type="text" id="phone" name="phone" maxlength="9" class="sm-form-control only-numbers" required placeholder="Teléfono">
-											</div>
-
-											<div class="clear"></div>
-
-											<div class="col-xs-12 push-20">
-												<textarea required class="required sm-form-control" id="message" name="message" rows="3" cols="30" aria-required="true" placeholder="Mensaje"></textarea>
-											</div>
-
-											<div class="col-xs-12 center">
-												<button class="button button-3d nomargin" type="submit">Enviar</button>
-											</div>
-
-										</form>
+							<?php if (!isset($contacted)): ?>
+								<div class="col-xs-12  black-cover" id="content-result-contact-form">
+									<div class="heading-block center ">
+										<h4 class="white">ENVIANOS TUS DUDAS</h4>
+										<!-- <span>Alquiler Apartamento de Lujo - Edif Miramar Ski</span> -->
 									</div>
-								</div>						
-							</div>
+									<div class="col-xs-12 not-padding-mobile">
+										<div class="col-xs-12 not-padding-mobile text-center">
+											<div class="col-xs-12 not-padding" >
+
+												<div class="col-xs-12" >
+													<!-- action="{{url('/contacto')}}" method="post" -->
+													<form id="contact-form" method="post" action="{{url('/contacto-form')}}" class="form-horizontal">
+														{{ csrf_field() }}
+														<div class="col-md-6 col-xs-12 push-20">
+															<input type="text" id="name" name="name" class="sm-form-control" required placeholder="Nombre">
+														</div>
+
+														<div class="col-md-6 col-xs-12 push-20">
+															<input type="email" id="email" name="email"  class="email sm-form-control" required placeholder="Email">
+														</div>
+
+														<div class="col-md-6 col-xs-12 push-20">
+															<input type="text" id="subject" name="subject"  class="sm-form-control" required placeholder="Asunto">
+														</div>
+
+														<div class="col-md-6 col-xs-12 push-20">
+															<input type="text" id="phone" name="phone" maxlength="9" class="sm-form-control only-numbers" required placeholder="Teléfono">
+														</div>
+
+														<div class="clear"></div>
+
+														<div class="col-xs-12 push-20">
+															<textarea required class="required sm-form-control" id="message" name="message" rows="3" cols="30" aria-required="true" placeholder="Mensaje"></textarea>
+														</div>
+
+														<div class="col-xs-12 center">
+															<button class="button button-3d nomargin" type="submit">Enviar</button>
+														</div>
+
+													</form>
+												</div>
+											</div>						
+										</div>
+									</div>
+								</div>
+							<?php else: ?>
+								<?php if ($contacted == 1): ?>
+									<div class="col-ppadding">
+
+										<div class="heading-block center nobottomborder nobottommargin">
+											<div class="col-xs-12 center white">
+												<i class="white fa fa-check-circle-o fa-5x"></i>
+											</div>
+											<h2 class="white">Muchas gracias!</h2>
+											<span class="white">Nos pondremos en contacto con la mayor brevedad posible.</span>
+										</div>
+									</div>
+								<?php else: ?>
+									<div class="col-ppadding">
+										<div class="heading-block center nobottomborder nobottommargin">
+											<div class="col-xs-12 center white">
+												<i class="white fa fa-exclamation-circle fa-5x"></i>
+											</div>
+											<h2 class="white">Lo sentimos!</h2>
+											<span class="white">Ha ocurrido algo inesperado, por favor intentalo de nuevo más tarde.</span>
+										</div>
+									</div>
+								<?php endif ?>
+							<?php endif ?>
 						</div>
 					</div>
 
@@ -294,33 +350,7 @@
 		    });
 
 
-		    $('#contact-form').submit(function(event) {
-
-		    	event.preventDefault();
-
-				var _token  = $('input[name="_token"]').val();
-				var name    = $('input[name="name"]').val();
-				var email   = $('input[name="email"]').val();
-				var subject = $('input[name="subject"]').val();
-				var phone   = $('input[name="phone"]').val();
-				var message = $('textarea[name="message"]').val();
-
-		    	var url = $(this).attr('action');
-
-		    	$.post( url , {
-		    					_token : _token,
-		    					name : name,
-		    					email : email,
-		    					subject : subject,
-		    					phone : phone,
-		    					message : message,
-		    					}, function(data) {
-
-    				$('#content-result-contact-form').empty().append(data);
-		    	});
-
-		    });
-
+		    
 		});
 	</script>	
 
