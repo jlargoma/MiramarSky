@@ -283,6 +283,9 @@ class HomeController extends Controller
         return view('frontend.privacidad', [ 'mobile' => new Mobile() ]);
     }
 
+    public function condicionesGenerales(){
+        return view('frontend.condiciones-generales', [ 'mobile' => new Mobile() ]);
+    }
 
     public function tiempo()
     {

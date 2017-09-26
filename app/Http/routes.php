@@ -24,6 +24,7 @@ Route::post('/contacto-form','HomeController@formContacto');
 Route::get('/terminos-condiciones','HomeController@terminos');
 Route::get('/politica-cookies','HomeController@politicaPrivacidad');
 Route::get('/politica-privacidad','HomeController@politicaPrivacidad');
+Route::get('/condiciones-generales','HomeController@condicionesGenerales');
 Route::get('/el-tiempo','HomeController@tiempo');
 
 
