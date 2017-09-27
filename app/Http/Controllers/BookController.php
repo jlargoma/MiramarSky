@@ -209,10 +209,6 @@ class BookController extends Controller
     public function create(Request $request)
     {
 
-        // echo "<pre>";
-        // print_r($request->input());
-        // die();
-
         $date = explode('-', $request->input('fechas'));
 
         $start = Carbon::createFromFormat('d M, y' , trim($date[0]))->format('d/m/Y');
@@ -431,32 +427,71 @@ class BookController extends Controller
                 }
         }
 
-    public function changeBook(Request $request, $id)
-        {
 
-            if ( isset($request->room) && !empty($request->room)) {
-                $book = \App\Book::find($id);
+    public function changeStatusBook(Request $request, $id)
+    {
+        if ( isset($request->status) && !empty($request->status)) {
+            $book = \App\Book::find($id);
+            $start = Carbon::createFromFormat('Y-m-d' , $book->start);
+            $finish = Carbon::createFromFormat('Y-m-d' , $book->finish);
 
-                if ($book->changeBook("",$request->room,$book)) {
-                    return "Apartamento cambiado";
-                }else{
-                    return "Ya hay una reserva para ese apartamento";
+            $isReservable  = 0;
+            if (in_array($request->status , [1, 2, 4, 5, 7, 8])) {
+                
+                if ($book->existDate($start->format('d/m/Y'), $finish->format('d/m/Y'), $book->room_id)) {
+                    $isReservable = 1;
                 }
 
-
-            }
-            if ( isset($request->status) && !empty($request->status)) {
-                $book = \App\Book::find($id);
-
-                if ($a = $book->changeBook($request->status,"",$book)) {
-                    return $a;
-                }else{
-                    return "No se puede cambiar el estado";
-                }
             }else{
-                return "Valor nulo o vacio";
+                $isReservable = 1;
             }
+
+
+            if ( $isReservable == 1 ) {
+
+                $book->type_book = $request->status;
+
+                if ($book->save()) {
+                    return "Actualizado";
+                }else{
+                    return "Error, al aintentar cambiar el estado";
+                }
+
+            }else{
+
+                return "Error, Ya hay una reserva para ese apartamento";
+            }
+
         }
+    }
+
+
+    public function changeBook(Request $request, $id)
+    {
+
+        if ( isset($request->room) && !empty($request->room)) {
+            $book = \App\Book::find($id);
+
+            if ($book->changeBook("",$request->room,$book)) {
+                return "Apartamento cambiado";
+            }else{
+                return "Ya hay una reserva para ese apartamento";
+            }
+
+
+        }
+        if ( isset($request->status) && !empty($request->status)) {
+            $book = \App\Book::find($id);
+
+            if ($a = $book->changeBook($request->status,"",$book)) {
+                return $a;
+            }else{
+                return "No se puede cambiar el estado";
+            }
+        }else{
+            return "Valor nulo o vacio";
+        }
+    }
 
     static function getPriceBook(Request $request)
         {

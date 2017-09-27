@@ -214,281 +214,281 @@
             
             <div class="col-md-5">
                 <!-- Seccion Calendario -->
-                    <div class="col-md-12 col-xs-12">
-                        <div class="panel">
-                            <ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
-                                <?php $dateAux = $inicio->copy(); ?>
-                                <?php for ($i=1; $i <= 9 ; $i++) :?>
-                                    <li <?php if($i == 4 ){ echo "class='active'";} ?>>
-                                        <a href="#tab<?php echo $i?>" data-toggle="tab" role="tab" style="padding:10px">
-                                            <?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>
-                                        </a>
-                                    </li>
-                                    <?php $dateAux->addMonth(); ?>
-                                <?php endfor; ?>
-                            </ul>
-                            <div class="tab-content">
-                                
-                                <?php for ($z=1; $z <= 9; $z++):?>
-                                <div class="tab-pane <?php if($z == 4){ echo 'active';} ?>" id="tab<?php echo $z ?>">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <table class="fc-border-separate" style="width: 100%">
-                                               <thead>
-                                                    <tr >
-                                                        <td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
-                                                            <?php echo  ucfirst($inicio->copy()->formatLocalized('%B %Y'))?>
-                                                        </td> 
-                                                    </tr>
-                                                    <tr>
-                                                        <td rowspan="2" style="width: 1%!important"></td>
-                                                            <?php for ($i=1; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
-                                                                <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
-                                                                    <?php echo $i?> 
-                                                                </td> 
-                                                             <?php endfor; ?>
-                                                    </tr>
-                                                    <tr>
-                                                        
+                <div class="col-md-12 col-xs-12">
+                    <div class="panel">
+                        <ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
+                            <?php $dateAux = $inicio->copy(); ?>
+                            <?php for ($i=1; $i <= 9 ; $i++) :?>
+                                <li <?php if($i == 4 ){ echo "class='active'";} ?>>
+                                    <a href="#tab<?php echo $i?>" data-toggle="tab" role="tab" style="padding:10px">
+                                        <?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>
+                                    </a>
+                                </li>
+                                <?php $dateAux->addMonth(); ?>
+                            <?php endfor; ?>
+                        </ul>
+                        <div class="tab-content">
+                            
+                            <?php for ($z=1; $z <= 9; $z++):?>
+                            <div class="tab-pane <?php if($z == 4){ echo 'active';} ?>" id="tab<?php echo $z ?>">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="fc-border-separate" style="width: 100%">
+                                           <thead>
+                                                <tr >
+                                                    <td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
+                                                        <?php echo  ucfirst($inicio->copy()->formatLocalized('%B %Y'))?>
+                                                    </td> 
+                                                </tr>
+                                                <tr>
+                                                    <td rowspan="2" style="width: 1%!important"></td>
                                                         <?php for ($i=1; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
-                                                            <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$inicio->copy()->format('n')][$i]?>">
-                                                                <?php echo $days[$inicio->copy()->format('n')][$i]?> 
+                                                            <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
+                                                                <?php echo $i?> 
                                                             </td> 
-                                                         <?php endfor; ?> 
-                                                    </tr>
-                                               </thead>
-                                               <tbody>
-                                               
-                                                    <?php foreach ($roomscalendar as $room): ?>
-                                                        <tr>
-                                                            <?php $inicio = $inicio->startOfMonth() ?>
-                                                            <td class="text-center"><b><?php echo substr($room->nameRoom, 0,5)?></b></td>
-                                                                
-                                                            <?php for ($i=01; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
+                                                         <?php endfor; ?>
+                                                </tr>
+                                                <tr>
+                                                    
+                                                    <?php for ($i=1; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
+                                                        <td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$inicio->copy()->format('n')][$i]?>">
+                                                            <?php echo $days[$inicio->copy()->format('n')][$i]?> 
+                                                        </td> 
+                                                     <?php endfor; ?> 
+                                                </tr>
+                                           </thead>
+                                           <tbody>
+                                           
+                                                <?php foreach ($roomscalendar as $room): ?>
+                                                    <tr>
+                                                        <?php $inicio = $inicio->startOfMonth() ?>
+                                                        <td class="text-center"><b><?php echo substr($room->nameRoom, 0,5)?></b></td>
+                                                            
+                                                        <?php for ($i=01; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
 
-                                                                    <?php if (isset($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i])): ?>
-                                                                        <?php if ($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->start == $inicio->copy()->format('Y-m-d')): ?>
-                                                                                <td style='border:1px solid grey;width: 3%'>
-                                                                                    <div style="width: 50%;float: left;">
-                                                                                        &nbsp;
-                                                                                    </div>
-                                                                                    <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> start" style="width: 50%;float: left;">
-                                                                                        &nbsp;
-                                                                                    </div>
+                                                                <?php if (isset($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i])): ?>
+                                                                    <?php if ($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->start == $inicio->copy()->format('Y-m-d')): ?>
+                                                                            <td style='border:1px solid grey;width: 3%'>
+                                                                                <div style="width: 50%;float: left;">
+                                                                                    &nbsp;
+                                                                                </div>
+                                                                                <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> start" style="width: 50%;float: left;">
+                                                                                    &nbsp;
+                                                                                </div>
 
-                                                                                </td>    
-                                                                        <?php elseif($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->finish == $inicio->copy()->format('Y-m-d')): ?>
-                                                                                <td style='border:1px solid grey;width: 3%'>
-                                                                                    <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> end" style="width: 50%;float: left;">
-                                                                                        &nbsp;
-                                                                                    </div>
-                                                                                    <div style="width: 50%;float: left;">
-                                                                                        &nbsp;
-                                                                                    </div>
-                                                                                    
-
-                                                                                </td>
-                                                                        <?php else: ?>
-                                                                            
-                                                                                <td 
-                                                                                    style='border:1px solid grey;width: 3%' 
-                                                                                    title="
-                                                                                        <?php echo $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->customer['name'] ?> 
-
-                                                                                        <?php echo 'PVP:'.$arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->total_price ?>
-                                                                                        <?php if (isset($payment[$arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->id])): ?>
-                                                                                            <?php echo 'PEND:'.($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->total_price - $payment[$arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->id])?>
-                                                                                        <?php else: ?>
-                                                                                        <?php endif ?>" 
-                                                                                        class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?>"
-                                                                                >
-
-                                                                               <a href="{{url ('/admin/reservas/update')}}/<?php echo $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->id ?>">
-                                                                                   <div style="width: 100%;height: 100%">
-                                                                                       &nbsp;
-                                                                                   </div>
-                                                                               </a>
+                                                                            </td>    
+                                                                    <?php elseif($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->finish == $inicio->copy()->format('Y-m-d')): ?>
+                                                                            <td style='border:1px solid grey;width: 3%'>
+                                                                                <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> end" style="width: 50%;float: left;">
+                                                                                    &nbsp;
+                                                                                </div>
+                                                                                <div style="width: 50%;float: left;">
+                                                                                    &nbsp;
+                                                                                </div>
+                                                                                
 
                                                                             </td>
+                                                                    <?php else: ?>
+                                                                        
+                                                                            <td 
+                                                                                style='border:1px solid grey;width: 3%' 
+                                                                                title="
+                                                                                    <?php echo $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->customer['name'] ?> 
 
-                                                                        <?php endif ?>
-                                                                    <?php else: ?>
-                                                                        <td class="<?php echo $days[$inicio->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
-                                                                            
+                                                                                    <?php echo 'PVP:'.$arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->total_price ?>
+                                                                                    <?php if (isset($payment[$arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->id])): ?>
+                                                                                        <?php echo 'PEND:'.($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->total_price - $payment[$arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->id])?>
+                                                                                    <?php else: ?>
+                                                                                    <?php endif ?>" 
+                                                                                    class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?>"
+                                                                            >
+
+                                                                           <a href="{{url ('/admin/reservas/update')}}/<?php echo $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->id ?>">
+                                                                               <div style="width: 100%;height: 100%">
+                                                                                   &nbsp;
+                                                                               </div>
+                                                                           </a>
+
                                                                         </td>
-                                                                    <?php endif; ?>
-                                                                    <?php if ($inicio->copy()->format('d') != $arrayMonths[$inicio->copy()->format('n')]): ?>
-                                                                        <?php $inicio = $inicio->addDay(); ?>
-                                                                    <?php else: ?>
-                                                                        <?php $inicio = $inicio->startOfMonth() ?>
+
                                                                     <?php endif ?>
-                                                                
-                                                            <?php endfor; ?> 
-                                                        </tr>
-                                                        
-                                                    <?php endforeach; ?>
-                                               </tbody>
-                                            </table>
-                                            <?php $inicio = $inicio->addMonth(); ?>
-                                        </div>
+                                                                <?php else: ?>
+                                                                    <td class="<?php echo $days[$inicio->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
+                                                                        
+                                                                    </td>
+                                                                <?php endif; ?>
+                                                                <?php if ($inicio->copy()->format('d') != $arrayMonths[$inicio->copy()->format('n')]): ?>
+                                                                    <?php $inicio = $inicio->addDay(); ?>
+                                                                <?php else: ?>
+                                                                    <?php $inicio = $inicio->startOfMonth() ?>
+                                                                <?php endif ?>
+                                                            
+                                                        <?php endfor; ?> 
+                                                    </tr>
+                                                    
+                                                <?php endforeach; ?>
+                                           </tbody>
+                                        </table>
+                                        <?php $inicio = $inicio->addMonth(); ?>
                                     </div>
                                 </div>
-                                <?php endfor; ?>
-                                
                             </div>
-                        </div>    
-                    </div>
+                            <?php endfor; ?>
+                            
+                        </div>
+                    </div>    
+                </div>
                 <!-- Seccion Calendario -->
 
                 <!-- Seccion Estadistica -->
-                    <div class="col-md-12 m-t-20">
-                        <div class="row">
-                            <div>
-                                <table class="table table-hover demo-table-search table-responsive " >
+                <div class="col-md-12 m-t-20">
+                    <div class="row">
+                        <div>
+                            <table class="table table-hover demo-table-search table-responsive " >
+                                <thead>
+                                    <th class="text-center bg-complete text-white" colspan="7">Ingresos de la temporada <?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?></th>
+                                </thead>
+                                <thead>
+                                    <th class="text-center bg-complete text-white">&nbsp;</th>
+                                    <th class="text-center bg-complete text-white">Nov/Dic</th>
+                                    <th class="text-center bg-complete text-white">Ene</th>
+                                    <th class="text-center bg-complete text-white">Feb</th>
+                                    <th class="text-center bg-complete text-white">Mar</th>
+                                    <th class="text-center bg-complete text-white">Abr/May</th>
+                                    <th class="text-center bg-complete text-white">Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th class="text-center p-t-5 p-b-5">Ventas</th>
+                                        <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][12],2,',','.')?></td>
+                                        <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][1],2,',','.')?></td>
+                                        <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][2],2,',','.')?></td>
+                                        <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][3],2,',','.')?></td>
+                                        <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][4],2,',','.')?></td>
+                                        <td class="text-center p-t-5 p-b-5"><?php echo number_format(array_sum($ventas["Ventas"]),2,',','.')?></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center p-t-5 p-b-5">Benº</th>
+                                        <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][12],2,',','.')?></td>
+                                        <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][1],2,',','.')?></td>
+                                        <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][2],2,',','.')?></td>
+                                        <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][3],2,',','.')?></td>
+                                        <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][4],2,',','.')?></td>
+                                        <td class="text-center p-t-5 p-b-5"><?php echo number_format(array_sum($ventas["Ben"]),2,',','.')?></td>
+                                    </tr>
                                     <thead>
-                                        <th class="text-center bg-complete text-white" colspan="7">Ingresos de la temporada <?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?></th>
+                                        <th colspan="7" class="ingresos_temp">Ingresos de la temporada <?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?> </th>
                                     </thead>
+                                    <tr>
+                                        <th class="text-center ingresos_temp text-white"></th>
+                                        <th class="text-center ingresos_temp text-white">Nov/Dic</th>
+                                        <th class="text-center ingresos_temp text-white">Ene</th>
+                                        <th class="text-center ingresos_temp text-white">Feb</th>
+                                        <th class="text-center ingresos_temp text-white">Mar</th>
+                                        <th class="text-center ingresos_temp text-white">Abr/May</th>
+                                        <th class="text-center ingresos_temp text-white">Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">Ventas</th>
+                                        <td class="text-center"><?php echo number_format($ventasOld["Ventas"][12],2,',','.') ?></td>
+                                        <td class="text-center"><?php echo number_format($ventasOld["Ventas"][1],2,',','.') ?></td>
+                                        <td class="text-center"><?php echo number_format($ventasOld["Ventas"][2],2,',','.') ?></td>
+                                        <td class="text-center"><?php echo number_format($ventasOld["Ventas"][3],2,',','.') ?></td>
+                                        <td class="text-center"><?php echo number_format($ventasOld["Ventas"][4],2,',','.') ?></td>
+                                        <td class="text-center"><?php echo number_format(array_sum($ventasOld["Ventas"]),2,',','.') ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">Benº</th>
+                                        <td class="text-center"><?php echo number_format($ventasOld["Ben"][12],2,',','.') ?></td>
+                                        <td class="text-center"><?php echo number_format($ventasOld["Ben"][1],2,',','.') ?></td>
+                                        <td class="text-center"><?php echo number_format($ventasOld["Ben"][2],2,',','.') ?></td>
+                                        <td class="text-center"><?php echo number_format($ventasOld["Ben"][3],2,',','.') ?></td>
+                                        <td class="text-center"><?php echo number_format($ventasOld["Ben"][4],2,',','.') ?></td>
+                                        <td class="text-center"><?php echo number_format(array_sum($ventasOld["Ben"]),2,',','.') ?></td>
+                                    </tr>
                                     <thead>
-                                        <th class="text-center bg-complete text-white">&nbsp;</th>
-                                        <th class="text-center bg-complete text-white">Nov/Dic</th>
-                                        <th class="text-center bg-complete text-white">Ene</th>
-                                        <th class="text-center bg-complete text-white">Feb</th>
-                                        <th class="text-center bg-complete text-white">Mar</th>
-                                        <th class="text-center bg-complete text-white">Abr/May</th>
-                                        <th class="text-center bg-complete text-white">Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                        <th colspan="7" class="comparativa bg-primary text-center text-white" >Comparativa de la temporada <?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?> </th>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th class="text-center p-t-5 p-b-5">Ventas</th>
-                                            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][12],2,',','.')?></td>
-                                            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][1],2,',','.')?></td>
-                                            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][2],2,',','.')?></td>
-                                            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][3],2,',','.')?></td>
-                                            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ventas"][4],2,',','.')?></td>
-                                            <td class="text-center p-t-5 p-b-5"><?php echo number_format(array_sum($ventas["Ventas"]),2,',','.')?></td>
-                                        </tr>
-                                        <tr>
-                                            <th class="text-center p-t-5 p-b-5">Benº</th>
-                                            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][12],2,',','.')?></td>
-                                            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][1],2,',','.')?></td>
-                                            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][2],2,',','.')?></td>
-                                            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][3],2,',','.')?></td>
-                                            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas["Ben"][4],2,',','.')?></td>
-                                            <td class="text-center p-t-5 p-b-5"><?php echo number_format(array_sum($ventas["Ben"]),2,',','.')?></td>
-                                        </tr>
-                                        <thead>
-                                            <th colspan="7" class="ingresos_temp">Ingresos de la temporada <?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?> </th>
-                                        </thead>
-                                        <tr>
-                                            <th class="text-center ingresos_temp text-white"></th>
-                                            <th class="text-center ingresos_temp text-white">Nov/Dic</th>
-                                            <th class="text-center ingresos_temp text-white">Ene</th>
-                                            <th class="text-center ingresos_temp text-white">Feb</th>
-                                            <th class="text-center ingresos_temp text-white">Mar</th>
-                                            <th class="text-center ingresos_temp text-white">Abr/May</th>
-                                            <th class="text-center ingresos_temp text-white">Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                                        </tr>
-                                        <tr>
-                                            <th class="text-center">Ventas</th>
-                                            <td class="text-center"><?php echo number_format($ventasOld["Ventas"][12],2,',','.') ?></td>
-                                            <td class="text-center"><?php echo number_format($ventasOld["Ventas"][1],2,',','.') ?></td>
-                                            <td class="text-center"><?php echo number_format($ventasOld["Ventas"][2],2,',','.') ?></td>
-                                            <td class="text-center"><?php echo number_format($ventasOld["Ventas"][3],2,',','.') ?></td>
-                                            <td class="text-center"><?php echo number_format($ventasOld["Ventas"][4],2,',','.') ?></td>
-                                            <td class="text-center"><?php echo number_format(array_sum($ventasOld["Ventas"]),2,',','.') ?></td>
-                                        </tr>
-                                        <tr>
-                                            <th class="text-center">Benº</th>
-                                            <td class="text-center"><?php echo number_format($ventasOld["Ben"][12],2,',','.') ?></td>
-                                            <td class="text-center"><?php echo number_format($ventasOld["Ben"][1],2,',','.') ?></td>
-                                            <td class="text-center"><?php echo number_format($ventasOld["Ben"][2],2,',','.') ?></td>
-                                            <td class="text-center"><?php echo number_format($ventasOld["Ben"][3],2,',','.') ?></td>
-                                            <td class="text-center"><?php echo number_format($ventasOld["Ben"][4],2,',','.') ?></td>
-                                            <td class="text-center"><?php echo number_format(array_sum($ventasOld["Ben"]),2,',','.') ?></td>
-                                        </tr>
-                                        <thead>
-                                            <th colspan="7" class="comparativa bg-primary text-center text-white" >Comparativa de la temporada <?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?> </th>
-                                        </thead>
-                                        <tr>
-                                            <th class="text-center  bg-primary text-white"></th>
-                                            <th class="text-center  bg-primary text-white">Nov/Dic</th>
-                                            <th class="text-center  bg-primary text-white">Ene</th>
-                                            <th class="text-center  bg-primary text-white">Feb</th>
-                                            <th class="text-center  bg-primary text-white">Mar</th>
-                                            <th class="text-center  bg-primary text-white">Abr/May</th>
-                                            <th class="text-center  bg-primary text-white">Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                                        </tr>
-                                        <tr>
-                                            <th class="text-center">Comp. Ventas</th>
-                                            <td class="text-center">
-                                                <?php echo number_format($ventas["Ventas"][12]-$ventasOld["Ventas"][12],2,',','.');
-                                                    echo ($ventas["Ventas"][12]-$ventasOld["Ventas"][12] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                     ?>
-                                            </td>
-                                            <td class="text-center">
-                                                <?php echo number_format($ventas["Ventas"][1]-$ventasOld["Ventas"][1],2,',','.');
-                                                    echo ($ventas["Ventas"][1]-$ventasOld["Ventas"][1] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                     ?>
-                                            </td>
-                                            <td class="text-center">
-                                                <?php echo number_format($ventas["Ventas"][2]-$ventasOld["Ventas"][2],2,',','.');
-                                                    echo ($ventas["Ventas"][2]-$ventasOld["Ventas"][2] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                     ?>
-                                            </td>
-                                            <td class="text-center">
-                                                <?php echo number_format($ventas["Ventas"][3]-$ventasOld["Ventas"][3],2,',','.');
-                                                    echo ($ventas["Ventas"][3]-$ventasOld["Ventas"][3] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                     ?>
-                                            </td>
-                                            <td class="text-center">
-                                                <?php echo number_format($ventas["Ventas"][4]-$ventasOld["Ventas"][4],2,',','.');
-                                                    echo ($ventas["Ventas"][4]-$ventasOld["Ventas"][4] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                     ?>
-                                            </td>
-                                            <td class="text-center">
-                                                <?php echo number_format(array_sum($ventas["Ventas"])-array_sum($ventasOld["Ventas"]),2,',','.');
-                                                    echo (array_sum($ventas["Ventas"])-array_sum($ventasOld["Ventas"]) > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                     ?>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th class="text-center">Comp. Benº</th>
-                                            <td class="text-center">
-                                                <?php echo number_format($ventas["Ben"][12]-$ventasOld["Ben"][12],2,',','.');
-                                                    echo ($ventas["Ben"][12]-$ventasOld["Ben"][12] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                     ?>
-                                            </td>
-                                            <td class="text-center">
-                                                <?php echo number_format($ventas["Ben"][1]-$ventasOld["Ben"][1],2,',','.');
-                                                    echo ($ventas["Ben"][1]-$ventasOld["Ben"][1] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                     ?>
-                                            </td>
-                                            <td class="text-center">
-                                                <?php echo number_format($ventas["Ben"][2]-$ventasOld["Ben"][2],2,',','.');
-                                                    echo ($ventas["Ben"][2]-$ventasOld["Ben"][2] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                     ?>
-                                            </td>
-                                            <td class="text-center">
-                                                <?php echo number_format($ventas["Ben"][3]-$ventasOld["Ben"][3],2,',','.');
-                                                    echo ($ventas["Ben"][3]-$ventasOld["Ben"][3] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                     ?>
-                                            </td>
-                                            <td class="text-center">
-                                                <?php echo number_format($ventas["Ben"][4]-$ventasOld["Ben"][4],2,',','.');
-                                                    echo ($ventas["Ben"][4]-$ventasOld["Ben"][4] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                     ?>
-                                            </td>
-                                            <td class="text-center">
-                                                <?php echo number_format(array_sum($ventas["Ben"])-array_sum($ventasOld["Ben"]),2,',','.');
-                                                    echo (array_sum($ventas["Ben"])-array_sum($ventasOld["Ben"]) > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
-                                                     ?>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                    <tr>
+                                        <th class="text-center  bg-primary text-white"></th>
+                                        <th class="text-center  bg-primary text-white">Nov/Dic</th>
+                                        <th class="text-center  bg-primary text-white">Ene</th>
+                                        <th class="text-center  bg-primary text-white">Feb</th>
+                                        <th class="text-center  bg-primary text-white">Mar</th>
+                                        <th class="text-center  bg-primary text-white">Abr/May</th>
+                                        <th class="text-center  bg-primary text-white">Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">Comp. Ventas</th>
+                                        <td class="text-center">
+                                            <?php echo number_format($ventas["Ventas"][12]-$ventasOld["Ventas"][12],2,',','.');
+                                                echo ($ventas["Ventas"][12]-$ventasOld["Ventas"][12] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                 ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php echo number_format($ventas["Ventas"][1]-$ventasOld["Ventas"][1],2,',','.');
+                                                echo ($ventas["Ventas"][1]-$ventasOld["Ventas"][1] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                 ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php echo number_format($ventas["Ventas"][2]-$ventasOld["Ventas"][2],2,',','.');
+                                                echo ($ventas["Ventas"][2]-$ventasOld["Ventas"][2] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                 ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php echo number_format($ventas["Ventas"][3]-$ventasOld["Ventas"][3],2,',','.');
+                                                echo ($ventas["Ventas"][3]-$ventasOld["Ventas"][3] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                 ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php echo number_format($ventas["Ventas"][4]-$ventasOld["Ventas"][4],2,',','.');
+                                                echo ($ventas["Ventas"][4]-$ventasOld["Ventas"][4] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                 ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php echo number_format(array_sum($ventas["Ventas"])-array_sum($ventasOld["Ventas"]),2,',','.');
+                                                echo (array_sum($ventas["Ventas"])-array_sum($ventasOld["Ventas"]) > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                 ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">Comp. Benº</th>
+                                        <td class="text-center">
+                                            <?php echo number_format($ventas["Ben"][12]-$ventasOld["Ben"][12],2,',','.');
+                                                echo ($ventas["Ben"][12]-$ventasOld["Ben"][12] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                 ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php echo number_format($ventas["Ben"][1]-$ventasOld["Ben"][1],2,',','.');
+                                                echo ($ventas["Ben"][1]-$ventasOld["Ben"][1] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                 ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php echo number_format($ventas["Ben"][2]-$ventasOld["Ben"][2],2,',','.');
+                                                echo ($ventas["Ben"][2]-$ventasOld["Ben"][2] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                 ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php echo number_format($ventas["Ben"][3]-$ventasOld["Ben"][3],2,',','.');
+                                                echo ($ventas["Ben"][3]-$ventasOld["Ben"][3] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                 ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php echo number_format($ventas["Ben"][4]-$ventasOld["Ben"][4],2,',','.');
+                                                echo ($ventas["Ben"][4]-$ventasOld["Ben"][4] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                 ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php echo number_format(array_sum($ventas["Ben"])-array_sum($ventasOld["Ben"]),2,',','.');
+                                                echo (array_sum($ventas["Ben"])-array_sum($ventasOld["Ben"]) > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+                                                 ?>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+                </div>
                 <!-- Seccion Estadistica -->
             </div>
         </div>
