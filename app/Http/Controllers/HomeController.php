@@ -392,6 +392,10 @@ class HomeController extends Controller
         return view('frontend.aviso-legal', [ 'mobile' => new Mobile() ]);
     }
 
+    public function huesped(){
+        return view('frontend.huesped', [ 'mobile' => new Mobile() ]);
+    }
+
 
     public function tiempo()
     {

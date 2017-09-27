@@ -35,6 +35,7 @@ Route::get('/grupos','HomeController@grupos');
 Route::get('/quienes-somos','HomeController@quienesSomos');
 Route::get('/ayudanos-a-mejorar','HomeController@ayudanosAMejorar');
 Route::get('/aviso-legal','HomeController@avisoLegal');
+Route::get('/huesped','HomeController@huesped');
 Route::get('/el-tiempo','HomeController@tiempo');
 
 

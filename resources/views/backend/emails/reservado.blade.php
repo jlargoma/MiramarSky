@@ -12,7 +12,7 @@ Hola "<?php echo $book->customer->name ?>" hemos bloqueado parcialmente un apart
 
 <strong>Una vez recibamos el pago de la señal, el apartamento quedará bloquedo y tu recibiras un email con la confirmación.</strong>
 
-Consulta nuestras condiciones de contratación <a href='http://www.apartamentosierranevada.net/condiciones-contratacion.html'>aquí</a>
+Consulta nuestras condiciones de contratación <a href='http://www.apartamentosierranevada.net/condiciones-generales.html'>aquí</a>
 <br/>Un cordial saludo.
 
 Instrucciones de pago señal reserva: APARTAMENTO MIRAMAR SKI
