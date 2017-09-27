@@ -19,12 +19,22 @@ Route::get('/sitemap','HomeController@siteMap');
 Route::get('/apartamentos/{apto}','HomeController@apartamento');
 Route::get('/edificio-miramarski-sierra-nevada','HomeController@edificio');
 Route::get('/contacto','HomeController@contacto');
-Route::post('/contacto-form','HomeController@formContacto');
-
+//Correos Frontend
+	Route::post('/contacto-form','HomeController@formContacto');
+	Route::post('/contacto-ayuda','HomeController@formAyuda');
+	Route::post('/contacto-propietario','HomeController@formPropietario');
+	Route::post('/contacto-grupos','HomeController@formGrupos');
+// Correos Frontend
 Route::get('/terminos-condiciones','HomeController@terminos');
-Route::get('/politica-cookies','HomeController@politicaPrivacidad');
+Route::get('/politica-cookies','HomeController@politicaCookies');
 Route::get('/politica-privacidad','HomeController@politicaPrivacidad');
 Route::get('/condiciones-generales','HomeController@condicionesGenerales');
+Route::get('/preguntas-frecuentes','HomeController@preguntasFrecuentes');
+Route::get('/eres-propietario','HomeController@eresPropietario');
+Route::get('/grupos','HomeController@grupos');
+Route::get('/quienes-somos','HomeController@quienesSomos');
+Route::get('/ayudanos-a-mejorar','HomeController@ayudanosAMejorar');
+Route::get('/aviso-legal','HomeController@avisoLegal');
 Route::get('/el-tiempo','HomeController@tiempo');
 
 

@@ -11,8 +11,67 @@
 		#primary-menu ul li  a div{
 			text-align: left!important;
 		}
+		#content p {
+		    line-height: 1.2;
+		}
+		.fa-circle{
+			font-size: 10px!important;
+		}
+		#contact-form input{
+				color: black!important;
+			}
+			*::-webkit-input-placeholder {
+		    /* Google Chrome y Safari */
+		    color: rgba(0,0,0,0.85) !important;
+			}
+			*:-moz-placeholder {
+			    /* Firefox anterior a 19 */
+			    color: rgba(0,0,0,0.85) !important;
+			}
+			*::-moz-placeholder {
+			    /* Firefox 19 y superior */
+			    color: rgba(0,0,0,0.85) !important;
+			}
+			*:-ms-input-placeholder {
+			    /* Internet Explorer 10 y superior */
+			    color: rgba(0,0,0,0.85) !important;
+			}
+		@media (max-width: 768px){
+			
+
+			.container-mobile{
+				padding: 0!important
+			}
+			#primary-menu{
+				padding: 40px 15px 0 15px;
+			}
+			#primary-menu-trigger {
+			    color: #3F51B5!important;
+			    top: 5px!important;
+			    left: 5px!important;
+			    border: 2px solid #3F51B5!important;
+			}
+			.container-image-box img{
+				height: 180px!important;
+			}
+
+			#content-form-book {
+				padding: 0px 0 40px 0
+			}
+			.daterangepicker {
+			    top: 135%!important;
+			}
+			.img{
+				max-height: 530px;
+			}
+			.button.button-desc.button-3d{
+				background-color: #4cb53f!important;
+			}
+
+		}
+
 	</style>
-	<section id="content">
+	<section id="content" style="margin-top: 15px">
 
 		<div class="container container-mobile clearfix push-0">
 			<div class="row">
@@ -20,139 +79,160 @@
 			</div>
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center" >
 				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
-					apartamentosierranevada.net es una web de reservas, que ofrece a sus usuarios la posibilidad de reservar un apartamento en Sierra Nevada. <br><br>
+					<a href="{{ url('/') }}">apartamentosierranevada.net</a> es un sitio web titularidad de  Instituto Superior para el desarrollo Empresarial (ISDE ) S.L.<br><br>
 
-					Al hacer uso de nuestra web, el usuario confirma que ha leído, entendido y aceptado el presente contrato de términos y condiciones, así como nuestra política de privacidad, incluyendo el uso de cookies.<br><br>
+					El usuario accede a este sitio web de forma voluntaria. El acceso a este sitio web tiene carácter gratuito. La navegación en este sitio web implica aceptar y conocer las advertencias legales, condiciones y términos de uso y política de privacidad contenidos en él. Si el usuario no está de acuerdo con estas condiciones de uso y no presta su consentimiento, no podrá hacer uso de este sitio web.<br><br>
 
-					<strong>Servicios ofrecidos</strong><br><br>
+					El acceso a este sitio web, así como el uso que pueda hacerse de la información que contiene, son de la exclusiva responsabilidad del usuario. El usuario se compromete a hacer uso del mismo de acuerdo a la finalidad del sitio web<br><br>
 
-					En la web de Apartamentosierranevada.net se ofrece la posibilidad de alquilar diferentes apartamentos en Sierra nevada a través del formulario de reservas.<br><br>
+					El usuario no puede hacer un uso ilícito de la información contenida en esta web, ni llevar a cabo acciones que puedan dañar o alterar los sistemas informáticos de esta web.<br><br>
 
-					apartamentosierranevada.net  no es el proveedor de los servicios de alojamiento: su función se limita a la gestión de las reservas realizadas por terceros.<br><br>
-
-
-					<strong>Privacidad y envío de correos electrónicos</strong><br><br>
-
-					La protección de los datos personales proporcionados por los usuarios es de suma importancia para apartamentosierranevada.net  y, por consiguiente, se velará por el cumplimiento de la normativa correspondiente en materia de protección de datos. <br><br>
-
-					Para obtener más información al respecto, Apartamentosierranevada.net recomienda leer detenidamente su política de privacidad.<br><br>
-
-					apartamentosierranevada.net  , recopilará, tratará y usará los datos que sean necesarios para la prestación de los servicios que ofrece  en  el funcionamiento de la web y para informar de promociones, para lo que el cliente da su consentimiento expreso.<br><br>
+					Queda prohibida la inclusión y comunicación de contenidos, por parte de los usuarios, que sean falsos o inexactos y que induzcan o puedan inducir a error a Siempre Free, S.L. o a otros usuarios o terceros. El usuario será el único responsable de los perjuicios que cause mediante la comunicación de dichos datos.<br><br>
 
 
-					<strong>Condiciones de reserva y pago</strong><br><br>
+					Queda prohibido el uso de datos personales de terceros sin su consentimiento, así como el uso de datos identificativos de terceros con el ánimo de hacerse pasar por o fingir ser cualquier otra persona o entidad.<br><br>
 
-					Ud. podrá efectuar su reserva por Internet o telefónicamente.<br><br>
+					La propiedad realiza los máximos esfuerzos para evitar errores en los contenidos que se publican en el sitio web, reservándose la facultad de poder modificarlos en cualquier momento. <br><br>
 
-					Recibirá una confirmación  de disponibilidad por escrito en el plazo más breve posible.<br><br>
-					 
-					A las 24 horas máximo a contar desde dicha confirmación, deberá abonar un pago a cuenta de un 25% del importe total de la reserva ( este % podría modificarse según del tipo de alojamiento y del propietario). <br><br>
+					ISDE S.L. declina expresamente cualquier responsabilidad por error u omisión en los contenidos de este sitio web y de los daños y perjuicios que puedan deberse a la falta de veracidad, exactitud y actualidad de los mismos.<br><br>
 
-					Al efectuar el primer pago el cliente/inquilino declara al mismo tiempo que ha leído y comprendido las condiciones generales de apartamentosierranevada.net y que acepta las mismas. <br><br>
+					<a href="{{ url('/') }}">www.apartamentosierranevada.net</a> puede ofrecer enlaces a otros sitios web o facilitar su acceso mediante buscadores ubicados en su sitio web. <br><br>
 
-					El 50% deberá ser pagado con una antelación de 15 días a la fecha de entrada , pudiendo abonar el cliente un 25% el día de la entrada en el alojamiento.<br><br>
+					ISDE S.L. no asume ninguna responsabilidad en relación con estos sitios enlazados, ni los resultados de las búsquedas, ya que no tiene ningún tipo de control sobre ellos, su contenido, productos y servicios ofrecidos, etc. <br><br>
 
-					La forma de pago podrá ser mediante transferencia bancaria o en efectivo. <br><br>
+					La finalidad de estos servicios es informar al usuario de otras fuentes de información, por lo que el usuario accede bajo su exclusiva responsabilidad al contenido y en las condiciones de uso que rijan en los mismos.<br><br>
 
-					apartamentosierranevada.net se reserva el derecho de cancelar la reserva, si d no se ha recibido el mencionado pago. <br><br>
+					ISDE SL. no se responsabilizará de ninguna consecuencia, daño o perjuicio que pudieran derivarse del uso de este sitio web o de sus contenidos, incluidos daños informáticos y la introducción de virus. ISDE SL. no garantiza la ausencia de virus ni de otros elementos en el sitio web, introducidos por terceros ajenos, que puedan producir alteraciones en los sistemas físicos o lógicos de los usuarios, pero utiliza todos los medios a su alcance para que esto no suceda.<br><br>
 
-					El cliente recibirá el comprobante de reserva para sus vacaciones una vez pagado el porcentaje solicitado del importe de la reserva.<br><br>
+					ISDE SL se reserva el derecho de modificar o borrar en cualquier momento, sin previo aviso y/o justificación, el diseño, la configuración y la información contenida en este sitio web, si así lo estima oportuno. <br><br>
 
-					<strong>Servicios incluidos y precios </strong><br><br>
+					ISDE S.L. no se hace responsable de los perjuicios que estas modificaciones puedan causar. No obstante utilizará todos los recursos que tenga a su alcance para informar a los usuarios de dichas modificaciones.<br><br>
 
-					Los precios publicados de los alojamientos son siempre precio por noche en base al periodo indicado en cada columna (temporadas). <br><br>
+				</p>
+				<h3>2. Registros y suscripciones</h3>
 
-					La estancia mínima es de 2 noches. Salvo en periodos especiales ( Navidades, que se puede solicitar una estancia mínima superior).<br><br>
+				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
+					
+					El acceso a este sitio web no implica la obligación de facilitar datos personales. No obstante, algunos de los servicios ofrecidos, como la propia reserva de alojamientos, requieren que el usuario facilite una serie de datos personales.<br><br>
 
-					Los gastos extras -como por ejemplo salida fuera de horarios de oficina, pueden o no estar incluidos en el precio, dependiendo de cada alojamiento. <br><br>
-					 
-					<strong>Modificaciones de precios y servicios</strong><br>
+					El usuario se compromete a aportar datos veraces, exactos y completos, tanto en el momento del registro, como en posteriores comunicaciones y se hace responsable de comunicar cualquier modificación en los mismos.<br><br>
 
-					Aunque se ha preparado cuidadosamente las descripciones de los alojamientos y los precios publicados en la web apartamentosierranevada.net, estos pueden en algún caso sufrir alguna modificación que será comunicada en el momento de efectuar la reserva.<br><br>
+					La no cumplimentación de campos indicados como obligatorios, que aparecen en los formularios de reserva y contacto, podrá tener como consecuencia que ISDE S.L. no pueda atender la solicitud del usuario.<br><br>
 
-					Podría darse el caso de que dichas modificaciones se produjeran después de la confirmación de la reserva y que afectaran puntos esenciales del contrato. <br><br>
+					El uso de este sitio web implica la aceptación de las condiciones generales y política de privacidad de ISDE S.L. <br><br>
 
-					En este caso Ud. podrá rescindir el contrato, sin gastos, en el plazo de los 3 días siguientes a dicha comunicación, siéndole reembolsado el pago efectuado.<br><br>
+					Los usuarios podrán solicitar la suscripción a boletines informativos y de ofertas (“newsletter”) de forma voluntaria. Los usuarios podrán solicitar la baja de dichos servicios en el momento que lo deseen dirigiendo un escrito a ISDE S.L. o utilizando cualquier otro medio que la empresa facilite a tal efecto, como por ejemplo el mecanismo denominado “Darse de baja”, ubicado en la parte final de los propios boletines informativos.<br><br>
 
-					<strong>Entradas y salidas </strong><br><br>
-
-					La hora de llegada será entre las 17:00 h y las 19:00 h. <br>
-					La hora de salida antes de las 12:00 am.<br>
-
-					Si Ud. no puede ajustarse a dicho horario deberá contactar con para concertar hora para la entrega de llaves. <br><br>
-
-					Si no puede ocupar el alojamiento durante el día de llegada o en el horario de entrega de llaves por cualquier dificultad durante el viaje o por motivos personales, así como si acorta su estancia, apartamentosierranevada.net, no estará obligado a ealizar reembolso alguno. <br><br>
-
-					Si Ud. desea prolongar la estancia lo deberá solicitar a través de la web tan pronto como le sea posible. <br><br>
-
-					Las entradas y salidas fuera del horario de oficina, tienen un suplemento del 20 € pudiéndose aumentar en fracciones de 10€ cada hora a partir de las 00:00h.<br><br>
-
-					<strong>Anulación del contrato por parte del cliente </strong><br><br>
-
-					El cliente tiene el derecho de cancelar la reserva abonando los gastos siguientes:  25 % del precio total de la reserva con una antelación de 15 días a la fecha de entrada.<br><br>
-
-					Una cancelación se considera efectuada en el momento que apartamentosierranevada.net, ha recibido la notificación por email.<br><br>
-
-					<strong>Modificación o anulación del contrato por nuestra parte</strong><br><br>
-
-					En supuestos de fuerza mayor o imposibilidad sobrevenida del inmueble para el alojamiento del cliente, apartamentosierranevada.net le ofrecerá la posibilidad de optar (cuando ello sea posible) entre sustituir el alojamiento por otro de características similares, o bien cancelar el contrato reembolsando íntegramente el importe total entregado por el cliente.<br><br>
-					 
-
-					<strong>Obligaciones del cliente </strong><br><br>
-
-					La reserva debe estar totalmente desembolsada a la llegada al alojamiento.<br><br>
-
-					La ocupación del alojamiento se limitará al número de personas que se indican en el contrato, contando los niños y bebés también como personas a efectos de la ocupación. <br><br>
-
-					El propietario o el administrador de llaves podrán impedir la entrada al alojamiento en el caso de exceder el número permitido. <br><br>
-
-					Se debe entregar una fianza al administrador de llaves de 300€ por apartamento, según la indicación en la ficha de cada alojamiento y/o en el bono. Dicha cantidad se podrá  abonar en efectivo o con tarjeta.<br><br>
-					 
-					De no pagarse dicha fianza el administrador de llaves se reservará el derecho de prohibir la entrada al alojamiento, y podrá dar lugar a la resolución del contrato con pérdida de las cantidades entregadas. <br><br>
-
-					La fianza le será devuelta íntegramente, siempre y cuando no se hayan ocasionado desperfectos en el alojamiento y Ud. deje el alojamiento en un estado recogido y presentable.<br><br>
-
-					Esto incluye (orientativamente, no limitativamente) que la vajilla debe estar limpia y colocada en su lugar, el frigorífico sin ningún resto de alimento y la basura debe haberse vaciado. <br><br>
-
-					Esto también será válido en caso de que Ud. haya contratado una limpieza final, o bien dicha limpieza esté incluida en el precio de alquiler. <br><br>
-
-					Si el inquilino causara daños en la vivienda por un valor mayor a la fianza entregada tendría que abonar la diferencia sin retraso al recibir el importe total de los daños causados por escrito de apartamentosierranevada.net.<br><br>
-
-					El inquilino debe respetar a los vecinos y las Normas de la Comunidad de Propietarios a la que pertenezca el alojamiento.<br><br> 
-
-					En caso de negligencia o comportamiento inadecuado apartamentosierranevada.net y el propietario se reservan el derecho de anular el contrato de alquiler con efecto inmediato y sin previo aviso así como de no devolver la fianza entregada a la llegada.  En este caso apartamentosierranevada.netno tendrá la obligación de devolver el importe de alquiler pagado por el cliente.<br><br>
-
-					No se admiten animales: ningún tipo de animales de compañía ni mascotas.<br><br>
-
-
-					<strong>Reclamaciones </strong>
-
-					Aunque apartamentosierranevada.net controla rigurosamente sus alojamientos antes de cada cambio de inquilino, podría ocurrir que hubiera algún desperfecto en la vivienda. <br><br>
-
-					En este caso, Ud. deberá comunicárselo inmediatamente y como más tarde 24 horas después de la llegada al administrador de llaves. Si el problema no se puede resolver por esta vía habiendo dejado un tiempo razonable para sanear el defecto, Ud. deberá notificarlo directamente a la oficina de reservas de por e-mail a reservas@apartamentosierranevada.net. <br><br>
-
-					No podemos responsabilizarnos de una reclamación posterior cuando Ud. no haya formulado queja alguna al ocupar el alojamiento, o bien durante su estancia. Cualquier tipo de reclamación, una vez concluida la estancia, deberá llegar a la oficina de reservas en un plazo máximo de 2 semanas. En caso contrario, perderá el derecho a recibir reembolso alguno. En la reclamación deberá constar el nombre y el apellido de la persona que le atendió durante su estancia.<br><br>
-
-					<strong>Responsabilidades del arrendador</strong> ( apartamentosierranevada.net)<br><br>
-
-					Si el alojamiento reservado presenta deficiencias graves sobrevenidas que impidan su uso normal, apartamentosierranevada.net se compromete a buscar una solución alternativa de similares características y precio. <br><br>
-
-					Si ello fuera inviable por falta de alojamientos disponibles o bien porque Ud. rechazara todas las propuestas ofrecidas, se reembolsará la totalidad o parte del importe de la reserva –según el tiempo que se haya disfrutado del alojamiento-, sin que pueda atribuir a apartamentosierranevada.net responsabilidad adicional alguna. <br><br>
-
-					La organización no asumirá responsabilidad alguna en los siguientes casos: <br>
-
-					1. Negligencia u omisión de servicios imputables a terceros. 2. Fallos o funcionamiento incorrecto de piscinas, zonas de juegos para niños e instalaciones deportivas de cualquier tipo quedando el uso de éstas estrictamente bajo la responsabilidad del usuario. 3. Robos en los alojamientos. 4. Daños a las personas o a las cosas ocasionados por causas de fuerza mayor o de contratiempos imprevistos. <br><br>
-
-					La responsabilidad de apartamentosierranevada.net  por tanto, queda limitada a su función de intermediación, de acuerdo con el alcance que esta tenga y sea efectivamente desarrollada, no asumiendo personalmente ninguna de las responsabilidades que, según Ley, corresponden a la propiedad en el alquiler de alojamientos de temporada. En cualquier caso, el “Cliente” acepta que la responsabilidad económica de apartamentosierranevada.net por eventuales perjuicios morales que pudieran ocasionarse como consecuencia de su intermediación, quedará limitada al importe total satisfecho en concepto de alquiler.<br><br>
-
-					<strong>Vigencia y jurisdicción competente</strong><br><br>
-
-					Al efectuar la reserva de un alojamiento entrarán en vigor las condiciones generales arriba indicadas que regirán el contrato de alquiler de alojamiento de temporada existente entre Usted y la Propiedad. apartamentosierranevada.net actúa como intermediaria entre el inquilino y el propietario del alojamiento y es responsable de la correcta ejecución de la mediación, que se efectúa según las leyes vigentes. <br><br>
-
-					Estas condiciones generales junto con los precios indicados se consideran válidas, salvo error tipográfico, desde el 25/11/2015. Las presentes condiciones generales y el contrato entre Ud. y la Propiedad se regirán, interpretarán y se ejecutarán según la ley española sometiéndose a los tribunales de Madrid , España.<br><br>
 
 
 				</p>
+
+				<h3>3. Propiedad intelectual e industrial</h3>
+
+				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
+					
+					Todo el contenido gráfico y la información de la página web <a href="{{ url('/') }}">www.apartamentosierranevada.net</a>, así como el diseño gráfico, las imágenes, las bases de datos y los programas son propiedad exclusiva ISDE S.L., la cual se reserva todos los derechos de explotación.<br><br>
+
+					En ningún caso el acceso o navegación en <a href="{{ url('/') }}">www.apartamentosierranevada.net</a> implica renuncia, transmisión o licencia total o parcial de ISDE S.L.para uso personal al usuario sobre sus derechos de propiedad intelectual e industrial.<br><br>
+
+					La reproducción, distribución, comercialización o transformación no autorizadas de estas obras constituye una infracción de los derechos de propiedad intelectual de ISDE S.L.<br><br>
+
+					El usuario se compromete a no realizar ninguna acción que perjudique la titularidad de este sitio. La utilización no autorizada de la información contenida en este sitio web, así como los perjuicios ocasionados en los derechos de propiedad intelectual e industrial de sus titulares, pueden dar lugar al ejercicio de las acciones que legalmente correspondan y, si procede, a las responsabilidades que de dicho ejercicio se deriven.
+
+				</p>
+
+				<h3>4. Modificaciones</h3>
+
+				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
+					
+					Estas Condiciones podrán sufrir modificaciones cuando ISDE S.L. lo considere oportuno, bien con la finalidad de adecuarse a los cambios legislativos, bien con el fin de llevar a cabo otro tipo de mejoras. Estas modificaciones serán válidas desde su publicación en este sitio web. <br><br>
+						
+					ISDE S.L. utilizará todos los medios a su alcance para dar a conocer a los usuarios de la web los cambios realizados.
+
+				</p>
+				
+				<h3>5. Jurisdicción</h3>
+
+				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
+					
+					Las partes se someten, con renuncia a cualquier otro fuero, a los juzgados y tribunales del domicilio de ISDE S.L..
+
+				</p>
+
+				<h3>6. Política de Privacidad - Protección de datos de carácter personal</h3>
+
+				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
+					
+					En cumplimiento con la Ley Orgánica 15/1999, de 13 de diciembre, sobre Protección de Datos de Carácter Personal (en adelante "LOPD") y su normativa de desarrollo, se informa a los usuarios que los datos de carácter personal que faciliten mediante correo electrónico, enviados a través de formularios web, áreas privadas o por cualquier otro medio ubicado en este sitio web, como la contratación del alojamiento, los servicios adicionales y a lo largo de su relación con la empresa, serán incorporados a ficheros titularidad de ISDE S.L. (Responsable del Fichero), con la finalidad de atender a las consultas y solicitudes recibidas, contactar con usted, gestionar los servicios solicitados, las relaciones comerciales y las funciones legítimas propias de su actividad, así como para el envío de los boletines y noticias a los que se haya podido suscribir y para el envío de futuras comunicaciones comerciales que pudieran ser de su interés. <br><br>
+
+					El tratamiento de sus datos personales se realizará de manera confidencial. ISDE, S.L. está comprometida con la privacidad y la protección de los datos personales de los usuarios y utiliza todos los recursos a su alcance para garantizar la seguridad y privacidad de los interesados.  <br><br>
+
+					ISDE, S.L. cumple con la legislación vigente en Protección de Datos de Carácter Personal, figura inscrita en el Registro General de la Agencia de Protección de Datos y actúa siguiendo las recomendaciones, informes, innovaciones y directrices que ofrecen los diferentes organismos de protección de datos, autonómicos, estatales y europeos y otras autoridades de control. <br><br>
+
+					En su oferta de servicios de alojamiento ISDE S.L. pone a disposición de sus clientes una serie de servicios opcionales, característicos de cada destino, para intentar hacer su estancia lo más agradable posible. Para prestar estos servicios la empresa puede contar con personal propio o con colaboradores externos.  <br><br>
+
+					El cliente que contrata los servicios da su consentimiento expreso a la empresa para que pueda comunicar sus datos (identificativos, de contacto y relativos a los alojamientos y servicios contratados) a las empresas y personas colaboradoras de ISDE, S.L. Sólo aquellos empleados y colaboradores de ISDE, S.L. que necesiten conocer tales datos en orden a la eficaz prestación de cada uno de los servicios solicitados por Vd. podrán tener acceso a los mismos.
+
+
+				</p>
+					
+				<h4>6.1. Recogida de datos de carácter personal</h4>
+
+				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
+					
+					ISDE S.L. recogerá los datos de carácter personal de manera adecuada, pertinente según las finalidades, utilidades, servicios y/o prestaciones incluidas en su web, de forma, además, determinada, explícita y legítima, por lo que en ningún caso se emplearán medios fraudulentos, desleales o, naturalmente, ilícitos o que en alguna forma pongan en peligro los legítimos derechos de los visitantes.<br><br>
+
+					El usuario aporta sus datos personales de forma libre y voluntaria. ISDE S.L. no solicita más información personal que la que es necesaria para recibir el servicio solicitado. El envío de información a través de esta web conlleva necesariamente la autorización expresa para los tratamientos de datos descritos en esta política de privacidad y en las condiciones generales del sitio web.
+
+				</p>
+
+				<h4>6.2. Derechos de los interesados</h4>
+
+				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
+					
+					Puede ejercer los derechos de acceso, rectificación, cancelación y oposición dirigiéndose a ISDE S.L.,  por correo electrónico <a href="mailto:reservas@apartamentosierranevada.net">reservas@apartamentosierranevada.net</a> Las solicitudes deberán adjuntar copia de documento acreditativo de la identidad del solicitante.
+
+				</p>
+				
+				<h4>6.3. Medidas de seguridad</h4>
+
+				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
+					
+					ISDE S.L. tratará los datos de carácter personal contenidos en sus ficheros adoptando las medidas de índole técnica y organizativa que sean necesarias para garantizar su seguridad y evitar su alteración, pérdida, tratamiento o acceso no autorizado, habida cuenta del estado de la tecnología, la naturaleza de los datos almacenados y los riesgos a que están expuestos, ya provengan de la acción humana o del medio físico o natural, de acuerdo con la legislación vigente que resulte de aplicación en materia de medidas de seguridad de los ficheros que contengan datos de carácter personal, particularmente por la LOPD y su normativa de desarrollo. <br><br>
+
+					Sin embargo, los usuarios son informados de que las medidas de seguridad informática no son inexpugnables y no se está a salvo de posibles intromisiones ilegales e indebidas, que no serían responsabilidad de ISDE S.L.
+
+
+				</p>
+
+				<h4>6.4. Datos de Tráfico y Cookies</h4>
+
+				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
+					
+					Para la utilización de nuestro sitio web es necesario la utilización de cookies, es decir, pequeños ficheros de datos que se generan en el ordenador del usuario y que permiten el correcto funcionamiento de la web (selección de idioma, parámetros de búsquedas, etc.) y que desaparecen al terminar la conexión. Si lo deseas puedes configurar tu navegador para ser avisado en pantalla de la recepción de cookies y para impedir la instalación de cookies en tu disco duro.  <br><br>
+
+					Por favor, consulta las instrucciones y manuales de tu navegador para ampliar esta información. La información obtenida es totalmente anónima y, en ningún caso, puede ser asociada a un usuario concreto e identificado. <br><br>
+
+					Asimismo, y con la finalidad de ofrecer un mejor servicio a través de este sitio, <a href="{{ url('/') }}">www.apartamentosierranevada.net</a> registra la dirección IP, permitiéndose así el posterior procesamiento de los datos con el fin de analizar el número de páginas visitadas, el número de visitas, así como la actividad de los visitantes de la web, y su frecuencia de utilización. <br><br>
+
+					Con la finalidad ya mencionada, este sitio está siendo medido y analizado con Google Analytics y/o herramientas similares, que pueden utilizar marcas en las páginas y cookies para analizar lo que sucede en las diferentes páginas del sitio web de ISDE S.L.
+
+
+				</p>
+
+				<h4>6.5. Vigencia</h4>
+
+				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
+					
+					ISDE, S.L. se reserva el derecho de modificar su política de privacidad de acuerdo a su criterio, a cambios legislativos o jurisprudenciales. <br><br>
+					
+					Si ISDE, S.L. introdujera alguna modificación, el nuevo texto será publicado en este mismo sitio web, donde el usuario podrá tener conocimiento de la misma. <br><br>
+					
+					En cualquier caso, la relación con los usuarios se regirá por las normas previstas en el momento preciso en que se accede al sitio web. Es por ello que ISDE S.L. le recomienda visitar esta política de privacidad de forma periódica.
+
+
+				</p>
+
 			</div>
 	</section>
 	

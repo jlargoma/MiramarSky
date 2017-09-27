@@ -101,34 +101,111 @@ class HomeController extends Controller
 
         // return view('frontend.pages._edificio');
     }
+
     public function contacto(){
         return view('frontend.contacto', ['mobile' => new Mobile(),]);
     }
 
-    public function formContacto(Request $request){
-        
-        $data['name']    = $request->input('name');
-        $data['email']   = $request->input('email');
-        $data['phone']   = $request->input('phone');
-        $data['subject'] = $request->input('subject');
-        $data['message'] = $request->input('message');
+    // Correos frontend
+        public function formContacto(Request $request){
+            
+            $data['name']    = $request->input('name');
+            $data['email']   = $request->input('email');
+            $data['phone']   = $request->input('phone');
+            $data['subject'] = $request->input('subject');
+            $data['message'] = $request->input('message');
 
 
-        $contact = Mail::send(['html' => 'frontend.emails.contact'],[ 'data' => $data,], function ($message) use ($data) {
-            $message->from($data['email'], $data['name']);
-            $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */
-            $message->bcc('jlargo@mksport.es');
-            $message->bcc('jlargoma@gmail.com');
-            $message->subject('Formulario de contacto MiramarSKI');
-        });
+            $contact = Mail::send(['html' => 'frontend.emails.contact'],[ 'data' => $data,], function ($message) use ($data) {
+                $message->from($data['email'], $data['name']);
+                $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */
+                $message->bcc('jlargo@mksport.es');
+                $message->bcc('jlargoma@gmail.com');
+                $message->subject('Formulario de contacto MiramarSKI');
+            });
 
-        if ( $contact ) {
-            return view('frontend.contacto', ['mobile' => new Mobile(),'contacted' => 1]);
-        }else{
-            return view('frontend.contacto', ['mobile' => new Mobile(),'contacted' => 0]);
+            if ( $contact ) {
+                return view('frontend.contacto', ['mobile' => new Mobile(),'contacted' => 1]);
+            }else{
+                return view('frontend.contacto', ['mobile' => new Mobile(),'contacted' => 0]);
 
+            }
         }
-    }
+
+        public function formAyuda(Request $request){
+            
+            $data['name']    = $request->input('name');
+            $data['email']   = $request->input('email');
+            $data['phone']   = $request->input('phone');
+            $data['subject'] = $request->input('subject');
+            $data['message'] = $request->input('message');
+
+            $contact = Mail::send(['html' => 'frontend.emails.ayuda'],[ 'data' => $data,], function ($message) use ($data) {
+                $message->from($data['email'], $data['name']);
+                $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */
+                // $message->bcc('jlargo@mksport.es');
+                // $message->bcc('jlargoma@gmail.com');
+                $message->subject('Formulario de Ayudanos a Mejorar MiramarSKI');
+            });
+
+            if ( $contact ) {
+                return view('frontend.ayudanos-a-mejorar', ['mobile' => new Mobile(),'contacted' => 1]);
+            }else{
+                return view('frontend.ayudanos-a-mejorar', ['mobile' => new Mobile(),'contacted' => 0]);
+
+            }            
+        }
+
+        public function formPropietario(Request $request){
+            
+            $data['name']    = $request->input('name');
+            $data['email']   = $request->input('email');
+            $data['phone']   = $request->input('phone');
+            $data['subject'] = $request->input('subject');
+            $data['message'] = $request->input('message');
+
+            $contact = Mail::send(['html' => 'frontend.emails.propietario'],[ 'data' => $data,], function ($message) use ($data) {
+                $message->from($data['email'], $data['name']);
+                $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */
+                // $message->bcc('jlargo@mksport.es');
+                // $message->bcc('jlargoma@gmail.com');
+                $message->subject('Formulario de Propietario MiramarSKI');
+            });
+
+            if ( $contact ) {
+                return view('frontend.eres-propietario', ['mobile' => new Mobile(),'contacted' => 1]);
+            }else{
+                return view('frontend.eres-propietario', ['mobile' => new Mobile(),'contacted' => 0]);
+
+            }
+        }
+
+        public function formGrupos(Request $request){
+            
+            $data['name']    = $request->input('name');
+            $data['email']   = $request->input('email');
+            $data['phone']   = $request->input('phone');
+            $data['destino'] = $request->input('destino');
+            $data['personas'] = $request->input('personas');
+            $data['message'] = $request->input('message');
+
+            $contact = Mail::send(['html' => 'frontend.emails.grupos'],[ 'data' => $data,], function ($message) use ($data) {
+                $message->from($data['email'], $data['name']);
+                $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */
+                // $message->to('jbaz@daimonconsulting.com'); /* $data['email'] */
+                // $message->bcc('jlargo@mksport.es');
+                // $message->bcc('jlargoma@gmail.com');
+                $message->subject('Formulario de Grupos MiramarSKI');
+            });
+
+            if ( $contact ) {
+                return view('frontend.grupos', ['mobile' => new Mobile(),'contacted' => 1]);
+            }else{
+                return view('frontend.grupos', ['mobile' => new Mobile(),'contacted' => 0]);
+
+            }
+        }
+    // Correos frontend
 
 
     static function getPriceBook(Request $request){
@@ -264,9 +341,7 @@ class HomeController extends Controller
         } else {
             return view('frontend.bookStatus.bookError');
         }
-        
-
-        
+              
     }
 
     public function form()
@@ -283,9 +358,39 @@ class HomeController extends Controller
         return view('frontend.privacidad', [ 'mobile' => new Mobile() ]);
     }
 
+    public function politicaCookies(){
+        return view('frontend.cookies', [ 'mobile' => new Mobile() ]);
+    }
+
+
     public function condicionesGenerales(){
         return view('frontend.condiciones-generales', [ 'mobile' => new Mobile() ]);
     }
+
+    public function preguntasFrecuentes(){
+        return view('frontend.preguntas-frecuentes', [ 'mobile' => new Mobile() ]);
+    }
+
+    public function eresPropietario(){
+        return view('frontend.eres-propietario', [ 'mobile' => new Mobile() ]);
+    }
+
+    public function grupos(){
+        return view('frontend.grupos', [ 'mobile' => new Mobile() ]);
+    }
+
+    public function quienesSomos(){
+        return view('frontend.quienes-somos', [ 'mobile' => new Mobile() ]);
+    }
+
+    public function ayudanosAMejorar(){
+        return view('frontend.ayudanos-a-mejorar', [ 'mobile' => new Mobile() ]);
+    }
+
+    public function avisoLegal(){
+        return view('frontend.aviso-legal', [ 'mobile' => new Mobile() ]);
+    }
+
 
     public function tiempo()
     {

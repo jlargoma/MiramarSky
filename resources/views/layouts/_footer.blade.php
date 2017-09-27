@@ -16,7 +16,7 @@
 					</ul>
 				</div>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-2">
 			    <div class="block footer-block block">
     				<h4 class="title_block push-10 black font-w800 center">
 						APARTAMENTOS
@@ -32,27 +32,41 @@
 			<div class="col-md-3">
 			    <div class="block footer-block block">
     				<h4 class="title_block push-10 black font-w800 center">
-						AYUDA Y MÁS
+						SOBRE TU RESERVA
 					</h4>
 					<ul class="toggle-footer list-group bullet center" style="list-style: none;">
-						<li><a href="{{ url('/terminos-condiciones') }}" style="color: #666">Términos y condiciones</a></li>
-						<li><a href="{{ url('/politica-cookies') }}" style="color: #666">Política de cookies</a></li>
-						<li><a href="{{ url('/politica-privacidad') }}" style="color: #666">Política de privacidad</a></li>
+						<li><a href="{{url('/condiciones-generales')}}" style="color: #666">Condiciones Generales</a></li>
+						<li><a href="{{url('/preguntas-frecuentes')}}" style="color: #666">Preguntas Frecuentes</a></li>
+						<li><a href="{{url('/eres-propietario')}}" style="color: #666">¿Eres Propietario?</a></li>
+						<li><a href="{{url('/grupos')}}" style="color: #666">Grupos</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-2">
+			    <div class="block footer-block block">
+    				<h4 class="title_block push-10 black font-w800 center">
+						ACERCA DE NOSOTROS
+					</h4>
+					<ul class="toggle-footer list-group bullet center" style="list-style: none;">
+						<li><a href="#" data-toggle="modal" data-target=".mapa" style="cursor: pointer;color: black;color: #666">
+								<i class="fa fa-map-marker "></i> Como llegar
+							</a></li>
+						<li><a href="{{ url('/contacto') }}" style="color: #666">Contacta</a></li>
+						<li><a href="{{ url('/quienes-somos') }}" style="color: #666">Quienes Somos</a></li>
+						<li><a href="{{ url('/ayudanos-a-mejorar') }}" style="color: #666">Ayudanos a Mejorar</a></li>
 						<!-- <li><a href="#" style="color: #666">Preguntas frecuentes</a></li> -->
 					</ul>
 				</div>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-2">
 			    <div class="block footer-block block">
     				<h4 class="title_block push-10 black font-w800 center">
-						COMO LLEGAR
+						Informacion Legal
 					</h4>
 					<ul class="toggle-footer list-group bullet center" style="list-style: none;">
-						<li>
-							<a href="#" data-toggle="modal" data-target=".mapa" style="cursor: pointer;color: black;color: #666">
-								<i class="fa fa-map-marker "></i> Ubicación GPS
-							</a>
-						</li>
+						<li><a href="{{ url('/politica-privacidad') }}" style="color: #666">Politica de privacidad</a></li>
+						<li><a href="{{ url('/aviso-legal') }}" style="color: #666">Aviso Legal</a></li>
+						<li><a href="{{ url('/politica-cookies') }}" style="color: #666">Politica de Cookies</a></li>
 					</ul>
 
 				</div>
