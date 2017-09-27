@@ -50,13 +50,6 @@
 		          	<table bgcolor="#ffffff" class="content" align="center" cellpadding="0" cellspacing="0" border="0">
 		          		<tr>
 		          			<td bgcolor="#3F51B5" class="header">
-		          				<table width="70" align="left" border="0" cellpadding="0" cellspacing="0">  
-		          					<tr>
-		          						<td height="70" style="padding: 0 20px 20px 0;">
-		          							<img class="fix" src="{{asset('emails/images/icon.gif')}}" width="70" height="70" border="0" alt="" />
-		          						</td>
-		          					</tr>
-		          				</table>
 				                <!--[if (gte mso 9)|(IE)]>
 				                    <table width="425" align="left" cellpadding="0" cellspacing="0" border="0">
 				                      <tr>
@@ -113,7 +106,7 @@
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 									<tr>
 										<td align="center" class="footercopy" style="color: #FFF">
-											&reg; Apartamentosierranevada.net, Copyright 2014<br/>
+											&reg; Apartamentosierranevada.net, Copyright <?php echo date('Y') ?><br/>
 										</td>
 									</tr>
 								</table>
