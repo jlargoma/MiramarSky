@@ -210,8 +210,9 @@ class HomeController extends Controller
 
     static function getPriceBook(Request $request){
 
+        $aux = str_replace('Abr', 'Apr', $request->input('fechas'));
 
-        $date = explode('-', $request->input('fechas'));
+        $date = explode('-', $aux);
        
         $start = Carbon::createFromFormat('d M, y' , trim($date[0]));
         $finish = Carbon::createFromFormat('d M, y' , trim($date[1]));
