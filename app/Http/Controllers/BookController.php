@@ -452,14 +452,14 @@ class BookController extends Controller
                 $book->type_book = $request->status;
 
                 if ($book->save()) {
-                    return "Actualizado";
+                    return 1;
                 }else{
-                    return "Error, al aintentar cambiar el estado";
+                    return 0;
                 }
 
             }else{
 
-                return "Error, Ya hay una reserva para ese apartamento";
+                return 2;
             }
 
         }
