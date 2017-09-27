@@ -209,7 +209,9 @@ class BookController extends Controller
     public function create(Request $request)
     {
 
-        $date = explode('-', $request->input('fechas'));
+        $aux = str_replace('Abr', 'Apr', $request->input('fechas'));
+
+        $date = explode('-', $aux);
 
         $start = Carbon::createFromFormat('d M, y' , trim($date[0]))->format('d/m/Y');
         $finish = Carbon::createFromFormat('d M, y' , trim($date[1]))->format('d/m/Y');
@@ -563,7 +565,9 @@ class BookController extends Controller
     //Funcion para actualizar la reserva
         public function saveUpdate(Request $request, $id)
             {
-                $date = explode('-', $request->input('fechas'));
+                $aux = str_replace('Abr', 'Apr', $request->input('fechas'));
+
+                $date = explode('-', $aux);
 
                 $start = Carbon::createFromFormat('d M, y' , trim($date[0]))->format('d/m/Y');
                 $finish = Carbon::createFromFormat('d M, y' , trim($date[1]))->format('d/m/Y');

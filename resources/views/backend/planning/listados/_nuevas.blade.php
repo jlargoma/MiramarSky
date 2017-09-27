@@ -247,10 +247,15 @@
                 var date = $('.daterange1').val();
 
                 var arrayDates = date.split('-');
-                var date1 = new Date(arrayDates[0]);
-                var date2 = new Date(arrayDates[1]);
+                var res1 = arrayDates[0].replace("Abr", "Apr");
+                var date1 = new Date(res1);
+                var start = date1.getTime();
+
+                var res2 = arrayDates[1].replace("Abr", "Apr");
+                var date2 = new Date(res2);
                 var timeDiff = Math.abs(date2.getTime() - date1.getTime());
                 var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                $('.nigths').val(diffDays);
                 
                 var start = date1.toLocaleDateString();
                 var finish = date2.toLocaleDateString();
@@ -324,11 +329,12 @@
                 var date = $(this).val();
 
                 var arrayDates = date.split('-');
-
-                var date1 = new Date(arrayDates[0]);
+                var res1 = arrayDates[0].replace("Abr", "Apr");
+                var date1 = new Date(res1);
                 var start = date1.getTime();
 
-                var date2 = new Date(arrayDates[1]);
+                var res2 = arrayDates[1].replace("Abr", "Apr");
+                var date2 = new Date(res2);
                 var timeDiff = Math.abs(date2.getTime() - date1.getTime());
                 var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
                 $('.nigths').val(diffDays);

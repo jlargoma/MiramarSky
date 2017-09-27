@@ -114,9 +114,13 @@
                             <label>Entrada</label>
                             <div class="input-prepend input-group">
                                 
-                                <?php $start = Carbon::createFromFormat('Y-m-d', $book->start); ?>
-                                <?php $finish = Carbon::createFromFormat('Y-m-d', $book->finish); ?>
-                                <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;" value="<?php echo $start->format('d M, y') ?> - <?php echo $finish->format('d M, y') ?>" readonly="">
+
+                                <?php $start = Carbon::createFromFormat('Y-m-d', $book->start);
+                                        $start1 = str_replace('Apr','Abr',$start->format('d M, y')); ?>
+                                <?php $finish = Carbon::createFromFormat('Y-m-d', $book->finish); 
+                                        $finish1 = str_replace('Apr','Abr',$finish->format('d M, y')); ?>
+
+                                <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;" value="<?php echo $start1 ;?> - <?php echo $finish1 ?>" readonly="">
 
                             </div>
                         </div>
@@ -436,8 +440,12 @@
                 var date = $('.daterange1').val();
 
                 var arrayDates = date.split('-');
-                var date1 = new Date(arrayDates[0]);
-                var date2 = new Date(arrayDates[1]);
+                var res1 = arrayDates[0].replace("Abr", "Apr");
+                var date1 = new Date(res1);
+                var start = date1.getTime();
+
+                var res2 = arrayDates[1].replace("Abr", "Apr");
+                var date2 = new Date(res2);
                 var timeDiff = Math.abs(date2.getTime() - date1.getTime());
                 var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
                 
@@ -513,11 +521,12 @@
                 var date = $(this).val();
 
                 var arrayDates = date.split('-');
-
-                var date1 = new Date(arrayDates[0]);
+                var res1 = arrayDates[0].replace("Abr", "Apr");
+                var date1 = new Date(res1);
                 var start = date1.getTime();
 
-                var date2 = new Date(arrayDates[1]);
+                var res2 = arrayDates[1].replace("Abr", "Apr");
+                var date2 = new Date(res2);
                 var timeDiff = Math.abs(date2.getTime() - date1.getTime());
                 var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
                 $('.nigths').val(diffDays);
