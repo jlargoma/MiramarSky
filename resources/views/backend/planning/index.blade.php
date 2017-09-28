@@ -113,11 +113,11 @@
             background: #99bce7 !important;
         }
         .Reservado,.table.table-striped tbody tr.Reservado td {
-            background-color: rgba(0,100,255,0.2)  !important;
+            background-color: rgba(0,200,10,0.2)  !important;
             color: black;
         }
         .table.table-striped tbody tr.Reservado td select.minimal{
-            background-color: rgba(0,100,255,0.0)  !important;
+            background-color: rgba(0,200,10,0.0)  !important;
             color: black!important;
             font-weight: bold!important;
         }
@@ -596,7 +596,7 @@
                         if (data == "Ya hay una reserva para ese apartamento" || data == "No se puede cambiar el estado") {
                             
                         }else{
-                            // setTimeout('document.location.reload()',5000);
+                            setTimeout('document.location.reload()',2000);
                         }                        
                    }); 
                 }
