@@ -14984,16 +14984,16 @@ p.text {
 	.dark #primary-menu:not(.not-dark) ul ul,
 	.dark #primary-menu:not(.not-dark) ul li .mega-menu-content,
 	#primary-menu.dark ul ul,
-	#primary-menu.dark ul li .mega-menu-content { background-color: #2C3E50; }
+	#primary-menu.dark ul li .mega-menu-content { background-color: #FFF; }
 
 	.dark #primary-menu:not(.not-dark) ul ul li > a,
-	#primary-menu.dark ul ul li > a { color: #CCC !important; }
+	#primary-menu.dark ul ul li > a { color: #000 !important; }
 
 	.dark #primary-menu:not(.not-dark) ul ul li:hover > a,
 	#primary-menu.dark ul ul li:hover > a {
 		background-color: rgba(255,255,255,0.025);
-		color: #F0AD4E !important;
-		border-radius: 3px;
+		color: #2C3E50 !important;
+		border-radius: 0px;
 	}
 
 }

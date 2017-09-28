@@ -81,21 +81,22 @@
 							<li class="mega-menu"><a href="#"><div>Apartamentos</div></a>
 								<div class="mega-menu-content style-2 clearfix">
 									<ul class="mega-menu-column col-md-6">
-										<li class="mega-menu-title"><a href="#" class="font-w600 green"><div>Apartamentos</div></a>
+										<li class="mega-menu-title">
+
 											<ul>
 												
 												<li>
-													<a class="font-w600" href="{{ url('/apartamentos/apartamento-lujo-sierra-nevada')}}"><div>Apartamento de lujo</div></a>
+													<a class="font-w600" href="{{ url('/apartamentos/apartamento-lujo-sierra-nevada')}}"><div>Apartamento 2 DORM de lujo</div></a>
 												</li>
 
 												<li>
-													<a class="font-w300" href="{{ url('/apartamentos/apartamento-standard-sierra-nevada')}}"><div>Apartamento Standard</div></a>
+													<a class="font-w300" href="{{ url('/apartamentos/apartamento-standard-sierra-nevada')}}"><div>Apartamento 2 DORM Standard</div></a>
 												</li>
 											</ul>
 										</li>
 									</ul>
 									<ul class="mega-menu-column col-md-6">
-										<li class="mega-menu-title"><a href="#" class="font-w600 green"><div>Estudios</div></a>
+										<li class="mega-menu-title">
 											<ul>
 												<li>
 													<a class="font-w300" href="{{ url('/apartamentos/estudio-lujo-sierra-nevada')}}"><div>Estudio de lujo</div></a>
