@@ -466,7 +466,6 @@
                         $('.pax').removeAttr('style');
                     }
                 });
-                alert(status);
                 if ( status == 8) {
                     $('.total').empty();
                     $('.total').val(0);
@@ -641,7 +640,7 @@
 
             $('.status').change(function(event) {
 
-                calculate();
+
 
                 $('.content-alert-success').hide();
                 $('.content-alert-error1').hide();
@@ -673,6 +672,22 @@
            });
 
 
+        });
+
+        $('.cobrar').click(function(event){ 
+            var id = $(this).attr('data-id');
+            var date = $('.fecha-cobro').val();
+            var importe = $('.importe').val();
+            var comment = $('.comment').val();
+            var type = $('.type_payment').val();
+            if (importe == 0) {
+
+            }else{
+                $.get('/admin/pagos/create', {id: id, date: date, importe: importe, comment: comment, type: type}).success(function( data ) {
+                    window.location.reload();
+                });
+            }
+            
         });
 
 
