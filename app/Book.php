@@ -98,41 +98,75 @@ class Book extends Model
                 return $agency = $array[$agency];
             }
 
-    //Para comprobar el dia de la reserva en el calendario
+        //Para comprobar el dia de la reserva en el calendario
         static function existDate($start,$finish,$room)
-            {   
+        {   
 
-            	if ($room >= 5) {
+        	if ($room >= 5) {
 
-                    $books = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,7,8])->get();
-                    $existStart = False;
-                    $existFinish = False;        
-                    $requestStart = Carbon::createFromFormat('d/m/Y',$start);
-                    $requestFinish = Carbon::createFromFormat('d/m/Y',$finish);
-                    
-                    foreach ($books as $book) {
-                        if ($existStart == False && $existFinish == False) {
-                            $start = Carbon::createFromFormat('Y-m-d', $book->start);
-                            $finish = Carbon::createFromFormat('Y-m-d', $book->finish);                
-                            $existStart = Carbon::create($requestStart->year,$requestStart->month,$requestStart->day)->between($start, $finish);
-                            $existFinish = Carbon::create($requestFinish->year,$requestFinish->month,$requestFinish->day)->between($start, $finish);
-                        }
-                        else{
-                            break;
-                        }
-                    }
+                $books = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,7,8])->get();
+                $existStart = False;
+                $existFinish = False;        
+                $requestStart = Carbon::createFromFormat('d/m/Y',$start);
+                $requestFinish = Carbon::createFromFormat('d/m/Y',$finish);
+                
+                foreach ($books as $book) {
                     if ($existStart == False && $existFinish == False) {
-                        return True;
-                    }else{
-                        return False;
+                        $start = Carbon::createFromFormat('Y-m-d', $book->start);
+                        $finish = Carbon::createFromFormat('Y-m-d', $book->finish);                
+                        $existStart = Carbon::create($requestStart->year,$requestStart->month,$requestStart->day)->between($start, $finish);
+                        $existFinish = Carbon::create($requestFinish->year,$requestFinish->month,$requestFinish->day)->between($start, $finish);
                     }
-
+                    else{
+                        break;
+                    }
+                }
+                if ($existStart == False && $existFinish == False) {
+                    return True;
                 }else{
-                    return true;
-                }   
-            }
+                    return False;
+                }
 
-    // Funcion para comprobar el precio de la reserva
+            }else{
+                return true;
+            }   
+        }
+
+
+        static function existDateOverrride($start,$finish,$room, $id_excluded)
+        {   
+
+            if ($room >= 5) {
+
+                $books = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,7,8])->where('id','!=',$id_excluded)->get();
+                $existStart = False;
+                $existFinish = False;        
+                $requestStart = Carbon::createFromFormat('d/m/Y',$start);
+                $requestFinish = Carbon::createFromFormat('d/m/Y',$finish);
+                
+                foreach ($books as $book) {
+                    if ($existStart == False && $existFinish == False) {
+                        $start = Carbon::createFromFormat('Y-m-d', $book->start);
+                        $finish = Carbon::createFromFormat('Y-m-d', $book->finish);                
+                        $existStart = Carbon::create($requestStart->year,$requestStart->month,$requestStart->day)->between($start, $finish);
+                        $existFinish = Carbon::create($requestFinish->year,$requestFinish->month,$requestFinish->day)->between($start, $finish);
+                    }
+                    else{
+                        break;
+                    }
+                }
+                if ($existStart == False && $existFinish == False) {
+                    return True;
+                }else{
+                    return False;
+                }
+
+            }else{
+                return true;
+            }   
+        }
+
+        // Funcion para comprobar el precio de la reserva
         static function getPriceBook($start,$finish,$pax,$room)
             {   
 

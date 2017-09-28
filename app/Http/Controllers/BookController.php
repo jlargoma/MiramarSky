@@ -473,7 +473,7 @@ class BookController extends Controller
 
             if (in_array($request->status , [1, 2, 4, 5, 7, 8])) {
                 
-                if ($book->existDate($start->format('d/m/Y'), $finish->format('d/m/Y'), $book->room_id)) {
+                if ($book->existDateOverrride($start->format('d/m/Y'), $finish->format('d/m/Y'), $book->room_id, $id)) {
                     $isReservable = 1;
                 }
 
