@@ -262,7 +262,7 @@
                                                 <?php foreach ($roomscalendar as $room): ?>
                                                     <tr>
                                                         <?php $inicio = $inicio->startOfMonth() ?>
-                                                        <td class="text-center"><b><?php echo substr($room->nameRoom, 0,5)?></b></td>
+                                                        <td class="text-center"><b title="<?php echo $room->name ?>"><?php echo substr($room->nameRoom, 0,5)?></b></td>
                                                             
                                                         <?php for ($i=01; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
 

@@ -10,9 +10,9 @@
                     <th class ="text-center Pagada-la-señal text-white" style="width: 10%!important">   Telefono     </th>
                     <th class ="text-center Pagada-la-señal text-white" style="width: 7%!important">   Pax         </th>
                     <th class ="text-center Pagada-la-señal text-white" style="width: 10%!important">   Apart       </th>
+                    <th class ="text-center Pagada-la-señal text-white" style="width: 5%!important">  <i class="fa fa-moon-o"></i> </th>
                     <th class ="text-center Pagada-la-señal text-white" style="width: 6%!important">   IN     </th>
                     <th class ="text-center Pagada-la-señal text-white" style="width: 8%!important">   OUT      </th>
-                    <th class ="text-center Pagada-la-señal text-white" style="width: 5%!important">  <i class="fa fa-moon-o"></i> </th>
                     <th class ="text-center Pagada-la-señal text-white" style="width: 17%!important">   Precio      </th>
                     <th class ="text-center Pagada-la-señal text-white" style="width: 17%!important">   Estado      </th>
                 </tr>
@@ -41,6 +41,7 @@
 
                                 </select>
                             </td>
+                            <td class ="text-center"><?php echo $book->nigths ?></td>
                             <td class ="text-center" style="width: 20%!important">
                                 <?php
                                     $start = Carbon::createFromFormat('Y-m-d',$book->start);
@@ -53,7 +54,7 @@
                                     echo $finish->formatLocalized('%d %b');
                                 ?>
                             </td>
-                            <td class ="text-center"><?php echo $book->nigths ?></td>
+                            
                             <td class ="text-center">
                                 <div class="col-md-6">
                                     <?php echo $book->total_price."€" ?><br>
@@ -69,7 +70,7 @@
                                         <b style="color: red;font-weight: bold">0%</b>
                                         </div>
                                     <?php else:?>
-                                        <div class="col-md-5 bg-success ">
+                                        <div class="col-md-5 ">
                                             <p class="text-white m-t-10"><b style="color: red;font-weight: bold"><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></b></p>
                                         </div> 
                                                                                                    
