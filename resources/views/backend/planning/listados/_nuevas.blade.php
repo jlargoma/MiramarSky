@@ -146,7 +146,7 @@
                         <input type="text" class="agencia form-control" name="agencia">
                     </div>
                     <div style="clear: both;"></div>
-                    <!-- <div class="col-md-6">
+                    <div class="col-md-6">
                         <label>Extras</label>
                         <select class="full-width form-control select2-hidden-accessible " data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true" style="cursor: pointer">
                             <?php // foreach ($extras as $extra): ?>
@@ -155,7 +155,7 @@
                                 </option>
                             <?php // endforeach ?>
                         </select>
-                    </div> -->
+                    </div>
                 </div>
                 <div class="col-xs-8 not-padding">
                     <div class="col-md-4 col-xs-12 text-center" style="background-color: #0c685f;">
@@ -283,10 +283,10 @@
 
                     if (pax < data) {
                         $('.pax').attr('style' , 'background-color:red');
-                        // $('.book_comments').empty();
+                        $('.book_comments').empty();
                         $('.book_comments').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
                     }else{
-                        // $('.book_comments').empty();
+                        $('.book_comments').empty();
                         $('.pax').removeAttr('style');
                     }
                 });
@@ -410,9 +410,6 @@
                 calculate();
             });
 
-            $("select[name=status]").change(function(){
-                calculate();
-            });
 
             $('.pax').change(function(event){ 
                 calculate();

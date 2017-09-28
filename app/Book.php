@@ -104,7 +104,7 @@ class Book extends Model
 
         	if ($room >= 5) {
 
-                $books = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,7,8])->get();
+                $books = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,7,8])->get();
                 $existStart = False;
                 $existFinish = False;        
                 $requestStart = Carbon::createFromFormat('d/m/Y',$start);
@@ -138,7 +138,7 @@ class Book extends Model
 
             if ($room >= 5) {
 
-                $books = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,7,8])->where('id','!=',$id_excluded)->get();
+                $books = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,7,8])->where('id','!=',$id_excluded)->get();
                 $existStart = False;
                 $existFinish = False;        
                 $requestStart = Carbon::createFromFormat('d/m/Y',$start);
