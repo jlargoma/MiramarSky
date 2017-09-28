@@ -209,7 +209,8 @@
           $(".daterange1").daterangepicker({
             "buttonClasses": "button button-rounded button-mini nomargin",
             "applyClass": "button-color",
-            "cancelClass": "button-light",
+            "cancelClass": "button-light",            
+            "startDate": '01 Dec, 17',
             locale: {
                 format: 'DD MMM, YY',
                 "applyLabel": "Aplicar",
