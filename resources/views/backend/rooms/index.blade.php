@@ -136,7 +136,7 @@
                                     </span>
                            </td>
                            <td>
-                              <a type="button" class="btn btn-default" href="{{ url ('/apartamentos') }}/<?php echo $room->nameRoom ?>"><i class="fa fa-paperclip"></i></a>
+                              <a type="button" class="btn btn-default" href="{{ url ('/apartamentos/galeria') }}/<?php echo $room->nameRoom ?>"><i class="fa fa-paperclip"></i></a>
                            </td>
                        </tr>
                    <?php endforeach ?>

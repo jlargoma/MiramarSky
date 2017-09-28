@@ -97,6 +97,53 @@ class HomeController extends Controller
        
     }
     
+    public function galeriaApartamento($apto){
+
+        $room = \App\Rooms::where('nameRoom' , $apto)->first();
+
+
+        if ($room->sizeApto == 2 && $room->luxury == 1) {
+            $aptoHeading       = "APARTAMENTOS DOS DORM - DE LUJO ";
+            $aptoHeadingMobile = "Apto de lujo 2 DORM";
+
+            $typeApto = 1;
+        }elseif($room->sizeApto == 2 && $room->luxury == 0){
+            $aptoHeading       = "APARTAMENTOS DOS DORM - ESTANDAR ";
+            $aptoHeadingMobile = "Apto Standard";
+
+            $typeApto = 2;
+        }elseif($room->sizeApto == 1 && $room->luxury == 1){
+            $aptoHeading       = "ESTUDIOS – DE LUJO";
+            $aptoHeadingMobile = "Estudio de lujo";
+
+            $typeApto = 3;
+        }else{
+            $aptoHeading       = "ESTUDIOS – ESTANDAR";
+            $aptoHeadingMobile = "Estudio Standard";
+
+            $typeApto = 4;
+        }
+
+
+        $slides = File::allFiles(public_path().'/img/miramarski/galerias/'.$apto); 
+        $aptos  = ['apartamento-lujo-sierra-nevada', 'estudio-lujo-sierra-nevada','apartamento-standard-sierra-nevada','estudio-standard-sierra-nevada'];
+
+
+        return view('frontend.pages._galeriaApartamentos', [ 
+                                                    'galeria'           => 1,
+                                                    'slides'            => $slides, 
+                                                    'mobile'            => new Mobile(),
+                                                    'aptoHeading'       => $aptoHeading,
+                                                    'aptoHeadingMobile' => $aptoHeadingMobile,
+                                                    'typeApto'          => $typeApto,
+                                                    'aptos'             => $aptos,
+                                                    'url'               => $apto,
+                                                ]);
+        
+
+       
+    }
+
     public function edificio(){
 
         // return view('frontend.pages._edificio');

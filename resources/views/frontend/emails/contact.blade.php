@@ -90,7 +90,6 @@
   	 	  									<b>Email:</b> <?php echo $data['email'] ?> <br>
   	 	  									<b>Asunto:</b> <?php echo $data['subject'] ?> <br>
   	 	  									<b>Mensaje: </b>  <?php echo $data['message'] ?> € <br>
-
 		  								</td>
 		  							</tr>
 		  						</table>

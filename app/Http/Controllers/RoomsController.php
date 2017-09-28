@@ -51,6 +51,13 @@ class RoomsController extends Controller
             $room->order = 99;
             $room->state = 1;
 
+            $directory =public_path()."/img/miramarski/galerias/".$room->nameRoom;
+
+            
+            if (!file_exists($directory)) {
+                mkdir($directory, 0777, true);
+            }
+
             if ($room->save()) {
                 return redirect()->action('RoomsController@index');
             }
@@ -97,33 +104,33 @@ class RoomsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request)
-    {
-        $id                   = $request->input('id');
-        $roomUpdate          = \App\Rooms::find($id);
+        {
+            $id                   = $request->input('id');
+            $roomUpdate          = \App\Rooms::find($id);
 
-        $roomUpdate->luxury = $request->input('luxury');
-        $roomUpdate->minOcu = $request->input('minOcu');
-        $roomUpdate->maxOcu = $request->input('maxOcu');
-        
+            $roomUpdate->luxury = $request->input('luxury');
+            $roomUpdate->minOcu = $request->input('minOcu');
+            $roomUpdate->maxOcu = $request->input('maxOcu');
+            
 
-        if ($roomUpdate->save()) {
-            echo "Cambiada!!";
-        }
+            if ($roomUpdate->save()) {
+                echo "Cambiada!!";
+            }
     }
 
     public function updateType(Request $request)
-    {
-        $id                   = $request->id;
-        $roomUpdate          = \App\Rooms::find($id);
+        {
+            $id                   = $request->id;
+            $roomUpdate          = \App\Rooms::find($id);
 
 
-        $roomUpdate->typeApto = $request->tipo;
-        
+            $roomUpdate->typeApto = $request->tipo;
+            
 
-        if ($roomUpdate->save()) {
-            echo "Cambiada!!";
+            if ($roomUpdate->save()) {
+                echo "Cambiada!!";
+            }
         }
-    }
 
     // Funcion para cambiar el nombre del apartamento
         public function updateName(Request $request)
