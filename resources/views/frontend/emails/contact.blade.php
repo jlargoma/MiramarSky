@@ -84,11 +84,6 @@
 		  					<td class="innerpadding borderbottom">
 		  						<table width="100%" border="0" cellspacing="0" cellpadding="0">
 		  							<tr>
-		  								<td class="h2" style="color: #3F51B5">
-		  									Hola Jorge, has recibido una nueva correo desde el formulario de contacto de apartamentosierranevada.net<br> con los siguientes datos:
-		  								</td>
-		  							</tr>
-		  							<tr>
 		  								<td class="bodycopy" style="color: #000">
 		  									<b>Nombre: </b> <?php echo $data['name'] ?> <br>
   	 	  									<b>Teléfono: </b> <?php echo $data['phone'] ?> <br>
