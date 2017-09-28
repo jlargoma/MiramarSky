@@ -60,6 +60,7 @@
                         <th class ="text-center bg-complete text-white">  Propietario   </th>
                         <th class ="text-center bg-complete text-white">  Orden   </th>
                         <th class ="text-center bg-complete text-white" style="width: 10%">  Estado </th>
+                        <th class ="text-center bg-complete text-white" style="width: 10%">  Btn </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -133,6 +134,9 @@
                                    <span class="input-group-addon bg-transparent">
                                         <input type="checkbox" class="estado" data-id="<?php echo $room->id ?>" name="state" data-init-plugin="switchery" data-size="small" data-color="success" <?php echo ($room->state == 0) ? "" : "checked" ?>> 
                                     </span>
+                           </td>
+                           <td>
+                              <a type="button" class="btn btn-default" href="{{ url ('/apartamentos') }}/<?php echo $room->nameRoom ?>"><i class="fa fa-paperclip"></i></a>
                            </td>
                        </tr>
                    <?php endforeach ?>

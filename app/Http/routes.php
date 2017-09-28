@@ -115,7 +115,7 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 	Route::get('admin/apartamentos/state', 'RoomsController@state');
 	Route::get('admin/apartamentos/getPaxPerRooms/{id}', 'RoomsController@getPaxPerRooms');
 	Route::get('admin/apartamentos/getLuxuryPerRooms/{id}', 'RoomsController@getLuxuryPerRooms');
-	Route::get('admin/apartamentos/uploadfile', 'RoomsController@uploadFile');
+	Route::get('admin/apartamentos/uploadFile/{id}', 'RoomsController@uploadFile');
 
 // Prices
 	Route::get('admin/precios' ,['middleware' => 'authSubAdmin','uses' =>  'PricesController@index']);

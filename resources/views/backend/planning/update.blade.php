@@ -26,6 +26,9 @@
        <div class="col-md-12 col-xs-12 center text-left0">
             <div class="col-md-6">
                 <div class="col-md-9">
+                    <a href="{{ url('/admin/reservas')}}" class="btn btn-danger btn-cons m-b-10" onclick="return confirm('¿Quieres Salir sin Guardar?');" data-toggle="tooltip" data-original-title="Salir de la  Reserva" style="min-width: 10px!important">
+                        <i class="fa fa-window-close" aria-hidden="true"></i>
+                    </a>
                     <h4>
                         <?php echo "<b>".strtoupper($book->customer->name)."</b>" ?> creada el 
                         <?php $fecha = Carbon::createFromFormat('Y-m-d H:i:s' ,$book->created_at);?>

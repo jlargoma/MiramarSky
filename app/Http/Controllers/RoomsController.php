@@ -191,29 +191,22 @@ class RoomsController extends Controller
             return $room->luxury;    
         }
 
-    public function uploadFile(Request $request)
+    public function uploadFile($id)
         {   
-            echo "llega";
-            die();
+            $room = \App\Rooms::find($id);
 
-            $room = \App\Rooms::find($request->id);
+            $directory =public_path()."/img/miramarski/apartamentos/".$room->nameRoom;
 
-            $directory =public_path()."/img/miramarski/galerias/".$room->nameRoom;
-
+            
+            echo $directory;
             if (!file_exists($directory)) {
                 mkdir($directory, 0777, true);
+                echo "creado";
+            }else{
+                echo "no se ha creado";
             }
+                return redirect()->action('RoomsController@index');
 
-            $directory =public_path()."/img/miramarski/galerias/".$room->nameRoom."/";
-            // echo $storage_path . basename( $_FILES['uploadedfile']['name']);
-            $directory = $directory . basename( $_FILES[$request->type]['name']); 
-            if(move_uploaded_file($request->type, $directory)) {
-                echo "subido";
-                return redirect()->action('RoomsController@index');
-            } else{
-                echo "no subido";
-                return redirect()->action('RoomsController@index');
-            }
         }
 
 }
