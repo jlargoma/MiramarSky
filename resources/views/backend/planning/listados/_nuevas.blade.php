@@ -4,13 +4,29 @@
     .daterangepicker{
         z-index: 10000!important;
     }
+    .pg-close{
+        font-size: 45px!important;
+        color: white!important;
+    }
 </style>
+<div class="modal-header clearfix text-left">
+
+</div>
 <div class="row padding-block">
     <div class="col-xs-12 bg-black push-20">
-        <h4 class="text-center white">
-            NUEVA RESERVA
-        </h4>
+        <div class="col-md-10">
+            <h4 class="text-center white">
+                NUEVA RESERVA
+            </h4>
+        </div>
+        <div class="col-md-2" style="margin-top: 2px!important">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <i class="pg-close fs-20" style=""></i>
+            </button>
+        </div>
+        
     </div>
+
     <div class="col-md-12">
         <form role="form"  action="{{ url('/admin/reservas/create') }}" method="post" >
             <!-- DATOS DEL CLIENTE -->
@@ -86,7 +102,7 @@
                     <label>Apartamento</label>
                     <select class="form-control full-width newroom minimal" name="newroom" id="newroom">
                         <?php foreach ($rooms as $room): ?>
-                            <option value="<?php echo $room->id ?>" data-luxury="<?php echo $room->luxury ?>">
+                            <option value="<?php echo $room->id ?>" data-luxury="<?php echo $room->luxury ?>" data-size="<?php echo $room->sizeApto ?>">
                                 <?php echo $room->name ?>
                             </option>
                         <?php endforeach ?>
@@ -106,7 +122,7 @@
                     <label>Sup. Lujo</label>
                     <select class=" form-control full-width type_luxury minimal" name="type_luxury">
                         <?php for ($i=1; $i <= 4 ; $i++): ?>
-                            <option value="<?php echo $i ?>">
+                            <option value="<?php echo $i ?>" <?php echo ($i == 2)?"selected": "" ?>>
                                 <?php echo $book->getSupLujo($i) ?>
                             </option>
                         <?php endfor;?>
@@ -234,8 +250,9 @@
                 var room = $('#newroom').val();
                 var pax = $('.pax').val();
                 var park = $('.parking').val();
-                var lujo = $('.type_luxury').val();
-
+                var lujo = $('select[name=type_luxury]').val();
+                var status = $('select[name=status]').val();
+                var sizeApto = $('option:selected', 'select[name=newroom]').attr('data-size');;
                 var beneficio = 0;
                 var costPark = 0;
                 var pricePark = 0;
@@ -260,6 +277,7 @@
                 var start = date1.toLocaleDateString();
                 var finish = date2.toLocaleDateString();
 
+
                 $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
 
                     if (pax < data) {
@@ -272,46 +290,76 @@
                     }
                 });
                 
+                if ( status == 8) {
+                    $('.total').empty();
+                    $('.total').val(0);
+                    $('.cost').empty();
+                    $('.cost').val(0);
 
-                $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays}).success(function( data ) {
-                    pricePark = data;
-                    $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
-                        priceLujo = data;
+                    $('.beneficio').empty();
+                    $('.beneficio').val(0);
+                }else if ( status == 7 ){
+                    if (sizeApto == 1) {
+                        $('.total').empty();
+                        $('.total').val(30);
 
-                        $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                            price = data;
-                            
-                            price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
-                            $('.total').empty();
-                            $('.total').val(price);
-                                $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays}).success(function( data ) {
-                                    costPark = data;
-                                    $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
-                                        costLujo = data;
-                                        $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                                            cost = data;
-                                            agencia = $('.agencia').val();
-                                            if (agencia == "") {
-                                                agencia = 0;
-                                            }
-                                            cost = (parseFloat(cost) + parseFloat(costPark) + parseFloat(agencia) + parseFloat(costLujo));
-                                            $('.cost').empty();
-                                            $('.cost').val(cost);
-                                            beneficio = price - cost;
-                                            $('.beneficio').empty;
-                                            $('.beneficio').val(beneficio);
-                                            beneficio_ = (beneficio / price)*100
-                                            $('.beneficio-text').empty;
-                                            $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
+                        $('.cost').empty();
+                        $('.cost').val(30);
 
+                        $('.beneficio').empty();
+                        $('.beneficio').val(0);
+                    }else{
+                        $('.total').empty();
+                        $('.total').val(50);
+
+                        $('.cost').empty();
+                        $('.cost').val(40);
+
+                        $('.beneficio').empty();
+                        $('.beneficio').val(10);
+                    }
+                }else{
+                    $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays}).success(function( data ) {
+                        pricePark = data;
+                        $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
+                            priceLujo = data;
+
+                            $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                                price = data;
+                                
+                                price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
+                                $('.total').empty();
+                                $('.total').val(price);
+                                    $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays}).success(function( data ) {
+                                        costPark = data;
+                                        $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
+                                            costLujo = data;
+                                            $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                                                cost = data;
+                                                agencia = $('.agencia').val();
+                                                if (agencia == "") {
+                                                    agencia = 0;
+                                                }
+                                                cost = (parseFloat(cost) + parseFloat(costPark) + parseFloat(agencia) + parseFloat(costLujo));
+                                                $('.cost').empty();
+                                                $('.cost').val(cost);
+                                                beneficio = price - cost;
+                                                $('.beneficio').empty;
+                                                $('.beneficio').val(beneficio);
+                                                beneficio_ = (beneficio / price)*100
+                                                $('.beneficio-text').empty();
+                                                $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
+
+                                            });
                                         });
                                     });
-                                });
+                            });
                         });
-                    });
-                });  
+                    }); 
+                }
+                 
 
-                $('.btn-complete').removeAttr('disabled');
+                
 
         }
 
@@ -339,6 +387,8 @@
                 var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
                 $('.nigths').val(diffDays);
 
+                $('.btn-complete').removeAttr('disabled');
+
             });
 
 
@@ -356,6 +406,10 @@
                 }
 
 
+                calculate();
+            });
+
+            $("select[name=status]").change(function(){
                 calculate();
             });
 

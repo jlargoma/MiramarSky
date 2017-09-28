@@ -37,7 +37,7 @@
 					<ul class="toggle-footer list-group bullet center" style="list-style: none;">
 						<li><a href="{{url('/condiciones-generales')}}" style="color: #666">Condiciones Generales</a></li>
 						<li><a href="{{url('/preguntas-frecuentes')}}" style="color: #666">Preguntas Frecuentes</a></li>
-						<li><a href="{{url('/eres-propietario')}}" style="color: #666">¿Eres Propietario?</a></li>
+						<li><a href="{{ url('/ayudanos-a-mejorar') }}" style="color: #666">Ayudanos a Mejorar</a></li>
 						<li><a href="{{url('/grupos')}}" style="color: #666">Grupos</a></li>
 					</ul>
 				</div>
@@ -51,7 +51,7 @@
 						<li><a class="map" href="https://www.google.com/maps?ll=37.093311,-3.396972&z=17&t=m&hl=es-ES&gl=ES&mapclient=embed&cid=335969053959651753" target="_blank"><i class="fa fa-map-marker "></i>Como llegar</a></li>
 						<li><a href="{{ url('/contacto') }}" style="color: #666">Contacta</a></li>
 						<li><a href="{{ url('/quienes-somos') }}" style="color: #666">Quienes Somos</a></li>
-						<li><a href="{{ url('/ayudanos-a-mejorar') }}" style="color: #666">Ayudanos a Mejorar</a></li>
+						<li><a href="{{url('/eres-propietario')}}" style="color: #666">¿Eres Propietario?</a></li>
 						<!-- <li><a href="#" style="color: #666">Preguntas frecuentes</a></li> -->
 					</ul>
 				</div>
@@ -59,7 +59,7 @@
 			<div class="col-md-2">
 			    <div class="block footer-block block">
     				<h4 class="title_block push-10 black font-w800 center">
-						Informacion Legal
+						INFORMACION LEGAL
 					</h4>
 					<ul class="toggle-footer list-group bullet center" style="list-style: none;">
 						<li><a href="{{ url('/politica-privacidad') }}" style="color: #666">Politica de privacidad</a></li>

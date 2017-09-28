@@ -120,7 +120,7 @@
 					11.<b>Sabanas y Toallas están incluidas en todas las reservas</b><br>
 
 					<br>
-					12. <b>A partir de las 23 hrs se ruega guardar silencio en los apartamentos y en las zonas comunes</b>, por respeto al sueño y a la tranquilidad de los demás inquilinos d y propietarios del edificio Miramarski.<br>
+					12. <b>A partir de las 23 hrs se ruega guardar silencio en los apartamentos y en las zonas comunes</b>, por respeto al sueño y a la tranquilidad de los demás inquilinos y propietarios del edificio Miramarski.<br>
 
 					<br>
 					13. <b>Checkout : El alojamiento se deberá entregar antes de las 12:00 con : </b><br>
@@ -131,11 +131,11 @@
 							<li class="text-left">Muebles de cama en la misma posición que se entregaron</li>
 							<li class="text-left">Sin basuras en el apartamento</li>
 							<li class="text-left">Nevera vacia(sin comida sobrante).</li>
-							<li class="text-left">Mantas dobladas en los armarios.</li>
+							<li class="text-left">Edredones doblados en los armarios.</li>
 						</ul>
 					</div>
 					<div style="clear: both"></div>
-					<h2><b>Si algunos de estos requisitos no se cumplen podría conllevar la perdida de la fianza, total o parcialmente.</b></h2>
+					<h3><b>Si algunos de estos requisitos no se cumplen podría conllevar la perdida de la fianza, total o parcialmente.</b></h3>
 					
 					
 				</p>

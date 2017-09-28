@@ -126,9 +126,9 @@
 
 					• <b>La calidad de nuestro servicio es la mejor garantía para que nuestra colaboración se prolongue en el tiempo.</b><br><br>
 
-					• <<b>Confirmación de reservas on line:</b> la gran mayoría de peticiones las confirmamos de forma inmediata (salvo fechas especiales), está agilidad nos hace ganar ventas.<br><br>
+					• <b>Confirmación de reservas on line:</b> la gran mayoría de peticiones las confirmamos de forma inmediata (salvo fechas especiales), está agilidad nos hace ganar ventas.<br><br>
 
-					<b>*Comunicación inmediata de las reservas</b> y pre-reservas con el cliente.
+					<b>*Comunicación inmediata de las reservas</b> y pre-reservas con el cliente.<br><br>
 
 					• <b>Herramienta on line para visualizar la rentabilidad de tu apartamento:</b> Te enviaremos un usuario y contraseña para que puedas acceder a la información completa de tus reservas, importes, fechas disponibles, etc.... Te daremos un control total. <br><br>
 

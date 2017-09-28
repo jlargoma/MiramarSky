@@ -35,7 +35,7 @@
             color: black;
         }
         .SubComunidad{
-            background-color: rgba(0,100,255,0.5) !important;
+            background-color: orange !important;
             color: black;
         }
         .botones{
@@ -596,7 +596,7 @@
                         if (data == "Ya hay una reserva para ese apartamento" || data == "No se puede cambiar el estado") {
                             
                         }else{
-                            setTimeout('document.location.reload()',5000);
+                            // setTimeout('document.location.reload()',5000);
                         }                        
                    }); 
                 }
