@@ -109,62 +109,62 @@
 
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/teleesqui.png') }}" /> A pie de pista 
+				       						<img src="{{ asset('/img/miramarski/iconos/small/teleesqui.png') }}" alt="teleesqui" /> A pie de pista 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/parking.png') }}" /> Parking cubierto 
+				       						<img src="{{ asset('/img/miramarski/iconos/small/parking.png') }}" alt="parking" /> Parking cubierto 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/ascensor.png') }}" /> Ascensor 
+				       						<img src="{{ asset('/img/miramarski/iconos/small/ascensor.png') }}" alt="ascensor" /> Ascensor 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/piscina.png') }}" /> Piscina climatizada 
+				       						<img src="{{ asset('/img/miramarski/iconos/small/piscina.png') }}" alt="piscina" /> Piscina climatizada 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/gimnasio.png') }}" /> gimnasio 
+				       						<img src="{{ asset('/img/miramarski/iconos/small/gimnasio.png') }}" alt="gimnasio" /> gimnasio 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/guardaesqui.png') }}" /> Guarda Esqíes 
+				       						<img src="{{ asset('/img/miramarski/iconos/small/guardaesqui.png') }}" alt="guardaesqui" /> Guarda Esqíes 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/mascotas.png') }}" /> Prohibido mascotas 
+				       						<img src="{{ asset('/img/miramarski/iconos/small/mascotas.png') }}" alt="mascotas" /> Prohibido mascotas 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/ropa-toallas.png') }}" /> Ropa y toallas 
+				       						<img src="{{ asset('/img/miramarski/iconos/small/ropa-toallas.png') }}" alt="ropa-toallas" /> Ropa y toallas 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/cocina.png') }}" /> Cocina 
+				       						<img src="{{ asset('/img/miramarski/iconos/small/cocina.png') }}" alt="cocina" /> Cocina 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/ducha.png') }}" /> Baño 
+				       						<img src="{{ asset('/img/miramarski/iconos/small/ducha.png') }}" alt="ducha" /> Baño 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/calefaccion.png') }}" /> Calefaccion 
+				       						<img src="{{ asset('/img/miramarski/iconos/small/calefaccion.png') }}" alt="calefaccion" /> Calefaccion 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/shopping.png') }}" /> Shopping 
+				       						<img src="{{ asset('/img/miramarski/iconos/small/shopping.png') }}" alt="shopping" /> Shopping 
 				       					</a>
 				       				</div>
 
