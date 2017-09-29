@@ -114,6 +114,7 @@ setlocale(LC_TIME, "es_ES");
 			<a id="cal-pago" class="btn btn-success2 btn text-white" >Liquidacion</a>
 			<a id="cal-pago2" class="btn btn-danger2 btn text-white" >cerrar</a>
 		</div>
+
 		<div style="clear: both;"></div>
 		<br>
 		<div class="col-md-3">
@@ -151,20 +152,27 @@ setlocale(LC_TIME, "es_ES");
 						<tbody>
 							<tr>
 								<?php if (count($pagos)> 0): ?>
-									<td class="text-center"><?php echo number_format($total,2,',','.'); ?>€</td>
+									<td class="text-center" style="padding-top: 20px!important"><?php echo number_format($total,2,',','.'); ?>€</td>
 									<?php foreach ($pagos as $pago): ?>
-									<td>
+									<td style="padding: 0;">
 										<table style="width: 100%">
 											<tr>
 												<td style="border:none"><?php echo Carbon::createFromFormat('Y-m-d',$pago->datePayment)->format('d-m-Y')?></td>
 												<td style="border:none"><?php echo $pago->comment ?></td>
-												<td style="border:none"><?php echo $pago->import ?></td>
+												<td style="border:none"><?php echo number_format($pago->import,2,',','.') ?>€</td>
 											</tr>
 										</table>							
 									</td>
 										
 										
 									<?php endforeach ?>
+									<td class="text-center" style="padding-top: 20px!important">
+										<?php echo number_format($pagototal,2,',','.') ?>€
+									</td>
+
+									<td class="text-center" style="padding-top: 20px!important">
+										<?php echo number_format($total-$pagototal,2,',','.'); ?>€
+									</td>
 								<?php else: ?>
 									<td class="text-center" colspan="4">Aun no hay pagos realizados</td>
 								<?php endif ?>

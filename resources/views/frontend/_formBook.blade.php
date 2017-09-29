@@ -4,22 +4,22 @@
 
     <div class="col-md-12">
             <div class="form-group col-sm-12 col-xs-6 col-md-6 col-lg-6 white">
-                <label>*Nombre</label>
+                <label for="name">*Nombre</label>
                 <input type="text" class="sm-form-control" name="name" id="nombre" placeholder="Nombre..." maxlength="40" required="">
             </div>
             <div class="form-group col-sm-12 col-xs-6 col-md-6 col-lg-6 white">
-                <label>*Email</label>
+                <label for="email">*Email</label>
                 <input type="email" class="sm-form-control"  name="email" id="email" placeholder="Email..." maxlength="40" required="">
             </div>
             <div class="form-group col-sm-12 col-xs-6 col-md-6 col-lg-6 white">
-                <label>*Telefono</label>
+                <label for="telefono">*Telefono</label>
                 <input type="text" class="sm-form-control only-numbers" name="telefono" id="telefono" placeholder="Teléfono..." maxlength="9" required="">
             </div>
             
 			
 
             <div class="form-group col-sm-12 col-xs-6 col-md-6 white">
-                <label style="display: inherit!important;">*Entrada - Salida</label>
+                <label for="date" style="display: inherit!important;">*Entrada - Salida</label>
                 <div class="input-group">
                     <input type="text" class="sm-form-control daterange1" id="date"   name="date" required style="cursor: pointer;text-align: center;" readonly="">
                 </div>
@@ -31,7 +31,7 @@
             <div class="hidden-xs hidden-sm" style="clear: both;"></div>
 
             <div class="form-group col-sm-12 col-xs-6 col-md-3 white">
-           		<label style="display: inherit!important;">*Personas</label>
+           		<label for="quantity" style="display: inherit!important;">*Personas</label>
             	<div class="quantity center clearfix divcenter">
 					<!-- <input type="button" value="-" class="minus black" style=" color: black;">
 					<input id="quantity" type="text" name="quantity" value="4" class="qty" style="background: white; color: black;"> -->
@@ -50,7 +50,7 @@
             </div>
             
             <div class="form-group col-sm-12 col-xs-4 col-md-3" style="padding: 0">
-                <label style="display: inline!important;" class="col-md-12 parking white">* Tipo Apto</label>
+                <label for="" style="display: inline!important;" class="col-md-12 parking white">* Tipo Apto</label>
                 <div class="col-md-6">
 					<input id="apto-2dorm" class="radio-style apto-2dorm form-control" name="apto" type="radio" value="2dorm">
 					<label for="apto-2dorm" class="radio-style-3-label">2Dor</label>
@@ -110,7 +110,7 @@
                 
                 
                 <div class="form-group col-sm-12 col-xs-12 col-md-3 white">
-                    <label style="display: inherit!important;">*Entrada - Salida</label>
+                    <label for="date" style="display: inherit!important;">*Entrada - Salida</label>
                     <input type="text" class="sm-form-control daterange1" id="date"   name="date" required style="cursor: pointer;text-align: center;" readonly="">
 
                     <p  class="help-block min-days" style="display:none;line-height:1.2;color:red;">
@@ -119,7 +119,7 @@
                 </div>
 
                 <div class="form-group col-sm-12 col-xs-5 col-md-1 white">
-                    <label style="display: inherit!important;">*Pers</label>
+                    <label for="quantity" style="display: inherit!important;">*Pers</label>
                     <div class="quantity center clearfix divcenter">
                         <select id="quantity" class="sm-form-control" name="quantity">
                             <?php for ($i = 1;  $i <= 8 ; $i++): ?>

@@ -97,6 +97,10 @@ class OwnedController extends Controller
 
 
         $paymentspro = \App\Paymentspro::where('room_id',$room->id)->where('datePayment','>=',$date->copy()->format('Y-m-d'))->where('datePayment','<=',$date->copy()->addYear()->format('Y-m-d'))->get();
+        $pagototal = 0;
+        foreach ($paymentspro as $pago) {
+            $pagototal += $pago->import;
+        }
 
 
         return view('backend.owned.index',[
@@ -112,6 +116,7 @@ class OwnedController extends Controller
                                             'park'       => $park,
                                             'lujo'       => $lujo,
                                             'pagos'      => $paymentspro,
+                                            'pagototal' => $pagototal,
                                             ]);
     }
 
