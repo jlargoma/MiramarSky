@@ -50,7 +50,7 @@
             </div>
             
             <div class="form-group col-sm-12 col-xs-4 col-md-3" style="padding: 0">
-                <label for="" style="display: inline!important;" class="col-md-12 parking white">* Tipo Apto</label>
+                <label for="parking" style="display: inline!important;" class="col-md-12 parking white">* Tipo Apto</label>
                 <div class="col-md-6">
 					<input id="apto-2dorm" class="radio-style apto-2dorm form-control" name="apto" type="radio" value="2dorm">
 					<label for="apto-2dorm" class="radio-style-3-label">2Dor</label>
@@ -157,7 +157,7 @@
                     </div>
                 </div>
                 <div class="form-group col-sm-12 col-xs-6 col-md-2">
-                    <label class="col-md-12 luxury white">* sup. lujo</label>
+                    <label for="luxury" class="col-md-12 luxury white">* sup. lujo</label>
                     <div class="col-xs-6 not-padding-mobile"> 
                         <input id="luxury-yes" class="radio-style" name="luxury" type="radio" value="si">
                         <label for="luxury-yes" class="radio-style-3-label">Si</label>
