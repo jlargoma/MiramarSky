@@ -5,15 +5,15 @@
     <div class="col-md-12">
             <div class="form-group col-sm-12 col-xs-6 col-md-6 col-lg-6 white">
                 <label for="name">*Nombre</label>
-                <input type="text" class="sm-form-control" name="name" id="nombre" placeholder="Nombre..." maxlength="40" required="">
+                <input type="text" class="sm-form-control" name="name" id="nombre" placeholder="Nombre..." maxlength="40" required="" aria-label="Escribe tu nombre">
             </div>
             <div class="form-group col-sm-12 col-xs-6 col-md-6 col-lg-6 white">
                 <label for="email">*Email</label>
-                <input type="email" class="sm-form-control"  name="email" id="email" placeholder="Email..." maxlength="40" required="">
+                <input type="email" class="sm-form-control"  name="email" id="email" placeholder="Email..." maxlength="40" required="" aria-label="Escribe tu email">
             </div>
             <div class="form-group col-sm-12 col-xs-6 col-md-6 col-lg-6 white">
                 <label for="telefono">*Telefono</label>
-                <input type="text" class="sm-form-control only-numbers" name="telefono" id="telefono" placeholder="Teléfono..." maxlength="9" required="">
+                <input type="text" class="sm-form-control only-numbers" name="telefono" id="telefono" placeholder="Teléfono..." maxlength="9" required="" aria-label="Escribe tu telefono">
             </div>
             
 			
@@ -84,7 +84,7 @@
             </div>
             <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12">
                 <div class="input-group col-sm-12 col-xs-12 col-md-12 col-lg-12">
-                    <textarea class="sm-form-control" name="comment" rows="3" placeholder="Comentanos aqui tus dudas o inquietudes." id="coment" maxlength="200"></textarea>
+                    <textarea class="sm-form-control" name="comment" rows="3" placeholder="Comentanos aqui tus dudas o inquietudes." id="coment" maxlength="200" aria-label="Comentanos aqui tus dudas o inquietudes."></textarea>
                 </div>
             </div>
             <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12 text-center">
@@ -121,7 +121,7 @@
                 <div class="form-group col-sm-12 col-xs-5 col-md-1 white">
                     <label for="quantity" style="display: inherit!important;">*Pers</label>
                     <div class="quantity center clearfix divcenter">
-                        <select id="quantity" class="sm-form-control" name="quantity">
+                        <select id="quantity" class="sm-form-control" name="quantity" aria-label="Selecciona el numero de personas">
                             <?php for ($i = 1;  $i <= 8 ; $i++): ?>
                                 <option value="<?php echo $i ?>"><?php echo $i ?></option>
                             <?php endfor ?>
