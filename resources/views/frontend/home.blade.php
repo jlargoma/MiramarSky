@@ -2,6 +2,8 @@
 @section('title')Apartamentos de lujo en Sierra Nievada a pie de pista @endsection
 
 @section('content')
+
+
 <link href="{{ asset('/frontend/hover.css')}}" rel="stylesheet" media="all">
 <link rel="stylesheet" href="{{ asset('/frontend/css/components/radio-checkbox.css')}}" type="text/css" />
 <style type="text/css">
