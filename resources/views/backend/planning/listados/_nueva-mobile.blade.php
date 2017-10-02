@@ -101,7 +101,6 @@
                                 <div class="col-xs-5  p-t-10">
                                     <label><i class="fa fa-home"></i></label>
                                     <select class="form-control full-width newroom minimal" name="newroom" id="newroom">
-                                        <option ></option>
                                         <?php foreach ($rooms as $room): ?>
                                             <option value="<?php echo $room->id ?>" data-luxury="<?php echo $room->luxury ?>" data-size="<?php echo $room->sizeApto ?>">
                                                 <?php echo $room->name ?>
@@ -265,24 +264,24 @@
             var agencia    = 0;
             var beneficio_ = 0;
             
-            alert('llega');
+
+
 
             var date = $('.daterange1').val();
 
-            alert(date);
-
-
             var arrayDates = date.split('-');
-            var res1       = arrayDates[0].replace("Abr", "Apr");
-            var date1      = new Date(res1);
-            var start      = date1.getTime();
-            
-            var res2       = arrayDates[1].replace("Abr", "Apr");
-            var date2      = new Date(res2);
-            var timeDiff   = Math.abs(date2.getTime() - date1.getTime());
-            var diffDays   = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+            var res1 = arrayDates[0].replace("Abr", "Apr");
+            var date1 = new Date(res1);
+            var start = date1.getTime();
+
+            var res2 = arrayDates[1].replace("Abr", "Apr");
+            var date2 = new Date(res2);
+            var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
             $('.nigths').val(diffDays);
 
+            console.log(date);
+            
             var start = date1.toLocaleDateString();
             var finish = date2.toLocaleDateString();
 
@@ -392,8 +391,9 @@
                 var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
                 $('.nigths').val(diffDays);
 
-                $('.btn-complete').removeAttr('disabled');
 
+                $('.btn-complete').removeAttr('disabled');
+                console.log(date);
             });
 
 
@@ -402,7 +402,6 @@
             $('.newroom').change(function(event){ 
 
                 var dataLuxury = $('option:selected', this).attr('data-luxury');;
-
                 if (dataLuxury == 1) {
                     $('.type_luxury option[value=1]').attr('selected','selected');
                     $('.type_luxury option[value=2]').removeAttr('selected');

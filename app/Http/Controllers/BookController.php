@@ -524,6 +524,7 @@ class BookController extends Controller
 
 
         }
+
         if ( isset($request->status) && !empty($request->status)) {
             $book = \App\Book::find($id);
 
@@ -1035,7 +1036,6 @@ class BookController extends Controller
     public function delete($id)
         {
             $book = \App\Book::find($id);
-
             if ($book->delete()) {
                     return redirect()->action('BookController@index');
                 }

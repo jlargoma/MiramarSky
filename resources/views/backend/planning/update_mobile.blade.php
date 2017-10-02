@@ -45,6 +45,47 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
 @section('content')
 <?php use \Carbon\Carbon; ?>
 <div class="row push-20" style="background-color: rgba(0,0,81,0.1)">
+    <div class="col-xs-9 padding-10">
+        <p>
+            <?php echo "<b>".strtoupper($book->customer->name)."</b>" ?> creada el 
+            <?php $fecha = Carbon::createFromFormat('Y-m-d H:i:s' ,$book->created_at);?>
+            <?php echo $fecha->copy()->format('d-m-Y')." Hora:".$fecha->copy()->format('H:m')?><br> 
+            Creado por <?php echo "<b>".strtoupper($book->user->name)."</b>" ?>
+        </p>
+    </div>
+    <div class="col-xs-3 padding-10">
+        <a href="{{ url('/admin/reservas')}}" class="btn btn-danger btn-cons m-b-10" onclick="return confirm('¿Quieres Salir sin Guardar?');" data-toggle="tooltip" data-original-title="Salir de la  Reserva" style="min-width: 10px!important">
+            <i class="fa fa-window-close" aria-hidden="true"></i>
+        </a>
+    </div>
+
+    <div class="col-md-6">
+        <div class="col-lg-6 content-alert-success" style="display: none;">
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true" style="right: 0">×</button>
+                <h3 class="font-w300 push-15">Perfecto</h3>
+                <p><a class="alert-link" href="javascript:void(0)">Actualizado</a> correctamente!</p>
+            </div>
+        </div>
+        
+        <div class="col-lg-6 content-alert-error2" style="display: none;">
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true" style="right: 0">×</button>
+                <h3 class="font-w300 push-15">Error</h3>
+                <p><a class="alert-link" href="javascript:void(0)">Ya hay una reserva para ese apartamento</a>!</p>
+            </div>
+        </div>
+        
+
+        <div class="col-lg-6 content-alert-error1" style="display: none;">
+            <div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true" style="right: 0">×</button>
+                <h3 class="font-w300 push-15">Error</h3>
+                <p><a class="alert-link" href="javascript:void(0)">Algo paso al intentar cambiar el estado</a>!</p>
+            </div>
+        </div>
+    </div>
+
     <div class="col-xs-12 push-0">
         <div class="col-xs-2">
             <h3><a href="{{ url('/admin/pdf/pdf-reserva') }}/<?php echo $book->id ?>"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a></h3>
@@ -218,13 +259,13 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                 </div>
             </div>
             <div class="col-md-12 table-responsive not-padding ">
-                <table class="table table-hover table-condensed no-footer push-10" style="border: none;">
+                <table class="table  table-responsive table-striped" style="margin-top: 0;">
                     <thead>
                         <tr>
-                            <th class ="text-center" >fecha</th>
-                            <th class ="text-center" >importe</th>
-                            <th class ="text-center" >Tipo</th>
-                            <th class ="text-center" >comentario</th>
+                            <th class ="text-center" style="min-width: 100px">fecha</th>
+                            <th class ="text-center" style="min-width: 100px">importe</th>
+                            <th class ="text-center" style="min-width: 200px">Tipo</th>
+                            <th class ="text-center" style="min-width: 100px">comentario</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -259,7 +300,7 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                                     </td>
                                     
                                     <td class="text-center">
-                                        <select class="full-width select2-hidden-accessible type_payment" data-init-plugin="select2" name="type_payment"  tabindex="-1" aria-hidden="true">
+                                        <select class="form-control minimal type_payment" name="type_payment"  tabindex="-1" aria-hidden="true">
                                             <?php for ($i=0; $i < 3 ; $i++): ?>
                                                <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
                 
@@ -275,9 +316,9 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                             <?php endif ?>
                         <?php else: ?>
                             <tr>
-                                <td class ="text-center" style="padding: 25px 0px 0px 0px;">
+                                <td class ="text-center" style="padding: 20px 0px 0px 0px;">
                                     <div class="input-daterange input-group" id="datepicker-range" style="width: 100%">
-                                        <input type="text" class="input-sm form-control fecha-cobro" name="start" data-date-format="dd-mm-yyyy" value="<?php $hoy = Carbon::now() ;echo $hoy->format('d/m/Y') ?>">
+                                        <input type="text" class="input-sm form-control fecha-cobro" name="start" data-date-format="dd-mm-yyyy" value="<?php $hoy = Carbon::now() ;echo $hoy->format('d/m/Y') ?>" style="min-height: 35px">
                                     </div>
                                 </td>
                                 <td class ="text-center">
@@ -285,7 +326,7 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                                 </td>
                                 
                                 <td class="text-center">
-                                    <select class="full-width select2-hidden-accessible type_payment" data-init-plugin="select2" name="type_payment"  tabindex="-1" aria-hidden="true">
+                                    <select class="type_payment form-control minimal" name="type_payment"  tabindex="-1" aria-hidden="true">
                                         <?php for ($i=0; $i < 3 ; $i++): ?>
                                            <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
                                     
@@ -293,7 +334,7 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                                     </select>
                                 </td>
                                 <td class ="text-center"> 
-                                <input class="comment" type="text" name="comment"  style="width: 100%;text-align: center;">
+                                <input class="comment form-control" type="text" name="comment"  style="width: 100%;text-align: center;min-height: 35px">
                                 </td>
                             </tr>
                         <?php endif ?>
@@ -313,7 +354,8 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                 </table>
             </div>  
             <div class="col-xs-12 text-center push-40">
-                <input type="button" name="cobrar" class="btn btn-success active cobrar padding-block font-s22" value="Cobrar" data-id="<?php echo $book->id ?>" style="padding-right: 50px; padding-left: 50px; ">
+                <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="Cobrar" data-id="<?php echo $book->id ?>" style="width: 50%;min-height: 50px"> 
+                <button class="cobrar">Cobrar</button> 
             </div>                          
         </div>
     </div>
@@ -530,6 +572,7 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                 
             });
 
+
             $('.editable').change(function(event) {
                 var id = $(this).attr('data-id');               
                 var importe = $(this).val();
@@ -548,6 +591,41 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                 $.get('/admin/clientes/save', { id: id,  name: name, email: email,phone: phone}, function(data) {
                 });
             });
+
+             $('.status').change(function(event) {
+
+
+
+                 $('.content-alert-success').hide();
+                 $('.content-alert-error1').hide();
+                 $('.content-alert-error2').hide();
+                 // content-alert-success
+                 // content-alert-error1
+                 // content-alert-error2
+                 var status = $(this).val();
+                 var id     = $(this).attr('data-id');
+                 var clase  = $(this).attr('class');
+
+                 if (status == 5) {
+                     $('#contentEmailing').empty().load('/admin/reservas/ansbyemail/'+id);  
+                     $('#btnEmailing').trigger('click');
+
+                        
+                 }else{
+                     $.get('/admin/reservas/changeStatusBook/'+id, { status:status }, function(data) {
+                         if (data == 1) {
+                             $('.content-alert-success').show();
+                         } else if (data == 0){
+                             $('.content-alert-error1').show();
+                         } else{
+                             $('.content-alert-error2').show();
+                         }
+                     }); 
+                }
+
+            });
+
+
         });
 
     </script>

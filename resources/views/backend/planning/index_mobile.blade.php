@@ -24,26 +24,23 @@
   <style type="text/css">
 
   	/* Estados */
-  	.Reservado-table{
+  	.Reservado-table{ 
         background-color: #295d9b !important;
         color: black;
     }
-    .Reservado{
-        background-color: rgba(0,100,255,0.2)  !important;
+
+    .Pagada-la-señal{
+        background-color: green  !important;
         color: black;
     }
-  	.Pagada-la-señal{
-  		background-color: green  !important;
-  		color: black;
-  	}
-  	.Bloqueado{
-  		background-color: orange !important;
-  		color: black;
-  	}
-  	.SubComunidad{
-  		background-color: rgba(138,125,190,1) !important;
-  		color: black;
-  	}
+    .Reserva.Propietario{
+        background-color: orange !important;
+        color: black;
+    }
+    .SubComunidad{
+        background-color: orange !important;
+        color: black;
+    }
   	/* Estados */
 
   	.botones{
@@ -103,6 +100,29 @@
     }
     .daterangepicker{
       top: 59%!important;
+    }
+
+    .Reservado,.table.table-striped tbody tr.Reservado td {
+        background-color: rgba(0,200,10,0.2)  !important;
+        color: black;
+    }
+    .table.table-striped tbody tr.Reservado td select.minimal{
+        background-color: rgba(0,200,10,0.0)  !important;
+        color: black!important;
+        font-weight: bold!important;
+    }
+
+    .Bloqueado,.table.table-striped tbody tr.Bloqueado td {
+        background-color: rgba(0,100,255,0.2)  !important;
+        color: red;
+    }
+        
+    
+    .table.table-striped tbody tr.Bloqueado td select.minimal{
+        background-color: rgba(0,100,255,0.0)  !important;
+        color:red!important;
+        font-weight: bold!important;
+
     }
   </style>
 
@@ -256,14 +276,7 @@
   				</div>
   			</div>
 
-  			<div class="tab-pane " id="tabNueva">
-				<div class="row column-seperation ">
-					<div class="row">
-				    @include('backend.planning.listados._nueva-mobile')   
-					</div>
-				</div>
-  			</div>
-  		</div>
+
 
   		<!-- Calendario -->
     		<div id="calendario" style="border-top: 5px solid black">
@@ -420,6 +433,13 @@
       <!-- /.modal-dialog -->
   </div>
 
+  <form role="form">
+      <div class="form-group form-group-default required" style="display: none">
+          <label class="highlight">Message</label>
+          <input type="text" hidden="" class="form-control notification-message" placeholder="Type your message here" value="This notification looks so perfect!" required>
+      </div>
+      <button class="btn btn-success show-notification hidden" id="boton">Show</button>
+  </form>
 
   @endsection
 
@@ -457,6 +477,8 @@
   <script src="/assets/plugins/summernote/js/summernote.js"></script>
   <script type="text/javascript" src="//assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
 
+  <script src="/assets/js/notifications.js" type="text/javascript"></script>
+
   <!-- END PAGE LEVEL JS -->
 
   <script type="text/javascript">
@@ -484,7 +506,6 @@
               }
 
 
-
               if (status == 5) {
                   $('#myModal').modal({
                       show: 'false'
@@ -496,10 +517,10 @@
                  $.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
                       $('.notification-message').val(data);
                       document.getElementById("boton").click();
-                      if (data == "Ya hay una reserva para ese apartamento" || data == "No se puede cambiar el estado") {
+                      if (data == "Ya hay una reserva para ese apartamento" || data == "No se puede cambiar el estado" || data == "Valor nulo o vacio") {
                           
                       }else{
-                          setTimeout('document.location.reload()',2000);
+                          // setTimeout('document.location.reload()',2000);
                       }                        
                  }); 
               }

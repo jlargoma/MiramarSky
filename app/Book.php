@@ -365,7 +365,10 @@ class Book extends Model
                             }
                             
                         }
+                        
                         if ($existStart == false && $existFinish == false) {
+
+                            
                             switch ($status) {
                                 case '1':
 
