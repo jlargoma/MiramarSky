@@ -26,8 +26,8 @@
        <div class="col-md-12 col-xs-12 center text-left0">
             <div class="col-md-6">
                 <div class="col-md-9">
-                    <a href="{{ url('/admin/reservas')}}" class="btn btn-danger btn-cons m-b-10" onclick="return confirm('¿Quieres Salir sin Guardar?');" data-toggle="tooltip" data-original-title="Salir de la  Reserva" style="min-width: 10px!important">
-                        <i class="fa fa-window-close" aria-hidden="true"></i>
+                    <a href="{{ url('/admin/reservas')}}" class=" m-b-10" style="min-width: 10px!important">
+                        <img src="{{ asset('/img/miramarski/iconos/close.png') }}" style="width: 20px" />
                     </a>
                     <h4>
                         <?php echo "<b>".strtoupper($book->customer->name)."</b>" ?> creada el 
@@ -206,15 +206,11 @@
                     <div class="col-xs-12 bg-white padding-block">
                         <div class="col-md-6 col-xs-12">
                             <label>Comentarios Cliente </label>
-                            <textarea class="form-control" name="comments" rows="5" >
-                                <?php echo $book->comment ?>
-                            </textarea>
+                            <textarea class="form-control" name="comments" rows="5" ><?php echo $book->comment ?></textarea>
                         </div>
                         <div class="col-md-6 col-xs-12">
                             <label>Comentarios Internos</label>
-                            <textarea class="form-control book_comments" name="book_comments" rows="5" >
-                                <?php echo $book->book_comments ?>
-                            </textarea>
+                            <textarea class="form-control book_comments" name="book_comments" rows="5" ><?php echo $book->book_comments ?></textarea>
                         </div>
                     </div>
                     <div class="row push-40 bg-white padding-block">
@@ -592,17 +588,24 @@
             $('.parking').change(function(event){ 
                 var commentBook = $('.book_comments').val();
                 $('.book_comments').empty();
-
+                var res = commentBook.replace("Parking: Si\n","");
+                res = res.replace("Parking: No\n","");
+                res = res.replace("Parking: Gratis\n","");
+                res = res.replace("Parking: 50 %\n","");
                 calculate();
                 
-                $('.book_comments').text( $.trim(commentBook+'Parking: '+ $('option:selected', this).text())+"\n");
+                $('.book_comments').text( $.trim(res+'Parking: '+ $('option:selected', this).text())+"\n");
             });
 
             $('.type_luxury').change(function(event){ 
                 var commentBook = $('.book_comments').val();
                 $('.book_comments').empty();
+                var res = commentBook.replace("Suplemento de lujo: Si\n","");
+                res = res.replace("Suplemento de lujo: No\n","");
+                res = res.replace("Suplemento de lujo: Gratis\n","");
+                res = res.replace("Suplemento de lujo: 50 %\n","");
                 calculate();
-                $('.book_comments').text( $.trim(commentBook+'Suplemento de lujo '+ $('option:selected', this).text())+"\n");
+                $('.book_comments').text( $.trim(res+'Suplemento de lujo: '+ $('option:selected', this).text())+"\n");
             });
 
             $('.agencia').change(function(event){ 
@@ -613,12 +616,15 @@
                 
             
             $('.total').change(function(event) {
+                var commentBook = $('.book_comments').val();
                 var price = $(this).val();
                 var cost = $('.cost').val();
                 var beneficio = (parseFloat(price) - parseFloat(cost));
-                console.log(beneficio);
+                $('.book_comments').text( $.trim(commentBook+'El valor antiguo era: '+price+"\n");
+
                 $('.beneficio').empty;
                 $('.beneficio').val(beneficio);
+                
             });
 
 

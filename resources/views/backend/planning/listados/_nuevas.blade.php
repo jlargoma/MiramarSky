@@ -262,7 +262,7 @@
                 var priceLujo = 0;
                 var agencia = 0;
                 var beneficio_ = 0;
-
+                var comentario =$('.book_comments').val();
                 var date = $('.daterange1').val();
 
                 var arrayDates = date.split('-');
@@ -280,17 +280,7 @@
                 var finish = date2.toLocaleDateString();
 
 
-                $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
 
-                    if (pax < data) {
-                        $('.pax').attr('style' , 'background-color:red');
-                        $('.book_comments').empty();
-                        $('.book_comments').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
-                    }else{
-                        $('.book_comments').empty();
-                        $('.pax').removeAttr('style');
-                    }
-                });
                 
                 if ( status == 8) {
                     $('.total').empty();
@@ -414,23 +404,44 @@
 
 
             $('.pax').change(function(event){ 
+                var room = $('#newroom').val();
+                var pax = $('.pax').val();
+                $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
+
+                    if (pax < data) {
+                        $('.pax').attr('style' , 'background-color:red');
+                        $('.book_comments').empty();
+                        $('.book_comments').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data+"\n");
+                    }else{
+                        $('.book_comments').empty();
+                        $('.pax').removeAttr('style');
+                    }
+                });
                 calculate();
             });
 
             $('.parking').change(function(event){ 
                 var commentBook = $('.book_comments').val();
                 $('.book_comments').empty();
-
+                var res = commentBook.replace("Parking: Si\n","");
+                res = res.replace("Parking: No\n","");
+                res = res.replace("Parking: Gratis\n","");
+                res = res.replace("Parking: 50 %\n","");
                 calculate();
                 
-                $('.book_comments').text( $.trim(commentBook+'Parking: '+ $('option:selected', this).text())+"\n");
+                $('.book_comments').text( $.trim(res+'Parking:'+ $('option:selected', this).text())+"\n");
             });
 
             $('.type_luxury').change(function(event){ 
                 var commentBook = $('.book_comments').val();
                 $('.book_comments').empty();
+                var res = commentBook.replace("Suplemento de lujo: Si\n","");
+                res = res.replace("Suplemento de lujo: No\n","");
+                res = res.replace("Suplemento de lujo: Gratis\n","");
+                res = res.replace("Suplemento de lujo: 50 %\n","");
+
                 calculate();
-                $('.book_comments').text( $.trim(commentBook+'Suplemento de lujo '+ $('option:selected', this).text())+"\n");
+                $('.book_comments').text( $.trim(res+'Suplemento de lujo:'+ $('option:selected', this).text())+"\n");
             });
 
             $('.agencia').change(function(event){ 

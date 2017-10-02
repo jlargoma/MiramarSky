@@ -54,8 +54,8 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
         </p>
     </div>
     <div class="col-xs-3 padding-10">
-        <a href="{{ url('/admin/reservas')}}" class=" m-b-10" style="min-width: 10px!important">
-            <img src="{{ asset('/img/miramarski/iconos/close.png') }}" />
+        <a href="{{ url('/admin/reservas')}}" class=" m-b-10" style="min-width: 10px!important;padding: 25px">
+            <img src="{{ asset('/img/miramarski/iconos/close.png') }}" style="width: 20px" />
         </a>
     </div>
 
@@ -220,13 +220,11 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                 <div class="col-xs-12 bg-white padding-block">
                     <div class="col-md-6 col-xs-12">
                         <label>Comentarios Cliente </label>
-                        <textarea class="form-control" name="comments" rows="5" >
-                        </textarea>
+                        <textarea class="form-control" name="comments" rows="5" ><?php echo $book->comment ?></textarea>
                     </div>
                     <div class="col-md-6 col-xs-12">
                         <label>Comentarios Internos</label>
-                        <textarea class="form-control book_comments" name="book_comments" rows="5" >
-                        </textarea>
+                        <textarea class="form-control book_comments" name="book_comments" rows="5" ><?php echo $book->book_comments ?></textarea>
                     </div>
                 </div>
                 <div class="row push-40 bg-white padding-block">
@@ -553,7 +551,7 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                 var comentario = $('.book_comments').val();
                 alert(comentario);
                 $('.book_comments').empty();
-                $('.book_comments').html(comentario + '\nEl PVP era '+<?php echo $book->total_price?> +' se vende en '+ price ) ; 
+               $('.book_comments').text( $.trim(commentBook+'El valor antiguo era: '+price+"\n");
             });
             
             $('.cobrar').click(function(event){ 
@@ -592,7 +590,27 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                 });
             });
 
-            
+            $('.parking').change(function(event){ 
+                var commentBook = $('.book_comments').val();
+                alert(commentBook);
+                $('.book_comments').empty();
+                var res = commentBook.replace("Parking: Si\n","");
+                res = res.replace("Parking: No\n","");
+                res = res.replace("Parking: Gratis\n","");
+                res = res.replace("Parking: 50 %\n","");
+                
+                $('.book_comments').text( $.trim(res+'Parking: '+ $('option:selected', this).text())+"\n");
+            });
+
+            $('.type_luxury').change(function(event){ 
+                var commentBook = $('.book_comments').val();
+                $('.book_comments').empty();
+                var res = commentBook.replace("Suplemento de lujo: Si\n","");
+                res = res.replace("Suplemento de lujo: No\n","");
+                res = res.replace("Suplemento de lujo: Gratis\n","");
+                res = res.replace("Suplemento de lujo: 50 %\n","");
+                $('.book_comments').text( $.trim(res+'Suplemento de lujo: '+ $('option:selected', this).text())+"\n");
+            });
 
 
         });

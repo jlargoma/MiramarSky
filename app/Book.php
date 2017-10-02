@@ -322,7 +322,6 @@ class Book extends Model
     // Funcion para cambiar la reserva de habitacion o estado
         public function changeBook($status,$room,$book)
             {   
-
                 if (!empty($status)) {
                     if ($status == 3) {
 
@@ -330,7 +329,7 @@ class Book extends Model
 
                         $this->save();
 
-                        return "Estado Sin Responder cambiado";
+                        return "Estado Cambiado a Sin Responder";
                     }else{
 
                         $this->type_book = $status;
@@ -339,7 +338,7 @@ class Book extends Model
                         $roomStart = Carbon::createFromFormat('Y-m-d',$this->start);
                         $roomFinish = Carbon::createFromFormat('Y-m-d',$this->finish);
 
-                        $isRooms = \App\Book::where('room_id',$this->room->id)->where('start','>=',$roomStart->copy()->format('Y-m-d'))->whereIn('type_book',[1,2,4,6,7,8])->where('id','!=' ,$this->id)->orderBy('start','ASC')->get();
+                        $isRooms = \App\Book::where('room_id',$this->room->id)->whereIn('type_book',[1,2,4,6,7,8])->where('id','!=' ,$this->id)->orderBy('start','ASC')->get();
 
                         $existStart = false;
                         $existFinish = false;        
@@ -401,21 +400,21 @@ class Book extends Model
                             }
                             if ($this->save()) {
                                 if ($status == 1) {
-                                    return "Email Reserva enviado";
+                                    return "Email Enviado Reserva";
                                 }elseif($status == 2){
-                                    return "Email Pagada la señal enviado";
+                                    return "Email Enviado Pagada la señal ";
                                 }elseif($status == 3){
-                                    return "Estado Sin Responder cambiado";
+                                    return "Estado Cambiado a Sin Responder ";
                                 }elseif($status == 4){
-                                    return "Estado Bloqueado cambiado";
+                                    return "Estado Cambiado a Bloqueado ";
                                 }elseif($status == 5){
                                     return "Contestado por email";
                                 }elseif($status == 6){
-                                    return "Email de Cancelacion enviado";
+                                    return "Email Enviado de Cancelacion ";
                                 }elseif($status == 7){
-                                    return "Estado Reserva Propietario cambiado";
+                                    return "Estado Cambiado a Reserva Propietario ";
                                 }elseif($status == 8){
-                                    return "Estado subcomunidad cambiado";
+                                    return "Estado Cambiado a Subcomunidad ";
                                 }
                             }
                         }
@@ -428,12 +427,15 @@ class Book extends Model
                     
                 }
                 if (!empty($room)) {
-                    $isRooms = \App\Book::where('room_id',$room)->get();
+
+                    $roomStart = Carbon::createFromFormat('Y-m-d',$this->start);
+                    $roomFinish = Carbon::createFromFormat('Y-m-d',$this->finish);
+
+                    $isRooms = \App\Book::where('room_id',$this->room->id)->whereIn('type_book',[1,2,4,6,7,8])->where('id','!=' ,$this->id)->orderBy('start','ASC')->get();
 
                         $existStart = false;
                         $existFinish = false;        
-                        $roomStart = Carbon::createFromFormat('Y-m-d',$this->start);
-                        $roomFinish = Carbon::createFromFormat('Y-m-d',$this->finish);
+
                         foreach ($isRooms as $isRoom) {
                             if ($existStart == false && $existFinish == false) {
                                 $start = Carbon::createFromFormat('Y-m-d', $isRoom->start);

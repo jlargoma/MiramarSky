@@ -244,8 +244,8 @@ class BookController extends Controller
                 $book->room_id       = $request->input('newroom');
                 $book->start         = Carbon::createFromFormat('d/m/Y',$start);
                 $book->finish        = Carbon::createFromFormat('d/m/Y',$finish);
-                $book->comment       = $request->input('comments');
-                $book->book_comments = $request->input('book_comments');
+                $book->comment       = ltrim($request->input('comments'));
+                $book->book_comments = ltrim($request->input('book_comments'));
                 $book->type_book     = ( $request->input('status') ) ? $request->input('status') : 3;
                 $book->pax           = $request->input('pax');
                 $book->nigths        = $request->input('nigths');
@@ -626,8 +626,8 @@ class BookController extends Controller
                 $book->room_id       = $request->input('newroom');
                 $book->start         = Carbon::createFromFormat('d/m/Y',$start);
                 $book->finish        = Carbon::createFromFormat('d/m/Y',$finish);
-                $book->comment       = trim($request->input('comments'));
-                $book->book_comments = trim($request->input('book_comments'));
+                $book->comment       = ltrim($request->input('comments'));
+                $book->book_comments = ltrim($request->input('book_comments'));
                 $book->pax           = $request->input('pax');
                 $book->nigths        = $request->input('nigths');
                 $book->sup_limp      = ($room->typeApto == 1) ? 35 : 50;
