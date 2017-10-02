@@ -101,6 +101,7 @@
                 <div class="col-md-3">
                     <label>Apartamento</label>
                     <select class="form-control full-width newroom minimal" name="newroom" id="newroom">
+                        <option ></option>
                         <?php foreach ($rooms as $room): ?>
                             <option value="<?php echo $room->id ?>" data-luxury="<?php echo $room->luxury ?>" data-size="<?php echo $room->sizeApto ?>">
                                 <?php echo $room->name ?>
@@ -399,10 +400,11 @@
 
                 var dataLuxury = $('option:selected', this).attr('data-luxury');;
 
-                // alert(dataLuxury);
                 if (dataLuxury == 1) {
                     $('.type_luxury option[value=1]').attr('selected','selected');
+                    $('.type_luxury option[value=2]').removeAttr('selected');
                 } else {
+                    $('.type_luxury option[value=1]').removeAttr('selected');
                     $('.type_luxury option[value=2]').attr('selected','selected');
                 }
 
