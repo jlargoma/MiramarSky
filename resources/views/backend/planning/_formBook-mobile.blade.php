@@ -29,7 +29,7 @@
                 </p>
             </div>
         </div>
-        <div class="row padding-block">
+        <div class="row not-padding">
             <div class="col-xs-12 bg-black push-20">
                 <h4 class="text-center white">
                     NUEVA RESERVA
@@ -62,16 +62,16 @@
                                 DATOS DEL CLIENTE
                             </h4>
                         </div>
-
-                        <div class="col-md-4">
+                
+                        <div class="col-xs-6">
                             <label for="name">Nombre</label> 
                             <input class="form-control cliente" type="text" name="name" value="<?php echo $request->name; ?>">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-xs-6">
                             <label for="email">Email</label> 
                             <input class="form-control cliente" type="email" name="email"  value="<?php echo $request->email; ?>">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-xs-12">
                             <label for="phone">Telefono</label> 
                             <input class="form-control cliente" type="text" name="phone"  value="<?php echo $request->phone; ?>">
                         </div>  
@@ -83,20 +83,18 @@
                                 DATOS DE LA RESERVA
                             </h4>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-xs-12">
                             <label>Entrada</label>
                             <div class="input-prepend input-group">
-                                
                                 <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center;min-height: 28px;" value="<?php echo $request->fechas; ?>" readonly="">
-
                             </div>
                         </div>
-                        <div class="col-md-1 p-l-0">
-                            <label>Noches</label>
-                            <input type="text" class="form-control nigths" name="nigths" style="width: 100%"  value="<?php echo $request->nigths; ?>">
-                        </div> 
-                        <div class="col-md-2 p-l-0">
-                            <label>Pax</label>
+                        <div class="col-xs-3  p-t-10">
+                            <label><i class="fa fa-moon-o"></i></label>
+                            <input type="text" class="form-control nigths" name="nigths" style="width: 100%" value="<?php echo $request->nigths; ?>">
+                        </div>
+                        <div class="col-xs-4 p-r-0  p-t-10">
+                            <label><i class="fa fa-users"></i></label>
                             <select class=" form-control pax minimal"  name="pax">
                                 <?php for ($i=1; $i <= 10 ; $i++): ?>
                                     <option value="<?php echo $i ?>" <?php echo $i == $request->pax ? "selected" : ""; ?>>
@@ -105,9 +103,10 @@
                                 <?php endfor;?>
                             </select>
                         </div>
-                        <div class="col-md-3">
-                            <label>Apartamento</label>
+                        <div class="col-xs-5  p-t-10">
+                            <label><i class="fa fa-home"></i></label>
                             <select class="form-control full-width newroom minimal" name="newroom" id="newroom">
+                                <option ></option>
                                 <?php foreach ($rooms as $room): ?>
                                     <option value="<?php echo $room->id ?>" data-luxury="<?php echo $room->luxury ?>" <?php echo $room->id == $request->newroom ? "selected" : ""; ?>> 
                                         <?php echo $room->name ?>
@@ -115,7 +114,8 @@
                                 <?php endforeach ?>
                             </select>
                         </div>
-                        <div class="col-md-1 p-l-0 p-r-0">
+
+                        <div class="col-xs-4 p-r-0 p-t-10">
                             <label>Parking</label>
                             <select class=" form-control parking minimal"  name="parking">
                                 <?php for ($i=1; $i <= 4 ; $i++): ?>
@@ -125,7 +125,7 @@
                                 <?php endfor;?>
                             </select>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-xs-4 p-r-0 p-t-10">
                             <label>Sup. Lujo</label>
                             <select class=" form-control full-width type_luxury minimal" name="type_luxury">
                                 <?php for ($i=1; $i <= 4 ; $i++): ?>
@@ -137,43 +137,33 @@
                         </div>
                     </div>
                     <div class="col-xs-12 bg-white">
-                        <div class="col-xs-4 not-padding">
-                            <div class="col-md-6 col-xs-12 push-10">
-                                <label>Agencia</label>
-                                <select class="form-control full-width agency minimal" data-init-plugin="select2" name="agency">
-                                    <?php for ($i=0; $i <= 2 ; $i++): ?>
-                                        <option value="<?php echo $i ?>" <?php echo $i == $request->agency ? "selected" : ""; ?>>
-                                            <?php echo $book->getAgency($i) ?>
-                                        </option>
-                                    <?php endfor;?>
-                                </select>
-                            </div>
-                            <div class="col-md-6 col-xs-12 push-10">                                                        
-                                <label>Cost Agencia</label>
-                                <input type="text" class="agencia form-control" name="agencia" value="<?php echo $request->agencia ?>">
-                            </div>
-                            <div style="clear: both;"></div>
-                            <!-- <div class="col-md-6">
-                                <label>Extras</label>
-                                <select class="full-width form-control select2-hidden-accessible " data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true" style="cursor: pointer">
-                                    <?php // foreach ($extras as $extra): ?>
-                                        <option value="<?php // echo $extra->id ?>">
-                                            <?php // echo $extra->name ?>
-                                        </option>
-                                    <?php // endforeach ?>
-                                </select>
-                            </div> -->
+                        <div class="col-xs-6 push-10">
+                            <label>Agencia</label>
+                            <select class="form-control full-width agency minimal" name="agency">
+                                <?php for ($i=0; $i <= 2 ; $i++): ?>
+                                    <option value="<?php echo $i ?>" <?php echo $i == $request->agency ? "selected" : ""; ?>>
+                                        <?php echo $book->getAgency($i) ?>
+                                    </option>
+                                <?php endfor;?>
+                            </select>
                         </div>
-                        <div class="col-xs-8 not-padding">
-                            <div class="col-md-4 col-xs-12 text-center" style="background-color: #0c685f;">
+                        <div class="col-xs-6 col-xs-12 push-10">                                                        
+                            <label>Cost Agencia</label>
+                            <input type="text" class="agencia form-control" name="agencia" value="<?php echo $request->agencia ?>">
+                        </div>
+                        <div style="clear: both;"></div>
+
+
+                        <div class="col-xs-12 not-padding">
+                            <div class="col-md-4 col-xs-4 text-center" style="background-color: #0c685f;">
                                 <label class="font-w800 text-white" for="">TOTAL</label>
                                 <input type="text" class="form-control total m-t-10 m-b-10 white" name="total"  value="<?php echo $request->total ?>">
                             </div>
-                            <div class="col-md-4 col-xs-12 text-center" style="background: #99D9EA;">
+                            <div class="col-md-4 col-xs-4 text-center" style="background: #99D9EA;">
                                 <label class="font-w800 text-white" for="">COSTE</label>
                                 <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost"  value="<?php echo $request->cost ?>">
                             </div>
-                            <div class="col-md-4 col-xs-12 text-center not-padding" style="background: #ff7f27;">
+                            <div class="col-md-4 col-xs-4 text-center not-padding" style="background: #ff7f27;">
                                 <label class="font-w800 text-white" for="">BENEFICIO</label>
                                 <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio"  style="width: 80%; float: left;" value="<?php echo $request->beneficio ?>">
                                 <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;">

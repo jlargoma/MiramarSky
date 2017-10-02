@@ -475,16 +475,35 @@
               var id = $(this).attr('data-id');
               var clase = $(this).attr('class');
               
-              if (clase == 'status form-control') {
+              if (clase == 'status form-control minimal') {
                   var status = $(this).val();
                   var room = "";
-              }else if(clase == 'room'){
+              }else if(clase == 'room form-control minimal'){
                   var room = $(this).val();
                   var status = "";
               }
-              $.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
-                  window.location.reload();
-              });
+
+
+
+              if (status == 5) {
+                  $('#myModal').modal({
+                      show: 'false'
+                  }); 
+                 $.get('/admin/reservas/ansbyemail/'+id, function(data) {
+                     $('.modal-content').empty().append(data);
+                 });
+              }else{
+                 $.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
+                      $('.notification-message').val(data);
+                      document.getElementById("boton").click();
+                      if (data == "Ya hay una reserva para ese apartamento" || data == "No se puede cambiar el estado") {
+                          
+                      }else{
+                          setTimeout('document.location.reload()',2000);
+                      }                        
+                 }); 
+              }
+              
           });
 
           // Mdoal

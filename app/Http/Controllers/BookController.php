@@ -16,6 +16,7 @@ setlocale(LC_TIME, "es_ES");
 
 class BookController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -208,6 +209,7 @@ class BookController extends Controller
      */
     public function create(Request $request)
     {
+        $mobile = new Mobile();
 
         $aux = str_replace('Abr', 'Apr', $request->input('fechas'));
 
@@ -408,12 +410,19 @@ class BookController extends Controller
                 // print_r($request->input());
                 // die();
                 // echo "Error. Este apartamento ya tiene una reserva confirmada";
-                return view('backend/planning/_formBook',  [
-                                                                'request'   => (object) $request->input(),
-                                                                'book'      => new \App\Book(),
-                                                                'rooms'     => \App\Rooms::where('state','=',1)->get(),
-                                                            ]);
-
+                if (!$mobile->isMobile()){
+                    return view('backend/planning/_formBook',  [
+                                                                    'request'   => (object) $request->input(),
+                                                                    'book'      => new \App\Book(),
+                                                                    'rooms'     => \App\Rooms::where('state','=',1)->get(),
+                                                                ]);
+                }else{
+                    return view('backend/planning/_formBook-mobile',  [
+                                                                    'request'   => (object) $request->input(),
+                                                                    'book'      => new \App\Book(),
+                                                                    'rooms'     => \App\Rooms::where('state','=',1)->get(),
+                                                                ]);
+                }
             }
         }
         
