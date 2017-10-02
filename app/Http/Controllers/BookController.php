@@ -1011,7 +1011,7 @@ class BookController extends Controller
         {
             $book = \App\Book::find($request->id);
             Mail::send('backend.emails.contestado',['book' => $book], function ($message) use ($book) {
-                                $message->from('reservas@daimonconsulting.com', 'Miramarski');
+                                $message->from('reservas@apartamentosierranevada.net', 'Miramarski');
 
                                 $message->to($book->customer->email);
                                 $message->subject('Correo Contestado ');
