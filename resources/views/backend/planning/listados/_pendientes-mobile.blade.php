@@ -1,5 +1,5 @@
 <?php use \Carbon\Carbon ;?>
-<div class="container column-seperation ">
+
   <table class="table table-hover dataTable no-footer">
     <thead>
       <th class="Reservado-table text-white text-center">Nombre</th>
@@ -41,4 +41,3 @@
       <?php endforeach ?>
     </tbody>
   </table>
-</div>
