@@ -31,11 +31,11 @@
                     <div class="panel">
                         <form class="form-horizontal" action="{{ url('/admin/reservas/create') }}" method="post">
                             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                            <div class="col-md-6 center text-left0">
-                                <div class="col-md-4 m-t-10">
+                            <div class="col-xs-12 center text-left0">
+                                <div class="col-xs-12 m-t-10">
                                     <label for="status">Estado</label>
                                 </div> 
-                                <div class="col-md-8">
+                                <div class="col-xs-12">
                                     <select name="status" class="status form-control minimal" data-id="<?php echo $book->id ?>" >
                                         <?php for ($i=1; $i < 9; $i++): ?> 
                                             <option <?php echo $i == 3 ? "selected" : ""; ?> 
@@ -70,6 +70,7 @@
                                 </div>  
                             </div>
                             <br>
+
                             <div class="col-xs-12 bg-white padding-block">
                                 <div class="col-xs-12 bg-black push-20">
                                     <h4 class="text-center white">
@@ -188,7 +189,7 @@
                                 </div>
                             </div>
                             <div class="row bg-white padding-block">
-                                <div class="col-md-4 col-md-offset-4 text-center">
+                                <div class="col-xs-12 text-center">
                                     <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;" disabled>Guardar</button>
                                 </div>  
                             </div>

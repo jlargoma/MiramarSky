@@ -184,7 +184,7 @@
                         </div>
                         
                         <div style="clear:both;"></div>
-                        
+
                     </div>
                     <div class="col-xs-12 bg-white padding-block">
                         <div class="col-md-6 col-xs-12">
