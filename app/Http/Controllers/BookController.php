@@ -1005,8 +1005,28 @@ class BookController extends Controller
         }
 
     public function sendEmail(Request $request)
-        {
-            $book = \App\Book::find($request->id);
+    {
+
+
+        if ( $request->input('type') ) {
+            $book = \App\Book::find($request->input('id'));
+            Mail::send('backend.emails.contestadoAdvanced',['body' => $request->input('textEmail'),], function ($message) use ($book) {
+                $message->from('reservas@apartamentosierranevada.net');
+
+                $message->to($book->customer->email);
+                $message->subject('Disponibilidad para tu reserva');
+            });
+
+            $book->send = 1;
+            $book->type_book = 5;
+            if ($book->save()) {
+                return 1;
+            }else{
+                return 0;
+            }
+            
+        }else{
+            $book = \App\Book::find($request->input('id'));
             Mail::send('backend.emails.contestado',['book' => $book], function ($message) use ($book) {
                                 $message->from('reservas@apartamentosierranevada.net');
 
@@ -1019,6 +1039,10 @@ class BookController extends Controller
             $book->save();
             return redirect()->back();
         }
+
+
+        
+    }
 
     public function ansbyemail($id)
         {

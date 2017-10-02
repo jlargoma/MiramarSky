@@ -504,7 +504,7 @@
 
 
     <div class="modal fade slide-up disable-scroll in" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-md">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content-wrapper">
                 <div class="modal-content"></div>
             </div>
@@ -549,13 +549,11 @@
     <script type="text/javascript" src="/assets/plugins/jquery-inputmask/jquery.inputmask.min.js"></script>
     <script src="/assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
     <script src="/assets/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
-    <script src="/assets/plugins/summernote/js/summernote.min.js" type="text/javascript"></script>
     <script src="/assets/plugins/moment/moment.min.js"></script>
     <script src="/assets/plugins/bootstrap-typehead/typeahead.bundle.min.js"></script>
     <script src="/assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
     <script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
 
-    <script src="/assets/plugins/summernote/js/summernote.js"></script>
     <script type="text/javascript" src="/assets/plugins/jquery-autonumeric/autoNumeric.js"></script>
 
     <script src="/assets/js/notifications.js" type="text/javascript"></script>
@@ -586,11 +584,10 @@
                     $('#myModal').modal({
                         show: 'false'
                     }); 
-                   $.get('/admin/reservas/ansbyemail/'+id, function(data) {
+                    $.get('/admin/reservas/ansbyemail/'+id, function(data) {
                        $('.modal-content').empty().append(data);
                    });
                 }else{
-                    alert(id);
                    $.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
                         $('.notification-message').val(data);
                         document.getElementById("boton").click();
