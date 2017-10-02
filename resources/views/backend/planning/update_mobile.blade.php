@@ -54,8 +54,8 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
         </p>
     </div>
     <div class="col-xs-3 padding-10">
-        <a href="{{ url('/admin/reservas')}}" class="btn btn-danger btn-cons m-b-10" onclick="return confirm('¿Quieres Salir sin Guardar?');" data-toggle="tooltip" data-original-title="Salir de la  Reserva" style="min-width: 10px!important">
-            <i class="fa fa-window-close" aria-hidden="true"></i>
+        <a href="{{ url('/admin/reservas')}}" class=" m-b-10" style="min-width: 10px!important">
+            <img src="{{ asset('/img/miramarski/iconos/close.png') }}" />
         </a>
     </div>
 
@@ -113,6 +113,7 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
         <div class="row">
             <form role="form"  action="{{ url('/admin/reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post" >
                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                <input type="hidden" name="customer_id" value="<?php echo $book->customer->id; ?>">
                 <!-- DATOS DEL CLIENTE -->
                 <div class="col-xs-12 bg-white padding-block">
                     <div class="col-xs-12 bg-black push-20">
@@ -120,7 +121,7 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                             DATOS DEL CLIENTE
                         </h4>
                     </div>
-
+                    
                     <div class="col-xs-6 push-10">
                         <label for="name">Nombre</label> 
                         <input class="form-control cliente" type="text" name="name" value="<?php echo $book->customer->name ?>" data-id="<?php echo $book->customer->id ?>">
@@ -162,7 +163,7 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                     </div>
                     <div class="col-xs-6 push-10">
                         <label>Apartamento</label>
-                        <select class="form-control full-width newroom" data-init-plugin="select2" name="newroom" id="newroom">
+                        <select class="form-control minimal newroom" name="newroom" id="newroom">
                             <?php foreach ($rooms as $room): ?>
                                 <option value="<?php echo $room->id ?>" {{ $room->id == $book->room_id ? 'selected' : '' }}><?php echo $room->name ?></option>
                             <?php endforeach ?>
@@ -184,12 +185,9 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                             <?php endfor;?>
                         </select>
                     </div>
-                </div>
-                <div class="col-xs-12 bg-white padding-block">
-                   
                     <div class="col-md-3 col-xs-6">
                         <label>Agencia</label>
-                        <select class="form-control full-width agency minimal" data-init-plugin="select2" name="agency">
+                        <select class="form-control agency minimal"  name="agency">
                             <?php for ($i=0; $i <= 2 ; $i++): ?>
                                 <option value="<?php echo $i ?>" {{ $book->agency == $i ? 'selected' : '' }}><?php echo $book->getAgency($i) ?></option>
                             <?php endfor;?>
@@ -256,7 +254,7 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                 <div class="col-xs-4 bg-danger text-white text-center">
                     <span class="font-s18">Pendiente:</span><br>
                     <!-- si esta pendiente nada,.si esta de mas +X -->
-                    <span class="font-w600 font-s18"><?php echo ($book->total_price-$totalpayment) >= 0 ? "-" : "+";echo number_format($book->total_price-$totalpayment,2,',','.') ?> €</span>
+                    <span class="font-w600 font-s18"><?php echo ($book->total_price-$totalpayment) >= 0 ? "" : "+";echo number_format($totalpayment-$book->total_price,2,',','.') ?> €</span>
                 </div>
             </div>
             <div class="col-md-12 table-responsive not-padding ">
@@ -282,10 +280,11 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                                         ?>
                                     </td>
                                     <td class ="text-center">
-                                        <input class="editable payment-<?php echo $payment->id?> form-control" type="text" name="cost" data-id="<?php echo $payment->id ?>" value="<?php echo $payment->import ?>" style="width: 50%;text-align: center;">€
+                                        <?php echo $payment->import." €" ?>
                                     </td>
-                                    <td class ="text-center"><?php echo $payment->comment ?></td>
                                     <td class ="text-center"><?php echo $typecobro->getTypeCobro($payment->type) ?> </td>
+                                    <td class ="text-center"><?php echo $payment->comment ?></td>
+                                    
                                     <td>
                                         <a href="{{ url('/admin/reservas/deleteCobro/')}}/<?php echo $payment->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Cobro" onclick="return confirm('¿Quieres Eliminar el obro?');">
                                             <i class="fa fa-trash"></i>

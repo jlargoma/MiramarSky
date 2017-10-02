@@ -636,6 +636,7 @@ class BookController extends Controller
 
                 $book->cost_park     = $book->getCostPark($request->parking,$request->nigths);
 
+                $book->type_luxury     = $request->input('type_luxury');                
                 $book->sup_lujo      = $this->getPriceLujo($request->input('type_luxury'));
                 $book->cost_lujo     = $this->getCostLujo($request->input('type_luxury'));
 
@@ -650,9 +651,6 @@ class BookController extends Controller
                 $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
 
 
-                // echo "<pre>";
-                // print_r($book);
-                // die();
 
                 if ($book->save()) {
                     return redirect('admin/reservas/update/'.$id);
