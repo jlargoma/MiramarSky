@@ -152,49 +152,9 @@
   					</div>
   					<div class="tab-content ">
   						<div class="tab-pane active table-responsive" id="tabPendientes">
-  							<div class="container column-seperation ">
-  								<table class="table table-hover dataTable no-footer">
-  									<thead>
-  										<th class="Reservado-table text-white text-center">Nombre</th>
-  										<th class="Reservado-table text-white text-center" style="min-width:35px">In</th>
-  										<th class="Reservado-table text-white text-center" style="min-width:35px ">Out</th>
-  										<th class="Reservado-table text-white text-center">Pax</th>
-  										<th class="Reservado-table text-white text-center">Tel</th>
-  										<th class="Reservado-table text-white text-center" style="min-width:100px">Apart</th>
-  										<th class="Reservado-table text-white text-center"><i class="fa fa-moon-o"></i></th>
-  										<th class="Reservado-table text-white text-center" style="min-width:50px">PVP</th>
-  										<th class="Reservado-table text-white text-center" style="min-width:100px">Estado</th>
-  									</thead>
-  									<tbody>
-  										<?php foreach ($arrayBooks["nuevas"] as $nueva): ?>
-  											<tr>
-  												<td class="text-center sm-p-t-10 sm-p-b-10" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>>
-                            <a href="{{url ('/admin/reservas/update')}}/<?php echo $nueva->id ?>"><?php echo $nueva->customer->name ?></a>
-                          </td>
-  												<td class="text-center sm-p-t-10 sm-p-b-10" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->start)->format('d-M') ?></td>
-  												<td class="text-center sm-p-t-10 sm-p-b-10" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->finish)->format('d-M') ?></td>
-  												<td class="text-center sm-p-t-10 sm-p-b-10" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>><?php echo $nueva->pax ?></td>
-  												<td class="text-center sm-p-t-10 sm-p-b-10" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>><a href="tel:<?php echo $nueva->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
-  												<td class="text-center sm-p-t-10 sm-p-b-10" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>><?php echo $nueva->room->name ?></td>
-  												<td class="text-center sm-p-t-10 sm-p-b-10" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>><?php echo $nueva->nigths ?></td>
-  												<td class="text-center sm-p-t-10 sm-p-b-10" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>><?php echo $nueva->total_price ?> €</td>
-  												<td class="text-center sm-p-t-10 sm-p-b-10 sm-p-l-10 sm-p-r-10" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0.2) !important'":""; ?>>
-                            <select class="status" data-id="<?php echo $nueva->id ?>" <?php echo ($nueva->type_book == 1) ? "style='background:rgba(0,100,255,0) !important'":""; ?>>
-      
-                                <?php for ($i=1; $i < 9; $i++): ?> 
-                                    <option <?php echo $i == ($nueva->type_book) ? "selected" : ""; ?> 
-                                            <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
-                                            value="<?php echo $i ?>"  data-id="<?php echo $nueva->id ?>">
-                                            <?php echo $nueva->getStatus($i) ?></option>                                    
-                                     
-                                <?php endfor; ?>
-                            </select>
-                          </td>
-  											</tr>
-  										<?php endforeach ?>
-  									</tbody>
-  								</table>
-  							</div>
+                <div class="container column-seperation ">
+  						    @include('backend.planning.listados._pendientes-mobile')
+                </div>
   						</div>
   						<div class="tab-pane table-responsive" id="tabEspeciales">
   							<div class="container column-seperation ">
@@ -299,191 +259,7 @@
   			<div class="tab-pane " id="tabNueva">
 				<div class="row column-seperation ">
 					<div class="row">
-					    <div class="col-md-12 push-30">
-					        <div class="col-md-12">
-							    <div class="row">
-							        <div class="container-fluid padding-10 sm-padding-10" style="background-color: rgba(0,0,10,0.1)">
-							        	<div class="col-md-12 col-xs-12 text-center">
-							        	    <p style="font-size: 14px">
-							        	        <br>
-							        	        Reserva nueva 
-							        	        <!-- Desplegable -->
-							        	    </p>
-							        	</div>
-							        	<div class="clear"></div>
-							        	
-							        	<div class="col-xs-12 sm-p-l-0 sm-p-r-0">
-							        	    <div class="panel">
-		        	    			        	<form class="form-horizontal" action="{{ url('/admin/reservas/create') }}" method="post">
-		        	    			        		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-		        	    			        		<div class="col-xs-12 col-md-12 push-20">
-		        	    			        			<p class="text-center">Cliente</p>
-		        	    			        		</div>
-	        	    			                <div style="padding: 0px 0px 0px 0px;">
-	        	    			                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-	        	    			                    <div class="input-group col-xs-12">
-	        	    			                        <div class="col-xs-6">
-	        	    			                           <input class="form-control" type="text" name="name" value="" placeholder="Nombre">
-	        	    			                        </div>
-	        	    			                        <div class="col-xs-6">
-	        	    			                            <input class="form-control" type="number" name="phone" value="" placeholder="Telefono"> 
-	        	    			                        </div>
-	        	    			                        <br><br>
-	        	    			                        <div class="col-xs-12">
-	        	    			                            <input class="form-control" type="email" name="email" value="" placeholder="Email">  
-	        	    			                        </div>
-	        	    			                         
-	        	    			                        <div style="clear: both;"></div>
-	        	    			                    </div>                                            
-	        	    			                </div>
-            													<br>
-            													<div class="col-xs-12 col-md-12 push-20">
-            														<p class="text-center">Reserva</p>
-            													</div>
-      	    			                		<div style="padding: 0px 0px 0px 0px;">
-  	    			                		        
-    			                		            <div class="col-xs-12">
-                                              <div class="input-prepend input-group col-xs-12">
-                                                <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;   " readonly="">
-                                              </div>
-                                          </div>
-                                          <div class="col-xs-3 m-t-10">
-                                              <label><i class="fa fa-moon-o"></i></label>
-                                              <input type="text" class="form-control nigths" name="nigths" value="" style="width: 100%;display:none">
-                                              <input type="text" class="form-control nigths" name="noches" value="<?php echo $book->nigths ?>" disabled style="width: 100%">
-                                          </div> 
-                                          <div class="col-xs-3 m-t-10">
-                                              <label class="m-l-10"><i class="fa fa-user"></i></label><br>
-                                              <select name="pax" id="" style="min-height: 35px">
-                                                <?php for ($i=1; $i <= 8; $i++):?>
-                                                  <option value="<?php echo $i ?>"><?php echo $i ?></option>
-                                                <?php endfor; ?>
-                                              </select>                                              
-                                          </div>
-                                            
-                                            <div class="col-xs-6 m-t-10">
-                                              <div class="col-xs-3">
-                                                 <label class="sm-pull-left"><i class="fa fa-home" aria-hidden="true"></i></label>
-                                              </div><br>
-                                              <div class="col-xs-8 sm-padding-0">
-                                                <select class="newroom minimal" name="newroom" id="newroom" style="min-height: 35px" >
-                                                  <?php foreach ($rooms as $room): ?>
-                                                      <option value="<?php echo $room->id ?>"><?php echo $room->name ?></option>
-                                                  <?php endforeach ?>
-                                              </select>
-                                              </div>
-                                            </div>
-    			                		            
-
-                                          <div class="clear-both"></div><br>
-
-    			                		            <div class="col-xs-5 col-xs-offset-1 sm-padding-0 sm-no-margin">
-  			                		                <div class="col-xs-3">
-                                              <label >P</label>      
-                                            </div>
-                                            <div class="col-xs-8 sm-padding-0">
-                                              <select class=" form-control full-width parking" data-init-plugin="select2" name="parking">
-                                                <?php for ($i=1; $i <= 4 ; $i++): ?>
-                                                    <option value="<?php echo $i ?>"><?php echo $book->getParking($i) ?></option>
-                                                <?php endfor;?>
-                                            </select>
-                                            </div>
-    			                		            </div>
-
-    			                		            <div class="col-xs-7">
-                                            <div class="col-xs-3">
-                                              <label><i class="fa fa-star"></i></label>
-                                            </div>
-  			                		                <div class="col-xs-8 sm-no-padding sm-no-margin">
-                                              <select class=" form-control full-width type_luxury" data-init-plugin="select2" name="type_luxury">
-                                                <?php for ($i=1; $i <= 4 ; $i++): ?>
-                                                    <option value="<?php echo $i ?>"><?php echo $book->getSupLujo($i) ?></option>
-                                                <?php endfor;?>
-                                            </select>
-                                            </div>
-    			                		            </div>
-
-    			                		            <div class="clear-both"></div>
-
-    			                		            <div class="col-xs-5 col-xs-offset-1">                                                        
-    			                		                <label>Cost Agencia</label>
-    			                		                <input type="text" class="agencia form-control pvpAgencia" name="agencia" value="0">
-    			                		            </div>
-
-    			                		            <div class="col-xs-5">
-    			                		                <label>Agencia</label>
-    			                		                <select class=" form-control full-width agency" data-init-plugin="select2" name="agency">
-                                                      <option value="0"></option>
-    			                		                    <?php for ($i=1; $i <= 2 ; $i++): ?>
-    			                		                        <option value="<?php echo $i ?>"><?php echo $book->getAgency($i) ?></option>
-    			                		                    <?php endfor;?>
-    			                		                </select>
-    			                		            </div>
-  	    			                		        
-    			                		            <div class="col-xs-5 col-xs-offset-1">
-    			                		                <label>Extras</label>
-    			                		                <select class="full-width select2-hidden-accessible extras" data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true">
-    			                		                    <?php foreach ($extras as $extra): ?>
-    			                		                        <option value="<?php echo $extra->id ?>"><?php echo $extra->name ?></option>
-    			                		                    <?php endforeach ?>
-    			                		                </select>
-    			                		            </div>
-
-    			                		            <div class="col-xs-5">
-    			                		                <label>PVP Extras</label>
-    			                		                <input type="text" class="pvp-exctra form-control" name="pvp-extra" disabled>
-    			                		            </div>
-
-    			                		            <div class="col-xs-4 m-t-10 p-b-10 text-white" style="background-color: #0c685f">
-    			                		                <label>PVP</label>
-    			                		                <input type="text" class="form-control total text-white" name="total" value="" style="font-weight: bold;width: 100%;border:none;background: #0c685f">
-    			                		            </div> 
-
-    			                		            <div class="col-xs-4 m-t-10 p-b-10 text-white" style="background-color: #99D9EA">
-    			                		                <label>COSTE</label>
-    			                		                <input type="text" class="form-control cost text-white" name="cost" value="" disabled style="font-weight: bold;width: 100%;border:none;background: #99D9EA">
-    			                		            </div>
-
-    			                		            <div class="col-xs-4 m-t-10 p-b-10 text-white" style="background-color: #ff7f27">
-    			                		                <label>BENº</label>
-    			                		                <input type="text" class="form-control beneficio text-white" name="beneficio" value="" disabled style="font-weight: bold;width: 100%;border:none;background: #ff7f27">
-    			                		            </div>
-                                          
-  	    			                		    </div>
-  	    			                		        <br><br>
-  	    			                		        <div class="input-group col-md-12">
-
-    			                		                <div class="col-xs-12">
-    			                		                    <label>Comentarios Usuario</label>
-    			                		                    <textarea class="form-control" name="comments" style="width: 100%" rows="4">
-    			                		                    </textarea>
-    			                		                </div>
-  	    			                		            
-  	    			                		            <!-- Añadir boton para escribir comentario interno -->
-
-    			                		                <div class="col-xs-12">
-    			                		                    <label>Comentarios Internos</label>
-    			                		                    <textarea class="form-control" name="book_comments" style="width: 100%" rows="4">
-    			                		                    </textarea>
-    			                		                </div>
-  	    			                		        </div> 
-  	    			                		        <div class="input-group col-md-12">
-  	    			                		            
-  	    			                		        </div> 
-  	    			                		        <br>
-  	    			                		        <div class="input-group col-xs-12 text-center">
-  	    			                		            <button class="form-control btn btn-complete active" type="submit" style="width: 90%;margin-left: 5%"><p style="font-size: 22px">Guardar</p></button>
-  	    			                		        </div>   
-  	    			                		        <br>                    
-      	    			                		</div>
-		        	    			        	</form>
-							        	    </div>
-							        	</div>
-							        	
-							        </div>
-							    </div> 
-					        </div>
-					    </div>
+				    @include('backend.planning.listados._nueva-mobile')   
 					</div>
 				</div>
   			</div>
@@ -675,7 +451,8 @@
         $(".daterange1").daterangepicker({
           "buttonClasses": "button button-rounded button-mini nomargin",
           "applyClass": "button-color",
-          "cancelClass": "button-light",
+          "cancelClass": "button-light",            
+          "startDate": '01 Dec, 17',
           locale: {
               format: 'DD MMM, YY',
               "applyLabel": "Aplicar",
@@ -711,6 +488,119 @@
             
         });
       });
+
+      function calculate(){
+              var room = $('#newroom').val();
+              var pax = $('.pax').val();
+              var park = $('.parking').val();
+              var lujo = $('select[name=type_luxury]').val();
+              var status = $('select[name=status]').val();
+              var sizeApto = $('option:selected', 'select[name=newroom]').attr('data-size');;
+              var beneficio = 0;
+              var costPark = 0;
+              var pricePark = 0;
+              var costLujo = 0;
+              var priceLujo = 0;
+              var agencia = 0;
+              var beneficio_ = 0;
+
+              var date = $('.daterange1').val();
+
+              var arrayDates = date.split('-');
+              var res1 = arrayDates[0].replace("Abr", "Apr");
+              var date1 = new Date(res1);
+              var start = date1.getTime();
+
+              var res2 = arrayDates[1].replace("Abr", "Apr");
+              var date2 = new Date(res2);
+              var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+              var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+              $('.nigths').val(diffDays);
+              
+              var start = date1.toLocaleDateString();
+              var finish = date2.toLocaleDateString();
+
+
+              $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
+
+                  if (pax < data) {
+                      $('.pax').attr('style' , 'background-color:red');
+                      $('.book_comments').empty();
+                      $('.book_comments').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
+                  }else{
+                      $('.book_comments').empty();
+                      $('.pax').removeAttr('style');
+                  }
+              });
+              
+              if ( status == 8) {
+                  $('.total').empty();
+                  $('.total').val(0);
+                  $('.cost').empty();
+                  $('.cost').val(0);
+
+                  $('.beneficio').empty();
+                  $('.beneficio').val(0);
+              }else if ( status == 7 ){
+                  if (sizeApto == 1) {
+                      $('.total').empty();
+                      $('.total').val(30);
+
+                      $('.cost').empty();
+                      $('.cost').val(30);
+
+                      $('.beneficio').empty();
+                      $('.beneficio').val(0);
+                  }else{
+                      $('.total').empty();
+                      $('.total').val(50);
+
+                      $('.cost').empty();
+                      $('.cost').val(40);
+
+                      $('.beneficio').empty();
+                      $('.beneficio').val(10);
+                  }
+              }else{
+                  $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays}).success(function( data ) {
+                      pricePark = data;
+                      $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
+                          priceLujo = data;
+
+                          $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                              price = data;
+                              
+                              price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
+                              $('.total').empty();
+                              $('.total').val(price);
+                                  $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays}).success(function( data ) {
+                                      costPark = data;
+                                      $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
+                                          costLujo = data;
+                                          $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                                              cost = data;
+                                              agencia = $('.agencia').val();
+                                              if (agencia == "") {
+                                                  agencia = 0;
+                                              }
+                                              cost = (parseFloat(cost) + parseFloat(costPark) + parseFloat(agencia) + parseFloat(costLujo));
+                                              $('.cost').empty();
+                                              $('.cost').val(cost);
+                                              beneficio = price - cost;
+                                              $('.beneficio').empty;
+                                              $('.beneficio').val(beneficio);
+                                              beneficio_ = (beneficio / price)*100
+                                              $('.beneficio-text').empty();
+                                              $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
+
+                                          });
+                                      });
+                                  });
+                          });
+                      });
+                  }); 
+              }
+      }
 
       $(document).ready(function() {          
 
@@ -758,93 +648,60 @@
               var date = $(this).val();
 
               var arrayDates = date.split('-');
-
-              var date1 = new Date(arrayDates[0]);
+              var res1 = arrayDates[0].replace("Abr", "Apr");
+              var date1 = new Date(res1);
               var start = date1.getTime();
-              console.log(date1.toLocaleDateString());
-              var date2 = new Date(arrayDates[1]);
+
+              var res2 = arrayDates[1].replace("Abr", "Apr");
+              var date2 = new Date(res2);
               var timeDiff = Math.abs(date2.getTime() - date1.getTime());
               var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
               $('.nigths').val(diffDays);
 
+              $('.btn-complete').removeAttr('disabled');
+
+          });
+
+          
+          $('#newroom').change(function(event){ 
+
+              var dataLuxury = $('option:selected', this).attr('data-luxury');;
+
+              if (dataLuxury == 1) {
+                  $('.type_luxury option[value=1]').attr('selected','selected');
+                  $('.type_luxury option[value=2]').removeAttr('selected');
+              } else {
+                  $('.type_luxury option[value=1]').removeAttr('selected');
+                  $('.type_luxury option[value=2]').attr('selected','selected');
+              }
+
+
+              calculate();
           });
 
 
-          $('#newroom, .pax, .parking, .agencia, .type_luxury').change(function(event){ 
+          $('.pax').change(function(event){ 
+              calculate();
+          });
 
-              var room = $('#newroom').val();
-              var pax = $('.pax').val();
-              var park = $('.parking').val();
-              var lujo = $('.type_luxury').val();
-              var beneficio = 0;
-              var costPark = 0;
-              var pricePark = 0;
-              var costLujo = 0;
-              var priceLujo = 0;
-              var agencia = 0;
-              var beneficio_ = 0;
+          $('.parking').change(function(event){ 
+              var commentBook = $('.book_comments').val();
+              $('.book_comments').empty();
 
-              var date = $('.daterange1').val();
-
-              var arrayDates = date.split('-');
-              var date1 = new Date(arrayDates[0]);
-              var date2 = new Date(arrayDates[1]);
-              var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-              var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+              calculate();
               
-              var start = date1.toLocaleDateString();
-              var finish = date2.toLocaleDateString();
+              $('.book_comments').text( $.trim(commentBook+'Parking: '+ $('option:selected', this).text())+"\n");
+          });
 
-              $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
+          $('.type_luxury').change(function(event){ 
+              var commentBook = $('.book_comments').val();
+              $('.book_comments').empty();
+              calculate();
+              $('.book_comments').text( $.trim(commentBook+'Suplemento de lujo '+ $('option:selected', this).text())+"\n");
+          });
 
-                  if (pax < data) {
-                      $('.pax').attr('style' , 'background-color:red');
-                      $('.book_comments').empty();
-                      $('.book_comments').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
-                  }else{
-                      $('.book_comments').empty();
-                      $('.pax').removeAttr('style');
-                  }
-              });
-
-              $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays}).success(function( data ) {
-                  pricePark = data;
-                  console.log(data)
-                  $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
-                      priceLujo = data;
-
-                      $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                          price = data;
-                          
-                          price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
-                          $('.total').empty();
-                          $('.total').val(price);
-                              $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays}).success(function( data ) {
-                                  costPark = data;
-                                  $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
-                                      costLujo = data;
-                                      $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                                          cost = data;
-                                          agencia = $('.agencia').val();
-                                          if (agencia == "") {
-                                              agencia = 0;
-                                          }
-                                          cost = (parseFloat(cost) + parseFloat(costPark) + parseFloat(agencia) + parseFloat(costLujo));
-                                          $('.cost').empty();
-                                          $('.cost').val(cost);
-                                          beneficio = price - cost;
-                                          $('.beneficio').empty;
-                                          $('.beneficio').val(beneficio);
-                                          beneficio_ = (beneficio / price)*100
-                                          $('.beneficio-text').empty;
-                                          $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
-
-                                      });
-                                  });
-                              });
-                      });
-                  });
-              });  
+          $('.agencia').change(function(event){ 
+              calculate();
           });
           
           $('.total').change(function(event) {
