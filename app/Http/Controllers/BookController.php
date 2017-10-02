@@ -993,7 +993,7 @@ class BookController extends Controller
         {
             $book = \App\Book::find($id);
 
-            return view('backend.emails.contestado',['book' => $book]);
+            return view('backend.emails.reservado',['book' => $book]);
 
             Mail::send('backend.emails.jaime',['book' => $book], function ($message) use ($book) {
                                 $message->from('reservas@daimonconsulting.com', 'Miramarski');
