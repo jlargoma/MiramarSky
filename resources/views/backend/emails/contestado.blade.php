@@ -1,6 +1,6 @@
 <?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
 
-Hola <?php echo $book->customer->name ?>, <b>Si hay disponibilidad para tu reserva en apartamento dos dormitorios.</b><br>
+Hola <?php echo $book->customer->name ?>, <b>Si hay disponibilidad para tu reserva en apartamento <?php echo $book->room->sizeRooms->name ?> // <?php echo ($book->type_luxury == 1)? "Lujo" : "Estandar" ?>.</b><br>
 <br>
 
 Nombre: <b><?php echo $book->customer->name ?></b> .<br><br>

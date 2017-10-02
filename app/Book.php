@@ -370,15 +370,15 @@ class Book extends Model
                                 case '1':
 
                                     Mail::send('backend.emails.reservado',['book' => $book], function ($message) use ($book) {
-                                            $message->from('reservas@apartamentosierranevada.net', 'Miramarski');
+                                            $message->from('reservas@apartamentosierranevada.net');
 
                                             $message->to($book->customer->email);
-                                            $message->subject('Correo de reserva');
+                                            $message->subject('Bloqueo de reserva y datos de pago');
                                         });
                                     break;
                                 case '2':
                                     Mail::send('backend.emails.confirmado',['book' => $book], function ($message) use ($book) {
-                                            $message->from('reservas@apartamentosierranevada.net', 'Miramarski');
+                                            $message->from('reservas@apartamentosierranevada.net');
 
                                             $message->to($book->customer->email);
                                             $message->subject('Correo de confirmacion del pago parcial');
@@ -386,10 +386,10 @@ class Book extends Model
                                     break;
                                 case '6':
                                     Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
-                                            $message->from('reservas@apartamentosierranevada.net', 'Miramarski');
+                                            $message->from('reservas@apartamentosierranevada.net');
 
                                             $message->to($book->customer->email);
-                                            $message->subject('Correo de cancelada');
+                                            $message->subject('Correo cancelación de reserva');
                                         });  
                                     break;
                                 default:

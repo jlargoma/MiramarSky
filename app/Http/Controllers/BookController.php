@@ -996,7 +996,7 @@ class BookController extends Controller
             return view('backend.emails.reservado',['book' => $book]);
 
             Mail::send('backend.emails.jaime',['book' => $book], function ($message) use ($book) {
-                                $message->from('reservas@daimonconsulting.com', 'Miramarski');
+                                $message->from('reservas@apartamentosierranevada.net');
 
                                 $message->to($book->customer->email);
                                 $message->subject('Correo a Jaime');
@@ -1011,10 +1011,10 @@ class BookController extends Controller
         {
             $book = \App\Book::find($request->id);
             Mail::send('backend.emails.contestado',['book' => $book], function ($message) use ($book) {
-                                $message->from('reservas@apartamentosierranevada.net', 'Miramarski');
+                                $message->from('reservas@apartamentosierranevada.net');
 
                                 $message->to($book->customer->email);
-                                $message->subject('Correo Contestado ');
+                                $message->subject('Disponibilidad para tu reserva');
                             });
 
             $book->send = 1;

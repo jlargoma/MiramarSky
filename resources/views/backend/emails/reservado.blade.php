@@ -26,7 +26,7 @@ En todas nuestra reservas están incluidas las Sábanas y toallas. <br>
 
 <h2><u>Pago de la reserva</u></h2>
 <br>
-<b>Para realizar el pago de la señal </b> <b style="color: red">25% del total = <?php echo number_format(($book->total_price*0.25),2,',','.') ?> €</b>  a estos datos bancarios: 
+<b>Dispones de un plazo de 24 horas para realizar el pago de la señal </b> <b style="color: red">25% del total = <?php echo number_format(($book->total_price*0.25),2,',','.') ?> €</b>  a estos datos bancarios: 
 <h2>Titular:  <span style='color:red'>ISDE SL</span><h2>
 <h2>Concepto: <span style='color:red'>Señal MiramarSKi - <?php echo $book->customer->name ?></span><h2>
 <h2>Ordenante: <span style='color:red'><?php echo $book->customer->name ?></span></h2>
