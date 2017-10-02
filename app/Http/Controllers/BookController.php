@@ -492,10 +492,8 @@ class BookController extends Controller
 
 
             if ( $isReservable == 1 ) {
-
-                $book->type_book = $request->status;
-
-                if ($book->save()) {
+                
+                if ($book->changeBook($request->status,"",$book)) {
                     return 1;
                 }else{
                     return 0;
