@@ -71,10 +71,13 @@
                             <label for="email">Email</label> 
                             <input class="form-control cliente" type="email" name="email"  value="<?php echo $request->email; ?>">
                         </div>
+                        <div style="clear:both;"></div>
                         <div class="col-xs-12">
                             <label for="phone">Telefono</label> 
                             <input class="form-control cliente" type="text" name="phone"  value="<?php echo $request->phone; ?>">
                         </div>  
+                        <div style="clear:both;"></div>
+
                     </div>
                     <!-- DATOS DE LA RESERVA -->
                     <div class="col-xs-12 bg-white padding-block">
@@ -89,6 +92,8 @@
                                 <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center;min-height: 28px;" value="<?php echo $request->fechas; ?>" readonly="">
                             </div>
                         </div>
+                        <div style="clear:both;"></div>
+
                         <div class="col-xs-3  p-t-10">
                             <label><i class="fa fa-moon-o"></i></label>
                             <input type="text" class="form-control nigths" name="nigths" style="width: 100%" value="<?php echo $request->nigths; ?>">
@@ -114,6 +119,8 @@
                                 <?php endforeach ?>
                             </select>
                         </div>
+                        <div style="clear:both;"></div>
+
 
                         <div class="col-xs-4 p-r-0 p-t-10">
                             <label>Parking</label>
@@ -136,6 +143,8 @@
                             </select>
                         </div>
                     </div>
+                        <div style="clear:both;"></div>
+
                     <div class="col-xs-12 bg-white">
                         <div class="col-xs-6 push-10">
                             <label>Agencia</label>
@@ -147,12 +156,14 @@
                                 <?php endfor;?>
                             </select>
                         </div>
+                        <div style="clear:both;"></div>
+
                         <div class="col-xs-6 col-xs-12 push-10">                                                        
                             <label>Cost Agencia</label>
                             <input type="text" class="agencia form-control" name="agencia" value="<?php echo $request->agencia ?>">
                         </div>
                         <div style="clear: both;"></div>
-
+    
 
                         <div class="col-xs-12 not-padding">
                             <div class="col-md-4 col-xs-4 text-center" style="background-color: #0c685f;">
@@ -171,6 +182,8 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <div style="clear:both;"></div>
                         
                     </div>
                     <div class="col-xs-12 bg-white padding-block">
