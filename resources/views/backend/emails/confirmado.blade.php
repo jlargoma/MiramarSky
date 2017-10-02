@@ -1,6 +1,6 @@
 <?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
 
-Hola <b><?php echo $book->customer->name ?>, </b>hemos recibido tu pago del 25% en concepto de señal, <b><u>tu reserva está confirmada</u></b>.
+Hola <b><?php echo $book->customer->name ?>, </b>hemos recibido tu pago en concepto de señal, <b><u>tu reserva está confirmada</u></b>.
 <br>
 <br>
 Nombre: <b><?php echo $book->customer->name ?></b> .<br>
@@ -26,7 +26,7 @@ En todas nuestra reservas están incluidas las Sábanas y toallas. <br>
 <hr style="width: 100%">
 
 <h2><b><u>Condiciones generales de Alquiler</u></b></h2><br>
-<b>*Hora de Entrada: Desde las 17,00h a 19,00h. <u>Si vas a llegar más tarde tienes que avisarnos y podrías tener un cargo adicional por las horas de espera.</u> Consultar condiciones </b>aquí.<br>
+<b>*Hora de Entrada: Desde las 17,00h a 19,00h. <u>Si vas a llegar más tarde tienes que avisarnos y podrías tener un cargo adicional por las horas de espera.</u> Consultar condiciones </b><a href="{{ url('/condiciones-generales') }}">aquí</a>.<br>
 <br>
 <b>*Hora de Salida: La vivienda debe estar desocupada antes de las 12,00 a.m.</b><br>
 <br>
@@ -42,7 +42,7 @@ La fianza se devolverá a la entregada de llaves, una vez revisada la vivienda .
 <br>
 <b>*Sabanas y Toallas están incluidas.</b><br>
 <br>
-En el caso de NO cumplir con lo establecido no se podrá ocupar la vivienda. Puedes consultar todas las condiciones generales de alquiler <a href="https://www.apartamentosierranevada.net/terminos-condiciones">aqui</a>.<br>
+En el caso de NO cumplir con lo establecido no se podrá ocupar la vivienda. Puedes consultar todas las condiciones generales de alquiler <a href="{{ url('/condiciones-generales') }}">aquí</a>.<br>
 <br>
 <hr style="width: 100%">
 

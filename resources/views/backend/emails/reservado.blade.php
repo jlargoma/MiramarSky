@@ -36,14 +36,14 @@ En todas nuestra reservas están incluidas las Sábanas y toallas. <br>
 
 <b><strong>Una vez recibamos el pago de la señal, el apartamento quedará bloquedo y tu recibiras un email con la confirmación.</strong><br>
 
-Consulta nuestras condiciones de contratación <a href='http://www.apartamentosierranevada.net/condiciones-generales.html'>aquí</a></b><br><br>
+Consulta nuestras condiciones de contratación <a href="{{ url('/condiciones-generales') }}">aquí</a></b><br><br>
 
 <hr>
 
 
 <h2><b><u>Condiciones generales de Alquiler</u></b></h2><br>
 
-<b>*Hora de Entrada: Desde las 17,00h a 19,00h.<u> Si vas a llegar más tarde tienes que avisarnos y podrías tener un cargo adicional por las horas de espera. </u>Consulta nuestras condiciones de contratación <a href='http://www.apartamentosierranevada.net/condiciones-generales.html'>aquí</a></b><br><br>
+<b>*Hora de Entrada: Desde las 17,00h a 19,00h.<u> Si vas a llegar más tarde tienes que avisarnos y podrías tener un cargo adicional por las horas de espera. </u>Consulta nuestras condiciones de contratación <a href="{{ url('/condiciones-generales') }}">aquí</a></b><br><br>
 
 <b>*Hora de Salida: La vivienda debe estar desocupada antes de las 12,00 a.m.</b><br>
 
@@ -60,7 +60,7 @@ La fianza se devolverá a la entregada de llaves, una vez revisada la vivienda <
 
 <b>*Sabanas y Toallas están incluidas</b><br><br>
 
-En el caso de NO cumplir con lo establecido no se podrá ocupar la vivienda. Puedes consultar todas las condiciones generales de alquiler <a href='http://www.apartamentosierranevada.net/condiciones-generales.html'>aquí</a><br><br>
+En el caso de NO cumplir con lo establecido no se podrá ocupar la vivienda. Puedes consultar todas las condiciones generales de alquiler <a href="{{ url('/condiciones-generales') }}">aquí</a>aquí</a><br><br>
 
 <hr>
 <h2><u><b>Servicios adicionales</b></u></h2><br>
@@ -71,14 +71,14 @@ Te ofrecemos sin coste añadido y con un descuento especial que hemos pactado co
 *Descuentos en tus clases y cursillos de esquí<br>
 *Descuentos en Alquiler de material</b><br><br>
 
-Para solicitar alguno de estos servicios solo es necesario que rellenes un formulario <a href="https:\\apartamentosierranevada.net/forfait">pinchando aquí</a><br><br>
+Para solicitar alguno de estos servicios solo es necesario que rellenes un formulario <a href="{{ url('/forfait') }}">pinchando aquí</a><br><br>
 
 <hr>
 
 <h2><b><u>Otros servicios</u></b></h2><br>
 
 Para tu comodidad <b>te llevamos el forfait a tu apartamento,</b> no tienes que esperar colas
-Te <b> facilitamos un supermercado</b> que te lo lleva a tu casa,  <a href="https:\\apartamentosierranevada.net/forfait">pinchando aquí</a><br><br>
+Te <b> facilitamos un supermercado</b> que te lo lleva a tu casa,  <a href="{{ url('/forfait') }}">pinchando aquí</a><br><br>
 
 <hr><br>
 

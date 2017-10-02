@@ -381,7 +381,7 @@ class Book extends Model
                                             $message->from('reservas@apartamentosierranevada.net');
 
                                             $message->to($book->customer->email);
-                                            $message->subject('Correo de confirmacion del pago parcial');
+                                            $message->subject('Confirmación de reserva (pago parcial)');
                                         });
                                     break;
                                 case '6':
