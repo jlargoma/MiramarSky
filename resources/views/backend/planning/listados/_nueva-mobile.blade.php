@@ -3,7 +3,7 @@
 <style type="text/css" media="screen">
     .daterangepicker{
         z-index: 10000!important;
-        top: 0px!important
+        top: 61px!important;
     }
     .pg-close{
         font-size: 45px!important;

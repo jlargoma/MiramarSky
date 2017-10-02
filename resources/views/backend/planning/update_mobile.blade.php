@@ -185,7 +185,22 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                         </select>
                     </div>
                 </div>
-                
+                <div class="col-xs-12 bg-white padding-block">
+                   
+                    <div class="col-md-3 col-xs-6">
+                        <label>Agencia</label>
+                        <select class="form-control full-width agency minimal" data-init-plugin="select2" name="agency">
+                            <?php for ($i=0; $i <= 2 ; $i++): ?>
+                                <option value="<?php echo $i ?>" {{ $book->agency == $i ? 'selected' : '' }}><?php echo $book->getAgency($i) ?></option>
+                            <?php endfor;?>
+                        </select>
+                    </div> 
+                    <div class="col-md-3 col-xs-6">                                                        
+                        <label>Cost Agencia</label>
+                        <input type="text" class="agencia form-control" name="agencia" value="<?php echo $book->PVPAgencia ?>">
+                    </div>
+                </div>
+
                 <div class="col-xs-12 bg-white">
                     <div class="col-md-4 col-xs-4 text-center" style="background-color: #0c685f;">
                         <label class="font-w800 text-white" for="">TOTAL</label>
@@ -203,21 +218,7 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                 </div>
 
 
-                <div class="col-xs-12 bg-white padding-block">
-                   
-                    <div class="col-md-3 col-xs-6">
-                        <label>Agencia</label>
-                        <select class="form-control full-width agency minimal" data-init-plugin="select2" name="agency">
-                            <?php for ($i=0; $i <= 2 ; $i++): ?>
-                                <option value="<?php echo $i ?>" {{ $book->agency == $i ? 'selected' : '' }}><?php echo $book->getAgency($i) ?></option>
-                            <?php endfor;?>
-                        </select>
-                    </div> 
-                    <div class="col-md-3 col-xs-6">                                                        
-                        <label>Cost Agencia</label>
-                        <input type="text" class="agencia form-control" name="agencia" value="<?php echo $book->PVPAgencia ?>">
-                    </div>
-                </div>
+                
                 <div class="col-xs-12 bg-white padding-block">
                     <div class="col-md-6 col-xs-12">
                         <label>Comentarios Cliente </label>
@@ -266,12 +267,12 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                             <th class ="text-center" style="min-width: 100px">importe</th>
                             <th class ="text-center" style="min-width: 200px">Tipo</th>
                             <th class ="text-center" style="min-width: 100px">comentario</th>
+                            <th class ="text-center" style="width:20%">Eliminar</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php $total = 0; ?>
-                        <?php if (count($payments)>0): ?>
-                            
+                           
                             <?php foreach ($payments as $payment): ?>
                                 <tr>
                                     <td class ="text-center">
@@ -285,36 +286,15 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                                     </td>
                                     <td class ="text-center"><?php echo $payment->comment ?></td>
                                     <td class ="text-center"><?php echo $typecobro->getTypeCobro($payment->type) ?> </td>
+                                    <td>
+                                        <a href="{{ url('/admin/reservas/deleteCobro/')}}/<?php echo $payment->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Cobro" onclick="return confirm('¿Quieres Eliminar el obro?');">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
                                 </tr>
+
                                 <?php $total = $total + $payment->import ?>
                             <?php endforeach ?>
-                            <?php if ($total < $book->total_price): ?>
-                                <tr>
-                                    <td class ="text-center">
-                                        <div class="input-daterange input-group" id="datepicker-range">
-                                            <input type="text" class="input-sm form-control fecha-cobro" name="start" data-date-format="dd-mm-yyyy" value="<?php $hoy = Carbon::now() ;echo $hoy->format('d/m/Y') ?>">
-                                        </div>
-                                    </td>
-                                    <td class ="text-center">
-                                        <input class="importe form-control" type="text" name="importe"   style="width: 100%;text-align: center;">
-                                    </td>
-                                    
-                                    <td class="text-center">
-                                        <select class="form-control minimal type_payment" name="type_payment"  tabindex="-1" aria-hidden="true">
-                                            <?php for ($i=0; $i < 3 ; $i++): ?>
-                                               <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
-                
-                                            <?php endfor ;?>
-                                        </select>
-                                    </td>
-                                    <td class ="text-center"> 
-                                    <input class="comment" type="text" name="comment"  style="width: 100%;text-align: center;">
-                                    </td>
-                                </tr>
-                            <?php else: ?>
-
-                            <?php endif ?>
-                        <?php else: ?>
                             <tr>
                                 <td class ="text-center" style="padding: 20px 0px 0px 0px;">
                                     <div class="input-daterange input-group" id="datepicker-range" style="width: 100%">
@@ -336,26 +316,13 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                                 <td class ="text-center"> 
                                 <input class="comment form-control" type="text" name="comment"  style="width: 100%;text-align: center;min-height: 35px">
                                 </td>
+                                
                             </tr>
-                        <?php endif ?>
-                        <!-- <tr>
-                            <?php if ($total < $book->total_price): ?>
-                                <td class="text-center" colspan="2">Falta</td>
-                                <td class="text-center" ><?php echo $total-$book->total_price ?>€</td>
-                            <?php elseif($total > $book->total_price): ?>
-                                <td class="text-center" colspan="2">Sobran</td>
-                                <td class="text-center" ><?php echo $total-$book->total_price ?>€</td>
-                            <?php else: ?>
-                                <td class="text-center" colspan="4">Al corriente de pago</td>
-                            <?php endif ?>
-                            
-                        </tr> -->
                     </tbody>
                 </table>
             </div>  
             <div class="col-xs-12 text-center push-40">
                 <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="Cobrar" data-id="<?php echo $book->id ?>" style="width: 50%;min-height: 50px"> 
-                <button class="cobrar">Cobrar</button> 
             </div>                          
         </div>
     </div>
@@ -435,6 +402,40 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
 
 
         $(document).ready(function() {          
+
+             $('.status').change(function(event) {
+
+
+
+                 $('.content-alert-success').hide();
+                 $('.content-alert-error1').hide();
+                 $('.content-alert-error2').hide();
+                 // content-alert-success
+                 // content-alert-error1
+                 // content-alert-error2
+                 var status = $(this).val();
+                 var id     = $(this).attr('data-id');
+                 var clase  = $(this).attr('class');
+
+                 if (status == 5) {
+                     $('#contentEmailing').empty().load('/admin/reservas/ansbyemail/'+id);  
+                     $('#btnEmailing').trigger('click');
+
+                        
+                 }else{
+                     $.get('/admin/reservas/changeStatusBook/'+id, { status:status }, function(data) {
+                         if (data == 1) {
+                             $('.content-alert-success').show();
+                         } else if (data == 0){
+                             $('.content-alert-error1').show();
+                         } else{
+                             $('.content-alert-error2').show();
+                         }
+                     }); 
+                }
+
+            });
+
 
             $('.status,.room').change(function(event) {
                 var id = $(this).attr('data-id');
@@ -592,38 +593,7 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                 });
             });
 
-             $('.status').change(function(event) {
-
-
-
-                 $('.content-alert-success').hide();
-                 $('.content-alert-error1').hide();
-                 $('.content-alert-error2').hide();
-                 // content-alert-success
-                 // content-alert-error1
-                 // content-alert-error2
-                 var status = $(this).val();
-                 var id     = $(this).attr('data-id');
-                 var clase  = $(this).attr('class');
-
-                 if (status == 5) {
-                     $('#contentEmailing').empty().load('/admin/reservas/ansbyemail/'+id);  
-                     $('#btnEmailing').trigger('click');
-
-                        
-                 }else{
-                     $.get('/admin/reservas/changeStatusBook/'+id, { status:status }, function(data) {
-                         if (data == 1) {
-                             $('.content-alert-success').show();
-                         } else if (data == 0){
-                             $('.content-alert-error1').show();
-                         } else{
-                             $('.content-alert-error2').show();
-                         }
-                     }); 
-                }
-
-            });
+            
 
 
         });
