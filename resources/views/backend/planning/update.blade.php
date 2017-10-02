@@ -620,7 +620,7 @@
                 var price = $(this).val();
                 var cost = $('.cost').val();
                 var beneficio = (parseFloat(price) - parseFloat(cost));
-                $('.book_comments').text( $.trim(commentBook+'El valor antiguo era: '+price+"\n");
+                $('.book_comments').text( $.trim(commentBook+'El valor antiguo era: '+price+"\n"));
 
                 $('.beneficio').empty;
                 $('.beneficio').val(beneficio);
@@ -670,6 +670,7 @@
                     $.get('/admin/reservas/changeStatusBook/'+id, { status:status }, function(data) {
                         if (data == 1) {
                             $('.content-alert-success').show();
+                            setTimeout
                         } else if (data == 0){
                             $('.content-alert-error1').show();
                         } else{
