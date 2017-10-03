@@ -120,21 +120,25 @@ class BookController extends Controller
         
 
         if(!$mobile->isMobile()){
-            $books = \App\Book::where('start','>',$start)->where('finish','<',$start->copy()->addYear())->orderBy('created_at','DESC')->get();
+            $booksNuevas = \App\Book::where('start','>',$start)->where('finish','<',$start->copy()->addYear())->orderBy('updated_at','DESC')->whereIn('type_book',[1,3,4,5,6])->get();
+            $booksPagadas = \App\Book::where('start','>',$start)->where('finish','<',$start->copy()->addYear())->where('type_book',2)->orderBy('start','ASC')->get();
+            $booksEspeciales = \App\Book::where('start','>',$start)->where('finish','<',$start->copy()->addYear())->whereIn('type_book',[7,8])->orderBy('start','ASC')->get();
         }else{
             // $date = Carbon::now();
-            $books = \App\Book::where('start','>=',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->orderBy('created_at','DESC')->get();
+            $booksNuevas = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[1,3,4,5,6])->orderBy('updated_at','DESC')->get();
+            $booksPagadas = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->where('type_book',2)->orderBy('start','ASC')->get();
+            $booksEspeciales = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[7,8])->orderBy('start','ASC')->get();
             $proxIn = \App\Book::where('start','>=',$date->copy()->subWeek())->where('type_book',2)->orderBy('start','ASC')->get();
             $proxOut = \App\Book::where('start','>=',$date->copy()->subWeek())->where('type_book',2)->orderBy('start','ASC')->get();
         }
-        foreach ($books as $key => $book) {
-            if ($book->type_book == 1 || $book->type_book == 3 || $book->type_book == 4 || $book->type_book == 5 || $book->type_book == 6 ) {
+        foreach ($booksNuevas as $key => $book) {
                 $arrayBooks["nuevas"][] = $book;
-            } elseif( $book->type_book == 2) {
+        }
+        foreach ($booksPagadas as $key => $book) {
                 $arrayBooks["pagadas"][] = $book;
-            } elseif($book->type_book == 7 || $book->type_book == 8){
+        }
+        foreach ($booksEspeciales as $key => $book) {
                 $arrayBooks["especiales"][] = $book;
-            }
         }
 
 
@@ -990,7 +994,7 @@ class BookController extends Controller
         {
             $book = \App\Book::find($id);
 
-            return view('backend.emails.reservado',['book' => $book]);
+            return view('backend.emails.subcomunidad',['book' => $book]);
 
             Mail::send('backend.emails.jaime',['book' => $book], function ($message) use ($book) {
                                 $message->from('reservas@apartamentosierranevada.net');

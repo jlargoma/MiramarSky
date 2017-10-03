@@ -338,7 +338,8 @@ class Book extends Model
                         $roomStart = Carbon::createFromFormat('Y-m-d',$this->start);
                         $roomFinish = Carbon::createFromFormat('Y-m-d',$this->finish);
 
-                        $isRooms = \App\Book::where('room_id',$this->room->id)->whereIn('type_book',[1,2,4,6,7,8])->where('id','!=' ,$this->id)->orderBy('start','ASC')->get();
+
+                        $isRooms = \App\Book::where('room_id',$this->room_id)->whereIn('type_book',[1,2,4,6,7,8])->where('id','!=' ,$this->id)->orderBy('start','ASC')->get();
 
                         $existStart = false;
                         $existFinish = false;        
@@ -353,12 +354,27 @@ class Book extends Model
                                                                 $roomStart->year,
                                                                 $roomStart->month,
                                                                 $roomStart->day)
-                                                            ->between($start->copy(),$finish->copy());
+                                                            ->between($start->copy()->subDay(),$finish->copy());
+                                if ($existStart == false) {
+                                    $existStart = Carbon::create(
+                                                                    $start->year,
+                                                                    $start->month,
+                                                                    $start->day)
+                                                                ->between($roomStart->copy(),$roomFinish->copy());
+                                }
+                                
                                 $existFinish = Carbon::create(
                                                                 $roomFinish->year,
                                                                 $roomFinish->month,
                                                                 $roomFinish->day)
-                                                            ->between($start->copy(),$finish->copy());
+                                                            ->between($start->copy()->addDay(),$finish->copy());
+                                if ($existFinish == false) {
+                                    $existFinish = Carbon::create(
+                                                                   $finish->year,
+                                                                   $finish->month,
+                                                                   $finish->day)
+                                                               ->between($roomStart->copy(),$roomFinish->copy());
+                                }
                             }else{
                                 break;
                             }
@@ -386,15 +402,36 @@ class Book extends Model
                                             $message->subject('Confirmación de reserva (pago parcial)');
                                         });
                                     break;
+                                case '4':
+                                    Mail::send('backend.emails.Bloqueado',['book' => $book], function ($message) use ($book) {
+                                            $message->from('reservas@apartamentosierranevada.net');
+                                            $message->to('alquilerapartamentosmiramarski@gmail.com');
+                                            $message->subject('Correo de Bloqueo');
+                                        });  
+                                    break;
                                 case '6':
                                     Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
                                             $message->from('reservas@apartamentosierranevada.net');
-
                                             $message->to($book->customer->email);
                                             $message->subject('Correo cancelación de reserva');
                                         });  
                                     break;
+                                case '7':
+                                    Mail::send('backend.emails.Reserva-propietario',['book' => $book], function ($message) use ($book) {
+                                            $message->from('reservas@apartamentosierranevada.net');
+                                            $message->to($book->customer->email);
+                                            $message->subject('Correo de Reserva de Propietario');
+                                        });  
+                                    break;
+                                case '8':
+                                    Mail::send('backend.emails.Subcomunidad',['book' => $book], function ($message) use ($book) {
+                                            $message->from('reservas@apartamentosierranevada.net');
+                                            $message->to('alquilerapartamentosmiramarski@gmail.com');
+                                            $message->subject('Correo de Subcomunidad');
+                                        });  
+                                    break;
                                 default:
+
                                     # code...
                                     break;
                             }
@@ -431,8 +468,9 @@ class Book extends Model
                     $roomStart = Carbon::createFromFormat('Y-m-d',$this->start);
                     $roomFinish = Carbon::createFromFormat('Y-m-d',$this->finish);
 
-                    $isRooms = \App\Book::where('room_id',$this->room->id)->whereIn('type_book',[1,2,4,6,7,8])->where('id','!=' ,$this->id)->orderBy('start','ASC')->get();
+                    $isRooms = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,6,7,8])->where('id','!=' ,$this->id)->orderBy('start','ASC')->get();
 
+                    
                         $existStart = false;
                         $existFinish = false;        
 
@@ -446,14 +484,28 @@ class Book extends Model
                                                                 $roomStart->year,
                                                                 $roomStart->month,
                                                                 $roomStart->day)
-                                                            ->between($start->copy()->addDay(),$finish->copy()->subDay());
-
+                                                            ->between($start->copy(),$finish->copy());
+                                if ($existStart == false) {
+                                    $existStart = Carbon::create(
+                                                                    $start->year,
+                                                                    $start->month,
+                                                                    $start->day)
+                                                                ->between($roomStart->copy(),$roomFinish->copy());
+                                }
+                                
                                 $existFinish = Carbon::create(
                                                                 $roomFinish->year,
                                                                 $roomFinish->month,
                                                                 $roomFinish->day)
-                                                            ->between($start->copy()->addDay(),$finish->copy()->subDay());
-
+                                                            ->between($start->copy(),$finish->copy());
+                                if ($existFinish == false) {
+                                    $existFinish = Carbon::create(
+                                                                   $finish->year,
+                                                                   $finish->month,
+                                                                   $finish->day)
+                                                               ->between($roomStart->copy(),$roomFinish->copy());
+                                }
+                                
                             }else{
                                 break;
                             }

@@ -20,7 +20,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
     <style type="text/css">
-
+    
         .Reservado-table{ 
             background-color: #295d9b !important;
             color: black;
@@ -30,14 +30,61 @@
             background-color: green  !important;
             color: black;
         }
-        .Reserva.Propietario{
-            background-color: orange !important;
-            color: black;
-        }
-        .SubComunidad{
-            background-color: orange !important;
-            color: black;
-        }
+
+        /*Colores*/
+
+            .SubComunidad.start,.Reserva.Propietario.start{
+                background-image: -webkit-linear-gradient(225deg, #FFA500 50%, #fff 50%);
+                color: black;
+            }
+            .SubComunidad,.Reserva.Propietario{
+                background-color: orange !important;
+                color: black;
+            }
+            .SubComunidad.end,.Reserva.Propietario.end{
+                background-image: -webkit-linear-gradient(45deg, #FFA500 50%, #fff 50%);
+                color: black;
+            }
+            
+            .Pagada-la-señal.start{
+                background-image: -webkit-linear-gradient(225deg, #008000 50%, #fff 50%);
+                color: black;
+            }
+            .Pagada-la-señal{
+                background-color: green  !important;
+                color: black;
+            }
+            .Pagada-la-señal.end{
+                background-image: -webkit-linear-gradient(45deg, #008000 50%, #fff 50%);
+                color: black;
+            }
+
+            .Reservado.start{
+                background-image: -webkit-linear-gradient(225deg, #D7F4D7 50%, #fff 50%);
+                color: black;
+            }
+            .Reservado{
+                background-color: #D7F4D7  !important;
+                color: black;
+            }
+            .Reservado.end{
+                background-image: -webkit-linear-gradient(45deg, #D7F4D7 50%, #fff 50%);
+                color: black;
+            }
+
+            .Bloqueado.start{
+                background-image: -webkit-linear-gradient(225deg, #B1CBFF 50%, #fff 50%);
+                color: black;
+            }
+            .Bloqueado{
+                background-color: #B1CBFF  !important;
+                color: black;
+            }
+            .Bloqueado.end{
+                background-image: -webkit-linear-gradient(45deg, #B1CBFF 50%, #fff 50%);
+                color: black;
+            }
+
         .botones{
             padding-top: 0px!important;
             padding-bottom: 0px!important;
@@ -269,20 +316,20 @@
                                                                 <?php if (isset($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i])): ?>
                                                                     <?php if ($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->start == $inicio->copy()->format('Y-m-d')): ?>
                                                                             <td style='border:1px solid grey;width: 3%'>
-                                                                                <div style="width: 50%;float: left;">
+                                                                                <div style="width: 25%;float: left;">
                                                                                     &nbsp;
                                                                                 </div>
-                                                                                <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> start" style="width: 50%;float: left;">
+                                                                                <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> start" style="width: 75%;float: left;">
                                                                                     &nbsp;
                                                                                 </div>
 
                                                                             </td>    
                                                                     <?php elseif($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->finish == $inicio->copy()->format('Y-m-d')): ?>
                                                                             <td style='border:1px solid grey;width: 3%'>
-                                                                                <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> end" style="width: 50%;float: left;">
+                                                                                <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> end" style="width: 75%;float: left;">
                                                                                     &nbsp;
                                                                                 </div>
-                                                                                <div style="width: 50%;float: left;">
+                                                                                <div style="width: 25%;float: left;">
                                                                                     &nbsp;
                                                                                 </div>
                                                                                 
@@ -506,7 +553,7 @@
     <div class="modal fade slide-up disable-scroll in" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content-wrapper">
-                <div class="modal-content"></div>
+                <div class="modal-content contestado"></div>
             </div>
             <!-- /.modal-content -->
         </div>
@@ -585,7 +632,7 @@
                         show: 'false'
                     }); 
                     $.get('/admin/reservas/ansbyemail/'+id, function(data) {
-                       $('.modal-content').empty().append(data);
+                       $('.modal-content.contestado').empty().append(data);
                    });
                 }else{
                     
@@ -595,7 +642,7 @@
                         if (data == "Ya hay una reserva para ese apartamento" || data == "No se puede cambiar el estado" || data == "Valor nulo o vacio") {
                             
                         }else{
-                            // setTimeout('document.location.reload()',2000);
+                            setTimeout('document.location.reload()',1000);
                         }                        
                    }); 
                 }

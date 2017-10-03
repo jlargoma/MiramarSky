@@ -186,20 +186,25 @@
                                 </select>
                             </div>
                         </div>
+                       
+                            
+                        
                         <div class="col-xs-8 not-padding">
                             <div class="col-md-4 col-xs-12 text-center" style="background-color: #0c685f;">
                                 <label class="font-w800 text-white" for="">TOTAL</label>
                                 <input type="text" class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>">
                             </div>
-                            <div class="col-md-4 col-xs-12 text-center" style="background: #99D9EA;">
-                                <label class="font-w800 text-white" for="">COSTE</label>
-                                <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost" value="<?php echo $book->cost_total ?>">
-                            </div>
-                            <div class="col-md-4 col-xs-12 text-center not-padding" style="background: #ff7f27;">
-                                <label class="font-w800 text-white" for="">BENEFICIO</label>
-                                <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>" style="width: 80%; float: left;">
-                                <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;"><?php echo number_format($book->inc_percent,0)."%" ?></div>
-                            </div>
+                            <?php if (Auth::user()->role == 'admin'): ?>
+                                <div class="col-md-4 col-xs-12 text-center" style="background: #99D9EA;">
+                                    <label class="font-w800 text-white" for="">COSTE</label>
+                                    <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost" value="<?php echo $book->cost_total ?>">
+                                </div>
+                                <div class="col-md-4 col-xs-12 text-center not-padding" style="background: #ff7f27;">
+                                    <label class="font-w800 text-white" for="">BENEFICIO</label>
+                                    <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>" style="width: 80%; float: left;">
+                                    <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;"><?php echo number_format($book->inc_percent,0)."%" ?></div>
+                                </div>
+                            <?php endif ?>
                         </div>
                         
                     </div>
@@ -215,7 +220,7 @@
                     </div>
                     <div class="row push-40 bg-white padding-block">
                         <div class="col-md-4 col-md-offset-4 text-center">
-                            <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;">Guardar</button>
+                            <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;" disabled>Guardar</button>
                         </div>  
                     </div>
                 </form>
@@ -381,6 +386,7 @@
 
 <script type="text/javascript">
 
+
         $(function() {
           $(".daterange1").daterangepicker({
             "buttonClasses": "button button-rounded button-mini nomargin",
@@ -423,6 +429,11 @@
         });
 
         function calculate(){
+
+
+                $('.status').attr("disabled", "disabled");
+                $('.btn-complete').removeAttr('disabled');
+
                 var room = $('#newroom').val();
                 var pax = $('.pax').val();
                 var park = $('.parking').val();
@@ -558,10 +569,14 @@
                 var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
                 $('.nigths').val(diffDays);
 
+                $('.status').attr("disabled", "disabled");
                 $('.btn-complete').removeAttr('disabled');
+
             });
 
-
+            $('.btn-complete').change(function(event) {
+                alert('prueba');
+            });
 
             
             $('#newroom').change(function(event){ 
