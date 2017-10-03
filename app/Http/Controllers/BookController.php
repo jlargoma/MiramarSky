@@ -994,7 +994,7 @@ class BookController extends Controller
         {
             $book = \App\Book::find($id);
 
-            return view('backend.emails.subcomunidad',['book' => $book]);
+            return view('backend.emails.comprobar-fechas',['book' => $book]);
 
             Mail::send('backend.emails.jaime',['book' => $book], function ($message) use ($book) {
                                 $message->from('reservas@apartamentosierranevada.net');

@@ -34,7 +34,7 @@
         /*Colores*/
 
             .SubComunidad.start,.Reserva.Propietario.start{
-                background-image: -webkit-linear-gradient(225deg, #FFA500 50%, #fff 50%);
+                background-image: -webkit-linear-gradient(135deg, #FFA500 50%, #fff 50%);
                 color: black;
             }
             .SubComunidad,.Reserva.Propietario{
@@ -42,12 +42,12 @@
                 color: black;
             }
             .SubComunidad.end,.Reserva.Propietario.end{
-                background-image: -webkit-linear-gradient(45deg, #FFA500 50%, #fff 50%);
+                background-image: -webkit-linear-gradient(315deg, #FFA500 50%, #fff 50%);
                 color: black;
             }
             
             .Pagada-la-señal.start{
-                background-image: -webkit-linear-gradient(225deg, #008000 50%, #fff 50%);
+                background-image: -webkit-linear-gradient(135deg, #008000 50%, #fff 50%);
                 color: black;
             }
             .Pagada-la-señal{
@@ -55,12 +55,12 @@
                 color: black;
             }
             .Pagada-la-señal.end{
-                background-image: -webkit-linear-gradient(45deg, #008000 50%, #fff 50%);
+                background-image: -webkit-linear-gradient(315deg, #008000 50%, #fff 50%);
                 color: black;
             }
 
             .Reservado.start{
-                background-image: -webkit-linear-gradient(225deg, #D7F4D7 50%, #fff 50%);
+                background-image: -webkit-linear-gradient(135deg, #D7F4D7 50%, #fff 50%);
                 color: black;
             }
             .Reservado{
@@ -68,20 +68,20 @@
                 color: black;
             }
             .Reservado.end{
-                background-image: -webkit-linear-gradient(45deg, #D7F4D7 50%, #fff 50%);
+                background-image: -webkit-linear-gradient(315deg, #D7F4D7 50%, #fff 50%);
                 color: black;
             }
 
             .Bloqueado.start{
-                background-image: -webkit-linear-gradient(225deg, #B1CBFF 50%, #fff 50%);
+                background-image: -webkit-linear-gradient(135deg, #D4E2FF 50%, #fff 50%);
                 color: black;
             }
             .Bloqueado{
-                background-color: #B1CBFF  !important;
+                background-color: #D4E2FF  !important;
                 color: black;
             }
             .Bloqueado.end{
-                background-image: -webkit-linear-gradient(45deg, #B1CBFF 50%, #fff 50%);
+                background-image: -webkit-linear-gradient(315deg, #D4E2FF 50%, #fff 50%);
                 color: black;
             }
 
@@ -170,13 +170,13 @@
         }
 
         .Bloqueado,.table.table-striped tbody tr.Bloqueado td {
-            background-color: rgba(0,100,255,0.2)  !important;
+            background-color: #D4E2FF  !important;
             color: red;
         }
             
         
         .table.table-striped tbody tr.Bloqueado td select.minimal{
-            background-color: rgba(0,100,255,0.0)  !important;
+            background-color: #D4E2FF  !important;
             color:red!important;
             font-weight: bold!important;
 
@@ -316,20 +316,15 @@
                                                                 <?php if (isset($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i])): ?>
                                                                     <?php if ($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->start == $inicio->copy()->format('Y-m-d')): ?>
                                                                             <td style='border:1px solid grey;width: 3%'>
-                                                                                <div style="width: 25%;float: left;">
-                                                                                    &nbsp;
-                                                                                </div>
-                                                                                <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> start" style="width: 75%;float: left;">
+                                                                                
+                                                                                <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> start" style="width: 100%;float: left;">
                                                                                     &nbsp;
                                                                                 </div>
 
                                                                             </td>    
                                                                     <?php elseif($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->finish == $inicio->copy()->format('Y-m-d')): ?>
                                                                             <td style='border:1px solid grey;width: 3%'>
-                                                                                <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> end" style="width: 75%;float: left;">
-                                                                                    &nbsp;
-                                                                                </div>
-                                                                                <div style="width: 25%;float: left;">
+                                                                                <div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> end" style="width: 100%;float: left;">
                                                                                     &nbsp;
                                                                                 </div>
                                                                                 

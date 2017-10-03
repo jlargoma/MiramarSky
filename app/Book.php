@@ -335,50 +335,33 @@ class Book extends Model
                         $this->type_book = $status;
 
                         
-                        $roomStart = Carbon::createFromFormat('Y-m-d',$this->start);
-                        $roomFinish = Carbon::createFromFormat('Y-m-d',$this->finish);
+                        $roomStart = Carbon::createFromFormat('Y-m-d',$this->start)->format('U');
+                        $roomFinish = Carbon::createFromFormat('Y-m-d',$this->finish)->format('U');
 
 
                         $isRooms = \App\Book::where('room_id',$this->room_id)->whereIn('type_book',[1,2,4,6,7,8])->where('id','!=' ,$this->id)->orderBy('start','ASC')->get();
 
                         $existStart = false;
                         $existFinish = false;        
-                        
-                        foreach ($isRooms as $isRoom) {
-                            if ($existStart == false && $existFinish == false) {
-                                $start = Carbon::createFromFormat('Y-m-d', $isRoom->start);
-                        
-                                $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish); 
 
-                                $existStart = Carbon::create(
-                                                                $roomStart->year,
-                                                                $roomStart->month,
-                                                                $roomStart->day)
-                                                            ->between($start->copy()->subDay(),$finish->copy());
-                                if ($existStart == false) {
-                                    $existStart = Carbon::create(
-                                                                    $start->year,
-                                                                    $start->month,
-                                                                    $start->day)
-                                                                ->between($roomStart->copy(),$roomFinish->copy());
-                                }
-                                
-                                $existFinish = Carbon::create(
-                                                                $roomFinish->year,
-                                                                $roomFinish->month,
-                                                                $roomFinish->day)
-                                                            ->between($start->copy()->addDay(),$finish->copy());
-                                if ($existFinish == false) {
-                                    $existFinish = Carbon::create(
-                                                                   $finish->year,
-                                                                   $finish->month,
-                                                                   $finish->day)
-                                                               ->between($roomStart->copy(),$roomFinish->copy());
+                        foreach ($isRooms as $isRoom) {
+                            if ($existStart == false) {
+
+                                $start = Carbon::createFromFormat('Y-m-d', $isRoom->start)->format('U');                        
+                                $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish)->format('U'); 
+
+                                if ($start < $roomStart && $roomStart < $finish){
+                                    $existStart = true;
+                                }elseif($roomStart < $start && $start < $roomFinish){
+                                    $existStart = true;
+                                }elseif($start < $roomStart && $roomStart < $finish){
+                                    $existStart = true;
+                                }elseif($roomStart < $start && $start < $roomFinish){
+                                    $existStart = true;
                                 }
                             }else{
                                 break;
-                            }
-                            
+                            }                            
                         }
                         
                         if ($existStart == false && $existFinish == false) {
@@ -465,51 +448,33 @@ class Book extends Model
                 }
                 if (!empty($room)) {
 
-                    $roomStart = Carbon::createFromFormat('Y-m-d',$this->start);
-                    $roomFinish = Carbon::createFromFormat('Y-m-d',$this->finish);
+                        $roomStart = Carbon::createFromFormat('Y-m-d',$this->start)->format('U');
+                        $roomFinish = Carbon::createFromFormat('Y-m-d',$this->finish)->format('U');
 
-                    $isRooms = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,6,7,8])->where('id','!=' ,$this->id)->orderBy('start','ASC')->get();
 
-                    
+                        $isRooms = \App\Book::where('room_id',$this->room_id)->whereIn('type_book',[1,2,4,6,7,8])->where('id','!=' ,$this->id)->orderBy('start','ASC')->get();
+
                         $existStart = false;
                         $existFinish = false;        
 
                         foreach ($isRooms as $isRoom) {
-                            if ($existStart == false && $existFinish == false) {
-                                $start = Carbon::createFromFormat('Y-m-d', $isRoom->start);
-                                
-                                $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish); 
+                            if ($existStart == false) {
 
-                                $existStart = Carbon::create(
-                                                                $roomStart->year,
-                                                                $roomStart->month,
-                                                                $roomStart->day)
-                                                            ->between($start->copy(),$finish->copy());
-                                if ($existStart == false) {
-                                    $existStart = Carbon::create(
-                                                                    $start->year,
-                                                                    $start->month,
-                                                                    $start->day)
-                                                                ->between($roomStart->copy(),$roomFinish->copy());
+                                $start = Carbon::createFromFormat('Y-m-d', $isRoom->start)->format('U');                        
+                                $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish)->format('U'); 
+
+                                if ($start < $roomStart && $roomStart < $finish){
+                                    $existStart = true;
+                                }elseif($roomStart < $start && $start < $roomFinish){
+                                    $existStart = true;
+                                }elseif($start < $roomStart && $roomStart < $finish){
+                                    $existStart = true;
+                                }elseif($roomStart < $start && $start < $roomFinish){
+                                    $existStart = true;
                                 }
-                                
-                                $existFinish = Carbon::create(
-                                                                $roomFinish->year,
-                                                                $roomFinish->month,
-                                                                $roomFinish->day)
-                                                            ->between($start->copy(),$finish->copy());
-                                if ($existFinish == false) {
-                                    $existFinish = Carbon::create(
-                                                                   $finish->year,
-                                                                   $finish->month,
-                                                                   $finish->day)
-                                                               ->between($roomStart->copy(),$roomFinish->copy());
-                                }
-                                
                             }else{
                                 break;
-                            }
-                            
+                            }                            
                         }
                         if ($existStart == false && $existFinish == false) {
                             $this->room_id = $room;
