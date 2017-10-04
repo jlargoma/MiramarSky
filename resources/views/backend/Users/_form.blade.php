@@ -14,7 +14,7 @@
             <!-- START PANEL -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <div class="panel-title">Actualizar usuario
+                    <div class="panel-title">Actualizar usuario 
                     </div>
                 </div>
                 <div class="panel-body">
