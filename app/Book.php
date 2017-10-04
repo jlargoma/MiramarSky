@@ -366,77 +366,82 @@ class Book extends Model
                         
                         if ($existStart == false && $existFinish == false) {
 
-                            
-                            switch ($status) {
-                                case '1':
+                            if ($this->customer->email == "") {
+                               return "No tiene Email asignado";
+                            }else{
+                                switch ($status) {
+                                    case '1':
 
-                                    Mail::send('backend.emails.reservado',['book' => $book], function ($message) use ($book) {
-                                            $message->from('reservas@apartamentosierranevada.net');
+                                        Mail::send('backend.emails.reservado',['book' => $book], function ($message) use ($book) {
+                                                $message->from('reservas@apartamentosierranevada.net');
 
-                                            $message->to($book->customer->email);
-                                            $message->subject('Bloqueo de reserva y datos de pago');
-                                        });
-                                    break;
-                                case '2':
-                                    Mail::send('backend.emails.confirmado',['book' => $book], function ($message) use ($book) {
-                                            $message->from('reservas@apartamentosierranevada.net');
+                                                $message->to($book->customer->email);
+                                                $message->subject('Bloqueo de reserva y datos de pago');
+                                            });
+                                        break;
+                                    case '2':
+                                        Mail::send('backend.emails.confirmado',['book' => $book], function ($message) use ($book) {
+                                                $message->from('reservas@apartamentosierranevada.net');
 
-                                            $message->to($book->customer->email);
-                                            $message->subject('Confirmación de reserva (pago parcial)');
-                                        });
-                                    break;
-                                case '4':
-                                    Mail::send('backend.emails.Bloqueado',['book' => $book], function ($message) use ($book) {
-                                            $message->from('reservas@apartamentosierranevada.net');
-                                            $message->to('alquilerapartamentosmiramarski@gmail.com');
-                                            $message->subject('Correo de Bloqueo');
-                                        });  
-                                    break;
-                                case '6':
-                                    Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
-                                            $message->from('reservas@apartamentosierranevada.net');
-                                            $message->to($book->customer->email);
-                                            $message->subject('Correo cancelación de reserva');
-                                        });  
-                                    break;
-                                case '7':
-                                    Mail::send('backend.emails.Reserva-propietario',['book' => $book], function ($message) use ($book) {
-                                            $message->from('reservas@apartamentosierranevada.net');
-                                            $message->to($book->customer->email);
-                                            $message->subject('Correo de Reserva de Propietario');
-                                        });  
-                                    break;
-                                case '8':
-                                    Mail::send('backend.emails.Subcomunidad',['book' => $book], function ($message) use ($book) {
-                                            $message->from('reservas@apartamentosierranevada.net');
-                                            $message->to('alquilerapartamentosmiramarski@gmail.com');
-                                            $message->subject('Correo de Subcomunidad');
-                                        });  
-                                    break;
-                                default:
+                                                $message->to($book->customer->email);
+                                                $message->subject('Confirmación de reserva (pago parcial)');
+                                            });
+                                        break;
+                                    case '4':
+                                        Mail::send('backend.emails.Bloqueado',['book' => $book], function ($message) use ($book) {
+                                                $message->from('reservas@apartamentosierranevada.net');
+                                                $message->to('alquilerapartamentosmiramarski@gmail.com');
+                                                $message->subject('Correo de Bloqueo');
+                                            });  
+                                        break;
+                                    case '6':
+                                        Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
+                                                $message->from('reservas@apartamentosierranevada.net');
+                                                $message->to($book->customer->email);
+                                                $message->subject('Correo cancelación de reserva');
+                                            });  
+                                        break;
+                                    case '7':
+                                        Mail::send('backend.emails.Reserva-propietario',['book' => $book], function ($message) use ($book) {
+                                                $message->from('reservas@apartamentosierranevada.net');
+                                                $message->to($book->customer->email);
+                                                $message->subject('Correo de Reserva de Propietario');
+                                            });  
+                                        break;
+                                    case '8':
+                                        Mail::send('backend.emails.Subcomunidad',['book' => $book], function ($message) use ($book) {
+                                                $message->from('reservas@apartamentosierranevada.net');
+                                                $message->to('alquilerapartamentosmiramarski@gmail.com');
+                                                $message->subject('Correo de Subcomunidad');
+                                            });  
+                                        break;
+                                    default:
 
-                                    # code...
-                                    break;
-                            }
-                            if ($this->save()) {
-                                if ($status == 1) {
-                                    return "Email Enviado Reserva";
-                                }elseif($status == 2){
-                                    return "Email Enviado Pagada la señal ";
-                                }elseif($status == 3){
-                                    return "Estado Cambiado a Sin Responder ";
-                                }elseif($status == 4){
-                                    return "Estado Cambiado a Bloqueado ";
-                                }elseif($status == 5){
-                                    return "Contestado por email";
-                                }elseif($status == 6){
-                                    return "Email Enviado de Cancelacion ";
-                                }elseif($status == 7){
-                                    return "Estado Cambiado a Reserva Propietario ";
-                                }elseif($status == 8){
-                                    return "Estado Cambiado a Subcomunidad ";
+                                        # code...
+                                        break;
+                                }
+                                if ($this->save()) {
+                                    if ($status == 1) {
+                                        return "Email Enviado Reserva";
+                                    }elseif($status == 2){
+                                        return "Email Enviado Pagada la señal ";
+                                    }elseif($status == 3){
+                                        return "Estado Cambiado a Sin Responder ";
+                                    }elseif($status == 4){
+                                        return "Estado Cambiado a Bloqueado ";
+                                    }elseif($status == 5){
+                                        return "Contestado por email";
+                                    }elseif($status == 6){
+                                        return "Email Enviado de Cancelacion ";
+                                    }elseif($status == 7){
+                                        return "Estado Cambiado a Reserva Propietario ";
+                                    }elseif($status == 8){
+                                        return "Estado Cambiado a Subcomunidad ";
+                                    }
                                 }
                             }
+                            
+                            
                         }
                         else{
                             return false;

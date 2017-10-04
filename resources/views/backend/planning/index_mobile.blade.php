@@ -511,10 +511,12 @@
                  $.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
                       $('.notification-message').val(data);
                       document.getElementById("boton").click();
-                      if (data == "Ya hay una reserva para ese apartamento" || data == "No se puede cambiar el estado" || data == "Valor nulo o vacio") {
-                          
+                      if (data == "Ya hay una reserva para ese apartamento" || data == "No se puede cambiar el estado" || data == "Valor nulo o vacio" || data == "No tiene Email asignado") {
+                          setTimeout(function(){ 
+                              $('.pgn-wrapper .pgn .alert .close').trigger('click');
+                               }, 3000);
                       }else{
-                          // setTimeout('document.location.reload()',2000);
+                          setTimeout('document.location.reload()',2000);
                       }                        
                  }); 
               }

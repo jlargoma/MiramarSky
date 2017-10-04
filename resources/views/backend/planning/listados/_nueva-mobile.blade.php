@@ -86,7 +86,8 @@
                                 </div>
                                 <div class="col-xs-3  p-t-10">
                                     <label><i class="fa fa-moon-o"></i></label>
-                                    <input type="text" class="form-control nigths" name="nigths" style="width: 100%">
+                                    <input type="text" class="form-control nigths" name="nigths" style="width: 100%" disabled>
+                                    <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%">
                                 </div> 
                                 <div class="col-xs-4 p-r-0  p-t-10">
                                     <label><i class="fa fa-users"></i></label>

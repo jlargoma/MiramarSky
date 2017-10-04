@@ -460,8 +460,11 @@
 
 
                 $('.status').attr("disabled", "disabled");
-                $('.btn-complete').removeAttr('disabled');
-
+                $('.notification-message').val("Guarda antes de cambiar el estado");
+                document.getElementById("boton").click();
+                setTimeout(function(){ 
+                    $('.pgn-wrapper .pgn .alert .close').trigger('click');
+                     }, 3000);
                 var room = $('#newroom').val();
                 var pax = $('.pax').val();
                 var park = $('.parking').val();
@@ -496,13 +499,11 @@
                 $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
 
                     if (pax < data) {
-                        $('.pax').attr('style' , 'background-color:red');
-                        // $('.book_comments').empty();
-                        $('.personas-antiguo').empty;
+                        $('.personas-antiguo').empty();
                         $('.personas-antiguo').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
                     }else{
-                        // $('.book_comments').empty();
-                        $('.pax').removeAttr('style');
+                        $('.personas-antiguo').empty();
+
                     }
                 });
                 if ( status == 8) {

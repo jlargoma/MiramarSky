@@ -200,19 +200,43 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                 </div>
 
                 <div class="col-xs-12 bg-white">
-                    <div class="col-md-4 col-xs-4 text-center" style="background-color: #0c685f;">
-                        <label class="font-w800 text-white" for="">TOTAL</label>
-                        <input type="text" class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>">
+                    <div class="col-xs-12 not-padding">
+                        <?php if ($book->pax < $book->room->minOcu): ?>
+                            <p class="personas-antiguo" style="color: red">
+                                
+                                    Van menos personas que la ocupacion minima del apartamento.
+                                
+                            </p>
+                        <?php else: ?>
+
+                         <p class="personas-antiguo" style="color: red">
+                        </p>
+                        <?php endif ?>
                     </div>
-                    <div class="col-md-4 col-xs-4 text-center" style="background: #99D9EA;">
-                        <label class="font-w800 text-white" for="">COSTE</label>
-                        <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost" value="<?php echo $book->cost_total ?>">
+                    <div class="col-xs-12 not-padding">
+                        <div class="col-md-4 col-xs-4 text-center" style="background-color: #0c685f;">
+                            <label class="font-w800 text-white" for="">TOTAL</label>
+                            <input type="text" class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>">
+                        </div>
+                        <?php if (Auth::user()->role == 'admin'): ?>
+                            <div class="col-md-4 col-xs-4 text-center" style="background: #99D9EA;">
+                                <label class="font-w800 text-white" for="">COSTE</label>
+                                <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost" value="<?php echo $book->cost_total ?>">
+                            </div>
+                            <div class="col-md-4 col-xs-4 text-center not-padding" style="background: #ff7f27;">
+                                <label class="font-w800 text-white" for="">BENEFICIO</label>
+                                <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>" style="width: 80%; float: left;">
+                                <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;"><?php echo number_format($book->inc_percent,0)."%" ?></div>
+                            </div>
                     </div>
-                    <div class="col-md-4 col-xs-4 text-center not-padding" style="background: #ff7f27;">
-                        <label class="font-w800 text-white" for="">BENEFICIO</label>
-                        <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>" style="width: 80%; float: left;">
-                        <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;"><?php echo number_format($book->inc_percent,0)."%" ?></div>
+                    <div class="col-xs-12 not-padding">
+                        <p class="precio-antiguo">
+                            El precio asignado es <?php echo $book->total_price ?>
+                        </p>
                     </div>
+                    <?php else: ?>
+                        </div>
+                    <?php endif ?> 
                 </div>
 
 
@@ -241,15 +265,15 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                 </h4>
             </div>
             <div class="col-xs-12 not-padding">
-                <div class="col-xs-4 bg-success text-white text-center">
+                <div class="col-xs-4 bg-success text-white text-center" style="min-height: 50px">
                     <span class="font-s18">Total:</span><br>
                     <span class="font-w600 font-s18"><?php echo number_format($book->total_price,2,',','.') ?> €</span>
                 </div>
-                <div class="col-xs-4 bg-primary text-white text-center">
+                <div class="col-xs-4 bg-primary text-white text-center" style="min-height: 50px">
                     <span class="font-s18">Cobrado:</span><br>
                     <span class="font-w600 font-s18"><?php echo number_format($totalpayment,2,',','.') ?> €</span>
                 </div>
-                <div class="col-xs-4 bg-danger text-white text-center">
+                <div class="col-xs-4 bg-danger text-white text-center" style="min-height: 50px">
                     <span class="font-s18">Pendiente:</span><br>
                     <!-- si esta pendiente nada,.si esta de mas +X -->
                     <span class="font-w600 font-s18"><?php echo ($book->total_price-$totalpayment) >= 0 ? "" : "+";echo number_format($totalpayment-$book->total_price,2,',','.') ?> €</span>
@@ -323,6 +347,16 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
             </div>                          
         </div>
     </div>
+
+    <form role="form">
+      <div class="form-group form-group-default required" style="display: none">
+        <label class="highlight">Message</label>
+        <input type="text" hidden="" class="form-control notification-message" placeholder="Type your message here" value="This notification looks so perfect!" required>
+      </div>
+      <button class="btn btn-success show-notification hidden" id="boton">Show</button>
+    </form>
+
+
     @endsection
 
     @section('scripts')
@@ -351,6 +385,9 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
     <script src="/assets/plugins/bootstrap-typehead/typeahead.bundle.min.js"></script>
     <script src="/assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
     <script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
+    
+    <script src="/assets/js/notifications.js" type="text/javascript"></script>
+    <script src="/assets/js/scripts.js" type="text/javascript"></script>
 
     <script src="/assets/plugins/summernote/js/summernote.js"></script>
     
@@ -475,6 +512,12 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
 
             $('#newroom, .pax, .parking, .agencia, .type_luxury').click(function(event){ 
 
+                $('.status').attr("disabled", "disabled");
+                $('.notification-message').val("Guarda antes de cambiar el estado");
+                document.getElementById("boton").click();
+                setTimeout(function(){ 
+                    $('.pgn-wrapper .pgn .alert .close').trigger('click');
+                     }, 3000);
                 var room = $('#newroom').val();
                 var pax = $('.pax').val();
                 var park = $('.parking').val();
@@ -498,8 +541,11 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                 $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
                     if (pax < data) {
                         $('.pax').attr('style' , 'background-color:red');
+                        $('.personas-antiguo').empty();
+                        $('.personas-antiguo').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
                     }else{
                         $('.pax').removeAttr('style');
+                        $('.personas-antiguo').empty();
                     }
                 });
                 $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays}).success(function( data ) {
@@ -511,8 +557,7 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                             price = data;
                             
                             price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
-                            $('.total').empty();
-                            $('.total').val(price);
+
                             $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays}).success(function( data ) {
                                 costPark = data;
                                 $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
@@ -533,6 +578,10 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                                         $('.beneficio-text').empty;
                                         $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
 
+                                        var precio = $('.total').val();
+                                        $('.precio-antiguo').empty;
+                                        $('.precio-antiguo').text('El precio introducido es '+precio+' y el precio real es '+price);
+
                                     });
                                 });
                             });
@@ -549,9 +598,14 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                 $('.beneficio').empty;
                 $('.beneficio').val(beneficio);
                 var comentario = $('.book_comments').val();
-                alert(comentario);
+
+                var precio = $('.total').val();
+                $('.precio-antiguo').empty;
+                $('.precio-antiguo').text('El precio introducido es '+precio);
+
+
                 $('.book_comments').empty();
-               $('.book_comments').text( $.trim(commentBook+'El valor antiguo era: '+price+"\n");
+               $('.book_comments').text( $.trim(commentBook+'El valor antiguo era: '+price+"\n"));
             });
             
             $('.cobrar').click(function(event){ 
@@ -587,12 +641,18 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                 var email = $('[name=email]').val();
                 var phone = $('[name=phone]').val();
                 $.get('/admin/clientes/save', { id: id,  name: name, email: email,phone: phone}, function(data) {
+                    $('.notification-message').val(data);
+                    document.getElementById("boton").click();
+                    setTimeout(function(){ 
+                        $('.pgn-wrapper .pgn .alert .close').trigger('click');
+                         }, 3000);
+
                 });
             });
 
             $('.parking').change(function(event){ 
                 var commentBook = $('.book_comments').val();
-                alert(commentBook);
+
                 $('.book_comments').empty();
                 var res = commentBook.replace("Parking: Si\n","");
                 res = res.replace("Parking: No\n","");
