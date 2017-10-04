@@ -54,12 +54,12 @@ class RoomsController extends Controller
             $room->order = 99;
             $room->state = 1;
 
-            $directory =public_path()."/img/miramarski/galerias/".$room->nameRoom;
+            // $directory =public_path()."/img/miramarski/galerias/".$room->nameRoom;
 
             
-            if (!file_exists($directory)) {
-                mkdir($directory, 0777, true);
-            }
+            // if (!file_exists($directory)) {
+            //     mkdir($directory, 0777, true);
+            // }
 
             if ($room->save()) {
                 return redirect()->action('RoomsController@index');

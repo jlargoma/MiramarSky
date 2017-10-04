@@ -13,6 +13,11 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
 
+<style>
+    .pgn-wrapper[data-position$='-right'] {
+        right: : 82%!important;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -95,7 +100,7 @@
 
                         <div class="col-md-4">
                             <label for="name">Nombre</label> 
-                            <input class="form-control cliente" type="text" name="name" value="<?php echo $book->customer->name ?>" data-id="<?php echo $book->customer->id ?>">
+                            <input class="form-control cliente" type="text" name="nombre" value="<?php echo $book->customer->name ?>" data-id="<?php echo $book->customer->id ?>">
                         </div>
                         <div class="col-md-4">
                             <label for="email">Email</label> 
@@ -355,6 +360,15 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
+
+<form role="form">
+  <div class="form-group form-group-default required" style="display: none">
+    <label class="highlight">Message</label>
+    <input type="text" hidden="" class="form-control notification-message" placeholder="Type your message here" value="This notification looks so perfect!" required>
+  </div>
+  <button class="btn btn-success show-notification hidden" id="boton">Show</button>
+</form>
+
 @endsection
 
 @section('scripts')
@@ -383,6 +397,9 @@
 <script src="/assets/plugins/bootstrap-typehead/typeahead.bundle.min.js"></script>
 <script src="/assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
 <script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
+
+    <script src="/assets/js/notifications.js" type="text/javascript"></script>
+    <script src="/assets/js/scripts.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 
@@ -655,10 +672,12 @@
 
             $('.cliente').change(function(event) {
                 var id = $(this).attr('data-id');;
-                var name = $('[name=name]').val();
+                var name = $('[name=nombre]').val();
                 var email = $('[name=email]').val();
                 var phone = $('[name=phone]').val();
                 $.get('/admin/clientes/save', { id: id,  name: name, email: email,phone: phone}, function(data) {
+                        $('.notification-message').val(data);
+                        document.getElementById("boton").click();
                 });
             });
 

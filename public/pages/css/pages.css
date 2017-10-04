@@ -4346,13 +4346,13 @@ body.menu-pin > .pgn-wrapper[data-position="bottom"] {
   left: 30px;
 }
 .pgn-wrapper[data-position$='-right'] {
-  right: 20px;
+  left: 30px;
 }
 .pgn-wrapper[data-position^='top-'] {
-  top: 20px;
+  left: 30px;
 }
 .pgn-wrapper[data-position^='bottom-'] {
-  bottom: 20px;
+  left: 30px;
 }
 .pgn-wrapper[data-position='top'] {
   top: 0;
