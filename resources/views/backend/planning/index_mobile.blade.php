@@ -335,20 +335,14 @@
     															<?php if (isset($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i])): ?>
     																<?php if ($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->start == $inicio->copy()->format('Y-m-d')): ?>
     																	<td style='border:1px solid grey;width: 3%'>
-    																		<div style="width: 50%;float: left;">
-    																			&nbsp;
-    																		</div>
-    																		<div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> start" style="width: 50%;float: left;">
+    																		<div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> start" style="width: 100%;float: left;">
     																			&nbsp;
     																		</div>
 
     																	</td>    
     																<?php elseif($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->finish == $inicio->copy()->format('Y-m-d')): ?>
     																	<td style='border:1px solid grey;width: 3%'>
-    																		<div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> end" style="width: 50%;float: left;">
-    																			&nbsp;
-    																		</div>
-    																		<div style="width: 50%;float: left;">
+    																		<div class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?> end" style="width: 100%;float: left;">
     																			&nbsp;
     																		</div>
 

@@ -14189,3 +14189,67 @@ Main components
     clear: both!important;
   }
 }
+
+.Reservado, .table.table-striped tbody tr.Reservado td {
+    background-color: rgba(0,200,10,0.2) !important;
+    color: black;
+}
+
+.Bloqueado, .table.table-striped tbody tr.Bloqueado td {
+    background-color: rgba(0,100,255,0.2) !important;
+    color: red;
+}
+
+/*Colores*/
+
+    .SubComunidad.start,.Reserva.Propietario.start{
+        background-image: -webkit-linear-gradient(135deg, #FFA500 50%, #fff 50%);
+        color: black;
+    }
+    .SubComunidad,.Reserva.Propietario{
+        background-color: orange !important;
+        color: black;
+    }
+    .SubComunidad.end,.Reserva.Propietario.end{
+        background-image: -webkit-linear-gradient(315deg, #FFA500 50%, #fff 50%);
+        color: black;
+    }
+    
+    .Pagada-la-señal.start{
+        background-image: -webkit-linear-gradient(135deg, #008000 50%, #fff 50%);
+        color: black;
+    }
+    .Pagada-la-señal{
+        background-color: green  !important;
+        color: black;
+    }
+    .Pagada-la-señal.end{
+        background-image: -webkit-linear-gradient(315deg, #008000 50%, #fff 50%);
+        color: black;
+    }
+
+    .Reservado.start{
+        background-image: -webkit-linear-gradient(135deg, #D7F4D7 50%, #fff 50%);
+        color: black;
+    }
+    .Reservado{
+        background-color: #D7F4D7  !important;
+        color: black;
+    }
+    .Reservado.end{
+        background-image: -webkit-linear-gradient(315deg, #D7F4D7 50%, #fff 50%);
+        color: black;
+    }
+
+    .Bloqueado.start{
+        background-image: -webkit-linear-gradient(135deg, #D4E2FF 50%, #fff 50%);
+        color: black;
+    }
+    .Bloqueado{
+        background-color: #D4E2FF  !important;
+        color: black;
+    }
+    .Bloqueado.end{
+        background-image: -webkit-linear-gradient(315deg, #D4E2FF 50%, #fff 50%);
+        color: black;
+    }

@@ -31,59 +31,7 @@
             color: black;
         }
 
-        /*Colores*/
 
-            .SubComunidad.start,.Reserva.Propietario.start{
-                background-image: -webkit-linear-gradient(135deg, #FFA500 50%, #fff 50%);
-                color: black;
-            }
-            .SubComunidad,.Reserva.Propietario{
-                background-color: orange !important;
-                color: black;
-            }
-            .SubComunidad.end,.Reserva.Propietario.end{
-                background-image: -webkit-linear-gradient(315deg, #FFA500 50%, #fff 50%);
-                color: black;
-            }
-            
-            .Pagada-la-señal.start{
-                background-image: -webkit-linear-gradient(135deg, #008000 50%, #fff 50%);
-                color: black;
-            }
-            .Pagada-la-señal{
-                background-color: green  !important;
-                color: black;
-            }
-            .Pagada-la-señal.end{
-                background-image: -webkit-linear-gradient(315deg, #008000 50%, #fff 50%);
-                color: black;
-            }
-
-            .Reservado.start{
-                background-image: -webkit-linear-gradient(135deg, #D7F4D7 50%, #fff 50%);
-                color: black;
-            }
-            .Reservado{
-                background-color: #D7F4D7  !important;
-                color: black;
-            }
-            .Reservado.end{
-                background-image: -webkit-linear-gradient(315deg, #D7F4D7 50%, #fff 50%);
-                color: black;
-            }
-
-            .Bloqueado.start{
-                background-image: -webkit-linear-gradient(135deg, #D4E2FF 50%, #fff 50%);
-                color: black;
-            }
-            .Bloqueado{
-                background-color: #D4E2FF  !important;
-                color: black;
-            }
-            .Bloqueado.end{
-                background-image: -webkit-linear-gradient(315deg, #D4E2FF 50%, #fff 50%);
-                color: black;
-            }
 
         .botones{
             padding-top: 0px!important;
@@ -159,20 +107,13 @@
         .table.table-hover tbody tr:hover td {
             background: #99bce7 !important;
         }
-        .Reservado,.table.table-striped tbody tr.Reservado td {
-            background-color: rgba(0,200,10,0.2)  !important;
-            color: black;
-        }
+        
         .table.table-striped tbody tr.Reservado td select.minimal{
             background-color: rgba(0,200,10,0.0)  !important;
             color: black!important;
             font-weight: bold!important;
         }
 
-        .Bloqueado,.table.table-striped tbody tr.Bloqueado td {
-            background-color: #D4E2FF  !important;
-            color: red;
-        }
             
         
         .table.table-striped tbody tr.Bloqueado td select.minimal{
@@ -189,7 +130,6 @@
 @endsection
     
 @section('content')
-
     <div class="container-fluid  p-l-15 p-r-15 p-t-20">
         <div class="row bg-white">
             <div class="col-md-12 text-center">
@@ -637,7 +577,7 @@
                         if (data == "Ya hay una reserva para ese apartamento" || data == "No se puede cambiar el estado" || data == "Valor nulo o vacio") {
                             
                         }else{
-                            setTimeout('document.location.reload()',1000);
+                            // setTimeout('document.location.reload()',1000);
                         }                        
                    }); 
                 }

@@ -452,7 +452,7 @@ class Book extends Model
                         $roomFinish = Carbon::createFromFormat('Y-m-d',$this->finish)->format('U');
 
 
-                        $isRooms = \App\Book::where('room_id',$this->room_id)->whereIn('type_book',[1,2,4,6,7,8])->where('id','!=' ,$this->id)->orderBy('start','ASC')->get();
+                        $isRooms = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,6,7,8])->where('id','!=' ,$this->id)->orderBy('start','ASC')->get();
 
                         $existStart = false;
                         $existFinish = false;        

@@ -19,16 +19,12 @@ class RoleMiddleware
 
     public function handle($request, Closure $next)
     {
-        $arraySubadminUrl = [
-                                'admin/precios',
-                            ];
+
+
+        
         if (!Auth::guest()) {
-            if (Auth::user()->role == "propietario") {
-
-                return redirect()->guest('/admin/propietario');
-
-            }elseif(Auth::user()->role == "subAdmin" && !array_search( $request->path(), $arraySubadminUrl )){
-                return redirect()->guest('/admin/jaime');
+            if (Auth::user()->role != "admin") {
+                return redirect()->guest('/admin/reservas');
             }
         }else{
             return redirect()->guest('login');
