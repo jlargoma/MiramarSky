@@ -17,7 +17,7 @@ class RoleSubAdmin
     public function handle($request, Closure $next)
     {
         if (!Auth::guest()) {
-            if (Auth::user()->role == "subadmin") {
+            if (Auth::user()->role != "subadmin") {
                 return redirect()->guest('/admin/reservas');
             }
         }else{

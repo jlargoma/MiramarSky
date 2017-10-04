@@ -47,9 +47,9 @@ Route::post('admin/reservas/create' , 'BookController@create');
 // Route::get('/test' , 'MailController@sendEmailBookSuccess');
 // Route::get('/admin/propietario',['middleware' => 'authSubAdmin','uses' => 'Admin\BackendController@index']);
 // Route::get('/admin/propietario',['middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
+//['middleware' => ['authRole', 'authSubAdmin']]
 
-Route::group(['middleware' => 'authSubAdmin'], function () {
-	Route::get('/admin','BookController@index');
+	Route::get('/admin',['middleware' => 'auth', 'uses' => 'BookController@index']);
 
 //Planing 
 	
@@ -100,23 +100,25 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 	Route::get('admin/clientes/delete/{id}', 'CustomersController@delete'); 
 
 // Rooms
-	Route::get('admin/apartamentos' , 'RoomsController@index');
-	Route::get('admin/apartamentos/new', 'RoomsController@newRoom');
-	Route::get('admin/apartamentos/new-type', 'RoomsController@newTypeRoom');
-	Route::get('admin/apartamentos/new-size', 'RoomsController@newSizeRoom');
-	Route::get('admin/apartamentos/update', 'RoomsController@update');
-	Route::get('admin/apartamentos/update-type', 'RoomsController@updateType');
-	Route::get('admin/apartamentos/update-name', 'RoomsController@updateName');
-	Route::get('admin/apartamentos/update-order', 'RoomsController@updateOrder');
-	Route::get('admin/apartamentos/update-size', 'RoomsController@updateSize');
-	Route::post('admin/apartamentos/saveupdate', 'RoomsController@saveUpdate');
-	Route::post('admin/apartamentos/create', 'RoomsController@create');
-	Route::post('admin/apartamentos/create-type', 'RoomsController@createType');
-	Route::post('admin/apartamentos/create-size', 'RoomsController@createSize');
-	Route::get('admin/apartamentos/state', 'RoomsController@state');
-	Route::get('admin/apartamentos/getPaxPerRooms/{id}', 'RoomsController@getPaxPerRooms');
-	Route::get('admin/apartamentos/getLuxuryPerRooms/{id}', 'RoomsController@getLuxuryPerRooms');
-	Route::get('admin/apartamentos/uploadFile/{id}', 'RoomsController@uploadFile');
+
+	Route::get('admin/apartamentos' , ['middleware' => 'authAdmin', 'uses' => 'RoomsController@index']);
+	Route::get('admin/apartamentos/new', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@newRoom']);
+	Route::get('admin/apartamentos/new-type', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@newTypeRoom']);
+	Route::get('admin/apartamentos/new-size', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@newSizeRoom']);
+	Route::get('admin/apartamentos/update', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@update']);
+	Route::get('admin/apartamentos/update-type', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateType']);
+	Route::get('admin/apartamentos/update-name', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateName']);
+	Route::get('admin/apartamentos/update-order', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateOrder']);
+	Route::get('admin/apartamentos/update-size', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateSize']);
+	Route::post('admin/apartamentos/saveupdate', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@saveUpdate']);
+	Route::post('admin/apartamentos/create', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@create']);
+	Route::post('admin/apartamentos/create-type', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@createType']);
+	Route::post('admin/apartamentos/create-size', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@createSize']);
+	Route::get('admin/apartamentos/state', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@state']);
+	Route::get('admin/apartamentos/getPaxPerRooms/{id}', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@getPaxPerRooms']);
+	Route::get('admin/apartamentos/getLuxuryPerRooms/{id}', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@getLuxuryPerRooms']);
+	Route::get('admin/apartamentos/uploadFile/{id}', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@uploadFile']);
+
 
 // Prices
 	Route::get('admin/precios' ,['middleware' => 'authSubAdmin','uses' =>  'PricesController@index']);
@@ -159,7 +161,6 @@ Route::group(['middleware' => 'authSubAdmin'], function () {
 	Route::get('admin/propietario/{year?}' , 'OwnedController@index');
 	Route::post('admin/propietario/bloquear' , 'OwnedController@bloqOwned');
 
-});
 
 //PDF´s
 
