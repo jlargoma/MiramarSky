@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Auth;
 use App\Http\Requests;
 
 class CustomersController extends Controller
@@ -24,9 +24,11 @@ class CustomersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
-    {
+    {   
+
         $customer = new \App\Customers();
 
+        $customer->user_id = Auth::user()->id;
         $customer->name = $request->input('name');
         $customer->email = $request->input('email');
         $customer->phone = $request->input('phone');

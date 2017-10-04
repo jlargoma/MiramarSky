@@ -41,12 +41,12 @@
                         	<label>Cargo</label>
                             <select class="full-width" data-init-plugin="select2" name="role">
                                 <option value="<?php echo $user->role ?>" default><?php echo $user->role ?></option>
-                                <option value="Admin">Admin</option>
-                                <option value="Jaime">Jaime</option>
-                                <option value="Limpieza">Limpieza</option>
-                                <option value="Agente">Agente</option>
-                                <option value="Propietario">Propietario</option>
-                                <option value="Recepcionista">Recepcionista</option>
+                                <option value="admin">admin</option>
+                                <option value="Subadmin">Subadmin</option>
+                                <option value="limpieza">Limpieza</option>
+                                <option value="agente">Agente</option>
+                                <option value="propietario">Propietario</option>
+                                <option value="recepcionista">Recepcionista</option>
                             </select>
                         </div>
                             <br>

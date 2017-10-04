@@ -139,7 +139,7 @@
                               <?php endif ?>
                             </td>
                             <td class="text-center">
-                              <?php if (isset($totalCost[$room->id]) && isset($totalPVP[$room->id])): ?>
+                              <?php if (isset($totalCost[$room->id]) && isset($totalPVP[$room->id]) && $totalCost[$room->id] != 0 && $totalPVP[$room->id] !=0): ?>
                                 <?php echo number_format((($totalPVP[$room->id]-$totalCost[$room->id])/$totalPVP[$room->id]*100),2,',','.') ?> %
                               <?php else: ?>
                                   -----

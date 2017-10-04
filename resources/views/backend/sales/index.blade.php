@@ -221,14 +221,14 @@ setlocale(LC_TIME, "es_ES");
 				        			<td class="text-center coste">		<?php echo number_format($book->sup_limp,2,',','.') ?>€</td>
 				        			<td class="text-center coste bf">	<?php echo number_format($book->agency,2,',','.') ?>€</td>
 				        			<td class="text-center"><?php echo number_format($book->ben_jorge,2,',','.') ?></td>
-				        			<?php if ($book->total_ben > 0): ?>
+				        			<?php if ($book->total_ben > 0 && $book->ben_jorge > 0): ?>
 				        				<td class="text-center"><?php echo number_format(($book->total_ben/$book->ben_jorge)*100)."%" ?></td>
 				        			<?php else: ?>
 				        				<td class="text-center"> 0%</td>
 				        			<?php endif ?>
 				        			
 				        			<td class="text-center"><?php echo number_format($book->ben_jaime,2,',','.') ?></td>
-				        			<?php if ($book->total_ben > 0): ?>
+				        			<?php if ($book->total_ben > 0 && $book->ben_jaime > 0): ?>
 				        				<td class="text-center"><?php echo number_format(($book->total_ben/$book->ben_jaime)*100)."%" ?></td>
 				        			<?php else: ?>
 				        				<td class="text-center"> 0%</td>

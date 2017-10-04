@@ -79,7 +79,7 @@
                             </div>
                             <div class="panel-body">
                                 <div class="col-md-12">
-                                    <form role="form"  action="{{ url('clientes/create') }}" method="post">
+                                    <form role="form"  action="{{ url('/admin/clientes/create') }}" method="post">
                                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                         <div class="input-group transparent">
                                             <span class="input-group-addon">

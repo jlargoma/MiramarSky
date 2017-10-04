@@ -37,6 +37,7 @@ class UsersController extends Controller
         $user->remember_token = str_random(60);
         $user->password = bcrypt($request->input('password'));
         
+
         if ($user->save()) {
             return redirect()->action('UsersController@index');
         }

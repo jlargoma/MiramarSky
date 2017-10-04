@@ -53,32 +53,32 @@ Route::post('admin/reservas/create' , 'BookController@create');
 
 //Planing 
 	
-	Route::get('admin/reservas/emails/{id}' , 'BookController@emails');
-	Route::get('admin/reservas/new' , 'BookController@newBook');
-	Route::get('admin/reservas/delete/{id}' , 'BookController@delete');
 	// Route::post('admin/reservas/create' , 'BookController@create');
-	Route::get('admin/reservas/update/{id}' , 'BookController@update');	
-	Route::post('admin/reservas/saveUpdate/{id}' , 'BookController@saveUpdate');	
-	Route::get('admin/reservas/changeBook/{id}' , 'BookController@changeBook');
-	Route::get('/admin/reservas/changeStatusBook/{id}' , 'BookController@changeStatusBook');
-
-	Route::get('admin/reservas/ansbyemail/{id}' , 'BookController@ansbyemail');
-	Route::post('admin/reservas/sendEmail' , 'BookController@sendEmail');
-	Route::get('admin/reservas/sendJaime' , 'BookController@sendJaime');
-	Route::get('admin/reservas/getPriceBook' , 'BookController@getPriceBook');
-	Route::get('admin/reservas/getCostBook' , 'BookController@getCostBook');
-	Route::get('admin/reservas/getPricePark' , 'BookController@getPricePark');
-	Route::get('admin/reservas/getCostPark' , 'BookController@getCostPark');
-	Route::get('admin/reservas/getPriceLujo' , 'BookController@getPriceLujo');
-	Route::get('admin/reservas/getCostLujo' , 'BookController@getCostLujo');
-	Route::get('admin/reservas/getPriceLujoAdmin' , 'BookController@getPriceLujoAdmin');
-	Route::get('admin/reservas/getCostLujoAdmin' , 'BookController@getCostLujoAdmin');
-	Route::get('admin/reservas/saveCobro' , 'BookController@saveCobro');
-	Route::get('admin/reservas/deleteCobro/{id}' , 'BookController@deleteCobro');
-	Route::get('admin/reservas/saveFianza' , 'BookController@saveFianza');
-	Route::get('admin/reservas/{year?}' , 'BookController@index');
-	Route::get('admin/reservas/reserva/{id}' , 'BookController@tabReserva');
-	Route::get('admin/reservas/cobrar/{id}' , 'BookController@cobroBook');
+	
+	Route::get('admin/reservas/emails/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@emails']);
+	Route::get('admin/reservas/new' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@newBook']);
+	Route::get('admin/reservas/delete/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@delete']);
+	Route::get('admin/reservas/update/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@update']);	
+	Route::post('admin/reservas/saveUpdate/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@saveUpdate']);	
+	Route::get('admin/reservas/changeBook/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@changeBook']);
+	Route::get('/admin/reservas/changeStatusBook/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@changeStatusBook']);
+	Route::get('admin/reservas/ansbyemail/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@ansbyemail']);
+	Route::post('admin/reservas/sendEmail' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@sendEmail']);
+	Route::get('admin/reservas/sendJaime' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@sendJaime']);
+	Route::get('admin/reservas/getPriceBook' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@getPriceBook']);
+	Route::get('admin/reservas/getCostBook' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@getCostBook']);
+	Route::get('admin/reservas/getPricePark' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@getPricePark']);
+	Route::get('admin/reservas/getCostPark' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@getCostPark']);
+	Route::get('admin/reservas/getPriceLujo' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@getPriceLujo']);
+	Route::get('admin/reservas/getCostLujo' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@getCostLujo']);
+	Route::get('admin/reservas/getPriceLujoAdmin' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@getPriceLujoAdmin']);
+	Route::get('admin/reservas/getCostLujoAdmin' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@getCostLujoAdmin']);
+	Route::get('admin/reservas/saveCobro' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@saveCobro']);
+	Route::get('admin/reservas/deleteCobro/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@deleteCobro']);
+	Route::get('admin/reservas/saveFianza' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@saveFianza']);
+	Route::get('admin/reservas/{year?}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@index']);
+	Route::get('admin/reservas/reserva/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@tabReserva']);
+	Route::get('admin/reservas/cobrar/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@cobroBook']);
 
 
 	
