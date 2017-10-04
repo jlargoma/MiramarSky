@@ -454,7 +454,7 @@ class BookController extends Controller
                 if (!$mobile->isMobile()){
                     return view('backend/planning/update',  [
                                                                 'book'   => $book ,
-                                                                'rooms'  => \App\Rooms::all(),
+                                                                'rooms'  => \App\Rooms::where('state',1)->get(),
                                                                 'extras' => \App\Extras::all(),
                                                                 'start' => Carbon::createFromFormat('Y-m-d',$book->start)->format('d M,y'),
                                                                 'payments' => $payments,
@@ -464,7 +464,7 @@ class BookController extends Controller
                 }else{
                     return view('backend/planning/update_mobile',  [
                                                                 'book'   => $book ,
-                                                                'rooms'  => \App\Rooms::all(),
+                                                                'rooms'  => \App\Rooms::where('state',1)->get(),
                                                                 'extras' => \App\Extras::all(),
                                                                 'payments' => $payments,
                                                                 'typecobro' => new \App\Book(),

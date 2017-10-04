@@ -168,7 +168,7 @@
                         </div>
                     </div>
                     <div class="col-xs-12 bg-white">
-                        <div class="col-xs-4 not-padding">
+                        <div class="col-xs-4 not-padding" style="min-height: 150px">
                             <div class="col-md-6 col-xs-12 push-10">
                                 <label>Agencia</label>
                                 <select class="form-control full-width agency minimal" name="agency">
@@ -193,7 +193,13 @@
                         </div>
                        
                             
-                        
+                        <div class="col-xs-8 not-padding">
+                            <p class="personas-antiguo" style="color: red">
+                                <?php if ($book->pax < $book->room->minOcu): ?>
+                                    Van menos personas que la ocupacion minima del apartamento.
+                                <?php endif ?>
+                            </p>
+                        </div>
                         <div class="col-xs-8 not-padding">
                             <div class="col-md-4 col-xs-12 text-center" style="background-color: #0c685f;">
                                 <label class="font-w800 text-white" for="">TOTAL</label>
@@ -209,9 +215,15 @@
                                     <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>" style="width: 80%; float: left;">
                                     <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;"><?php echo number_format($book->inc_percent,0)."%" ?></div>
                                 </div>
-                            <?php endif ?>
                         </div>
-                        
+                        <div class="col-xs-8 not-padding">
+                            <p class="precio-antiguo">
+                                El precio asignado es <?php echo $book->total_price ?>
+                            </p>
+                        </div>
+                        <?php else: ?>
+                            </div>
+                        <?php endif ?>                        
                     </div>
                     <div class="col-xs-12 bg-white padding-block">
                         <div class="col-md-6 col-xs-12">
@@ -225,7 +237,7 @@
                     </div>
                     <div class="row push-40 bg-white padding-block">
                         <div class="col-md-4 col-md-offset-4 text-center">
-                            <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;" disabled>Guardar</button>
+                            <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;">Guardar</button>
                         </div>  
                     </div>
                 </form>
@@ -293,7 +305,6 @@
                                             <?php else: ?>
                                                 <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
                                             <?php endif ?>
-
 
                                         <?php endfor ;?>
                                     </select>
@@ -487,7 +498,8 @@
                     if (pax < data) {
                         $('.pax').attr('style' , 'background-color:red');
                         // $('.book_comments').empty();
-                        $('.book_comments').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
+                        $('.personas-antiguo').empty;
+                        $('.personas-antiguo').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
                     }else{
                         // $('.book_comments').empty();
                         $('.pax').removeAttr('style');
@@ -531,8 +543,7 @@
                                 price = data;
                                 
                                 price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
-                                $('.total').empty();
-                                $('.total').val(price);
+                            
                                     $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays}).success(function( data ) {
                                         costPark = data;
                                         $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
@@ -553,6 +564,9 @@
                                                 $('.beneficio-text').empty();
                                                 $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
 
+                                                var precio = $('.total').val();
+                                                $('.precio-antiguo').empty;
+                                                $('.precio-antiguo').text('El precio introducido es '+precio+' y el precio real es '+price);
                                             });
                                         });
                                     });
@@ -560,6 +574,10 @@
                         });
                     }); 
                 }
+
+                
+
+            
         }
 
 
@@ -653,7 +671,8 @@
                 var cost = $('.cost').val();
                 var beneficio = (parseFloat(price) - parseFloat(cost));
                 $('.book_comments').text( $.trim(commentBook+'El valor antiguo era: '+price+"\n"));
-
+                
+                
                 $('.beneficio').empty;
                 $('.beneficio').val(beneficio);
                 
@@ -678,6 +697,9 @@
                 $.get('/admin/clientes/save', { id: id,  name: name, email: email,phone: phone}, function(data) {
                         $('.notification-message').val(data);
                         document.getElementById("boton").click();
+                        setTimeout(function(){ 
+                            $('.pgn-wrapper .pgn .alert .close').trigger('click');
+                             }, 3000);
                 });
             });
 

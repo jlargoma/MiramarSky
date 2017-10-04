@@ -81,7 +81,7 @@
                                 <div class="col-xs-12">
                                     <label>Entrada</label>
                                     <div class="input-prepend input-group">
-                                        <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center;min-height: 28px;" >
+                                        <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="">
                                     </div>
                                 </div>
                                 <div class="col-xs-3  p-t-10">
