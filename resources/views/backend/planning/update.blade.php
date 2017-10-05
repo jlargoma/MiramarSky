@@ -216,9 +216,9 @@
                                     <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;"><?php echo number_format($book->inc_percent,0)."%" ?></div>
                                 </div>
                         </div>
-                        <div class="col-xs-8 not-padding">
-                            <p class="precio-antiguo">
-                                El precio asignado es <?php echo $book->total_price ?>
+                        <div class="col-xs-8 not-padding text-left">
+                            <p class="precio-antiguo font-s18">
+                                <b>El precio asignado es <?php echo $book->total_price ?></b>
                             </p>
                         </div>
                         <?php else: ?>
@@ -700,7 +700,7 @@
                         document.getElementById("boton").click();
                         setTimeout(function(){ 
                             $('.pgn-wrapper .pgn .alert .close').trigger('click');
-                             }, 3000);
+                             }, 1000);
                 });
             });
 
@@ -727,11 +727,19 @@
                     $.get('/admin/reservas/changeStatusBook/'+id, { status:status }, function(data) {
                         if (data == 1) {
                             $('.content-alert-success').show();
-                            setTimeout
+                             setTimeout(function(){ 
+                                 $('.alert-success .close').trigger('click');
+                                  }, 1000);                       
                         } else if (data == 0){
                             $('.content-alert-error1').show();
+                            setTimeout(function(){ 
+                                $('.alert-error1 .close').trigger('click');
+                                 }, 1000);  
                         } else{
                             $('.content-alert-error2').show();
+                                setTimeout(function(){ 
+                                    $('.alert-error2 .close').trigger('click');
+                                     }, 1000);  
                         }
                     }); 
                }

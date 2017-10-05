@@ -14253,3 +14253,7 @@ Main components
         background-image: -webkit-linear-gradient(315deg, #D4E2FF 50%, #fff 50%);
         color: black;
     }
+
+    .pgn-circle .alert .close{
+      display: none;
+    }
