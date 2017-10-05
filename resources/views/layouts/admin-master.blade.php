@@ -107,7 +107,8 @@
 
 			        </ul>
 			        <ul class="nav navbar-nav navbar-right">
-			            <li><a href="{{url ('/logout')}}">Log Out</a></li>
+			        	<li style="color:white"><a href="#" style="pointer-events: none"><?php echo ucwords(Auth::user()->name) ?></a></li>
+			            <li ><a href="{{url ('/logout')}}">Log Out</a></li>
 			        </ul>
 			    </div>
 			    <?php if (stristr(Request::path(), 'liquidacion') == TRUE || Request::path() == 'admin/liquidacion-apartamentos' || Request::path() == 'admin/pagos-propietarios' || Request::path() == 'admin/pagos-estadisticas' || Request::path() == 'admin/perdidas-ganancias' ): ?>

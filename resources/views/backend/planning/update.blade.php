@@ -136,9 +136,15 @@
                             <label>Noches</label>
                             <input type="text" class="form-control nigths" name="nigths" value="<?php echo $book->nigths ?>" style="width: 100%">
                         </div> 
-                        <div class="col-md-1 p-l-0">
+                        <div class="col-md-1 p-l-0 p-r-0">
                             <label>Pax</label>
-                            <input  type="text" class="form-control full-width pax" name="pax" style="width: 100%" value="<?php echo $book->pax ?>"> 
+                            <select class=" form-control pax minimal"  name="pax">
+                                <?php for ($i=1; $i <= 10 ; $i++): ?>
+                                    <option value="<?php echo $i ?>" <?php echo ($i == $book->pax)?"selected":""; ?>>
+                                        <?php echo $i ?>
+                                    </option>
+                                <?php endfor;?>
+                            </select> 
                         </div>
                         <div class="col-md-3">
                             <label>Apartamento</label>
@@ -218,7 +224,7 @@
                         </div>
                         <div class="col-xs-8 not-padding text-left">
                             <p class="precio-antiguo font-s18">
-                                <b>El precio asignado es <?php echo $book->total_price ?></b>
+                                <b>El precio asignado <?php echo $book->total_price ?></b>
                             </p>
                         </div>
                         <?php else: ?>
@@ -567,7 +573,7 @@
 
                                                 var precio = $('.total').val();
                                                 $('.precio-antiguo').empty;
-                                                $('.precio-antiguo').text('El precio introducido es '+precio+' y el precio real es '+price);
+                                                $('.precio-antiguo').text('El precio asignado '+precio+' y el precio tarifa '+price);
                                             });
                                         });
                                     });
@@ -667,11 +673,10 @@
                 
             
             $('.total').change(function(event) {
-                var commentBook = $('.book_comments').val();
                 var price = $(this).val();
                 var cost = $('.cost').val();
                 var beneficio = (parseFloat(price) - parseFloat(cost));
-                $('.book_comments').text( $.trim(commentBook+'El valor antiguo era: '+price+"\n"));
+                $('.precio-antiguo').empty;
                 
                 
                 $('.beneficio').empty;

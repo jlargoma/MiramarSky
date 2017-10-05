@@ -3,9 +3,17 @@
 		setlocale(LC_TIME, "ES"); 
         setlocale(LC_TIME, "es_ES"); 
  ?>
+ <style>
+ 	.note-editor, .note-editable{
+ 	    min-height: 500px!important;
+ 	}
+ 	.dropdown-toggle > i{
+ 		font-size: 10px!important;
+ 	}
+ </style>
 <div class="modal-content">
 	<div class="modal-header clearfix text-left">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14" style="font-size: 40px!important"></i>
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14" style="font-size: 40px!important;color: black!important"></i>
 		</button>
 		<h5>Mensaje para <span class="semi-bold"><?php echo $book->customer->name ?></span></h5>
 	</div>

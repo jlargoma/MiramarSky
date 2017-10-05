@@ -39,6 +39,7 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
     top: 36%;
     color: #626262;
 }
+
 </style>
 @endsection
 
@@ -158,7 +159,13 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                     </div> 
                     <div class="col-xs-3 push-10">
                         <label>Pax</label>
-                        <input  type="text" class="form-control full-width pax" name="pax" style="width: 100%" value="<?php echo $book->pax ?>">
+                        <select class=" form-control pax minimal"  name="pax">
+                            <?php for ($i=1; $i <= 10 ; $i++): ?>
+                                <option value="<?php echo $i ?>" <?php echo ($i == $book->pax)?"selected":""; ?>>
+                                    <?php echo $i ?>
+                                </option>
+                            <?php endfor;?>
+                        </select>
 
                     </div>
                     <div class="col-xs-6 push-10">
