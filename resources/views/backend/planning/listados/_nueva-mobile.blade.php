@@ -59,7 +59,7 @@
 
                                 <div class="col-xs-6">
                                     <label for="name">Nombre</label> 
-                                    <input class="form-control cliente" type="text" name="name">
+                                    <input class="form-control cliente" type="text" name="name" required>
                                 </div>
                                 <div class="col-xs-6">
                                     <label for="email">Email</label> 
@@ -67,7 +67,7 @@
                                 </div>
                                 <div class="col-xs-12">
                                     <label for="phone">Telefono</label> 
-                                    <input class="form-control cliente" type="text" name="phone" >
+                                    <input class="form-control cliente" type="number" name="phone" >
                                 </div>  
                             </div>
                             <br>
@@ -392,9 +392,8 @@
                 var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
                 $('.nigths').val(diffDays);
 
-
+                calculate();
                 $('.btn-complete').removeAttr('disabled');
-                console.log(date);
             });
 
 

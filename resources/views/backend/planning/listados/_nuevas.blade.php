@@ -58,7 +58,7 @@
 
                 <div class="col-md-4">
                     <label for="name">Nombre</label> 
-                    <input class="form-control cliente" type="text" name="name">
+                    <input class="form-control cliente" type="text" name="name" required>
                 </div>
                 <div class="col-md-4">
                     <label for="email">Email</label> 
@@ -66,7 +66,7 @@
                 </div>
                 <div class="col-md-4">
                     <label for="phone">Telefono</label> 
-                    <input class="form-control cliente" type="text" name="phone" >
+                    <input class="form-control cliente" type="number" name="phone" >
                 </div>  
             </div>
             <!-- DATOS DE LA RESERVA -->
@@ -86,7 +86,8 @@
                 </div>
                 <div class="col-md-1 p-l-0">
                     <label>Noches</label>
-                    <input type="text" class="form-control nigths" name="nigths" style="width: 100%">
+                    <input type="text" class="form-control nigths" name="nigths" style="width: 100%" disabled>
+                    <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%" >
                 </div> 
                 <div class="col-md-2 p-l-0">
                     <label>Pax</label>
@@ -157,6 +158,10 @@
                             <?php // endforeach ?>
                         </select>
                     </div>
+                </div>
+                <div class="col-xs-8 not-padding">
+                    <p class="personas-antiguo" style="color: red">
+                    </p>
                 </div>
                 <div class="col-xs-8 not-padding">
                     <div class="col-md-4 col-xs-12 text-center" style="background-color: #0c685f;">
@@ -379,7 +384,7 @@
                 var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
                 $('.nigths').val(diffDays);
 
-                $('.btn-complete').removeAttr('disabled');
+                calculate();
 
             });
 
@@ -388,6 +393,19 @@
             
             $('#newroom').change(function(event){ 
 
+                var room = $('#newroom').val();
+                var pax = $('.pax').val();
+                $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
+
+                    if (pax < data) {
+                        $('.personas-antiguo').empty();
+                        $('.personas-antiguo').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
+                    }else{
+                        $('.personas-antiguo').empty();
+                    }
+                });
+
+                
                 var dataLuxury = $('option:selected', this).attr('data-luxury');;
 
                 if (dataLuxury == 1) {
@@ -397,6 +415,7 @@
                     $('.type_luxury option[value=1]').removeAttr('selected');
                     $('.type_luxury option[value=2]').attr('selected','selected');
                 }
+
 
 
                 calculate();
@@ -409,14 +428,13 @@
                 $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
 
                     if (pax < data) {
-                        $('.pax').attr('style' , 'background-color:red');
-                        $('.book_comments').empty();
-                        $('.book_comments').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data+"\n");
+                        $('.personas-antiguo').empty();
+                        $('.personas-antiguo').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
                     }else{
-                        $('.book_comments').empty();
-                        $('.pax').removeAttr('style');
+                        $('.personas-antiguo').empty();
                     }
                 });
+
                 calculate();
             });
 

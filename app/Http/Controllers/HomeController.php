@@ -304,7 +304,7 @@ class HomeController extends Controller
                 }
             }
             /* $room = 116;  A definir por jorge */
-            $limp = 35;
+            $limp = 30;
             $typeApto  = "Estudio Lujo";
 
         }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'no'){
@@ -319,7 +319,7 @@ class HomeController extends Controller
                 }
             }
             $typeApto  = "Estudio estandar";
-            $limp = 35;
+            $limp = 30;
         }
 
 

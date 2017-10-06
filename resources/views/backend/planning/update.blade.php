@@ -334,10 +334,16 @@
                                 </td>
                                 <td class="text-center">
                                     <select class="full-width select2-hidden-accessible type_payment" data-init-plugin="select2" name="type_payment"  tabindex="-1" aria-hidden="true">
-                                        <?php for ($i=0; $i < 3 ; $i++): ?>
-                                         <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
+                                        <?php for ($i=0; $i < 4 ; $i++): ?>
+                                            <?php if (Auth::user()->id == 39 && $i == 2): ?>
+                                                <option value="<?php echo $i ?>" selected><?php echo $book->getTypeCobro($i) ?></option>
+                                            <?php elseif (Auth::user()->id == 28 && $i == 1):?>
+                                                <option value="<?php echo $i ?>" selected><?php echo $book->getTypeCobro($i) ?></option>
+                                            <?php else: ?>
+                                                <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
+                                            <?php endif ?>
 
-                                     <?php endfor ;?>
+                                        <?php endfor ;?>
                                  </select>
                              </td>
                              <td class ="text-center"> 

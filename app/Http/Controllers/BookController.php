@@ -273,6 +273,8 @@ class BookController extends Controller
 
                 $book->total_price   = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
 
+                $book->real_price    = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
+
 
                 $book->total_ben     = $book->total_price - $book->cost_total;
 
@@ -358,8 +360,9 @@ class BookController extends Controller
                         $book->cost_apto     = 0 ;
                         $book->cost_total    = 0 ;
                         $book->total_price   = 0 ;
+                        $book->real_price    = 0 ;
                         $book->total_ben     = 0 ;
-
+                        
                         $book->inc_percent   = 0 ;
                         $book->ben_jorge     = 0 ;
                         $book->ben_jaime     = 0 ;   
@@ -374,6 +377,7 @@ class BookController extends Controller
                         $book->cost_apto     = 0 ;
                         $book->cost_total    = ($room->sizeApto == 1) ? 30 : 40 ;
                         $book->total_price   = ($room->sizeApto == 1) ? 30 : 50 ;
+                        $book->real_price    = ($room->sizeApto == 1) ? 30 : 50 ;
                         $book->total_ben     = $book->total_price - $book->cost_total ;
 
                         $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
@@ -381,16 +385,18 @@ class BookController extends Controller
                         $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
                     }else{
 
-                        $book->PVPAgencia    = ( $request->input('agencia') )?$request->input('agencia'):0;
-                        $book->sup_limp      = ($room->sizeApto == 1) ? 30 : 50;
-                        $book->cost_limp     = ($room->sizeApto == 1) ? 30 : 40;
-                        $book->sup_park      = $this->getPriceParkController($request->input('parking'), $request->input('nigths'));
-                        $book->cost_park     = $this->getCostParkController($request->input('parking'),$request->input('nigths'));
-                        $book->sup_lujo      = $this->getPriceLujo($request->input('type_luxury'));
-                        $book->cost_lujo     = $this->getCostLujo($request->input('type_luxury'));
-                        $book->cost_apto     = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
-                        $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
-                        $book->total_price   = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
+                        $book->PVPAgencia  = ( $request->input('agencia') )?$request->input('agencia'):0;
+                        $book->sup_limp    = ($room->sizeApto == 1) ? 30 : 50;
+                        $book->cost_limp   = ($room->sizeApto == 1) ? 30 : 40;
+                        $book->sup_park    = $this->getPriceParkController($request->input('parking'), $request->input('nigths'));
+                        $book->cost_park   = $this->getCostParkController($request->input('parking'),$request->input('nigths'));
+                        $book->sup_lujo    = $this->getPriceLujo($request->input('type_luxury'));
+                        $book->cost_lujo   = $this->getCostLujo($request->input('type_luxury'));
+                        $book->cost_apto   = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
+                        $book->cost_total  = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
+                        $book->total_price = $request->input('total');
+                        $book->real_price  = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
+
                         $book->total_ben     = $book->total_price - $book->cost_total;
                         
                         $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
