@@ -333,10 +333,16 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                                 </td>
                                 
                                 <td class="text-center">
-                                    <select class="type_payment form-control minimal" name="type_payment"  tabindex="-1" aria-hidden="true">
-                                        <?php for ($i=0; $i < 3 ; $i++): ?>
-                                           <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
-                                    
+                                    <select class="form-control type_payment minimal" name="type_payment"  tabindex="-1" aria-hidden="true">
+                                        <?php for ($i=0; $i < 4 ; $i++): ?>
+                                            <?php if (Auth::user()->id == 39 && $i == 2): ?>
+                                                <option value="<?php echo $i ?>" selected><?php echo $book->getTypeCobro($i) ?></option>
+                                            <?php elseif (Auth::user()->id == 28 && $i == 1):?>
+                                                <option value="<?php echo $i ?>" selected><?php echo $book->getTypeCobro($i) ?></option>
+                                            <?php else: ?>
+                                                <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
+                                            <?php endif ?>
+
                                         <?php endfor ;?>
                                     </select>
                                 </td>

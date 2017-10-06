@@ -515,6 +515,7 @@
                           setTimeout(function(){ 
                               $('.pgn-wrapper .pgn .alert .close').trigger('click');
                                }, 3000);
+                          setTimeout('document.location.reload()',1000);
                       }else{
                           setTimeout('document.location.reload()',2000);
                       }                        
