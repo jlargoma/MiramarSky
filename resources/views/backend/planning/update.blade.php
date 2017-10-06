@@ -134,7 +134,8 @@
                         </div>
                         <div class="col-md-1 p-l-0">
                             <label>Noches</label>
-                            <input type="text" class="form-control nigths" name="nigths" value="<?php echo $book->nigths ?>" style="width: 100%">
+                            <input type="text" class="form-control nigths" name="nigths" style="width: 100%" disabled value="<?php echo $book->nigths ?>">
+                            <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%" >
                         </div> 
                         <div class="col-md-1 p-l-0 p-r-0">
                             <label>Pax</label>
@@ -224,7 +225,7 @@
                         </div>
                         <div class="col-xs-8 not-padding text-left">
                             <p class="precio-antiguo font-s18">
-                                <b>El precio asignado <?php echo $book->total_price ?></b>
+                                <b>El precio asignado <?php echo $book->total_price ?> y el precio de tarifa es <?php echo $book->real_price ?></b>
                             </p>
                         </div>
                         <?php else: ?>
@@ -617,6 +618,7 @@
                 var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
                 $('.nigths').val(diffDays);
 
+                calculate();
                 $('.status').attr("disabled", "disabled");
                 $('.btn-complete').removeAttr('disabled');
 
@@ -629,22 +631,47 @@
             
             $('#newroom').change(function(event){ 
 
+                var room = $('#newroom').val();
+                var pax = $('.pax').val();
+                $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
+
+                    if (pax < data) {
+                        $('.personas-antiguo').empty();
+                        $('.personas-antiguo').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
+                    }else{
+                        $('.personas-antiguo').empty();
+                    }
+                });
+
+                
                 var dataLuxury = $('option:selected', this).attr('data-luxury');;
 
-                // alert(dataLuxury);
                 if (dataLuxury == 1) {
                     $('.type_luxury option[value=1]').attr('selected','selected');
                     $('.type_luxury option[value=2]').removeAttr('selected');
                 } else {
-                    $('.type_luxury option[value=2]').attr('selected','selected');
                     $('.type_luxury option[value=1]').removeAttr('selected');
+                    $('.type_luxury option[value=2]').attr('selected','selected');
                 }
+
 
 
                 calculate();
             });
 
             $('.pax').change(function(event){ 
+                var room = $('#newroom').val();
+                var pax = $('.pax').val();
+                $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
+
+                    if (pax < data) {
+                        $('.personas-antiguo').empty();
+                        $('.personas-antiguo').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
+                    }else{
+                        $('.personas-antiguo').empty();
+                    }
+                });
+
                 calculate();
             });
 
@@ -682,8 +709,9 @@
                 var price = $(this).val();
                 var cost = $('.cost').val();
                 var beneficio = (parseFloat(price) - parseFloat(cost));
-                $('.precio-antiguo').empty;
                 
+                $('.precio-antiguo').empty;
+                $('.precio-antiguo').text('El precio asignado '+price+' y el precio tarifa '+price);
                 
                 $('.beneficio').empty;
                 $('.beneficio').val(beneficio);

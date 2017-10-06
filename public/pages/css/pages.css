@@ -14257,3 +14257,7 @@ Main components
     .pgn-circle .alert .close{
       display: none;
     }
+  
+  .alert-info{
+      background: yellow!important;
+  }

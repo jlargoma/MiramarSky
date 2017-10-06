@@ -332,14 +332,11 @@ class Book extends Model
                         return "Estado Cambiado a Sin Responder";
                     }else{
 
-                        $this->type_book = $status;
-
-                        
                         $roomStart = Carbon::createFromFormat('Y-m-d',$this->start)->format('U');
                         $roomFinish = Carbon::createFromFormat('Y-m-d',$this->finish)->format('U');
 
 
-                        $isRooms = \App\Book::where('room_id',$this->room_id)->whereIn('type_book',[1,2,4,6,7,8])->where('id','!=' ,$this->id)->orderBy('start','ASC')->get();
+                        $isRooms = \App\Book::where('room_id',$this->room_id)->whereIn('type_book',[1,2,4,5,6,7,8])->where('id','!=' ,$this->id)->orderBy('start','ASC')->get();
 
                         $existStart = false;
                         $existFinish = false;        
@@ -350,13 +347,20 @@ class Book extends Model
                                 $start = Carbon::createFromFormat('Y-m-d', $isRoom->start)->format('U');                        
                                 $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish)->format('U'); 
 
+                                // if ($start <= $roomStart && $roomStart <= $finish){
+                                //     $existStart = true;
+                                // }elseif($roomStart <= $start && $start <= $roomFinish){
+                                //     $existStart = true;
+                                // }elseif($start <= $roomStart && $roomStart < $finish){
+                                //     $existStart = true;
+                                // }elseif($roomStart <= $start && $start <= $roomFinish){
+                                //     $existStart = true;
+                                // }
                                 if ($start < $roomStart && $roomStart < $finish){
                                     $existStart = true;
-                                }elseif($roomStart < $start && $start < $roomFinish){
+                                }elseif($start <= $roomStart && $roomStart < $finish){
                                     $existStart = true;
-                                }elseif($start < $roomStart && $roomStart < $finish){
-                                    $existStart = true;
-                                }elseif($roomStart < $start && $start < $roomFinish){
+                                }elseif($roomStart <= $start && $start < $roomFinish){
                                     $existStart = true;
                                 }
                             }else{
@@ -365,6 +369,8 @@ class Book extends Model
                         }
                         
                         if ($existStart == false && $existFinish == false) {
+
+                            $this->type_book = $status;
 
                             if ($this->customer->email == "") {
                                return "No tiene Email asignado";
@@ -457,7 +463,7 @@ class Book extends Model
                         $roomFinish = Carbon::createFromFormat('Y-m-d',$this->finish)->format('U');
 
 
-                        $isRooms = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,6,7,8])->where('id','!=' ,$this->id)->orderBy('start','ASC')->get();
+                        $isRooms = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,6,7,8])->where('id','!=' ,$this->id)->orderBy('start','ASC')->get();
 
                         $existStart = false;
                         $existFinish = false;        

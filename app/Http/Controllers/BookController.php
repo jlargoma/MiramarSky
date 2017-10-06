@@ -654,6 +654,7 @@ class BookController extends Controller
                 $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo;
 
                 $book->total_price   = $request->input('total');
+                $book->real_price   = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
                 $book->total_ben     = $book->total_price - $book->cost_total;
                 $book->extra         = $request->input('extra');
                 $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;

@@ -24,9 +24,7 @@ hr.reserva:after {content:"Datos de la Reserva"; position: relative; top: -12px;
 hr.cobro {border: 0; height: 4px; margin-top: 20px;background:black; text-align: center;}
 hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; display: inline-block; width: 160px; height: 24px; padding: 0;border: 2px solid black; border-radius: 24px; background: black; color: white; font-size: 12px; line-height: 24px; }
 
-.daterangepicker{
-    top: 10%!important;
-}
+
 .panel-group .panel-heading .panel-title > a.collapsed:after {
     content: "";
     color: rgba(98, 98, 98, 0.7);
@@ -130,7 +128,7 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                    
                     <div class="col-xs-6 push-10">
                         <label for="phone">Telefono</label> 
-                        <input class="form-control cliente" type="text" name="phone" value="<?php echo $book->customer->phone ?>" data-id="<?php echo $book->customer->id ?>"> 
+                        <input class="form-control cliente" type="number" name="phone" value="<?php echo $book->customer->phone ?>" data-id="<?php echo $book->customer->id ?>"> 
                     </div>  
                      <div class="col-xs-12 push-10">
                         <label for="email">Email</label> 
@@ -155,7 +153,8 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                     </div>
                     <div class="col-xs-3 push-10">
                         <label>Noches</label>
-                        <input type="text" class="form-control nigths" name="nigths" value="<?php echo $book->nigths ?>" style="width: 100%">
+                        <input type="text" class="form-control nigths" name="nigths" style="width: 100%" disabled value="<?php echo $book->nigths ?>">
+                        <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%" >
                     </div> 
                     <div class="col-xs-3 push-10">
                         <label>Pax</label>
@@ -517,7 +516,7 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
 
             });
 
-            $('#newroom, .pax, .parking, .agencia, .type_luxury').click(function(event){ 
+            $('.daterange1, #newroom, .pax, .parking, .agencia, .type_luxury').click(function(event){ 
 
                 $('.status').attr("disabled", "disabled");
                 $('.notification-message').val("Guarda antes de cambiar el estado");
@@ -610,9 +609,6 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                 $('.precio-antiguo').empty;
                 $('.precio-antiguo').text('El precio introducido es '+precio);
 
-
-                $('.book_comments').empty();
-               $('.book_comments').text( $.trim(commentBook+'El valor antiguo era: '+price+"\n"));
             });
             
             $('.cobrar').click(function(event){ 

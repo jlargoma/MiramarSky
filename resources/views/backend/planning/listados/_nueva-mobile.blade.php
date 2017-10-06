@@ -62,13 +62,14 @@
                                     <input class="form-control cliente" type="text" name="name" required>
                                 </div>
                                 <div class="col-xs-6">
+                                    <label for="phone">Telefono</label> 
+                                    <input class="form-control cliente" type="number" name="phone" >
+                                </div> 
+                                <div class="col-xs-12">
                                     <label for="email">Email</label> 
                                     <input class="form-control cliente" type="email" name="email" >
                                 </div>
-                                <div class="col-xs-12">
-                                    <label for="phone">Telefono</label> 
-                                    <input class="form-control cliente" type="number" name="phone" >
-                                </div>  
+                                 
                             </div>
                             <br>
 
