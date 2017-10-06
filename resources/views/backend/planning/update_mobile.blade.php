@@ -325,11 +325,11 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                             <tr>
                                 <td class ="text-center" style="padding: 20px 0px 0px 0px;">
                                     <div class="input-daterange input-group" id="datepicker-range" style="width: 100%">
-                                        <input type="text" class="input-sm form-control fecha-cobro" name="start" data-date-format="dd-mm-yyyy" value="<?php $hoy = Carbon::now() ;echo $hoy->format('d/m/Y') ?>" style="min-height: 35px">
+                                        <input type="text" class="input-sm form-control fecha-cobro" name="start" data-date-format="dd-mm-yyyy" value="<?php $hoy = Carbon::now() ;echo $hoy->format('d/m/Y') ?>" style="min-height: 35px" readonly>
                                     </div>
                                 </td>
                                 <td class ="text-center">
-                                <input class="importe form-control" type="text" name="importe"  style="width: 100%;text-align: center;">
+                                <input class="importe form-control" type="number" name="importe"  style="width: 100%;text-align: center;">
                                 </td>
                                 
                                 <td class="text-center">
