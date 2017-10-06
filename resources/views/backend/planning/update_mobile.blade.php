@@ -201,7 +201,7 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                     </div> 
                     <div class="col-md-3 col-xs-6">                                                        
                         <label>Cost Agencia</label>
-                        <input type="text" class="agencia form-control" name="agencia" value="<?php echo $book->PVPAgencia ?>">
+                        <input type="number" class="agencia form-control" name="agencia" value="<?php echo $book->PVPAgencia ?>">
                     </div>
                 </div>
 
@@ -222,7 +222,7 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                     <div class="col-xs-12 not-padding">
                         <div class="col-md-4 col-xs-4 text-center" style="background-color: #0c685f;">
                             <label class="font-w800 text-white" for="">TOTAL</label>
-                            <input type="text" class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>">
+                            <input type="number" class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>">
                         </div>
                         <?php if (Auth::user()->role == 'admin'): ?>
                             <div class="col-md-4 col-xs-4 text-center" style="background: #99D9EA;">
