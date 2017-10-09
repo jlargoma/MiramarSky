@@ -76,28 +76,27 @@ Route::post('admin/reservas/create' , 'BookController@create');
 	Route::get('admin/reservas/saveCobro' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@saveCobro']);
 	Route::get('admin/reservas/deleteCobro/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@deleteCobro']);
 	Route::get('admin/reservas/saveFianza' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@saveFianza']);
-	Route::get('admin/reservas/{year?}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@index']);
 	Route::get('admin/reservas/reserva/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@tabReserva']);
 	Route::get('admin/reservas/cobrar/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@cobroBook']);
+	Route::get('admin/reservas/{year?}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@index']);
+
 
 
 	
 // Usuarios
-	Route::get('admin/usuarios' , 'UsersController@index');
-	Route::get('admin/usuarios/new', 'UsersController@newUser');
-	Route::get('admin/usuarios/update/{id}', 'UsersController@update');
-	Route::post('admin/usuarios/saveAjax', 'UsersController@saveAjax');
-	Route::post('admin/usuarios/saveupdate', 'UsersController@saveUpdate');
-	Route::post('admin/usuarios/create', 'UsersController@create');
-	Route::get('admin/usuarios/delete/{id}', 'UsersController@delete');
+	Route::get('admin/usuarios' ,['middleware' => 'authAdmin', 'uses' =>   'UsersController@index' ]);
+	Route::get('admin/usuarios/update/{id}', ['middleware' => 'authAdmin', 'uses' =>'UsersController@update']);
+	Route::post('admin/usuarios/saveAjax',['middleware' => 'authAdmin', 'uses' => 'UsersController@saveAjax']);
+	Route::post('admin/usuarios/saveupdate',['middleware' => 'authAdmin', 'uses' => 'UsersController@saveUpdate']);
+	Route::post('admin/usuarios/create',['middleware' => 'authAdmin', 'uses' => 'UsersController@create']);
+	Route::get('admin/usuarios/delete/{id}',['middleware' => 'authAdmin', 'uses' => 'UsersController@delete']);
 
 // Clientes
-	Route::get('admin/clientes' , 'CustomersController@index');
-	Route::get('admin/clientes/new', 'CustomersController@newUser');
-	Route::get('admin/clientes/update', 'CustomersController@update');
-	Route::get('admin/clientes/save', 'CustomersController@save');
-	Route::post('admin/clientes/create', 'CustomersController@create');
-	Route::get('admin/clientes/delete/{id}', 'CustomersController@delete'); 
+	Route::get('admin/clientes' ,['middleware' => 'authAdmin', 'uses' => 'CustomersController@index']);
+	Route::get('admin/clientes/update',['middleware' => 'authAdmin', 'uses' => 'CustomersController@update']);
+	Route::get('admin/clientes/save',['middleware' => 'authAdmin', 'uses' => 'CustomersController@save']);
+	Route::post('admin/clientes/create',['middleware' => 'authAdmin', 'uses' => 'CustomersController@create']);
+	Route::get('admin/clientes/delete/{id}',['middleware' => 'authAdmin', 'uses' => 'CustomersController@delete']); 
 
 // Rooms
 
@@ -115,29 +114,29 @@ Route::post('admin/reservas/create' , 'BookController@create');
 	Route::post('admin/apartamentos/create-type', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@createType']);
 	Route::post('admin/apartamentos/create-size', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@createSize']);
 	Route::get('admin/apartamentos/state', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@state']);
-	Route::get('admin/apartamentos/getPaxPerRooms/{id}', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@getPaxPerRooms']);
-	Route::get('admin/apartamentos/getLuxuryPerRooms/{id}', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@getLuxuryPerRooms']);
+	Route::get('admin/apartamentos/getPaxPerRooms/{id}', ['middleware' => 'authSubAdmin', 'uses' => 'RoomsController@getPaxPerRooms']);
+	Route::get('admin/apartamentos/getLuxuryPerRooms/{id}', ['middleware' => 'authSubAdmin', 'uses' => 'RoomsController@getLuxuryPerRooms']);
 	Route::get('admin/apartamentos/uploadFile/{id}', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@uploadFile']);
 
 
 // Prices
-	Route::get('admin/precios' ,['middleware' => 'authSubAdmin','uses' =>  'PricesController@index']);
-	Route::get('admin/precios/update', 'PricesController@update');
-	Route::get('admin/precios/updateExtra', 'PricesController@updateExtra');
-	Route::post('admin/precios/create', 'PricesController@create');
-	Route::get('admin/precios/delete/{id}', 'PricesController@delete');
-	Route::get('admin/precios/deleteExtra/{id}', 'PricesController@delete');
-	Route::post('admin/precios/createExtras', 'PricesController@createExtras');
+	Route::get('admin/precios' ,['middleware' => 'authAdmin', 'uses' =>'PricesController@index']);
+	Route::get('admin/precios/update',['middleware' => 'authAdmin', 'uses' => 'PricesController@update']);
+	Route::get('admin/precios/updateExtra',['middleware' => 'authAdmin', 'uses' => 'PricesController@updateExtra']);
+	Route::post('admin/precios/create',['middleware' => 'authAdmin', 'uses' => 'PricesController@create']);
+	Route::get('admin/precios/delete/{id}',['middleware' => 'authAdmin', 'uses' => 'PricesController@delete']);
+	Route::get('admin/precios/deleteExtra/{id}',['middleware' => 'authAdmin', 'uses' => 'PricesController@delete']);
+	Route::post('admin/precios/createExtras',['middleware' => 'authAdmin', 'uses' => 'PricesController@createExtras']);
 
 // seasons
-	Route::get('admin/temporadas' , 'SeasonsController@index');
-	Route::get('admin/temporadas/new', 'SeasonsController@newSeasons');
-	Route::get('admin/temporadas/new-type', 'SeasonsController@newTypeSeasons');
-	Route::get('admin/temporadas/update', 'SeasonsController@update');
-	Route::post('admin/temporadas/saveupdate', 'SeasonsController@saveUpdate');
-	Route::post('admin/temporadas/create', 'SeasonsController@create');
-	Route::post('admin/temporadas/create-type', 'SeasonsController@createType');
-	Route::get('admin/temporadas/delete/{id}', 'SeasonsController@delete');
+	Route::get('admin/temporadas' ,['middleware' => 'authAdmin', 'uses' => 'SeasonsController@index']);
+	Route::get('admin/temporadas/new',['middleware' => 'authAdmin', 'uses' => 'SeasonsController@newSeasons']);
+	Route::get('admin/temporadas/new-type',['middleware' => 'authAdmin', 'uses' => 'SeasonsController@newTypeSeasons']);
+	Route::get('admin/temporadas/update',['middleware' => 'authAdmin', 'uses' => 'SeasonsController@update']);
+	Route::post('admin/temporadas/saveupdate',['middleware' => 'authAdmin', 'uses' => 'SeasonsController@saveUpdate']);
+	Route::post('admin/temporadas/create',['middleware' => 'authAdmin', 'uses' => 'SeasonsController@create']);
+	Route::post('admin/temporadas/create-type',['middleware' => 'authAdmin', 'uses' => 'SeasonsController@createType']);
+	Route::get('admin/temporadas/delete/{id}',['middleware' => 'authAdmin', 'uses' => 'SeasonsController@delete']);
 
 // Pagos
 	Route::get('admin/pagos' , 'PaymentsController@index');

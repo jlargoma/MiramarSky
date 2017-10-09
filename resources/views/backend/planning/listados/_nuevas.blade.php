@@ -168,17 +168,20 @@
                         <label class="font-w800 text-white" for="">TOTAL</label>
                         <input type="text" class="form-control total m-t-10 m-b-10 white" name="total" >
                     </div>
-                    <div class="col-md-4 col-xs-12 text-center" style="background: #99D9EA;">
-                        <label class="font-w800 text-white" for="">COSTE</label>
-                        <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost" >
-                    </div>
-                    <div class="col-md-4 col-xs-12 text-center not-padding" style="background: #ff7f27;">
-                        <label class="font-w800 text-white" for="">BENEFICIO</label>
-                        <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio"  style="width: 80%; float: left;">
-                        <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;">
-
+                    <?php if (Auth::user()->role == "admin"): ?>
+                        <div class="col-md-4 col-xs-12 text-center" style="background: #99D9EA;">
+                            <label class="font-w800 text-white" for="">COSTE</label>
+                            <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost" >
                         </div>
-                    </div>
+                        <div class="col-md-4 col-xs-12 text-center not-padding" style="background: #ff7f27;">
+                            <label class="font-w800 text-white" for="">BENEFICIO</label>
+                            <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio"  style="width: 80%; float: left;">
+                            <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;">
+
+                            </div>
+                        </div>
+                    <?php endif ?>
+                    
                 </div>
                 
             </div>
@@ -198,7 +201,7 @@
             </div>
             <div class="row bg-white padding-block">
                 <div class="col-md-4 col-md-offset-4 text-center">
-                    <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;" disabled>Guardar</button>
+                    <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;">Guardar</button>
                 </div>  
             </div>
         </form>

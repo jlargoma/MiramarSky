@@ -25,19 +25,6 @@ setlocale(LC_TIME, "es_ES");
 			background-color: rgba(0,100,255,0.2) !important;
 		}
 
-	    .Pagada-la-señal{
-	        background-color: #F77975  !important;
-	        color: black;
-	    }
-	    .Bloqueado{
-	        background-color: #F9D975 !important;
-	        color: black;
-	    }
-	    .SubComunidad{
-	        background-color: #8A7DBE !important;
-	        color: black;
-	    }
-
 	    .botones{
 	        padding-top: 0px!important;
 	        padding-bottom: 0px!important;
