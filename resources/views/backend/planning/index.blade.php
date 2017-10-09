@@ -22,7 +22,7 @@
     <style type="text/css">
     
         .Booking{
-            background: rgba(90,90,0,0.1)!important;
+            background: rgba(255,255,0,0.3)!important;
         }
         .botones{
             padding-top: 0px!important;
@@ -252,12 +252,18 @@
                                                                                     <?php endif ?>" 
                                                                                     class="<?php echo $book->getStatus($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book) ?>"
                                                                             >
-
-                                                                           <a href="{{url ('/admin/reservas/update')}}/<?php echo $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->id ?>">
-                                                                               <div style="width: 100%;height: 100%">
-                                                                                   &nbsp;
-                                                                               </div>
-                                                                           </a>
+                                                                        <?php if ($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->type_book == 9): ?>
+                                                                            <div style="width: 100%;height: 100%">
+                                                                                &nbsp;
+                                                                            </div>
+                                                                        <?php else: ?>
+                                                                            <a href="{{url ('/admin/reservas/update')}}/<?php echo $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i]->id ?>">
+                                                                                <div style="width: 100%;height: 100%">
+                                                                                    &nbsp;
+                                                                                </div>
+                                                                            </a>
+                                                                        <?php endif ?>
+                                                                           
 
                                                                         </td>
 

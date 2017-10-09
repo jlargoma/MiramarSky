@@ -24,7 +24,7 @@
   <style type="text/css">
   
     .Booking{
-        background: rgba(90,90,0,0.1)!important;
+        background: rgba(255,255,0,0.3)!important;
     }
     
   	/* Estados */
