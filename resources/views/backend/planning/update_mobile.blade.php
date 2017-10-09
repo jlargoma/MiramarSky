@@ -92,11 +92,16 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
         <div class="col-xs-8" style="padding: 15px 0;">
             <select class="status form-control minimal" data-id="<?php echo $book->id ?>">
                 <?php for ($i=1; $i < 9; $i++): ?> 
-                    <?php if ($i == $book->type_book): ?>
-                        <option selected value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>"><?php echo $book->getStatus($i) ?></option>
+                    <?php if ($i == 5 && $book->customer->email == ""): ?>
                     <?php else: ?>
-                        <option value="<?php echo $i ?>"><?php echo $book->getStatus($i) ?></option>
-                    <?php endif ?>                                          
+                        <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
+                        <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
+                        value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
+                            <?php echo $book->getStatus($i) ?>
+                            
+                        </option>   
+                    <?php endif ?>
+                                                     
 
                 <?php endfor; ?>
             </select>
@@ -153,8 +158,8 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
                     </div>
                     <div class="col-xs-3 push-10">
                         <label>Noches</label>
-                        <input type="text" class="form-control nigths" name="nigths" style="width: 100%" disabled value="<?php echo $book->nigths ?>">
-                        <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%" >
+                        <input type="number" class="form-control nigths" name="nigths" style="width: 100%" disabled value="<?php echo $book->nigths ?>">
+                        <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%" value="<?php echo $book->nigths ?>">
                     </div> 
                     <div class="col-xs-3 push-10">
                         <label>Pax</label>
@@ -522,7 +527,7 @@ hr.cobro:after {content:"Datos de Cobros"; position: relative; top: -12px; displ
 
             });
 
-            $('.daterange1, #newroom, .pax, .parking, .agencia, .type_luxury').click(function(event){ 
+            $('.daterange1, #newroom, .pax, .parking, .agencia, .type_luxury').change(function(event){ 
 
                 $('.status').attr("disabled", "disabled");
                 $('.notification-message').val("Guarda antes de cambiar el estado");

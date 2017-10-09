@@ -37,7 +37,7 @@
                 </div> 
                 <div class="col-md-8">
                     <select name="status" class="status form-control minimal" data-id="<?php echo $book->id ?>" >
-                        <?php for ($i=1; $i < 9; $i++): ?> 
+                        <?php for ($i=1; $i <= 9; $i++): ?> 
                             <option <?php echo $i == 3 ? "selected" : ""; ?> 
                             <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
                             value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
@@ -58,7 +58,7 @@
 
                 <div class="col-md-4">
                     <label for="name">Nombre</label> 
-                    <input class="form-control cliente" type="text" name="name" required>
+                    <input class="form-control cliente" type="text" name="name">
                 </div>
                 <div class="col-md-4">
                     <label for="email">Email</label> 

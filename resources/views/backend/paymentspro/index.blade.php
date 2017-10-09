@@ -41,8 +41,6 @@
     
 @endsection
 
-
-
 <?php setlocale(LC_TIME, "ES"); ?>
 <?php setlocale(LC_TIME, "es_ES");?>  
 @section('content')

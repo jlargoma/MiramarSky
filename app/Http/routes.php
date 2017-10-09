@@ -107,6 +107,7 @@ Route::post('admin/reservas/create' , 'BookController@create');
 	Route::get('admin/apartamentos/update', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@update']);
 	Route::get('admin/apartamentos/update-type', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateType']);
 	Route::get('admin/apartamentos/update-name', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateName']);
+	Route::get('admin/apartamentos/update-nameRoom', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateNameRoom']);
 	Route::get('admin/apartamentos/update-order', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateOrder']);
 	Route::get('admin/apartamentos/update-size', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateSize']);
 	Route::post('admin/apartamentos/saveupdate', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@saveUpdate']);

@@ -213,7 +213,8 @@
   									<th class="bg-success text-white text-center">Out</th>
   									<th class="bg-success text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i> In</th>
   									<th class="bg-success text-white text-center">Apto</th>
-  									<th class="bg-success text-white text-center">Pendiente</th>
+                    <th class="bg-success text-white text-center">Pendiente</th>
+  									<th class="bg-success text-white text-center">Tel</th>
   								</thead>
   								<tbody>
   									<?php foreach ($proxIn as $book): ?>
@@ -226,7 +227,7 @@
   											<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?></td>
   											<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
   											<td class="text-center sm-p-t-10 sm-p-b-10">Hora</td>
-  											<td class="text-center sm-p-t-10 sm-p-b-10">Apto</td>
+  											<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $book->room->nameRoom ?></td>
   											<td class="text-center sm-p-t-10 sm-p-b-10">
   												<?php if (isset($payment[$book->id])): ?>
   													<p style="{{ $book->total_price - $payment[$book->id] > 0 ? 'color:red' : '' }}"><?php echo number_format($book->total_price - $payment[$book->id],2,',','.') ?> €</p>
@@ -234,6 +235,7 @@
   													<p style="color:red"><?php echo number_format($book->total_price,2,',','.') ?> €<p>
   												<?php endif ?>
   											</td>
+                        <td class="text-center sm-p-t-10 sm-p-b-10"><a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
   										</tr>
   									<?php endforeach ?>
   								</tbody>
@@ -247,7 +249,6 @@
   									<th class="bg-success text-white text-center">Out</th>
   									<th class="bg-success text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i> Out</th>
   									<th class="bg-success text-white text-center">Apto</th>
-  									<th class="bg-success text-white text-center">Pendiente</th>
   								</thead>
   								<tbody>
   									<?php foreach ($proxOut as $book): ?>
@@ -267,6 +268,7 @@
   													<?php echo number_format($book->total_price,2,',','.') ?> €
   												<?php endif ?>
   											</td>
+                        <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $book->room->nameRoom ?></td>
   										</tr>
   									<?php endforeach ?>
   								</tbody>

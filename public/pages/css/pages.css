@@ -14258,6 +14258,17 @@ Main components
       display: none;
     }
   
-  .alert-info{
-      background: yellow!important;
-  }
+    .alert-info{
+        background: yellow!important;
+    }
+    .Booking{
+        background: rgba(90,90,0,0.1)!important;
+    }
+    .Reservado-table{ 
+        background-color: #295d9b !important;
+        color: black;
+    }
+    .Pagada-la-señal{
+        background-color: green  !important;
+        color: black;
+    }

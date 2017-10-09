@@ -39,7 +39,7 @@
                                         <span class="input-group-addon">
                                             <i class="fa fa-eur"></i>
                                         </span>
-                                            <input type="text" class="form-control" name="import" placeholder="Importe" required="" aria-required="true" aria-invalid="false">
+                                            <input type="number" class="form-control" name="import" placeholder="Importe" required="" aria-required="true" aria-invalid="false">
                                     </div>
                                         <br>
                                     
@@ -130,10 +130,13 @@
                                     <thead >
                                         <?php if ($deuda != 0): ?>
                                             <th class ="text-center bg-success " style="width:<?php echo $deuda."%" ?>!important"><?php echo number_format($pagado,2,',','.') ?></th>
+                                        <?php else: ?>
+                                            <th class ="text-center bg-success " style=""><?php echo number_format($pagado,2,',','.') ?></th>
                                         <?php endif ?>
                                         <?php if ($debt == 0): ?>
                                         <?php else: ?>
                                             <th class ="text-center bg-danger text-black" style="width:<?php echo 100-$deuda."%" ?>!important"><?php echo number_format($debt,2,',','.') ?></th>
+
                                         <?php endif ?>
                                         
                                     </thead>

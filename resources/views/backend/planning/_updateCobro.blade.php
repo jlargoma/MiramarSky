@@ -2,8 +2,22 @@
 
 <?php setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); use \Carbon\Carbon;?>
 <div>
-	<div class="col-xs-12">
+	<div class="col-xs-9 padding-10">
+	    <p>
+	        <?php echo "<b>".strtoupper($book->customer->name)."</b>" ?> creada el 
+	        <?php $fecha = Carbon::createFromFormat('Y-m-d H:i:s' ,$book->created_at);?>
+	        <?php echo $fecha->copy()->format('d-m-Y')." Hora:".$fecha->copy()->format('H:m')?><br> 
+	        Creado por <?php echo "<b>".strtoupper($book->user->name)."</b>" ?>
+	    </p>
+	</div>
+	<div class="col-xs-3 padding-10">
 
+	    <a class="close" data-dismiss="modal" aria-hidden="true" style="min-width: 10px!important;padding: 25px">
+	        <img src="{{ asset('/img/miramarski/iconos/close.png') }}" style="width: 20px" />
+	    </a>
+	</div>
+	<div class="col-xs-12">
+	
 		<h3>
 			<a href="{{ url('/admin/pdf/pdf-reserva') }}/<?php echo $book->id ?>"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
 			<?php echo $book->customer->name ?> 

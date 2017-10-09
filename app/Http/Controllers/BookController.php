@@ -51,7 +51,7 @@ class BookController extends Controller
 
         $apartamentos = \App\Rooms::where('state','=',1);
 
-        $reservas = \App\Book::whereIn('type_book',[1,2,4,7,8])->orderBy('start', 'ASC')->get();
+        $reservas = \App\Book::whereIn('type_book',[1,2,4,7,8,9])->orderBy('start', 'ASC')->get();
 
         foreach ($reservas as $reserva) {
             $dia = Carbon::createFromFormat('Y-m-d',$reserva->start);
@@ -122,12 +122,12 @@ class BookController extends Controller
         if(!$mobile->isMobile()){
             $booksNuevas = \App\Book::where('start','>',$start)->where('finish','<',$start->copy()->addYear())->orderBy('updated_at','DESC')->whereIn('type_book',[1,3,4,5,6])->get();
             $booksPagadas = \App\Book::where('start','>',$start)->where('finish','<',$start->copy()->addYear())->where('type_book',2)->orderBy('start','ASC')->get();
-            $booksEspeciales = \App\Book::where('start','>',$start)->where('finish','<',$start->copy()->addYear())->whereIn('type_book',[7,8])->orderBy('start','ASC')->get();
+            $booksEspeciales = \App\Book::where('start','>',$start)->where('finish','<',$start->copy()->addYear())->whereIn('type_book',[7,8,9])->orderBy('start','ASC')->get();
         }else{
             // $date = Carbon::now();
             $booksNuevas = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[1,3,4,5,6])->orderBy('updated_at','DESC')->get();
             $booksPagadas = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->where('type_book',2)->orderBy('start','ASC')->get();
-            $booksEspeciales = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[7,8])->orderBy('start','ASC')->get();
+            $booksEspeciales = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[7,8,9])->orderBy('start','ASC')->get();
             $proxIn = \App\Book::where('start','>=',$date->copy()->subWeek())->where('type_book',2)->orderBy('start','ASC')->get();
             $proxOut = \App\Book::where('start','>=',$date->copy()->subWeek())->where('type_book',2)->orderBy('start','ASC')->get();
         }
@@ -643,6 +643,8 @@ class BookController extends Controller
                 $book->sup_limp      = ($room->typeApto == 1) ? 35 : 50;
                 $book->sup_park      = $book->getPricePark($request->input('parking'),$request->input('nigths'));
                 $book->type_park     = $request->input('parking');
+                $book->agency        = $request->input('agency');
+                $book->PVPAgencia    = $request->input('agencia');
 
                 $book->cost_park     = $book->getCostPark($request->parking,$request->nigths);
 

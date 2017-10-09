@@ -59,7 +59,7 @@
 
                                 <div class="col-xs-6">
                                     <label for="name">Nombre</label> 
-                                    <input class="form-control cliente" type="text" name="name" required>
+                                    <input class="form-control cliente" type="text" name="name" >
                                 </div>
                                 <div class="col-xs-6">
                                     <label for="phone">Telefono</label> 

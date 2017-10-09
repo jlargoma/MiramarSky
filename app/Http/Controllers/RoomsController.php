@@ -140,7 +140,17 @@ class RoomsController extends Controller
             {
                 $id                   = $request->id;
                 $roomUpdate          = \App\Rooms::find($id);
-                $roomUpdate->nameRoom = $request->name;
+                $roomUpdate->name = $request->name;
+                if ($roomUpdate->save()) {
+                    }
+            }
+
+    // Funcion para cambiar el nombre del apartamento
+        public function updateNameRoom(Request $request)
+            {
+                $id                   = $request->id;
+                $roomUpdate          = \App\Rooms::find($id);
+                $roomUpdate->nameRoom = $request->nameRoom;
                 if ($roomUpdate->save()) {
                     }
             }

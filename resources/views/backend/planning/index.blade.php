@@ -21,15 +21,9 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
     <style type="text/css">
     
-        .Reservado-table{ 
-            background-color: #295d9b !important;
-            color: black;
-        }
+        
 
-        .Pagada-la-señal{
-            background-color: green  !important;
-            color: black;
-        }
+        
 
 
 
@@ -81,33 +75,10 @@
         .paginate_button.active>a{
             color: black!important;
         }
-        .fa-arrow-down{color:red;}
-        .fa-arrow-up{color:green;}
-
-        hr.reserva {border: 0; height: 4px; margin-top: 20px;background:black; text-align: center;}
-        hr.reserva:after {content:"Datos de la Reserva"; position: relative; top: -12px; display: inline-block; width: 160px; height: 24px; padding: 0;border: 2px solid black; border-radius: 24px; background: black; color: white; font-size: 12px; line-height: 24px; }
-
-        hr.cliente {border: 0; height: 4px; margin-top: 20px;background:black; text-align: center;}
-        hr.cliente:after {content:"Datos del Cliente"; position: relative; top: -12px; display: inline-block; width: 150px; height: 24px; padding: 0;border: 2px solid black; border-radius: 24px; background: black; color: white; font-size: 12px; line-height: 24px; }
-        
-        hr.cotizacion {border: 0; height: 4px; margin-top: 20px;background:black; text-align: center;}
-        hr.cotizacion:after {content:"Cotizacion"; position: relative; top: -12px; display: inline-block; width: 86px; height: 24px; padding: 0;border: 2px solid black; border-radius: 24px; background: black; color: white; font-size: 12px; line-height: 24px; }
-
-
-        .ingresos_temp{
-            background: #99bce7!important;
-            color: white!important;
-            text-align: center;
-        }
-        .cobros_temp{
-            background: #2dcdaf!important;
-            color: white!important;
-            text-align: center;
-        }
         .table.table-hover tbody tr:hover td {
             background: #99bce7 !important;
         }
-        
+
         .table.table-striped tbody tr.Reservado td select.minimal{
             background-color: rgba(0,200,10,0.0)  !important;
             color: black!important;

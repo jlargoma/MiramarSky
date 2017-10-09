@@ -154,7 +154,12 @@ class PaymentsProController extends Controller
 
         $room  = \App\Rooms::find($id);
         $month = Carbon::createFromFormat('Y',$month);
-        $date  = $month->copy()->addMonth(2);
+
+        if ($month->copy()->format('n') >= 9) {
+            $date = new Carbon('first day of September '.$month->copy()->format('Y'));
+        }else{
+            $date = new Carbon('first day of September '.$month->copy()->subYear()->format('Y'));
+        }
 
         $payments = \App\Paymentspro::where('room_id',$id)->where('datePayment','>',$date->copy())->where('datePayment','<',$date->copy()->addYear())->get();
 

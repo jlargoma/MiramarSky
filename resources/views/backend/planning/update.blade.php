@@ -44,12 +44,16 @@
                 <div class="col-md-3" style="padding: 40px 0;">
                     <select class="status form-control minimal" data-id="<?php echo $book->id ?>" name="status" >
                         <?php for ($i=1; $i < 9; $i++): ?> 
-                            <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
-                            <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
-                            value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
-                                <?php echo $book->getStatus($i) ?>
-                                
-                            </option>                                    
+                            <?php if ($i == 5 && $book->customer->email == ""): ?>
+                            <?php else: ?>
+                                <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
+                                <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
+                                value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
+                                    <?php echo $book->getStatus($i) ?>
+                                    
+                                </option>   
+                            <?php endif ?>
+                                                             
 
                         <?php endfor; ?>
                     </select>
@@ -134,8 +138,8 @@
                         </div>
                         <div class="col-md-1 p-l-0">
                             <label>Noches</label>
-                            <input type="text" class="form-control nigths" name="nigths" style="width: 100%" disabled value="<?php echo $book->nigths ?>">
-                            <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%" >
+                            <input type="number" class="form-control nigths" name="nigths" style="width: 100%" disabled value="<?php echo $book->nigths ?>">
+                        <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%" value="<?php echo $book->nigths ?>">
                         </div> 
                         <div class="col-md-1 p-l-0 p-r-0">
                             <label>Pax</label>
@@ -186,7 +190,11 @@
                             </div>
                             <div class="col-md-6 col-xs-12 push-10">                                                        
                                 <label>Cost Agencia</label>
-                                <input type="text" class="agencia form-control" name="agencia" value="<?php echo $book->PVPAgencia ?>">
+                                <?php if ($book->PVPAgencia == 0.00): ?>
+                                    <input type="number" class="agencia form-control" name="agencia" value="">
+                                <?php else: ?>
+                                    <input type="number" class="agencia form-control" name="agencia" value="<?php echo $book->PVPAgencia ?>">
+                                <?php endif ?>
                             </div>
                             <div style="clear: both;"></div>
                             <div class="col-md-6">
@@ -588,9 +596,6 @@
                         });
                     }); 
                 }
-
-                
-
             
         }
 

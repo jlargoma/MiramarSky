@@ -61,7 +61,7 @@ class Book extends Model
     //Para poner nombre al estado de la reserva//
 	   static function getStatus($status)
             {
-            	$array = [1 =>"Reservado", 2 =>"Pagada-la-señal",3 =>"SIN RESPONDER",4 =>"Bloqueado", 5 =>"Contestado(EMAIL)",6 =>"Cancelada", 7 =>"Reserva Propietario",8 =>"SubComunidad"];
+            	$array = [1 =>"Reservado", 2 =>"Pagada-la-señal",3 =>"SIN RESPONDER",4 =>"Bloqueado", 5 =>"Contestado(EMAIL)",6 =>"Cancelada", 7 =>"Reserva Propietario",8 =>"SubComunidad",9=>"Booking"];
 
             	return $status = $array[$status];
             }
@@ -98,7 +98,7 @@ class Book extends Model
                 return $agency = $array[$agency];
             }
 
-        //Para comprobar el dia de la reserva en el calendario
+    //Para comprobar el dia de la reserva en el calendario
         static function existDate($start,$finish,$room)
         {   
 
@@ -132,41 +132,40 @@ class Book extends Model
             }   
         }
 
+    static function existDateOverrride($start,$finish,$room, $id_excluded)
+    {   
 
-        static function existDateOverrride($start,$finish,$room, $id_excluded)
-        {   
+        if ($room >= 5) {
 
-            if ($room >= 5) {
-
-                $books = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,7,8])->where('id','!=',$id_excluded)->get();
-                $existStart = False;
-                $existFinish = False;        
-                $requestStart = Carbon::createFromFormat('d/m/Y',$start);
-                $requestFinish = Carbon::createFromFormat('d/m/Y',$finish);
-                
-                foreach ($books as $book) {
-                    if ($existStart == False && $existFinish == False) {
-                        $start = Carbon::createFromFormat('Y-m-d', $book->start);
-                        $finish = Carbon::createFromFormat('Y-m-d', $book->finish);                
-                        $existStart = Carbon::create($requestStart->year,$requestStart->month,$requestStart->day)->between($start, $finish);
-                        $existFinish = Carbon::create($requestFinish->year,$requestFinish->month,$requestFinish->day)->between($start, $finish);
-                    }
-                    else{
-                        break;
-                    }
-                }
+            $books = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,7,8])->where('id','!=',$id_excluded)->get();
+            $existStart = False;
+            $existFinish = False;        
+            $requestStart = Carbon::createFromFormat('d/m/Y',$start);
+            $requestFinish = Carbon::createFromFormat('d/m/Y',$finish);
+            
+            foreach ($books as $book) {
                 if ($existStart == False && $existFinish == False) {
-                    return True;
-                }else{
-                    return False;
+                    $start = Carbon::createFromFormat('Y-m-d', $book->start);
+                    $finish = Carbon::createFromFormat('Y-m-d', $book->finish);                
+                    $existStart = Carbon::create($requestStart->year,$requestStart->month,$requestStart->day)->between($start, $finish);
+                    $existFinish = Carbon::create($requestFinish->year,$requestFinish->month,$requestFinish->day)->between($start, $finish);
                 }
-
+                else{
+                    break;
+                }
+            }
+            if ($existStart == False && $existFinish == False) {
+                return True;
             }else{
-                return true;
-            }   
-        }
+                return False;
+            }
 
-        // Funcion para comprobar el precio de la reserva
+        }else{
+            return true;
+        }   
+    }
+
+    // Funcion para comprobar el precio de la reserva
         static function getPriceBook($start,$finish,$pax,$room)
             {   
 
@@ -239,6 +238,7 @@ class Book extends Model
         static function getPricePark($park,$noches)
             {
                 $supPark = 0;
+
                 switch ($park) {
                         case 1:
                             $supPark = 15 * $noches;
@@ -373,6 +373,7 @@ class Book extends Model
                             $this->type_book = $status;
 
                             if ($this->customer->email == "") {
+                                $this->save();
                                return "No tiene Email asignado";
                             }else{
                                 switch ($status) {

@@ -68,7 +68,7 @@
                        <tr>
                            <td class="text-center hidden"><?php echo $room->id?></td>
                            <td class="text-center">
-                               <?php echo $room->name?>
+                               <input class="name name-<?php echo $room->name?>" type="text" name="name" data-id="<?php echo $room->id ?>" value="<?php echo $room->name?>" style="width: 100%;text-align: center;border-style: none none ">
                            </td>
                            <td class="text-center">
                                <input class="nameRoom nameRoom-<?php echo $room->nameRoom?>" type="text" name="nameRoom" data-id="<?php echo $room->id ?>" value="<?php echo $room->nameRoom?>" style="width: 100%;text-align: center;border-style: none none ">
@@ -409,11 +409,20 @@
                 }
             });
         });
-        $('.nameRoom').change(function(event) {
+        $('.name').change(function(event) {
           var id = $(this).attr('data-id');
           var name = $(this).val();
 
           $.get('/admin/apartamentos/update-name', {  id: id, name: name}, function(data) {
+              location.reload();
+          });
+        });
+
+        $('.nameRoom').change(function(event) {
+          var id = $(this).attr('data-id');
+          var nameRoom = $(this).val();
+
+          $.get('/admin/apartamentos/update-nameRoom', {  id: id, nameRoom: nameRoom}, function(data) {
               location.reload();
           });
         });
@@ -444,12 +453,13 @@
 
         });
        }
+       
 
       $(document).ready(function() {
          changeRooms();
-         $('.dataTables_paginate').click(function(event) {
-          changeRooms();
-         });
+          $('.dataTables_paginate').click(function(event) {
+            changeRooms();
+          });
        });
    </script>
 @endsection
