@@ -22,7 +22,11 @@
   <?php setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); use \Carbon\Carbon;?>
 
   <style type="text/css">
-
+  
+    .Booking{
+        background: rgba(90,90,0,0.1)!important;
+    }
+    
   	/* Estados */
   	.Reservado-table{ 
         background-color: #295d9b !important;
