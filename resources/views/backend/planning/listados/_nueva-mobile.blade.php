@@ -7,7 +7,6 @@
     }
     .pg-close{
         font-size: 45px!important;
-        color: white!important;
     }
 </style>
 <div class="col-md-12 not-padding">

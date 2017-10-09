@@ -44,12 +44,12 @@
 					<select class="status form-control minimal" data-id="<?php echo $especial->id ?>">
 
 					    <?php for ($i=1; $i < 9; $i++): ?> 
-					        <?php if ($i == 5 && $book->customer->email == ""): ?>
+					        <?php if ($i == 5 && $especial->customer->email == ""): ?>
 					        <?php else: ?>
-					            <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
+					            <option <?php echo $i == ($especial->type_book) ? "selected" : ""; ?> 
 					            <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
-					            value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
-					                <?php echo $book->getStatus($i) ?>
+					            value="<?php echo $i ?>"  data-id="<?php echo $especial->id ?>">
+					                <?php echo $especial->getStatus($i) ?>
 					                
 					            </option>   
 					        <?php endif ?>
