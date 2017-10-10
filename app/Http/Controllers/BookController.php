@@ -51,7 +51,7 @@ class BookController extends Controller
 
         $apartamentos = \App\Rooms::where('state','=',1);
 
-        $reservas = \App\Book::whereIn('type_book',[1,2,4,7,8,9])->orderBy('start', 'ASC')->get();
+        $reservas = \App\Book::whereIn('type_book',[1,2,4,7,8,9])->whereYear('start','>=', $date)->orderBy('start', 'ASC')->get();
 
         foreach ($reservas as $reserva) {
             $dia = Carbon::createFromFormat('Y-m-d',$reserva->start);
@@ -59,10 +59,12 @@ class BookController extends Controller
             $finish = Carbon::createFromFormat('Y-m-d',$reserva->finish);
             $diferencia = $start->diffInDays($finish);
             for ($i=0; $i <= $diferencia; $i++) {
-                $arrayReservas[$reserva->room_id][$dia->copy()->format('Y')][$dia->copy()->format('n')][$dia->copy()->format('j')] = $reserva;
+                $arrayReservas[$reserva->room_id][$dia->copy()->format('Y')][$dia->copy()->format('n')][$dia->copy()->format('j')][] = $reserva;
                 $dia = $dia->addDay();
             }
         }
+
+
 
         $firstDayOfTheYear = new Carbon('first day of September '.$date->copy()->format('Y'));
         $book = new \App\Book();
@@ -84,6 +86,12 @@ class BookController extends Controller
             $firstDayOfTheYear->addMonth();
 
         }
+
+        // echo "<pre>";
+        // print_r($arrayMonths);
+        // die();
+
+        
         if ($date->copy()->format('n') >= 9) {
             $start = new Carbon('first day of September '.$date->copy()->format('Y'));
         }else{
@@ -179,7 +187,7 @@ class BookController extends Controller
                                                     'pagos'         => \App\Payments::all(),
                                                     'days'          => $arrayDays,
                                                     'inicio'        => $start,
-                                                    'paymentSeason' =>$paymentSeason,
+                                                    'paymentSeason' => $paymentSeason,
                                                     'ventas'        => $ventas,
                                                     'ventasOld'     => $ventasOld,
                                                     ]);
@@ -200,7 +208,7 @@ class BookController extends Controller
                                                     'inicio'        => $start->addMonth(3),
                                                     'proxIn'        => $proxIn,
                                                     'proxOut'       => $proxOut,
-                                                    'paymentSeason' =>$paymentSeason,
+                                                    'paymentSeason' => $paymentSeason,
 
                                                     ]);
             }

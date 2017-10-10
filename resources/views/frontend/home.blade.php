@@ -364,24 +364,20 @@
 					color: white!important
 				}
 				.degradado-background1{
-					background: rgba(251,0,71,1);
-					background: -moz-linear-gradient(45deg, rgba(251,0,71,1) 0%, rgba(167,12,245,1) 53%, rgba(167,12,245,1) 54%, rgba(167,12,245,1) 69%, rgba(48,49,199,1) 100%);
-					background: -webkit-gradient(left bottom, right top, color-stop(0%, rgba(251,0,71,1)), color-stop(53%, rgba(167,12,245,1)), color-stop(54%, rgba(167,12,245,1)), color-stop(69%, rgba(167,12,245,1)), color-stop(100%, rgba(48,49,199,1)));
-					background: -webkit-linear-gradient(45deg, rgba(251,0,71,1) 0%, rgba(167,12,245,1) 53%, rgba(167,12,245,1) 54%, rgba(167,12,245,1) 69%, rgba(48,49,199,1) 100%);
-					background: -o-linear-gradient(45deg, rgba(251,0,71,1) 0%, rgba(167,12,245,1) 53%, rgba(167,12,245,1) 54%, rgba(167,12,245,1) 69%, rgba(48,49,199,1) 100%);
-					background: -ms-linear-gradient(45deg, rgba(251,0,71,1) 0%, rgba(167,12,245,1) 53%, rgba(167,12,245,1) 54%, rgba(167,12,245,1) 69%, rgba(48,49,199,1) 100%);
-					background: linear-gradient(45deg, rgba(251,0,71,1) 0%, rgba(167,12,245,1) 53%, rgba(167,12,245,1) 54%, rgba(167,12,245,1) 69%, rgba(48,49,199,1) 100%);
-					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fb0047', endColorstr='#3031c7', GradientType=1 );
+					background: rgb(175,0,198); /* Old browsers */
+					background: -moz-linear-gradient(45deg,  rgba(175,0,198,1) 0%, rgba(234,0,125,1) 13%, rgba(167,12,245,1) 49%, rgba(167,12,245,1) 73%, rgba(48,49,199,1) 100%); /* FF3.6-15 */
+					background: -webkit-linear-gradient(45deg,  rgba(175,0,198,1) 0%,rgba(234,0,125,1) 13%,rgba(167,12,245,1) 49%,rgba(167,12,245,1) 73%,rgba(48,49,199,1) 100%); /* Chrome10-25,Safari5.1-6 */
+					background: linear-gradient(45deg,  rgba(175,0,198,1) 0%,rgba(234,0,125,1) 13%,rgba(167,12,245,1) 49%,rgba(167,12,245,1) 73%,rgba(48,49,199,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#af00c6', endColorstr='#3031c7',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
 				}
 				.degradado-background2{
-					background: rgba(251,0,71,1);
-					background: -moz-linear-gradient(45deg, rgba(251,0,71,1) 0%, rgba(185,12,212,1) 31%, rgba(167,12,245,1) 50%, rgba(167,12,245,1) 63%, rgba(48,49,199,1) 100%);
-					background: -webkit-gradient(left bottom, right top, color-stop(0%, rgba(251,0,71,1)), color-stop(31%, rgba(185,12,212,1)), color-stop(50%, rgba(167,12,245,1)), color-stop(63%, rgba(167,12,245,1)), color-stop(100%, rgba(48,49,199,1)));
-					background: -webkit-linear-gradient(45deg, rgba(251,0,71,1) 0%, rgba(185,12,212,1) 31%, rgba(167,12,245,1) 50%, rgba(167,12,245,1) 63%, rgba(48,49,199,1) 100%);
-					background: -o-linear-gradient(45deg, rgba(251,0,71,1) 0%, rgba(185,12,212,1) 31%, rgba(167,12,245,1) 50%, rgba(167,12,245,1) 63%, rgba(48,49,199,1) 100%);
-					background: -ms-linear-gradient(45deg, rgba(251,0,71,1) 0%, rgba(185,12,212,1) 31%, rgba(167,12,245,1) 50%, rgba(167,12,245,1) 63%, rgba(48,49,199,1) 100%);
-					background: linear-gradient(45deg, rgba(251,0,71,1) 0%, rgba(185,12,212,1) 31%, rgba(167,12,245,1) 50%, rgba(167,12,245,1) 63%, rgba(48,49,199,1) 100%);
-					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fb0047', endColorstr='#3031c7', GradientType=1 );
+					background: rgb(175,0,198); /* Old browsers */
+					background: -moz-linear-gradient(45deg,  rgba(175,0,198,1) 0%, rgba(234,0,125,1) 13%, rgba(167,12,245,1) 49%, rgba(167,12,245,1) 73%, rgba(48,49,199,1) 100%); /* FF3.6-15 */
+					background: -webkit-linear-gradient(45deg,  rgba(175,0,198,1) 0%,rgba(234,0,125,1) 13%,rgba(167,12,245,1) 49%,rgba(167,12,245,1) 73%,rgba(48,49,199,1) 100%); /* Chrome10-25,Safari5.1-6 */
+					background: linear-gradient(45deg,  rgba(175,0,198,1) 0%,rgba(234,0,125,1) 13%,rgba(167,12,245,1) 49%,rgba(167,12,245,1) 73%,rgba(48,49,199,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#af00c6', endColorstr='#3031c7',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
 				}
 			</style>
 	       	<section class="page-section degradado-background1" style="letter-spacing: 0;line-height: 1;color: #fff!important;">

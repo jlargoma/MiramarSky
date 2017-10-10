@@ -1,805 +1,176 @@
-<?php setlocale(LC_TIME, "ES"); ?>
-<?php setlocale(LC_TIME, "es_ES");
-	use Carbon\Carbon; 
-?>
-<style type="text/css">
-	.not-padding {
-		padding: 0;
-	}
-	.min-h50{
-		min-height: 40px;
-	}
 
-	.booked{
-		background-color: green;
-		min-width: 33.33%;
-		min-height: 20px!important;
-	}
-	.closed{
-		background-color: red;
-		min-width: 33.33%;
-		min-height: 20px!important;
-		
-	}
-	.bloq{
-		background-color: yellow;
-		min-width: 33.33%;
-		min-height: 20px!important;
-		
-	}
-	.sub{
-		background-color: #8A7DBE;
-		min-width: 33.33%;
-		min-height: 20px!important;
-		
-	}
+<div class="col-md-12 col-xs-12">
+	<div class="panel">
+		<ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
+			<?php $dateAux = $inicio->copy(); ?>
+			<?php for ($i=1; $i <= 9 ; $i++) :?>
+				<li <?php if($i == 4 ){ echo "class='active'";} ?>>
+					<a href="#tab<?php echo $i?>" data-toggle="tab" role="tab" style="padding:10px">
+						<?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>
+					</a>
+				</li>
+				<?php $dateAux->addMonth(); ?>
+			<?php endfor; ?>
+		</ul>
+		<div class="tab-content">
 
-	.end, .start{
-		opacity: 0.50;
-	}
+			<?php for ($z=1; $z <= 9; $z++):?>
+				<div class="tab-pane <?php if($z == 4){ echo 'active';} ?>" id="tab<?php echo $z ?>">
+					<div class="row">
+						<div class="col-md-12">
+							<table class="fc-border-separate" style="width: 100%">
+								<thead>
+									<tr >
+										<td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
+											<?php echo  ucfirst($inicio->copy()->formatLocalized('%B %Y'))?>
+										</td> 
+									</tr>
+									<tr>
+										<td rowspan="2" style="width: 1%!important"></td>
+										<?php for ($i=1; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
+											<td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
+												<?php echo $i?> 
+											</td> 
+										<?php endfor; ?>
+									</tr>
+									<tr>
 
-	.fc-day.fc-sun.fc-widget-content.fc-other-month.fc-first{
-		cursor: pointer;
-	}
+										<?php for ($i=1; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
+											<td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$inicio->copy()->format('n')][$i]?>">
+												<?php echo $days[$inicio->copy()->format('n')][$i]?> 
+											</td> 
+										<?php endfor; ?> 
+									</tr>
+								</thead>
+								<tbody>
 
+									<?php foreach ($roomscalendar as $room): ?>
+										<tr>
+											<?php $inicio = $inicio->startOfMonth() ?>
+											<td class="text-center">
+												<b title="<?php echo $room->name ?>"><?php echo substr($room->nameRoom, 0,5)?></b>
+											</td>
 
-	body {
-	    padding-top: 20px;
-	}
-	/**** FULL CALENDAR ****/
+											<?php for ($i=01; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
+												<!-- Si existe la reserva para ese dia -->
+												<?php if (isset($arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i])): ?>
+							
+													<?php $calendars = $arrayReservas[$room->id][$inicio->copy()->format('Y')][$inicio->copy()->format('n')][$i] ?>
+													<!-- Si hay una reserva que sale y una que entra  -->
+													<?php if (count($calendars) > 1): ?>
+														
 
-	/* Header
-	------------------------------------------------------------------------*/
-	 .fc-header td {
-	    white-space: nowrap;
-	}
-	.fc-header-left {
-	    width: 25%;
-	    text-align: left;
-	}
-	.fc-header-center {
-	    text-align: center;
-	}
-	.fc-header-right {
-	    width: 25%;
-	    text-align: right;
-	}
-	.fc-header-title {
-	    display: inline-block;
-	    vertical-align: top;
-	}
-	.fc-header-title h2 {
-	    margin-top: 0;
-	    white-space: nowrap;
-	}
-	.fc .fc-header-space {
-	    padding-left: 10px;
-	}
-	.fc-header .fc-button {
-	    margin-bottom: 1em;
-	    vertical-align: top;
-	}
-	/* buttons edges butting together */
-	 .fc-header .fc-button {
-	    margin-right: -1px;
-	}
-	.fc-header .fc-corner-right,
-	/* non-theme */
-	 .fc-header .ui-corner-right {
-	    /* theme */
-	    margin-right: 0;
-	    /* back to normal */
-	}
-	/* button layering (for border precedence) */
-	 .fc-header .fc-state-hover, .fc-header .ui-state-hover {
-	    z-index: 2;
-	}
-	.fc-header .fc-state-down {
-	    z-index: 3;
-	}
-	.fc-header .fc-state-active, .fc-header .ui-state-active {
-	    z-index: 4;
-	}
-	/* Content
-	------------------------------------------------------------------------*/
-	 .fc-content {
-	    clear: both;
-	}
-	.fc-view {
-	    width: 100%;
-	    /* needed for view switching (when view is absolute) */
-	    overflow: hidden;
-	}
-	/* Cell Styles
-	------------------------------------------------------------------------*/
-	 .fc-widget-header,
-	/* <th>, usually */
-	 .fc-widget-content {
-	    /* <td>, usually */
-	    border: 1px solid #ddd;
-	}
-	.fc-state-highlight {
-	    /* <td> today cell */
-	    /* TODO: add .fc-today to <th> */
-	    background: #fcf8e3;
-	}
-	.fc-cell-overlay {
-	    /* semi-transparent rectangle while dragging */
-	    background: #bce8f1;
-	    opacity: .3;
-	    filter: alpha(opacity=30);
-	    /* for IE */
-	}
-	/* Buttons
-	------------------------------------------------------------------------*/
-	 .fc-button {
-	    position: relative;
-	    display: inline-block;
-	    padding: 0 .6em;
-	    overflow: hidden;
-	    height: 1.9em;
-	    line-height: 1.9em;
-	    white-space: nowrap;
-	    cursor: pointer;
-	}
-	.fc-state-default {
-	    /* non-theme */
-	    border: 1px solid;
-	}
-	.fc-state-default.fc-corner-left {
-	    /* non-theme */
-	    border-top-left-radius: 4px;
-	    border-bottom-left-radius: 4px;
-	}
-	.fc-state-default.fc-corner-right {
-	    /* non-theme */
-	    border-top-right-radius: 4px;
-	    border-bottom-right-radius: 4px;
-	}
-	/*
-	    Our default prev/next buttons use HTML entities like ‹ › « »
-	    and we'll try to make them look good cross-browser.
-	*/
-	 .fc-text-arrow {
-	    margin: 0 .1em;
-	    font-size: 2em;
-	    font-family:"Courier New", Courier, monospace;
-	    vertical-align: baseline;
-	    /* for IE7 */
-	}
-	.fc-button-prev .fc-text-arrow, .fc-button-next .fc-text-arrow {
-	    /* for ‹ › */
-	    font-weight: bold;
-	}
-	/* icon (for jquery ui) */
-	 .fc-button .fc-icon-wrap {
-	    position: relative;
-	    float: left;
-	    top: 50%;
-	}
-	.fc-button .ui-icon {
-	    position: relative;
-	    float: left;
-	    margin-top: -50%;
-	    *margin-top: 0;
-	    *top: -50%;
-	}
-	/*
-	  button states
-	  borrowed from twitter bootstrap (http://twitter.github.com/bootstrap/)
-	*/
-	 .fc-state-default {
-	    background-color: #f5f5f5;
-	    background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
-	    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
-	    background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
-	    background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
-	    background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
-	    background-repeat: repeat-x;
-	    border-color: #e6e6e6 #e6e6e6 #bfbfbf;
-	    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-	    color: #333;
-	    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
-	    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-	}
-	.fc-state-hover, .fc-state-down, .fc-state-active, .fc-state-disabled {
-	    color: #333333;
-	    background-color: #e6e6e6;
-	}
-	.fc-state-hover {
-	    color: #333333;
-	    text-decoration: none;
-	    background-position: 0 -15px;
-	    -webkit-transition: background-position 0.1s linear;
-	    -moz-transition: background-position 0.1s linear;
-	    -o-transition: background-position 0.1s linear;
-	    transition: background-position 0.1s linear;
-	}
-	.fc-state-down, .fc-state-active {
-	    background-color: #cccccc;
-	    background-image: none;
-	    outline: 0;
-	    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
-	}
-	.fc-state-disabled {
-	    cursor: default;
-	    background-image: none;
-	    opacity: 0.65;
-	    filter: alpha(opacity=65);
-	    box-shadow: none;
-	}
-	/* Global Event Styles
-	------------------------------------------------------------------------*/
-	 .fc-event {
-	    border: 1px solid #3a87ad;
-	    /* default BORDER color */
-	    background-color: #3a87ad;
-	    /* default BACKGROUND color */
-	    color: #fff;
-	    /* default TEXT color */
-	    font-size: .85em;
-	    cursor: default;
-	}
-	a.fc-event {
-	    text-decoration: none;
-	}
-	a.fc-event, .fc-event-draggable {
-	    cursor: pointer;
-	}
-	.fc-rtl .fc-event {
-	    text-align: right;
-	}
-	.fc-event-inner {
-	    width: 100%;
-	    height: 100%;
-	    overflow: hidden;
-	}
-	.fc-event-time, .fc-event-title {
-	    padding: 0 1px;
-	}
-	.fc .ui-resizable-handle {
-	    display: block;
-	    position: absolute;
-	    z-index: 99999;
-	    overflow: hidden;
-	    /* hacky spaces (IE6/7) */
-	    font-size: 300%;
-	    /* */
-	    line-height: 50%;
-	    /* */
-	}
-	/* Horizontal Events
-	------------------------------------------------------------------------*/
-	 .fc-event-hori {
-	    border-width: 1px 0;
-	    margin-bottom: 1px;
-	}
-	.fc-ltr .fc-event-hori.fc-event-start, .fc-rtl .fc-event-hori.fc-event-end {
-	    border-left-width: 1px;
-	    border-top-left-radius: 3px;
-	    border-bottom-left-radius: 3px;
-	}
-	.fc-ltr .fc-event-hori.fc-event-end, .fc-rtl .fc-event-hori.fc-event-start {
-	    border-right-width: 1px;
-	    border-top-right-radius: 3px;
-	    border-bottom-right-radius: 3px;
-	}
-	/* resizable */
-	 .fc-event-hori .ui-resizable-e {
-	    top: 0 !important;
-	    /* importants override pre jquery ui 1.7 styles */
-	    right: -3px !important;
-	    width: 7px !important;
-	    height: 100% !important;
-	    cursor: e-resize;
-	}
-	.fc-event-hori .ui-resizable-w {
-	    top: 0 !important;
-	    left: -3px !important;
-	    width: 7px !important;
-	    height: 100% !important;
-	    cursor: w-resize;
-	}
-	.fc-event-hori .ui-resizable-handle {
-	    _padding-bottom: 14px;
-	    /* IE6 had 0 height */
-	}
-	/* Reusable Separate-border Table
-	------------------------------------------------------------*/
-	 table.fc-border-separate {
-	    border-collapse: separate;
-	}
-	.fc-border-separate th, .fc-border-separate td {
-	    border-width: 1px 0 0 1px;
-	}
-	.fc-border-separate th.fc-last, .fc-border-separate td.fc-last {
-	    border-right-width: 1px;
-	}
-	.fc-border-separate tr.fc-last th, .fc-border-separate tr.fc-last td {
-	    border-bottom-width: 1px;
-	}
-	.fc-border-separate tbody tr.fc-first td, .fc-border-separate tbody tr.fc-first th {
-	    border-top-width: 0;
-	}
-	/* Month View, Basic Week View, Basic Day View
-	------------------------------------------------------------------------*/
-	 .fc-grid th {
-	    text-align: center;
-	}
-	.fc .fc-week-number {
-	    width: 22px;
-	    text-align: center;
-	}
-	.fc .fc-week-number div {
-	    padding: 0 2px;
-	}
-	.fc-grid .fc-day-number {
-	    float: right;
-	    padding: 0 2px;
-	}
-	.fc-grid .fc-other-month .fc-day-number {
-	    opacity: 0.3;
-	    filter: alpha(opacity=30);
-	    /* for IE */
-	    /* opacity with small font can sometimes look too faded
-		   might want to set the 'color' property instead
-		   making day-numbers bold also fixes the problem */
-	}
-	.fc-grid .fc-day-content {
-	    clear: both;
-	    padding: 2px 2px 1px;
-	    /* distance between events and day edges */
-	}
-	/* event styles */
-	 .fc-grid .fc-event-time {
-	    font-weight: bold;
-	}
-	/* right-to-left */
-	 .fc-rtl .fc-grid .fc-day-number {
-	    float: left;
-	}
-	.fc-rtl .fc-grid .fc-event-time {
-	    float: right;
-	}
-	/* Agenda Week View, Agenda Day View
-	------------------------------------------------------------------------*/
-	 .fc-agenda table {
-	    border-collapse: separate;
-	}
-	.fc-agenda-days th {
-	    text-align: center;
-	}
-	.fc-agenda .fc-agenda-axis {
-	    width: 50px;
-	    padding: 0 4px;
-	    vertical-align: middle;
-	    text-align: right;
-	    white-space: nowrap;
-	    font-weight: normal;
-	}
-	.fc-agenda .fc-week-number {
-	    font-weight: bold;
-	}
-	.fc-agenda .fc-day-content {
-	    padding: 2px 2px 1px;
-	}
-	/* make axis border take precedence */
-	 .fc-agenda-days .fc-agenda-axis {
-	    border-right-width: 1px;
-	}
-	.fc-agenda-days .fc-col0 {
-	    border-left-width: 0;
-	}
-	/* all-day area */
-	 .fc-agenda-allday th {
-	    border-width: 0 1px;
-	}
-	.fc-agenda-allday .fc-day-content {
-	    min-height: 34px;
-	    /* TODO: doesnt work well in quirksmode */
-	    _height: 34px;
-	}
-	/* divider (between all-day and slots) */
-	 .fc-agenda-divider-inner {
-	    height: 2px;
-	    overflow: hidden;
-	}
-	.fc-widget-header .fc-agenda-divider-inner {
-	    background: #eee;
-	}
-	/* slot rows */
-	 .fc-agenda-slots th {
-	    border-width: 1px 1px 0;
-	}
-	.fc-agenda-slots td {
-	    border-width: 1px 0 0;
-	    background: none;
-	}
-	.fc-agenda-slots td div {
-	    height: 20px;
-	}
-	.fc-agenda-slots tr.fc-slot0 th, .fc-agenda-slots tr.fc-slot0 td {
-	    border-top-width: 0;
-	}
-	.fc-agenda-slots tr.fc-minor th, .fc-agenda-slots tr.fc-minor td {
-	    border-top-style: dotted;
-	}
-	.fc-agenda-slots tr.fc-minor th.ui-widget-header {
-	    *border-top-style: solid;
-	    /* doesn't work with background in IE6/7 */
-	}
-	/* Vertical Events
-	------------------------------------------------------------------------*/
-	 .fc-event-vert {
-	    border-width: 0 1px;
-	}
-	.fc-event-vert.fc-event-start {
-	    border-top-width: 1px;
-	    border-top-left-radius: 3px;
-	    border-top-right-radius: 3px;
-	}
-	.fc-event-vert.fc-event-end {
-	    border-bottom-width: 1px;
-	    border-bottom-left-radius: 3px;
-	    border-bottom-right-radius: 3px;
-	}
-	.fc-event-vert .fc-event-time {
-	    white-space: nowrap;
-	    font-size: 10px;
-	}
-	.fc-event-vert .fc-event-inner {
-	    position: relative;
-	    z-index: 2;
-	}
-	.fc-event-vert .fc-event-bg {
-	    /* makes the event lighter w/ a semi-transparent overlay  */
-	    position: absolute;
-	    z-index: 1;
-	    top: 0;
-	    left: 0;
-	    width: 100%;
-	    height: 100%;
-	    background: #fff;
-	    opacity: .25;
-	    filter: alpha(opacity=25);
-	}
-	.fc .ui-draggable-dragging .fc-event-bg,
-	/* TODO: something nicer like .fc-opacity */
-	 .fc-select-helper .fc-event-bg {
-	    display: none\9;
-	    /* for IE6/7/8. nested opacity filters while dragging don't work */
-	}
-	/* resizable */
-	 .fc-event-vert .ui-resizable-s {
-	    bottom: 0 !important;
-	    /* importants override pre jquery ui 1.7 styles */
-	    width: 100% !important;
-	    height: 8px !important;
-	    overflow: hidden !important;
-	    line-height: 8px !important;
-	    font-size: 11px !important;
-	    font-family: monospace;
-	    text-align: center;
-	    cursor: s-resize;
-	}
-	.fc-agenda .ui-resizable-resizing {
-	    /* TODO: better selector */
-	    _overflow: hidden;
-	}
-	/* CUSTOM */
-	 body .calendar {
-	    margin-bottom: 20px;
-	}
-	body .calendar .fc-header {
-	    margin-bottom: 10px;
-	}
-	body .calendar .fc-header .fc-button-effect {
-	    display: none;
-	}
-	body .calendar .fc-header .fc-header-left .fc-button, body .calendar .fc-header .fc-header-right .fc-button {
-	    background: none;
-	    border: none;
-	}
-	body .calendar .fc-header .fc-header-left .fc-button.fc-button-prev, body .calendar .fc-header .fc-header-right .fc-button.fc-button-prev {
-	    background: center center !important;
-	    text-indent: -9999px;
-	    width: 36px;
-	    height: 24px;
-	    padding: 0;
-	    opacity: 0.3;
-	    filter: alpha(opacity=30);
-	}
-	body .calendar .fc-header .fc-header-left .fc-button.fc-button-prev:hover, body .calendar .fc-header .fc-header-right .fc-button.fc-button-prev:hover {
-	    opacity: 1;
-	    filter: alpha(opacity=100);
-	}
-	body .calendar .fc-header .fc-header-left .fc-button.fc-button-next, body .calendar .fc-header .fc-header-right .fc-button.fc-button-next {
-	    text-indent: -9999px;
-	    background: url(../../img/styler/arrow-right.png) center center !important;
-	    width: 36px;
-	    height: 24px;
-	    padding: 0;
-	    opacity: 0.3;
-	    filter: alpha(opacity=30);
-	}
-	body .calendar .fc-header .fc-header-left .fc-button.fc-button-next:hover, body .calendar .fc-header .fc-header-right .fc-button.fc-button-next:hover {
-	    opacity: 1;
-	    filter: alpha(opacity=100);
-	}
-	body .calendar .fc-header .fc-header-left .fc-button.fc-state-default, body .calendar .fc-header .fc-header-right .fc-button.fc-state-default {
-	    box-shadow: none;
-	    text-shadow: none;
-	    background: #f5f5f5;
-	}
-	body .calendar .fc-header .fc-header-left .fc-button.fc-state-active, body .calendar .fc-header .fc-header-right .fc-button.fc-state-active {
-	    background: #34495e;
-	    color: #fff;
-	    box-shadow: none;
-	}
-	body .calendar .fc-header .fc-header-left .fc-button .fc-button-inner, body .calendar .fc-header .fc-header-right .fc-button .fc-button-inner {
-	    background: none;
-	    border: none;
-	    color: #bbb;
-	    font-weight: 300;
-	    font-family:'Roboto', Helvetica, sans-serif;
-	    text-transform: uppercase;
-	    font-size: 18px;
-	}
-	body .calendar .fc-header .fc-header-left .fc-button .fc-button-inner .fc-button-content, body .calendar .fc-header .fc-header-right .fc-button .fc-button-inner .fc-button-content {
-	    line-height: 48px;
-	    -webkit-transition: All 0.5s ease;
-	    -moz-transition: All 0.5s ease;
-	    -o-transition: All 0.5s ease;
-	    -ms-transition: All 0.5s ease;
-	    transition: All 0.5s ease;
-	}
-	body .calendar .fc-header .fc-header-left .fc-button:hover .fc-button-inner, body .calendar .fc-header .fc-header-right .fc-button:hover .fc-button-inner {
-	    color: #333;
-	}
-	body .calendar .fc-header .fc-header-left .fc-button.fc-state-active .fc-button-inner, body .calendar .fc-header .fc-header-right .fc-button.fc-state-active .fc-button-inner {
-	    color: #333;
-	    font-weight: 400;
-	}
-	body .calendar .fc-header .fc-header-title h2 {
-	    font-family:'Roboto', Helvetica, sans-serif;
-	}
-	body .calendar .fc-content .fc-state-highlight {
-	    background: #f5f5f5;
-	}
-	body .calendar .fc-content .fc-event {
-	    border-radius: 50%;
-	    width: 50px;
-	    height: 50px;
-	    background: #5bc0de;
-	    border: rgba(0, 0, 0, 0.1) solid 1px;
-	}
-	body .calendar .fc-content .fc-view-month table thead th {
-	    border: none;
-	}
-	body .calendar .fc-content .fc-view-month table tbody tr td.fc-widget-content {
-	    border: #000 solid 1px;
-	    background: #f5f5f5;
-	    margin: 3px 3px;
-	    padding: 10px;
-	}
-	body .calendar .fc-content .fc-view-month table tbody tr td .fc-day-number {
-	    font-size: 24px;
-	    font-weight: 300;
-	    font-family:'Roboto', Helvetica, sans-serif;
-	    margin-bottom: 10px;
-	}
-	body .calendar .fc-content .fc-view-month .fc-event-skin {
-	    background: #2abf9e;
-	    border: none;
-	    border-radius: 0;
-	    line-height: 1.3;
-	}
-	body .calendar .fc-content .fc-view-month .fc-event-skin .fc-event-inner {
-	    margin: 3px;
-	    width: auto;
-	}
-	body .calendar .fc-content .fc-view-month .fc-event-skin .fc-event-time {
-	    font-weight: 600;
-	    margin-left: 3px;
-	    text-transform: uppercase;
-	}
-	body .calendar .fc-content .fc-view-month .fc-event-skin .fc-event-title {
-	    margin: 3px;
-	    line-height: 1;
-	}
-	body .calendar .fc-content .fc-view-agendaWeek table.fc-agenda-days thead th {
-	    border: none;
-	}
-	body .calendar .fc-content .fc-view-agendaWeek table.fc-agenda-days tbody tr td {
-	    border: none;
-	}
-	body .calendar .fc-content .fc-view-agendaWeek table.fc-agenda-days tbody tr td.fc-widget-content {
-	    border: #fff solid 2px;
-	    background: #f5f5f5;
-	    margin: 3px 3px;
-	    padding: 10px;
-	}
-	body .calendar .fc-content .fc-view-agendaWeek table.fc-agenda-days tbody tr td.fc-state-highlight {
-	    background: #ddd;
-	}
-	body .calendar .fc-content .fc-view-agendaWeek table.fc-agenda-allday thead th {
-	    border: none !important;
-	}
-	body .calendar .fc-content .fc-view-agendaWeek table.fc-agenda-slots tr th.fc-agenda-axis {
-	    border: none !important;
-	    background: #fff;
-	}
-	body .calendar .fc-content .fc-view-agendaWeek table.fc-agenda-slots tr td.fc-widget-content {
-	    background: none;
-	    border: #fff solid 2px;
-	    border-bottom-width: 1px;
-	}
-	body .calendar .fc-content .fc-view-agendaWeek table.fc-agenda-slots tr.fc-minor {
-	    border-top: none;
-	}
-	body .calendar .fc-content .fc-view-agendaWeek table.fc-agenda-slots tr.fc-minor td.fc-widget-content {
-	    border-top: none;
-	    border-bottom-width: 2px;
-	}
-	body .calendar .fc-content .fc-border-separate tr.fc-last th, body .calendar .fc-content .fc-border-separate tr.fc-last td {
-	    border: none;
-	}
-	/*!
-	 * FullCalendar v1.6.1 Stylesheet
-	 * Docs & License: http://arshaw.com/fullcalendar/
-	 * (c) 2013 Adam Shaw
-	 */
-	 .fc {
-	    direction: ltr;
-	    text-align: left;
-	}
-	.fc table {
-	    border-collapse: collapse;
-	    border-spacing: 0;
-	}
-	html .fc, .fc table {
-	    font-size: 1em;
-	}
-	.fc td, .fc th {
-	    padding: 0;
-	    vertical-align: top;
-	}
-</style>
+														<!-- <td><?php echo count($calendars) ?></td> -->
+														<td style='border:1px solid grey;width: 3%'>
+														<?php for ($x = 0; $x < count($calendars); $x++): ?>
+															
+															<?php if($calendars[$x]->finish == $inicio->copy()->format('Y-m-d')): ?>
+															
+																	<div class="<?php echo $book->getStatus($calendars[$x]->type_book) ?> end" style="width: 50%;float: left;">
+																		&nbsp;
+																	</div>
 
 
-<?php $date->subMonth(); ?>
-<div id="leyenda-reservas" class="col-xs-12 col-md-12 m-b-20">
-    <div class="panel-body bg-white">
-        <div style="float:left;width:20px;height:20px;background-color:white;border: 1px solid #333;margin-left:10px;"></div>
-        <div style="float:left;margin-left:5px">Libre</div>
+															
+															<?php elseif ($calendars[$x]->start == $inicio->copy()->format('Y-m-d')): ?>
+															
 
-        <div style="float:left;width:20px;height:20px;background-color:#0DAD9E;border: 1px solid #333;margin-left:10px;"></div>
-        <div style="float:left;margin-left:5px">Reservado</div>
+																	<div class="<?php echo $book->getStatus($calendars[$x]->type_book) ?> start" style="width: 50%;float: right;">
+																		&nbsp;
+																	</div>
 
-        <div style="float:left;width:20px;height:20px;background-color:#F77975;border: 1px solid #333;margin-left:10px;"></div>
-        <div style="float:left;margin-left:5px">Pagada la señal</div>
+															
+															<?php else: ?>
+																	
+																<?php if ($calendars[$x]->type_book != 9): ?>
+																	<div class="<?php echo $book->getStatus($calendars[$x]->type_book) ?>" style="width: 100%;float: left;">
+																		&nbsp;
+																	</div>
+																<?php endif ?>
 
-        <div style="float:left;width:20px;height:20px;background-color:#F9D975;border: 1px solid #333;margin-left:10px;"></div>
-        <div style="float:left;margin-left:5px">Bloqueado</div>
-        <div style="float:left;width:20px;height:20px;background-color:#8A7DBE;border: 1px solid #333;margin-left:10px;"></div>
-        <div style="float:left;margin-left:5px">Subcomunidad</div>
-    </div>
+																	
+
+															
+															<?php endif ?>
+														<?php endfor ?>
+														
+														</td>
+
+													<!-- Si no hay dos reservas el mismo dia  -->
+													<?php else: ?>
+														<?php if ($calendars[0]->start == $inicio->copy()->format('Y-m-d')): ?>
+															<td style='border:1px solid grey;width: 3%'>
+
+																<div class="<?php echo $book->getStatus($calendars[0]->type_book) ?> start" style="width: 100%;float: left;">
+																	&nbsp;
+																</div>
+
+															</td>    
+														<?php elseif($calendars[0]->finish == $inicio->copy()->format('Y-m-d')): ?>
+															<td style='border:1px solid grey;width: 3%'>
+																<div class="<?php echo $book->getStatus($calendars[0]->type_book) ?> end" style="width: 100%;float: left;">
+																	&nbsp;
+																</div>
+
+
+															</td>
+														<?php else: ?>
+
+															<td 
+															style='border:1px solid grey;width: 3%' 
+															title="
+															<?php echo $calendars[0]->customer['name'] ?> 
+
+															<?php echo 'PVP:'.$calendars[0]->total_price ?>
+															<?php if (isset($payment[$calendars[0]->id])): ?>
+																<?php echo 'PEND:'.($calendars[0]->total_price - $payment[$calendars[0]->id])?>
+															<?php else: ?>
+															<?php endif ?>" 
+															class="<?php echo $book->getStatus($calendars[0]->type_book) ?>"
+															>
+																<?php if ($calendars[0]->type_book == 9): ?>
+																	<div style="width: 100%;height: 100%">
+																		&nbsp;
+																	</div>
+																<?php else: ?>
+																	<a href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[0]->id ?>">
+																		<div style="width: 100%;height: 100%">
+																			&nbsp;
+																		</div>
+																	</a>
+																<?php endif ?>
+
+
+															</td>
+
+														<?php endif ?>
+													<?php endif ?>
+												<!-- Si no existe nada para ese dia -->
+												<?php else: ?>
+												
+													<td class="<?php echo $days[$inicio->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
+
+													</td>
+
+												<?php endif; ?>
+												
+												<?php if ($inicio->copy()->format('d') != $arrayMonths[$inicio->copy()->format('n')]): ?>
+                                                    <?php $inicio = $inicio->addDay(); ?>
+                                                <?php else: ?>
+                                                    <?php $inicio = $inicio->startOfMonth() ?>
+                                                <?php endif ?>
+											<?php endfor; ?> 
+										</tr>
+
+									<?php endforeach; ?>
+								</tbody>
+							</table>
+							<?php $inicio = $inicio->addMonth(); ?>
+						</div>
+					</div>
+				</div>
+			<?php endfor; ?>
+
+		</div>
+	</div>    
 </div>
-<?php for ($j=0; $j < 2; $j++): 
-	$startMonth = $date->copy()->startOfMonth();
-	$endMonth = $date->copy()->endOfMonth();
-	$countDays = $endMonth->diffInDays($startMonth);
-?>
-	<div id="calendar" class="col-xs-12 col-md-12">
-	    <div class="panel panel-default">
-	        <div class="panel-body">
-	            <div class="calendar fc fc-ltr">
-	                <h2><?php echo ucfirst($date->copy()->formatLocalized('%B %Y')) ?></h2>          
-	                            	
-	                <div class="fc-content" style="position: relative; min-height: 1px;">
-	                    <div class="fc-view fc-view-month fc-grid" style="position: relative; min-height: 1px;" unselectable="on">
-	                        <table class="fc-border-separate" style="width:100%;border: 1px solid black" cellspacing="0">
-	                            <thead>
-	                                <tr class="fc-last">
-	                                	<th class="fc-day-header fc-mon fc-widget-header">
-	                                		<span style="font-size: 12px">Apto</span>
-	                                	</th>
-	                        			<?php $dayMonth = $startMonth; ?>
-	                                	<?php for ( $i = 1; $i <= $countDays+1; $i++): ?>
-	                                		<th class="fc-day-header fc-mon fc-widget-header" style="width: 100px;">
-												<span style="font-size: 11px">
-													<?php echo $dayMonth->format('d') ?> <br>
-													<!-- <?php echo ucfirst($dayMonth->formatLocalized('%a')) ?> -->
-												</span>
-	                                		</th>
-	                            			<?php $dayMonth->addDay() ?>
-	                                	<?php endfor ?>
-	                                </tr>
-	                            </thead>
-	                            <tbody>
-	                            	<?php foreach ($roomscalendar as $room): ?>
-	                            		<tr>
-	                            			<td class="text-center"><?php echo substr($room->nameRoom, 0,5) ?></td>
-				                               
-		                        				<?php 
-													$day = $startMonth->copy()->subMonth();
-
-
-													for ( $i = 1; $i <= $countDays+1; $i++): 
-													/* Reservas por Año y Mes */
-													// $criteriaBooks = new CDbCriteria();
-													// $criteriaBooks->condition = 'Type IN (0,1,6,7) AND "'.$day->copy()->format('Y-m-d').'" BETWEEN Start AND Finish AND RoomID = '.$room->ID;
-													$books = \App\Book::whereIn('type_book' , [1,2,7,8])
-																		->where('room_id', $room->id)
-																		->where('start', '<=' ,$day->copy()->format('Y-m-d'))
-																		->where('finish', '>=' ,$day->copy()->format('Y-m-d'))
-																		->get();												
-													$status = "";
-				                                	if (count($books) > 0) {
-				                                		
-				                                		foreach ($books as $book){
-
-															$nameCustomer = $book->customer->name;
-															$startBook    = $book->start;
-															$endBook      = $book->finish;
-															$startDate    = date('d-m-Y' , strtotime($book->start));
-															$endDate      = date('d-m-Y', strtotime($book->finish));
-			                                				switch ($book->type_book) {
-			                                					case 1:
-			                                						$status = "booked";
-			                                						break;
-			                                					case 2:
-			                                						$status = "closed";
-			                                						break;
-			                                					case 7:
-			                                						$status = "bloq";
-			                                						break;
-			                                					case 8:
-			                                						$status = "sub";
-			                                						break;
-			                                					default:
-			                                						$status = "";
-			                                						break;
-			                                				}
-				                                		}
-
-
-													} 
-													else {
-														$status = "";
-														$nameCustomer = "";
-														$startBook    = "";
-														$endBook      = "";
-													}
-				                                ?>	
-
-				                                	<?php if ($book->finish > $day->copy()->format('Y-m-d') && $book->start < $day->copy()->format('Y-m-d')): ?>
-				                                	<td style="border: 1px solid black"  title="<?php echo $nameCustomer; ?>">
-				                                		<div class="not-padding <?php echo $status ?>" style="width: 100%"></div>
-				                                	</td>
-				                                	<?php else:?>
-				                                		<td style="border: 1px solid black">
-				                                			<div class="descrip-<?php echo $i?>">
-				                                				<div class="not-padding <?php if ($book->finish == $day->copy()->format('Y-m-d') && $book->start < $day->copy()->format('Y-m-d')){ echo $status.' end';}elseif($book->finish > $day->copy()->format('Y-m-d') && $book->start < $day->copy()->format('Y-m-d')){echo $status;}else{} ?>" style="float:left;width: 5px" title="<?php echo $nameCustomer; ?>"></div>
-				                                				<div class="not-padding <?php if ($book->finish > $day->copy()->format('Y-m-d') && $book->start < $day->copy()->format('Y-m-d')){ echo $status;}elseif($book->finish > $day->copy()->format('Y-m-d') && $book->start < $day->copy()->format('Y-m-d')){echo $status;}else{} ?>" style="float:left;width: 5px"></div>
-				                                				<div class="not-padding <?php if ($book->start == $day->copy()->format('Y-m-d') && $book->finish > $day->copy()->format('Y-m-d')){ echo $status.' end';}elseif($book->finish > $day->copy()->format('Y-m-d') && $book->start < $day->copy()->format('Y-m-d')){echo $status;}else{} ?>" style="float:right;width: 5px" title="<?php echo $nameCustomer; ?>"></div>
-				                                			</div>
-				                                		</td>
-				                                	<?php endif ?>
-	                            					
-	                            				<?php $day->addDay(); ?>
-	                            			<?php endfor ?>
-	                            		</tr>
-	                            	<?php endforeach;?>
-	                            </tbody>
-	                        </table>		
-	                    </div>
-	                </div>
-	            </div>
-	        </div>
-	    </div>
-	</div>
-<?php $date->addMonth(); ?>
-<?php endfor;?>
-
-

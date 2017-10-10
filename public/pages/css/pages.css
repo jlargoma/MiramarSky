@@ -14203,7 +14203,7 @@ Main components
 /*Colores*/
 
     .SubComunidad.start,.Reserva.Propietario.start{
-        background-image: -webkit-linear-gradient(135deg, #FFA500 50%, #fff 50%);
+        background-image: -webkit-linear-gradient(150deg, #FFA500 50%, #fff 50%);
         color: black;
     }
     .SubComunidad,.Reserva.Propietario{
@@ -14211,12 +14211,12 @@ Main components
         color: black;
     }
     .SubComunidad.end,.Reserva.Propietario.end{
-        background-image: -webkit-linear-gradient(315deg, #FFA500 50%, #fff 50%);
+        background-image: -webkit-linear-gradient(330deg, #FFA500 50%, #fff 50%);
         color: black;
     }
     
     .Pagada-la-señal.start{
-        background-image: -webkit-linear-gradient(135deg, #008000 50%, #fff 50%);
+        background-image: -webkit-linear-gradient(150deg, #008000 50%, #fff 50%);
         color: black;
     }
     .Pagada-la-señal{
@@ -14224,12 +14224,12 @@ Main components
         color: black;
     }
     .Pagada-la-señal.end{
-        background-image: -webkit-linear-gradient(315deg, #008000 50%, #fff 50%);
+        background-image: -webkit-linear-gradient(330deg, #008000 50%, #fff 50%);
         color: black;
     }
 
     .Reservado.start{
-        background-image: -webkit-linear-gradient(135deg, #D7F4D7 50%, #fff 50%);
+        background-image: -webkit-linear-gradient(150deg, #D7F4D7 50%, #fff 50%);
         color: black;
     }
     .Reservado{
@@ -14237,12 +14237,12 @@ Main components
         color: black;
     }
     .Reservado.end{
-        background-image: -webkit-linear-gradient(315deg, #D7F4D7 50%, #fff 50%);
+        background-image: -webkit-linear-gradient(330deg, #D7F4D7 50%, #fff 50%);
         color: black;
     }
 
     .Bloqueado.start{
-        background-image: -webkit-linear-gradient(135deg, #D4E2FF 50%, #fff 50%);
+        background-image: -webkit-linear-gradient(150deg, #D4E2FF 50%, #fff 50%);
         color: black;
     }
     .Bloqueado{
@@ -14250,7 +14250,7 @@ Main components
         color: black;
     }
     .Bloqueado.end{
-        background-image: -webkit-linear-gradient(315deg, #D4E2FF 50%, #fff 50%);
+        background-image: -webkit-linear-gradient(330deg, #D4E2FF 50%, #fff 50%);
         color: black;
     }
 

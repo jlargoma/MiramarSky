@@ -395,11 +395,11 @@ class Book extends Model
                                             });
                                         break;
                                     case '4':
-                                        Mail::send('backend.emails.Bloqueado',['book' => $book], function ($message) use ($book) {
-                                                $message->from('reservas@apartamentosierranevada.net');
-                                                $message->to('alquilerapartamentosmiramarski@gmail.com');
-                                                $message->subject('Correo de Bloqueo');
-                                            });  
+                                        // Mail::send('backend.emails.bloqueado',['book' => $book], function ($message) use ($book) {
+                                        //         $message->from('reservas@apartamentosierranevada.net');
+                                        //         $message->to('alquilerapartamentosmiramarski@gmail.com');
+                                        //         $message->subject('Correo de Bloqueo');
+                                        //     });  
                                         break;
                                     case '6':
                                         Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
@@ -409,14 +409,14 @@ class Book extends Model
                                             });  
                                         break;
                                     case '7':
-                                        Mail::send('backend.emails.Reserva-propietario',['book' => $book], function ($message) use ($book) {
+                                        Mail::send('backend.emails.reserva-propietario',['book' => $book], function ($message) use ($book) {
                                                 $message->from('reservas@apartamentosierranevada.net');
                                                 $message->to($book->customer->email);
                                                 $message->subject('Correo de Reserva de Propietario');
                                             });  
                                         break;
                                     case '8':
-                                        Mail::send('backend.emails.Subcomunidad',['book' => $book], function ($message) use ($book) {
+                                        Mail::send('backend.emails.subcomunidad',['book' => $book], function ($message) use ($book) {
                                                 $message->from('reservas@apartamentosierranevada.net');
                                                 $message->to('alquilerapartamentosmiramarski@gmail.com');
                                                 $message->subject('Correo de Subcomunidad');
