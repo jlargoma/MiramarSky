@@ -104,7 +104,6 @@ setlocale(LC_TIME, "es_ES");
     	        </h2>
     	    </div>        
     	</div>
-
 		<div class="text-center"><h1 class="text-complete"><?php echo strtoupper($room->nameRoom) ?></h1></div>
 		<div class="col-md-3">
 			<a id="cal-bloq" class="btn btn-success2 btn text-white" >Bloquear fechas</a>
