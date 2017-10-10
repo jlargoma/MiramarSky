@@ -28,12 +28,10 @@ class OwnedController extends Controller
 
 
                 $room = \App\Rooms::where('nameRoom', $name)->first();
-                $rooms = \App\Rooms::where('owned', Auth::user()->id)->get();
 
             }elseif(Auth::user()->role == 'admin'){
 
                 $room = \App\Rooms::where('nameRoom', $name)->first();  
-                $rooms = \App\Rooms::all();
 
             }else{ 
 
@@ -128,11 +126,10 @@ class OwnedController extends Controller
                 }
 
             
-
+            
             return view('backend.owned.index',[
                                                 'user'        => \App\User::find(Auth::user()->id),
                                                 'room'        => $room,
-                                                'rooms'        => $rooms,
                                                 'books'       => $books,
                                                 'mes'         => $mes,
                                                 'reservas'    => $arrayReservas,
