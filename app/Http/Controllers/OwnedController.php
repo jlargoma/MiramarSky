@@ -15,11 +15,22 @@ class OwnedController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($year = "")
+    public function index($name,$year = "")
     {
+            
+        // Rooms
         
-    
+
+
         try {
+
+            $room = \App\Rooms::where('nameRoom', $name)->first();
+
+            if ($room->user_id == Auth::user()->id) {
+                $room = \App\Rooms::where('nameRoom', $name)->first();
+            }elseif(Auth::user()->role == 'admin'){
+                $room = \App\Rooms::where('nameRoom', $name)->first();
+            }
             // Año
                 if ( empty($year) ) {
                     $date = Carbon::now();
@@ -47,15 +58,16 @@ class OwnedController extends Controller
                 $park = 0;
                 $lujo = 0;
 
-            // Room
-                if (Auth::user()->id != 39 && Auth::user()->id != 1 && Auth::user()->id != 23 ) {
-                    $room = \App\Rooms::where('owned', Auth::user()->id)->first();        
-                }else{
-                    $room = \App\Rooms::where('owned', 39)->first();
-                }
+            
 
             // Datos
+                
+                // echo "<pre>";
+                // print_r($firstDayOfTheYear);
+                // die();
                 $reservas = \App\Book::whereIn('type_book',[2,7,8])->where('room_id',$room->id)->where('start','>=',$firstDayOfTheYear->copy())->where('start','<=',$firstDayOfTheYear->copy()->addYear())->orderBy('start', 'ASC')->get();
+                
+                $books = \App\Book::where('room_id', $room->id)->whereIn('type_book',[2,7,8])->where('start','>=',$firstDayOfTheYear->copy())->where('start','<=',$firstDayOfTheYear->copy()->addYear())->orderBy('start','ASC')->get();
 
                 foreach ($reservas as $reserva) {
                     $dia = Carbon::createFromFormat('Y-m-d',$reserva->start);
@@ -90,7 +102,7 @@ class OwnedController extends Controller
                     $firstDayOfTheYear->addMonth();                                    
 
                 }
-                $books = \App\Book::where('room_id', $room->id)->orderBy('start','ASC')->get();
+                
 
                 
                 foreach ($books as $book) {

@@ -73,7 +73,18 @@ setlocale(LC_TIME, "es_ES");
 <div class="container-fluid padding-10 sm-padding-10">
     <div class="row">
     	<div class="col-md-12 text-center">
-    	    <div class="col-md-6 col-md-offset-4">
+    		<div class="col-md-3 m-t-20">
+    			<div class="col-md-4">
+    				<a id="cal-bloq" class="btn btn-danger btn text-white" >Opertaiva</a>
+    			</div>
+    			<div class="col-md-4">
+    				<a id="cal-bloq" class="btn btn-danger btn text-white" >Tarifas</a>
+    			</div>
+    			<div class="col-md-4">
+    				<a id="cal-bloq" class="btn btn-danger btn text-white" >Descuentos</a>
+    			</div>
+    		</div>
+    	    <div class="col-md-6">
     	    	<h2><b>Planning de reservas</b>  Fechas:
     	            
     	            
@@ -94,7 +105,7 @@ setlocale(LC_TIME, "es_ES");
     	    </div>        
     	</div>
 
-		<div class="text-center"><h1 class="text-complete"><?php echo strtoupper($user->name) ?></h1></div>
+		<div class="text-center"><h1 class="text-complete"><?php echo strtoupper($room->nameRoom) ?></h1></div>
 		<div class="col-md-3">
 			<a id="cal-bloq" class="btn btn-success2 btn text-white" >Bloquear fechas</a>
 			<a id="cal-bloq2" class="btn btn-danger2 btn text-white" >cerrar</a>
@@ -139,9 +150,11 @@ setlocale(LC_TIME, "es_ES");
 						<tbody>
 							<tr>
 								<?php if (count($pagos)> 0): ?>
-									<td class="text-center" style="padding-top: 20px!important"><?php echo number_format($total,2,',','.'); ?>€</td>
+									<td class="text-center" style="padding-top: 20px!important;vertical-align: middle;"><?php echo number_format($total,2,',','.'); ?>€</td>
+									<td style="padding: 0;border-left: 1px solid black;border-right: 1px solid black">
 									<?php foreach ($pagos as $pago): ?>
-									<td style="padding: 0;">
+
+									
 										<table style="width: 100%">
 											<tr>
 												<td style="border:none"><?php echo Carbon::createFromFormat('Y-m-d',$pago->datePayment)->format('d-m-Y')?></td>
@@ -149,15 +162,16 @@ setlocale(LC_TIME, "es_ES");
 												<td style="border:none"><?php echo number_format($pago->import,2,',','.') ?>€</td>
 											</tr>
 										</table>							
-									</td>
+									
 										
 										
 									<?php endforeach ?>
-									<td class="text-center" style="padding-top: 20px!important">
+									</td>
+									<td class="text-center" style="padding-top: 20px!important;vertical-align: middle;">
 										<?php echo number_format($pagototal,2,',','.') ?>€
 									</td>
 
-									<td class="text-center" style="padding-top: 20px!important">
+									<td class="text-center" style="padding-top: 20px!important;vertical-align: middle;">
 										<?php echo number_format($total-$pagototal,2,',','.'); ?>€
 									</td>
 								<?php else: ?>
@@ -250,12 +264,12 @@ setlocale(LC_TIME, "es_ES");
 				<div class="row">
 			    	<?php for ($j=0; $j < 12; $j++): ?>
 			    		<div class="col-md-12 padding-10">
-					        <table class="fc-border-separate" style="border:1px solid black;width: 100%">
+					        <table class="fc-border-separate" style="width: 100%">
 					           <thead>
 					                <tr>
-					                    <td colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
+					                    <th class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
 					                        <?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
-					                    </td> 
+					                    </th> 
 					                </tr>
 					                <tr>
 					                    <td style="width: 1%!important">Apto</td>

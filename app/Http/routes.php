@@ -158,8 +158,8 @@ Route::post('admin/reservas/create' , 'BookController@create');
 	
 
 //Propietario
-	Route::get('admin/propietario/{year?}' , 'OwnedController@index');
 	Route::post('admin/propietario/bloquear' , 'OwnedController@bloqOwned');
+	Route::get('admin/propietario/{name?}/{year?}' , 'OwnedController@index');
 
 
 //PDF´s
