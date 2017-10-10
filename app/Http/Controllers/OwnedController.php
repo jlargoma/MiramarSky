@@ -23,7 +23,7 @@ class OwnedController extends Controller
         try {
 
             $room = \App\Rooms::where('nameRoom', $name)->first();
-
+            
             if ($room->owned == Auth::user()->id) {
 
 
