@@ -48,8 +48,20 @@ Route::post('admin/reservas/create' , 'BookController@create');
 // Route::get('/admin/propietario',['middleware' => 'authSubAdmin','uses' => 'Admin\BackendController@index']);
 // Route::get('/admin/propietario',['middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
 //['middleware' => ['authRole', 'authSubAdmin']]
+	Route::group(['middleware' => 'auth'], function () {
+ 		Route::get('/admin', function ()    {
+        	$user = \Auth::user(); 
+ 			if ($user->role == "propietario") {
+ 				$room = \App\Rooms::where('owned', $user->id)->first();
+ 			 	return redirect('admin/propietario/'.$room->nameRoom);
+ 			}else{
+ 				return redirect('admin/reservas');
+ 			}
 
-	Route::get('/admin',['middleware' => 'auth', 'uses' => 'BookController@index']);
+
+    	});
+	});
+	// Route::get('/admin',['middleware' => 'auth', 'uses' => 'BookController@index']);
 
 //Planing 
 	
