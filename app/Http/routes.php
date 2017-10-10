@@ -48,19 +48,7 @@ Route::post('admin/reservas/create' , 'BookController@create');
 // Route::get('/admin/propietario',['middleware' => 'authSubAdmin','uses' => 'Admin\BackendController@index']);
 // Route::get('/admin/propietario',['middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
 //['middleware' => ['authRole', 'authSubAdmin']]
-	Route::group(['middleware' => 'auth'], function () {
- 		Route::get('/admin', function ()    {
-        	$user = \Auth::user(); 
- 			if ($user->role == "propietario") {
- 				$room = \App\Rooms::where('owned', $user->id)->first();
- 			 	return redirect('admin/propietario/'.$room->nameRoom);
- 			}else{
- 				return redirect('admin/reservas');
- 			}
 
-
-    	});
-	});
 	// Route::get('/admin',['middleware' => 'auth', 'uses' => 'BookController@index']);
 
 //Planing 
@@ -171,9 +159,26 @@ Route::post('admin/reservas/create' , 'BookController@create');
 
 //Propietario
 	Route::post('admin/propietario/bloquear' , 'OwnedController@bloqOwned');
+	Route::get('admin/propietario/{name?}/operativa' , 'OwnedController@operativaOwned');
+	Route::get('admin/propietario/{name?}/tarifas' , 'OwnedController@tarifasOwned');
+	Route::get('admin/propietario/{name?}/descuentos' , 'OwnedController@descuentosOwned');
 	Route::get('admin/propietario/{name?}/{year?}' , 'OwnedController@index');
 
 
 //PDF´s
 
 	Route::get('admin/pdf/pdf-reserva/{id}','PdfController@invoice');
+
+	Route::group(['middleware' => 'auth'], function () {
+ 		Route::get('/admin', function ()    {
+        	$user = \Auth::user(); 
+ 			if ($user->role == "propietario") {
+ 				$room = \App\Rooms::where('owned', $user->id)->first();
+ 			 	return redirect('admin/propietario/'.$room->nameRoom);
+ 			}else{
+ 				return redirect('admin/reservas');
+ 			}
+
+
+    	});
+	});

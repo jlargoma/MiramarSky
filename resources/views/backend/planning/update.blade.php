@@ -17,6 +17,25 @@
     .pgn-wrapper[data-position$='-right'] {
         right: : 82%!important;
     }
+
+    input[type=number]::-webkit-outer-spin-button,
+
+    input[type=number]::-webkit-inner-spin-button {
+
+        -webkit-appearance: none;
+
+        margin: 0;
+
+    }
+
+     
+
+    input[type=number] {
+
+        -moz-appearance:textfield;
+
+    }
+
 </style>
 @endsection
 
@@ -57,6 +76,7 @@
 
                         <?php endfor; ?>
                     </select>
+                    <h5 class="guardar" style="font-weight: bold"></h5>
                 </div>
             </div>
             <div class="col-md-6">
@@ -308,7 +328,7 @@
                                     </div>
                                 </td>
                                 <td class ="text-center">
-                                    <input class="importe m-t-5" type="text" name="importe"  style="width: 100%;text-align: center;border-style: none none ">
+                                    <input class="importe m-t-5" type="number" name="importe"  style="width: 100%;text-align: center;border-style: none none ">
                                 </td>
                                 <td class="text-center">
                                     <select class="full-width select2-hidden-accessible type_payment" data-init-plugin="select2" name="type_payment"  tabindex="-1" aria-hidden="true">
@@ -400,7 +420,7 @@
   </div>
   <button class="btn btn-success show-notification hidden" id="boton">Show</button>
 </form>
-
+<input type="hidden"  class="precio-oculto" value="<?php echo $book->total_price ?>">
 @endsection
 
 @section('scripts')
@@ -481,14 +501,18 @@
 
 
                 $('.status').attr("disabled", "disabled");
-                $('.notification-message').val("Guarda antes de cambiar el estado");
-                document.getElementById("boton").click();
-                setTimeout(function(){ 
-                    $('.pgn-wrapper .pgn .alert .close').trigger('click');
-                     }, 3000);
+
+                $('.guardar').empty;
+                $('.guardar').text("Guarda antes de cambiar el estado");
+                // $('.notification-message').val('Guarda');
+                // document.getElementById("boton").click();
+                // setTimeout(function(){ 
+                //     $('.pgn-wrapper .pgn .alert .close').trigger('click');
+                //      }, 3000);
                 var room = $('#newroom').val();
                 var pax = $('.pax').val();
                 var park = $('.parking').val();
+                var precio = $('.precio-oculto').val();
                 var lujo = $('select[name=type_luxury]').val();
                 var status = $('select[name=status]').val();
                 var sizeApto = $('option:selected', 'select[name=newroom]').attr('data-size');;
@@ -565,7 +589,9 @@
                                 price = data;
                                 
                                 price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
-                            
+                                $('.total').empty();
+                                $('.total').val(price);
+
                                     $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays}).success(function( data ) {
                                         costPark = data;
                                         $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
@@ -580,14 +606,16 @@
                                                 $('.cost').empty();
                                                 $('.cost').val(cost);
                                                 beneficio = price - cost;
+
                                                 $('.beneficio').empty;
                                                 $('.beneficio').val(beneficio);
-                                                beneficio_ = (beneficio / price)*100
-                                                $('.beneficio-text').empty();
-                                                $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
+                                                beneficio_ = (beneficio / price)*100;
 
-                                                var precio = $('.total').val();
+                                                $('.beneficio-text').empty();
+                                                $('.beneficio-text').html(beneficio_.toFixed(0)+"%");
+
                                                 $('.precio-antiguo').empty;
+
                                                 $('.precio-antiguo').text('El precio asignado '+precio+' y el precio tarifa '+price);
                                             });
                                         });
@@ -629,9 +657,6 @@
 
             });
 
-            $('.btn-complete').change(function(event) {
-                alert('prueba');
-            });
 
             
             $('#newroom').change(function(event){ 
@@ -761,8 +786,18 @@
                 var status = $(this).val();
                 var id     = $(this).attr('data-id');
                 var clase  = $(this).attr('class');
+                var email = $('input[name=email]').val();
+
+                if (email == "") {
+                    $('.guardar').emtpy;
+
+                    $('.guardar').text("El usuario no tiene e-mail asignado");
+                }
 
                 if (status == 5) {
+                    
+                    
+
                     $('#contentEmailing').empty().load('/admin/reservas/ansbyemail/'+id);  
                     $('#btnEmailing').trigger('click');
 

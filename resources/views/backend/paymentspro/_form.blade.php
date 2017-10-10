@@ -49,6 +49,7 @@
                                         </span>
                                             <select class="full-width" data-init-plugin="select2" name="type" style="    min-height: 30px;">
                                                 <?php for ($i=1; $i <= 4 ; $i++): ?>
+                                                    
                                                     <option value="<?php echo $i ?>"><?php echo $typePayment->getPaymentType($i) ?></option>
                                                 <?php endfor; ?>
                                             </select>

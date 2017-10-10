@@ -20,16 +20,24 @@ class OwnedController extends Controller
             
         // Rooms
         
-
-
         try {
 
             $room = \App\Rooms::where('nameRoom', $name)->first();
 
-            if ($room->user_id == Auth::user()->id) {
+            if ($room->owned == Auth::user()->id) {
+
+
                 $room = \App\Rooms::where('nameRoom', $name)->first();
+
             }elseif(Auth::user()->role == 'admin'){
-                $room = \App\Rooms::where('nameRoom', $name)->first();
+
+                $room = \App\Rooms::where('nameRoom', $name)->first();  
+
+            }else{ 
+
+
+                return view('errors.owned-access');
+
             }
             // Año
                 if ( empty($year) ) {
@@ -57,8 +65,6 @@ class OwnedController extends Controller
                 $apto = 0;
                 $park = 0;
                 $lujo = 0;
-
-            
 
             // Datos
                 
@@ -119,7 +125,8 @@ class OwnedController extends Controller
                     $pagototal += $pago->import;
                 }
 
-
+            $rooms = \App\Rooms::where('owned', Auth::user()->id)->get();
+            
             return view('backend.owned.index',[
                                                 'user'        => \App\User::find(Auth::user()->id),
                                                 'room'        => $room,
@@ -137,6 +144,7 @@ class OwnedController extends Controller
                                                 ]);
         
         } catch (\Exception $e) {
+            // print_r($e);
             $e   ? abort(404) : abort(500);
         }
 
@@ -209,20 +217,22 @@ class OwnedController extends Controller
     }
     // Pagina de propietario
 
+    public function operativaOwned(){   return view('backend.owned.operativa');   }
+    public function tarifasOwned(){   return view('backend.owned.tarifa');   }
+    public function descuentosOwned(){   return view('backend.owned.descuento');   }
 
     public function bloqOwned(Request $request)
             {
                 
-                $room = \App\Rooms::where('owned', Auth::user()->id)->first();
+                echo "<pre>";
+
+                $room = \App\Rooms::find($request->input('room'));
 
                 $book = new \App\Book();
+
                 if ($book->existDate($request->start,$request->finish,$room->id)) {
-                    $customer = \App\Customers::where('name' , 'Bloqueo '.Auth::user()->name)->first();
-                    if (count($customer) > 0) {
-                        echo "Ya existe ese usuario";
-                        $book->user_id = Auth::user()->id;
-                        
-                    }else{
+                       
+
                         $bloqueo = new \App\Customers();
                         $bloqueo->user_id = Auth::user()->id;
                         $bloqueo->name = 'Bloqueo '.Auth::user()->name;
@@ -237,9 +247,11 @@ class OwnedController extends Controller
                         $book->type_book = 7;
 
                         $book->save();
-                    }
+
+                        return back();
+                    
                 }else{
-                    echo "ya hay una reserva";
+                    return back();
                 }
             }
 

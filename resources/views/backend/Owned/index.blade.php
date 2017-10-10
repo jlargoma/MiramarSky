@@ -75,13 +75,13 @@ setlocale(LC_TIME, "es_ES");
     	<div class="col-md-12 text-center">
     		<div class="col-md-3 m-t-20">
     			<div class="col-md-4">
-    				<a id="cal-bloq" class="btn btn-danger btn text-white" >Opertaiva</a>
+    				<a class="btn btn-danger btn text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/operativa" ?>">Opertaiva</a>
     			</div>
     			<div class="col-md-4">
-    				<a id="cal-bloq" class="btn btn-danger btn text-white" >Tarifas</a>
+    				<a class="btn btn-danger btn text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/tarifas" ?>">Tarifas</a>
     			</div>
     			<div class="col-md-4">
-    				<a id="cal-bloq" class="btn btn-danger btn text-white" >Descuentos</a>
+    				<a class="btn btn-danger btn text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/descuentos" ?>">Descuentos</a>
     			</div>
     		</div>
     	    <div class="col-md-6">
@@ -120,6 +120,7 @@ setlocale(LC_TIME, "es_ES");
 				<div class="col-md-12 padding-10 bloq-cont">
 					<form role="form"  action="{{ url('/admin/propietario/bloquear') }}" method="post">
 						<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+						<input type="hidden" name="room" value="<?php echo $room->id ?>">
 						<div class="input-daterange input-group" id="datepicker-range">
 						    <input id="start" type="text" class="input-sm form-control" name="start" data-date-format="dd-mm-yyyy">
 						    <span class="input-group-addon">Hasta</span>

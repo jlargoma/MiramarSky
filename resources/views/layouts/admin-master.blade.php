@@ -90,7 +90,7 @@
 
 							<li class="{{ Request::path() == 'admin/perdidas-ganancias'  ? 'active' : '' }}"><a href="{{ url('admin/perdidas-ganancias') }}" class="detailed">P & G</a></li>
 
-							<li class="{{ Request::path() == 'admin/propietario'  ? 'active' : '' }}"><a href="{{ url('admin/propietario') }}" class="detailed">Area Propietario</a></li>
+							<li class="{{ Request::path() == 'admin/propietario/8D'  ? 'active' : '' }}"><a href="{{ url('admin/propietario/8D') }}" class="detailed">Area Propietario</a></li>
 
 					      	<li class="{{ Request::path() == 'admin/precios' ? 'active' : '' }}"><a href="{{ url('admin/precios') }}" class="detailed">Precios</a></li>
 

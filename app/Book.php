@@ -102,34 +102,35 @@ class Book extends Model
         static function existDate($start,$finish,$room)
         {   
 
-        	if ($room >= 5) {
-
-                $books = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,7,8])->get();
-                $existStart = False;
-                $existFinish = False;        
-                $requestStart = Carbon::createFromFormat('d/m/Y',$start);
-                $requestFinish = Carbon::createFromFormat('d/m/Y',$finish);
-                
-                foreach ($books as $book) {
-                    if ($existStart == False && $existFinish == False) {
-                        $start = Carbon::createFromFormat('Y-m-d', $book->start);
-                        $finish = Carbon::createFromFormat('Y-m-d', $book->finish);                
-                        $existStart = Carbon::create($requestStart->year,$requestStart->month,$requestStart->day)->between($start, $finish);
-                        $existFinish = Carbon::create($requestFinish->year,$requestFinish->month,$requestFinish->day)->between($start, $finish);
-                    }
-                    else{
-                        break;
-                    }
-                }
+            $books = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,7,8])->get();
+            $existStart = False;
+            $existFinish = False;        
+            $requestStart = Carbon::createFromFormat('d/m/Y',$start);
+            $requestFinish = Carbon::createFromFormat('d/m/Y',$finish);
+            
+            foreach ($books as $book) {
                 if ($existStart == False && $existFinish == False) {
-                    return True;
-                }else{
-                    return False;
-                }
 
+                    $start = Carbon::createFromFormat('Y-m-d', $book->start);
+                    $finish = Carbon::createFromFormat('Y-m-d', $book->finish);
+
+                    if ($start < $requestStart && $requestStart < $finish){
+                        $existStart = true;
+                    }elseif($start <= $requestStart && $requestStart < $finish){
+                        $existStart = true;
+                    }elseif($requestStart <= $start && $start < $requestFinish){
+                        $existStart = true;
+                    }
+                }
+                else{
+                    break;
+                }
+            }
+            if ($existStart == False && $existFinish == False) {
+                return True;
             }else{
-                return true;
-            }   
+                return False;
+            }
         }
 
     static function existDateOverrride($start,$finish,$room, $id_excluded)
