@@ -16,68 +16,12 @@ setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
 ?>
 
-    <style type="text/css">
-        .total{
-            border-right: 2px solid black !important;
-            border-left: 2px solid black !important;
-            font-weight: bold;
-            color: black;
-            background-color: rgba(0,100,255,0.2) !important;
-        }
 
-        .botones{
-            padding-top: 0px!important;
-            padding-bottom: 0px!important;
-        }
-        .nuevo{
-            background-color: lightgreen;
-            color: black;
-            border-radius: 11px;
-            width: 50px;
-        }
-        td.text-center{
-            padding: 3px!important;
-        }
-        a {
-            color: black;
-            cursor: pointer;
-        }
-        .btn-success2{
-            background-color: rgb(70, 195, 123)!important; 
-            font-size: 20px !important; 
-            border: rgb(70, 195, 123) !important; 
-            box-shadow: rgba(70, 195, 123, 0.5) 0px 0px 3px 2px !important; 
-            display: inline-block;
-            color: white!important;
-        }
-
-        .bloq-cont{
-            padding: 30px;
-            border: 2px solid #999999;
-            -moz-border-radius: 6px;
-            -webkit-border-radius: 6px;
-            border-radius: 6px;
-            box-shadow: inset 1px 1px 0 white, 1px 1px 0 white;
-            background: #f7f7f7;
-            margin-top: 15px;
-        }
-        .btn-danger2{
-            display:none;font-size: 20px !important;
-            background-color: rgb(228, 22, 22)!important;
-            border: rgb(201, 53, 53) !important;
-            box-shadow: 0px 0px 3px 2px rgba(228, 22, 22, 0.5)!important;"
-            color: white!important;
-        }
-    </style>
 
 <div class="container-fluid padding-10 sm-padding-10">
     <div class="row">
         <div class="col-md-12 text-center">
-            <div class="col-md-3 m-t-20">
-                <div class="col-md-3">
-                    
-                    <a class="btn btn-danger btn text-white" href="{{ url('') }}/<?php echo str_replace('tarifas', '', Request::path()) ?>">Volver</a>
-                </div>
+            <div class="col-md-4 m-t-20">
                 <div class="col-md-3">
                     <a class="btn btn-danger btn text-white" href="{{ url('') }}/<?php echo str_replace('tarifas', 'operativa', Request::path()) ?>"  >Opertaiva</a>
                 </div>
@@ -87,15 +31,39 @@ setlocale(LC_TIME, "es_ES");
                 <div class="col-md-3">
                     <a class="btn btn-danger btn text-white" href="{{ url('') }}/<?php echo str_replace('tarifas', 'descuentos', Request::path()) ?>">Descuentos</a>
                 </div>
+                <div class="col-md-3">
+                    <a class="btn btn-danger btn text-white" href="{{ url('') }}/<?php echo str_replace('tarifas', 'fiscalidad', Request::path()) ?>">Fiscalidad</a>
+                </div>
                 
-            </div>        
+            </div> 
+            <div class="col-md-1 pull-right">
+                <div class="col-md-3 m-t-20">
+                    
+                    <a class="btn btn-danger btn text-white" href="{{ url('') }}/<?php echo str_replace('operativa', '', Request::path()) ?>">Volver</a>
+                </div>
+            </div>     
         </div>
 
-        <div class="col-md-12">
+        <div class="container ">
             <div align="center"><font size="10px" color="blue"><strong>Tarifas</strong></font></div>
-
             <div>
-                <img src="{{ asset('/img/miramarski/TARIFAS PROPIETARIOS 2016-2017.jpg') }}" />
+                <div class="col-md-6">
+                    <img src="{{ asset('/img/miramarski/calendario 2017-2018.png') }}" style="max-width: 100%" />
+                </div>
+                <div class="col-md-6">
+                    <img src="{{ asset('/img/miramarski/tarifas 2017-2018.png') }}" />
+                    
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="m-t-20">
+                <p style="font-size: 18px">
+                    Con la finalidad de aumentar la ocupación en los días valle vamos a sacar una oferta de 3 x 2 días en noches de entre semana (de domingo a jueves) y siempre que no coincida con ningún puente o festivo de alta disponibilidad. <br><br>
+
+                    Esta promoción no se realizará por defecto ni para todos los apartamentos, si no en función de cómo vaya la ocupación y del consentimiento de cada propietario:<br><br>
+
+                    <input type="checkbox"><b>Autorizo a que se realice la oferta 3x2 en mi apartamento, siempre y cuando me informen previamente de las fechas en las que se realizará la promoción.</b>
+                </p>
             </div>
         </div>
     </div>

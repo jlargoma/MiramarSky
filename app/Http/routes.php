@@ -162,6 +162,7 @@ Route::post('admin/reservas/create' , 'BookController@create');
 	Route::get('admin/propietario/{name?}/operativa' , 'OwnedController@operativaOwned');
 	Route::get('admin/propietario/{name?}/tarifas' , 'OwnedController@tarifasOwned');
 	Route::get('admin/propietario/{name?}/descuentos' , 'OwnedController@descuentosOwned');
+	Route::get('admin/propietario/{name?}/fiscalidad' , 'OwnedController@fiscalidadOwned');
 	Route::get('admin/propietario/{name?}/{year?}' , 'OwnedController@index');
 
 

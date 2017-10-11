@@ -73,15 +73,18 @@ setlocale(LC_TIME, "es_ES");
 <div class="container-fluid padding-10 sm-padding-10">
     <div class="row">
     	<div class="col-md-12 text-center">
-    		<div class="col-md-3 m-t-20">
-    			<div class="col-md-4">
+    		<div class="col-md-4 m-t-20">
+    			<div class="col-md-3">
     				<a class="btn btn-danger btn text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/operativa" ?>">Opertaiva</a>
     			</div>
-    			<div class="col-md-4">
+    			<div class="col-md-3">
     				<a class="btn btn-danger btn text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/tarifas" ?>">Tarifas</a>
     			</div>
-    			<div class="col-md-4">
+    			<div class="col-md-3">
     				<a class="btn btn-danger btn text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/descuentos" ?>">Descuentos</a>
+    			</div>
+    			<div class="col-md-3">
+    			    <a class="btn btn-danger btn text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/fiscalidad" ?>">Fiscalidad</a>
     			</div>
     		</div>
     	    <div class="col-md-6">

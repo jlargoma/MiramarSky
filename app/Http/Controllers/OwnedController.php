@@ -217,9 +217,10 @@ class OwnedController extends Controller
     }
     // Pagina de propietario
 
-    public function operativaOwned(){   return view('backend.owned.operativa');   }
-    public function tarifasOwned(){   return view('backend.owned.tarifa');   }
-    public function descuentosOwned(){   return view('backend.owned.descuento');   }
+    public function operativaOwned() {   return view('backend.owned.operativa' );   }
+    public function tarifasOwned()   {   return view('backend.owned.tarifa'    );   }
+    public function descuentosOwned(){   return view('backend.owned.descuento' );   }
+    public function fiscalidadOwned(){   return view('backend.owned.fiscalidad');   }
 
     public function bloqOwned(Request $request)
             {
