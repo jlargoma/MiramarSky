@@ -35,6 +35,15 @@
         -moz-appearance:textfield;
 
     }
+    #overlay{
+        position: absolute;       
+        left: 0;
+        
+        opacity: .1;
+        background-color: blue;
+        height: 35px;
+        width: 100%;
+    }
 
 </style>
 @endsection
@@ -60,7 +69,8 @@
                     </h4>
                     <h5>Creado por <?php echo "<b>".strtoupper($book->user->name)."</b>" ?></h5>
                 </div>
-                <div class="col-md-3" style="padding: 40px 0;">
+                <div class="col-md-3 content-guardar" style="padding: 20px 0;">
+                    <div id="overlay" style="display: none;"></div>  
                     <select class="status form-control minimal" data-id="<?php echo $book->id ?>" name="status" >
                         <?php for ($i=1; $i < 9; $i++): ?> 
                             <?php if ($i == 5 && $book->customer->email == ""): ?>
@@ -72,11 +82,9 @@
                                     
                                 </option>   
                             <?php endif ?>
-                                                             
-
                         <?php endfor; ?>
                     </select>
-                    <h5 class="guardar" style="font-weight: bold"></h5>
+                    <h5 class="guardar" style="font-weight: bold; display: none; font-size: 15px;"></h5>
                 </div>
             </div>
             <div class="col-md-6">
@@ -95,6 +103,16 @@
                         <p><a class="alert-link" href="javascript:void(0)">Ya hay una reserva para ese apartamento</a>!</p>
                     </div>
                 </div>
+
+                <?php if ( isset($_GET['saveStatus']) && !empty($_GET['saveStatus']) ): ?>
+                    <div class="col-lg-6 content-alert-error2" >
+                        <div class="alert alert-danger alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true" style="right: 0">×</button>
+                            <h3 class="font-w300 push-15">Error</h3>
+                            <p><a class="alert-link" href="javascript:void(0)">Ya hay una reserva para ese apartamento</a>!</p>
+                        </div>
+                    </div>
+                <?php endif ?>
                 
 
                 <div class="col-lg-6 content-alert-error1" style="display: none;">
@@ -173,7 +191,8 @@
                         </div>
                         <div class="col-md-3">
                             <label>Apartamento</label>
-                            <select class="form-control full-width minimal newroom" name="newroom" id="newroom">
+
+                            <select class="form-control full-width minimal newroom" name="newroom" id="newroom" <?php if ( isset($_GET['saveStatus']) && !empty($_GET['saveStatus']) ): echo "style='border: 1px solid red'"; endif ?>>
                                 <?php foreach ($rooms as $room): ?>
                                     <option data-luxury="<?php echo $room->luxury ?>" value="<?php echo $room->id ?>" {{ $room->id == $book->room_id ? 'selected' : '' }} >
                                             <?php echo $room->name ?>
@@ -501,9 +520,10 @@
 
 
                 $('.status').attr("disabled", "disabled");
+                $('.content-guardar #overlay').show();
 
-                $('.guardar').empty;
-                $('.guardar').text("Guarda antes de cambiar el estado");
+                $('.guardar').empty();
+                $('.guardar').text("Guarda para cambiar el estado");
                 // $('.notification-message').val('Guarda');
                 // document.getElementById("boton").click();
                 // setTimeout(function(){ 
@@ -773,6 +793,11 @@
                 });
             });
 
+            $('#overlay').hover(function() {
+                $('.guardar').show();
+            }, function() {
+                $('.guardar').hide();
+            });
             $('.status').change(function(event) {
 
 
@@ -791,7 +816,8 @@
                 if (email == "") {
                     $('.guardar').emtpy;
 
-                    $('.guardar').text("El usuario no tiene e-mail asignado");
+                    $('.guardar').text("Usuario sin e-mail");
+                    $('.guardar').show();
                 }
 
                 if (status == 5) {

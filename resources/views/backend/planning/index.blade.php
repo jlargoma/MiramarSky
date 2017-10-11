@@ -21,9 +21,6 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
     <style type="text/css">
     
-        .Booking{
-            background: rgba(255,255,0,0.3)!important;
-        }
         .botones{
             padding-top: 0px!important;
             padding-bottom: 0px!important;

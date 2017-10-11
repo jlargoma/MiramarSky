@@ -14229,15 +14229,15 @@ Main components
     }
 
     .Reservado.start{
-        background-image: -webkit-linear-gradient(150deg, #D7F4D7 50%, #fff 50%);
+        background-image: -webkit-linear-gradient(150deg, #bdf9bd 50%, #fff 50%);
         color: black;
     }
     .Reservado{
-        background-color: #D7F4D7  !important;
+        background-color: #bdf9bd  !important;
         color: black;
     }
     .Reservado.end{
-        background-image: -webkit-linear-gradient(330deg, #D7F4D7 50%, #fff 50%);
+        background-image: -webkit-linear-gradient(330deg, #bdf9bd 50%, #fff 50%);
         color: black;
     }
 
@@ -14262,7 +14262,10 @@ Main components
         background: yellow!important;
     }
     .Booking{
-        background: rgba(90,90,0,0.1)!important;
+        /*background: rgba(90,90,0,0.1)!important;*/
+        background-image: url('/pages/booking.png');
+        background-repeat: repeat-x;
+    background-size: contain;
     }
     .Reservado-table{ 
         background-color: #295d9b !important;

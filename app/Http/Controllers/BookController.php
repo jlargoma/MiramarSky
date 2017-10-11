@@ -635,47 +635,53 @@ class BookController extends Controller
                 $extraCost  = 0;
 
 
+               
 
-                $book = \App\Book::find($id);
-                $room = \App\Rooms::find($request->input('newroom'));
+                if ( \App\Book::existDateOverrride($start,$finish,$request->input('newroom'), $id) ) {
+                        $book = \App\Book::find($id);
+                        $room = \App\Rooms::find($request->input('newroom'));
 
-                $book->user_id       = Auth::user()->id;
-                $book->customer_id   = $request->input('customer_id');
-                $book->room_id       = $request->input('newroom');
-                $book->start         = Carbon::createFromFormat('d/m/Y',$start);
-                $book->finish        = Carbon::createFromFormat('d/m/Y',$finish);
-                $book->comment       = ltrim($request->input('comments'));
-                $book->book_comments = ltrim($request->input('book_comments'));
-                $book->pax           = $request->input('pax');
-                $book->nigths        = $request->input('nigths');
-                $book->sup_limp      = ($room->typeApto == 1) ? 35 : 50;
-                $book->sup_park      = $book->getPricePark($request->input('parking'),$request->input('nigths'));
-                $book->type_park     = $request->input('parking');
-                $book->agency        = $request->input('agency');
-                $book->PVPAgencia    = $request->input('agencia');
+                        $book->user_id       = Auth::user()->id;
+                        $book->customer_id   = $request->input('customer_id');
+                        $book->room_id       = $request->input('newroom');
+                        $book->start         = Carbon::createFromFormat('d/m/Y',$start);
+                        $book->finish        = Carbon::createFromFormat('d/m/Y',$finish);
+                        $book->comment       = ltrim($request->input('comments'));
+                        $book->book_comments = ltrim($request->input('book_comments'));
+                        $book->pax           = $request->input('pax');
+                        $book->nigths        = $request->input('nigths');
+                        $book->sup_limp      = ($room->typeApto == 1) ? 35 : 50;
+                        $book->sup_park      = $book->getPricePark($request->input('parking'),$request->input('nigths'));
+                        $book->type_park     = $request->input('parking');
+                        $book->agency        = $request->input('agency');
+                        $book->PVPAgencia    = $request->input('agencia');
 
-                $book->cost_park     = $book->getCostPark($request->parking,$request->nigths);
+                        $book->cost_park     = $book->getCostPark($request->parking,$request->nigths);
 
-                $book->type_luxury     = $request->input('type_luxury');                
-                $book->sup_lujo      = $this->getPriceLujo($request->input('type_luxury'));
-                $book->cost_lujo     = $this->getCostLujo($request->input('type_luxury'));
+                        $book->type_luxury     = $request->input('type_luxury');                
+                        $book->sup_lujo      = $this->getPriceLujo($request->input('type_luxury'));
+                        $book->cost_lujo     = $this->getCostLujo($request->input('type_luxury'));
 
-                $book->cost_apto     = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
-                $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo;
+                        $book->cost_apto     = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
+                        $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo;
 
-                $book->total_price   = $request->input('total');
-                $book->real_price   = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
-                
-                $book->total_ben     = $book->total_price - $book->cost_total;
-                $book->extra         = $request->input('extra');
-                $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
-                $book->ben_jorge     = $book->getBenJorge($book->total_ben,$room->id);
-                $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
+                        $book->total_price   = $request->input('total');
+                        $book->real_price   = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
+                        
+                        $book->total_ben     = $book->total_price - $book->cost_total;
+                        $book->extra         = $request->input('extra');
+                        $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
+                        $book->ben_jorge     = $book->getBenJorge($book->total_ben,$room->id);
+                        $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
 
 
 
-                if ($book->save()) {
-                    return redirect('admin/reservas/update/'.$id);
+                        if ($book->save()) {
+                            return redirect('admin/reservas/update/'.$id);
+                        }
+                }else{
+
+                    return redirect('admin/reservas/update/'.$id.'?saveStatus=Error_no_hay_disponibilidad_para_este_piso');
                 }
             }
 
