@@ -60,6 +60,8 @@ class OwnedController extends Controller
                 $mes = array();
                 $arrayReservas = array();
                 $arrayMonths = array();
+                $arrayDays     = array();
+
 
                 $total = 0;
                 $apto = 0;
@@ -91,6 +93,8 @@ class OwnedController extends Controller
                     $firstDayOfTheYear = $firstDayOfTheYear->addMonth();
                 }
 
+                $book = new \App\Book();
+
                 for ($i=1; $i <= 12; $i++) { 
                     
                     $startMonth = $firstDayOfTheYear->copy()->startOfMonth();
@@ -100,8 +104,8 @@ class OwnedController extends Controller
 
 
                     for ($j=1; $j <= $countDays+1 ; $j++) { 
-                            $arrayMonths[$firstDayOfTheYear->copy()->format('n')] = $day->format('d');     
-
+                            $arrayMonths[$firstDayOfTheYear->copy()->format('n')] = $day->copy()->format('d');     
+                            $arrayDays[$firstDayOfTheYear->copy()->format('n')][$j] = $book->getDayWeek($day->copy()->format('w'));
                             $day = $day->addDay();
                     }
                     
@@ -134,13 +138,14 @@ class OwnedController extends Controller
                                                 'mes'         => $mes,
                                                 'reservas'    => $arrayReservas,
                                                 'date'        => $date,
+                                                'days'        => $arrayDays,
                                                 'arrayMonths' => $arrayMonths,
                                                 'total'       => $total,
-                                                'apto'       => $apto,
-                                                'park'       => $park,
-                                                'lujo'       => $lujo,
-                                                'pagos'      => $paymentspro,
-                                                'pagototal' => $pagototal,
+                                                'apto'        => $apto,
+                                                'park'        => $park,
+                                                'lujo'        => $lujo,
+                                                'pagos'       => $paymentspro,
+                                                'pagototal'   => $pagototal,
                                                 ]);
         
         } catch (\Exception $e) {
@@ -225,34 +230,43 @@ class OwnedController extends Controller
     public function bloqOwned(Request $request)
             {
                 
-                echo "<pre>";
+                $aux = str_replace('Abr', 'Apr', $request->input('fechas'));
+
+                $date = explode('-', $aux);
+
+                $start = Carbon::createFromFormat('d M, y' , trim($date[0]))->format('d/m/Y');
+                $finish = Carbon::createFromFormat('d M, y' , trim($date[1]))->format('d/m/Y');
+
 
                 $room = \App\Rooms::find($request->input('room'));
 
                 $book = new \App\Book();
 
-                if ($book->existDate($request->start,$request->finish,$room->id)) {
+                if ($book->existDate($start,$finish,$room->id)) {
                        
 
                         $bloqueo = new \App\Customers();
                         $bloqueo->user_id = Auth::user()->id;
                         $bloqueo->name = 'Bloqueo '.Auth::user()->name;
 
+                        
+
                         $bloqueo->save();
 
+                        
                         $book->user_id = Auth::user()->id;
                         $book->customer_id = $bloqueo->id;
                         $book->room_id = $room->id;
-                        $book->start = Carbon::CreateFromFormat('d/m/Y',$request->start);
-                        $book->finish = Carbon::CreateFromFormat('d/m/Y',$request->finish);
+                        $book->start = Carbon::CreateFromFormat('d/m/Y',$start);
+                        $book->finish = Carbon::CreateFromFormat('d/m/Y',$finish);
                         $book->type_book = 7;
 
                         $book->save();
 
-                        return back();
+                        return "Reserva Guardada";
                     
                 }else{
-                    return back();
+                    return "No se puede guardar reserva";
                 }
             }
 

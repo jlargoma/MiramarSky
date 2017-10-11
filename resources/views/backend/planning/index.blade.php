@@ -273,10 +273,7 @@
                         $('.notification-message').val(data);
                         document.getElementById("boton").click();
                         if (data == "Ya hay una reserva para ese apartamento" || data == "No se puede cambiar el estado" || data == "Valor nulo o vacio" || data == "No tiene Email asignado") {
-                            setTimeout(function(){ 
-                                $('.pgn-wrapper .pgn .alert .close').trigger('click');
-                                 }, 1000);
-                            setTimeout('document.location.reload()',1000);
+                            
                         }else{
                             setTimeout('document.location.reload()',1000);
                         }                        

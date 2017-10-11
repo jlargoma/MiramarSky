@@ -1,6 +1,6 @@
 @extends('layouts.admin-master')
 
-@section('title') Administrador de reservas MiramarSKI @endsection
+@section('title') Seccion Propietarios @endsection
 
 @section('externalScripts') 
 
@@ -8,67 +8,71 @@
     <link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
     <link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
 
+    <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
 @endsection
-    
+     
 @section('content')
-<?php use \Carbon\Carbon; 
-setlocale(LC_TIME, "ES");
-setlocale(LC_TIME, "es_ES");
-?>
 
-	<style type="text/css">
-		.total{
-			border-right: 2px solid black !important;
-			border-left: 2px solid black !important;
-			font-weight: bold;
-			color: black;
-			background-color: rgba(0,100,255,0.2) !important;
-		}
+<?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
 
-	    .botones{
-	        padding-top: 0px!important;
-	        padding-bottom: 0px!important;
-	    }
-	    .nuevo{
-	        background-color: lightgreen;
-	        color: black;
-	        border-radius: 11px;
-	        width: 50px;
-	    }
-		td.text-center{
-			padding: 3px!important;
-		}
-	    a {
-	        color: black;
-	        cursor: pointer;
-	    }
-	    .btn-success2{
-	    	background-color: rgb(70, 195, 123)!important; 
-	    	font-size: 20px !important; 
-	    	border: rgb(70, 195, 123) !important; 
-	    	box-shadow: rgba(70, 195, 123, 0.5) 0px 0px 3px 2px !important; 
-	    	display: inline-block;
-	    	color: white!important;
-	    }
+<style type="text/css">
 
-	    .bloq-cont{
-	    	padding: 30px;
-	    	border: 2px solid #999999;
-	    	-moz-border-radius: 6px;
-	    	-webkit-border-radius: 6px;
-	    	border-radius: 6px;
-	    	box-shadow: inset 1px 1px 0 white, 1px 1px 0 white;
-	    	background: #f7f7f7;
-	    	margin-top: 15px;
-	    }
-	    .btn-danger2{
-	    	display:none;font-size: 20px !important;
-	    	background-color: rgb(228, 22, 22)!important;
-	    	border: rgb(201, 53, 53) !important;
-	    	box-shadow: 0px 0px 3px 2px rgba(228, 22, 22, 0.5)!important;"
-	    	color: white!important;
-	    }
-	</style>
+	.S, .D{
+	    background-color: rgba(0,0,0,0.2)!important;
+	    color: red!important;
+	}
+	.total{
+		border-right: 2px solid black !important;
+		border-left: 2px solid black !important;
+		font-weight: bold;
+		color: black;
+		background-color: rgba(0,100,255,0.2) !important;
+	}
+
+    .botones{
+        padding-top: 0px!important;
+        padding-bottom: 0px!important;
+    }
+    .nuevo{
+        background-color: lightgreen;
+        color: black;
+        border-radius: 11px;
+        width: 50px;
+    }
+	.table-hover > tr > td{
+		padding: 3px!important;
+	}
+    a {
+        color: black;
+        cursor: pointer;
+    }
+    .btn-success2{
+    	background-color: rgb(70, 195, 123)!important; 
+    	font-size: 20px !important; 
+    	border: rgb(70, 195, 123) !important; 
+    	box-shadow: rgba(70, 195, 123, 0.5) 0px 0px 3px 2px !important; 
+    	display: inline-block;
+    	color: white!important;
+    }
+
+    .bloq-cont{
+    	padding: 30px;
+    	border: 2px solid #999999;
+    	-moz-border-radius: 6px;
+    	-webkit-border-radius: 6px;
+    	border-radius: 6px;
+    	box-shadow: inset 1px 1px 0 white, 1px 1px 0 white;
+    	background: #f7f7f7;
+    	margin-top: 15px;
+    }
+    .btn-danger2{
+    	display:none;font-size: 20px !important;
+    	background-color: rgb(228, 22, 22)!important;
+    	border: rgb(201, 53, 53) !important;
+    	box-shadow: 0px 0px 3px 2px rgba(228, 22, 22, 0.5)!important;"
+    	color: white!important;
+    }
+</style>
 
 <div class="container-fluid padding-10 sm-padding-10">
     <div class="row">
@@ -120,19 +124,11 @@ setlocale(LC_TIME, "es_ES");
 		<div class="col-md-3">
 			<div id="container-bloq" style="display:none;">
 				<div class="col-md-12 padding-10 bloq-cont">
-					<form role="form"  action="{{ url('/admin/propietario/bloquear') }}" method="post">
-						<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-						<input type="hidden" name="room" value="<?php echo $room->id ?>">
-						<div class="input-daterange input-group" id="datepicker-range">
-						    <input id="start" type="text" class="input-sm form-control" name="start" data-date-format="dd-mm-yyyy">
-						    <span class="input-group-addon">Hasta</span>
-						    <input id="finish" type="text" class="input-sm form-control" name="finish" data-date-format="dd-mm-yyyy">
-						</div>
-						<div class="input-group col-md-12 padding-10 text-center">
-						    <button class="btn btn-complete" type="submit">Guardar</button>
-						</div> 
 
-					</form>
+						<input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="">
+						<div class="input-group col-md-12 padding-10 text-center">
+						    <button class="btn btn-complete bloquear" data-id="<?php echo $room->id ?>">Guardar</button>
+						</div> 
 				    
 				</div>
 			</div>
@@ -145,15 +141,16 @@ setlocale(LC_TIME, "es_ES");
 				<div class="col-md-12 padding-10 liq-cont">
 					<table class="table table-hover  no-footer" id="basicTable" role="grid">
 						<thead>
-							<th class="bg-complete text-white text-center">Facturado</th>
+							
 							<th class="bg-complete text-white text-center">Pagos</th>
+							<th class="bg-complete text-white text-center">Facturado</th>
 							<th class="bg-complete text-white text-center">Pagado</th>
 							<th class="bg-complete text-white text-center">Pendiente</th>
 						</thead>
 						<tbody>
 							<tr>
 								<?php if (count($pagos)> 0): ?>
-									<td class="text-center" style="padding-top: 20px!important;vertical-align: middle;"><?php echo number_format($total,2,',','.'); ?>€</td>
+									
 									<td style="padding: 0;border-left: 1px solid black;border-right: 1px solid black">
 									<?php foreach ($pagos as $pago): ?>
 
@@ -170,6 +167,7 @@ setlocale(LC_TIME, "es_ES");
 										
 									<?php endforeach ?>
 									</td>
+									<td class="text-center" style="padding-top: 20px!important;vertical-align: middle;"><?php echo number_format($total,2,',','.'); ?>€</td>
 									<td class="text-center" style="padding-top: 20px!important;vertical-align: middle;">
 										<?php echo number_format($pagototal,2,',','.') ?>€
 									</td>
@@ -191,9 +189,10 @@ setlocale(LC_TIME, "es_ES");
 		<div style="clear: both;"></div>
 		<br>
 		<?php if (count($room) > 0): ?>
-			<div class="col-md-2 col-md-offset-4">
+			<div class="col-md-4 col-md-offset-2">
 				<table class="table table-hover  no-footer" id="basicTable" role="grid">
-					<thead>
+					<tr>
+						<th class ="text-center bg-complete text-white" rowspan="2" style="vertical-align: middle;min-width: 140px;">RESUMEN</th>
 						<th class ="text-center bg-complete text-white">ING. PROP</th>
 						<th class ="text-center bg-complete text-white">Apto</th>
 						<th class ="text-center bg-complete text-white">Park</th>
@@ -201,11 +200,10 @@ setlocale(LC_TIME, "es_ES");
 							<th class ="text-center bg-complete text-white">Sup.Lujo</th>
 						<?php else: ?>
 						<?php endif ?>
-					</thead>
-					<tbody>
+					</tr>
 						<tr>
-							<td class="text-center"><?php echo number_format($total,2,',','.'); ?>€</td>
-							<td class="text-center total"><?php echo number_format($apto,2,',','.'); ?>€</td>
+							<td class="text-center total"><?php echo number_format($total,2,',','.'); ?>€</td>
+							<td class="text-center"><?php echo number_format($apto,2,',','.'); ?>€</td>
 							<td class="text-center"><?php echo number_format($park,2,',','.'); ?>€</td>
 							<?php if ($room->luxury == 1): ?>
 								<td class="text-center"><?php echo number_format($lujo,2,',','.'); ?>€</td>
@@ -264,81 +262,133 @@ setlocale(LC_TIME, "es_ES");
 				</table>
 			</div>
 			<div class="col-md-6">
-				<div class="row">
-			    	<?php for ($j=0; $j < 12; $j++): ?>
-			    		<div class="col-md-12 padding-10">
-					        <table class="fc-border-separate" style="width: 100%">
-					           <thead>
-					                <tr>
-					                    <th class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
-					                        <?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
-					                    </th> 
-					                </tr>
-					                <tr>
-					                    <td style="width: 1%!important">Apto</td>
-					                    <?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-					                        <td style='border:1px solid black;width: 3%'>
-					                            <?php echo $i?> 
-					                        </td> 
-					                     <?php endfor; ?> 
-					                </tr>
-					           </thead>
-					           <tbody>
-				                    <tr>
-				                        <?php $date = $date->startOfMonth() ?>
-				                        <td><?php echo substr($room->nameRoom, 0,5)." " ?>      </td>
-				                            
-				                        <?php for ($i=01; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
+				<div class="col-md-12 col-xs-12">
+					<div class="panel">
+						<ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
+							<?php $dateAux = $date->copy(); ?>
+							<?php for ($i=1; $i <= 9 ; $i++) :?>
+								<li <?php if($i == 4 ){ echo "class='active'";} ?>>
+									<a href="#tab<?php echo $i?>" data-toggle="tab" role="tab" style="padding:10px">
+										<?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>
+									</a>
+								</li>
+								<?php $dateAux->addMonth(); ?>
+							<?php endfor; ?>
+						</ul>
+						<div class="tab-content">
+							<?php for ($z=1; $z <= 9; $z++):?>
+								<div class="tab-pane <?php if($z == 4){ echo 'active';} ?>" id="tab<?php echo $z ?>">
+									<div class="row">
+										<div class="col-md-12">
+											<table class="fc-border-separate" style="width: 100%">
+												<thead>
+													<tr >
+														<td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
+															<?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
+														</td> 
+													</tr>
+													<tr>
+														<td rowspan="2" style="width: 1%!important"></td>
+														<?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
+															<td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
+																<?php echo $i?> 
+															</td> 
+														<?php endfor; ?>
+													</tr>
+													<tr>
 
-				                                <?php if (isset($reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i])): ?>
-				                                    <?php if ($reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->start == $date->copy()->format('Y-m-d')): ?>
-				                                            <td style='border:1px solid black;width: 3%'>
-				                                                <div style="width: 50%;float: left;">
-				                                                    &nbsp;
-				                                                </div>
-				                                                <div class="<?php echo $book->getStatus($reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?> start" style="width: 50%;float: left;">
-				                                                    &nbsp;
-				                                                </div>
+														<?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
+															<td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$date->copy()->format('n')][$i]?>">
+																<?php echo $days[$date->copy()->format('n')][$i]?> 
+															</td> 
+														<?php endfor; ?> 
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<?php $date = $date->startOfMonth() ?>
+														<td class="text-center">
+															<b title="<?php echo $room->name ?>"><?php echo substr($room->nameRoom, 0,5)?></b>
+														</td>
 
-				                                            </td>    
-				                                    <?php elseif($reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->finish == $date->copy()->format('Y-m-d')): ?>
-				                                            <td style='border:1px solid black;width: 3%'>
-				                                                <div class="<?php echo $book->getStatus($reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?> end" style="width: 50%;float: left;">
-				                                                    &nbsp;
-				                                                </div>
-				                                                <div style="width: 50%;float: left;">
-				                                                    &nbsp;
-				                                                </div>
-				                                                
+														<?php for ($i=01; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
+															<!-- Si existe la reserva para ese dia -->
+															<?php if (isset($reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i])): ?>
+										
+																<?php $calendars = $reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i] ?>
+																	<?php if ($calendars->start == $date->copy()->format('Y-m-d')): ?>
+																		<td style='border:1px solid grey;width: 3%'>
 
-				                                            </td>
-				                                    <?php else: ?>
-				                                        
-				                                            <td style='border:1px solid black;width: 3%' title="<?php echo $reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->Customer->name ?>" class="<?php echo $book->getStatus($reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i]->type_book) ?>">
+																			<div class="<?php echo $book->getStatus($calendars->type_book) ?> start" style="width: 100%;float: left;">
+																				&nbsp;
+																			</div>
 
-				                                        </td>
+																		</td>    
+																	<?php elseif($calendars->finish == $date->copy()->format('Y-m-d')): ?>
+																		<td style='border:1px solid grey;width: 3%'>
+																			<div class="<?php echo $book->getStatus($calendars->type_book) ?> end" style="width: 100%;float: left;">
+																				&nbsp;
+																			</div>
 
-				                                    <?php endif ?>
-				                                <?php else: ?>
-				                                    <td style='border:1px solid black;width: 3%'>
-				                                        
-				                                    </td>
-				                                <?php endif; ?>
-				                                <?php if ($date->copy()->format('d') != $arrayMonths[$date->copy()->format('n')]): ?>
-				                                    <?php $date = $date->addDay(); ?>
-				                                <?php else: ?>
-				                                    <?php $date = $date->startOfMonth() ?>
-				                                <?php endif ?>
-				                            
-				                        <?php endfor; ?> 
-				                    </tr>
 
-					           </tbody>
-					        </table>
-					    </div>
-				        <?php $date = $date->addMonth(); ?>
-			    	<?php endfor; ?>
-				    
+																		</td>
+																	<?php else: ?>
+
+																		<td 
+																		style='border:1px solid grey;width: 3%' 
+																		title="
+																		<?php echo $calendars->customer['name'] ?> 
+
+																		<?php echo 'PVP:'.$calendars->total_price ?>
+																		<?php if (isset($payment[$calendars->id])): ?>
+																			<?php echo 'PEND:'.($calendars->total_price - $payment[$calendars->id])?>
+																		<?php else: ?>
+																		<?php endif ?>" 
+																		class="<?php echo $book->getStatus($calendars->type_book) ?>"
+																		>
+																			<?php if ($calendars->type_book == 9): ?>
+																				<div style="width: 100%;height: 100%">
+																					&nbsp;
+																				</div>
+																			<?php else: ?>
+																				<a href="{{url ('/admin/reservas/update')}}/<?php echo $calendars->id ?>">
+																					<div style="width: 100%;height: 100%">
+																						&nbsp;
+																					</div>
+																				</a>
+																			<?php endif ?>
+
+
+																		</td>
+
+																	<?php endif ?>
+															<!-- Si no existe nada para ese dia -->
+															<?php else: ?>
+															
+																<td class="<?php echo $days[$date->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
+
+																</td>
+
+															<?php endif; ?>
+															
+															<?php if ($date->copy()->format('d') != $arrayMonths[$date->copy()->format('n')]): ?>
+			                                                    <?php $date = $date->addDay(); ?>
+			                                                <?php else: ?>
+			                                                    <?php $date = $date->startOfMonth() ?>
+			                                                <?php endif ?>
+														<?php endfor; ?> 
+													</tr>
+												</tbody>
+											</table>
+										</div>
+
+									</div>
+								</div>
+								<?php $date = $date->addMonth(); ?>
+							<?php endfor ?>
+						</div>
+					</div>
+
 				</div>
 			</div>
 		<?php else: ?>
@@ -350,6 +400,16 @@ setlocale(LC_TIME, "es_ES");
 		<?php endif ?>
 	</div>
 </div>
+
+<form role="form">
+    <div class="form-group form-group-default required" style="display: none">
+        <label class="highlight">Message</label>
+        <input type="text" hidden="" class="form-control notification-message" placeholder="Type your message here" value="This notification looks so perfect!" required>
+    </div>
+    <button class="btn btn-success show-notification hidden" id="boton">Show</button>
+</form>
+
+
 @endsection
 
 @section('scripts')
@@ -361,8 +421,57 @@ setlocale(LC_TIME, "es_ES");
 	<script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
    	<script type="text/javascript" src="/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
 	<script src="/assets/plugins/moment/moment.min.js"></script>
+	
+	<script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
+	<script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
+	
+	<script src="/assets/js/notifications.js" type="text/javascript"></script>
 
 	<script type="text/javascript">
+
+		$(function() {
+		  $(".daterange1").daterangepicker({
+		    "buttonClasses": "button button-rounded button-mini nomargin",
+		    "applyClass": "button-color",
+		    "cancelClass": "button-light",            
+		    "startDate": '01 Dec, 17',
+		    locale: {
+		        format: 'DD MMM, YY',
+		        "applyLabel": "Aplicar",
+		          "cancelLabel": "Cancelar",
+		          "fromLabel": "From",
+		          "toLabel": "To",
+		          "customRangeLabel": "Custom",
+		          "daysOfWeek": [
+		              "Do",
+		              "Lu",
+		              "Mar",
+		              "Mi",
+		              "Ju",
+		              "Vi",
+		              "Sa"
+		          ],
+		          "monthNames": [
+		              "Enero",
+		              "Febrero",
+		              "Marzo",
+		              "Abril",
+		              "Mayo",
+		              "Junio",
+		              "Julio",
+		              "Agosto",
+		              "Septiembre",
+		              "Octubre",
+		              "Noviembre",
+		              "Diciembre"
+		          ],
+		          "firstDay": 1,
+		      },
+		      
+		  });
+		});
+
+
 
 		$(document).ready(function() {
 			
@@ -427,6 +536,22 @@ setlocale(LC_TIME, "es_ES");
 				$('#container-pago').removeClass('showed');
 			});
 
+			$('.bloquear').click(function(event) {
+				
+				var id = $(this).attr('data-id');
+				var fechas = $('.daterange1').val();
+
+				$.get('/admin/propietario/bloquear', {room: id, fechas: fechas}).success(function( data ) {
+
+					$('.notification-message').val(data);
+					document.getElementById("boton").click();
+					if (data == "Reserva Guardada") {
+						setTimeout('document.location.reload()',1000);
+					}else{
+                          
+                    } 
+				});
+			});
 
 		});
 		

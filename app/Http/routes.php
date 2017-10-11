@@ -158,7 +158,7 @@ Route::post('admin/reservas/create' , 'BookController@create');
 	
 
 //Propietario
-	Route::post('admin/propietario/bloquear' , 'OwnedController@bloqOwned');
+	Route::get('admin/propietario/bloquear' , 'OwnedController@bloqOwned');
 	Route::get('admin/propietario/{name?}/operativa' , 'OwnedController@operativaOwned');
 	Route::get('admin/propietario/{name?}/tarifas' , 'OwnedController@tarifasOwned');
 	Route::get('admin/propietario/{name?}/descuentos' , 'OwnedController@descuentosOwned');
