@@ -415,6 +415,16 @@
           <!-- /.modal-dialog -->
          </div>
 
+        <div class="modal fade slide-up in" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content-wrapper">
+                    <div class="modal-content contestado">
+                    </div>
+                </div>
+              <!-- /.modal-content -->
+            </div>
+          <!-- /.modal-dialog -->
+         </div>
         <form role="form">
             <div class="form-group form-group-default required" style="display: none">
                 <label class="highlight">Message</label>
@@ -479,12 +489,13 @@
 
 
                 if (status == 5) {
-                    $('#myModal').modal({
+                    $('.modal-content.contestado').empty().load('/admin/reservas/ansbyemail/'+id);
+                    
+                    $('#myModal2').modal({
                         show: 'false'
                     }); 
-                    $.get('/admin/reservas/ansbyemail/'+id, function(data) {
-                       $('.modal-content.contestado').empty().append(data);
-                   });
+                    
+                   
                 }else{
                     
                    $.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
