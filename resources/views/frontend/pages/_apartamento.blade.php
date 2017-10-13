@@ -8,17 +8,39 @@
 	}
 </style>
 @section('title') {{ $aptoHeading }} en Sierra Nevada @endsection
-<?php if ($typeApto == 1): ?>
-	<meta name="description" content="Alquiler de apartamento de lujo dos dormitorios en Sierra nevada, el edificio miramarski esá a pie de pista, los apartamentos tienen capacidad 6 / 8 personas, con piscina climatizada, gimansio y parking cubierto; el edificio esta en zona baja, a 5 minutos de la plaza de Andalucía" />
-<?php elseif($typeApto == 2): ?>.
-	<meta name="description" content="Alquiler apartamento dos dormitorios en Sierra nevada, los apartamentos tienen capacidad 6 / 8 personas, con piscina climatizada, gimansio y parking cubierto; el edificio esta en zona baja, a 5 minutos de la plaza de Andalucía" />
-<?php elseif($typeApto == 3): ?>.
-	<meta name="description" content="Alquiler apartamentos y estudios;sierra nevada;edificio miramarski;los apartamentos tienen capacidad 4 / 5 personas, con piscina climatizada, gimansio y parking cubierto; el edificio esta en zona baja, a 5 minutos de la plaza de Andalucía" />
-<?php elseif($typeApto == 4): ?>.
-	<meta name="description" content="Alquiler apartamento y estudio de lujo, sierra nevada en el edificio miramarski, los apartamentos tienen capacidad 4 /5 personas, con piscina climatizada, gimansio y parking cubierto; el edificio esta en zona baja, a 5 minutos de la plaza de Andalucía" />
-<?php endif ?>
+
 
 @section('slider')
+
+<?php if ($typeApto == 1): ?>
+
+	<meta name="description" content="Alquiler de apartamento de lujo dos dormitorios en Sierra nevada, el edificio miramarski esá a pie de pista, los apartamentos tienen capacidad 6 / 8 personas, con piscina climatizada, gimansio y parking cubierto; el edificio esta en zona baja, a 5 minutos de la plaza de Andalucía" />
+
+	<meta name="keywords" content="alquiler apartamento de lujo;dos dormitorios;sierra nevada;recien reformado;a pie de pista;capacidad 8 personas;piscina climatizada;gimansio;zona baja">
+
+
+<?php elseif($typeApto == 2): ?>
+
+	<meta name="description" content="Alquiler apartamento dos dormitorios en Sierra nevada, los apartamentos tienen capacidad 6 / 8 personas, con piscina climatizada, gimansio y parking cubierto; el edificio esta en zona baja, a 5 minutos de la plaza de Andalucía" />
+
+	<meta name="keywords" content="alquiler apartamento dos dormitorios;sierra nevada;edificio miramarski;a pie de pista;capacidad 6 / 8 personas;piscina climatizada;gimansio;zona baja">
+
+
+<?php elseif($typeApto == 3): ?>
+
+	<meta name="description" content="Alquiler apartamentos y estudios;sierra nevada;edificio miramarski;los apartamentos tienen capacidad 4 / 5 personas, con piscina climatizada, gimansio y parking cubierto; el edificio esta en zona baja, a 5 minutos de la plaza de Andalucía" />
+
+	<meta name="keywords" content="alquiler apartamentos y estudios;sierra nevada;edificio miramarski;a pie de pista;capacidad 4 / 5 personas;piscina climatizada;gimansio;zona baja">
+
+
+<?php elseif($typeApto == 4): ?>
+
+	<meta name="description" content="Alquiler apartamento y estudio de lujo, sierra nevada en el edificio miramarski, los apartamentos tienen capacidad 4 /5 personas, con piscina climatizada, gimansio y parking cubierto; el edificio esta en zona baja, a 5 minutos de la plaza de Andalucía" />
+
+	<meta name="keywords" content="alquiler apartamento y estudio;de lujo; sierra nevada;edificio miramarski;a pie de pista;capacidad 4 / 5 personas;piscina climatizada;gimansio;zona baja">
+
+
+<?php endif ?>
 
 <section id="slider" class="revslider-wrap clearfix">
 

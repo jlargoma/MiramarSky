@@ -3,9 +3,14 @@
 @section('metadescription') Preguntas Frecuentes - apartamentosierranevada.net @endsection
 @section('title')  Preguntas Frecuentes - apartamentosierranevada.net @endsection
 
-<meta name="description" content="Aquí encontraras las faq´s, las respuestas a las preguntas frecuentes de nuestros clientes para alquilar su apartamento en sierra nevada, información sobre el pago,condiones alquiler" />
 
 @section('content')
+
+<meta name="description" content="Aquí encontraras las faq´s, las respuestas a las preguntas frecuentes de nuestros clientes para alquilar su apartamento en sierra nevada, información sobre el pago,condiones alquiler" />
+
+
+<meta name="keywords" content="faq´s;preguntas frecuentes;alquiler apartamento sierra nevada; condiones alquiler">
+
 	<style type="text/css">
 		#primary-menu ul li  a{
 			color: #3F51B5!important;
