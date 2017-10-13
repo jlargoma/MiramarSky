@@ -217,6 +217,15 @@
                 width: 3%!important;
                 padding: 0px 10px!important;;
         }
+        .summernote-wrapper .note-editor .note-toolbar .btn-group .btn {
+            font-size: 12px;
+            font-weight: 600;
+            height: 40px;
+            min-width: 33px;
+        }
+        .modal .modal-body{
+            padding: 0 10px;
+        }
     </style>
     <div class="container-fluid container-fixed-lg">
         <div class="row">
@@ -230,14 +239,14 @@
             
             <div class="panel" style="margin-bottom: 0px!important">
                 <ul class="nav nav-tabs nav-tabs-simple bg-info-light " role="tablist" data-init-reponsive-tabs="collapse">
-                    <li class="resv  active"  style="width: 25%;margin-left: 10px;margin-right: 10px;">
+                    <li class="resv  active text-center"  style="width: 33.33%; min-height: 43px;">
                         <a href="#reservas" data-toggle="tab" role="tab" style="font-size: 15px!important;padding-left: 2px;padding-right: 2px"> RESERVAS </a>
                     </li>
-                    <li class="cob text-center" style="width: 30%;margin-left: 10px;margin-right: 10px;">
+                    <li class="cob text-center" style="width: 33.33%; min-height: 43px;">
                         <a href="#cobros" data-toggle="tab" role="tab" style="font-size: 15px!important;padding-left: 2px;padding-right: 2px"> RECEPCION </a>
                     </li>
-                    <li class="calend text-center" style="width: 17%">
-                        <a href="#calendario"> <i class="fa fa-calendar " aria-hidden="true" style="font-size: 24px!important;padding-left: 2px;padding-right: 2px"></i> </a>
+                    <li class="calend text-center" style="width: 33.33%;min-height: 43px;line-height: 45px;">
+                        <i class="fa fa-calendar fa-2x white" aria-hidden="true"></i>
                     </li>
                 </ul>
             </div>
@@ -246,18 +255,18 @@
                     <div class="row column-seperation ">
                         <div class="panel resv" style="margin-bottom: 0;">
                             <ul class="nav nav-tabs nav-tabs-simple bg-info-light rev" role="tablist" data-init-reponsive-tabs="collapse">
-                                <li class="active res" >
-                                    <a href="#tabPendientes" data-toggle="tab" role="tab" class="pendientes">Pendientes 
+                                <li class="active res text-center"  style="width: 33.33%;">
+                                    <a href="#tabPendientes" data-toggle="tab" role="tab" class="pendientes">Pend... 
                                         <span class="badge font-w800 "><?php echo count($arrayBooks["nuevas"]) ?></span>
                                     </a>
                                 </li>
-                                <li class="bloq">
-                                    <a href="#tabEspeciales" data-toggle="tab" role="tab" class="especiales">Especiales
+                                <li class="bloq text-center" style="width: 33.33%;">
+                                    <a href="#tabEspeciales" data-toggle="tab" role="tab" class="especiales">Esp...
                                         <span class="badge font-w800 "><?php echo count($arrayBooks["especiales"]) ?></span>
                                     </a>
                                 </li>
-                                <li class="pag">
-                                    <a href="#tabPagadas" data-toggle="tab" role="tab" class="confirmadas">Confirmadas 
+                                <li class="pag text-center" style="width: 33.33%;">
+                                    <a href="#tabPagadas" data-toggle="tab" role="tab" class="confirmadas">Confir... 
                                         <span class="badge font-w800 "><?php echo count($arrayBooks["pagadas"]) ?></span>
                                     </a>
                                 </li>
@@ -374,8 +383,9 @@
 
 
                 <!-- Seccion Calendario -->
-                
-                @include('backend.planning.calendar')
+                <div class="calendar-mobile">
+                    @include('backend.planning.calendar')
+                </div>
                 <!-- Seccion Calendario -->
 
             </div>
@@ -469,7 +479,12 @@
 
         
     <script type="text/javascript">
-
+       
+        $('li.calend').click(function(event) {
+            $('html, body').animate({
+               scrollTop: $(".calendar-mobile").offset().top 
+           }, 2000);
+        });
         
 
         $(document).ready(function() {          
@@ -490,7 +505,7 @@
 
                 if (status == 5) {
                     $('.modal-content.contestado').empty().load('/admin/reservas/ansbyemail/'+id);
-                    
+
                     $('#myModal2').modal({
                         show: 'false'
                     }); 
