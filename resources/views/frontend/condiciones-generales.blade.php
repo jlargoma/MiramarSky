@@ -75,7 +75,7 @@
 
 		<div class="container container-mobile clearfix push-0">
 			<div class="row">
-				<h1 class="center psuh-20">Condiciones generales del Alquiler</h2>
+				<h1 class="center psuh-20">Condiciones generales del Alquiler</h1>
 			</div>
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center" >
 				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >

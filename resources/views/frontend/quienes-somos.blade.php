@@ -71,45 +71,46 @@
 	}
 
 	</style>
-	<section id="content" style="margin-top: 15px">
 
-		<div class="container container-mobile clearfix push-0">
-			<div class="row">
-				<h1 class="center psuh-20">Quienes Somos</h2>
-			</div>
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center" >
+<section id="content" style="margin-top: 15px">
+
+	<div class="container container-mobile clearfix push-0">
+		<div class="row">
+			<h1 class="center psuh-20">Quienes Somos</h1>
+		</div>
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center" >
+			
+			<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px;" >
 				
-				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px;" >
-					
-					Hola, como estás. <br><br>
+				Hola, como estás. <br><br>
 
-					Somos una empresa que solamente gestiona el alquiler de apartamentos y estudios en el edificio MiramarSki, en Sierra Nevada. <br><br>
+				Somos una empresa que solamente gestiona el alquiler de apartamentos y estudios en el edificio MiramarSki, en Sierra Nevada. <br><br>
 
-					<b>Nuestra especialidad son los apartamentos y estudios de calidad,</b> siempre tratando de daros  una atención personalizada a ti y a tu familia. <br><br>
+				<b>Nuestra especialidad son los apartamentos y estudios de calidad,</b> siempre tratando de daros  una atención personalizada a ti y a tu familia. <br><br>
 
-					Los apartamentos y estudios  que gestionamos en www.apartamentosierranevada.net  han sido revisados y seleccionados por nosotros por su calidad, diseño, decoración, ubicación y equipamiento. <br><br>
+				Los apartamentos y estudios  que gestionamos en www.apartamentosierranevada.net  han sido revisados y seleccionados por nosotros por su calidad, diseño, decoración, ubicación y equipamiento. <br><br>
 
-					<b>El  objetivo por el que trabajamos es lograr que nuestros clientes puedan sentirse como en casa durante sus vacaciones en Sierra Nevada.</b><br><br>
+				<b>El  objetivo por el que trabajamos es lograr que nuestros clientes puedan sentirse como en casa durante sus vacaciones en Sierra Nevada.</b><br><br>
 
-					Si hemos conseguido que nos des tu confianza no vamos a defraudarte, sabemos lo importante que son tus días de ocio, aceptamos la responsabilidad. <br><br>
+				Si hemos conseguido que nos des tu confianza no vamos a defraudarte, sabemos lo importante que son tus días de ocio, aceptamos la responsabilidad. <br><br>
 
-					Además de tu apartamento, ponemos a tu disposición una serie de servicios opcionales para intentar hacer tu estancia más agradable: <b>Descuentos en Forfait, cursillos de esquí, alquiler de material... puedes contratarlos en este link:</b> <a href="{{ url('/forfait') }}">Forfaits</a><br><br>
+				Además de tu apartamento, ponemos a tu disposición una serie de servicios opcionales para intentar hacer tu estancia más agradable: <b>Descuentos en Forfait, cursillos de esquí, alquiler de material... puedes contratarlos en este link:</b> <a href="{{ url('/forfait') }}">Forfaits</a><br><br>
 
-					Gracias por confiarnos tus vacaciones,  haremos todo lo posible para que pases unos días agradables. <br><br>
+				Gracias por confiarnos tus vacaciones,  haremos todo lo posible para que pases unos días agradables. <br><br>
 
-					Un saludo<br><br>
+				Un saludo<br><br>
 
-					Jorge Largo <br><br>
+				Jorge Largo <br><br>
 
-					<a href="{{ url('/') }}">www.apartamentosierranevada.net</a><br><br>
+				<a href="{{ url('/') }}">www.apartamentosierranevada.net</a><br><br>
 
 
 
 
-				</p>
+			</p>
 
-			</div>
-	</section>
+		</div>
+</section>
 	
 @endsection
 @section('scripts')

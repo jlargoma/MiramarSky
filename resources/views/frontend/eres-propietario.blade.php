@@ -75,7 +75,7 @@
 
 		<div class="container container-mobile clearfix push-0">
 			<div class="row">
-				<h1 class="center psuh-20">¿Eres Propietario y quieres alquilar tu apartamento?</h2>
+				<h1 class="center psuh-20">¿Eres Propietario y quieres alquilar tu apartamento?</h1>
 			</div>
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center" >
 				

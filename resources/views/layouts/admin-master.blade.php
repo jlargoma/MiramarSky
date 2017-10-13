@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 	<head>
+
 		<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 		<meta charset="utf-8" />
 		<title>@yield('title')</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no" />
+		<meta name="TWpUeE0zeDhNZkQ2STF3ZU1mVHhjcT0y" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no"  value="1003272df3af89e0ab299138ff66db15"/>
 		<link rel="apple-touch-icon" href="pages/ico/60.png">
 		<link rel="apple-touch-icon" sizes="76x76" href="pages/ico/76.png">
 		<link rel="apple-touch-icon" sizes="120x120" href="pages/ico/120.png">
