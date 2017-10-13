@@ -86,11 +86,6 @@ class BookController extends Controller
             $firstDayOfTheYear->addMonth();
 
         }
-
-        // echo "<pre>";
-        // print_r($arrayMonths);
-        // die();
-
         
         if ($date->copy()->format('n') >= 9) {
             $start = new Carbon('first day of September '.$date->copy()->format('Y'));
@@ -127,18 +122,13 @@ class BookController extends Controller
 
         
 
-        if(!$mobile->isMobile()){
-            $booksNuevas = \App\Book::where('start','>',$start)->where('finish','<',$start->copy()->addYear())->orderBy('updated_at','DESC')->whereIn('type_book',[1,3,4,5,6])->get();
-            $booksPagadas = \App\Book::where('start','>',$start)->where('finish','<',$start->copy()->addYear())->where('type_book',2)->orderBy('start','ASC')->get();
-            $booksEspeciales = \App\Book::where('start','>',$start)->where('finish','<',$start->copy()->addYear())->whereIn('type_book',[7,8])->orderBy('start','ASC')->get();
-        }else{
-            // $date = Carbon::now();
-            $booksNuevas = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[1,3,4,5,6])->orderBy('updated_at','DESC')->get();
-            $booksPagadas = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->where('type_book',2)->orderBy('start','ASC')->get();
-            $booksEspeciales = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[7,8])->orderBy('start','ASC')->get();
-            $proxIn = \App\Book::where('start','>=',$date->copy()->subWeek())->where('type_book',2)->orderBy('start','ASC')->get();
-            $proxOut = \App\Book::where('start','>=',$date->copy()->subWeek())->where('type_book',2)->orderBy('start','ASC')->get();
-        }
+        // $date = Carbon::now();
+        $booksNuevas = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[1,3,4,5,6])->orderBy('updated_at','DESC')->get();
+        $booksPagadas = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->where('type_book',2)->orderBy('start','ASC')->get();
+        $booksEspeciales = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[7,8])->orderBy('start','ASC')->get();
+        $proxIn = \App\Book::where('start','>=',$date->copy()->subWeek())->where('type_book',2)->orderBy('start','ASC')->get();
+        $proxOut = \App\Book::where('start','>=',$date->copy()->subWeek())->where('type_book',2)->orderBy('start','ASC')->get();
+        
         foreach ($booksNuevas as $key => $book) {
                 $arrayBooks["nuevas"][] = $book;
         }
@@ -171,47 +161,26 @@ class BookController extends Controller
 
 
 
-            if (!$mobile->isMobile()){
-                return view('backend/planning/index',[
-                                                    'arrayBooks'    => $arrayBooks,
-                                                    'arrayMonths'   => $arrayMonths,
-                                                    'arrayTotales'  => $arrayTotales,
-                                                    'rooms'         => \App\Rooms::where('state','=',1)->get(),
-                                                    'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->where('state','=',1)->orderBy('order','ASC')->get(),
-                                                    'arrayReservas' => $arrayReservas,
-                                                    'mes'           => $mes,
-                                                    'date'          => $date,
-                                                    'book'          => new \App\Book(),
-                                                    'extras'        => \App\Extras::all(),
-                                                    'payment'       => $totalPayments,
-                                                    'pagos'         => \App\Payments::all(),
-                                                    'days'          => $arrayDays,
-                                                    'inicio'        => $start,
-                                                    'paymentSeason' => $paymentSeason,
-                                                    'ventas'        => $ventas,
-                                                    'ventasOld'     => $ventasOld,
-                                                    ]);
-            }else{
-                return view('backend/planning/index_mobile',[
-                                                    'arrayBooks'    => $arrayBooks,
-                                                    'arrayMonths'   => $arrayMonths,
-                                                    'rooms'         => \App\Rooms::where('state','=',1)->get(),
-                                                    'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->where('state','=',1)->orderBy('order','ASC')->get(),
-                                                    'arrayReservas' => $arrayReservas,
-                                                    'mes'           => $mes,
-                                                    'date'          => $date->subMonth(),
-                                                    'book'          => new \App\Book(),
-                                                    'extras'        => \App\Extras::all(),
-                                                    'payment'       => $totalPayments,
-                                                    'pagos'         => \App\Payments::all(),
-                                                    'days'          => $arrayDays,
-                                                    'inicio'        => $start->addMonth(3),
-                                                    'proxIn'        => $proxIn,
-                                                    'proxOut'       => $proxOut,
-                                                    'paymentSeason' => $paymentSeason,
-
-                                                    ]);
-            }
+           return view('backend/planning/index',[
+                                            'arrayBooks'    => $arrayBooks,
+                                            'arrayMonths'   => $arrayMonths,
+                                            'arrayTotales'  => $arrayTotales,
+                                            'rooms'         => \App\Rooms::where('state','=',1)->get(),
+                                            'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->where('state','=',1)->orderBy('order','ASC')->get(),
+                                            'arrayReservas' => $arrayReservas,
+                                            'mes'           => $mes,
+                                            'date'          => $date,
+                                            'book'          => new \App\Book(),
+                                            'extras'        => \App\Extras::all(),
+                                            'payment'       => $totalPayments,
+                                            'pagos'         => \App\Payments::all(),
+                                            'days'          => $arrayDays,
+                                            'inicio'        => $start,
+                                            'paymentSeason' => $paymentSeason,
+                                            'proxIn'        => $proxIn,
+                                            'proxOut'       => $proxOut,
+                                            'mobile'        => $mobile
+                                            ]);
     }
 
     /**
@@ -232,6 +201,10 @@ class BookController extends Controller
         $book = new \App\Book();
         $extraPrice = 0 ;
         $extraCost  = 0;
+
+
+
+
 
         if ( $request->input('from') ) {
             if ($request->input('extras') != "") {
@@ -307,6 +280,9 @@ class BookController extends Controller
 
             return redirect('admin/reservas');
         }else{
+
+
+
             $isReservable  = 0;
 
             if (in_array($request->input('status'), [1, 2, 4, 5, 7, 8])) {
@@ -319,6 +295,7 @@ class BookController extends Controller
                 $isReservable = 1;
             }
 
+            
 
             if ( $isReservable == 1 ) {
 
@@ -424,23 +401,13 @@ class BookController extends Controller
                 };
                 
             }else{
-                // echo "<pre>";
-                // print_r($request->input());
-                // die();
-                // echo "Error. Este apartamento ya tiene una reserva confirmada";
-                if (!$mobile->isMobile()){
-                    return view('backend/planning/_formBook',  [
-                                                                    'request'   => (object) $request->input(),
-                                                                    'book'      => new \App\Book(),
-                                                                    'rooms'     => \App\Rooms::where('state','=',1)->get(),
-                                                                ]);
-                }else{
-                    return view('backend/planning/_formBook-mobile',  [
-                                                                    'request'   => (object) $request->input(),
-                                                                    'book'      => new \App\Book(),
-                                                                    'rooms'     => \App\Rooms::where('state','=',1)->get(),
-                                                                ]);
-                }
+
+                return view('backend/planning/_formBook',  [
+                                                                'request'   => (object) $request->input(),
+                                                                'book'      => new \App\Book(),
+                                                                'rooms'     => \App\Rooms::where('state','=',1)->get(),
+                                                                'mobile'    => $mobile
+                                                            ]);
             }
         }
         
@@ -465,26 +432,16 @@ class BookController extends Controller
 
             
             $mobile = new Mobile();
-                if (!$mobile->isMobile()){
-                    return view('backend/planning/update',  [
-                                                                'book'   => $book ,
-                                                                'rooms'  => \App\Rooms::where('state',1)->get(),
-                                                                'extras' => \App\Extras::all(),
-                                                                'start' => Carbon::createFromFormat('Y-m-d',$book->start)->format('d M,y'),
-                                                                'payments' => $payments,
-                                                                'typecobro' => new \App\Book(),
-                                                                'totalpayment' => $totalpayment,
-                                                            ]);
-                }else{
-                    return view('backend/planning/update_mobile',  [
-                                                                'book'   => $book ,
-                                                                'rooms'  => \App\Rooms::where('state',1)->get(),
-                                                                'extras' => \App\Extras::all(),
-                                                                'payments' => $payments,
-                                                                'typecobro' => new \App\Book(),
-                                                                'totalpayment' => $totalpayment,
-                                                            ]);
-                }
+            return view('backend/planning/update',  [
+                                                        'book'         => $book ,
+                                                        'rooms'        => \App\Rooms::where('state',1)->get(),
+                                                        'extras'       => \App\Extras::all(),
+                                                        'start'        => Carbon::createFromFormat('Y-m-d',$book->start)->format('d M,y'),
+                                                        'payments'     => $payments,
+                                                        'typecobro'    => new \App\Book(),
+                                                        'totalpayment' => $totalpayment,
+                                                        'mobile'       => $mobile,
+                                                    ]);
         }
 
 

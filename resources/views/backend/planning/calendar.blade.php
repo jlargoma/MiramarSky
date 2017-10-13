@@ -4,7 +4,8 @@
 		<ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
 			<?php $dateAux = $inicio->copy(); ?>
 			<?php for ($i=1; $i <= 9 ; $i++) :?>
-				<li <?php if($i == 4 ){ echo "class='active'";} ?>>
+				<?php if(!$mobile->isMobile()){ $hidden = "";}else{ $hidden = "hidden"; } ?>
+				<li class='<?php if($i == 4 ){ echo "active";} ?> <?php if($i < 4 || $i > 8){ echo $hidden;} ?>'>
 					<a href="#tab<?php echo $i?>" data-toggle="tab" role="tab" style="padding:10px">
 						<?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>
 					</a>
@@ -13,18 +14,17 @@
 			<?php endfor; ?>
 		</ul>
 		<div class="tab-content">
-
 			<?php for ($z=1; $z <= 9; $z++):?>
 				<div class="tab-pane <?php if($z == 4){ echo 'active';} ?>" id="tab<?php echo $z ?>">
 					<div class="row">
-						<div class="col-md-12">
-							<table class="fc-border-separate" style="width: 100%">
+						<div class="table-responsive">
+							<table class="fc-border-separate calendar-table" style="width: 100%">
 								<thead>
-									<tr >
+									<!-- <tr >
 										<td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
 											<?php echo  ucfirst($inicio->copy()->formatLocalized('%B %Y'))?>
 										</td> 
-									</tr>
+									</tr> -->
 									<tr>
 										<td rowspan="2" style="width: 1%!important"></td>
 										<?php for ($i=1; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
@@ -217,5 +217,4 @@
 		<?php endfor; ?>
 
 	</div>
-</div>    
-</div>
+</div> 

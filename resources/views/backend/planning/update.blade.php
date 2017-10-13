@@ -126,9 +126,9 @@
         </div>
     </div>
     <div class="col-md-12 col-xs-12 center text-center">
-        <div class="col-md-6 col-xs-12">
+        <div class="col-xs-12">
             <!-- DATOS DE LA RESERVA -->
-            <div class="row">
+            <div class="col-md-6 col-xs-12">
                 <form role="form"  action="{{ url('/admin/reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post" >
                     <!-- DATOS DEL CLIENTE -->
                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
@@ -140,15 +140,15 @@
                             </h4>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-4 push-10">
                             <label for="name">Nombre</label> 
                             <input class="form-control cliente" type="text" name="nombre" value="<?php echo $book->customer->name ?>" data-id="<?php echo $book->customer->id ?>">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 push-10">
                             <label for="email">Email</label> 
                             <input class="form-control cliente" type="email" name="email" value="<?php echo $book->customer->email ?>" data-id="<?php echo $book->customer->id ?>">  
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 push-10">
                             <label for="phone">Telefono</label> 
                             <input class="form-control cliente" type="text" name="phone" value="<?php echo $book->customer->phone ?>" data-id="<?php echo $book->customer->id ?>"> 
                         </div>  
@@ -160,11 +160,9 @@
                                 DATOS DE LA RESERVA
                             </h4>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 push-20">
                             <label>Entrada</label>
                             <div class="input-prepend input-group">
-                                
-
                                 <?php $start = Carbon::createFromFormat('Y-m-d', $book->start);
                                         $start1 = str_replace('Apr','Abr',$start->format('d M, y')); ?>
                                 <?php $finish = Carbon::createFromFormat('Y-m-d', $book->finish); 
@@ -174,12 +172,12 @@
 
                             </div>
                         </div>
-                        <div class="col-md-1 p-l-0">
+                        <div class="col-md-1 col-xs-3 push-20 p-l-0">
                             <label>Noches</label>
                             <input type="number" class="form-control nigths" name="nigths" style="width: 100%" disabled value="<?php echo $book->nigths ?>">
                         <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%" value="<?php echo $book->nigths ?>">
                         </div> 
-                        <div class="col-md-1 p-l-0 p-r-0">
+                        <div class="col-md-1 col-xs-3 push-20 p-l-0 p-r-0">
                             <label>Pax</label>
                             <select class=" form-control pax minimal"  name="pax">
                                 <?php for ($i=1; $i <= 10 ; $i++): ?>
@@ -189,7 +187,7 @@
                                 <?php endfor;?>
                             </select> 
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3 col-xs-6 push-20">
                             <label>Apartamento</label>
 
                             <select class="form-control full-width minimal newroom" name="newroom" id="newroom" <?php if ( isset($_GET['saveStatus']) && !empty($_GET['saveStatus']) ): echo "style='border: 1px solid red'"; endif ?>>
@@ -200,7 +198,7 @@
                                 <?php endforeach ?>
                             </select>
                         </div>
-                        <div class="col-md-1 p-l-0 p-r-0">
+                        <div class="col-md-1 col-xs-6 push-20 p-l-0 p-r-0">
                             <label>Parking</label>
                             <select class=" form-control parking minimal"  name="parking">
                                 <?php for ($i=1; $i <= 4 ; $i++): ?>
@@ -208,7 +206,7 @@
                                 <?php endfor;?>
                             </select>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-2 col-xs-6 push-20">
                             <label>Sup. Lujo</label>
                             <select class=" form-control full-width type_luxury minimal" name="type_luxury">
                                 <?php for ($i=1; $i <= 4 ; $i++): ?>
@@ -218,7 +216,7 @@
                         </div>
                     </div>
                     <div class="col-xs-12 bg-white">
-                        <div class="col-xs-4 not-padding" style="min-height: 150px">
+                        <div class="col-md-4 col-xs-6 push-20 not-padding" style="min-height: 150px">
                             <div class="col-md-6 col-xs-12 push-10">
                                 <label>Agencia</label>
                                 <select class="form-control full-width agency minimal" name="agency">
@@ -247,14 +245,8 @@
                         </div>
                        
                             
-                        <div class="col-xs-8 not-padding">
-                            <p class="personas-antiguo" style="color: red">
-                                <?php if ($book->pax < $book->room->minOcu): ?>
-                                    Van menos personas que la ocupacion minima del apartamento.
-                                <?php endif ?>
-                            </p>
-                        </div>
-                        <div class="col-xs-8 not-padding">
+                       
+                        <div class="col-md-8 col-xs-6 push-20 not-padding">
                             <div class="col-md-4 col-xs-12 text-center" style="background-color: #0c685f;">
                                 <label class="font-w800 text-white" for="">TOTAL</label>
                                 <input type="text" class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>">
@@ -269,16 +261,21 @@
                                     <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>" style="width: 80%; float: left;">
                                     <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;"><?php echo number_format($book->inc_percent,0)."%" ?></div>
                                 </div>
-                        </div>
-                        <div class="col-xs-8 not-padding text-left">
-                            <p class="precio-antiguo font-s18">
-                                <b>El precio asignado <?php echo $book->total_price ?> y el precio de tarifa es <?php echo $book->real_price ?></b>
-                            </p>
-                        </div>
-                        <?php else: ?>
-                            </div>
-                        <?php endif ?>                        
+                            <?php endif ?>    
+                                                 
                     </div>
+                    <div class="col-md-8 col-xs-12 push-20 not-padding">
+                        <p class="personas-antiguo" style="color: red">
+                            <?php if ($book->pax < $book->room->minOcu): ?>
+                                Van menos personas que la ocupacion minima del apartamento.
+                            <?php endif ?>
+                        </p>
+                    </div>
+                    <div class="col-md-8 col-xs-12 not-padding text-left">
+                        <p class="precio-antiguo font-s18">
+                            <b>El precio asignado <?php echo $book->total_price ?> y el precio de tarifa es <?php echo $book->real_price ?></b>
+                        </p>
+                    </div> 
                     <div class="col-xs-12 bg-white padding-block">
                         <div class="col-md-6 col-xs-12">
                             <label>Comentarios Cliente </label>
@@ -297,8 +294,9 @@
                 </form>
             </div>
         </div>
+
         <div class="col-md-6 col-xs-12 padding-block">
-            <div class="col-md-12">
+            <div class="row">
                 <div class="col-xs-12 bg-black push-0">
                     <h4 class="text-center white">
                         COBROS
@@ -516,61 +514,40 @@
           });
         });
 
-        function calculate(){
-
-
-                $('.status').attr("disabled", "disabled");
-                $('.content-guardar #overlay').show();
-
-                $('.guardar').empty();
-                $('.guardar').text("Guarda para cambiar el estado");
-                // $('.notification-message').val('Guarda');
-                // document.getElementById("boton").click();
-                // setTimeout(function(){ 
-                //     $('.pgn-wrapper .pgn .alert .close').trigger('click');
-                //      }, 3000);
-                var room = $('#newroom').val();
-                var pax = $('.pax').val();
-                var park = $('.parking').val();
-                var precio = $('.precio-oculto').val();
-                var lujo = $('select[name=type_luxury]').val();
-                var status = $('select[name=status]').val();
-                var sizeApto = $('option:selected', 'select[name=newroom]').attr('data-size');;
-                var beneficio = 0;
-                var costPark = 0;
-                var pricePark = 0;
-                var costLujo = 0;
-                var priceLujo = 0;
-                var agencia = 0;
+        function calculate( notModifyPrice = 0){
+                var room       = $('#newroom').val();
+                var pax        = $('.pax').val();
+                var park       = $('.parking').val();
+                var lujo       = $('select[name=type_luxury]').val();
+                var status     = $('select[name=status]').val();
+                var sizeApto   = $('option:selected', 'select[name=newroom]').attr('data-size');;
+                var beneficio  = 0;
+                var costPark   = 0;
+                var pricePark  = 0;
+                var costLujo   = 0;
+                var priceLujo  = 0;
+                var agencia    = 0;
                 var beneficio_ = 0;
-
-                var date = $('.daterange1').val();
-
+                var comentario =$('.book_comments').val();
+                var date       = $('.daterange1').val();
+                
                 var arrayDates = date.split('-');
-                var res1 = arrayDates[0].replace("Abr", "Apr");
-                var date1 = new Date(res1);
-                var start = date1.getTime();
-
-                var res2 = arrayDates[1].replace("Abr", "Apr");
-                var date2 = new Date(res2);
-                var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                var res1       = arrayDates[0].replace("Abr", "Apr");
+                var date1      = new Date(res1);
+                var start      = date1.getTime();
+                
+                var res2       = arrayDates[1].replace("Abr", "Apr");
+                var date2      = new Date(res2);
+                var timeDiff   = Math.abs(date2.getTime() - date1.getTime());
+                var diffDays   = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
                 $('.nigths').val(diffDays);
                 
-                var start = date1.toLocaleDateString();
-                var finish = date2.toLocaleDateString();
+                var start      = date1.toLocaleDateString();
+                var finish     = date2.toLocaleDateString();
 
 
-                $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
 
-                    if (pax < data) {
-                        $('.personas-antiguo').empty();
-                        $('.personas-antiguo').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
-                    }else{
-                        $('.personas-antiguo').empty();
-
-                    }
-                });
+                
                 if ( status == 8) {
                     $('.total').empty();
                     $('.total').val(0);
@@ -609,9 +586,11 @@
                                 price = data;
                                 
                                 price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
-                                $('.total').empty();
-                                $('.total').val(price);
 
+                                if ( notModifyPrice == 0) {
+                                    $('.total').empty();
+                                    $('.total').val(price);
+                                }
                                     $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays}).success(function( data ) {
                                         costPark = data;
                                         $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
@@ -626,17 +605,12 @@
                                                 $('.cost').empty();
                                                 $('.cost').val(cost);
                                                 beneficio = price - cost;
-
                                                 $('.beneficio').empty;
                                                 $('.beneficio').val(beneficio);
-                                                beneficio_ = (beneficio / price)*100;
-
+                                                beneficio_ = (beneficio / price)*100
                                                 $('.beneficio-text').empty();
-                                                $('.beneficio-text').html(beneficio_.toFixed(0)+"%");
+                                                $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
 
-                                                $('.precio-antiguo').empty;
-
-                                                $('.precio-antiguo').text('El precio asignado '+precio+' y el precio tarifa '+price);
                                             });
                                         });
                                     });
@@ -644,7 +618,10 @@
                         });
                     }); 
                 }
-            
+                 
+
+                
+
         }
 
 
@@ -749,7 +726,7 @@
             });
 
             $('.agencia').change(function(event){ 
-                calculate();
+                calculate(1);
             });
 
            

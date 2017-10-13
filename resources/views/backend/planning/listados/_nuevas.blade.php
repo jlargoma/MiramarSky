@@ -256,36 +256,36 @@
           });
         });
 
-        function calculate(){
-                var room = $('#newroom').val();
-                var pax = $('.pax').val();
-                var park = $('.parking').val();
-                var lujo = $('select[name=type_luxury]').val();
-                var status = $('select[name=status]').val();
-                var sizeApto = $('option:selected', 'select[name=newroom]').attr('data-size');;
-                var beneficio = 0;
-                var costPark = 0;
-                var pricePark = 0;
-                var costLujo = 0;
-                var priceLujo = 0;
-                var agencia = 0;
+        function calculate( notModifyPrice = 0){
+                var room       = $('#newroom').val();
+                var pax        = $('.pax').val();
+                var park       = $('.parking').val();
+                var lujo       = $('select[name=type_luxury]').val();
+                var status     = $('select[name=status]').val();
+                var sizeApto   = $('option:selected', 'select[name=newroom]').attr('data-size');;
+                var beneficio  = 0;
+                var costPark   = 0;
+                var pricePark  = 0;
+                var costLujo   = 0;
+                var priceLujo  = 0;
+                var agencia    = 0;
                 var beneficio_ = 0;
                 var comentario =$('.book_comments').val();
-                var date = $('.daterange1').val();
-
+                var date       = $('.daterange1').val();
+                
                 var arrayDates = date.split('-');
-                var res1 = arrayDates[0].replace("Abr", "Apr");
-                var date1 = new Date(res1);
-                var start = date1.getTime();
-
-                var res2 = arrayDates[1].replace("Abr", "Apr");
-                var date2 = new Date(res2);
-                var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+                var res1       = arrayDates[0].replace("Abr", "Apr");
+                var date1      = new Date(res1);
+                var start      = date1.getTime();
+                
+                var res2       = arrayDates[1].replace("Abr", "Apr");
+                var date2      = new Date(res2);
+                var timeDiff   = Math.abs(date2.getTime() - date1.getTime());
+                var diffDays   = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
                 $('.nigths').val(diffDays);
                 
-                var start = date1.toLocaleDateString();
-                var finish = date2.toLocaleDateString();
+                var start      = date1.toLocaleDateString();
+                var finish     = date2.toLocaleDateString();
 
 
 
@@ -328,8 +328,11 @@
                                 price = data;
                                 
                                 price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
-                                $('.total').empty();
-                                $('.total').val(price);
+
+                                if ( notModifyPrice == 0) {
+                                    $('.total').empty();
+                                    $('.total').val(price);
+                                }
                                     $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays}).success(function( data ) {
                                         costPark = data;
                                         $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
@@ -466,7 +469,7 @@
             });
 
             $('.agencia').change(function(event){ 
-                calculate();
+                calculate(1);
             });
 
            
