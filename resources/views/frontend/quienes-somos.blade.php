@@ -3,7 +3,15 @@
 @section('metadescription') Quienes Somos - apartamentosierranevada.net @endsection
 @section('title')  Quienes Somos - apartamentosierranevada.net @endsection
 
+
+
 @section('content')
+
+<meta name="description" content="Información de la empresa, quienes somos los que formamos parte del booking en miramarski; quienes formamos la empresa de alquiler apartamentos en sierra nevada" />
+
+<meta name="keywords" content="quienes somos;booking miramarski;la empresa de alquiler apartamentos en sierra nevada">
+
+
 <style type="text/css">
 	#primary-menu ul li  a{
 		color: #3F51B5!important;

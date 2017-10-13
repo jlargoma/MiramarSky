@@ -4,6 +4,10 @@
 @section('title')  Condiciones generales - apartamentosierranevada.net @endsection
 
 @section('content')
+
+<meta name="description" content="Consultar Condiciones generales para el alquiler apartamento sierra nevada,condiciones de cancelación, check in y out" />
+<meta name="keywords" content="condiciones generales,alquiler apartamento sierra nevada,condiciones de cancelación">
+
 	<style type="text/css">
 		#primary-menu ul li  a{
 			color: #3F51B5!important;

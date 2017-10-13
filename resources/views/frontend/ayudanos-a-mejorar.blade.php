@@ -3,7 +3,13 @@
 @section('metadescription') Ayudanos a Mejorar - apartamentosierranevada.net @endsection
 @section('title')  Ayudanos a Mejorar - apartamentosierranevada.net @endsection
 
+
+
 @section('content')
+
+<meta name="description" content="Escribenos tus comentarios, rellena la encuesta satisfacción para ayudarnos a mejorar la atencion al cliente, queremos ofercer el mejor servicio para alquilar tu apartamento o estudio en Sierra Nevada (edificio Mirarmaski)" />
+
+<meta name="keywords" content="encuesta satisfacción;atencion al cliente;miramarski;alquiler apartamento;sierra nevada">
 	<style type="text/css">
 		#primary-menu ul li  a{
 			color: #3F51B5!important;

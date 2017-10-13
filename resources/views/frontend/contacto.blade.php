@@ -2,6 +2,9 @@
 
 @section('title') Apartamentosierranevada.net - contacto @endsection
 
+<meta name="description" content="Datos de contacto, alquiler apartamento sierra nevada, donde estamos,edificio mirarmarski, como llegar a Sierra Nevada a traves de google maps" />
+
+
 @section('content')
 
 <!-- Google Code for conversiones_lead Conversion Page -->
