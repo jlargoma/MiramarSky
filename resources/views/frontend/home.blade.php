@@ -433,62 +433,62 @@
 
 		       				<div class="oc-item">
 		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-piepista.png') }}" /> A pie de pista 
+		       						<img src="{{ asset('/img/miramarski/iconos/small/white-piepista.png') }}" alt="piepista" title="piepista" /> A pie de pista 
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
 		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-parking.png') }}" /> Parking cubierto 
+		       						<img src="{{ asset('/img/miramarski/iconos/small/white-parking.png') }}" alt="parking" title="parking" /> Parking cubierto 
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
 		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-ascensor.png') }}" /> Ascensor 
+		       						<img src="{{ asset('/img/miramarski/iconos/small/white-ascensor.png') }}" alt="ascensor" title="ascensor" /> Ascensor 
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
 		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-piscina.png') }}" /> Piscina  
+		       						<img src="{{ asset('/img/miramarski/iconos/small/white-piscina.png') }}" alt="piscina" title="piscina" /> Piscina  
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
 		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-gimnasio.png') }}" /> Gimnasio 
+		       						<img src="{{ asset('/img/miramarski/iconos/small/white-gimnasio.png') }}" alt="gimnasio" title="gimnasio" /> Gimnasio 
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
 		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-guardaesqui.png') }}" /> Guarda Esqíes 
+		       						<img src="{{ asset('/img/miramarski/iconos/small/white-guardaesqui.png') }}" alt="guardaesqui" title="guardaesqui" /> Guarda Esqíes 
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
 		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-mascotas.png') }}" /> No mascotas 
+		       						<img src="{{ asset('/img/miramarski/iconos/small/white-mascotas.png') }}" alt="mascotas" title="mascotas" /> No mascotas 
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
 		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-ropa-toallas.png') }}" /> Ropa y toallas 
+		       						<img src="{{ asset('/img/miramarski/iconos/small/white-ropa-toallas.png') }}" alt="ropa-toallas" title="ropa-toallas" /> Ropa y toallas 
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
 		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-cocina.png') }}" /> Cocina 
+		       						<img src="{{ asset('/img/miramarski/iconos/small/white-cocina.png') }}" alt="cocina" title="cocina" /> Cocina 
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
 		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-ducha.png') }}" /> Baño 
+		       						<img src="{{ asset('/img/miramarski/iconos/small/white-ducha.png') }}" alt="ducha" title="ducha" /> Baño 
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
 		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-calefaccion.png') }}" /> Calefaccion 
+		       						<img src="{{ asset('/img/miramarski/iconos/small/white-calefaccion.png') }}" alt="calefaccion" title="calefaccion" /> Calefaccion 
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
 		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-shopping.png') }}" /> Shopping 
+		       						<img src="{{ asset('/img/miramarski/iconos/small/white-shopping.png') }}" alt="shopping" title="shopping" /> Shopping 
 		       					</a>
 		       				</div>
 

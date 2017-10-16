@@ -21,8 +21,15 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        $slides = File::allFiles(public_path().'/img/miramarski/edificio/'); 
+    {   
+        /* Detectamos el tipo de dispositivo*/
+        $mobile = new Mobile();
+
+        if (!$mobile->isMobile()){
+            $slides = File::allFiles(public_path().'/img/miramarski/edificio/');             
+        }else{
+            $slides = File::allFiles(public_path().'/img/miramarski/edificio-mobile'); 
+        }
         $val = $request->cookie('showPopup');
         if ( !empty($val) ){
             $cookie = $request->cookie('showPopup');
@@ -30,8 +37,7 @@ class HomeController extends Controller
             $cookie = 0;
         }
 
-        /* Detectamos el tipo de dispositivo*/
-        $mobile = new Mobile();
+        
 
         return view('frontend.home', [
                             'cookie'   => $cookie,
