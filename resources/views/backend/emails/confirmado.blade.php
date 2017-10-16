@@ -4,7 +4,7 @@ Hola <b><?php echo $book->customer->name ?>, </b>hemos recibido tu pago en conce
 <br>
 <br>
 Nombre: <b><?php echo $book->customer->name ?></b> .<br>
-<u>Teléfono</u>: <b><?php echo $book->customer->phone ?></b>.<br>
+<u>Teléfono</u>: <b><a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?></a></b>.<br>
 Email: <b><?php echo $book->customer->email ?></b>.<br>
 Apartamento: <b><?php echo $book->room->sizeRooms->name ?> // <?php echo ($book->type_luxury == 1)? "Lujo" : "Estandar" ?></b><br>
 Nº: <b><?php echo $book->pax ?> Pers </b><br>

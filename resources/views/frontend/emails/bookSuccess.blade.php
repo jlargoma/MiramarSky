@@ -88,7 +88,8 @@
   	 	  							<tr>
   	 	  								<td class="bodycopy" style="color: #000">
 											Nombre: 			<b><?php echo $data->customer->name ?></b> <br>
-											Teléfono:  			<b><?php echo $data->customer->phone ?></b> <br>
+											Teléfono:  			<b><a href="tel:<?php echo $data->customer->phone ?>"><?php echo $data->customer->phone ?></a></b> <br>
+											Apartamento: <b><?php echo $data->room->sizeRooms->name ?> // <?php echo ($data->type_luxury == 1)? "Lujo" : "Estandar" ?></b><br>
 											Email: 				<b><?php echo $data->customer->email ?></b> <br>
 											Fecha Entrada: 		<b><?php echo date('d-m-Y', strtotime($data->start)) ?></b> <br>
 											Fecha Salida: 		<b><?php echo date('d-m-Y', strtotime($data->finish)) ?></b> <br>
@@ -98,8 +99,8 @@
 											Suplemento lujo: 	<b><?php echo number_format($data->sup_lujo,0,'','.') ?> €</b> <br>
 											Comentarios: 		<b><?php echo $data->comment ?> € </b><br>
 
-  	 	  									<h2 style="text-align: center">
-  	 	  										<b>Precio total solicitud: </b>  <?php echo number_format($data->total_price,0,'','.') ?> €
+  	 	  									<h2 style="text-align: left">
+  	 	  										<b>Precio total: </b>  <?php echo number_format($data->total_price,0,'','.') ?> €
   	 	  									</h2> <br>
 
   	 	  								</td>
@@ -176,7 +177,8 @@
 		  								<td class="bodycopy" style="color: #000">
 		  									Detalles de la reserva:<br><br>
 		  									<b>Nombre: </b> <?php echo $data->customer->name ?> <br>
-  	 	  									<b>Teléfono: </b> <?php echo $data->customer->phone ?> <br>
+  	 	  									Teléfono:  			<b><a href="tel:<?php echo $data->customer->phone ?>"><?php echo $data->customer->phone ?></a></b> <br>
+											Apartamento: <b><?php echo $data->room->sizeRooms->name ?> // <?php echo ($data->type_luxury == 1)? "Lujo" : "Estandar" ?></b><br>
   	 	  									<b>Email:</b> <?php echo $data->customer->email ?> <br>
   	 	  									<b>Fecha Entrada:</b> <?php echo date('d-m-Y', strtotime($data->start)) ?> <br>
   	 	  									<b>Fecha Salida:</b> <?php echo date('d-m-Y', strtotime($data->finish)) ?> <br>
@@ -186,7 +188,7 @@
   	 	  									<b>Suplemento lujo:  <?php echo $data->sup_lujo ?> €</b><br>
   	 	  									<b>Comentarios: </b>  <?php echo $data->comment ?> € <br>
 
-		  									<h2 style="text-align: center"><b>Precio total solicitud: </b> <?php echo $data->total_price ?> €</h2> <br>
+		  									<h2 style="text-align: left;"><b>Precio total: </b> <?php echo $data->total_price ?> €</h2> <br>
 
 		  								</td>
 		  							</tr>

@@ -4,7 +4,7 @@ Hola <?php echo $book->customer->name ?>, <b>Si hay disponibilidad para tu reser
 <br>
 
 Nombre: <b><?php echo $book->customer->name ?></b> .<br><br>
-<u>Teléfono</u>: <b><?php echo $book->customer->phone ?></b>.<br><br>
+<u>Teléfono</u>: <b><a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?></a></b>.<br><br>
 Email: <b><?php echo $book->customer->email ?></b>.<br><br>
 Apartamento: <b><?php echo $book->room->sizeRooms->name ?> // <?php echo ($book->type_luxury == 1)? "Lujo" : "Estandar" ?></b><br><br>
 Nº: <b><?php echo $book->pax ?> Pers </b><br><br>

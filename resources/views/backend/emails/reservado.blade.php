@@ -4,7 +4,7 @@ Hola "<?php echo $book->customer->name ?>" hemos bloqueado parcialmente un apart
 <br>
 
 <b>Nombre: <?php echo $book->customer->name ?> .<br><br>
-Teléfono: <?php echo $book->customer->phone ?>.<br><br>
+Teléfono: <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?></a>.<br><br>
 Email: <?php echo $book->customer->email ?>.<br><br>
 Apartamento: <?php echo $book->room->sizeRooms->name ?> // <?php echo ($book->type_luxury == 1)? "Lujo" : "Estandar" ?><br><br>
 Nº: <?php echo $book->pax ?> Pers <br><br>

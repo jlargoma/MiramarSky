@@ -213,9 +213,9 @@
         .bg-info-light>li>a {
             padding: 10px;
         }
-        table.calendar-table tbody > tr > td{
-                width: 3%!important;
-                padding: 0px 10px!important;;
+        table.calendar-table thead > tr > td {
+            width: 20px!important;
+            padding: 0px 5px!important;
         }
         .summernote-wrapper .note-editor .note-toolbar .btn-group .btn {
             font-size: 12px;
@@ -434,7 +434,7 @@
               <!-- /.modal-content -->
             </div>
           <!-- /.modal-dialog -->
-         </div>
+        </div>
         <form role="form">
             <div class="form-group form-group-default required" style="display: none">
                 <label class="highlight">Message</label>

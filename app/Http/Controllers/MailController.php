@@ -35,7 +35,8 @@ class MailController extends Controller
 
     		/* Admin */
     		Mail::send(['html' => 'frontend.emails.bookSuccess'],[ 'data' => $data, 'admin' => 1], function ($message) use ($data) {
-	            $message->from('reservas@apartamentosierranevada.net');
+	            $message->from($data->customer->email);
+	            // $message->to('iankurosaki17@gmail.com'); /* $data['email'] */
 	            $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */
 	            $message->subject('Nueva Solicitud: '.$data->customer->name);
 	        });

@@ -1034,7 +1034,8 @@ class BookController extends Controller
             $book = \App\Book::find($id);
 
             return view('backend/planning/_answerdByEmail',  [
-                                                                'book' => $book
+                                                                'book' => $book,
+                                                                'mobile' => new Mobile()
                                                             ]);
         }
 

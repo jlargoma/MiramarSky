@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use \Carbon\Carbon;
 use Auth;
-
+use App\Classes\Mobile;
 class OwnedController extends Controller
 {
     /**
@@ -146,6 +146,7 @@ class OwnedController extends Controller
                                                 'lujo'        => $lujo,
                                                 'pagos'       => $paymentspro,
                                                 'pagototal'   => $pagototal,
+                                                'mobile'      => new Mobile(),
                                                 ]);
         
         } catch (\Exception $e) {
@@ -222,10 +223,22 @@ class OwnedController extends Controller
     }
     // Pagina de propietario
 
-    public function operativaOwned() {   return view('backend.owned.operativa' );   }
-    public function tarifasOwned()   {   return view('backend.owned.tarifa'    );   }
-    public function descuentosOwned(){   return view('backend.owned.descuento' );   }
-    public function fiscalidadOwned(){   return view('backend.owned.fiscalidad');   }
+    public function operativaOwned() {
+        
+       return view('backend.owned.operativa' , ['mobile'      => new Mobile()]);   
+    }
+    public function tarifasOwned()   {
+        
+       return view('backend.owned.tarifa'    , ['mobile'      => new Mobile()]);   
+    }
+    public function descuentosOwned(){
+        
+       return view('backend.owned.descuento' , ['mobile'      => new Mobile()]);   
+    }
+    public function fiscalidadOwned(){
+        
+       return view('backend.owned.fiscalidad', ['mobile'      => new Mobile()]);   
+    }
 
     public function bloqOwned(Request $request)
             {
