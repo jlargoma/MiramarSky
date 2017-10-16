@@ -1,7 +1,11 @@
 @extends('layouts.master')
-@section('title')Apartamentos de lujo en Sierra Nievada a pie de pista @endsection
+@section('title')Apartamentos de lujo en Sierra Nevada a pie de pista @endsection
 
 @section('content')
+
+<meta name="description" content="Contacto para la Cotizacion de grupos esquí en Sierra nevada, te ofrecemos precios especiales, ofertas descuento de forfaits para grupos" />
+
+<meta name="keywords" content="Alquiler apartamento Sierra Nevada;edificio miramarski; a pie de pista; apartamentos capacidad 6 / 8 personas; estudios capacidad 4 /5 personas; zona baja;piscina climatizada;gimansio;parking cubierto; a 5 minutos  de la plaza de Andalucia">
 
 
 <link href="{{ asset('/frontend/hover.css')}}" rel="stylesheet" media="all">
@@ -22,9 +26,105 @@
 		    left: 5px!important;
 		}
 	}
+	#tele-esqui{
+		margin-left: 15px;
+		left: 0px;
+	    width: 35px;
+	    height: 35px;
+	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') 0 0;
+	}
+	#parking{
+		margin-left: 15px;
+		left: 35px;
+	    width: 35px;
+	    height: 35px;
+	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -35px 0;
+	}
+	#ascensor{
+		margin-left: 15px;
+		left: 70px;
+	    width: 35px;
+	    height: 35px;
+	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -70px 0;
+	}
+	#piscina{
+		margin-left: 15px;
+		left: 105px;
+	    width: 35px;
+	    height: 35px;
+	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -105px 0;
+	}
+	#gimnasio{
+		margin-left: 15px;
+		left: 0px;
+		top: 35px;
+	    width: 35px;
+	    height: 35px;
+	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') 0 -35px;
+	}
+
+	#guarda-esqui{
+		margin-left: 15px;
+		left: 35px;
+		top: 35px;
+	    width: 35px;
+	    height: 35px;
+	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -35px -35px;
+	}
+	#mascota{
+		margin-left: 15px;
+		left: 70px;
+		top: 35px;
+	    width: 35px;
+	    height: 35px;
+	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -70px -35px;
+	}
+	#toalla{
+		margin-left: 15px;
+		left: 105px;
+		top: 35px;
+	    width: 35px;
+	    height: 35px;
+	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -105px -35px;
+	}
+	#cocina{
+		margin-left: 15px;
+		left: 0px;
+		top: 70px;
+	    width: 35px;
+	    height: 35px;
+	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') 0 -70px;
+	}
+	#ducha{
+		margin-left: 15px;
+		left: 35px;
+		top: 70px;
+	    width: 35px;
+	    height: 35px;
+	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -35px -70px;
+	}
+	#calefaccion{
+		margin-left: 15px;
+		left: 70px;
+		top: 70px;
+	    width: 35px;
+	    height: 35px;
+	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -70px -70px;
+	}
+	#shopping{
+		margin-left: 15px;
+		left: 105px;
+		top: 70px;
+	    width: 35px;
+	    height: 35px;
+	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -105px -70px;
+	}
+
+
+
 </style>
 <section id="content">
-
+	
     <div class="content-wrap notoppadding" style="padding-bottom: 0;">
        
 		<?php if (!$mobile->isMobile()): ?>
@@ -60,10 +160,13 @@
 					</div>
    				</div>
    			</div>
+   			
    			<div style="clear: both;"></div>
 	       	<section class="row full-screen noborder" style="background-image: url('/img/miramarski/mountain.jpg'); background-color:white; background-size: cover; background-position:50%;">
-
+				
+				
 				<div class="col-xs-12">
+
 					<div class="col-xs-12 ">
 					
 		       			<div class="col-lg-6 col-md-7 center fadeInUp animated" data-animation="fadeInUp" style="padding: 40px 15px;">
@@ -109,62 +212,62 @@
 
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/teleesqui.png') }}" alt="teleesqui" title="teleesqui" /> A pie de pista 
+				       						<li id="tele-esqui"></li> A pie de pista 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/parking.png') }}" alt="parking" title="parking" /> Parking cubierto 
+				       						<li id="parking"></li> Parking cubierto 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/ascensor.png') }}" alt="ascensor" title="ascensor" /> Ascensor 
+				       						<li id="ascensor"></li> Ascensor  
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/piscina.png') }}" alt="piscina" title="piscina" /> Piscina climatizada 
+				       						<li id="piscina"></li> Piscina climatizada 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/gimnasio.png') }}" alt="gimnasio" title="gimnasio" /> gimnasio 
+				       						<li id="gimnasio"></li> gimnasio 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/guardaesqui.png') }}" alt="guardaesqui" title="guardaesqui" /> Guarda Esqíes 
+				       						<li id="guarda-esqui"></li> Guarda Esqíes 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/mascotas.png') }}" alt="mascotas" title="mascotas" /> Prohibido mascotas 
+				       						<li id="mascota"></li> Prohibido mascotas 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/ropa-toallas.png') }}" alt="ropa-toallas" title="ropa-toallas" /> Ropa y toallas 
+				       						<li id="toalla"></li> Ropa y toallas 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/cocina.png') }}" alt="cocina" title="cocina" /> Cocina 
+				       						<li id="cocina"></li> Cocina 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/ducha.png') }}" alt="ducha" title="ducha" /> Baño 
+				       						<li id="ducha"></li> Baño 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/calefaccion.png') }}" alt="calefaccion" title="calefaccion" /> Calefaccion 
+				       						<li id="calefaccion"></li>Calefaccion 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<img src="{{ asset('/img/miramarski/iconos/small/shopping.png') }}" alt="shopping" title="shopping" /> Shopping 
+				       						<li id="shopping"></li> Shopping 
 				       					</a>
 				       				</div>
 
