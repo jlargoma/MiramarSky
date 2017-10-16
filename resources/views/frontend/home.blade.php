@@ -26,35 +26,35 @@
 		    left: 5px!important;
 		}
 	}
-	.tele-esqui{
+	#tele-esqui{
 		margin-left: 15px;
 		left: 0px;
 	    width: 35px;
 	    height: 35px;
 	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') 0 0;
 	}
-	.parking{
+	#parking{
 		margin-left: 15px;
 		left: 35px;
 	    width: 35px;
 	    height: 35px;
 	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -35px 0;
 	}
-	.ascensor{
+	#ascensor{
 		margin-left: 15px;
 		left: 70px;
 	    width: 35px;
 	    height: 35px;
 	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -70px 0;
 	}
-	.piscina{
+	#piscina{
 		margin-left: 15px;
 		left: 105px;
 	    width: 35px;
 	    height: 35px;
 	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -105px 0;
 	}
-	.gimnasio{
+	#gimnasio{
 		margin-left: 15px;
 		left: 0px;
 		top: 35px;
@@ -63,7 +63,7 @@
 	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') 0 -35px;
 	}
 
-	.guarda-esqui{
+	#guarda-esqui{
 		margin-left: 15px;
 		left: 35px;
 		top: 35px;
@@ -71,7 +71,7 @@
 	    height: 35px;
 	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -35px -35px;
 	}
-	.mascota{
+	#mascota{
 		margin-left: 15px;
 		left: 70px;
 		top: 35px;
@@ -79,7 +79,7 @@
 	    height: 35px;
 	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -70px -35px;
 	}
-	.toalla{
+	#toalla{
 		margin-left: 15px;
 		left: 105px;
 		top: 35px;
@@ -87,7 +87,7 @@
 	    height: 35px;
 	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -105px -35px;
 	}
-	.cocina{
+	#cocina{
 		margin-left: 15px;
 		left: 0px;
 		top: 70px;
@@ -95,7 +95,7 @@
 	    height: 35px;
 	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') 0 -70px;
 	}
-	.ducha{
+	#ducha{
 		margin-left: 15px;
 		left: 35px;
 		top: 70px;
@@ -103,7 +103,7 @@
 	    height: 35px;
 	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -35px -70px;
 	}
-	.calefaccion{
+	#calefaccion{
 		margin-left: 15px;
 		left: 70px;
 		top: 70px;
@@ -111,7 +111,7 @@
 	    height: 35px;
 	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -70px -70px;
 	}
-	.shopping{
+	#shopping{
 		margin-left: 15px;
 		left: 105px;
 		top: 70px;
@@ -212,62 +212,62 @@
 
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<li class="tele-esqui"></li> A pie de pista 
+				       						<li id="tele-esqui"></li> A pie de pista 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<li class="parking"></li> Parking cubierto 
+				       						<li id="parking"></li> Parking cubierto 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<li class="ascensor"></li> Ascensor 
+				       						<li id="ascensor"></li> Ascensor  
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<li class="piscina"></li> Piscina climatizada 
+				       						<li id="piscina"></li> Piscina climatizada 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<li class="gimnasio"></li> gimnasio 
+				       						<li id="gimnasio"></li> gimnasio 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<li class="guarda-esqui"></li> Guarda Esqíes 
+				       						<li id="guarda-esqui"></li> Guarda Esqíes 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<li class="mascota"></li> Prohibido mascotas 
+				       						<li id="mascota"></li> Prohibido mascotas 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<li class="toalla"></li> Ropa y toallas 
+				       						<li id="toalla"></li> Ropa y toallas 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<li class="cocina"></li> Cocina 
+				       						<li id="cocina"></li> Cocina 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<li class="ducha"></li> Baño 
+				       						<li id="ducha"></li> Baño 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<li class="calefaccion"></li>Calefaccion 
+				       						<li id="calefaccion"></li>Calefaccion 
 				       					</a>
 				       				</div>
 				       				<div class="oc-item">
 				       					<a class="pc-characteristics">
-				       						<li class="shopping"></li> Shopping 
+				       						<li id="shopping"></li> Shopping 
 				       					</a>
 				       				</div>
 
