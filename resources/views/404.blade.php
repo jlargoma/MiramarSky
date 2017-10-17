@@ -28,7 +28,6 @@
                     <h1 class="font-s128 font-w300 text-modern animated zoomInDown">404</h1>
                     <h2 class="h3 font-w300 push-50 animated fadeInUp">Uuppss!! Tenemos un problemilla con nuestro servidor...</h2>
                     <!-- END Error Titles -->
-                    
                 </div>
             </div>
         </div>

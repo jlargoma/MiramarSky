@@ -386,41 +386,41 @@ class Book extends Model
                                 switch ($status) {
                                     case '1':
 
-                                        // Mail::send('backend.emails.reservado',['book' => $book], function ($message) use ($book) {
-                                        //         $message->from('reservas@apartamentosierranevada.net');
+                                        Mail::send('backend.emails.reservado',['book' => $book], function ($message) use ($book) {
+                                                $message->from('reservas@apartamentosierranevada.net');
 
-                                        //         $message->to($book->customer->email);
-                                        //         $message->subject('Bloqueo de reserva y datos de pago');
-                                        //     });
+                                                $message->to($book->customer->email);
+                                                $message->subject('Bloqueo de reserva y datos de pago');
+                                            });
                                         break;
                                     case '2':
-                                        // Mail::send('backend.emails.confirmado',['book' => $book], function ($message) use ($book) {
-                                        //         $message->from('reservas@apartamentosierranevada.net');
+                                        Mail::send('backend.emails.confirmado',['book' => $book], function ($message) use ($book) {
+                                                $message->from('reservas@apartamentosierranevada.net');
 
-                                        //         $message->to($book->customer->email);
-                                        //         $message->subject('Confirmación de reserva (pago parcial)');
-                                        //     });
+                                                $message->to($book->customer->email);
+                                                $message->subject('Confirmación de reserva (pago parcial)');
+                                            });
                                         break;
                                     case '4':
-                                        // Mail::send('backend.emails.bloqueado',['book' => $book], function ($message) use ($book) {
-                                        //         $message->from('reservas@apartamentosierranevada.net');
-                                        //         $message->to('alquilerapartamentosmiramarski@gmail.com');
-                                        //         $message->subject('Correo de Bloqueo');
-                                        //     });  
-                                        // break;
+                                        Mail::send('backend.emails.bloqueado',['book' => $book], function ($message) use ($book) {
+                                                $message->from('reservas@apartamentosierranevada.net');
+                                                $message->to('alquilerapartamentosmiramarski@gmail.com');
+                                                $message->subject('Correo de Bloqueo');
+                                            });  
+                                        break;
                                     case '6':
-                                        // Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
-                                        //         $message->from('reservas@apartamentosierranevada.net');
-                                        //         $message->to($book->customer->email);
-                                        //         $message->subject('Correo cancelación de reserva');
-                                        //     });  
+                                        Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
+                                                $message->from('reservas@apartamentosierranevada.net');
+                                                $message->to($book->customer->email);
+                                                $message->subject('Correo cancelación de reserva');
+                                            });  
                                         break;
                                     case '7':
-                                        // Mail::send('backend.emails.reserva-propietario',['book' => $book], function ($message) use ($book) {
-                                        //         $message->from('reservas@apartamentosierranevada.net');
-                                        //         $message->to($book->customer->email);
-                                        //         $message->subject('Correo de Reserva de Propietario');
-                                        //     });  
+                                        Mail::send('backend.emails.reserva-propietario',['book' => $book], function ($message) use ($book) {
+                                                $message->from('reservas@apartamentosierranevada.net');
+                                                $message->to($book->customer->email);
+                                                $message->subject('Correo de Reserva de Propietario');
+                                            });  
                                         break;
                                     case '8':
                                         // Mail::send('backend.emails.subcomunidad',['book' => $book], function ($message) use ($book) {
@@ -428,7 +428,7 @@ class Book extends Model
                                         //         $message->to('alquilerapartamentosmiramarski@gmail.com');
                                         //         $message->subject('Correo de Subcomunidad');
                                         //     });  
-                                        // break;
+                                        break;
                                     default:
 
                                         # code...

@@ -44,12 +44,9 @@ Route::post('/getPriceBook','HomeController@getPriceBook');
 Route::get('/getFormBook','HomeController@form');
 
 Route::post('admin/reservas/create' , 'BookController@create');
-// Route::get('/test' , 'MailController@sendEmailBookSuccess');
-// Route::get('/admin/propietario',['middleware' => 'authSubAdmin','uses' => 'Admin\BackendController@index']);
-// Route::get('/admin/propietario',['middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
-//['middleware' => ['authRole', 'authSubAdmin']]
 
-	// Route::get('/admin',['middleware' => 'auth', 'uses' => 'BookController@index']);
+Route::get('/reservas/stripe/pagos/{id_book}', 'StripeController@stripePayment');
+Route::post('/reservas/stripe/payment/', 'StripeController@stripePaymentResponse');
 
 //Planing 
 	
@@ -168,18 +165,18 @@ Route::post('admin/reservas/create' , 'BookController@create');
 
 //PDF´s
 
-	Route::get('admin/pdf/pdf-reserva/{id}','PdfController@invoice');
+Route::get('admin/pdf/pdf-reserva/{id}','PdfController@invoice');
 
-	Route::group(['middleware' => 'auth'], function () {
- 		Route::get('/admin', function ()    {
-        	$user = \Auth::user(); 
- 			if ($user->role == "propietario") {
- 				$room = \App\Rooms::where('owned', $user->id)->first();
- 			 	return redirect('admin/propietario/'.$room->nameRoom);
- 			}else{
- 				return redirect('admin/reservas');
- 			}
+Route::group(['middleware' => 'auth'], function () {
+		Route::get('/admin', function ()    {
+    	$user = \Auth::user(); 
+			if ($user->role == "propietario") {
+				$room = \App\Rooms::where('owned', $user->id)->first();
+			 	return redirect('admin/propietario/'.$room->nameRoom);
+			}else{
+				return redirect('admin/reservas');
+			}
 
 
-    	});
 	});
+});

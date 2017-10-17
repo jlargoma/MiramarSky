@@ -26,13 +26,11 @@ En todas nuestra reservas están incluidas las Sábanas y toallas. <br>
 
 <h2><u>Pago de la reserva</u></h2>
 <br>
-<b>Dispones de un plazo de 24 horas para realizar el pago de la señal </b> <b style="color: red">25% del total = <?php echo number_format(($book->total_price*0.25),2,',','.') ?> €</b>  a estos datos bancarios: 
-<h2>Titular:  <span style='color:red'>ISDE SL</span><h2>
-<h2>Concepto: <span style='color:red'>Señal MiramarSKi - <?php echo $book->customer->name ?></span><h2>
-<h2>Ordenante: <span style='color:red'><?php echo $book->customer->name ?></span></h2>
-<h2>Datos Bancarios: <span style='color:red'>La Caixa</span></h2>
-<h2>IBAN: <span style='color:red'>ES68 2100 1875 0502 0022 5878</span></h2>
-<h2>BIC(SWIFT): <span style='color:red'>CAIXESBBXXX</span></h1>    
+<b>Dispones de un plazo de 4 horas para realizar el pago de la señal </b> <b style="color: red">25% del total = <?php echo round($book->total_price*0.25) ?> €</b> a traveés de nuestra pasarela de pago para tarjetas.<br><br>
+
+	<a href="<?php echo $_SERVER['SERVER_NAME']; ?>/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>">
+		<?php echo $_SERVER['SERVER_NAME']; ?>/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>		
+	</a><br>
 
 <b><strong>Una vez recibamos el pago de la señal, el apartamento quedará bloquedo y tu recibiras un email con la confirmación.</strong><br>
 
