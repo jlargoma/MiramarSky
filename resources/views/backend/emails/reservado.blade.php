@@ -1,6 +1,19 @@
 <?php use \Carbon\Carbon; setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
 Hola "<?php echo $book->customer->name ?>" hemos bloqueado parcialmente un apartamento en respuesta a tu solicitud:<br/><br/>
 
+<h2><u>Pago de la reserva</u></h2>
+<br>
+<b>Dispones de un plazo de 4 horas para realizar el pago de la señal </b> <b style="color: red">25% del total = <?php echo round($book->total_price*0.25) ?> €</b> a traveés de nuestra pasarela de pago para tarjetas.<br><br>
+
+	<a href="<?php echo $_SERVER['SERVER_NAME']; ?>/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>">
+		<?php echo $_SERVER['SERVER_NAME']; ?>/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>		
+	</a><br><br>
+
+<b><strong>Una vez recibamos el pago de la señal, el apartamento quedará bloquedo y tu recibiras un email con la confirmación.</strong><br>
+
+Consulta nuestras condiciones de contratación <a href="{{ url('/condiciones-generales') }}">aquí</a></b><br><br>
+
+<hr>
 <br>
 
 <b>Nombre: <?php echo $book->customer->name ?> .<br><br>
@@ -24,19 +37,7 @@ En todas nuestra reservas están incluidas las Sábanas y toallas. <br>
 
 <hr/>
 
-<h2><u>Pago de la reserva</u></h2>
-<br>
-<b>Dispones de un plazo de 4 horas para realizar el pago de la señal </b> <b style="color: red">25% del total = <?php echo round($book->total_price*0.25) ?> €</b> a traveés de nuestra pasarela de pago para tarjetas.<br><br>
 
-	<a href="<?php echo $_SERVER['SERVER_NAME']; ?>/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>">
-		<?php echo $_SERVER['SERVER_NAME']; ?>/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>		
-	</a><br><br>
-
-<b><strong>Una vez recibamos el pago de la señal, el apartamento quedará bloquedo y tu recibiras un email con la confirmación.</strong><br>
-
-Consulta nuestras condiciones de contratación <a href="{{ url('/condiciones-generales') }}">aquí</a></b><br><br>
-
-<hr>
 
 
 <h2><b><u>Condiciones generales de Alquiler</u></b></h2><br>
