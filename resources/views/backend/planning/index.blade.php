@@ -100,9 +100,10 @@
     
         <div class="container-fluid  p-l-15 p-r-15 p-t-20">
             <div class="row bg-white">
-                <div class="col-md-12 text-center">
-                    <div class="col-md-3 col-md-offset-3 not-padding">
-                        <h2><b>Planning de reservas</b>  Fechas:
+                <div class="col-md-12 text-center push-20">
+                    <div class="col-md-1 not-padding">
+                        <h2>
+                            <b>Planning</b> 
                         </h2>
                     </div>  
                     <div class="col-md-1" style="padding: 15px 0px;">
@@ -119,7 +120,14 @@
                                  <?php $fecha->addYear(); ?>
                              <?php endfor; ?>
                          </select>     
-                    </div>      
+                    </div>  
+                    <div class="col-md-10">
+                        <div class="alert alert-info fade in alert-dismissable">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                            <!-- <strong>Info!</strong> This alert box indicates a neutral informative change or action. -->
+                            
+                        </div>
+                    </div>    
                 </div>
                 <div class="col-xs-12">
                     <div class="col-md-6 not-padding">
@@ -186,7 +194,7 @@
         </form>
 
 
-
+        <button style="display: none;" id="btnContestado" class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#myModal"> </button>
         <div class="modal fade slide-up in" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content-wrapper">
@@ -424,8 +432,8 @@
             </div>
           <!-- /.modal-dialog -->
          </div>
-
-        <div class="modal fade slide-up in" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
+        <button style="display: none;" id="btnContestado" class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#myModal"> </button>
+        <div class="modal fade slide-up in" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content-wrapper">
                     <div class="modal-content contestado">
@@ -489,7 +497,7 @@
 
         $(document).ready(function() {          
 
-            $('.status,.room').change(function(event) {
+            $('.status, .room').change(function(event) {
                 var id = $(this).attr('data-id');
                 var clase = $(this).attr('class');
                 
@@ -504,11 +512,13 @@
 
 
                 if (status == 5) {
+
+                    alert('se abre');
+
                     $('.modal-content.contestado').empty().load('/admin/reservas/ansbyemail/'+id);
 
-                    $('#myModal2').modal({
-                        show: 'false'
-                    }); 
+                    $('#btnContestado').trigger('click');
+
                     
                    
                 }else{

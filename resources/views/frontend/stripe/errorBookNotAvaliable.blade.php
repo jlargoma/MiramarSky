@@ -91,9 +91,11 @@
 							<span class="font-w800 black shadow" style="font-size: 56px;letter-spacing: -3px;">
 								<?php echo $message[1] ?><br>
 							</span>
-							<?php echo $message[2] ?><br>
+							
 						</h2>
-						
+						<?php if (isset($message[2]) && !empty($message[2])): ?>
+							<p class="text-center">Para regresar al formulario de pago, pincha <a href="{{url('/reservas/stripe/pagos')}}/<?php echo base64_encode($book->id) ?>">aquí</a></p>
+						<?php endif ?>
 					</div>							
 				</div>
 			</div>
@@ -113,8 +115,11 @@
 							<span class="font-w800 shadow" style="font-size: 32px; letter-spacing: -3px;">
 								<?php echo $message[1] ?><br>
 							</span>
-							<?php echo $message[2] ?><br>
+							
 						</h2>
+						<?php if (isset($message[2]) && !empty($message[2])): ?>
+							<p class="text-center">Para regresar al formulario de pago, pincha <a href="{{url('/reservas/stripe/pagos')}}/<?php echo base64_encode($book->id) ?>">aquí</a></p>
+						<?php endif ?>
 					</div>
 					
 				</div>
