@@ -11,7 +11,7 @@
 				<div class="col-lg-2 col-md-4 col-xs-12 hiddens-sm hidden-xs">
 					<ul class="header-extras-2 divcenter pull-right">
 						<li>
-							<a class="facebook" href="[10:59, 18/10/2017] Jorge Largo Jefe: https://www.facebook.com/alquilerlujosierranevada/?ref=bookmarks" ><i class="fa fa-facebook-official fa-2x"></i></a>
+							<a class="facebook" href="https://www.facebook.com/alquilerlujosierranevada/?ref=bookmarks" ><i class="fa fa-facebook-official fa-2x"></i></a>
 						</li>
 						<li>
 							<a class="instagram" href="#" ><i class="fa fa-instagram fa-2x"></i></a>
