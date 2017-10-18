@@ -30,7 +30,7 @@ En todas nuestra reservas están incluidas las Sábanas y toallas. <br>
 
 	<a href="<?php echo $_SERVER['SERVER_NAME']; ?>/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>">
 		<?php echo $_SERVER['SERVER_NAME']; ?>/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>		
-	</a><br>
+	</a><br><br>
 
 <b><strong>Una vez recibamos el pago de la señal, el apartamento quedará bloquedo y tu recibiras un email con la confirmación.</strong><br>
 

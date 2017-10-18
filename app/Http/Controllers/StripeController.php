@@ -15,15 +15,15 @@ class StripeController extends Controller
 {
 
     public static 	$stripe = [
-	  					// "secret_key"      => "sk_test_o40xNAzPuB6sGDEY3rPQ2KUN",
-					  	// "publishable_key" => "pk_test_YNbne14yyAOIrYJINoJHV3BQ"
+	  					"secret_key"      => "sk_test_o40xNAzPuB6sGDEY3rPQ2KUN",
+					  	"publishable_key" => "pk_test_YNbne14yyAOIrYJINoJHV3BQ"
 
-                        "secret_key" => "sk_live_JKRWYAtvJ31tqwZyqNErMEap",
-                        "publishable_key" => "pk_live_wEAGo29RoqPrXWiw3iKQJtWk",
+                        // "secret_key" => "sk_live_JKRWYAtvJ31tqwZyqNErMEap",
+                        // "publishable_key" => "pk_live_wEAGo29RoqPrXWiw3iKQJtWk",
 					];
 
 
-
+    /* Stripe Payments to FRONTEND */
     public function stripePayment($id_book)
     {
 
@@ -108,6 +108,18 @@ class StripeController extends Controller
                 if ($book->changeBook(2, "", $book)) {
 
                     /* Make a charge on apartamentosierranevada.net */
+                    $realPrice = substr($price, 0, -2);
+
+                    $payment = new \App\Payments();
+        
+                    $date = Carbon::now()->format('Y-m-d');
+                    $payment->book_id     = $book->id;
+                    $payment->datePayment = $date;
+                    $payment->import      = $realPrice;
+                    $payment->comment     = "Pago desde stripe";
+                    $payment->type        = 2;
+
+                    $payment->save();
 
 
 
@@ -116,7 +128,6 @@ class StripeController extends Controller
                                                             'payment'        => 0,
                                                             'stripe'         => self::$stripe,
                                                             'book'           => $book,
-                                                            'slidesEdificio' => $slides,
                                                         ]);
                 }
 
@@ -126,4 +137,9 @@ class StripeController extends Controller
         
 
     }
+
+
+
+    /* Stripe Payments to BACKEND */
+
 }

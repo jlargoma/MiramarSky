@@ -90,6 +90,14 @@
         .nav-tabs-simple > li.active a{
             font-weight: 800;
         }
+        span.numPaymentLastBooks{
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: red;
+            border-radius: 100%;
+            padding: 0px 7px;
+        }
     </style>
 
 @endsection
@@ -100,41 +108,119 @@
     
         <div class="container-fluid  p-l-15 p-r-15 p-t-20">
             <div class="row bg-white">
-                <div class="col-md-12 text-center push-20">
-                    <div class="col-md-1 not-padding">
-                        <h2>
-                            <b>Planning</b> 
-                        </h2>
-                    </div>  
-                    <div class="col-md-1" style="padding: 15px 0px;">
-                        <select id="fecha" class="form-control minimal">
-                             <?php $fecha = $inicio->copy()->SubYear(2); ?>
-                             <?php if ($fecha->copy()->format('Y') < 2015): ?>
-                                 <?php $fecha = new Carbon('first day of September 2015'); ?>
-                             <?php endif ?>
-                         
-                             <?php for ($i=1; $i <= 3; $i++): ?>                           
-                                 <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $date->copy()->format('Y') == $fecha->format('Y') ? 'selected' : '' }}>
-                                     <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
-                                 </option>
-                                 <?php $fecha->addYear(); ?>
-                             <?php endfor; ?>
-                         </select>     
-                    </div>  
-                    <div class="col-md-10">
-                        <div class="alert alert-info fade in alert-dismissable">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                <div class="col-md-4">
+                    <div class="col-md-12 not-padding content-last-books" style="display:none;">
+                        <div class="alert alert-info fade in alert-dismissable" style="background-color: #daeffd!important;">
+                            <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a> -->
                             <!-- <strong>Info!</strong> This alert box indicates a neutral informative change or action. -->
-                            
+                            <h4 class="text-center">Últimas confirmadas</h4>
+                            <table class="table table-condensed" style="margin-top: 0;">
+                                <tbody>
+                                    <?php foreach ($arrayBooks["pagadas"] as $key => $book): ?>
+                                        <tr>
+                                            <td class ="text-center" style="color: black;padding: 5px!important;">  
+                                                <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
+                                                    <?php echo $book->customer->name ?>
+                                                </a> 
+                                                
+                                            </td>
+                                            <td class="text-center" style="color: black;">   
+                                                <?php echo substr($book->room->name,0,5) ?>       
+                                            </th>
+                                            <td class="text-center" style="color: black;">   
+                                                <b>
+                                                    <?php
+                                                        $start = Carbon::createFromFormat('Y-m-d',$book->start);
+                                                        echo $start->formatLocalized('%d %b');
+                                                    ?>        
+                                                </b> - 
+                                                <b>
+                                                    <?php
+                                                        $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
+                                                        echo $finish->formatLocalized('%d %b');
+                                                    ?>        
+                                                </b>           
+                                            </td>
+                                            <td class="text-center" style="width: 17%!important; color: black;padding: 5px!important;">
+                                                
+                                                <?php if (isset($payment[$book->id])): ?>
+                                                    <?php echo  $payment[$book->id]." €" ?>
+                                                <?php else: ?>
+                                                    -----
+                                                <?php endif ?>
+                                            </td>
+                                             <td class="text-center" style="color: black;">  
+                                                <?php $paymentBook = \App\Payments::where('book_id', $book->id)->get(); ?>
+                                                <?php 
+                                                    $fromStripe = false;
+                                                    foreach ($paymentBook as $pay) {
+                                                        if (preg_match('/stripe/i', $pay->comment)) {
+                                                            $fromStripe = true;
+                                                        }
+                                                    }
+                                                ?>
+                                                <?php if ($fromStripe): ?>
+                                                    <a target="_blank" href="https://dashboard.stripe.com/payments"><img src="/img/stripe-icon.jpg" style="width: 20px;"></a>
+                                                <?php else: ?>
+                                                    &nbsp;
+                                                <?php endif ?>      
+                                            </th>
+                                        </tr>
+                                        <?php if($key == 4) break; ?>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
                         </div>
-                    </div>    
+                    </div> 
                 </div>
+
                 <div class="col-xs-12">
                     <div class="col-md-6 not-padding">
-                        <button class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalNewBook">
-                            <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Nueva Reserva</span>
-                        </button>
+                        <div class="col-md-6">
+                            <button class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalNewBook">
+                                <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Nueva Reserva</span>
+                            </button>
+                            <?php 
+                                $stripedsPayments = \App\Payments::where('comment', 'LIKE', '%stripe%')
+                                                                    ->whereYear('created_at','=', date('Y'))
+                                                                    ->whereMonth('created_at','=', date('m'))
+                                                                    ->whereDay('created_at','=', date('d'))
+                                                                    ->get();
+                            ?>
+                            <button id="lastBooks" class="btn btn-success btn-cons m-b-10" type="button">
+                                <span class="bold">Últimas reservas</span>
+                                <span class="numPaymentLastBooks"><?php echo  $stripedsPayments->count(); ?></span>
+                            </button>
+                            <button id="lastBooksClose" class="btn btn-danger btn-cons m-b-10" type="button" style="display: none;">
+                                <span class="bold">Últimas reservas</span>
+                                <span class="numPaymentLastBooks"><?php echo  $stripedsPayments->count(); ?></span>
+                            </button>
+                        </div>
+                        <div class="col-md-6 text-center pull-right">
+                            <div class="col-md-5 not-padding">
+                                <h2 style="margin: 0;">
+                                    <b>Planning</b> 
+                                </h2>
+                            </div>  
+                            <div class="col-md-7">
+                                <select id="fecha" class="form-control minimal">
+                                     <?php $fecha = $inicio->copy()->SubYear(2); ?>
+                                     <?php if ($fecha->copy()->format('Y') < 2015): ?>
+                                         <?php $fecha = new Carbon('first day of September 2015'); ?>
+                                     <?php endif ?>
+                                 
+                                     <?php for ($i=1; $i <= 3; $i++): ?>                           
+                                         <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $date->copy()->format('Y') == $fecha->format('Y') ? 'selected' : '' }}>
+                                             <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
+                                         </option>
+                                         <?php $fecha->addYear(); ?>
+                                     <?php endfor; ?>
+                                 </select>     
+                            </div>  
+
+                        </div>
                     </div>
+                    
                 </div>
                 
         
@@ -194,8 +280,8 @@
         </form>
 
 
-        <button style="display: none;" id="btnContestado" class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#myModal"> </button>
-        <div class="modal fade slide-up in" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <button style="display: none;" id="btnContestado" class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalContestado"> </button>
+        <div class="modal fade slide-up in" id="modalContestado" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content-wrapper">
                     <div class="modal-content contestado" id="contentEmailing"></div>
@@ -217,239 +303,332 @@
         </div>
 
     <?php else: ?>
-    <style type="text/css">
-        .bg-info-light>li>a {
-            padding: 10px;
-        }
-        table.calendar-table thead > tr > td {
-            width: 20px!important;
-            padding: 0px 5px!important;
-        }
-        .summernote-wrapper .note-editor .note-toolbar .btn-group .btn {
-            font-size: 12px;
-            font-weight: 600;
-            height: 40px;
-            min-width: 33px;
-        }
-        .modal .modal-body{
-            padding: 0 10px;
-        }
-    </style>
-    <div class="container-fluid container-fixed-lg">
-        <div class="row">
-            <div class="col-xs-3" style="position: fixed; bottom: 20px; right: 10px; z-index: 100">
-                <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalNewBook" style="min-width: 10px!important;width: 80px!important; padding: 25px; border-radius: 100%;">
-                    <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
-                </button>
-            </div>
-        </div>
-        <div class="row">
-            
-            <div class="panel" style="margin-bottom: 0px!important">
-                <ul class="nav nav-tabs nav-tabs-simple bg-info-light " role="tablist" data-init-reponsive-tabs="collapse">
-                    <li class="resv  active text-center"  style="width: 33.33%; min-height: 43px;">
-                        <a href="#reservas" data-toggle="tab" role="tab" style="font-size: 15px!important;padding-left: 2px;padding-right: 2px"> RESERVAS </a>
-                    </li>
-                    <li class="cob text-center" style="width: 33.33%; min-height: 43px;">
-                        <a href="#cobros" data-toggle="tab" role="tab" style="font-size: 15px!important;padding-left: 2px;padding-right: 2px"> RECEPCION </a>
-                    </li>
-                    <li class="calend text-center" style="width: 33.33%;min-height: 43px;line-height: 45px;">
-                        <i class="fa fa-calendar fa-2x white" aria-hidden="true"></i>
-                    </li>
-                </ul>
-            </div>
-            <div class="tab-content ">
-                <div class="tab-pane active" id="reservas">
-                    <div class="row column-seperation ">
-                        <div class="panel resv" style="margin-bottom: 0;">
-                            <ul class="nav nav-tabs nav-tabs-simple bg-info-light rev" role="tablist" data-init-reponsive-tabs="collapse">
-                                <li class="active res text-center"  style="width: 33.33%;">
-                                    <a href="#tabPendientes" data-toggle="tab" role="tab" class="pendientes">Pend... 
-                                        <span class="badge font-w800 "><?php echo count($arrayBooks["nuevas"]) ?></span>
-                                    </a>
-                                </li>
-                                <li class="bloq text-center" style="width: 33.33%;">
-                                    <a href="#tabEspeciales" data-toggle="tab" role="tab" class="especiales">Esp...
-                                        <span class="badge font-w800 "><?php echo count($arrayBooks["especiales"]) ?></span>
-                                    </a>
-                                </li>
-                                <li class="pag text-center" style="width: 33.33%;">
-                                    <a href="#tabPagadas" data-toggle="tab" role="tab" class="confirmadas">Confir... 
-                                        <span class="badge font-w800 "><?php echo count($arrayBooks["pagadas"]) ?></span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="tab-content ">
-                            <div class="tab-pane active table-responsive" id="tabPendientes">
-                                <div class="container column-seperation ">
-                                    @include('backend.planning.listados._pendientes-mobile')
-                                </div>
-                            </div>
-                            <div class="tab-pane table-responsive" id="tabEspeciales">
-                                <div class="container column-seperation ">
-                                        @include('backend.planning.listados._especiales-mobile')
-                                </div>
-                            </div>
-                            <div class="tab-pane table-responsive " id="tabPagadas">
-                                <div class="container column-seperation ">.
-                                    @include('backend.planning.listados._pagadas-mobile')                                 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+        <style type="text/css">
+            .bg-info-light>li>a {
+                padding: 10px;
+            }
+            table.calendar-table thead > tr > td {
+                width: 20px!important;
+                padding: 0px 5px!important;
+            }
+            .summernote-wrapper .note-editor .note-toolbar .btn-group .btn {
+                font-size: 12px;
+                font-weight: 600;
+                height: 40px;
+                min-width: 33px;
+            }
+            .modal .modal-body{
+                padding: 0 10px;
+            }
+        </style>
+        <div class="container-fluid container-fixed-lg">
+            <div class="row">
+                <div class="col-xs-3" style="position: fixed; bottom: 20px; right: 10px; z-index: 100">
+                    <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalNewBook" style="min-width: 10px!important;width: 80px!important; padding: 25px; border-radius: 100%;">
+                        <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+                    </button>
                 </div>
-
-                <div class="tab-pane" id="cobros">
-                    <div class="row column-seperation">
-                        <div class="panel in-out">
-                            <ul class="nav nav-tabs nav-tabs-simple bg-info-light rev" role="tablist" data-init-reponsive-tabs="collapse">
-                                <li class="active in text-center cob" style="width: 50%">
-                                    <a href="#tabIn" data-toggle="tab" role="tab" style="font-size: 11px;">CHECK IN
-                                    </a>
-                                </li>
-                                <li class="out text-center cob"  style="width: 50%">
-                                    <a href="#tabOut" data-toggle="tab" role="tab" style="font-size: 11px;">CHECK OUT
-                                    </a>
-                                </li>
-                            </ul>
+            </div>
+            <div class="row" style="margin-top: 15px;">
+                <div class="col-xs-12" style="padding: 0 15px;">
+                    <?php 
+                        $stripedsPayments = \App\Payments::where('comment', 'LIKE', '%stripe%')
+                                                            ->whereYear('created_at','=', date('Y'))
+                                                            ->whereMonth('created_at','=', date('m'))
+                                                            ->whereDay('created_at','=', date('d'))
+                                                            ->get();
+                    ?>
+                    <button id="lastBooks" class="btn btn-success btn-cons m-b-10" type="button">
+                        <span class="bold">Últimas reservas</span>
+                        <span class="numPaymentLastBooks"><?php echo  $stripedsPayments->count(); ?></span>
+                    </button>
+                    <button id="lastBooksClose" class="btn btn-danger btn-cons m-b-10" type="button" style="display: none;">
+                        <span class="bold">Últimas reservas</span>
+                        <span class="numPaymentLastBooks"><?php echo  $stripedsPayments->count(); ?></span>
+                    </button>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 15px;">
+                    
+                <div class="col-md-12">
+                    <div class="col-md-12 not-padding content-last-books" style="display:none;">
+                        <div class="alert alert-info fade in alert-dismissable" style="background-color: #daeffd!important;">
+                            <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a> -->
+                            <!-- <strong>Info!</strong> This alert box indicates a neutral informative change or action. -->
+                            <h4 class="text-center">Últimas confirmadas</h4>
+                            <table class="table table-condensed" style="margin-top: 0;">
+                                <tbody>
+                                    <?php foreach ($arrayBooks["pagadas"] as $key => $book): ?>
+                                        <tr>
+                                            <td class ="text-center" style="color: black;padding: 5px!important;">  
+                                                <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
+                                                    <?php echo $book->customer->name ?>
+                                                </a> 
+                                                
+                                            </td>
+                                            <td class="text-center" style="color: black;">   
+                                                <?php echo substr($book->room->name,0,5) ?>       
+                                            </th>
+                                            <td class="text-center" style="color: black;">   
+                                                <b>
+                                                    <?php
+                                                        $start = Carbon::createFromFormat('Y-m-d',$book->start);
+                                                        echo $start->formatLocalized('%d %b');
+                                                    ?>        
+                                                </b> - 
+                                                <b>
+                                                    <?php
+                                                        $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
+                                                        echo $finish->formatLocalized('%d %b');
+                                                    ?>        
+                                                </b>           
+                                            </td>
+                                            <td class="text-center" style="width: 17%!important; color: black;padding: 5px!important;">
+                                                
+                                                <?php if (isset($payment[$book->id])): ?>
+                                                    <?php echo  $payment[$book->id]." €" ?>
+                                                <?php else: ?>
+                                                    -----
+                                                <?php endif ?>
+                                            </td>
+                                             <td class="text-center" style="color: black;">  
+                                                <?php $paymentBook = \App\Payments::where('book_id', $book->id)->get(); ?>
+                                                <?php 
+                                                    $fromStripe = false;
+                                                    foreach ($paymentBook as $pay) {
+                                                        if (preg_match('/stripe/i', $pay->comment)) {
+                                                            $fromStripe = true;
+                                                        }
+                                                    }
+                                                ?>
+                                                <?php if ($fromStripe): ?>
+                                                    <a target="_blank" href="https://dashboard.stripe.com/payments"><img src="/img/stripe-icon.jpg" style="width: 20px;"></a>
+                                                <?php else: ?>
+                                                    &nbsp;
+                                                <?php endif ?>      
+                                            </th>
+                                        </tr>
+                                        <?php if($key == 4) break; ?>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="tab-content">
-                            <div class="tab-pane active table-responsive" id="tabIn">
-                                <table class="table table-striped dataTable no-footer">
-                                    <thead>
-                                        <th class="bg-success text-white text-center">Nombre</th>
-                                        <th class="bg-success text-white text-center">In</th>
-                                        <th class="bg-success text-white text-center">Out</th>
-                                        <th class="bg-success text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i> In</th>
-                                        <th class="bg-success text-white text-center">Apto</th>
-                                        <th class="bg-success text-white text-center">Pendiente</th>
-                                        <th class="bg-success text-white text-center">Tel</th>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($proxIn as $book): ?>
-                                            <tr>
-                                                <td class="text-center sm-p-t-10 sm-p-b-10">
-                                                    <a class="cobro" data-id="<?php echo $book->id ?>" data-toggle="modal" data-target="#myModal">
-                                                        <?php echo substr($book->customer->name,0,10) ?>
-                                                    </a>
-                                                </td>
-                                                <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?></td>
-                                                <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
-                                                <td class="text-center sm-p-t-10 sm-p-b-10">Hora</td>
-                                                <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $book->room->nameRoom ?></td>
-                                                <td class="text-center sm-p-t-10 sm-p-b-10">
-                                                    <?php if (isset($payment[$book->id])): ?>
-                                                        <p style="{{ $book->total_price - $payment[$book->id] > 0 ? 'color:red' : '' }}"><?php echo number_format($book->total_price - $payment[$book->id],2,',','.') ?> €</p>
-                                                    <?php else: ?>
-                                                        <p style="color:red"><?php echo number_format($book->total_price,2,',','.') ?> €<p>
-                                                    <?php endif ?>
-                                                </td>
-                                                <td class="text-center sm-p-t-10 sm-p-b-10"><a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
-                                            </tr>
-                                        <?php endforeach ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="tab-pane table-responsive" id="tabOut">
-                                <table class="table table-striped dataTable no-footer">
-                                    <thead>
-                                        <th class="bg-success text-white text-center">Nombre</th>
-                                        <th class="bg-success text-white text-center">In</th>
-                                        <th class="bg-success text-white text-center">Out</th>
-                                        <th class="bg-success text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i> Out</th>
-                                        <th class="bg-success text-white text-center">Apto</th>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($proxOut as $book): ?>
-                                            <tr>
-                                                <td class="text-center sm-p-t-10 sm-p-b-10">
-                                                    <a class="cobro" data-id="<?php echo $book->id ?>" data-toggle="modal" data-target="#myModal">
-                                                        <?php echo substr($book->customer->name,0,10) ?>
-                                                    </a>
-                                                </td>
-                                                <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?></td>
-                                                <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
-
-                                                <td class="text-center sm-p-t-10 sm-p-b-10">
-                                                    <?php if (isset($payment[$book->id])): ?>
-                                                        <?php echo number_format($book->total_price - $payment[$book->id],2,',','.') ?> €
-                                                    <?php else: ?>
-                                                        <?php echo number_format($book->total_price,2,',','.') ?> €
-                                                    <?php endif ?>
-                                                </td>
-                                                <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $book->room->nameRoom ?></td>
-                                            </tr>
-                                        <?php endforeach ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                    </div> 
                 </div>
 
 
-
-                <!-- Seccion Calendario -->
-                <div class="calendar-mobile">
-                    @include('backend.planning.calendar')
-                </div>
-                <!-- Seccion Calendario -->
-
             </div>
-        </div>
-
-        <!-- Modal de cobros -->
-        <div class="modal fade slide-up disable-scroll in" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-md">
-                <div class="modal-content-wrapper">
-                    <div class="modal-content">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-50" style="font-size: 35px"></i>
-                        </button>
-                        <div class="container-xs-height full-height">
-                            <div class="row-xs-height">
-                                <div class="modal-body col-xs-height col-middle text-center p-0">
-
+            <div class="row">
+                
+                <div class="panel" style="margin-bottom: 0px!important">
+                    <ul class="nav nav-tabs nav-tabs-simple bg-info-light " role="tablist" data-init-reponsive-tabs="collapse">
+                        <li class="resv  active text-center"  style="width: 33.33%; min-height: 43px;">
+                            <a href="#reservas" data-toggle="tab" role="tab" style="font-size: 15px!important;padding-left: 2px;padding-right: 2px"> RESERVAS </a>
+                        </li>
+                        <li class="cob text-center" style="width: 33.33%; min-height: 43px;">
+                            <a href="#cobros" data-toggle="tab" role="tab" style="font-size: 15px!important;padding-left: 2px;padding-right: 2px"> RECEPCION </a>
+                        </li>
+                        <li class="calend text-center" style="width: 33.33%;min-height: 43px;line-height: 45px;">
+                            <i class="fa fa-calendar fa-2x white" aria-hidden="true"></i>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-content ">
+                    <div class="tab-pane active" id="reservas">
+                        <div class="row column-seperation ">
+                            <div class="panel resv" style="margin-bottom: 0;">
+                                <ul class="nav nav-tabs nav-tabs-simple bg-info-light rev" role="tablist" data-init-reponsive-tabs="collapse">
+                                    <li class="active res text-center"  style="width: 33.33%;">
+                                        <a href="#tabPendientes" data-toggle="tab" role="tab" class="pendientes">Pend... 
+                                            <span class="badge font-w800 "><?php echo count($arrayBooks["nuevas"]) ?></span>
+                                        </a>
+                                    </li>
+                                    <li class="bloq text-center" style="width: 33.33%;">
+                                        <a href="#tabEspeciales" data-toggle="tab" role="tab" class="especiales">Esp...
+                                            <span class="badge font-w800 "><?php echo count($arrayBooks["especiales"]) ?></span>
+                                        </a>
+                                    </li>
+                                    <li class="pag text-center" style="width: 33.33%;">
+                                        <a href="#tabPagadas" data-toggle="tab" role="tab" class="confirmadas">Confir... 
+                                            <span class="badge font-w800 "><?php echo count($arrayBooks["pagadas"]) ?></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-content ">
+                                <div class="tab-pane active table-responsive" id="tabPendientes">
+                                    <div class="container column-seperation ">
+                                        @include('backend.planning.listados._pendientes-mobile')
+                                    </div>
+                                </div>
+                                <div class="tab-pane table-responsive" id="tabEspeciales">
+                                    <div class="container column-seperation ">
+                                            @include('backend.planning.listados._especiales-mobile')
+                                    </div>
+                                </div>
+                                <div class="tab-pane table-responsive " id="tabPagadas">
+                                    <div class="container column-seperation ">.
+                                        @include('backend.planning.listados._pagadas-mobile')                                 
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
-        <!-- Modal de Cobros -->
 
-        <div class="modal fade slide-up in" id="modalNewBook" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content-wrapper">
-                    <div class="modal-content">
-                        @include('backend.planning.listados._nueva-mobile')
+                    <div class="tab-pane" id="cobros">
+                        <div class="row column-seperation">
+                            <div class="panel in-out">
+                                <ul class="nav nav-tabs nav-tabs-simple bg-info-light rev" role="tablist" data-init-reponsive-tabs="collapse">
+                                    <li class="active in text-center cob" style="width: 50%">
+                                        <a href="#tabIn" data-toggle="tab" role="tab" style="font-size: 11px;">CHECK IN
+                                        </a>
+                                    </li>
+                                    <li class="out text-center cob"  style="width: 50%">
+                                        <a href="#tabOut" data-toggle="tab" role="tab" style="font-size: 11px;">CHECK OUT
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-content">
+                                <div class="tab-pane active table-responsive" id="tabIn">
+                                    <table class="table table-striped dataTable no-footer">
+                                        <thead>
+                                            <th class="bg-success text-white text-center">Nombre</th>
+                                            <th class="bg-success text-white text-center">In</th>
+                                            <th class="bg-success text-white text-center">Out</th>
+                                            <th class="bg-success text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i> In</th>
+                                            <th class="bg-success text-white text-center">Apto</th>
+                                            <th class="bg-success text-white text-center">Pendiente</th>
+                                            <th class="bg-success text-white text-center">Tel</th>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($proxIn as $book): ?>
+                                                <tr>
+                                                    <td class="text-center sm-p-t-10 sm-p-b-10">
+                                                        <a class="cobro" data-id="<?php echo $book->id ?>" data-toggle="modal" data-target="#myModal">
+                                                            <?php echo substr($book->customer->name,0,10) ?>
+                                                        </a>
+                                                    </td>
+                                                    <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?></td>
+                                                    <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
+                                                    <td class="text-center sm-p-t-10 sm-p-b-10">Hora</td>
+                                                    <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $book->room->nameRoom ?></td>
+                                                    <td class="text-center sm-p-t-10 sm-p-b-10">
+                                                        <?php if (isset($payment[$book->id])): ?>
+                                                            <p style="{{ $book->total_price - $payment[$book->id] > 0 ? 'color:red' : '' }}"><?php echo number_format($book->total_price - $payment[$book->id],2,',','.') ?> €</p>
+                                                        <?php else: ?>
+                                                            <p style="color:red"><?php echo number_format($book->total_price,2,',','.') ?> €<p>
+                                                        <?php endif ?>
+                                                    </td>
+                                                    <td class="text-center sm-p-t-10 sm-p-b-10"><a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
+                                                </tr>
+                                            <?php endforeach ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane table-responsive" id="tabOut">
+                                    <table class="table table-striped dataTable no-footer">
+                                        <thead>
+                                            <th class="bg-success text-white text-center">Nombre</th>
+                                            <th class="bg-success text-white text-center">In</th>
+                                            <th class="bg-success text-white text-center">Out</th>
+                                            <th class="bg-success text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i> Out</th>
+                                            <th class="bg-success text-white text-center">Apto</th>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($proxOut as $book): ?>
+                                                <tr>
+                                                    <td class="text-center sm-p-t-10 sm-p-b-10">
+                                                        <a class="cobro" data-id="<?php echo $book->id ?>" data-toggle="modal" data-target="#myModal">
+                                                            <?php echo substr($book->customer->name,0,10) ?>
+                                                        </a>
+                                                    </td>
+                                                    <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?></td>
+                                                    <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
+
+                                                    <td class="text-center sm-p-t-10 sm-p-b-10">
+                                                        <?php if (isset($payment[$book->id])): ?>
+                                                            <?php echo number_format($book->total_price - $payment[$book->id],2,',','.') ?> €
+                                                        <?php else: ?>
+                                                            <?php echo number_format($book->total_price,2,',','.') ?> €
+                                                        <?php endif ?>
+                                                    </td>
+                                                    <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $book->room->nameRoom ?></td>
+                                                </tr>
+                                            <?php endforeach ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-              <!-- /.modal-content -->
-            </div>
-          <!-- /.modal-dialog -->
-         </div>
-        <button style="display: none;" id="btnContestado" class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#myModal"> </button>
-        <div class="modal fade slide-up in" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content-wrapper">
-                    <div class="modal-content contestado">
+
+
+
+                    <!-- Seccion Calendario -->
+                    <div class="calendar-mobile">
+                        @include('backend.planning.calendar')
                     </div>
+                    <!-- Seccion Calendario -->
+
                 </div>
-              <!-- /.modal-content -->
             </div>
-          <!-- /.modal-dialog -->
+
+            <!-- Modal de cobros -->
+            <div class="modal fade slide-up disable-scroll in" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content-wrapper">
+                        <div class="modal-content">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-50" style="font-size: 35px"></i>
+                            </button>
+                            <div class="container-xs-height full-height">
+                                <div class="row-xs-height">
+                                    <div class="modal-body col-xs-height col-middle text-center p-0">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- Modal de Cobros -->
+
+            <div class="modal fade slide-up in" id="modalNewBook" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content-wrapper">
+                        <div class="modal-content">
+                            @include('backend.planning.listados._nueva-mobile')
+                        </div>
+                    </div>
+                  <!-- /.modal-content -->
+                </div>
+              <!-- /.modal-dialog -->
+            </div>
+
+            <button style="display: none;" id="btnContestado" class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalContestado"> </button>
+
+            <div class="modal fade slide-up in" id="modalContestado" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content-wrapper">
+                        <div class="modal-content contestado">
+                        </div>
+                    </div>
+                  <!-- /.modal-content -->
+                </div>
+              <!-- /.modal-dialog -->
+            </div>
+
+            <form role="form">
+                <div class="form-group form-group-default required" style="display: none">
+                    <label class="highlight">Message</label>
+                    <input type="text" hidden="" class="form-control notification-message" placeholder="Type your message here" value="This notification looks so perfect!" required>
+                </div>
+                <button class="btn btn-success show-notification hidden" id="boton">Show</button>
+            </form>
         </div>
-        <form role="form">
-            <div class="form-group form-group-default required" style="display: none">
-                <label class="highlight">Message</label>
-                <input type="text" hidden="" class="form-control notification-message" placeholder="Type your message here" value="This notification looks so perfect!" required>
-            </div>
-            <button class="btn btn-success show-notification hidden" id="boton">Show</button>
-        </form>
     <?php endif ?>
 @endsection
 
@@ -494,6 +673,17 @@
            }, 2000);
         });
         
+        $('#lastBooks').click(function(event) {
+            $('.content-last-books').show();
+            $('#lastBooksClose').show();
+            $(this).hide();
+        });
+        $('#lastBooksClose').click(function(event) {
+            $('.content-last-books').hide();
+            $(this).hide();
+            $('#lastBooks').show();
+            
+        });
 
         $(document).ready(function() {          
 
@@ -512,8 +702,6 @@
 
 
                 if (status == 5) {
-
-                    alert('se abre');
 
                     $('.modal-content.contestado').empty().load('/admin/reservas/ansbyemail/'+id);
 
