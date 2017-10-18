@@ -6,25 +6,12 @@
 			<div class="row center nobottommargin">
 				
 				<div class="col-lg-10 col-md-8 col-xs-12">
-					<div class="top-links">
-						<ul>
-							<li >
-							
-							</li>
-							<li class="hidden-md hiddens-sm hidden-xs">
-								
-							</li>
-							<li class="hidden-md hiddens-sm hidden-xs">
-								
-							</li>
-						</ul>
 
-					</div>
 				</div>
 				<div class="col-lg-2 col-md-4 col-xs-12 hiddens-sm hidden-xs">
 					<ul class="header-extras-2 divcenter pull-right">
 						<li>
-							<a class="facebook" href="https://www.facebook.com/Evolutio.fit" ><i class="fa fa-facebook-official fa-2x"></i></a>
+							<a class="facebook" href="[10:59, 18/10/2017] Jorge Largo Jefe: https://www.facebook.com/alquilerlujosierranevada/?ref=bookmarks" ><i class="fa fa-facebook-official fa-2x"></i></a>
 						</li>
 						<li>
 							<a class="instagram" href="#" ><i class="fa fa-instagram fa-2x"></i></a>
@@ -33,7 +20,7 @@
 							<a class="whatsapp"  href="whatsapp://send?text=Descubre%20www.evolutio.fit!!%20disfruta%20de%20sus%20ofertas%20exclusivas" data-action="share/whatsapp/share" ><i class="fa fa-whatsapp fa-2x"></i></a>
 						</li>
 						<li>
-							<a class="email" href="mailto:info@evolutio.fit" ><i class="fa fa-envelope fa-2x"></i></a>
+							<a class="email" href="mailto:reservas@apartamentosierranevada.net" ><i class="fa fa-envelope fa-2x"></i></a>
 						</li>
 
 						<li>
@@ -129,7 +116,6 @@
 					</nav><!-- #primary-menu end -->
 
 				</div>
-				<div></div>
 
 			</div>
 			

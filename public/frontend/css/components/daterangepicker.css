@@ -335,6 +335,7 @@
 		border-right: none;
 		border-top-right-radius: 0;
 		border-bottom-right-radius: 0;
+		padding-right: 12px;
 		}
 
 		.daterangepicker .calendar.right .calendar-table {
@@ -360,10 +361,6 @@
 		}
 
 		.daterangepicker .left .daterangepicker_input {
-		padding-right: 12px;
-		}
-
-		.daterangepicker .calendar.left .calendar-table {
 		padding-right: 12px;
 		}
 
