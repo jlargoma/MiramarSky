@@ -6,9 +6,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 		<link href="//fonts.googleapis.com/css?family=Open+Sans%3A800|Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700,800,900|Crete+Round:400italic" rel="stylesheet" type="text/css" />
-		<link href="//fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700,800,900|Roboto+Condensed:400|Poppins:600%2C400" rel="stylesheet" type="text/css" />
- 	
-		<link rel="stylesheet" href="{{ asset ('/css/app.css')}}" type="text/css" />
+
+ 
+			<link rel="stylesheet" href="{{ asset ('/css/app.css')}}" type="text/css" />
 
 		<?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
 			<link rel="stylesheet" href="{{ asset ('/frontend/css/responsive-mobile.css')}}" type="text/css" />
