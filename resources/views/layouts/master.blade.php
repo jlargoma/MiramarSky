@@ -8,18 +8,18 @@
 		<link href="//fonts.googleapis.com/css?family=Open+Sans%3A800|Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700,800,900|Crete+Round:400italic" rel="stylesheet" type="text/css" />
 		<link href="//fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700,800,900|Roboto+Condensed:400|Poppins:600%2C400" rel="stylesheet" type="text/css" />
  	
-		<link rel="stylesheet" href="{{ asset ('/css/app.css')}}" type="text/css" />
+		<link rel="stylesheet" async href="{{ asset ('/css/app.css')}}" type="text/css" />
 
 		<?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
-			<link rel="stylesheet" href="{{ asset ('/frontend/css/responsive-mobile.css')}}" type="text/css" />
+			<link rel="stylesheet" async href="{{ asset ('/frontend/css/responsive-mobile.css')}}" type="text/css" />
 		<?php else: ?>
-			<link rel="stylesheet" href="{{ asset ('/frontend/css/responsive.css')}}" type="text/css" />
+			<link rel="stylesheet" async href="{{ asset ('/frontend/css/responsive.css')}}" type="text/css" />
 		<?php endif; ?>
 
-		<link rel="stylesheet" href="{{ asset ('/frontend/colors.php?color=3F51B5')}}" type="text/css" />
-		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/> 
+		<link rel="stylesheet" async href="{{ asset ('/frontend/colors.php?color=3F51B5')}}" type="text/css" />
+		<link rel="stylesheet" async type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/> 
 
-		<link rel="stylesheet" href="{{ asset ('/css/slider.css')}}" type="text/css" />
+		<link rel="stylesheet" async href="{{ asset ('/css/slider.css')}}" type="text/css" />
 		
 		<link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
 		<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
