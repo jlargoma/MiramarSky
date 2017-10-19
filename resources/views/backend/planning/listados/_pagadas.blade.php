@@ -20,7 +20,7 @@
             <tbody>
                 <?php foreach ($arrayBooks["pagadas"] as $book): ?>
                     <tr>
-                        <td class ="text-center">
+                        <td class ="text-center" style="padding: 10px 15px!important">
                             <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                                 <?php echo substr($book->customer['name'], 0,10)  ?>
                             </a>                                                        

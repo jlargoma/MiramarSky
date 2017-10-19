@@ -39,7 +39,7 @@
         <div class="col-md-12 text-center">
             <h2>Apartamentos</h2>
         </div>
-        <div class="col-md-8 cols-xs-12 col-sm-12">
+        <div class="col-md-9 cols-xs-12 col-sm-12">
             <div class="pull-left">
               <div class="col-xs-12 ">
                 <input type="text" id="search-tableRoom" class="form-control pull-right" placeholder="Buscar">
@@ -57,9 +57,10 @@
                         <th class ="text-center bg-complete text-white">  Tamaño          </th>
                         <th class ="text-center bg-complete text-white">  Lujo          </th>                        
                         <th class ="text-center bg-complete text-white">  Tipo        </th>
-                        <th class ="text-center bg-complete text-white">  Propietario   </th>
+                        <th class ="text-center bg-complete text-white">  Prop   </th>
                         <th class ="text-center bg-complete text-white">  Orden   </th>
                         <th class ="text-center bg-complete text-white" style="width: 10%">  Estado </th>
+                        <th class ="text-center bg-complete text-white" style="width: 10%">  Booking.com </th>
                         <th class ="text-center bg-complete text-white" style="width: 10%">  Btn </th>
                     </tr>
                 </thead>
@@ -80,7 +81,7 @@
                                <input class="editable maxOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->maxOcu?>" style="width: 100%;text-align: center;border-style: none none">
                            </td> 
                            <td class="text-center">
-                               <select class="sizes" class="form-control" data-id="<?php echo $room->id ?>">
+                               <select class="sizes form-control minimal" data-id="<?php echo $room->id ?>">
                                  <?php foreach ($sizes as $size): ?>                                   
                                      <option value="<?php echo $size->id; ?>" <?php echo ($size->id == $room->sizeApto) ? "selected" : "" ?>>
                                          <?php echo $size->name ?>
@@ -95,7 +96,7 @@
                                
                            </td> 
                            <td class="text-center">
-                              <select class="type" class="form-control" data-id="<?php echo $room->id ?>">
+                              <select class="type form-control minimal" data-id="<?php echo $room->id ?>">
                                 <?php foreach ($tipos as $tipo): ?>
                                   <?php if( $tipo->id == $room->typeApto ){ $selected = "selected"; }else{$selected = "";} ?>
                                     <option value="<?php echo $tipo->id; ?>" <?php echo $selected ?> >
@@ -105,35 +106,32 @@
                               </select>
                            </td>
                            <td class="text-center">
-                               <?php echo $room->user->name?>
+                              <select class="owned form-control minimal" data-id="<?php echo $room->id ?>">
+                                <?php foreach (\App\User::all() as $key => $owned): ?>
+                                  <?php if ( ($owned->role == 'propietario') || $owned->name == 'jorge'): ?>
+                                      <?php if( $owned->name == $room->user->name ){ $selected = "selected"; }else{$selected = "";} ?>
+                                      <option value="<?php echo $owned->id; ?>" <?php echo $selected ?> >
+                                          <?php echo $owned->name ?>
+                                      </option>
+                                  <?php endif ?>
+                                  
+                                <?php endforeach ?>
+                                <?php// echo $room->user->name;?>
+                              </select>
                            </td> 
                            <td class="text-center">
                               <p style="display: none"><?php echo $room->order ?></p>
                                <input class="orden order-<?php echo $room->id?>" type="text" name="orden" data-id="<?php echo $room->id ?>" value="<?php echo $room->order?>" style="width: 100%;text-align: center;border-style: none none">
                            </td>             
                            <td class="text-center">
-                               <!-- <div class="btn-group">
-                                
-                                  <div class="col-md-6">
-                                    <form action="apartamentos/uploadfile" method="post" >
-                                      <input type="hidden" name="id" value="<?php echo $room->id ?>">
-                                      <a class="fileUpload btn btn-tag btn-success">
-                                        <i class="fa fa-file-image-o" aria-hidden="true"></i>
-                                          <input type="file" class="upload" data-id="<?php echo $room->id ?>"/>
-                                      </a>
-                                    </form>
-                                  </div>
-                                  <div class="col-md-6">
-                                    <a href="{{ url('/admin/apartamentos/state/')}}/<?php echo $room->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Deshabilitar Apartamento" onclick="return confirm('¿Quieres Deshabilitar el apartamento?');">
-                                        <i class="fa fa-trash"></i>
-                                    </a> 
-                                  </div> 
-                                   
-                                                                       
-                               </div> -->
-                                   <span class="input-group-addon bg-transparent">
-                                        <input type="checkbox" class="estado" data-id="<?php echo $room->id ?>" name="state" data-init-plugin="switchery" data-size="small" data-color="success" <?php echo ($room->state == 0) ? "" : "checked" ?>> 
-                                    </span>
+                              <span class="input-group-addon bg-transparent">
+                                  <input type="checkbox" class="estado" data-id="<?php echo $room->id ?>" name="state" data-init-plugin="switchery" data-size="small" data-color="success" <?php echo ($room->state == 0) ? "" : "checked" ?>> 
+                              </span>
+                           </td>
+                           <td class="text-center">
+                              <span class="input-group-addon bg-transparent">
+                                  <input type="checkbox" class="assingToBooking" data-id="<?php echo $room->id ?>" name="assingToBooking" data-init-plugin="switchery" data-size="small" data-color="danger" <?php echo ( $room->isAssingToBooking() ) ? "checked" : "" ?>> 
+                              </span>
                            </td>
                            <td>
                               <a type="button" class="btn btn-default" href="{{ url ('/apartamentos/galeria') }}/<?php echo $room->nameRoom ?>"><i class="fa fa-paperclip"></i></a>
@@ -144,7 +142,7 @@
             </table>
         </div>
         
-        <div class="col-md-4 cols-xs-12 col-sm-12 " style="border:1px solid black;margin-top: 40px;">
+        <div class="col-md-3 cols-xs-12 col-sm-12 " style="border:1px solid black;margin-top: 40px;">
             <div class="row">
                 <div class="col-md-12">
                     <div class="sm-m-l-5 sm-m-r-5">
@@ -409,6 +407,25 @@
                 }
             });
         });
+
+        $('.assingToBooking').change(function(event) {
+            var id = $(this).attr('data-id');
+            var assing = $(this).is(':checked');
+
+            if (assing == true) {
+                assing = 1;
+            }else{
+                assing = 0;
+            }
+
+            $.get('/admin/apartamentos/assingToBooking', {  id: id, assing: assing}, function(data) {
+
+                alert(data);
+                location.reload();
+            });
+        });
+
+
         $('.name').change(function(event) {
           var id = $(this).attr('data-id');
           var name = $(this).val();
@@ -426,6 +443,8 @@
               location.reload();
           });
         });
+
+
         $('.sizes').change(function(event) {
           var id = $(this).attr('data-id');
           var size = $(this).val();
@@ -434,6 +453,16 @@
               location.reload();
           });
         });
+        $('.owned').change(function(event) {
+          var id = $(this).attr('data-id');
+          var owned = $(this).val();
+          $.get('/admin/apartamentos/update-owned', {  id: id, owned: owned}, function(data) {
+              location.reload();
+          });
+        });
+        
+
+
         $('.type').change(function(event) {
           var id = $(this).attr('data-id');
           var tipo = $(this).val();

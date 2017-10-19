@@ -107,6 +107,7 @@ Route::post('/reservas/stripe/payment/', 'StripeController@stripePaymentResponse
 	Route::get('admin/apartamentos/update-nameRoom', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateNameRoom']);
 	Route::get('admin/apartamentos/update-order', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateOrder']);
 	Route::get('admin/apartamentos/update-size', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateSize']);
+	Route::get('admin/apartamentos/update-owned', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateOwned']);
 	Route::post('admin/apartamentos/saveupdate', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@saveUpdate']);
 	Route::post('admin/apartamentos/create', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@create']);
 	Route::post('admin/apartamentos/create-type', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@createType']);
@@ -115,6 +116,8 @@ Route::post('/reservas/stripe/payment/', 'StripeController@stripePaymentResponse
 	Route::get('admin/apartamentos/getPaxPerRooms/{id}', ['middleware' => 'authSubAdmin', 'uses' => 'RoomsController@getPaxPerRooms']);
 	Route::get('admin/apartamentos/getLuxuryPerRooms/{id}', ['middleware' => 'authSubAdmin', 'uses' => 'RoomsController@getLuxuryPerRooms']);
 	Route::get('admin/apartamentos/uploadFile/{id}', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@uploadFile']);
+	Route::get('admin/apartamentos/assingToBooking', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@assingToBooking']);
+	
 
 
 // Prices

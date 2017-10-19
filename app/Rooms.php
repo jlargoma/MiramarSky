@@ -33,11 +33,24 @@ class Rooms extends Model
     }
 
     public static function getPaxRooms($pax,$room)
-        {
-            $room = \App\Rooms::where('id', $room)->first();
-            
-            return $room->minOcu;    
-        }
+    {
+        $room = \App\Rooms::where('id', $room)->first();
+        
+        return $room->minOcu;    
+    }
+
+    public function isAssingToBooking()
+    {
+        $isAssing = false;
+        $books = \App\Book::where('room_id', $this->id)->where('type_book', 9)->get();
+
+        if (count($books) > 0) {
+            $isAssing = true;
+        } 
+
+        return $isAssing;
+        
+    }
 
 
 }

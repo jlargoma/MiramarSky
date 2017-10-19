@@ -61,7 +61,7 @@ class Book extends Model
     //Para poner nombre al estado de la reserva//
 	   static function getStatus($status)
             {
-            	$array = [1 =>"Reservado", 2 =>"Pagada-la-señal",3 =>"SIN RESPONDER",4 =>"Bloqueado", 5 =>"Contestado(EMAIL)",6 =>"Cancelada", 7 =>"Reserva Propietario",8 =>"SubComunidad",9=>"Booking"];
+            	$array = [1 =>"Reservado - stripe", 2 =>"Pagada-la-señal",3 =>"SIN RESPONDER",4 =>"Bloqueado", 5 =>"Contestado(EMAIL)",6 =>"Cancelada", 7 =>"Reserva Propietario",8 =>"SubComunidad",9=>"Booking"];
 
             	return $status = $array[$status];
             }
@@ -137,12 +137,20 @@ class Book extends Model
     {   
 
         if ($room >= 5) {
-
-            $books = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,7,8])->where('id','!=',$id_excluded)->get();
-            $existStart = False;
-            $existFinish = False;        
             $requestStart = Carbon::createFromFormat('d/m/Y',$start);
             $requestFinish = Carbon::createFromFormat('d/m/Y',$finish);
+
+            $books =  \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,6,7,8])
+                                        ->where('id','!=' ,$id_excluded)
+                                        ->whereYear('start', '=',  $requestStart->format('Y'))
+                                        ->whereMonth('start', '=',  $requestStart->format('m'))
+                                        ->orderBy('start','DESC')
+                                        ->get();
+            //\App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,7,8])->where('id','!=',$id_excluded)->get();
+
+            $existStart = False;
+            $existFinish = False;        
+            
             
             foreach ($books as $book) {
                 if ($existStart == False && $existFinish == False) {
@@ -328,198 +336,233 @@ class Book extends Model
     
     // Funcion para cambiar la reserva de habitacion o estado
         public function changeBook($status,$room,$book)
-            {   
-                if (!empty($status)) {
-                    if ($status == 3) {
+        {   
+            if (!empty($status)) {
+                if ($status == 3) {
+
+                    $this->type_book = $status;
+
+                    $this->save();
+
+                    return "Estado Cambiado a Sin Responder";
+                }else{
+
+                    $dateStart  = Carbon::createFromFormat('Y-m-d',$this->start);
+                    $dateFinish  = Carbon::createFromFormat('Y-m-d',$this->finish);
+
+                    $roomStart = $dateStart->format('U');
+                    $roomFinish = $dateFinish->format('U');
+
+                    $isRooms = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,6,7,8])
+                                        ->where('id','!=' ,$this->id)
+                                        ->whereYear('start', '=',  $dateStart->format('Y'))
+                                        ->whereMonth('start', '=',  $dateStart->format('m'))
+                                        ->orderBy('start','DESC')
+                                        ->get();
+
+                    $existStart = false;
+                    $existFinish = false;        
+
+                    foreach ($isRooms as $isRoom) {
+                        if ($existStart == false) {
+
+                            $start = Carbon::createFromFormat('Y-m-d', $isRoom->start)->format('U');                        
+                            $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish)->format('U'); 
+
+                            // if ($start <= $roomStart && $roomStart <= $finish){
+                            //     $existStart = true;
+                            // }elseif($roomStart <= $start && $start <= $roomFinish){
+                            //     $existStart = true;
+                            // }elseif($start <= $roomStart && $roomStart < $finish){
+                            //     $existStart = true;
+                            // }elseif($roomStart <= $start && $start <= $roomFinish){
+                            //     $existStart = true;
+                            // }
+                            if ($start < $roomStart && $roomStart < $finish){
+                                $existStart = true;
+                            }elseif($start <= $roomStart && $roomStart < $finish){
+                                $existStart = true;
+                            }elseif($roomStart <= $start && $start < $roomFinish){
+                                $existStart = true;
+                            }
+                        }else{
+                            break;
+                        }                            
+                    }
+                    
+                    if ($existStart == false && $existFinish == false) {
 
                         $this->type_book = $status;
 
-                        $this->save();
+                        if ($this->customer->email == "") {
+                            $this->save();
+                           return "No tiene Email asignado";
+                        }else{
+                            switch ($status) {
+                                case '1':
 
-                        return "Estado Cambiado a Sin Responder";
-                    }else{
+                                    // Mail::send('backend.emails.reservado',['book' => $book], function ($message) use ($book) {
+                                    //         $message->from('reservas@apartamentosierranevada.net');
 
-                        $roomStart = Carbon::createFromFormat('Y-m-d',$this->start)->format('U');
-                        $roomFinish = Carbon::createFromFormat('Y-m-d',$this->finish)->format('U');
+                                    //         $message->to($book->customer->email);
+                                    //         $message->subject('Bloqueo de reserva y datos de pago');
+                                    //     });
+                                    break;
+                                case '2':
+                                    // Mail::send('backend.emails.confirmado',['book' => $book], function ($message) use ($book) {
+                                    //         $message->from('reservas@apartamentosierranevada.net');
 
+                                    //         $message->to($book->customer->email);
+                                    //         $message->subject('Confirmación de reserva (pago parcial)');
+                                    //     });
+                                    break;
+                                case '4':
+                                    // Mail::send('backend.emails.bloqueado',['book' => $book], function ($message) use ($book) {
+                                    //         $message->from('reservas@apartamentosierranevada.net');
+                                    //         $message->to('alquilerapartamentosmiramarski@gmail.com');
+                                    //         $message->subject('Correo de Bloqueo');
+                                    //     });  
+                                    break;
+                                case '6':
+                                    // Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
+                                    //         $message->from('reservas@apartamentosierranevada.net');
+                                    //         $message->to($book->customer->email);
+                                    //         $message->subject('Correo cancelación de reserva');
+                                    //     });  
+                                    break;
+                                case '7':
+                                    // Mail::send('backend.emails.reserva-propietario',['book' => $book], function ($message) use ($book) {
+                                    //         $message->from('reservas@apartamentosierranevada.net');
+                                    //         $message->to($book->customer->email);
+                                    //         $message->subject('Correo de Reserva de Propietario');
+                                    //     });  
+                                    break;
+                                case '8':
+                                    // Mail::send('backend.emails.subcomunidad',['book' => $book], function ($message) use ($book) {
+                                    //         $message->from('reservas@apartamentosierranevada.net');
+                                    //         $message->to('alquilerapartamentosmiramarski@gmail.com');
+                                    //         $message->subject('Correo de Subcomunidad');
+                                    //     });  
+                                    break;
+                                default:
 
-                        $isRooms = \App\Book::where('room_id',$this->room_id)->whereIn('type_book',[1,2,4,5,6,7,8])->where('id','!=' ,$this->id)->orderBy('start','ASC')->get();
+                                    # code...
+                                    break;
+                            }
+                            if ($this->save()) {
 
-                        $existStart = false;
-                        $existFinish = false;        
+                                /* Creamos las notificaciones de booking */
+                                /* Comprobamos que la room de la reserva este cedida a booking.com */
+                                if ( $this->room->isAssingToBooking() ) {
 
-                        foreach ($isRooms as $isRoom) {
-                            if ($existStart == false) {
+                                    $isAssigned = \App\BookNotification::where('book_id',$book->id)->get();
 
-                                $start = Carbon::createFromFormat('Y-m-d', $isRoom->start)->format('U');                        
-                                $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish)->format('U'); 
-
-                                // if ($start <= $roomStart && $roomStart <= $finish){
-                                //     $existStart = true;
-                                // }elseif($roomStart <= $start && $start <= $roomFinish){
-                                //     $existStart = true;
-                                // }elseif($start <= $roomStart && $roomStart < $finish){
-                                //     $existStart = true;
-                                // }elseif($roomStart <= $start && $start <= $roomFinish){
-                                //     $existStart = true;
-                                // }
-                                if ($start < $roomStart && $roomStart < $finish){
-                                    $existStart = true;
-                                }elseif($start <= $roomStart && $roomStart < $finish){
-                                    $existStart = true;
-                                }elseif($roomStart <= $start && $start < $roomFinish){
-                                    $existStart = true;
-                                }
-                            }else{
-                                break;
-                            }                            
-                        }
-                        
-                        if ($existStart == false && $existFinish == false) {
-
-                            $this->type_book = $status;
-
-                            if ($this->customer->email == "") {
-                                $this->save();
-                               return "No tiene Email asignado";
-                            }else{
-                                switch ($status) {
-                                    case '1':
-
-                                        Mail::send('backend.emails.reservado',['book' => $book], function ($message) use ($book) {
-                                                $message->from('reservas@apartamentosierranevada.net');
-
-                                                $message->to($book->customer->email);
-                                                $message->subject('Bloqueo de reserva y datos de pago');
-                                            });
-                                        break;
-                                    case '2':
-                                        Mail::send('backend.emails.confirmado',['book' => $book], function ($message) use ($book) {
-                                                $message->from('reservas@apartamentosierranevada.net');
-
-                                                $message->to($book->customer->email);
-                                                $message->subject('Confirmación de reserva (pago parcial)');
-                                            });
-                                        break;
-                                    case '4':
-                                        Mail::send('backend.emails.bloqueado',['book' => $book], function ($message) use ($book) {
-                                                $message->from('reservas@apartamentosierranevada.net');
-                                                $message->to('alquilerapartamentosmiramarski@gmail.com');
-                                                $message->subject('Correo de Bloqueo');
-                                            });  
-                                        break;
-                                    case '6':
-                                        Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
-                                                $message->from('reservas@apartamentosierranevada.net');
-                                                $message->to($book->customer->email);
-                                                $message->subject('Correo cancelación de reserva');
-                                            });  
-                                        break;
-                                    case '7':
-                                        Mail::send('backend.emails.reserva-propietario',['book' => $book], function ($message) use ($book) {
-                                                $message->from('reservas@apartamentosierranevada.net');
-                                                $message->to($book->customer->email);
-                                                $message->subject('Correo de Reserva de Propietario');
-                                            });  
-                                        break;
-                                    case '8':
-                                        // Mail::send('backend.emails.subcomunidad',['book' => $book], function ($message) use ($book) {
-                                        //         $message->from('reservas@apartamentosierranevada.net');
-                                        //         $message->to('alquilerapartamentosmiramarski@gmail.com');
-                                        //         $message->subject('Correo de Subcomunidad');
-                                        //     });  
-                                        break;
-                                    default:
-
-                                        # code...
-                                        break;
-                                }
-                                if ($this->save()) {
-                                    if ($status == 1) {
-                                        return "Email Enviado Reserva";
-                                    }elseif($status == 2){
-                                        return "Email Enviado Pagada la señal ";
-                                    }elseif($status == 3){
-                                        return "Estado Cambiado a Sin Responder ";
-                                    }elseif($status == 4){
-                                        return "Estado Cambiado a Bloqueado ";
-                                    }elseif($status == 5){
-                                        return "Contestado por email";
-                                    }elseif($status == 6){
-                                        return "Email Enviado de Cancelacion ";
-                                    }elseif($status == 7){
-                                        return "Estado Cambiado a Reserva Propietario ";
-                                    }elseif($status == 8){
-                                        return "Estado Cambiado a Subcomunidad ";
+                                    if (count($isAssigned) == 0) {
+                                        $notification = new \App\BookNotification();
+                                        $notification->book_id = $book->id;
+                                        $notification->save();
                                     }
+
+                                    
+                                }
+
+                                if ($status == 1) {
+                                    return "Email Enviado Reserva";
+                                }elseif($status == 2){
+                                    return "Email Enviado Pagada la señal ";
+                                }elseif($status == 3){
+                                    return "Estado Cambiado a Sin Responder ";
+                                }elseif($status == 4){
+                                    return "Estado Cambiado a Bloqueado ";
+                                }elseif($status == 5){
+                                    return "Contestado por email";
+                                }elseif($status == 6){
+                                    return "Email Enviado de Cancelacion ";
+                                }elseif($status == 7){
+                                    return "Estado Cambiado a Reserva Propietario ";
+                                }elseif($status == 8){
+                                    return "Estado Cambiado a Subcomunidad ";
                                 }
                             }
-                            
-                            
                         }
-                        else{
-                            return false;
-                        };
+                        
+                        
                     }
-                    
-                    
-                    
+                    else{
+                        return false;
+                    };
                 }
-                if (!empty($room)) {
+                
+                
+                
+            }
+            if (!empty($room)) {
+                    
+                    if ( $this->room->isAssingToBooking() ) {
 
-                        $roomStart = Carbon::createFromFormat('Y-m-d',$this->start)->format('U');
-                        $roomFinish = Carbon::createFromFormat('Y-m-d',$this->finish)->format('U');
+                        $isAssigned = \App\BookNotification::where('book_id',$book->id)->get();
 
-
-                        $isRooms = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,6,7,8])->where('id','!=' ,$this->id)->orderBy('start','ASC')->get();
-
-                        $existStart = False;
-                        $existFinish = False;        
-
-                        foreach ($isRooms as $isRoom) {
-                            if ($existStart == False && $existFinish == False) {
-
-                                $start = Carbon::createFromFormat('Y-m-d', $isRoom->start)->format('U');                        
-                                $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish)->format('U'); 
-
-                                if ($start < $roomStart && $roomStart < $finish){
-                                    $existStart = true;
-                                }elseif($start <= $roomStart && $roomStart < $finish){
-                                    $existStart = true;
-                                }elseif($roomStart <= $start && $start < $roomFinish){
-                                    $existStart = true;
-                                }
-                            }else{
-                                break;
-                            }                            
+                        if (count($isAssigned) == 0) {
+                            $notification = new \App\BookNotification();
+                            $notification->book_id = $book->id;
+                            $notification->save();
                         }
-                        if ($existStart == false && $existFinish == false) {
-                            $this->room_id = $room;
-                            if($this->save()){
-                               return true; 
-                           }else{
-                            return false;
-                           }
-                            
+
+                        
+                    }else{
+                        $deleted = \App\BookNotification::where('book_id',$book->id)->delete();
+                    }
+
+                    $dateStart  = Carbon::createFromFormat('Y-m-d',$this->start);
+                    $dateFinish  = Carbon::createFromFormat('Y-m-d',$this->finish);
+
+                    $roomStart = $dateStart->format('U');
+                    $roomFinish = $dateFinish->format('U');
+
+
+                    $isRooms = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,6,7,8])
+                                        ->where('id','!=' ,$this->id)
+                                        ->whereYear('start', '=',  $dateStart->format('Y'))
+                                        ->whereMonth('start', '=',  $dateStart->format('m'))
+                                        ->orderBy('start','DESC')
+                                        ->get();
+
+                    $existStart = False;
+                    $existFinish = False;        
+
+                    foreach ($isRooms as $isRoom) {
+                        if ($existStart == False && $existFinish == False) {
+
+                            $start = Carbon::createFromFormat('Y-m-d', $isRoom->start)->format('U');                        
+                            $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish)->format('U'); 
+
+                            if ($start < $roomStart && $roomStart < $finish){
+                                $existStart = true;
+                            }elseif($start <= $roomStart && $roomStart < $finish){
+                                $existStart = true;
+                            }elseif($roomStart <= $start && $start < $roomFinish){
+                                $existStart = true;
+                            }
                         }else{
-                            return false;
-                        }
-
-                    /*
-                    if ( $isStartReservable == 1 && $isfinishReservable == 1 ) {
+                            break;
+                        }                            
+                    }
+                    if ($existStart == false && $existFinish == false) {
                         $this->room_id = $room;
-
-                       
-                        if ( $this->save() ) {
-                            return true;
-                        }
+                        if($this->save()){
+                           return true; 
+                       }else{
+                        return false;
+                       }
+                        
                     }else{
                         return false;
                     }
-                    */
 
-                }
+
+
             }
+        }
 
     // Funcion para buscar las nuevas reservas
         static public function newBooks()

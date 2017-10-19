@@ -175,7 +175,7 @@
                 </div>
 
                 <div class="col-xs-12">
-                    <div class="col-md-6 not-padding">
+                    <div class="col-md-7 not-padding">
                         <div class="col-md-6">
                             <button class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalNewBook">
                                 <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Nueva Reserva</span>
@@ -220,7 +220,54 @@
 
                         </div>
                     </div>
-                    
+                    <div class="col-md-5">
+                        <?php $notifications = \App\BookNotification::all(); ?>
+                        <?php $isNotify = false; ?>
+                        <?php foreach ($notifications as $key => $notify): ?>
+                            <?php if ($notify->book->type_book != 3 || $notify->book->type_book != 5 || $notify->book->type_book != 6){ $isNotify = true; } ?>
+                        <?php endforeach ?>
+                        <?php if ($isNotify): ?>
+                            <div class="col-xs-12">
+                                <div class="alert alert-info fade in alert-dismissable" style="background-color: #daeffd!important;">
+                                    <h4 class="text-center">Alertas BOOKING</h4> 
+                                    <h5 class="text-center">Recuerda eliminar los dias de las siguientes reservas de booking.com</h5> 
+                                    
+                                    <table class="table table-condensed" style="margin-top: 0;">
+                                        <tbody>
+                                        <?php foreach ($notifications as $key => $notify): ?>
+                                            <?php if ($notify->book->type_book != 3 || $notify->book->type_book != 5 || $notify->book->type_book != 6 ): ?>
+                                            <tr>
+                                                <td class="text-center" style="padding: 5px 10px!important">
+                                                    <?php echo $notify->book->customer->name; ?></td>
+                                                <td class="text-center" style="padding: 5px 10px!important">
+                                                    <?php
+                                                        $start = Carbon::createFromFormat('Y-m-d',$notify->book->start);
+                                                        echo $start->formatLocalized('%d %b');
+                                                    ?> - 
+                                                    <?php
+                                                        $finish = Carbon::createFromFormat('Y-m-d',$notify->book->finish);
+                                                        echo $finish->formatLocalized('%d %b');
+                                                    ?>
+                                                </td>
+                                                <td class="text-center" style="padding: 5px 10px!important">
+                                                    <b><?php echo number_format($notify->book->total_price,2, ',', ".") ?> €</b>                                               
+                                                </td>
+                                                <td class="text-center" style="padding: 5px 10px!important">
+
+                                                </td>
+                                            </tr>
+                                            <?php endif ?>
+                                        <?php endforeach ?>
+                                        </tbody>
+                                    </table>
+                                    <p class="text-justify">
+                                        Puedes acceder a booking haciendo click <a href="#">aquí</a>
+                                    </p>
+                                </div>   
+                            </div>
+                        <?php endif ?>
+                        
+                    </div>
                 </div>
                 
         
@@ -266,6 +313,11 @@
                     @include('backend.planning.calendar')
                     <!-- Seccion Calendario -->
 
+
+                    <div class="col-md-12">
+                        <!-- {{ url('admin/reservas/stripe/paymentsBooking') }} -->
+                        
+                    </div>
 
                 </div>
             </div>
@@ -728,6 +780,7 @@
                 
                 var year = $(this).val();
                 window.location = '/admin/reservas/'+year;
+
             });
             
                

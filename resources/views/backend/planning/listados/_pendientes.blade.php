@@ -22,9 +22,9 @@
                     <?php foreach ($arrayBooks["nuevas"] as $book): ?>
                             <tr class="<?php echo ucwords($book->getStatus($book->type_book)) ;?>"> 
                                 <td style="display: none"><?php echo $book->id ?></td>
-                                <td class ="text-center"  >
+                                <td class ="text-center"  style="padding: 10px 15px!important">
 
-                                        <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo $book->customer['name']  ?></a>                                                        
+                                    <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo $book->customer['name']  ?></a>                                                        
                                 </td>
 
                                 <td class ="text-center"  > 

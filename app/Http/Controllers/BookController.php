@@ -396,6 +396,16 @@ class BookController extends Controller
                     $book->extraCost     = $extraCost;
 
                     if($book->save()){
+
+                        /* Creamos las notificaciones de booking */
+                        /* Comprobamos que la room de la reserva este cedida a booking.com */
+                        if ( $room->isAssingToBooking() ) {
+                            $notification = new \App\BookNotification();
+                            $notification->book_id = $book->id;
+                            $notification->save();
+                        }
+
+
                         // MailController::sendEmailBookSuccess( $book, 0);
                         return redirect('admin/reservas');
                     
@@ -491,7 +501,7 @@ class BookController extends Controller
         if ( isset($request->room) && !empty($request->room)) {
             $book = \App\Book::find($id);
 
-            if ($book->changeBook("",$request->room,$book)) {
+            if ($book->changeBook("", $request->room, $book)) {
                 return "Apartamento cambiado";
             }else{
                 return "Ya hay una reserva para ese apartamento";
