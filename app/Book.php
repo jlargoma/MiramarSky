@@ -181,158 +181,158 @@ class Book extends Model
     }
 
     // Funcion para comprobar el precio de la reserva
-        static function getPriceBook($start,$finish,$pax,$room)
-            {   
+    static function getPriceBook($start,$finish,$pax,$room)
+    {   
 
-                $start = Carbon::createFromFormat('d/m/Y' , $start);
-                $finish = Carbon::createFromFormat('d/m/Y' , $finish);
-                $countDays = $finish->diffInDays($start);
+        $start = Carbon::createFromFormat('d/m/Y' , $start);
+        $finish = Carbon::createFromFormat('d/m/Y' , $finish);
+        $countDays = $finish->diffInDays($start);
 
-                $paxPerRoom = \App\Rooms::getPaxRooms($pax,$room);
-                $room = \App\Rooms::find($room);
-                $suplimp =  ($room->sizeApto == 1 )? 30 : 50 ;
-                $pax = $pax;
-                if ($paxPerRoom > $pax) {
-                    $pax = $paxPerRoom;
-                }
+        $paxPerRoom = \App\Rooms::getPaxRooms($pax,$room);
+        $room = \App\Rooms::find($room);
+        $suplimp =  ($room->sizeApto == 1 )? 30 : 50 ;
+        $pax = $pax;
+        if ($paxPerRoom > $pax) {
+            $pax = $paxPerRoom;
+        }
 
-                $price = 0;
-
-
-                for ($i=1; $i <= $countDays; $i++) {
-
-                    $seasonActive = \App\Seasons::getSeason($start->copy()->format('Y-m-d'));
-
-                    $prices = \App\Prices::where('season' ,  $seasonActive)
-                                        ->where('occupation', $pax)->get();
-
-                    foreach ($prices as $precio) {
-                        $price = $price + $precio->price ;
-                    }
-                }
+        $price = 0;
 
 
-                return $price;
+        for ($i=1; $i <= $countDays; $i++) {
+
+            $seasonActive = \App\Seasons::getSeason($start->copy()->format('Y-m-d'));
+
+            $prices = \App\Prices::where('season' ,  $seasonActive)
+                                ->where('occupation', $pax)->get();
+
+            foreach ($prices as $precio) {
+                $price = $price + $precio->price ;
             }
+        }
+
+
+        return $price;
+    }
     
     // Funcion para comprobar el precio de la reserva
-        static function getCostBook($start,$finish,$pax,$room)
-            {
+    static function getCostBook($start,$finish,$pax,$room)
+    {
 
 
-                $start = Carbon::createFromFormat('d/m/Y' , $start);
-                $finish = Carbon::createFromFormat('d/m/Y' , $finish);
-                $countDays = $finish->diffInDays($start);
+        $start = Carbon::createFromFormat('d/m/Y' , $start);
+        $finish = Carbon::createFromFormat('d/m/Y' , $finish);
+        $countDays = $finish->diffInDays($start);
 
 
-                $paxPerRoom = \App\Rooms::getPaxRooms($pax,$room);
-                
-                $room = \App\Rooms::find($room);
-                $suplimp =  ($room->sizeApto == 1 )? 30 : 40 ;
+        $paxPerRoom = \App\Rooms::getPaxRooms($pax,$room);
+        
+        $room = \App\Rooms::find($room);
+        $suplimp =  ($room->sizeApto == 1 )? 30 : 40 ;
 
-                $pax = $pax;
-                if ($paxPerRoom > $pax) {
-                    $pax = $paxPerRoom;
-                }
-                $cost = 0;
-                for ($i=1; $i <= $countDays; $i++) {
+        $pax = $pax;
+        if ($paxPerRoom > $pax) {
+            $pax = $paxPerRoom;
+        }
+        $cost = 0;
+        for ($i=1; $i <= $countDays; $i++) {
 
-                    $seasonActive = \App\Seasons::getSeason($start->copy()->format('Y-m-d'));
-                    $costs = \App\Prices::where('season' ,  $seasonActive)
-                                        ->where('occupation', $pax)->get();
+            $seasonActive = \App\Seasons::getSeason($start->copy()->format('Y-m-d'));
+            $costs = \App\Prices::where('season' ,  $seasonActive)
+                                ->where('occupation', $pax)->get();
 
-                    foreach ($costs as $precio) {
-                        $cost = $cost + $precio->cost ;
-                    }
-                }
-
-                return $cost;
+            foreach ($costs as $precio) {
+                $cost = $cost + $precio->cost ;
             }
+        }
+
+        return $cost;
+    }
 
     //Funcion para el precio del Aparcamiento
-        static function getPricePark($park,$noches)
-            {
-                $supPark = 0;
+    static function getPricePark($park,$noches)
+    {
+        $supPark = 0;
 
-                switch ($park) {
-                        case 1:
-                            $supPark = 15 * $noches;
-                            break;
-                        case 2:
-                            $supPark = 0;
-                            break;
-                        case 3:
-                            $supPark = (15 * $noches) / 2;
-                            break;
-                        case 4:
-                            $supPark = 0;
-                            break;
-                    }
-                return $supPark;
+        switch ($park) {
+                case 1:
+                    $supPark = 15 * $noches;
+                    break;
+                case 2:
+                    $supPark = 0;
+                    break;
+                case 3:
+                    $supPark = (15 * $noches) / 2;
+                    break;
+                case 4:
+                    $supPark = 0;
+                    break;
             }
+        return $supPark;
+    }
    
     //Funcion para el coste del Aparcamiento
-        static function getCostPark($park,$noches)
-            {
-                $supPark = 0;
-                switch ($park) {
-                        case 1:
-                            $supPark = 13.5 * $noches;
-                            break;
-                        case 2:
-                            $supPark = 0;
-                            break;
-                        case 3:
-                            $supPark = (13.5 * $noches) / 2;
-                            break;
-                        case 4:
-                            $supPark = 0;
-                            break;
-                    }
-                return $supPark;
+    static function getCostPark($park,$noches)
+    {
+        $supPark = 0;
+        switch ($park) {
+                case 1:
+                    $supPark = 13.5 * $noches;
+                    break;
+                case 2:
+                    $supPark = 0;
+                    break;
+                case 3:
+                    $supPark = (13.5 * $noches) / 2;
+                    break;
+                case 4:
+                    $supPark = 0;
+                    break;
             }
+        return $supPark;
+    }
    
     //Funcion para el precio del Suplemento de Lujo
-        static function getPriceLujo($lujo)
-            {
-                $supLujo = 0;
-                switch ($lujo) {
-                        case 1:
-                            $supLujo = 50;
-                             break;
-                        case 2:
-                            $supLujo = 0;
-                            break;
-                        case 3:
-                            $supLujo = 0;
-                            break;
-                        case 4:
-                            $supLujo = 50/2;
-                            break;
-                    }
-                return $supLujo;
+    static function getPriceLujo($lujo)
+    {
+        $supLujo = 0;
+        switch ($lujo) {
+                case 1:
+                    $supLujo = 50;
+                     break;
+                case 2:
+                    $supLujo = 0;
+                    break;
+                case 3:
+                    $supLujo = 0;
+                    break;
+                case 4:
+                    $supLujo = 50/2;
+                    break;
             }
+        return $supLujo;
+    }
     
     //Funcion para el precio del Suplemento de Lujo
-        static function getCostLujo($lujo)
-            {
-                $supLujo = 0;
-                switch ($lujo) {
-                        case 1:
-                            $supLujo = 40;
-                             break;
-                        case 2:
-                            $supLujo = 0;
-                            break;
-                        case 3:
-                            $supLujo = 0;
-                            break;
-                        case 4:
-                            $supLujo = 40/2;
-                            break;
-                    }
-                return $supLujo;
+    static function getCostLujo($lujo)
+    {
+        $supLujo = 0;
+        switch ($lujo) {
+                case 1:
+                    $supLujo = 40;
+                     break;
+                case 2:
+                    $supLujo = 0;
+                    break;
+                case 3:
+                    $supLujo = 0;
+                    break;
+                case 4:
+                    $supLujo = 40/2;
+                    break;
             }
+        return $supLujo;
+    }
     
     // Funcion para cambiar la reserva de habitacion o estado
         public function changeBook($status,$room,$book)
@@ -498,20 +498,6 @@ class Book extends Model
             }
             if (!empty($room)) {
                     
-                    if ( $this->room->isAssingToBooking() ) {
-
-                        $isAssigned = \App\BookNotification::where('book_id',$book->id)->get();
-
-                        if (count($isAssigned) == 0) {
-                            $notification = new \App\BookNotification();
-                            $notification->book_id = $book->id;
-                            $notification->save();
-                        }
-
-                        
-                    }else{
-                        $deleted = \App\BookNotification::where('book_id',$book->id)->delete();
-                    }
 
                     $dateStart  = Carbon::createFromFormat('Y-m-d',$this->start);
                     $dateFinish  = Carbon::createFromFormat('Y-m-d',$this->finish);
@@ -550,9 +536,21 @@ class Book extends Model
                     if ($existStart == false && $existFinish == false) {
                         $this->room_id = $room;
                         if($this->save()){
-                           return true; 
+                            if ( $this->room->isAssingToBooking() ) {
+
+                                $isAssigned = \App\BookNotification::where('book_id',$book->id)->get();
+
+                                if (count($isAssigned) == 0) {
+                                    $notification = new \App\BookNotification();
+                                    $notification->book_id = $book->id;
+                                    $notification->save();
+                                }
+                            }else{
+                                $deleted = \App\BookNotification::where('book_id',$book->id)->delete();
+                            }
+                            return true; 
                        }else{
-                        return false;
+                            return false;
                        }
                         
                     }else{

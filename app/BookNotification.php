@@ -14,10 +14,4 @@ class BookNotification extends Model
     }
 
 
-    public function getBooksAlert()
-    {
-    	# code...
-    }
-
-
 }

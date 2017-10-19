@@ -646,6 +646,20 @@ class BookController extends Controller
 
 
                         if ($book->save()) {
+
+                             if ( $book->room->isAssingToBooking() ) {
+
+                                $isAssigned = \App\BookNotification::where('book_id',$book->id)->get();
+
+                                if (count($isAssigned) == 0) {
+                                    $notification = new \App\BookNotification();
+                                    $notification->book_id = $book->id;
+                                    $notification->save();
+                                }
+                            }else{
+                                $deleted = \App\BookNotification::where('book_id',$book->id)->delete();
+                            }
+
                             return redirect('admin/reservas/update/'.$id);
                         }
                 }else{

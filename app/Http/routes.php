@@ -117,7 +117,7 @@ Route::post('/reservas/stripe/payment/', 'StripeController@stripePaymentResponse
 	Route::get('admin/apartamentos/getLuxuryPerRooms/{id}', ['middleware' => 'authSubAdmin', 'uses' => 'RoomsController@getLuxuryPerRooms']);
 	Route::get('admin/apartamentos/uploadFile/{id}', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@uploadFile']);
 	Route::get('admin/apartamentos/assingToBooking', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@assingToBooking']);
-	
+
 
 
 // Prices
@@ -171,6 +171,7 @@ Route::post('/reservas/stripe/payment/', 'StripeController@stripePaymentResponse
 Route::get('admin/pdf/pdf-reserva/{id}','PdfController@invoice');
 
 Route::group(['middleware' => 'auth'], function () {
+
 		Route::get('/admin', function ()    {
     	$user = \Auth::user(); 
 			if ($user->role == "propietario") {
@@ -183,3 +184,13 @@ Route::group(['middleware' => 'auth'], function () {
 
 	});
 });
+Route::group(['middleware' => 'authAdmin'], function () {
+	Route::get('admin/delete/nofify/{id}', function ($id) {
+		$notify = \App\BookNotification::find($id);
+
+		if ($notify->delete()) {
+			return redirect('admin/reservas');
+		}
+	});
+});
+
