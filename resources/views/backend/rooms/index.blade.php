@@ -29,6 +29,21 @@
         opacity: 0;
         filter: alpha(opacity=0);
     }
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
 </style>
 @endsection
     
@@ -52,91 +67,99 @@
                         <th class ="text-center hidden">                  ID            </th>
                         <th class ="text-center bg-complete text-white" style="width: 10%">  Nick        </th>
                         <th class ="text-center bg-complete text-white" style="width: 10%">  Piso          </th>
-                        <th class ="text-center bg-complete text-white" style="width: 10%">  Ocu min </th>
-                        <th class ="text-center bg-complete text-white" style="width: 10%">  Ocu max </th>
+                        <th class ="text-center bg-complete text-white" style="width: 5%">  Ocu min </th>
+                        <th class ="text-center bg-complete text-white" style="width: 5%">  Ocu max </th>
                         <th class ="text-center bg-complete text-white">  Tamaño          </th>
                         <th class ="text-center bg-complete text-white">  Lujo          </th>                        
                         <th class ="text-center bg-complete text-white">  Tipo        </th>
                         <th class ="text-center bg-complete text-white">  Prop   </th>
                         <th class ="text-center bg-complete text-white">  Orden   </th>
                         <th class ="text-center bg-complete text-white" style="width: 10%">  Estado </th>
-                        <th class ="text-center bg-complete text-white" style="width: 10%">  Booking.com </th>
-                        <th class ="text-center bg-complete text-white" style="width: 10%">  Btn </th>
+                        <th class ="text-center bg-complete text-white" style="width: 5%;max-width: 5%">  Booking </th>
+                        <th class ="text-center bg-complete text-white" style="width: 30%">  Btn </th>
                     </tr>
                 </thead>
                 <tbody>
                    <?php foreach ($rooms as $room): ?>
-                       <tr>
-                           <td class="text-center hidden"><?php echo $room->id?></td>
-                           <td class="text-center">
-                               <input class="name name-<?php echo $room->name?>" type="text" name="name" data-id="<?php echo $room->id ?>" value="<?php echo $room->name?>" style="width: 100%;text-align: center;border-style: none none ">
-                           </td>
-                           <td class="text-center">
-                               <input class="nameRoom nameRoom-<?php echo $room->nameRoom?>" type="text" name="nameRoom" data-id="<?php echo $room->id ?>" value="<?php echo $room->nameRoom?>" style="width: 100%;text-align: center;border-style: none none ">
-                           </td>
-                           <td class="text-center">
-                                <input class="editable minOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->minOcu?>" style="width: 100%;text-align: center;border-style: none none ">
-                           </td>  
-                           <td class="text-center">
-                               <input class="editable maxOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->maxOcu?>" style="width: 100%;text-align: center;border-style: none none">
-                           </td> 
-                           <td class="text-center">
-                               <select class="sizes form-control minimal" data-id="<?php echo $room->id ?>">
-                                 <?php foreach ($sizes as $size): ?>                                   
-                                     <option value="<?php echo $size->id; ?>" <?php echo ($size->id == $room->sizeApto) ? "selected" : "" ?>>
-                                         <?php echo $size->name ?>
-                                     </option>
-                                 <?php endforeach ?>
-                               </select>
-                           </td>
-                           <td class="text-center">
-                               <span class="input-group-addon bg-transparent">
-                                    <input type="checkbox" class="editable" data-id="<?php echo $room->id ?>" name="luxury" data-init-plugin="switchery" data-size="small" data-color="primary" <?php echo ($room->luxury == 0) ? "" : "checked" ?>/>
-                                </span>
-                               
-                           </td> 
-                           <td class="text-center">
-                              <select class="type form-control minimal" data-id="<?php echo $room->id ?>">
-                                <?php foreach ($tipos as $tipo): ?>
-                                  <?php if( $tipo->id == $room->typeApto ){ $selected = "selected"; }else{$selected = "";} ?>
-                                    <option value="<?php echo $tipo->id; ?>" <?php echo $selected ?> >
-                                        <?php echo $tipo->name ?>
-                                    </option>
-                                <?php endforeach ?>
-                              </select>
-                           </td>
-                           <td class="text-center">
-                              <select class="owned form-control minimal" data-id="<?php echo $room->id ?>">
-                                <?php foreach (\App\User::all() as $key => $owned): ?>
-                                  <?php if ( ($owned->role == 'propietario') || $owned->name == 'jorge'): ?>
-                                      <?php if( $owned->name == $room->user->name ){ $selected = "selected"; }else{$selected = "";} ?>
-                                      <option value="<?php echo $owned->id; ?>" <?php echo $selected ?> >
-                                          <?php echo $owned->name ?>
-                                      </option>
-                                  <?php endif ?>
-                                  
-                                <?php endforeach ?>
-                                <?php// echo $room->user->name;?>
-                              </select>
-                           </td> 
-                           <td class="text-center">
-                              <p style="display: none"><?php echo $room->order ?></p>
-                               <input class="orden order-<?php echo $room->id?>" type="text" name="orden" data-id="<?php echo $room->id ?>" value="<?php echo $room->order?>" style="width: 100%;text-align: center;border-style: none none">
-                           </td>             
-                           <td class="text-center">
-                              <span class="input-group-addon bg-transparent">
-                                  <input type="checkbox" class="estado" data-id="<?php echo $room->id ?>" name="state" data-init-plugin="switchery" data-size="small" data-color="success" <?php echo ($room->state == 0) ? "" : "checked" ?>> 
-                              </span>
-                           </td>
-                           <td class="text-center">
-                              <span class="input-group-addon bg-transparent">
-                                  <input type="checkbox" class="assingToBooking" data-id="<?php echo $room->id ?>" name="assingToBooking" data-init-plugin="switchery" data-size="small" data-color="danger" <?php echo ( $room->isAssingToBooking() ) ? "checked" : "" ?>> 
-                              </span>
-                           </td>
-                           <td>
-                              <a type="button" class="btn btn-default" href="{{ url ('/apartamentos/galeria') }}/<?php echo $room->nameRoom ?>"><i class="fa fa-paperclip"></i></a>
-                           </td>
-                       </tr>
+                      <tr>
+                        <td class="text-center hidden"><?php echo $room->id?></td>
+                        <td class="text-center">
+                           <input class="name name-<?php echo $room->name?>" type="text" name="name" data-id="<?php echo $room->id ?>" value="<?php echo $room->name?>" style="width: 100%;text-align: center;border-style: none none ">
+                        </td>
+                        <td class="text-center">
+                           <input class="nameRoom nameRoom-<?php echo $room->nameRoom?>" type="text" name="nameRoom" data-id="<?php echo $room->id ?>" value="<?php echo $room->nameRoom?>" style="width: 100%;text-align: center;border-style: none none ">
+                        </td>
+                        <td class="text-center">
+                            <input class="editable minOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->minOcu?>" style="width: 100%;text-align: center;border-style: none none ">
+                        </td>  
+                        <td class="text-center">
+                           <input class="editable maxOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->maxOcu?>" style="width: 100%;text-align: center;border-style: none none">
+                        </td> 
+                        <td class="text-center">
+                           <select class="sizes form-control minimal" data-id="<?php echo $room->id ?>">
+                             <?php foreach ($sizes as $size): ?>                                   
+                                 <option value="<?php echo $size->id; ?>" <?php echo ($size->id == $room->sizeApto) ? "selected" : "" ?>>
+                                     <?php echo $size->name ?>
+                                 </option>
+                             <?php endforeach ?>
+                           </select>
+                        </td>
+                        <td class="text-center">
+                           <span class="input-group-addon bg-transparent">
+                                <input type="checkbox" class="editable" data-id="<?php echo $room->id ?>" name="luxury" data-init-plugin="switchery" data-size="small" data-color="primary" <?php echo ($room->luxury == 0) ? "" : "checked" ?>/>
+                            </span>
+                           
+                        </td> 
+                        <td class="text-center">
+                          <select class="type form-control minimal" data-id="<?php echo $room->id ?>">
+                            <?php foreach ($tipos as $tipo): ?>
+                              <?php if( $tipo->id == $room->typeApto ){ $selected = "selected"; }else{$selected = "";} ?>
+                                <option value="<?php echo $tipo->id; ?>" <?php echo $selected ?> >
+                                    <?php echo $tipo->name ?>
+                                </option>
+                            <?php endforeach ?>
+                          </select>
+                        </td>
+                        <td class="text-center">
+                          <select class="owned form-control minimal" data-id="<?php echo $room->id ?>">
+                            <?php foreach (\App\User::all() as $key => $owned): ?>
+                              <?php if ( ($owned->role == 'propietario') || $owned->name == 'jorge'): ?>
+                                  <?php if( $owned->name == $room->user->name ){ $selected = "selected"; }else{$selected = "";} ?>
+                                  <option value="<?php echo $owned->id; ?>" <?php echo $selected ?> >
+                                      <?php echo $owned->name ?>
+                                  </option>
+                              <?php endif ?>
+                              
+                            <?php endforeach ?>
+                            <?php// echo $room->user->name;?>
+                          </select>
+                        </td> 
+                        <td class="text-center">
+                          <p style="display: none"><?php echo $room->order ?></p>
+                           <input class="orden order-<?php echo $room->id?>" type="text" name="orden" data-id="<?php echo $room->id ?>" value="<?php echo $room->order?>" style="width: 100%;text-align: center;border-style: none none">
+                        </td>             
+                        <td class="text-center">
+                          <span class="input-group-addon bg-transparent">
+                              <input type="checkbox" class="estado" data-id="<?php echo $room->id ?>" name="state" data-init-plugin="switchery" data-size="small" data-color="success" <?php echo ($room->state == 0) ? "" : "checked" ?>> 
+                          </span>
+                        </td>
+                        <td class="text-center">
+                          <span class="input-group-addon bg-transparent">
+                              <input type="checkbox" class="assingToBooking" data-id="<?php echo $room->id ?>" name="assingToBooking" data-init-plugin="switchery" data-size="small" data-color="danger" <?php echo ( $room->isAssingToBooking() ) ? "checked" : "" ?>> 
+                          </span>
+                        </td>
+                        <td>
+                          <a type="button" class="btn btn-default" href="{{ url ('/fotos') }}/<?php echo $room->nameRoom ?>" target="_blank" data-original-title="Enlace de Apartamento" data-toggle="tooltip">
+                              <i class="fa fa-paperclip"></i>
+                          </a>
+                          <a type="button" class="btn btn-default" href="{{ url ('/admin/apartamentos/email') }}/<?php echo $room->owned ?>" data-original-title="E-mail a Propietario" data-toggle="tooltip">
+                            <i class=" pg-mail"></i>
+                          </a>
+                          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalFiles" >
+                            <i class="fa fa-save"></i>
+                          </button>                    
+                        </td>
+                      </tr>
                    <?php endforeach ?>
                 </tbody>
             </table>
@@ -341,6 +364,44 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade slide-up in" id="modalFiles" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xs">
+        <div class="modal-content-wrapper">
+            <div class="modal-content">
+              <div class="block">
+                <div class="block-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14" style="font-size: 40px!important;color: black!important"></i>
+                  </button>
+                  <h2 class="text-center">
+                    Subida de archivos
+                  </h2>
+                </div>
+                
+                <div class="row" style="padding:20px">
+                  <div class="col-md-4 col-md-offset-4">
+                    <div class="input-group">
+                        <label class="input-group-btn">
+                            <span class="btn btn-success">
+                                Archivo/s <input type="file" style="display: none;" multiple="">
+                            </span>
+                        </label>
+                        <input type="text" class="form-control" readonly="">
+                    </div>
+                    <div class="input-group col-md-12 padding-10 text-center">
+                        <button class="btn btn-complete bloquear" data-id="<?php echo $room->id ?>">Guardar</button>
+                    </div> 
+                  </div>
+                </div>
+              </div>
+
+              
+            </div>
+        </div>
+      <!-- /.modal-content -->
+    </div>
+  <!-- /.modal-dialog -->
 </div>
 
 @endsection
