@@ -47,6 +47,7 @@ Route::post('admin/reservas/create' , 'BookController@create');
 
 Route::get('/reservas/stripe/pagos/{id_book}', 'StripeController@stripePayment');
 Route::post('/reservas/stripe/payment/', 'StripeController@stripePaymentResponse');
+Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePaymentBooking');
 
 //Planing 
 	

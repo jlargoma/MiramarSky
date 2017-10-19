@@ -181,7 +181,8 @@ class BookController extends Controller
                                             'paymentSeason' => $paymentSeason,
                                             'proxIn'        => $proxIn,
                                             'proxOut'       => $proxOut,
-                                            'mobile'        => $mobile
+                                            'mobile'        => $mobile,
+                                            'stripe'        => StripeController::$stripe,
                                             ]);
     }
 
