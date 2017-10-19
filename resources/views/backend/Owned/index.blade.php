@@ -2,7 +2,7 @@
 
 @section('title') Seccion Propietarios @endsection
 
-@section('externalScripts') 
+@section('externalScripts')  
 
     <link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
