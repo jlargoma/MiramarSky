@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use \Carbon\Carbon;
+use Mail;
+
 class RoomsController extends Controller
 {
     /**
@@ -241,8 +243,20 @@ class RoomsController extends Controller
 
     }
 
+    public function email($id){
+        
+        echo $id;
+        $user = \App\User::find($id);
+        echo "<pre>";
+        print_r($user);
+        die();
+        Mail::send(['html' => 'frontend.emails.accesoPropietario'],[ 'user' => $user], function ($message) use ($user) {
+            $message->from('reservas@apartamentosierranevada.net');
+            $message->to($user->email); /* $data['email'] */
+            $message->subject('Datos de acceso para ApartamentoSierranevada');
+        });
 
-
+    }
     public function assingToBooking(Request $request)
     {
         $room = \App\Rooms::find($request->id);

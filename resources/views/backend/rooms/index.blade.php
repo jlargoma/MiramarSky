@@ -152,13 +152,12 @@
                           <a type="button" class="btn btn-default" href="{{ url ('/fotos') }}/<?php echo $room->nameRoom ?>" target="_blank" data-original-title="Enlace de Apartamento" data-toggle="tooltip">
                               <i class="fa fa-paperclip"></i>
                           </a>
-                          <a type="button" class="btn btn-default" href="{{ url ('/admin/apartamentos/email') }}/<?php echo $room->nameRoom ?>" data-original-title="E-mail a Propietario" data-toggle="tooltip">
+                          <a type="button" class="btn btn-default" href="{{ url ('/admin/apartamentos/email') }}/<?php echo $room->owned ?>" data-original-title="E-mail a Propietario" data-toggle="tooltip">
                             <i class=" pg-mail"></i>
                           </a>
                           <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalFiles" >
                             <i class="fa fa-save"></i>
-                          </button>
-                          
+                          </button>                    
                         </td>
                       </tr>
                    <?php endforeach ?>
