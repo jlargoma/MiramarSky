@@ -194,5 +194,12 @@ Route::group(['middleware' => 'authAdmin'], function () {
 			return redirect('admin/reservas');
 		}
 	});
+
+
+
+	Route::get('admin/liquidation/searchByName', 'LiquidacionController@searchByName');
+
+	Route::get('admin/liquidation/searchByRoom', 'LiquidacionController@searchByRoom');
+
 });
 

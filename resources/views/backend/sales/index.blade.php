@@ -48,200 +48,60 @@
 @endsection
 
 @section('content')
-<?php use \Carbon\Carbon; 
-setlocale(LC_TIME, "ES");
-setlocale(LC_TIME, "es_ES");
-?>
 
 
 <div class="container-fluid padding-5 sm-padding-10">
 
-    <div class="row">
-    	<div class="col-md-12 text-center">
-    		<h2>Liquidación por reservas <?php echo $temporada->copy()->format('Y')."-".$temporada->copy()->AddYear()->format('Y') ?> 
-				<select id="date" >
-					<?php $fecha = $temporada->copy()->SubYear(2); ?>
-					<?php if ($fecha->copy()->format('Y') < 2015): ?>
-						<?php $fecha = new Carbon('first day of September 2015'); ?>
-					<?php else: ?>
-						
-					<?php endif ?>
-				
-                    <?php for ($i=1; $i <= 4; $i++): ?>                           
-                        <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $temporada->copy()->format('Y') == $fecha->copy()->format('Y') ? 'selected' : '' }}>
-                            <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
-                        </option>
-                        <?php $fecha->addYear(); ?>
-                    <?php endfor; ?>
-                </select>
-            </h2>
+    <div class="row push-20">
+    	<div class="col-md-3 col-md-offset-4 text-center">
+    		<h2>Liquidación por reservas <?php echo $temporada->copy()->format('Y')."-".$temporada->copy()->AddYear()->format('Y') ?> </h2>
     	</div>
-        <div class="col-md-12">
-        	<div class="col-md-12 pull-right">
-				<div class="col-md-3">
-					<table class="table table-hover demo-table-search table-responsive">
-						<thead>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">PVP</th>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">C. banco</th>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">C. Jorge</th>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">C. Jaime</th>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">Pendiente </th>
-						</thead>
-						<tbody>
-							<tr>
-								<td class="text-center"><?php echo number_format($totales["total"],2,',','.') ?></td>
-								<td class="text-center"><?php echo number_format($totales["banco"],2,',','.') ?></td>
-								<td class="text-center"><?php echo number_format($totales["jorge"],2,',','.') ?></td>
-								<td class="text-center"><?php echo number_format($totales["jaime"],2,',','.') ?></td>
-								<td class="text-center"><?php echo number_format($totales["pendiente"],2,',','.') ?></td>
-							</tr>
-						</tbody>
-	    			</table>
-				</div>
-    			<div class="col-md-2">
-	    			<table class="table table-hover demo-table-search table-responsive">
-						<thead>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">ING. NETO</th>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">Benº </th>
-						</thead>
-						<tbody>
-							<tr>
-								<td class="text-center beneficio"><?php echo number_format($totales["beneficio"],2,',','.') ?></td>
-								<td class="text-center beneficio"><?php echo number_format(($totales["beneficio"]/$totales["total"])*100,2,',','.') ?>%</td>
-							</tr>
-						</tbody>
-	    			</table>
-	    		</div>
-				<div class="col-md-5">
-	    			<table class="table table-hover demo-table-search table-responsive">
-						<thead>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">Coste total</th>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">Coste Apto </th>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">Coste Park</th>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">Coste Lujo</th>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">Coste Limpieza</th>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">Coste Agencia</th>
-						</thead>
-						<tbody>
-							<tr>
-								<td class="text-center"><?php echo number_format($totales["coste"],2,',','.') ?></td>
-								<td class="text-center"><?php echo number_format($totales["costeApto"],2,',','.') ?></td>
-								<td class="text-center"><?php echo number_format($totales["costePark"],2,',','.') ?></td>
-								<td class="text-center"><?php echo number_format($totales["costeLujo"],2,',','.') ?></td>
-								<td class="text-center"><?php echo number_format($totales["costeLimp"],2,',','.') ?></td>
-								<td class="text-center"><?php echo number_format($totales["costeAgencia"],2,',','.') ?></td>
-							</tr>
-						</tbody>
-	    			</table>
-				</div>
-				<div class="col-md-2">
-	    			<table class="table table-hover demo-table-search table-responsive">
-						<thead>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">B. Jorge</th>
-							<th class ="text-center bg-complete text-white" style="width: 10%!important">B. Jaime</th>
-						</thead>
-						<tbody>
-							<tr>
-								<td class="text-center"><?php echo number_format($totales["benJorge"],2,',','.') ?></td>
-								<td class="text-center"><?php echo number_format($totales["benJaime"],2,',','.') ?></td>
-							</tr>
-						</tbody>
-	    			</table>
-    			</div>
-        	</div>
-        	<div style="clear: both;"></div>
-			<div class="tab-content">
-				<div class="pull-left">
-				        <div class="col-xs-12 ">
-				            <input type="text" id="search-tableLiquidacion" class="form-control pull-right" placeholder="Buscar">
-				        </div>
-				    </div>
-				
-				    <div class="clearfix"></div>
-			    <div class="tab-pane active" id="tabPrices">
-			        <table class="table table-hover demo-table-search table-responsive" id="tableWithSearchLiquidacion" >
-			        	<thead >
-			        		<th class ="text-center bg-complete text-white" style="width: 7%">Nombre</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Pax</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Apto</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Entrada</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Salida</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 2%"><i class="fa fa-moon-o"></i></th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">PVP</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Cob <br> Banco</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Cob <br> Jorge</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Cob <br> Jaime</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Pend</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Ingreso <br> Neto</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">%Ben</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Coste <br> Total</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Coste <br> Apto</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Park</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Lujo</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Limp</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Agencia</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Ben <br> Jorge</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">% <br> Jorge</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">Ben <br> Jaime</th>
-			        		<th class ="text-center bg-complete text-white" style="width: 5%">% <br> Jaime</th>
-			        	</thead>
-			        	<tbody >
-			        		<?php foreach ($books as $book): ?>
-			        			<tr >
-				        			<td class="text-center">
-										<a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php  echo $book->customer['name'] ?></a>
-									</td>
-				        			<td class="text-center"><?php echo $book->pax ?></td>
-				        			<td class="text-center"><?php echo $book->room->name ?></td>
-				        			<td class="text-center">
-				        				<?php 
-    										$start = Carbon::createFromFormat('Y-m-d',$book->start);
-    										echo $start->formatLocalized('%d %b');
-    									?>
-				        			</td>
-				        			<td class="text-center">
-				        				<?php 
-    										$finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-    										echo $finish->formatLocalized('%d %b');
-    									?>
-				        			</td>
-				        			<td class="text-center"><?php echo $book->nigths ?></td>
-				        			<td class="text-center"><b><?php echo number_format($book->total_price,2,',','.') ?> €</b></td>
-
-				        			<td class="text-center pagos bi"><?php echo number_format($book->getPayment(2),2,',','.'); ?> €</td>
-				        			<td class="text-center pagos"><?php echo number_format($book->getPayment(0),2,',','.'); ?> €</td>
-				        			<td class="text-center pagos"><?php echo number_format($book->getPayment(1),2,',','.'); ?> €</td>
-									<td class="text-center pagos pendiente"><?php echo number_format(($book->total_price - $book->getPayment(4)),2,',','.')." €"; ?></td>
-				        			<td class="text-center beneficio bi" style="border-left: 1px solid black;"><b><?php echo number_format($book->total_ben,2,',','.') ?> €</b></td>
-				        			<td class="text-center beneficio bf"><?php echo number_format($book->inc_percent,0)." %" ?></td>
-				        			<td class="text-center coste bi "><b><?php echo number_format($book->cost_total,2,',','.')?> €</b></td>
-				        			<td class="text-center coste"><?php echo number_format($book->cost_apto,2,',','.')?> €</td>
-				        			<td class="text-center coste"><?php echo number_format($book->cost_park,2,',','.')?> €</td>
-				        			<td class="text-center coste" ><?php echo number_format($book->cost_lujo,2,',','.')?> €</td>
-				        			<td class="text-center coste">		<?php echo number_format($book->sup_limp,2,',','.') ?>€</td>
-				        			<td class="text-center coste bf">	<?php echo number_format($book->agency,2,',','.') ?>€</td>
-				        			<td class="text-center"><?php echo number_format($book->ben_jorge,2,',','.') ?></td>
-				        			<?php if ($book->total_ben > 0 && $book->ben_jorge > 0): ?>
-				        				<td class="text-center"><?php echo number_format(($book->total_ben/$book->ben_jorge)*100)."%" ?></td>
-				        			<?php else: ?>
-				        				<td class="text-center"> 0%</td>
-				        			<?php endif ?>
-				        			
-				        			<td class="text-center"><?php echo number_format($book->ben_jaime,2,',','.') ?></td>
-				        			<?php if ($book->total_ben > 0 && $book->ben_jaime > 0): ?>
-				        				<td class="text-center"><?php echo number_format(($book->total_ben/$book->ben_jaime)*100)."%" ?></td>
-				        			<?php else: ?>
-				        				<td class="text-center"> 0%</td>
-				        			<?php endif ?>
-				        		</tr>
-			        		<?php endforeach ?>
-			        		
-			        	</tbody>
-			        </table>
-			    </div>
-			</div>
-        </div>
+    	<div class="col-md-1" style="padding: 10px 0;">
+			<select id="date" class="form-control minimal">
+				<?php $fecha = $temporada->copy()->SubYear(2); ?>
+				<?php if ($fecha->copy()->format('Y') < 2015): ?>
+					<?php $fecha = new Carbon('first day of September 2015'); ?>
+				<?php else: ?>
+					
+				<?php endif ?>
+			
+                <?php for ($i=1; $i <= 4; $i++): ?>                           
+                    <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $temporada->copy()->format('Y') == $fecha->copy()->format('Y') ? 'selected' : '' }}>
+                        <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
+                    </option>
+                    <?php $fecha->addYear(); ?>
+                <?php endfor; ?>
+            </select>
+    	</div>
     </div>
+
+	<div class="row push-40">
+		<div class="col-md-12">
+			<div class="col-md-6 push-20">
+				<h2 class="text-left">
+					Buscar por:
+				</h2>
+				<div class="col-md-6">
+					<label>Nombre del cliente:</label>
+					<input id="nameCustomer" type="text" name="searchName" class="searchabled form-control" placeholder="nombre del cliente" />
+				</div>
+				<div class="col-md-3">
+					<label>APTO:</label>
+					<select class="form-control searchSelect minimal" name="searchByRoom">
+						<option value="all">Todos</option>
+						<?php foreach (\App\Rooms::all() as $key => $room): ?>
+							<option value="<?php echo $room->id ?>">
+								<?php echo $room->name ?>
+							</option>
+						<?php endforeach ?>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="liquidationSummary">
+    		@include('backend.sales._tableSummary', ['totales' => $totales, 'books' => $books])
+    	</div>
+    </div>   
 </div>
 @endsection
 
@@ -298,6 +158,34 @@ setlocale(LC_TIME, "es_ES");
 			var year = $(this).val();
 			window.location = '/admin/liquidacion/'+year;
 		});
+
+
+		$('.searchabled').keyup(function(event) {
+			var searchString = $(this).val();
+			var year = '<?php echo $temporada->copy()->format('Y')?>';
+
+			$.get('/admin/liquidation/searchByName', { searchString: searchString,  year: year }, function(data) {
+
+				$('.liquidationSummary').empty();
+				$('.liquidationSummary').append(data);
+
+			});
+		});
+
+		$('.searchSelect').change(function(event) {
+			var searchRoom = $(this).val();
+			var searchString = $('.searchabled').val();
+			var year = '<?php echo $temporada->copy()->format('Y')?>';
+
+			$.get('/admin/liquidation/searchByRoom', { searchRoom: searchRoom, searchString: searchString,  year: year }, function(data) {
+
+				$('.liquidationSummary').empty();
+				$('.liquidationSummary').append(data);
+
+			});
+		});
+
+
 	});
 </script>
 @endsection

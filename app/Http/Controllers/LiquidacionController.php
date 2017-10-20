@@ -22,21 +22,23 @@ class LiquidacionController extends Controller
         {   
             $now = Carbon::now();
             $totales = [
-                            "total"        => [],
-                            "coste"        => [],
-                            "banco"        => [],
-                            "jorge"        => [],
-                            "jaime"        => [],
-                            "costeApto"    => [],
-                            "costePark"    => [],
-                            "costeLujo"    => [],
-                            "costeLimp"    => [],
-                            "costeAgencia" => [],
-                            "benJorge"     => [],
-                            "benJaime"     => [],
-                            "pendiente"    => [],
-                            "beneficio"    =>[],
-                        ];
+                    "total"        => 0,       
+                    "coste"        => 0,       
+                    "bancoJorge"   => 0,  
+                    "bancoJaime"   => 0,  
+                    "jorge"        => 0,       
+                    "jaime"        => 0,       
+                    "costeApto"    => 0,   
+                    "costePark"    => 0,   
+                    "costeLujo"    => 0,   
+                    "costeLimp"    => 0,   
+                    "costeAgencia" => 0,
+                    "benJorge"     => 0,    
+                    "benJaime"     => 0,    
+                    "pendiente"    => 0,   
+                    "limpieza"     => 0,    
+                    "beneficio"    => 0,   
+                ];
             $liquidacion = new \App\Liquidacion();
             if (empty($year)) {
                 if ($now->copy()->format('n') >= 9) {
@@ -48,29 +50,13 @@ class LiquidacionController extends Controller
             }else{
                 $date = new Carbon('first day of September '.$year);
             }
-            $books = \App\Book::where('start' , '>=' , $date)->where('start', '<=', $date->copy()->AddYear()->SubMonth())->where('type_book',2)->get();
+            $books = \App\Book::where('start' , '>=' , $date)->where('start', '<=', $date->copy()->AddYear()->SubMonth())->where('type_book',2)->orderBy('start', 'ASC')->get();
 
             foreach ($books as $key => $book) {
-                if ($key == 0) {
-                    $totales["total"] = $book->total_price;
-                    $totales["coste"] = $book->cost_total;
-                    $totales["banco"] = $book->getPayment(2);
-                    $totales["jorge"] = $book->getPayment(0);
-                    $totales["jaime"] = $book->getPayment(1);
-                    $totales["costeApto"] = $book->cost_apto;
-                    $totales["costePark"] = $book->cost_park;
-                    $totales["costeLujo"] = $book->cost_lujo;
-                    $totales["costeLimp"] = $book->sup_limp;
-                    $totales["costeAgencia"] = $book->pvpAgency;
-                    $totales["benJorge"] = $book->total_price;
-                    $totales["benJaime"] = $book->total_price;
-                    $totales["pendiente"] = $book->getPayment(4);
-                    $totales["limpieza"] = $book->sup_limp;
-                    $totales["beneficio"] = $book->total_ben;
-                }
                 $totales["total"] += $book->total_price;
                 $totales["coste"] += $book->cost_total;
-                $totales["banco"] += $book->getPayment(2);
+                $totales["bancoJorge"] += $book->getPayment(2);
+                $totales["bancoJaime"] += $book->getPayment(3);
                 $totales["jorge"] += $book->getPayment(0);
                 $totales["jaime"] += $book->getPayment(1);
                 $totales["costeApto"] += $book->cost_apto;
@@ -326,5 +312,268 @@ class LiquidacionController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function searchByName(Request $request)
+    {
+        $now = Carbon::now();
+        $totales = [
+                    "total"        => 0,       
+                    "coste"        => 0,       
+                    "bancoJorge"   => 0,  
+                    "bancoJaime"   => 0,  
+                    "jorge"        => 0,       
+                    "jaime"        => 0,       
+                    "costeApto"    => 0,   
+                    "costePark"    => 0,   
+                    "costeLujo"    => 0,   
+                    "costeLimp"    => 0,   
+                    "costeAgencia" => 0,
+                    "benJorge"     => 0,    
+                    "benJaime"     => 0,    
+                    "pendiente"    => 0,   
+                    "limpieza"     => 0,    
+                    "beneficio"    => 0,   
+                ];
+
+        if ($request->input('year')) {
+            if ($now->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$now->copy()->format('Y'));
+            }else{
+                $date = new Carbon('first day of September '.$now->copy()->subYear()->format('Y'));
+            }
+            
+        }else{
+            $date = new Carbon('first day of September '.$request->input('year'));
+        }
+
+
+        if ($request->input('searchString') != "") {
+            $customers = \App\Customers::where('name', 'LIKE', '%'.$request->input('searchString').'%')->get();
+            
+            if (count($customers) > 0) {
+                $arrayCustomersId = [];
+                foreach ($customers as $key => $customer) {
+                    if (!in_array($customer->id, $arrayCustomersId)) {
+                        $arrayCustomersId[] = $customer->id;
+                    }
+                    
+                }
+
+                $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
+                                    ->where('start' , '>=' , $date->format('Y-m-d'))
+                                    ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
+                                    ->where('type_book',2)
+                                    ->orderBy('start', 'ASC')
+                                    ->get();
+
+
+                foreach ($books as $key => $book) {
+
+                    $totales["total"]        += $book->total_price;
+                    $totales["coste"]        += $book->cost_total;
+                    $totales["bancoJorge"]   += $book->getPayment(2);
+                    $totales["bancoJaime"]   += $book->getPayment(3);
+                    $totales["jorge"]        += $book->getPayment(0);
+                    $totales["jaime"]        += $book->getPayment(1);
+                    $totales["costeApto"]    += $book->cost_apto;
+                    $totales["costePark"]    += $book->cost_park;
+                    $totales["costeLujo"]    += $book->cost_lujo;
+                    $totales["costeLimp"]    += $book->sup_limp;
+                    $totales["costeAgencia"] += $book->pvpAgency;
+                    $totales["benJorge"]     += $book->total_price;
+                    $totales["benJaime"]     += $book->total_price;
+                    $totales["pendiente"]    += $book->getPayment(4);
+                    $totales["limpieza"]     += $book->sup_limp;
+                    $totales["beneficio"]    += $book->total_ben;
+                
+                }
+
+                return view('backend/sales/_tableSummary',  [
+                                                        'books'   => $books,
+                                                        'totales' => $totales,
+                                                    ]);
+            }else{
+                return "<h2>No hay reservas para este término '".$request->input('searchString')."'</h2>";
+            }
+        }else{
+
+            $books = \App\Book::where('start' , '>=' , $date)->where('start', '<=', $date->copy()->AddYear()->SubMonth())->where('type_book',2)->orderBy('start', 'ASC')->get();
+
+            foreach ($books as $key => $book) {
+                $totales["total"]        += $book->total_price;
+                $totales["coste"]        += $book->cost_total;
+                $totales["bancoJorge"]   += $book->getPayment(2);
+                $totales["bancoJaime"]   += $book->getPayment(3);
+                $totales["jorge"]        += $book->getPayment(0);
+                $totales["jaime"]        += $book->getPayment(1);
+                $totales["costeApto"]    += $book->cost_apto;
+                $totales["costePark"]    += $book->cost_park;
+                $totales["costeLujo"]    += $book->cost_lujo;
+                $totales["costeLimp"]    += $book->sup_limp;
+                $totales["costeAgencia"] += $book->pvpAgency;
+                $totales["benJorge"]     += $book->total_price;
+                $totales["benJaime"]     += $book->total_price;
+                $totales["pendiente"]    += $book->getPayment(4);
+                $totales["limpieza"]     += $book->sup_limp;
+                $totales["beneficio"]    += $book->total_ben;
+            
+            }
+
+            return view('backend/sales/_tableSummary',  [
+                                                    'books'   => $books,
+                                                    'totales' => $totales,
+                                                ]);
+
+        }
+
+
+        
+        
+    }
+
+
+    public function searchByRoom(Request $request)
+    {
+        $now = Carbon::now();
+        $totales = [
+                    "total"        => 0,       
+                    "coste"        => 0,       
+                    "bancoJorge"   => 0,  
+                    "bancoJaime"   => 0,  
+                    "jorge"        => 0,       
+                    "jaime"        => 0,       
+                    "costeApto"    => 0,   
+                    "costePark"    => 0,   
+                    "costeLujo"    => 0,   
+                    "costeLimp"    => 0,   
+                    "costeAgencia" => 0,
+                    "benJorge"     => 0,    
+                    "benJaime"     => 0,    
+                    "pendiente"    => 0,   
+                    "limpieza"     => 0,    
+                    "beneficio"    => 0,   
+                ];
+
+        if ($request->input('year')) {
+            if ($now->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$now->copy()->format('Y'));
+            }else{
+                $date = new Carbon('first day of September '.$now->copy()->subYear()->format('Y'));
+            }
+            
+        }else{
+            $date = new Carbon('first day of September '.$request->input('year'));
+        }
+
+
+        if ($request->input('searchString') != "") {
+
+            $customers = \App\Customers::where('name', 'LIKE', '%'.$request->input('searchString').'%')->get();
+            
+            if (count($customers) > 0) {
+                $arrayCustomersId = [];
+                foreach ($customers as $key => $customer) {
+                    if (!in_array($customer->id, $arrayCustomersId)) {
+                        $arrayCustomersId[] = $customer->id;
+                    }
+                    
+                }
+
+                if ($request->input('searchRoom') == "all") {
+
+                    $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
+                                    ->where('start' , '>=' , $date->format('Y-m-d'))
+                                    ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
+                                    ->where('type_book',2)
+                                    ->orderBy('start', 'ASC')
+                                    ->get();
+                }else{
+                    $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
+                                    ->where('start' , '>=' , $date->format('Y-m-d'))
+                                    ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
+                                    ->where('type_book',2)
+                                    ->where('room_id',$request->input('searchRoom'))
+                                    ->orderBy('start', 'ASC')
+                                    ->get();
+                }
+
+                
+
+
+                foreach ($books as $key => $book) {
+
+                    $totales["total"]        += $book->total_price;
+                    $totales["coste"]        += $book->cost_total;
+                    $totales["bancoJorge"]   += $book->getPayment(2);
+                    $totales["bancoJaime"]   += $book->getPayment(3);
+                    $totales["jorge"]        += $book->getPayment(0);
+                    $totales["jaime"]        += $book->getPayment(1);
+                    $totales["costeApto"]    += $book->cost_apto;
+                    $totales["costePark"]    += $book->cost_park;
+                    $totales["costeLujo"]    += $book->cost_lujo;
+                    $totales["costeLimp"]    += $book->sup_limp;
+                    $totales["costeAgencia"] += $book->pvpAgency;
+                    $totales["benJorge"]     += $book->total_price;
+                    $totales["benJaime"]     += $book->total_price;
+                    $totales["pendiente"]    += $book->getPayment(4);
+                    $totales["limpieza"]     += $book->sup_limp;
+                    $totales["beneficio"]    += $book->total_ben;
+                
+                }
+
+                return view('backend/sales/_tableSummary',  [
+                                                        'books'   => $books,
+                                                        'totales' => $totales,
+                                                    ]);
+            }else{
+                return "<h2>No hay reservas para este término '".$request->input('searchString')."'</h2>";
+            }
+        }else{
+
+            $books = \App\Book::where('start' , '>=' , $date)->where('start', '<=', $date->copy()->AddYear()->SubMonth())->where('type_book',2)->orderBy('start', 'ASC')->get();
+
+            if ($request->input('searchRoom') == "all") {
+                    
+                   $books = \App\Book::where('start' , '>=' , $date)
+                                        ->where('start', '<=', $date->copy()->AddYear()->SubMonth())
+                                        ->where('type_book',2)
+                                        ->orderBy('start', 'ASC')
+                                        ->get();
+                }else{
+                    $books = \App\Book::where('start' , '>=' , $date)
+                                        ->where('start', '<=', $date->copy()->AddYear()->SubMonth())
+                                        ->where('type_book',2)
+                                        ->where('room_id',$request->input('searchRoom'))
+                                        ->orderBy('start', 'ASC')
+                                        ->get();
+                }
+
+            foreach ($books as $key => $book) {
+                $totales["total"]        += $book->total_price;
+                $totales["coste"]        += $book->cost_total;
+                $totales["bancoJorge"]   += $book->getPayment(2);
+                $totales["bancoJaime"]   += $book->getPayment(3);
+                $totales["jorge"]        += $book->getPayment(0);
+                $totales["jaime"]        += $book->getPayment(1);
+                $totales["costeApto"]    += $book->cost_apto;
+                $totales["costePark"]    += $book->cost_park;
+                $totales["costeLujo"]    += $book->cost_lujo;
+                $totales["costeLimp"]    += $book->sup_limp;
+                $totales["costeAgencia"] += $book->pvpAgency;
+                $totales["benJorge"]     += $book->total_price;
+                $totales["benJaime"]     += $book->total_price;
+                $totales["pendiente"]    += $book->getPayment(4);
+                $totales["limpieza"]     += $book->sup_limp;
+                $totales["beneficio"]    += $book->total_ben;
+            
+            }
+
+            return view('backend/sales/_tableSummary',  [
+                                                    'books'   => $books,
+                                                    'totales' => $totales,
+                                                ]);
+
+        }
     }
 }
