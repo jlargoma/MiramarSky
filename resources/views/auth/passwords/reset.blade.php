@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<!--[if IE 9]>         <html class="ie9 no-focus"> <![endif]-->
-<!--[if gt IE 9]><!--> <html class="no-focus"> <!--<![endif]-->
+<html class="no-focus">
     <head>
         <meta charset="utf-8">
 
@@ -53,7 +52,7 @@
                                 <input type="hidden" name="token" value="{{ $token }}">
 
                                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                    <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+                                    <label for="email" class="col-md-4 control-label">Direccion e-mail</label>
 
                                     <div class="col-md-6">
                                         <input id="email" type="email" class="form-control" name="email" value="{{ $email or old('email') }}">
