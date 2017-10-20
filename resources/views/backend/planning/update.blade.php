@@ -415,6 +415,14 @@
                     <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="Cobrar" data-id="<?php echo $book->id ?>" style="width: 50%;min-height: 50px">                            
                 </div>
                 <div class="row">
+                    <h2 class="text-center ls1" style="font-size: 24px">
+                        <span style="font-size: 20px;">Puedes ver el enlace que se enviará al cliente para realizar el pago mediante stripe aquí</span><br>
+                        <a target="_blank" href="https://www.apartamentosierranevada.net/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>">
+                            https://www.apartamentosierranevada.net/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>     
+                        </a>
+                    </h2>
+                </div>
+                <div class="row">
                     @include('backend.stripe.stripe', [ 'bookTocharge' => $book ])
                 </div>
             </div>
@@ -679,6 +687,17 @@
                    <div class="col-xs-12 text-center push-40">
                     <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="Cobrar" data-id="<?php echo $book->id ?>" style="width: 50%;min-height: 50px"> 
                     </div>
+            </div>
+                <div class="row">
+                    <h2 class="text-center ls1" style="font-size: 20px">
+                        <span style="font-size: 26px;">Puedes ver el enlace que se enviará al cliente para realizar el pago mediante stripe </span><br>
+                        <a target="_blank" href="https://www.apartamentosierranevada.net/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>">
+                           Pinchando aquí   
+                        </a>
+                    </h2>
+                </div>
+            <div class="row">
+                @include('backend.stripe.stripe', [ 'bookTocharge' => $book ])
             </div>
     <?php endif ?>
 </div>
