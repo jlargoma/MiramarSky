@@ -22,7 +22,7 @@ class RoomsController extends Controller
                     'sizes'  => \App\SizeRooms::all(),
                     'types'  => \App\TypeApto::all(),
                     'tipos'  => \App\TypeApto::all(),
-                    'owners' => \App\User::whereIn('role',['Admin','Propietario'])->get(),
+                    'owners' => \App\User::all(),
                 ]);
     }
 

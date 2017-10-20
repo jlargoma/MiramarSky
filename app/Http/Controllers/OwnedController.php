@@ -33,8 +33,7 @@ class OwnedController extends Controller
                 $room = \App\Rooms::where('nameRoom', $name)->first();  
 
             }else{ 
-
-
+                
                 return view('errors.owned-access');
 
             }

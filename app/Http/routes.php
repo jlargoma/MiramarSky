@@ -142,21 +142,21 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 	Route::get('admin/temporadas/delete/{id}',['middleware' => 'authAdmin', 'uses' => 'SeasonsController@delete']);
 
 // Pagos
-	Route::get('admin/pagos' , 'PaymentsController@index');
-	Route::get('admin/pagos/create', 'PaymentsController@create');
-	Route::get('admin/pagos/update', 'PaymentsController@update');
+	Route::get('admin/pagos' , ['middleware' => 'authAdmin', 'uses' => 'PaymentsController@index']);
+	Route::get('admin/pagos/create',['middleware' => 'authAdmin', 'uses' =>  'PaymentsController@create']);
+	Route::get('admin/pagos/update',['middleware' => 'authAdmin', 'uses' =>  'PaymentsController@update']);
 
 // Pagos-Propietarios
-	Route::get('admin/pagos-propietarios/{month?}' , 'PaymentsProController@index');
-	Route::post('admin/pagos-propietarios/create', 'PaymentsProController@create');
-	Route::get('admin/pagos-propietarios/update/{id}/{month?}', 'PaymentsProController@update');
+	Route::get('admin/pagos-propietarios/{month?}' ,['middleware' => 'authAdmin', 'uses' => 'PaymentsProController@index']);
+	Route::post('admin/pagos-propietarios/create', ['middleware' => 'authAdmin', 'uses' =>'PaymentsProController@create']);
+	Route::get('admin/pagos-propietarios/update/{id}/{month?}',['middleware' => 'authAdmin', 'uses' => 'PaymentsProController@update']);
 
 
 //Liquidacion
-	Route::get('admin/liquidacion/{year?}' , 'LiquidacionController@index');
-	Route::get('admin/liquidacion-apartamentos/{year?}' , 'LiquidacionController@apto');
-	Route::get('admin/estadisticas/{year?}' , 'LiquidacionController@Statistics');
-	Route::get('admin/perdidas-ganancias' , 'LiquidacionController@perdidas');
+	Route::get('admin/liquidacion/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@index']);
+	Route::get('admin/liquidacion-apartamentos/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@apto']);
+	Route::get('admin/estadisticas/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@Statistics']);
+	Route::get('admin/perdidas-ganancias' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@perdidas']);
 	
 
 //Propietario

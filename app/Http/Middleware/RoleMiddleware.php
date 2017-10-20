@@ -20,8 +20,6 @@ class RoleMiddleware
     public function handle($request, Closure $next)
     {
 
-
-        
         if (!Auth::guest()) {
             if (Auth::user()->role != "admin") {
                 return redirect()->guest('/admin/reservas');

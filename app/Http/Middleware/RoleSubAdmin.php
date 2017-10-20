@@ -18,7 +18,8 @@ class RoleSubAdmin
     {
         if (!Auth::guest()) {
             if (Auth::user()->role != "subadmin" &&  Auth::user()->role != "admin" ) {
-                return redirect()->guest('/admin/reservas');
+                $room = \App\Rooms::where('owned', Auth::user()->id)->first();
+                return redirect()->guest('/admin/propietario/'.$room->nameRoom);
             }
         }else{
             return redirect()->guest('login');
