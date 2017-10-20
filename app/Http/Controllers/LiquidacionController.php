@@ -164,80 +164,98 @@ class LiquidacionController extends Controller
         {
             return view ('backend/sales/perdidas_ganancias');
         }
-    public function statistics()
-        {
-            $arrayMonth = [11 => "Noviembre",12 =>"Diciembre",1 => "Enero", 2 => "Febrero",3 => "Marzo",4=> "Abril"];
-            $arrayStadisticas = array();
-            $arrayYear = array();
-            $años = array();
-            $books = \App\Book::where('type_book',2)->where('start','<','2016-05-01')->get();
-            $arrayBooks = array();
+    public function statistics($year="")
+    {
+        if ( empty($year) ) {
+            $date = Carbon::now();
+        }else{
+            $year = Carbon::createFromFormat('Y',$year);
+            $date = $year->copy();
 
-            //Para sacar las reservas por temporada
-            foreach ($books as $book) {
-                $fecha = Carbon::CreateFromFormat('Y-m-d',$book->start);
-                
-                if ($fecha->format('m')< 11 ) {
-                    $año = ($fecha->format('Y')-1)."-".($fecha->format('Y'));
-                }else{
-                    $año = ($fecha->format('Y'))."-".($fecha->format('Y')+1);
-                }
-                if (isset($arrayYear[$año])) {
-                    $arrayYear[$año] += $book->total_price;
-                }else{
-                    $arrayYear[$año] = $book->total_price;
-                }
-
-                $arrayBooks[$año][$fecha->format('n')][] = $book;
-
-            }
-
-            //Para sacar los nombres de la temporada
-            foreach ($arrayBooks as $key => $value){
-                $años[] = $key;
-            }
-
-            //Para sacar la leyenda del grafico
-            for ($i=0; $i <= count($arrayBooks) ; $i++) { 
-                if ($i == 0) {
-                    $leyenda = "['Mes',";
-                }elseif($i == count($arrayBooks)){
-                    $leyenda .= "'".$años[count($arrayBooks)-1]."'],";
-                }else{
-                    $leyenda .= "'".$años[$i-1]."',";
-                }
-            }
-            // // Mes
-            // foreach ($arrayMonth as $key => $stats) {
-            //     $arrayStadisticas[$key] = "['".$stats."',";
-            // }
-
-            // //Primer Año
-            // foreach ($arrayMonth as $key => $stats) {
-            //     $arrayStadisticas[$key] .= "0,";
-            // }
-
-            // //Segundo Año
-            // foreach ($arrayMonth as $key => $stats) {
-            //     $arrayStadisticas[$key] .= ($key+5).",";
-            // }
-
-            // //Tercer  Año
-            // foreach ($arrayMonth as $key => $stats) {
-            //     $arrayStadisticas[$key] .= ($key+6)."],";
-            // }
-            
-
-
-            return view ('backend/sales/statistics',[
-                                                        'meses' => $arrayMonth,
-                                                        'estadisticas' => $arrayStadisticas,
-                                                        'arrayYear' => $arrayYear,
-                                                        'leyenda' => $leyenda,
-                                                        'arrayBooks' => $arrayBooks,
-                                                        'años' => $años
-                                                    ]);
         }
+        if ($date->copy()->format('n') >= 9) {
+            $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
+        }else{
+            $inicio = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+        }
+
+        $arrayMonth = [11 => "Noviembre",12 =>"Diciembre",1 => "Enero", 2 => "Febrero",3 => "Marzo",4=> "Abril"];
+        $arrayStadisticas = array();
+        $arrayYear = array();
+        $años = array();
+        $books = \App\Book::where('type_book',2)->where('start','<','2016-05-01')->get();
+        $arrayBooks = array();
+
+        //Para sacar las reservas por temporada
+        foreach ($books as $book) {
+            $fecha = Carbon::CreateFromFormat('Y-m-d',$book->start);
+            
+            if ($fecha->format('m')< 11 ) {
+                $año = ($fecha->format('Y')-1)."-".($fecha->format('Y'));
+            }else{
+                $año = ($fecha->format('Y'))."-".($fecha->format('Y')+1);
+            }
+            if (isset($arrayYear[$año])) {
+                $arrayYear[$año] += $book->total_price;
+            }else{
+                $arrayYear[$año] = $book->total_price;
+            }
+
+            $arrayBooks[$año][$fecha->format('n')][] = $book;
+
+        }
+
+        //Para sacar los nombres de la temporada
+        foreach ($arrayBooks as $key => $value){
+            $años[] = $key;
+        }
+
+        //Para sacar la leyenda del grafico
+        for ($i=0; $i <= count($arrayBooks) ; $i++) { 
+            if ($i == 0) {
+                $leyenda = "['Mes',";
+            }elseif($i == count($arrayBooks)){
+                $leyenda .= "'".$años[count($arrayBooks)-1]."'],";
+            }else{
+                $leyenda .= "'".$años[$i-1]."',";
+            }
+        }
+
+
+
+        $books = \App\Book::whereIn('type_book', [2,7,8])->get();
+
+        foreach ($books as $book) {
+            $fecha = Carbon::createFromFormat('Y-m-d',$book->start);
+            if ($fecha->copy()->format('n') >= 9) {
+                if(isset($arrayTotales[$fecha->copy()->format('Y')])){
+                    $arrayTotales[$fecha->copy()->format('Y')] += $book->total_price;
+                }else{
+                    $arrayTotales[$fecha->copy()->format('Y')] = $book->total_price;
+                }
+            }else{
+                if(isset($arrayTotales[$fecha->copy()->subYear()->format('Y')])){
+                    $arrayTotales[$fecha->copy()->subYear()->format('Y')] += $book->total_price;
+                }else{
+                    $arrayTotales[$fecha->copy()->subYear()->format('Y')] = $book->total_price;
+                }
+            }
+        }
+
+
+        return view ('backend/sales/statistics',[
+                                                    'arrayTotales' => $arrayTotales,
+                                                    'date'         => $date,
+                                                    'meses'        => $arrayMonth,
+                                                    'estadisticas' => $arrayStadisticas,
+                                                    'arrayYear'    => $arrayYear,
+                                                    'leyenda'      => $leyenda,
+                                                    'arrayBooks'   => $arrayBooks,
+                                                    'años'         => $años,
+                                                    'inicio'         => $inicio,
+
+                                                ]);
+    }
 
     /**
      * Show the form for creating a new resource.

@@ -155,7 +155,7 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 //Liquidacion
 	Route::get('admin/liquidacion/{year?}' , 'LiquidacionController@index');
 	Route::get('admin/liquidacion-apartamentos/{year?}' , 'LiquidacionController@apto');
-	Route::get('admin/estadisticas' , 'LiquidacionController@Statistics');
+	Route::get('admin/estadisticas/{year?}' , 'LiquidacionController@Statistics');
 	Route::get('admin/perdidas-ganancias' , 'LiquidacionController@perdidas');
 	
 
