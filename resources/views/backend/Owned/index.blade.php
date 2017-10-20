@@ -546,6 +546,10 @@
 		    width: 20px!important;
 		    padding: 0px 5px!important;
 		}
+		.daterangepicker.dropdown-menu {
+		    z-index: 3000!important;
+		    top: 0px!important;
+		}
 		button.minimal{
 		    background-image: linear-gradient(45deg, transparent 50%, gray 50%),linear-gradient(135deg, gray 50%, transparent 50%),linear-gradient(to right, #ccc, #ccc)!important;
 			background-position: calc(100% - 20px) calc(1em + 2px),calc(100% - 15px) calc(1em + 2px),calc(100% - 2.5em) 0.5em!important;
@@ -945,7 +949,7 @@
 		            				Liquidación
 		            			</h2>
 		            		</div>
-		            		<div class="block block-content" style="padding:20px">
+		            		<div class="block block-content not-padding table-responsive" >
 		            			<table class="table table-hover  no-footer" id="basicTable" role="grid">
 		            				<thead>
 		            					
@@ -964,9 +968,9 @@
 		            							
 		            								<table style="width: 100%">
 		            									<tr>
-		            										<td style="border:none"><?php echo Carbon::createFromFormat('Y-m-d',$pago->datePayment)->format('d-m-Y')?></td>
-		            										<td style="border:none"><?php echo $pago->comment ?></td>
-		            										<td style="border:none"><?php echo number_format($pago->import,2,',','.') ?>€</td>
+		            										<td style="border:none;min-width: 50px;padding-bottom: 20px!important" class="not-padding"><?php echo Carbon::createFromFormat('Y-m-d',$pago->datePayment)->format('d-m')?></td>
+		            										<td style="border:none;padding-bottom: 20px!important" class="not-padding"><?php echo $pago->comment ?></td>
+		            										<td style="border:none;padding-bottom: 20px!important" class="not-padding"><?php echo number_format($pago->import,2,',','.') ?>€</td>
 		            									</tr>
 		            								</table>							
 		            							
@@ -1026,8 +1030,7 @@
 		  $(".daterange1").daterangepicker({
 		    "buttonClasses": "button button-rounded button-mini nomargin",
 		    "applyClass": "button-color",
-		    "cancelClass": "button-light",            
-		    "startDate": '01 Dec, 17',
+		    "cancelClass": "button-light",
 		    locale: {
 		        format: 'DD MMM, YY',
 		        "applyLabel": "Aplicar",
