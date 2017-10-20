@@ -17,7 +17,7 @@
 
 <?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
 
-<style type="text/css">
+<style type="text/css"> 
 
 	.S, .D{
 	    background-color: rgba(0,0,0,0.2)!important;
