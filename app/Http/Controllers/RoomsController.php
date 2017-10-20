@@ -225,30 +225,38 @@ class RoomsController extends Controller
         return $room->luxury;    
     }
 
-    public function uploadFile($id)
+    public function uploadFile(Request $request,$id)
     {   
-        $room = \App\Rooms::find($id);
+        echo "<pre>";
+        $file = ($_FILES);
+
+        $room = \App\Rooms::where('nameRoom',$id)->first();
 
         $directory =public_path()."/img/miramarski/apartamentos/".$room->nameRoom;
 
-        
-        echo $directory;
         if (!file_exists($directory)) {
             mkdir($directory, 0777, true);
-            echo "creado";
-        }else{
-            echo "no se ha creado";
         }
-            return redirect()->action('RoomsController@index');
+
+        // echo $storage_path . basename( $_FILES['uploadedfile']['name']);
+        $directory = $directory."/" . basename( $_FILES['uploadedfile']['name']); 
+
+        if(move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $directory))
+        {
+            return "imagen subida";
+        } else{
+            return "imagen no subida";
+        }
 
     }
 
     public function email($id){
         
-        echo $id;
         $user = \App\User::find($id);
-        echo "<pre>";
-        print_r($user);
+        // echo "<pre>";
+        // print_r($user);
+        return view('backend/emails/accesoPropietario',[ 'user' => $user,
+                ]);
         die();
         Mail::send(['html' => 'frontend.emails.accesoPropietario'],[ 'user' => $user], function ($message) use ($user) {
             $message->from('reservas@apartamentosierranevada.net');

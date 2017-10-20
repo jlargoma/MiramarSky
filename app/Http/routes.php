@@ -117,7 +117,7 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 	Route::get('admin/apartamentos/email/{id}' , ['middleware' => 'authAdmin', 'uses' => 'RoomsController@email']);
 	Route::get('admin/apartamentos/getPaxPerRooms/{id}', ['middleware' => 'authSubAdmin', 'uses' => 'RoomsController@getPaxPerRooms']);
 	Route::get('admin/apartamentos/getLuxuryPerRooms/{id}', ['middleware' => 'authSubAdmin', 'uses' => 'RoomsController@getLuxuryPerRooms']);
-	Route::get('admin/apartamentos/uploadFile/{id}', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@uploadFile']);
+	Route::post('admin/apartamentos/uploadFile/{id}', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@uploadFile']);
 	Route::get('admin/apartamentos/assingToBooking', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@assingToBooking']);
 
 

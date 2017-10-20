@@ -152,10 +152,11 @@
                           <a type="button" class="btn btn-default" href="{{ url ('/fotos') }}/<?php echo $room->nameRoom ?>" target="_blank" data-original-title="Enlace de Apartamento" data-toggle="tooltip">
                               <i class="fa fa-paperclip"></i>
                           </a>
+                          
                           <a type="button" class="btn btn-default" href="{{ url ('/admin/apartamentos/email') }}/<?php echo $room->owned ?>" data-original-title="E-mail a Propietario" data-toggle="tooltip">
                             <i class=" pg-mail"></i>
                           </a>
-                          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalFiles" >
+                          <button type="button" class="btn btn-success uploadFile" data-toggle="modal" data-target="#modalFiles" data-id="<?php echo $room->nameRoom ?>" >
                             <i class="fa fa-save"></i>
                           </button>                    
                         </td>
@@ -382,12 +383,11 @@
                 <div class="row" style="padding:20px">
                   <div class="col-md-4 col-md-offset-4">
                     <div class="input-group">
-                        <label class="input-group-btn">
-                            <span class="btn btn-success">
-                                Archivo/s <input type="file" style="display: none;" multiple="">
-                            </span>
-                        </label>
-                        <input type="text" class="form-control" readonly="">
+                        <form enctype="multipart/form-data" action="{{ url('admin/apartamentos/uploadFile') }}/<?php echo $room->nameRoom ?>" method="POST">
+                          <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                        <input name="uploadedfile" type="file" multiple/>
+                        <input type="submit" value="Subir archivo" />
+                        </form>
                     </div>
                     <div class="input-group col-md-12 padding-10 text-center">
                         <button class="btn btn-complete bloquear" data-id="<?php echo $room->id ?>">Guardar</button>
@@ -431,6 +431,14 @@
    <script type="text/javascript">
 
       function changeRooms(){
+
+        $('.uploadFile').click(function(event) {
+            var id = $(this).attr('data-id');
+            $.get('/admin/usuarios/update/'+id, function(data) {
+                $('.modal-body').empty().append(data);
+            });
+        });
+
         $('.editable').change(function(event) {
             var id = $(this).attr('data-id');
             var luxury = $(this).is(':checked');
@@ -486,7 +494,6 @@
             });
         });
 
-
         $('.name').change(function(event) {
           var id = $(this).attr('data-id');
           var name = $(this).val();
@@ -505,7 +512,6 @@
           });
         });
 
-
         $('.sizes').change(function(event) {
           var id = $(this).attr('data-id');
           var size = $(this).val();
@@ -514,6 +520,7 @@
               location.reload();
           });
         });
+
         $('.owned').change(function(event) {
           var id = $(this).attr('data-id');
           var owned = $(this).val();
@@ -522,8 +529,6 @@
           });
         });
         
-
-
         $('.type').change(function(event) {
           var id = $(this).attr('data-id');
           var tipo = $(this).val();
