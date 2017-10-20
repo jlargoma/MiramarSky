@@ -332,7 +332,7 @@
 
 
                     <div class="col-md-12">
-                        @include('backend.stripe.stripe', ['bookTocharge' => 0])
+                        @include('backend.stripe.stripe', ['bookTocharge' => null])
                     </div>
 
                 </div>
@@ -700,9 +700,9 @@
 					
                 </div>
                 <div class="col-md-12 push-40">
-					    <!-- {{ url('admin/reservas/stripe/paymentsBooking') }} -->
-					    @include('backend.stripe.stripe', ['bookTocharge' => 0])
-					</div>
+				    <!-- {{ url('admin/reservas/stripe/paymentsBooking') }} -->
+				    @include('backend.stripe.stripe', ['bookTocharge' => null])
+				</div>
             </div>
 
             <!-- Modal de cobros -->

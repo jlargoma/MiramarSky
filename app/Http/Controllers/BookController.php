@@ -454,6 +454,7 @@ class BookController extends Controller
                                                         'typecobro'    => new \App\Book(),
                                                         'totalpayment' => $totalpayment,
                                                         'mobile'       => $mobile,
+                                                        'stripe'        => StripeController::$stripe,
                                                     ]);
         }
 

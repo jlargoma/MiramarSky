@@ -187,6 +187,39 @@ class StripeController extends Controller
         }
 
 
-        return view('backend.stripe.response', ['message' => $message, 'mobile'  => new Mobile()]);
+        if ( $request->input('id_book') ) {
+            $book = \App\Book::find($request->input('id_book'));
+            if ($charge->status == "succeeded") {
+                
+                    if ($book->changeBook(2, "", $book)) {
+
+                        /* Make a charge on apartamentosierranevada.net */
+                        $realPrice = substr($price, 0, -2);
+
+                        $payment = new \App\Payments();
+            
+                        $date = Carbon::now()->format('Y-m-d');
+                        $payment->book_id     = $book->id;
+                        $payment->datePayment = $date;
+                        $payment->import      = $realPrice;
+                        $payment->comment     = "Pago desde stripe";
+                        $payment->type        = 2;
+
+                        $payment->save();
+
+
+
+                        return redirect()->back();
+                    }
+            }
+
+        }else{
+
+            return view('backend.stripe.response', ['message' => $message, 'mobile'  => new Mobile()]);
+
+        }
+
+
+        
     }
 }

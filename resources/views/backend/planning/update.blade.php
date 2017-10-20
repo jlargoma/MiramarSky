@@ -414,6 +414,9 @@
                     </table>
                     <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="Cobrar" data-id="<?php echo $book->id ?>" style="width: 50%;min-height: 50px">                            
                 </div>
+                <div class="row">
+                    @include('backend.stripe.stripe', [ 'bookTocharge' => $book ])
+                </div>
             </div>
         </div>
     <?php else: ?>
