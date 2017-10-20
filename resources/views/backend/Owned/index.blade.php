@@ -77,6 +77,10 @@
     .daterangepicker.dropdown-menu{
     	z-index: 3000!important;
     }
+    .btn-cons {
+        margin-right: 5px!important;
+        min-width: 150px!important;
+    }
 </style>
 <?php if (!$mobile->isMobile()): ?>
 	<div class="container-fluid padding-10 sm-padding-10">
@@ -112,26 +116,57 @@
 					<div class="col-md-12 text-center">
 						<h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1>
 					</div>
+
+				</div>
+				<div style="clear: both;"></div>
+				<div class="col-md-1">
+					<a class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalBloq">
+	                    <span class="bold">Bloquear fechas</span>
+	                </a>
+		        </div>
+				<div class="col-md-1">
+					<a class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalLiquidation">
+	                    <span class="bold">Liquidación</span>
+	                </a>
+				</div>
+				<div class="col-md-1">
+						<a class="btn btn-success btn-cons text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/operativa" ?>">
+							Opertaiva
+						</a>
+				</div>
+				<div class="col-md-1">
+						<a class="btn btn-success btn-cons text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/tarifas" ?>">
+							Tarifas
+						</a>
+				</div>
+				<div class="col-md-1">
+					<a class="btn btn-success btn-cons text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/descuentos" ?>">
+						Descuentos
+					</a>
+				</div>
+				<div class="col-md-1">
+					<a class="btn btn-success btn-cons text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/fiscalidad" ?>">
+						Fiscalidad
+					</a>
+				</div>
+				<div class="col-md-12">
 					<div class="col-md-12">
-						<button class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalBloq">
-		                    <span class="bold">Bloquear fechas</span>
-		                </button>
-						<button class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalLiquidation">
-		                    <span class="bold">Liquidación</span>
-		                </button>
+						
+		                
+						
 					</div>
 					<div class="col-xs-12">
 						<div class="col-md-3">
-							<a class="btn btn-success btn-cons text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/operativa" ?>">Opertaiva</a>
+							
 						</div>
 						<div class="col-md-3">
-							<a class="btn btn-success btn-cons text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/tarifas" ?>">Tarifas</a>
+							
 						</div>
 						<div class="col-md-3">
-							<a class="btn btn-success btn-cons text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/descuentos" ?>">Descuentos</a>
+							
 						</div>
 						<div class="col-md-3">
-						    <a class="btn btn-success btn-cons text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/fiscalidad" ?>">Fiscalidad</a>
+						    
 						</div>
 					</div>
 				</div>
@@ -150,16 +185,39 @@
 									<?php else: ?>
 									<?php endif ?>
 								</tr>
-									<tr>
-										<td class="text-center total"><?php echo number_format($total,2,',','.'); ?>€</td>
-										<td class="text-center"><?php echo number_format($apto,2,',','.'); ?>€</td>
-										<td class="text-center"><?php echo number_format($park,2,',','.'); ?>€</td>
-										<?php if ($room->luxury == 1): ?>
-											<td class="text-center"><?php echo number_format($lujo,2,',','.'); ?>€</td>
+								<tr>
+									<td class="text-center total">
+										<?php if ($total > 0): ?>
+											<?php echo number_format($total,2,',','.'); ?>€
 										<?php else: ?>
+											--- €
+										<?php endif ?>												
+									</td>
+									<td class="text-center">
+										<?php if ($apto > 0): ?>
+											<?php echo number_format($apto,2,',','.'); ?>€
+										<?php else: ?>
+											--- €
 										<?php endif ?>
-									</tr>
-								</tbody>
+									</td>
+									<td class="text-center">
+										<?php if ($park > 0): ?>
+											<?php echo number_format($park,2,',','.'); ?>€
+										<?php else: ?>
+											--- €
+										<?php endif ?>
+									</td>
+									<?php if ($room->luxury == 1): ?>
+										<td class="text-center">
+											<?php if ($lujo > 0): ?>
+												<?php echo number_format($lujo,2,',','.'); ?>€
+											<?php else: ?>
+												--- €
+											<?php endif ?>
+										</td>
+									<?php else: ?>
+									<?php endif ?>
+								</tr>
 							</table>
 						</div>
 						<div class="col-md-12">
@@ -197,11 +255,35 @@
 													echo $finish->formatLocalized('%d-%b');
 												?> 
 											</td>
-											<td class="text-center total"><?php echo number_format($book->cost_total,2,',','.') ?> €</td>
-											<td class="text-center"><?php echo number_format($book->cost_apto,2,',','.') ?> €</td>
-											<td class="text-center"><?php echo number_format($book->cost_park,2,',','.') ?> €</td>
+											<td class="text-center total">
+												<?php if ($book->cost_total > 0): ?>
+													<?php echo number_format($book->cost_total,2,',','.') ?> €
+												<?php else: ?>
+													---€	
+												<?php endif ?>
+											</td>
+											<td class="text-center">
+												<?php if ($book->cost_apto > 0): ?>
+													<?php echo number_format($book->cost_apto,2,',','.') ?> €
+												<?php else: ?>
+													---€	
+												<?php endif ?>
+											</td>
+											<td class="text-center">
+												<?php if ($book->cost_park > 0): ?>
+													<?php echo number_format($book->cost_park,2,',','.') ?> €
+												<?php else: ?>
+													---€	
+												<?php endif ?>
+											</td>
 											<?php if ($room->luxury == 1): ?>
-												<td class="text-center"><?php echo $book->cost_lujo ?> €</td>
+												<td class="text-center">
+													<?php if ($book->cost_lujo > 0): ?>
+														<?php echo $book->cost_lujo ?> €
+													<?php else: ?>
+														---€	
+													<?php endif ?>
+												</td>
 											<?php else: ?>
 											<?php endif ?>
 										</tr>
@@ -464,6 +546,26 @@
 		    width: 20px!important;
 		    padding: 0px 5px!important;
 		}
+		button.minimal{
+		    background-image: linear-gradient(45deg, transparent 50%, gray 50%),linear-gradient(135deg, gray 50%, transparent 50%),linear-gradient(to right, #ccc, #ccc)!important;
+			background-position: calc(100% - 20px) calc(1em + 2px),calc(100% - 15px) calc(1em + 2px),calc(100% - 2.5em) 0.5em!important;
+			 
+			background-size: 5px 5px,5px 5px,1px 1.5em!important;
+			background-repeat: no-repeat;
+		}
+		.nav-tabs > li > a:hover, .nav-tabs > li > a:focus{
+		    color: white!important;
+		}
+
+		.fechas > li.active{
+		    background-color: rgb(81,81,81);
+		}
+		.fechas > li > a{
+			color: white!important;
+		}
+		.nav-tabs ~ .tab-content{
+		    padding: 0px;
+		}
 	</style>
 	<div class="container-fluid padding-10 sm-padding-10">
 	    <div class="row">
@@ -471,11 +573,11 @@
 
 	    	    <div class="col-md-12">
 	    	    	<div class="row">
-		    			<div class="col-xs-12">
-		    				<h2 class="text-center push-10" style="font-size: 24px;"><b>Planning de reservas</b>  Fechas:</h2>
+		    			<div class="col-xs-7 not-padding">
+		    				<h4 class="text-center push-10" style="font-size: 19px;"><b>Planning de reservas</b></h4>
 		    			</div>
 		    		        
-		    		    <div class="col-xs-12" style="padding:0 15px;">  
+		    		    <div class="col-xs-5 m-t-10 p-r-0" style="padding:0 15px;">  
 		    		        <select id="fecha" class="form-control minimal">
 		    		            <?php $fecha = $date->copy()->SubYear(); ?>
 		    		            <?php if ($fecha->copy()->format('Y') < 2015): ?>
@@ -499,14 +601,28 @@
 						<h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1>
 					</div>
 					<div class="col-md-12">
-						<button class="btn btn-success btn-cons push-20" type="button" data-toggle="modal" data-target="#modalBloq">
+						<div class="dropdown dropdown-default">
+							<button class="btn btn-secondary dropdown-toggle text-center minimal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 138px;">
+								Paginas
+							</button>
+							<div class="dropdown-menu" style="width: 138px;">
+								<a class="dropdown-item" data-toggle="modal" data-target="#modalBloq"><span class="bold">Bloquear fechas</span></a><br>
+								<a class="dropdown-item" data-toggle="modal" data-target="#modalLiquidation"><span class="bold">Liquidación</span></a><br>
+								<a class="dropdown-item" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/operativa" ?>">Opertaiva</a><br>
+								<a class="dropdown-item" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/tarifas" ?>">Tarifas</a><br>
+								<a class="dropdown-item" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/descuentos" ?>">Descuentos</a><br>
+								<a class="dropdown-item" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/fiscalidad" ?>">Fiscalidad</a><br>
+							</div>
+						</div>
+						<!-- <button class="btn btn-success btn-cons push-20" type="button" data-toggle="modal" data-target="#modalBloq">
 		                    <span class="bold">Bloquear fechas</span>
 		                </button>
 						<button class="btn btn-success btn-cons push-20" type="button" data-toggle="modal" data-target="#modalLiquidation">
 		                    <span class="bold">Liquidación</span>
-		                </button>
+		                </button> -->
 					</div>
-					<div class="col-xs-12">
+					<!-- <div class="col-xs-12">
+
 						<div class="col-xs-6 push-20">
 							<a class="btn btn-success btn-cons text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/operativa" ?>"><span class="bold">Opertaiva</span></a>
 						</div>
@@ -519,7 +635,7 @@
 						<div class="col-xs-6 push-20">
 						    <a class="btn btn-success btn-cons text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/fiscalidad" ?>"><span class="bold">Fiscalidad</span></a>
 						</div>
-					</div>
+					</div> -->
 				</div>
 			</div>
 			<div class="row push-20 text-center">
@@ -530,29 +646,52 @@
 							<table class="table table-hover   no-footer" id="basicTable" role="grid">
 								<tr>
 									<th class ="text-center bg-complete text-white">ING. PROP</th>
-									<th class ="text-center bg-complete text-white">Apto</th>
-									<th class ="text-center bg-complete text-white">Park</th>
+									<th class ="text-center bg-complete text-white">APTO</th>
+									<th class ="text-center bg-complete text-white">PARK</th>
 									<?php if ($room->luxury == 1): ?>
-										<th class ="text-center bg-complete text-white">Sup.Lujo</th>
+										<th class ="text-center bg-complete text-white">SUP.LUJO</th>
 									<?php else: ?>
 									<?php endif ?>
 								</tr>
-									<tr>
-										<td class="text-center total"><?php echo number_format($total,2,',','.'); ?>€</td>
-										<td class="text-center"><?php echo number_format($apto,2,',','.'); ?>€</td>
-										<td class="text-center"><?php echo number_format($park,2,',','.'); ?>€</td>
-										<?php if ($room->luxury == 1): ?>
-											<td class="text-center"><?php echo number_format($lujo,2,',','.'); ?>€</td>
+								<tr>
+									<td class="text-center total">
+										<?php if ($total > 0): ?>
+											<?php echo number_format($total,2,',','.'); ?>€
 										<?php else: ?>
+											--- €
+										<?php endif ?>												
+									</td>
+									<td class="text-center">
+										<?php if ($apto > 0): ?>
+											<?php echo number_format($apto,2,',','.'); ?>€
+										<?php else: ?>
+											--- €
 										<?php endif ?>
-									</tr>
-								</tbody>
+									</td>
+									<td class="text-center">
+										<?php if ($park > 0): ?>
+											<?php echo number_format($park,2,',','.'); ?>€
+										<?php else: ?>
+											--- €
+										<?php endif ?>
+									</td>
+									<?php if ($room->luxury == 1): ?>
+										<td class="text-center">
+											<?php if ($lujo > 0): ?>
+												<?php echo number_format($lujo,2,',','.'); ?>€
+											<?php else: ?>
+												--- €
+											<?php endif ?>
+										</td>
+									<?php else: ?>
+									<?php endif ?>
+								</tr>
 							</table>
 						</div>
 						<div class="row table-responsive" style="border: none;">
 							<h2 class="text-center push-10" style="font-size: 24px;"><b>Reservas</b></h2>
 
-							<table class="table table-hover no-footer " id="basicTable" role="grid" >
+							<table class="table table-hover no-footer" id="basicTable" role="grid" style="margin-bottom: 17px!important">
 								
 								<thead>
 									<th class ="text-center bg-complete text-white" style="width: 25%">Cliente</th>
@@ -586,11 +725,35 @@
 													echo $finish->formatLocalized('%d-%b');
 												?> 
 											</td>
-											<td class="text-center total"><?php echo number_format($book->cost_total,2,',','.') ?> €</td>
-											<td class="text-center"><?php echo number_format($book->cost_apto,2,',','.') ?> €</td>
-											<td class="text-center"><?php echo number_format($book->cost_park,2,',','.') ?> €</td>
+											<td class="text-center total">
+												<?php if ($book->cost_total > 0): ?>
+													<?php echo number_format($book->cost_total,2,',','.') ?> €
+												<?php else: ?>
+													---€	
+												<?php endif ?>
+											</td>
+											<td class="text-center">
+												<?php if ($book->cost_apto > 0): ?>
+													<?php echo number_format($book->cost_apto,2,',','.') ?> €
+												<?php else: ?>
+													---€	
+												<?php endif ?>
+											</td>
+											<td class="text-center">
+												<?php if ($book->cost_park > 0): ?>
+													<?php echo number_format($book->cost_park,2,',','.') ?> €
+												<?php else: ?>
+													---€	
+												<?php endif ?>
+											</td>
 											<?php if ($room->luxury == 1): ?>
-												<td class="text-center"><?php echo $book->cost_lujo ?> €</td>
+												<td class="text-center">
+													<?php if ($book->cost_lujo > 0): ?>
+														<?php echo $book->cost_lujo ?> €
+													<?php else: ?>
+														---€	
+													<?php endif ?>
+												</td>
 											<?php else: ?>
 											<?php endif ?>
 										</tr>
@@ -599,7 +762,7 @@
 							</table>
 						</div>
 					</div>
-					<div class="row">
+					<div class="row"> 
 						<div class="col-md-12 col-xs-12">
 							<div class="panel">
 								<ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
@@ -614,10 +777,10 @@
 										<?php $dateAux->addMonth(); ?>
 									<?php endfor; ?>
 								</ul>
-								<div class="tab-content" style="padding: 0 15px;">
+								<div class="tab-content " style="padding: 0 15px;">
 									<?php for ($z=1; $z <= 9; $z++):?>
 										<div class="tab-pane <?php if($z == 4){ echo 'active';} ?>" id="tab<?php echo $z ?>">
-											<div class="row table-responsive" style="border: none;">
+											<div class="row table-responsive p-b-20" style="border: none;">
 												<table class="fc-border-separate calendar-table" style="width: 100%">
 													<thead>
 														<tr>
@@ -926,7 +1089,7 @@
 			$('#fecha').change(function(event) {
 			    
 			    var year = $(this).val();
-			    window.location = '/admin/propietario/'+year;
+			    window.location = '/admin/propietario/<?php echo $room->nameRoom ?>/'+year;
 			});
 
 
