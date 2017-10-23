@@ -162,9 +162,10 @@
 
 		$('.searchabled').keyup(function(event) {
 			var searchString = $(this).val();
+			var searchRoom = $('.searchSelect').val();
 			var year = '<?php echo $temporada->copy()->format('Y')?>';
 
-			$.get('/admin/liquidation/searchByName', { searchString: searchString,  year: year }, function(data) {
+			$.get('/admin/liquidation/searchByName', { searchString: searchString,  year: year, searchRoom: searchRoom, }, function(data) {
 
 				$('.liquidationSummary').empty();
 				$('.liquidationSummary').append(data);

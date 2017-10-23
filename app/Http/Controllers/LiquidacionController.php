@@ -360,12 +360,26 @@ class LiquidacionController extends Controller
                     
                 }
 
-                $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
+
+                if ($request->input('searchRoom') && $request->input('searchRoom') != "all") {
+                    $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
+                                    ->where('start' , '>=' , $date->format('Y-m-d'))
+                                    ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
+                                    ->where('type_book',2)
+                                    ->where('room_id', $request->input('searchRoom'))
+                                    ->orderBy('start', 'ASC')
+                                    ->get();
+                } else {
+                    $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
                                     ->where('start' , '>=' , $date->format('Y-m-d'))
                                     ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
                                     ->where('type_book',2)
                                     ->orderBy('start', 'ASC')
                                     ->get();
+                }
+                
+
+                
 
 
                 foreach ($books as $key => $book) {
@@ -398,7 +412,23 @@ class LiquidacionController extends Controller
             }
         }else{
 
-            $books = \App\Book::where('start' , '>=' , $date)->where('start', '<=', $date->copy()->AddYear()->SubMonth())->where('type_book',2)->orderBy('start', 'ASC')->get();
+            if ($request->input('searchRoom') && $request->input('searchRoom') != "all") {
+                $books = \App\Book::where('start' , '>=' , $date)
+                                ->where('start', '<=', $date->copy()->AddYear()->SubMonth())
+                                ->where('type_book', 2)
+                                ->where('room_id', $request->input('searchRoom'))
+                                ->orderBy('start', 'ASC')
+                                ->get();
+            } else {
+                $books = \App\Book::where('start' , '>=' , $date)
+                                    ->where('start', '<=', $date->copy()->AddYear()->SubMonth())
+                                    ->where('type_book', 2)
+                                    ->orderBy('start', 'ASC')
+                                    ->get();
+            }
+            
+
+            
 
             foreach ($books as $key => $book) {
                 $totales["total"]        += $book->total_price;
@@ -480,7 +510,7 @@ class LiquidacionController extends Controller
                     
                 }
 
-                if ($request->input('searchRoom') == "all") {
+                if ($request->input('searchRoom') && $request->input('searchRoom') != "all") {
 
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
                                     ->where('start' , '>=' , $date->format('Y-m-d'))
@@ -533,7 +563,7 @@ class LiquidacionController extends Controller
 
             $books = \App\Book::where('start' , '>=' , $date)->where('start', '<=', $date->copy()->AddYear()->SubMonth())->where('type_book',2)->orderBy('start', 'ASC')->get();
 
-            if ($request->input('searchRoom') == "all") {
+            if ($request->input('searchRoom') && $request->input('searchRoom') != "all") {
                     
                    $books = \App\Book::where('start' , '>=' , $date)
                                         ->where('start', '<=', $date->copy()->AddYear()->SubMonth())
