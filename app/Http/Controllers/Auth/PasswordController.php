@@ -17,8 +17,10 @@ class PasswordController extends Controller
     | explore this trait and override any methods you wish to tweak.
     |
     */
-    protected $redirectPath = '/admin/reservas';
     use ResetsPasswords;
+    protected $redirectPath = '/admin';
+
+    
 
     /**
      * Create a new password controller instance.

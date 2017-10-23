@@ -120,58 +120,43 @@
 				</div>
 				<div style="clear: both;"></div>
 				<div class="col-md-1">
-					<a class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalBloq">
+					<button class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalBloq">
 	                    <span class="bold">Bloquear fechas</span>
-	                </a>
+	                </button>
 		        </div>
 				<div class="col-md-1">
-					<a class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalLiquidation">
+					<button class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalLiquidation">
 	                    <span class="bold">Liquidación</span>
-	                </a>
+	                </button>
 				</div>
 				<div class="col-md-1">
-						<a class="btn btn-success btn-cons text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/operativa" ?>">
-							Opertaiva
-						</a>
+					<button class="btn btn-success btn-cons text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/operativa" ?>">
+						Opertaiva
+					</button>
 				</div>
 				<div class="col-md-1">
-						<a class="btn btn-success btn-cons text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/tarifas" ?>">
-							Tarifas
-						</a>
+					<button class="btn btn-success btn-cons text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/tarifas" ?>">
+						Tarifas
+					</button>
 				</div>
 				<div class="col-md-1">
-					<a class="btn btn-success btn-cons text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/descuentos" ?>">
+					<button class="btn btn-success btn-cons text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/descuentos" ?>">
 						Descuentos
-					</a>
+					</button>
 				</div>
 				<div class="col-md-1">
-					<a class="btn btn-success btn-cons text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/fiscalidad" ?>">
+					<button class="btn btn-success btn-cons text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/fiscalidad" ?>">
 						Fiscalidad
-					</a>
+					</button>
 				</div>
-				<div class="col-md-12">
-					<div class="col-md-12">
-						
-		                
-						
-					</div>
-					<div class="col-xs-12">
-						<div class="col-md-3">
-							
-						</div>
-						<div class="col-md-3">
-							
-						</div>
-						<div class="col-md-3">
-							
-						</div>
-						<div class="col-md-3">
-						    
-						</div>
-					</div>
+				<div class="col-md-1">
+					<button class="btn btn-primary btn-cons text-white " id="btn-back" style="display: none;">
+						Volver al resumen
+					</button>
 				</div>
 			</div>
-			<div class="col-md-12 push-20 text-center">
+			<div class="col-md-12 push-20 text-center" id="content-info" style="display: none;"></div>
+			<div class="col-md-12 push-20 text-center" id="content-info-ini">
 				<?php if (count($room) > 0): ?>
 					<div class="col-md-6">
 						<div class="col-md-6 pull-right" style="padding-left: 45px;">
@@ -456,7 +441,7 @@
 		            			<div class="col-md-4 col-md-offset-4">
 									<input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="">
 									<div class="input-group col-md-12 padding-10 text-center">
-									    <button class="btn btn-complete bloquear" data-id="<?php echo $room->id ?>">Guardar</button>
+									    <button class="btn btn-complete bloquear" disabled="" data-id="<?php echo $room->id ?>">Guardar</button>
 									</div> 
 		            			</div>
 		            		</div>
@@ -570,6 +555,13 @@
 		.nav-tabs ~ .tab-content{
 		    padding: 0px;
 		}
+		a.dropdown-item{
+			padding: 0 5px;
+			margin-bottom: 10px;
+			background-color: none!important;
+			width: 100%;
+			text-align: center;
+		}
 	</style>
 	<div class="container-fluid padding-10 sm-padding-10">
 	    <div class="row">
@@ -610,39 +602,26 @@
 								Paginas
 							</button>
 							<div class="dropdown-menu" style="width: 138px;">
-								<a class="dropdown-item" data-toggle="modal" data-target="#modalBloq"><span class="bold">Bloquear fechas</span></a><br>
-								<a class="dropdown-item" data-toggle="modal" data-target="#modalLiquidation"><span class="bold">Liquidación</span></a><br>
-								<a class="dropdown-item" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/operativa" ?>">Opertaiva</a><br>
-								<a class="dropdown-item" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/tarifas" ?>">Tarifas</a><br>
-								<a class="dropdown-item" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/descuentos" ?>">Descuentos</a><br>
-								<a class="dropdown-item" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/fiscalidad" ?>">Fiscalidad</a><br>
+								<a class="dropdown-item font-s16" data-toggle="modal" data-target="#modalBloq"><span class="bold">Bloquear fechas</span></a><br>
+
+								<a class="dropdown-item font-s16" data-toggle="modal" data-target="#modalLiquidation"><span class="bold">Liquidación</span></a><br>
+
+								<a class="dropdown-item btn-content  font-s16"  data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/operativa" ?>">Opertaiva</a><br>
+
+								<a class="dropdown-item btn-content  font-s16"  data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/tarifas" ?>">Tarifas</a><br>
+
+								<a class="dropdown-item btn-content  font-s16"  data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/descuentos" ?>">Descuentos</a><br>
+
+								<a class="dropdown-item btn-content  font-s16"  data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/fiscalidad" ?>">Fiscalidad</a><br>
+								
+								<a class="dropdown-item  font-s16" id="btn-back">Volver al resumen</a><br>
 							</div>
 						</div>
-						<!-- <button class="btn btn-success btn-cons push-20" type="button" data-toggle="modal" data-target="#modalBloq">
-		                    <span class="bold">Bloquear fechas</span>
-		                </button>
-						<button class="btn btn-success btn-cons push-20" type="button" data-toggle="modal" data-target="#modalLiquidation">
-		                    <span class="bold">Liquidación</span>
-		                </button> -->
 					</div>
-					<!-- <div class="col-xs-12">
-
-						<div class="col-xs-6 push-20">
-							<a class="btn btn-success btn-cons text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/operativa" ?>"><span class="bold">Opertaiva</span></a>
-						</div>
-						<div class="col-xs-6 push-20">
-							<a class="btn btn-success btn-cons text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/tarifas" ?>"><span class="bold">Tarifas</span></a>
-						</div>
-						<div class="col-xs-6 push-20">
-							<a class="btn btn-success btn-cons text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/descuentos" ?>"><span class="bold">Descuentos</span></a>
-						</div>
-						<div class="col-xs-6 push-20">
-						    <a class="btn btn-success btn-cons text-white" href="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/fiscalidad" ?>"><span class="bold">Fiscalidad</span></a>
-						</div>
-					</div> -->
 				</div>
 			</div>
-			<div class="row push-20 text-center">
+			<div class="row push-20 text-center" id="content-info" style="display: none;"></div>
+			<div class="row push-20 text-center" id="content-info-ini">
 				<?php if (count($room) > 0): ?>
 					<div class="col-xs-12 push-20">
 						<h2 class="text-center push-10" style="font-size: 24px;"><b>Resumen</b></h2>
@@ -898,6 +877,7 @@
 					</div>
 				<?php endif ?>
 			</div>
+
 		</div>
 
 		<form role="form">
@@ -1095,6 +1075,9 @@
 			    window.location = '/admin/propietario/<?php echo $room->nameRoom ?>/'+year;
 			});
 
+			$('#fechas').change(function(event) {
+				$('.bloquear').attr('disabled', false);
+			});
 
 			$('.bloquear').click(function(event) {
 				
@@ -1111,6 +1094,30 @@
                           
                     } 
 				});
+			});
+
+
+			$('.btn-content').click(function(event) {
+				var url = $(this).attr('data-url');
+				$('button.btn-content').css('background-color', '#10cfbd');
+				$(this).css('background-color', '#0a7d72');
+				$.get(url, function(data) {
+
+					$('#content-info').empty().append(data);
+					$('#content-info-ini').hide();
+					$('#content-info').show();
+
+					$('#btn-back').show();
+				});
+			});
+
+			$('#btn-back').click(function(event) {
+				$('#content-info').hide();
+				$('#content-info-ini').show();
+				$('#content-info').empty();
+				
+				$('#btn-back').hide();
+				$('.btn-content').css('background-color', '#10cfbd');
 			});
 
 		});

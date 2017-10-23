@@ -168,6 +168,10 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 	Route::get('admin/propietario/{name?}/{year?}' , 'OwnedController@index');
 
 
+
+// AUX PROPIETARIOS 
+	Route::get('admin/propietarios/dashboard/{name?}/{year?}' , ['middleware' => 'authAdmin', 'uses' => 'OwnedController@index'] );
+
 //PDF´s
 
 Route::get('admin/pdf/pdf-reserva/{id}','PdfController@invoice');
