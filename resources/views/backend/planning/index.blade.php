@@ -402,15 +402,12 @@
             .modal .modal-body{
                 padding: 0 10px;
             }
+            .first-list > li.active a{
+                background-color: #3f3f3f!important;
+            }
         </style>
         <div class="container-fluid container-fixed-lg">
-            <div class="row">
-                <div class="col-xs-3" style="position: fixed; bottom: 20px; right: 10px; z-index: 100">
-                    <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalNewBook" style="min-width: 10px!important;width: 80px!important; padding: 25px; border-radius: 100%;">
-                        <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
-                    </button>
-                </div>
-            </div>
+            
             <div class="row" style="margin-top: 15px;">
                 <div class="col-xs-6" style="padding: 0 15px;">
                     <?php 
@@ -562,7 +559,7 @@
             <div class="row">
                 
                 <div class="panel" style="margin-bottom: 0px!important">
-                    <ul class="nav nav-tabs nav-tabs-simple bg-info-light " role="tablist" data-init-reponsive-tabs="collapse">
+                    <ul class="nav nav-tabs nav-tabs-simple bg-info-light first-list" role="tablist" data-init-reponsive-tabs="collapse">
                         <li class="resv  active text-center"  style="width: 33.33%; min-height: 43px;">
                             <a href="#reservas" data-toggle="tab" role="tab" style="font-size: 15px!important;padding-left: 2px;padding-right: 2px"> RESERVAS </a>
                         </li>
@@ -576,6 +573,13 @@
                 </div>
                 <div class="tab-content ">
                     <div class="tab-pane active" id="reservas">
+                        <div class="row">
+                            <div class="col-xs-3" style="position: fixed; bottom: 20px; right: 10px; z-index: 100">
+                                <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalNewBook" style="min-width: 10px!important;width: 80px!important; padding: 25px; border-radius: 100%;">
+                                    <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
                         <div class="row column-seperation ">
                             <div class="panel resv" style="margin-bottom: 0;">
                                 <ul class="nav nav-tabs nav-tabs-simple bg-info-light rev" role="tablist" data-init-reponsive-tabs="collapse">
@@ -617,9 +621,9 @@
                     </div>
 
                     <div class="tab-pane" id="cobros">
-                        <div class="row column-seperation">
-                            <div class="panel in-out">
-                                <ul class="nav nav-tabs nav-tabs-simple bg-info-light rev" role="tablist" data-init-reponsive-tabs="collapse">
+                        <div class="col-xs-12 column-seperation">
+                            <div class="panel in-out push-0">
+                                <ul class="nav nav-tabs nav-tabs-simple bg-info-light rev first-list" role="tablist" data-init-reponsive-tabs="collapse">
                                     <li class="active in text-center cob" style="width: 50%">
                                         <a href="#tabIn" data-toggle="tab" role="tab" style="font-size: 11px;">CHECK IN
                                         </a>
@@ -631,7 +635,7 @@
                                 </ul>
                             </div>
                             <div class="tab-content">
-                                <div class="tab-pane active table-responsive" id="tabIn">
+                                <div class="tab-pane active table-responsive" id="tabIn" style="border: none;">
                                     <table class="table table-striped dataTable no-footer">
                                         <thead>
                                             <th class="bg-success text-white text-center">Nombre</th>
@@ -639,21 +643,25 @@
                                             <th class="bg-success text-white text-center">Out</th>
                                             <th class="bg-success text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i> In</th>
                                             <th class="bg-success text-white text-center">Apto</th>
-                                            <th class="bg-success text-white text-center">Pendiente</th>
                                             <th class="bg-success text-white text-center">Tel</th>
+                                            <th class="bg-success text-white text-center">Pendiente</th>
+                                            
                                         </thead>
                                         <tbody>
                                             <?php foreach ($proxIn as $book): ?>
                                                 <tr>
-                                                    <td class="text-center sm-p-t-10 sm-p-b-10">
-                                                        <a class="cobro" data-id="<?php echo $book->id ?>" data-toggle="modal" data-target="#myModal">
-                                                            <?php echo substr($book->customer->name,0,10) ?>
-                                                        </a>
+                                                    <td class="text-center" style="padding: 0px 10px!important;">
+                                                        <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
+                                                             <?php echo substr($book->customer->name, 0, 10) ?>
+                                                        </a> 
                                                     </td>
                                                     <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?></td>
                                                     <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
+
                                                     <td class="text-center sm-p-t-10 sm-p-b-10">Hora</td>
+
                                                     <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $book->room->nameRoom ?></td>
+                                                    <td class="text-center sm-p-t-10 sm-p-b-10"><a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
                                                     <td class="text-center sm-p-t-10 sm-p-b-10">
                                                         <?php if (isset($payment[$book->id])): ?>
                                                             <p style="{{ $book->total_price - $payment[$book->id] > 0 ? 'color:red' : '' }}"><?php echo number_format($book->total_price - $payment[$book->id],2,',','.') ?> €</p>
@@ -661,7 +669,7 @@
                                                             <p style="color:red"><?php echo number_format($book->total_price,2,',','.') ?> €<p>
                                                         <?php endif ?>
                                                     </td>
-                                                    <td class="text-center sm-p-t-10 sm-p-b-10"><a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
+                                                   
                                                 </tr>
                                             <?php endforeach ?>
                                         </tbody>
@@ -671,28 +679,27 @@
                                     <table class="table table-striped dataTable no-footer">
                                         <thead>
                                             <th class="bg-success text-white text-center">Nombre</th>
-                                            <th class="bg-success text-white text-center">In</th>
                                             <th class="bg-success text-white text-center">Out</th>
-                                            <th class="bg-success text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i> Out</th>
+                                            <th class="bg-success text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i> h. salida</th>
                                             <th class="bg-success text-white text-center">Apto</th>
                                         </thead>
                                         <tbody>
                                             <?php foreach ($proxOut as $book): ?>
                                                 <tr>
                                                     <td class="text-center sm-p-t-10 sm-p-b-10">
-                                                        <a class="cobro" data-id="<?php echo $book->id ?>" data-toggle="modal" data-target="#myModal">
-                                                            <?php echo substr($book->customer->name,0,10) ?>
-                                                        </a>
+                                                        <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
+                                                            <?php echo substr($book->customer->name, 0, 10) ?>
+                                                        </a> 
                                                     </td>
-                                                    <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?></td>
                                                     <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
 
                                                     <td class="text-center sm-p-t-10 sm-p-b-10">
-                                                        <?php if (isset($payment[$book->id])): ?>
+                                                        12:00 am
+                                                       <!--  <?php if (isset($payment[$book->id])): ?>
                                                             <?php echo number_format($book->total_price - $payment[$book->id],2,',','.') ?> €
                                                         <?php else: ?>
                                                             <?php echo number_format($book->total_price,2,',','.') ?> €
-                                                        <?php endif ?>
+                                                        <?php endif ?> -->
                                                     </td>
                                                     <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $book->room->nameRoom ?></td>
                                                 </tr>

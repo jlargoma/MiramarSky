@@ -1,4 +1,3 @@
-
 <div class="col-md-12 col-xs-12">
 	<div class="panel">
 		<ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
@@ -173,38 +172,38 @@
 															<?php endif ?>" 
 															class="<?php echo $book->getStatus($calendars[0]->type_book) ?>"
 															>
-															<?php if ($calendars[0]->type_book == 9): ?>
-																<div style="width: 100%;height: 100%">
-																	&nbsp;
-																</div>
-															<?php else: ?>
-																<a href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[0]->id ?>">
+																<?php if ($calendars[0]->type_book == 9): ?>
 																	<div style="width: 100%;height: 100%">
 																		&nbsp;
 																	</div>
-																</a>
-															<?php endif ?>
+																<?php else: ?>
+																	<a href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[0]->id ?>">
+																		<div style="width: 100%;height: 100%">
+																			&nbsp;
+																		</div>
+																	</a>
+																<?php endif ?>
 
 
-														</td>
+															</td>
 
+														<?php endif ?>
 													<?php endif ?>
+													<!-- Si no existe nada para ese dia -->
+												<?php else: ?>
+													
+													<td class="<?php echo $days[$inicio->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
+
+													</td>
+
+												<?php endif; ?>
+
+												<?php if ($inicio->copy()->format('d') != $arrayMonths[$inicio->copy()->format('n')]): ?>
+													<?php $inicio = $inicio->addDay(); ?>
+												<?php else: ?>
+													<?php $inicio = $inicio->startOfMonth() ?>
 												<?php endif ?>
-												<!-- Si no existe nada para ese dia -->
-											<?php else: ?>
-												
-												<td class="<?php echo $days[$inicio->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
-
-												</td>
-
-											<?php endif; ?>
-
-											<?php if ($inicio->copy()->format('d') != $arrayMonths[$inicio->copy()->format('n')]): ?>
-												<?php $inicio = $inicio->addDay(); ?>
-											<?php else: ?>
-												<?php $inicio = $inicio->startOfMonth() ?>
-											<?php endif ?>
-										<?php endfor; ?> 
+											<?php endfor; ?> 
 									</tr>
 
 								<?php endforeach; ?>

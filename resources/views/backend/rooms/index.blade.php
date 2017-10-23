@@ -54,7 +54,7 @@
         <div class="col-md-12 text-center">
             <h2>Apartamentos</h2>
         </div>
-        <div class="col-md-9 cols-xs-12 col-sm-12">
+        <div class="col-md-10 cols-xs-12 col-sm-12">
             <div class="pull-left">
               <div class="col-xs-12 ">
                 <input type="text" id="search-tableRoom" class="form-control pull-right" placeholder="Buscar">
@@ -153,9 +153,10 @@
                               <i class="fa fa-paperclip"></i>
                           </a>
                           
-                          <a type="button" class="btn btn-default" href="{{ url ('/admin/apartamentos/email') }}/<?php echo $room->owned ?>" data-original-title="E-mail a Propietario" data-toggle="tooltip">
+                          <button class="btn btn-default btn-emiling" type="button" data-toggle="modal" data-target="#modalEmailing" data-id="<?php echo $room->user->id ?>">
                             <i class=" pg-mail"></i>
-                          </a>
+                          </button>
+
                           <button type="button" class="btn btn-success uploadFile" data-toggle="modal" data-target="#modalFiles" data-id="<?php echo $room->nameRoom ?>" >
                             <i class="fa fa-save"></i>
                           </button>                    
@@ -166,7 +167,7 @@
             </table>
         </div>
         
-        <div class="col-md-3 cols-xs-12 col-sm-12 " style="border:1px solid black;margin-top: 40px;">
+        <div class="col-md-2 cols-xs-12 col-sm-12 " style="border:1px solid black;margin-top: 40px;">
             <div class="row">
                 <div class="col-md-12">
                     <div class="sm-m-l-5 sm-m-r-5">
@@ -404,6 +405,15 @@
   <!-- /.modal-dialog -->
 </div>
 
+<div class="modal fade slide-up in" id="modalEmailing" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content-wrapper">
+            <div class="modal-content emailing"></div>
+        </div>
+      <!-- /.modal-content -->
+    </div>
+  <!-- /.modal-dialog -->
+</div>
 @endsection
 
 @section('scripts')
@@ -430,7 +440,8 @@
 
    <script type="text/javascript">
 
-      function changeRooms(){
+
+    function changeRooms(){
 
         $('.uploadFile').click(function(event) {
             var id = $(this).attr('data-id');
@@ -547,14 +558,19 @@
           });
 
         });
-       }
+    }
        
 
-      $(document).ready(function() {
-         changeRooms();
-          $('.dataTables_paginate').click(function(event) {
+    $(document).ready(function() {
+        changeRooms();
+        $('.dataTables_paginate').click(function(event) {
             changeRooms();
-          });
-       });
+        });
+
+        $('.btn-emiling').click(function(event) {
+            var id = $(this).attr('data-id');
+            $('.modal-content.emailing').empty().load('/admin/apartamentos/email/'+id);
+        });
+    });
    </script>
 @endsection

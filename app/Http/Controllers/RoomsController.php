@@ -253,18 +253,25 @@ class RoomsController extends Controller
     public function email($id){
         
         $user = \App\User::find($id);
-        // echo "<pre>";
-        // print_r($user);
-        return view('backend/emails/accesoPropietario',[ 'user' => $user,
-                ]);
-        die();
-        Mail::send(['html' => 'frontend.emails.accesoPropietario'],[ 'user' => $user], function ($message) use ($user) {
-            $message->from('reservas@apartamentosierranevada.net');
-            $message->to($user->email); /* $data['email'] */
-            $message->subject('Datos de acceso para ApartamentoSierranevada');
-        });
+        $rooms = \App\Rooms::where('owned', $id)->get();
+        return view('backend/emails/_emailingToOwned',[ 'user' => $user, 'rooms' => $rooms,]);
 
     }
+
+    public function sendEmailToOwned(Request $request)
+    {
+        $user = \App\User::find($request->input('user'));
+
+        Mail::send('backend.emails.accesoPropietario',['data' => $request->input()], function ($message) use ($user) {
+            $message->from('reservas@apartamentosierranevada.net');
+            $message->attach(public_path("contrato-comercializacion-17-18.pdf"));
+            $message->to($user->email);
+            $message->subject('Datos de acceso para ApartamentoSierraNevada');
+        });
+
+        return redirect()->back();
+    }
+
     public function assingToBooking(Request $request)
     {
         $room = \App\Rooms::find($request->id);

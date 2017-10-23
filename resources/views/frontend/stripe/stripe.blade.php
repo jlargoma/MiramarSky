@@ -174,29 +174,29 @@
 		</div>
 	</section>
 <?php else:?>
-	<section class="section full-screen nobottommargin" style="background-color: white; padding-top: 0">
+	<section class="section full-screen nobottommargin" style="background-color: white; padding-top: 0; margin-top: 35px;">
 		<div class="container container-mobile clearfix" style="width: 85%;">
 			<?php if ($payment == 1): ?>
 				<div class="col-md-6 nobottommargin">
 					
 					<div class="row">
 						<div class="col-xs-12">
-							<h2 class="text-justify font-w300 ls1" style="line-height: 1; font-size: 20px;">
-								Hola <b><?php echo $book->customer->name ?></b>,Para confirmar tu reserva tienes que abonar el 25% de el importe total de tu reserva  mediante nuestra pasarela de pago stripe
+							<h2 class="text-justify font-w300 push-10 ls1" style="line-height: 1; font-size: 18px;">
+								Hola <b><?php echo $book->customer->name ?></b>, Para confirmar tu reserva tienes que abonar el 25% de el importe total de tu reserva  mediante nuestra pasarela de pago stripe
 							</h2>
-							<p class="text-justify" style="font-size: 20px;font-family: miramar!important">Te dejamos un resumen de tu reserva:</p>
+							<p class="text-justify push-0" style="font-size: 18px;font-family: miramar!important">Te dejamos un resumen de tu reserva:</p>
 						</div>
 						<div class="col-md-12">
-							<p class="font-w300 text-justify" style="font-size: 20px; font-family: miramar!important">
+							<p class="font-w300 text-justify" style="font-size: 18px; font-family: miramar!important">
 								<?php 
 									$start = Carbon::createFromFormat('Y-m-d', $book->start);
 									$finish = Carbon::createFromFormat('Y-m-d', $book->finish);
 								?>
 
 								Nombre: <b><?php echo $book->customer->name ?></b><br>
-								Apartamento: <b><?php echo $book->room->sizeRooms->name ?> // <?php echo ($book->type_luxury == 1)? "Lujo" : "Estandar" ?></b><br>
-								Nº Ocupantes: <b><?php echo $book->pax ?> Pers </b><br>
-								Fechas: <b><?php echo $start->formatLocalized('%d %B %Y') ?> - <?php echo $finish->formatLocalized('%d %B %Y') ?> </b><br>
+								Apto: <b><?php echo $book->room->sizeRooms->name ?> // <?php echo ($book->type_luxury == 1)? "Lujo" : "Estandar" ?></b><br>
+								Nº Pers: <b><?php echo $book->pax ?> Pers </b><br>
+								Fechas: <b><?php echo $start->formatLocalized('%d %B') ?> - <?php echo $finish->formatLocalized('%d %B ') ?> </b><br>
 								Noches: <b><?php echo $book->nigths ?></b>  <br>
 								<?php if ($book->type_luxury != 2): ?>
 									Sup. Lujo: <b><?php echo number_format($book->sup_lujo,2,',','.') ?> €</b><br>
@@ -215,12 +215,12 @@
 					
 					<div class="col-md-12">
 						
-						<h2 class="text-center font-w300 ls1" style="line-height: 1; font-size: 22px;">
+						<h2 class="text-center push-10 font-w300 ls1" style="line-height: 1; font-size: 22px;">
 							<span class="font-w800" style="font-size: 22px; letter-spacing: -3px;">
 								El importe que debes abonar para tu reserva es de:
 							</span>
 						</h2>
-						<p class=" text-center font-w800" style="font-size: 90px;letter-spacing: -15px; line-height: 1;">
+						<p class=" text-center font-w800 push-10" style="font-size: 72px;letter-spacing: -15px; line-height: 1;">
 							<?php echo round($partialPay) ?> € <span>*</span>
 						</p>
 					</div>
