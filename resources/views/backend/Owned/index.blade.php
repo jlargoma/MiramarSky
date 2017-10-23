@@ -81,6 +81,10 @@
         margin-right: 5px!important;
         min-width: 150px!important;
     }
+    .nav-tabs-simple > li.active a{
+		color: white;
+		background-color: #3f3f3f;
+    }
 </style>
 <?php if (!$mobile->isMobile()): ?>
 	<div class="container-fluid padding-10 sm-padding-10">
@@ -120,15 +124,21 @@
 				</div>
 				<div style="clear: both;"></div>
 				<div class="col-md-1">
-					<button class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalBloq">
-	                    <span class="bold">Bloquear fechas</span>
-	                </button>
-		        </div>
+					<button class="btn btn-success btn-cons text-white " id="btn-back">
+						 <span class="bold">Planning</span>
+					</button>
+				</div>
+				
 				<div class="col-md-1">
 					<button class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalLiquidation">
 	                    <span class="bold">Liquidación</span>
 	                </button>
 				</div>
+				<div class="col-md-1">
+					<button class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalBloq">
+	                    <span class="bold">Bloquear fechas</span>
+	                </button>
+		        </div>
 				<div class="col-md-1">
 					<button class="btn btn-success btn-cons text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/operativa" ?>">
 						Opertaiva
@@ -149,11 +159,7 @@
 						Fiscalidad
 					</button>
 				</div>
-				<div class="col-md-1">
-					<button class="btn btn-primary btn-cons text-white " id="btn-back" style="display: none;">
-						Volver al resumen
-					</button>
-				</div>
+				
 			</div>
 			<div class="col-md-12 push-20 text-center" id="content-info" style="display: none;"></div>
 			<div class="col-md-12 push-20 text-center" id="content-info-ini">
@@ -467,49 +473,9 @@
 		            			</h2>
 		            		</div>
 		            		<div class="block block-content" style="padding:20px">
-		            			<table class="table table-hover  no-footer" id="basicTable" role="grid">
-		            				<thead>
-		            					
-		            					<th class="bg-complete text-white text-center">Pagos</th>
-		            					<th class="bg-complete text-white text-center">Facturado</th>
-		            					<th class="bg-complete text-white text-center">Pagado</th>
-		            					<th class="bg-complete text-white text-center">Pendiente</th>
-		            				</thead>
-		            				<tbody>
-		            					<tr>
-		            						<?php if (count($pagos)> 0): ?>
-		            							
-		            							<td style="padding: 0;border-left: 1px solid black;border-right: 1px solid black">
-		            							<?php foreach ($pagos as $pago): ?>
-
-		            							
-		            								<table style="width: 100%">
-		            									<tr>
-		            										<td style="border:none"><?php echo Carbon::createFromFormat('Y-m-d',$pago->datePayment)->format('d-m-Y')?></td>
-		            										<td style="border:none"><?php echo $pago->comment ?></td>
-		            										<td style="border:none"><?php echo number_format($pago->import,2,',','.') ?>€</td>
-		            									</tr>
-		            								</table>							
-		            							
-		            								
-		            								
-		            							<?php endforeach ?>
-		            							</td>
-		            							<td class="text-center" style="padding-top: 20px!important;vertical-align: middle;"><?php echo number_format($total,2,',','.'); ?>€</td>
-		            							<td class="text-center" style="padding-top: 20px!important;vertical-align: middle;">
-		            								<?php echo number_format($pagototal,2,',','.') ?>€
-		            							</td>
-
-		            							<td class="text-center" style="padding-top: 20px!important;vertical-align: middle;">
-		            								<?php echo number_format($total-$pagototal,2,',','.'); ?>€
-		            							</td>
-		            						<?php else: ?>
-		            							<td class="text-center" colspan="4">Aun no hay pagos realizados</td>
-		            						<?php endif ?>
-		            						
-		            					</tr>
-		            				</tbody>
-		            			</table>
+		            			<div class="row">
+		            				@include('backend.owned._liquidation')
+		            			</div>
 		            		</div>
 		            	</div>
 
@@ -1100,6 +1066,7 @@
 			$('.btn-content').click(function(event) {
 				var url = $(this).attr('data-url');
 				$('button.btn-content').css('background-color', '#10cfbd');
+				$('#btn-back').css('background-color', '#10cfbd')
 				$(this).css('background-color', '#0a7d72');
 				$.get(url, function(data) {
 
@@ -1116,7 +1083,7 @@
 				$('#content-info-ini').show();
 				$('#content-info').empty();
 				
-				$('#btn-back').hide();
+				$(this).css('background-color', '#0a7d72');
 				$('.btn-content').css('background-color', '#10cfbd');
 			});
 
