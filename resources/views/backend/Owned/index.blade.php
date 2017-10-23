@@ -125,7 +125,7 @@
 				<div style="clear: both;"></div>
 				<div class="col-md-1">
 					<button class="btn btn-success btn-cons text-white " id="btn-back">
-						 <span class="bold">Planning</span>
+						<span class="bold">Planning</span>
 					</button>
 				</div>
 				
@@ -164,8 +164,12 @@
 			<div class="col-md-12 push-20 text-center" id="content-info" style="display: none;"></div>
 			<div class="col-md-12 push-20 text-center" id="content-info-ini">
 				<?php if (count($room) > 0): ?>
+					
 					<div class="col-md-6">
-						<div class="col-md-6 pull-right" style="padding-left: 45px;">
+						<div class="col-md-6">
+							<h2 class="text-center font-w800">Resumen</h2>
+						</div>
+						<div class="col-md-6 pull-right"">
 							<table class="table table-hover  no-footer" id="basicTable" role="grid">
 								<tr>
 									<th class ="text-center bg-complete text-white">ING. PROP</th>
@@ -212,6 +216,9 @@
 							</table>
 						</div>
 						<div class="col-md-12">
+							<div class="col-md-12">
+								<h2 class="text-center font-w800">Listado de reservas</h2>
+							</div>
 							<table class="table table-hover  no-footer " id="basicTable" role="grid" >
 								
 								<thead>
@@ -557,32 +564,49 @@
 		    			</div> 
 	    	    	</div>       
 	    		</div>
-			
-				<div class="col-md-4 col-md-offset-4">
-					<div class="col-md-12 text-center">
-						<h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1>
-					</div>
-					<div class="col-md-12">
-						<div class="dropdown dropdown-default">
-							<button class="btn btn-secondary dropdown-toggle text-center minimal" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 138px;">
-								Paginas
+				<div class="col-md-12 text-center">
+					<h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1>
+				</div>
+				<div class="row">
+					<div class="col-md-12 not-padding">
+						<div class="col-xs-4 push-10" style="padding: 0px 5px">
+							<button class="btn btn-success text-white " id="btn-back" style="width: 100%">
+								<span class="bold">Planning</span>
 							</button>
-							<div class="dropdown-menu" style="width: 138px;">
-								<a class="dropdown-item font-s16" data-toggle="modal" data-target="#modalBloq"><span class="bold">Bloquear fechas</span></a><br>
-
-								<a class="dropdown-item font-s16" data-toggle="modal" data-target="#modalLiquidation"><span class="bold">Liquidación</span></a><br>
-
-								<a class="dropdown-item btn-content  font-s16"  data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/operativa" ?>">Opertaiva</a><br>
-
-								<a class="dropdown-item btn-content  font-s16"  data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/tarifas" ?>">Tarifas</a><br>
-
-								<a class="dropdown-item btn-content  font-s16"  data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/descuentos" ?>">Descuentos</a><br>
-
-								<a class="dropdown-item btn-content  font-s16"  data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/fiscalidad" ?>">Fiscalidad</a><br>
-								
-								<a class="dropdown-item  font-s16" id="btn-back">Volver al resumen</a><br>
-							</div>
 						</div>
+						<div class="col-xs-4 push-10" style="padding: 0px 5px">
+							<button class="btn btn-success m-b-10" type="button" data-toggle="modal" data-target="#modalLiquidation" style="width: 100%">
+			                    <span class="bold">Liquidación</span>
+			                </button>
+						</div>
+						<div class="col-xs-4 push-10" style="padding: 0px 5px">
+							<button class="btn btn-success m-b-10" type="button" data-toggle="modal" data-target="#modalBloq" style="width: 100%">
+			                    <span class="bold">Bloquear</span>
+			                </button>
+				        </div>
+						<div class="col-xs-4 push-10" style="padding: 0px 5px">
+							<button class="btn btn-success text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/operativa" ?>" style="width: 100%">
+								Opertaiva
+							</button>
+						</div>
+						<div class="col-xs-4 push-10" style="padding: 0px 5px">
+							<button class="btn btn-success text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/tarifas" ?>" style="width: 100%">
+								Tarifas
+							</button>
+						</div>
+						<div class="col-xs-4 push-10" style="padding: 0px 5px">
+							<button class="btn btn-success text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/descuentos" ?>" style="width: 100%">
+								Descuentos
+							</button>
+						</div>
+						<div class="col-xs-4 push-10" style="padding: 0px 5px">
+							<button class="btn btn-success text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/fiscalidad" ?>" style="width: 100%">
+								Fiscalidad
+							</button>
+						</div>
+					</div>
+					<div class="col-xs-12">
+						
 					</div>
 				</div>
 			</div>
@@ -638,7 +662,7 @@
 							</table>
 						</div>
 						<div class="row table-responsive" style="border: none;">
-							<h2 class="text-center push-10" style="font-size: 24px;"><b>Reservas</b></h2>
+							<h2 class="text-center push-10" style="font-size: 24px;"><b>Listado de Reservas</b></h2>
 
 							<table class="table table-hover no-footer" id="basicTable" role="grid" style="margin-bottom: 17px!important">
 								
@@ -896,49 +920,7 @@
 		            			</h2>
 		            		</div>
 		            		<div class="block block-content not-padding table-responsive" >
-		            			<table class="table table-hover  no-footer" id="basicTable" role="grid">
-		            				<thead>
-		            					
-		            					<th class="bg-complete text-white text-center">Pagos</th>
-		            					<th class="bg-complete text-white text-center">Facturado</th>
-		            					<th class="bg-complete text-white text-center">Pagado</th>
-		            					<th class="bg-complete text-white text-center">Pendiente</th>
-		            				</thead>
-		            				<tbody>
-		            					<tr>
-		            						<?php if (count($pagos)> 0): ?>
-		            							
-		            							<td style="padding: 0;border-left: 1px solid black;border-right: 1px solid black">
-		            							<?php foreach ($pagos as $pago): ?>
-
-		            							
-		            								<table style="width: 100%">
-		            									<tr>
-		            										<td style="border:none;min-width: 50px;padding-bottom: 20px!important" class="not-padding"><?php echo Carbon::createFromFormat('Y-m-d',$pago->datePayment)->format('d-m')?></td>
-		            										<td style="border:none;padding-bottom: 20px!important" class="not-padding"><?php echo $pago->comment ?></td>
-		            										<td style="border:none;padding-bottom: 20px!important" class="not-padding"><?php echo number_format($pago->import,2,',','.') ?>€</td>
-		            									</tr>
-		            								</table>							
-		            							
-		            								
-		            								
-		            							<?php endforeach ?>
-		            							</td>
-		            							<td class="text-center" style="padding-top: 20px!important;vertical-align: middle;"><?php echo number_format($total,2,',','.'); ?>€</td>
-		            							<td class="text-center" style="padding-top: 20px!important;vertical-align: middle;">
-		            								<?php echo number_format($pagototal,2,',','.') ?>€
-		            							</td>
-
-		            							<td class="text-center" style="padding-top: 20px!important;vertical-align: middle;">
-		            								<?php echo number_format($total-$pagototal,2,',','.'); ?>€
-		            							</td>
-		            						<?php else: ?>
-		            							<td class="text-center" colspan="4">Aun no hay pagos realizados</td>
-		            						<?php endif ?>
-		            						
-		            					</tr>
-		            				</tbody>
-		            			</table>
+		            			@include('backend.owned._liquidation')
 		            		</div>
 		            	</div>
 

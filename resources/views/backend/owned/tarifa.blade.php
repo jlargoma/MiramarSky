@@ -2,19 +2,18 @@
     <div class="row">
 
         <div class="container ">
-            <div  class=" col-xs-12 text-center push-20"><strong>Tarifas</strong></div>
+            <div  class=" col-xs-12 text-center push-20"><h2 class="font-w800">Tarifas</h2></div>
             <div>
                 <div class="col-md-6">
-                    <img src="{{ asset('/img/miramarski/calendario 2017-2018.png') }}" style="max-width: 100%" />
+                    <img src="{{ asset('/img/miramarski/calendario 2017-2018.png') }}" class="img-responsive" />
                 </div>
                 <div class="col-md-6">
-                    <img src="{{ asset('/img/miramarski/tarifas 2017-2018.png') }}" />
-                    
+                    <img src="{{ asset('/img/miramarski/tarifas 2017-2018.png') }}" class="img-responsive" />
                 </div>
             </div>
             <div style="clear: both;"></div>
             <div class="m-t-20">
-                <p style="font-size: 18px">
+                <p class="text-justify" style="font-size: 18px">
                     Con la finalidad de aumentar la ocupación en los días valle vamos a sacar una oferta de 3 x 2 días en noches de entre semana (de domingo a jueves) y siempre que no coincida con ningún puente o festivo de alta disponibilidad. <br><br>
 
                     Esta promoción no se realizará por defecto ni para todos los apartamentos, si no en función de cómo vaya la ocupación y del consentimiento de cada propietario:<br><br>

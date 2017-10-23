@@ -1,10 +1,10 @@
 <div class="container-fluid padding-10 sm-padding-10">
     <div class="row">
         <div class="col-md-12">
-            <div  class=" col-xs-12 text-center push-20"><strong>Fiscalidad</strong></div>
+            <div  class=" col-xs-12 text-center push-20"><h2 class="font-w800">Fiscalidad</h2></div>
             <div class="container m-t-20">
                 <h5><b>LA FISCALIDAD DE LAS VIVIENDAS  CON FINES TURÍSTICOS</b></h5>
-                <p>
+                <p class="text-justify" style="font-size: 18px;">
                     Desde hace varios años y con la ayuda de diversas aplicaciones informáticas, se ha incrementado exponencialmente el arrendamiento de viviendas turísticas, lo que supone la generación de nuevas rentas por parte de los ciudadanos que debe declarase correctamente en los modelos correspondientes.<br><br> 
                     
                     Este tipo de servicio puede ser gestionado por el propietario o por medio alguna de las empresas Intermediaria que gestiona estos inmuebles.<br><br> 
@@ -25,7 +25,7 @@
                 </p>
                 <h5><b>REGISTRO  VIVIENDA TUISTICA JUNTA DE ANDALUCIA</b></h5>
 
-                <p>
+                <p class="text-justify" style="font-size: 18px;">
                     Desde hace algún tiempo es obligatorio sacar el número de registro de Vivienda Turística<br><br>
 
 
