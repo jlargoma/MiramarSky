@@ -145,7 +145,7 @@
 		var formURL   = $(this).attr("action");
 		var token     = $('input[name="_token"]').val();
 		var id        = $('.id').val();
-		var textEmail = $('.note-editable').text();
+		var textEmail = $('.note-editable').html();
 		var type      = 1;
 
 

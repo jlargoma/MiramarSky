@@ -10,21 +10,19 @@
     }
 </style>
 <div class="modal-header clearfix text-left">
-
+    
 </div>
 <div class="row padding-block">
+
     <div class="col-xs-12 bg-black push-20">
         <div class="col-md-10">
             <h4 class="text-center white">
                 NUEVA RESERVA
             </h4>
         </div>
-        <div class="col-md-2" style="margin-top: 2px!important">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    <i class="pg-close fs-20" style=""></i>
-            </button>
-        </div>
-        
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
+            <i class="pg-close fs-20" style="color: #e8e8e8;"></i>
+        </button>
     </div>
 
     <div class="col-md-12">
@@ -56,15 +54,15 @@
                     </h4>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-4 push-10">
                     <label for="name">Nombre</label> 
                     <input class="form-control cliente" type="text" name="name">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 push-10">
                     <label for="email">Email</label> 
                     <input class="form-control cliente" type="email" name="email" >
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 push-10">
                     <label for="phone">Telefono</label> 
                     <input class="form-control cliente" type="number" name="phone" >
                 </div>  

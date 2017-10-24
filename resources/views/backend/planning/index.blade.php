@@ -752,7 +752,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content-wrapper">
                         <div class="modal-content">
-                            @include('backend.planning.listados._nueva-mobile')
+                            @include('backend.planning.listados._nuevas')
                         </div>
                     </div>
                   <!-- /.modal-content -->
