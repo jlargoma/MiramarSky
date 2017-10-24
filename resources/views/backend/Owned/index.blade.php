@@ -226,6 +226,132 @@
 							</table>
 						</div>
 					</div>
+					<div class="col-md-6 planning blocks">
+						<div class="col-md-12 col-xs-12">
+							<div class="panel">
+								<ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
+									<?php $dateAux = $date->copy(); ?>
+									<?php for ($i=1; $i <= 9 ; $i++) :?>
+										<li <?php if($i == 4 ){ echo "class='active'";} ?>>
+											<a href="#tab<?php echo $i?>" data-toggle="tab" role="tab" style="padding:10px">
+												<?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>
+											</a>
+										</li>
+										<?php $dateAux->addMonth(); ?>
+									<?php endfor; ?>
+								</ul>
+								<div class="tab-content">
+									<?php for ($z=1; $z <= 9; $z++):?>
+										<div class="tab-pane <?php if($z == 4){ echo 'active';} ?>" id="tab<?php echo $z ?>">
+											<div class="row">
+												<div class="col-md-12">
+													<table class="fc-border-separate" style="width: 100%">
+														<thead>
+															<tr >
+																<td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
+																	<?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
+																</td> 
+															</tr>
+															<tr>
+																<td rowspan="2" style="width: 1%!important"></td>
+																<?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
+																	<td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
+																		<?php echo $i?> 
+																	</td> 
+																<?php endfor; ?>
+															</tr>
+															<tr>
+
+																<?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
+																	<td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$date->copy()->format('n')][$i]?>">
+																		<?php echo $days[$date->copy()->format('n')][$i]?> 
+																	</td> 
+																<?php endfor; ?> 
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<?php $date = $date->startOfMonth() ?>
+																<td class="text-center">
+																	<b title="<?php echo $room->name ?>"><?php echo substr($room->nameRoom, 0,5)?></b>
+																</td>
+
+																<?php for ($i=01; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
+																	<!-- Si existe la reserva para ese dia -->
+																	<?php if (isset($reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i])): ?>
+												
+																		<?php $calendars = $reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i] ?>
+																			<?php if ($calendars->start == $date->copy()->format('Y-m-d')): ?>
+																				<td style='border:1px solid grey;width: 3%'>
+
+																					<div class="<?php echo $calendars->getStatus($calendars->type_book) ?> start" style="width: 100%;float: left;">
+																						&nbsp;
+																					</div>
+
+																				</td>    
+																			<?php elseif($calendars->finish == $date->copy()->format('Y-m-d')): ?>
+																				<td style='border:1px solid grey;width: 3%'>
+																					<div class="<?php echo $calendars->getStatus($calendars->type_book) ?> end" style="width: 100%;float: left;">
+																						&nbsp;
+																					</div>
+
+
+																				</td>
+																			<?php else: ?>
+
+																				<td 
+																				style='border:1px solid grey;width: 3%' 
+																				title="
+																				<?php echo $calendars->customer['name'] ?> - <?php echo 'PVP:'.$calendars->total_price ?>
+																				<?php if (isset($payment[$calendars->id])): ?>
+																					<?php echo '- PEND:'.($calendars->total_price - $payment[$calendars->id])?>
+																				<?php else: ?>
+																				<?php endif ?>" 
+																				class="<?php echo $calendars->getStatus($calendars->type_book) ?>"
+																				>
+																					<?php if ($calendars->type_book == 9): ?>
+																						<div style="width: 100%;height: 100%">
+																							&nbsp;
+																						</div>
+																					<?php else: ?>
+																						<div style="width: 100%;height: 100%">
+																							&nbsp;
+																						</div>
+																					<?php endif ?>
+
+
+																				</td>
+
+																			<?php endif ?>
+																	<!-- Si no existe nada para ese dia -->
+																	<?php else: ?>
+																	
+																		<td class="<?php echo $days[$date->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
+
+																		</td>
+
+																	<?php endif; ?>
+																	
+																	<?php if ($date->copy()->format('d') != $arrayMonths[$date->copy()->format('n')]): ?>
+					                                                    <?php $date = $date->addDay(); ?>
+					                                                <?php else: ?>
+					                                                    <?php $date = $date->startOfMonth() ?>
+					                                                <?php endif ?>
+																<?php endfor; ?> 
+															</tr>
+														</tbody>
+													</table>
+												</div>
+
+											</div>
+										</div>
+										<?php $date = $date->addMonth(); ?>
+									<?php endfor ?>
+								</div>
+							</div>
+
+						</div>
+					</div>
 					<div class="col-md-12 reservas blocks">
 						<div class="col-md-6">
 							<div class="col-md-12">
@@ -302,132 +428,7 @@
 							</table>
 						</div>
 					</div>
-					<div class="col-md-6 planning blocks">
-						<div class="col-md-12 col-xs-12">
-							<div class="panel">
-								<ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
-									<?php $dateAux = $date->copy(); ?>
-									<?php for ($i=1; $i <= 9 ; $i++) :?>
-										<li <?php if($i == 4 ){ echo "class='active'";} ?>>
-											<a href="#tab<?php echo $i?>" data-toggle="tab" role="tab" style="padding:10px">
-												<?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>
-											</a>
-										</li>
-										<?php $dateAux->addMonth(); ?>
-									<?php endfor; ?>
-								</ul>
-								<div class="tab-content">
-									<?php for ($z=1; $z <= 9; $z++):?>
-										<div class="tab-pane <?php if($z == 4){ echo 'active';} ?>" id="tab<?php echo $z ?>">
-											<div class="row">
-												<div class="col-md-12">
-													<table class="fc-border-separate" style="width: 100%">
-														<thead>
-															<tr >
-																<td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
-																	<?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
-																</td> 
-															</tr>
-															<tr>
-																<td rowspan="2" style="width: 1%!important"></td>
-																<?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-																	<td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
-																		<?php echo $i?> 
-																	</td> 
-																<?php endfor; ?>
-															</tr>
-															<tr>
-
-																<?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-																	<td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$date->copy()->format('n')][$i]?>">
-																		<?php echo $days[$date->copy()->format('n')][$i]?> 
-																	</td> 
-																<?php endfor; ?> 
-															</tr>
-														</thead>
-														<tbody>
-															<tr>
-																<?php $date = $date->startOfMonth() ?>
-																<td class="text-center">
-																	<b title="<?php echo $room->name ?>"><?php echo substr($room->nameRoom, 0,5)?></b>
-																</td>
-
-																<?php for ($i=01; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-																	<!-- Si existe la reserva para ese dia -->
-																	<?php if (isset($reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i])): ?>
-												
-																		<?php $calendars = $reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i] ?>
-																			<?php if ($calendars->start == $date->copy()->format('Y-m-d')): ?>
-																				<td style='border:1px solid grey;width: 3%'>
-
-																					<div class="<?php echo $book->getStatus($calendars->type_book) ?> start" style="width: 100%;float: left;">
-																						&nbsp;
-																					</div>
-
-																				</td>    
-																			<?php elseif($calendars->finish == $date->copy()->format('Y-m-d')): ?>
-																				<td style='border:1px solid grey;width: 3%'>
-																					<div class="<?php echo $book->getStatus($calendars->type_book) ?> end" style="width: 100%;float: left;">
-																						&nbsp;
-																					</div>
-
-
-																				</td>
-																			<?php else: ?>
-
-																				<td 
-																				style='border:1px solid grey;width: 3%' 
-																				title="
-																				<?php echo $calendars->customer['name'] ?> - <?php echo 'PVP:'.$calendars->total_price ?>
-																				<?php if (isset($payment[$calendars->id])): ?>
-																					<?php echo '- PEND:'.($calendars->total_price - $payment[$calendars->id])?>
-																				<?php else: ?>
-																				<?php endif ?>" 
-																				class="<?php echo $book->getStatus($calendars->type_book) ?>"
-																				>
-																					<?php if ($calendars->type_book == 9): ?>
-																						<div style="width: 100%;height: 100%">
-																							&nbsp;
-																						</div>
-																					<?php else: ?>
-																						<div style="width: 100%;height: 100%">
-																							&nbsp;
-																						</div>
-																					<?php endif ?>
-
-
-																				</td>
-
-																			<?php endif ?>
-																	<!-- Si no existe nada para ese dia -->
-																	<?php else: ?>
-																	
-																		<td class="<?php echo $days[$date->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
-
-																		</td>
-
-																	<?php endif; ?>
-																	
-																	<?php if ($date->copy()->format('d') != $arrayMonths[$date->copy()->format('n')]): ?>
-					                                                    <?php $date = $date->addDay(); ?>
-					                                                <?php else: ?>
-					                                                    <?php $date = $date->startOfMonth() ?>
-					                                                <?php endif ?>
-																<?php endfor; ?> 
-															</tr>
-														</tbody>
-													</table>
-												</div>
-
-											</div>
-										</div>
-										<?php $date = $date->addMonth(); ?>
-									<?php endfor ?>
-								</div>
-							</div>
-
-						</div>
-					</div>
+					
 				<?php else: ?>
 					<div class="col-md-12">
 						
