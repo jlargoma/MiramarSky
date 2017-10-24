@@ -225,15 +225,25 @@ class RoomsController extends Controller
         return $room->luxury;    
     }
 
+    public function photo($id)
+    {
+        return view('backend/rooms/photo',[
+                    'room' => \App\Rooms::where('nameRoom',$id)->first(),
+                ]);
+    }
+
     public function uploadFile(Request $request,$id)
     {   
         echo "<pre>";
+        echo $id;
+        die();
         $file = ($_FILES);
 
         $room = \App\Rooms::where('nameRoom',$id)->first();
 
         $directory =public_path()."/img/miramarski/apartamentos/".$room->nameRoom;
-
+        print_r($room);
+        die();
         if (!file_exists($directory)) {
             mkdir($directory, 0777, true);
         }
