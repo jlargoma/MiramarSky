@@ -124,7 +124,17 @@
 				</div>
 				<div style="clear: both;"></div>
 				<div class="col-md-1">
-					<button class="btn btn-success btn-cons text-white " id="btn-back">
+					<button class="btn btn-success btn-cons text-white btn-blocks" data-block="resumen">
+						<span class="bold">Resumen</span>
+					</button>
+				</div>
+				<div class="col-md-1">
+					<button class="btn btn-success btn-cons text-white btn-blocks" data-block="reservas">
+						<span class="bold">Reservas</span>
+					</button>
+				</div>
+				<div class="col-md-1">
+					<button class="btn btn-success btn-cons text-white btn-blocks" data-block="planning">
 						<span class="bold">Planning</span>
 					</button>
 				</div>
@@ -165,7 +175,7 @@
 			<div class="col-md-12 push-20 text-center" id="content-info-ini">
 				<?php if (count($room) > 0): ?>
 					
-					<div class="col-md-6">
+					<div class="col-md-6 resumen blocks">
 						<div class="col-md-6">
 							<h2 class="text-center font-w800">Resumen</h2>
 						</div>
@@ -215,7 +225,9 @@
 								</tr>
 							</table>
 						</div>
-						<div class="col-md-12">
+					</div>
+					<div class="col-md-12 reservas blocks">
+						<div class="col-md-6">
 							<div class="col-md-12">
 								<h2 class="text-center font-w800">Listado de reservas</h2>
 							</div>
@@ -290,7 +302,7 @@
 							</table>
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-6 planning blocks">
 						<div class="col-md-12 col-xs-12">
 							<div class="panel">
 								<ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
@@ -564,19 +576,28 @@
 					<h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1>
 				</div>
 				<div class="row">
-					<div class="col-md-12 not-padding">
 						<div class="col-xs-4 push-10" style="padding: 0px 5px">
-							<button class="btn btn-success text-white " id="btn-back" style="width: 100%">
+							<button class="btn btn-success   text-white btn-blocks" data-block="resumen" style="width: 100%">
+								<span class="bold">Resumen</span>
+							</button>
+						</div>
+						<div class="col-xs-4 push-10" style="padding: 0px 5px">
+							<button class="btn btn-success text-white btn-blocks" data-block="reservas" style="width: 100%">
+								<span class="bold">Reservas</span>
+							</button>
+						</div>
+						<div class="col-xs-4 push-10" style="padding: 0px 5px">
+							<button class="btn btn-success text-white btn-blocks" data-block="planning" style="width: 100%">
 								<span class="bold">Planning</span>
 							</button>
 						</div>
 						<div class="col-xs-4 push-10" style="padding: 0px 5px">
-							<button class="btn btn-success m-b-10" type="button" data-toggle="modal" data-target="#modalLiquidation" style="width: 100%">
+							<button class="btn btn-success" type="button" data-toggle="modal" data-target="#modalLiquidation" style="width: 100%">
 			                    <span class="bold">Liquidación</span>
 			                </button>
 						</div>
 						<div class="col-xs-4 push-10" style="padding: 0px 5px">
-							<button class="btn btn-success m-b-10" type="button" data-toggle="modal" data-target="#modalBloq" style="width: 100%">
+							<button class="btn btn-success" type="button" data-toggle="modal" data-target="#modalBloq" style="width: 100%">
 			                    <span class="bold">Bloquear</span>
 			                </button>
 				        </div>
@@ -609,7 +630,7 @@
 			<div class="row push-20 text-center" id="content-info" style="display: none;"></div>
 			<div class="row push-20 text-center" id="content-info-ini">
 				<?php if (count($room) > 0): ?>
-					<div class="col-xs-12 push-20">
+					<div class="col-xs-12 push-20 resumen blocks">
 						<h2 class="text-center push-10" style="font-size: 24px;"><b>Resumen</b></h2>
 
 						<div class="col-xs-12" style="border: none;">
@@ -658,6 +679,8 @@
 								</tr>
 							</table>
 						</div>
+					</div>
+					<div class="reservas blocks">
 						<div style="clear:both;"></div>
 						<h2 class="text-center push-10" style="font-size: 24px;"><b>Listado de Reservas</b></h2>
 						<div class="row table-responsive" style="border: none;">
@@ -732,7 +755,7 @@
 							</table>
 						</div>
 					</div>
-					<div class="row"> 
+					<div class="row planning blocks"> 
 						<div class="col-md-12 col-xs-12">
 							<div class="panel">
 								<ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
@@ -1057,6 +1080,7 @@
 				});
 			});
 
+
 			$('#btn-back').click(function(event) {
 				$('#content-info').hide();
 				$('#content-info-ini').show();
@@ -1064,6 +1088,15 @@
 				
 				$(this).css('background-color', '#0a7d72');
 				$('.btn-content').css('background-color', '#10cfbd');
+			});
+
+			$('.btn-blocks').click(function(event) {
+				var block = $(this).attr('data-block');
+
+				$('.blocks').hide();
+				$("."+block).show();
+
+
 			});
 
 		});

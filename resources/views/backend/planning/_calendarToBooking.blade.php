@@ -30,7 +30,7 @@
 						$arrayRoomId[] = $book->room_id;
 					}
 				}
-
+				
 				$rooms = \App\Rooms::whereIn('id', $arrayRoomId)->get();
 
 			?>

@@ -1,7 +1,7 @@
 <div class="col-md-12 col-xs-12">
 	<div class="panel">
 		<ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
-			<?php $dateAux = $dateX->copy(); ?>
+			<?php $dateAux = $inicio->copy(); ?>
 			<?php for ($i=1; $i <= 9 ; $i++) :?>
 				<?php if(!$mobile->isMobile()){ $hidden = "";}else{ $hidden = "hidden"; } ?>
 				<li class='<?php if($i == 4 ){ echo "active";} ?> <?php if($i < 4 || $i > 8){ echo $hidden;} ?>'>
