@@ -1068,7 +1068,8 @@
 			$('.btn-content').click(function(event) {
 				var url = $(this).attr('data-url');
 				$('button.btn-content').css('background-color', '#10cfbd');
-				$('#btn-back').css('background-color', '#10cfbd')
+				$('#btn-back').css('background-color', '#10cfbd');
+				$('.btn-blocks').css('background-color', '#10cfbd');
 				$(this).css('background-color', '#0a7d72');
 				$.get(url, function(data) {
 
@@ -1099,6 +1100,12 @@
 				$('#content-info').hide();
 				$('#content-info-ini').show();
 				$('#content-info').empty();
+
+				$('.btn-blocks').css('background-color', '#10cfbd');
+				$(this).css('background-color', '#0a7d72');
+				$('.btn-content').css('background-color', '#10cfbd')
+				
+
 			});
 
 		});
