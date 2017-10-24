@@ -276,6 +276,12 @@
                 <!-- Planning reservas -->
                 
                 <div class="col-md-5">
+
+                    <?php 
+                        /* No borrar para calendario de booking */
+                        $dateX = $inicio->copy(); 
+                    ?>
+
                     <!-- Seccion Calendario -->
                     @include('backend.planning.calendar')
                     <!-- Seccion Calendario -->
@@ -285,6 +291,10 @@
                         @include('backend.stripe.stripe', ['bookTocharge' => null])
                     </div>
 
+
+                    <div class="col-md-12">
+                        @include('backend.planning._calendarToBooking')
+                    </div>
                 </div>
             </div>
         </div>

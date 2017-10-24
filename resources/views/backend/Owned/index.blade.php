@@ -366,11 +366,9 @@
 																				<td 
 																				style='border:1px solid grey;width: 3%' 
 																				title="
-																				<?php echo $calendars->customer['name'] ?> 
-
-																				<?php echo 'PVP:'.$calendars->total_price ?>
+																				<?php echo $calendars->customer['name'] ?> - <?php echo 'PVP:'.$calendars->total_price ?>
 																				<?php if (isset($payment[$calendars->id])): ?>
-																					<?php echo 'PEND:'.($calendars->total_price - $payment[$calendars->id])?>
+																					<?php echo '- PEND:'.($calendars->total_price - $payment[$calendars->id])?>
 																				<?php else: ?>
 																				<?php endif ?>" 
 																				class="<?php echo $book->getStatus($calendars->type_book) ?>"
@@ -380,11 +378,9 @@
 																							&nbsp;
 																						</div>
 																					<?php else: ?>
-																						<a href="{{url ('/admin/reservas/update')}}/<?php echo $calendars->id ?>">
-																							<div style="width: 100%;height: 100%">
-																								&nbsp;
-																							</div>
-																						</a>
+																						<div style="width: 100%;height: 100%">
+																							&nbsp;
+																						</div>
 																					<?php endif ?>
 
 
