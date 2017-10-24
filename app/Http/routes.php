@@ -18,6 +18,7 @@ Route::get('/','HomeController@index');
 Route::get('/sitemap','HomeController@siteMap');
 Route::get('/apartamentos/galeria/{apto}','HomeController@galeriaApartamento');
 Route::get('/apartamentos/{apto}','HomeController@apartamento');
+Route::get('/fotos/{apto}','HomeController@apartamento');
 Route::get('/edificio-miramarski-sierra-nevada','HomeController@edificio');
 Route::get('/contacto','HomeController@contacto');
 //Correos Frontend

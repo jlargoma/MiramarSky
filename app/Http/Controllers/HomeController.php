@@ -81,11 +81,34 @@ class HomeController extends Controller
                 $aptoHeadingMobile = "Estudio Standard";
 
                 $typeApto = 4;
-                break;            
+                break; 
+            default:
+                $room = \App\Rooms::where('nameRoom',$url)->first();
+                if (count($room) > 0) {
+                    $aptoHeading       = ($room->luxury) ? $room->sizeRooms->name." - LUJO" : $room->sizeRooms->name." - ESTANDAR";
+                    $aptoHeadingMobile = ($room->luxury) ? $room->sizeRooms->name." - lujo" : $room->sizeRooms->name." - estandar";
+                    if ($room->sizeApto == 1 && $room->luxury == 0) {
+                        $typeApto = 4;
+                    }elseif ($room->sizeApto == 1 && $room->luxury == 1) {
+                        $typeApto = 3;
+                    }elseif ($room->sizeApto == 2 && $room->luxury == 0) {
+                        $typeApto = 2;
+                    }else{
+                        $typeApto = 1;
+                    }
+                    break;
+                }else{
+                    return view('errors.notexist-apartmanet');
+                }
+                        
         }
 
-
-        $slides = File::allFiles(public_path().'/img/miramarski/galerias/'.$url); 
+        if ($url == 'apartamento-standard-sierra-nevada' || $url == 'apartamento-lujo-sierra-nevada'  || $url == 'estudio-lujo-sierra-nevada'  || $url == 'estudio-standard-sierra-nevada' ) {
+            $slides = File::allFiles(public_path().'/img/miramarski/galerias/'.$url); 
+        }else{
+            $slides = File::allFiles(public_path().'/img/miramarski/apartamentos/'.$url); 
+        }
+        
         $aptos  = ['apartamento-lujo-sierra-nevada', 'estudio-lujo-sierra-nevada','apartamento-standard-sierra-nevada','estudio-standard-sierra-nevada'];
 
 
