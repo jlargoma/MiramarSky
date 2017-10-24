@@ -32,37 +32,44 @@
 		<form  action="{{ url('/admin/apartamentos/send/email/owned') }}" method="post" id="form-email">
 			<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 			<input type="hidden" name="user" value="<?php echo $user->id ?>">
+			
+			<div class="col-md-12 push-40">
+		        <div class="summernote-wrapper" style="margin-bottom: 30px;">
+		          <div id="summernote">
+					Hola <b><?php echo $user->name ?></b>, como estás.<br><br>
 
-	        <div class="summernote-wrapper" style="margin-bottom: 30px;">
-	          <div id="summernote">
-				Hola <b><?php echo $user->name ?></b>, como estás.<br><br>
+					Te hago llegar este email con los datos para que puedas ver las reservas de tu apartamento así como los importes que se van generando.<br><br>
 
-				Te hago llegar este email con los datos para que puedas ver las reservas de tu apartamento así como los importes que se van generando.<br><br>
+					A través de este área privada a la que solo puedes acceder con usuario contraseña, cada  propietario recibe información actualizada sobre el plannning de ocupación de su apartamento de manera que tenga visibilidad total sobre el progreso de la temporada y del dinero que le corresponde por cada reserva. <br><br>
 
-				A través de este área privada a la que solo puedes acceder con usuario contraseña, cada  propietario recibe información actualizada sobre el plannning de ocupación de su apartamento de manera que tenga visibilidad total sobre el progreso de la temporada y del dinero que le corresponde por cada reserva. <br><br>
+					<?php foreach ($rooms as $key => $room): ?>
+						<a href="https://www.apartamentosierranevada.net/admin/propietarios/dashboard/<?php echo $room->nameRoom; ?>">
+							https://www.apartamentosierranevada.net/admin/propietarios/dashboard/<?php echo $room->nameRoom; ?>
+						</a><br>
+					<?php endforeach ?>
+					<br>
 
-				<?php foreach ($rooms as $key => $room): ?>
-					<a href="https://www.apartamentosierranevada.net/admin/propietarios/dashboard/<?php echo $room->nameRoom; ?>">
-						https://www.apartamentosierranevada.net/admin/propietarios/dashboard/<?php echo $room->nameRoom; ?>
-					</a><br>
-				<?php endforeach ?>
-				<br>
+					El usuario para acceder es tu email: <b><?php echo $user->email ?></b><br>
+					Y la contraseña la generas tú mismo la primera vez que accedes<br>
 
-				El usuario para acceder es tu email: <b><?php echo $user->email ?></b><br>
-				Y la contraseña la generas tú mismo la primera vez que accedes<br>
+					<b>Para generar tu contraseña debes hacer clic en "Olvide mi contraseña" y seguir los pasos indicados</b><br><br>
 
-				<b>Para generar tu contraseña debes hacer clic en "Olvide mi contraseña" y seguir los pasos indicados</b><br><br>
+					También os adjunto en este email el contrato de colaboración de esta temporada para vuestra revisión y firma si estáis conformes<br><br>
 
-				También os adjunto en este email el contrato de colaboración de esta temporada para vuestra revisión y firma si estáis conformes<br><br>
+					Muchas gracias por vuestra confianza, espero que este año también quedemos todos satisfechos y podamos seguir creciendo juntos.<br><br>
 
-				Muchas gracias por vuestra confianza, espero que este año también quedemos todos satisfechos y podamos seguir creciendo juntos.<br><br>
+					Un abrazo <br>
+					Jorge Largo
 
-				Un abrazo <br>
-				Jorge Largo
-
-	          </div>
+		          </div>
+		        </div>
 	        </div>
-	        
+	        <div class="col-md-12">
+				<div class="col-md-6">
+					<label class="inline">Enviar contrato adjunto</label>
+                    <input type="checkbox" name="attachment" data-init-plugin="switchery" data-size="small" data-color="primary" checked="checked" />
+				</div>
+			</div>
 	        <div class="wrapper push-20" style="text-align: center;">
 	        	<button type="submit" class="btn btn-lg btn-success"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Enviar</button>
 	        </div>
@@ -122,13 +129,19 @@
 	$('#form-email').submit(function(event) {
 		event.preventDefault();
 
-		var formURL   = $(this).attr("action");
-		var token     = $('input[name="_token"]').val();
-		var textEmail = $('.note-editable').html();
-		var user      = $('input[name="user"]').val();
+		var formURL    = $(this).attr("action");
+		var token      = $('input[name="_token"]').val();
+		var textEmail  = $('.note-editable').html();
+		var user       = $('input[name="user"]').val();
+		var attachment = $('input[name="attachment"]').is(':checked');
+            
+            if (attachment == true) {
+                type = 1;
+            }else{
+                type = 0;
+            }
 
-
-		$.post(formURL, {_token: token, textEmail: textEmail ,user: user}, function(data) {
+		$.post(formURL, {_token: token, textEmail: textEmail ,user: user, attachment: type}, function(data) {
 
 			$('.pg-close').trigger('click');
 

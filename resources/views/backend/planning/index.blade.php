@@ -104,81 +104,14 @@
     
 @section('content')
     
+    @include('backend.planning._calculateBook')
+
     <?php if (!$mobile->isMobile() ): ?>
     
         <div class="container-fluid  p-l-15 p-r-15 p-t-20">
             <div class="row bg-white">
                 <div class="col-md-4">
-                    <div class="col-md-12 not-padding content-last-books" style="display:none;">
-                        <div class="alert alert-info fade in alert-dismissable" style="background-color: #daeffd!important;">
-                            <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a> -->
-                            <!-- <strong>Info!</strong> This alert box indicates a neutral informative change or action. -->
-                            <h4 class="text-center">Últimas confirmadas</h4>
-                            <table class="table table-condensed" style="margin-top: 0;">
-                                <tbody>
-                                    <?php foreach ($arrayBooks["pagadas"] as $key => $book): ?>
-                                        <tr>
-                                             <td class="text-center" style="width: 30px; padding: 5px 0!important">
-                                                <?php if ($book->agency != 0): ?>
-                                                    <img src="/pages/booking.png" style="width: 20px;"/>
-                                                <?php else: ?>
-
-                                                <?php endif ?>
-                                            </td>
-                                            <td class ="text-center" style="color: black;padding: 5px!important;">  
-                                                <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
-                                                    <?php echo $book->customer->name ?>
-                                                </a> 
-                                                
-                                            </td>
-                                            <td class="text-center" style="color: black;">   
-                                                <?php echo substr($book->room->name,0,5) ?>       
-                                            </th>
-                                            <td class="text-center" style="color: black;">   
-                                                <b>
-                                                    <?php
-                                                        $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                                        echo $start->formatLocalized('%d %b');
-                                                    ?>        
-                                                </b> - 
-                                                <b>
-                                                    <?php
-                                                        $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                                        echo $finish->formatLocalized('%d %b');
-                                                    ?>        
-                                                </b>           
-                                            </td>
-                                            <td class="text-center" style="width: 17%!important; color: black;padding: 5px!important;">
-                                                
-                                                <?php if (isset($payment[$book->id])): ?>
-                                                    <?php echo  $payment[$book->id]." €" ?>
-                                                <?php else: ?>
-                                                    -----
-                                                <?php endif ?>
-                                            </td>
-                                             <td class="text-center" style="color: black;">  
-                                                <?php $paymentBook = \App\Payments::where('book_id', $book->id)->get(); ?>
-                                                <?php 
-                                                    $fromStripe = false;
-                                                    foreach ($paymentBook as $pay) {
-                                                        if (preg_match('/stripe/i', $pay->comment)) {
-                                                            $fromStripe = true;
-                                                        }
-                                                    }
-                                                ?>
-                                                <?php if ($fromStripe): ?>
-                                                    <a target="_blank" href="https://dashboard.stripe.com/payments"><img src="/img/stripe-icon.jpg" style="width: 20px;"></a>
-                                                <?php else: ?>
-                                                    &nbsp;
-                                                <?php endif ?>      
-                                            </th>
-                                        </tr>
-                                        <?php if($key == 4) break; ?>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div> 
+                    @include('backend.planning._lastBookPayment')
                 </div>
                 <div class="col-md-5 pull-right">
                 	<?php $notifications = \App\BookNotification::all(); ?>
@@ -244,7 +177,7 @@
 
                 <div class="col-xs-12">
                     <div class="col-md-7 not-padding">
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <button class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalNewBook">
                                 <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Nueva Reserva</span>
                             </button>
@@ -263,8 +196,11 @@
                                 <span class="bold">Últimas reservas</span>
                                 <span class="numPaymentLastBooks"><?php echo  $stripedsPayments->count(); ?></span>
                             </button>
+                             <button class="btn btn-success btn-cons m-b-10" type="button" id="stripePayment">
+                                <i class="fa fa-money" aria-hidden="true"></i> <span class="bold">Cobros stripe</span>
+                            </button>
                         </div>
-                        <div class="col-md-6 text-center pull-right">
+                        <div class="col-md-4 text-center pull-right">
                             <div class="col-md-5 not-padding">
                                 <h2 style="margin: 0;">
                                     <b>Planning</b> 
@@ -345,7 +281,7 @@
                     <!-- Seccion Calendario -->
 
 
-                    <div class="col-md-12">
+                    <div class="col-md-12" id="stripe-conten-index" style="display: none;">
                         @include('backend.stripe.stripe', ['bookTocharge' => null])
                     </div>
 
@@ -446,69 +382,7 @@
             <div class="row" style="margin-top: 15px;">
                     
                 <div class="col-md-12">
-                    <div class="col-md-12 not-padding content-last-books" style="display:none;">
-                        <div class="alert alert-info fade in alert-dismissable" style="background-color: #daeffd!important;">
-                            <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a> -->
-                            <!-- <strong>Info!</strong> This alert box indicates a neutral informative change or action. -->
-                            <h4 class="text-center">Últimas confirmadas</h4>
-                            <table class="table table-condensed" style="margin-top: 0;">
-                                <tbody>
-                                    <?php foreach ($arrayBooks["pagadas"] as $key => $book): ?>
-                                        <tr>
-                                            <td class ="text-center" style="color: black;padding: 5px!important;">  
-                                                <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
-                                                    <?php echo $book->customer->name ?>
-                                                </a> 
-                                                
-                                            </td>
-                                            <td class="text-center" style="color: black;">   
-                                                <?php echo substr($book->room->name,0,5) ?>       
-                                            </th>
-                                            <td class="text-center" style="color: black;">   
-                                                <b>
-                                                    <?php
-                                                        $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                                        echo $start->formatLocalized('%d %b');
-                                                    ?>        
-                                                </b> - 
-                                                <b>
-                                                    <?php
-                                                        $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                                        echo $finish->formatLocalized('%d %b');
-                                                    ?>        
-                                                </b>           
-                                            </td>
-                                            <td class="text-center" style="width: 17%!important; color: black;padding: 5px!important;">
-                                                
-                                                <?php if (isset($payment[$book->id])): ?>
-                                                    <?php echo  $payment[$book->id]." €" ?>
-                                                <?php else: ?>
-                                                    -----
-                                                <?php endif ?>
-                                            </td>
-                                             <td class="text-center" style="color: black;">  
-                                                <?php $paymentBook = \App\Payments::where('book_id', $book->id)->get(); ?>
-                                                <?php 
-                                                    $fromStripe = false;
-                                                    foreach ($paymentBook as $pay) {
-                                                        if (preg_match('/stripe/i', $pay->comment)) {
-                                                            $fromStripe = true;
-                                                        }
-                                                    }
-                                                ?>
-                                                <?php if ($fromStripe): ?>
-                                                    <a target="_blank" href="https://dashboard.stripe.com/payments"><img src="/img/stripe-icon.jpg" style="width: 20px;"></a>
-                                                <?php else: ?>
-                                                    &nbsp;
-                                                <?php endif ?>      
-                                            </th>
-                                        </tr>
-                                        <?php if($key == 4) break; ?>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div> 
+                     @include('backend.planning._lastBookPayment')
                 </div>
 				
             	<?php if ($isNotify): ?>
@@ -560,14 +434,18 @@
                 
                 <div class="panel" style="margin-bottom: 0px!important">
                     <ul class="nav nav-tabs nav-tabs-simple bg-info-light first-list" role="tablist" data-init-reponsive-tabs="collapse">
-                        <li class="resv  active text-center"  style="width: 33.33%; min-height: 43px;">
-                            <a href="#reservas" data-toggle="tab" role="tab" style="font-size: 15px!important;padding-left: 2px;padding-right: 2px"> RESERVAS </a>
+                        <li class="resv  active text-center"  style="width: 25%; min-height: 43px;">
+                            <a href="#reservas" data-toggle="tab" role="tab" style="font-size: 12px!important;padding-left: 2px;padding-right: 2px"> RESERVAS </a>
                         </li>
-                        <li class="cob text-center" style="width: 33.33%; min-height: 43px;">
-                            <a href="#cobros" data-toggle="tab" role="tab" style="font-size: 15px!important;padding-left: 2px;padding-right: 2px"> RECEPCION </a>
+                        <li class="cob text-center" style="width: 25%; min-height: 43px;">
+                            <a href="#cobros" data-toggle="tab" role="tab" style="font-size: 12px!important;padding-left: 2px;padding-right: 2px"> RECEPCION </a>
                         </li>
-                        <li class="calend text-center" style="width: 33.33%;min-height: 43px;line-height: 45px;">
+                        <li class="calend text-center" style="width: 25%;min-height: 43px;line-height: 45px;">
                             <i class="fa fa-calendar fa-2x white" aria-hidden="true"></i>
+                        </li>
+
+                        <li class="money-stripe text-center" style="width: 25%;min-height: 43px;line-height: 45px;">
+                            <i class="fa fa-money fa-2x white" aria-hidden="true"></i>
                         </li>
                     </ul>
                 </div>
@@ -753,7 +631,7 @@
                     <!-- Seccion Calendario -->
 					
                 </div>
-                <div class="col-md-12 push-40">
+                <div class="col-md-12 push-40 stripe-mobile" >
 				    <!-- {{ url('admin/reservas/stripe/paymentsBooking') }} -->
 				    @include('backend.stripe.stripe', ['bookTocharge' => null])
 				</div>
@@ -928,6 +806,26 @@
                 var year = $(this).val();
                 window.location = '/admin/reservas/'+year;
 
+            });
+
+            $('#stripePayment').click(function(event) {
+               $('#stripe-conten-index').toggle(function() {
+
+                   $('#stripePayment').css('background-color', '#f55753');
+
+               }, function() {
+
+                   $('#stripePayment').css('background-color', '#10cfbd');
+                   
+
+               });
+               
+            });
+
+            $('.money-stripe ').click(function(event) {
+                 $('html, body').animate({
+                       scrollTop: $(".stripe-mobile").offset().top 
+                   }, 2000);
             });
             
 

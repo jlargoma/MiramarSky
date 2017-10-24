@@ -271,13 +271,23 @@ class RoomsController extends Controller
     public function sendEmailToOwned(Request $request)
     {
         $user = \App\User::find($request->input('user'));
+        if ($request->input('attachment') == 1) {
+            Mail::send('backend.emails.accesoPropietario',['data' => $request->input()], function ($message) use ($user) {
+                $message->from('reservas@apartamentosierranevada.net');
+                $message->attach(public_path("contrato-comercializacion-17-18.pdf"));
+                $message->to($user->email);
+                $message->subject('Datos de acceso para ApartamentoSierraNevada');
+            });
+        }else{
+            Mail::send('backend.emails.accesoPropietario',['data' => $request->input()], function ($message) use ($user) {
+                $message->from('reservas@apartamentosierranevada.net');
+                $message->to($user->email);
+                $message->subject('Datos de acceso para ApartamentoSierraNevada');
+            });
+        }
 
-        Mail::send('backend.emails.accesoPropietario',['data' => $request->input()], function ($message) use ($user) {
-            $message->from('reservas@apartamentosierranevada.net');
-            $message->attach(public_path("contrato-comercializacion-17-18.pdf"));
-            $message->to($user->email);
-            $message->subject('Datos de acceso para ApartamentoSierraNevada');
-        });
+
+        
 
         return redirect()->back();
     }
