@@ -615,33 +615,34 @@
 				<?php if (count($room) > 0): ?>
 					<div class="col-xs-12 push-20">
 						<h2 class="text-center push-10" style="font-size: 24px;"><b>Resumen</b></h2>
-						<div class="row" style="border: none;">
-							<table class="table table-hover   no-footer" id="basicTable" role="grid">
+
+						<div class="col-xs-12" style="border: none;">
+							<table class="table table-hover no-footer">
 								<tr>
-									<th class ="text-center bg-complete text-white">ING. PROP</th>
+									<th class ="text-center bg-complete text-white">TOT. ING</th>
 									<th class ="text-center bg-complete text-white">APTO</th>
 									<th class ="text-center bg-complete text-white">PARK</th>
 									<?php if ($room->luxury == 1): ?>
-										<th class ="text-center bg-complete text-white">SUP.LUJO</th>
+										<th class ="text-center bg-complete text-white">S.LUJO</th>
 									<?php else: ?>
 									<?php endif ?>
 								</tr>
 								<tr>
-									<td class="text-center total">
+									<td class="text-center total" style="padding: 8px;">
 										<?php if ($total > 0): ?>
 											<?php echo number_format($total,2,',','.'); ?>€
 										<?php else: ?>
 											--- €
 										<?php endif ?>												
 									</td>
-									<td class="text-center">
+									<td class="text-center" style="padding: 8px;">
 										<?php if ($apto > 0): ?>
 											<?php echo number_format($apto,2,',','.'); ?>€
 										<?php else: ?>
 											--- €
 										<?php endif ?>
 									</td>
-									<td class="text-center">
+									<td class="text-center" style="padding: 8px;">
 										<?php if ($park > 0): ?>
 											<?php echo number_format($park,2,',','.'); ?>€
 										<?php else: ?>
@@ -649,7 +650,7 @@
 										<?php endif ?>
 									</td>
 									<?php if ($room->luxury == 1): ?>
-										<td class="text-center">
+										<td class="text-center" style="padding: 8px;">
 											<?php if ($lujo > 0): ?>
 												<?php echo number_format($lujo,2,',','.'); ?>€
 											<?php else: ?>
@@ -661,9 +662,9 @@
 								</tr>
 							</table>
 						</div>
+						<div style="clear:both;"></div>
+						<h2 class="text-center push-10" style="font-size: 24px;"><b>Listado de Reservas</b></h2>
 						<div class="row table-responsive" style="border: none;">
-							<h2 class="text-center push-10" style="font-size: 24px;"><b>Listado de Reservas</b></h2>
-
 							<table class="table table-hover no-footer" id="basicTable" role="grid" style="margin-bottom: 17px!important">
 								
 								<thead>
@@ -671,7 +672,7 @@
 									<th class ="text-center bg-complete text-white" style="width: 5%">Personas</th>
 									<th class ="text-center bg-complete text-white">Entrada</th>
 									<th class ="text-center bg-complete text-white">Salida</th>
-									<th class ="text-center bg-complete text-white">ING. PROP</th>
+									<th class ="text-center bg-complete text-white">Tot. Ing</th>
 									<th class ="text-center bg-complete text-white">Apto</th>
 									<th class ="text-center bg-complete text-white">Parking</th>
 									<?php if ($room->luxury == 1): ?>
@@ -894,7 +895,7 @@
 		            			<div class="col-md-4 col-md-offset-4">
 									<input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="">
 									<div class="input-group col-md-12 padding-10 text-center">
-									    <button class="btn btn-complete bloquear" data-id="<?php echo $room->id ?>">Guardar</button>
+									    <button class="btn btn-complete bloquear" disabled data-id="<?php echo $room->id ?>">Guardar</button>
 									</div> 
 		            			</div>
 		            		</div>

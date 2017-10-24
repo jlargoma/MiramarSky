@@ -613,7 +613,7 @@
                                 </div>
                                 <div class="tab-pane table-responsive " id="tabPagadas">
                                     <div class="container column-seperation ">.
-                                        @include('backend.planning.listados._pagadas-mobile')                                 
+                                        @include('backend.planning.listados._pagadas')                                 
                                     </div>
                                 </div>
                             </div>
@@ -639,11 +639,10 @@
                                     <table class="table table-striped dataTable no-footer">
                                         <thead>
                                             <th class="bg-success text-white text-center">Nombre</th>
-                                            <th class="bg-success text-white text-center">In</th>
-                                            <th class="bg-success text-white text-center">Out</th>
-                                            <th class="bg-success text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i> In</th>
-                                            <th class="bg-success text-white text-center">Apto</th>
                                             <th class="bg-success text-white text-center">Tel</th>
+                                            <th class="bg-success text-white text-center">Apto</th>
+                                            <th class="bg-success text-white text-center">Reserva</th>
+                                            <th class="bg-success text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i> in</th>
                                             <th class="bg-success text-white text-center">Pendiente</th>
                                             
                                         </thead>
@@ -655,13 +654,32 @@
                                                              <?php echo substr($book->customer->name, 0, 10) ?>
                                                         </a> 
                                                     </td>
-                                                    <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?></td>
-                                                    <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
+                                                    <td class="text-center sm-p-t-10 sm-p-b-10">
+                                                        <a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a>
+                                                    </td>
+                                                    <td class="text-center sm-p-t-10 sm-p-b-10">
+                                                        <b><?php echo $book->room->nameRoom ?></b>
+                                                    </td>
+                                                    <td class="text-center sm-p-t-10 sm-p-b-10">
+                                                        <?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d-%b') ?> 
+                                                        <?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?>
+                                                            
+                                                    </td>
 
-                                                    <td class="text-center sm-p-t-10 sm-p-b-10">Hora</td>
-
-                                                    <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $book->room->nameRoom ?></td>
-                                                    <td class="text-center sm-p-t-10 sm-p-b-10"><a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
+                                                    <td class="text-center sm-p-t-10 sm-p-b-10">
+                                                        <select id="schedule" style="width: 100%;" data-type="in" data-id="<?php echo $book->id ?>">
+                                                            <option>---</option>
+                                                            <?php for ($i = 0; $i < 24; $i++): ?>
+                                                                <option value="<?php echo $i ?>" <?php if($i == $book->schedule) { echo 'selected';}?>>
+                                                                    <?php if ($i < 10): ?>
+                                                                        0<?php echo $i ?>
+                                                                    <?php else: ?>
+                                                                        <?php echo $i ?>
+                                                                    <?php endif ?>
+                                                                </option>
+                                                            <?php endfor ?>
+                                                        </select>
+                                                    </td>
                                                     <td class="text-center sm-p-t-10 sm-p-b-10">
                                                         <?php if (isset($payment[$book->id])): ?>
                                                             <p style="{{ $book->total_price - $payment[$book->id] > 0 ? 'color:red' : '' }}"><?php echo number_format($book->total_price - $payment[$book->id],2,',','.') ?> €</p>
@@ -680,8 +698,8 @@
                                         <thead>
                                             <th class="bg-success text-white text-center">Nombre</th>
                                             <th class="bg-success text-white text-center">Out</th>
-                                            <th class="bg-success text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i> h. salida</th>
                                             <th class="bg-success text-white text-center">Apto</th>
+                                            <th class="bg-success text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i>Salida</th>
                                         </thead>
                                         <tbody>
                                             <?php foreach ($proxOut as $book): ?>
@@ -692,16 +710,31 @@
                                                         </a> 
                                                     </td>
                                                     <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
-
                                                     <td class="text-center sm-p-t-10 sm-p-b-10">
-                                                        12:00 am
+                                                        <b><?php echo $book->room->nameRoom ?></b>
+                                                    </td>
+                                                    <td class="text-center sm-p-t-10 sm-p-b-10">
+                                                        <select id="scheduleOut" style="width: 100%;" data-type="out" data-id="<?php echo $book->id ?>">
+                                                            <option>---</option>
+                                                            <?php for ($i = 0; $i < 24; $i++): ?>
+                                                                <option value="<?php echo $i ?>" <?php if($i == $book->scheduleOut) { echo 'selected';}?>>
+                                                                    <?php if ($i != 12): ?><b><?php endif ?>
+                                                                    <?php if ($i < 10): ?>
+                                                                        0<?php echo $i ?>
+                                                                    <?php else: ?>
+                                                                        <?php echo $i ?>
+                                                                    <?php endif ?>
+                                                                    <?php if ($i != 12): ?></b><?php endif ?>
+                                                                </option>
+                                                            <?php endfor ?>
+                                                        </select>
                                                        <!--  <?php if (isset($payment[$book->id])): ?>
                                                             <?php echo number_format($book->total_price - $payment[$book->id],2,',','.') ?> €
                                                         <?php else: ?>
                                                             <?php echo number_format($book->total_price,2,',','.') ?> €
                                                         <?php endif ?> -->
                                                     </td>
-                                                    <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $book->room->nameRoom ?></td>
+                                                    
                                                 </tr>
                                             <?php endforeach ?>
                                         </tbody>
@@ -897,6 +930,24 @@
 
             });
             
+
+            $('#schedule, #scheduleOut').change(function(event) {
+
+                var type = $(this).attr('data-type');
+                var id = $(this).attr('data-id');
+                var schedule = $(this).val();
+
+                if (type == "in") {
+                    var typeNum = 1;
+                }else{
+                    var typeNum = 0;
+
+                }
+
+                $.get('/admin/reservas/changeSchedule/'+id+'/'+typeNum+'/'+schedule, function(data) {
+                    alert(data);
+                });
+            });
                
         });
     </script>

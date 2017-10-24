@@ -79,29 +79,28 @@
 			<table class="table table-hover no-footer" id="basicTable" role="grid">
 				<thead>
 					
-					<th class="bg-complete text-white text-center" style="width: 20%;"><i class="fa fa-calendar" aria-hidden="true"></i></th>
+					<th class="bg-complete text-white text-center"><i class="fa fa-calendar" aria-hidden="true"></i></th>
 					<th class="bg-complete text-white text-center"><i class="fa fa-money" aria-hidden="true"></i></th>
-					<th class="bg-complete text-white text-center"><i class="fa fa-commenting-o" aria-hidden="true"></i></th>
+					<th class="bg-complete text-white text-center">Tipo</th>
 					<th class="bg-complete text-white text-center">Pend</th>
 				</thead>
 				<tbody>
 
 					<?php foreach ($pagos as $pago): ?>
 					<tr>
-						
-							
-						<td class="text-center" style="width: 100%">
+
+						<td class="text-center"  style="padding: 8px!important">
 							<?php $date = Carbon::createFromFormat('Y-m-d',$pago->datePayment) ?>
 							<?php echo $date->format('d')?>-<?php echo $date->format('M')?>-<?php echo $date->format('y')?>
 						</td>
-						<td class="text-center" style="padding: 20px 5px!important">
-							<?php echo number_format($pagototal,2,',','.') ?>€
+						<td class="text-center" style="padding: 8px!important">
+							<b><?php echo number_format($pagototal,2,',','.') ?>€</b>
 						</td>
-						<td class="text-center" style="padding: 20px 5px!important">
-							<?php echo $pago->comment?>
+						<td class="text-center" style="padding: 8px!important">
+							<?php echo \App\Book::getTypeCobro($pago->type) ?>
 						</td>
 
-						<td class="text-center" style="padding: 20px 5px!important">
+						<td class="text-center" style="padding: 8px!important">
 							<?php echo number_format($total-$pagototal,2,',','.'); ?>€
 						</td>						
 						

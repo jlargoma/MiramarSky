@@ -200,11 +200,30 @@ Route::group(['middleware' => 'authAdmin'], function () {
 		}
 	});
 
-
-
 	Route::get('admin/liquidation/searchByName', 'LiquidacionController@searchByName');
 
 	Route::get('admin/liquidation/searchByRoom', 'LiquidacionController@searchByRoom');
+
+
+	Route::get('admin/reservas/changeSchedule/{id}/{type}/{schedule}', function ($id,$type, $schedule) {
+		
+
+		$book = \App\Book::find($id);
+		if ( $type == 1) {
+			$book->schedule = $schedule;
+		} else {
+			$book->scheduleOut = $schedule;
+		}
+
+		if ($book->save()) {
+			echo "Cambiado!";
+		}
+		
+		
+
+
+	});
+
 
 });
 

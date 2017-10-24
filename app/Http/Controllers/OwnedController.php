@@ -71,7 +71,7 @@ class OwnedController extends Controller
                 // echo "<pre>";
                 // print_r($firstDayOfTheYear);
                 // die();
-                $reservas = \App\Book::whereIn('type_book',[2,7,8])->where('room_id',$room->id)->where('start','>=',$firstDayOfTheYear->copy())->where('start','<=',$firstDayOfTheYear->copy()->addYear())->orderBy('start', 'ASC')->get();
+                $reservas = \App\Book::whereIn('type_book',[1,2,4,7,8])->where('room_id',$room->id)->where('start','>=',$firstDayOfTheYear->copy())->where('start','<=',$firstDayOfTheYear->copy()->addYear())->orderBy('start', 'ASC')->get();
                 
                 $books = \App\Book::where('room_id', $room->id)->whereIn('type_book',[2,7,8])->where('start','>=',$firstDayOfTheYear->copy())->where('start','<=',$firstDayOfTheYear->copy()->addYear())->orderBy('start','ASC')->get();
 

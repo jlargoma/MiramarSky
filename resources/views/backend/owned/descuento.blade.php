@@ -18,7 +18,7 @@
 
                 <br /><br />
 
-                Rellena el formulario y se pondrán en contacto contigo para <a href="http://www.apartamentosierranevada.net/forfait"> gestionar tu petición</a>
+                Rellena el formulario y se pondrán en contacto contigo para <u><a href="http://www.apartamentosierranevada.net/forfait" class="text-primary"> gestionar tu petición</a></u>
             </p>
         </div>
     </div>
