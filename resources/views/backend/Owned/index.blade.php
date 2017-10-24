@@ -1096,7 +1096,9 @@
 				$('.blocks').hide();
 				$("."+block).show();
 
-
+				$('#content-info').hide();
+				$('#content-info-ini').show();
+				$('#content-info').empty();
 			});
 
 		});
