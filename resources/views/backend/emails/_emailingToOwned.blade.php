@@ -144,6 +144,7 @@
 		$.post(formURL, {_token: token, textEmail: textEmail ,user: user, attachment: type}, function(data) {
 
 			$('.pg-close').trigger('click');
+			location.reload();
 
 		});
 	});
