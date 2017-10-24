@@ -2,15 +2,19 @@
         setlocale(LC_TIME, "ES"); 
         setlocale(LC_TIME, "es_ES"); 
 ?>
-<div class="col-xs-12">
+<style type="text/css">
+	.calendar-day{
+		width: 20px; height: 15px; float: left; text-align: center;
+	}
+</style>
+<div class="row">
 	<h2 class="text-center font-w300">
 		Calendario <span class="font-w800">BOOKING</span>
 	</h2>
 </div>
-<div class="col-xs-12">
-	<div class="panel">
-		<ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
-			<?php $dateAux = $dateX->copy(); ?>
+<div class="row">
+	<ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
+		<?php $dateAux = $dateX->copy(); ?>
 			<?php for ($i=1; $i <= 9 ; $i++) :?>
 				<?php if(!$mobile->isMobile()){ $hidden = "";}else{ $hidden = "hidden"; } ?>
 				<li class='<?php if($i == 4 ){ echo "active";} ?> <?php if($i < 4 || $i > 8){ echo $hidden;} ?>'>
@@ -20,28 +24,130 @@
 				</li>
 				<?php $dateAux->addMonth(); ?>
 			<?php endfor; ?>
-		</ul>
-		<div class="tab-content">
-			<?php 
-				$arrayRoomId = array();
-				$booksAux = \App\Book::where('type_book', 9)->get();
-				foreach ($booksAux as $key => $book) {
-					if (!in_array( $book->room->id , $arrayRoomId )) {
-						$arrayRoomId[] = $book->room_id;
-					}
+	</ul>
+	<div class="tab-content">
+		<?php 
+			$arrayRoomId = array();
+			$booksAux = \App\Book::where('type_book', 9)->get();
+			foreach ($booksAux as $key => $book) {
+				if (!in_array( $book->room->id , $arrayRoomId )) {
+					$arrayRoomId[] = $book->room_id;
 				}
-				
-				$rooms = \App\Rooms::whereIn('id', $arrayRoomId)->get();
+			}
+			$arrayRoomsForType = [
+									'2dorm-lujo' => [
+													'title' => '2DORM lujo',
+													'rooms' => [],
+												] ,
+									'estudio-lujo' => [
+													'title' => 'Est. Lujo',
+													'rooms' => [],
+												], 
+									'2dorm-stand' => [
+													'title' => '2DORM',
+													'rooms' => [],
+												],
+									'estudio-stand' => [
+													'title' => 'Est.',
+													'rooms' => [],
+												]
+								];
+			$rooms = \App\Rooms::whereIn('id', $arrayRoomId)->get();
 
-			?>
-			<?php for ($z=1; $z <= 9; $z++):?>
-				<div class="tab-pane <?php if($z == 4){ echo 'active';} ?>" id="booking<?php echo $z ?>">
-					
-					
+			foreach ($rooms as $key => $room) {
+				if ($room->luxury == 1 && $room->sizeApto == 2) {
 
+					$arrayRoomsForType['2dorm-lujo']['rooms'][] = $room; 
 
+				}
 
+				if($room->luxury == 1 && $room->sizeApto == 1){
+
+					$arrayRoomsForType['estudio-lujo']['rooms'][] = $room; 
+
+				}
+
+				if($room->luxury == 0 && $room->sizeApto == 2){
+
+					$arrayRoomsForType['2dorm-stand']['rooms'][] = $room; 
+
+				}
+
+				if($room->luxury == 0 && $room->sizeApto == 1){
+
+					$arrayRoomsForType['estudio-stand']['rooms'][] = $room; 
+
+				}
+			}
+
+			// echo "<pre>";
+			// print_r($arrayRoomsForType);
+
+		?>
+		<?php for ($z=1; $z <= 9; $z++):?>
+			<div class="tab-pane <?php if($z == 4){ echo 'active';} ?>" id="booking<?php echo $z ?>">
+				<div class="row">
+					<div class="table-responsive">
+						<table class="fc-border-separate calendar-table" style="width: 100%">
+							<thead>
+								<tr>
+									<td rowspan="2" style="width: 1%!important"></td>
+									<?php for ($i=1; $i <= $arrayMonths[$dateX->copy()->format('n')] ; $i++): ?> 
+										<td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
+											<?php echo $i?> 
+										</td> 
+									<?php endfor; ?>
+								</tr>
+								<tr>
+
+									<?php for ($i=1; $i <= $arrayMonths[$dateX->copy()->format('n')] ; $i++): ?> 
+										<td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$dateX->copy()->format('n')][$i]?>">
+											<?php echo $days[$dateX->copy()->format('n')][$i]?> 
+										</td> 
+									<?php endfor; ?> 
+								</tr>
+							</thead>
+							<tbody>
+
+								<?php foreach ($arrayRoomsForType as $room): ?>
+									<tr>
+										<?php $dateX = $dateX->startOfMonth() ?>
+										<td class="text-center">
+											<b>
+												<?php echo substr($room['title'], 0, 5)?>	
+											</b>
+										</td>
+
+										<?php for ($i=01; $i <= $arrayMonths[$dateX->copy()->format('n')] ; $i++): ?> 
+
+												
+												<td class="" style='border:1px solid grey;width: 3%;text-align: center'>
+													<?php if (count($room['rooms']) == 0): ?>
+														<span class="text-danger">
+															<?php echo count($room['rooms']) ?>
+														</span>
+													<?php else: ?>
+														<span>
+															<?php echo count($room['rooms']) ?>
+														</span>
+													<?php endif ?>
+												</td>
+
+											<?php if ($dateX->copy()->format('d') != $arrayMonths[$dateX->copy()->format('n')]): ?>
+												<?php $dateX = $dateX->addDay(); ?>
+											<?php else: ?>
+												<?php $dateX = $dateX->startOfMonth() ?>
+											<?php endif ?>
+										<?php endfor; ?> 
+									</tr>
+
+								<?php endforeach; ?>
+							</tbody>
+						</table>
+					<?php $dateX = $dateX->addMonth(); ?>
+					</div>
 				</div>
-			<?php endfor; ?>
-		</div>
+			</div>
+		<?php endfor; ?>
+	</div>
 </div>

@@ -302,11 +302,7 @@
 																				<td 
 																				style='border:1px solid grey;width: 3%' 
 																				title="
-																				<?php echo $calendars->customer['name'] ?> - <?php echo 'PVP:'.$calendars->total_price ?>
-																				<?php if (isset($payment[$calendars->id])): ?>
-																					<?php echo '- PEND:'.($calendars->total_price - $payment[$calendars->id])?>
-																				<?php else: ?>
-																				<?php endif ?>" 
+																				<?php echo $calendars->customer['name'] ?>" 
 																				class="<?php echo $calendars->getStatus($calendars->type_book) ?>"
 																				>
 																					<?php if ($calendars->type_book == 9): ?>

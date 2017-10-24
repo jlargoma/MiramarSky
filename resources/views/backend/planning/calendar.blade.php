@@ -19,11 +19,6 @@
 						<div class="table-responsive">
 							<table class="fc-border-separate calendar-table" style="width: 100%">
 								<thead>
-									<!-- <tr >
-										<td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
-											<?php echo  ucfirst($inicio->copy()->formatLocalized('%B %Y'))?>
-										</td> 
-									</tr> -->
 									<tr>
 										<td rowspan="2" style="width: 1%!important"></td>
 										<?php for ($i=1; $i <= $arrayMonths[$inicio->copy()->format('n')] ; $i++): ?> 
@@ -204,16 +199,16 @@
 													<?php $inicio = $inicio->startOfMonth() ?>
 												<?php endif ?>
 											<?php endfor; ?> 
-									</tr>
+										</tr>
 
-								<?php endforeach; ?>
-							</tbody>
-						</table>
+									<?php endforeach; ?>
+								</tbody>
+							</table>
 						<?php $inicio = $inicio->addMonth(); ?>
+						</div>
 					</div>
 				</div>
-			</div>
-		<?php endfor; ?>
+			<?php endfor; ?>
 
-	</div>
+		</div>
 </div> 
