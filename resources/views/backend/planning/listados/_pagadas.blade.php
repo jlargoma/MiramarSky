@@ -22,9 +22,11 @@
                     <?php foreach ($arrayBooks["pagadas"] as $book): ?>
                         <tr>
                             <td class ="text-center" style="padding: 10px 15px!important">
-                                <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
-                                    <?php echo substr($book->customer['name'], 0,10)  ?>
-                                </a>                                                        
+                                <?php if (isset($payment[$book->id])): ?>
+                                    <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>
+                                <?php else: ?>
+                                    <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" ><?php echo $book->customer['name']  ?></a>
+                                <?php endif ?>                                                        
                             </td>
 
                             <td class ="text-center"><?php echo $book->customer->phone ?></td>
