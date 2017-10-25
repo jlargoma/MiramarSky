@@ -263,7 +263,7 @@ class RoomsController extends Controller
 
     public function uploadFile(Request $request,$id)
     {   
-
+        echo "<pre>";
         $file = ($_FILES);
 
         $room = \App\Rooms::where('nameRoom',$id)->first();
@@ -274,17 +274,45 @@ class RoomsController extends Controller
         if (!file_exists($directory)) {
             mkdir($directory, 0777, true);
         }
-
-        // echo $storage_path . basename( $_FILES['uploadedfile']['name']);
-        $directory = $directory."/" . basename( $_FILES['uploadedfile']['name']); 
-
-        if(move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $directory))
+        // RECORREMOS LOS FICHEROS
+        for($i=0; $i<count($_FILES['uploadedfile']['name']); $i++) {
+          //Obtenemos la ruta temporal del fichero
+          $fichTemporal = $_FILES['uploadedfile']['tmp_name'][$i];
+         
+          //Si tenemos fichero procedemos
+          if ($fichTemporal != ""){
+            //Definimos una ruta definitiva para guardarlo
+            $destino = $directory."/". $_FILES['uploadedfile']['name'][$i];
+         
+            //Movemos a la ruta final
+            if(move_uploaded_file($fichTemporal, $destino)) {
+               //imprimimos el nombre del archivo subido
+               printf("Se ha subido el fichero %s.",$_FILES['uploadedfile']['name'][$i]);
+               $status = true;
+            }else{
+                $statu = false;
+            }
+          }
+        }
+        if($status)
         {
             return redirect()->action('RoomsController@index');
         } else{
-            return "imagen no subida";
+            return redirect()->action('RoomsController@index');
         }
 
+    }
+
+    public function deletePhoto(Request $request, $id)
+    {
+
+        $archivo = public_path()."/img/miramarski/apartamentos/".$request->input('apto')."/".$id;
+        
+        if (unlink($archivo)) {
+            return "OK";
+        }else{
+            return "no se puede eliminar";
+        }
     }
 
     public function email($id){
