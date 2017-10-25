@@ -263,7 +263,7 @@ class RoomsController extends Controller
 
     public function uploadFile(Request $request,$id)
     {   
-        echo "<pre>";
+
         $file = ($_FILES);
 
         $room = \App\Rooms::where('nameRoom',$id)->first();
