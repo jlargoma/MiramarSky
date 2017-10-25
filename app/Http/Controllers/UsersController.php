@@ -145,23 +145,30 @@ class UsersController extends Controller
         if (request()->getMethod() == 'POST') {
 
             $data = $request->input();
-
+            $user = \App\User::where('email', $data['email'])->first();
             
             if ($data['password'] == $data['rep-password']) {
-                # code...
+                $user->password = bcrypt($data['password']);
+
+                if ($user->save()) {
+                    return redirect('/login');
+                }
+
+
             }else{
-                echo "Error, las contraseñas no coinciden";
+
+                $message[] = 'Error';
+                $message[] = 'Las contraseñas no coinciden';
+                return view('loginToOwneds', ['user' => $user->email , 'message' => $message]);
+
             }
             
-
-
-
 
         }else{
 
 
             $email = base64_decode($email);
-            $user = \App\User::where('email', $email)->first();//->where('role', 'LIKE', '%propietario%')->get();
+            $user = \App\User::where('email', $email)->first();
 
             if (count($user) > 0) {
                 
@@ -169,18 +176,21 @@ class UsersController extends Controller
 
 
 
-                    return view('loginToOwneds', ['user' => $user ]);
+                    return view('loginToOwneds', ['user' => $user->email ]);
 
 
                 }else{
-                    echo "Error, este usuario no es un propietario";
+                    $message[] = 'Error';
+                    $message[] = 'este usuario no es un propietario';
+                    return view('loginToOwneds', ['user' => $user->email , 'message' => $message]);
 
                 }
 
 
             }else{
-
-                echo "Error, no hay ningun usuario para este email";
+                $message[] = 'Error';
+                $message[] = 'no hay ningun usuario con este email';
+                return view('loginToOwneds', ['user' => $email , 'message' => $message]);
 
             }
 

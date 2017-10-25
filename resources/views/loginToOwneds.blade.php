@@ -63,7 +63,7 @@
 				<!-- START Login Right Container-->
 				<div class="login-container " style="float: left;background-color: rgba(0,0,0,0.6);">
 				<?php if (isset($message)): ?>
-					<div class="col-xs-12">
+					<div class="col-xs-12" style="margin: 20px 0">
 						<div class="alert alert-danger">
 						  	<strong><?php echo $message[0] ?></strong> <?php echo $message[1] ?>
 						</div>
@@ -73,12 +73,12 @@
 					<h2 class="semi-bold text-white push-20" >Crear contraseña</h2>
 
 					<!-- START Login Form -->
-					<form class="form-horizontal" role="form" method="POST" action="{{ url('admin/propietario/create/password/') }}/<?php echo base64_encode($user->email) ?>">
+					<form class="form-horizontal" role="form" method="POST" action="{{ url('admin/propietario/create/password/') }}/<?php echo base64_encode($user) ?>">
 						{{ csrf_field() }}
 
 						<div class="col-md-12 push-20">
 							<p class="col-md-12 text-white bold" style="color: white;">E-Mail</p>
-							<input id="email" type="email" class="form-control" name="email" value="{{ $user->email }}">
+							<input id="email" type="email" class="form-control" name="email" value="{{ $user }}">
 						</div>
 						<div class="col-md-12 push-20">
 							<p class="col-md-12 text-white bold" style="color: white;">Password</p>
