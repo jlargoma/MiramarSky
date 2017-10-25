@@ -77,15 +77,25 @@ class BookController extends Controller
             $countDays  = $endMonth->diffInDays($startMonth);
             $day        = $startMonth;
 
-            $arrayMonths[$firstDayOfTheYear->copy()->format('n')] = $day->copy()->format('t');
+
+           $arrayMonths[$firstDayOfTheYear->copy()->format('n')] = $day->copy()->format('t');
+            
+            
+
             for ($j=1; $j <= $day->copy()->format('t') ; $j++) {
+
                 $arrayDays[$firstDayOfTheYear->copy()->format('n')][$j] = $book->getDayWeek($day->copy()->format('w'));
                 $day = $day->copy()->addDay();
+
             }
 
             $firstDayOfTheYear->addMonth();
 
         }
+
+        unset($arrayMonths[6]);
+        unset($arrayMonths[7]);
+        unset($arrayMonths[8]);
         
         if ($date->copy()->format('n') >= 9) {
             $start = new Carbon('first day of September '.$date->copy()->format('Y'));

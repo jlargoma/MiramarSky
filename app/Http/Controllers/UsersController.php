@@ -137,4 +137,56 @@ class UsersController extends Controller
             return redirect()->action('UsersController@index');
         }
     }
+
+
+    public function createPasswordUser(Request $request, $email)
+    {
+
+        if (request()->getMethod() == 'POST') {
+
+            $data = $request->input();
+
+            
+            if ($data['password'] == $data['rep-password']) {
+                # code...
+            }else{
+                echo "Error, las contraseñas no coinciden";
+            }
+            
+
+
+
+
+        }else{
+
+
+            $email = base64_decode($email);
+            $user = \App\User::where('email', $email)->first();//->where('role', 'LIKE', '%propietario%')->get();
+
+            if (count($user) > 0) {
+                
+                if ( preg_match('/propietario/i', $user->role) ) {
+
+
+
+                    return view('loginToOwneds', ['user' => $user ]);
+
+
+                }else{
+                    echo "Error, este usuario no es un propietario";
+
+                }
+
+
+            }else{
+
+                echo "Error, no hay ningun usuario para este email";
+
+            }
+
+        }
+
+        
+    }
+
 }

@@ -36,19 +36,19 @@
 			}
 			$arrayRoomsForType = [
 									'2dorm-lujo' => [
-													'title' => '2DORM lujo',
+													'title' => '2L',
 													'rooms' => [],
 												] ,
 									'estudio-lujo' => [
-													'title' => 'Est. Lujo',
+													'title' => 'EL',
 													'rooms' => [],
 												], 
 									'2dorm-stand' => [
-													'title' => '2DORM',
+													'title' => '2S',
 													'rooms' => [],
 												],
 									'estudio-stand' => [
-													'title' => 'Est.',
+													'title' => 'ES',
 													'rooms' => [],
 												]
 								];
@@ -85,7 +85,7 @@
 
 		?>
 		<?php for ($z=1; $z <= 9; $z++):?>
-			<div class="tab-pane <?php if($z == 4){ echo 'active';} ?>" id="booking<?php echo $z ?>">
+			<div class="tab-pane <?php if($z == 4){ echo 'active';} ?>" id="booking<?php echo $z ?>" style="padding: 0 5px;">
 				<div class="row">
 					<div class="table-responsive">
 						<table class="fc-border-separate calendar-table" style="width: 100%">
@@ -110,25 +110,42 @@
 							<tbody>
 
 								<?php foreach ($arrayRoomsForType as $room): ?>
+									
 									<tr>
 										<?php $dateX = $dateX->startOfMonth() ?>
-										<td class="text-center">
+										<td class="text-center" style='width: 3%;text-align: center'>
 											<b>
 												<?php echo substr($room['title'], 0, 5)?>	
 											</b>
 										</td>
 
 										<?php for ($i=01; $i <= $arrayMonths[$dateX->copy()->format('n')] ; $i++): ?> 
+											<?php $count         = count($room['rooms']) ?>
+											<?php $countReservas = false ?>
+											<?php if (count($room['rooms']) > 0): ?>
+												<?php foreach ($room['rooms'] as $key => $data): ?>
+													
 
+													<?php 
+														if ( isset($arrayReservas[$data->id][$dateX->copy()->format('Y')][$dateX->copy()->format('n')][$i]) ){
+															
+															$count = $count - (count($arrayReservas[$data->id][$dateX->copy()->format('Y')][$dateX->copy()->format('n')][$i]) - 1);
+															
+														}
+													?>	
+												<?php endforeach ?>
 												
+												
+											<?php endif ?>
+											
 												<td class="" style='border:1px solid grey;width: 3%;text-align: center'>
-													<?php if (count($room['rooms']) == 0): ?>
+													<?php if ( $count == 0 ): ?>
 														<span class="text-danger">
-															<?php echo count($room['rooms']) ?>
+															<b><?php echo $count ?></b>
 														</span>
 													<?php else: ?>
 														<span>
-															<?php echo count($room['rooms']) ?>
+															<b><?php echo $count ?></b>
 														</span>
 													<?php endif ?>
 												</td>

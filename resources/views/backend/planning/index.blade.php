@@ -292,7 +292,7 @@
                     </div>
 
 
-                    <div class="col-md-12">
+                    <div class="row">
                         @include('backend.planning._calendarToBooking')
                     </div>
                 </div>
@@ -857,6 +857,7 @@
                 });
             });
                
+
         });
     </script>
 

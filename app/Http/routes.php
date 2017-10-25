@@ -171,6 +171,9 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 	Route::get('admin/propietario/{name?}/{year?}' , 'OwnedController@index');
 
 
+	Route::get('admin/propietario/create/password/{email}' , 'UsersController@createPasswordUser');
+	Route::post('admin/propietario/create/password/{email}' , 'UsersController@createPasswordUser');
+
 
 // AUX PROPIETARIOS 
 	Route::get('admin/propietarios/dashboard/{name?}/{year?}' , ['middleware' => 'authAdmin', 'uses' => 'OwnedController@index'] );
