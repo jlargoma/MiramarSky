@@ -38,114 +38,149 @@ class OwnedController extends Controller
 
             }
             // Año
-                if ( empty($year) ) {
-                    $date = Carbon::now();
-                }else{
-                    $year = Carbon::createFromFormat('Y',$year);
-                    $date = $year->copy();
+            if ( empty($year) ) {
+                $date = Carbon::now();
+            }else{
+                $year = Carbon::createFromFormat('Y',$year);
+                $date = $year->copy();
 
-                }
+            }
 
-                if ($date->copy()->format('n') >= 9) {
-                    $firstDayOfTheYear = new Carbon('first day of September '.$date->copy()->format('Y'));
-                    $date = new Carbon('first day of September '.$date->copy()->format('Y'));
-                }else{
-                    $firstDayOfTheYear = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
-                    $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
-                }
+            if ($date->copy()->format('n') >= 9) {
+                $firstDayOfTheYear = new Carbon('first day of September '.$date->copy()->format('Y'));
+                $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+            }else{
+                $firstDayOfTheYear = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+                $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            }
 
             // Variables
-                $mes = array();
-                $arrayReservas = array();
-                $arrayMonths = array();
-                $arrayDays     = array();
+            $mes = array();
+            $arrayReservas = array();
+            $arrayMonths = array();
+            $arrayDays     = array();
 
 
-                $total = 0;
-                $apto = 0;
-                $park = 0;
-                $lujo = 0;
+            $total = 0;
+            $apto = 0;
+            $park = 0;
+            $lujo = 0;
 
-            // Datos
-                
-                // echo "<pre>";
-                // print_r($firstDayOfTheYear);
-                // die();
-                $reservas = \App\Book::whereIn('type_book',[1,2,4,7,8])->where('room_id',$room->id)->where('start','>=',$firstDayOfTheYear->copy())->where('start','<=',$firstDayOfTheYear->copy()->addYear())->orderBy('start', 'ASC')->get();
-                
-                $books = \App\Book::where('room_id', $room->id)->whereIn('type_book',[2,7,8])->where('start','>=',$firstDayOfTheYear->copy())->where('start','<=',$firstDayOfTheYear->copy()->addYear())->orderBy('start','ASC')->get();
+                // Datos
 
-                foreach ($reservas as $reserva) {
-                    $dia = Carbon::createFromFormat('Y-m-d',$reserva->start);
-                    $start = Carbon::createFromFormat('Y-m-d',$reserva->start);
-                    $finish = Carbon::createFromFormat('Y-m-d',$reserva->finish);
-                    $diferencia = $start->diffInDays($finish);
-                    for ($i=0; $i <= $diferencia; $i++) {
-                        $arrayReservas[$reserva->room_id][$dia->copy()->format('Y')][$dia->copy()->format('n')][$dia->copy()->format('j')] = $reserva;
-                        $dia = $dia->addDay();
-                    }
+            $reservas = \App\Book::whereIn('type_book',[1,2,4,7,8])->where('room_id',$room->id)->where('start','>=',$firstDayOfTheYear->copy())->where('start','<=',$firstDayOfTheYear->copy()->addYear())->orderBy('start', 'ASC')->get();
+            
+            $books = \App\Book::where('room_id', $room->id)->whereIn('type_book',[2,7,8])->where('start','>=',$firstDayOfTheYear->copy())->where('start','<=',$firstDayOfTheYear->copy()->addYear())->orderBy('start','ASC')->get();
+
+            foreach ($reservas as $reserva) {
+                $dia = Carbon::createFromFormat('Y-m-d',$reserva->start);
+                $start = Carbon::createFromFormat('Y-m-d',$reserva->start);
+                $finish = Carbon::createFromFormat('Y-m-d',$reserva->finish);
+                $diferencia = $start->diffInDays($finish);
+                for ($i=0; $i <= $diferencia; $i++) {
+                    $arrayReservas[$reserva->room_id][$dia->copy()->format('Y')][$dia->copy()->format('n')][$dia->copy()->format('j')] = $reserva;
+                    $dia = $dia->addDay();
                 }
+            }
 
-                for ($i=1; $i <= 12; $i++) { 
-                    $mes[$firstDayOfTheYear->copy()->format('n')] = $firstDayOfTheYear->copy()->format('M Y');
-                    $firstDayOfTheYear = $firstDayOfTheYear->addMonth();
-                }
+            for ($i=1; $i <= 12; $i++) { 
+                $mes[$firstDayOfTheYear->copy()->format('n')] = $firstDayOfTheYear->copy()->format('M Y');
+                $firstDayOfTheYear = $firstDayOfTheYear->addMonth();
+            }
 
-                $book = new \App\Book();
+            $book = new \App\Book();
 
-                for ($i=1; $i <= 12; $i++) { 
-                    
-                    $startMonth = $firstDayOfTheYear->copy()->startOfMonth();
-                    $endMonth   = $firstDayOfTheYear->copy()->endOfMonth();
-                    $countDays  = $endMonth->diffInDays($startMonth);
-                    $day        = $startMonth;
+            for ($i=1; $i <= 12; $i++) { 
+                
+                $startMonth = $firstDayOfTheYear->copy()->startOfMonth();
+                $endMonth   = $firstDayOfTheYear->copy()->endOfMonth();
+                $countDays  = $endMonth->diffInDays($startMonth);
+                $day        = $startMonth;
 
 
-                    for ($j=1; $j <= $countDays+1 ; $j++) { 
-                            $arrayMonths[$firstDayOfTheYear->copy()->format('n')] = $day->copy()->format('d');     
-                            $arrayDays[$firstDayOfTheYear->copy()->format('n')][$j] = $book->getDayWeek($day->copy()->format('w'));
-                            $day = $day->addDay();
-                    }
-                    
-                    $firstDayOfTheYear->addMonth();                                    
-
+                for ($j=1; $j <= $countDays+1 ; $j++) { 
+                        $arrayMonths[$firstDayOfTheYear->copy()->format('n')] = $day->copy()->format('d');     
+                        $arrayDays[$firstDayOfTheYear->copy()->format('n')][$j] = $book->getDayWeek($day->copy()->format('w'));
+                        $day = $day->addDay();
                 }
                 
+                $firstDayOfTheYear->addMonth();                                    
 
-                
-                foreach ($books as $book) {
-                    $total +=  $book->cost_total;
-                    $apto += $book->cost_apto;
-                    $park += $book->cost_park;
-                    $lujo += $book->cost_lujo;
-                }
-
-
-                $paymentspro = \App\Paymentspro::where('room_id',$room->id)->where('datePayment','>=',$date->copy()->format('Y-m-d'))->where('datePayment','<=',$date->copy()->addYear()->format('Y-m-d'))->get();
-                $pagototal = 0;
-                foreach ($paymentspro as $pago) {
-                    $pagototal += $pago->import;
-                }
+            }
+            
 
             
+            foreach ($books as $book) {
+                $total +=  $book->cost_total;
+                $apto += $book->cost_apto;
+                $park += $book->cost_park;
+                $lujo += $book->cost_lujo;
+            }
+
+
+            $paymentspro = \App\Paymentspro::where('room_id',$room->id)->where('datePayment','>=',$date->copy()->format('Y-m-d'))->where('datePayment','<=',$date->copy()->addYear()->format('Y-m-d'))->get();
+            $pagototal = 0;
+            foreach ($paymentspro as $pago) {
+                $pagototal += $pago->import;
+            }
+
+        
+        $estadisticas['ingresos'] = array(); 
+        $estadisticas['clientes'] = array(); 
+        $dateStadistic            = $date->copy()->startOfMonth();
+
+        for ($i=$dateStadistic->copy()->format('n'); $i < 21; $i++) { 
+            if ($i > 12) {
+                $x = $dateStadistic->copy()->format('n');
+            }else{
+                $x = $i;
+            }
+            $ingresos = 0;
+            $clientes = 0;
             
-            return view('backend.owned.index',[
-                                                'user'        => \App\User::find(Auth::user()->id),
-                                                'room'        => $room,
-                                                'books'       => $books,
-                                                'mes'         => $mes,
-                                                'reservas'    => $arrayReservas,
-                                                'date'        => $date,
-                                                'days'        => $arrayDays,
-                                                'arrayMonths' => $arrayMonths,
-                                                'total'       => $total,
-                                                'apto'        => $apto,
-                                                'park'        => $park,
-                                                'lujo'        => $lujo,
-                                                'pagos'       => $paymentspro,
-                                                'pagototal'   => $pagototal,
-                                                'mobile'      => new Mobile(),
-                                                ]);
+            $bookStadistic = \App\Book::whereIn('type_book',[1,2,4,7,8])
+                                        ->where('room_id',$room->id)
+                                        ->whereYear('start','=', $dateStadistic->copy()->format('Y'))
+                                        ->whereMonth('start','=', $dateStadistic->copy()->format('m'))
+                                        ->get();
+
+            if (count($bookStadistic) > 0) {
+                
+                foreach ($bookStadistic as $key => $book) {
+                        
+                    $ingresos += $book->cost_total;
+                    $clientes += $book->pax;
+
+
+                }
+
+            }
+
+            $estadisticas['ingresos'][$x] = round($ingresos);
+            $estadisticas['clientes'][$x] = round($clientes);
+
+
+            $dateStadistic->addMonth();
+        }
+            
+        return view('backend.owned.index',[
+                                            'user'        => \App\User::find(Auth::user()->id),
+                                            'room'        => $room,
+                                            'books'       => $books,
+                                            'mes'         => $mes,
+                                            'reservas'    => $arrayReservas,
+                                            'date'        => $date,
+                                            'days'        => $arrayDays,
+                                            'arrayMonths' => $arrayMonths,
+                                            'total'       => $total,
+                                            'apto'        => $apto,
+                                            'park'        => $park,
+                                            'lujo'        => $lujo,
+                                            'pagos'       => $paymentspro,
+                                            'pagototal'   => $pagototal,
+                                            'mobile'      => new Mobile(),
+                                            'estadisticas'      => $estadisticas,
+                                            ]);
         
         } catch (\Exception $e) {
             // print_r($e);

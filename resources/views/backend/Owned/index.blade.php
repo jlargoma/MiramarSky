@@ -11,12 +11,15 @@
 	<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('/assets/plugins/bootstrap-datepicker/css/datepicker3.css')}}" type="text/css" >
     <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css">
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+
 @endsection
      
 @section('content')
-
+<?php $dateStat = $date->copy(); ?>
 <?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
-
 <style type="text/css"> 
 
 	.S, .D{
@@ -114,26 +117,35 @@
 
 	    	    <div class="col-md-12">
 	    	    	<div class="container">
-		    			<div class="col-md-6 col-sm-8">
-		    				<h2 class="text-center"><b>Planning de reservas</b>  Fechas:</h2>
-		    			</div>
-		    		        
-		    		    <div class="col-md-2" style="padding: 15px;">  
-		    		        <select id="fecha" class="form-control minimal">
-		    		            <?php $fecha = $date->copy()->SubYear(); ?>
-		    		            <?php if ($fecha->copy()->format('Y') < 2015): ?>
-		    		                <?php $fecha = new Carbon('first day of September 2015'); ?>
-		    		            <?php endif ?>
-		    		        
-		    		            <?php for ($i=1; $i <= 3; $i++): ?>                           
-		    		                <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $date->copy()->format('Y') == $fecha->format('Y') ? 'selected' : '' }}>
-		    		                    <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
-		    		                </option>
-		    		                <?php $fecha->addYear(); ?>
-		    		            <?php endfor; ?>
-		    		        </select>
-		    		    
-		    			</div> 
+		    			
+		    		    <?php if (!preg_match('/propietario/i', Auth::user()->role)): ?>
+		    		    	<div class="col-md-6 col-sm-8">
+			    				<h2 class="text-center"><b>Planning de reservas</b></h2>
+			    			</div>
+	    		    	    <div class="col-md-2" style="padding: 15px;">  
+	    		    	        <select id="fecha" class="form-control minimal">
+	    		    	            <?php $fecha = $date->copy()->SubYear(); ?>
+	    		    	            <?php if ($fecha->copy()->format('Y') < 2015): ?>
+	    		    	                <?php $fecha = new Carbon('first day of September 2015'); ?>
+	    		    	            <?php endif ?>
+	    		    	        
+	    		    	            <?php for ($i=1; $i <= 3; $i++): ?>                           
+	    		    	                <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $date->copy()->format('Y') == $fecha->format('Y') ? 'selected' : '' }}>
+	    		    	                    <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
+	    		    	                </option>
+	    		    	                <?php $fecha->addYear(); ?>
+	    		    	            <?php endfor; ?>
+	    		    	        </select>
+	    		    		</div> 
+	    		    	<?php else: ?>
+	    		    		<div class="col-md-12 col-sm-8">
+	    		    			<?php $fecha = $date->copy(); ?>
+			    				<h2 class="text-center">
+			    					<b>Planning de reservas</b> <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?>
+			    				</h2>
+			    			</div>
+		    		    <?php endif ?>
+		    		   
 	    	    	</div>       
 	    		</div>
 			
@@ -144,7 +156,7 @@
 
 				</div>
 				<div style="clear: both;"></div>
-				<div class="row buttons">
+				<div class="row buttons push-40">
 					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-4 push-10">
 						<button class="btn btn-success btn-cons text-white btn-blocks" data-block="resumen">
 							<span class="bold">Resumen</span>
@@ -156,7 +168,7 @@
 						</button>
 					</div>
 					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-4 push-10">
-						<button class="btn btn-success btn-cons text-white btn-blocks" data-block="estadisticas" disabled>
+						<button class="btn btn-success btn-cons text-white btn-blocks" data-block="estadisticas">
 							<span class="bold">Estadisticas</span>
 						</button>
 					</div>
@@ -198,258 +210,272 @@
 			<div class="col-md-12 push-20 text-center" id="content-info" style="display: none;"></div>
 			<div class="col-md-12 push-20 text-center" id="content-info-ini">
 				<?php if (count($room) > 0): ?>
-					
-					<div class="col-md-6 resumen blocks">
-						<div class="col-md-4">
-							<h2 class="text-center font-w800">Resumen</h2>
-						</div>
-						<div class="col-md-8 pull-right"">
-							<table class="table table-hover  no-footer" id="basicTable" role="grid">
-								<tr>
-									<th class ="text-center bg-complete text-white">ING. PROP</th>
-									<th class ="text-center bg-complete text-white">Apto</th>
-									<th class ="text-center bg-complete text-white">Park</th>
-									<?php if ($room->luxury == 1): ?>
-										<th class ="text-center bg-complete text-white">Sup.Lujo</th>
-									<?php else: ?>
-									<?php endif ?>
-								</tr>
-								<tr>
-									<td class="text-center total">
-										<?php if ($total > 0): ?>
-											<?php echo number_format($total,2,',','.'); ?>€
+					<div class="row">
+						<div class="col-md-6 col-xs-12 resumen blocks">
+							<div class="row">
+								<h2 class="text-center font-w800">Resumen</h2>
+								<table class="table table-bordered table-hover  no-footer" id="basicTable" role="grid">
+									<tr>
+										<th class ="text-center bg-complete text-white">ING. PROP</th>
+										<th class ="text-center bg-complete text-white">Apto</th>
+										<th class ="text-center bg-complete text-white">Park</th>
+										<?php if ($room->luxury == 1): ?>
+											<th class ="text-center bg-complete text-white">Sup.Lujo</th>
 										<?php else: ?>
-											--- €
-										<?php endif ?>												
-									</td>
-									<td class="text-center">
-										<?php if ($apto > 0): ?>
-											<?php echo number_format($apto,2,',','.'); ?>€
-										<?php else: ?>
-											--- €
 										<?php endif ?>
-									</td>
-									<td class="text-center">
-										<?php if ($park > 0): ?>
-											<?php echo number_format($park,2,',','.'); ?>€
-										<?php else: ?>
-											--- €
-										<?php endif ?>
-									</td>
-									<?php if ($room->luxury == 1): ?>
+									</tr>
+									<tr>
+										<td class="text-center total">
+											<?php if ($total > 0): ?>
+												<?php echo number_format($total,2,',','.'); ?>€
+											<?php else: ?>
+												--- €
+											<?php endif ?>												
+										</td>
 										<td class="text-center">
-											<?php if ($lujo > 0): ?>
-												<?php echo number_format($lujo,2,',','.'); ?>€
+											<?php if ($apto > 0): ?>
+												<?php echo number_format($apto,2,',','.'); ?>€
 											<?php else: ?>
 												--- €
 											<?php endif ?>
 										</td>
-									<?php else: ?>
-									<?php endif ?>
-								</tr>
-							</table>
+										<td class="text-center">
+											<?php if ($park > 0): ?>
+												<?php echo number_format($park,2,',','.'); ?>€
+											<?php else: ?>
+												--- €
+											<?php endif ?>
+										</td>
+										<?php if ($room->luxury == 1): ?>
+											<td class="text-center">
+												<?php if ($lujo > 0): ?>
+													<?php echo number_format($lujo,2,',','.'); ?>€
+												<?php else: ?>
+													--- €
+												<?php endif ?>
+											</td>
+										<?php else: ?>
+										<?php endif ?>
+									</tr>
+								</table>
+							</div>
+						</div>
+
+						<div class="col-md-6 col-xs-12 reservas resumen blocks">
+							<h2 class="text-center font-w800">Calendario</h2>
+							<div class="col-md-12 col-xs-12">
+								<div class="panel">
+									<ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
+										<?php $dateAux = $date->copy(); ?>
+										<?php for ($i=1; $i <= 9 ; $i++) :?>
+											<li class="<?php if($i == 4 ){ echo 'active';} ?> <?php if($i < 4 ){ echo 'hidden';} ?>">
+												<a href="#tab<?php echo $i?>" data-toggle="tab" role="tab" style="padding:10px">
+													<?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>
+												</a>
+											</li>
+											<?php $dateAux->addMonth(); ?>
+										<?php endfor; ?>
+									</ul>
+									<div class="tab-content" style="padding: 0 0 20px 0;">
+										<?php for ($z=1; $z <= 9; $z++):?>
+											<div class="tab-pane <?php if($z == 4){ echo 'active';} ?> <?php if($i < 4 ){ echo 'hidden';} ?>"  id="tab<?php echo $z ?>">
+												<div class="row">
+													<div class="col-md-12">
+														<table class="fc-border-separate" style="width: 100%">
+															<thead>
+																<tr >
+																	<td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
+																		<?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
+																	</td> 
+																</tr>
+																<tr>
+																	<?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
+																		<td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
+																			<?php echo $i?> 
+																		</td> 
+																	<?php endfor; ?>
+																</tr>
+																<tr>
+
+																	<?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
+																		<td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$date->copy()->format('n')][$i]?>">
+																			<?php echo $days[$date->copy()->format('n')][$i]?> 
+																		</td> 
+																	<?php endfor; ?> 
+																</tr>
+															</thead>
+															<tbody>
+																<tr>
+																	<?php $date = $date->startOfMonth() ?>
+											
+																	<?php for ($i=01; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
+																		<!-- Si existe la reserva para ese dia -->
+																		<?php if (isset($reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i])): ?>
+													
+																			<?php $calendars = $reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i] ?>
+																				<?php if ($calendars->start == $date->copy()->format('Y-m-d')): ?>
+																					<td style='border:1px solid grey;width: 3%'>
+
+																						<div class="<?php echo $calendars->getStatus($calendars->type_book) ?> start" style="width: 100%;float: left;">
+																							&nbsp;
+																						</div>
+
+																					</td>    
+																				<?php elseif($calendars->finish == $date->copy()->format('Y-m-d')): ?>
+																					<td style='border:1px solid grey;width: 3%'>
+																						<div class="<?php echo $calendars->getStatus($calendars->type_book) ?> end" style="width: 100%;float: left;">
+																							&nbsp;
+																						</div>
+
+
+																					</td>
+																				<?php else: ?>
+
+																					<td 
+																					style='border:1px solid grey;width: 3%' 
+																					title="
+																					<?php echo $calendars->customer['name'] ?>" 
+																					class="<?php echo $calendars->getStatus($calendars->type_book) ?>"
+																					>
+																						<?php if ($calendars->type_book == 9): ?>
+																							<div style="width: 100%;height: 100%">
+																								&nbsp;
+																							</div>
+																						<?php else: ?>
+																							<div style="width: 100%;height: 100%">
+																								&nbsp;
+																							</div>
+																						<?php endif ?>
+
+
+																					</td>
+
+																				<?php endif ?>
+																		<!-- Si no existe nada para ese dia -->
+																		<?php else: ?>
+																		
+																			<td class="<?php echo $days[$date->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
+
+																			</td>
+
+																		<?php endif; ?>
+																		
+																		<?php if ($date->copy()->format('d') != $arrayMonths[$date->copy()->format('n')]): ?>
+						                                                    <?php $date = $date->addDay(); ?>
+						                                                <?php else: ?>
+						                                                    <?php $date = $date->startOfMonth() ?>
+						                                                <?php endif ?>
+																	<?php endfor; ?> 
+																</tr>
+															</tbody>
+														</table>
+													</div>
+
+												</div>
+											</div>
+											<?php $date = $date->addMonth(); ?>
+										<?php endfor ?>
+									</div>
+								</div>
+
+							</div>
 						</div>
 					</div>
-					<div class="col-md-6 reservas resumen blocks">
-						<div class="col-md-12 col-xs-12">
-							<div class="panel">
-								<ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
-									<?php $dateAux = $date->copy(); ?>
-									<?php for ($i=1; $i <= 9 ; $i++) :?>
-										<li class="<?php if($i == 4 ){ echo 'active';} ?> <?php if($i < 4 ){ echo 'hidden';} ?>">
-											<a href="#tab<?php echo $i?>" data-toggle="tab" role="tab" style="padding:10px">
-												<?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>
-											</a>
-										</li>
-										<?php $dateAux->addMonth(); ?>
-									<?php endfor; ?>
-								</ul>
-								<div class="tab-content">
-									<?php for ($z=1; $z <= 9; $z++):?>
-										<div class="tab-pane <?php if($z == 4){ echo 'active';} ?> <?php if($i < 4 ){ echo 'hidden';} ?>"  id="tab<?php echo $z ?>">
-											<div class="row">
-												<div class="col-md-12">
-													<table class="fc-border-separate" style="width: 100%">
-														<thead>
-															<tr >
-																<td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
-																	<?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
-																</td> 
-															</tr>
-															<tr>
-																<td rowspan="2" style="width: 1%!important"></td>
-																<?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-																	<td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
-																		<?php echo $i?> 
-																	</td> 
-																<?php endfor; ?>
-															</tr>
-															<tr>
-
-																<?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-																	<td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$date->copy()->format('n')][$i]?>">
-																		<?php echo $days[$date->copy()->format('n')][$i]?> 
-																	</td> 
-																<?php endfor; ?> 
-															</tr>
-														</thead>
-														<tbody>
-															<tr>
-																<?php $date = $date->startOfMonth() ?>
-																<td class="text-center">
-																	<b title="<?php echo $room->name ?>"><?php echo substr($room->nameRoom, 0,5)?></b>
-																</td>
-
-																<?php for ($i=01; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-																	<!-- Si existe la reserva para ese dia -->
-																	<?php if (isset($reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i])): ?>
-												
-																		<?php $calendars = $reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i] ?>
-																			<?php if ($calendars->start == $date->copy()->format('Y-m-d')): ?>
-																				<td style='border:1px solid grey;width: 3%'>
-
-																					<div class="<?php echo $calendars->getStatus($calendars->type_book) ?> start" style="width: 100%;float: left;">
-																						&nbsp;
-																					</div>
-
-																				</td>    
-																			<?php elseif($calendars->finish == $date->copy()->format('Y-m-d')): ?>
-																				<td style='border:1px solid grey;width: 3%'>
-																					<div class="<?php echo $calendars->getStatus($calendars->type_book) ?> end" style="width: 100%;float: left;">
-																						&nbsp;
-																					</div>
-
-
-																				</td>
-																			<?php else: ?>
-
-																				<td 
-																				style='border:1px solid grey;width: 3%' 
-																				title="
-																				<?php echo $calendars->customer['name'] ?>" 
-																				class="<?php echo $calendars->getStatus($calendars->type_book) ?>"
-																				>
-																					<?php if ($calendars->type_book == 9): ?>
-																						<div style="width: 100%;height: 100%">
-																							&nbsp;
-																						</div>
-																					<?php else: ?>
-																						<div style="width: 100%;height: 100%">
-																							&nbsp;
-																						</div>
-																					<?php endif ?>
-
-
-																				</td>
-
-																			<?php endif ?>
-																	<!-- Si no existe nada para ese dia -->
-																	<?php else: ?>
-																	
-																		<td class="<?php echo $days[$date->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
-
-																		</td>
-
-																	<?php endif; ?>
-																	
-																	<?php if ($date->copy()->format('d') != $arrayMonths[$date->copy()->format('n')]): ?>
-					                                                    <?php $date = $date->addDay(); ?>
-					                                                <?php else: ?>
-					                                                    <?php $date = $date->startOfMonth() ?>
-					                                                <?php endif ?>
-																<?php endfor; ?> 
-															</tr>
-														</tbody>
-													</table>
-												</div>
-
-											</div>
-										</div>
-										<?php $date = $date->addMonth(); ?>
-									<?php endfor ?>
+					<div class="row">
+						<div class="col-md-6 col-xs-12 reservas resumen blocks">
+							<div class="row">
+								<div class="col-md-12">
+									<h2 class="text-center font-w800">Listado de reservas</h2>
+								</div>
+								<table class="table table-hover  no-footer " id="basicTable" role="grid" >
+									
+									<thead>
+										<th class ="text-center bg-complete text-white" style="width: 25%">Cliente</th>
+										<th class ="text-center bg-complete text-white" style="width: 5%">Personas</th>
+										<th class ="text-center bg-complete text-white">Entrada</th>
+										<th class ="text-center bg-complete text-white">Salida</th>
+										<th class ="text-center bg-complete text-white">ING. PROP</th>
+										<th class ="text-center bg-complete text-white">Apto</th>
+										<th class ="text-center bg-complete text-white">Parking</th>
+										<?php if ($room->luxury == 1): ?>
+											<th class ="text-center bg-complete text-white">Sup.Lujo</th>
+										<?php else: ?>
+										<?php endif ?>
+											
+										
+									</thead>
+									<tbody>
+										<?php foreach ($books as $book): ?>
+											<tr>
+												<td class="text-center"><?php echo ucfirst(strtolower($book->Customer->name)) ?> </td>
+												<td class="text-center"><?php echo $book->pax ?> </td>
+												<td class="text-center">
+													<?php 
+														$start = Carbon::CreateFromFormat('Y-m-d',$book->start);
+														echo $start->formatLocalized('%d-%b');
+													?> 
+												</td>
+												<td class="text-center">
+													<?php 
+														$finish = Carbon::CreateFromFormat('Y-m-d',$book->finish);
+														echo $finish->formatLocalized('%d-%b');
+													?> 
+												</td>
+												<td class="text-center total">
+													<?php if ($book->cost_total > 0): ?>
+														<?php echo number_format($book->cost_total,2,',','.') ?> €
+													<?php else: ?>
+														---€	
+													<?php endif ?>
+												</td>
+												<td class="text-center">
+													<?php if ($book->cost_apto > 0): ?>
+														<?php echo number_format($book->cost_apto,2,',','.') ?> €
+													<?php else: ?>
+														---€	
+													<?php endif ?>
+												</td>
+												<td class="text-center">
+													<?php if ($book->cost_park > 0): ?>
+														<?php echo number_format($book->cost_park,2,',','.') ?> €
+													<?php else: ?>
+														---€	
+													<?php endif ?>
+												</td>
+												<?php if ($room->luxury == 1): ?>
+													<td class="text-center">
+														<?php if ($book->cost_lujo > 0): ?>
+															<?php echo $book->cost_lujo ?> €
+														<?php else: ?>
+															---€	
+														<?php endif ?>
+													</td>
+												<?php else: ?>
+												<?php endif ?>
+											</tr>
+										<?php endforeach ?>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						
+						<div class="col-md-6 col-xs-12 resumen estadisticas blocks">
+							<div class="col-xs-12">
+								<div class="row push-20">
+									<h2 class="text-center font-w800">
+										Estadísticas
+									</h2>
+								</div>
+								<div class="col-md-6 not-padding">
+									<canvas id="barChart" style="width: 100%; height: 250px;"></canvas>
+								</div>
+								<div class="col-md-6 not-padding">
+									<canvas id="barChartClient" style="width: 100%; height: 250px;"></canvas>
 								</div>
 							</div>
 
 						</div>
 					</div>
-					<div class="col-md-12 reservas resumen blocks">
-						<div class="col-md-6">
-							<div class="col-md-12">
-								<h2 class="text-center font-w800">Listado de reservas</h2>
-							</div>
-							<table class="table table-hover  no-footer " id="basicTable" role="grid" >
-								
-								<thead>
-									<th class ="text-center bg-complete text-white" style="width: 25%">Cliente</th>
-									<th class ="text-center bg-complete text-white" style="width: 5%">Personas</th>
-									<th class ="text-center bg-complete text-white">Entrada</th>
-									<th class ="text-center bg-complete text-white">Salida</th>
-									<th class ="text-center bg-complete text-white">ING. PROP</th>
-									<th class ="text-center bg-complete text-white">Apto</th>
-									<th class ="text-center bg-complete text-white">Parking</th>
-									<?php if ($room->luxury == 1): ?>
-										<th class ="text-center bg-complete text-white">Sup.Lujo</th>
-									<?php else: ?>
-									<?php endif ?>
-										
-									
-								</thead>
-								<tbody>
-									<?php foreach ($books as $book): ?>
-										<tr>
-											<td class="text-center"><?php echo ucfirst(strtolower($book->Customer->name)) ?> </td>
-											<td class="text-center"><?php echo $book->pax ?> </td>
-											<td class="text-center">
-												<?php 
-													$start = Carbon::CreateFromFormat('Y-m-d',$book->start);
-													echo $start->formatLocalized('%d-%b');
-												?> 
-											</td>
-											<td class="text-center">
-												<?php 
-													$finish = Carbon::CreateFromFormat('Y-m-d',$book->finish);
-													echo $finish->formatLocalized('%d-%b');
-												?> 
-											</td>
-											<td class="text-center total">
-												<?php if ($book->cost_total > 0): ?>
-													<?php echo number_format($book->cost_total,2,',','.') ?> €
-												<?php else: ?>
-													---€	
-												<?php endif ?>
-											</td>
-											<td class="text-center">
-												<?php if ($book->cost_apto > 0): ?>
-													<?php echo number_format($book->cost_apto,2,',','.') ?> €
-												<?php else: ?>
-													---€	
-												<?php endif ?>
-											</td>
-											<td class="text-center">
-												<?php if ($book->cost_park > 0): ?>
-													<?php echo number_format($book->cost_park,2,',','.') ?> €
-												<?php else: ?>
-													---€	
-												<?php endif ?>
-											</td>
-											<?php if ($room->luxury == 1): ?>
-												<td class="text-center">
-													<?php if ($book->cost_lujo > 0): ?>
-														<?php echo $book->cost_lujo ?> €
-													<?php else: ?>
-														---€	
-													<?php endif ?>
-												</td>
-											<?php else: ?>
-											<?php endif ?>
-										</tr>
-									<?php endforeach ?>
-								</tbody>
-							</table>
-						</div>
-					</div>
-					
-					<div class="col-md-6 estadisticas blocks"></div>
 				<?php else: ?>
 					<div class="col-md-12">
 						
@@ -525,6 +551,7 @@
 		</div>
 	</div>
 <?php else: ?>
+
 	<style type="text/css">
 		.nav-tabs-simple > li.active{
 			font-weight: 600;
@@ -609,7 +636,7 @@
 						</button>
 					</div>
 					<div class="col-xs-4 push-10" style="padding: 0px 5px">
-						<button class="btn btn-success text-white btn-blocks" data-block="estadisticas" style="width: 100%" disabled>
+						<button class="btn btn-success text-white btn-blocks" data-block="estadisticas" style="width: 100%">
 							<span class="bold">Estadisticas</span>
 						</button>
 					</div>
@@ -655,8 +682,8 @@
 				<div class="col-xs-12 push-20 resumen blocks">
 					<h2 class="text-center push-10" style="font-size: 24px;"><b>Resumen</b></h2>
 
-					<div class="col-xs-12" style="border: none;">
-						<table class="table table-hover no-footer">
+					<div class="row" style="border: none;">
+						<table class="table table-bordered table-hover no-footer">
 							<tr>
 								<th class ="text-center bg-complete text-white">TOT. ING</th>
 								<th class ="text-center bg-complete text-white">APTO</th>
@@ -705,6 +732,7 @@
 				
 				<div class="row reservas resumen blocks"> 
 					<div class="col-md-12 col-xs-12">
+						<h2 class="text-center push-10" style="font-size: 24px;"><b>Calendario</b></h2>
 						<div class="panel">
 							<ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
 								<?php $dateAux = $date->copy()->addMonths(3); ?>
@@ -828,7 +856,7 @@
 					</div>
 				</div>
 
-				<div class="reservas resumen blocks">
+				<div class="row reservas resumen blocks">
 					<div style="clear:both;"></div>
 					<h2 class="text-center push-10" style="font-size: 24px;"><b>Listado de Reservas</b></h2>
 					<div class="row table-responsive" style="border: none;">
@@ -904,6 +932,23 @@
 					</div>
 				</div>
 
+
+				<div class="row resumen estadisticas blocks">
+					<div class="col-xs-12">
+						<div class="row push-20">
+							<h2 class="text-center font-w800">
+								Estadísticas
+							</h2>
+						</div>
+						<div class="col-md-6 not-padding">
+							<canvas id="barChart" style="width: 100%; height: 250px;"></canvas>
+						</div>
+						<div class="col-md-6 not-padding">
+							<canvas id="barChartClient" style="width: 100%; height: 250px;"></canvas>
+						</div>
+					</div>
+
+				</div>
 			<?php else: ?>
 				<div class="col-md-12">
 					
@@ -976,6 +1021,7 @@
 	    </div>
 	  <!-- /.modal-dialog -->
 	</div>
+
 <?php endif ?>
 
 
@@ -1136,4 +1182,156 @@
 		
 	</script>
 
+	<script type="text/javascript">
+	$(document).ready(function() {
+		/* GRAFICA INGRESOS/GASTOS */
+			var data = {
+			    labels: [
+		    			"Sep",
+		    			"Oct",
+		    			"Nov",
+		    			"Dic",
+		    			"Ene",
+		    			"Feb",
+		    			"Abr",
+		    			"Mar",
+		    			"May",
+		    			"Jun",
+		    			"Jul",
+		    			"Ago"
+			    			],
+			    datasets: [
+					        {
+					            label: "Ingresos",
+					            backgroundColor: [
+					                'rgba(67, 160, 71, 0.3)',
+					                'rgba(67, 160, 71, 0.3)',
+					                'rgba(67, 160, 71, 0.3)',
+					                'rgba(67, 160, 71, 0.3)',
+					                'rgba(67, 160, 71, 0.3)',
+					                'rgba(67, 160, 71, 0.3)',
+					                'rgba(67, 160, 71, 0.3)',
+					                'rgba(67, 160, 71, 0.3)',
+					                'rgba(67, 160, 71, 0.3)',
+					                'rgba(67, 160, 71, 0.3)',
+					                'rgba(67, 160, 71, 0.3)',
+					                'rgba(67, 160, 71, 0.3)',
+					            ],
+					            borderColor: [
+					                'rgba(67, 160, 71, 1)',
+					                'rgba(67, 160, 71, 1)',
+					                'rgba(67, 160, 71, 1)',
+					                'rgba(67, 160, 71, 1)',
+					                'rgba(67, 160, 71, 1)',
+					                'rgba(67, 160, 71, 1)',
+					                'rgba(67, 160, 71, 1)',
+					                'rgba(67, 160, 71, 1)',
+					                'rgba(67, 160, 71, 1)',
+					                'rgba(67, 160, 71, 1)',
+					                'rgba(67, 160, 71, 1)',
+					                'rgba(67, 160, 71, 1)',
+					            ],
+					            borderWidth: 1,
+					            data: [
+					            		<?php echo $estadisticas['ingresos'][9] ?>,
+					            		<?php echo $estadisticas['ingresos'][10] ?>,
+					            		<?php echo $estadisticas['ingresos'][11] ?>,
+					            		<?php echo $estadisticas['ingresos'][12] ?>,
+					            		<?php echo $estadisticas['ingresos'][1] ?>,
+					            		<?php echo $estadisticas['ingresos'][2] ?>,
+					            		<?php echo $estadisticas['ingresos'][3] ?>,
+					            		<?php echo $estadisticas['ingresos'][4] ?>,
+					            		<?php echo $estadisticas['ingresos'][5] ?>,
+					            		<?php echo $estadisticas['ingresos'][6] ?>,
+					            		<?php echo $estadisticas['ingresos'][7] ?>,
+					            		<?php echo $estadisticas['ingresos'][8] ?>
+					            	],
+					        }
+					    ]
+			};
+
+			var myBarChart = new Chart('barChart', {
+			    type: 'line',
+			    data: data,
+			});
+
+
+
+		/* GRAFICA CLIENTES */
+
+			/* La configuracion de posicion funciona con la siguiente que se escriba*/
+			Chart.defaults.global.legend.position = 'top';
+			Chart.defaults.global.legend.labels.usePointStyle = true;
+			/*Fin de configuracion de posicion*/
+			var dataClient = {
+			    labels: [
+			    			"Sep",
+			    			"Oct",
+			    			"Nov",
+			    			"Dic",
+			    			"Ene",
+			    			"Feb",
+			    			"Abr",
+			    			"Mar",
+			    			"May",
+			    			"Jun",
+			    			"Jul",
+			    			"Ago"
+			    			],
+			    datasets: [
+			        {
+			            label: "Clientes por mes",
+			            backgroundColor: [
+			                'rgba(54, 162, 235, 0.2)',
+			                'rgba(54, 162, 235, 0.2)',
+			                'rgba(54, 162, 235, 0.2)',
+			                'rgba(54, 162, 235, 0.2)',
+			                'rgba(54, 162, 235, 0.2)',
+			                'rgba(54, 162, 235, 0.2)',
+			                'rgba(54, 162, 235, 0.2)',
+			                'rgba(54, 162, 235, 0.2)',
+			                'rgba(54, 162, 235, 0.2)',
+			                'rgba(54, 162, 235, 0.2)',
+			                'rgba(54, 162, 235, 0.2)',
+			                'rgba(54, 162, 235, 0.2)',
+			            ],
+			            borderColor: [
+			                'rgba(54, 162, 235, 1)',
+			                'rgba(54, 162, 235, 1)',
+			                'rgba(54, 162, 235, 1)',
+			                'rgba(54, 162, 235, 1)',
+			                'rgba(54, 162, 235, 1)',
+			                'rgba(54, 162, 235, 1)',
+			                'rgba(54, 162, 235, 1)',
+			                'rgba(54, 162, 235, 1)',
+			                'rgba(54, 162, 235, 1)',
+			                'rgba(54, 162, 235, 1)',
+			                'rgba(54, 162, 235, 1)',
+			                'rgba(54, 162, 235, 1)',
+			            ],
+			            borderWidth: 1,
+			            data: [
+			            		<?php echo $estadisticas['clientes'][9] ?>,
+			            		<?php echo $estadisticas['clientes'][10] ?>,
+			            		<?php echo $estadisticas['clientes'][11] ?>,
+			            		<?php echo $estadisticas['clientes'][12] ?>,
+			            		<?php echo $estadisticas['clientes'][1] ?>,
+			            		<?php echo $estadisticas['clientes'][2] ?>,
+			            		<?php echo $estadisticas['clientes'][3] ?>,
+			            		<?php echo $estadisticas['clientes'][4] ?>,
+			            		<?php echo $estadisticas['clientes'][5] ?>,
+			            		<?php echo $estadisticas['clientes'][6] ?>,
+			            		<?php echo $estadisticas['clientes'][7] ?>,
+			            		<?php echo $estadisticas['clientes'][8] ?>
+			            		],
+			        }
+			    ]
+			};
+
+			var myBarChartClient = new Chart('barChartClient', {
+			    type: 'bar',
+			    data: dataClient,
+			});
+	});
+</script>
 @endsection
