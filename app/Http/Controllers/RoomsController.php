@@ -280,7 +280,7 @@ class RoomsController extends Controller
 
         if(move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $directory))
         {
-            return "imagen subida";
+            return redirect()->action('RoomsController@index');
         } else{
             return "imagen no subida";
         }
