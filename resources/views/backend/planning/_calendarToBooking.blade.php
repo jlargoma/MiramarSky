@@ -36,21 +36,18 @@
 			}
 			$arrayRoomsForType = [
 									'2dorm-lujo' => [
-													'title' => '2L',
+													'title' => '2DL',
 													'rooms' => [],
 												] ,
-									'estudio-lujo' => [
-													'title' => 'EL',
-													'rooms' => [],
-												], 
+									
 									'2dorm-stand' => [
-													'title' => '2S',
+													'title' => '2D',
 													'rooms' => [],
 												],
-									'estudio-stand' => [
-													'title' => 'ES',
+									'estudio' => [
+													'title' => 'EST',
 													'rooms' => [],
-												]
+												], 
 								];
 			$rooms = \App\Rooms::whereIn('id', $arrayRoomId)->get();
 
@@ -63,7 +60,7 @@
 
 				if($room->luxury == 1 && $room->sizeApto == 1){
 
-					$arrayRoomsForType['estudio-lujo']['rooms'][] = $room; 
+					$arrayRoomsForType['estudio']['rooms'][] = $room; 
 
 				}
 
@@ -75,7 +72,7 @@
 
 				if($room->luxury == 0 && $room->sizeApto == 1){
 
-					$arrayRoomsForType['estudio-stand']['rooms'][] = $room; 
+					$arrayRoomsForType['estudio']['rooms'][] = $room; 
 
 				}
 			}

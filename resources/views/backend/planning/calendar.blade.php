@@ -3,13 +3,29 @@
     setlocale(LC_TIME, "ES"); 
     setlocale(LC_TIME, "es_ES"); 
 ?>
+<style type="text/css">
+    .btn-fechas-calendar{
+        background-color: #899098;
+        color: white;
+        border-radius: 0px!important;
+        text-transform: uppercase;
+    }
+    .fixed-td{
+        position: absolute;
+        background-color: #fff;
+        left: -20px;
+        border: 1px solid #d8d8d8;
+        padding: 0px 5px!important;
+        border-right: 0px;
+    }
+</style>
 <div class="col-md-12 col-xs-12">
     <div class="panel">
-        <div class="row" role="tablist" data-init-reponsive-tabs="collapse">
+        <div class="row">
           <?php $dateAux = $inicio->copy(); ?>
           <?php for ($i=1; $i <= 9 ; $i++) :?>
 				
-              	<button class='btn btn-sm btn-default btn-fechas-calendar' data-month="<?php echo $i ?>">
+              	<button <?php if($i == 4){ echo 'id="btn-active"';} ?> class='btn btn-sm btn-default btn-fechas-calendar <?php if($i < 4){ echo 'hidden-xs'; }?>' data-month="<?php echo $dateAux->copy()->format('n') ?>">
               		<?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>
               	</button>
               <?php $dateAux->addMonth(); ?>
@@ -25,7 +41,7 @@
                                 <tr>
                                     <td  style="width: 1%!important"></td>
                                     <?php foreach ($arrayMonths as $key => $daysMonth): ?>
-                                        <td colspan="<?php echo $daysMonth ?>" class="text-center months" style="border-right: 1px solid black;border-left: 1px solid black;padding: 5px 10px;">
+                                        <td id="month-<?php echo $key ?>" colspan="<?php echo $daysMonth ?>" class="text-center months" style="border-right: 1px solid black;border-left: 1px solid black;padding: 5px 10px;">
                                             <span class="font-w600">
                                                 <?php echo ucfirst(Carbon::createFromFormat('m' , $key)->formatLocalized('%B'))?>
                                             </span>
@@ -58,7 +74,7 @@
 									<?php $inicio = $inicioAux->copy() ?>
                                     <tr>
                                         
-                                        <td class="text-center">
+                                        <td class="text-center fixed-td">
                                             <b style="cursor: pointer;" data-placement="right" title="" data-toggle="tooltip" data-original-title="<?php echo $room->name ?>">
                                                 <?php echo substr($room->nameRoom, 0,5)?>   
                                             </b>
@@ -78,14 +94,7 @@
                                                                 <?php if($calendars[$x]->finish == $inicio->copy()->format('Y-m-d')): ?>
                                                                     <a 
                                                                         href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
-                                                                        title="
-                                                                                <?php echo $calendars[$x]->customer['name'] ?> 
-
-                                                                                <?php echo 'PVP:'.$calendars[$x]->total_price ?>
-                                                                                <?php if (isset($payment[$calendars[$x]->id])): ?>
-                                                                                    <?php echo 'PEND:'.($calendars[$x]->total_price - $payment[$calendars[$x]->id])?>
-                                                                                <?php else: ?>
-                                                                                <?php endif ?>"
+                                                                        title="<?php echo $calendars[$x]->customer['name'] ?> - <?php echo 'PVP:'.$calendars[$x]->total_price ?> <?php if (isset($payment[$calendars[$x]->id])): ?><?php echo '- PEND:'.($calendars[$x]->total_price - $payment[$calendars[$x]->id])?><?php endif ?>"
                                                                     >
                                                                         <div class="<?php echo $book->getStatus($calendars[$x]->type_book) ?> end" style="width: 50%;float: left;">
                                                                             &nbsp;
@@ -95,14 +104,7 @@
 
                                                                     <a 
                                                                         href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
-                                                                        title="
-                                                                                <?php echo $calendars[$x]->customer['name'] ?> 
-
-                                                                                <?php echo 'PVP:'.$calendars[$x]->total_price ?>
-                                                                                <?php if (isset($payment[$calendars[$x]->id])): ?>
-                                                                                    <?php echo 'PEND:'.($calendars[$x]->total_price - $payment[$calendars[$x]->id])?>
-                                                                                <?php else: ?>
-                                                                                <?php endif ?>"
+                                                                        title="<?php echo $calendars[$x]->customer['name'] ?> - <?php echo 'PVP:'.$calendars[$x]->total_price ?> <?php if (isset($payment[$calendars[$x]->id])): ?><?php echo '- PEND:'.($calendars[$x]->total_price - $payment[$calendars[$x]->id])?><?php endif ?>"
                                                                     >
                                                                         <?php if ($book->getStatus($calendars[$x]->type_book) != "Booking"): ?>
                                                                             <div class="<?php echo $book->getStatus($calendars[$x]->type_book) ?> start" style="width: 50%;float: right;">
@@ -118,14 +120,7 @@
                                                                     <?php if ($calendars[$x]->type_book != 9): ?>
                                                                         <a 
                                                                         href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
-                                                                        title="
-                                                                                <?php echo $calendars[$x]->customer['name'] ?> 
-
-                                                                                <?php echo 'PVP:'.$calendars[$x]->total_price ?>
-                                                                                <?php if (isset($payment[$calendars[$x]->id])): ?>
-                                                                                    <?php echo 'PEND:'.($calendars[$x]->total_price - $payment[$calendars[$x]->id])?>
-                                                                                <?php else: ?>
-                                                                                <?php endif ?>"
+                                                                        title="<?php echo $calendars[$x]->customer['name'] ?>- <?php echo 'PVP:'.$calendars[$x]->total_price ?> <?php if (isset($payment[$calendars[$x]->id])): ?> <?php echo '- PEND:'.($calendars[$x]->total_price - $payment[$calendars[$x]->id])?><?php endif ?>"
                                                                     >
                                                                         <div class="<?php echo $book->getStatus($calendars[$x]->type_book) ?>" style="width: 100%;float: left;">
                                                                             &nbsp;
@@ -141,14 +136,7 @@
                                                     <?php else: ?>
                                                         <?php if ($calendars[0]->start == $inicio->copy()->format('Y-m-d')): ?>
                                                             <td 
-                                                                title="
-                                                            <?php echo $calendars[0]->customer['name'] ?> 
-
-                                                            <?php echo 'PVP:'.$calendars[0]->total_price ?>
-                                                            <?php if (isset($payment[$calendars[0]->id])): ?>
-                                                                <?php echo 'PEND:'.($calendars[0]->total_price - $payment[$calendars[0]->id])?>
-                                                            <?php else: ?>
-                                                            <?php endif ?>"
+                                                                title="<?php echo $calendars[0]->customer['name'] ?> - <?php echo 'PVP:'.$calendars[0]->total_price ?> <?php if (isset($payment[$calendars[0]->id])): ?><?php echo '- PEND:'.($calendars[0]->total_price - $payment[$calendars[0]->id])?><?php endif ?>"
                                                                 style='border:1px solid grey;width: 24px; height: 20px;'>
 
                                                                 <div class="<?php echo $book->getStatus($calendars[0]->type_book) ?> start" style="width: 100%;float: left;">
@@ -158,14 +146,7 @@
                                                             </td>    
                                                         <?php elseif($calendars[0]->finish == $inicio->copy()->format('Y-m-d')): ?>
                                                             <td 
-                                                                title="
-                                                            <?php echo $calendars[0]->customer['name'] ?> 
-
-                                                            <?php echo 'PVP:'.$calendars[0]->total_price ?>
-                                                            <?php if (isset($payment[$calendars[0]->id])): ?>
-                                                                <?php echo 'PEND:'.($calendars[0]->total_price - $payment[$calendars[0]->id])?>
-                                                            <?php else: ?>
-                                                            <?php endif ?>"
+                                                                title="<?php echo $calendars[0]->customer['name'] ?> - <?php echo 'PVP:'.$calendars[0]->total_price ?> <?php if (isset($payment[$calendars[0]->id])): ?> <?php echo '- PEND:'.($calendars[0]->total_price - $payment[$calendars[0]->id])?><?php endif ?>"
                                                                 style='border:1px solid grey;width: 24px; height: 20px;'>
 
                                                                 <div class="<?php echo $book->getStatus($calendars[0]->type_book) ?> end" style="width: 100%;float: left;">
@@ -178,14 +159,7 @@
 
                                                             <td 
                                                             style='border:1px solid grey;width: 24px; height: 20px;' 
-                                                            title="
-                                                            <?php echo $calendars[0]->customer['name'] ?> 
-
-                                                            <?php echo 'PVP:'.$calendars[0]->total_price ?>
-                                                            <?php if (isset($payment[$calendars[0]->id])): ?>
-                                                                <?php echo 'PEND:'.($calendars[0]->total_price - $payment[$calendars[0]->id])?>
-                                                            <?php else: ?>
-                                                            <?php endif ?>" 
+                                                            title="<?php echo $calendars[0]->customer['name'] ?> - <?php echo 'PVP:'.$calendars[0]->total_price ?> <?php if (isset($payment[$calendars[0]->id])): ?> <?php echo '- PEND:'.($calendars[0]->total_price - $payment[$calendars[0]->id])?><?php endif ?>" 
                                                             class="<?php echo $book->getStatus($calendars[0]->type_book) ?>"
                                                             >
                                                                 <?php if ($calendars[0]->type_book == 9): ?>

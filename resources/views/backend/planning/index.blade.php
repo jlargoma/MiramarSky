@@ -858,6 +858,24 @@
             });
                
 
+               $('.btn-fechas-calendar').click(function(event) {
+                    event.preventDefault();
+                    $('.btn-fechas-calendar').css({
+                        'background-color': '#899098',
+                        'color': '#fff'
+                    });
+                    $(this).css({
+                        'background-color': '#10cfbd',
+                        'color': '#fff'
+                    });
+                    var target = $(this).attr('data-month');
+                    var targetPosition = $('.content-calendar #month-'+target).position();
+                    // alert("Left: "+targetPosition.left+ ", right: "+targetPosition.right);
+                    $('.content-calendar').animate({ scrollLeft: "+="+targetPosition.left+"px" }, "slow");
+                });
+
+               $('#btn-active').trigger('click');
+
         });
     </script>
 
