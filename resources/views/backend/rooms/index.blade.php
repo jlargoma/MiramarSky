@@ -54,7 +54,7 @@
         <div class="col-md-12 text-center">
             <h2>Apartamentos</h2>
         </div>
-        <div class="col-md-10 cols-xs-12 col-sm-12">
+        <div class="col-md-12 cols-xs-12 col-sm-12">
             <div class="pull-left">
               <div class="col-xs-12 ">
                 <input type="text" id="search-tableRoom" class="form-control pull-right" placeholder="Buscar">
@@ -65,8 +65,10 @@
                 <thead>
                     <tr>
                         <th class ="text-center hidden">                  ID            </th>
-                        <th class ="text-center bg-complete text-white" style="width: 10%">  Nick        </th>
-                        <th class ="text-center bg-complete text-white" style="width: 10%">  Piso          </th>
+                        <th class ="text-center bg-complete text-white" style="width: 10%">  Nick     </th>
+                        <th class ="text-center bg-complete text-white" style="width: 10%">  Piso     </th>
+                        <th class ="text-center bg-complete text-white" style="width: 7%">  Parking  </th>
+                        <th class ="text-center bg-complete text-white" style="width: 7%">  Taquilla </th>
                         <th class ="text-center bg-complete text-white" style="width: 5%">  Ocu min </th>
                         <th class ="text-center bg-complete text-white" style="width: 5%">  Ocu max </th>
                         <th class ="text-center bg-complete text-white">  Tamaño          </th>
@@ -76,7 +78,7 @@
                         <th class ="text-center bg-complete text-white">  Orden   </th>
                         <th class ="text-center bg-complete text-white" style="width: 10%">  Estado </th>
                         <th class ="text-center bg-complete text-white" style="width: 5%;max-width: 5%">  Booking </th>
-                        <th class ="text-center bg-complete text-white" style="width: 30%">  Btn </th>
+                        <th class ="text-center bg-complete text-white" style="width: 15%">  Btn </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -88,6 +90,12 @@
                         </td>
                         <td class="text-center">
                            <input class="nameRoom nameRoom-<?php echo $room->nameRoom?>" type="text" name="nameRoom" data-id="<?php echo $room->id ?>" value="<?php echo $room->nameRoom?>" style="width: 100%;text-align: center;border-style: none none ">
+                        </td>
+                        <td class="text-center">
+                           <input class="parking parking-<?php echo $room->parking?>" type="text" name="parking" data-id="<?php echo $room->id ?>" value="<?php echo $room->parking?>" style="width: 100%;text-align: center;border-style: none none ">
+                        </td>
+                        <td class="text-center">
+                           <input class="taquilla taquilla-<?php echo $room->locker?>" type="text" name="taquilla" data-id="<?php echo $room->id ?>" value="<?php echo $room->locker?>" style="width: 100%;text-align: center;border-style: none none ">
                         </td>
                         <td class="text-center">
                             <input class="editable minOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->minOcu?>" style="width: 100%;text-align: center;border-style: none none ">
@@ -167,7 +175,7 @@
             </table>
         </div>
         
-        <div class="col-md-2 cols-xs-12 col-sm-12 " style="border:1px solid black;margin-top: 40px;">
+        <div class="col-md-4 cols-xs-12 col-sm-12 " style="border:1px solid black;margin-top: 40px;">
             <div class="row">
                 <div class="col-md-12">
                     <div class="sm-m-l-5 sm-m-r-5">
@@ -380,9 +388,16 @@
                     Subida de archivos
                   </h2>
                 </div>
-                <div class="modal-body">
-                    
-                </div>
+                
+                    <div class="container-xs-height full-height">
+                      <div class="row-xs-height">
+                        <div class="modal-body col-xs-height col-middle text-center   ">
+                            <div class="upload-body">
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                
               </div>
 
               
@@ -434,7 +449,7 @@
         $('.uploadFile').click(function(event) {
             var id = $(this).attr('data-id');
             $.get('/admin/apartamentos/fotos/'+id, function(data) {
-                $('.modal-body').empty().append(data);
+                $('.upload-body').empty().append(data);
             });
         });
 
