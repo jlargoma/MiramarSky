@@ -110,6 +110,8 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 	Route::get('admin/apartamentos/update-order', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateOrder']);
 	Route::get('admin/apartamentos/update-size', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateSize']);
 	Route::get('admin/apartamentos/update-owned', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateOwned']);
+	Route::get('admin/apartamentos/update-parking', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateParking']);
+	Route::get('admin/apartamentos/update-taquilla', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateTaquilla']);
 	Route::post('admin/apartamentos/saveupdate', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@saveUpdate']);
 	Route::post('admin/apartamentos/create', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@create']);
 	Route::post('admin/apartamentos/create-type', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@createType']);

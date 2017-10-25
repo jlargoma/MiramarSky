@@ -189,6 +189,26 @@ class RoomsController extends Controller
             }
     }
 
+    // Funcion para cambiar el parking
+    public function updateParking(Request $request)
+    {
+        $id                   = $request->id;
+        $roomUpdate          = \App\Rooms::find($id);
+        $roomUpdate->parking = $request->parking;
+        if ($roomUpdate->save()) {
+            }
+    }
+
+    // Funcion para cambiar la Taquilla
+    public function updateTaquilla(Request $request)
+    {
+        $id                   = $request->id;
+        $roomUpdate          = \App\Rooms::find($id);
+        $roomUpdate->locker = $request->taquilla;
+        if ($roomUpdate->save()) {
+            }
+    }
+
     /**
      * Remove the specified resource from storage.
      *

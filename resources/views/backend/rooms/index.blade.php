@@ -561,6 +561,25 @@
           });
 
         });
+        $('.parking').change(function(event) {
+          var id = $(this).attr('data-id');
+          var parking = $(this).val();
+
+          $.get('/admin/apartamentos/update-parking', {  id: id, parking: parking}, function(data) {
+              location.reload();
+          });
+
+        });
+        $('.taquilla').change(function(event) {
+          var id = $(this).attr('data-id');
+          var taquilla = $(this).val();
+
+          $.get('/admin/apartamentos/update-taquilla', {  id: id, taquilla: taquilla}, function(data) {
+              location.reload();
+          });
+
+        });
+
     }
        
 
