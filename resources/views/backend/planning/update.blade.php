@@ -175,7 +175,7 @@
                                 <input type="number" class="form-control nigths" name="nigths" style="width: 100%" disabled value="<?php echo $book->nigths ?>">
                             <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%" value="<?php echo $book->nigths ?>">
                             </div> 
-                            <div class="col-md-1 col-xs-3 push-20 p-l-0 p-r-0">
+                            <div class="col-md-1 col-xs-3 p-l-0 p-r-0" style="margin-bottom: -10px!important">
                                 <label>Pax</label>
                                 <select class=" form-control pax minimal"  name="pax">
                                     <?php for ($i=1; $i <= 10 ; $i++): ?>
@@ -183,7 +183,15 @@
                                             <?php echo $i ?>
                                         </option>
                                     <?php endfor;?>
-                                </select> 
+                                </select>
+
+                                <select class=" form-control real_pax minimal m-t-5"  name="real_pax">
+                                    <?php for ($i=1; $i <= 10 ; $i++): ?>
+                                        <option value="<?php echo $i ?>" <?php echo ($i == $book->real_pax)?"selected":""; ?>>
+                                            <?php echo $i ?>
+                                        </option>
+                                    <?php endfor;?>
+                                </select>
                             </div>
                             <div class="col-md-3 col-xs-6 push-20">
                                 <label>Apartamento</label>

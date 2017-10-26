@@ -606,6 +606,7 @@ class BookController extends Controller
     //Funcion para actualizar la reserva
         public function saveUpdate(Request $request, $id)
             {
+
                 $aux = str_replace('Abr', 'Apr', $request->input('fechas'));
 
                 $date = explode('-', $aux);
@@ -631,6 +632,7 @@ class BookController extends Controller
                         $book->comment       = ltrim($request->input('comments'));
                         $book->book_comments = ltrim($request->input('book_comments'));
                         $book->pax           = $request->input('pax');
+                        $book->real_pax           = $request->input('real_pax');
                         $book->nigths        = $request->input('nigths');
                         $book->sup_limp      = ($room->typeApto == 1) ? 35 : 50;
                         $book->sup_park      = $book->getPricePark($request->input('parking'),$request->input('nigths'));

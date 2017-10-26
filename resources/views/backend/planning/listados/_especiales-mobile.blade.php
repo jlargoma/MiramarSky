@@ -21,7 +21,16 @@
 				<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $especial->customer->name ?></td>
 				<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$especial->start)->formatLocalized('%d %b') ?></td>
 				<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$especial->finish)->formatLocalized('%d %b') ?></td>
-				<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $especial->pax ?></td>
+				<td class ="text-center" >
+				    <?php if ($book->real_pax > 6 ): ?>
+				        <?php echo $book->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
+				    <?php elseif($book->pax != $book->real_pax): ?>
+				        <?php echo $book->real_pax ?><i class="fa fa-exclamation-circle" aria-hidden="true" style="color: red"></i>
+				    <?php else: ?>
+				        <?php echo $book->pax ?>
+				    <?php endif ?>
+				        
+				</td>
 				<td class="text-center sm-p-t-10 sm-p-b-10"><a href="tel:<?php echo $especial->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
 				<td class="text-center sm-p-t-10 sm-p-b-10">
 					<select class="room form-control minimal" data-id="<?php echo $especial->id ?>"  >

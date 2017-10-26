@@ -30,7 +30,16 @@
                             </td>
 
                             <td class ="text-center"><?php echo $book->customer->phone ?></td>
-                            <td class ="text-center"><?php echo $book->pax ?></td>
+                            <td class ="text-center" >
+                                <?php if ($book->real_pax > 6): ?>
+                                    <?php echo $book->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
+                                <?php elseif($book->pax != $book->real_pax): ?>
+                                    <?php echo $book->real_pax ?><i class="fa fa-exclamation-circle" aria-hidden="true" style="color: red"></i>
+                                <?php else: ?>
+                                    <?php echo $book->pax ?>
+                                <?php endif ?>
+                                    
+                            </td>
                             <td class ="text-center">
                                 <select class="room form-control minimal" data-id="<?php echo $book->id ?>" >                                
                                     <?php foreach ($rooms as $room): ?>
@@ -127,7 +136,16 @@
                     <td class="text-center sm-p-t-10 sm-p-b-10"><a href="{{url ('/admin/reservas/update')}}/<?php echo $pagada->id ?>"><?php echo $pagada->customer->name ?></a></td>
                     <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$pagada->start)->formatLocalized('%d %b') ?></td>
                     <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$pagada->finish)->formatLocalized('%d %b') ?></td>
-                    <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $pagada->pax ?></td>
+                    <td class ="text-center" >
+                        <?php if ($book->real_pax > 6 ): ?>
+                            <?php echo $book->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
+                        <?php elseif($book->pax != $book->real_pax): ?>
+                            <?php echo $book->real_pax ?><i class="fa fa-exclamation-circle" aria-hidden="true" style="color: red"></i>
+                        <?php else: ?>
+                            <?php echo $book->pax ?>
+                        <?php endif ?>
+                            
+                    </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10"><a href="tel:<?php echo $pagada->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
                         <select class="room form-control minimal" data-id="<?php echo $pagada->id ?>"  >
