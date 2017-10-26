@@ -50,6 +50,12 @@ class Book extends Model
         return $this->hasOne('\App\User', 'id', 'user_id');
     }
 
+    public function notifications()
+    {
+        return $this->hasMany('\App\BookNotification', 'book_id', 'id');
+    }
+
+
     //Para poner nombre al dia del calendario//
     static function getDayWeek($dayweek)
     {
