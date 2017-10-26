@@ -206,7 +206,7 @@
                 </div>
             </div>
             <div class="row bg-white padding-block">
-                <div class="col-md-4 col-md-offset-4 text-center">
+                <div class="col-md-4 col-md-offset-4 col-xs-12 text-center">
                     <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;">Guardar</button>
                 </div>  
             </div>

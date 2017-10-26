@@ -35,7 +35,7 @@
         <form role="form"  action="{{ url('/admin/reservas/create') }}" method="post" >
             <!-- DATOS DEL CLIENTE -->
             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-            <input type="hidden"  name="status" class="status form-control minimal" data-id="<?php echo $book->id ?>" value="5">
+            <input type="hidden"  name="status" class="status form-control minimal" value="5">
 
             <div class="col-md-8 col-xs-12 push-20">
 
@@ -53,7 +53,7 @@
                     <label>Apartamento</label>
                     <select class="form-control full-width calculate-newroom minimal" name="calculate-newroom" id="calculate-newroom">
                         <option ></option>
-                        <?php foreach ($rooms as $room): ?>
+                        <?php foreach (\App\Rooms::where('state','=',1)->get() as $room): ?>
                             <option value="<?php echo $room->id ?>" data-luxury="<?php echo $room->luxury ?>" data-size="<?php echo $room->sizeApto ?>">
                                 <?php echo $room->name ?>
                             </option>
@@ -65,7 +65,7 @@
                     <select class=" form-control calculate-parking minimal"  name="parking">
                         <?php for ($i=1; $i <= 4 ; $i++): ?>
                             <option value="<?php echo $i ?>">
-                                <?php echo $book->getParking($i) ?>
+                                <?php echo \App\Book::getParking($i) ?>
                             </option>
                         <?php endfor;?>
                     </select>
@@ -75,7 +75,7 @@
                     <select class=" form-control full-width calculate-type_luxury minimal" name="type_luxury">
                         <?php for ($i=1; $i <= 4 ; $i++): ?>
                             <option value="<?php echo $i ?>" <?php echo ($i == 2)?"selected": "" ?>>
-                                <?php echo $book->getSupLujo($i) ?>
+                                <?php echo \App\Book::getSupLujo($i) ?>
                             </option>
                         <?php endfor;?>
                     </select>
@@ -122,7 +122,9 @@
         </form>
     </div>
 </div>
-
+<script src="{{ asset('assets/plugins/jquery/jquery-1.11.1.min.js') }}" type="text/javascript"></script>
+<script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
+<script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
 <script type="text/javascript">
 
     $(function() {

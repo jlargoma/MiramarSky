@@ -198,7 +198,7 @@
                              <button class="btn btn-success btn-cons" type="button" id="stripePayment">
                                 <i class="fa fa-money" aria-hidden="true"></i> <span class="bold">Cobros stripe</span>
                             </button>
-                            <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalCalculateBook"> 
+                            <button class="btn btn-success btn-calcuteBook btn-cons" type="button" data-toggle="modal" data-target="#modalCalculateBook"> 
                                 <span class="bold">Calcular reserva</span>
                             </button>
                         </div>
@@ -336,9 +336,7 @@
         <div class="modal fade slide-up in" id="modalCalculateBook" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content-wrapper">
-                    <div class="modal-content">
-                        @include('backend.planning._calculateBook')
-                    </div>
+                    <div class="modal-content"></div>
                 </div>
                 <!-- /.modal-content -->
             </div>
@@ -893,6 +891,11 @@
             });
 
             $('#btn-active').trigger('click');
+
+
+            $('.btn-calcuteBook').click(function(event) {
+                $('#modalCalculateBook .modal-content').empty().load('/admin/reservas/help/calculateBook');
+            });
 
         });
     </script>

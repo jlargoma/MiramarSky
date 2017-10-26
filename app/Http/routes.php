@@ -187,17 +187,22 @@ Route::get('admin/pdf/pdf-reserva/{id}','PdfController@invoice');
 
 Route::group(['middleware' => 'auth'], function () {
 
-		Route::get('/admin', function ()    {
-    	$user = \Auth::user(); 
-			if ($user->role == "propietario") {
-				$room = \App\Rooms::where('owned', $user->id)->first();
-			 	return redirect('admin/propietario/'.$room->nameRoom);
-			}else{
-				return redirect('admin/reservas');
-			}
+	Route::get('/admin', function ()    {
+	$user = \Auth::user(); 
+		if ($user->role == "propietario") {
+			$room = \App\Rooms::where('owned', $user->id)->first();
+		 	return redirect('admin/propietario/'.$room->nameRoom);
+		}else{
+			return redirect('admin/reservas');
+		}
 
 
 	});
+
+	Route::get('admin/reservas/help/calculateBook', function () {
+		return view('backend.planning._calculateBook');
+	});
+
 });
 Route::group(['middleware' => 'authAdmin'], function () {
 	Route::get('admin/delete/nofify/{id}', function ($id) {
