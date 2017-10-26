@@ -14202,76 +14202,98 @@ Main components
 
 /*Colores*/
 
-    .SubComunidad.start,.Reserva.Propietario.start{
-        background-image: -webkit-linear-gradient(150deg, #FFA500 50%, #fff 50%);
-        color: black;
-    }
-    .SubComunidad,.Reserva.Propietario{
-        background-color: orange !important;
-        color: black;
-    }
-    .SubComunidad.end,.Reserva.Propietario.end{
-        background-image: -webkit-linear-gradient(330deg, #FFA500 50%, #fff 50%);
-        color: black;
-    }
-    
-    .Pagada-la-señal.start{
-        background-image: -webkit-linear-gradient(150deg, #008000 50%, #fff 50%);
-        color: black;
-    }
-    .Pagada-la-señal{
-        background-color: green  !important;
-        color: black;
-    }
-    .Pagada-la-señal.end{
-        background-image: -webkit-linear-gradient(330deg, #008000 50%, #fff 50%);
-        color: black;
-    }
+.SubComunidad.start,.Reserva.Propietario.start{
+    background-image: -webkit-linear-gradient(150deg, #FFA500 50%, #fff 50%);
+    color: black;
+}
+.SubComunidad,.Reserva.Propietario{
+    background-color: orange !important;
+    color: black;
+}
+.SubComunidad.end,.Reserva.Propietario.end{
+    background-image: -webkit-linear-gradient(330deg, #FFA500 50%, #fff 50%);
+    color: black;
+}
 
-    .Reservado.start{
-        background-image: -webkit-linear-gradient(150deg, #bdf9bd 50%, #fff 50%);
-        color: black;
-    }
-    .Reservado{
-        background-color: #bdf9bd  !important;
-        color: black;
-    }
-    .Reservado.end{
-        background-image: -webkit-linear-gradient(330deg, #bdf9bd 50%, #fff 50%);
-        color: black;
-    }
+.Pagada-la-señal.start{
+    background-image: -webkit-linear-gradient(150deg, #008000 50%, #fff 50%);
+    color: black;
+}
+.Pagada-la-señal{
+    background-color: green  !important;
+    color: black;
+}
+.Pagada-la-señal.end{
+    background-image: -webkit-linear-gradient(330deg, #008000 50%, #fff 50%);
+    color: black;
+}
 
-    .Bloqueado.start{
-        background-image: -webkit-linear-gradient(150deg, #D4E2FF 50%, #fff 50%);
-        color: black;
-    }
-    .Bloqueado{
-        background-color: #D4E2FF  !important;
-        color: black;
-    }
-    .Bloqueado.end{
-        background-image: -webkit-linear-gradient(330deg, #D4E2FF 50%, #fff 50%);
-        color: black;
-    }
+.Reservado.start{
+    background-image: -webkit-linear-gradient(150deg, #bdf9bd 50%, #fff 50%);
+    color: black;
+}
+.Reservado{
+    background-color: #bdf9bd  !important;
+    color: black;
+}
+.Reservado.end{
+    background-image: -webkit-linear-gradient(330deg, #bdf9bd 50%, #fff 50%);
+    color: black;
+}
 
-    .pgn-circle .alert .close{
-      display: none;
-    }
-  
-    .alert-info{
-        background: yellow!important;
-    }
-    .Booking{
-        /*background: rgba(90,90,0,0.1)!important;*/
-        background-image: url('/pages/booking.png');
-        background-repeat: repeat-x;
+.Bloqueado.start{
+    background-image: -webkit-linear-gradient(150deg, #D4E2FF 50%, #fff 50%);
+    color: black;
+}
+.Bloqueado{
+    background-color: #D4E2FF  !important;
+    color: black;
+}
+.Bloqueado.end{
+    background-image: -webkit-linear-gradient(330deg, #D4E2FF 50%, #fff 50%);
+    color: black;
+}
+
+.pgn-circle .alert .close{
+  display: none;
+}
+
+.alert-info{
+    background: yellow!important;
+}
+.Booking{
+    /*background: rgba(90,90,0,0.1)!important;*/
+    background-image: url('/pages/booking.png');
+    background-repeat: repeat-x;
     background-size: contain;
-    }
-    .Reservado-table{ 
-        background-color: #295d9b !important;
-        color: black;
-    }
-    .Pagada-la-señal{
-        background-color: green  !important;
-        color: black;
-    }
+}
+.Reservado-table{ 
+    background-color: #295d9b !important;
+    color: black;
+}
+.Pagada-la-señal{
+    background-color: green  !important;
+    color: black;
+}
+.contestado-email{
+  background-color: rgba(246,244,179, 0.6) !important;
+    color: black;
+}
+.contestado-email.start {
+    background-image: -webkit-linear-gradient(150deg, #faf8d1 50%, #fff 50%);
+    color: black;
+}
+.contestado-email.end {
+    background-image: -webkit-linear-gradient(330deg, #faf8d1 50%, #fff 50%);
+    color: black;
+}
+.table tbody tr.contestado-email td{
+  
+  background-color: rgba(246,244,179, 0.3) !important;
+    color: black;
+}
+@media screen and (max-width: 767px){
+  .push-mobile-20{
+    margin-bottom: 20px
+  }
+}

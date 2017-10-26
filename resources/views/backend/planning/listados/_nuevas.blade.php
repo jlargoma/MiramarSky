@@ -8,6 +8,12 @@
         font-size: 45px!important;
         color: white!important;
     }
+    @media screen and (max-width: 767px){
+        .daterangepicker {
+            left: 12%!important;
+            top: 7%!important;
+        }
+    }
 </style>
 <div class="modal-header clearfix text-left">
     
@@ -29,7 +35,7 @@
         <form role="form"  action="{{ url('/admin/reservas/create') }}" method="post" >
             <!-- DATOS DEL CLIENTE -->
             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-            <div class="col-md-6 center text-left0">
+            <div class="col-md-6 center text-left">
                 <div class="col-md-4 m-t-10">
                     <label for="status">Estado</label>
                 </div> 
@@ -54,15 +60,15 @@
                     </h4>
                 </div>
 
-                <div class="col-md-4 push-10">
+                <div class="col-md-4 col-xs-12 push-10">
                     <label for="name">Nombre</label> 
                     <input class="form-control cliente" type="text" name="name">
                 </div>
-                <div class="col-md-4 push-10">
+                <div class="col-md-4 col-xs-12 push-10">
                     <label for="email">Email</label> 
                     <input class="form-control cliente" type="email" name="email" >
                 </div>
-                <div class="col-md-4 push-10">
+                <div class="col-md-4 col-xs-12 push-10">
                     <label for="phone">Telefono</label> 
                     <input class="form-control cliente" type="number" name="phone" >
                 </div>  
@@ -74,7 +80,7 @@
                         DATOS DE LA RESERVA
                     </h4>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 col-xs-12 push-mobile-20">
                     <label>Entrada</label>
                     <div class="input-prepend input-group">
                     
@@ -82,12 +88,12 @@
 
                     </div>
                 </div>
-                <div class="col-md-1 p-l-0">
+                <div class="col-md-1 col-xs-6 push-mobile-20">
                     <label>Noches</label>
                     <input type="text" class="form-control nigths" name="nigths" style="width: 100%" disabled>
                     <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%" >
                 </div> 
-                <div class="col-md-2 p-l-0">
+                <div class="col-md-2 col-xs-6 push-mobile-20">
                     <label>Pax</label>
                     <select class=" form-control pax minimal"  name="pax">
                         <?php for ($i=1; $i <= 10 ; $i++): ?>
@@ -97,7 +103,7 @@
                         <?php endfor;?>
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 col-xs-12 push-mobile-20">
                     <label>Apartamento</label>
                     <select class="form-control full-width newroom minimal" name="newroom" id="newroom">
                         <option ></option>
@@ -108,7 +114,7 @@
                         <?php endforeach ?>
                     </select>
                 </div>
-                <div class="col-md-1 p-l-0 p-r-0">
+                <div class="col-md-1 col-xs-6 push-mobile-20 ">
                     <label>Parking</label>
                     <select class=" form-control parking minimal"  name="parking">
                         <?php for ($i=1; $i <= 4 ; $i++): ?>
@@ -118,7 +124,7 @@
                         <?php endfor;?>
                     </select>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 col-xs-6 push-mobile-20">
                     <label>Sup. Lujo</label>
                     <select class=" form-control full-width type_luxury minimal" name="type_luxury">
                         <?php for ($i=1; $i <= 4 ; $i++): ?>
@@ -198,7 +204,7 @@
                 </div>
             </div>
             <div class="row bg-white padding-block">
-                <div class="col-md-4 col-md-offset-4 text-center">
+                <div class="col-md-4 col-md-offset-4 col-sm-12 col-xs-12 text-center">
                     <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;">Guardar</button>
                 </div>  
             </div>

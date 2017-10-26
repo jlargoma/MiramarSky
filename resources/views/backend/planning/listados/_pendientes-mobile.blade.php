@@ -18,7 +18,12 @@
     </thead>
     <tbody>
       <?php foreach ($arrayBooks["nuevas"] as $nueva): ?>
-        <tr class="<?php echo ucwords($book->getStatus($nueva->type_book)) ;?>">
+        <?php $class = ucwords($book->getStatus($book->type_book)) ?>
+        <?php if ($class == "Contestado(EMAIL)"): ?>
+             <?php $class = "contestado-email" ?>
+        <?php endif ?>
+            
+        <tr class="<?php echo $class ;?>"> 
           <td class="text-center sm-p-t-10 sm-p-b-10">
             <a href="{{url ('/admin/reservas/update')}}/<?php echo $nueva->id ?>"><?php echo $nueva->customer->name ?></a>
           </td>

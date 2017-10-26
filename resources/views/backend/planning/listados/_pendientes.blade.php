@@ -20,7 +20,12 @@
                 </thead>
                 <tbody>
                     <?php foreach ($arrayBooks["nuevas"] as $book): ?>
-                            <tr class="<?php echo ucwords($book->getStatus($book->type_book)) ;?>"> 
+                        <?php $class = ucwords($book->getStatus($book->type_book)) ?>
+                        <?php if ($class == "Contestado(EMAIL)"): ?>
+                             <?php $class = "contestado-email" ?>
+                        <?php endif ?>
+                            
+                            <tr class="<?php echo $class ;?>"> 
                                 <td style="display: none"><?php echo $book->id ?></td>
                                 <td class ="text-center"  style="padding: 10px 15px!important">
                                     <?php if (isset($payment[$book->id])): ?>

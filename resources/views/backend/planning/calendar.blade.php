@@ -96,7 +96,12 @@
                                                                         href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
                                                                         title="<?php echo $calendars[$x]->customer['name'] ?> - <?php echo 'PVP:'.$calendars[$x]->total_price ?> <?php if (isset($payment[$calendars[$x]->id])): ?><?php echo '- PEND:'.($calendars[$x]->total_price - $payment[$calendars[$x]->id])?><?php endif ?>"
                                                                     >
-                                                                        <div class="<?php echo $book->getStatus($calendars[$x]->type_book) ?> end" style="width: 50%;float: left;">
+                                                                        <?php $class = $book->getStatus($calendars[$x]->type_book) ?>
+                                                                            <?php if ($class == "Contestado(EMAIL)"): ?>
+                                                                                 <?php $class = "contestado-email" ?>
+                                                                            <?php endif ?>
+                                                                                
+                                                                            <div class="<?php echo $class ;?> end" style="width: 50%;float: left;">
                                                                             &nbsp;
                                                                         </div>
                                                                     </a>
@@ -107,7 +112,12 @@
                                                                         title="<?php echo $calendars[$x]->customer['name'] ?> - <?php echo 'PVP:'.$calendars[$x]->total_price ?> <?php if (isset($payment[$calendars[$x]->id])): ?><?php echo '- PEND:'.($calendars[$x]->total_price - $payment[$calendars[$x]->id])?><?php endif ?>"
                                                                     >
                                                                         <?php if ($book->getStatus($calendars[$x]->type_book) != "Booking"): ?>
-                                                                            <div class="<?php echo $book->getStatus($calendars[$x]->type_book) ?> start" style="width: 50%;float: right;">
+                                                                            <?php $class = $book->getStatus($calendars[$x]->type_book) ?>
+                                                                            <?php if ($class == "Contestado(EMAIL)"): ?>
+                                                                                 <?php $class = "contestado-email" ?>
+                                                                            <?php endif ?>
+                                                                                
+                                                                            <div class="<?php echo $class ;?> start" style="width: 50%;float: right;">
                                                                                 &nbsp;
                                                                             </div>
                                                                         <?php endif ?>
@@ -122,7 +132,12 @@
                                                                         href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
                                                                         title="<?php echo $calendars[$x]->customer['name'] ?>- <?php echo 'PVP:'.$calendars[$x]->total_price ?> <?php if (isset($payment[$calendars[$x]->id])): ?> <?php echo '- PEND:'.($calendars[$x]->total_price - $payment[$calendars[$x]->id])?><?php endif ?>"
                                                                     >
-                                                                        <div class="<?php echo $book->getStatus($calendars[$x]->type_book) ?>" style="width: 100%;float: left;">
+                                                                        <?php $class = $book->getStatus($calendars[$x]->type_book) ?>
+                                                                            <?php if ($class == "Contestado(EMAIL)"): ?>
+                                                                                 <?php $class = "contestado-email" ?>
+                                                                            <?php endif ?>
+                                                                                
+                                                                            <div class="<?php echo $class ;?>" style="width: 100%;float: left;">
                                                                             &nbsp;
                                                                         </div>
                                                                     </a>
@@ -138,8 +153,13 @@
                                                             <td 
                                                                 title="<?php echo $calendars[0]->customer['name'] ?> - <?php echo 'PVP:'.$calendars[0]->total_price ?> <?php if (isset($payment[$calendars[0]->id])): ?><?php echo '- PEND:'.($calendars[0]->total_price - $payment[$calendars[0]->id])?><?php endif ?>"
                                                                 style='border:1px solid grey;width: 24px; height: 20px;'>
-
-                                                                <div class="<?php echo $book->getStatus($calendars[0]->type_book) ?> start" style="width: 100%;float: left;">
+                                                                
+                                                                <?php $class = $book->getStatus($calendars[0]->type_book) ?>
+                                                                <?php if ($class == "Contestado(EMAIL)"): ?>
+                                                                     <?php $class = "contestado-email" ?>
+                                                                <?php endif ?>
+                                                                    
+                                                                <div class="<?php echo $class ;?> start" style="width: 100%;float: left;">
                                                                     &nbsp;
                                                                 </div>
 
@@ -149,7 +169,12 @@
                                                                 title="<?php echo $calendars[0]->customer['name'] ?> - <?php echo 'PVP:'.$calendars[0]->total_price ?> <?php if (isset($payment[$calendars[0]->id])): ?> <?php echo '- PEND:'.($calendars[0]->total_price - $payment[$calendars[0]->id])?><?php endif ?>"
                                                                 style='border:1px solid grey;width: 24px; height: 20px;'>
 
-                                                                <div class="<?php echo $book->getStatus($calendars[0]->type_book) ?> end" style="width: 100%;float: left;">
+                                                                <?php $class = $book->getStatus($calendars[0]->type_book) ?>
+                                                                <?php if ($class == "Contestado(EMAIL)"): ?>
+                                                                     <?php $class = "contestado-email" ?>
+                                                                <?php endif ?>
+                                                                    
+                                                                <div class="<?php echo $class ;?> end" style="width: 100%;float: left;">
                                                                     &nbsp;
                                                                 </div>
 
@@ -160,7 +185,12 @@
                                                             <td 
                                                             style='border:1px solid grey;width: 24px; height: 20px;' 
                                                             title="<?php echo $calendars[0]->customer['name'] ?> - <?php echo 'PVP:'.$calendars[0]->total_price ?> <?php if (isset($payment[$calendars[0]->id])): ?> <?php echo '- PEND:'.($calendars[0]->total_price - $payment[$calendars[0]->id])?><?php endif ?>" 
-                                                            class="<?php echo $book->getStatus($calendars[0]->type_book) ?>"
+                                                                <?php $class = $book->getStatus($calendars[0]->type_book) ?>
+                                                                <?php if ($class == "Contestado(EMAIL)"): ?>
+                                                                     <?php $class = "contestado-email" ?>
+                                                                <?php endif ?>
+                                                                    
+                                                                class="<?php echo $class ;?>"
                                                             >
                                                                 <?php if ($calendars[0]->type_book == 9): ?>
                                                                     <div style="width: 100%;height: 100%">

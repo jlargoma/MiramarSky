@@ -360,6 +360,8 @@ class Book extends Model
                                         ->orderBy('start','DESC')
                                         ->get();
 
+
+
                     $existStart = false;
                     $existFinish = false;        
 
@@ -369,15 +371,7 @@ class Book extends Model
                             $start = Carbon::createFromFormat('Y-m-d', $isRoom->start)->format('U');                        
                             $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish)->format('U'); 
 
-                            // if ($start <= $roomStart && $roomStart <= $finish){
-                            //     $existStart = true;
-                            // }elseif($roomStart <= $start && $start <= $roomFinish){
-                            //     $existStart = true;
-                            // }elseif($start <= $roomStart && $roomStart < $finish){
-                            //     $existStart = true;
-                            // }elseif($roomStart <= $start && $start <= $roomFinish){
-                            //     $existStart = true;
-                            // }
+
                             if ($start < $roomStart && $roomStart < $finish){
                                 $existStart = true;
                             }elseif($start <= $roomStart && $roomStart < $finish){
@@ -513,6 +507,7 @@ class Book extends Model
                                         ->orderBy('start','DESC')
                                         ->get();
 
+                    
                     $existStart = False;
                     $existFinish = False;        
 
