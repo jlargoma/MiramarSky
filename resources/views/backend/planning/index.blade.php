@@ -799,10 +799,12 @@
                 }else{
                     
                    $.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
-                        $('.notification-message').val(data);
-                        document.getElementById("boton").click();
-                        if (data == "Ya hay una reserva para ese apartamento" || data == "No se puede cambiar el estado" || data == "Valor nulo o vacio" || data == "No tiene Email asignado") {
-                            
+                        
+                        if (data == "Ya hay una reserva para ese apartamento" || data == "No se puede cambiar el estado" || data == "Valor nulo o vacio" ) {
+
+                            $('.notification-message').val(data);
+                            $("#boton").click();
+
                         }else{
                             setTimeout('document.location.reload()',1000);
                         }                        
@@ -858,23 +860,23 @@
             });
                
 
-               $('.btn-fechas-calendar').click(function(event) {
-                    event.preventDefault();
-                    $('.btn-fechas-calendar').css({
-                        'background-color': '#899098',
-                        'color': '#fff'
-                    });
-                    $(this).css({
-                        'background-color': '#10cfbd',
-                        'color': '#fff'
-                    });
-                    var target = $(this).attr('data-month');
-                    var targetPosition = $('.content-calendar #month-'+target).position();
-                    // alert("Left: "+targetPosition.left+ ", right: "+targetPosition.right);
-                    $('.content-calendar').animate({ scrollLeft: "+="+targetPosition.left+"px" }, "slow");
+            $('.btn-fechas-calendar').click(function(event) {
+                event.preventDefault();
+                $('.btn-fechas-calendar').css({
+                    'background-color': '#899098',
+                    'color': '#fff'
                 });
+                $(this).css({
+                    'background-color': '#10cfbd',
+                    'color': '#fff'
+                });
+                var target = $(this).attr('data-month');
+                var targetPosition = $('.content-calendar #month-'+target).position();
+                // alert("Left: "+targetPosition.left+ ", right: "+targetPosition.right);
+                $('.content-calendar').animate({ scrollLeft: "+="+targetPosition.left+"px" }, "slow");
+            });
 
-               $('#btn-active').trigger('click');
+            $('#btn-active').trigger('click');
 
         });
     </script>

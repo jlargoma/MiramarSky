@@ -1085,11 +1085,11 @@ class BookController extends Controller
         }
 
     public function delete($id)
-        {
-            $book = \App\Book::find($id);
-            if ($book->delete()) {
-                    return redirect()->action('BookController@index');
-                }
+    {
+        $book = \App\Book::find($id);
+        if ($book->delete()) {
+                return redirect()->action('BookController@index');
+            }
 
-        }
+    }
 }

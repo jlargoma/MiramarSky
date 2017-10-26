@@ -39,46 +39,88 @@
 													'title' => '2DL',
 													'rooms' => [],
 												] ,
+
+									'estudio' => [
+													'title' => 'EST',
+													'rooms' => [],
+												], 		
 									
 									'2dorm-stand' => [
 													'title' => '2D',
 													'rooms' => [],
 												],
-									'estudio' => [
-													'title' => 'EST',
+
+									'chalet' => [
+													'title' => 'CHLT',
 													'rooms' => [],
-												], 
+												],
+									
 								];
-			$rooms = \App\Rooms::whereIn('id', $arrayRoomId)->get();
+			$roomsBooking = \App\Rooms::whereIn('id', $arrayRoomId)->get();
+			$arrayCountRoomBooking = [ 0, 0, 0 ,0];
+			foreach ($roomsBooking as $key => $roomB) {
+				
+				if ($roomB->id != 144) {
+					if ($roomB->luxury == 1 && $roomB->sizeApto == 2) {
+						$arrayCountRoomBooking[0]++;
+					}
 
-			foreach ($rooms as $key => $room) {
-				if ($room->luxury == 1 && $room->sizeApto == 2) {
+					if($roomB->luxury == 1 && $roomB->sizeApto == 1){
+						$arrayCountRoomBooking[1]++;
+					}
 
-					$arrayRoomsForType['2dorm-lujo']['rooms'][] = $room; 
+					if($roomB->luxury == 0 && $roomB->sizeApto == 2){
+						$arrayCountRoomBooking[2]++;
+					}
 
+					if($roomB->luxury == 0 && $roomB->sizeApto == 1){
+						$arrayCountRoomBooking[1]++; 
+					}
+				}else{
+					$arrayCountRoomBooking[3]++; 
 				}
 
-				if($room->luxury == 1 && $room->sizeApto == 1){
-
-					$arrayRoomsForType['estudio']['rooms'][] = $room; 
-
-				}
-
-				if($room->luxury == 0 && $room->sizeApto == 2){
-
-					$arrayRoomsForType['2dorm-stand']['rooms'][] = $room; 
-
-				}
-
-				if($room->luxury == 0 && $room->sizeApto == 1){
-
-					$arrayRoomsForType['estudio']['rooms'][] = $room; 
-
-				}
 			}
 
-			// echo "<pre>";
-			// print_r($arrayRoomsForType);
+			$rooms = \App\Rooms::where('state', 1)->get();
+
+			foreach ($rooms as $key => $room) {
+
+				if ($room->id != 144) {
+
+					if ($room->luxury == 1 && $room->sizeApto == 2) {
+
+						$arrayRoomsForType['2dorm-lujo']['rooms'][] = $room; 
+
+					}
+
+					if($room->luxury == 1 && $room->sizeApto == 1){
+
+						$arrayRoomsForType['estudio']['rooms'][] = $room; 
+
+					}
+
+					if($room->luxury == 0 && $room->sizeApto == 2){
+
+						$arrayRoomsForType['2dorm-stand']['rooms'][] = $room; 
+
+					}
+
+					if($room->luxury == 0 && $room->sizeApto == 1){
+
+						$arrayRoomsForType['estudio']['rooms'][] = $room; 
+
+					}
+
+				}else{
+
+					$arrayRoomsForType['chalet']['rooms'][] = $room; 
+
+				}
+
+				
+
+			}
 
 		?>
 		<?php for ($z=1; $z <= 9; $z++):?>
@@ -105,14 +147,17 @@
 								</tr>
 							</thead>
 							<tbody>
-
-								<?php foreach ($arrayRoomsForType as $room): ?>
+								<?php $inx = 0; ?>
+								<?php foreach ($arrayRoomsForType as $key => $room): ?>
 									
 									<tr>
 										<?php $dateX = $dateX->startOfMonth() ?>
 										<td class="text-center" style='width: 3%;text-align: center'>
 											<b>
-												<?php echo substr($room['title'], 0, 5)?>	
+												<?php echo substr($room['title'], 0, 5)?>
+												<span class="text-danger">
+													(<?php echo $arrayCountRoomBooking[$inx] ?>)
+												</span>	
 											</b>
 										</td>
 
@@ -154,7 +199,7 @@
 											<?php endif ?>
 										<?php endfor; ?> 
 									</tr>
-
+									<?php $inx++; ?>
 								<?php endforeach; ?>
 							</tbody>
 						</table>
