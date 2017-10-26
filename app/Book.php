@@ -140,10 +140,8 @@ class Book extends Model
             $requestStart = Carbon::createFromFormat('d/m/Y',$start);
             $requestFinish = Carbon::createFromFormat('d/m/Y',$finish);
 
-            $books =  \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,6,7,8])
+            $books =  \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,6,7,8])
                                         ->where('id','!=' ,$id_excluded)
-                                        ->whereYear('start', '=',  $requestStart->format('Y'))
-                                        ->whereMonth('start', '=',  $requestStart->format('m'))
                                         ->orderBy('start','DESC')
                                         ->get();
             //\App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,7,8])->where('id','!=',$id_excluded)->get();
@@ -353,10 +351,8 @@ class Book extends Model
                     $roomStart = $dateStart->format('U');
                     $roomFinish = $dateFinish->format('U');
 
-                    $isRooms = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,6,7,8])
+                    $isRooms = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,6,7,8])
                                         ->where('id','!=' ,$this->id)
-                                        ->whereYear('start', '=',  $dateStart->format('Y'))
-                                        ->whereMonth('start', '=',  $dateStart->format('m'))
                                         ->orderBy('start','DESC')
                                         ->get();
 
@@ -500,14 +496,12 @@ class Book extends Model
                     $roomFinish = $dateFinish->format('U');
 
 
-                    $isRooms = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,6,7,8])
+                    $isRooms = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,6,7,8])
                                         ->where('id','!=' ,$this->id)
-                                        ->whereYear('start', '=',  $dateStart->format('Y'))
-                                        ->whereMonth('start', '=',  $dateStart->format('m'))
                                         ->orderBy('start','DESC')
                                         ->get();
 
-                    
+
                     $existStart = False;
                     $existFinish = False;        
 

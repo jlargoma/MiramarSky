@@ -18,7 +18,7 @@
     </thead>
     <tbody>
       <?php foreach ($arrayBooks["nuevas"] as $nueva): ?>
-        <?php $class = ucwords($book->getStatus($nueva->type_book)) ?>
+        <?php $class = ucwords($nueva->getStatus($nueva->type_book)) ?>
         <?php if ($class == "Contestado(EMAIL)"): ?>
              <?php $class = "contestado-email" ?>
         <?php endif ?>

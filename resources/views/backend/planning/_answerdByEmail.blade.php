@@ -1,4 +1,6 @@
-<link href="/assets/plugins/summernote/css/summernote.css" rel="stylesheet" type="text/css" media="screen">
+<?php if (!$mobile->isMobile()): ?>
+	<link href="/assets/plugins/summernote/css/summernote.css" rel="stylesheet" type="text/css" media="screen">
+<?php endif; ?>
 <?php 	use \Carbon\Carbon;
 		setlocale(LC_TIME, "ES"); 
         setlocale(LC_TIME, "es_ES"); 
@@ -58,25 +60,7 @@
 		        </div>
 			<?php else: ?>
 		        <div class="summernote-wrapper" style="margin-bottom: 30px;">
-		          <textarea class="form-control note-editable" style="width: 100%;">Hola <?php echo $book->customer->name ?> Si tenemos disponibilidad para tu reserva  <?php echo "\n" ?><?php echo "\n" ?>
-
-					Nombre: <?php echo $book->customer->name ?><?php echo "\n" ?>
-					Teléfono: <?php echo $book->customer->phone ?><?php echo "\n" ?>
-					Email: <?php echo $book->customer->email ?><?php echo "\n" ?>
-					Apartamento: <?php echo $book->room->sizeRooms->name ?> // <?php echo ($book->type_luxury == 1)? "Lujo" : "Estandar" ?><?php echo "\n" ?>
-					Fechas: <?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b') ?> - <?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b') ?><?php echo "\n" ?>
-					Noches: <?php echo $book->nigths; ?><?php echo "\n" ?>
-					Ocupantes: <?php echo $book->pax; ?><?php echo "\n" ?>
-					Suplemento Lujo: <?php if ($book->sup_lujo > 0): ?>(SI) <?php echo $book->sup_lujo ?>€ <?php else: ?>(NO) 0<?php endif ?><?php echo "\n" ?>
-					Suplemento Parking: <?php if ($book->sup_park > 0): ?>(SI) <?php echo $book->sup_park ?>€ <?php else: ?>(NO) 0<?php endif ?><?php echo "\n" ?><?php echo "\n" ?>
-
-					Precio total: <?php echo number_format($book->total_price,2,',','.') ?>€<?php echo "\n" ?><?php echo "\n" ?>
-
-					El precio te incluye, parking cubierto, piscina climatizada, gimnasio, taquilla guarda esquíes, sabanas y toallas. <?php echo "\n" ?>
-					Posteriormente a tu contratación te ofrecemos descuentos para la compra de tus forfaits, en cursillos de esquí o alquiler de material.<?php echo "\n" ?><?php echo "\n" ?>
-
-					Quedamos a la espera de tu respuesta.<?php echo "\n" ?>
-					Un cordial saludo
+		          <textarea class="form-control note-editable" style="width: 100%;">Hola <?php echo $book->customer->name ?> Si tenemos disponibilidad para tu reserva  <?php echo "\n" ?><?php echo "\n" ?>Nombre: <?php echo $book->customer->name ?><?php echo "\n" ?>Teléfono: <?php echo $book->customer->phone ?><?php echo "\n" ?>Email: <?php echo $book->customer->email ?><?php echo "\n" ?>Apartamento: <?php echo $book->room->sizeRooms->name ?> // <?php echo ($book->type_luxury == 1)? "Lujo" : "Estandar" ?><?php echo "\n" ?>Fechas: <?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b') ?> - <?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b') ?><?php echo "\n" ?>Noches: <?php echo $book->nigths; ?><?php echo "\n" ?>Ocupantes: <?php echo $book->pax; ?><?php echo "\n" ?>Suplemento Lujo: <?php if ($book->sup_lujo > 0): ?>(SI) <?php echo $book->sup_lujo ?>€ <?php else: ?>(NO) 0<?php endif ?><?php echo "\n" ?>Suplemento Parking: <?php if ($book->sup_park > 0): ?>(SI) <?php echo $book->sup_park ?>€ <?php else: ?>(NO) 0<?php endif ?><?php echo "\n" ?><?php echo "\n" ?>Precio total: <?php echo number_format($book->total_price,2,',','.') ?>€<?php echo "\n" ?><?php echo "\n" ?>El precio te incluye, parking cubierto, piscina climatizada, gimnasio, taquilla guarda esquíes, sabanas y toallas. <?php echo "\n" ?>Posteriormente a tu contratación te ofrecemos descuentos para la compra de tus forfaits, en cursillos de esquí o alquiler de material.<?php echo "\n" ?><?php echo "\n" ?>Quedamos a la espera de tu respuesta.<?php echo "\n" ?>Un cordial saludo
 		          </textarea>
 		        </div>
 			<?php endif ?>
@@ -90,6 +74,7 @@
 
 <script src="/assets/plugins/pace/pace.min.js" type="text/javascript"></script>
 <script src="/assets/plugins/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<?php if (!$mobile->isMobile()): ?>
 <script src="/assets/plugins/modernizr.custom.js" type="text/javascript"></script>
 <script src="/assets/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
 <script src="/assets/plugins/bootstrapv3/js/bootstrap.min.js" type="text/javascript"></script>
@@ -124,6 +109,7 @@
 <!-- BEGIN PAGE LEVEL JS -->
 <script src="/assets/js/form_elements.js" type="text/javascript"></script>
 <script src="/assets/js/scripts.js" type="text/javascript"></script>
+<?php endif; ?>
 <script type="text/javascript">
 
 	function sending(){
