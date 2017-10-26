@@ -171,6 +171,95 @@
                         </td>
                       </tr>
                    <?php endforeach ?>
+                   <?php foreach ($roomsdesc as $room): ?>
+                      <tr>
+                        <td class="text-center hidden"><?php echo $room->id?></td>
+                        <td class="text-center">
+                           <input class="name name-<?php echo $room->name?>" type="text" name="name" data-id="<?php echo $room->id ?>" value="<?php echo $room->name?>" style="width: 100%;text-align: center;border-style: none none ">
+                        </td>
+                        <td class="text-center">
+                           <input class="nameRoom nameRoom-<?php echo $room->nameRoom?>" type="text" name="nameRoom" data-id="<?php echo $room->id ?>" value="<?php echo $room->nameRoom?>" style="width: 100%;text-align: center;border-style: none none ">
+                        </td>
+                        <td class="text-center">
+                           <input class="parking parking-<?php echo $room->parking?>" type="text" name="parking" data-id="<?php echo $room->id ?>" value="<?php echo $room->parking?>" style="width: 100%;text-align: center;border-style: none none ">
+                        </td>
+                        <td class="text-center">
+                           <input class="taquilla taquilla-<?php echo $room->locker?>" type="text" name="taquilla" data-id="<?php echo $room->id ?>" value="<?php echo $room->locker?>" style="width: 100%;text-align: center;border-style: none none ">
+                        </td>
+                        <td class="text-center">
+                            <input class="editable minOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->minOcu?>" style="width: 100%;text-align: center;border-style: none none ">
+                        </td>  
+                        <td class="text-center">
+                           <input class="editable maxOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->maxOcu?>" style="width: 100%;text-align: center;border-style: none none">
+                        </td> 
+                        <td class="text-center">
+                           <select class="sizes form-control minimal" data-id="<?php echo $room->id ?>">
+                             <?php foreach ($sizes as $size): ?>                                   
+                                 <option value="<?php echo $size->id; ?>" <?php echo ($size->id == $room->sizeApto) ? "selected" : "" ?>>
+                                     <?php echo $size->name ?>
+                                 </option>
+                             <?php endforeach ?>
+                           </select>
+                        </td>
+                        <td class="text-center">
+                           <span class="input-group-addon bg-transparent">
+                                <input type="checkbox" class="editable" data-id="<?php echo $room->id ?>" name="luxury" data-init-plugin="switchery" data-size="small" data-color="primary" <?php echo ($room->luxury == 0) ? "" : "checked" ?>/>
+                            </span>
+                           
+                        </td> 
+                        <td class="text-center">
+                          <select class="type form-control minimal" data-id="<?php echo $room->id ?>">
+                            <?php foreach ($tipos as $tipo): ?>
+                              <?php if( $tipo->id == $room->typeApto ){ $selected = "selected"; }else{$selected = "";} ?>
+                                <option value="<?php echo $tipo->id; ?>" <?php echo $selected ?> >
+                                    <?php echo $tipo->name ?>
+                                </option>
+                            <?php endforeach ?>
+                          </select>
+                        </td>
+                        <td class="text-center">
+                          <select class="owned form-control minimal" data-id="<?php echo $room->id ?>">
+                            <?php foreach (\App\User::all() as $key => $owned): ?>
+                              <?php if ( ($owned->role == 'propietario') || $owned->name == 'jorge'): ?>
+                                  <?php if( $owned->name == $room->user->name ){ $selected = "selected"; }else{$selected = "";} ?>
+                                  <option value="<?php echo $owned->id; ?>" <?php echo $selected ?> >
+                                      <?php echo $owned->name ?>
+                                  </option>
+                              <?php endif ?>
+                              
+                            <?php endforeach ?>
+                            <?php// echo $room->user->name;?>
+                          </select>
+                        </td> 
+                        <td class="text-center">
+                          <p style="display: none"><?php echo $room->order ?></p>
+                           <input class="orden order-<?php echo $room->id?>" type="text" name="orden" data-id="<?php echo $room->id ?>" value="<?php echo $room->order?>" style="width: 100%;text-align: center;border-style: none none">
+                        </td>             
+                        <td class="text-center">
+                          <span class="input-group-addon bg-transparent">
+                              <input type="checkbox" class="estado" data-id="<?php echo $room->id ?>" name="state" data-init-plugin="switchery" data-size="small" data-color="success" <?php echo ($room->state == 0) ? "" : "checked" ?>> 
+                          </span>
+                        </td>
+                        <td class="text-center">
+                          <span class="input-group-addon bg-transparent">
+                              <input type="checkbox" class="assingToBooking" data-id="<?php echo $room->id ?>" name="assingToBooking" data-init-plugin="switchery" data-size="small" data-color="danger" <?php echo ( $room->isAssingToBooking() ) ? "checked" : "" ?>> 
+                          </span>
+                        </td>
+                        <td>
+                          <a type="button" class="btn btn-default" href="{{ url ('/fotos') }}/<?php echo $room->nameRoom ?>" target="_blank" data-original-title="Enlace de Apartamento" data-toggle="tooltip">
+                              <i class="fa fa-paperclip"></i>
+                          </a>
+                          
+                          <button class="btn btn-default btn-emiling" type="button" data-toggle="modal" data-target="#modalEmailing" data-id="<?php echo $room->user->id ?>">
+                            <i class=" pg-mail"></i>
+                          </button>
+
+                          <button type="button" class="btn btn-success uploadFile" data-toggle="modal" data-target="#modalFiles" data-id="<?php echo $room->nameRoom ?>" >
+                            <i class="fa fa-save"></i>
+                          </button>                    
+                        </td>
+                      </tr>
+                   <?php endforeach ?>
                 </tbody>
             </table>
         </div>

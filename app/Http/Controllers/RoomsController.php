@@ -19,6 +19,7 @@ class RoomsController extends Controller
     {
         return view('backend/rooms/index',[
                     'rooms' => \App\Rooms::where('state',1)->orderBy('order','ASC')->get(),
+                    'roomsdesc' => \App\Rooms::where('state',0)->orderBy('order','ASC')->get(),
                     'sizes'  => \App\SizeRooms::all(),
                     'types'  => \App\TypeApto::all(),
                     'tipos'  => \App\TypeApto::all(),
