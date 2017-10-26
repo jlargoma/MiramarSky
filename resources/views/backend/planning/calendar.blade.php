@@ -91,10 +91,17 @@
                                                         <td style='border:1px solid grey;width: 24px; height: 20px;'>
                                                             <?php for ($x = 0; $x < count($calendars); $x++): ?>
 
-                                                                <?php if($calendars[$x]->finish == $inicio->copy()->format('Y-m-d')): ?>
+                                                                <?php if($calendars[$x]->finish == $inicio->copy()->format('Y-m-d') && $calendars[$x]->type_book != 5): ?>
                                                                     <a 
                                                                         href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
-                                                                        title="<?php echo $calendars[$x]->customer['name'] ?> - <?php echo 'PVP:'.$calendars[$x]->total_price ?> <?php if (isset($payment[$calendars[$x]->id])): ?><?php echo '- PEND:'.($calendars[$x]->total_price - $payment[$calendars[$x]->id])?><?php endif ?>"
+                                                                        <?php $titulo = 
+                                                                                        $calendars[$x]->customer['name'].'&#10'.
+                                                                                        'Pax-real '.$calendars[$x]->real_pax.'&#10;'.
+                                                                                        'IN '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %B').'&#10;'.
+                                                                                        'OUT '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %B').'&#10;'.
+                                                                                        'PVP:'.$calendars[$x]->total_price ;
+                                                                        ?>
+                                                                        title="<?php echo $titulo ?>"
                                                                     >
                                                                         <?php $class = $book->getStatus($calendars[$x]->type_book) ?>
                                                                             <?php if ($class == "Contestado(EMAIL)"): ?>
@@ -105,11 +112,18 @@
                                                                             &nbsp;
                                                                         </div>
                                                                     </a>
-                                                                <?php elseif ($calendars[$x]->start == $inicio->copy()->format('Y-m-d')): ?>
+                                                                <?php elseif ($calendars[$x]->start == $inicio->copy()->format('Y-m-d') && $calendars[$x]->type_book != 5 ): ?>
 
                                                                     <a 
                                                                         href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
-                                                                        title="<?php echo $calendars[$x]->customer['name'] ?> - <?php echo 'PVP:'.$calendars[$x]->total_price ?> <?php if (isset($payment[$calendars[$x]->id])): ?><?php echo '- PEND:'.($calendars[$x]->total_price - $payment[$calendars[$x]->id])?><?php endif ?>"
+                                                                        <?php $titulo = 
+                                                                                        $calendars[$x]->customer['name'].'&#10'.
+                                                                                        'Pax-real '.$calendars[$x]->real_pax.'&#10;'.
+                                                                                        'IN '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %B').'&#10;'.
+                                                                                        'OUT '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %B').'&#10;'.
+                                                                                        'PVP:'.$calendars[$x]->total_price ;
+                                                                        ?>
+                                                                        title="<?php echo $titulo ?>"
                                                                     >
                                                                         <?php if ($book->getStatus($calendars[$x]->type_book) != "Booking"): ?>
                                                                             <?php $class = $book->getStatus($calendars[$x]->type_book) ?>
@@ -127,11 +141,18 @@
 
                                                                 <?php else: ?>
                                                                     
-                                                                    <?php if ($calendars[$x]->type_book != 9): ?>
+                                                                    <?php if ($calendars[$x]->type_book != 9 && $calendars[$x]->type_book != 5): ?>
                                                                         <a 
-                                                                        href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
-                                                                        title="<?php echo $calendars[$x]->customer['name'] ?>- <?php echo 'PVP:'.$calendars[$x]->total_price ?> <?php if (isset($payment[$calendars[$x]->id])): ?> <?php echo '- PEND:'.($calendars[$x]->total_price - $payment[$calendars[$x]->id])?><?php endif ?>"
-                                                                    >
+                                                                            href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
+                                                                            <?php $titulo = 
+                                                                                            $calendars[$x]->customer['name'].'&#10'.
+                                                                                            'Pax-real '.$calendars[$x]->real_pax.'&#10;'.
+                                                                                            'IN '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %B').'&#10;'.
+                                                                                            'OUT '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %B').'&#10;'.
+                                                                                            'PVP:'.$calendars[$x]->total_price ;
+                                                                            ?>
+                                                                            title="<?php echo $titulo ?>"
+                                                                        >
                                                                         <?php $class = $book->getStatus($calendars[$x]->type_book) ?>
                                                                             <?php if ($class == "Contestado(EMAIL)"): ?>
                                                                                  <?php $class = "contestado-email" ?>
@@ -151,7 +172,15 @@
                                                     <?php else: ?>
                                                         <?php if ($calendars[0]->start == $inicio->copy()->format('Y-m-d')): ?>
                                                             <td 
-                                                                title="<?php echo $calendars[0]->customer['name'] ?> - <?php echo 'PVP:'.$calendars[0]->total_price ?> <?php if (isset($payment[$calendars[0]->id])): ?><?php echo '- PEND:'.($calendars[0]->total_price - $payment[$calendars[0]->id])?><?php endif ?>"
+                                                                <?php $titulo = 
+                                                                                $calendars[0]->customer['name'].'&#10'.
+                                                                                'Pax-real '.$calendars[0]->real_pax.'&#10;'.
+                                                                                'IN '.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %B').'&#10;'.
+                                                                                'OUT '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %B').'&#10;'.
+                                                                                'PVP:'.$calendars[0]->total_price ;
+                                                                ?>
+
+                                                                title="<?php echo $titulo ?>"
                                                                 style='border:1px solid grey;width: 24px; height: 20px;'>
                                                                 
                                                                 <?php $class = $book->getStatus($calendars[0]->type_book) ?>
@@ -166,7 +195,15 @@
                                                             </td>    
                                                         <?php elseif($calendars[0]->finish == $inicio->copy()->format('Y-m-d')): ?>
                                                             <td 
-                                                                title="<?php echo $calendars[0]->customer['name'] ?> - <?php echo 'PVP:'.$calendars[0]->total_price ?> <?php if (isset($payment[$calendars[0]->id])): ?> <?php echo '- PEND:'.($calendars[0]->total_price - $payment[$calendars[0]->id])?><?php endif ?>"
+                                                                <?php $titulo = 
+                                                                                $calendars[0]->customer['name'].'&#10'.
+                                                                                'Pax-real '.$calendars[0]->real_pax.'&#10;'.
+                                                                                'IN '.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %B').'&#10;'.
+                                                                                'OUT '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %B').'&#10;'.
+                                                                                'PVP:'.$calendars[0]->total_price ;
+                                                                ?>
+
+                                                                title="<?php echo $titulo ?>"
                                                                 style='border:1px solid grey;width: 24px; height: 20px;'>
 
                                                                 <?php $class = $book->getStatus($calendars[0]->type_book) ?>
@@ -184,7 +221,14 @@
 
                                                             <td 
                                                             style='border:1px solid grey;width: 24px; height: 20px;' 
-                                                            title="<?php echo $calendars[0]->customer['name'] ?> - <?php echo 'PVP:'.$calendars[0]->total_price ?> <?php if (isset($payment[$calendars[0]->id])): ?> <?php echo '- PEND:'.($calendars[0]->total_price - $payment[$calendars[0]->id])?><?php endif ?>" 
+                                                            <?php $titulo = 
+                                                                            $calendars[0]->customer['name'].'&#10'.
+                                                                            'Pax-real '.$calendars[0]->real_pax.'&#10;'.
+                                                                            'IN '.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %B').'&#10;'.
+                                                                            'OUT '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %B').'&#10;'.
+                                                                            'PVP:'.$calendars[0]->total_price ;
+                                                            ?>
+                                                                title="<?php echo $titulo ?> " 
                                                                 <?php $class = $book->getStatus($calendars[0]->type_book) ?>
                                                                 <?php if ($class == "Contestado(EMAIL)"): ?>
                                                                      <?php $class = "contestado-email" ?>
