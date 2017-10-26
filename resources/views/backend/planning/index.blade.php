@@ -104,8 +104,7 @@
     
 @section('content')
     
-    @include('backend.planning._calculateBook')
-
+    
     <?php if (!$mobile->isMobile() ): ?>
     
         <div class="container-fluid  p-l-15 p-r-15 p-t-20">
@@ -178,7 +177,7 @@
                 <div class="col-xs-12">
                     <div class="col-md-7 not-padding">
                         <div class="col-md-8">
-                            <button class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalNewBook">
+                            <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalNewBook">
                                 <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Nueva Reserva</span>
                             </button>
                             <?php 
@@ -188,16 +187,19 @@
                                                                     ->whereDay('created_at','=', date('d'))
                                                                     ->get();
                             ?>
-                            <button id="lastBooks" class="btn btn-success btn-cons m-b-10" type="button">
+                            <button id="lastBooks" class="btn btn-success btn-cons" type="button">
                                 <span class="bold">Últimas reservas</span>
                                 <span class="numPaymentLastBooks"><?php echo  $stripedsPayments->count(); ?></span>
                             </button>
-                            <button id="lastBooksClose" class="btn btn-danger btn-cons m-b-10" type="button" style="display: none;">
+                            <button id="lastBooksClose" class="btn btn-danger btn-cons " type="button" style="display: none;">
                                 <span class="bold">Últimas reservas</span>
                                 <span class="numPaymentLastBooks"><?php echo  $stripedsPayments->count(); ?></span>
                             </button>
-                             <button class="btn btn-success btn-cons m-b-10" type="button" id="stripePayment">
+                             <button class="btn btn-success btn-cons" type="button" id="stripePayment">
                                 <i class="fa fa-money" aria-hidden="true"></i> <span class="bold">Cobros stripe</span>
+                            </button>
+                            <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalCalculateBook"> 
+                                <span class="bold">Calcular reserva</span>
                             </button>
                         </div>
                         <div class="col-md-4 text-center pull-right">
@@ -329,6 +331,20 @@
             </div>
             <!-- /.modal-dialog -->
         </div>
+
+        
+        <div class="modal fade slide-up in" id="modalCalculateBook" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content-wrapper">
+                    <div class="modal-content">
+                        @include('backend.planning._calculateBook')
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
 
     <?php else: ?>
         <style type="text/css">
