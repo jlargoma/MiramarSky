@@ -24,8 +24,6 @@
 				<td class ="text-center" >
 				    <?php if ($book->real_pax > 6 ): ?>
 				        <?php echo $book->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
-				    <?php elseif($book->pax != $book->real_pax): ?>
-				        <?php echo $book->real_pax ?><i class="fa fa-exclamation-circle" aria-hidden="true" style="color: red"></i>
 				    <?php else: ?>
 				        <?php echo $book->pax ?>
 				    <?php endif ?>

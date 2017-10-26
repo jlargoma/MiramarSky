@@ -204,6 +204,7 @@ class BookController extends Controller
      */
     public function create(Request $request)
     {
+
         $mobile = new Mobile();
 
         $aux = str_replace('Abr', 'Apr', $request->input('fechas'));
@@ -214,7 +215,7 @@ class BookController extends Controller
         $finish = Carbon::createFromFormat('d M, y' , trim($date[1]))->format('d/m/Y');
         $book = new \App\Book();
         $extraPrice = 0 ;
-        $extraCost  = 0;
+        $extraCost  = 0 ;
 
 
 
@@ -247,6 +248,7 @@ class BookController extends Controller
                 $book->book_comments = ltrim($request->input('book_comments'));
                 $book->type_book     = ( $request->input('status') ) ? $request->input('status') : 3;
                 $book->pax           = $request->input('pax');
+                $book->real_pax      = $request->input('pax');
                 $book->nigths        = $request->input('nigths');
                 $book->agency        = $request->input('agency');
                 $book->PVPAgencia    = ( $request->input('agencia') )?$request->input('agencia'):0;
@@ -299,7 +301,7 @@ class BookController extends Controller
 
             $isReservable  = 0;
 
-            if (in_array($request->input('status'), [1, 2, 4, 5, 7, 8])) {
+            if (in_array($request->input('status'), [1, 2, 4, 7, 8])) {
                 
                 if ($book->existDate($start, $finish, $request->input('newroom'))) {
                     $isReservable = 1;
@@ -334,6 +336,7 @@ class BookController extends Controller
                     $room                = \App\Rooms::find($request->input('newroom'));
                     
 
+
                     $book->user_id       = $customer->user_id;
                     $book->customer_id   = $customer->id;
                     $book->room_id       = $request->input('newroom');
@@ -343,6 +346,7 @@ class BookController extends Controller
                     $book->book_comments = $request->input('book_comments');
                     $book->type_book     = ( $request->input('status') ) ? $request->input('status') : 3;
                     $book->pax           = $request->input('pax');
+                    $book->real_pax      = $request->input('real_pax');
                     $book->nigths        = $request->input('nigths');
                     $book->agency        = $request->input('agency');
                     $book->type_park     = $request->input('parking');

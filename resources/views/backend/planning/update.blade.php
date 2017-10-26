@@ -184,10 +184,10 @@
                                         </option>
                                     <?php endfor;?>
                                 </select>
-
-                                <select class=" form-control real_pax minimal m-t-5"  name="real_pax">
+                                <label class="m-t-5" style="color: red">Pax-Real</label>
+                                <select class=" form-control real_pax minimal"  name="real_pax">
                                     <?php for ($i=1; $i <= 10 ; $i++): ?>
-                                        <option value="<?php echo $i ?>" <?php echo ($i == $book->real_pax)?"selected":""; ?>>
+                                        <option value="<?php echo $i ?>" <?php echo ($i == $book->real_pax)?"selected":""; ?> style="color: red">
                                             <?php echo $i ?>
                                         </option>
                                     <?php endfor;?>
@@ -493,6 +493,14 @@
                                     </option>
                                 <?php endfor;?>
                             </select> 
+                            <label class="m-t-20" style="color: red">Pax-Real</label>
+                            <select class=" form-control real_pax minimal"  name="real_pax">
+                                <?php for ($i=1; $i <= 10 ; $i++): ?>
+                                    <option value="<?php echo $i ?>" <?php echo ($i == $book->real_pax)?"selected":""; ?> style="color: red">
+                                        <?php echo $i ?>
+                                    </option>
+                                <?php endfor;?>
+                            </select>
                         </div>
                         <div class="col-md-3 col-xs-8 push-20">
                             <label>Apartamento</label>
@@ -978,7 +986,12 @@
 
             $('.pax').change(function(event){ 
                 var room = $('#newroom').val();
+                var real_pax =$('.real_pax').val();
                 var pax = $('.pax').val();
+
+                $('.real_pax option[value='+pax+']').attr('selected','selected');
+                $('.real_pax option[value='+real_pax+']').removeAttr('selected');
+
                 $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
 
                     if (pax < data) {

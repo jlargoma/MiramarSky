@@ -18,7 +18,7 @@
     </thead>
     <tbody>
       <?php foreach ($arrayBooks["nuevas"] as $nueva): ?>
-        <?php $class = ucwords($book->getStatus($book->type_book)) ?>
+        <?php $class = ucwords($book->getStatus($nueva->type_book)) ?>
         <?php if ($class == "Contestado(EMAIL)"): ?>
              <?php $class = "contestado-email" ?>
         <?php endif ?>
@@ -30,12 +30,10 @@
           <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->start)->formatLocalized('%d %b') ?></td>
           <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->finish)->formatLocalized('%d %b') ?></td>
           <td class ="text-center" >
-              <?php if ($book->real_pax > 6 ): ?>
-                  <?php echo $book->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
-              <?php elseif($book->pax != $book->real_pax): ?>
-                  <?php echo $book->real_pax ?><i class="fa fa-exclamation-circle" aria-hidden="true" style="color: red"></i>
+              <?php if ($nueva->real_pax > 6 ): ?>
+                  <?php echo $nueva->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
               <?php else: ?>
-                  <?php echo $book->pax ?>
+                  <?php echo $nueva->pax ?>
               <?php endif ?>
                   
           </td>
