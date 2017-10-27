@@ -413,11 +413,11 @@ class Book extends Model
                                 });
                             break;
                             case '4':
-                                Mail::send('backend.emails.bloqueado',['book' => $book], function ($message) use ($book) {
-                                    $message->from('reservas@apartamentosierranevada.net');
-                                    $message->to('alquilerapartamentosmiramarski@gmail.com');
-                                    $message->subject('Correo de Bloqueo');
-                                });  
+                                // Mail::send('backend.emails.bloqueado',['book' => $book], function ($message) use ($book) {
+                                //     $message->from('reservas@apartamentosierranevada.net');
+                                //     $message->to('alquilerapartamentosmiramarski@gmail.com');
+                                //     $message->subject('Correo de Bloqueo');
+                                // });  
                             break;
                             case '6':
                                 Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
