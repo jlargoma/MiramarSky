@@ -1,336 +1,249 @@
-<link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
-<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
-<style type="text/css" media="screen">
-    .daterangepicker{
-        z-index: 10000!important;
-    }
-    .pg-close{
-        font-size: 45px!important;
+<?php $mobile = new \App\Classes\Mobile(); ?>
+<style type="text/css">
+    .radio-style:checked + .radio-style-3-label:before{
+        background: #1ABC9C!important;
         color: white!important;
     }
-    input.calculate-total{
-        background: #0c685f!important;
-        border-color: #0c685f!important;
-        color: white!important;
-        font-size: 60px;
-        font-weight: 800;
-        text-align: center;
-        height: 90px;
+    .black {
+        color: black!important;
     }
 </style>
+<link href="{{ asset('/frontend/hover.css')}}" rel="stylesheet" media="all">
+<link rel="stylesheet" href="{{ asset('/frontend/css/components/radio-checkbox.css')}}" type="text/css" />
+
 <div class="modal-header clearfix text-left">
     <div class="row">
         <div class="col-xs-12 bg-black push-20">
             <h4 class="text-center white">
                 CALCULAR RESERVA
             </h4>
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
+            <button type="button" class="close close-calculate" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
                 <i class="pg-close fs-20" style="color: #e8e8e8;"></i>
             </button>
         </div>
     </div>
 </div>
-<div class="row push-20">
-    <div class="col-md-12">
-        <form role="form"  action="{{ url('/admin/reservas/create') }}" method="post" >
-            <!-- DATOS DEL CLIENTE -->
-            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-            <input type="hidden"  name="status" class="status form-control minimal" value="5">
 
-            <div class="col-md-8 col-xs-12 push-20">
+<div id="content-book" class="row clearfix push-10" >    
+    <div class="col-xs-12 clearfix"  style="padding: 20px 0;">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="row" id="content-book-response">
+                    <div class="col-xs-12 front" >
+                        <div id="form-content">
+                            <form id="form-book-apto-lujo" action="{{url('/admin/reservas/help/getTotalBook')}}" method="post">
+                                <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
-                <div class="col-md-4 col-xs-12 push-10">
-                    <label for="name">Nombre</label> 
-                    <input class="form-control calculate-cliente" type="text" name="name">
-                </div> 
-                <div class="col-md-5 col-xs-12 push-10">
-                    <label>Entrada</label>
-                    <div class="input-prepend input-group">
-                        <input type="text" class="form-control calculate-daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="">
+                                <div class="col-md-12">
+                                    <div class="form-group col-sm-12 col-xs-6 col-md-6 col-lg-6 white">
+                                        <label for="name">*Nombre</label>
+                                        <input type="text" class="form-control" name="name" id="cal-nombre" placeholder="Nombre..." maxlength="40" required="" aria-label="Escribe tu nombre">
+                                    </div>
+
+                                    <div class="form-group col-sm-12 col-xs-6 col-md-6 white">
+                                        <label for="date" style="display: inherit!important;">*Entrada - Salida</label>
+                                        <input type="text" class="form-control daterange1" id="date"   name="date" required style="cursor: pointer;text-align: center;" readonly="">
+                                        <p  class="help-block min-days" style="display:none;line-height:1.2;color:red;">
+                                            <b>* ESTANCIA MÍNIMA: 2 NOCHES</b>
+                                        </p>
+                                    </div>
+
+                                    <div class="hidden-xs hidden-sm" style="clear: both;"></div>
+
+                                    <div class="form-group col-sm-12 col-xs-6 col-md-3 white">
+                                        <label for="quantity" style="display: inherit!important;">*Personas</label>
+                                        <div class="quantity center clearfix divcenter">
+                                            <select id="quantity" class="form-control minimal" name="quantity">
+                                                <?php for ($i = 1;  $i <= 8 ; $i++): ?>
+                                                    <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                                                <?php endfor ?>
+                                            </select>
+                                        </div>
+                                        <p class="help-block hidden-sm hidden-xs" style="line-height:1.2">Máx 8 pers</p>
+                                    </div>
+                                        
+                                    <div class="form-group col-sm-12 col-xs-4 col-md-3" style="padding: 0">
+                                        <label for="parking" style="display: inline!important;" class="col-md-12 parking">* Tipo Apto</label>
+                                        <div class="col-md-6">
+                                            <input id="apto-2dorm" class="radio-style apto-2dorm form-control" name="apto" type="radio" value="2dorm">
+                                            <label for="apto-2dorm" class="radio-style-3-label">2Dor</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input id="apto-estudio" class="radio-style apto-estudio form-control" name="apto" type="radio" value="estudio">
+                                            <label for="apto-estudio" class="radio-style-3-label">Est.</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-12 col-xs-4 col-md-3">
+                                        <label style="display: inline!important;" class="col-md-12 luxury">*lujo</label>
+                                        <div class="col-md-6"> 
+                                            <input id="luxury-yes" class="radio-style" name="luxury" type="radio"  value="si">
+                                            <label for="luxury-yes" class="radio-style-3-label">Si</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input id="luxury-no" class="radio-style" name="luxury" type="radio" value="no" checked="">
+                                            <label for="luxury-no" class="radio-style-3-label">No</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-12 col-xs-4 col-md-3">
+                                        <label style="display: inline!important;" class="col-md-12 parking">*Parking</label>
+                                        <div class="col-md-6">
+                                            <input id="parking-yes" class="radio-style" name="parking" type="radio" checked="" value="si">
+                                            <label for="parking-yes" class="radio-style-3-label">Si</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input id="parking-no" class="radio-style" name="parking" type="radio" value="no">
+                                            <label for="parking-no" class="radio-style-3-label">No</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12 text-center">
+                                        <button type="submit" class="btn btn-success btn-cons btn-lg" id="confirm-reserva">Calcular reserva</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 back" style="display: none;">
+
                     </div>
                 </div>
-                <div class="col-md-3 col-xs-12 push-10">
-                    <label>Apartamento</label>
-                    <select class="form-control full-width calculate-newroom minimal" name="calculate-newroom" id="calculate-newroom">
-                        <option ></option>
-                        <?php foreach (\App\Rooms::where('state','=',1)->get() as $room): ?>
-                            <option value="<?php echo $room->id ?>" data-luxury="<?php echo $room->luxury ?>" data-size="<?php echo $room->sizeApto ?>">
-                                <?php echo $room->name ?>
-                            </option>
-                        <?php endforeach ?>
-                    </select>
-                </div>
-                <div class="col-md-3 col-xs-12 push-10">
-                    <label>Parking</label>
-                    <select class=" form-control calculate-parking minimal"  name="parking">
-                        <?php for ($i=1; $i <= 4 ; $i++): ?>
-                            <option value="<?php echo $i ?>">
-                                <?php echo \App\Book::getParking($i) ?>
-                            </option>
-                        <?php endfor;?>
-                    </select>
-                </div>
-                 <div class="col-md-3 col-xs-12 push-10">
-                    <label>Sup. Lujo</label>
-                    <select class=" form-control full-width calculate-type_luxury minimal" name="type_luxury">
-                        <?php for ($i=1; $i <= 4 ; $i++): ?>
-                            <option value="<?php echo $i ?>" <?php echo ($i == 2)?"selected": "" ?>>
-                                <?php echo \App\Book::getSupLujo($i) ?>
-                            </option>
-                        <?php endfor;?>
-                    </select>
-                </div>
-                <div class="col-md-2 col-xs-12 push-10">
-                    <label>Noches</label>
-                    <input type="text" class="form-control calculate-nigths" name="nigths" style="width: 100%" disabled>
-                    <input type="hidden" class="form-control calculate-nigths" name="nigths" style="width: 100%" >
-                </div> 
-                <div class="col-md-2 col-xs-12 push-10">
-                    <label>Pax</label>
-                    <select class=" form-control calculate-pax minimal"  name="pax">
-                        <?php for ($i=1; $i <= 10 ; $i++): ?>
-                            <option value="<?php echo $i ?>">
-                                <?php echo $i ?>
-                            </option>
-                        <?php endfor;?>
-                    </select>
-                    
-                </div>
-                <div class="col-md-2 col-xs-12 push-10">
-                    <label style="color: red">Px-real</label>
-                    <select class=" form-control calculate-real_pax minimal"  name="real_pax" style="color:red">
-                        <?php for ($i=1; $i <= 10 ; $i++): ?>
-                            <option value="<?php echo $i ?>" style="color:red">
-                                <?php echo $i ?>
-                            </option>
-                        <?php endfor;?>
-                    </select>
-                </div>
-                
             </div>
-            <div class="col-md-4 col-xs-12 push-20">
-             <div class="col-xs-12 text-center" style="background-color: #0c685f;">
-                    <label class="font-w800 text-white" for="">TOTAL</label>
-                    <input type="text" class="form-control calculate-total m-t-10 m-b-10 white" name="total" >
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <button class="btn btn-md btn-cons btn-complete font-s24 font-w400" type="submit" style="min-height: 50px;">Guardar</button>
-                </div>  
-            </div>
-        </form>
+            
+        </div>
     </div>
 </div>
-<script src="{{ asset('assets/plugins/jquery/jquery-1.11.1.min.js') }}" type="text/javascript"></script>
+<script type="text/javascript" src="{{ asset('/frontend/js/jquery.js')}}"></script>
 <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
 <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
 <script type="text/javascript">
-
+    /* Calendario */
     $(function() {
-      $(".calculate-daterange1").daterangepicker({
-        "buttonClasses": "button button-rounded button-mini nomargin",
-        "applyClass": "button-color",
-        "cancelClass": "button-light",
-        "startDate": '01 Dec, 17',
-        locale: {
-            format: 'DD MMM, YY',
-            "applyLabel": "Aplicar",
-              "cancelLabel": "Cancelar",
-              "fromLabel": "From",
-              "toLabel": "To",
-              "customRangeLabel": "Custom",
-              "daysOfWeek": [
-                  "Do",
-                  "Lu",
-                  "Mar",
-                  "Mi",
-                  "Ju",
-                  "Vi",
-                  "Sa"
-              ],
-              "monthNames": [
-                  "Enero",
-                  "Febrero",
-                  "Marzo",
-                  "Abril",
-                  "Mayo",
-                  "Junio",
-                  "Julio",
-                  "Agosto",
-                  "Septiembre",
-                  "Octubre",
-                  "Noviembre",
-                  "Diciembre"
-              ],
-              "firstDay": 1,
-          },
-          
-      });
+        $(".daterange1").daterangepicker({
+            "buttonClasses": "button button-rounded button-mini nomargin",
+            "applyClass": "button-color",
+            "cancelClass": "button-light",
+            "startDate": '01 Dec, 17',
+            locale: {
+              format: 'DD MMM, YY',
+              "applyLabel": "Aplicar",
+                "cancelLabel": "Cancelar",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "daysOfWeek": [
+                    "Do",
+                    "Lu",
+                    "Mar",
+                    "Mi",
+                    "Ju",
+                    "Vi",
+                    "Sa"
+                ],
+                "monthNames": [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre"
+                ],
+                "firstDay": 1,
+            },
+            
+        });
     });
 
-    function calculate( notModifyPrice = 0){
-            var room       = $('#calculate-newroom').val();
-            var pax        = $('.calculate-pax').val();
-            var park       = $('.calculate-parking').val();
-            var lujo       = $('select[name=type_luxury]').val();
-            var status     = $('input[name=status]').val();
-            var sizeApto   = $('option:selected', 'select[name=calculate-newroom]').attr('data-size');
-            var beneficio  = 0;
-            var costPark   = 0;
-            var pricePark  = 0;
-            var costLujo   = 0;
-            var priceLujo  = 0;
-            var agencia    = 0;
-            var beneficio_ = 0;
-            var comentario = "";
-            var date       = $('.calculate-daterange1').val();
-            
-            var arrayDates = date.split('-');
-            var res1       = arrayDates[0].replace("Abr", "Apr");
-            var date1      = new Date(res1);
-            var start      = date1.getTime();
-            
-            var res2       = arrayDates[1].replace("Abr", "Apr");
-            var date2      = new Date(res2);
-            var timeDiff   = Math.abs(date2.getTime() - date1.getTime());
-            var diffDays   = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-            $('.calculate-nigths').val(diffDays);
-            
-            var start      = date1.toLocaleDateString();
-            var finish     = date2.toLocaleDateString();
 
+    $(document).ready(function() {
 
-
-            
-            if ( status == 8) {
-                $('.calculate-total').empty();
-                $('.calculate-total').val(0);
-            }else if ( status == 7 ){
-                if (sizeApto == 1) {
-                    $('.calculate-total').empty();
-                    $('.calculate-total').val(30);
-                }else{
-                    $('.calculate-total').empty();
-                    $('.calculate-total').val(50);
-                }
-            }else{
-                $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays}).success(function( data ) {
-                    pricePark = data;
-                    $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
-                        priceLujo = data;
-
-                        $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                            price = data;
-                            
-                            price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
-
-                            if ( notModifyPrice == 0) {
-                                $('.calculate-total').empty();
-                                $('.calculate-total').val(price);
-                            }
-                        });
-                    });
-                }); 
+        $(".only-numbers").keydown(function (e) {
+            // Allow: backspace, delete, tab, escape, enter and .
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                 // Allow: Ctrl+A, Command+A
+                (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
+                 // Allow: home, end, left, right, down, up
+                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                     // let it happen, don't do anything
+                     return;
             }
-             
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
 
-            
+       
+        $('#form-book-apto-lujo').submit(function(event) {
 
-    }
-
-
-    $(document).ready(function() {          
+            event.preventDefault();
 
 
-        var start  = 0;
-        var finish = 0;
-        var noches = 0;
-        var price = 0;
-        var cost = 0;
+            var _token   = $('input[name="_token"]').val();
+            var name     = $('#cal-nombre').val();
+            var email    = $('input[name="email"]').val();
+            var phone    = $('input[name="telefono"]').val();
+            var date     = $('input[name="date"]').val();
+            var quantity = $('select[name="quantity"]').val();
+            var apto     = $('input:radio[name="apto"]:checked').val();
+            var luxury   = $('input:radio[name="luxury"]:checked').val();
+            var parking  = $('input:radio[name="parking"]:checked').val();
+            var comment  = "";
 
-        $('.calculate-daterange1').change(function(event) {
+            var url = $(this).attr('action');
+
+            $.post( url , {_token : _token,  name : name,  email : email,   phone : phone,   fechas : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
+                
+                $('#content-book-response .back').empty();
+                $('#content-book-response .back').append(data);
+
+                $("#content-book-response .front").hide();
+
+                $("#content-book-response .back").show();
+                
+
+            });
+
+        });
+        
+
+        $('.daterange1').change(function(event) {
             var date = $(this).val();
 
             var arrayDates = date.split('-');
-            var res1 = arrayDates[0].replace("Abr", "Apr");
-            var date1 = new Date(res1);
-            var start = date1.getTime();
 
-            var res2 = arrayDates[1].replace("Abr", "Apr");
-            var date2 = new Date(res2);
+            var date1 = new Date(arrayDates[0]);
+            var date2 = new Date(arrayDates[1]);
             var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-            $('.calculate-nigths').val(diffDays);
-
-            calculate();
-
-        });
-
-
-
-        
-        $('#calculate-newroom').change(function(event){ 
-
-            var room = $('#calculate-newroom').val();
-            var pax = $('.calculate-pax').val();
-            $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
-
-                if (pax < data) {
-                    $('.calculate-personas-antiguo').empty();
-                    $('.calculate-personas-antiguo').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
-                }else{
-                    $('.calculate-personas-antiguo').empty();
-                }
-            });
-
-            
-            var dataLuxury = $('option:selected', this).attr('data-luxury');;
-
-            if (dataLuxury == 1) {
-                $('.calculate-type_luxury option[value=1]').attr('selected','selected');
-                $('.calculate-type_luxury option[value=2]').removeAttr('selected');
-            } else {
-                $('.calculate-type_luxury option[value=1]').removeAttr('selected');
-                $('.calculate-type_luxury option[value=2]').attr('selected','selected');
+            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+            console.log(diffDays);
+            if (diffDays < 2) {
+                $('.min-days').show();
+            }else{
+                $('.min-days').hide();
             }
 
-
-
-            calculate();
         });
 
+        $('#quantity').change(function(event) {
+            var pax = $(this).val();
 
-        $('.calculate-pax').change(function(event){ 
-            var room = $('#calculate-newroom').val();
-            var real_pax =$('.calculate-real_pax').val();
-            var pax = $('.calculate-pax').val();
+            if (pax <= 4) {
+                $("#apto-estudio").trigger('click');
+                $("#apto-estudio").show();
 
-            $('.real_pax option[value='+pax+']').attr('selected','selected');
-            $('.real_pax option[value='+real_pax+']').removeAttr('selected');
-
-            $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
-
-                if (pax < data) {
-                    $('.calculate-personas-antiguo').empty();
-                    $('.calculate-personas-antiguo').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
-                }else{
-                    $('.calculate-personas-antiguo').empty();
-                }
-            });
-
-
-            calculate();
+            }else if (pax > 4) {
+                $(".apto-2dorm").trigger('click');
+                $("#apto-estudio").hide();
+            }
         });
-        
-        $('.calculate-total').change(function(event) {
-            var price = $(this).val();
-            var cost = $('.cost').val();
-            var beneficio = (parseFloat(price) - parseFloat(cost));
-            console.log(beneficio);
-            $('.beneficio').empty;
-            $('.beneficio').val(beneficio);
-        });
+
+       
 
     });
-</script>
+
+</script>   

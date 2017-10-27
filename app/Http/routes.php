@@ -203,6 +203,9 @@ Route::group(['middleware' => 'auth'], function () {
 		return view('backend.planning._calculateBook');
 	});
 
+	Route::post('admin/reservas/help/getTotalBook', 'BookController@getTotalBook');
+	
+
 });
 Route::group(['middleware' => 'authAdmin'], function () {
 	Route::get('admin/delete/nofify/{id}', function ($id) {

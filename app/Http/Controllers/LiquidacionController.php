@@ -336,7 +336,7 @@ class LiquidacionController extends Controller
                     "beneficio"    => 0,   
                 ];
 
-        if ($request->input('year')) {
+        if ($request->year) {
             if ($now->copy()->format('n') >= 9) {
                 $date = new Carbon('first day of September '.$now->copy()->format('Y'));
             }else{
@@ -344,12 +344,12 @@ class LiquidacionController extends Controller
             }
             
         }else{
-            $date = new Carbon('first day of September '.$request->input('year'));
+            $date = new Carbon('first day of September '.$request->year);
         }
 
 
-        if ($request->input('searchString') != "") {
-            $customers = \App\Customers::where('name', 'LIKE', '%'.$request->input('searchString').'%')->get();
+        if ($request->searchString != "") {
+            $customers = \App\Customers::where('name', 'LIKE', '%'.$request->searchString.'%')->get();
             
             if (count($customers) > 0) {
                 $arrayCustomersId = [];
@@ -361,12 +361,13 @@ class LiquidacionController extends Controller
                 }
 
 
-                if ($request->input('searchRoom') && $request->input('searchRoom') != "all") {
+                if ($request->searchRoom && $request->searchRoom != "all") {
+                    
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
                                     ->where('start' , '>=' , $date->format('Y-m-d'))
                                     ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
                                     ->where('type_book',2)
-                                    ->where('room_id', $request->input('searchRoom'))
+                                    ->where('room_id', $request->searchRoom)
                                     ->orderBy('start', 'ASC')
                                     ->get();
                 } else {
@@ -378,9 +379,6 @@ class LiquidacionController extends Controller
                                     ->get();
                 }
                 
-
-                
-
 
                 foreach ($books as $key => $book) {
 
@@ -408,15 +406,16 @@ class LiquidacionController extends Controller
                                                         'totales' => $totales,
                                                     ]);
             }else{
-                return "<h2>No hay reservas para este término '".$request->input('searchString')."'</h2>";
+                return "<h2>No hay reservas para este término '".$request->searchString."'</h2>";
             }
         }else{
 
-            if ($request->input('searchRoom') && $request->input('searchRoom') != "all") {
+            if ($request->searchRoom && $request->searchRoom != "all") {
+
                 $books = \App\Book::where('start' , '>=' , $date)
                                 ->where('start', '<=', $date->copy()->AddYear()->SubMonth())
                                 ->where('type_book', 2)
-                                ->where('room_id', $request->input('searchRoom'))
+                                ->where('room_id', $request->searchRoom)
                                 ->orderBy('start', 'ASC')
                                 ->get();
             } else {
@@ -485,7 +484,7 @@ class LiquidacionController extends Controller
                     "beneficio"    => 0,   
                 ];
 
-        if ($request->input('year')) {
+        if ( $request->year ) {
             if ($now->copy()->format('n') >= 9) {
                 $date = new Carbon('first day of September '.$now->copy()->format('Y'));
             }else{
@@ -493,13 +492,13 @@ class LiquidacionController extends Controller
             }
             
         }else{
-            $date = new Carbon('first day of September '.$request->input('year'));
+            $date = new Carbon('first day of September '.$request->year);
         }
 
 
-        if ($request->input('searchString') != "") {
+        if ($request->searchString != "") {
 
-            $customers = \App\Customers::where('name', 'LIKE', '%'.$request->input('searchString').'%')->get();
+            $customers = \App\Customers::where('name', 'LIKE', '%'.$request->searchString.'%')->get();
             
             if (count($customers) > 0) {
                 $arrayCustomersId = [];
@@ -510,7 +509,7 @@ class LiquidacionController extends Controller
                     
                 }
 
-                if ($request->input('searchRoom') && $request->input('searchRoom') != "all") {
+                if ($request->searchRoom && $request->searchRoom != "all") {
 
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
                                     ->where('start' , '>=' , $date->format('Y-m-d'))
@@ -523,7 +522,7 @@ class LiquidacionController extends Controller
                                     ->where('start' , '>=' , $date->format('Y-m-d'))
                                     ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
                                     ->where('type_book',2)
-                                    ->where('room_id',$request->input('searchRoom'))
+                                    ->where('room_id',$request->searchRoom)
                                     ->orderBy('start', 'ASC')
                                     ->get();
                 }
@@ -557,13 +556,12 @@ class LiquidacionController extends Controller
                                                         'totales' => $totales,
                                                     ]);
             }else{
-                return "<h2>No hay reservas para este término '".$request->input('searchString')."'</h2>";
+                return "<h2>No hay reservas para este término '".$request->searchString."'</h2>";
             }
         }else{
 
-            $books = \App\Book::where('start' , '>=' , $date)->where('start', '<=', $date->copy()->AddYear()->SubMonth())->where('type_book',2)->orderBy('start', 'ASC')->get();
 
-            if ($request->input('searchRoom') && $request->input('searchRoom') != "all") {
+            if ($request->searchRoom && $request->searchRoom != "all") {
                     
                    $books = \App\Book::where('start' , '>=' , $date)
                                         ->where('start', '<=', $date->copy()->AddYear()->SubMonth())
@@ -574,7 +572,7 @@ class LiquidacionController extends Controller
                     $books = \App\Book::where('start' , '>=' , $date)
                                         ->where('start', '<=', $date->copy()->AddYear()->SubMonth())
                                         ->where('type_book',2)
-                                        ->where('room_id',$request->input('searchRoom'))
+                                        ->where('room_id',$request->searchRoom)
                                         ->orderBy('start', 'ASC')
                                         ->get();
                 }

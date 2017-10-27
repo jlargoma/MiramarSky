@@ -598,10 +598,11 @@
                                 <div class="tab-pane table-responsive" id="tabOut">
                                     <table class="table table-striped dataTable no-footer">
                                         <thead>
-                                            <th class="bg-success text-white text-center">Nombre</th>
-                                            <th class="bg-success text-white text-center">Out</th>
-                                            <th class="bg-success text-white text-center">Apto</th>
-                                            <th class="bg-success text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i>Salida</th>
+                                            <th class="bg-primary text-white text-center">Nombre</th>
+                                            <th class="bg-primary text-white text-center">Tel</th>
+                                            <th class="bg-primary text-white text-center">Out</th>
+                                            <th class="bg-primary text-white text-center">Apto</th>
+                                            <th class="bg-primary text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i>Salida</th>
                                         </thead>
                                         <tbody>
                                             <?php foreach ($proxOut as $book): ?>
@@ -610,6 +611,9 @@
                                                         <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                                                             <?php echo substr($book->customer->name, 0, 10) ?>
                                                         </a> 
+                                                    </td>
+                                                    <td class="text-center sm-p-t-10 sm-p-b-10">
+                                                        <a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a>
                                                     </td>
                                                     <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
                                                     <td class="text-center sm-p-t-10 sm-p-b-10">
@@ -813,11 +817,11 @@
                 }else{
                     
                    $.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
-                        
+                        $('.notification-message').val(data);
+                        $("#boton").click();
                         if (data == "Ya hay una reserva para ese apartamento" || data == "No se puede cambiar el estado" || data == "Valor nulo o vacio" ) {
 
-                            $('.notification-message').val(data);
-                            $("#boton").click();
+                            
 
                         }else{
                             setTimeout('document.location.reload()',1000);
@@ -894,9 +898,14 @@
 
 
             $('.btn-calcuteBook').click(function(event) {
+
                 $('#modalCalculateBook .modal-content').empty().load('/admin/reservas/help/calculateBook');
+
             });
 
+            $('.close-calculate').click(function(event) {
+               ('#modalCalculateBook .modal-content').empty();
+            });
         });
     </script>
 

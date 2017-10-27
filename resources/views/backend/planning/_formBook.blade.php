@@ -150,7 +150,7 @@
                             </div>
                             <div class="col-md-6 col-xs-12 push-10">                                                        
                                 <label>Cost Agencia</label>
-                                <input type="text" class="agencia form-control" name="agencia" value="<?php echo $request->agencia ?>">
+                                <input type="number" class="agencia form-control" name="agencia" value="<?php echo $request->agencia ?>">
                             </div>
                             <div style="clear: both;"></div>
                             <!-- <div class="col-md-6">

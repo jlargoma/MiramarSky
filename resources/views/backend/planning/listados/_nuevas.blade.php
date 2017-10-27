@@ -8,10 +8,14 @@
         font-size: 45px!important;
         color: white!important;
     }
+    @media only screen and (max-width: 767px){
+       .daterangepicker {
+            left: 12%!important;
+            top: 8%!important; 
+        }
+    }
+
 </style>
-<div class="modal-header clearfix text-left">
-    
-</div>
 <div class="row padding-block">
 
     <div class="col-xs-12 bg-black push-20">
@@ -34,7 +38,7 @@
                     <label for="status">Estado</label>
                 </div> 
                 <div class="col-md-8">
-                    <select name="status" class="status form-control minimal" data-id="<?php echo $book->id ?>" >
+                    <select name="status" class="form-control minimal" data-id="<?php echo $book->id ?>" >
                         <?php for ($i=1; $i <= 9; $i++): ?> 
                             <option <?php echo $i == 3 ? "selected" : ""; ?> 
                             <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
@@ -54,15 +58,15 @@
                     </h4>
                 </div>
 
-                <div class="col-md-4 push-10">
+                <div class="col-md-4 col-xs-12 push-10">
                     <label for="name">Nombre</label> 
                     <input class="form-control cliente" type="text" name="name">
                 </div>
-                <div class="col-md-4 push-10">
+                <div class="col-md-4 col-xs-12 push-10">
                     <label for="email">Email</label> 
                     <input class="form-control cliente" type="email" name="email" >
                 </div>
-                <div class="col-md-4 push-10">
+                <div class="col-md-4 col-xs-12 push-10">
                     <label for="phone">Telefono</label> 
                     <input class="form-control cliente" type="number" name="phone" >
                 </div>  
@@ -82,12 +86,12 @@
 
                     </div>
                 </div>
-                <div class="col-md-1 p-l-0">
+                <div class="col-md-1 col-xs-6">
                     <label>Noches</label>
                     <input type="text" class="form-control nigths" name="nigths" style="width: 100%" disabled>
                     <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%" >
                 </div> 
-                <div class="col-md-2 p-l-0">
+                <div class="col-md-2 col-xs-6">
                     <label>Pax</label>
                     <select class=" form-control pax minimal"  name="pax">
                         <?php for ($i=1; $i <= 10 ; $i++): ?>
@@ -96,16 +100,21 @@
                             </option>
                         <?php endfor;?>
                     </select>
-                    <label class="m-t-5" style="color: red">Pax-reales</label>
-                    <select class=" form-control real_pax minimal"  name="real_pax" style="color:red">
-                        <?php for ($i=1; $i <= 10 ; $i++): ?>
-                            <option value="<?php echo $i ?>" style="color:red">
-                                <?php echo $i ?>
-                            </option>
-                        <?php endfor;?>
-                    </select>
+                   
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2 col-xs-6">
+                     <label style="color: red">Pax-reales</label>
+                     <select class=" form-control real_pax minimal"  name="real_pax" style="color:red">
+                         <?php for ($i=1; $i <= 10 ; $i++): ?>
+                             <option value="<?php echo $i ?>" style="color:red">
+                                 <?php echo $i ?>
+                             </option>
+                         <?php endfor;?>
+                     </select>
+                   
+                </div>
+                 
+                <div class="col-md-3 col-xs-7">
                     <label>Apartamento</label>
                     <select class="form-control full-width newroom minimal" name="newroom" id="newroom">
                         <option ></option>
@@ -116,7 +125,7 @@
                         <?php endforeach ?>
                     </select>
                 </div>
-                <div class="col-md-1 p-l-0 p-r-0">
+                <div class="col-md-4 col-xs-5">
                     <label>Parking</label>
                     <select class=" form-control parking minimal"  name="parking">
                         <?php for ($i=1; $i <= 4 ; $i++): ?>
@@ -126,7 +135,7 @@
                         <?php endfor;?>
                     </select>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-4 col-xs-6">
                     <label>Sup. Lujo</label>
                     <select class=" form-control full-width type_luxury minimal" name="type_luxury">
                         <?php for ($i=1; $i <= 4 ; $i++): ?>
@@ -151,7 +160,7 @@
                     </div>
                     <div class="col-md-6 col-xs-12 push-10">                                                        
                         <label>Cost Agencia</label>
-                        <input type="text" class="agencia form-control" name="agencia">
+                        <input type="number" class="agencia form-control" name="agencia">
                     </div>
                     <div style="clear: both;"></div>
                     <div class="col-md-6">
