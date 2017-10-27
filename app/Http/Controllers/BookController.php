@@ -431,7 +431,7 @@ class BookController extends Controller
                     'mobile'    => $mobile
                 ]);
             }
-}
+        }
 
 
 
@@ -614,7 +614,6 @@ class BookController extends Controller
         $book = new \App\Book();
         $extraPrice = 0 ;
         $extraCost  = 0;
-
 
 
 

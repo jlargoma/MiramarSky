@@ -75,7 +75,7 @@
     	</div>
     </div>
 
-	<div class="row push-40">
+	<div class="row">
 		<div class="col-md-12">
 			<div class="col-md-6 push-20">
 				<h2 class="text-left">

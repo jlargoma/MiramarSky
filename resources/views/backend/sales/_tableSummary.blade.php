@@ -3,12 +3,15 @@
 	setlocale(LC_TIME, "ES");
 	setlocale(LC_TIME, "es_ES");
 ?>
-<div class="row">
-    <div class="col-md-9 pull-right">
-        
-    </div>
-</div>
+
 <div class="col-xs-12">
+    <!-- <div class="row">
+        <div class="col-md-9 pull-right">
+            <pre>
+                <?php print_r($data) ?>
+            </pre>
+        </div>
+    </div> -->
 	<div class="col-md-3" style="width: 22%;">
 		<h2 class="text-center font-w800">
 			Resumen liquidación

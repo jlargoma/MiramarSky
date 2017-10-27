@@ -108,7 +108,7 @@ class Book extends Model
     static function existDate($start,$finish,$room)
     {   
 
-        $books = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,7,8])->get();
+        $books = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,7,8])->get();
         $existStart = False;
         $existFinish = False;        
         $requestStart = Carbon::createFromFormat('d/m/Y',$start);

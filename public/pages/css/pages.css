@@ -8141,7 +8141,7 @@ div.cs-skin-slide .cs-options ul li.cs-selected span {
   background: #fafafa !important;
 }
 .table.table-striped tbody tr:nth-child(2n+1) td {
-  background: #fff !important;
+  /*background: #fff !important;*/
 }
 .table.table-borderless tbody tr td {
   border-top: 0;

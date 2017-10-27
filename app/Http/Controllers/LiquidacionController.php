@@ -107,12 +107,14 @@ class LiquidacionController extends Controller
                                                         'books'   => $books,
                                                         'totales' => $totales,
                                                         'temporada' => $date,
+                                                        'data' => $data,
                                                     ]);
             }else{
                 return view('backend/sales/index_mobile',  [
                                                         'books'   => $books,
                                                         'totales' => $totales,
                                                         'temporada' => $date,
+                                                        'data' => $data,
                                                     ]);
             }
         }
