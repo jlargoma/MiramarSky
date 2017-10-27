@@ -103,12 +103,17 @@ class HomeController extends Controller
                         
         }
 
+
         if ($url == 'apartamento-standard-sierra-nevada' || $url == 'apartamento-lujo-sierra-nevada'  || $url == 'estudio-lujo-sierra-nevada'  || $url == 'estudio-standard-sierra-nevada' ) {
-            $slides = File::allFiles(public_path().'/img/miramarski/galerias/'.$url); 
+            $slides = File::allFiles(public_path().'/img/miramarski/galerias/'.$url);
+            $directory = '/img/miramarski/galerias/';
         }else{
+            
             $slides = File::allFiles(public_path().'/img/miramarski/apartamentos/'.$url); 
+            $directory = '/img/miramarski/apartamentos/';            
+
+         
         }
-        
         $aptos  = ['apartamento-lujo-sierra-nevada', 'estudio-lujo-sierra-nevada','apartamento-standard-sierra-nevada','estudio-standard-sierra-nevada'];
 
 
@@ -120,6 +125,7 @@ class HomeController extends Controller
                                                     'typeApto'          => $typeApto,
                                                     'aptos'             => $aptos,
                                                     'url'               => $url,
+                                                    'directory'         => $directory,
                                                 ]);
         
 

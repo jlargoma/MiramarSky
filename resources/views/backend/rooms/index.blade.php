@@ -44,6 +44,9 @@
         cursor: inherit;
         display: block;
     }
+    input{
+      min-height: 35px!important;
+    }
 </style>
 @endsection
     
@@ -67,8 +70,8 @@
                         <th class ="text-center hidden">                  ID            </th>
                         <th class ="text-center bg-complete text-white" style="width: 10%">  Nick     </th>
                         <th class ="text-center bg-complete text-white" style="width: 10%">  Piso     </th>
-                        <th class ="text-center bg-complete text-white" style="width: 7%">  Parking  </th>
-                        <th class ="text-center bg-complete text-white" style="width: 7%">  Taquilla </th>
+                        <th class ="text-center bg-complete text-white" style="width: 5%">  Parking  </th>
+                        <th class ="text-center bg-complete text-white" style="width: 5%">  Taquilla </th>
                         <th class ="text-center bg-complete text-white" style="width: 5%">  Ocu min </th>
                         <th class ="text-center bg-complete text-white" style="width: 5%">  Ocu max </th>
                         <th class ="text-center bg-complete text-white">  Tamaño          </th>

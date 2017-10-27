@@ -75,16 +75,16 @@
 							<?php foreach ($slides as $key => $slide): ?>
 								<?php $fotos = explode(",", $slide->getFilename()) ?>
 								<?php if (isset($fotos[1])): ?>
-									<div class="slide" data-thumb="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $fotos[1] ?>">
+									<div class="slide" data-thumb="{{ asset('')}}<?php echo $directory.$url ?>/<?php echo $fotos[1] ?>">
 										<a>
-											<img class="img img-slider-apto" src="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>" alt="<?php echo $fotos[2] ?>" title="<?php echo $fotos[3] ?>" style="height: 600px">
+											<img class="img img-slider-apto" src="{{ asset('')}}<?php echo $directory.$url ?>/<?php echo $slide->getFilename() ?>" alt="<?php echo $fotos[2] ?>" title="<?php echo $fotos[3] ?>" style="height: 600px">
 											<!-- <div class="flex-caption slider-caption-bg"><?php echo $slide->getFilename() ?></div> -->
 										</a>
 									</div>
 								<?php else: ?>
-									<div class="slide" data-thumb="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename()  ?>">
+									<div class="slide" data-thumb="{{ asset('')}}<?php echo $directory.$url ?>/<?php echo $slide->getFilename() ?>">
 										<a>
-											<img class="img img-slider-apto" src="{{ asset('/img/miramarski/galerias/')}}/<?php echo $url ?>/<?php echo $slide->getFilename() ?>" alt="<?php echo $slide->getFilename()  ?>" title="<?php echo $slide->getFilename()  ?>" style="height: 600px">
+											<img class="img img-slider-apto" src="{{ asset('')}}<?php echo $directory.$url ?>/<?php echo $slide->getFilename() ?>" alt="<?php echo $slide->getFilename()  ?>" title="<?php echo $slide->getFilename()  ?>" style="height: 600px">
 											<!-- <div class="flex-caption slider-caption-bg"><?php echo $slide->getFilename() ?></div> -->
 										</a>
 									</div>
