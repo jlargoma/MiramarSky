@@ -18,6 +18,20 @@
         padding: 0px 5px!important;
         border-right: 0px;
     }
+    .line-divide{
+        border-top: 2px solid #000;
+    }
+    @media screen and (max-width: 767px){
+        .fixed-td{
+            left: 0px;
+        }
+        .btn-fechas-calendar{
+            font-size: 11px;
+        }
+        .btn-fechas-calendar[data-month="5"]{
+            display: none;
+        }
+    }
 </style>
 <div class="col-md-12 col-xs-12">
     <div class="panel">
@@ -69,10 +83,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-								
-                                <?php foreach ($roomscalendar as $room): ?>
+                                <?php 
+                                    $luxAux = 1;
+                                    $typeAux = 2;
+                                ?>
+                                <?php foreach ($roomscalendar as $key => $room): ?>
 									<?php $inicio = $inicioAux->copy() ?>
-                                    <tr>
+
+                                    <?php if ($room->luxury != $luxAux || $room->sizeApto != $typeAux): ?>
+                                        <?php $line = "line-divide"; ?>
+                                    <?php else: ?>
+                                        <?php $line = ""; ?>
+                                    <?php endif ?>
+                                    <?php 
+                                        $luxAux  = $room->luxury;
+                                        $typeAux = $room->sizeApto;
+                                    ?>
+                                    <tr class="<?php echo $line ?>">
                                         
                                         <td class="text-center fixed-td">
                                             <b style="cursor: pointer;" data-placement="right" title="" data-toggle="tooltip" data-original-title="<?php echo $room->name ?>">

@@ -173,7 +173,6 @@ class BookController extends Controller
         }
 
 
-
         return view('backend/planning/index',[
             'arrayBooks'    => $arrayBooks,
             'arrayMonths'   => $arrayMonths,

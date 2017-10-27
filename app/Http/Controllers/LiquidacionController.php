@@ -72,6 +72,35 @@ class LiquidacionController extends Controller
  
             }
 
+            $totBooks = (count($books) > 0)?count($books):1;
+
+            /* INDICADORES DE LA TEMPORADA */
+            $data = [
+                        'days-ocupation'    => 0,
+                        'total-days-season' => 156,
+                        'num-pax'           => 0,
+                        'estancia-media'    => 0,
+                        'pax-media'         => 0,
+                        'precio-dia-media'  => 0,
+                    ];
+
+            foreach ($books as $key => $book) {
+                /* Dias ocupados */
+                $data['days-ocupation'] += $book->nights;
+
+                /* Nº inquilinos */
+                $data['num-pax'] += $book->pax;
+
+            }
+
+                /* Estancia media */
+                $data['estancia-media'] = ($data['days-ocupation'] / $totBooks) * 100 ;
+
+                /* Inquilinos media */
+                $data['pax-media'] = ($data['num-pax'] / $totBooks) * 100 ;
+
+
+
             $mobile = new Mobile();
             if (!$mobile->isMobile()){
                 return view('backend/sales/index',  [
@@ -509,12 +538,13 @@ class LiquidacionController extends Controller
                     
                 }
 
-                if ($request->searchRoom && $request->searchRoom != "all") {
+                if ( $request->searchRoom && $request->searchRoom != "all" ) {
 
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
                                     ->where('start' , '>=' , $date->format('Y-m-d'))
                                     ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
                                     ->where('type_book',2)
+                                    ->where('room_id',$request->searchRoom)
                                     ->orderBy('start', 'ASC')
                                     ->get();
                 }else{
@@ -522,7 +552,6 @@ class LiquidacionController extends Controller
                                     ->where('start' , '>=' , $date->format('Y-m-d'))
                                     ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
                                     ->where('type_book',2)
-                                    ->where('room_id',$request->searchRoom)
                                     ->orderBy('start', 'ASC')
                                     ->get();
                 }
@@ -566,13 +595,13 @@ class LiquidacionController extends Controller
                    $books = \App\Book::where('start' , '>=' , $date)
                                         ->where('start', '<=', $date->copy()->AddYear()->SubMonth())
                                         ->where('type_book',2)
+                                        ->where('room_id',$request->searchRoom)
                                         ->orderBy('start', 'ASC')
                                         ->get();
                 }else{
                     $books = \App\Book::where('start' , '>=' , $date)
                                         ->where('start', '<=', $date->copy()->AddYear()->SubMonth())
                                         ->where('type_book',2)
-                                        ->where('room_id',$request->searchRoom)
                                         ->orderBy('start', 'ASC')
                                         ->get();
                 }
