@@ -77,15 +77,15 @@
 
 	<div class="row">
 		<div class="col-md-12">
-			<div class="col-md-6 push-20">
+			<div class="col-md-3 push-20">
 				<h2 class="text-left">
 					Buscar por:
 				</h2>
-				<div class="col-md-6">
+				<div class="col-md-8">
 					<label>Nombre del cliente:</label>
 					<input id="nameCustomer" type="text" name="searchName" class="searchabled form-control" placeholder="nombre del cliente" />
 				</div>
-				<div class="col-md-3">
+				<div class="col-md-4">
 					<label>APTO:</label>
 					<select class="form-control searchSelect minimal" name="searchByRoom">
 						<option value="all">Todos</option>
@@ -96,6 +96,12 @@
 						<?php endforeach ?>
 					</select>
 				</div>
+			</div>
+			<div class="col-md-9 push-20">
+				<h2 class="text-left">
+					Indicadores de ocupación
+				</h2>
+				@include('backend.sales._tableSummaryBoxes', ['totales' => $totales, 'books' => $books, 'data' => $data])
 			</div>
 		</div>
 		<div class="liquidationSummary">

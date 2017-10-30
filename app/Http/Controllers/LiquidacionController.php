@@ -19,168 +19,175 @@ class LiquidacionController extends Controller
      */
    
     public function index($year="")
-        {   
-            $now = Carbon::now();
-            $totales = [
-                    "total"        => 0,       
-                    "coste"        => 0,       
-                    "bancoJorge"   => 0,  
-                    "bancoJaime"   => 0,  
-                    "jorge"        => 0,       
-                    "jaime"        => 0,       
-                    "costeApto"    => 0,   
-                    "costePark"    => 0,   
-                    "costeLujo"    => 0,   
-                    "costeLimp"    => 0,   
-                    "costeAgencia" => 0,
-                    "benJorge"     => 0,    
-                    "benJaime"     => 0,    
-                    "pendiente"    => 0,   
-                    "limpieza"     => 0,    
-                    "beneficio"    => 0,   
-                ];
-            $liquidacion = new \App\Liquidacion();
-            if (empty($year)) {
-                if ($now->copy()->format('n') >= 9) {
-                    $date = new Carbon('first day of September '.$now->copy()->format('Y'));
-                }else{
-                    $date = new Carbon('first day of September '.$now->copy()->subYear()->format('Y'));
-                }
-                
+    {   
+        $now = Carbon::now();
+        $totales = [
+                "total"        => 0,       
+                "coste"        => 0,       
+                "bancoJorge"   => 0,  
+                "bancoJaime"   => 0,  
+                "jorge"        => 0,       
+                "jaime"        => 0,       
+                "costeApto"    => 0,   
+                "costePark"    => 0,   
+                "costeLujo"    => 0,   
+                "costeLimp"    => 0,   
+                "costeAgencia" => 0,
+                "benJorge"     => 0,    
+                "benJaime"     => 0,    
+                "pendiente"    => 0,   
+                "limpieza"     => 0,    
+                "beneficio"    => 0,   
+            ];
+        $liquidacion = new \App\Liquidacion();
+        if (empty($year)) {
+            if ($now->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$now->copy()->format('Y'));
             }else{
-                $date = new Carbon('first day of September '.$year);
+                $date = new Carbon('first day of September '.$now->copy()->subYear()->format('Y'));
             }
-            $books = \App\Book::where('start' , '>=' , $date)->where('start', '<=', $date->copy()->AddYear()->SubMonth())->where('type_book',2)->orderBy('start', 'ASC')->get();
-
-            foreach ($books as $key => $book) {
-                $totales["total"] += $book->total_price;
-                $totales["coste"] += $book->cost_total;
-                $totales["bancoJorge"] += $book->getPayment(2);
-                $totales["bancoJaime"] += $book->getPayment(3);
-                $totales["jorge"] += $book->getPayment(0);
-                $totales["jaime"] += $book->getPayment(1);
-                $totales["costeApto"] += $book->cost_apto;
-                $totales["costePark"] += $book->cost_park;
-                $totales["costeLujo"] += $book->cost_lujo;
-                $totales["costeLimp"] += $book->sup_limp;
-                $totales["costeAgencia"] += $book->pvpAgency;
-                $totales["benJorge"] += $book->total_price;
-                $totales["benJaime"] += $book->total_price;
-                $totales["pendiente"] += $book->getPayment(4);
-                $totales["limpieza"] += $book->sup_limp;
-                $totales["beneficio"] += $book->total_ben;
- 
-            }
-
-            $totBooks = (count($books) > 0)?count($books):1;
-
-            /* INDICADORES DE LA TEMPORADA */
-            $data = [
-                        'days-ocupation'    => 0,
-                        'total-days-season' => 156,
-                        'num-pax'           => 0,
-                        'estancia-media'    => 0,
-                        'pax-media'         => 0,
-                        'precio-dia-media'  => 0,
-                    ];
-
-            foreach ($books as $key => $book) {
-                /* Dias ocupados */
-                $data['days-ocupation'] += $book->nights;
-
-                /* Nº inquilinos */
-                $data['num-pax'] += $book->pax;
-
-            }
-
-                /* Estancia media */
-                $data['estancia-media'] = ($data['days-ocupation'] / $totBooks) * 100 ;
-
-                /* Inquilinos media */
-                $data['pax-media'] = ($data['num-pax'] / $totBooks) * 100 ;
-
-
-
-            $mobile = new Mobile();
-            if (!$mobile->isMobile()){
-                return view('backend/sales/index',  [
-                                                        'books'   => $books,
-                                                        'totales' => $totales,
-                                                        'temporada' => $date,
-                                                        'data' => $data,
-                                                    ]);
-            }else{
-                return view('backend/sales/index_mobile',  [
-                                                        'books'   => $books,
-                                                        'totales' => $totales,
-                                                        'temporada' => $date,
-                                                        'data' => $data,
-                                                    ]);
-            }
+            
+        }else{
+            $date = new Carbon('first day of September '.$year);
         }
+        $books = \App\Book::where('start' , '>=' , $date)->where('start', '<=', $date->copy()->AddYear()->SubMonth())->where('type_book',2)->orderBy('start', 'ASC')->get();
+
+        foreach ($books as $key => $book) {
+            $totales["total"] += $book->total_price;
+            $totales["coste"] += $book->cost_total;
+            $totales["bancoJorge"] += $book->getPayment(2);
+            $totales["bancoJaime"] += $book->getPayment(3);
+            $totales["jorge"] += $book->getPayment(0);
+            $totales["jaime"] += $book->getPayment(1);
+            $totales["costeApto"] += $book->cost_apto;
+            $totales["costePark"] += $book->cost_park;
+            $totales["costeLujo"] += $book->cost_lujo;
+            $totales["costeLimp"] += $book->sup_limp;
+            $totales["costeAgencia"] += $book->pvpAgency;
+            $totales["benJorge"] += $book->total_price;
+            $totales["benJaime"] += $book->total_price;
+            $totales["pendiente"] += $book->getPayment(4);
+            $totales["limpieza"] += $book->sup_limp;
+            $totales["beneficio"] += $book->total_ben;
+
+        }
+
+        $totBooks = (count($books) > 0)?count($books):1;
+
+        /* INDICADORES DE LA TEMPORADA */
+        $data = [
+                    'days-ocupation'    => 0,
+                    'total-days-season' => 156,
+                    'num-pax'           => 0,
+                    'estancia-media'    => 0,
+                    'pax-media'         => 0,
+                    'precio-dia-media'  => 0,
+                ];
+
+        foreach ($books as $key => $book) {
+
+            $start = Carbon::createFromFormat('Y-m-d' , $book->start);
+            $finish = Carbon::createFromFormat('Y-m-d' , $book->finish);
+            $countDays = $start->diffInDays($finish);
+
+            /* Dias ocupados */
+            $data['days-ocupation'] += $countDays;
+
+            /* Nº inquilinos */
+            $data['num-pax'] += $book->pax;
+
+        }
+
+            /* Estancia media */
+            $data['estancia-media'] = ($data['days-ocupation'] / $totBooks);
+
+            /* Inquilinos media */
+            $data['pax-media'] = ($data['num-pax'] / $totBooks);
+
+
+
+        $mobile = new Mobile();
+        if (!$mobile->isMobile()){
+            return view('backend/sales/index',  [
+                                                    'books'   => $books,
+                                                    'totales' => $totales,
+                                                    'temporada' => $date,
+                                                    'data' => $data,
+                                                ]);
+        }else{
+            return view('backend/sales/index_mobile',  [
+                                                    'books'   => $books,
+                                                    'totales' => $totales,
+                                                    'temporada' => $date,
+                                                    'data' => $data,
+                                                ]);
+        }
+    }
 
     public function apto($year = "")
-        {
-            $now = Carbon::now();
+    {
+        $now = Carbon::now();
 
-            if (empty($year)) {
-                if ($now->copy()->format('n') >= 9) {
-                    $date = new Carbon('first day of September '.$now->copy()->format('Y'));
-                }else{
-                    $date = new Carbon('first day of September '.$now->copy()->subYear()->format('Y'));
-                }
-                
+        if (empty($year)) {
+            if ($now->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$now->copy()->format('Y'));
             }else{
-                $date = new Carbon('first day of September '.$year);
+                $date = new Carbon('first day of September '.$now->copy()->subYear()->format('Y'));
             }
-
-            $rooms = \App\Rooms::all();
-            $pendientes = array();
-            $apartamentos = [   
-                                "room"      => [],
-                                "noches"    => [],
-                                "pvp"       => [],
-                                "pendiente" => [],
-                                "beneficio"  => [],
-                                "%ben"      => [],
-                                "costes"    => [],
-                            ];
-            $books = \App\Book::where('type_book',2)->where('start' , '>=' , $date)->where('start', '<=', $date->copy()->AddYear()->SubMonth())->get();
-
-            foreach ($books as $key => $book) {
-                if (isset($apartamentos["noches"][$book->room_id])) {
-                    $apartamentos["noches"][$book->room_id]   += $book->nigths;
-                    $apartamentos["pvp"][$book->room_id]      += $book->total_price;
-                    $apartamentos['beneficio'][$book->room_id] += $book->total_ben;
-                    $apartamentos['costes'][$book->room_id]   += $book->cost_total;
-                }else{
-                    $apartamentos["noches"][$book->room_id]   = $book->nigths;
-                    $apartamentos["pvp"][$book->room_id]      = $book->total_price;
-                    $apartamentos['beneficio'][$book->room_id] = $book->total_ben;
-                    $apartamentos['costes'][$book->room_id]   = $book->cost_total;
-                }
-            }
-
-            $pagos = \App\Paymentspro::where('datePayment' , '>=' , $date)->where('datePayment', '<=', $date->copy()->AddYear()->SubMonth())->get();
-
-            foreach ($pagos as $pago) {
-                if (isset($pendientes[$pago->room_id])) {
-                    $pendientes[$pago->room_id] += $pago->import;
-                }else{
-                    $pendientes[$pago->room_id] = $pago->import;
-                }
-            }
-            return view('backend/sales/liquidacion_apto',[
-                                                            'rooms' => $rooms,
-                                                            'apartamentos' => $apartamentos,
-                                                            'temporada' => $date,
-                                                            'pendientes' => $pendientes,
-                                                            ]);
+            
+        }else{
+            $date = new Carbon('first day of September '.$year);
         }
+
+        $rooms = \App\Rooms::all();
+        $pendientes = array();
+        $apartamentos = [   
+                            "room"      => [],
+                            "noches"    => [],
+                            "pvp"       => [],
+                            "pendiente" => [],
+                            "beneficio"  => [],
+                            "%ben"      => [],
+                            "costes"    => [],
+                        ];
+        $books = \App\Book::where('type_book',2)->where('start' , '>=' , $date)->where('start', '<=', $date->copy()->AddYear()->SubMonth())->get();
+
+        foreach ($books as $key => $book) {
+            if (isset($apartamentos["noches"][$book->room_id])) {
+                $apartamentos["noches"][$book->room_id]   += $book->nigths;
+                $apartamentos["pvp"][$book->room_id]      += $book->total_price;
+                $apartamentos['beneficio'][$book->room_id] += $book->total_ben;
+                $apartamentos['costes'][$book->room_id]   += $book->cost_total;
+            }else{
+                $apartamentos["noches"][$book->room_id]   = $book->nigths;
+                $apartamentos["pvp"][$book->room_id]      = $book->total_price;
+                $apartamentos['beneficio'][$book->room_id] = $book->total_ben;
+                $apartamentos['costes'][$book->room_id]   = $book->cost_total;
+            }
+        }
+
+        $pagos = \App\Paymentspro::where('datePayment' , '>=' , $date)->where('datePayment', '<=', $date->copy()->AddYear()->SubMonth())->get();
+
+        foreach ($pagos as $pago) {
+            if (isset($pendientes[$pago->room_id])) {
+                $pendientes[$pago->room_id] += $pago->import;
+            }else{
+                $pendientes[$pago->room_id] = $pago->import;
+            }
+        }
+        return view('backend/sales/liquidacion_apto',[
+                                                        'rooms' => $rooms,
+                                                        'apartamentos' => $apartamentos,
+                                                        'temporada' => $date,
+                                                        'pendientes' => $pendientes,
+                                                        ]);
+    }
+
     public function perdidas()
-        {
-            return view ('backend/sales/perdidas_ganancias');
-        }
+    {
+        return view ('backend/sales/perdidas_ganancias');
+    }
+
     public function statistics($year="")
     {
         if ( empty($year) ) {
@@ -432,9 +439,37 @@ class LiquidacionController extends Controller
                 
                 }
 
+                $totBooks = (count($books) > 0)?count($books):1;
+
+                /* INDICADORES DE LA TEMPORADA */
+                $data = [
+                            'days-ocupation'    => 0,
+                            'total-days-season' => 156,
+                            'num-pax'           => 0,
+                            'estancia-media'    => 0,
+                            'pax-media'         => 0,
+                            'precio-dia-media'  => 0,
+                        ];
+
+                foreach ($books as $key => $book) {
+                    /* Dias ocupados */
+                    $data['days-ocupation'] += $book->nights;
+
+                    /* Nº inquilinos */
+                    $data['num-pax'] += $book->pax;
+
+                }
+
+                /* Estancia media */
+                $data['estancia-media'] = ($data['days-ocupation'] / $totBooks) * 100 ;
+
+                /* Inquilinos media */
+                $data['pax-media'] = ($data['num-pax'] / $totBooks);
+
                 return view('backend/sales/_tableSummary',  [
                                                         'books'   => $books,
                                                         'totales' => $totales,
+                                                        'data' => $data
                                                     ]);
             }else{
                 return "<h2>No hay reservas para este término '".$request->searchString."'</h2>";
@@ -479,10 +514,37 @@ class LiquidacionController extends Controller
                 $totales["beneficio"]    += $book->total_ben;
             
             }
+            $totBooks = (count($books) > 0)?count($books):1;
+
+            /* INDICADORES DE LA TEMPORADA */
+            $data = [
+                        'days-ocupation'    => 0,
+                        'total-days-season' => 156,
+                        'num-pax'           => 0,
+                        'estancia-media'    => 0,
+                        'pax-media'         => 0,
+                        'precio-dia-media'  => 0,
+                    ];
+
+            foreach ($books as $key => $book) {
+                /* Dias ocupados */
+                $data['days-ocupation'] += $book->nights;
+
+                /* Nº inquilinos */
+                $data['num-pax'] += $book->pax;
+
+            }
+
+            /* Estancia media */
+            $data['estancia-media'] = ($data['days-ocupation'] / $totBooks) * 100 ;
+
+            /* Inquilinos media */
+            $data['pax-media'] = ($data['num-pax'] / $totBooks);
 
             return view('backend/sales/_tableSummary',  [
                                                     'books'   => $books,
                                                     'totales' => $totales,
+                                                    'data' => $data
                                                 ]);
 
         }
@@ -582,9 +644,37 @@ class LiquidacionController extends Controller
                 
                 }
 
+                $totBooks = (count($books) > 0)?count($books):1;
+
+                /* INDICADORES DE LA TEMPORADA */
+                $data = [
+                            'days-ocupation'    => 0,
+                            'total-days-season' => 156,
+                            'num-pax'           => 0,
+                            'estancia-media'    => 0,
+                            'pax-media'         => 0,
+                            'precio-dia-media'  => 0,
+                        ];
+
+                foreach ($books as $key => $book) {
+                    /* Dias ocupados */
+                    $data['days-ocupation'] += $book->nights;
+
+                    /* Nº inquilinos */
+                    $data['num-pax'] += $book->pax;
+
+                }
+
+                /* Estancia media */
+                $data['estancia-media'] = ($data['days-ocupation'] / $totBooks) * 100 ;
+
+                /* Inquilinos media */
+                $data['pax-media'] = ($data['num-pax'] / $totBooks);
+
                 return view('backend/sales/_tableSummary',  [
                                                         'books'   => $books,
                                                         'totales' => $totales,
+                                                        'data' => $data,
                                                     ]);
             }else{
                 return "<h2>No hay reservas para este término '".$request->searchString."'</h2>";
@@ -627,10 +717,37 @@ class LiquidacionController extends Controller
                 $totales["beneficio"]    += $book->total_ben;
             
             }
+            $totBooks = (count($books) > 0)?count($books):1;
+
+            /* INDICADORES DE LA TEMPORADA */
+            $data = [
+                        'days-ocupation'    => 0,
+                        'total-days-season' => 156,
+                        'num-pax'           => 0,
+                        'estancia-media'    => 0,
+                        'pax-media'         => 0,
+                        'precio-dia-media'  => 0,
+                    ];
+
+            foreach ($books as $key => $book) {
+                /* Dias ocupados */
+                $data['days-ocupation'] += $book->nights;
+
+                /* Nº inquilinos */
+                $data['num-pax'] += $book->pax;
+
+            }
+
+            /* Estancia media */
+            $data['estancia-media'] = ($data['days-ocupation'] / $totBooks) * 100 ;
+
+            /* Inquilinos media */
+            $data['pax-media'] = ($data['num-pax'] / $totBooks);
 
             return view('backend/sales/_tableSummary',  [
                                                     'books'   => $books,
                                                     'totales' => $totales,
+                                                    'data' => $data
                                                 ]);
 
         }

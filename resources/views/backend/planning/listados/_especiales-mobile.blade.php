@@ -18,7 +18,7 @@
 	<tbody>
 		<?php foreach ($arrayBooks["especiales"] as $especial): ?>
 			<tr class="<?php echo ucwords($book->getStatus($especial->type_book)) ;?>">
-				<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $especial->customer->name ?></td>
+				<td class="text-center sm-p-t-10 sm-p-b-10" title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"><?php echo $especial->customer->name ?></td>
 				<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$especial->start)->formatLocalized('%d %b') ?></td>
 				<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$especial->finish)->formatLocalized('%d %b') ?></td>
 				<td class ="text-center" >

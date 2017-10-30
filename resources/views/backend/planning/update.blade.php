@@ -422,9 +422,9 @@
                     </table>
                     <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="Cobrar" data-id="<?php echo $book->id ?>" style="width: 50%;min-height: 50px">                            
                 </div>
-                <div class="row">
-                    <h2 class="text-center ls1" style="font-size: 24px">
-                        <span style="font-size: 20px;">Puedes ver el enlace que se enviará al cliente para realizar el pago mediante stripe aquí</span><br>
+                <div class="row" style="margin-top: 20px;">
+                    <h2 class="text-center" style="font-size: 24px; line-height: 15px">
+                        <span style="font-size: 20px;">En este link podrás realizar el pago de la señal por el 25% del total.<br> En el momento en que efectúes el pago, te legará un email confirmando tu reserva</span><br>
                         <a target="_blank" href="https://www.apartamentosierranevada.net/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>">
                             https://www.apartamentosierranevada.net/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>     
                         </a>
@@ -705,10 +705,10 @@
                     </div>
             </div>
                 <div class="row">
-                    <h2 class="text-center ls1" style="font-size: 20px">
-                        <span style="font-size: 26px;">Puedes ver el enlace que se enviará al cliente para realizar el pago mediante stripe </span><br>
+                   <h2 class="text-center" style="font-size: 24px; line-height: 18px">
+                        <span style="font-size: 20px;">En este link podrás realizar el pago de la señal por el 25% del total.<br> En el momento en que efectúes el pago, te legará un email confirmando tu reserva</span><br>
                         <a target="_blank" href="https://www.apartamentosierranevada.net/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>">
-                           Pinchando aquí   
+                            https://www.apartamentosierranevada.net/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>     
                         </a>
                     </h2>
                 </div>
