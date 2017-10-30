@@ -18,14 +18,14 @@
 	<tbody>
 		<?php foreach ($arrayBooks["especiales"] as $especial): ?>
 			<tr class="<?php echo ucwords($book->getStatus($especial->type_book)) ;?>">
-				<td class="text-center sm-p-t-10 sm-p-b-10" title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"><?php echo $especial->customer->name ?></td>
+				<td class="text-center sm-p-t-10 sm-p-b-10" title="<?php echo $especial->customer->name ?> - <?php echo $especial->customer->email ?>"><?php echo $especial->customer->name ?></td>
 				<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$especial->start)->formatLocalized('%d %b') ?></td>
 				<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$especial->finish)->formatLocalized('%d %b') ?></td>
 				<td class ="text-center" >
-				    <?php if ($book->real_pax > 6 ): ?>
-				        <?php echo $book->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
+				    <?php if ($especial->real_pax > 6 ): ?>
+				        <?php echo $especial->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
 				    <?php else: ?>
-				        <?php echo $book->pax ?>
+				        <?php echo $especial->pax ?>
 				    <?php endif ?>
 				        
 				</td>

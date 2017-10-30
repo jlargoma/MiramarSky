@@ -25,7 +25,7 @@ setlocale(LC_TIME, "es_ES");
 			
 			<tr class="<?php echo $class ;?>"> 
 				<td class="text-center sm-p-t-10 sm-p-b-10">
-					<a title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $nueva->id ?>"><?php echo $nueva->customer->name ?></a>
+					<a title="<?php echo $nueva->customer->name ?> - <?php echo $nueva->customer->email ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $nueva->id ?>"><?php echo $nueva->customer->name ?></a>
 				</td>
 				<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->start)->formatLocalized('%d %b') ?></td>
 				<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->finish)->formatLocalized('%d %b') ?></td>

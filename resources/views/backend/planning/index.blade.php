@@ -97,6 +97,7 @@
             background: red;
             border-radius: 100%;
             padding: 0px 7px;
+            z-index: 15;
         }
     </style>
 
@@ -369,7 +370,7 @@
         <div class="container-fluid container-fixed-lg">
             
             <div class="row" style="margin-top: 15px;">
-                <div class="col-xs-6" style="padding: 0 15px;">
+                <div class="col-xs-4 push-10" >
                     <?php 
                         $stripedsPayments = \App\Payments::where('comment', 'LIKE', '%stripe%')
                                                             ->whereYear('created_at','=', date('Y'))
@@ -377,30 +378,35 @@
                                                             ->whereDay('created_at','=', date('d'))
                                                             ->get();
                     ?>
-                    <button id="lastBooks" class="btn btn-success btn-cons m-b-10" type="button">
-                        <span class="bold">Últimas reservas</span>
+                    <button id="lastBooks" class="btn btn-success" type="button">
+                        <span class="bold">Últ. reservas</span>
                         <span class="numPaymentLastBooks"><?php echo  $stripedsPayments->count(); ?></span>
                     </button>
-                    <button id="lastBooksClose" class="btn btn-danger btn-cons m-b-10" type="button" style="display: none;">
-                        <span class="bold">Últimas reservas</span>
+                    <button id="lastBooksClose" class="btn btn-danger" type="button" style="display: none;">
+                        <span class="bold">Últ. reservas</span>
                         <span class="numPaymentLastBooks"><?php echo  $stripedsPayments->count(); ?></span>
                     </button>
                 </div>
-                <div class="col-xs-6">
+                <div class="col-xs-4 push-10" >
                 	<?php $notifications = \App\BookNotification::all(); ?>
                 	<?php $isNotify = false; ?>
                 	<?php $countNotify = 0; ?>
                 	<?php foreach ($notifications as $key => $notify): ?>
                 	    <?php if ($notify->book->type_book != 3 || $notify->book->type_book != 5 || $notify->book->type_book != 6){ $isNotify = true; $countNotify ++;} ?>
                 	<?php endforeach ?>
-                	<button id="btnNotifyBooking" class="btn btn-success btn-cons m-b-10" type="button">
-                	    <span class="bold">Alertas booking</span>
+                	<button id="btnNotifyBooking" class="btn btn-success" type="button">
+                	    <span class="bold">Alr. booking</span>
                 	    <span class="numPaymentLastBooks"><?php echo  $countNotify; ?></span>
                 	</button>
-                	<button id="btnHideNotifyBooking" class="btn btn-danger btn-cons m-b-10" type="button" style="display: none;">
-                	    <span class="bold">Alertas booking</span>
+                	<button id="btnHideNotifyBooking" class="btn btn-danger" type="button" style="display: none;">
+                	    <span class="bold">Alr. booking</span>
                 	    <span class="numPaymentLastBooks"><?php echo  $countNotify; ?></span>
                 	</button>
+                </div>
+                <div class="col-xs-4 push-10" >
+                    <button class="btn btn-success btn-calcuteBook " type="button" data-toggle="modal" data-target="#modalCalculateBook"> 
+                        <span class="bold">Cal. reserva</span>
+                    </button>
                 </div>
             </div>
             <div class="row" style="margin-top: 15px;">
@@ -659,6 +665,13 @@
                     <!-- Seccion Calendario -->
 					
                 </div>
+                <?php 
+                    /* No borrar para calendario de booking */
+                    $dateX = $inicio->copy(); 
+                ?>
+                <div class="col-md-12">
+                    @include('backend.planning._calendarToBooking')
+                </div>
                 <div class="col-md-12 push-40 stripe-mobile" >
 				    <!-- {{ url('admin/reservas/stripe/paymentsBooking') }} -->
 				    @include('backend.stripe.stripe', ['bookTocharge' => null])
@@ -710,6 +723,16 @@
                   <!-- /.modal-content -->
                 </div>
               <!-- /.modal-dialog -->
+            </div>
+            
+            <div class="modal fade slide-up in" id="modalCalculateBook" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content-wrapper">
+                        <div class="modal-content"></div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
             </div>
 
             <form role="form">

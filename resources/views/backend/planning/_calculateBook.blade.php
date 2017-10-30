@@ -7,6 +7,11 @@
     .black {
         color: black!important;
     }
+    @media only screen and (max-width: 767px){
+        .not-padding-mobile{
+            padding: 0!important;
+        }
+    }
 </style>
 <link href="{{ asset('/frontend/hover.css')}}" rel="stylesheet" media="all">
 <link rel="stylesheet" href="{{ asset('/frontend/css/components/radio-checkbox.css')}}" type="text/css" />
@@ -35,7 +40,7 @@
                                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
                                 <div class="col-md-12">
-                                    <div class="form-group col-sm-12 col-xs-6 col-md-6 col-lg-6 white">
+                                    <div class="form-group col-sm-12 col-xs-12 col-md-6 col-lg-6 white">
                                         <label for="name">*Nombre</label>
                                         <input type="text" class="form-control" name="name" id="cal-nombre" placeholder="Nombre..." maxlength="40" required="" aria-label="Escribe tu nombre">
                                     </div>
@@ -73,7 +78,7 @@
                                             <label for="apto-estudio" class="radio-style-3-label">Est.</label>
                                         </div>
                                     </div>
-                                    <div class="form-group col-sm-12 col-xs-4 col-md-3">
+                                    <div class="form-group col-sm-12 col-xs-4 col-md-3 not-padding-mobile">
                                         <label style="display: inline!important;" class="col-md-12 luxury">*lujo</label>
                                         <div class="col-md-6"> 
                                             <input id="luxury-yes" class="radio-style" name="luxury" type="radio"  value="si">
@@ -84,7 +89,7 @@
                                             <label for="luxury-no" class="radio-style-3-label">No</label>
                                         </div>
                                     </div>
-                                    <div class="form-group col-sm-12 col-xs-4 col-md-3">
+                                    <div class="form-group col-sm-12 col-xs-4 col-md-3 not-padding-mobile">
                                         <label style="display: inline!important;" class="col-md-12 parking">*Parking</label>
                                         <div class="col-md-6">
                                             <input id="parking-yes" class="radio-style" name="parking" type="radio" checked="" value="si">
