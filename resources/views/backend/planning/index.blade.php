@@ -126,47 +126,7 @@
                 	            <h4 class="text-center">Alertas BOOKING</h4> 
                 	            <h5 class="text-center">Recuerda eliminar los dias de las siguientes reservas de booking.com</h5> 
                 	            
-                	            <table class="table table-condensed" style="margin-top: 0;">
-                	                <tbody>
-                	                <?php foreach ($notifications as $key => $notify): ?>
-                	                    <?php if ($notify->book->type_book != 3 || $notify->book->type_book != 5 || $notify->book->type_book != 6 ): ?>
-                	                    <tr>
-                                            <td class="text-center" style="width: 30px; padding: 5px 0!important">
-                                                <?php if ($notify->book->agency != 0): ?>
-                                                    <img src="/pages/booking.png" style="width: 20px;"/>
-                                                <?php else: ?>
-
-                                                <?php endif ?>
-                                            </td>
-                	                        <td class="text-center" style="padding: 5px 0!important">
-                	                            <?php echo $notify->book->customer->name; ?></td>
-                	                        <td class="text-center" style="padding: 5px 0!important">
-                	                            <?php
-                	                                $start = Carbon::createFromFormat('Y-m-d',$notify->book->start);
-                	                                echo $start->formatLocalized('%d %b');
-                	                            ?> - 
-                	                            <?php
-                	                                $finish = Carbon::createFromFormat('Y-m-d',$notify->book->finish);
-                	                                echo $finish->formatLocalized('%d %b');
-                	                            ?>
-                	                        </td>
-                	                        <td class="text-center" style="padding: 5px 0!important">
-                	                            <b><?php echo $notify->book->room->name?> </b>                                               
-                	                        </td>
-                	                        <td class="text-center" style="padding: 5px 0!important">
-                	                            <b><?php echo $notify->book->getStatus($notify->book->type_book)?> </b>                                               
-                	                        </td>
-                	                        <td class="text-center" style="padding: 5px 0!important">
-                	                            <b><?php echo number_format($notify->book->total_price,2, ',', ".") ?> €</b>                                               
-                	                        </td>
-                	                        <td class="text-center" style="padding: 5px 0!important">
-												<a class="btn btn-default" href="/admin/delete/nofify/<?php echo $notify->id ?>"><i class="fa fa-trash-o"></i></a>
-                	                        </td>
-                	                    </tr>
-                	                    <?php endif ?>
-                	                <?php endforeach ?>
-                	                </tbody>
-                	            </table>
+                	            <div id="content-table-alert">@include('backend.planning._tableAlertBooking')</div>
                 	            <p class="text-justify">
                 	                Puedes acceder a booking haciendo click <a href="#">aquí</a>
                 	            </p>
@@ -421,37 +381,9 @@
             	            <h4 class="text-center">Alertas BOOKING</h4> 
             	            <h5 class="text-center">Recuerda eliminar los dias de las siguientes reservas de booking.com</h5> 
             	            
-            	            <table class="table" style="margin-top: 0;">
-            	                <tbody>
-            	                <?php foreach ($notifications as $key => $notify): ?>
-            	                    <?php if ($notify->book->type_book != 3 || $notify->book->type_book != 5 || $notify->book->type_book != 6 ): ?>
-            	                    <tr>
-            	                        <td class="text-center" style="padding: 0 5px!important">
-            	                            <?php echo $notify->book->customer->name; ?></td>
-            	                        <td class="text-center" style="padding: 0 5px!important">
-            	                            <?php
-            	                                $start = Carbon::createFromFormat('Y-m-d',$notify->book->start);
-            	                                echo $start->formatLocalized('%d %b');
-            	                            ?><br>
-            	                            <?php
-            	                                $finish = Carbon::createFromFormat('Y-m-d',$notify->book->finish);
-            	                                echo $finish->formatLocalized('%d %b');
-            	                            ?>
-            	                        </td>
-            	                        <td class="text-center" style="padding: 0 5px!important">
-            	                            <b><?php echo $notify->book->room->name?> </b>                                               
-            	                        </td>
-            	                        <td class="text-center" style="padding: 0 5px!important">
-            	                            <b><?php echo $notify->book->getStatus($notify->book->type_book)?> </b>                                               
-            	                        </td>
-            	                        <td class="text-center" style="padding: 0 5px!important">
-											<a class="btn btn-default" href="/admin/delete/nofify/<?php echo $notify->id ?>"><i class="fa fa-trash-o"></i></a>
-            	                        </td>
-            	                    </tr>
-            	                    <?php endif ?>
-            	                <?php endforeach ?>
-            	                </tbody>
-            	            </table>
+            	            <div id="content-table-alert">
+                                @include('backend.planning._tableAlertBooking')
+                            </div>
             	            <p class="text-justify">
             	                Puedes acceder a booking haciendo click <a href="#">aquí</a>
             	            </p>
@@ -929,6 +861,15 @@
             $('.close-calculate').click(function(event) {
                ('#modalCalculateBook .modal-content').empty();
             });
+
+
+            $('.btn-delete-alert').click(function(event) {
+                var url = $(this).attr('data-link');
+                $.get(url, function(data) {
+                    $('#content-table-alert').empty().append(data);
+                });
+            });
+
         });
     </script>
 

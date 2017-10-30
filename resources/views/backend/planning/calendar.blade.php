@@ -55,10 +55,17 @@
                                 <tr>
                                     <td  style="width: 1%!important"></td>
                                     <?php foreach ($arrayMonths as $key => $daysMonth): ?>
+                                        <?php $monthX =  Carbon::createFromFormat('m' , str_pad($key, 2, "0", STR_PAD_LEFT))->formatLocalized('%B');?>
                                         <td id="month-<?php echo $key ?>" colspan="<?php echo $daysMonth ?>" class="text-center months" style="border-right: 1px solid black;border-left: 1px solid black;padding: 5px 10px;">
-                                            <span class="font-w600">
-                                                <?php echo ucfirst(Carbon::createFromFormat('m' , $key)->formatLocalized('%B'))?>
-                                            </span>
+                                            <?php if ($key != 2): ?>
+                                                <span class="font-w600 pull-left" style="padding: 5px;"> <?php echo $monthX ?> </span>
+                                                <span class="font-w600" style="padding: 5px;"> <?php echo $monthX ?> </span>
+                                                <span class="font-w600 pull-right" style="padding: 5px;"> <?php echo $monthX ?> </span>
+                                            <?php else: ?>
+                                                <span class="font-w600 pull-left" style="padding: 5px;"> febrero </span>
+                                                <span class="font-w600" style="padding: 5px;"> febrero </span>
+                                                <span class="font-w600 pull-right" style="padding: 5px;"> febrero </span>
+                                            <?php endif ?>
                                         </td>
                                     <?php endforeach ?>
                                 </tr>

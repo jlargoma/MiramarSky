@@ -212,7 +212,7 @@ Route::group(['middleware' => 'authAdmin'], function () {
 		$notify = \App\BookNotification::find($id);
 
 		if ($notify->delete()) {
-			return redirect('admin/reservas');
+			return view('backend.planning._tableAlertBooking', ['notifications' => \App\BookNotification::all()]);
 		}
 	});
 
