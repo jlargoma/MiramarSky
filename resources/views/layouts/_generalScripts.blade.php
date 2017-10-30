@@ -168,11 +168,14 @@
 	    	var pax = $(this).val();
 
 	    	if (pax <= 4) {
+	    		$("#apto-estudio").prop("disabled",false);
+
 	    		$("#apto-estudio").trigger('click');
 	    		$("#apto-estudio").show();
 
 	    	}else if (pax > 4) {
 	    		$(".apto-2dorm").trigger('click');
+	    		$("#apto-estudio").prop("disabled",true);
 	    		$("#apto-estudio").hide();
 	    	}
 	    });

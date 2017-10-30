@@ -387,7 +387,7 @@ class HomeController extends Controller
             $parking = 1;
         }else{
             $priceParking = 0;
-            $parking = 4;
+            $parking = 2;
         }
 
         if ($request->input('luxury') == 'si') {
