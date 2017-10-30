@@ -98,11 +98,11 @@ class LiquidacionController extends Controller
 
         }
 
-            /* Estancia media */
-            $data['estancia-media'] = ($data['days-ocupation'] / $totBooks);
+        /* Estancia media */
+        $data['estancia-media'] = ($data['days-ocupation'] / $totBooks);
 
-            /* Inquilinos media */
-            $data['pax-media'] = ($data['num-pax'] / $totBooks);
+        /* Inquilinos media */
+        $data['pax-media'] = ($data['num-pax'] / $totBooks);
 
 
 
@@ -452,8 +452,13 @@ class LiquidacionController extends Controller
                         ];
 
                 foreach ($books as $key => $book) {
+
+                    $start = Carbon::createFromFormat('Y-m-d' , $book->start);
+                    $finish = Carbon::createFromFormat('Y-m-d' , $book->finish);
+                    $countDays = $start->diffInDays($finish);
+
                     /* Dias ocupados */
-                    $data['days-ocupation'] += $book->nights;
+                    $data['days-ocupation'] += $countDays;
 
                     /* Nº inquilinos */
                     $data['num-pax'] += $book->pax;
@@ -461,10 +466,11 @@ class LiquidacionController extends Controller
                 }
 
                 /* Estancia media */
-                $data['estancia-media'] = ($data['days-ocupation'] / $totBooks) * 100 ;
+                $data['estancia-media'] = ($data['days-ocupation'] / $totBooks);
 
                 /* Inquilinos media */
                 $data['pax-media'] = ($data['num-pax'] / $totBooks);
+
 
                 return view('backend/sales/_tableSummary',  [
                                                         'books'   => $books,
@@ -527,8 +533,13 @@ class LiquidacionController extends Controller
                     ];
 
             foreach ($books as $key => $book) {
+
+                $start = Carbon::createFromFormat('Y-m-d' , $book->start);
+                $finish = Carbon::createFromFormat('Y-m-d' , $book->finish);
+                $countDays = $start->diffInDays($finish);
+
                 /* Dias ocupados */
-                $data['days-ocupation'] += $book->nights;
+                $data['days-ocupation'] += $countDays;
 
                 /* Nº inquilinos */
                 $data['num-pax'] += $book->pax;
@@ -536,10 +547,11 @@ class LiquidacionController extends Controller
             }
 
             /* Estancia media */
-            $data['estancia-media'] = ($data['days-ocupation'] / $totBooks) * 100 ;
+            $data['estancia-media'] = ($data['days-ocupation'] / $totBooks);
 
             /* Inquilinos media */
             $data['pax-media'] = ($data['num-pax'] / $totBooks);
+
 
             return view('backend/sales/_tableSummary',  [
                                                     'books'   => $books,
@@ -657,8 +669,13 @@ class LiquidacionController extends Controller
                         ];
 
                 foreach ($books as $key => $book) {
+
+                    $start = Carbon::createFromFormat('Y-m-d' , $book->start);
+                    $finish = Carbon::createFromFormat('Y-m-d' , $book->finish);
+                    $countDays = $start->diffInDays($finish);
+
                     /* Dias ocupados */
-                    $data['days-ocupation'] += $book->nights;
+                    $data['days-ocupation'] += $countDays;
 
                     /* Nº inquilinos */
                     $data['num-pax'] += $book->pax;
@@ -666,10 +683,11 @@ class LiquidacionController extends Controller
                 }
 
                 /* Estancia media */
-                $data['estancia-media'] = ($data['days-ocupation'] / $totBooks) * 100 ;
+                $data['estancia-media'] = ($data['days-ocupation'] / $totBooks);
 
                 /* Inquilinos media */
                 $data['pax-media'] = ($data['num-pax'] / $totBooks);
+
 
                 return view('backend/sales/_tableSummary',  [
                                                         'books'   => $books,
@@ -719,6 +737,8 @@ class LiquidacionController extends Controller
             }
             $totBooks = (count($books) > 0)?count($books):1;
 
+            $totBooks = (count($books) > 0)?count($books):1;
+
             /* INDICADORES DE LA TEMPORADA */
             $data = [
                         'days-ocupation'    => 0,
@@ -730,8 +750,13 @@ class LiquidacionController extends Controller
                     ];
 
             foreach ($books as $key => $book) {
+
+                $start = Carbon::createFromFormat('Y-m-d' , $book->start);
+                $finish = Carbon::createFromFormat('Y-m-d' , $book->finish);
+                $countDays = $start->diffInDays($finish);
+
                 /* Dias ocupados */
-                $data['days-ocupation'] += $book->nights;
+                $data['days-ocupation'] += $countDays;
 
                 /* Nº inquilinos */
                 $data['num-pax'] += $book->pax;
@@ -739,10 +764,11 @@ class LiquidacionController extends Controller
             }
 
             /* Estancia media */
-            $data['estancia-media'] = ($data['days-ocupation'] / $totBooks) * 100 ;
+            $data['estancia-media'] = ($data['days-ocupation'] / $totBooks);
 
             /* Inquilinos media */
             $data['pax-media'] = ($data['num-pax'] / $totBooks);
+
 
             return view('backend/sales/_tableSummary',  [
                                                     'books'   => $books,

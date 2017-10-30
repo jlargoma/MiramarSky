@@ -3,7 +3,12 @@
 	setlocale(LC_TIME, "ES");
 	setlocale(LC_TIME, "es_ES");
 ?>
-
+<div class="col-md-12 pull-right push-20">
+    <h2 class="text-left">
+        Indicadores de ocupación
+    </h2>
+    @include('backend.sales._tableSummaryBoxes', ['totales' => $totales, 'books' => $books, 'data' => $data])
+</div>
 <div class="col-xs-12">
 	<div class="col-md-3" style="width: 22%;">
 		<h2 class="text-center font-w800">

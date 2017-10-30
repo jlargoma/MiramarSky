@@ -51,7 +51,7 @@
 		</div>
 	</div>
 	<div class="col-md-3">
-		<div class="col-md-6 bordered">
+		<div class="col-md-4 bordered">
 			<div class="card-title text-black hint-text">
 				Nº Inquilinos
 			</div>
@@ -59,13 +59,14 @@
 				<h3 class="text-black font-w400 text-center"><?php echo $data['num-pax'] ?></h3>
 			</div>
 		</div>
-		<div class="col-md-6 bordered">
+		<div class="col-md-4 bordered">
 			<div class="card-title text-black hint-text">
-				Estan. min
+				Estan. media (días)
 			</div>
 			<div class="p-l-20">
 				<h3 class="text-black font-w400 text-center"><?php echo round($data['estancia-media']) ?></h3>
 			</div>
 		</div>
+		
 	</div>
 </div>

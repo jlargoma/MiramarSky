@@ -97,12 +97,7 @@
 					</select>
 				</div>
 			</div>
-			<div class="col-md-9 push-20">
-				<h2 class="text-left">
-					Indicadores de ocupación
-				</h2>
-				@include('backend.sales._tableSummaryBoxes', ['totales' => $totales, 'books' => $books, 'data' => $data])
-			</div>
+			
 		</div>
 		<div class="liquidationSummary">
     		@include('backend.sales._tableSummary', ['totales' => $totales, 'books' => $books])
