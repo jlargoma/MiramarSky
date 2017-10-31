@@ -72,16 +72,29 @@ class LiquidacionController extends Controller
 
         }
 
-        $totBooks = (count($books) > 0)?count($books):1;
+        $totBooks    = (count($books) > 0)?count($books):1;
+        $diasPropios = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[7,8])->orderBy('created_at','DESC')->get();
+
+        $countDiasPropios = 0;
+        foreach ($diasPropios as $key => $book) {
+            $start = Carbon::createFromFormat('Y-m-d' , $book->start);
+            $finish = Carbon::createFromFormat('Y-m-d' , $book->finish);
+            $countDays = $start->diffInDays($finish);
+
+            $countDiasPropios += $countDays;
+        }
 
         /* INDICADORES DE LA TEMPORADA */
         $data = [
                     'days-ocupation'    => 0,
-                    'total-days-season' => 156,
+                    'total-days-season' => \App\SeasonDays::first()->numDays,
                     'num-pax'           => 0,
                     'estancia-media'    => 0,
                     'pax-media'         => 0,
                     'precio-dia-media'  => 0,
+                    'dias-propios'      => $countDiasPropios,
+                    'agencia'           => 0,
+                    'propios'           => 0,
                 ];
 
         foreach ($books as $key => $book) {
@@ -96,7 +109,17 @@ class LiquidacionController extends Controller
             /* Nº inquilinos */
             $data['num-pax'] += $book->pax;
 
+
+            if ($book->agency != 0) {
+                $data['agencia'] ++;
+            }else{
+                $data['propios'] ++;
+            }
+
         }
+
+        $data['agencia'] = ($data['agencia']/ $totBooks)*100;
+        $data['propios'] = ($data['propios']/ $totBooks)*100;
 
         /* Estancia media */
         $data['estancia-media'] = ($data['days-ocupation'] / $totBooks);
@@ -402,19 +425,36 @@ class LiquidacionController extends Controller
                 if ($request->searchRoom && $request->searchRoom != "all") {
                     
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
-                                    ->where('start' , '>=' , $date->format('Y-m-d'))
-                                    ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
-                                    ->where('type_book',2)
-                                    ->where('room_id', $request->searchRoom)
-                                    ->orderBy('start', 'ASC')
-                                    ->get();
+                                        ->where('start' , '>=' , $date->format('Y-m-d'))
+                                        ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
+                                        ->where('type_book',2)
+                                        ->where('room_id', $request->searchRoom)
+                                        ->orderBy('start', 'ASC')
+                                        ->get();
+
+                    $diasPropios = \App\Book::whereIn('customer_id', $arrayCustomersId)
+                                            ->where('start','>',$date->copy()->subMonth())
+                                            ->where('finish','<',$date->copy()->addYear())
+                                            ->whereIn('type_book',[7,8])
+                                            ->where('room_id', $request->searchRoom)
+                                            ->orderBy('created_at','DESC')
+                                            ->get();
+
                 } else {
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
-                                    ->where('start' , '>=' , $date->format('Y-m-d'))
-                                    ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
-                                    ->where('type_book',2)
-                                    ->orderBy('start', 'ASC')
-                                    ->get();
+                                        ->where('start' , '>=' , $date->format('Y-m-d'))
+                                        ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
+                                        ->where('type_book',2)
+                                        ->orderBy('start', 'ASC')
+                                        ->get();
+
+                    $diasPropios = \App\Book::whereIn('customer_id', $arrayCustomersId)
+                                            ->where('start','>',$date->copy()->subMonth())
+                                            ->where('finish','<',$date->copy()->addYear())
+                                            ->whereIn('type_book',[7,8])
+                                            ->orderBy('created_at','DESC')
+                                            ->get();
+
                 }
                 
 
@@ -439,16 +479,27 @@ class LiquidacionController extends Controller
                 
                 }
 
-                $totBooks = (count($books) > 0)?count($books):1;
+                $totBooks    = (count($books) > 0)?count($books):1;
+                $countDiasPropios = 0;
+                foreach ($diasPropios as $key => $book) {
+                    $start = Carbon::createFromFormat('Y-m-d' , $book->start);
+                    $finish = Carbon::createFromFormat('Y-m-d' , $book->finish);
+                    $countDays = $start->diffInDays($finish);
+
+                    $countDiasPropios += $countDays;
+                }
 
                 /* INDICADORES DE LA TEMPORADA */
                 $data = [
                             'days-ocupation'    => 0,
-                            'total-days-season' => 156,
+                            'total-days-season' => \App\SeasonDays::first()->numDays,
                             'num-pax'           => 0,
                             'estancia-media'    => 0,
                             'pax-media'         => 0,
                             'precio-dia-media'  => 0,
+                            'dias-propios'      => $countDiasPropios,
+                            'agencia'           => 0,
+                            'propios'           => 0,
                         ];
 
                 foreach ($books as $key => $book) {
@@ -463,7 +514,17 @@ class LiquidacionController extends Controller
                     /* Nº inquilinos */
                     $data['num-pax'] += $book->pax;
 
+
+                    if ($book->agency != 0) {
+                        $data['agencia'] ++;
+                    }else{
+                        $data['propios'] ++;
+                    }
+
                 }
+
+                $data['agencia'] = ($data['agencia']/ $totBooks)*100;
+                $data['propios'] = ($data['propios']/ $totBooks)*100;
 
                 /* Estancia media */
                 $data['estancia-media'] = ($data['days-ocupation'] / $totBooks);
@@ -490,12 +551,25 @@ class LiquidacionController extends Controller
                                 ->where('room_id', $request->searchRoom)
                                 ->orderBy('start', 'ASC')
                                 ->get();
+
+                $diasPropios = \App\Book::where('start','>',$date->copy()->subMonth())
+                                        ->where('room_id', $request->searchRoom)
+                                        ->where('finish','<',$date->copy()->addYear())
+                                        ->whereIn('type_book',[7,8])
+                                        ->orderBy('created_at','DESC')
+                                        ->get();
             } else {
                 $books = \App\Book::where('start' , '>=' , $date)
                                     ->where('start', '<=', $date->copy()->AddYear()->SubMonth())
                                     ->where('type_book', 2)
                                     ->orderBy('start', 'ASC')
                                     ->get();
+
+                $diasPropios = \App\Book::where('start','>',$date->copy()->subMonth())
+                                            ->where('finish','<',$date->copy()->addYear())
+                                            ->whereIn('type_book',[7,8])
+                                            ->orderBy('created_at','DESC')
+                                            ->get();
             }
             
 
@@ -520,16 +594,27 @@ class LiquidacionController extends Controller
                 $totales["beneficio"]    += $book->total_ben;
             
             }
-            $totBooks = (count($books) > 0)?count($books):1;
+            $totBooks    = (count($books) > 0)?count($books):1;
+            $countDiasPropios = 0;
+            foreach ($diasPropios as $key => $book) {
+                $start = Carbon::createFromFormat('Y-m-d' , $book->start);
+                $finish = Carbon::createFromFormat('Y-m-d' , $book->finish);
+                $countDays = $start->diffInDays($finish);
+
+                $countDiasPropios += $countDays;
+            }
 
             /* INDICADORES DE LA TEMPORADA */
             $data = [
                         'days-ocupation'    => 0,
-                        'total-days-season' => 156,
+                        'total-days-season' => \App\SeasonDays::first()->numDays,
                         'num-pax'           => 0,
                         'estancia-media'    => 0,
                         'pax-media'         => 0,
                         'precio-dia-media'  => 0,
+                        'dias-propios'      => $countDiasPropios,
+                        'agencia'           => 0,
+                        'propios'           => 0,
                     ];
 
             foreach ($books as $key => $book) {
@@ -544,7 +629,17 @@ class LiquidacionController extends Controller
                 /* Nº inquilinos */
                 $data['num-pax'] += $book->pax;
 
+
+                if ($book->agency != 0) {
+                    $data['agencia'] ++;
+                }else{
+                    $data['propios'] ++;
+                }
+
             }
+
+            $data['agencia'] = ($data['agencia']/ $totBooks)*100;
+            $data['propios'] = ($data['propios']/ $totBooks)*100;
 
             /* Estancia media */
             $data['estancia-media'] = ($data['days-ocupation'] / $totBooks);
@@ -623,6 +718,15 @@ class LiquidacionController extends Controller
                                     ->where('room_id',$request->searchRoom)
                                     ->orderBy('start', 'ASC')
                                     ->get();
+
+                    $diasPropios = \App\Book::whereIn('customer_id', $arrayCustomersId)
+                                            ->where('start','>',$date->copy()->subMonth())
+                                            ->where('finish','<',$date->copy()->addYear())
+                                            ->whereIn('type_book',[7,8])
+                                            ->where('room_id', $request->searchRoom)
+                                            ->orderBy('created_at','DESC')
+                                            ->get();
+
                 }else{
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
                                     ->where('start' , '>=' , $date->format('Y-m-d'))
@@ -630,6 +734,13 @@ class LiquidacionController extends Controller
                                     ->where('type_book',2)
                                     ->orderBy('start', 'ASC')
                                     ->get();
+
+                    $diasPropios = \App\Book::whereIn('customer_id', $arrayCustomersId)
+                                            ->where('start','>',$date->copy()->subMonth())
+                                            ->where('finish','<',$date->copy()->addYear())
+                                            ->whereIn('type_book',[7,8])
+                                            ->orderBy('created_at','DESC')
+                                            ->get();
                 }
 
                 
@@ -656,16 +767,27 @@ class LiquidacionController extends Controller
                 
                 }
 
-                $totBooks = (count($books) > 0)?count($books):1;
+                $totBooks    = (count($books) > 0)?count($books):1;
+                $countDiasPropios = 0;
+                foreach ($diasPropios as $key => $book) {
+                    $start = Carbon::createFromFormat('Y-m-d' , $book->start);
+                    $finish = Carbon::createFromFormat('Y-m-d' , $book->finish);
+                    $countDays = $start->diffInDays($finish);
+
+                    $countDiasPropios += $countDays;
+                }
 
                 /* INDICADORES DE LA TEMPORADA */
                 $data = [
                             'days-ocupation'    => 0,
-                            'total-days-season' => 156,
+                            'total-days-season' => \App\SeasonDays::first()->numDays,
                             'num-pax'           => 0,
                             'estancia-media'    => 0,
                             'pax-media'         => 0,
                             'precio-dia-media'  => 0,
+                            'dias-propios'      => $countDiasPropios,
+                            'agencia'           => 0,
+                            'propios'           => 0,
                         ];
 
                 foreach ($books as $key => $book) {
@@ -680,7 +802,17 @@ class LiquidacionController extends Controller
                     /* Nº inquilinos */
                     $data['num-pax'] += $book->pax;
 
+
+                    if ($book->agency != 0) {
+                        $data['agencia'] ++;
+                    }else{
+                        $data['propios'] ++;
+                    }
+
                 }
+
+                $data['agencia'] = ($data['agencia']/ $totBooks)*100;
+                $data['propios'] = ($data['propios']/ $totBooks)*100;
 
                 /* Estancia media */
                 $data['estancia-media'] = ($data['days-ocupation'] / $totBooks);
@@ -702,18 +834,36 @@ class LiquidacionController extends Controller
 
             if ($request->searchRoom && $request->searchRoom != "all") {
                     
-                   $books = \App\Book::where('start' , '>=' , $date)
+                    $books = \App\Book::where('start' , '>=' , $date)
                                         ->where('start', '<=', $date->copy()->AddYear()->SubMonth())
                                         ->where('type_book',2)
                                         ->where('room_id',$request->searchRoom)
                                         ->orderBy('start', 'ASC')
                                         ->get();
+
+                    $diasPropios = \App\Book::where('start','>',$date->copy()->subMonth())
+                                        ->where('room_id', $request->searchRoom)
+                                        ->where('finish','<',$date->copy()->addYear())
+                                        ->whereIn('type_book',[7,8])
+                                        ->orderBy('created_at','DESC')
+                                        ->get();
+
+
+
                 }else{
                     $books = \App\Book::where('start' , '>=' , $date)
                                         ->where('start', '<=', $date->copy()->AddYear()->SubMonth())
                                         ->where('type_book',2)
                                         ->orderBy('start', 'ASC')
                                         ->get();
+
+                    $diasPropios = \App\Book::where('start','>',$date->copy()->subMonth())
+                                            ->where('finish','<',$date->copy()->addYear())
+                                            ->whereIn('type_book',[7,8])
+                                            ->orderBy('created_at','DESC')
+                                            ->get();
+
+
                 }
 
             foreach ($books as $key => $book) {
@@ -735,18 +885,27 @@ class LiquidacionController extends Controller
                 $totales["beneficio"]    += $book->total_ben;
             
             }
-            $totBooks = (count($books) > 0)?count($books):1;
+            $totBooks    = (count($books) > 0)?count($books):1;
+            $countDiasPropios = 0;
+            foreach ($diasPropios as $key => $book) {
+                $start = Carbon::createFromFormat('Y-m-d' , $book->start);
+                $finish = Carbon::createFromFormat('Y-m-d' , $book->finish);
+                $countDays = $start->diffInDays($finish);
 
-            $totBooks = (count($books) > 0)?count($books):1;
+                $countDiasPropios += $countDays;
+            }
 
             /* INDICADORES DE LA TEMPORADA */
             $data = [
                         'days-ocupation'    => 0,
-                        'total-days-season' => 156,
+                        'total-days-season' => \App\SeasonDays::first()->numDays,
                         'num-pax'           => 0,
                         'estancia-media'    => 0,
                         'pax-media'         => 0,
                         'precio-dia-media'  => 0,
+                        'dias-propios'      => $countDiasPropios,
+                        'agencia'           => 0,
+                        'propios'           => 0,
                     ];
 
             foreach ($books as $key => $book) {
@@ -761,7 +920,17 @@ class LiquidacionController extends Controller
                 /* Nº inquilinos */
                 $data['num-pax'] += $book->pax;
 
+
+                if ($book->agency != 0) {
+                    $data['agencia'] ++;
+                }else{
+                    $data['propios'] ++;
+                }
+
             }
+
+            $data['agencia'] = ($data['agencia']/ $totBooks)*100;
+            $data['propios'] = ($data['propios']/ $totBooks)*100;
 
             /* Estancia media */
             $data['estancia-media'] = ($data['days-ocupation'] / $totBooks);

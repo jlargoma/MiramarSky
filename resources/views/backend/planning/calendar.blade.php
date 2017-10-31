@@ -142,7 +142,7 @@
                                                                                  <?php $class = "contestado-email" ?>
                                                                             <?php endif ?>
                                                                                 
-                                                                            <div class="<?php echo $class ;?> end" style="width: 50%;float: left;">
+                                                                            <div class="<?php echo $class ;?> end" style="width: 35%;float: left;">
                                                                             &nbsp;
                                                                         </div>
                                                                     </a>
@@ -165,7 +165,7 @@
                                                                                  <?php $class = "contestado-email" ?>
                                                                             <?php endif ?>
                                                                                 
-                                                                            <div class="<?php echo $class ;?> start" style="width: 50%;float: right;">
+                                                                            <div class="<?php echo $class ;?> start" style="width: 35%;float: right;">
                                                                                 &nbsp;
                                                                             </div>
                                                                         <?php endif ?>

@@ -14203,7 +14203,7 @@ Main components
 /*Colores*/
 
 .SubComunidad.start,.Reserva.Propietario.start{
-    background-image: -webkit-linear-gradient(150deg, #FFA500 50%, #fff 50%);
+    background-color: #FFA500;
     color: black;
 }
 .SubComunidad,.Reserva.Propietario{
@@ -14211,12 +14211,12 @@ Main components
     color: black;
 }
 .SubComunidad.end,.Reserva.Propietario.end{
-    background-image: -webkit-linear-gradient(330deg, #FFA500 50%, #fff 50%);
+    background-color: #FFA500;
     color: black;
 }
 
 .Pagada-la-señal.start{
-    background-image: -webkit-linear-gradient(150deg, #008000 50%, #fff 50%);
+    background-color: #008000;
     color: black;
 }
 .Pagada-la-señal{
@@ -14224,12 +14224,12 @@ Main components
     color: black;
 }
 .Pagada-la-señal.end{
-    background-image: -webkit-linear-gradient(330deg, #008000 50%, #fff 50%);
+    background-color:  #008000;
     color: black;
 }
 
 .Reservado.start{
-    background-image: -webkit-linear-gradient(150deg, #bdf9bd 50%, #fff 50%);
+    background-color: #bdf9bd;
     color: black;
 }
 .Reservado{
@@ -14237,12 +14237,12 @@ Main components
     color: black;
 }
 .Reservado.end{
-    background-image: -webkit-linear-gradient(330deg, #bdf9bd 50%, #fff 50%);
+    background-color: #bdf9bd;
     color: black;
 }
 
 .Bloqueado.start{
-    background-image: -webkit-linear-gradient(150deg, #D4E2FF 50%, #fff 50%);
+    background-color:#D4E2FF;
     color: black;
 }
 .Bloqueado{
@@ -14250,7 +14250,7 @@ Main components
     color: black;
 }
 .Bloqueado.end{
-    background-image: -webkit-linear-gradient(330deg, #D4E2FF 50%, #fff 50%);
+    background-color: #D4E2FF;
     color: black;
 }
 
@@ -14280,11 +14280,11 @@ Main components
     color: black;
 }
 .contestado-email.start {
-    background-image: -webkit-linear-gradient(150deg, #faf8d1 50%, #fff 50%);
+    background-color: #faf8d1;
     color: black;
 }
 .contestado-email.end {
-    background-image: -webkit-linear-gradient(330deg, #faf8d1 50%, #fff 50%);
+    background-color:  #faf8d1 ;
     color: black;
 }
 .table tbody tr.contestado-email td{

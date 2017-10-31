@@ -163,6 +163,7 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 	Route::get('admin/liquidacion-apartamentos/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@apto']);
 	Route::get('admin/estadisticas/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@Statistics']);
 	Route::get('admin/perdidas-ganancias' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@perdidas']);
+
 	
 
 //Propietario
@@ -201,6 +202,17 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('admin/reservas/help/calculateBook', function () {
 		return view('backend.planning._calculateBook');
+	});
+
+	Route::get('admin/update/seasonsDays/{val}', function ($val) {
+
+		$seasonDays = \App\SeasonDays::first();
+		$seasonDays->numDays = $val;
+
+		if ($seasonDays->save()) {
+			return "Cambiado";
+		}
+
 	});
 
 	Route::post('admin/reservas/help/getTotalBook', 'BookController@getTotalBook');

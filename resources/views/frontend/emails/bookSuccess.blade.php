@@ -210,7 +210,7 @@
 			                						<td class="bodycopy" style="color: #000">
 			                							Asigna y gestiona esta reserva desde la zona de administración haciendo clic en el siguiente enlace<br><br>
 
-			                							<a href="//apartamentosierranevada.net/admin">apartamentosierranevada.net/admin</a>
+			                							<a href="https://apartamentosierranevada.net/admin" target="_blank">apartamentosierranevada.net/admin</a>
 			                						</td>
 			                					</tr>
 

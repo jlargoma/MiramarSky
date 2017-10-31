@@ -53,7 +53,24 @@
 <div class="container-fluid padding-5 sm-padding-10">
 
     <div class="row push-20">
-    	<div class="col-md-3 col-md-offset-4 text-center">
+    	<div class="col-md-4 push-20">
+    		<div class="col-md-8">
+    			<label>Nombre del cliente:</label>
+    			<input id="nameCustomer" type="text" name="searchName" class="searchabled form-control" placeholder="nombre del cliente" />
+    		</div>
+    		<div class="col-md-4">
+    			<label>APTO:</label>
+    			<select class="form-control searchSelect minimal" name="searchByRoom">
+    				<option value="all">Todos</option>
+    				<?php foreach (\App\Rooms::all() as $key => $room): ?>
+    					<option value="<?php echo $room->id ?>">
+    						<?php echo $room->name ?>
+    					</option>
+    				<?php endforeach ?>
+    			</select>
+    		</div>
+    	</div>
+    	<div class="col-md-3 text-center">
     		<h2>Liquidación por reservas <?php echo $temporada->copy()->format('Y')."-".$temporada->copy()->AddYear()->format('Y') ?> </h2>
     	</div>
     	<div class="col-md-1" style="padding: 10px 0;">
@@ -76,29 +93,6 @@
     </div>
 
 	<div class="row">
-		<div class="col-md-12">
-			<div class="col-md-3 push-20">
-				<h2 class="text-left">
-					Buscar por:
-				</h2>
-				<div class="col-md-8">
-					<label>Nombre del cliente:</label>
-					<input id="nameCustomer" type="text" name="searchName" class="searchabled form-control" placeholder="nombre del cliente" />
-				</div>
-				<div class="col-md-4">
-					<label>APTO:</label>
-					<select class="form-control searchSelect minimal" name="searchByRoom">
-						<option value="all">Todos</option>
-						<?php foreach (\App\Rooms::all() as $key => $room): ?>
-							<option value="<?php echo $room->id ?>">
-								<?php echo $room->name ?>
-							</option>
-						<?php endforeach ?>
-					</select>
-				</div>
-			</div>
-			
-		</div>
 		<div class="liquidationSummary">
     		@include('backend.sales._tableSummary', ['totales' => $totales, 'books' => $books])
     	</div>
@@ -187,6 +181,13 @@
 			});
 		});
 
+		$('.seasonDays').change(function(event) {
+            var numDays = $(this).val();
+            $.get('/admin/update/seasonsDays/'+numDays,{numDays: numDays}, function(data) {
+                alert(data);
+                location.reload();
+            });
+        });
 
 	});
 </script>

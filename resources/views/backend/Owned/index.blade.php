@@ -407,7 +407,7 @@
 									<tbody>
 										<?php foreach ($books as $book): ?>
 											<tr>
-												<td class="text-center"><?php echo ucfirst(strtolower($book->Customer->name)) ?> </td>
+												<td class="text-center" data-id="<?php echo $book->id; ?>"><?php echo ucfirst(strtolower($book->customer->name)) ?> </td>
 												<td class="text-center"><?php echo $book->pax ?> </td>
 												<td class="text-center">
 													<?php 
@@ -444,8 +444,9 @@
 												</td>
 												<?php if ($room->luxury == 1): ?>
 													<td class="text-center">
-														<?php if ($book->cost_lujo > 0): ?>
-															<?php echo $book->cost_lujo ?> €
+														<?php $auxLuxury = ($book->cost_total - ($book->cost_apto + $book->cost_park)) ?>
+														<?php if ($auxLuxury > 0): ?>
+															<?php echo $auxLuxury ?> €
 														<?php else: ?>
 															---€	
 														<?php endif ?>
