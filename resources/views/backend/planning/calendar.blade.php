@@ -142,7 +142,7 @@
                                                                                  <?php $class = "contestado-email" ?>
                                                                             <?php endif ?>
                                                                                 
-                                                                            <div class="<?php echo $class ;?> end" style="width: 35%;float: left;">
+                                                                            <div class="<?php echo $class ;?> end" style="width: 45%;float: left;">
                                                                             &nbsp;
                                                                         </div>
                                                                     </a>
@@ -165,7 +165,7 @@
                                                                                  <?php $class = "contestado-email" ?>
                                                                             <?php endif ?>
                                                                                 
-                                                                            <div class="<?php echo $class ;?> start" style="width: 35%;float: right;">
+                                                                            <div class="<?php echo $class ;?> start" style="width: 45%;float: right;">
                                                                                 &nbsp;
                                                                             </div>
                                                                         <?php endif ?>
@@ -174,7 +174,6 @@
 
 
                                                                 <?php else: ?>
-                                                                    
                                                                     <?php if ($calendars[$x]->type_book != 9 && $calendars[$x]->type_book != 5): ?>
                                                                         <a 
                                                                             href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
@@ -222,7 +221,7 @@
                                                                      <?php $class = "contestado-email" ?>
                                                                 <?php endif ?>
                                                                     
-                                                                <div class="<?php echo $class ;?> start" style="width: 100%;float: left;">
+                                                                <div class="<?php echo $class ;?> start" style="width: 45%;float: right;">
                                                                     &nbsp;
                                                                 </div>
 
@@ -245,7 +244,7 @@
                                                                      <?php $class = "contestado-email" ?>
                                                                 <?php endif ?>
                                                                     
-                                                                <div class="<?php echo $class ;?> end" style="width: 100%;float: left;">
+                                                                <div class="<?php echo $class ;?> end" style="width: 45%;float: left;">
                                                                     &nbsp;
                                                                 </div>
 
