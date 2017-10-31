@@ -11,6 +11,9 @@
         .not-padding-mobile{
             padding: 0!important;
         }
+        .daterangepicker{
+            top: 5%!important
+        }
     }
 </style>
 <link href="{{ asset('/frontend/hover.css')}}" rel="stylesheet" media="all">

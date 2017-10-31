@@ -17,15 +17,14 @@ class PdfController extends Controller
         foreach ($payments as $payment) {
             $pending += $payment->import;
         }
-        // if($request->has('download')){
-        //     $pdf = PDF::loadView('pdf._pdfWithData');
-        //     return $pdf->download('pdf._pdfWithData');
-        // }
-        return view('pdf._pdfWithData',[
-        								'book' => $book,
-        								'pendiente' => $pending,
-        								]);
-        
+
+        $data =[ 'book' => $book, 'pendiente' => $pending];
+        $pdf = PDF::loadView('pdf._pdfWithData', ['data' => $data]);
+        return $pdf->download('invoice-'.str_replace(' ', '-', strtolower($book->customer->name)).'.pdf');
 
     }
+
+
+
+
 }

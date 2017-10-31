@@ -80,7 +80,7 @@
     }
 </style>
 <?php if (!$mobile->isMobile()): ?>
-	<section class="section full-screen nobottommargin" style="background-image: url({{ asset('/img/mountain.png')}});background-repeat: no-repeat;background-size: 100%; background-position: inherit; padding: 0; margin: 0" >
+	<section class="section nobottommargin" style="background-image: url({{ asset('/img/mountain.png')}});background-repeat: no-repeat;background-size: 100%;background-position: 0;padding: 0;margin: 0;min-height: 564px;" >
 		<div class="vertical-middle">
 			<div class="container container-mobile clearfix" style="width: 85%;">
 
@@ -103,7 +103,7 @@
 					
 	</section>
 <?php else:?>
-	<section class=" full-screen section nobottommargin" style="background-image: url({{ asset('/img/mountain.png')}});background-repeat: no-repeat;background-size: cover; background-position: inherit; padding: 0;" >
+	<section class="section nobottommargin" style="background-image: url({{ asset('/img/mountain.png')}});background-repeat: no-repeat;background-size: cover; background-position: inherit; padding: 0;" >
 		<div class="container container-mobile clearfix" style="width: 85%;    min-height: 450px;">
 			<div class="col-xs-12 nobottommargin">
 				
@@ -129,8 +129,8 @@
 	</section>
 <?php endif ;?>
 <script type="text/javascript">
-	setTimeout(function(){
-	  window.location.href = "/admin/reservas";
-	}, 4000);
+	// setTimeout(function(){
+	//   window.location.href = "/admin/reservas";
+	// }, 4000);
 </script>
 @endsection

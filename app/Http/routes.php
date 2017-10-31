@@ -13,6 +13,7 @@
 
 Route::auth();
 
+
 // Route::get('/',['middleware' => 'authSubAdmin','middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
 Route::get('/','HomeController@index');
 Route::get('/sitemap','HomeController@siteMap');
@@ -128,6 +129,11 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 
 
 
+	
+
+
+
+
 // Prices
 	Route::get('admin/precios' ,['middleware' => 'authAdmin', 'uses' =>'PricesController@index']);
 	Route::get('admin/precios/update',['middleware' => 'authAdmin', 'uses' => 'PricesController@update']);
@@ -220,6 +226,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 });
 Route::group(['middleware' => 'authAdmin'], function () {
+
 	Route::get('admin/delete/nofify/{id}', function ($id) {
 		$notify = \App\BookNotification::find($id);
 
@@ -246,10 +253,20 @@ Route::group(['middleware' => 'authAdmin'], function () {
 		if ($book->save()) {
 			echo "Cambiado!";
 		}
-		
-		
 
+	});
 
+	Route::get('/admin/apartamentos/rooms/getTableRooms/', function(){
+
+		return view('backend.rooms._tableRooms',[
+						                    'rooms'     => \App\Rooms::where('state',1)->orderBy('order','ASC')->get(),
+						                    'roomsdesc' => \App\Rooms::where('state',0)->orderBy('order','ASC')->get(),
+						                    'sizes'     => \App\SizeRooms::all(),
+						                    'types'     => \App\TypeApto::all(),
+						                    'tipos'     => \App\TypeApto::all(),
+						                    'owners'    => \App\User::all(),
+						                    'show'      => 1,
+										]);
 	});
 
 

@@ -508,11 +508,16 @@
 
                                                     <td class="text-center sm-p-t-10 sm-p-b-10">
                                                         <select id="schedule" style="width: 100%;" data-type="in" data-id="<?php echo $book->id ?>">
-                                                            <option>---</option>
+                                                            <option>-- Sin asignar --</option>
                                                             <?php for ($i = 0; $i < 24; $i++): ?>
                                                                 <option value="<?php echo $i ?>" <?php if($i == $book->schedule) { echo 'selected';}?>>
                                                                     <?php if ($i < 10): ?>
-                                                                        0<?php echo $i ?>
+                                                                        <?php if ($i == 0): ?>
+                                                                            --
+                                                                        <?php else: ?>
+                                                                            0<?php echo $i ?>
+                                                                        <?php endif ?>
+                                                                        
                                                                     <?php else: ?>
                                                                         <?php echo $i ?>
                                                                     <?php endif ?>

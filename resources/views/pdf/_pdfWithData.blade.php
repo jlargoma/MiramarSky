@@ -3,33 +3,33 @@
 <hr></hr>
 
 <br><br>
-Nombre: <?php echo $book->customer->name ?><br>
+Nombre: <?php echo $data['book']->customer->name ?><br>
 
-DNI: <?php echo $book->customer->dni ?><br>
+DNI: <?php echo $data['book']->customer->dni ?><br>
 
-Telefono: <?php echo $book->customer->phone ?>
+Telefono: <?php echo $data['book']->customer->phone ?>
 <br><br>
 
 <hr></hr>
 
 <br>
-<b>Fecha entrada:</b><?php echo $start = Carbon::createFromFormat('Y-m-d',$book->start)->format('d-m-Y') ?> <br /><br /> 
-<b>Fecha salida:</b><?php echo $finish = Carbon::createFromFormat('Y-m-d',$book->finish)->format('d-m-Y') ?> <br /><br />  
-<b>Noches:</b><?php echo Carbon::createFromFormat('Y-m-d', $book->start)->diffInDays(Carbon::createFromFormat('Y-m-d', $book->finish)) ?> <br /><br />
-<b>Ocupantes:</b> <?php echo $book->pax ?><br /><br /> 
-<b>Apartamento: </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nº:<?php echo $book->room->name ?><br><br>  
+<b>Fecha entrada:</b><?php echo $start = Carbon::createFromFormat('Y-m-d',$data['book']->start)->format('d-m-Y') ?> <br /><br /> 
+<b>Fecha salida:</b><?php echo $finish = Carbon::createFromFormat('Y-m-d',$data['book']->finish)->format('d-m-Y') ?> <br /><br />  
+<b>Noches:</b><?php echo Carbon::createFromFormat('Y-m-d', $data['book']->start)->diffInDays(Carbon::createFromFormat('Y-m-d', $data['book']->finish)) ?> <br /><br />
+<b>Ocupantes:</b> <?php echo $data['book']->pax ?><br /><br /> 
+<b>Apartamento: </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nº:<?php echo $data['book']->room->name ?><br><br>  
 <b>Parking: </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PLAZA Nº:________________<br><br>  
 <b>Taquilla guarda esquíes</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TAQUILLA Nº:________________<br><br>
 
 <hr></hr>
 <br><br>
-<b>Total Reserva: <?php echo $book->total_price ?> </b>&euro;<br><br>
-<b>Cobrado: <?php echo $book->total_price - $pendiente ?> </b>&euro;<br><br>
+<b>Total Reserva: <?php echo $data['book']->total_price ?> </b>&euro;<br><br>
+<b>Cobrado: <?php echo $data['book']->total_price - $data['pendiente'] ?> </b>&euro;<br><br>
 
 <hr></hr>
 
 <br><br>
-<b>Pendiente de abono: <?php echo $pendiente ?>&euro;</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Forma de Pago:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<b>Pendiente de abono: <?php echo $data['pendiente'] ?>&euro;</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Forma de Pago:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <span style="border:1px black solid; position fixed">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;Metálico&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <span style="border:1px black solid; position fixed">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;Tarjeta
 <br><br>

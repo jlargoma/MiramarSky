@@ -200,9 +200,7 @@ class HomeController extends Controller
 
             $contact = Mail::send(['html' => 'frontend.emails.contact'],[ 'data' => $data,], function ($message) use ($data) {
                 $message->from($data['email'], $data['name']);
-                $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */
-                $message->bcc('jlargo@mksport.es');
-                $message->bcc('jlargoma@gmail.com');
+                $message->to('reservas@apartamentosierranevada.net'); 
                 $message->subject('Formulario de contacto MiramarSKI');
             });
 

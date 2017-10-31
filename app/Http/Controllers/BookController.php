@@ -468,6 +468,90 @@ class BookController extends Controller
     }
 
 
+    //Funcion para actualizar la reserva
+    public function saveUpdate(Request $request, $id)
+    {
+        
+
+        $aux = str_replace('Abr', 'Apr', $request->input('fechas'));
+
+        $date = explode('-', $aux);
+
+        $start = Carbon::createFromFormat('d M, y' , trim($date[0]))->format('d/m/Y');
+        $finish = Carbon::createFromFormat('d M, y' , trim($date[1]))->format('d/m/Y');
+        $book = new \App\Book();
+        $extraPrice = 0 ;
+        $extraCost  = 0;
+
+
+
+        if ( \App\Book::existDateOverrride($start,$finish,$request->input('newroom'), $id) ) {
+            $book = \App\Book::find($id);
+            $room = \App\Rooms::find($request->input('newroom'));
+
+            $book->user_id       = Auth::user()->id;
+            $book->customer_id   = $request->input('customer_id');
+            $book->room_id       = $request->input('newroom');
+            $book->start         = Carbon::createFromFormat('d/m/Y',$start);
+            $book->finish        = Carbon::createFromFormat('d/m/Y',$finish);
+            $book->comment       = ltrim($request->input('comments'));
+            $book->book_comments = ltrim($request->input('book_comments'));
+            $book->pax           = $request->input('pax');
+            $book->real_pax           = $request->input('real_pax');
+            $book->nigths        = $request->input('nigths');
+            $book->sup_limp      = ($room->typeApto == 1) ? 35 : 50;
+            $book->sup_park      = $book->getPricePark($request->input('parking'),$request->input('nigths'));
+            $book->type_park     = $request->input('parking');
+            $book->agency        = $request->input('agency');
+            $book->PVPAgencia    = $request->input('agencia');
+
+            $book->cost_park     = $book->getCostPark($request->parking,$request->nigths);
+
+            $book->type_luxury     = $request->input('type_luxury');                
+            $book->sup_lujo      = $this->getPriceLujo($request->input('type_luxury'));
+            $book->cost_lujo     = $this->getCostLujo($request->input('type_luxury'));
+
+            $book->cost_apto     = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
+            $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo;
+
+            $book->total_price   = $request->input('total');
+            $book->real_price    = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
+
+            $book->total_ben     = $book->total_price - $book->cost_total;
+            $book->extra         = $request->input('extra');
+            $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
+            $book->ben_jorge     = $book->getBenJorge($book->total_ben,$room->id);
+            $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
+
+
+            $book->schedule       = $request->input('schedule');
+            $book->scheduleOut    = $request->input('scheduleOut');
+
+            if ($book->save()) {
+
+               if ( $book->room->isAssingToBooking() ) {
+
+                $isAssigned = \App\BookNotification::where('book_id',$book->id)->get();
+
+                if (count($isAssigned) == 0) {
+                    $notification = new \App\BookNotification();
+                    $notification->book_id = $book->id;
+                    $notification->save();
+                }
+            }else{
+                $deleted = \App\BookNotification::where('book_id',$book->id)->delete();
+            }
+
+            return redirect('admin/reservas/update/'.$id);
+            }
+        }else{
+
+            return redirect('admin/reservas/update/'.$id.'?saveStatus=Error_no_hay_disponibilidad_para_este_piso');
+        }
+    }
+
+    
+
     public function changeStatusBook(Request $request, $id)
     {
         if ( isset($request->status) && !empty($request->status)) {
@@ -599,85 +683,6 @@ class BookController extends Controller
         }
 
         return $cost + $suplimp;
-    }
-
-    //Funcion para actualizar la reserva
-    public function saveUpdate(Request $request, $id)
-    {
-
-        $aux = str_replace('Abr', 'Apr', $request->input('fechas'));
-
-        $date = explode('-', $aux);
-
-        $start = Carbon::createFromFormat('d M, y' , trim($date[0]))->format('d/m/Y');
-        $finish = Carbon::createFromFormat('d M, y' , trim($date[1]))->format('d/m/Y');
-        $book = new \App\Book();
-        $extraPrice = 0 ;
-        $extraCost  = 0;
-
-
-
-        if ( \App\Book::existDateOverrride($start,$finish,$request->input('newroom'), $id) ) {
-            $book = \App\Book::find($id);
-            $room = \App\Rooms::find($request->input('newroom'));
-
-            $book->user_id       = Auth::user()->id;
-            $book->customer_id   = $request->input('customer_id');
-            $book->room_id       = $request->input('newroom');
-            $book->start         = Carbon::createFromFormat('d/m/Y',$start);
-            $book->finish        = Carbon::createFromFormat('d/m/Y',$finish);
-            $book->comment       = ltrim($request->input('comments'));
-            $book->book_comments = ltrim($request->input('book_comments'));
-            $book->pax           = $request->input('pax');
-            $book->real_pax           = $request->input('real_pax');
-            $book->nigths        = $request->input('nigths');
-            $book->sup_limp      = ($room->typeApto == 1) ? 35 : 50;
-            $book->sup_park      = $book->getPricePark($request->input('parking'),$request->input('nigths'));
-            $book->type_park     = $request->input('parking');
-            $book->agency        = $request->input('agency');
-            $book->PVPAgencia    = $request->input('agencia');
-
-            $book->cost_park     = $book->getCostPark($request->parking,$request->nigths);
-
-            $book->type_luxury     = $request->input('type_luxury');                
-            $book->sup_lujo      = $this->getPriceLujo($request->input('type_luxury'));
-            $book->cost_lujo     = $this->getCostLujo($request->input('type_luxury'));
-
-            $book->cost_apto     = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
-            $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo;
-
-            $book->total_price   = $request->input('total');
-            $book->real_price   = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
-
-            $book->total_ben     = $book->total_price - $book->cost_total;
-            $book->extra         = $request->input('extra');
-            $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
-            $book->ben_jorge     = $book->getBenJorge($book->total_ben,$room->id);
-            $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
-
-
-
-            if ($book->save()) {
-
-               if ( $book->room->isAssingToBooking() ) {
-
-                $isAssigned = \App\BookNotification::where('book_id',$book->id)->get();
-
-                if (count($isAssigned) == 0) {
-                    $notification = new \App\BookNotification();
-                    $notification->book_id = $book->id;
-                    $notification->save();
-                }
-            }else{
-                $deleted = \App\BookNotification::where('book_id',$book->id)->delete();
-            }
-
-            return redirect('admin/reservas/update/'.$id);
-            }
-        }else{
-
-            return redirect('admin/reservas/update/'.$id.'?saveStatus=Error_no_hay_disponibilidad_para_este_piso');
-        }
     }
 
     //Funcion para el precio del Aparcamiento
@@ -825,13 +830,13 @@ class BookController extends Controller
         } else {
             switch ($lujo) {
                 case 1:
-                $supLujo = 0;
+                $supLujo = 40;
                 break;
                 case 2:
                 $supLujo = 0;
                 break;
                 case 3:
-                $supLujo = 40;
+                $supLujo = 0;
                 break;
                 case 4:
                 $supLujo = 40/2;
@@ -848,13 +853,14 @@ class BookController extends Controller
         $supLujo = 0;
         switch ($request->lujo) {
             case 1:
-            $supLujo = 0;
+            $supLujo = 40;
+            
             break;
             case 2:
             $supLujo = 0;
             break;
             case 3:
-            $supLujo = 40;
+            $supLujo = 0;
             break;
             case 4:
             $supLujo = 40/2;
@@ -863,54 +869,6 @@ class BookController extends Controller
 
         return $supLujo;
     }
-
-    // Funcion para la migracion de la base antigua  a la nuevas
-        // public function getBaseDatos()
-        //     {
-        //         $apartamentos = DB::connection('apartamento')->table('book')->get();
-
-        //         echo "<pre>";
-        //         foreach ($apartamentos as $apartamento) {
-        //             $book = \App\Book::find($apartamento->ID);
-        //             if (count($book) > 0) {
-        //                 echo "Ya existe esta reserva ".$apartamento->ID." <br>";
-        //             } else {
-        //                 $book = new \App\Book();
-        //                 $book->id            = $apartamento->ID;
-        //                 $book->user_id       =$apartamento->UserID;
-        //                 $book->customer_id   =$apartamento->CustomerID;
-        //                 $book->room_id       =$apartamento->RoomID;
-        //                 $book->start         =$apartamento->Start;
-        //                 $book->finish        =$apartamento->Finish;
-        //                 $book->comment       =($apartamento->Comment != "") ? $apartamento->Comment : "";
-        //                 $book->book_comments =($apartamento->bookComments != "") ? $apartamento->bookComments : "";
-        //                 $book->pax           =$apartamento->Pax;
-        //                 $book->nigths        =$apartamento->noches;
-        //                 $book->sup_limp      =$apartamento->supLimp;
-        //                 $book->sup_park      =$apartamento->supPark;
-        //                 $book->type_book     = $apartamento->Type;
-        //                 $book->type_park     = 0;
-        //                 $book->cost_park     =$apartamento->Parking;
-        //                 $book->sup_lujo      =$apartamento->supLujo;
-        //                 $book->cost_lujo     =$apartamento->LujoCoste;
-        //                 $book->cost_apto     =$apartamento->costeApto;
-        //                 $book->cost_total    =$apartamento->costeTotal;
-        //                 $book->total_price   =$apartamento->totalPrice;
-        //                 $book->total_ben     =$apartamento->ingresoNeto;
-        //                 $book->extra         = 0;
-        //                 $book->inc_percent   =$apartamento->porcIngreso;
-        //                 $book->ben_jorge     = $book->getBenJorge($book->total_ben,$apartamento->RoomID);
-        //                 $book->ben_jaime     = $book->getBenJaime($book->total_ben,$apartamento->RoomID);
-        //                 $book->send          =$apartamento->send;
-        //                 $book->statusCobro   =$apartamento->statusCobro;
-        //                 if ($book->save()) {
-        //                    echo "Insertado ID ".$apartamento->ID."<br>";
-        //                 } else {
-        //                     # code...
-        //                 }
-        //             }
-        //         }
-        //     }
 
     // Funcion para la migracion de la base antigua  a la nuevas "cobros"
     public function getCobrosBD()

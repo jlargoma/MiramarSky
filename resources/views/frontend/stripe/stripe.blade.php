@@ -88,7 +88,7 @@
 </style>
 <?php $partialPay = ($book->total_price * 25 )/ 100 ?>
 <?php if (!$mobile->isMobile()): ?>
-	<section class="section full-screen nobottommargin" style="background-image: url({{ asset('/img/mountain.png')}});background-size: cover;background-position: 0;" >
+	<section class="section nobottommargin" style="background-image: url({{ asset('/img/mountain.png')}});background-size: cover;background-position: 0; min-height: 564px;" >
 		<div class="container container-mobile clearfix" style="width: 85%;">
 			<?php if ($payment == 1): ?>
 				<div class="col-md-6 nobottommargin">

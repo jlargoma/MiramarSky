@@ -148,7 +148,6 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
-        // Barryvdh\Snappy\ServiceProvider::class,
 
         /*
          * Application Service Providers...

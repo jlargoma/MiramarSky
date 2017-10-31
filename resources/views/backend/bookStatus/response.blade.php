@@ -1,5 +1,5 @@
 <div class="col-xs-12">
-	<div class="col-xs-12 col-md-12 not-padding">
+	<div class="col-xs-12 col-md-12">
 				
 		<div class="row push-10">
 			<span class="push-10 font-s18 black font-w300 pull-left">Nombre:</span>
@@ -40,7 +40,7 @@
 			Precio total de la solicitud de reserva<br><br>
 			<span class="font-w800 black" style="font-size: 48px;"><?php echo number_format($total ,0,'','.') ?>€</span>
 		</p>
-		<div class="col-md-7 col-xs-12">
+		<div class="col-md-7 col-xs-6 text-center">
 			<form method="post" action="{{url('/admin/reservas/create')}}" id="confirm-book">
 	    		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 	    		<input type="hidden" name="newroom" value="<?php echo $id_apto; ?>">
@@ -60,10 +60,10 @@
 				<?php else: ?>
 					<input type="hidden" name="type_luxury" value="2">
 				<?php endif; ?>
-				<button type="submit" class="btn btn-success text-white btn-lg btn-cons center hvr-grow-shadow " style="line-height: 1.3;letter-spacing: 1px; width: 100%;">RESERVAR</button>
+				<button type="submit" class="btn btn-success text-white btn-lg btn-cons center hvr-grow-shadow ">RESERVAR</button>
 			</form>
 		</div>
-        <div class="col-md-5 col-xs-12">
+        <div class="col-md-5 col-xs-6 text-center">
         	<button class="btn btn-danger btn-lg btn-cons  text-white center hvr-grow-shadow btn-back-calculate">
         		VOLVER
         	</button>

@@ -55,7 +55,7 @@
    <div class="row">
        <div class="col-md-12 col-xs-12 center text-left0">
             <div class="col-md-6">
-                <div class="col-md-9">
+                <div class="col-md-9 col-xs-12">
                     <a href="{{ url('/admin/reservas')}}" class=" m-b-10" style="min-width: 10px!important">
                         <img src="{{ asset('/img/miramarski/iconos/close.png') }}" style="width: 20px" />
                     </a>
@@ -65,8 +65,21 @@
                         <?php echo $fecha->copy()->format('d-m-Y')." Hora:".$fecha->copy()->format('H:m')?>
                     </h4>
                     <h5>Creado por <?php echo "<b>".strtoupper($book->user->name)."</b>" ?></h5>
+                    <?php if ($book->type_book == 2): ?>
+                        <div class="col-md-2 col-xs-4 text-center push-10">
+                            <a href="{{ url('/admin/pdf/pdf-reserva/'.$book->id) }}">
+                                <img src="/img/pdf.png" style="width: 50px; float:left;">
+                            </a>
+                        </div>
+                        <div class="col-md-2 col-xs-4 text-center push-10">
+                            <a href="tel:<?php echo $book->customer->phone ?>" style="width: 50px; float:left;">
+                                <i class="fa fa-phone  text-success" style="font-size: 48px;"></i>
+                            </a>
+                        </div>
+
+                    <?php endif ?>
                 </div>
-                <div class="col-md-3 content-guardar" style="padding: 20px 0;">
+                <div class="col-md-3 col-xs-12 content-guardar" style="padding: 20px 0;">
                     <div id="overlay" style="display: none;"></div>  
                     <select class="status form-control minimal" data-id="<?php echo $book->id ?>" name="status" >
                         <?php for ($i=1; $i < 9; $i++): ?> 
@@ -211,6 +224,26 @@
                                         <option value="<?php echo $i ?>" {{ $book->type_park == $i ? 'selected' : '' }}><?php echo $book->getParking($i) ?></option>
                                     <?php endfor;?>
                                 </select>
+                                <label class="m-t-5">Hora IN</label>
+                                <select id="schedule" class="form-control minimal" style="width: 100%;" name="schedule">
+                                    <option>-- Sin asignar --</option>
+                                    <?php for ($i = 0; $i < 24; $i++): ?>
+                                        <option value="<?php echo $i ?>" <?php if($i == $book->schedule) { echo 'selected';}?>>
+                                            <?php if ($i < 10): ?>
+                                                <?php if ($i == 0): ?>
+                                                    --
+                                                <?php else: ?>
+                                                    0<?php echo $i ?>
+                                                <?php endif ?>
+                                                
+                                            <?php else: ?>
+                                                <?php echo $i ?>
+                                            <?php endif ?>
+                                        </option>
+                                    <?php endfor ?>
+                                </select>
+                                
+                            </select>
                             </div>
                             <div class="col-md-2 col-xs-6 push-20">
                                 <label>Sup. Lujo</label>
@@ -218,6 +251,25 @@
                                     <?php for ($i=1; $i <= 4 ; $i++): ?>
                                         <option value="<?php echo $i ?>" {{ $book->type_luxury == $i ? 'selected' : '' }}><?php echo $book->getSupLujo($i) ?></option>
                                     <?php endfor;?>
+                                </select>
+
+                                <label class="m-t-5">Hora Out</label>
+                                <select id="scheduleOut" class="form-control minimal" style="width: 100%;" name="scheduleOut">
+                                    <option>-- Sin asignar --</option>
+                                    <?php for ($i = 0; $i < 24; $i++): ?>
+                                        <option value="<?php echo $i ?>" <?php if($i == $book->scheduleOut) { echo 'selected';}?>>
+                                            <?php if ($i < 10): ?>
+                                                <?php if ($i == 0): ?>
+                                                    --
+                                                <?php else: ?>
+                                                    0<?php echo $i ?>
+                                                <?php endif ?>
+                                                
+                                            <?php else: ?>
+                                                <?php echo $i ?>
+                                            <?php endif ?>
+                                        </option>
+                                    <?php endfor ?>
                                 </select>
                             </div>
                         </div>
@@ -450,15 +502,15 @@
                             </h4>
                         </div>
 
-                        <div class="col-md-4 push-10">
+                        <div class="col-xs-12 push-10">
                             <label for="name">Nombre</label> 
                             <input class="form-control cliente" type="text" name="nombre" value="<?php echo $book->customer->name ?>" data-id="<?php echo $book->customer->id ?>">
                         </div>
-                        <div class="col-md-4 push-10">
+                        <div class="col-xs-12 push-10">
                             <label for="email">Email</label> 
                             <input class="form-control cliente" type="email" name="email" value="<?php echo $book->customer->email ?>" data-id="<?php echo $book->customer->id ?>">  
                         </div>
-                        <div class="col-md-4 push-10">
+                        <div class="col-xs-12 push-10">
                             <label for="phone">Telefono</label> 
                             <input class="form-control cliente" type="text" name="phone" value="<?php echo $book->customer->phone ?>" data-id="<?php echo $book->customer->id ?>"> 
                         </div>  
@@ -479,7 +531,7 @@
 
                             <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;" value="<?php echo $start1 ;?> - <?php echo $finish1 ?>" readonly="">
                         </div>
-                        <div class="col-md-1 col-xs-3 push-20 ">
+                        <div class="col-md-1 col-xs-4 push-20 ">
                             <label>Noches</label>
                             <input type="number" class="form-control nigths" name="nigths" style="width: 100%" disabled value="<?php echo $book->nigths ?>">
                              <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%" value="<?php echo $book->nigths ?>">
@@ -529,6 +581,46 @@
                                 <?php endfor;?>
                             </select>
                         </div>
+                        <div class="col-md-2 col-xs-3 push-20">
+                            <label >IN</label>
+                            <select id="schedule" class="form-control " style="width: 100%;" name="schedule">
+                                <option>-- Sin asignar --</option>
+                                <?php for ($i = 0; $i < 24; $i++): ?>
+                                    <option value="<?php echo $i ?>" <?php if($i == $book->schedule) { echo 'selected';}?>>
+                                        <?php if ($i < 10): ?>
+                                            <?php if ($i == 0): ?>
+                                                --
+                                            <?php else: ?>
+                                                0<?php echo $i ?>
+                                            <?php endif ?>
+                                            
+                                        <?php else: ?>
+                                            <?php echo $i ?>
+                                        <?php endif ?>
+                                    </option>
+                                <?php endfor ?>
+                            </select>
+                        </div>
+                        <div class="col-md-2 col-xs-3 push-20">
+                            <label>Out</label>
+                            <select id="scheduleOut" class="form-control " style="width: 100%;" name="scheduleOut">
+                                <option>-- Sin asignar --</option>
+                                <?php for ($i = 0; $i < 24; $i++): ?>
+                                    <option value="<?php echo $i ?>" <?php if($i == $book->scheduleOut) { echo 'selected';}?>>
+                                        <?php if ($i < 10): ?>
+                                            <?php if ($i == 0): ?>
+                                                --
+                                            <?php else: ?>
+                                                0<?php echo $i ?>
+                                            <?php endif ?>
+                                            
+                                        <?php else: ?>
+                                            <?php echo $i ?>
+                                        <?php endif ?>
+                                    </option>
+                                <?php endfor ?>
+                            </select>
+                        </div>
                     </div>
                     <div class="col-xs-12 bg-white">
                         <div class="col-md-4 col-xs-6 push-20 not-padding" style="min-height: 150px">
@@ -573,7 +665,7 @@
                                 </div>
                                 <div class="col-md-4 col-xs-12 text-center not-padding" style="background: #ff7f27;">
                                     <label class="font-w800 text-white" for="">BENEFICIO</label>
-                                    <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>" style="width: 80%; float: left;">
+                                    <input type="text" class="form-control text-right beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>" style="width: 80%; float: left;">
                                     <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;"><?php echo number_format($book->inc_percent,0)."%" ?></div>
                                 </div>
                             <?php endif ?>    
@@ -602,7 +694,7 @@
                         </div>
                     </div>
                     <div class="row push-40 bg-white padding-block">
-                        <div class="col-md-4 col-md-offset-4 text-center">
+                        <div class="col-md-4 col-md-offset-4 col-xs-12 text-center">
                             <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;">Guardar</button>
                         </div>  
                     </div>
