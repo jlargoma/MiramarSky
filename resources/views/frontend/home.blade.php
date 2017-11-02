@@ -14,6 +14,9 @@
 	.hvr-reveal:before{
 		border-color: white!important;
 	}
+	#content{
+		margin-top: -56px!important;
+	}
 	@media (max-width: 768px){ 
 		#primary-menu.style-2 {
 		    background-color: transparent; 
@@ -119,7 +122,7 @@
 	    height: 35px;
 	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -105px -70px;
 	}
-
+	
 	@media only screen and (min-width: 991px) and (max-width: 1222px){ 
 		h1.font-w800.black{
 			font-size: 22px!important;
@@ -130,7 +133,7 @@
 	}
 
 </style>
-<section id="content">
+<section id="content" >
 	
     <div class="content-wrap notoppadding" style="padding-bottom: 0;">
        
@@ -143,7 +146,7 @@
 			</style>
 			
 
-			
+
 			<div class="row clearfix" style="background-color: #3F51B5; background-image: url({{asset('/img/miramarski/esquiadores.png')}}); background-position: left bottom; background-repeat: no-repeat; background-size: 50%;">
    				<div id="close-form-book" style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
    					<span class="white text-white"><i class="fa fa-times fa-2x"></i></span>
