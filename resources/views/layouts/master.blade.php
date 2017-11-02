@@ -142,6 +142,9 @@
 					width: 100%;
 					margin-top: -100px!important;
 				}
+				.button.button-reveal.button-large {
+				    padding: 0 20px;
+				}
 			}
 
 		</style>
