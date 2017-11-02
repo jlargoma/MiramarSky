@@ -20,7 +20,7 @@ class PdfController extends Controller
 
         $data =[ 'book' => $book, 'pendiente' => $pending];
         $pdf = PDF::loadView('pdf._pdfWithData', ['data' => $data]);
-        return $pdf->stream('invoice-'.str_replace(' ', '-', strtolower($book->customer->name)).'.pdf');
+        return $pdf->stream('documento-checkin-'.str_replace(' ', '-', strtolower($book->customer->name)).'.pdf');
 
     }
 
