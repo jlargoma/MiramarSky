@@ -127,6 +127,7 @@
 				.imagen-slider{
 					width: 100%;
 					margin-top: -130px!important;
+					max-height: 700px!important
 				}
 			
 			@media (max-width: 767px) {
@@ -158,11 +159,12 @@
 			
 			@include('layouts._header')
 			
-				<img class="imagen-slider" src="{{ asset('/img/miramarski/salon-slider.jpg') }}" alt="texto" />
-				
-				<button class="tp-caption rev-btn  tp-static-layer button button-rounded button-reveal button-large button-green tright  center hvr-grow-shadow menu-booking" style=""> <i class="icon-angle-right"></i><span>SOLICITA TU RESERVA</span> </button>
+<!-- 				<img class="imagen-slider" src="{{ asset('/img/miramarski/salon-slider-2.jpg') }}" alt="texto" />
+				<h2 class="m-b-0">Apartamentos de lujo</h2>
 
-			<!-- @include('frontend.slider') -->
+				<button class="tp-caption rev-btn  tp-static-layer button button-rounded button-reveal button-large button-green tright  center hvr-grow-shadow menu-booking" style=""> <i class="icon-angle-right"></i><span>SOLICITA TU RESERVA</span> </button> -->
+	
+			@include('frontend.slider')
 
 			@yield('content')
 
