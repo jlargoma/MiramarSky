@@ -141,6 +141,9 @@
 					color: white!important;
 				}
 			</style>
+			
+
+			
 			<div class="row clearfix" style="background-color: #3F51B5; background-image: url({{asset('/img/miramarski/esquiadores.png')}}); background-position: left bottom; background-repeat: no-repeat; background-size: 50%;">
    				<div id="close-form-book" style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
    					<span class="white text-white"><i class="fa fa-times fa-2x"></i></span>

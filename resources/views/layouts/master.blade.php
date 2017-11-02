@@ -118,7 +118,34 @@
 				-webkit-transition:all 0.3s;
 			}
 			#rev_slider_15_1 .uranus.tparrows:hover:before{opacity:0.75; }
-
+			
+				.button-green{
+					position: inherit;
+				    top: -114px;
+				    left: 43%;
+				}
+				.imagen-slider{
+					width: 100%;
+					margin-top: -130px!important;
+				}
+			
+			@media (max-width: 767px) {
+				.button-green{
+					position: inherit;
+					top: -61px!important;
+					left: 26%!important;
+					max-width: 164px!important;
+			      	font-size: 10px!important;
+			      	max-height: 40px!important;
+				}
+				.imagen-slider{
+					width: 100%;
+					margin-top: -100px!important;
+				}
+				.button.button-reveal.button-large {
+				    padding: 0 20px;
+				}
+			}
 
 		</style>
 
@@ -131,7 +158,11 @@
 			
 			@include('layouts._header')
 			
-			@include('frontend.slider')
+				<img class="imagen-slider" src="{{ asset('/img/miramarski/salon-slider.jpg') }}" alt="texto" />
+				
+				<button class="tp-caption rev-btn  tp-static-layer button button-rounded button-reveal button-large button-green tright  center hvr-grow-shadow menu-booking" style=""> <i class="icon-angle-right"></i><span>SOLICITA TU RESERVA</span> </button>
+
+			<!-- @include('frontend.slider') -->
 
 			@yield('content')
 
