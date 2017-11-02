@@ -111,10 +111,16 @@ class OwnedController extends Controller
 
             
             foreach ($books as $book) {
-                $total +=  $book->cost_total;
-                $apto  +=  $book->cost_apto;
-                $park  +=  $book->cost_park;
-                $lujo  +=  ($book->cost_total - ($book->cost_apto + $book->cost_park));
+
+                if ($book->type_book != 7 && $book->type_book != 8) {
+                    $total +=  $book->cost_total;
+                    $apto  +=  $book->cost_apto;
+                    $park  +=  $book->cost_park;
+                    $lujo  +=  ($book->cost_total - ($book->cost_apto + $book->cost_park));
+                }
+
+               
+
             }
 
 
@@ -138,7 +144,7 @@ class OwnedController extends Controller
             $ingresos = 0;
             $clientes = 0;
             
-            $bookStadistic = \App\Book::whereIn('type_book',[2,7,8])
+            $bookStadistic = \App\Book::whereIn('type_book',[2])
                                         ->where('room_id',$room->id)
                                         ->whereYear('start','=', $dateStadistic->copy()->format('Y'))
                                         ->whereMonth('start','=', $dateStadistic->copy()->format('m'))

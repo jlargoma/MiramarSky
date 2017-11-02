@@ -34,7 +34,7 @@ class PaymentsProController extends Controller
         }
 
         /*Calculamos los ingresos por reserva y room */
-        $books = \App\Book::whereIn('type_book',[2,7,8])
+        $books = \App\Book::whereIn('type_book',[2])
                             ->whereNotIn('room_id',[106,107,108,109,111,112,113,126,134])
                             ->where('start','>=',$date->copy())
                             ->where('start','<=',$date->copy()->addYear())

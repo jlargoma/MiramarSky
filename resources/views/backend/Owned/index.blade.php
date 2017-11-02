@@ -418,31 +418,50 @@
 														?> 
 													</td>
 													<td class="text-center total" style="padding: 8px; ">
-														<?php if ($book->cost_total > 0): ?>
-															<?php echo number_format($book->cost_total,2,',','.') ?>€
+														<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
+															<?php if ($book->cost_total > 0 ): ?>
+																<?php echo number_format($book->cost_total,2,',','.') ?>€
+															<?php else: ?>
+																---€	
+															<?php endif ?>
 														<?php else: ?>
-															---€	
+															---€
 														<?php endif ?>
+														
 													</td>
 													<td class="text-center" style="padding: 8px; ">
-														<?php if ($book->cost_apto > 0): ?>
-															<?php echo number_format($book->cost_apto,2,',','.') ?>€
+
+														<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
+															<?php if ($book->cost_apto > 0 ): ?>
+																<?php echo number_format($book->cost_apto,2,',','.') ?>€
+															<?php else: ?>
+																---€	
+															<?php endif ?>
 														<?php else: ?>
-															---€	
+															---€
 														<?php endif ?>
+
 													</td>
 													<td class="text-center" style="padding: 8px; ">
-														<?php if ($book->cost_park > 0): ?>
-															<?php echo number_format($book->cost_park,2,',','.') ?>€
+														<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
+															<?php if ($book->cost_park > 0 ): ?>
+																<?php echo number_format($book->cost_park,2,',','.') ?>€
+															<?php else: ?>
+																---€	
+															<?php endif ?>
 														<?php else: ?>
-															---€	
+																---€	
 														<?php endif ?>
 													</td>
 													<?php if ($room->luxury == 1): ?>
 														<td class="text-center" style="padding: 8px; ">
-															<?php $auxLuxury = ($book->cost_total - ($book->cost_apto + $book->cost_park)) ?>
-															<?php if ($auxLuxury > 0): ?>
-																<?php echo $auxLuxury ?>€
+															<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
+																<?php $auxLuxury = ($book->cost_total - ($book->cost_apto + $book->cost_park)) ?>
+																<?php if ($auxLuxury > 0): ?>
+																	<?php echo $auxLuxury ?>€
+																<?php else: ?>
+																	---€	
+																<?php endif ?>
 															<?php else: ?>
 																---€	
 															<?php endif ?>
