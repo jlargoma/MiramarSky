@@ -24,7 +24,9 @@
 				<b>Cobrado:</b>  <?php echo $data['book']->total_price - $data['pendiente'] ?>€<br>
 				<b>Pendiente de abono:</b> <?php echo $data['pendiente'] ?>€ 
 				<br>------------------------------------------------------------------------------------------------------<br> 
-				<b>Fianza apartamento 300 €</b>
+				<span style="float:left;margin-left: 5px"><b>Fianza apartamento 300 €</b></span>
+				<div style="width: 15px; height: 15px; border: 1px solid black;float:left;margin-left: 15px;"></div>&nbsp;&nbsp;<span style="float:left;margin-left: 5px">Metálico </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<div style="width: 15px; height: 15px; border: 1px solid black;float:left;margin-left: 15px;"></div>&nbsp;&nbsp;<span style="float:left;margin-left: 5px">Tarjeta</span>
 
 			</p>
 			<h2 style="font-weight: 800; color: red; text-align: center; font-family: 'Verdana'; font-size: 20px;">

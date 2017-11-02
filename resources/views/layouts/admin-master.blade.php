@@ -83,10 +83,10 @@
 
 			        	<li class="{{ Request::path() == 'admin/liquidacion'  ? 'active' : '' }}"><a href="{{ url('admin/liquidacion') }}" class="detailed">Liquidacion por reservas</a></li>
 
-			        	<li class="{{ Request::path() == 'admin/liquidacion-apartamentos'  ? 'active' : '' }}"><a href="{{ url('admin/liquidacion-apartamentos') }}" class="detailed">Liquidacion de apartamentos</a></li>
+			        	<!-- <li class="{{ Request::path() == 'admin/liquidacion-apartamentos'  ? 'active' : '' }}"><a href="{{ url('admin/liquidacion-apartamentos') }}" class="detailed">Liquidacion de apartamentos</a></li> -->
 						
 			        	<li class="{{ Request::path() == 'admin/pagos-propietarios'  ? 'active' : '' }}"><a href="{{ url('admin/pagos-propietarios') }}" class="detailed">Pagos a propietarios</a></li>
-						<?php if (Auth::user()->role == "admin"): ?>
+						<?php if ( preg_match('/admin/i', Auth::user()->role) ): ?>
 							
 							<li class="{{ Request::path() == 'admin/estadisticas'  ? 'active' : '' }}"><a href="{{ url('admin/estadisticas') }}" class="detailed">Estadisticas</a></li>
 
