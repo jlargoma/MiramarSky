@@ -1,8 +1,6 @@
 <?php use \Carbon\Carbon; ?>
 
 <?php for ($i=0; $i <= 1; $i++): ?>
-	<div class="container">
-		<div class="col-xs-12">
 			<h2 style="font-weight: 800; color: red; text-align: center; font-family: 'Verdana'; font-size: 20px;">Documento Check In</h2>
 			<p style="color: black; font-family: 'Verdana';margin-bottom: 0;font-size: 12px; text-align: justify;">
 				<b>Nombre: <?php echo ucfirst($data['book']->customer->name) ?></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -24,9 +22,11 @@
 				<b>Cobrado:</b>  <?php echo $data['book']->total_price - $data['pendiente'] ?>€<br>
 				<b>Pendiente de abono:</b> <?php echo $data['pendiente'] ?>€ 
 				<br>------------------------------------------------------------------------------------------------------<br> 
-				<span style="float:left;margin-left: 5px"><b>Fianza apartamento 300 €</b></span>
-				<div style="width: 15px; height: 15px; border: 1px solid black;float:left;margin-left: 15px;"></div>&nbsp;&nbsp;<span style="float:left;margin-left: 5px">Metálico </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<div style="width: 15px; height: 15px; border: 1px solid black;float:left;margin-left: 15px;"></div>&nbsp;&nbsp;<span style="float:left;margin-left: 5px">Tarjeta</span>
+				<span style="float:left;"><b>Fianza apartamento 300 €</b></span>
+				<div style="width: 15px; height: 15px; border: 1px solid black; position: absolute; top: 200px; left: 200px;"></div>&nbsp;&nbsp;<span style="position: absolute; top: 200px; left: 220px;">Metálico </span>
+
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<div style="width: 15px; height: 15px; border: 1px solid black;position: absolute; top: 200px; left: 300px;"></div>&nbsp;&nbsp;<span style="position: absolute; top: 200px; left: 320px;">Tarjeta</span>
 
 			</p>
 			<h2 style="font-weight: 800; color: red; text-align: center; font-family: 'Verdana'; font-size: 20px;">
@@ -66,19 +66,15 @@
 				Si algunos de estos requisitos no se cumplen podría conllevar la perdida de la fianza, total o parcialmente.<br><br>
 				<b><u>Para la devolución de Fianza llamar al teléfono de Manolo: 678728196</u></b><br><br>
 				Confirmo que se me ha informado y acepto las condiciones del alquiler de la vivienda que se detallan en este documento.
+
+				
 			</p>
+			<span style="position: absolute; bottom: 0px; left: 0px;">
+			 	Firmado: <b><?php echo ucfirst($data['book']->customer->name) ?></b>
+			</span>
 			
-			<p style="color: black; font-family: 'Verdana';margin-bottom: 0px;font-size: 12px; text-align: justify;">
-				<span style="float: left">Firmado: <b><?php echo ucfirst($data['book']->customer->name) ?>  </b></span>
-				<span style="float: right">Firmado: <b>Jaime Fernández Diez</b></span>
-			</p>
-			                                   
+			<span style="position: absolute; bottom: 0px; right: 0px;">
+				Firmado: <b>Jaime Fernández Diez</b>
+			</span>
 
-
-
-
-			        						
-
-		</div>
-	</div>
 <?php endfor; ?>
