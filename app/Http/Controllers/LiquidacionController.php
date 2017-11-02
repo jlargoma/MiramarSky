@@ -199,10 +199,10 @@ class LiquidacionController extends Controller
             }
         }
         return view('backend/sales/liquidacion_apto',[
-                                                        'rooms' => $rooms,
+                                                        'rooms'        => $rooms,
                                                         'apartamentos' => $apartamentos,
-                                                        'temporada' => $date,
-                                                        'pendientes' => $pendientes,
+                                                        'temporada'    => $date,
+                                                        'pendientes'   => $pendientes,
                                                         ]);
     }
 

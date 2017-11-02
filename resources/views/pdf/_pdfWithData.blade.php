@@ -1,60 +1,82 @@
 <?php use \Carbon\Carbon; ?>
-<h2 style='text-align:center;'>Condiciones Alquiler Apartamentos Miramar Ski</h2>
-<hr></hr>
 
-<br><br>
-Nombre: <?php echo $data['book']->customer->name ?><br>
+<?php for ($i=0; $i <= 1; $i++): ?>
+	<div class="container">
+		<div class="col-xs-12">
+			<h2 style="font-weight: 800; color: red; text-align: center; font-family: 'Verdana'; font-size: 20px;">Documento Check In</h2>
+			<p style="color: black; font-family: 'Verdana';margin-bottom: 0;font-size: 12px; text-align: justify;">
+				<b>Nombre: <?php echo ucfirst($data['book']->customer->name) ?></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<b>DNI: _______________ </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<b>Teléfono: <?php echo ($data['book']->customer->phone)?$data['book']->customer->phone:"_______________"; ?></b>
+				<br>------------------------------------------------------------------------------------------------------<br> 
+				<b>Fecha reserva: 
+					<?php 
+						echo Carbon::createFromFormat('Y-m-d',$data['book']->start)->formatLocalized('%d %b')." - ". Carbon::createFromFormat('Y-m-d',$data['book']->finish)->formatLocalized('%d %b')." ".Carbon::createFromFormat('Y-m-d',$data['book']->finish)->format('Y')
+					?>
+				</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<b>Noches:</b> <?php echo Carbon::createFromFormat('Y-m-d', $data['book']->start)->diffInDays(Carbon::createFromFormat('Y-m-d', $data['book']->finish)) ?> <br>
+				<b>Ocupantes:</b> <?php echo $data['book']->pax ?><br>
+				<b>Apartamento: <?php echo $data['book']->room->nameRoom ?></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<b>Nº Plaza Parking:  <?php echo $data['book']->room->parking ?></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<b>Nº Taquilla Guarda esquíes: <?php echo $data['book']->room->locker ?></b> 
+				<br>------------------------------------------------------------------------------------------------------<br> 
+				<b>Total Reserva:</b> <?php echo $data['book']->total_price ?>€<br>
+				<b>Cobrado:</b>  <?php echo $data['book']->total_price - $data['pendiente'] ?>€<br>
+				<b>Pendiente de abono:</b> <?php echo $data['pendiente'] ?>€ 
+				<br>------------------------------------------------------------------------------------------------------<br> 
+				<b>Fianza apartamento 300 €</b>
 
-DNI: <?php echo $data['book']->customer->dni ?><br>
+			</p>
+			<h2 style="font-weight: 800; color: red; text-align: center; font-family: 'Verdana'; font-size: 20px;">
+				Condiciones Alquiler Apartamentos Miramar Ski
+			</h2>
+			       
+			<p style="color: black; font-family: 'Verdana';margin-bottom: 50px;font-size: 12px; text-align: justify;">
+				<b>Hora de Entrada</b>: Desde las <b>17,00h a 19,00h</b> en el caso de llegar más tarde avisarán por teléfono y se incrementara en el alquiler de 10€ por la demora en recogida de llaves. De 22,00h en adelante se cobrará 20€<br><br>
 
-Telefono: <?php echo $data['book']->customer->phone ?>
-<br><br>
+				<b>Hora de Salida</b>: La vivienda deberá  ser desocupada antes de las <b>11,59h a.m</b> (de lo contrario se podrá cobrará un noche más de alquiler apartamento según tarifa apartamento  y ocupación. La plaza de garaje debe quedar libre a esta hora o bien pagar la estancia de un nuevo día.(según tarifa 15€ / día.) <br><br>
 
-<hr></hr>
+				<b>Fianza</b>: Además del precio del alquiler el día de llegada <b>se pedirá una fianza por el importe de 300€</b> a la entrega de llaves para garantizar el buen uso de la vivienda. La fianza se devolverá a la entregada de llaves, una vez revisada la vivienda y descontados los gastos correspondientes a los desperfectos  (en el caso de que se produzcan.)<br><br>
 
-<br>
-<b>Fecha entrada:</b><?php echo $start = Carbon::createFromFormat('Y-m-d',$data['book']->start)->format('d-m-Y') ?> <br /><br /> 
-<b>Fecha salida:</b><?php echo $finish = Carbon::createFromFormat('Y-m-d',$data['book']->finish)->format('d-m-Y') ?> <br /><br />  
-<b>Noches:</b><?php echo Carbon::createFromFormat('Y-m-d', $data['book']->start)->diffInDays(Carbon::createFromFormat('Y-m-d', $data['book']->finish)) ?> <br /><br />
-<b>Ocupantes:</b> <?php echo $data['book']->pax ?><br /><br /> 
-<b>Apartamento: </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nº:<?php echo $data['book']->room->name ?><br><br>  
-<b>Parking: </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PLAZA Nº:________________<br><br>  
-<b>Taquilla guarda esquíes</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TAQUILLA Nº:________________<br><br>
+				<b>Resto del Pago</b>:  El apartamento debe estar completamente abonado a la entrega de llaves. <b>En el caso de no cumplir con lo establecido no se podrá ocupar la vivienda.</b><br><br>
 
-<hr></hr>
-<br><br>
-<b>Total Reserva: <?php echo $data['book']->total_price ?> </b>&euro;<br><br>
-<b>Cobrado: <?php echo $data['book']->total_price - $data['pendiente'] ?> </b>&euro;<br><br>
+				<b>Periodo del alquiler</b>: Por el motivo que sea si la persona que alquila decide marcharse antes del periodo contratado no tiene derecho a devolución del importe de los días no disfrutados.<br><br>
 
-<hr></hr>
+				<b>Meteorología y estado de pistas</b>: Las condiciones del alquiler de la vivienda son completamente ajenas  a las condiciones meteorológicas, al estado de las carreteras, al estado de las pistas de esquí, falta de nieve o incluso al cierre de la estación por lo que tampoco se podrá reclamar devolución  por estos motivos.<br><br>
 
-<br><br>
-<b>Pendiente de abono: <?php echo $data['pendiente'] ?>&euro;</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Forma de Pago:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<span style="border:1px black solid; position fixed">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;Metálico&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<span style="border:1px black solid; position fixed">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;Tarjeta
-<br><br>
+				<b>Nº de personas</b>: El apartamento no podrá ser habitado por más personas de las camas que dispone.<br><br>
 
-<hr></hr>
+				<b><u>No se admiten animales</u></b>: ningún tipo de animales de compañía ni mascotas.<br><br>
 
-<br><br>
-<b>Fianza apartamento 300 &euro;</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Forma de Pago:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<span style="border:1px black solid; position fixed">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;Metálico&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<span style="border:1px black solid; position fixed">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;Tarjeta
-<br><br>
+				<b>Sabanas y Toallas</b> están incluidas en todas las reservas.<br><br>
 
-<hr></hr>
+				<b>Se ruega guardar silencio en los apartamentos y en las zonas comunes a partir de las 23 hrs</b>, por respeto al sueño y a la tranquilidad de los demás inquilinos y propietarios del edificio Miramarski.<br><br>
 
-<br>
-En sierra nevada a <?php echo Carbon::now()->format('d-M-Y') ?>
-<br><br><br><br><br><br><br>
-<b>Fdo. </b>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<b>Fdo. Jaime Díaz Fernández.</b><br><br>
-<b>La salida se realizará  antes de las 12,OO</b> de la mañana de lo contrario se podrá cobrar un día (140,00€) por apartamento.<br><br>
+				<b>Checkout : El alojamiento se deberá entregar antes de las 12:00 con : </b><br><br>
 
-<b>Para la devolución de Fianza</b> llamar al teléfono de <b>Manolo: 678728196 </b>
+				•	Estado de limpieza aceptable.<br>
+				•	Vajilla limpia y recogida.<br>
+				•	Muebles de cama en la misma posición que se entregaron.<br>
+				•	Sin basuras en el apartamento.<br>
+				•	Nevera vacía (sin comida sobrante).<br>
+				•	Edredones doblados en los armarios.<br>
+
+				Si algunos de estos requisitos no se cumplen podría conllevar la perdida de la fianza, total o parcialmente.<br><br>
+				<b><u>Para la devolución de Fianza llamar al teléfono de Manolo: 678728196</u></b><br><br>
+				Confirmo que se me ha informado y acepto las condiciones del alquiler de la vivienda que se detallan en este documento.
+			</p>
+			
+			<p style="color: black; font-family: 'Verdana';margin-bottom: 0px;font-size: 12px; text-align: justify;">
+				<span style="float: left">Firmado: <b><?php echo ucfirst($data['book']->customer->name) ?>  </b></span>
+				<span style="float: right">Firmado: <b>Jaime Fernández Diez</b></span>
+			</p>
+			                                   
 
 
+
+
+			        						
+
+		</div>
+	</div>
+<?php endfor; ?>
