@@ -149,8 +149,8 @@
 						<i class=" pg-mail"></i>
 					</button>
 
-					<button type="button" class="btn btn-success uploadFile" data-toggle="modal" data-target="#modalFiles" data-id="<?php echo $room->nameRoom ?>" >
-						<i class="fa fa-save"></i>
+					<button type="button" class="btn btn-success uploadFile" data-toggle="modal" data-target="#modalFiles" data-id="<?php echo $room->nameRoom ?>" title="Subir imagenes aptos">
+						<i class="fa fa-upload" aria-hidden="true"></i>
 					</button>                    
 				</td>
 			</tr>
@@ -238,8 +238,8 @@
 						<i class=" pg-mail"></i>
 					</button>
 
-					<button type="button" class="btn btn-success uploadFile" data-toggle="modal" data-target="#modalFiles" data-id="<?php echo $room->nameRoom ?>" >
-						<i class="fa fa-save"></i>
+					<button type="button" class="btn btn-success uploadFile" data-toggle="modal" data-target="#modalFiles" data-id="<?php echo $room->nameRoom ?>" title="Subir imagenes aptos">
+						<i class="fa fa-upload" aria-hidden="true"></i>
 					</button>                    
 				</td>
 			</tr>

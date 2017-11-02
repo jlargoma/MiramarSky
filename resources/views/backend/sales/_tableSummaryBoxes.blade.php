@@ -30,7 +30,7 @@
 	<div class="col-md-5">
 		<div class="col-md-4 bordered">
 			<div class="card-title text-black hint-text">
-				Total días
+				Total noches
 			</div>
 			<div class="p-l-20">
 				<h3 class="text-black font-w400 text-center"><?php echo $data['days-ocupation'] + $data['dias-propios']  ?></h3>

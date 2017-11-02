@@ -100,7 +100,7 @@
 	}
    @media only screen and (min-width: 1025px){
 		.buttons .col-lg-1.col-md-1{
-			width: 10.333%;
+			width: 11%;
 		}
     	.buttons .btn-cons{
 			min-width: 100%!important;
@@ -187,7 +187,7 @@
 					
 					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-4 push-10">
 						<button class="btn btn-success btn-cons text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/operativa" ?>">
-							Opertaiva
+							Operativa
 						</button>
 					</div>
 					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-4 push-10">
@@ -387,76 +387,73 @@
 								<div class="col-md-12">
 									<h2 class="text-center font-w800">Listado de reservas</h2>
 								</div>
-								<table class="table table-hover  no-footer " id="basicTable" role="grid" >
-									
-									<thead>
-										<th class ="text-center bg-complete text-white" style="width: 25%">Cliente</th>
-										<th class ="text-center bg-complete text-white" style="width: 5%">Personas</th>
-										<th class ="text-center bg-complete text-white">Entrada</th>
-										<th class ="text-center bg-complete text-white">Salida</th>
-										<th class ="text-center bg-complete text-white">ING. PROP</th>
-										<th class ="text-center bg-complete text-white">Apto</th>
-										<th class ="text-center bg-complete text-white">Parking</th>
-										<?php if ($room->luxury == 1): ?>
-											<th class ="text-center bg-complete text-white">Sup.Lujo</th>
-										<?php else: ?>
-										<?php endif ?>
-											
+								<div class="col-md-12">
+									<table class="table no-footer ">
 										
-									</thead>
-									<tbody>
-										<?php foreach ($books as $book): ?>
-											<tr>
-												<td class="text-center" data-id="<?php echo $book->id; ?>"><?php echo ucfirst(strtolower($book->customer->name)) ?> </td>
-												<td class="text-center"><?php echo $book->pax ?> </td>
-												<td class="text-center">
-													<?php 
-														$start = Carbon::CreateFromFormat('Y-m-d',$book->start);
-														echo $start->formatLocalized('%d-%b');
-													?> 
-												</td>
-												<td class="text-center">
-													<?php 
-														$finish = Carbon::CreateFromFormat('Y-m-d',$book->finish);
-														echo $finish->formatLocalized('%d-%b');
-													?> 
-												</td>
-												<td class="text-center total">
-													<?php if ($book->cost_total > 0): ?>
-														<?php echo number_format($book->cost_total,2,',','.') ?> €
-													<?php else: ?>
-														---€	
-													<?php endif ?>
-												</td>
-												<td class="text-center">
-													<?php if ($book->cost_apto > 0): ?>
-														<?php echo number_format($book->cost_apto,2,',','.') ?> €
-													<?php else: ?>
-														---€	
-													<?php endif ?>
-												</td>
-												<td class="text-center">
-													<?php if ($book->cost_park > 0): ?>
-														<?php echo number_format($book->cost_park,2,',','.') ?> €
-													<?php else: ?>
-														---€	
-													<?php endif ?>
-												</td>
-												<?php if ($room->luxury == 1): ?>
-													<td class="text-center">
-														<?php $auxLuxury = ($book->cost_total - ($book->cost_apto + $book->cost_park)) ?>
-														<?php if ($auxLuxury > 0): ?>
-															<?php echo $auxLuxury ?> €
+										<thead>
+											<th class ="text-center bg-complete text-white" style="width: 20%; padding: 4px 10px">Cliente</th>
+											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Pers</th>
+											<th class ="text-center bg-complete text-white" style="width: 20%; padding: 4px 10px">IN/OUT</th>
+											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">ING. PROP</th>
+											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Apto</th>
+											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Park.</th>
+											<?php if ($room->luxury == 1): ?>
+												<th class ="text-center bg-complete text-white" style="width: 10%">Sup.Lujo</th>
+											<?php else: ?>
+											<?php endif ?>
+										</thead>
+										<tbody>
+											<?php foreach ($books as $book): ?>
+												<tr>
+													<td class="text-center" style="padding: 8px" data-id="<?php echo $book->id; ?>"><?php echo ucfirst(strtolower($book->customer->name)) ?> </td>
+													<td class="text-center" style="padding: 8px"><?php echo $book->pax ?> </td>
+													<td class="text-center" style="padding: 8px">
+														<?php 
+															$start = Carbon::CreateFromFormat('Y-m-d',$book->start);
+															echo $start->formatLocalized('%d-%b');
+														?> 
+														<?php 
+															$finish = Carbon::CreateFromFormat('Y-m-d',$book->finish);
+															echo $finish->formatLocalized('%d-%b');
+														?> 
+													</td>
+													<td class="text-center total" style="padding: 8px; ">
+														<?php if ($book->cost_total > 0): ?>
+															<?php echo number_format($book->cost_total,2,',','.') ?>€
 														<?php else: ?>
 															---€	
 														<?php endif ?>
 													</td>
-												<?php else: ?>
-												<?php endif ?>
-											</tr>
-										<?php endforeach ?>
-									</tbody>
-								</table>
+													<td class="text-center" style="padding: 8px; ">
+														<?php if ($book->cost_apto > 0): ?>
+															<?php echo number_format($book->cost_apto,2,',','.') ?>€
+														<?php else: ?>
+															---€	
+														<?php endif ?>
+													</td>
+													<td class="text-center" style="padding: 8px; ">
+														<?php if ($book->cost_park > 0): ?>
+															<?php echo number_format($book->cost_park,2,',','.') ?>€
+														<?php else: ?>
+															---€	
+														<?php endif ?>
+													</td>
+													<?php if ($room->luxury == 1): ?>
+														<td class="text-center" style="padding: 8px; ">
+															<?php $auxLuxury = ($book->cost_total - ($book->cost_apto + $book->cost_park)) ?>
+															<?php if ($auxLuxury > 0): ?>
+																<?php echo $auxLuxury ?>€
+															<?php else: ?>
+																---€	
+															<?php endif ?>
+														</td>
+													<?php else: ?>
+													<?php endif ?>
+												</tr>
+											<?php endforeach ?>
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
 						
@@ -467,12 +464,15 @@
 										Estadísticas
 									</h2>
 								</div>
-								<div class="col-md-6 not-padding">
+								<div class="col-lg-6 col-md-12 col-sm-12 not-padding">
 									<canvas id="barChart" style="width: 100%; height: 250px;"></canvas>
 								</div>
-								<div class="col-md-6 not-padding">
+								<div class="col-lg-6 col-md-12 col-sm-12 not-padding">
 									<canvas id="barChartClient" style="width: 100%; height: 250px;"></canvas>
 								</div>
+								<p class="font-s12 push-0">
+									<span class="text-danger">*</span> <i>Estas estadisticas estan generadas en base a las reservas que ya tenemos pagadas</i>
+								</p>
 							</div>
 
 						</div>
@@ -653,7 +653,7 @@
 					</div>
 					<div class="col-xs-4 push-10" style="padding: 0px 5px">
 						<button class="btn btn-success text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/operativa" ?>" style="width: 100%">
-							Opertaiva
+							Operativa
 						</button>
 					</div>
 					<div class="col-xs-4 push-10" style="padding: 0px 5px">
@@ -947,6 +947,9 @@
 						<div class="col-md-6 not-padding">
 							<canvas id="barChartClient" style="width: 100%; height: 250px;"></canvas>
 						</div>
+						<p class="font-s12 push-0">
+							<span class="text-danger">*</span> <i>Estas estadisticas estan generadas en base a las reservas que ya tenemos pagadas</i>
+						</p>
 					</div>
 
 				</div>

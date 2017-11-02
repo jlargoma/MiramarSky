@@ -130,9 +130,7 @@
                                                                         href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
                                                                         <?php $titulo = 
                                                                                         $calendars[$x]->customer['name'].'&#10'.
-                                                                                        'Pax-real '.$calendars[$x]->real_pax.'&#10;'.
-                                                                                        'IN '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %B').'&#10;'.
-                                                                                        'OUT '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %B').'&#10;'.
+                                                                                        'Pax-real '.$calendars[$x]->real_pax.'&#10;'.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;'.
                                                                                         'PVP:'.$calendars[$x]->total_price ;
                                                                         ?>
                                                                         title="<?php echo $titulo ?>"
@@ -153,8 +151,7 @@
                                                                         <?php $titulo = 
                                                                                         $calendars[$x]->customer['name'].'&#10'.
                                                                                         'Pax-real '.$calendars[$x]->real_pax.'&#10;'.
-                                                                                        'IN '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %B').'&#10;'.
-                                                                                        'OUT '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %B').'&#10;'.
+                                                                                        ''.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;'.
                                                                                         'PVP:'.$calendars[$x]->total_price ;
                                                                         ?>
                                                                         title="<?php echo $titulo ?>"
@@ -180,8 +177,7 @@
                                                                             <?php $titulo = 
                                                                                             $calendars[$x]->customer['name'].'&#10'.
                                                                                             'Pax-real '.$calendars[$x]->real_pax.'&#10;'.
-                                                                                            'IN '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %B').'&#10;'.
-                                                                                            'OUT '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %B').'&#10;'.
+                                                                                            ''.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;'.
                                                                                             'PVP:'.$calendars[$x]->total_price ;
                                                                             ?>
                                                                             title="<?php echo $titulo ?>"
@@ -208,8 +204,7 @@
                                                                 <?php $titulo = 
                                                                                 $calendars[0]->customer['name'].'&#10'.
                                                                                 'Pax-real '.$calendars[0]->real_pax.'&#10;'.
-                                                                                'IN '.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %B').'&#10;'.
-                                                                                'OUT '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %B').'&#10;'.
+                                                                                ''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;'.
                                                                                 'PVP:'.$calendars[0]->total_price ;
                                                                 ?>
 
@@ -231,8 +226,7 @@
                                                                 <?php $titulo = 
                                                                                 $calendars[0]->customer['name'].'&#10'.
                                                                                 'Pax-real '.$calendars[0]->real_pax.'&#10;'.
-                                                                                'IN '.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %B').'&#10;'.
-                                                                                'OUT '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %B').'&#10;'.
+                                                                                ''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;'.
                                                                                 'PVP:'.$calendars[0]->total_price ;
                                                                 ?>
 
@@ -257,8 +251,7 @@
                                                             <?php $titulo = 
                                                                             $calendars[0]->customer['name'].'&#10'.
                                                                             'Pax-real '.$calendars[0]->real_pax.'&#10;'.
-                                                                            'IN '.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %B').'&#10;'.
-                                                                            'OUT '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %B').'&#10;'.
+                                                                            ''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;'.
                                                                             'PVP:'.$calendars[0]->total_price ;
                                                             ?>
                                                                 title="<?php echo $titulo ?> " 

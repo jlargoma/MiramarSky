@@ -67,7 +67,7 @@
 	</head>
 	<body class="fixed-header   windows desktop pace-done sidebar-visible menu-pin" style="padding-top:0px!important">
 	<!-- <body class="fixed-header dashboard  windows desktop sidebar-visible pace-done menu-pin"> -->
-		<?php if (Auth::user()->role == 'admin' || Auth::user()->role == 'subadmin'): ?>
+		<?php if (preg_match('/subadmin/i', Auth::user()->role) || preg_match('/admin/i', Auth::user()->role)): ?>
 			<nav class="navbar navbar-inverse" role="navigation">
 			    <div class="navbar-header">
 			        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">

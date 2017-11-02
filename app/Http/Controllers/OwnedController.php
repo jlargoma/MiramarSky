@@ -138,7 +138,7 @@ class OwnedController extends Controller
             $ingresos = 0;
             $clientes = 0;
             
-            $bookStadistic = \App\Book::whereIn('type_book',[1,2,4,7,8])
+            $bookStadistic = \App\Book::whereIn('type_book',[2,7,8])
                                         ->where('room_id',$room->id)
                                         ->whereYear('start','=', $dateStadistic->copy()->format('Y'))
                                         ->whereMonth('start','=', $dateStadistic->copy()->format('m'))
