@@ -120,7 +120,14 @@
 	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -105px -70px;
 	}
 
-
+	@media only screen and (min-width: 991px) and (max-width: 1222px){ 
+		h1.font-w800.black{
+			font-size: 22px!important;
+		}
+		.container-image-box h2.hvr-reveal{
+		    padding: 65px 15px!important;
+		}
+	}
 
 </style>
 <section id="content">

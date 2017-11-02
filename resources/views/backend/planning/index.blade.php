@@ -784,7 +784,7 @@
                             
 
                         }else{
-                            setTimeout('document.location.reload()',1000);
+                            // setTimeout('document.location.reload()',1000);
                         }                        
                    }); 
                 }

@@ -87,7 +87,7 @@ class Book extends Model
 
         return $parking = $array[$parking];
     }
-    
+
     // Para poner nombre al suplemento de lujo en la reserva
     static function getSupLujo($lujo)
     {
@@ -95,7 +95,7 @@ class Book extends Model
 
         return  $supLujo = $array[$lujo];
     }
-    
+
     //Para poner nombre a la agencia//
     static function getAgency($agency)
     {
@@ -106,11 +106,11 @@ class Book extends Model
 
     //Para comprobar el dia de la reserva en el calendario
     static function existDate($start,$finish,$room)
-    {   
+    {
 
         $books = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,7,8])->get();
         $existStart = False;
-        $existFinish = False;        
+        $existFinish = False;
         $requestStart = Carbon::createFromFormat('d/m/Y',$start);
         $requestFinish = Carbon::createFromFormat('d/m/Y',$finish);
 
@@ -140,7 +140,7 @@ class Book extends Model
     }
 
     static function existDateOverrride($start,$finish,$room, $id_excluded)
-    {   
+    {
 
         if ($room >= 5) {
             $requestStart = Carbon::createFromFormat('d/m/Y',$start);
@@ -153,9 +153,9 @@ class Book extends Model
             //\App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,7,8])->where('id','!=',$id_excluded)->get();
 
             $existStart = False;
-            $existFinish = False;        
-            
-            
+            $existFinish = False;
+
+
             foreach ($books as $book) {
                 if ($existStart == False && $existFinish == False) {
                     $start = Carbon::createFromFormat('Y-m-d', $book->start);
@@ -181,12 +181,12 @@ class Book extends Model
 
         }else{
             return true;
-        }   
+        }
     }
 
     // Funcion para comprobar el precio de la reserva
     static function getPriceBook($start,$finish,$pax,$room)
-    {   
+    {
 
         $start = Carbon::createFromFormat('d/m/Y' , $start);
         $finish = Carbon::createFromFormat('d/m/Y' , $finish);
@@ -218,7 +218,7 @@ class Book extends Model
 
         return $price;
     }
-    
+
     // Funcion para comprobar el precio de la reserva
     static function getCostBook($start,$finish,$pax,$room)
     {
@@ -230,7 +230,7 @@ class Book extends Model
 
 
         $paxPerRoom = \App\Rooms::getPaxRooms($pax,$room);
-        
+
         $room = \App\Rooms::find($room);
         $suplimp =  ($room->sizeApto == 1 )? 30 : 40 ;
 
@@ -274,7 +274,7 @@ class Book extends Model
             }
         return $supPark;
     }
-   
+
     //Funcion para el coste del Aparcamiento
     static function getCostPark($park,$noches)
     {
@@ -295,7 +295,7 @@ class Book extends Model
             }
         return $supPark;
     }
-   
+
     //Funcion para el precio del Suplemento de Lujo
     static function getPriceLujo($lujo)
     {
@@ -316,7 +316,7 @@ class Book extends Model
             }
         return $supLujo;
     }
-    
+
     //Funcion para el precio del Suplemento de Lujo
     static function getCostLujo($lujo)
     {
@@ -337,10 +337,10 @@ class Book extends Model
             }
         return $supLujo;
     }
-    
+
     // Funcion para cambiar la reserva de habitacion o estado
     public function changeBook($status,$room,$book)
-    {   
+    {
         if (!empty($status)) {
             if ($status == 3) {
 
@@ -365,13 +365,13 @@ class Book extends Model
 
 
                 $existStart = false;
-                $existFinish = false;        
+                $existFinish = false;
 
                 foreach ($isRooms as $isRoom) {
                     if ($existStart == false) {
 
-                        $start = Carbon::createFromFormat('Y-m-d', $isRoom->start)->format('U');                        
-                        $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish)->format('U'); 
+                        $start = Carbon::createFromFormat('Y-m-d', $isRoom->start)->format('U');
+                        $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish)->format('U');
 
 
                         if ($start < $roomStart && $roomStart < $finish){
@@ -383,7 +383,7 @@ class Book extends Model
                         }
                     }else{
                         break;
-                    }                            
+                    }
                 }
 
                 if ($existStart == false && $existFinish == false) {
@@ -417,28 +417,28 @@ class Book extends Model
                                 //     $message->from('reservas@apartamentosierranevada.net');
                                 //     $message->to('alquilerapartamentosmiramarski@gmail.com');
                                 //     $message->subject('Correo de Bloqueo');
-                                // });  
+                                // });
                             break;
                             case '6':
                                 Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
                                     $message->from('reservas@apartamentosierranevada.net');
                                     $message->to($book->customer->email);
                                     $message->subject('Correo cancelación de reserva');
-                                });  
+                                });
                             break;
                             case '7':
                                 Mail::send('backend.emails.reserva-propietario',['book' => $book], function ($message) use ($book) {
                                     $message->from('reservas@apartamentosierranevada.net');
                                     $message->to($book->customer->email);
                                     $message->subject('Correo de Reserva de Propietario');
-                                });  
+                                });
                             break;
                             case '8':
                                     // Mail::send('backend.emails.subcomunidad',['book' => $book], function ($message) use ($book) {
                                     //         $message->from('reservas@apartamentosierranevada.net');
                                     //         $message->to('alquilerapartamentosmiramarski@gmail.com');
                                     //         $message->subject('Correo de Subcomunidad');
-                                    //     });  
+                                    //     });
                             break;
                             default:
 
@@ -509,13 +509,15 @@ class Book extends Model
 
 
             $existStart = False;
-            $existFinish = False;        
+            $existFinish = False;
+
+
 
             foreach ($isRooms as $isRoom) {
                 if ($existStart == False && $existFinish == False) {
 
-                    $start = Carbon::createFromFormat('Y-m-d', $isRoom->start)->format('U');                        
-                    $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish)->format('U'); 
+                    $start = Carbon::createFromFormat('Y-m-d', $isRoom->start)->format('U');
+                    $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish)->format('U');
 
                     if ($start < $roomStart && $roomStart < $finish){
                         $existStart = true;
@@ -526,7 +528,7 @@ class Book extends Model
                     }
                 }else{
                     break;
-                }                            
+                }
             }
             if ($existStart == false && $existFinish == false) {
                 $this->room_id = $room;
@@ -543,7 +545,7 @@ class Book extends Model
                     }else{
                         $deleted = \App\BookNotification::where('book_id',$book->id)->delete();
                     }
-                    return true; 
+                    return true;
                 }else{
                     return false;
                 }
@@ -614,7 +616,7 @@ class Book extends Model
         }
         return $beneficio;
     }
-    
+
     //Funcion para calcular el beneficio de Jaime
     static public function getBenJaime($ben,$id)
     {
@@ -658,7 +660,7 @@ class Book extends Model
             }else if ($pago->type == $tipo && $tipo == 0) {
                 $this->cobJaime += $pago->import;
             }
-            
+
         }
         if ($tipo == 2) {
             return  $this->banco;
@@ -669,7 +671,7 @@ class Book extends Model
         }else if($tipo == 4){
             return $this->banco + $this->cobJorge + $this->cobJaime;
         }
-        
+
     }
 
     // Funcion para Sacar Ventas por temporada
