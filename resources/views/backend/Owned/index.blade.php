@@ -528,7 +528,8 @@
 		            		
 		            		<div class="row" style="padding:20px">
 		            			<div class="col-md-4 col-md-offset-4">
-									<input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="">
+		            				<h5 class="text-center"> Seleccione sus fechas</h5>
+									<input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="" placeholder="Seleccione sus fechas">
 									<div class="input-group col-md-12 padding-10 text-center">
 									    <button class="btn btn-complete bloquear" disabled="" data-id="<?php echo $room->id ?>">Guardar</button>
 									</div> 
@@ -1005,7 +1006,8 @@
 	            		
 	            		<div class="row" style="padding:20px">
 	            			<div class="col-md-4 col-md-offset-4">
-								<input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="">
+	            				<h5 class="text-center"> Seleccione sus fechas</h5>
+								<input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="" placeholder="Seleccione sus fechas">
 								<div class="input-group col-md-12 padding-10 text-center">
 								    <button class="btn btn-complete bloquear" disabled data-id="<?php echo $room->id ?>">Guardar</button>
 								</div> 
@@ -1067,48 +1069,46 @@
 
 	<script type="text/javascript">
 
-		$(function() {
-		  $(".daterange1").daterangepicker({
-		    "buttonClasses": "button button-rounded button-mini nomargin",
-		    "applyClass": "button-color",
-		    "cancelClass": "button-light",
-		    locale: {
-		        format: 'DD MMM, YY',
-		        "applyLabel": "Aplicar",
-		          "cancelLabel": "Cancelar",
-		          "fromLabel": "From",
-		          "toLabel": "To",
-		          "customRangeLabel": "Custom",
-		          "daysOfWeek": [
-		              "Do",
-		              "Lu",
-		              "Mar",
-		              "Mi",
-		              "Ju",
-		              "Vi",
-		              "Sa"
-		          ],
-		          "monthNames": [
-		              "Enero",
-		              "Febrero",
-		              "Marzo",
-		              "Abril",
-		              "Mayo",
-		              "Junio",
-		              "Julio",
-		              "Agosto",
-		              "Septiembre",
-		              "Octubre",
-		              "Noviembre",
-		              "Diciembre"
-		          ],
-		          "firstDay": 1,
-		      },
-		      
-		  });
-		});
-
-
+			$(function() {
+			  $(".daterange1").daterangepicker({
+			    "buttonClasses": "button button-rounded button-mini nomargin",
+			    "applyClass": "button-color",
+			    "cancelClass": "button-light",
+			    locale: {
+			        format: 'DD MMM, YY',
+			        "applyLabel": "Aplicar",
+			          "cancelLabel": "Cancelar",
+			          "fromLabel": "From",
+			          "toLabel": "To",
+			          "customRangeLabel": "Custom",
+			          "daysOfWeek": [
+			              "Do",
+			              "Lu",
+			              "Mar",
+			              "Mi",
+			              "Ju",
+			              "Vi",
+			              "Sa"
+			          ],
+			          "monthNames": [
+			              "Enero",
+			              "Febrero",
+			              "Marzo",
+			              "Abril",
+			              "Mayo",
+			              "Junio",
+			              "Julio",
+			              "Agosto",
+			              "Septiembre",
+			              "Octubre",
+			              "Noviembre",
+			              "Diciembre"
+			          ],
+			          "firstDay": 1,
+			      },
+			      
+			  });
+			});
 
 		$(document).ready(function() {
 			
