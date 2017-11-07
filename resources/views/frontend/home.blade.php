@@ -462,7 +462,7 @@
 	       						<br><br>
 	       						<b>A pie de pista... Sin coger remontes. El acceso a las pistas es directo, todo pensado para que disfrutes.</b>
 	       						<br><br>
-	       						Tambien <b>te ofrecemos nuestros descuentos para la compra de Forfaits, ofertas en alquiler de material y packs cobinados con cursillos de Ski.</b>
+	       						Tambien <b>te ofrecemos nuestros descuentos para la compra de Forfaits, ofertas en alquiler de material y packs cobinados con cursillos de Ski. <a href="{{ url('/forfait')}}" target="_blank">Pincha aquí. </a></b>
 	       						<br><br>
 	       						Si quieres saber más información sobre la estación de Sierra Nevada <b><a href="{{url('/actividades')}}">consulta nuestro blog</a></b>,  encontraras información sobre la estación, cosas que hacer,actividades de esqui y de a preski,  que visitar, como divertirte con los niños, bares y restaurantes de la estación y de Padrollano….etc
 	       					</p>
@@ -775,7 +775,7 @@
 						<br><br>
 						<b>A pie de pista... Sin coger remontes. El acceso a las pistas es directo, todo pensado para que disfrutes.</b>
 						<br><br>
-						Tambien <b>te ofrecemos nuestros descuentos para la compra de Forfaits, ofertas en alquiler de material y packs cobinados con cursillos de Ski.</b>
+						Tambien <b>te ofrecemos nuestros descuentos para la compra de Forfaits, ofertas en alquiler de material y packs cobinados con cursillos de Ski. <a href="{{ url('/forfait')}}" target="_blank">Pincha aquí. </a></b>
 						<br><br>
 						Si quieres saber más información sobre la estación de Sierra Nevada <b><a href="{{url('/actividades')}}">consulta nuestro blog</a></b>,  encontraras información sobre la estación, cosas que hacer,actividades de esqui y de a preski,  que visitar, como divertirte con los niños, bares y restaurantes de la estación y de Padrollano….etc
 					</p>

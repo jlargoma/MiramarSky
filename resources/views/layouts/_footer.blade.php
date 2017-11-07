@@ -2,8 +2,8 @@
 	<!-- Copyrights
 	============================================= -->
 	<div id="copyrights"  style="background-color: #e8e8e8;">
-		<div class="container clearfix">
-			<div class="col-md-3">
+		<div class="row clearfix" style="margin-left: 20px;margin-right: 20px">
+			<div class="col-md-2">
 			    <div class="block footer-block block">
     				<h4 class="title_block push-10 black font-w800 center">
 						¿QUÉ HACER EN SIERRA NEVADA?
@@ -25,16 +25,17 @@
 						<li><a href="{{url('/apartamentos/apartamento-lujo-sierra-nevada')}}" style="color: #666">Apartamento de lujo</a></li>
 						<li><a href="{{url('/apartamentos/apartamento-standard-sierra-nevada')}}" style="color: #666">Apartamento standard</a></li>
 						<li><a href="{{url('/apartamentos/estudio-lujo-sierra-nevada')}}" style="color: #666">Estudio de lujo</a></li>
-						<li><a href="{{url('/apartamentos/estudio-standard-sierra-nevada')}}" style="color: #666">Estudio standard</a></li>
+						<li><a href="{{url('/apartamentos/estudio-standard-sierra-nevada')}}" style="color: #666">Estudio standard</a></li>					
 					</ul>
 				</div>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-2">
 			    <div class="block footer-block block">
     				<h4 class="title_block push-10 black font-w800 center">
 						SOBRE TU RESERVA
 					</h4>
 					<ul class="toggle-footer list-group bullet center" style="list-style: none;">
+						<li><a href="{{ url('/forfait')}}" target="_blank" style="color: #666">Descuentos en forfait</a></li>
 						<li><a href="{{url('/condiciones-generales')}}" style="color: #666">Condiciones Generales</a></li>
 						<li><a href="{{url('/preguntas-frecuentes')}}" style="color: #666">Preguntas Frecuentes</a></li>
 						<li><a href="{{ url('/ayudanos-a-mejorar') }}" style="color: #666">Ayudanos a Mejorar</a></li>
@@ -52,6 +53,21 @@
 						<li><a href="{{ url('/contacto') }}" style="color: #666">Contacta</a></li>
 						<li><a href="{{ url('/quienes-somos') }}" style="color: #666">Quienes Somos</a></li>
 						<li><a href="{{url('/eres-propietario')}}" style="color: #666">¿Eres Propietario?</a></li>
+						<!-- <li><a href="#" style="color: #666">Preguntas frecuentes</a></li> -->
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-2">
+			    <div class="block footer-block block">
+    				<h4 class="title_block push-10 black font-w800 center">
+						ENLACES DE INTERES
+					</h4>
+					<ul class="toggle-footer list-group bullet center" style="list-style: none;">
+
+						<li><a href="http://sierranevada.es/es/invierno/la-estaci%C3%B3n/parte-nieve/" style="color: #666"><i class="fa fa-snowflake-o" aria-hidden="true" style="color:#3F51B5"></i> Parte de nieve</a></li>
+						<li><a href="http://sierranevada.es/es/invierno/la-estaci%C3%B3n/en-pistas/plano-de-pistas/" style="color: #666"><i class="fa fa-map" aria-hidden="true" style="color:#3F51B5"></i> Mapa de la estación</a></li>
+						<li><a href="http://sierranevada.es/es/webcams/" style="color: #666"><i class="fa fa-video-camera" aria-hidden="true" style="color:#3F51B5"></i> Webcams</a></li>
+						<li><a href="{{url('/eres-propietario')}}" style="color: #666"></a></li>
 						<!-- <li><a href="#" style="color: #666">Preguntas frecuentes</a></li> -->
 					</ul>
 				</div>
