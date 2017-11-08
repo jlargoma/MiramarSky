@@ -119,4 +119,31 @@ class CustomersController extends Controller
             return redirect()->action('CustomersController@index');
         }
     }
+
+    public function createExcel()
+    {
+        \Excel::create('Clientes', function($excel) {
+         
+            $clientes = \App\Customers::distinct('email')->get();
+            
+            $excel->sheet('Clientes', function($sheet) use($clientes) {
+         
+
+            
+            $sheet->freezeFirstColumn();
+
+            $sheet->row(1, [
+                'Número', 'Nombre', 'Email', 'Telefono'
+            ]);
+
+            foreach($clientes as $index => $user) {
+                $sheet->row($index+2, [
+                    $user->id, $user->name, $user->email, $user->phone
+                ]); 
+            }
+
+        });
+         
+        })->export('xlsx');
+    }
 }
