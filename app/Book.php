@@ -710,4 +710,6 @@ class Book extends Model
 
         return $ventas;
     }
+
+
 }

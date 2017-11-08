@@ -2,6 +2,12 @@
         setlocale(LC_TIME, "ES"); 
         setlocale(LC_TIME, "es_ES"); 
 ?>
+<!-- <pre>
+	<?php print_r($arrayReservas[115][2017][12][3]) ?>
+</pre>
+<pre>
+	<?php print_r($arrayReservas[123][2017][12][3]) ?>
+</pre> -->
 <style type="text/css">
 	.calendar-day{
 		width: 20px; height: 15px; float: left; text-align: center;
@@ -56,24 +62,28 @@
 												],
 									
 								];
-			$roomsBooking = \App\Rooms::whereIn('id', $arrayRoomId)->get();
+			$roomsBooking = \App\Rooms::whereIn('id', $arrayRoomId)->where('state', 1)->orderBy('order', 'ASC')->get();
 			$arrayCountRoomBooking = [ 0, 0, 0 ,0];
 			foreach ($roomsBooking as $key => $roomB) {
-				
+
 				if ($roomB->id != 144) {
 					if ($roomB->luxury == 1 && $roomB->sizeApto == 2) {
+
 						$arrayCountRoomBooking[0]++;
 					}
 
 					if($roomB->luxury == 1 && $roomB->sizeApto == 1){
+
 						$arrayCountRoomBooking[1]++;
 					}
 
 					if($roomB->luxury == 0 && $roomB->sizeApto == 2){
+
 						$arrayCountRoomBooking[2]++;
 					}
 
 					if($roomB->luxury == 0 && $roomB->sizeApto == 1){
+
 						$arrayCountRoomBooking[1]++; 
 					}
 				}else{
@@ -81,6 +91,7 @@
 				}
 
 			}
+
 
 			$rooms = \App\Rooms::where('state', 1)->get();
 
@@ -121,7 +132,6 @@
 				
 
 			}
-
 		?>
 		<?php for ($z=1; $z <= 9; $z++):?>
 			<div class="tab-pane <?php if($z == 4){ echo 'active';} ?>" id="booking<?php echo $z ?>" style="padding: 0 5px;">
@@ -152,7 +162,7 @@
 									
 									<tr>
 										<?php $dateX = $dateX->startOfMonth() ?>
-										<td class="text-center" style='width: 3%;text-align: center'>
+										<td class="text-center " style='width: 3%;text-align: center'>
 											<b>
 												<?php echo substr($room['title'], 0, 5)?>
 												<span class="text-danger">
@@ -161,26 +171,35 @@
 											</b>
 										</td>
 
-										<?php for ($i=01; $i <= $arrayMonths[$dateX->copy()->format('n')] ; $i++): ?> 
+										<?php for ($i=1; $i <= $arrayMonths[$dateX->copy()->format('n')] ; $i++): ?> 
 											<?php $count         = count($room['rooms']) ?>
-											<?php $countReservas = false ?>
-											<?php if (count($room['rooms']) > 0): ?>
-												<?php foreach ($room['rooms'] as $key => $data): ?>
-													
 
-													<?php 
-														if ( isset($arrayReservas[$data->id][$dateX->copy()->format('Y')][$dateX->copy()->format('n')][$i]) ){
+											<?php $countReservas = false ?>
+											<?php if ( $count > 0): ?>
+												<?php foreach ($room['rooms'] as $key => $data): ?>
+													<?php $countBooks = 0; ?>
+													<?php if (isset($arrayReservas[$data->id][$dateX->copy()->format('Y')][$dateX->copy()->format('n')][$i]) ): ?>
+														
 															
-															$count = $count - (count($arrayReservas[$data->id][$dateX->copy()->format('Y')][$dateX->copy()->format('n')][$i]) - 1);
+															<?php foreach ($arrayReservas[$data->id][$dateX->copy()->format('Y')][$dateX->copy()->format('n')][$i] as $key => $bk): ?>
+																<?php if ($bk->type_book != 9): ?>
+																	<?php $countBooks++; ?>
+																<?php endif ?>
+															<?php endforeach ?>
+
+																
+															<?php if ($countBooks >= 1): ?>
+																<?php $count--; ?>
+															<?php endif ?>
 															
-														}
-													?>	
+
+													<?php endif ?>
+													
 												<?php endforeach ?>
 												
-												
 											<?php endif ?>
-											
 												<td class="" style='border:1px solid grey;width: 3%;text-align: center'>
+
 													<?php if ( $count == 0 ): ?>
 														<span class="text-danger">
 															<b><?php echo $count ?></b>
