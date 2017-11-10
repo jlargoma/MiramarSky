@@ -130,7 +130,7 @@ class OwnedController extends Controller
                     $total +=  $book->cost_total;
                     $apto  +=  $book->cost_apto;
                     $park  +=  $book->cost_park;
-                    $lujo  +=  ($book->cost_total - ($book->cost_apto + $book->cost_park));
+                    $lujo  +=  $book->cost_lujo;
                 }
 
                

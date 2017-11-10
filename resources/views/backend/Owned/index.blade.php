@@ -301,7 +301,6 @@
 										<th class ="text-center bg-complete text-white">Park</th>
 										<?php if ($room->luxury == 1): ?>
 											<th class ="text-center bg-complete text-white">Sup.Lujo</th>
-										<?php else: ?>
 										<?php endif ?>
 									</tr>
 									<tr>
@@ -366,8 +365,8 @@
 											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Park.</th>
 											<?php if ($room->luxury == 1): ?>
 												<th class ="text-center bg-complete text-white" style="width: 10%">Sup.Lujo</th>
-											<?php else: ?>
 											<?php endif ?>
+											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Limp.</th>
 										</thead>
 										<tbody>
 											<?php foreach ($books as $book): ?>
@@ -423,7 +422,7 @@
 													<?php if ($room->luxury == 1): ?>
 														<td class="text-center" style="padding: 8px; ">
 															<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
-																<?php $auxLuxury = $book->sup_lujo ?>
+																<?php $auxLuxury = $book->cost_lujo ?>
 																<?php if ($auxLuxury > 0): ?>
 																	<?php echo $auxLuxury ?>€
 																<?php else: ?>
@@ -433,8 +432,14 @@
 																---€	
 															<?php endif ?>
 														</td>
-													<?php else: ?>
 													<?php endif ?>
+													<td class="text-center" style="padding: 8px; ">
+														<?php if ($book->cost_limp > 0): ?>
+															<?php echo $book->cost_limp ?>€
+														<?php else: ?>
+															---€	
+														<?php endif ?>
+													</td>
 												</tr>
 											<?php endforeach ?>
 										</tbody>
@@ -742,8 +747,8 @@
 								<th class ="text-center bg-complete text-white">Parking</th>
 								<?php if ($room->luxury == 1): ?>
 									<th class ="text-center bg-complete text-white">Sup.Lujo</th>
-								<?php else: ?>
 								<?php endif ?>
+								<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Limp.</th>
 									
 								
 							</thead>
@@ -793,8 +798,14 @@
 													---€	
 												<?php endif ?>
 											</td>
-										<?php else: ?>
 										<?php endif ?>
+										<td class="text-center">
+											<?php if ($book->cost_limp > 0): ?>
+												<?php echo $book->cost_limp ?> €
+											<?php else: ?>
+												---€	
+											<?php endif ?>
+										</td>
 									</tr>
 								<?php endforeach ?>
 							</tbody>
