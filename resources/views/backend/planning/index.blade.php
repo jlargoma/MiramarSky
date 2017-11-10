@@ -205,34 +205,18 @@
                 <div class="col-md-7">
                     
                     <div class="col-md-12 col-xs-12 not-padding">
-                        <div class="row">
-                            <ul class="nav nav-tabs nav-tabs-simple bg-info-light " role="tablist" data-init-reponsive-tabs="collapse">
-                                <li class="active res" >
-                                    <a href="#tabPendientes" data-toggle="tab" role="tab" class="pendientes">Pendientes 
-                                        <span class="badge font-w800 "><?php echo count($arrayBooks["nuevas"]) ?></span>
-                                    </a>
-                                </li>
-                                <li class="bloq">
-                                    <a href="#tabEspeciales" data-toggle="tab" role="tab" class="especiales">Especiales
-                                        <span class="badge font-w800 "><?php echo count($arrayBooks["especiales"]) ?></span>
-                                    </a>
-                                </li>
-                                <li class="pag">
-                                    <a href="#tabPagadas" data-toggle="tab" role="tab" class="confirmadas">Confirmadas 
-                                        <span class="badge font-w800 "><?php echo count($arrayBooks["pagadas"]) ?></span>
-                                    </a>
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                
-                                @include('backend.planning.listados._pendientes')
-                                
-                                @include('backend.planning.listados._especiales')
-
-                                @include('backend.planning.listados._pagadas')
-                                
-
+                        <div class="row push-10">
+                            <div class="col-md-6 col-xs-12">
+                                <input id="nameCustomer" type="text" name="searchName" class="searchabled form-control" placeholder="nombre del cliente" />
                             </div>
+                        </div>
+                        <div class="row" >
+                            <div id="resultSearchBook" style="display: none;"></div>
+                            <div class="contentAllsBooks">
+                                @include('backend.planning._tablesBooks')
+                            </div>
+                            
+                           
                         </div>
                     </div>
                 </div>
@@ -875,6 +859,29 @@
                 });
             });
 
+
+
+            $('.searchabled').keyup(function(event) {
+                var searchString = $(this).val();
+                var year = '<?php echo $inicio->copy()->format('Y')?>';
+
+                $.get('/admin/reservas/search/searchByName', { searchString: searchString,  year: year}, function(data) {
+
+                    if ( data == 0) {
+                        $('#resultSearchBook').empty();
+                        $('#resultSearchBook').hide();
+                        $('.contentAllsBooks').show();
+                       
+                    } else {
+                        $('#resultSearchBook').empty();
+                        $('#resultSearchBook').append(data);
+
+                        $('.contentAllsBooks').hide();
+                        $('#resultSearchBook').show();
+                    }
+                    
+                });
+            });
         });
     </script>
 

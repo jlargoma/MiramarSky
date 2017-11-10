@@ -14,7 +14,7 @@
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
-	    <style type="text/css">
+    <style type="text/css">
     
         .botones{
             padding-top: 0px!important;
@@ -294,7 +294,7 @@
 						<div class="col-md-6 col-xs-12 resumen blocks">
 							<div class="row">
 								<h2 class="text-center font-w800">Resumen</h2>
-								<table class="table table-bordered table-hover  no-footer" id="basicTable" role="grid">
+								<table class="table table-bordered table-hover  no-footer" id="basicTable" role="grid" >
 									<tr>
 										<th class ="text-center bg-complete text-white">ING. PROP</th>
 										<th class ="text-center bg-complete text-white">Apto</th>
@@ -304,7 +304,7 @@
 										<?php endif ?>
 									</tr>
 									<tr>
-										<td class="text-center total">
+										<td class="text-center">
 											<?php if ($total > 0): ?>
 												<?php echo number_format($total,2,',','.'); ?>€
 											<?php else: ?>
@@ -359,14 +359,14 @@
 										<thead>
 											<th class ="text-center bg-complete text-white" style="width: 20%; padding: 4px 10px">Cliente</th>
 											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Pers</th>
-											<th class ="text-center bg-complete text-white" style="width: 20%; padding: 4px 10px">IN/OUT</th>
-											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">ING. PROP</th>
+											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">IN</th>
+											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">OUT</th>
+											<th class ="text-center bg-complete text-white" style="width: 20%; padding: 4px 10px">ING. PROP</th>
 											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Apto</th>
 											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Park.</th>
 											<?php if ($room->luxury == 1): ?>
 												<th class ="text-center bg-complete text-white" style="width: 10%">Sup.Lujo</th>
 											<?php endif ?>
-											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Limp.</th>
 										</thead>
 										<tbody>
 											<?php foreach ($books as $book): ?>
@@ -378,6 +378,8 @@
 															$start = Carbon::CreateFromFormat('Y-m-d',$book->start);
 															echo $start->formatLocalized('%d-%b');
 														?> 
+													</td>
+													<td class="text-center" style="padding: 8px">
 														<?php 
 															$finish = Carbon::CreateFromFormat('Y-m-d',$book->finish);
 															echo $finish->formatLocalized('%d-%b');
@@ -385,8 +387,9 @@
 													</td>
 													<td class="text-center total" style="padding: 8px; ">
 														<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
-															<?php if ($book->cost_total > 0 ): ?>
-																<?php echo number_format($book->cost_total,2,',','.') ?>€
+															<?php $cost = ($book->cost_apto + $book->cost_park + $book->cost_lujo) ?>
+															<?php if ($cost > 0 ): ?>
+																<?php echo number_format($cost,2,',','.') ?>€
 															<?php else: ?>
 																---€	
 															<?php endif ?>
@@ -433,13 +436,6 @@
 															<?php endif ?>
 														</td>
 													<?php endif ?>
-													<td class="text-center" style="padding: 8px; ">
-														<?php if ($book->cost_limp > 0): ?>
-															<?php echo $book->cost_limp ?>€
-														<?php else: ?>
-															---€	
-														<?php endif ?>
-													</td>
 												</tr>
 											<?php endforeach ?>
 										</tbody>
@@ -676,7 +672,7 @@
 					<h2 class="text-center push-10" style="font-size: 24px;"><b>Resumen</b></h2>
 
 					<div class="row" style="border: none;">
-						<table class="table table-bordered table-hover no-footer">
+						<table class="table table-bordered table-hover no-footer" >
 							<tr>
 								<th class ="text-center bg-complete text-white">TOT. ING</th>
 								<th class ="text-center bg-complete text-white">APTO</th>
@@ -687,7 +683,7 @@
 								<?php endif ?>
 							</tr>
 							<tr>
-								<td class="text-center total" style="padding: 8px;">
+								<td class="text-center" style="padding: 8px;">
 									<?php if ($total > 0): ?>
 										<?php echo number_format($total,2,',','.'); ?>€
 									<?php else: ?>
@@ -739,7 +735,7 @@
 							
 							<thead>
 								<th class ="text-center bg-complete text-white" style="width: 25%">Cliente</th>
-								<th class ="text-center bg-complete text-white" style="width: 5%">Personas</th>
+								<th class ="text-center bg-complete text-white" style="width: 5%">Pers</th>
 								<th class ="text-center bg-complete text-white">Entrada</th>
 								<th class ="text-center bg-complete text-white">Salida</th>
 								<th class ="text-center bg-complete text-white">Tot. Ing</th>
@@ -748,14 +744,13 @@
 								<?php if ($room->luxury == 1): ?>
 									<th class ="text-center bg-complete text-white">Sup.Lujo</th>
 								<?php endif ?>
-								<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Limp.</th>
 									
 								
 							</thead>
 							<tbody>
 								<?php foreach ($books as $book): ?>
 									<tr>
-										<td class="text-center"><?php echo ucfirst(strtolower($book->Customer->name)) ?> </td>
+										<td class="text-center"><?php echo ucfirst(strtolower($book->customer->name)) ?> </td>
 										<td class="text-center"><?php echo $book->pax ?> </td>
 										<td class="text-center">
 											<?php 
@@ -769,12 +764,17 @@
 												echo $finish->formatLocalized('%d-%b');
 											?> 
 										</td>
-										<td class="text-center total">
-											<?php if ($book->cost_total > 0): ?>
-												<?php echo number_format($book->cost_total,2,',','.') ?> €
+										<td class="text-center">
+										<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
+											<?php $cost = ($book->cost_apto + $book->cost_park + $book->cost_lujo) ?>
+											<?php if ($cost > 0 ): ?>
+												<b><?php echo number_format($cost,2,',','.') ?>€</b>
 											<?php else: ?>
 												---€	
 											<?php endif ?>
+										<?php else: ?>
+											---€
+										<?php endif ?>
 										</td>
 										<td class="text-center">
 											<?php if ($book->cost_apto > 0): ?>
@@ -790,7 +790,7 @@
 												---€	
 											<?php endif ?>
 										</td>
-										<?php if ($room->luxury == 1): ?>
+										<?php if ($book->room->luxury == 1): ?>
 											<td class="text-center">
 												<?php if ($book->cost_lujo > 0): ?>
 													<?php echo $book->cost_lujo ?> €
@@ -799,13 +799,6 @@
 												<?php endif ?>
 											</td>
 										<?php endif ?>
-										<td class="text-center">
-											<?php if ($book->cost_limp > 0): ?>
-												<?php echo $book->cost_limp ?> €
-											<?php else: ?>
-												---€	
-											<?php endif ?>
-										</td>
 									</tr>
 								<?php endforeach ?>
 							</tbody>

@@ -1185,4 +1185,52 @@ class BookController extends Controller
             return view('backend.bookStatus.bookError');
         }
     }
+
+    public function searchByName(Request $request)
+    {
+    
+        $now = Carbon::now();
+
+        if ( $request->year ) {
+            if ($now->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$now->copy()->format('Y'));
+            }else{
+                $date = new Carbon('first day of September '.$now->copy()->subYear()->format('Y'));
+            }
+            
+        }else{
+            $date = new Carbon('first day of September '.$request->year);
+        }
+
+
+        if ($request->searchString != "") {
+
+            $customers = \App\Customers::where('name', 'LIKE', '%'.$request->searchString.'%')->get();
+            
+            if (count($customers) > 0) {
+                $arrayCustomersId = [];
+                foreach ($customers as $key => $customer) {
+                    if (!in_array($customer->id, $arrayCustomersId)) {
+                        $arrayCustomersId[] = $customer->id;
+                    }
+                    
+                }
+
+                $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
+                                    ->where('start' , '>=' , $date->format('Y-m-d'))
+                                    ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
+                                    ->where('type_book', '!=', 9)
+                                    ->orderBy('start', 'ASC')
+                                    ->get();
+
+
+                return view('backend/planning/responses/_resultSearch',  [ 'books' => $books ]);
+            }else{
+                return "<h2>No hay reservas para este término '".$request->searchString."'</h2>";
+            }
+        }else{
+
+            return 0;
+        }
+    }
 }

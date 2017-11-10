@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use \Carbon\Carbon;
 use Auth;
+use Mail;
 use App\Classes\Mobile;
 class OwnedController extends Controller
 {
@@ -126,17 +127,17 @@ class OwnedController extends Controller
             
             foreach ($books as $book) {
 
-                if ($book->type_book != 7 && $book->type_book != 8) {
-                    $total +=  $book->cost_total;
+                if ($book->type_book != 7 && $book->type_book != 8 && $book->type_book != 9) {
                     $apto  +=  $book->cost_apto;
                     $park  +=  $book->cost_park;
                     $lujo  +=  $book->cost_lujo;
+                    
                 }
 
                
 
             }
-
+            $total += ( $apto + $park + $lujo);
 
             $paymentspro = \App\Paymentspro::where('room_id',$room->id)->where('datePayment','>=',$date->copy()->format('Y-m-d'))->where('datePayment','<=',$date->copy()->addYear()->format('Y-m-d'))->get();
             $pagototal = 0;
@@ -298,46 +299,54 @@ class OwnedController extends Controller
     }
 
     public function bloqOwned(Request $request)
-            {
+    {
+        
+        $aux = str_replace('Abr', 'Apr', $request->input('fechas'));
+
+        $date = explode('-', $aux);
+
+        $start = Carbon::createFromFormat('d M, y' , trim($date[0]))->format('d/m/Y');
+        $finish = Carbon::createFromFormat('d M, y' , trim($date[1]))->format('d/m/Y');
+
+
+        $room = \App\Rooms::find($request->input('room'));
+
+        $book = new \App\Book();
+
+        if ($book->existDate($start,$finish,$room->id)) {
+               
+
+                $bloqueo = new \App\Customers();
+                $bloqueo->user_id = Auth::user()->id;
+                $bloqueo->name = 'Bloqueo '.Auth::user()->name;
+
                 
-                $aux = str_replace('Abr', 'Apr', $request->input('fechas'));
 
-                $date = explode('-', $aux);
+                $bloqueo->save();
 
-                $start = Carbon::createFromFormat('d M, y' , trim($date[0]))->format('d/m/Y');
-                $finish = Carbon::createFromFormat('d M, y' , trim($date[1]))->format('d/m/Y');
+                
+                $book->user_id = Auth::user()->id;
+                $book->customer_id = $bloqueo->id;
+                $book->room_id = $room->id;
+                $book->start = Carbon::CreateFromFormat('d/m/Y',$start);
+                $book->finish = Carbon::CreateFromFormat('d/m/Y',$finish);
+                $book->type_book = 7;
 
-
-                $room = \App\Rooms::find($request->input('room'));
-
-                $book = new \App\Book();
-
-                if ($book->existDate($start,$finish,$room->id)) {
-                       
-
-                        $bloqueo = new \App\Customers();
-                        $bloqueo->user_id = Auth::user()->id;
-                        $bloqueo->name = 'Bloqueo '.Auth::user()->name;
-
-                        
-
-                        $bloqueo->save();
-
-                        
-                        $book->user_id = Auth::user()->id;
-                        $book->customer_id = $bloqueo->id;
-                        $book->room_id = $room->id;
-                        $book->start = Carbon::CreateFromFormat('d/m/Y',$start);
-                        $book->finish = Carbon::CreateFromFormat('d/m/Y',$finish);
-                        $book->type_book = 7;
-
-                        $book->save();
-
-                        return "Reserva Guardada";
-                    
-                }else{
-                    return "No se puede guardar reserva";
+                if ($book->save()) {
+                    /* Cliente */
+                    Mail::send(['html' => 'backend.emails.bloqueoPropietario'],[ 'book' => $book ], function ($message) use ($book) {
+                        $message->from('bloqueos@apartamentosierranevada.net');
+                        $message->to('reservas@apartamentosierranevada.net');
+                        // $message->to('iavila@daimonconsulting.com');
+                        $message->subject('BLOQUEO '.strtolower($book->user->name));
+                    });
                 }
-            }
+
+                return "Reserva Guardada";
+            
+        }else{
+            return "No se puede guardar reserva";
+        }
+    }
 
 }
