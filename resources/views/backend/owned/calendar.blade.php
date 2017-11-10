@@ -27,13 +27,14 @@
         }
         .btn-fechas-calendar{
             font-size: 11px;
+            float: left;
+            width: 73px;
         }
         .btn-fechas-calendar[data-month="5"]{
             display: none;
         }
     }
 </style>
-<div class="col-md-12 col-xs-12">
     <div class="panel">
         <div class="row">
           <?php $dateAux = $inicio->copy(); ?>
@@ -94,31 +95,26 @@
                                     $luxAux = 1;
                                     $typeAux = 2;
                                 ?>
-                                <?php foreach ($roomscalendar as $key => $room): ?>
+                                <?php foreach ($roomscalendar as $key => $roomX): ?>
 									<?php $inicio = $inicioAux->copy() ?>
 
-                                    <?php if ($room->luxury != $luxAux || $room->sizeApto != $typeAux): ?>
-                                        <?php $line = "line-divide"; ?>
-                                    <?php else: ?>
-                                        <?php $line = ""; ?>
-                                    <?php endif ?>
                                     <?php 
-                                        $luxAux  = $room->luxury;
-                                        $typeAux = $room->sizeApto;
+                                        $luxAux  = $roomX->luxury;
+                                        $typeAux = $roomX->sizeApto;
                                     ?>
-                                    <tr class="<?php echo $line ?>">
+                                    <tr >
                                         
                                         <td class="text-center fixed-td">
-                                            <b style="cursor: pointer;" data-placement="right" title="" data-toggle="tooltip" data-original-title="<?php echo $room->name ?>">
-                                                <?php echo substr($room->nameRoom, 0,5)?>   
+                                            <b style="cursor: pointer;" data-placement="right" title="" data-toggle="tooltip" data-original-title="<?php echo $roomX->name ?>">
+                                                <?php echo substr($roomX->nameRoom, 0,5)?>   
                                             </b>
                                         </td>
                                         <?php foreach ($arrayMonths as $key => $daysMonth): ?>
                                             <?php for ($i=01; $i <= $daysMonth  ; $i++): ?> 
                                                 <!-- Si existe la reserva para ese dia -->
-                                                <?php if (isset($arrayReservas[$room->id][$inicio->copy()->format('Y')][$key][$i])): ?>
+                                                <?php if (isset($arrayReservas[$roomX->id][$inicio->copy()->format('Y')][$key][$i])): ?>
 
-                                                    <?php $calendars = $arrayReservas[$room->id][$inicio->copy()->format('Y')][$key][$i] ?>
+                                                    <?php $calendars = $arrayReservas[$roomX->id][$inicio->copy()->format('Y')][$key][$i] ?>
                                                     <!-- Si hay una reserva que sale y una que entra  -->
                                                     <?php if (count($calendars) > 1): ?>
                                                         
@@ -128,11 +124,7 @@
                                                                 <?php if($calendars[$x]->finish == $inicio->copy()->format('Y-m-d') && $calendars[$x]->type_book != 5): ?>
                                                                     <a 
                                                                         href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
-                                                                        <?php $titulo = 
-                                                                                        $calendars[$x]->customer['name'].'&#10'.
-                                                                                        'Pax-real '.$calendars[$x]->real_pax.'&#10;'.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;'.
-                                                                                        'PVP:'.$calendars[$x]->total_price ;
-                                                                        ?>
+                                                                        <?php $titulo =  $calendars[$x]->customer['name'] ?>
                                                                         title="<?php echo $titulo ?>"
                                                                     >
                                                                         <?php $class = $calendars[$x]->getStatus($calendars[$x]->type_book) ?>
@@ -148,12 +140,7 @@
 
                                                                     <a 
                                                                         href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
-                                                                        <?php $titulo = 
-                                                                                        $calendars[$x]->customer['name'].'&#10'.
-                                                                                        'Pax-real '.$calendars[$x]->real_pax.'&#10;'.
-                                                                                        ''.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;'.
-                                                                                        'PVP:'.$calendars[$x]->total_price ;
-                                                                        ?>
+                                                                        <?php $titulo =  $calendars[$x]->customer['name'] ?>
                                                                         title="<?php echo $titulo ?>"
                                                                     >
                                                                         <?php if ($calendars[$x]->getStatus($calendars[$x]->type_book) != "Booking"): ?>
@@ -174,12 +161,7 @@
                                                                     <?php if ($calendars[$x]->type_book != 9 && $calendars[$x]->type_book != 5): ?>
                                                                         <a 
                                                                             href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
-                                                                            <?php $titulo = 
-                                                                                            $calendars[$x]->customer['name'].'&#10'.
-                                                                                            'Pax-real '.$calendars[$x]->real_pax.'&#10;'.
-                                                                                            ''.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;'.
-                                                                                            'PVP:'.$calendars[$x]->total_price ;
-                                                                            ?>
+                                                                            <?php $titulo =  $calendars[$x]->customer['name'] ?>
                                                                             title="<?php echo $titulo ?>"
                                                                         >
                                                                         <?php $class = $calendars[$x]->getStatus($calendars[$x]->type_book) ?>
@@ -203,12 +185,7 @@
 
                                                         <?php if ($calendars[0]->start == $inicio->copy()->format('Y-m-d')): ?>
                                                             <td 
-                                                                <?php $titulo = 
-                                                                                $calendars[0]->customer['name'].'&#10'.
-                                                                                'Pax-real '.$calendars[0]->real_pax.'&#10;'.
-                                                                                ''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;'.
-                                                                                'PVP:'.$calendars[0]->total_price ;
-                                                                ?>
+                                                                <?php $titulo =  $calendars[0]->customer['name'] ?>
 
                                                                 title="<?php echo $titulo ?>"
                                                                 style='border:1px solid grey;width: 24px; height: 20px;'>
@@ -225,12 +202,7 @@
                                                             </td>    
                                                         <?php elseif($calendars[0]->finish == $inicio->copy()->format('Y-m-d')): ?>
                                                             <td 
-                                                                <?php $titulo = 
-                                                                                $calendars[0]->customer['name'].'&#10'.
-                                                                                'Pax-real '.$calendars[0]->real_pax.'&#10;'.
-                                                                                ''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;'.
-                                                                                'PVP:'.$calendars[0]->total_price ;
-                                                                ?>
+                                                                <?php $titulo =  $calendars[0]->customer['name'] ?>
 
                                                                 title="<?php echo $titulo ?>"
                                                                 style='border:1px solid grey;width: 24px; height: 20px;'>
@@ -250,12 +222,7 @@
 
                                                             <td 
                                                             style='border:1px solid grey;width: 24px; height: 20px;' 
-                                                            <?php $titulo = 
-                                                                            $calendars[0]->customer['name'].'&#10'.
-                                                                            'Pax-real '.$calendars[0]->real_pax.'&#10;'.
-                                                                            ''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;'.
-                                                                            'PVP:'.$calendars[0]->total_price ;
-                                                            ?>
+                                                            <?php $titulo =  $calendars[0]->customer['name'] ?>
                                                                 title="<?php echo $titulo ?> " 
                                                                 <?php $class = $calendars[0]->getStatus($calendars[0]->type_book) ?>
                                                                 <?php if ($class == "Contestado(EMAIL)"): ?>
@@ -306,4 +273,4 @@
             </div>
 
         </div>
-</div> 
+    </div> 

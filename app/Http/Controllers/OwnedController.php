@@ -78,35 +78,49 @@ class OwnedController extends Controller
                 $finish = Carbon::createFromFormat('Y-m-d',$reserva->finish);
                 $diferencia = $start->diffInDays($finish);
                 for ($i=0; $i <= $diferencia; $i++) {
-                    $arrayReservas[$reserva->room_id][$dia->copy()->format('Y')][$dia->copy()->format('n')][$dia->copy()->format('j')] = $reserva;
+                    $arrayReservas[$reserva->room_id][$dia->copy()->format('Y')][$dia->copy()->format('n')][$dia->copy()->format('j')][] = $reserva;
                     $dia = $dia->addDay();
                 }
             }
 
+            $ax = $firstDayOfTheYear->copy();
             for ($i=1; $i <= 12; $i++) { 
-                $mes[$firstDayOfTheYear->copy()->format('n')] = $firstDayOfTheYear->copy()->format('M Y');
-                $firstDayOfTheYear = $firstDayOfTheYear->addMonth();
+                $mes[$ax->copy()->format('n')] = $ax->copy()->format('M Y');
+                $ax = $ax->addMonth();
             }
 
             $book = new \App\Book();
 
-            for ($i=1; $i <= 12; $i++) { 
-                
+     
+
+
+            for ($i=1; $i <= 12; $i++) {
+
                 $startMonth = $firstDayOfTheYear->copy()->startOfMonth();
                 $endMonth   = $firstDayOfTheYear->copy()->endOfMonth();
                 $countDays  = $endMonth->diffInDays($startMonth);
                 $day        = $startMonth;
 
 
-                for ($j=1; $j <= $countDays+1 ; $j++) { 
-                        $arrayMonths[$firstDayOfTheYear->copy()->format('n')] = $day->copy()->format('d');     
-                        $arrayDays[$firstDayOfTheYear->copy()->format('n')][$j] = $book->getDayWeek($day->copy()->format('w'));
-                        $day = $day->addDay();
-                }
+                $arrayMonths[$firstDayOfTheYear->copy()->format('n')] = $day->copy()->format('t');
                 
-                $firstDayOfTheYear->addMonth();                                    
+                
+
+                for ($j=1; $j <= $day->copy()->format('t') ; $j++) {
+
+                    $arrayDays[$firstDayOfTheYear->copy()->format('n')][$j] = $book->getDayWeek($day->copy()->format('w'));
+
+                    $day = $day->copy()->addDay();
+
+                }
+
+                $firstDayOfTheYear->addMonth();
 
             }
+
+            unset($arrayMonths[6]);
+            unset($arrayMonths[7]);
+            unset($arrayMonths[8]);
             
 
             
@@ -168,7 +182,8 @@ class OwnedController extends Controller
 
             $dateStadistic->addMonth();
         }
-            
+
+        
         return view('backend.owned.index',[
                                             'user'        => \App\User::find(Auth::user()->id),
                                             'room'        => $room,
@@ -186,6 +201,9 @@ class OwnedController extends Controller
                                             'pagototal'   => $pagototal,
                                             'mobile'      => new Mobile(),
                                             'estadisticas'      => $estadisticas,
+                                            'inicio'        => $date,
+                                            'roomscalendar' => \App\Rooms::where('nameRoom', $name)->get(),
+                                            'arrayReservas' => $arrayReservas,
                                             ]);
         
         } catch (\Exception $e) {

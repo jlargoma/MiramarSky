@@ -14,7 +14,87 @@
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+	    <style type="text/css">
+    
+        .botones{
+            padding-top: 0px!important;
+            padding-bottom: 0px!important;
+        }
+        td{
+            margin: 0px;
+            padding: 0px!important;
+            vertical-align: middle!important;
+        }
+        a {
+            color: black;
+            cursor: pointer;
+        }
+        .S, .D{
+            background-color: rgba(0,0,0,0.2);
+            color: red;
+        }
+        .active>a{
+            color: white!important;
+        }
+        .bg-info-light>li>a{
+            color: white;
+        }
+        .active.res{
+            background-color: #295d9b !important; 
+        }
+        .active.bloq{
+            background-color: orange !important; 
+        }
+        .active.pag{
+            background-color: green !important; 
+        }
+        .res,.bloq,.pag{
+            background-color: rgba(98,108,117,0.5);
+        }
+        .nav-tabs > li > a:hover, .nav-tabs > li > a:focus{
+            color: white!important;
+        }
 
+        .fechas > li.active{
+            background-color: rgb(81,81,81);
+        }
+        .nav-tabs ~ .tab-content{
+            padding: 0px;
+        }
+        .paginate_button.active>a{
+            color: black!important;
+        }
+        .table.table-hover tbody tr:hover td {
+            background: #99bce7 !important;
+        }
+
+        .table.table-striped tbody tr.Reservado td select.minimal{
+            background-color: rgba(0,200,10,0.0)  !important;
+            color: black!important;
+            font-weight: bold!important;
+        }
+
+            
+        
+        .table.table-striped tbody tr.Bloqueado td select.minimal{
+            background-color: #D4E2FF  !important;
+            color:red!important;
+            font-weight: bold!important;
+
+        }
+        .nav-tabs-simple > li.active a{
+            font-weight: 800;
+        }
+        span.numPaymentLastBooks{
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: red;
+            border-radius: 100%;
+            padding: 0px 7px;
+            z-index: 15;
+        }
+    </style>
 @endsection
      
 @section('content')
@@ -264,120 +344,7 @@
 						<div class="col-md-6 col-xs-12 reservas resumen blocks">
 							<h2 class="text-center font-w800">Calendario</h2>
 							<div class="col-md-12 col-xs-12">
-								<div class="panel">
-									<ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
-										<?php $dateAux = $date->copy(); ?>
-										<?php for ($i=1; $i <= 9 ; $i++) :?>
-											<li class="<?php if($i == 4 ){ echo 'active';} ?> <?php if($i < 4 ){ echo 'hidden';} ?>">
-												<a href="#tab<?php echo $i?>" data-toggle="tab" role="tab" style="padding:10px">
-													<?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>
-												</a>
-											</li>
-											<?php $dateAux->addMonth(); ?>
-										<?php endfor; ?>
-									</ul>
-									<div class="tab-content" style="padding: 0 0 20px 0;">
-										<?php for ($z=1; $z <= 9; $z++):?>
-											<div class="tab-pane <?php if($z == 4){ echo 'active';} ?> <?php if($i < 4 ){ echo 'hidden';} ?>"  id="tab<?php echo $z ?>">
-												<div class="row">
-													<div class="col-md-12">
-														<table class="fc-border-separate" style="width: 100%">
-															<thead>
-																<tr >
-																	<td class="text-center" colspan="<?php echo $arrayMonths[$date->copy()->format('n')]+1 ?>">
-																		<?php echo  ucfirst($date->copy()->formatLocalized('%B %Y'))?>
-																	</td> 
-																</tr>
-																<tr>
-																	<?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-																		<td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
-																			<?php echo $i?> 
-																		</td> 
-																	<?php endfor; ?>
-																</tr>
-																<tr>
-
-																	<?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-																		<td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$date->copy()->format('n')][$i]?>">
-																			<?php echo $days[$date->copy()->format('n')][$i]?> 
-																		</td> 
-																	<?php endfor; ?> 
-																</tr>
-															</thead>
-															<tbody>
-																<tr>
-																	<?php $date = $date->startOfMonth() ?>
-											
-																	<?php for ($i=01; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-																		<!-- Si existe la reserva para ese dia -->
-																		<?php if (isset($reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i])): ?>
-													
-																			<?php $calendars = $reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i] ?>
-																				<?php if ($calendars->start == $date->copy()->format('Y-m-d')): ?>
-																					<td style='border:1px solid grey;width: 3%'>
-
-																						<div class="<?php echo $calendars->getStatus($calendars->type_book) ?> start" style="width: 100%;float: left;">
-																							&nbsp;
-																						</div>
-
-																					</td>    
-																				<?php elseif($calendars->finish == $date->copy()->format('Y-m-d')): ?>
-																					<td style='border:1px solid grey;width: 3%'>
-																						<div class="<?php echo $calendars->getStatus($calendars->type_book) ?> end" style="width: 100%;float: left;">
-																							&nbsp;
-																						</div>
-
-
-																					</td>
-																				<?php else: ?>
-
-																					<td 
-																					style='border:1px solid grey;width: 3%' 
-																					title="
-																					<?php echo $calendars->customer['name'] ?>" 
-																					class="<?php echo $calendars->getStatus($calendars->type_book) ?>"
-																					>
-																						<?php if ($calendars->type_book == 9): ?>
-																							<div style="width: 100%;height: 100%">
-																								&nbsp;
-																							</div>
-																						<?php else: ?>
-																							<div style="width: 100%;height: 100%">
-																								&nbsp;
-																							</div>
-																						<?php endif ?>
-
-
-																					</td>
-
-																				<?php endif ?>
-																		<!-- Si no existe nada para ese dia -->
-																		<?php else: ?>
-																		
-																			<td class="<?php echo $days[$date->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
-
-																			</td>
-
-																		<?php endif; ?>
-																		
-																		<?php if ($date->copy()->format('d') != $arrayMonths[$date->copy()->format('n')]): ?>
-						                                                    <?php $date = $date->addDay(); ?>
-						                                                <?php else: ?>
-						                                                    <?php $date = $date->startOfMonth() ?>
-						                                                <?php endif ?>
-																	<?php endfor; ?> 
-																</tr>
-															</tbody>
-														</table>
-													</div>
-
-												</div>
-											</div>
-											<?php $date = $date->addMonth(); ?>
-										<?php endfor ?>
-									</div>
-								</div>
-
+								@include('backend.owned.calendar')
 							</div>
 						</div>
 					</div>
@@ -456,7 +423,7 @@
 													<?php if ($room->luxury == 1): ?>
 														<td class="text-center" style="padding: 8px; ">
 															<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
-																<?php $auxLuxury = ($book->cost_total - ($book->cost_apto + $book->cost_park)) ?>
+																<?php $auxLuxury = $book->sup_lujo ?>
 																<?php if ($auxLuxury > 0): ?>
 																	<?php echo $auxLuxury ?>€
 																<?php else: ?>
@@ -754,125 +721,7 @@
 				<div class="row reservas resumen blocks"> 
 					<div class="col-md-12 col-xs-12">
 						<h2 class="text-center push-10" style="font-size: 24px;"><b>Calendario</b></h2>
-						<div class="panel">
-							<ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist" data-init-reponsive-tabs="collapse">
-								<?php $dateAux = $date->copy()->addMonths(3); ?>
-								<?php for ($i=4; $i <= 8 ; $i++) :?>
-
-									<li <?php if($i == 4 ){ echo "class='active'";} ?>>
-										<a href="#tab<?php echo $i?>" data-toggle="tab" role="tab" style="padding:10px">
-											<?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>
-										</a>
-									</li>
-									<?php $dateAux->addMonth(); ?>
-								<?php endfor; ?>
-							</ul>
-							<div class="tab-content " style="padding: 0 15px;">
-								<?php for ($z=1; $z <= 9; $z++):?>
-									<div class="tab-pane <?php if($z == 4){ echo 'active';} ?>" id="tab<?php echo $z ?>">
-										<div class="row table-responsive p-b-20" style="border: none;">
-											<table class="fc-border-separate calendar-table" style="width: 100%">
-												<thead>
-													<tr>
-														<td rowspan="2" style="width: 1%!important"></td>
-														<?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-															<td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center">
-																<?php echo $i?> 
-															</td> 
-														<?php endfor; ?>
-													</tr>
-													<tr>
-
-														<?php for ($i=1; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-															<td style='border:1px solid black;width: 3%;font-size: 10px' class="text-center <?php echo $days[$date->copy()->format('n')][$i]?>">
-																<?php echo $days[$date->copy()->format('n')][$i]?> 
-															</td> 
-														<?php endfor; ?> 
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<?php $date = $date->startOfMonth() ?>
-														<td class="text-center">
-															
-														</td>
-
-														<?php for ($i=01; $i <= $arrayMonths[$date->copy()->format('n')] ; $i++): ?> 
-															<!-- Si existe la reserva para ese dia -->
-															<?php if (isset($reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i])): ?>
-										
-																<?php $calendars = $reservas[$room->id][$date->copy()->format('Y')][$date->copy()->format('n')][$i] ?>
-																	<?php if ($calendars->start == $date->copy()->format('Y-m-d')): ?>
-																		<td style='border:1px solid grey;width: 3%'>
-
-																			<div class="<?php echo $calendars->getStatus($calendars->type_book) ?> start" style="width: 100%;float: left;">
-																				&nbsp;
-																			</div>
-
-																		</td>    
-																	<?php elseif($calendars->finish == $date->copy()->format('Y-m-d')): ?>
-																		<td style='border:1px solid grey;width: 3%'>
-																			<div class="<?php echo $calendars->getStatus($calendars->type_book) ?> end" style="width: 100%;float: left;">
-																				&nbsp;
-																			</div>
-
-
-																		</td>
-																	<?php else: ?>
-
-																		<td 
-																		style='border:1px solid grey;width: 3%' 
-																		title="
-																		<?php echo $calendars->customer['name'] ?> 
-
-																		<?php echo 'PVP:'.$calendars->total_price ?>
-																		<?php if (isset($payment[$calendars->id])): ?>
-																			<?php echo 'PEND:'.($calendars->total_price - $payment[$calendars->id])?>
-																		<?php else: ?>
-																		<?php endif ?>" 
-																		class="<?php echo $calendars->getStatus($calendars->type_book) ?>"
-																		>
-																			<?php if ($calendars->type_book == 9): ?>
-																				<div style="width: 100%;height: 100%">
-																					&nbsp;
-																				</div>
-																			<?php else: ?>
-																				<a href="{{url ('/admin/reservas/update')}}/<?php echo $calendars->id ?>">
-																					<div style="width: 100%;height: 100%">
-																						&nbsp;
-																					</div>
-																				</a>
-																			<?php endif ?>
-
-
-																		</td>
-
-																	<?php endif ?>
-															<!-- Si no existe nada para ese dia -->
-															<?php else: ?>
-															
-																<td class="<?php echo $days[$date->copy()->format('n')][$i]?>" style='border:1px solid grey;width: 3%'>
-
-																</td>
-
-															<?php endif; ?>
-															
-															<?php if ($date->copy()->format('d') != $arrayMonths[$date->copy()->format('n')]): ?>
-			                                                    <?php $date = $date->addDay(); ?>
-			                                                <?php else: ?>
-			                                                    <?php $date = $date->startOfMonth() ?>
-			                                                <?php endif ?>
-														<?php endfor; ?> 
-													</tr>
-												</tbody>
-											</table>
-
-										</div>
-									</div>
-									<?php $date = $date->addMonth(); ?>
-								<?php endfor ?>
-							</div>
-						</div>
+						@include('backend.owned.calendar')
 
 					</div>
 				</div>
@@ -1200,6 +1049,24 @@
 				
 
 			});
+
+			$('.btn-fechas-calendar').click(function(event) {
+                event.preventDefault();
+                $('.btn-fechas-calendar').css({
+                    'background-color': '#899098',
+                    'color': '#fff'
+                });
+                $(this).css({
+                    'background-color': '#10cfbd',
+                    'color': '#fff'
+                });
+                var target = $(this).attr('data-month');
+                var targetPosition = $('.content-calendar #month-'+target).position();
+                // alert("Left: "+targetPosition.left+ ", right: "+targetPosition.right);
+                $('.content-calendar').animate({ scrollLeft: "+="+targetPosition.left+"px" }, "slow");
+            });
+
+            $('#btn-active').trigger('click');
 
 		});
 		
