@@ -49,6 +49,7 @@ class PaymentsProController extends Controller
                     'totalParking' => 0,
                     'totalLujo'    => 0,
                     'totalCost'    => 0,
+                    'totalApto'    => 0,
                     'totalPVP'     => 0,
                     'pagos'        => 0,
                     ];
@@ -89,20 +90,22 @@ class PaymentsProController extends Controller
             $data[$room->id]['totales']['totalParking'] = 0;
             $data[$room->id]['totales']['totalLujo']    = 0;
             $data[$room->id]['totales']['totalCost']    = 0;
+            $data[$room->id]['totales']['totalApto']    = 0;
             $data[$room->id]['totales']['totalPVP']     = 0;
 
 
 
         }
         foreach ($books as $book) {
-
+            $costTotal = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->cost_limp + $book->PVPAgencia;
 
                 
             $data[$book->room_id]['totales']['totalLimp']    += $book->cost_limp;
             $data[$book->room_id]['totales']['totalAgencia'] += $book->PVPAgencia;
             $data[$book->room_id]['totales']['totalParking'] += $book->cost_park;
             $data[$book->room_id]['totales']['totalLujo']    += $book->cost_lujo;
-            $data[$book->room_id]['totales']['totalCost']    += $book->cost_total;
+            $data[$book->room_id]['totales']['totalCost']    += $costTotal;
+            $data[$book->room_id]['totales']['totalApto']    += $book->cost_apto;
             $data[$book->room_id]['totales']['totalPVP']     += $book->total_price;
  
 
@@ -110,7 +113,8 @@ class PaymentsProController extends Controller
             $summary['totalAgencia'] += $book->PVPAgencia;
             $summary['totalParking'] += $book->cost_park;
             $summary['totalLujo']    += $book->cost_lujo;
-            $summary['totalCost']    += $book->cost_total;
+            $summary['totalCost']    += $costTotal;
+            $summary['totalApto']    += $book->cost_apto;
             $summary['totalPVP']     += $book->total_price;
         }
 

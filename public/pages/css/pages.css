@@ -14295,8 +14295,17 @@ Main components
 .room.form-control.minimal option{
   font-size:14px;
 }
+
+
+
 @media screen and (max-width: 767px){
   .push-mobile-20{
     margin-bottom: 20px
+  }
+
+  .btn-fechas-calendar {
+      font-size: 10px!important;
+      float: left!important;
+      width: 65px!important;
   }
 }

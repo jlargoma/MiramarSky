@@ -1,3 +1,7 @@
+<?php 
+	use \App\Classes\Mobile;
+	$mobile = new Mobile();
+?>
 @extends('layouts.admin-master')
 
 @section('title') Administrador de reservas MiramarSKI @endsection
@@ -68,15 +72,285 @@
         	</select>
         </div>
     </div>
-    <div class="row">
-    	
-    	<div class="col-md-7 col-xs-12 push-0">
-    		<div class="col-md-9 col-xs-12 pull-right not-padding" style="width: 78%">
-    			<table class="table table-hover" >
+    <?php if (!$mobile->isMobile()): ?>
+	    <div class="row">
+	    	
+	    	<div class="col-md-8 col-xs-12 push-0">
+	    		<div class="col-md-9 col-xs-12 pull-right not-padding" style="width: 78%">
+	    			<table class="table table-hover" >
+	    				<thead>
+	    					<tr>
+	    						<th class ="text-center bg-complete text-white">
+	    							PVP    
+	    						</th>
+	    						<th class ="text-center bg-complete text-white">
+	    							C. Total.   
+	    						</th>
+	    						<th class ="text-center bg-complete text-white">
+	    							C. Apto.   
+	    						</th>
+	    						<th class ="text-center bg-complete text-white">
+	    							C. Park   
+	    						</th>
+	    						<th class ="text-center bg-complete text-white">
+	    							C. Lujo   
+	    						</th>
+	    						<th class ="text-center bg-complete text-white">
+	    							C. Agen   
+	    						</th>
+	    						<th class ="text-center bg-complete text-white">
+	    							C. Limp.   
+	    						</th>
+	    						<th class ="text-center bg-complete text-white">
+	    							Benef.    
+	    						</th>
+	    						<th class ="text-center bg-complete text-white">
+	    							%Ben.    
+	    						</th>
+	    						<th class ="text-center bg-complete text-white">
+	    							Pagado    
+	    						</th>
+	    						<th class ="text-center bg-complete text-white">
+	    							Pend.
+	    						</th>
+	    					</tr>
+	    				</thead>
+	    				<tbody>
+	    					<tr> 
+	    						<td class="text-center" style="padding: 8px;">
+	    							<?php echo number_format($summary['totalPVP'],2,',','.') ?>€
+	    						</td>
+	    						<td class="text-center costeApto bordes">
+	    							<b><?php  echo number_format($summary['totalCost'],2,',','.') ?>€</b>
+	    						</td>
+	    						<td class="text-center">
+	    							<b><?php  echo number_format($summary['totalApto'],2,',','.') ?>€</b>
+	    						</td>
+	    						<td class="text-center" style="padding: 8px;">
+	    							<?php  echo number_format($summary['totalParking'],2,',','.') ?>€
+	    						</td>
+	    						<td class="text-center" style="padding: 8px;">
+	    							<?php  echo number_format($summary['totalLujo'],2,',','.') ?>€
+	    						</td>
+	    						<td class="text-center" style="padding: 8px;">
+	    							<?php  echo number_format($summary['totalAgencia'],2,',','.') ?>€
+	    						</td>
+	    						<td class="text-center" style="padding: 8px;">
+	    							<?php  echo number_format($summary['totalLimp'],2,',','.') ?>€
+	    						</td>
+	    						<td class="text-center" style="padding: 8px;">
+	    							<?php $beneficio = $summary['totalPVP'] - $summary['totalCost']; ?>
+	    							<?php if ($beneficio > 0): ?>
+	    								<span class="text-success font-w800"><?php echo number_format( $beneficio,2,',','.') ?>€</span>
+	    							<?php else: ?>
+	    								<span class="text-danger font-w800"><?php echo number_format( $beneficio,2,',','.') ?>€</span>
+	    							<?php endif ?>
+	    							
+	    						</td>
+	    						<td class="text-center" style="padding: 8px;">
+	    							<?php $benPercentage = ($beneficio/$summary['totalPVP'])*100;?>
+	    							<?php  echo number_format($benPercentage,2,',','.') ?>%
+	    						</td>
+	    						<td class="text-center" style="padding: 8px;">
+	    							<?php  echo number_format($summary['pagos'],2,',','.') ?> €
+	    						</td>
+	    						<td class="text-center pendiente bordes" style="padding: 8px;">
+	    							<?php $pendiente = $summary['totalCost'] - $summary['pagos'];?>
+	    							<span class="text-danger font-w800"><b><?php echo number_format($pendiente,2,',','.') ?>€</b></span>
+	    						</td>
+	    					</tr>
+	    				</tbody>
+	    			</table>
+	    		</div>
+
+	    		<div class="col-md-12 col-xs-12 pull-right not-padding">
+		    		<table class="table tableRooms">
+
+		    			<thead>
+		    				<tr>
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 8%">
+			    					Prop.
+			    				</th>
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 1%">&nbsp;</th>
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 3%">
+			    					Tipo 
+			    				</th>
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: " >
+			    					PVP  
+			    				</th>
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+									C. Total.   
+								</th>
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+									C. Apto.   
+								</th>
+								<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+									C. Park   
+								</th>
+								<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+									C. Lujo   
+								</th>
+								<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+									C. Agen   
+								</th>
+								<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+									C. Limp.   
+								</th>
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+			    					Benef
+			    				</th>
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+			    					% Ben 
+			    				</th>
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+			    					Pagado  
+			    				</th>
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+			    					Pendiente   
+			    				</th>
+		    				</tr>
+				        </thead>
+					        <tbody>
+					        	<?php foreach ($rooms as $room): ?>
+					        		<?php $pendiente = $data[$room->id]['totales']['totalCost'] - $data[$room->id]['pagos'] ?>
+					        		<tr>
+					        			<td class="text-left"  style="padding: 10px 5px ;">
+					        				<a class="update-payments" data-debt="<?php echo $pendiente ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments" title="Añadir pago" style="cursor: pointer">
+					        					<?php echo ucfirst($room->user->name) ?> (<?php echo $room->nameRoom ?>)
+					        				</a>
+					        			</td>
+					        			<td class="text-center"  style="padding: 10px 5px ;">
+					        				<button class="btn btn-default btn-sm bookByRoom" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#bookByRoom" style="cursor: pointer" title="Reservas de <?php echo $room->nameRoom?>">
+					        					<i class="fa fa-address-book" aria-hidden="true"></i>
+					        				</button>
+					        			</td>
+					        			<td class="text-center"  style="padding: 10px 5px ;">
+					        				<?php echo $room->typeAptos->name ?>		
+					        			</td>
+					        			<td class="text-center"  style="padding: 10px 5px ;">
+					        				<?php if (isset($data[$room->id]['totales']['totalPVP'])): ?>
+					        					<?php echo number_format($data[$room->id]['totales']['totalPVP'],2,',','.'); ?>€
+					        				<?php else: ?>
+					        					-----
+					        				<?php endif ?>
+					        			</td>
+					        			
+					        			<td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
+
+					        				<?php if (isset($data[$room->id]['totales']['totalCost'])): ?>
+					        					<?php echo number_format($data[$room->id]['totales']['totalCost'],2,',','.'); ?>€
+					        				<?php else: ?>
+					        					-----
+					        				<?php endif ?>
+					        			</td>
+
+					        			<td class="text-center"  style="padding: 10px 5px ;">
+					        				<?php if (isset($data[$room->id]['totales']['totalApto'])): ?>
+					        					<?php echo number_format($data[$room->id]['totales']['totalApto'],2,',','.'); ?>€
+					        				<?php else: ?>
+					        					-----
+					        				<?php endif ?>
+					        			</td>
+
+					        			<td class="text-center"  style="padding: 10px 5px ;">
+					        				<?php if (isset($data[$room->id]['totales']['totalParking'])): ?>
+					        					<?php echo number_format($data[$room->id]['totales']['totalParking'],2,',','.'); ?>€
+					        				<?php else: ?>
+					        					-----
+					        				<?php endif ?>
+					        			</td>
+
+					        			<td class="text-center"  style="padding: 10px 5px ;">
+					        				<?php if (isset($data[$room->id]['totales']['totalLujo'])): ?>
+					        					<?php echo number_format($data[$room->id]['totales']['totalLujo'],2,',','.'); ?>€
+					        				<?php else: ?>
+					        					-----
+					        				<?php endif ?>
+					        			</td>
+
+					        			<td class="text-center"  style="padding: 10px 5px ;">
+					        				<?php if (isset($data[$room->id]['totales']['totalAgencia'])): ?>
+					        					<?php echo number_format($data[$room->id]['totales']['totalAgencia'],2,',','.'); ?>€
+					        				<?php else: ?>
+					        					-----
+					        				<?php endif ?>
+					        			</td>
+
+					        			<td class="text-center"  style="padding: 10px 5px ;">
+					        				<?php if (isset($data[$room->id]['totales']['totalLujo'])): ?>
+					        					<?php echo number_format($data[$room->id]['totales']['totalLujo'],2,',','.'); ?>€
+					        				<?php else: ?>
+					        					-----
+					        				<?php endif ?>
+					        			</td>
+
+					        			<td class="text-center   "   style="padding: 10px 5px ;">
+					        				<?php 
+					        					$benefRoom = $data[$room->id]['totales']['totalPVP'] - $data[$room->id]['totales']['totalCost'] 
+					        				?>
+					        				<?php if ($benefRoom > 0): ?>
+					        					<span class="text-success font-w800"><?php echo number_format($benefRoom,2,',','.') ?>€</span>
+					        				<?php elseif($benefRoom == 0): ?>
+					        					-----
+					        				<?php elseif($benefRoom < 0): ?>
+					        					<span class="text-danger font-w800"><?php echo number_format($benefRoom,2,',','.') ?>€</span>
+					        				<?php endif ?>
+					        			</td>
+
+					        			<td class="text-center"  style="padding: 10px 5px ;">
+					        				<?php 
+					        				$divisor = ($data[$room->id]['totales']['totalPVP'] == 0)?1:$data[$room->id]['totales']['totalPVP'];
+					        					$benefPercentageRoom = ( $benefRoom / $divisor  ) *100;
+					        				?>
+					        				<?php if ($benefPercentageRoom > 0): ?>
+					        					<span class="text-success font-w800"><?php echo number_format($benefPercentageRoom,2,',','.') ?>%</span>
+					        				<?php elseif($benefPercentageRoom == 0): ?>
+					        					-----
+					        				<?php elseif($benefPercentageRoom < 0): ?>
+					        					<span class="text-danger font-w800"><?php echo number_format($benefPercentageRoom,2,',','.') ?>%</span>
+					        				<?php endif ?>
+					        			</td>
+
+					        			<td class="text-center"  style="padding: 10px 5px ;">
+					        				<?php if ( $data[$room->id]['pagos'] != 0): ?>
+					        					<?php echo number_format($data[$room->id]['pagos'],2,',','.')?>€
+					        				<?php else: ?>
+					        					-----
+					        				<?php endif ?>
+					        			</td>
+
+					        			<td class="text-center pendiente bordes"  style="padding: 10px 5px ;">
+					        				
+					        				<?php if ($pendiente <= 0): ?>
+					        					<span class="text-success font-w800"><?php echo number_format($pendiente,2,',','.') ?>€</span>
+					        				<?php else: ?>
+					        					<span class="text-danger font-w800"><?php echo number_format($pendiente,2,',','.') ?>€</span>
+					        				<?php endif ?>
+					        			</td>
+					            </tr>
+
+					        <?php endforeach ?>
+					    </tbody>
+
+					</table>
+	    		</div>
+	    	</div>
+	    	<div class="col-md-5 col-xs-12">
+	    	
+	    	</div>
+	    </div>
+    <?php else: ?>
+	    <div class="row">
+	    	
+	    	<div class="table-responsive" style="border: none!important">
+    			<table class="table table-hover push-20" >
     				<thead>
     					<tr>
     						<th class ="text-center bg-complete text-white">
     							PVP    
+    						</th>
+    						<th class ="text-center bg-complete text-white">
+    							C. Total.   
     						</th>
     						<th class ="text-center bg-complete text-white">
     							C. Apto.   
@@ -115,6 +389,9 @@
     						<td class="text-center costeApto bordes">
     							<b><?php  echo number_format($summary['totalCost'],2,',','.') ?>€</b>
     						</td>
+    						<td class="text-center">
+    							<b><?php  echo number_format($summary['totalApto'],2,',','.') ?>€</b>
+    						</td>
     						<td class="text-center" style="padding: 8px;">
     							<?php  echo number_format($summary['totalParking'],2,',','.') ?>€
     						</td>
@@ -152,46 +429,49 @@
     			</table>
     		</div>
 
-    		<div class="col-md-12 col-xs-12 pull-right not-padding">
-	    		<table class="table tableRooms">
+    		<div class="table-responsive push-20" style="border: none!important">
+	    		<table class="table tableRooms push-20">
 
 	    			<thead>
 	    				<tr>
-		    				<th class ="text-center bg-complete text-white">
+		    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 8%">
 		    					Prop.
 		    				</th>
-		    				<th class ="text-center bg-complete text-white">&nbsp;</th>
-		    				<th class ="text-center bg-complete text-white">
+		    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 1%">&nbsp;</th>
+		    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 3%">
 		    					Tipo 
 		    				</th>
-		    				<th class ="text-center bg-complete text-white" >
+		    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: " >
 		    					PVP  
 		    				</th>
-		    				<th class ="text-center bg-complete text-white">
+		    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+								C. Total.   
+							</th>
+		    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
 								C. Apto.   
 							</th>
-							<th class ="text-center bg-complete text-white">
+							<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
 								C. Park   
 							</th>
-							<th class ="text-center bg-complete text-white">
+							<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
 								C. Lujo   
 							</th>
-							<th class ="text-center bg-complete text-white">
+							<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
 								C. Agen   
 							</th>
-							<th class ="text-center bg-complete text-white">
+							<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
 								C. Limp.   
 							</th>
-		    				<th class ="text-center bg-complete text-white">
+		    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
 		    					Benef
 		    				</th>
-		    				<th class ="text-center bg-complete text-white">
+		    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
 		    					% Ben 
 		    				</th>
-		    				<th class ="text-center bg-complete text-white">
+		    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
 		    					Pagado  
 		    				</th>
-		    				<th class ="text-center bg-complete text-white">
+		    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
 		    					Pendiente   
 		    				</th>
 	    				</tr>
@@ -200,62 +480,77 @@
 				        	<?php foreach ($rooms as $room): ?>
 				        		<?php $pendiente = $data[$room->id]['totales']['totalCost'] - $data[$room->id]['pagos'] ?>
 				        		<tr>
-				        			<td class="text-left">
+				        			<td class="text-left"  style="padding: 10px 5px ;">
 				        				<a class="update-payments" data-debt="<?php echo $pendiente ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments" title="Añadir pago" style="cursor: pointer">
 				        					<?php echo ucfirst($room->user->name) ?> (<?php echo $room->nameRoom ?>)
 				        				</a>
 				        			</td>
-				        			<td class="text-center">
+				        			<td class="text-center"  style="padding: 10px 5px ;">
 				        				<button class="btn btn-default btn-sm bookByRoom" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#bookByRoom" style="cursor: pointer" title="Reservas de <?php echo $room->nameRoom?>">
 				        					<i class="fa fa-address-book" aria-hidden="true"></i>
 				        				</button>
 				        			</td>
-				        			<td class="text-center">
+				        			<td class="text-center"  style="padding: 10px 5px ;">
 				        				<?php echo $room->typeAptos->name ?>		
 				        			</td>
-				        			<td class="text-center">
+				        			<td class="text-center"  style="padding: 10px 5px ;">
 				        				<?php if (isset($data[$room->id]['totales']['totalPVP'])): ?>
 				        					<?php echo number_format($data[$room->id]['totales']['totalPVP'],2,',','.'); ?>€
 				        				<?php else: ?>
 				        					-----
 				        				<?php endif ?>
 				        			</td>
-				        			<td class="text-center  costeApto bordes">
+				        			
+				        			<td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
+
 				        				<?php if (isset($data[$room->id]['totales']['totalCost'])): ?>
 				        					<?php echo number_format($data[$room->id]['totales']['totalCost'],2,',','.'); ?>€
 				        				<?php else: ?>
 				        					-----
 				        				<?php endif ?>
 				        			</td>
-				        			<td class="text-center">
+
+				        			<td class="text-center"  style="padding: 10px 5px ;">
+				        				<?php if (isset($data[$room->id]['totales']['totalApto'])): ?>
+				        					<?php echo number_format($data[$room->id]['totales']['totalApto'],2,',','.'); ?>€
+				        				<?php else: ?>
+				        					-----
+				        				<?php endif ?>
+				        			</td>
+
+				        			<td class="text-center"  style="padding: 10px 5px ;">
 				        				<?php if (isset($data[$room->id]['totales']['totalParking'])): ?>
 				        					<?php echo number_format($data[$room->id]['totales']['totalParking'],2,',','.'); ?>€
 				        				<?php else: ?>
 				        					-----
 				        				<?php endif ?>
 				        			</td>
-				        			<td class="text-center">
+
+				        			<td class="text-center"  style="padding: 10px 5px ;">
 				        				<?php if (isset($data[$room->id]['totales']['totalLujo'])): ?>
 				        					<?php echo number_format($data[$room->id]['totales']['totalLujo'],2,',','.'); ?>€
 				        				<?php else: ?>
 				        					-----
 				        				<?php endif ?>
 				        			</td>
-				        			<td class="text-center">
+
+				        			<td class="text-center"  style="padding: 10px 5px ;">
 				        				<?php if (isset($data[$room->id]['totales']['totalAgencia'])): ?>
 				        					<?php echo number_format($data[$room->id]['totales']['totalAgencia'],2,',','.'); ?>€
 				        				<?php else: ?>
 				        					-----
 				        				<?php endif ?>
 				        			</td>
-				        			<td class="text-center">
+
+				        			<td class="text-center"  style="padding: 10px 5px ;">
 				        				<?php if (isset($data[$room->id]['totales']['totalLujo'])): ?>
 				        					<?php echo number_format($data[$room->id]['totales']['totalLujo'],2,',','.'); ?>€
 				        				<?php else: ?>
 				        					-----
 				        				<?php endif ?>
 				        			</td>
-				        			<td class="text-center   " >
+
+				        			<td class="text-center   "   style="padding: 10px 5px ;">
 				        				<?php 
 				        					$benefRoom = $data[$room->id]['totales']['totalPVP'] - $data[$room->id]['totales']['totalCost'] 
 				        				?>
@@ -267,7 +562,8 @@
 				        					<span class="text-danger font-w800"><?php echo number_format($benefRoom,2,',','.') ?>€</span>
 				        				<?php endif ?>
 				        			</td>
-				        			<td class="text-center">
+
+				        			<td class="text-center"  style="padding: 10px 5px ;">
 				        				<?php 
 				        				$divisor = ($data[$room->id]['totales']['totalPVP'] == 0)?1:$data[$room->id]['totales']['totalPVP'];
 				        					$benefPercentageRoom = ( $benefRoom / $divisor  ) *100;
@@ -280,14 +576,16 @@
 				        					<span class="text-danger font-w800"><?php echo number_format($benefPercentageRoom,2,',','.') ?>%</span>
 				        				<?php endif ?>
 				        			</td>
-				        			<td class="text-center">
+
+				        			<td class="text-center"  style="padding: 10px 5px ;">
 				        				<?php if ( $data[$room->id]['pagos'] != 0): ?>
 				        					<?php echo number_format($data[$room->id]['pagos'],2,',','.')?>€
 				        				<?php else: ?>
 				        					-----
 				        				<?php endif ?>
 				        			</td>
-				        			<td class="text-center pendiente bordes">
+
+				        			<td class="text-center pendiente bordes"  style="padding: 10px 5px ;">
 				        				
 				        				<?php if ($pendiente <= 0): ?>
 				        					<span class="text-success font-w800"><?php echo number_format($pendiente,2,',','.') ?>€</span>
@@ -302,11 +600,11 @@
 
 				</table>
     		</div>
-    	</div>
-    	<div class="col-md-5 col-xs-12">
-    	
-    	</div>
-    </div>
+	    	<div class="col-xs-12">
+	    	
+	    	</div>
+	    </div>
+    <?php endif ?>
 </div>
 
 
