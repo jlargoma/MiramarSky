@@ -36,10 +36,10 @@
 					    <?php foreach ($rooms as $room): ?>
 					        <?php if ($room->id == $especial->room_id): ?>
 					            <option selected value="<?php echo $especial->room_id ?>" data-id="<?php echo $room->name ?>">
-					                <?php echo substr($room->name,0,5) ?>
+					               <?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?>
 					            </option>
 					        <?php else:?>
-					            <option value="<?php echo $room->id ?>"><?php echo substr($room->name,0,5) ?></option>
+					            <option value="<?php echo $room->id ?>"><?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?></option>
 					        <?php endif ?>
 					    <?php endforeach ?>
 

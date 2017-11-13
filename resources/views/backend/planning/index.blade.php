@@ -356,7 +356,7 @@
             <div class="row" style="margin-top: 15px;">
                     
                 <div class="col-md-12">
-                     @include('backend.planning._lastBookPayment')
+                    @include('backend.planning._lastBookPayment')
                 </div>
 				
             	<?php if ($isNotify): ?>
@@ -397,6 +397,9 @@
                 </div>
                 <div class="tab-content ">
                     <div class="tab-pane active" id="reservas">
+                        <div class="col-xs-12 push-10" style="margin-top: 10px;">
+                            <input id="nameCustomer" type="text" name="searchName" class="searchabled form-control" placeholder="nombre del cliente" />
+                        </div>
                         <div class="row">
                             <div class="col-xs-3" style="position: fixed; bottom: 20px; right: 10px; z-index: 100">
                                 <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalNewBook" style="min-width: 10px!important;width: 80px!important; padding: 25px; border-radius: 100%;">
@@ -405,42 +408,48 @@
                             </div>
                         </div>
                         <div class="row column-seperation ">
-                            <div class="panel resv" style="margin-bottom: 0;">
-                                <ul class="nav nav-tabs nav-tabs-simple bg-info-light rev" role="tablist" data-init-reponsive-tabs="collapse">
-                                    <li class="active res text-center"  style="width: 33.33%;">
-                                        <a href="#tabPendientes" data-toggle="tab" role="tab" class="pendientes">Pend... 
-                                            <span class="badge font-w800 "><?php echo count($arrayBooks["nuevas"]) ?></span>
-                                        </a>
-                                    </li>
-                                    <li class="bloq text-center" style="width: 33.33%;">
-                                        <a href="#tabEspeciales" data-toggle="tab" role="tab" class="especiales">Esp...
-                                            <span class="badge font-w800 "><?php echo count($arrayBooks["especiales"]) ?></span>
-                                        </a>
-                                    </li>
-                                    <li class="pag text-center" style="width: 33.33%;">
-                                        <a href="#tabPagadas" data-toggle="tab" role="tab" class="confirmadas">Confir... 
-                                            <span class="badge font-w800 "><?php echo count($arrayBooks["pagadas"]) ?></span>
-                                        </a>
-                                    </li>
-                                </ul>
+                            
+                            
+                            <div id="resultSearchBook" style="display: none;"></div>
+                            <div class="contentAllsBooks">
+                                <div class="panel resv" style="margin-bottom: 0;">
+                                    <ul class="nav nav-tabs nav-tabs-simple bg-info-light rev" role="tablist" data-init-reponsive-tabs="collapse">
+                                        <li class="active res text-center"  style="width: 33.33%;">
+                                            <a href="#tabPendientes" data-toggle="tab" role="tab" class="pendientes">Pend... 
+                                                <span class="badge font-w800 "><?php echo count($arrayBooks["nuevas"]) ?></span>
+                                            </a>
+                                        </li>
+                                        <li class="bloq text-center" style="width: 33.33%;">
+                                            <a href="#tabEspeciales" data-toggle="tab" role="tab" class="especiales">Esp...
+                                                <span class="badge font-w800 "><?php echo count($arrayBooks["especiales"]) ?></span>
+                                            </a>
+                                        </li>
+                                        <li class="pag text-center" style="width: 33.33%;">
+                                            <a href="#tabPagadas" data-toggle="tab" role="tab" class="confirmadas">Confir... 
+                                                <span class="badge font-w800 "><?php echo count($arrayBooks["pagadas"]) ?></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-content ">
+                                    <div class="tab-pane active table-responsive" id="tabPendientes">
+                                        <div class="container column-seperation ">
+                                            @include('backend.planning.listados._pendientes-mobile')
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane table-responsive" id="tabEspeciales">
+                                        <div class="container column-seperation ">
+                                                @include('backend.planning.listados._especiales-mobile')
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane table-responsive " id="tabPagadas">
+                                        <div class="container column-seperation ">.
+                                            @include('backend.planning.listados._pagadas')                                 
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="tab-content ">
-                                <div class="tab-pane active table-responsive" id="tabPendientes">
-                                    <div class="container column-seperation ">
-                                        @include('backend.planning.listados._pendientes-mobile')
-                                    </div>
-                                </div>
-                                <div class="tab-pane table-responsive" id="tabEspeciales">
-                                    <div class="container column-seperation ">
-                                            @include('backend.planning.listados._especiales-mobile')
-                                    </div>
-                                </div>
-                                <div class="tab-pane table-responsive " id="tabPagadas">
-                                    <div class="container column-seperation ">.
-                                        @include('backend.planning.listados._pagadas')                                 
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
 
@@ -859,6 +868,7 @@
                 });
             });
 
+           
 
 
             $('.searchabled').keyup(function(event) {

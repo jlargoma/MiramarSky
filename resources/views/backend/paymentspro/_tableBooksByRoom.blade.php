@@ -1,7 +1,6 @@
 <?php   use \Carbon\Carbon;  
         setlocale(LC_TIME, "ES"); 
         setlocale(LC_TIME, "es_ES"); 
-        $mobile = new \App\Classes\Mobile();
 ?>
 <?php if (!$mobile->isMobile()): ?>
 	<table class="table  table-condensed table-striped" style="margin-top: 0;">

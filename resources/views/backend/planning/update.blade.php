@@ -212,7 +212,7 @@
                                 <select class="form-control full-width minimal newroom" name="newroom" id="newroom" <?php if ( isset($_GET['saveStatus']) && !empty($_GET['saveStatus']) ): echo "style='border: 1px solid red'"; endif ?>>
                                     <?php foreach ($rooms as $room): ?>
                                         <option data-luxury="<?php echo $room->luxury ?>" value="<?php echo $room->id ?>" {{ $room->id == $book->room_id ? 'selected' : '' }} >
-                                                <?php echo $room->name ?>
+                                            <?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?>
                                         </option>
                                     <?php endforeach ?>
                                 </select>
@@ -560,7 +560,7 @@
                             <select class="form-control full-width minimal newroom" name="newroom" id="newroom" <?php if ( isset($_GET['saveStatus']) && !empty($_GET['saveStatus']) ): echo "style='border: 1px solid red'"; endif ?>>
                                 <?php foreach ($rooms as $room): ?>
                                     <option data-luxury="<?php echo $room->luxury ?>" value="<?php echo $room->id ?>" {{ $room->id == $book->room_id ? 'selected' : '' }} >
-                                            <?php echo $room->name ?>
+                                        <?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?>
                                     </option>
                                 <?php endforeach ?>
                             </select>

@@ -6,6 +6,7 @@
             <thead>
                 <tr>  
                     <th style="display: none">ID</th> 
+                    <th class ="text-center Reservado-table text-white" style="width: 4%!important">&nbsp;</th> 
                     <th class ="text-center Reservado-table text-white" >   Cliente     </th>
                     <th class ="text-center Reservado-table text-white" >   Telefono     </th>
                     <th class ="text-center Reservado-table text-white" style="width: 7%!important">   Pax         </th>
@@ -27,6 +28,11 @@
                         
                         <tr class="<?php echo $class ;?>"> 
                             <td style="display: none"><?php echo $book->id ?></td>
+                            <td class="text-center">
+                                <?php if ($book->agency != 0): ?>
+                                    <img style="width: 20px;margin: 0 auto;" src="/pages/booking.png" align="center" />
+                                <?php endif ?>
+                            </td>
                             <td class ="text-center"  style="padding: 10px 15px!important">
                                 <?php if (isset($payment[$book->id])): ?>
                                     <a class="update-book" data-id="<?php echo $book->id ?>" title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>
@@ -57,10 +63,10 @@
                                     <?php foreach ($rooms as $room): ?>
                                         <?php if ($room->id == $book->room_id): ?>
                                             <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                                <?php echo substr($room->name,0,5) ?>
+                                               <?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?>
                                             </option>
                                         <?php else:?>
-                                            <option value="<?php echo $room->id ?>"><?php echo substr($room->name,0,5) ?></option>
+                                            <option value="<?php echo $room->id ?>"><?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?></option>
                                         <?php endif ?>
                                     <?php endforeach ?>
 

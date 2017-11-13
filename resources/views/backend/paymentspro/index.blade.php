@@ -160,6 +160,7 @@
 		    				<th class ="text-center bg-complete text-white">
 		    					Prop.
 		    				</th>
+		    				<th class ="text-center bg-complete text-white">&nbsp;</th>
 		    				<th class ="text-center bg-complete text-white">
 		    					Tipo 
 		    				</th>
@@ -203,6 +204,11 @@
 				        				<a class="update-payments" data-debt="<?php echo $pendiente ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments" title="Añadir pago" style="cursor: pointer">
 				        					<?php echo ucfirst($room->user->name) ?> (<?php echo $room->nameRoom ?>)
 				        				</a>
+				        			</td>
+				        			<td class="text-center">
+				        				<button class="btn btn-default btn-sm bookByRoom" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#bookByRoom" style="cursor: pointer" title="Reservas de <?php echo $room->nameRoom?>">
+				        					<i class="fa fa-address-book" aria-hidden="true"></i>
+				        				</button>
 				        			</td>
 				        			<td class="text-center">
 				        				<?php echo $room->typeAptos->name ?>		
@@ -324,6 +330,24 @@
 </div>
 
 
+<div class="modal fade slide-up disable-scroll in" id="bookByRoom" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg" style="width: 70%;">
+		<div class="modal-content-wrapper">
+			<div class="modal-content">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close fa-2x"></i></button>
+				<div class="container-xs-height full-height">
+					<div class="row-xs-height">
+						<div class="modal-body contentBookRoom">
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
 @endsection
 
 @section('scripts')
@@ -419,5 +443,15 @@
 
 			chart.render();
 		}
+
+
+		$('button.bookByRoom').click(function(event) {
+			event.preventDefault();
+			var idRoom = $(this).attr('data-id');
+			$.get('/admin/paymentspro/getBooksByRoom/'+idRoom,{ idRoom: idRoom}, function(data) {
+				$('.contentBookRoom').empty().append(data);
+			});
+			
+		});
 	</script>
 @endsection

@@ -14292,6 +14292,9 @@ Main components
   background-color: rgba(246,244,179, 0.3) !important;
     color: black;
 }
+.room.form-control.minimal option{
+  font-size:14px;
+}
 @media screen and (max-width: 767px){
   .push-mobile-20{
     margin-bottom: 20px

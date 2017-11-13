@@ -120,7 +120,7 @@
                         <option ></option>
                         <?php foreach ($rooms as $room): ?>
                             <option value="<?php echo $room->id ?>" data-luxury="<?php echo $room->luxury ?>" data-size="<?php echo $room->sizeApto ?>">
-                                <?php echo $room->name ?>
+                                <?php echo substr($room->nameRoom." - ".$room->name, 0,12)  ?>
                             </option>
                         <?php endforeach ?>
                     </select>

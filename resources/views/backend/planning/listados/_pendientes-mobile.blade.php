@@ -5,6 +5,7 @@ setlocale(LC_TIME, "es_ES");
 
 <table class="table  table-responsive table-striped" style="margin-top: 0;">
 	<thead>
+		<th class ="text-center Reservado-table text-white" style="width: 4%!important">&nbsp;</th> 
 		<th class="Reservado-table text-white text-center">Nombre</th>
 		<th class="Reservado-table text-white text-center" style="min-width:50px">In</th>
 		<th class="Reservado-table text-white text-center" style="min-width:50px ">Out</th>
@@ -24,6 +25,11 @@ setlocale(LC_TIME, "es_ES");
 			<?php endif ?>
 			
 			<tr class="<?php echo $class ;?>"> 
+				<td class="text-center">
+                    <?php if ($nueva->agency != 0): ?>
+                        <img style="width: 20px;margin: 0 auto;" src="/pages/booking.png" align="center" />
+                    <?php endif ?>
+                </td>
 				<td class="text-center sm-p-t-10 sm-p-b-10">
 					<a title="<?php echo $nueva->customer->name ?> - <?php echo $nueva->customer->email ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $nueva->id ?>"><?php echo $nueva->customer->name ?></a>
 				</td>
@@ -44,10 +50,10 @@ setlocale(LC_TIME, "es_ES");
 						<?php foreach ($rooms as $room): ?>
 							<?php if ($room->id == $nueva->room_id): ?>
 								<option selected value="<?php echo $nueva->room_id ?>" data-id="<?php echo $room->name ?>">
-									<?php echo substr($room->name,0,5) ?>
+									<?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?>
 								</option>
 							<?php else:?>
-								<option value="<?php echo $room->id ?>"><?php echo substr($room->name,0,5) ?></option>
+								<option value="<?php echo $room->id ?>"><?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?></option>
 							<?php endif ?>
 						<?php endforeach ?>
 

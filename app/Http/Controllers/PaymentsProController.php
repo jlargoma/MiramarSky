@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use \Carbon\Carbon;
+use App\Classes\Mobile;
 
 class PaymentsProController extends Controller
 {
@@ -259,5 +260,31 @@ class PaymentsProController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getBooksByRoom($idRoom , Request $request)
+    {
+        $now = Carbon::now();
+
+        if ( $request->year ) {
+            if ($now->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$now->copy()->format('Y'));
+            }else{
+                $date = new Carbon('first day of September '.$now->copy()->subYear()->format('Y'));
+            }
+            
+        }else{
+            $date = new Carbon('first day of September '.$request->year);
+        }
+
+        $books = \App\Book::where('start' , '>=' , $date->format('Y-m-d'))
+                            ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
+                            ->whereIn('type_book',[2, 7, 8])
+                            ->where('room_id',$idRoom)
+                            ->orderBy('start', 'ASC')
+                            ->get();
+
+
+        return view('backend/paymentspro/_tableBooksByRoom', ['books' => $books, 'mobile' => new Mobile()]);
     }
 }

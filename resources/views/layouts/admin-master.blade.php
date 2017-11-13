@@ -30,8 +30,7 @@
 		<link href="{{ asset('/assets/plugins/jquery-metrojs/MetroJs.css') }}" rel="stylesheet" type="text/css" media="screen" />
 		<link href="{{ asset('/pages/css/pages-icons.css') }}" rel="stylesheet" type="text/css">
 		<link class="main-stylesheet" href="{{ asset('/pages/css/pages.css') }}" rel="stylesheet" type="text/css" />
-	
-		
+		<script src="//code.jquery.com/jquery.js"></script>
 
 		@yield('externalScripts')
 	    <!--[if lte IE 9]>
@@ -160,7 +159,7 @@
 			
 		<!-- BEGIN VENDOR JS -->
 		<script src="{{ asset('assets/plugins/pace/pace.min.js') }}" type="text/javascript"></script>
-		<script src="{{ asset('assets/plugins/jquery/jquery-1.11.1.min.js') }}" type="text/javascript"></script>
+		
 		<script src="{{ asset('assets/plugins/modernizr.custom.js') }}" type="text/javascript"></script>
 		<script src="{{ asset('assets/plugins/jquery-ui/jquery-ui.min.js') }}" type="text/javascript"></script>
 		<script src="{{ asset('assets/plugins/bootstrapv3/js/bootstrap.min.js') }}" type="text/javascript"></script>

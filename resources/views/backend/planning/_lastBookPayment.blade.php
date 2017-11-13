@@ -26,7 +26,7 @@
                             
                         </td>
                         <td class="text-center" style="color: black;">   
-                            <?php echo substr($book->room->name,0,5) ?>       
+                            <?php echo $book->room->nameRoom ?> - <?php echo substr($book->room->name,0,5) ?>  
                         </th>
                         <td class="text-center" style="color: black;">   
                             <b>
@@ -45,12 +45,17 @@
                         <td class="text-center" style="width: 17%!important; color: black;padding: 5px!important;">
                             
                             <?php if (isset($payment[$book->id])): ?>
-                                <?php echo  $payment[$book->id]." €" ?>
+                                <b><?php echo $book->total_price ?>€</b>
                             <?php else: ?>
                                 -----
                             <?php endif ?>
                         </td>
                          <td class="text-center" style="color: black;">  
+                            <?php if (isset($payment[$book->id])): ?>
+                                <?php echo  $payment[$book->id]." €" ?>
+                            <?php else: ?>
+                                -----&nbsp;&nbsp;
+                            <?php endif ?> 
                             <?php $paymentBook = \App\Payments::where('book_id', $book->id)->get(); ?>
                             <?php 
                                 $fromStripe = false;

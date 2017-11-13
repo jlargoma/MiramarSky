@@ -7,6 +7,7 @@
                 <thead>
                     <tr>   
                         <th style="display: none">ID</th> 
+                        <th class ="text-center Pagada-la-señal text-white" style="width: 4%!important">&nbsp;</th> 
                         <th class ="text-center Pagada-la-señal text-white" style="width: 11%!important">   Cliente     </th>
                         <th class ="text-center Pagada-la-señal text-white" style="width: 10%!important">   Telefono     </th>
                         <th class ="text-center Pagada-la-señal text-white" style="width: 7%!important">   Pax         </th>
@@ -21,6 +22,11 @@
                 <tbody>
                     <?php foreach ($arrayBooks["pagadas"] as $book): ?>
                         <tr>
+                            <td class="text-center">
+                                <?php if ($book->agency != 0): ?>
+                                    <img style="width: 20px;margin: 0 auto;" src="/pages/booking.png" align="center" />
+                                <?php endif ?>
+                            </td>
                             <td class ="text-center" style="padding: 10px 15px!important">
                                 <?php if (isset($payment[$book->id])): ?>
                                     <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>
@@ -43,10 +49,10 @@
                                     <?php foreach ($rooms as $room): ?>
                                         <?php if ($room->id == $book->room_id): ?>
                                             <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                                <?php echo substr($room->name,0,5) ?>
+                                                <?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?>
                                             </option>
                                         <?php else:?>
-                                            <option value="<?php echo $room->id ?>"><?php echo substr($room->name,0,5) ?></option>
+                                            <option value="<?php echo $room->id ?>"><?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?></option>
                                         <?php endif ?>
                                     <?php endforeach ?>
                                 </select>
@@ -118,6 +124,7 @@
 <?php else: ?>
     <table class="table  table-responsive table-striped" style="margin-top: 0;">
         <thead>
+            <th class ="text-center Pagada-la-señal text-white" style="width: 4%!important">&nbsp;</th>
             <th class="Pagada-la-señal text-white text-center">Nombre</th>
             <th class="Pagada-la-señal text-white text-center" style="min-width:50px">In</th>
             <th class="Pagada-la-señal text-white text-center" style="min-width:50px ">Out</th>
@@ -131,6 +138,11 @@
         <tbody>
             <?php foreach ($arrayBooks["pagadas"] as $pagada): ?>
                 <tr class="<?php echo ucwords($book->getStatus($pagada->type_book)) ;?>">
+                    <td class="text-center">
+                        <?php if ($pagada->agency != 0): ?>
+                            <img style="width: 20px;margin: 0 auto;" src="/pages/booking.png" align="center" />
+                        <?php endif ?>
+                    </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10"><a href="{{url ('/admin/reservas/update')}}/<?php echo $pagada->id ?>"><?php echo $pagada->customer->name ?></a></td>
                     <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$pagada->start)->formatLocalized('%d %b') ?></td>
                     <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$pagada->finish)->formatLocalized('%d %b') ?></td>
@@ -151,10 +163,10 @@
                             <?php foreach ($rooms as $room): ?>
                                 <?php if ($room->id == $pagada->room_id): ?>
                                     <option selected value="<?php echo $pagada->room_id ?>" data-id="<?php echo $room->name ?>">
-                                        <?php echo substr($room->name,0,5) ?>
+                                        <?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?>
                                     </option>
                                 <?php else:?>
-                                    <option value="<?php echo $room->id ?>"><?php echo substr($room->name,0,5) ?></option>
+                                    <option value="<?php echo $room->id ?>"><?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?></option>
                                 <?php endif ?>
                             <?php endforeach ?>
 

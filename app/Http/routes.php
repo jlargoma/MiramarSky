@@ -165,7 +165,7 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 	Route::get('admin/pagos-propietarios/{month?}' ,['middleware' => 'authAdmin', 'uses' => 'PaymentsProController@index']);
 	Route::post('admin/pagos-propietarios/create', ['middleware' => 'authAdmin', 'uses' =>'PaymentsProController@create']);
 	Route::get('admin/pagos-propietarios/update/{id}/{month?}',['middleware' => 'authAdmin', 'uses' => 'PaymentsProController@update']);
-
+	Route::get('admin/paymentspro/getBooksByRoom/{idRoom}' , 'PaymentsProController@getBooksByRoom');
 
 //Liquidacion
 	Route::get('admin/liquidacion/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@index']);

@@ -110,7 +110,7 @@
                             <select class="form-control full-width newroom minimal" name="newroom" id="newroom">
                                 <?php foreach ($rooms as $room): ?>
                                     <option value="<?php echo $room->id ?>" data-luxury="<?php echo $room->luxury ?>" <?php echo $room->id == $request->newroom ? "selected" : ""; ?>> 
-                                        <?php echo $room->name ?>
+                                        <?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?>
                                     </option>
                                 <?php endforeach ?>
                             </select>
