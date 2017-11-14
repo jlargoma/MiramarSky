@@ -322,11 +322,11 @@
                                                             ->whereDay('created_at','=', date('d'))
                                                             ->get();
                     ?>
-                    <button id="lastBooks" class="btn btn-success" type="button">
+                    <button id="lastBooks" class="btn btn-success btn-sm" type="button">
                         <span class="bold">Últ. reservas</span>
                         <span class="numPaymentLastBooks"><?php echo  $stripedsPayments->count(); ?></span>
                     </button>
-                    <button id="lastBooksClose" class="btn btn-danger" type="button" style="display: none;">
+                    <button id="lastBooksClose" class="btn btn-danger btn-sm" type="button" style="display: none;">
                         <span class="bold">Últ. reservas</span>
                         <span class="numPaymentLastBooks"><?php echo  $stripedsPayments->count(); ?></span>
                     </button>
@@ -338,17 +338,17 @@
                 	<?php foreach ($notifications as $key => $notify): ?>
                 	    <?php if ($notify->book->type_book != 3 || $notify->book->type_book != 5 || $notify->book->type_book != 6){ $isNotify = true; $countNotify ++;} ?>
                 	<?php endforeach ?>
-                	<button id="btnNotifyBooking" class="btn btn-success" type="button">
+                	<button id="btnNotifyBooking" class="btn btn-success btn-sm" type="button">
                 	    <span class="bold">Alr. booking</span>
                 	    <span class="numPaymentLastBooks"><?php echo  $countNotify; ?></span>
                 	</button>
-                	<button id="btnHideNotifyBooking" class="btn btn-danger" type="button" style="display: none;">
+                	<button id="btnHideNotifyBooking" class="btn btn-danger btn-sm" type="button" style="display: none;">
                 	    <span class="bold">Alr. booking</span>
                 	    <span class="numPaymentLastBooks"><?php echo  $countNotify; ?></span>
                 	</button>
                 </div>
                 <div class="col-xs-4 push-10" >
-                    <button class="btn btn-success btn-calcuteBook " type="button" data-toggle="modal" data-target="#modalCalculateBook"> 
+                    <button class="btn btn-success btn-calcuteBook  btn-sm" type="button" data-toggle="modal" data-target="#modalCalculateBook"> 
                         <span class="bold">Cal. reserva</span>
                     </button>
                 </div>

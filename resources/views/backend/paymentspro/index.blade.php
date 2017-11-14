@@ -1,6 +1,6 @@
 <?php 
 	use \App\Classes\Mobile;
-	$mobile = new Mobile();
+	$mobile = new Mobile(); 
 ?>
 @extends('layouts.admin-master')
 
@@ -482,7 +482,7 @@
 				        		<tr>
 				        			<td class="text-left"  style="padding: 10px 5px ;">
 				        				<a class="update-payments" data-debt="<?php echo $pendiente ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments" title="Añadir pago" style="cursor: pointer">
-				        					<?php echo ucfirst($room->user->name) ?> (<?php echo $room->nameRoom ?>)
+				        					<?php echo ucfirst(substr($room->user->name, 0, 6)) ?> (<?php echo substr($room->nameRoom, 0, 6) ?>)
 				        				</a>
 				        			</td>
 				        			<td class="text-center"  style="padding: 10px 5px ;">
@@ -609,16 +609,11 @@
 
 
 <div class="modal fade slide-up disable-scroll in" id="payments" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog modal-lg" style="width: 70%;">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content-wrapper">
 			<div class="modal-content">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close fa-2x"></i></button>
-				<div class="container-xs-height full-height">
-					<div class="row-xs-height">
-						<div class="modal-body col-xs-height col-middle text-center">
+				<div class="modal-body text-center" style="overflow-y: auto; max-height: 764px; padding: 15px;">
 
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -629,7 +624,7 @@
 
 
 <div class="modal fade slide-up disable-scroll in" id="bookByRoom" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog modal-lg" style="width: 70%;">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content-wrapper">
 			<div class="modal-content">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close fa-2x"></i></button>
