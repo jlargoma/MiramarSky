@@ -284,8 +284,8 @@ class BookController extends Controller
                 $book->extraCost     = $extraCost;
                     //Porcentaje de beneficio
                 $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
-                $book->ben_jorge     = $book->getBenJorge($book->total_ben,$room->id);
-                $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
+                $book->ben_jorge = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
+                $book->ben_jaime = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
 
                 if($book->save()){
                     /* Notificacion via email */
@@ -383,8 +383,8 @@ class BookController extends Controller
                         $book->total_ben     = $book->total_price - $book->cost_total ;
 
                         $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
-                        $book->ben_jorge     = $book->getBenJorge($book->total_ben,$room->id);
-                        $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
+                        $book->ben_jorge = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
+                        $book->ben_jaime = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
                     }else{
 
                         $book->PVPAgencia  = ( $request->input('agencia') )?$request->input('agencia'):0;
@@ -407,8 +407,8 @@ class BookController extends Controller
                         $book->total_ben     = $book->total_price - $book->cost_total;
 
                         $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
-                        $book->ben_jorge     = $book->getBenJorge($book->total_ben,$room->id);
-                        $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
+                        $book->ben_jorge = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
+                        $book->ben_jaime = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
                     }
 
 
@@ -530,8 +530,8 @@ class BookController extends Controller
             $book->total_ben     = $book->total_price - $book->cost_total;
             $book->extra         = $request->input('extra');
             $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
-            $book->ben_jorge     = $book->getBenJorge($book->total_ben,$room->id);
-            $book->ben_jaime     = $book->getBenJaime($book->total_ben,$room->id);
+            $book->ben_jorge = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
+            $book->ben_jaime = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
 
 
             $book->schedule       = $request->input('schedule');
@@ -1248,17 +1248,25 @@ class BookController extends Controller
     {
         $books = \App\Book::all();
 
+
         foreach ($books as $book) {
-            if ($book->room->typeAptos->id == 1 || $book->room->typeAptos->id == 3) {
-                
 
-                $book->cost_total = $book->cost_total - $book->cost_apto;
-                $book->cost_apto = 0;
-                $book->total_ben = $book->total_price - $book->cost_total;
 
-                
-                $book->save();
-            }
+               if ($book->room->typeAptos->id == 1  || $book->room->typeAptos->id == 3) {            
+
+                   $book->cost_total = $book->cost_limp + $book->cost_park + $book->cost_lujo + $book->extraCost;
+                   $book->total_ben = $book->total_price - $book->cost_total;
+                   $book->cost_apto = 0;
+
+
+                  
+               }
+            $book->ben_jorge = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
+            $book->ben_jaime = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
+
+            $book->save();
         }
+            
+        
     } 
 }
