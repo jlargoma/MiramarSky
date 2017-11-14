@@ -63,7 +63,7 @@ class LiquidacionController extends Controller
             $totales["costePark"] += $book->cost_park;
             $totales["costeLujo"] += $book->cost_lujo;
             $totales["costeLimp"] += $book->sup_limp;
-            $totales["costeAgencia"] += $book->pvpAgency;
+            $totales["costeAgencia"] += $book->PVPAgencia;
             $totales["benJorge"] += $book->total_price;
             $totales["benJaime"] += $book->total_price;
             $totales["pendiente"] += $book->getPayment(4);
