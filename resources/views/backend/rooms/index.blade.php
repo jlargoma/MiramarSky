@@ -37,6 +37,11 @@
 	                <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Nuevo Apto.</span>
 	            </button>
 			</div>
+					<div class="col-md-1 col-xs-4 push-20">
+						<button class="btn btn-success btn-cons percent" type="button" data-toggle="modal" data-target="#modalPercentApto">
+			                <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">% Ben.</span>
+			            </button>
+					</div>
 			<div class="clearfix"></div>
 			<div class="row">
 				<div class="col-xs-12 content-table-rooms">
@@ -327,10 +332,74 @@
 		</div>
 		<!-- /.modal-dialog -->
 	</div>
+
+	<div class="modal fade slide-up in" id="modalPercentApto" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content-wrapper">						
+				<div class="modal-content">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100;">
+			            <i class="pg-close fs-20" ></i>
+			        </button>
+					<div class="percent-body">
+						
+					</div>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<div class="row">
+	    <div class="col-md-12 push-30">
+	        <div class="col-md-12">
+			    <div class="row">
+
+			        	<div class="col-xs-12 col-md-12 push-20">
+			        		<h3 class="text-center">
+			        			Reparto de Beneficios por tipo
+			        		</h3>
+			        	</div>
+			        	<div class="clear"></div>
+			        		
+			        	<div class="col-md-12 col-xs-12 push-20">
+			        		<table class="table table-condensed table-hover">
+								<thead>
+									<th class="text-center bg-complete text-white font-s12">Tipo</th>
+									<th class="text-center bg-complete text-white font-s12">% Jorge</th>
+									<th class="text-center bg-complete text-white font-s12">% Jaime</th>
+								</thead>
+								<tbody>
+									<?php foreach ($typesApto as $typeApto): ?>
+										<tr>
+											<td><?php echo $typeApto->name ?></td>
+											<td>
+												<input class="percentage percentJorge-<?php echo $typeApto->id?>" type="text" name="Jorge" data-id="<?php echo $typeApto->id ?>" value="<?php echo $typeApto->PercentJorge?>" style="width: 100%;text-align: center;border-style: none none ">
+											</td>
+											<td><input class="percentage percentJaime-<?php echo $typeApto->id?>" type="text" name="Jaime" data-id="<?php echo $typeApto->id ?>" value="<?php echo $typeApto->PercentJaime?>" style="width: 100%;text-align: center;border-style: none none "></td>
+										</tr>
+									<?php endforeach ?>
+								</tbody>
+			        		</table>
+			        	</div>
+			    </div>
+			</div>
+		</div>
+	</div>
+	
+	<form role="form">
+	    <div class="form-group form-group-default required" style="display: none">
+	        <label class="highlight">Message</label>
+	        <input type="text" hidden="" class="form-control notification-message" placeholder="Type your message here" value="This notification looks so perfect!" required>
+	    </div>
+	    <button class="btn btn-success show-notification hidden" id="boton">Show</button>
+	</form>
+	
+
 @endsection
 
 @section('scripts')
 
+	<script src="/assets/js/notifications.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 
@@ -473,6 +542,12 @@
 
 		});
 
+		$('.percent').click(function(event) {
+			$.get('/admin/apartamentos/percentApto', function(data) {
+				$('.percent-body').empty().append(data);
+			});
+		});
+
 	}
 
 
@@ -486,6 +561,25 @@
 			var id = $(this).attr('data-id');
 			$('.modal-content.emailing').empty().load('/admin/apartamentos/email/'+id);
 		});
+
+		$('.percentage').change(function(event) {
+
+			
+			var id = $(this).attr('data-id');
+			var tipo = $(this).attr('name');
+			var percent = $(this).val();
+
+			$.get('/admin/apartamentos/update-Percent', {  id: id, tipo: tipo, percent: percent}, function(data) {
+				$('.notification-message').val(data);
+				$("#boton").click();
+                setTimeout(function(){ 
+                    $('.alert-info .close').trigger('click');
+                     }, 1500); 
+
+			});
+
+		});
+
 	});
 </script>
 @endsection

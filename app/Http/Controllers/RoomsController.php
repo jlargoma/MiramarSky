@@ -16,7 +16,7 @@ class RoomsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {   
         return view('backend/rooms/index',[
                     'rooms'     => \App\Rooms::where('state',1)->orderBy('order','ASC')->get(),
                     'roomsdesc' => \App\Rooms::where('state',0)->orderBy('order','ASC')->get(),
@@ -24,6 +24,7 @@ class RoomsController extends Controller
                     'types'     => \App\TypeApto::all(),
                     'tipos'     => \App\TypeApto::all(),
                     'owners'    => \App\User::all(),
+                    'typesApto' => \App\TypeApto::all(),
                 ]);
     }
 
@@ -425,5 +426,31 @@ class RoomsController extends Controller
         
     }
 
+    public function percentApto(Request $request)
+    {
+        $typesApto = \App\TypeApto::all();
+
+        return view('backend/rooms/typesApto',['typesApto' => $typesApto]);
+    }
+
+    public function updatePercent(Request $request)
+    {
+        $typeApto = \App\TypeApto::find($request->input('id'));
+        $tipo     = $request->input('tipo');
+        $percent  = $request->input('percent');
+
+        if (preg_match('/jorge/i', $tipo)) {
+            $typeApto->PercentJorge = $percent;
+            if ($typeApto->save()) {
+                return "ok";
+            }
+        }else{
+            $typeApto->PercentJaime = $percent;
+            if ($typeApto->save()) {
+                return "ok";
+            }
+        }
+
+    }
 
 }

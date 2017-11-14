@@ -121,6 +121,8 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 	Route::post('admin/apartamentos/create-type', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@createType']);
 	Route::post('admin/apartamentos/create-size', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@createSize']);
 	Route::get('admin/apartamentos/state', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@state']);
+	Route::get('admin/apartamentos/percentApto', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@percentApto']);
+	Route::get('admin/apartamentos/update-Percent', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updatePercent']);
 	Route::get('admin/apartamentos/email/{id}' , ['middleware' => 'authAdmin', 'uses' => 'RoomsController@email']);
 	Route::get('admin/apartamentos/fotos/{id}' , ['middleware' => 'authAdmin', 'uses' => 'RoomsController@photo']);
 	Route::get('admin/apartamentos/deletePhoto/{id}' , ['middleware' => 'authAdmin', 'uses' => 'RoomsController@deletePhoto']);
@@ -129,13 +131,6 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 	Route::get('admin/apartamentos/getLuxuryPerRooms/{id}', ['middleware' => 'authSubAdmin', 'uses' => 'RoomsController@getLuxuryPerRooms']);
 	Route::post('admin/apartamentos/uploadFile/{id}', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@uploadFile']);
 	Route::get('admin/apartamentos/assingToBooking', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@assingToBooking']);
-
-
-
-	
-
-
-
 
 // Prices
 	Route::get('admin/precios' ,['middleware' => 'authAdmin', 'uses' =>'PricesController@index']);
