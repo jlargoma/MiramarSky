@@ -394,187 +394,39 @@
 
 @section('scripts')
 
-	<script src="/assets/js/notifications.js" type="text/javascript"></script>
+<script src="/assets/js/notifications.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 
 
-	function changeRooms(){
-
-		$('.uploadFile').click(function(event) {
-			var id = $(this).attr('data-id');
-			$.get('/admin/apartamentos/fotos/'+id, function(data) {
-				$('.upload-body').empty().append(data);
-			});
-		});
-
-		$('.editable').change(function(event) {
-			var id = $(this).attr('data-id');
-			var luxury = $(this).is(':checked');
-
-			if (luxury == true) {
-				luxury = 1;
-			}else{
-				luxury = 0;
-			}
-
-			var minOcu = $('.minOcu-'+id).val();
-			var maxOcu = $('.maxOcu-'+id).val();
-
-			$.get('/admin/apartamentos/update', {  id: id, luxury: luxury, maxOcu: maxOcu, minOcu: minOcu}, function(data) {
-				// $('.content-table-rooms').empty().load('/admin/apartamentos/rooms/getTableRooms');
-				alert('cambiado')
-			});
-		});
-
-		$('.estado').change(function(event) {
-			var id = $(this).attr('data-id');
-			var state = $(this).is(':checked');
-
-			if (state == true) {
-				state = 1;
-			}else{
-				state = 0;
-			}
-
-			$.get('/admin/apartamentos/state', {  id: id, state: state}, function(data) {
-				if (data == 0) {
-					alert('No se puede cambiar')
-					// $('.content-table-rooms').empty().load('/admin/apartamentos/rooms/getTableRooms');
-				}else{
-					alert('cambiado')
-					// $('.content-table-rooms').empty().load('/admin/apartamentos/rooms/getTableRooms');
-				}
-			});
-		});
-
-		$('.assingToBooking').change(function(event) {
-			var id = $(this).attr('data-id');
-			var assing = $(this).is(':checked');
-
-			if (assing == true) {
-				assing = 1;
-			}else{
-				assing = 0;
-			}
-
-			$.get('/admin/apartamentos/assingToBooking', {  id: id, assing: assing}, function(data) {
-
-				alert(data);
-				// $('.content-table-rooms').empty().load('/admin/apartamentos/rooms/getTableRooms');
-			});
-		});
-
-		$('.name').change(function(event) {
-			var id = $(this).attr('data-id');
-			var name = $(this).val();
-
-			$.get('/admin/apartamentos/update-name', {  id: id, name: name}, function(data) {
-				$('.content-table-rooms').empty().load('/admin/apartamentos/rooms/getTableRooms');
-			});
-		});
-
-		$('.nameRoom').change(function(event) {
-			var id = $(this).attr('data-id');
-			var nameRoom = $(this).val();
-
-			$.get('/admin/apartamentos/update-nameRoom', {  id: id, nameRoom: nameRoom}, function(data) {
-				$('.content-table-rooms').empty().load('/admin/apartamentos/rooms/getTableRooms');
-			});
-		});
-
-		$('.sizes').change(function(event) {
-			var id = $(this).attr('data-id');
-			var size = $(this).val();
-
-			$.get('/admin/apartamentos/update-size', {  id: id, size: size}, function(data) {
-				$('.content-table-rooms').empty().load('/admin/apartamentos/rooms/getTableRooms');
-			});
-		});
-
-		$('.owned').change(function(event) {
-			var id = $(this).attr('data-id');
-			var owned = $(this).val();
-			$.get('/admin/apartamentos/update-owned', {  id: id, owned: owned}, function(data) {
-				$('.content-table-rooms').empty().load('/admin/apartamentos/rooms/getTableRooms');
-			});
-		});
-
-		$('.type').change(function(event) {
-			var id = $(this).attr('data-id');
-			var tipo = $(this).val();
-
-			$.get('/admin/apartamentos/update-type', {  id: id, tipo: tipo}, function(data) {
-				$('.content-table-rooms').empty().load('/admin/apartamentos/rooms/getTableRooms');
-			});
-
-		});
-		$('.orden').change(function(event) {
-			var id = $(this).attr('data-id');
-			var orden = $(this).val();
-
-			$.get('/admin/apartamentos/update-order', {  id: id, orden: orden}, function(data) {
-				$('.content-table-rooms').empty().load('/admin/apartamentos/rooms/getTableRooms');
-			});
-
-		});
-		$('.parking').change(function(event) {
-			var id = $(this).attr('data-id');
-			var parking = $(this).val();
-
-			$.get('/admin/apartamentos/update-parking', {  id: id, parking: parking}, function(data) {
-				$('.content-table-rooms').empty().load('/admin/apartamentos/rooms/getTableRooms');
-			});
-
-		});
-		$('.taquilla').change(function(event) {
-			var id = $(this).attr('data-id');
-			var taquilla = $(this).val();
-
-			$.get('/admin/apartamentos/update-taquilla', {  id: id, taquilla: taquilla}, function(data) {
-				$('.content-table-rooms').empty().load('/admin/apartamentos/rooms/getTableRooms');
-			});
-
-		});
-
-		$('.percent').click(function(event) {
-			$.get('/admin/apartamentos/percentApto', function(data) {
-				$('.percent-body').empty().append(data);
-			});
-		});
-
-	}
 
 
-	$(document).ready(function() {
-		changeRooms();
-		$('.dataTables_paginate').click(function(event) {
-			changeRooms();
-		});
 
-		$('.btn-emiling').click(function(event) {
-			var id = $(this).attr('data-id');
-			$('.modal-content.emailing').empty().load('/admin/apartamentos/email/'+id);
-		});
+$(document).ready(function() {
 
-		$('.percentage').change(function(event) {
+	$('.btn-emiling').click(function(event) {
+		var id = $(this).attr('data-id');
+		$('.modal-content.emailing').empty().load('/admin/apartamentos/email/'+id);
+	});
 
-			
-			var id = $(this).attr('data-id');
-			var tipo = $(this).attr('name');
-			var percent = $(this).val();
+	$('.percentage').change(function(event) {
 
-			$.get('/admin/apartamentos/update-Percent', {  id: id, tipo: tipo, percent: percent}, function(data) {
-				$('.notification-message').val(data);
-				$("#boton").click();
-                setTimeout(function(){ 
-                    $('.alert-info .close').trigger('click');
-                     }, 1500); 
+		
+		var id = $(this).attr('data-id');
+		var tipo = $(this).attr('name');
+		var percent = $(this).val();
 
-			});
+		$.get('/admin/apartamentos/update-Percent', {  id: id, tipo: tipo, percent: percent}, function(data) {
+			$('.notification-message').val(data);
+			$("#boton").click();
+            setTimeout(function(){ 
+                $('.alert-info .close').trigger('click');
+                 }, 1500); 
 
 		});
 
 	});
+
+});
 </script>
 @endsection
