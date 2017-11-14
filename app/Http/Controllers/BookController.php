@@ -1243,4 +1243,22 @@ class BookController extends Controller
             return 0;
         }
     }
+
+    public function changeCostes()
+    {
+        $books = \App\Book::all();
+
+        foreach ($books as $book) {
+            if ($book->room->typeAptos->id == 1 || $book->room->typeAptos->id == 3) {
+                
+
+                $book->cost_total = $book->cost_total - $book->cost_apto;
+                $book->cost_apto = 0;
+                $book->total_ben = $book->total_price - $book->cost_total;
+
+                
+                $book->save();
+            }
+        }
+    } 
 }

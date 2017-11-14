@@ -80,10 +80,10 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 	Route::get('admin/reservas/cobrar/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@cobroBook']);
 	Route::get('admin/reservas/{year?}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@index']);
 
-	Route::get('admin/reservas/search/searchByName' ,   'BookController@searchByName');
+	Route::get('admin/reservas/search/searchByName' , 'BookController@searchByName');
 
 
-
+	Route::get('admin/cambiarCostes', 'BookController@changeCostes');
 	
 // Usuarios
 	Route::get('admin/usuarios' ,['middleware' => 'authAdmin', 'uses' =>   'UsersController@index' ]);
