@@ -5,8 +5,7 @@ setlocale(LC_TIME, "es_ES");
 
 <table class="table  table-responsive table-striped" style="margin-top: 0;">
 	<thead>
-		<th class ="text-center Reservado-table text-white" style="width: 4%!important">&nbsp;</th> 
-		<th class="Reservado-table text-white text-center">Nombre</th>
+		<th class="Reservado-table text-white text-center" colspan="2">Nombre</th>
 		<th class="Reservado-table text-white text-center" style="min-width:50px">In</th>
 		<th class="Reservado-table text-white text-center" style="min-width:50px ">Out</th>
 		<th class="Reservado-table text-white text-center">Pax</th>
@@ -25,16 +24,18 @@ setlocale(LC_TIME, "es_ES");
 			<?php endif ?>
 			
 			<tr class="<?php echo $class ;?>"> 
+				<?php if ($nueva->agency != 0): ?>
 				<td class="text-center">
-                    <?php if ($nueva->agency != 0): ?>
-                        <img style="width: 20px;margin: 0 auto;" src="/pages/booking.png" align="center" />
-                    <?php endif ?>
+                    <img style="width: 15px;margin: 0 auto;" src="/pages/booking.png" align="center" />
                 </td>
-				<td class="text-center sm-p-t-10 sm-p-b-10">
+        		<?php else: ?>
+        			<td class="text-center">&nbsp;</td>
+            	<?php endif ?>
+				<td class="text-center" <?php if ($nueva->agency != 0): echo 'colspan="2"'; endif ?>>
 					<a title="<?php echo $nueva->customer->name ?> - <?php echo $nueva->customer->email ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $nueva->id ?>"><?php echo $nueva->customer->name ?></a>
 				</td>
-				<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->start)->formatLocalized('%d %b') ?></td>
-				<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->finish)->formatLocalized('%d %b') ?></td>
+				<td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->start)->formatLocalized('%d %b') ?></td>
+				<td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->finish)->formatLocalized('%d %b') ?></td>
 				<td class ="text-center" >
 					<?php if ($nueva->real_pax > 6 ): ?>
 						<?php echo $nueva->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
@@ -43,8 +44,8 @@ setlocale(LC_TIME, "es_ES");
 					<?php endif ?>
 					
 				</td>
-				<td class="text-center sm-p-t-10 sm-p-b-10"><a href="tel:<?php echo $nueva->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
-				<td class ="text-center sm-p-t-10 sm-p-b-10" >
+				<td class="text-center"><a href="tel:<?php echo $nueva->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
+				<td class ="text-center" >
 					<select class="room form-control minimal" data-id="<?php echo $nueva->id ?>"  >
 						
 						<?php foreach ($rooms as $room): ?>
@@ -59,9 +60,9 @@ setlocale(LC_TIME, "es_ES");
 
 					</select>
 				</td>
-				<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $nueva->nigths ?></td>
-				<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $nueva->total_price ?> €</td>
-				<td class="text-center sm-p-t-10 sm-p-b-10 sm-p-l-10 sm-p-r-10">
+				<td class="text-center"><?php echo $nueva->nigths ?></td>
+				<td class="text-center"><?php echo $nueva->total_price ?> €</td>
+				<td class="text-center sm-p-l-10 sm-p-r-10">
 					<select class="status form-control minimal" data-id="<?php echo $nueva->id ?>">
 
 						<?php for ($i=1; $i < 9; $i++): ?> 

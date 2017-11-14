@@ -23,7 +23,7 @@
                 <?php foreach ($arrayBooks["nuevas"] as $book): ?>
                     <?php $class = ucwords($book->getStatus($book->type_book)) ?>
                     <?php if ($class == "Contestado(EMAIL)"): ?>
-                         <?php $class = "contestado-email" ?>
+                        <?php $class = "contestado-email" ?>
                     <?php endif ?>
                         
                         <tr class="<?php echo $class ;?>"> 

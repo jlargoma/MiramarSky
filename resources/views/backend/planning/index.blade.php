@@ -443,7 +443,7 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane table-responsive " id="tabPagadas">
-                                        <div class="container column-seperation ">.
+                                        <div class="container column-seperation ">
                                             @include('backend.planning.listados._pagadas')                                 
                                         </div>
                                     </div>

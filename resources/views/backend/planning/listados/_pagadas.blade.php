@@ -124,8 +124,8 @@
 <?php else: ?>
     <table class="table  table-responsive table-striped" style="margin-top: 0;">
         <thead>
-            <th class ="text-center Pagada-la-señal text-white" style="width: 4%!important">&nbsp;</th>
-            <th class="Pagada-la-señal text-white text-center">Nombre</th>
+            <th class="Pagada-la-señal text-white text-center" ></th>
+            <th class="Pagada-la-señal text-white text-center" >Nombre</th>
             <th class="Pagada-la-señal text-white text-center" style="min-width:50px">In</th>
             <th class="Pagada-la-señal text-white text-center" style="min-width:50px ">Out</th>
             <th class="Pagada-la-señal text-white text-center">Pax</th>
@@ -138,26 +138,29 @@
         <tbody>
             <?php foreach ($arrayBooks["pagadas"] as $pagada): ?>
                 <tr class="<?php echo ucwords($book->getStatus($pagada->type_book)) ;?>">
+                    
                     <td class="text-center">
                         <?php if ($pagada->agency != 0): ?>
-                            <img style="width: 20px;margin: 0 auto;" src="/pages/booking.png" align="center" />
+                            <img style="width: 15px;margin: 0 auto;" src="/pages/booking.png" align="center" />
                         <?php endif ?>
                     </td>
-                    <td class="text-center sm-p-t-10 sm-p-b-10"><a href="{{url ('/admin/reservas/update')}}/<?php echo $pagada->id ?>"><?php echo $pagada->customer->name ?></a></td>
-                    <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$pagada->start)->formatLocalized('%d %b') ?></td>
-                    <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$pagada->finish)->formatLocalized('%d %b') ?></td>
+                    <td class="text-center">
+                        <a href="{{url ('/admin/reservas/update')}}/<?php echo $pagada->id ?>"><?php echo $pagada->customer->name ?></a>
+                    </td>
+                    <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$pagada->start)->formatLocalized('%d %b') ?></td>
+                    <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$pagada->finish)->formatLocalized('%d %b') ?></td>
                     <td class ="text-center" >
-                        <?php if ($book->real_pax > 6 ): ?>
-                            <?php echo $book->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
-                        <?php elseif($book->pax != $book->real_pax): ?>
-                            <?php echo $book->real_pax ?><i class="fa fa-exclamation-circle" aria-hidden="true" style="color: red"></i>
+                        <?php if ($pagada->real_pax > 6 ): ?>
+                            <?php echo $pagada->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
+                        <?php elseif($pagada->pax != $pagada->real_pax): ?>
+                            <?php echo $pagada->real_pax ?><i class="fa fa-exclamation-circle" aria-hidden="true" style="color: red"></i>
                         <?php else: ?>
-                            <?php echo $book->pax ?>
+                            <?php echo $pagada->pax ?>
                         <?php endif ?>
                             
                     </td>
-                    <td class="text-center sm-p-t-10 sm-p-b-10"><a href="tel:<?php echo $pagada->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
-                    <td class="text-center sm-p-t-10 sm-p-b-10">
+                    <td class="text-center"><a href="tel:<?php echo $pagada->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
+                    <td class="text-center">
                         <select class="room form-control minimal" data-id="<?php echo $pagada->id ?>"  >
                             
                             <?php foreach ($rooms as $room): ?>
@@ -172,15 +175,15 @@
 
                         </select>
                     </td>
-                    <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $pagada->nigths ?></td>
-                    <td class="text-center sm-p-t-10 sm-p-b-10">
+                    <td class="text-center"><?php echo $pagada->nigths ?></td>
+                    <td class="text-center">
                         <?php echo $pagada->total_price."€" ?><br>
                         <?php if (isset($payment[$pagada->id])): ?>
                             <?php echo "<p style='color:red'>".$payment[$pagada->id]."</p>" ?>
                         <?php else: ?>
                         <?php endif ?>
                     </td>
-                    <td class="text-center sm-p-t-10 sm-p-b-10 sm-p-l-10 sm-p-r-10">
+                    <td class="text-center">
                         <select class="status form-control minimal" data-id="<?php echo $pagada->id ?>">
 
                             <?php for ($i=1; $i < 9; $i++): ?> 
