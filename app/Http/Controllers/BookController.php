@@ -264,7 +264,12 @@ class BookController extends Controller
                 $book->type_luxury   = $request->input('type_luxury');
                 $book->sup_lujo      = $this->getPriceLujo($request->input('type_luxury'));
                 $book->cost_lujo     = $this->getCostLujo($request->input('type_luxury'));
-                $book->cost_apto     = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
+                if ($room->typeApto == 3 || $room->typeApto == 1) {
+                    $book->cost_apto     = 0;        
+                }else{
+                    $book->cost_apto     = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
+                }
+                
                 $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
 
                 $book->total_price   = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
@@ -389,7 +394,12 @@ class BookController extends Controller
                         $book->cost_park   = $this->getCostParkController($request->input('parking'),$request->input('nigths'));
                         $book->sup_lujo    = $this->getPriceLujo($request->input('type_luxury'));
                         $book->cost_lujo   = $this->getCostLujo($request->input('type_luxury'));
-                        $book->cost_apto   = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
+
+                        if ($room->typeApto == 3 || $room->typeApto == 1) {
+                            $book->cost_apto     = 0;        
+                        }else{
+                            $book->cost_apto     = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
+                        }
                         $book->cost_total  = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
                         $book->total_price = $request->input('total');
                         $book->real_price  = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
