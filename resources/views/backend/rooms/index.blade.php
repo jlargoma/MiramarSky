@@ -37,11 +37,6 @@
 	                <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Nuevo Apto.</span>
 	            </button>
 			</div>
-					<div class="col-md-1 col-xs-4 push-20">
-						<button class="btn btn-success btn-cons percent" type="button" data-toggle="modal" data-target="#modalPercentApto">
-			                <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">% Ben.</span>
-			            </button>
-					</div>
 			<div class="clearfix"></div>
 			<div class="row">
 				<div class="col-xs-12 content-table-rooms">
@@ -354,14 +349,14 @@
 	        <div class="col-md-12">
 			    <div class="row">
 
-			        	<div class="col-xs-12 col-md-12 push-20">
+			        	<div class="col-xs-12 col-md-6 push-20">
 			        		<h3 class="text-center">
 			        			Reparto de Beneficios por tipo
 			        		</h3>
 			        	</div>
-			        	<div class="clear"></div>
+			        	<div style="clear: both;"></div>
 			        		
-			        	<div class="col-md-12 col-xs-12 push-20">
+			        	<div class="col-md-6 col-xs-12 push-20">
 			        		<table class="table table-condensed table-hover">
 								<thead>
 									<th class="text-center bg-complete text-white font-s12">Tipo</th>
