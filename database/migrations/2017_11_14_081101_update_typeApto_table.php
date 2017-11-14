@@ -12,7 +12,7 @@ class UpdateTypeAptoTable extends Migration
      */
     public function up()
     {
-        Schema::table('typeApto', function ($table) {
+        Schema::table('typeapto', function ($table) {
            $table->integer('PercentJorge');
            $table->integer('PercentJaime');
         });
