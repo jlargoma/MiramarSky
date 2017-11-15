@@ -235,6 +235,8 @@ class BookController extends Controller
             $customer->name    = $request->input('name');
             $customer->email   = $request->input('email');
             $customer->phone   = $request->input('phone');
+            $customer->DNI   = $request->input('dni');
+            $customer->address   = $request->input('address');
 
             if($customer->save()){
                 //Creacion de la reserva

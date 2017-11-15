@@ -82,6 +82,15 @@
 					<label for="parking-no" class="radio-style-3-label">No</label>
 				</div>
             </div>
+            <div style="clear: both;"></div>
+            <div class="form-group col-sm-12 col-xs-12 col-md-6 col-lg-6">
+                <label for="dni">*DNI</label>
+                <input type="text" class="sm-form-control" name="dni"  placeholder="DNI..." maxlength="9" required="" aria-label="Escribe tu DNI">
+            </div>
+            <div class="form-group col-sm-12 col-xs-12 col-md-6 col-lg-6">
+                <label for="direccion">*Direccion</label>
+                <input type="text" class="sm-form-control" name="address"  placeholder="Direccion..." maxlength="9" required="" aria-label="Escribe tu Direccion">
+            </div>
             <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12">
                 <div class="input-group col-sm-12 col-xs-12 col-md-12 col-lg-12">
                     <textarea class="sm-form-control" name="comment" rows="3" placeholder="Comentanos aqui tus dudas o inquietudes." id="coment" maxlength="200" aria-label="Comentanos aqui tus dudas o inquietudes."></textarea>
@@ -166,6 +175,14 @@
                         <input id="luxury-no" class="radio-style" name="luxury" type="radio" value="no" checked="" >
                         <label for="luxury-no" class="radio-style-3-label">No</label>
                     </div>
+                </div>
+                <div class="form-group col-sm-12 col-xs-12 col-md-6 col-lg-6">
+                    <label for="dni">*DNI</label>
+                    <input type="text" class="sm-form-control" name="dni" id="dni" placeholder="DNI..." maxlength="9" required="" aria-label="Escribe tu DNI">
+                </div>
+                <div class="form-group col-sm-12 col-xs-12 col-md-6 col-lg-6">
+                    <label for="direccion">*Direccion</label>
+                    <input type="text" class="sm-form-control" name="address" id="direccion" placeholder="Direccion..." maxlength="9" required="" aria-label="Escribe tu Direccion">
                 </div>
                 <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12">
                     <div class="input-group col-sm-12 col-xs-12 col-md-12 col-lg-12">

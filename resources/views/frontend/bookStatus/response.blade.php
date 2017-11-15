@@ -18,6 +18,14 @@
 			<span class="font-w800 white center push-10 font-s18 pull-right"><?php echo ucfirst($name) ?></span>
 		</div>
 		<div class="row push-20">
+			<span class="white push-10 font-s18 font-w300 pull-left">DNI:</span>
+			<span class="font-w800 white center push-10 font-s18 pull-right"><?php echo ucfirst($dni) ?></span>
+		</div>
+		<div class="row push-20">
+			<span class="white push-10 font-s18 font-w300 pull-left">Dirección:</span>
+			<span class="font-w800 white center push-10 font-s18 pull-right"><?php echo ucfirst($address) ?></span>
+		</div>
+		<div class="row push-20">
 			<span class="white push-10 font-s18 font-w300 pull-left">Numº Pers:</span>
 			<span class="font-w800 white center push-10 font-s18 pull-right">
 				<?php echo $pax ?> <?php if ($pax == 1 ): ?>Per<?php else: ?>Pers <?php endif ?>	
@@ -66,6 +74,8 @@
 	    		<input type="hidden" name="parking" value="<?php echo $parking; ?>">
 	    		<input type="hidden" name="agencia" value="0">
 	    		<input type="hidden" name="lujo" value="<?php echo $luxury ?>">
+	    		<input type="hidden" name="dni" value="<?php echo $dni ?>">
+	    		<input type="hidden" name="address" value="<?php echo $address ?>">
 	    		<input type="hidden" name="book_comments" value="">
 				<?php if($luxury > 0): ?>
 					<input type="hidden" name="type_luxury" value="1">
@@ -112,6 +122,8 @@
 		var agency        = 0;
 		var book_comments = $('input[name="book_comments"]').val();
 		var lujo 		  = $('input[name="lujo"]').val();
+		var dni 		  = $('input[name="dni"]').val();
+		var address 		  = $('input[name="address"]').val();
 		var type_luxury 		  = $('input[name="type_luxury"]').val();
 
 		var url = $(this).attr('action');
@@ -132,6 +144,8 @@
 						agency : agency,
 						book_comments : book_comments,
 						Suplujo : lujo,
+						dni : dni,
+						address : address,
 						type_luxury : type_luxury,
 					}, function(data) {
 				hideLoad();

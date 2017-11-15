@@ -395,12 +395,11 @@ class HomeController extends Controller
         }
         
         $total =  $price + $priceParking + $limp + $luxury;  
-
+        $dni = $request->input('dni');
+        $address = $request->input('address');
         // echo "<pre>";
-        // print_r($price); echo "<br>";
-        // print_r($priceParking); echo "<br>";
-        // print_r($limp); echo "<br>";
-        // print_r($luxury); echo "<br>";
+        // print_r($request->input()); echo "<br>";
+        // die();
 
         if ($seasonActive != 0) {
             return view('frontend.bookStatus.response', [
@@ -417,6 +416,8 @@ class HomeController extends Controller
                                                             'priceParking' => $priceParking,
                                                             'luxury'  => $luxury,
                                                             'total'   => $total,
+                                                            'dni'   => $dni,
+                                                            'address'   => $address,
                                                             'comment' => $request->input('comment'),
                                                         ]);
 
