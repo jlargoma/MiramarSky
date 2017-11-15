@@ -1,3 +1,7 @@
+<?php   use \Carbon\Carbon;  
+        setlocale(LC_TIME, "ES"); 
+        setlocale(LC_TIME, "es_ES"); 
+?>
 @extends('layouts.admin-master')
 
 @section('title') Estadísticas  @endsection
@@ -6,6 +10,13 @@
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+
+    <style>
+
+    	.table-room tr td{
+    		padding: 8px 10px!important;
+    	}
+    </style>
 @endsection
 
 @section('content')
@@ -16,16 +27,58 @@
 		@include('backend.sales._button-contabiliad')
 	
 	</div>
-	<div class="col-md-12">
+	<div class="col-md-6 col-md-offset-3">
 		<h2 class="text-center">
-			Estadisticas
+			Contabilidad
 		</h2>
 	</div>
-	<div class="col-md-4">
+
+	<div class="col-md-3">
+		<select id="fecha" class="form-control minimal">
+		     <?php $fecha = $date->copy()->SubYear(2); ?>
+		     <?php if ($fecha->copy()->format('Y') < 2015): ?>
+		         <?php $fecha = new Carbon('first day of September 2015'); ?>
+		     <?php endif ?>
+		 
+		     <?php for ($i=1; $i <= 3; $i++): ?>                           
+		         <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $date->copy()->format('Y') == $fecha->format('Y') ? 'selected' : '' }}>
+		             <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
+		         </option>
+		         <?php $fecha->addYear(); ?>
+		     <?php endfor; ?>
+		 </select>  
+	</div>
+	<div style="clear: both;"></div>
+	<div class="col-md-2">
 	   <div>
 	       <canvas id="barChart" style="width: 100%; height: 250px;"></canvas>
 	   </div>
 	</div>
+    <div class="col-md-2">
+    	<?php if ($date->copy()->format('n') >= 9): ?>
+    	    <?php echo $date->copy()->format('Y') ?>-<?php echo $date->copy()->addYear()->format('Y') ?>
+    	<?php else: ?>
+    	    <?php echo $date->copy()->subYear()->format('Y') ?>-<?php echo $date->copy()->format('Y') ?>
+    	<?php endif ?>
+
+    	<table class="table table-hover demo-table-search table-responsive table-room" >
+			<?php foreach ($rooms as $room): ?>
+				<tr>
+					<td><?php echo $room->name ?></td>
+					<td><?php echo number_format(($totalRoom[$room->id]/$totalAño * 100),2,',','.')." %" ?>
+                    </td>
+				</tr>
+			<?php endforeach ?>
+		</table>
+
+    </div>
+	
+	<div class="col-md-2">
+	   <div>
+	       <canvas id="barChart2" style="width: 100%; height: 250px;"></canvas>
+	   </div>
+	</div>
+	
 	<div class="col-md-3 pull-right">
 	    <div class="row">
 	        <div class="col-md-12">
@@ -46,6 +99,7 @@
 	                            </div>
 	                        </div>
 	                    </div>
+
 	                    <div class="row-xs-height ">
 	                        <div class="col-xs-height col-top relative">
 	                            <div class="row">
@@ -151,11 +205,91 @@
 	            </div>
 	        </div>
 	    </div>
-	</div>  
+	</div>
+	<div style="clear: both;"></div>  
+	
+	<?php if ($date->copy()->format('n') >= 9): ?>
+	    <?php $fecha= $date->copy()->format('Y')."-".$date->copy()->addYear()->format('Y') ?>
+	<?php else: ?>
+	    <?php $fecha = $date->copy()->subYear()->format('Y')."-".$date->copy()->format('Y') ?>
+	<?php endif ?>
+
 	<div class="row">
 		<div class="row">
-		    <div>
-		        <table class="table table-hover demo-table-search table-responsive " >
+		    <div class="col-md-12">
+		        <table class="table  table-condensed table-striped" style="margin-top: 0;">
+					<thead>
+						<th class="text-center bg-complete text-white">Apto</th>
+						<th class="text-center bg-complete text-white">Nov/Dic</th>
+						<th class="text-center bg-complete text-white">Ene</th>
+						<th class="text-center bg-complete text-white">Feb</th>
+						<th class="text-center bg-complete text-white">Mar</th>
+						<th class="text-center bg-complete text-white">Abr/May</th>
+						<th class="text-center bg-complete text-white">Total</th>
+					</thead>
+					<tbody>
+
+						<?php foreach ($rooms as $room): ?>
+							<tr>
+								<?php $total[$room->id] = 0 ?>
+								<th class="text-center p-t-5 p-b-5"><?php echo $room->name ?></th>
+								<td class="text-center p-t-5 p-b-5">
+									<?php if(isset($arrayPrices[$fecha][12][$room->id]["total_price"])){
+											echo number_format($arrayPrices[$fecha][12][$room->id]["total_price"],2,',','.')."€";
+											$total[$room->id] += $arrayPrices[$fecha][12][$room->id]["total_price"];
+										}else{
+											echo  "---";
+										}   
+									;?>												
+								</td>
+								<td class="text-center p-t-5 p-b-5">
+									<?php if(isset($arrayPrices[$fecha][1][$room->id]["total_price"])){
+											echo number_format($arrayPrices[$fecha][1][$room->id]["total_price"],2,',','.')."€";
+											$total[$room->id] += $arrayPrices[$fecha][1][$room->id]["total_price"];
+										}else{
+											echo  "---";
+										}   
+									;?>										
+								</td>
+								<td class="text-center p-t-5 p-b-5">
+									<?php if(isset($arrayPrices[$fecha][2][$room->id]["total_price"])){
+											echo number_format($arrayPrices[$fecha][2][$room->id]["total_price"],2,',','.')."€";
+											$total[$room->id] += $arrayPrices[$fecha][2][$room->id]["total_price"];
+										}else{
+											echo  "---";
+										}   
+									;?>								
+								</td>
+								<td class="text-center p-t-5 p-b-5">
+									<?php if(isset($arrayPrices[$fecha][3][$room->id]["total_price"])){
+											echo number_format($arrayPrices[$fecha][3][$room->id]["total_price"],2,',','.')."€";
+											$total[$room->id] += $arrayPrices[$fecha][3][$room->id]["total_price"];
+										}else{
+											echo  "---";
+										}   
+									;?>
+								</td>
+								<td class="text-center p-t-5 p-b-5">
+									<?php if(isset($arrayPrices[$fecha][4][$room->id]["total_price"])){
+											echo number_format($arrayPrices[$fecha][4][$room->id]["total_price"],2,',','.')."€";
+											$total[$room->id] += $arrayPrices[$fecha][4][$room->id]["total_price"];
+										}else{
+											echo  "---";
+										}   
+									;?>								
+								</td>
+								<td class="text-center p-t-5 p-b-5">
+									<?php echo number_format($total[$room->id],2,',','.')."€" ?>
+								</td>
+							</tr>
+						<?php endforeach ?>
+						<tr>
+							<th colspan="6" class="text-right bg-complete text-white">TOTAL</th>
+							<td class="text-center"><?php echo number_format(array_sum($total),2,',','.'); ?></td>
+						</tr>
+					</tbody>
+		        </table>
+<!-- 		        <table class="table table-hover demo-table-search table-responsive " >
 		            <thead>
 		                <th class="text-center bg-complete text-white" colspan="7">Ingresos de la temporada <?php //echo $inicio->copy()->format('Y') ?>-<?php //echo $inicio->copy()->addYear()->format('Y') ?></th>
 		            </thead>
@@ -296,7 +430,106 @@
 		                    </td>
 		                </tr>
 		            </tbody>
-		        </table>
+		        </table> -->
+		    </div>
+		    <div class="col-md-12">
+    	        <table class="table  table-condensed table-striped" style="margin-top: 0;">
+    				<thead>
+    					<th class="text-center bg-complete text-white">Apto</th>
+    					<th class="text-center bg-complete text-white">Nov</th>
+    					<th class="text-center bg-complete text-white">Dic</th>
+    					<th class="text-center bg-complete text-white">Ene</th>
+    					<th class="text-center bg-complete text-white">Feb</th>
+    					<th class="text-center bg-complete text-white">Mar</th>
+    					<th class="text-center bg-complete text-white">Abr</th>
+    					<th class="text-center bg-complete text-white">May</th>
+    					<th class="text-center bg-complete text-white">Total</th>
+    				</thead>
+    				<tbody>
+    					<tr>
+    						<?php 
+    							$totalBanco = 0;
+    							$totalBancoMes = 0;
+    						 ?>
+
+    						<td >Banco</td>
+    						<td><?php echo (isset($arrayCobro["banco"][11])) ? number_format($arrayCobro["banco"][11],2,',','.')."€" : "---"; ?></td>
+    						<td><?php echo (isset($arrayCobro["banco"][12])) ? number_format($arrayCobro["banco"][12],2,',','.')."€" : "---"; ?></td>
+    						<td ><?php echo (isset($arrayCobro["banco"][1])) ? number_format($arrayCobro["banco"][1],2,',','.')."€" : "---"; ?></td>
+    						<td ><?php echo (isset($arrayCobro["banco"][2])) ? number_format($arrayCobro["banco"][2],2,',','.')."€" : "---"; ?></td>
+    						<td ><?php echo (isset($arrayCobro["banco"][3])) ? number_format($arrayCobro["banco"][3],2,',','.')."€" : "---"; ?></td>
+    						<td ><?php echo (isset($arrayCobro["banco"][4])) ? number_format($arrayCobro["banco"][4],2,',','.')."€" : "---"; ?></td>
+    						<td ><?php echo (isset($arrayCobro["banco"][5])) ? number_format($arrayCobro["banco"][5],2,',','.')."€" : "---"; ?></td>
+    						<td ><?php echo number_format(array_sum($arrayCobro["banco"]),2,',','.')."€" ?></td>
+    					</tr>
+    					<tr>
+    						<td >Metalico</td>
+    						<td><?php echo (isset($arrayCobro["metalico"][11])) ? number_format($arrayCobro["metalico"][11],2,',','.')."€" : "---"; ?></td>
+    						<td><?php echo (isset($arrayCobro["metalico"][12])) ? number_format($arrayCobro["metalico"][12],2,',','.')."€" : "---"; ?></td>
+    						<td ><?php echo (isset($arrayCobro["metalico"][1])) ? number_format($arrayCobro["metalico"][1],2,',','.')."€" : "---"; ?></td>
+    						<td ><?php echo (isset($arrayCobro["metalico"][2])) ? number_format($arrayCobro["metalico"][2],2,',','.')."€" : "---"; ?></td>
+    						<td ><?php echo (isset($arrayCobro["metalico"][3])) ? number_format($arrayCobro["metalico"][3],2,',','.')."€" : "---"; ?></td>
+    						<td ><?php echo (isset($arrayCobro["metalico"][4])) ? number_format($arrayCobro["metalico"][4],2,',','.')."€" : "---"; ?></td>
+    						<td ><?php echo (isset($arrayCobro["metalico"][5])) ? number_format($arrayCobro["metalico"][5],2,',','.')."€" : "---"; ?></td>
+    						<td ><?php echo number_format(array_sum($arrayCobro["metalico"]),2,',','.')."€" ?></td>
+    					</tr>
+						<tr>
+							<th class="text-right bg-complete text-white">Totales</th>
+							<td>
+								<?php 	(isset($arrayCobro["metalico"][11])) ? $total[11] = $arrayCobro["metalico"][11]: $total[11] = 0; 
+										(isset($arrayCobro["banco"][11])) ? $total[11] += $arrayCobro["banco"][11] : 0 ;
+										echo number_format($total[11],2,',','.')."€";
+								?>
+							</td>
+							<td>
+								<?php 	(isset($arrayCobro["metalico"][12])) ? $total[12] = $arrayCobro["metalico"][12]: $total[12] = 0; 
+										(isset($arrayCobro["banco"][12])) ? $total[12] += $arrayCobro["banco"][12] : 0 ;
+										echo number_format($total[12],2,',','.')."€";
+								?>
+							</td>
+							<td>
+								<?php 	(isset($arrayCobro["metalico"][1])) ? $total[1] = $arrayCobro["metalico"][1]: $total[1] = 0; 
+										(isset($arrayCobro["banco"][1])) ? $total[1] += $arrayCobro["banco"][1] : 0 ;
+										echo number_format($total[1],2,',','.')."€";
+								?>
+							</td>
+							<td>
+								<?php 	(isset($arrayCobro["metalico"][2])) ? $total[2] = $arrayCobro["metalico"][2]: $total[2] = 0; 
+										(isset($arrayCobro["banco"][2])) ? $total[2] += $arrayCobro["banco"][2] : 0 ;
+										echo number_format($total[2],2,',','.')."€";
+								?>
+							</td>
+							<td>
+								<?php 	(isset($arrayCobro["metalico"][3])) ? $total[3] = $arrayCobro["metalico"][3]: $total[3] = 0; 
+										(isset($arrayCobro["banco"][3])) ? $total[3] += $arrayCobro["banco"][3] : 0 ;
+										echo number_format($total[3],2,',','.')."€";
+								?>
+							</td>
+							<td>
+								<?php 	(isset($arrayCobro["metalico"][4])) ? $total[4] = $arrayCobro["metalico"][4]: $total[4] = 0; 
+										(isset($arrayCobro["banco"][4])) ? $total[4] += $arrayCobro["banco"][4] : 0 ;
+										echo number_format($total[4],2,',','.')."€";
+								?>
+							</td>
+							<td>
+								<?php 	(isset($arrayCobro["metalico"][5])) ? $total[5] = $arrayCobro["metalico"][5]: $total[5] = 0; 
+										(isset($arrayCobro["banco"][5])) ? $total[5] += $arrayCobro["banco"][5] : 0 ;
+										echo number_format($total[5],2,',','.')."€";
+								?>
+							</td>
+							<td>
+								<?php echo number_format($total[11]+$total[12]+$total[1]+$total[2]+$total[3]+$total[4]+$total[5],2,',','.')."€" ?>
+							</td>
+						</tr>
+    				</tbody>
+    			</table>	
+		    </div>
+
+		    <div class="col-md-12">
+    	        <table class="table  table-condensed table-striped" style="margin-top: 0;">
+    				<thead>
+    				</thead>
+    			</table>
 		    </div>
 		</div>
 	</div>  
@@ -327,40 +560,13 @@
 <script src="/assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
 <script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
 <script type="text/javascript">
-	nv.addGraph(function() {
-        var chart = nv.models.multiBarChart()
-          .transitionDuration(350)
-          .reduceXTicks(true)   //If 'false', every single x-axis tick label will be rendered.
-          .rotateLabels(0)      //Angle to rotate x-axis labels.
-          .showControls(true)   //Allow user to switch between 'Grouped' and 'Stacked' mode.
-          .groupSpacing(0.1)    //Distance between each group of bars.
-        ;
 
-        chart.xAxis
-            .tickFormat(d3.format(',f'));
+	$('#fecha').change(function(event) {
+	    
+	    var year = $(this).val();
+	    window.location = '/admin/estadisticas/'+year;
 
-        chart.yAxis
-            .tickFormat(d3.format(',.1f'));
-
-        d3.select('#chart1 svg')
-            .datum(exampleData())
-            .call(chart);
-
-        nv.utils.windowResize(chart.update);
-
-        return chart;
-    });
-
-    //Generate some nice data.
-    function exampleData() {
-      return stream_layers(3,10+Math.random()*100,.1).map(function(data, i) {
-        return {
-          key: 'Stream #' + i,
-          values: data
-        };
-      });
-    }
-
+	});
 
     var data = {
         labels: [
@@ -410,6 +616,11 @@
     };
 
     var myBarChart = new Chart('barChart', {
+        type: 'line',
+        data: data,
+    });
+
+    var myBarChart = new Chart('barChart2', {
         type: 'bar',
         data: data,
     });

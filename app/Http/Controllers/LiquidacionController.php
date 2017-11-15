@@ -226,13 +226,18 @@ class LiquidacionController extends Controller
             $inicio = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
         }
 
-        $arrayMonth = [11 => "Noviembre",12 =>"Diciembre",1 => "Enero", 2 => "Febrero",3 => "Marzo",4=> "Abril"];
+        $arrayMonth       = [11 => "Noviembre",12 =>"Diciembre",1 => "Enero", 2 => "Febrero",3 => "Marzo",4=> "Abril"];
         $arrayStadisticas = array();
-        $arrayYear = array();
-        $años = array();
-        $books = \App\Book::where('type_book',2)->where('start','<','2016-05-01')->get();
-        $arrayBooks = array();
-
+        $arrayYear        = array();
+        $años             = array();
+        $books            = \App\Book::whereIn('type_book',[2,7,8])->get();
+        $arrayBooks       = array();
+        $arrayPrices      = array();
+        $arrayTotal       = 0;
+        $arrayCobro       = [
+                                "banco" ,
+                                "metalico"
+                            ];
         //Para sacar las reservas por temporada
         foreach ($books as $book) {
             $fecha = Carbon::CreateFromFormat('Y-m-d',$book->start);
@@ -247,9 +252,55 @@ class LiquidacionController extends Controller
             }else{
                 $arrayYear[$año] = $book->total_price;
             }
+            if ($fecha->copy()->format('m') <= 11 && $fecha->copy()->format('m') >= 5) {
+                $mes = 12;
+            }else{
+                $mes  = $fecha->copy()->format('n');
+            }
 
-            $arrayBooks[$año][$fecha->format('n')][] = $book;
+            if (isset($arrayPrices[$año][$mes][$book->room_id])) {
+                $arrayPrices[$año][$mes][$book->room_id]['total_price'] += $book->total_price;
 
+            }else{
+                $arrayPrices[$año][$mes][$book->room_id]['total_price'] = $book->total_price;
+
+            }
+
+            
+
+            $arrayBooks[$año][$mes][] = $book;
+        }
+
+        $cobros = \App\Payments::where('datePayment','>=',$inicio->copy()->format('Y-m-d'))->where('datePayment','<=',$inicio->copy()->addYear()->format('Y-m-d'))->get();
+
+        //Pasa sacar los metodos de pago
+        foreach ($cobros as $key => $cobro) {
+            $fecha = Carbon::CreateFromFormat('Y-m-d',$cobro->datePayment);
+            
+            if ($fecha->format('m')< 11 ) {
+                $año = ($fecha->format('Y')-1)."-".($fecha->format('Y'));
+            }else{
+                $año = ($fecha->format('Y'))."-".($fecha->format('Y')+1);
+            }
+
+            if ($fecha->copy()->format('m') < 11 && $fecha->copy()->format('m') >= 5) {
+                $mes = 11;
+            }else{
+                $mes  = $fecha->copy()->format('n');
+            }
+            if ($cobro->type == 0 || $cobro->type == 1) {
+                if (isset($arrayCobro["banco"][$mes])) {
+                    $arrayCobro["banco"][$mes] += $cobro->import;
+                }else{
+                    $arrayCobro["banco"][$mes] = $cobro->import;
+                }
+            }else{
+                if (isset($arrayCobro["metalico"][$mes])) {
+                    $arrayCobro["metalico"][$mes] += $cobro->import;
+                }else{
+                    $arrayCobro["metalico"][$mes] = $cobro->import;
+                }
+            }
         }
 
         //Para sacar los nombres de la temporada
@@ -257,6 +308,7 @@ class LiquidacionController extends Controller
             $años[] = $key;
         }
 
+        
         //Para sacar la leyenda del grafico
         for ($i=0; $i <= count($arrayBooks) ; $i++) { 
             if ($i == 0) {
@@ -289,8 +341,30 @@ class LiquidacionController extends Controller
             }
         }
 
+        $rooms = \App\Rooms::where('state',1)->orderBy('order','ASC')->get();
 
-        return view ('backend/sales/statistics',[
+        $totalRoom = array();
+        $totalAño = 0;
+        foreach ($rooms as $room) {
+            $totalRoom[$room->id] = 0;
+            $reservas = \App\Book::whereIn('type_book',[2,7,8])
+                                ->where('start','>=', $inicio->copy()->format('Y-m-d'))
+                                ->where('start','<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                                ->where('room_id',$room->id)->get();
+
+            foreach ($reservas as $reserva) {
+                if (isset($totalRoom[$room->id])) {
+                    $totalRoom[$room->id] += $reserva->total_price;
+                }else{
+                    $totalRoom[$room->id] = $reserva->total_price;
+
+                }
+                $totalAño +=$reserva->total_price ;
+            }
+
+        }
+        return view ('backend/sales/statistics',[   
+                                                    'rooms'        => $rooms,
                                                     'arrayTotales' => $arrayTotales,
                                                     'date'         => $date,
                                                     'meses'        => $arrayMonth,
@@ -298,12 +372,188 @@ class LiquidacionController extends Controller
                                                     'arrayYear'    => $arrayYear,
                                                     'leyenda'      => $leyenda,
                                                     'arrayBooks'   => $arrayBooks,
+                                                    'arrayPrices'  => $arrayPrices,
+                                                    'arrayCobro'   => $arrayCobro,
+                                                    'arrayTotal'   => $arrayTotal,
                                                     'años'         => $años,
-                                                    'inicio'         => $inicio,
+                                                    'totalRoom'    => $totalRoom,
+                                                    'totalAño'     => $totalAño,
+                                                    'inicio'       => $inicio,
 
                                                 ]);
     }
 
+    public function contabilidad($year="")
+    {
+        if ( empty($year) ) {
+            $date = Carbon::now();
+        }else{
+            $year = Carbon::createFromFormat('Y',$year);
+            $date = $year->copy();
+
+        }
+        if ($date->copy()->format('n') >= 9) {
+            $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
+        }else{
+            $inicio = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+        }
+
+        $arrayMonth       = [11 => "Noviembre",12 =>"Diciembre",1 => "Enero", 2 => "Febrero",3 => "Marzo",4=> "Abril"];
+        $arrayStadisticas = array();
+        $arrayYear        = array();
+        $años             = array();
+        $books            = \App\Book::whereIn('type_book',[2,7,8])->get();
+        $arrayBooks       = array();
+        $arrayPrices      = array();
+        $arrayTotal       = 0;
+        $arrayCobro       = [
+                                "banco" ,
+                                "metalico"
+                            ];
+        //Para sacar las reservas por temporada
+        foreach ($books as $book) {
+            $fecha = Carbon::CreateFromFormat('Y-m-d',$book->start);
+            
+            if ($fecha->format('m')< 11 ) {
+                $año = ($fecha->format('Y')-1)."-".($fecha->format('Y'));
+            }else{
+                $año = ($fecha->format('Y'))."-".($fecha->format('Y')+1);
+            }
+            if (isset($arrayYear[$año])) {
+                $arrayYear[$año] += $book->total_price;
+            }else{
+                $arrayYear[$año] = $book->total_price;
+            }
+            if ($fecha->copy()->format('m') <= 11 && $fecha->copy()->format('m') >= 5) {
+                $mes = 12;
+            }else{
+                $mes  = $fecha->copy()->format('n');
+            }
+
+            if (isset($arrayPrices[$año][$mes][$book->room_id])) {
+                $arrayPrices[$año][$mes][$book->room_id]['total_price'] += $book->total_price;
+
+            }else{
+                $arrayPrices[$año][$mes][$book->room_id]['total_price'] = $book->total_price;
+
+            }
+
+            
+
+            $arrayBooks[$año][$mes][] = $book;
+        }
+
+        $cobros = \App\Payments::where('datePayment','>=',$inicio->copy()->format('Y-m-d'))->where('datePayment','<=',$inicio->copy()->addYear()->format('Y-m-d'))->get();
+
+        //Pasa sacar los metodos de pago
+        foreach ($cobros as $key => $cobro) {
+            $fecha = Carbon::CreateFromFormat('Y-m-d',$cobro->datePayment);
+            
+            if ($fecha->format('m')< 11 ) {
+                $año = ($fecha->format('Y')-1)."-".($fecha->format('Y'));
+            }else{
+                $año = ($fecha->format('Y'))."-".($fecha->format('Y')+1);
+            }
+
+            if ($fecha->copy()->format('m') < 11 && $fecha->copy()->format('m') >= 5) {
+                $mes = 11;
+            }else{
+                $mes  = $fecha->copy()->format('n');
+            }
+            if ($cobro->type == 0 || $cobro->type == 1) {
+                if (isset($arrayCobro["banco"][$mes])) {
+                    $arrayCobro["banco"][$mes] += $cobro->import;
+                }else{
+                    $arrayCobro["banco"][$mes] = $cobro->import;
+                }
+            }else{
+                if (isset($arrayCobro["metalico"][$mes])) {
+                    $arrayCobro["metalico"][$mes] += $cobro->import;
+                }else{
+                    $arrayCobro["metalico"][$mes] = $cobro->import;
+                }
+            }
+        }
+
+        //Para sacar los nombres de la temporada
+        foreach ($arrayBooks as $key => $value){
+            $años[] = $key;
+        }
+
+        
+        //Para sacar la leyenda del grafico
+        for ($i=0; $i <= count($arrayBooks) ; $i++) { 
+            if ($i == 0) {
+                $leyenda = "['Mes',";
+            }elseif($i == count($arrayBooks)){
+                $leyenda .= "'".$años[count($arrayBooks)-1]."'],";
+            }else{
+                $leyenda .= "'".$años[$i-1]."',";
+            }
+        }
+
+
+
+        $books = \App\Book::whereIn('type_book', [2,7,8])->get();
+
+        foreach ($books as $book) {
+            $fecha = Carbon::createFromFormat('Y-m-d',$book->start);
+            if ($fecha->copy()->format('n') >= 9) {
+                if(isset($arrayTotales[$fecha->copy()->format('Y')])){
+                    $arrayTotales[$fecha->copy()->format('Y')] += $book->total_price;
+                }else{
+                    $arrayTotales[$fecha->copy()->format('Y')] = $book->total_price;
+                }
+            }else{
+                if(isset($arrayTotales[$fecha->copy()->subYear()->format('Y')])){
+                    $arrayTotales[$fecha->copy()->subYear()->format('Y')] += $book->total_price;
+                }else{
+                    $arrayTotales[$fecha->copy()->subYear()->format('Y')] = $book->total_price;
+                }
+            }
+        }
+
+        $rooms = \App\Rooms::where('state',1)->orderBy('order','ASC')->get();
+
+        $totalRoom = array();
+        $totalAño = 0;
+        foreach ($rooms as $room) {
+            $totalRoom[$room->id] = 0;
+            $reservas = \App\Book::whereIn('type_book',[2,7,8])
+                                ->where('start','>=', $inicio->copy()->format('Y-m-d'))
+                                ->where('start','<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                                ->where('room_id',$room->id)->get();
+
+            foreach ($reservas as $reserva) {
+                if (isset($totalRoom[$room->id])) {
+                    $totalRoom[$room->id] += $reserva->total_price;
+                }else{
+                    $totalRoom[$room->id] = $reserva->total_price;
+
+                }
+                $totalAño +=$reserva->total_price ;
+            }
+
+        }
+        return view ('backend/sales/contabilidad',[   
+                                                    'rooms'        => $rooms,
+                                                    'arrayTotales' => $arrayTotales,
+                                                    'date'         => $date,
+                                                    'meses'        => $arrayMonth,
+                                                    'estadisticas' => $arrayStadisticas,
+                                                    'arrayYear'    => $arrayYear,
+                                                    'leyenda'      => $leyenda,
+                                                    'arrayBooks'   => $arrayBooks,
+                                                    'arrayPrices'  => $arrayPrices,
+                                                    'arrayCobro'   => $arrayCobro,
+                                                    'arrayTotal'   => $arrayTotal,
+                                                    'años'         => $años,
+                                                    'totalRoom'    => $totalRoom,
+                                                    'totalAño'     => $totalAño,
+                                                    'inicio'       => $inicio,
+
+                                                ]);
+    }
     /**
      * Show the form for creating a new resource.
      *
