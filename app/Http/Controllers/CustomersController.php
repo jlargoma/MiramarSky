@@ -95,9 +95,11 @@ class CustomersController extends Controller
         
 
         $customerUpadate->name     = $request->input('name');
-        $customerUpadate->email     = $request->input('email');
-        $customerUpadate->phone     = $request->input('phone');
-        $customerUpadate->comments  = $request->input('comments');
+        $customerUpadate->email    = $request->input('email');
+        $customerUpadate->phone    = $request->input('phone');
+        $customerUpadate->DNI      = $request->input('dni');
+        $customerUpadate->address  = $request->input('address');
+        $customerUpadate->comments = $request->input('comments');
 
         if ($customerUpadate->save()) {
             echo "Usuario cambiado!!";

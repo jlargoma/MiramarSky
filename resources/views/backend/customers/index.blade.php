@@ -30,8 +30,11 @@
                         <th class ="text-center hidden bg-complete text-white">id          </th>
                         <th class ="text-center bg-complete text-white" >       Nombre      </th>
                         <th class ="text-center bg-complete text-white" >       Email       </th>
-                        <th class ="text-center bg-complete text-white" >       Telefono    </th>                  
+                        <th class ="text-center bg-complete text-white" >       Telefono    </th>
+                        <th class ="text-center bg-complete text-white" >       DNI </th>
+                        <th class ="text-center bg-complete text-white" >       Dirección </th>                  
                         <th class ="text-center bg-complete text-white" style="width: 40%">       Comentarios </th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -47,11 +50,17 @@
                             </td>
                             <td class="text-center font-montserrat">
                                 <input type="number" class="editables form-control phone-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->phone?>" >
-                               
+                            </td>
+                            <td class="text-center font-montserrat">
+                               <input type="text" class="editables form-control dni-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->DNI?>" >
+                               <!-- <?php echo $customer->dni ?> -->
+                            </td>
+                            <td class="text-center font-montserrat">
+                               <input type="text" class="editables form-control address-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->address?>" >
+                               <!-- <?php echo $customer->address ?> -->
                             </td>
                             <td class="text-center font-montserrat">
                                 <input type="text" class="editables form-control comments-<?php echo $customer->id ?>" data-id="<?php echo $customer->id ?>" value="<?php  echo $customer->comments?>" style="width: 85%;height: 20px">
-                                
                             </td>
                         </tr>
                     <?php endforeach ?>
@@ -182,8 +191,10 @@
                 var email = $('.email-'+id).val();
                 var phone = $('.phone-'+id).val();
                 var comments = $('.comments-'+id).val();
+                var dni = $('.dni-'+id).val();
+                var address = $('.address-'+id).val();
 
-                $.get('/admin/clientes/save', {  id: id, name: name, email: email, phone: phone, comments: comments}, function(data) {
+                $.get('/admin/clientes/save', {  id: id, name: name, email: email, phone: phone, comments: comments, dni: dni , address : address}, function(data) {
                     $('.notification-message').val(data);
                     document.getElementById("boton").click();
                     // setTimeout('document.location.reload()',5000);
