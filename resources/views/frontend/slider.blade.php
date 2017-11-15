@@ -1,95 +1,51 @@
-<section id="slider" class="revslider-wrap  slider-parallax clearfix">
+<?php $mobile = new \App\Classes\Mobile(); ?>
+<?php if (!$mobile->isMobile()): ?>
+	<section id="slider" class="section nomargin noborder" style="padding: 0; max-height: 700px">
 
-	<div id="rev_slider_202_1_wrapper" class="rev_slider_wrapper fullscreen-container" data-alias="concept1" style="background-color:#FFFFFF;padding:0px;">
-		<!-- START REVOLUTION SLIDER 5.1.1RC fullscreen mode -->
-		<div id="rev_slider_202_1" class="rev_slider fullscreenbanner" style="display:none;" data-version="5.1.1RC">
-			<ul>
-				<!-- SLIDE  -->
-				<li data-index="rs-672" class="dark" data-transition="slidehorizontal" data-slotamount="default" data-easein="default" data-easeout="default" data-masterspeed="default" data-thumb="{{asset('/img/miramarski/cama-principal-apartamento-sierra-nevada.jpg')}}" data-rotate="0" data-saveperformance="off" data-title="Web Show" data-description="">
-					<!-- MAIN IMAGE -->
-					<img src="{{asset('/img/miramarski/cama-principal-apartamento-sierra-nevada.jpg')}}" alt="" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
-					<!-- LAYER NR. 2 -->
-					<div class="tp-caption Concept-SubTitle   tp-resizeme rs-parallaxlevel-2" id="slide-672-layer-4" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['20','20','20','0']" data-fontsize="['40','40','30','20']" data-lineheight="['25','25','20','20']" data-width="none" data-height="none" data-whitespace="nowrap" data-transform_idle="o:1;" data-transform_in="z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;s:1500;e:Power3.easeInOut;" data-transform_out="x:left(R);s:1000;e:Power3.easeIn;s:1000;e:Power3.easeIn;" data-start="1500" data-splitin="none" data-splitout="none" data-responsive_offset="on" style="z-index: 6; white-space: nowrap;text-shadow: 1px 1px #000;"> 
-						En Sierra Nevada
-					</div>
+		<div class="force-full-screen parallax full-screen dark" style="background-image: url({{asset('/img/miramarski/salon-miramar-apartamento-sierra-nevada.jpg')}});background-position: 50% 0; background-size: contain; background-repeat: no-repeat; max-height: 700px">
 
-					<!-- LAYER NR. 3 -->
-					<div class="tp-caption Concept-Title   tp-resizeme rs-parallaxlevel-2 center" id="slide-672-layer-2" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['-50','-40','-40','-60']" data-fontsize="['70','50','40','40']" data-lineheight="['70','70','50','40']" data-width="['none','none','none','400']" data-height="none" data-whitespace="['nowrap','nowrap','nowrap','normal']" data-transform_idle="o:1;" data-transform_in="z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;s:1500;e:Power3.easeInOut;" data-transform_out="x:left(R);s:1000;e:Power3.easeIn;s:1000;e:Power3.easeIn;" data-start="1700" data-splitin="none" data-splitout="none" data-responsive_offset="on" style="z-index: 7; white-space: nowrap;text-align:center;text-shadow: 1px 1px #000;">Apartamentos de lujo a pie de pista
-					</div>
+			<div class="row container-mobile clearfix">
+				<div class="slider-caption slider-caption-center" style="max-width: 85%;">
+					<h2 class="text-white white font-w800" data-animate="fadeInDown" style="text-align:center;text-shadow: 1px 1px #000;letter-spacing: -2px">Apartamentos de lujo en Sierra Nevada</h2>
 
-					<!-- LAYER NR. 4 -->
-					<div class="tp-caption tp-shape tp-shapewrapper  tp-resizeme rs-parallaxlevel-2" id="slide-672-layer-5" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['50','50','43','39']" data-width="80" data-height="2" data-whitespace="nowrap" data-transform_idle="o:1;" data-transform_in="x:[175%];y:0px;z:0;rX:0;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0.01;s:1500;e:Power3.easeOut;" data-transform_out="x:left(R);s:1000;e:Power3.easeIn;s:1000;e:Power3.easeIn;" data-mask_in="x:[-100%];y:0;s:inherit;e:inherit;" data-start="1900" data-responsive_offset="on" style="z-index: 8;background-color:rgba(255, 255, 255, 1.00);border-color:rgba(0, 0, 0, 0.50);">
-					</div>
+					<h3 class="text-white white push-0" data-animate="fadeInUp" data-delay="400" style="text-align:center;text-shadow: 1px 1px #000;font-size: 56px;letter-spacing: -2px">SERVICIO EXCLUSIVO</h3>
 
-					
-				</li>
-				<!-- SLIDE  -->
-				<li data-index="rs-673" class="dark" data-transition="slidehorizontal" data-slotamount="default" data-easein="default" data-easeout="default" data-masterspeed="default" data-thumb="{{asset('/img/miramarski/television-chimenea-apartamento-sierra-nevada.jpg')}}" data-rotate="0" data-saveperformance="off" data-title="Web Show" data-description="">
-					<!-- MAIN IMAGE -->
-					<img src="{{asset('/img/miramarski/television-chimenea-apartamento-sierra-nevada.jpg')}}" alt="" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
-					<!-- LAYERS -->
-
-					<!-- LAYER NR. 2 -->
-					<div class="tp-caption Concept-SubTitle   tp-resizeme rs-parallaxlevel-2" id="slide-673-layer-4" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['-65','-65','-57','-54']" data-fontsize="['25','25','20','20']" data-lineheight="['25','25','20','20']" data-width="none" data-height="none" data-whitespace="nowrap" data-transform_idle="o:1;" data-transform_in="z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;s:1500;e:Power3.easeInOut;" data-transform_out="x:left(R);s:1000;e:Power3.easeIn;s:1000;e:Power3.easeIn;" data-start="1500" data-splitin="none" data-splitout="none" data-responsive_offset="on" style="z-index: 6; white-space: nowrap;text-shadow: 1px 1px #000;">En el mejor Edificio de Sierra Nevada
-					</div>
-
-					<!-- LAYER NR. 3 -->
-					<div class="tp-caption Concept-Title   tp-resizeme rs-parallaxlevel-2 center" id="slide-673-layer-2" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['20','20','0','20']" data-fontsize="['70','70','50','40']" data-lineheight="['70','70','50','40']" data-width="['none','none','none','400']" data-height="none" data-whitespace="['nowrap','nowrap','nowrap','normal']" data-transform_idle="o:1;" data-transform_in="z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;s:1500;e:Power3.easeInOut;" data-transform_out="x:left(R);s:1000;e:Power3.easeIn;s:1000;e:Power3.easeIn;" data-start="1700" data-splitin="none" data-splitout="none" data-responsive_offset="on" style="z-index: 7; white-space: nowrap;text-align:center;text-shadow: 1px 1px #000;">Zona baja<br>5 min de la plaza
-					</div>
-
-					<!-- LAYER NR. 4 -->
-					<div class="tp-caption tp-shape tp-shapewrapper  tp-resizeme rs-parallaxlevel-2" id="slide-673-layer-5" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['50','50','43','39']" data-width="80" data-height="2" data-whitespace="nowrap" data-transform_idle="o:1;" data-transform_in="x:[175%];y:0px;z:0;rX:0;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0.01;s:1500;e:Power3.easeOut;" data-transform_out="x:left(R);s:1000;e:Power3.easeIn;s:1000;e:Power3.easeIn;" data-mask_in="x:[-100%];y:0;s:inherit;e:inherit;" data-start="1900" data-responsive_offset="on" style="z-index: 8;background-color:rgba(255, 255, 255, 1.00);border-color:rgba(0, 0, 0, 0.50);">
-					</div>
-
-					
-				</li>
-				<!-- SLIDE  -->
-				<li data-index="rs-674" data-transition="slidehorizontal" data-slotamount="default" data-easein="default" data-easeout="default" data-masterspeed="default" data-thumb="{{asset('/img/miramarski/salon-miramar-apartamento-sierra-nevada.jpg')}}" data-rotate="0" data-saveperformance="off" data-title="Unlock Power" data-description="">
-					<!-- MAIN IMAGE -->
-					<img src="{{asset('/img/miramarski/salon-miramar-apartamento-sierra-nevada.jpg')}}" alt="" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="5" class="rev-slidebg" data-no-retina>
-					<!-- LAYERS -->
-					<!-- LAYER NR. 2 -->
-					<div class="tp-caption Concept-SubTitle   tp-resizeme rs-parallaxlevel-2" id="slide-674-layer-4" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['-65','-65','-57','-85']" data-fontsize="['50','25','30','30']" data-lineheight="['25','25','20','20']" data-width="none" data-height="none" data-whitespace="nowrap" data-transform_idle="o:1;" data-transform_in="z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;s:1500;e:Power3.easeInOut;" data-transform_out="x:left(R);s:1000;e:Power3.easeIn;s:1000;e:Power3.easeIn;" data-start="1500" data-splitin="none" data-splitout="none" data-responsive_offset="on" style="z-index: 6; white-space: nowrap;text-shadow: 1px 1px #000;">Servicio Exclusivo
-					</div>
-
-					<!-- LAYER NR. 3 -->
-					<div class="tp-caption Concept-Title   tp-resizeme rs-parallaxlevel-2 center" id="slide-674-layer-2" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['20','20','0','20']" data-fontsize="['50','50','40','30']" data-lineheight="['70','70','50','25']" data-width="['none','none','none','400']" data-height="none" data-whitespace="['nowrap','nowrap','nowrap','normal']" data-transform_idle="o:1;" data-transform_in="z:0;rX:0;rY:0;rZ:0;sX:0.9;sY:0.9;skX:0;skY:0;opacity:0;s:1500;e:Power3.easeInOut;" data-transform_out="x:left(R);s:1000;e:Power3.easeIn;s:1000;e:Power3.easeIn;" data-start="1700" data-splitin="none" data-splitout="none" data-responsive_offset="on" style="z-index: 7; white-space: nowrap;text-align:center;text-shadow: 1px 1px #000;">Piscina, gimnasio, parking, guarda esquis, salida directa a las pistas
-					</div>
-
-					<!-- LAYER NR. 4 -->
-					<div class="tp-caption tp-shape tp-shapewrapper  tp-resizeme rs-parallaxlevel-2" id="slide-674-layer-5" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['50','50','43','75']" data-width="80" data-height="2" data-whitespace="nowrap" data-transform_idle="o:1;" data-transform_in="x:[175%];y:0px;z:0;rX:0;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0.01;s:1500;e:Power3.easeOut;" data-transform_out="x:left(R);s:1000;e:Power3.easeIn;s:1000;e:Power3.easeIn;" data-mask_in="x:[-100%];y:0;" data-start="1900" data-responsive_offset="on" style="z-index: 8;background-color:rgba(255, 255, 255, 1.00);border-color:rgba(255, 255, 255, 0.50);">
-					</div>
-
-					
-				</li>
-			</ul>
-			<div style="" class="tp-static-layers">
-				<button class="tp-caption rev-btn  tp-static-layer button button-rounded button-reveal button-large button-red tright  center hvr-grow-shadow menu-booking"		 
-		 			id="slider-15-layer-18"
-					data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-					data-y="['bottom','bottom','bottom','bottom']" data-voffset="['120','80','80','80']"
-					data-width="none"
-					data-height="none"
-					data-whitespace="nowrap"
-
-					data-type="button"
-					data-actions=''
-					data-basealign="slide"
-					data-responsive_offset="off"
-					data-responsive="off"
-					data-startslide="0"
-					data-endslide="2"
-					data-frames='[{"delay":800,"speed":1000,"frame":"0","from":"y:20px;sX:1.5;sY:1.5;opacity:0;fb:10px;","to":"o:1;fb:0;","ease":"Power4.easeOut"},{"delay":"wait","speed":1000,"frame":"999","to":"opacity:0;fb:10px;","ease":"Power4.easeOut"},{"frame":"hover","speed":"0","ease":"Linear.easeNone","to":"o:1;rX:0;rY:0;rZ:0;z:0;fb:0;","style":"c:rgba(0, 0, 0, 1.00);bg:rgba(255, 255, 255, 1.00);"}]'
-					data-textAlign="['inherit','inherit','inherit','inherit']"
-					data-paddingtop="[35,0,0,0]"
-					data-paddingright="[35,35,35,35]"
-					data-paddingbottom="[35,0,0,0]"
-					data-paddingleft="[35,35,35,35]"
-
-					style="z-index: 8;"> <i class="icon-angle-right"></i><span>SOLICITA TU RESERVA</span> </button>
+					<h4 class="text-white white font-w300 push-40" data-animate="fadeInUp" data-delay="600" style="text-align:center;text-shadow: 1px 1px #000;font-size: 42px;">Piscina, gimnasio, parking, guarda esquis, salida directa a las pistas</h4>
+	<!-- 
+					<a  href="#" class="button button-3d button-teal button-large nobottommargin" style="margin: 30px 0 0 10px;">Buy Now</a> -->
+					<p class="text-center">
+						<button class="tp-caption rev-btn  tp-static-layer button button-rounded button-large button-green tright  center hvr-grow-shadow menu-booking" data-animate="fadeInUp" data-delay="1000"
+						style="z-index: 8; ">SOLICITA TU RESERVA
+						</button>
+					</p>
+				</div>
 			</div>
-			<div class="tp-bannertimer tp-bottom" style="visibility: hidden !important;"></div>
+
 		</div>
+
+	</section>
+<?php else: ?>
+<section id="slider" class="section nomargin noborder" style="padding: 0; max-height: 700px">
+
+	<div class="force-full-screen parallax full-screen dark" style="background-image: url({{asset('/img/miramarski/mobile-slide.jpg')}});background-position: 50% 0; background-size: contain; background-repeat: no-repeat; max-height: 700px">
+
+		<div class="row">
+			<div class="col-xs-12" style="padding: 120px 20px 0 20px">
+				<h2 class="text-white white font-w800" data-animate="fadeInDown" style="text-align:center;text-shadow: 1px 1px #000;letter-spacing: -1px ;line-height:1.3;font-size: 26px;">APARTAMENOS DE LUJO EN SIERRA NEVADA</h2>
+
+				<h3 class="text-white white push-0" data-animate="fadeInUp" data-delay="400" style="text-align:center;text-shadow: 1px 1px #000;font-size: 24px;letter-spacing: -2px">SERVICIO EXCLUSIVO</h3>
+
+				<h4 class="text-white white font-w300 push-40" data-animate="fadeInUp" data-delay="600" style="text-align:center;text-shadow: 1px 1px #000;font-size: 22px;">Piscina, gimnasio, parking, guarda esquis, salida directa a las pistas</h4>
+<!-- 
+				<a  href="#" class="button button-3d button-teal button-large nobottommargin" style="margin: 30px 0 0 10px;">Buy Now</a> -->
+				<p class="text-center">
+					<button class="btn btn-lg white menu-booking" data-animate="fadeInUp" data-delay="1000" style="z-index: 8; padding: 15px 10px; background-color: #59BA41; border-radius: 0; padding: 15px 10px; font-size: 14px">SOLICITA TU RESERVA
+					</button>
+				</p>
+			</div>
+		</div>
+
 	</div>
-	<!-- END REVOLUTION SLIDER -->
+
 </section>
+<?php endif; ?>

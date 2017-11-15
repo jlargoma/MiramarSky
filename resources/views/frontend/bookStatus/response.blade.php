@@ -18,14 +18,6 @@
 			<span class="font-w800 white center push-10 font-s18 pull-right"><?php echo ucfirst($name) ?></span>
 		</div>
 		<div class="row push-10">
-			<span class="white push-10 font-s18 font-w300 pull-left">DNI:</span>
-			<span class="font-w800 white center push-10 font-s18 pull-right"><?php echo ucfirst($dni) ?></span>
-		</div>
-		<div class="row push-10">
-			<span class="white push-10 font-s18 font-w300 pull-left">Dirección:</span>
-			<span class="font-w800 white center push-10 font-s14 pull-right"><?php echo ucfirst($address) ?></span>
-		</div>
-		<div class="row push-10">
 			<span class="white push-10 font-s18 font-w300 pull-left">Numº Pers:</span>
 			<span class="font-w800 white center push-10 font-s18 pull-right">
 				<?php echo $pax ?> <?php if ($pax == 1 ): ?>Per<?php else: ?>Pers <?php endif ?>	
@@ -124,34 +116,30 @@
 		var agency        = 0;
 		var book_comments = $('input[name="book_comments"]').val();
 		var lujo 		  = $('input[name="lujo"]').val();
-		var dni 		  = $('input[name="dni"]').val();
-		var address 		  = $('input[name="address"]').val();
 		var type_luxury 		  = $('input[name="type_luxury"]').val();
 
 		var url = $(this).attr('action');
 
 		$.post( url , {
-						_token : _token,
-						newroom : newroom,
-						name : name,
-						email : email,
-						phone : phone,
-						fechas : fechas,
-						pax : pax,
-						nigths : nigths,
-						comments : comments,
-						from : from,
-						parking : <?php echo $parking; ?>,
-						agencia : agencia,
-						agency : agency,
-						book_comments : book_comments,
-						Suplujo : lujo,
-						dni : dni,
-						address : address,
-						type_luxury : type_luxury,
-					}, function(data) {
-				hideLoad();
-				$('#content-response').empty().append(data).fadeIn('300');
+				_token : _token,
+				newroom : newroom,
+				name : name,
+				email : email,
+				phone : phone,
+				fechas : fechas,
+				pax : pax,
+				nigths : nigths,
+				comments : comments,
+				from : from,
+				parking : <?php echo $parking; ?>,
+				agencia : agencia,
+				agency : agency,
+				book_comments : book_comments,
+				Suplujo : lujo,
+				type_luxury : type_luxury,
+			}, function(data) {
+		hideLoad();
+		$('#content-response').empty().append(data).fadeIn('300');
 				
 		});
 

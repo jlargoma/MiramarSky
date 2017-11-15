@@ -506,14 +506,10 @@
                 </div>
                 <div class="row" style="margin-top: 20px;">
                     <h2 class="text-center" style="font-size: 24px; line-height: 15px">
-                        <?php $text = "En este link podrás realizar el pago de la señal por el 25% del total. <br> En el momento en que efectúes el pago, te legará un email confirmando tu reserva - https://www.apartamentosierranevada.net/reservas/stripe/pagos/".base64_encode($book->id);
-                        ?>
-                            
-                            <a href="whatsapp://send?text=<?php echo $text; ?>" data-action="share/whatsapp/share" >
-                                <i class="fa fa-whatsapp fa-3x" aria-hidden="true"></i>
-                            </a>
-                
-                        
+                        <span style="font-size: 20px;">En este link podrás realizar el pago de la señal por el 25% del total.<br> En el momento en que efectúes el pago, te legará un email confirmando tu reserva</span><br>
+                        <a target="_blank" href="https://www.apartamentosierranevada.net/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>">
+                            https://www.apartamentosierranevada.net/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>     
+                        </a>
                     </h2>
                 </div>
                 <div class="row">
@@ -861,7 +857,7 @@
                     </div>
             </div>
                 <div class="row">
-                   <h2 class="text-center" style="font-size: 24px; line-height: 18px">
+                    <h2 class="text-center" style="font-size: 24px; line-height: 18px">
                         <?php $text = "En este link podrás realizar el pago de la señal por el 25% del total. <br> En el momento en que efectúes el pago, te legará un email confirmando tu reserva - https://www.apartamentosierranevada.net/reservas/stripe/pagos/".base64_encode($book->id);
                         ?>
                             

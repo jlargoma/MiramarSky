@@ -86,12 +86,10 @@
 	    	var luxury   = $('input:radio[name="luxury"]:checked').val();
 	    	var parking  = $('input:radio[name="parking"]:checked').val();
 	    	var comment  = $('textarea[name="comment"]').val();
-	    	var dni  = $('input[name="dni"]').val();
-	    	var address  = $('input[name="address"]').val();
 
 	    	var url = $(this).attr('action');
 
-	    	$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   fechas : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment, dni : dni, address : address,}, function(data) {
+	    	$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   fechas : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
 	    		
 	    		$('#content-book-response .back').empty();
 	    		$('#content-book-response .back').append(data);
