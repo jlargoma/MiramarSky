@@ -59,35 +59,37 @@
 		<p class="white push-10 font-s18 font-w300 text-center" style="line-height: 1">
 			Precio total de la solicitud de reserva<br> <span class="font-w800" style="font-size: 48px;"><?php echo number_format($total ,0,'','.') ?>€</span>
 		</p>
-		<div class="col-md-7 col-xs-12">
-			<form method="post" action="{{url('/admin/reservas/create')}}" id="confirm-book">
-	    		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-	    		<input type="hidden" name="newroom" value="<?php echo $id_apto; ?>">
-	    		<input type="hidden" name="name" value="<?php echo $name; ?>">
-	    		<input type="hidden" name="email" value="<?php echo $email; ?>">
-	    		<input type="hidden" name="phone" value="<?php echo $phone; ?>">
-	    		<input type="hidden" name="fechas" value="<?php echo $start->copy()->format('d M, y') ?> - <?php echo $finish->copy()->format('d M, y') ?>">
-	    		<input type="hidden" name="pax" value="<?php echo $pax; ?>">
-	    		<input type="hidden" name="nigths" value="<?php echo $nigths; ?>">
-	    		<input type="hidden" name="comments" value="<?php echo $comment; ?>">
-	    		<input type="hidden" name="from" value="frontend">
-	    		<input type="hidden" name="parking" value="<?php echo $parking; ?>">
-	    		<input type="hidden" name="agencia" value="0">
-	    		<input type="hidden" name="lujo" value="<?php echo $luxury ?>">
-	    		<input type="hidden" name="dni" value="<?php echo $dni ?>">
-	    		<input type="hidden" name="address" value="<?php echo $address ?>">
-	    		<input type="hidden" name="book_comments" value="">
-				<?php if($luxury > 0): ?>
-					<input type="hidden" name="type_luxury" value="1">
-				<?php else: ?>
-					<input type="hidden" name="type_luxury" value="2">
-				<?php endif; ?>
-				<button type="submit" class="button button-rounded button-reveal button-large button-green tright  center hvr-grow-shadow " style="line-height: 1.3;letter-spacing: 1px; width: 100%;"><i class="icon-angle-right"></i><span>SOLICITAR RESERVA</span></button>
-			</form>
-		</div>
-        <div class="col-md-5 col-xs-12">
-        	<button onclick="unflip()" class="button button-rounded button-reveal button-large button-red tright center hvr-grow-shadow "><i class="icon-angle-right"></i><span>volver</span></button>
-        </div>
+		<div class="row">
+			<div class="col-md-7 col-xs-7 not-padding-mobile">
+				<form method="post" action="{{url('/admin/reservas/create')}}" id="confirm-book">
+		    		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+		    		<input type="hidden" name="newroom" value="<?php echo $id_apto; ?>">
+		    		<input type="hidden" name="name" value="<?php echo $name; ?>">
+		    		<input type="hidden" name="email" value="<?php echo $email; ?>">
+		    		<input type="hidden" name="phone" value="<?php echo $phone; ?>">
+		    		<input type="hidden" name="fechas" value="<?php echo $start->copy()->format('d M, y') ?> - <?php echo $finish->copy()->format('d M, y') ?>">
+		    		<input type="hidden" name="pax" value="<?php echo $pax; ?>">
+		    		<input type="hidden" name="nigths" value="<?php echo $nigths; ?>">
+		    		<input type="hidden" name="comments" value="<?php echo $comment; ?>">
+		    		<input type="hidden" name="from" value="frontend">
+		    		<input type="hidden" name="parking" value="<?php echo $parking; ?>">
+		    		<input type="hidden" name="agencia" value="0">
+		    		<input type="hidden" name="lujo" value="<?php echo $luxury ?>">
+		    		<input type="hidden" name="dni" value="<?php echo $dni ?>">
+		    		<input type="hidden" name="address" value="<?php echo $address ?>">
+		    		<input type="hidden" name="book_comments" value="">
+					<?php if($luxury > 0): ?>
+						<input type="hidden" name="type_luxury" value="1">
+					<?php else: ?>
+						<input type="hidden" name="type_luxury" value="2">
+					<?php endif; ?>
+					<button type="submit" class="button button-rounded button-reveal button-large button-green tright center hvr-grow-shadow font-s16" style="letter-spacing: 1px;"><i class="icon-angle-right"></i><span style=" font-size: 16px">SOLICITAR</span></button>
+				</form>
+			</div>
+	        <div class="col-md-5 col-xs-5">
+	        	<button onclick="unflip()" class="button button-rounded button-reveal button-large button-red tright center hvr-grow-shadow "><i class="icon-angle-right"></i><span>volver</span></button>
+	        </div>
+    	</div>
     </div>
 </div>
 <script type="text/javascript">
