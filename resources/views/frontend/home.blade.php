@@ -156,7 +156,7 @@
 						<div class="row">
 							<div class="col-md-6 col-md-offset-3">
 								<div class="row" id="content-book-response">
-									<div class="front" style="min-height: 550px;">
+									<div class="front" style="min-height: 600px;">
 										<div class="col-xs-12">
 											<h3 class="text-center white">FORMULARIO DE RESERVA</h3>
 										</div>
@@ -164,7 +164,7 @@
 	   										@include('frontend._formBook')
 	   									</div>
 									</div>
-									<div class="back" style="background-color: #3F51B5; min-height: 550px;">
+									<div class="back" style="background-color: #3F51B5; min-height: 600px;">
 										
 									</div>
 								</div>
@@ -508,7 +508,7 @@
 							<div class="row">
 								<div class="col-md-6 col-md-offset-3">
 									<div class="row" id="content-book-response">
-										<div class="front" style="min-height: 550px;">
+										<div class="front" style="min-height: 700px!important;">
 											<div class="col-xs-12">
 												<h3 class="text-center white">FORMULARIO DE RESERVA</h3>
 											</div>
@@ -516,7 +516,7 @@
 		   										@include('frontend._formBook')
 		   									</div>
 										</div>
-										<div class="back degradado-background1" style="min-height: 550px;">
+										<div class="back degradado-background1" style="min-height: 700px!important;">
 											
 										</div>
 									</div>

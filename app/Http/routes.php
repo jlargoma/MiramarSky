@@ -44,6 +44,10 @@ Route::get('/el-tiempo','HomeController@tiempo');
 
 Route::post('/getPriceBook','HomeController@getPriceBook');
 Route::get('/getFormBook','HomeController@form');
+Route::get('/getCitiesByCountry','HomeController@getCitiesByCountry');
+
+
+
 
 Route::post('admin/reservas/create' , 'BookController@create');
 

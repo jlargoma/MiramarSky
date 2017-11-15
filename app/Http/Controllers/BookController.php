@@ -331,6 +331,10 @@ class BookController extends Controller
                 $customer->name    = $request->input('name');
                 $customer->email   = $request->input('email');
                 $customer->phone   = $request->input('phone');
+                $customer->DNI     = ($request->input('dni'))?$request->input('dni'):"";
+                $customer->address = ($request->input('address'))?$request->input('address'):"";
+                $customer->country = ($request->input('country'))?$request->input('country'):"";
+                $customer->city    = ($request->input('city'))?$request->input('city'):"";
 
                 if($customer->save()){
                     //Creacion de la reserva
@@ -495,6 +499,14 @@ class BookController extends Controller
         $extraPrice = 0 ;
         $extraCost  = 0;
 
+
+        $customer          = \App\Customers::find($request->input('customer_id'));
+        $customer->DNI     = ($request->input('dni'))?$request->input('dni'):"";
+        $customer->address = ($request->input('address'))?$request->input('address'):"";
+        $customer->country = ($request->input('country'))?$request->input('country'):"";
+        $customer->city    = ($request->input('city'))?$request->input('city'):"";
+
+        $customer->save();
 
 
         if ( \App\Book::existDateOverrride($start,$finish,$request->input('newroom'), $id) ) {

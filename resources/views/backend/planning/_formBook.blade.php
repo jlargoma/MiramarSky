@@ -75,6 +75,26 @@
                             <label for="phone">Telefono</label> 
                             <input class="form-control cliente" type="text" name="phone"  value="<?php echo $request->phone; ?>">
                         </div>  
+                        <div class="col-md-3 col-xs-12 push-10">
+                            <label for="dni">DNI</label> 
+                            <input class="form-control cliente" type="text" name="dni">
+                        </div>
+                        <div class="col-md-3 col-xs-12 push-10">
+                            <label for="address">DIRECCION</label> 
+                            <input class="form-control cliente" type="text" name="address" >
+                        </div>
+                        <div class="col-md-3 col-xs-12 push-10">
+                            <label for="country">PAÍS</label> 
+                            <select class="form-control country minimal"  name="country">
+                                <option>--Seleccione país --</option>
+                                <?php foreach (\App\Countries::orderBy('code', 'ASC')->get() as $country): ?>
+                                    <option value="<?php echo $country->code ?>">
+                                        <?php echo $country->country ?>
+                                    </option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>  
+                        <div class="col-md-3 col-xs-12 push-10 content-cities"></div> 
                     </div>
                     <!-- DATOS DE LA RESERVA -->
                     <div class="col-xs-12 bg-white padding-block">
@@ -484,6 +504,13 @@
                 console.log(beneficio);
                 $('.beneficio').empty;
                 $('.beneficio').val(beneficio);
+            });
+
+            $('.country').change(function(event) {
+                var code = $(this).val();
+                $.get('/getCitiesByCountry', {code: code}, function(data) {
+                    $('.content-cities').empty().append(data);
+                });
             });
 
         });

@@ -89,8 +89,9 @@
             </div>
             <div class="form-group col-sm-12 col-xs-12 col-md-6 col-lg-6">
                 <label for="direccion">*Direccion</label>
-                <input type="text" class="sm-form-control" name="address"  placeholder="Direccion..." maxlength="9" required="" aria-label="Escribe tu Direccion">
+                <input type="text" class="sm-form-control" name="address"  placeholder="Direccion..." required="" aria-label="Escribe tu Direccion">
             </div>
+            <div style="clear: both;"></div>
             <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12">
                 <div class="input-group col-sm-12 col-xs-12 col-md-12 col-lg-12">
                     <textarea class="sm-form-control" name="comment" rows="3" placeholder="Comentanos aqui tus dudas o inquietudes." id="coment" maxlength="200" aria-label="Comentanos aqui tus dudas o inquietudes."></textarea>
@@ -182,7 +183,7 @@
                 </div>
                 <div class="form-group col-sm-12 col-xs-12 col-md-6 col-lg-6">
                     <label for="direccion">*Direccion</label>
-                    <input type="text" class="sm-form-control" name="address" id="direccion" placeholder="Direccion..." maxlength="9" required="" aria-label="Escribe tu Direccion">
+                    <input type="text" class="sm-form-control" name="address" id="direccion" placeholder="Direccion..." required="" aria-label="Escribe tu Direccion">
                 </div>
                 <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12">
                     <div class="input-group col-sm-12 col-xs-12 col-md-12 col-lg-12">

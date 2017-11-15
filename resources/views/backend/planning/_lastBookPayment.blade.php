@@ -122,12 +122,7 @@
                                     </b>           
                                 </td>
                                 <td class="text-center" style="color: black;padding: 5px!important;">
-                                    
-                                    <?php if (isset($payment[$book->id])): ?>
-                                        <?php echo  $payment[$book->id]." €" ?>
-                                    <?php else: ?>
-                                        -----
-                                    <?php endif ?>
+                                     <b><?php echo $book->total_price ?>€</b>
                                 </td>
                                 <td class="text-center" style="color: black;">  
                                     <?php if (isset($payment[$book->id])): ?>

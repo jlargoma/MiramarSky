@@ -18,7 +18,7 @@
         <table class="table table-condensed tableAlert" style="margin-top: 0;">
             <tbody>
             <?php foreach ($notifications as $key => $notify): ?>
-                <?php if ($notify->book->type_book != 3 || $notify->book->type_book != 5 || $notify->book->type_book != 6 ): ?>
+                <?php if ($notify->book->type_book == 1 || $notify->book->type_book == 2 || $notify->book->type_book == 7  || $notify->book->type_book == 8): ?>
                 <tr>
 
                     <td class="text-center" style="padding: 5px 0!important">
@@ -65,7 +65,7 @@
             <table class="table tableAlert" style="margin-top: 0; margin-bottom: 20px;">
                 <tbody>
                 <?php foreach ($notifications as $key => $notify): ?>
-                    <?php if ($notify->book->type_book != 3 || $notify->book->type_book != 5 || $notify->book->type_book != 6 ): ?>
+                    <?php if ($notify->book->type_book == 1 || $notify->book->type_book == 2 || $notify->book->type_book == 7  || $notify->book->type_book == 8): ?>
                     <tr>
                         <td class="text-center" style="padding: 5px!important">
                             <input type="checkbox" class="alertsChecks" data-id="<?php echo $notify->id ?>"  name = "alertsChecks[]">

@@ -44,8 +44,8 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group col-sm-12 col-xs-12 col-md-6 col-lg-6 white">
-                                        <label for="name">*Nombre</label>
-                                        <input type="text" class="form-control" name="name" id="cal-nombre" placeholder="Nombre..." maxlength="40" required="" aria-label="Escribe tu nombre">
+                                        <label for="name">Nombre</label>
+                                        <input type="text" class="form-control" name="name" id="cal-nombre" placeholder="Nombre..." maxlength="40" aria-label="Escribe tu nombre">
                                     </div>
 
                                     <div class="form-group col-sm-12 col-xs-6 col-md-6 white">

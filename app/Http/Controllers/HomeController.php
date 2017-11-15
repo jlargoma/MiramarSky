@@ -397,9 +397,6 @@ class HomeController extends Controller
         $total =  $price + $priceParking + $limp + $luxury;  
         $dni = $request->input('dni');
         $address = $request->input('address');
-        // echo "<pre>";
-        // print_r($request->input()); echo "<br>";
-        // die();
 
         if ($seasonActive != 0) {
             return view('frontend.bookStatus.response', [
@@ -487,6 +484,13 @@ class HomeController extends Controller
                                         'mobile' => new Mobile() ,
                                         'aptos'  => $aptos,
                                     ]);
+    }
+
+    public function getCitiesByCountry(Request $request)
+    {
+        
+        return view('frontend.responses._citiesByCountry', [ 'cities'  => \App\Cities::where('code_country', $request->code )->orderBy('city', 'ASC')->get() ]);
+
     }
  
 }

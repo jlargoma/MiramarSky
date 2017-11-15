@@ -162,6 +162,36 @@
                             <div class="col-md-4 push-10">
                                 <label for="phone">Telefono</label> 
                                 <input class="form-control cliente" type="text" name="phone" value="<?php echo $book->customer->phone ?>" data-id="<?php echo $book->customer->id ?>"> 
+                            </div> 
+                            <div class="col-md-3 col-xs-12 push-10">
+                                <label for="dni">DNI</label> 
+                                <input class="form-control cliente" type="text" name="dni" value="<?php echo $book->customer->DNI ?>">
+                            </div>
+                            <div class="col-md-3 col-xs-12 push-10">
+                                <label for="address">DIRECCION</label> 
+                                <input class="form-control cliente" type="text" name="address"  value="<?php echo $book->customer->address ?>">
+                            </div>
+                            <div class="col-md-3 col-xs-12 push-10">
+                                <label for="country">PAÍS</label> 
+                                <select class="form-control country minimal"  name="country">
+                                    <option>--Seleccione país --</option>
+                                    <?php foreach (\App\Countries::orderBy('code', 'ASC')->get() as $country): ?>
+                                        <option value="<?php echo $country->code ?>" <?php if ($country->code == $book->customer->country){echo "selected";} ?>>
+                                            <?php echo $country->country ?>
+                                        </option>
+                                    <?php endforeach;?>
+                                </select>
+                            </div>  
+                            <div class="col-md-3 col-xs-12 push-10 content-cities">
+                                <label for="city">CIUDAD</label>
+                                <select class="form-control city minimal"  name="city">
+                                    <option>--Seleccione ciudad --</option>
+                                    <?php foreach (\App\Cities::where('code_country', $book->customer->country)->orderBy('city', 'ASC')->get() as $city): ?>
+                                        <option value="<?php echo $city->id ?>" <?php if ($city->id == $book->customer->city){ echo "selected";} ?>>
+                                            <?php echo $city->city ?>
+                                        </option>
+                                    <?php endforeach;?>
+                                </select>
                             </div>  
                         </div>
                         <!-- DATOS DE LA RESERVA -->
@@ -513,6 +543,36 @@
                         <div class="col-xs-12 push-10">
                             <label for="phone">Telefono</label> 
                             <input class="form-control cliente" type="text" name="phone" value="<?php echo $book->customer->phone ?>" data-id="<?php echo $book->customer->id ?>"> 
+                        </div>  
+                        <div class="col-xs-12 push-10">
+                            <label for="dni">DNI</label> 
+                            <input class="form-control cliente" type="text" name="dni" value="<?php echo $book->customer->DNI ?>">
+                        </div>
+                        <div class="col-xs-12 push-10">
+                            <label for="address">DIRECCION</label> 
+                            <input class="form-control cliente" type="text" name="address"  value="<?php echo $book->customer->address ?>">
+                        </div>
+                        <div class="col-xs-12 push-10">
+                            <label for="country">PAÍS</label> 
+                            <select class="form-control country minimal"  name="country">
+                                <option>--Seleccione país --</option>
+                                <?php foreach (\App\Countries::orderBy('code', 'ASC')->get() as $country): ?>
+                                    <option value="<?php echo $country->code ?>" <?php if ($country->code == $book->customer->country){echo "selected";} ?>>
+                                        <?php echo $country->country ?>
+                                    </option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>  
+                        <div class="col-xs-12 push-10 content-cities">
+                            <label for="city">CIUDAD</label>
+                            <select class="form-control city minimal"  name="city">
+                                <option>--Seleccione ciudad --</option>
+                                <?php foreach (\App\Cities::where('code_country', $book->customer->country)->orderBy('city', 'ASC')->get() as $city): ?>
+                                    <option value="<?php echo $city->id ?>" <?php if ($city->id == $book->customer->city){ echo "selected";} ?>>
+                                        <?php echo $city->city ?>
+                                    </option>
+                                <?php endforeach;?>
+                            </select>
                         </div>  
                     </div>
                     <!-- DATOS DE LA RESERVA -->
@@ -1242,6 +1302,12 @@
             
         });
 
+        $('.country').change(function(event) {
+            var code = $(this).val();
+            $.get('/getCitiesByCountry', {code: code}, function(data) {
+                $('.content-cities').empty().append(data);
+            });
+        });
 
 </script>
 @endsection

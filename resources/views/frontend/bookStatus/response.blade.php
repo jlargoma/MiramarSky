@@ -13,42 +13,42 @@
 	</div>
 	<div class="col-xs-12 col-md-12 not-padding">
 				
-		<div class="row push-20">
+		<div class="row push-10">
 			<span class="white push-10 font-s18 font-w300 pull-left">Nombre:</span>
 			<span class="font-w800 white center push-10 font-s18 pull-right"><?php echo ucfirst($name) ?></span>
 		</div>
-		<div class="row push-20">
+		<div class="row push-10">
 			<span class="white push-10 font-s18 font-w300 pull-left">DNI:</span>
 			<span class="font-w800 white center push-10 font-s18 pull-right"><?php echo ucfirst($dni) ?></span>
 		</div>
-		<div class="row push-20">
+		<div class="row push-10">
 			<span class="white push-10 font-s18 font-w300 pull-left">Dirección:</span>
-			<span class="font-w800 white center push-10 font-s18 pull-right"><?php echo ucfirst($address) ?></span>
+			<span class="font-w800 white center push-10 font-s14 pull-right"><?php echo ucfirst($address) ?></span>
 		</div>
-		<div class="row push-20">
+		<div class="row push-10">
 			<span class="white push-10 font-s18 font-w300 pull-left">Numº Pers:</span>
 			<span class="font-w800 white center push-10 font-s18 pull-right">
 				<?php echo $pax ?> <?php if ($pax == 1 ): ?>Per<?php else: ?>Pers <?php endif ?>	
 			</span>
 		</div>
 
-		<div class="row push-20">
+		<div class="row push-10">
 			<span class="white push-10 font-s18 font-w300 pull-left">Apartamento:</span>
 			<span class="font-w800 white center push-10 font-s18 font-w300 pull-right"><?php echo $apto ?></span>
 		</div>
-		<div class="row push-20">
+		<div class="row push-10">
 			<span class="white push-10 font-s18 font-w300 pull-left">Noches:</span>
 			<span class="white center push-10 font-s18 font-w300 pull-right"><span class="font-w800"><?php echo $nigths ?></span> Noches</span>
 		</div>
-		<div class="row push-20">
+		<div class="row push-10">
 			<span class="white push-10 font-s18 font-w300 pull-left">Fechas:</span> 
 			<span class="white push-10 font-s18 font-w300 pull-right"><b><?php echo $start->copy()->format('d-M') ?> - <?php echo $finish->copy()->format('d-M') ?></b></span>
 		</div>
-		<div class="row push-20">
+		<div class="row push-10">
 			<span class="white push-10 font-s18 font-w300 pull-left">Sup. Lujo:<?php if($luxury > 0): ?>(SI)<?php else: ?>(NO)<?php endif; ?></span>
 			<span class="white center push-10 font-s18 font-w300 pull-right"><span class="font-w800"><?php echo number_format($luxury,0,'','.')?>€</span></span>
 		</div>
-		<div class="row push-20">
+		<div class="row push-10">
 			<span class="white push-10 font-s18 font-w300 pull-left">Parking:<?php if($priceParking > 0): ?>(SI)<?php else: ?>(NO)<?php endif; ?></span>
 			<span class="white center push-10 font-s18 font-w300 pull-right"><span class="font-w800"><?php echo number_format($priceParking,0,'','.')?>€</span></span>
 		</div>
@@ -56,7 +56,7 @@
 	<div class="line" style="margin-bottom: 10px;"></div>
 
 	<div class="form-group col-sm-12 col-xs-12 col-md-12 text-center">
-		<p class="white push-10 font-s18 font-w300 text-center">
+		<p class="white push-10 font-s18 font-w300 text-center" style="line-height: 1">
 			Precio total de la solicitud de reserva<br> <span class="font-w800" style="font-size: 48px;"><?php echo number_format($total ,0,'','.') ?>€</span>
 		</p>
 		<div class="col-md-7 col-xs-12">
@@ -86,7 +86,7 @@
 			</form>
 		</div>
         <div class="col-md-5 col-xs-12">
-        	<button onclick="unflip()" class="button button-rounded button-reveal button-large button-red tright  center hvr-grow-shadow "><i class="icon-angle-right"></i><span>volver</span></button>
+        	<button onclick="unflip()" class="button button-rounded button-reveal button-large button-red tright center hvr-grow-shadow "><i class="icon-angle-right"></i><span>volver</span></button>
         </div>
     </div>
 </div>
