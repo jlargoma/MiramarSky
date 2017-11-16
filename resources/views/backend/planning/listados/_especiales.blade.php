@@ -70,11 +70,11 @@
                                     ?>
                                 </td>
                                 <td class ="text-center"><?php echo $book->nigths ?></td>
-                                <td class ="text-center"><?php echo $book->total_price."€" ?><br>
-                                                        <?php if (isset($payment[$book->id])): ?>
-                                                            <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
-                                                        <?php else: ?>
-                                                        <?php endif ?>
+                                <td class ="text-center"><?php echo round($book->total_price)."€" ?><br>
+                                        <?php if (isset($payment[$book->id])): ?>
+                                            <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
+                                        <?php else: ?>
+                                        <?php endif ?>
                                 </td>
                                 <td class ="text-center">
                                     <select class="status form-control minimal" data-id="<?php echo $book->id ?>" >

@@ -22,12 +22,15 @@
                 <tbody>
                     <?php foreach ($arrayBooks["pagadas"] as $book): ?>
                         <tr>
+
                             <td class="text-center">
                                 <?php if ($book->agency != 0): ?>
                                     <img style="width: 20px;margin: 0 auto;" src="/pages/booking.png" align="center" />
                                 <?php endif ?>
                             </td>
                             <td class ="text-center" style="padding: 10px 15px!important">
+                               
+
                                 <?php if (isset($payment[$book->id])): ?>
                                     <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>
                                 <?php else: ?>
@@ -73,7 +76,7 @@
                             
                             <td class ="text-center">
                                 <div class="col-md-6">
-                                    <?php echo $book->total_price."€" ?><br>
+                                    <?php echo round($book->total_price)."€" ?><br>
                                     <?php if (isset($payment[$book->id])): ?>
                                         <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
                                     <?php else: ?>
@@ -145,7 +148,14 @@
                         <?php endif ?>
                     </td>
                     <td class="text-center">
-                        <a href="{{url ('/admin/reservas/update')}}/<?php echo $pagada->id ?>"><?php echo $pagada->customer->name ?></a>
+                        <a href="{{url ('/admin/reservas/update')}}/<?php echo $pagada->id ?>">
+                            <?php echo $pagada->customer->name ?>
+                        </a>
+                        <?php if (isset($payment[$book->id])): ?>
+                            <span class="bg-danger text-white" style="padding: 1px 7px; margin-left:5px;border-radius: 100%;">
+                                <i class="fa fa-eur" aria-hidden="true"></i>
+                            </span>
+                        <?php endif; ?>
                     </td>
                     <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$pagada->start)->formatLocalized('%d %b') ?></td>
                     <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$pagada->finish)->formatLocalized('%d %b') ?></td>
@@ -177,7 +187,7 @@
                     </td>
                     <td class="text-center"><?php echo $pagada->nigths ?></td>
                     <td class="text-center">
-                        <?php echo $pagada->total_price."€" ?><br>
+                        <?php echo round($pagada->total_price)."€" ?><br>
                         <?php if (isset($payment[$pagada->id])): ?>
                             <?php echo "<p style='color:red'>".$payment[$pagada->id]."</p>" ?>
                         <?php else: ?>

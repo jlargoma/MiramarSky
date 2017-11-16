@@ -94,7 +94,14 @@
                                 <?php endforeach;?>
                             </select>
                         </div>  
-                        <div class="col-md-3 col-xs-12 push-10 content-cities"></div> 
+                        <div class="col-md-3 col-xs-12 push-10">
+                            <label for="city">CIUDAD</label>
+                            <select class="form-control country minimal" name="city">
+                            <?php foreach (\App\Cities::all() as $city): ?>
+                                <option value="<?php echo $city->id ?>"><?php echo $city->city ?></option>
+                            <?php endforeach ?>
+                            </select>
+                        </div> 
                     </div>
                     <!-- DATOS DE LA RESERVA -->
                     <div class="col-xs-12 bg-white padding-block">
@@ -173,16 +180,6 @@
                                 <input type="number" class="agencia form-control" name="agencia" value="<?php echo $request->agencia ?>">
                             </div>
                             <div style="clear: both;"></div>
-                            <!-- <div class="col-md-6">
-                                <label>Extras</label>
-                                <select class="full-width form-control select2-hidden-accessible " data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true" style="cursor: pointer">
-                                    <?php // foreach ($extras as $extra): ?>
-                                        <option value="<?php // echo $extra->id ?>">
-                                            <?php // echo $extra->name ?>
-                                        </option>
-                                    <?php // endforeach ?>
-                                </select>
-                            </div> -->
                         </div>
                         <div class="col-md-8 col-xs-6 not-padding push-20">
                             <div class="col-md-4 col-xs-12 text-center" style="background-color: #0c685f;">
@@ -506,13 +503,7 @@
                 $('.beneficio').val(beneficio);
             });
 
-            $('.country').change(function(event) {
-                var code = $(this).val();
-                $.get('/getCitiesByCountry', {code: code}, function(data) {
-                    $('.content-cities').empty().append(data);
-                });
-            });
-
+           
         });
 </script>
 @endsection

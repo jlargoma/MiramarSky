@@ -89,7 +89,7 @@
 
                             <td class ="text-center" ><?php echo $book->nigths ?></td>
 
-                            <td class ="text-center" ><?php echo $book->total_price."€" ?><br>
+                            <td class ="text-center" ><?php echo round($book->total_price)."€" ?><br>
                             </td>
 
                             <td class ="text-center"  >

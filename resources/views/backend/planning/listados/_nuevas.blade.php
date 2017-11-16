@@ -83,13 +83,20 @@
                     <select class="form-control country minimal"  name="country">
                         <option>--Seleccione país --</option>
                         <?php foreach (\App\Countries::orderBy('code', 'ASC')->get() as $country): ?>
-                            <option value="<?php echo $country->code ?>">
+                            <option value="<?php echo $country->code ?>" <?php if( $country->code == 'ES'){ echo "selected";} ?>>
                                 <?php echo $country->country ?>
                             </option>
                         <?php endforeach;?>
                     </select>
                 </div>  
-                <div class="col-md-3 col-xs-12 push-10 content-cities"></div> 
+                <div class="col-md-3 col-xs-12 push-10 content-cities">
+                    <label for="city">CIUDAD</label>
+                    <select class="form-control country minimal" name="city">
+                    <?php foreach (\App\Cities::all() as $city): ?>
+                        <option value="<?php echo $city->id ?>"><?php echo $city->city ?></option>
+                    <?php endforeach ?>
+                    </select>
+                </div> 
             </div>
             <!-- DATOS DE LA RESERVA -->
             <div class="col-xs-12 bg-white padding-block">
@@ -525,12 +532,5 @@
                 $('.beneficio').val(beneficio);
             });
 
-
-            $('.country').change(function(event) {
-                var code = $(this).val();
-                $.get('/getCitiesByCountry', {code: code}, function(data) {
-                    $('.content-cities').empty().append(data);
-                });
-            });
         });
 </script>

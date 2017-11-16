@@ -8,7 +8,24 @@
 
 @section('externalScripts') 
 
-	
+	<style type="text/css">
+		.name-back{
+			background-color: rgba(72,176,247,0.5)!important;
+		}
+		.name-back input{
+			background-color: transparent;
+			color: black;
+			font-weight: 800;
+		}
+		.ocupation-back{
+			background-color: rgba(72,176,247,0.5)!important;
+		}
+		.ocupation-back input{
+			background-color: transparent;
+			color: black;
+			font-weight: 800;
+		}
+	</style>
 @endsection
 
 @section('content')

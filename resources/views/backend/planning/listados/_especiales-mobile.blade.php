@@ -46,7 +46,7 @@
 					</select>
 				</td>
 				<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $especial->nigths ?></td>
-				<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo $especial->total_price ?> €</td>
+				<td class="text-center sm-p-t-10 sm-p-b-10"><?php echo round($especial->total_price) ?> €</td>
 				<td class="text-center sm-p-t-10 sm-p-b-10 sm-p-l-10 sm-p-r-10">
 					<select class="status form-control minimal" data-id="<?php echo $especial->id ?>">
 

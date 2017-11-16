@@ -6,6 +6,11 @@
     $mobile = new Mobile();
 ?>
 <?php if ( !$mobile->isMobile() ): ?>
+    <style type="text/css">
+        @media screen and (min-width: 998px){
+            .summary-text{ width: 22%; }
+        }
+    </style>
     <div class="col-md-12 pull-right push-20">
         <h2 class="text-left">
             Indicadores de ocupación
@@ -13,7 +18,7 @@
         @include('backend.sales._tableSummaryBoxes', ['totales' => $totales, 'books' => $books, 'data' => $data])
     </div>
     <div class="col-xs-12">
-        <div class="col-md-3 col-xs-12">
+        <div class="col-md-3 col-xs-12 summary-text">
             <h2 class="text-center font-w800">
                 Resumen liquidación
             </h2>
@@ -146,48 +151,118 @@
                         <td class="text-center">
                             <?php echo $book->nigths ?>     
                         </td>
-                        <td class="text-center">
-                            <b><?php echo number_format($book->total_price,2,',','.') ?> €</b>      
+                        <td class="text-center pagos bi">
+                            <?php if ($book->total_price > 0): ?>
+                                <b><?php echo number_format($book->total_price,2,',','.') ?> €</b>      
+                            <?php else: ?>
+                                <b>----</b> 
+                            <?php endif ?>
+                            
                         </td>
 
                         <td class="text-center pagos bi">
-                            <?php echo number_format($book->getPayment(2),2,',','.'); ?> €
+                            <?php if ( $book->getPayment(2) > 0): ?>
+                                <?php echo number_format($book->getPayment(2),2,',','.'); ?> €    
+                            <?php else: ?>
+                                <b>----</b>
+                            <?php endif ?>
+                            
                         </td>
-                        <td class="text-center pagos bi">
-                            <?php echo number_format($book->getPayment(3),2,',','.'); ?> €
+                        <td class="text-center pagos ">
+                            <?php if ( $book->getPayment(3) > 0): ?>
+                                <?php echo number_format($book->getPayment(3),2,',','.'); ?> €    
+                            <?php else: ?>
+                                <b>----</b>
+                            <?php endif ?>
+                            
                         </td>
                         <td class="text-center pagos">
-                            <?php echo number_format($book->getPayment(0),2,',','.'); ?> €
+                            <?php if ( $book->getPayment(0) > 0): ?>
+                                <?php echo number_format($book->getPayment(0),2,',','.'); ?> €    
+                            <?php else: ?>
+                                <b>----</b>
+                            <?php endif ?>
+                            
                         </td>
                         <td class="text-center pagos">
-                            <?php echo number_format($book->getPayment(1),2,',','.'); ?> €
+                            <?php if ( $book->getPayment(1) > 0): ?>
+                                <?php echo number_format($book->getPayment(1),2,',','.'); ?> €    
+                            <?php else: ?>
+                                <b>----</b>
+                            <?php endif ?>
+                            
                         </td>
                         <td class="text-center pagos pendiente">
-                            <?php echo number_format(($book->total_price - $book->getPayment(4)),2,',','.')." €"; ?>
+                            <?php if ( ($book->total_price - $book->getPayment(4)) == 0 ): ?>
+                                <b>----</b>
+                            <?php else: ?>
+                                <?php echo number_format(($book->total_price - $book->getPayment(4)),2,',','.')." €"; ?>
+                            <?php endif ?>
+                            
                         </td>
-                        <td class="text-center beneficio bi" style="border-left: 1px solid black;"><b>
-                            <?php echo number_format($book->total_ben,2,',','.') ?> €</b>
+                        <td class="text-center beneficio bi" style="border-left: 1px solid black;">
+                            <?php if ( $book->total_ben > 0): ?>
+                                <b><?php echo number_format($book->total_ben,2,',','.') ?> €</b>    
+                            <?php else: ?>
+                               <b>----</b>
+                            <?php endif ?>
+                            
                         </td>
                         <td class="text-center beneficio bf">
-                            <?php echo number_format($book->inc_percent,0)." %" ?>
+                            <?php if ( $book->inc_percent > 0): ?>
+                                <?php echo number_format($book->inc_percent,0)." %" ?>    
+                            <?php else: ?>
+                                ----
+                            <?php endif ?>
+                            
                         </td>
                         <td class="text-center coste bi ">
-                            <b><?php echo number_format( $book->cost_total,2,',','.')?> €</b>
+                            <?php if ( $book->cost_total > 0): ?>
+                                <b><?php echo number_format( $book->cost_total,2,',','.')?> €</b>    
+                            <?php else: ?>
+                               <b>----</b>
+                            <?php endif ?>
+                            
                         </td>
                         <td class="text-center coste">
-                            <?php echo number_format($book->cost_apto,2,',','.')?> €
+                            <?php if ( $book->cost_apto > 0): ?>
+                                <?php echo number_format($book->cost_apto,2,',','.')?> €    
+                            <?php else: ?>
+                                ----
+                            <?php endif ?>
+                            
                         </td>
                         <td class="text-center coste">
-                            <?php echo number_format($book->cost_park,2,',','.')?> €
+                            <?php if ( $book->cost_park > 0): ?>
+                                <?php echo number_format($book->cost_park,2,',','.')?> €    
+                            <?php else: ?>
+                                ----
+                            <?php endif ?>
+                            
                         </td>
                         <td class="text-center coste" >
-                            <?php echo number_format($book->cost_lujo,2,',','.')?> €
+                            <?php if ( $book->cost_lujo > 0): ?>
+                                <?php echo number_format($book->cost_lujo,2,',','.')?> €    
+                            <?php else: ?>
+                                ----
+                            <?php endif ?>
+                            
                         </td>
-                        <td class="text-center coste">      
-                            <?php echo number_format($book->cost_limp,2,',','.') ?>€
+                        <td class="text-center coste"> 
+                            <?php if ( $book->cost_limp > 0): ?>
+                                <?php echo number_format($book->cost_limp,2,',','.') ?>€    
+                            <?php else: ?>
+                                ----
+                            <?php endif ?>
+                            
                         </td>
-                        <td class="text-center coste bf">   
-                            <?php echo number_format($book->PVPAgencia,2,',','.') ?>€
+                        <td class="text-center coste bf"> 
+                            <?php if ( $book->PVPAgencia > 0): ?>
+                                <?php echo number_format($book->PVPAgencia,2,',','.') ?>€    
+                            <?php else: ?>
+                                ----
+                            <?php endif ?>
+                            
                         </td>
                         <td class="text-center">
                             <?php echo number_format($book->ben_jorge,2,',','.') ?>

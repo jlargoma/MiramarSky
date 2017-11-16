@@ -70,10 +70,10 @@
 			<?php foreach ($rooms as $room): ?>
 				<tr>
 					<td class="text-center padding-room hidden"><?php echo $room->id?></td>
-					<td class="text-center padding-room">
+					<td class="text-center padding-room name-back">
 						<input class="name name-<?php echo $room->name?>" type="text" name="name" data-id="<?php echo $room->id ?>" value="<?php echo $room->name?>" style="width: 100%;text-align: center;border-style: none none ">
 					</td>
-					<td class="text-center padding-room">
+					<td class="text-center padding-room name-back">
 						<input class="nameRoom nameRoom-<?php echo $room->nameRoom?>" type="text" name="nameRoom" data-id="<?php echo $room->id ?>" value="<?php echo $room->nameRoom?>" style="width: 100%;text-align: center;border-style: none none ">
 					</td>
 					<td class="text-center padding-room">
@@ -82,10 +82,10 @@
 					<td class="text-center padding-room">
 						<input class="taquilla taquilla-<?php echo $room->locker?>" type="text" name="taquilla" data-id="<?php echo $room->id ?>" value="<?php echo $room->locker?>" style="width: 100%;text-align: center;border-style: none none ">
 					</td>
-					<td class="text-center padding-room">
+					<td class="text-center padding-room ocupation-back">
 						<input class="editable minOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->minOcu?>" style="width: 100%;text-align: center;border-style: none none ">
 					</td>  
-					<td class="text-center padding-room">
+					<td class="text-center padding-room ocupation-back">
 						<input class="editable maxOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->maxOcu?>" style="width: 100%;text-align: center;border-style: none none">
 					</td> 
 					<td class="text-center padding-room">
@@ -159,10 +159,10 @@
 			<?php foreach ($roomsdesc as $room): ?>
 				<tr>
 					<td class="text-center padding-room hidden"><?php echo $room->id?></td>
-					<td class="text-center padding-room">
+					<td class="text-center padding-room name-back">
 						<input class="name name-<?php echo $room->name?>" type="text" name="name" data-id="<?php echo $room->id ?>" value="<?php echo $room->name?>" style="width: 100%;text-align: center;border-style: none none ">
 					</td>
-					<td class="text-center padding-room">
+					<td class="text-center padding-room name-back">
 						<input class="nameRoom nameRoom-<?php echo $room->nameRoom?>" type="text" name="nameRoom" data-id="<?php echo $room->id ?>" value="<?php echo $room->nameRoom?>" style="width: 100%;text-align: center;border-style: none none ">
 					</td>
 					<td class="text-center padding-room">
@@ -171,10 +171,10 @@
 					<td class="text-center padding-room">
 						<input class="taquilla taquilla-<?php echo $room->locker?>" type="text" name="taquilla" data-id="<?php echo $room->id ?>" value="<?php echo $room->locker?>" style="width: 100%;text-align: center;border-style: none none ">
 					</td>
-					<td class="text-center padding-room">
+					<td class="text-center padding-room ocupation-back">
 						<input class="editable minOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->minOcu?>" style="width: 100%;text-align: center;border-style: none none ">
 					</td>  
-					<td class="text-center padding-room">
+					<td class="text-center padding-room ocupation-back">
 						<input class="editable maxOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->maxOcu?>" style="width: 100%;text-align: center;border-style: none none">
 					</td> 
 					<td class="text-center padding-room">
@@ -272,10 +272,10 @@
 			<?php foreach ($rooms as $room): ?>
 				<tr>
 					<td class="text-center padding-room hidden"><?php echo $room->id?></td>
-					<td class="text-center padding-room">
+					<td class="text-center padding-room name-back">
 						<input class="name name-<?php echo $room->name?>" type="text" name="name" data-id="<?php echo $room->id ?>" value="<?php echo $room->name?>" style="width: 100%;text-align: center;border-style: none none ">
 					</td>
-					<td class="text-center padding-room">
+					<td class="text-center padding-room name-back">
 						<input class="nameRoom nameRoom-<?php echo $room->nameRoom?>" type="text" name="nameRoom" data-id="<?php echo $room->id ?>" value="<?php echo $room->nameRoom?>" style="width: 100%;text-align: center;border-style: none none ">
 					</td>
 					<td class="text-center padding-room">
@@ -284,10 +284,10 @@
 					<td class="text-center padding-room">
 						<input class="taquilla taquilla-<?php echo $room->locker?>" type="text" name="taquilla" data-id="<?php echo $room->id ?>" value="<?php echo $room->locker?>" style="width: 100%;text-align: center;border-style: none none ">
 					</td>
-					<td class="text-center padding-room">
+					<td class="text-center padding-room ocupation-back">
 						<input class="editable minOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->minOcu?>" style="width: 100%;text-align: center;border-style: none none ">
 					</td>  
-					<td class="text-center padding-room">
+					<td class="text-center padding-room ocupation-back">
 						<input class="editable maxOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->maxOcu?>" style="width: 100%;text-align: center;border-style: none none">
 					</td> 
 					<td class="text-center padding-room">
@@ -361,10 +361,10 @@
 			<?php foreach ($roomsdesc as $room): ?>
 				<tr>
 					<td class="text-center padding-room hidden"><?php echo $room->id?></td>
-					<td class="text-center padding-room">
+					<td class="text-center padding-room name-back">
 						<input class="name name-<?php echo $room->name?>" type="text" name="name" data-id="<?php echo $room->id ?>" value="<?php echo $room->name?>" style="width: 100%;text-align: center;border-style: none none ">
 					</td>
-					<td class="text-center padding-room">
+					<td class="text-center padding-room name-back">
 						<input class="nameRoom nameRoom-<?php echo $room->nameRoom?>" type="text" name="nameRoom" data-id="<?php echo $room->id ?>" value="<?php echo $room->nameRoom?>" style="width: 100%;text-align: center;border-style: none none ">
 					</td>
 					<td class="text-center padding-room">
@@ -373,10 +373,10 @@
 					<td class="text-center padding-room">
 						<input class="taquilla taquilla-<?php echo $room->locker?>" type="text" name="taquilla" data-id="<?php echo $room->id ?>" value="<?php echo $room->locker?>" style="width: 100%;text-align: center;border-style: none none ">
 					</td>
-					<td class="text-center padding-room">
+					<td class="text-center padding-room ocupation-back">
 						<input class="editable minOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->minOcu?>" style="width: 100%;text-align: center;border-style: none none ">
 					</td>  
-					<td class="text-center padding-room">
+					<td class="text-center padding-room ocupation-back">
 						<input class="editable maxOcu-<?php echo $room->id?>" type="text" name="cost" data-id="<?php echo $room->id ?>" value="<?php echo $room->maxOcu?>" style="width: 100%;text-align: center;border-style: none none">
 					</td> 
 					<td class="text-center padding-room">

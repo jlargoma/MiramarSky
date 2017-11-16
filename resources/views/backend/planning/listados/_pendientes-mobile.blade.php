@@ -5,7 +5,8 @@ setlocale(LC_TIME, "es_ES");
 
 <table class="table  table-responsive table-striped" style="margin-top: 0;">
 	<thead>
-		<th class="Reservado-table text-white text-center" colspan="2">Nombre</th>
+		<th class="Reservado-table text-white text-center">&nbsp;</th>
+		<th class="Reservado-table text-white text-center">Nombre</th>
 		<th class="Reservado-table text-white text-center" style="min-width:50px">In</th>
 		<th class="Reservado-table text-white text-center" style="min-width:50px ">Out</th>
 		<th class="Reservado-table text-white text-center">Pax</th>
@@ -31,7 +32,7 @@ setlocale(LC_TIME, "es_ES");
         		<?php else: ?>
         			<td class="text-center">&nbsp;</td>
             	<?php endif ?>
-				<td class="text-center" <?php if ($nueva->agency != 0): echo 'colspan="2"'; endif ?>>
+				<td class="text-center">
 					<a title="<?php echo $nueva->customer->name ?> - <?php echo $nueva->customer->email ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $nueva->id ?>"><?php echo $nueva->customer->name ?></a>
 				</td>
 				<td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$nueva->start)->formatLocalized('%d %b') ?></td>
@@ -61,7 +62,7 @@ setlocale(LC_TIME, "es_ES");
 					</select>
 				</td>
 				<td class="text-center"><?php echo $nueva->nigths ?></td>
-				<td class="text-center"><?php echo $nueva->total_price ?> €</td>
+				<td class="text-center"><?php echo round($nueva->total_price) ?> €</td>
 				<td class="text-center sm-p-l-10 sm-p-r-10">
 					<select class="status form-control minimal" data-id="<?php echo $nueva->id ?>">
 

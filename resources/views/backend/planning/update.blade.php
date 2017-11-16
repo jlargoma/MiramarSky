@@ -518,6 +518,14 @@
             </div>
         </div>
     <?php else: ?>
+        <style type="text/css">
+            @media screen and (max-width: 767px){
+                .daterangepicker {
+                    position: fixed;
+                    top: 8%!important;
+                }
+            }
+        </style>
         <div class="row">
             <div class="col-xs-12">
                 <!-- DATOS DE LA RESERVA -->
@@ -1302,13 +1310,6 @@
                 });
             }
             
-        });
-
-        $('.country').change(function(event) {
-            var code = $(this).val();
-            $.get('/getCitiesByCountry', {code: code}, function(data) {
-                $('.content-cities').empty().append(data);
-            });
         });
 
 </script>
