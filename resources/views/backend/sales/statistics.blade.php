@@ -26,6 +26,13 @@
 	       <canvas id="barChart" style="width: 100%; height: 250px;"></canvas>
 	   </div>
 	</div>
+	<div class="col-md-2">
+		<table class="table table-hover demo-table-search table-responsive " >
+			<thead>
+				<th> Ingresos Temporada</th>
+			</thead>
+		</table>
+	</div>
 	<div class="col-md-3 pull-right">
 	    <div class="row">
 	        <div class="col-md-12">
@@ -157,7 +164,7 @@
 		    <div>
 		        <table class="table table-hover demo-table-search table-responsive " >
 		            <thead>
-		                <th class="text-center bg-complete text-white" colspan="7">Ingresos de la temporada <?php //echo $inicio->copy()->format('Y') ?>-<?php //echo $inicio->copy()->addYear()->format('Y') ?></th>
+		                <th class="text-center bg-complete text-white" colspan="7">Ingresos de la temporada <?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?></th>
 		            </thead>
 		            <thead>
 		                <th class="text-center bg-complete text-white">&nbsp;</th>
@@ -188,7 +195,7 @@
 		                    <td class="text-center p-t-5 p-b-5"><?php //echo number_format(array_sum($ventas["Ben"]),2,',','.')?></td>
 		                </tr>
 		                <thead>
-		                    <th colspan="7" class="ingresos_temp">Ingresos de la temporada <?php //echo $inicio->copy()->subYear()->format('Y') ?>-<?php //echo $inicio->copy()->format('Y') ?> </th>
+		                    <th colspan="7" class="ingresos_temp">Ingresos de la temporada <?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?> </th>
 		                </thead>
 		                <tr>
 		                    <th class="text-center ingresos_temp text-white"></th>
@@ -218,7 +225,7 @@
 		                    <td class="text-center"><?php //echo number_format(array_sum($ventasOld["Ben"]),2,',','.') ?></td>
 		                </tr>
 		                <thead>
-		                    <th colspan="7" class="comparativa bg-primary text-center text-white" >Comparativa de la temporada <?php //echo $inicio->copy()->subYear()->format('Y') ?>-<?php //echo $inicio->copy()->format('Y') ?> </th>
+		                    <th colspan="7" class="comparativa bg-primary text-center text-white" >Comparativa de la temporada <?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?> </th>
 		                </thead>
 		                <tr>
 		                    <th class="text-center  bg-primary text-white"></th>
@@ -364,8 +371,8 @@
 
     var data = {
         labels: [
-                    <?php foreach ($arrayTotales as $key => $value): ?>
-                        <?php echo "'".$key."'," ?>
+                    <?php foreach ($años as $key => $value): ?>
+                        <?php echo "'".$value."'," ?>
                     <?php endforeach ?>
                 ],
         datasets: [
@@ -410,7 +417,7 @@
     };
 
     var myBarChart = new Chart('barChart', {
-        type: 'bar',
+        type: 'line',
         data: data,
     });
 </script>

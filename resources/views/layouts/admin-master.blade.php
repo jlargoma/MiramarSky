@@ -87,7 +87,7 @@
 			        	<li class="{{ Request::path() == 'admin/pagos-propietarios'  ? 'active' : '' }}"><a href="{{ url('admin/pagos-propietarios') }}" class="detailed">Pagos a propietarios</a></li>
 						<?php if ( Auth::user()->role == "admin" ): ?>
 							
-							<li class="{{ Request::path() == 'admin/estadisticas'  ? 'active' : '' }}"><a href="{{ url('admin/estadisticas') }}" class="detailed">Estadisticas</a></li>
+							<li class="{{ Request::path() == 'admin/contabilidad'  ? 'active' : '' }}"><a href="{{ url('admin/contabilidad') }}" class="detailed">Contabilidad</a></li>
 
 							<li class="{{ Request::path() == 'admin/perdidas-ganancias'  ? 'active' : '' }}"><a href="{{ url('admin/perdidas-ganancias') }}" class="detailed">P & G</a></li>
 

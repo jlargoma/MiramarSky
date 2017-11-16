@@ -226,6 +226,7 @@ class LiquidacionController extends Controller
             $inicio = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
         }
 
+
         $arrayMonth       = [11 => "Noviembre",12 =>"Diciembre",1 => "Enero", 2 => "Febrero",3 => "Marzo",4=> "Abril"];
         $arrayStadisticas = array();
         $arrayYear        = array();
@@ -904,13 +905,8 @@ class LiquidacionController extends Controller
                                                     'data' => $data
                                                 ]);
 
-        }
-
-
-        
-        
+        }  
     }
-
 
     public function searchByRoom(Request $request)
     {
