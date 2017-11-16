@@ -99,7 +99,7 @@ class Book extends Model
     //Para poner nombre a la agencia//
     static function getAgency($agency)
     {
-        $array = [0=>"" ,1 =>"Booking", 2 =>"Trivago"];
+        $array = [0=>"" ,1 =>"Booking", 2 =>"Trivago", 3=> "Bed&Snow", 4=> "AirBnb"];
 
         return $agency = $array[$agency];
     }

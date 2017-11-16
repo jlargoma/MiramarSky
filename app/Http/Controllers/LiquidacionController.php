@@ -235,10 +235,7 @@ class LiquidacionController extends Controller
         $arrayBooks       = array();
         $arrayPrices      = array();
         $arrayTotal       = 0;
-        $arrayCobro       = [
-                                "banco" ,
-                                "metalico"
-                            ];
+        $arrayCobro       = array();
         //Para sacar las reservas por temporada
         foreach ($books as $book) {
             $fecha = Carbon::CreateFromFormat('Y-m-d',$book->start);
@@ -272,7 +269,7 @@ class LiquidacionController extends Controller
             $arrayBooks[$año][$mes][] = $book;
         }
 
-        $cobros = \App\Payments::where('datePayment','>=',$inicio->copy()->format('Y-m-d'))->where('datePayment','<=',$inicio->copy()->addYear()->format('Y-m-d'))->get();
+        $cobros = \App\Payments::all();
 
         //Pasa sacar los metodos de pago
         foreach ($cobros as $key => $cobro) {
@@ -284,23 +281,11 @@ class LiquidacionController extends Controller
                 $año = ($fecha->format('Y'))."-".($fecha->format('Y')+1);
             }
 
-            if ($fecha->copy()->format('m') < 11 && $fecha->copy()->format('m') >= 5) {
-                $mes = 11;
+
+            if (isset($arrayCobro[$año])) {
+                $arrayCobro[$año] += $cobro->import;
             }else{
-                $mes  = $fecha->copy()->format('n');
-            }
-            if ($cobro->type == 0 || $cobro->type == 1) {
-                if (isset($arrayCobro["banco"][$mes])) {
-                    $arrayCobro["banco"][$mes] += $cobro->import;
-                }else{
-                    $arrayCobro["banco"][$mes] = $cobro->import;
-                }
-            }else{
-                if (isset($arrayCobro["metalico"][$mes])) {
-                    $arrayCobro["metalico"][$mes] += $cobro->import;
-                }else{
-                    $arrayCobro["metalico"][$mes] = $cobro->import;
-                }
+                $arrayCobro[$año] = $cobro->import;
             }
         }
 

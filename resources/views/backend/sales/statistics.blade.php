@@ -6,9 +6,19 @@
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+
+
 @endsection
 
 @section('content')
+
+<style>
+	.table-ingresos , .table-ingresos >tbody> tr > td{
+		background-color: #92B6E2!important;
+		margin: 0px ;
+		padding: 5px 8px;
+	}
+</style>
 <div class="container-fluid padding-5 sm-padding-10">
 	<div class="row bg-white"></div>
 	<div class="col-md-12 col-xs-12 push-20">
@@ -26,11 +36,34 @@
 	       <canvas id="barChart" style="width: 100%; height: 250px;"></canvas>
 	   </div>
 	</div>
+	<pre>
+		<?php print_r($arrayCobro) ?>
+	</pre>
 	<div class="col-md-2">
-		<table class="table table-hover demo-table-search table-responsive " >
-			<thead>
-				<th> Ingresos Temporada</th>
+		<table class="table table-hover demo-table-search table-responsive table-ingresos" style="background-color: #92B6E2">
+			<thead style="background-color: #92B6E2">
+				<th colspan="2" class="text-white text-center"> Ingresos Temporada</th>
 			</thead>
+			<tbody style="background-color: #92B6E2">
+				<tr>
+					<td class="text-white">Ventas Temporada</td>
+					<td class="text-white">
+						<?php if ($date->copy()->format('n') >= 9): ?>
+						    <?php echo number_format($arrayTotales[$date->copy()->format('Y')],2,',','.') ?> €
+						<?php else: ?>
+						    <?php echo number_format($arrayTotales[$date->copy()->subYear()->format('Y')],2,',','.') ?> €
+						<?php endif ?>  
+					</td>
+				</tr>
+				<tr>
+					<td class="text-white">Cobrado Temporada</td>
+					<td class="text-white"></td>
+				</tr>
+				<tr>
+					<td class="text-white">Pendiente Cobro</td>
+					<td class="text-white">Ventas Temporada</td>
+				</tr>
+			</tbody>
 		</table>
 	</div>
 	<div class="col-md-3 pull-right">
