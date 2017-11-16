@@ -29,7 +29,6 @@
 			<?php endif ?>	
 		</div>
 
-
 		<div class="col-md-1 col-xs-2">
 	    	<?php if ($url == "gastos"): ?>
 	    		<button class="btn btn-md" style="width: 100%; background-color: #6600ff;pointer-events: none" disabled>

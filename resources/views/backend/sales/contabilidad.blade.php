@@ -4,7 +4,7 @@
 ?>
 @extends('layouts.admin-master')
 
-@section('title') Estadísticas  @endsection
+@section('title') Contabilidad  @endsection
 
 @section('externalScripts') 
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -433,6 +433,9 @@
 		        </table> -->
 		    </div>
 		    <div class="col-md-12">
+		    	<pre>
+		    		<?php print_r($arrayCobro) ?>
+		    	</pre>
     	        <table class="table  table-condensed table-striped" style="margin-top: 0;">
     				<thead>
     					<th class="text-center bg-complete text-white">Apto</th>
@@ -564,7 +567,7 @@
 	$('#fecha').change(function(event) {
 	    
 	    var year = $(this).val();
-	    window.location = '/admin/estadisticas/'+year;
+	    window.location = '/admin/contabilidad/'+year;
 
 	});
 
