@@ -433,9 +433,7 @@
 		        </table> -->
 		    </div>
 		    <div class="col-md-12">
-		    	<pre>
-		    		<?php print_r($arrayCobro) ?>
-		    	</pre>
+
     	        <table class="table  table-condensed table-striped" style="margin-top: 0;">
     				<thead>
     					<th class="text-center bg-complete text-white">Apto</th>
