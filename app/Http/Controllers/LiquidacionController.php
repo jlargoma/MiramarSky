@@ -236,6 +236,7 @@ class LiquidacionController extends Controller
         $arrayPrices      = array();
         $arrayTotal       = 0;
         $arrayCobro       = array();
+        $arrayMetodo      = array();
         //Para sacar las reservas por temporada
         foreach ($books as $book) {
             $fecha = Carbon::CreateFromFormat('Y-m-d',$book->start);
@@ -271,23 +272,37 @@ class LiquidacionController extends Controller
 
         $cobros = \App\Payments::all();
 
+
         //Pasa sacar los metodos de pago
         foreach ($cobros as $key => $cobro) {
             $fecha = Carbon::CreateFromFormat('Y-m-d',$cobro->datePayment);
             
-            if ($fecha->format('m')< 11 ) {
+            if ($fecha->format('n')<= 8  ) {
                 $año = ($fecha->format('Y')-1)."-".($fecha->format('Y'));
             }else{
                 $año = ($fecha->format('Y'))."-".($fecha->format('Y')+1);
             }
-
 
             if (isset($arrayCobro[$año])) {
                 $arrayCobro[$año] += $cobro->import;
             }else{
                 $arrayCobro[$año] = $cobro->import;
             }
+            if ($cobro->type == 0 || $cobro->type == 1) {
+                if (isset($arrayMetodo["metalico"][$año])) {
+                    $arrayMetodo["metalico"][$año] += $cobro->import;
+                }else{
+                    $arrayMetodo["metalico"][$año] = $cobro->import;
+                }
+            }else{
+                if (isset($arrayMetodo["banco"][$año])) {
+                    $arrayMetodo["banco"][$año] += $cobro->import;
+                }else{
+                    $arrayMetodo["banco"][$año] = $cobro->import;
+                }
+            }
         }
+
 
         //Para sacar los nombres de la temporada
         foreach ($arrayBooks as $key => $value){
@@ -312,6 +327,11 @@ class LiquidacionController extends Controller
 
         foreach ($books as $book) {
             $fecha = Carbon::createFromFormat('Y-m-d',$book->start);
+            if ($fecha->copy()->format('n') >= 5 && $fecha->copy()->format('n') <= 11) {
+                $mes  = 12;
+            }else{
+                $mes = $fecha->copy()->format('n');
+            }
             if ($fecha->copy()->format('n') >= 9) {
                 if(isset($arrayTotales[$fecha->copy()->format('Y')])){
                     $arrayTotales[$fecha->copy()->format('Y')] += $book->total_price;
@@ -361,6 +381,7 @@ class LiquidacionController extends Controller
                                                     'arrayPrices'  => $arrayPrices,
                                                     'arrayCobro'   => $arrayCobro,
                                                     'arrayTotal'   => $arrayTotal,
+                                                    'arrayMetodo'   => $arrayMetodo,
                                                     'años'         => $años,
                                                     'totalRoom'    => $totalRoom,
                                                     'totalAño'     => $totalAño,
