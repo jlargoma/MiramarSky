@@ -481,4 +481,18 @@ class RoomsController extends Controller
         return view('backend/rooms/_updateFormRoom',[ 'room' => \App\Rooms::find($request->id) ]);
     }
 
+    
+
+    public function searchByName(Request $request)
+    {
+        $rooms     = \App\Rooms::where('state',1)->where('name', 'LIKE', '%'.$request->searchString.'%')->orderBy('order','ASC')->get();
+        $roomsdesc = \App\Rooms::where('state',0)->where('name', 'LIKE', '%'.$request->searchString.'%')->orderBy('order','ASC')->get();
+
+        return view('backend/rooms/_tableRooms',[ 
+                                                    'rooms' => $rooms,
+                                                    'roomsdesc' => $roomsdesc,
+                                                    'show'      => 1,
+                                                ]);
+    }
+
 }

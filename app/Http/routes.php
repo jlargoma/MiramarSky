@@ -270,7 +270,9 @@ Route::group(['middleware' => 'authAdmin'], function () {
 						                    'show'      => 1,
 										]);
 	});
-
+	
+	Route::get('/admin/rooms/search/searchByName', 'RoomsController@searchByName');
+	
 	Route::get('/admin/rooms/getUpdateForm', 'RoomsController@getUpdateForm');
 
 

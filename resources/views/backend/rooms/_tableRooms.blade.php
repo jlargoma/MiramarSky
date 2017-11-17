@@ -141,7 +141,102 @@
 		</tbody>
 	</table>
 <?php else: ?>
-	
+	<div class="table-responsive">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th class ="text-center bg-complete text-white font-s12" style="width: 5%">#</th>
+					<th class ="text-center bg-complete text-white font-s12" style="width: 5%;">APTO</th>
+					<th class ="text-center bg-complete text-white font-s12" style="width: 8%">Lujo</th>
+					<th class ="text-center bg-complete text-white font-s12" style="width: 10%">Estado</th>
+					<th class ="text-center bg-complete text-white font-s12" style="width: 10%">Booking</th>
+					<th class ="text-center bg-complete text-white font-s12" style="width: 30%">Acc</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($rooms as $room): ?>
+					<tr>
+						<td class="text-center not-padding" >
+							<input class="orden order-<?php echo $room->id?>" type="number" name="orden" data-id="<?php echo $room->id ?>" value="<?php echo $room->order?>" style="width: 100%;text-align: center;border-style: none none">
+						</td>
+						<td class="text-left not-padding" >
+							<a class="aptos" data-id="<?php echo $room->id?>" style="cursor: pointer;">
+								<?php echo substr($room->name, 0, 8)?> (<?php echo substr($room->nameRoom, 0, 5)?>)
+							</a>
+						</td>
+						<td class="text-center not-padding" >
+							<span class="input-group-addon bg-transparent">
+								<input type="checkbox" class="editable" data-id="<?php echo $room->id ?>" name="luxury" data-init-plugin="switchery" data-size="small" data-color="primary" <?php echo ($room->luxury == 0) ? "" : "checked" ?>/>
+							</span>
+						</td>
+						<td class="text-center not-padding" >
+							<span class="input-group-addon bg-transparent">
+								<input type="checkbox" class="estado" data-id="<?php echo $room->id ?>" name="state" data-init-plugin="switchery" data-size="small" data-color="success" <?php echo ($room->state == 0) ? "" : "checked" ?>> 
+							</span>
+						</td>
+						<td class="text-center not-padding" >
+							<span class="input-group-addon bg-transparent">
+								<input type="checkbox" class="assingToBooking" data-id="<?php echo $room->id ?>" name="assingToBooking" data-init-plugin="switchery" data-size="small" data-color="danger" <?php echo ( $room->isAssingToBooking() ) ? "checked" : "" ?>> 
+							</span>
+						</td>
+						<td class="text-center not-padding" >
+							<a type="button" class="btn btn-default btn-xs" href="{{ url ('/fotos') }}/<?php echo $room->nameRoom ?>" target="_blank" data-original-title="Enlace de Apartamento" data-toggle="tooltip">
+								<i class="fa fa-paperclip"></i>
+							</a>
+
+							<button class="btn btn-default btn-emiling btn-xs" type="button" data-toggle="modal" data-target="#modalEmailing" data-id="<?php echo $room->user->id ?>">
+								<i class=" pg-mail"></i>
+							</button>
+
+							<button type="button" class="btn btn-success btn-xs uploadFile" data-toggle="modal" data-target="#modalFiles" data-id="<?php echo $room->nameRoom ?>" title="Subir imagenes aptos">
+								<i class="fa fa-upload" aria-hidden="true"></i>
+							</button>                    
+						</td>
+					</tr>
+				<?php endforeach ?>
+				<?php foreach ($roomsdesc as $room): ?>
+					<tr>
+						<td class="text-center not-padding" >
+							<?php echo $room->order?>
+						</td>
+						<td class="text-left not-padding" >
+							<a class="aptos" data-id="<?php echo $room->id?>" style="cursor: pointer;">
+								<?php echo $room->name?> (<?php echo $room->nameRoom?>)
+							</a>
+						</td>
+						<td class="text-center not-padding" >
+							<span class="input-group-addon bg-transparent">
+								<input type="checkbox" class="editable" data-id="<?php echo $room->id ?>" name="luxury" data-init-plugin="switchery" data-size="small" data-color="primary" <?php echo ($room->luxury == 0) ? "" : "checked" ?>/>
+							</span>
+						</td>
+						<td class="text-center not-padding" >
+							<span class="input-group-addon bg-transparent">
+								<input type="checkbox" class="estado" data-id="<?php echo $room->id ?>" name="state" data-init-plugin="switchery" data-size="small" data-color="success" <?php echo ($room->state == 0) ? "" : "checked" ?>> 
+							</span>
+						</td>
+						<td class="text-center not-padding" >
+							<span class="input-group-addon bg-transparent">
+								<input type="checkbox" class="assingToBooking" data-id="<?php echo $room->id ?>" name="assingToBooking" data-init-plugin="switchery" data-size="small" data-color="danger" <?php echo ( $room->isAssingToBooking() ) ? "checked" : "" ?>> 
+							</span>
+						</td>
+						<td class="text-center not-padding" >
+							<a type="button" class="btn btn-default btn-sm" href="{{ url ('/fotos') }}/<?php echo $room->nameRoom ?>" target="_blank" data-original-title="Enlace de Apartamento" data-toggle="tooltip">
+								<i class="fa fa-paperclip"></i>
+							</a>
+
+							<button class="btn btn-default btn-emiling btn-sm" type="button" data-toggle="modal" data-target="#modalEmailing" data-id="<?php echo $room->user->id ?>">
+								<i class=" pg-mail"></i>
+							</button>
+
+							<button type="button" class="btn btn-success btn-sm uploadFile" data-toggle="modal" data-target="#modalFiles" data-id="<?php echo $room->nameRoom ?>" title="Subir imagenes aptos">
+								<i class="fa fa-upload" aria-hidden="true"></i>
+							</button>                    
+						</td>
+					</tr>
+				<?php endforeach ?>
+			</tbody>
+		</table>
+	</div>
 
 <?php endif ?>
 <script type="text/javascript">
@@ -219,30 +314,34 @@
 		});
 
 	});
-	$('.parking').change(function(event) {
-		var id = $(this).attr('data-id');
-		var parking = $(this).val();
-
-		$.get('/admin/apartamentos/update-parking', {  id: id, parking: parking}, function(data) {
-			$('.content-table-rooms').empty().load('/admin/apartamentos/rooms/getTableRooms');
-			alert('Cambiado!');
-		});
-
-	});
-	$('.taquilla').change(function(event) {
-		var id = $(this).attr('data-id');
-		var taquilla = $(this).val();
-
-		$.get('/admin/apartamentos/update-taquilla', {  id: id, taquilla: taquilla}, function(data) {
-			$('.content-table-rooms').empty().load('/admin/apartamentos/rooms/getTableRooms');
-
-			alert('Cambiado!');
-		});
-
-	});
 </script>
 <?php if(isset($show) && !empty($show)): ?>
-<script src="/assets/plugins/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+	$('.btn-emiling').click(function(event) {
+		var id = $(this).attr('data-id');
+		$('.modal-content.emailing').empty().load('/admin/apartamentos/email/'+id);
+	});
+	<?php if (!$mobile->isMobile()): ?>
+		$('.aptos').click(function(event) {
+			var id = $(this).attr('data-id');
+
+			$.get('/admin/rooms/getUpdateForm', {id: id}, function(data) {
+				$('.contentUpdateForm').empty().append(data)
+			});
+		});
+	<?php else: ?>
+		$('.aptos').click(function(event) {
+			var id = $(this).attr('data-id');
+
+			$.get('/admin/rooms/getUpdateForm', {id: id}, function(data) {
+				$('.contentUpdateForm').empty().append(data);
+				$('html,body').animate({
+				        scrollTop: $(".contentUpdateForm").offset().top},
+		        'slow');
+			});
+		});
+	<?php endif ?>
+</script>
 <script src="/assets/plugins/switchery/js/switchery.min.js" type="text/javascript"></script>
 <script src="/pages/js/pages.min.js"></script>
 <?php endif; ?>
