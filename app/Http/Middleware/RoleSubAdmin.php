@@ -17,7 +17,7 @@ class RoleSubAdmin
     public function handle($request, Closure $next)
     {
         if (!Auth::guest()) {
-            if (!preg_match('/subadmin/i', Auth::user()->role) && !preg_match('/admin/i', Auth::user()->role) ) {
+            if (!preg_match('/subadmin/i', Auth::user()->role) && !preg_match('/admin/i', Auth::user()->role) && !preg_match('/agente/i', Auth::user()->role)) {
                 $room = \App\Rooms::where('owned', Auth::user()->id)->first();
                 return redirect()->guest('/admin/propietario/'.$room->nameRoom);
             }

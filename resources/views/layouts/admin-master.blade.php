@@ -66,7 +66,7 @@
 	</head>
 	<body class="fixed-header   windows desktop pace-done sidebar-visible menu-pin" style="padding-top:0px!important">
 	<!-- <body class="fixed-header dashboard  windows desktop sidebar-visible pace-done menu-pin"> -->
-		<?php if (preg_match('/subadmin/i', Auth::user()->role) || preg_match('/admin/i', Auth::user()->role)): ?>
+		<?php if (preg_match('/subadmin/i', Auth::user()->role) || preg_match('/admin/i', Auth::user()->role) || preg_match('/agente/i', Auth::user()->role)): ?>
 			<nav class="navbar navbar-inverse" role="navigation">
 			    <div class="navbar-header">
 			        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -80,11 +80,14 @@
 
 			        	<li class="{{ Request::path() == 'admin/reservas' ? 'active' : '' }}"><a href="{{ url('admin/reservas') }}" class="detailed" >Reservas</a></li>
 
-			        	<li class="{{ Request::path() == 'admin/liquidacion'  ? 'active' : '' }}"><a href="{{ url('admin/liquidacion') }}" class="detailed">Liquidacion por reservas</a></li>
+						<?php if ( Auth::user()->role == "admin" ||  Auth::user()->role == "subadmin"): ?>
+				        	<li class="{{ Request::path() == 'admin/liquidacion'  ? 'active' : '' }}"><a href="{{ url('admin/liquidacion') }}" class="detailed">Liquidacion por reservas</a></li>
 
-			        	<!-- <li class="{{ Request::path() == 'admin/liquidacion-apartamentos'  ? 'active' : '' }}"><a href="{{ url('admin/liquidacion-apartamentos') }}" class="detailed">Liquidacion de apartamentos</a></li> -->
-						
-			        	<li class="{{ Request::path() == 'admin/pagos-propietarios'  ? 'active' : '' }}"><a href="{{ url('admin/pagos-propietarios') }}" class="detailed">Pagos a propietarios</a></li>
+				        	<!-- <li class="{{ Request::path() == 'admin/liquidacion-apartamentos'  ? 'active' : '' }}"><a href="{{ url('admin/liquidacion-apartamentos') }}" class="detailed">Liquidacion de apartamentos</a></li> -->
+							
+				        	<li class="{{ Request::path() == 'admin/pagos-propietarios'  ? 'active' : '' }}"><a href="{{ url('admin/pagos-propietarios') }}" class="detailed">Pagos a propietarios</a></li>
+
+						<?php endif ?>
 						<?php if ( Auth::user()->role == "admin" ): ?>
 							
 							<li class="{{ Request::path() == 'admin/contabilidad'  ? 'active' : '' }}"><a href="{{ url('admin/contabilidad') }}" class="detailed">Contabilidad</a></li>

@@ -108,7 +108,7 @@
                                             </span>
                                             <input type="number" class="form-control" name="phone" placeholder="Telefono" required="" aria-required="true" aria-invalid="false">
                                         </div>
-                                            <br>
+                                            <br> 
                                         <div class="input-group">
                                             <span class="input-group-addon">
                                                 <i class="pg-plus_circle"></i>
@@ -116,7 +116,7 @@
                                             <select class="full-width" data-init-plugin="select2" name="role">
                                                 <option></option>
                                                 <option value="admin">Admin</option>
-                                                <option value="jaime">Jaime</option>
+                                                <option value="subadmin">subadmin</option>
                                                 <option value="limpieza">Limpieza</option>
                                                 <option value="agente">Agente</option>
                                                 <option value="propietario">Propietario</option>
