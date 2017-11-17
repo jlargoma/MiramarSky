@@ -271,6 +271,8 @@ Route::group(['middleware' => 'authAdmin'], function () {
 										]);
 	});
 
+	Route::get('/admin/rooms/getUpdateForm', 'RoomsController@getUpdateForm');
+
 
 });
 

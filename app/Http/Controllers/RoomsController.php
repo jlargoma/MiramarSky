@@ -453,4 +453,32 @@ class RoomsController extends Controller
 
     }
 
+    public function saveupdate(Request $request)
+    {
+        
+        // echo "<pre>";
+        // print_r($request->input());
+        // die();
+
+        $room           = \App\Rooms::find($request->input('id'));
+        $room->name     = $request->input('name');
+        $room->nameRoom = $request->input('nameRoom');
+        $room->minOcu   = $request->input('minOcu');
+        $room->maxOcu   = $request->input('maxOcu');
+        $room->owned    = $request->input('owned');
+        $room->typeApto = $request->input('type');
+        $room->sizeApto = $request->input('sizeApto');
+        $room->parking  = $request->input('parking');
+        $room->locker   = $request->input('locker');
+
+        if ($room->save()) {
+            return redirect()->action('RoomsController@index');
+        }
+    }
+
+    public function getUpdateForm(Request $request)
+    {
+        return view('backend/rooms/_updateFormRoom',[ 'room' => \App\Rooms::find($request->id) ]);
+    }
+
 }

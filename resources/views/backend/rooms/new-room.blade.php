@@ -14,9 +14,9 @@
 		        			Formulario para añadir Apartamento
 		        		</h3>
 		        	</div>
-		        	<div class="clear"></div>
 		        	<form class="form-horizontal" action="{{ url('/admin/apartamentos/create') }}" method="post">
 		        		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+		        		
 		                <div class="col-md-12 col-xs-12 push-20">
 		                    <div class="col-md-6  push-20">
 		                        <div class="form-material">
@@ -32,8 +32,8 @@
 		                    </div>
 		                    <div class="col-md-6  push-20 ">
 		                        <div class="form-material">
-		                            <select class="js-select2 form-control" id="propietario" name="propietario" style="width: 100%;" data-placeholder="Propietario..." required>
-		                            	<?php foreach ($users as $user): ?>
+		                            <select class="js-select2 form-control" id="propietario" name="propietario" style="width: 100%; z-index: 1500" data-placeholder="Propietario..." required>
+		                            	<?php foreach (\App\User::whereIn('role',['admin', 'subadmin', 'propietario'])->get() as $user): ?>
 		                            		<option value="<?php echo $user->id ?>"><?php echo $user->name ?></option>
 		                            	<?php endforeach ?>
 	                            	</select>
@@ -42,7 +42,7 @@
 		                    </div>
 		                    <div class="col-md-6  push-20 ">
 		                        <div class="form-material">
-		                            <select class="js-select2 form-control" id="type" name="type" style="width: 100%;" data-placeholder="Propietario..." required>
+		                            <select class="js-select2 form-control" id="type" name="type" style="width: 100%; z-index: 1500" data-placeholder="Propietario..." required>
 		                            	<?php foreach ($types as $type): ?>
 		                            		<option value="<?php echo $type->id ?>"><?php echo $type->name ?></option>
 		                            	<?php endforeach ?>
@@ -63,7 +63,7 @@
 		                	
 		                    <div class="col-md-6  push-20">
 		                        <div class="form-material">		                     
-		                            <select class="js-select2 form-control" id="size" name="size" style="width: 100%;" required>
+		                            <select class="js-select2 form-control" id="size" name="size" style="width: 100%; z-index: 1500" required>
 		                            	<?php foreach ($sizes as $size): ?>
 		                            		<option value="<?php echo $size->id ?>"><?php echo $size->name ?></option>
 		                            	<?php endforeach ?>

@@ -56,52 +56,62 @@
 			</div>
 			<div class="clearfix"></div>
 			<div class="row">
-				<div class="col-xs-12 content-table-rooms">
+				<div class="col-md-5 col-xs-12 content-table-rooms" style="max-height: 680px; overflow-y: auto;">
 					@include('backend.rooms._tableRooms', ['rooms' => $rooms, 'roomsdesc' => $roomsdesc])
 				</div>
-				
+				<div class="col-md-7 col-xs-12">
+					<div class="col-md-12 col-xs-12 push-20">
+						<div class="row contentUpdateForm" style="border: 2px dashed black;">
+							<div class="col-xs-12" style="">
+								<h2 class="text-center">
+									HAZ CLIC PARA CARGAR LOS DATOS DE UN APTO.
+								</h2>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-5 col-xs-12">
+					    <div class="row">
+
+				        	<div class="col-xs-12 col-md-12 push-20">
+				        		<h3 class="text-center">
+				        			Reparto de Beneficios por tipo
+				        		</h3>
+				        	</div>
+					        		
+				        	<div class="col-md-12 col-xs-12">
+				        		<table class="table table-condensed table-hover">
+									<thead>
+										<th class="text-center bg-complete text-white font-s12">Tipo</th>
+										<th class="text-center bg-complete text-white font-s12">% Jorge</th>
+										<th class="text-center bg-complete text-white font-s12">% Jaime</th>
+									</thead>
+									<tbody>
+										<?php foreach ($typesApto as $typeApto): ?>
+											<?php if ( $typeApto->name != 'Propio'): ?>											
+												<tr>
+													<td><?php echo $typeApto->name ?></td>
+													<td>
+														<input class="percentage percentJorge-<?php echo $typeApto->id?>" type="text" name="Jorge" data-id="<?php echo $typeApto->id ?>" value="<?php echo $typeApto->PercentJorge?>" style="width: 100%;text-align: center;border-style: none none ">
+													</td>
+													<td>
+														<input class="percentage percentJaime-<?php echo $typeApto->id?>" type="text" name="Jaime" data-id="<?php echo $typeApto->id ?>" value="<?php echo $typeApto->PercentJaime?>" style="width: 100%;text-align: center;border-style: none none ">
+													</td>
+												</tr>
+											<?php endif ?>
+										<?php endforeach ?>
+									</tbody>
+				        		</table>
+				        	</div>
+					    </div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 
 <?php else: ?>
 	
-	<div class="container-fluid padding-25 sm-padding-10 ">
-		<div class="row">
-			<div class="col-md-12 text-center">
-				<h2>LISTADO DE <span class="font-w800">APARTAMENTOS</span></h2>
-			</div>
-			<div class="col-md-2 col-xs-12 push-20">
-				<input type="text" id="searchRoomByName" class="form-control" placeholder="Buscar..." />
-			</div>
-			
 
-		</div>
-		<div class="row">
-			<div class="col-xs-4 push-20 text-center">
-				<button class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#modalNewSize">
-	                <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">tamaño</span>
-	            </button>
-			</div>
-			<div class="col-xs-4 push-20 text-center">
-				<button class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#modalNewTypeApto">
-	                <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Tipo Apto.</span>
-	            </button>
-			</div>
-			<div class="col-xs-4 push-20 text-center">
-				<button class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#modalNewApto">
-	                <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Apto.</span>
-	            </button>
-			</div>
-		</div>
-		<div class="row">
-			<div class="content-table-rooms table-responsive">
-				@include('backend.rooms._tableRooms', ['rooms' => $rooms, 'roomsdesc' => $roomsdesc])
-			</div>
-			
-		</div>
-	</div>
-	
 
 <?php endif ?>
 
@@ -292,9 +302,9 @@
 												<span class="input-group-addon">
 													Propietario
 												</span>
-												<select class="full-width" data-init-plugin="select2" name="owner">
+												<select class="form-control minimal" name="owner">
 													<option></option>
-													<?php foreach ($owners as $owner): ?>
+													<?php foreach (\App\User::whereIn('role',['admin', 'subadmin', 'propietario'])->get() as $owner): ?>
 														<option value="<?php echo $owner->id ?>"><?php echo $owner->name ?></option>
 													<?php endforeach ?>
 												</select>
@@ -304,7 +314,7 @@
 												<span class="input-group-addon">
 													Tipo de apartamento
 												</span>
-												<select class="full-width" data-init-plugin="select2" name="type">
+												<select class="form-control minimal" name="type">
 													<option></option>
 													<?php foreach ($types as $type): ?>
 														<option value="<?php echo $type->id ?>"><?php echo $type->name ?></option>
@@ -316,7 +326,7 @@
 												<span class="input-group-addon">
 													Tamaño de apartamento
 												</span>
-												<select class="full-width" data-init-plugin="select2" name="sizeRoom">
+												<select class="form-control minimal" name="sizeRoom">
 													<option></option>
 													<?php foreach ($sizes as $size): ?>
 														<option value="<?php echo $size->id ?>"><?php echo $size->name ?></option>
@@ -361,42 +371,6 @@
 		</div>
 		<!-- /.modal-dialog -->
 	</div>
-	<div class="row">
-	    <div class="col-md-12 push-30">
-	        <div class="col-md-12">
-			    <div class="row">
-
-			        	<div class="col-xs-12 col-md-6 push-20">
-			        		<h3 class="text-center">
-			        			Reparto de Beneficios por tipo
-			        		</h3>
-			        	</div>
-			        	<div style="clear: both;"></div>
-			        		
-			        	<div class="col-md-6 col-xs-12 push-20">
-			        		<table class="table table-condensed table-hover">
-								<thead>
-									<th class="text-center bg-complete text-white font-s12">Tipo</th>
-									<th class="text-center bg-complete text-white font-s12">% Jorge</th>
-									<th class="text-center bg-complete text-white font-s12">% Jaime</th>
-								</thead>
-								<tbody>
-									<?php foreach ($typesApto as $typeApto): ?>
-										<tr>
-											<td><?php echo $typeApto->name ?></td>
-											<td>
-												<input class="percentage percentJorge-<?php echo $typeApto->id?>" type="text" name="Jorge" data-id="<?php echo $typeApto->id ?>" value="<?php echo $typeApto->PercentJorge?>" style="width: 100%;text-align: center;border-style: none none ">
-											</td>
-											<td><input class="percentage percentJaime-<?php echo $typeApto->id?>" type="text" name="Jaime" data-id="<?php echo $typeApto->id ?>" value="<?php echo $typeApto->PercentJaime?>" style="width: 100%;text-align: center;border-style: none none "></td>
-										</tr>
-									<?php endforeach ?>
-								</tbody>
-			        		</table>
-			        	</div>
-			    </div>
-			</div>
-		</div>
-	</div>
 	
 	<form role="form">
 	    <div class="form-group form-group-default required" style="display: none">
@@ -415,35 +389,39 @@
 
 <script type="text/javascript">
 
+	$(document).ready(function() {
 
+		$('.btn-emiling').click(function(event) {
+			var id = $(this).attr('data-id');
+			$('.modal-content.emailing').empty().load('/admin/apartamentos/email/'+id);
+		});
 
+		$('.percentage').change(function(event) {
 
+			
+			var id = $(this).attr('data-id');
+			var tipo = $(this).attr('name');
+			var percent = $(this).val();
 
-$(document).ready(function() {
+			$.get('/admin/apartamentos/update-Percent', {  id: id, tipo: tipo, percent: percent}, function(data) {
+				$('.notification-message').val(data);
+				$("#boton").click();
+	            setTimeout(function(){ 
+	                $('.alert-info .close').trigger('click');
+	                 }, 1500); 
 
-	$('.btn-emiling').click(function(event) {
-		var id = $(this).attr('data-id');
-		$('.modal-content.emailing').empty().load('/admin/apartamentos/email/'+id);
-	});
-
-	$('.percentage').change(function(event) {
-
-		
-		var id = $(this).attr('data-id');
-		var tipo = $(this).attr('name');
-		var percent = $(this).val();
-
-		$.get('/admin/apartamentos/update-Percent', {  id: id, tipo: tipo, percent: percent}, function(data) {
-			$('.notification-message').val(data);
-			$("#boton").click();
-            setTimeout(function(){ 
-                $('.alert-info .close').trigger('click');
-                 }, 1500); 
+			});
 
 		});
 
-	});
+		$('.aptos').click(function(event) {
+			var id = $(this).attr('data-id');
 
-});
+			$.get('/admin/rooms/getUpdateForm', {id: id}, function(data) {
+				$('.contentUpdateForm').empty().append(data)
+			});
+		});
+
+	});
 </script>
 @endsection

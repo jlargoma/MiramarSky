@@ -59,10 +59,10 @@
                     <a href="{{ url('/admin/reservas')}}" class=" m-b-10" style="min-width: 10px!important">
                         <img src="{{ asset('/img/miramarski/iconos/close.png') }}" style="width: 20px" />
                     </a>
-                    <h4>
+                    <h4 class="" style="line-height: 1; letter-spacing: -1px">
                         <?php echo "<b>".strtoupper($book->customer->name)."</b>" ?> creada el 
-                        <?php $fecha = Carbon::createFromFormat('Y-m-d H:i:s' ,$book->created_at);?>
-                        <?php echo $fecha->copy()->format('d-m-Y')." Hora:".$fecha->copy()->format('H:m')?>
+                        <?php $fecha = Carbon::createFromFormat('Y-m-d H:i:s' ,$book->created_at);?><br>
+                        <span class="font-s18"><?php echo $fecha->copy()->formatLocalized('%d %B %Y')." Hora: ".$fecha->copy()->format('H:m')?></span>
                     </h4>
                     <h5>Creado por <?php echo "<b>".strtoupper($book->user->name)."</b>" ?></h5>
                     <?php if ($book->type_book == 2): ?>
@@ -866,7 +866,7 @@
             </div>
                 <div class="row">
                     <h2 class="text-center" style="font-size: 24px; line-height: 18px">
-                        <?php $text = "En este link podrás realizar el pago de la señal por el 25% del total. <br> En el momento en que efectúes el pago, te legará un email confirmando tu reserva - https://www.apartamentosierranevada.net/reservas/stripe/pagos/".base64_encode($book->id);
+                        <?php $text = "En este link podrás realizar el pago de la señal por el 25% del total."."\n"." En el momento en que efectúes el pago, te legará un email confirmando tu reserva - https://www.apartamentosierranevada.net/reservas/stripe/pagos/".base64_encode($book->id);
                         ?>
                             
                             <a href="whatsapp://send?text=<?php echo $text; ?>" data-action="share/whatsapp/share" >
