@@ -267,21 +267,21 @@
 	        	    <tbody>
 	        	        <tr>
 	        	            <th class="text-center p-t-5 p-b-5">Ventas</th>
-	        	            <td class="text-center p-t-5 p-b-5"><?php //echo number_format($ventas["Ventas"][12],2,',','.')?></td>
-	        	            <td class="text-center p-t-5 p-b-5"><?php //echo number_format($ventas["Ventas"][1],2,',','.')?></td>
-	        	            <td class="text-center p-t-5 p-b-5"><?php //echo number_format($ventas["Ventas"][2],2,',','.')?></td>
-	        	            <td class="text-center p-t-5 p-b-5"><?php //echo number_format($ventas["Ventas"][3],2,',','.')?></td>
-	        	            <td class="text-center p-t-5 p-b-5"><?php //echo number_format($ventas["Ventas"][4],2,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->format('Y')][12]["ventas"],0,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->format('Y')][1]["ventas"],0,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->format('Y')][2]["ventas"],0,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->format('Y')][3]["ventas"],0,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->format('Y')][4]["ventas"],0,',','.')?></td>
 	        	            <td class="text-center p-t-5 p-b-5"><?php //echo number_format(array_sum($ventas["Ventas"]),2,',','.')?></td>
 	        	        </tr>
 	        	        <tr>
 	        	            <th class="text-center p-t-5 p-b-5">Benº</th>
-	        	            <td class="text-center p-t-5 p-b-5"><?php //echo number_format($ventas["Ben"][12],2,',','.')?></td>
-	        	            <td class="text-center p-t-5 p-b-5"><?php //echo number_format($ventas["Ben"][1],2,',','.')?></td>
-	        	            <td class="text-center p-t-5 p-b-5"><?php //echo number_format($ventas["Ben"][2],2,',','.')?></td>
-	        	            <td class="text-center p-t-5 p-b-5"><?php //echo number_format($ventas["Ben"][3],2,',','.')?></td>
-	        	            <td class="text-center p-t-5 p-b-5"><?php //echo number_format($ventas["Ben"][4],2,',','.')?></td>
-	        	            <td class="text-center p-t-5 p-b-5"><?php //echo number_format(array_sum($ventas["Ben"]),2,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->format('Y')][12]["beneficio"],0,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->format('Y')][1]["beneficio"],0,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->format('Y')][2]["beneficio"],0,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->format('Y')][3]["beneficio"],0,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->format('Y')][4]["beneficio"],0,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php //echo number_format(array_sum($ventas["Ventas"]),2,',','.')?></td>
 	        	        </tr>
 	        	        <thead>
 	        	            <th colspan="7" class="ingresos_temp">Ingresos de la temporada <?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?> </th>
@@ -296,22 +296,22 @@
 	        	            <th class="text-center ingresos_temp text-white">Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 	        	        </tr>
 	        	        <tr>
-	        	            <th class="text-center">Ventas</th>
-	        	            <td class="text-center"><?php //echo number_format($ventasOld["Ventas"][12],2,',','.') ?></td>
-	        	            <td class="text-center"><?php //echo number_format($ventasOld["Ventas"][1],2,',','.') ?></td>
-	        	            <td class="text-center"><?php //echo number_format($ventasOld["Ventas"][2],2,',','.') ?></td>
-	        	            <td class="text-center"><?php //echo number_format($ventasOld["Ventas"][3],2,',','.') ?></td>
-	        	            <td class="text-center"><?php //echo number_format($ventasOld["Ventas"][4],2,',','.') ?></td>
-	        	            <td class="text-center"><?php //echo number_format(array_sum($ventasOld["Ventas"]),2,',','.') ?></td>
+	        	            <th class="text-center p-t-5 p-b-5">Ventas</th>
+	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->subYear()->format('Y')][12]["ventas"],0,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->subYear()->format('Y')][1]["ventas"],0,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->subYear()->format('Y')][2]["ventas"],0,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->subYear()->format('Y')][3]["ventas"],0,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->subYear()->format('Y')][4]["ventas"],0,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php //echo number_format(array_sum($ventas["Ventas"]),2,',','.')?></td>
 	        	        </tr>
 	        	        <tr>
-	        	            <th class="text-center">Benº</th>
-	        	            <td class="text-center"><?php //echo number_format($ventasOld["Ben"][12],2,',','.') ?></td>
-	        	            <td class="text-center"><?php //echo number_format($ventasOld["Ben"][1],2,',','.') ?></td>
-	        	            <td class="text-center"><?php //echo number_format($ventasOld["Ben"][2],2,',','.') ?></td>
-	        	            <td class="text-center"><?php //echo number_format($ventasOld["Ben"][3],2,',','.') ?></td>
-	        	            <td class="text-center"><?php //echo number_format($ventasOld["Ben"][4],2,',','.') ?></td>
-	        	            <td class="text-center"><?php //echo number_format(array_sum($ventasOld["Ben"]),2,',','.') ?></td>
+	        	            <th class="text-center p-t-5 p-b-5">Benº</th>
+	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->subYear()->format('Y')][12]["beneficio"],0,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->subYear()->format('Y')][1]["beneficio"],0,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->subYear()->format('Y')][2]["beneficio"],0,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->subYear()->format('Y')][3]["beneficio"],0,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->subYear()->format('Y')][4]["beneficio"],0,',','.')?></td>
+	        	            <td class="text-center p-t-5 p-b-5"><?php //echo number_format(array_sum($ventas["Ventas"]),2,',','.')?></td>
 	        	        </tr>
 	        	        <thead>
 	        	            <th colspan="7" class="comparativa bg-primary text-center text-white" >Comparativa de la temporada <?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?> </th>
