@@ -76,7 +76,7 @@
 	    <div class="row">
 	    	
 	    	<div class="col-md-8 col-xs-12 push-0">
-	    		<div class="col-md-9 col-xs-12 pull-right not-padding" style="width: 78%">
+	    		<div class="col-md-9 col-xs-12 pull-right not-padding" style="width: 76.6%">
 	    			<table class="table table-hover" >
 	    				<thead>
 	    					<tr>
@@ -277,8 +277,8 @@
 					        			</td>
 
 					        			<td class="text-center"  style="padding: 10px 5px ;">
-					        				<?php if (isset($data[$room->id]['totales']['totalLujo'])): ?>
-					        					<?php echo number_format($data[$room->id]['totales']['totalLujo'],2,',','.'); ?>€
+					        				<?php if (isset($data[$room->id]['totales']['totalLimp'])): ?>
+					        					<?php echo number_format($data[$room->id]['totales']['totalLimp'],2,',','.'); ?>€
 					        				<?php else: ?>
 					        					-----
 					        				<?php endif ?>
@@ -543,8 +543,8 @@
 				        			</td>
 
 				        			<td class="text-center"  style="padding: 10px 5px ;">
-				        				<?php if (isset($data[$room->id]['totales']['totalLujo'])): ?>
-				        					<?php echo number_format($data[$room->id]['totales']['totalLujo'],2,',','.'); ?>€
+				        				<?php if (isset($data[$room->id]['totales']['totalLimp'])): ?>
+				        					<?php echo number_format($data[$room->id]['totales']['totalLimp'],2,',','.'); ?>€
 				        				<?php else: ?>
 				        					-----
 				        				<?php endif ?>

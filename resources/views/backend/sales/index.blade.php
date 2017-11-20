@@ -1,3 +1,4 @@
+<?php use \Carbon\Carbon; ?>
 @extends('layouts.admin-master')
 
 @section('title') Liquidacion @endsection
@@ -62,7 +63,7 @@
     			<label>APTO:</label>
     			<select class="form-control searchSelect minimal" name="searchByRoom">
     				<option value="all">Todos</option>
-    				<?php foreach (\App\Rooms::all() as $key => $room): ?>
+    				<?php foreach (\App\Rooms::where('state', 1)->get() as $key => $room): ?>
     					<option value="<?php echo $room->id ?>">
     						<?php echo $room->name ?>
     					</option>

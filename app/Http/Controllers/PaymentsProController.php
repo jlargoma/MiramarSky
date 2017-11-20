@@ -33,10 +33,12 @@ class PaymentsProController extends Controller
         }else{
             $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
         }
+        $arrayIdRooms = array();
+        $rooms = \App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get();
+
 
         /*Calculamos los ingresos por reserva y room */
         $books = \App\Book::whereIn('type_book',[2])
-                            ->whereNotIn('room_id',[106,107,108,109,111,112,113,126,134])
                             ->where('start','>=',$date->copy())
                             ->where('start','<=',$date->copy()->addYear())
                             ->orderBy('start', 'ASC')
@@ -55,7 +57,7 @@ class PaymentsProController extends Controller
                     ];
 
         /* Calculamos los pagos por room */
-        $rooms = \App\Rooms::whereNotIn('id',[106,107,108,109,111,112,113,126,134])->orderBy('order', 'ASC')->get();
+        
         foreach ($rooms as $room) {
             $paymentspro = \App\Paymentspro::where('room_id', $room->id)
                                             ->where('datePayment','>',$date->copy())

@@ -69,8 +69,9 @@
                     <h3 class="tex-center">Resumen de pagos</h3>
                         
                     <div class="row">
-                        <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
+                        <table class="table table-hover " >
                             <thead >
+                                <th class ="text-center bg-complete text-white"></th>
                                 <th class ="text-center bg-complete text-white">Fecha</th>
                                 <th class ="text-center bg-complete text-white">Importe</th>
                                 <th class ="text-center bg-complete text-white">Metodo</th>
@@ -79,7 +80,12 @@
                             <tbody>
                             <?php if (count($payments) > 0): ?>
                                 <?php foreach ($payments as $payment): ?>
-                                    <tr>
+                                    <tr id="payment-<?php echo $payment->id ?>">
+                                        <td class="text-center">
+                                           <button class="btn btn-danger btn-xs deletePayment" type="button" data-id="<?php echo $payment->id ?>">
+                                               <i class="fa fa-close"></i>
+                                           </button>
+                                        </td>
                                         <td class="text-center">
                                             <?php $fecha = Carbon::createFromFormat('Y-m-d',$payment->datePayment) ?>
                                             <?php echo $fecha->format('d-m-Y') ?>
@@ -164,6 +170,15 @@
 <script src="/assets/plugins/moment/moment.min.js"></script>
 <script src="/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
 <script src="/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
+<script type="text/javascript">
+    $('.deletePayment').click(function(event) {
+        var id = $(this).attr('data-id');
+        var line = "#payment-"+id;
 
+        $.get('/admin/paymentspro/delete', {id: id}, function(data) {
+            $(line).hide();
+        });
+    });
+</script>
 
 

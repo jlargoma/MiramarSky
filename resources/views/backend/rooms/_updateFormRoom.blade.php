@@ -27,14 +27,6 @@
 				<label for="locker">Taquilla</label>
 				<input type="number" name="locker" class="form-control" value="<?php echo $room->locker; ?>"/>
 			</div>
-			<div class="col-md-1 col-xs-4 push-20">
-				<label for="minOcu">Ocu. Min</label>
-				<input type="number" name="minOcu" class="form-control" value="<?php echo $room->minOcu; ?>"/>
-			</div>
-			<div class="col-md-1 col-xs-4 push-20">
-				<label for="maxOcu">Ocu. Max</label>
-				<input type="number" name="maxOcu" class="form-control" value="<?php echo $room->maxOcu; ?>"/>
-			</div>
 			<div class="col-md-2 col-xs-12 push-20">
 				<label for="sizeApto">Tamaño Apto.</label>
 				<select class="form-control minimal" name="sizeApto">
@@ -45,6 +37,15 @@
 					<?php endforeach ?>
 				</select>
 			</div>
+			<div class="col-md-1 col-xs-4 push-20">
+				<label for="minOcu">Ocu. Min</label>
+				<input type="number" name="minOcu" class="form-control" value="<?php echo $room->minOcu; ?>"/>
+			</div>
+			<div class="col-md-1 col-xs-4 push-20">
+				<label for="maxOcu">Ocu. Max</label>
+				<input type="number" name="maxOcu" class="form-control" value="<?php echo $room->maxOcu; ?>"/>
+			</div>
+			
 		</div>
 		<div class="row">
 			<div class="col-xs-12 col-md-12">
@@ -53,7 +54,8 @@
 				<div class="col-md-2 col-xs-12 push-20">
 					<label for="owned">Prop.</label>
 					<select class="form-control minimal" name="owned">
-						<?php foreach (\App\User::all() as $key => $owned): ?>
+						<?php $owneds = \App\User::whereIn('role', ['propietario', 'admin'])->whereNotIn('id', [58,59,63])->get() ?>
+						<?php foreach ($owneds as $key => $owned): ?>
 							<?php if ( ($owned->role == 'propietario') || $owned->name == 'jorge'): ?>
 								<?php if( $owned->name == $room->user->name ){ $selected = "selected"; }else{$selected = "";} ?>
 								<option value="<?php echo $owned->id; ?>" <?php echo $selected ?> >

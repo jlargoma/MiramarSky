@@ -69,8 +69,7 @@
                         <?php echo number_format( ( $totales["beneficio"] / $totales["total"] )* 100 ,2 ,',','.') ?>%
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <?php $coste = $totales["coste"] +  $totales["costeLimp"] + $totales["costeAgencia"]?>
-                        <b><?php echo number_format($coste,2,',','.') ?>€</b>
+                        <b><?php echo number_format($totales["coste"],2,',','.') ?>€</b>
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
                         <?php echo number_format($totales["costeApto"],2,',','.') ?>€

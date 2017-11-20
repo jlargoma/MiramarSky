@@ -298,59 +298,22 @@ class HomeController extends Controller
         $finish = Carbon::createFromFormat('d M, y' , trim($date[1]));
         $countDays = $finish->diffInDays($start);
 
-        $roomAssigned = 111;
+        
         if ($request->input('apto') == '2dorm' && $request->input('luxury') == 'si') {
-            
-            $rooms = \App\Rooms::where('sizeApto', 2)->where('luxury', 1)->orderBy('order', 'ASC')->get();
-
-            if ( count($rooms) > 0) {
-                    foreach ($rooms as $key => $room) {
-                        if ( \App\Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'), $room->id) ) {
-                            $roomAssigned =  $room->id;
-                            break;
-                        }
-                    }
-            }
+            $roomAssigned = 115;
             $typeApto  = "2 DORM Lujo";
             $limp = 50;
         }elseif($request->input('apto') == '2dorm' && $request->input('luxury') == 'no'){
-            $rooms = \App\Rooms::where('sizeApto', 2)->where('luxury', 0)->orderBy('order', 'ASC')->get();
-
-            if ( count($rooms) > 0) {
-                foreach ($rooms as $key => $room) {
-                    if ( \App\Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'), $room->id) ) {
-                        $roomAssigned =  $room->id;
-                        break;
-                    }
-                }
-            }
+            $roomAssigned = 122;
             $typeApto  = "2 DORM estandar";
             $limp = 50;
         }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'si'){
-            $rooms = \App\Rooms::where('sizeApto', 1)->where('luxury', 1)->orderBy('order', 'ASC')->get();
-            if ( count($rooms) > 0) {
-                foreach ($rooms as $key => $room) {
-                    if ( \App\Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'), $room->id) ) {
-                        $roomAssigned =  $room->id;
-                        break;
-                    }
-                }
-            }
-            /* $room = 116;  A definir por jorge */
+            $roomAssigned = 138;
             $limp = 30;
             $typeApto  = "Estudio Lujo";
 
         }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'no'){
-            $rooms = \App\Rooms::where('sizeApto', 1)->where('luxury', 0)->orderBy('order', 'ASC')->get();
-
-            if ( count($rooms) > 0) {
-                foreach ($rooms as $key => $room) {
-                    if ( \App\Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'), $room->id) ) {
-                        $roomAssigned =  $room->id;
-                        break;
-                    }
-                }
-            }
+            $roomAssigned = 110;
             $typeApto  = "Estudio estandar";
             $limp = 30;
         }

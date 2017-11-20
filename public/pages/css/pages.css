@@ -14296,6 +14296,10 @@ Main components
   font-size:14px;
 }
 
+.table.table-striped tbody tr.contestado-email td select.minimal{
+      background-color: rgba(246,244,179, 0.6) !important;
+    color: black;
+}
 
 
 @media screen and (max-width: 767px){
