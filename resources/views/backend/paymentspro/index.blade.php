@@ -118,45 +118,45 @@
 	    				<tbody>
 	    					<tr> 
 	    						<td class="text-center" style="padding: 8px;">
-	    							<?php echo number_format($summary['totalPVP'],2,',','.') ?>€
+	    							<?php echo number_format($summary['totalPVP'],0,',','.') ?>€
 	    						</td>
 	    						<td class="text-center costeApto bordes">
-	    							<b><?php  echo number_format($summary['totalCost'],2,',','.') ?>€</b>
+	    							<b><?php  echo number_format($summary['totalCost'],0,',','.') ?>€</b>
 	    						</td>
 	    						<td class="text-center">
-	    							<b><?php  echo number_format($summary['totalApto'],2,',','.') ?>€</b>
+	    							<b><?php  echo number_format($summary['totalApto'],0,',','.') ?>€</b>
 	    						</td>
 	    						<td class="text-center" style="padding: 8px;">
-	    							<?php  echo number_format($summary['totalParking'],2,',','.') ?>€
+	    							<?php  echo number_format($summary['totalParking'],0,',','.') ?>€
 	    						</td>
 	    						<td class="text-center" style="padding: 8px;">
-	    							<?php  echo number_format($summary['totalLujo'],2,',','.') ?>€
+	    							<?php  echo number_format($summary['totalLujo'],0,',','.') ?>€
 	    						</td>
 	    						<td class="text-center" style="padding: 8px;">
-	    							<?php  echo number_format($summary['totalAgencia'],2,',','.') ?>€
+	    							<?php  echo number_format($summary['totalAgencia'],0,',','.') ?>€
 	    						</td>
 	    						<td class="text-center" style="padding: 8px;">
-	    							<?php  echo number_format($summary['totalLimp'],2,',','.') ?>€
+	    							<?php  echo number_format($summary['totalLimp'],0,',','.') ?>€
 	    						</td>
 	    						<td class="text-center" style="padding: 8px;">
 	    							<?php $beneficio = $summary['totalPVP'] - $summary['totalCost']; ?>
 	    							<?php if ($beneficio > 0): ?>
-	    								<span class="text-success font-w800"><?php echo number_format( $beneficio,2,',','.') ?>€</span>
+	    								<span class="text-success font-w800"><?php echo number_format( $beneficio,0,',','.') ?>€</span>
 	    							<?php else: ?>
-	    								<span class="text-danger font-w800"><?php echo number_format( $beneficio,2,',','.') ?>€</span>
+	    								<span class="text-danger font-w800"><?php echo number_format( $beneficio,0,',','.') ?>€</span>
 	    							<?php endif ?>
 	    							
 	    						</td>
 	    						<td class="text-center" style="padding: 8px;">
 	    							<?php $benPercentage = ($beneficio/$summary['totalPVP'])*100;?>
-	    							<?php  echo number_format($benPercentage,2,',','.') ?>%
+	    							<?php  echo number_format($benPercentage,0,',','.') ?>%
 	    						</td>
 	    						<td class="text-center" style="padding: 8px;">
-	    							<?php  echo number_format($summary['pagos'],2,',','.') ?> €
+	    							<?php  echo number_format($summary['pagos'],0,',','.') ?> €
 	    						</td>
 	    						<td class="text-center pendiente bordes" style="padding: 8px;">
 	    							<?php $pendiente = $summary['totalCost'] - $summary['pagos'];?>
-	    							<span class="text-danger font-w800"><b><?php echo number_format($pendiente,2,',','.') ?>€</b></span>
+	    							<span class="text-danger font-w800"><b><?php echo number_format($pendiente,0,',','.') ?>€</b></span>
 	    						</td>
 	    					</tr>
 	    				</tbody>
@@ -229,7 +229,7 @@
 					        			</td>
 					        			<td class="text-center"  style="padding: 10px 5px ;">
 					        				<?php if (isset($data[$room->id]['totales']['totalPVP'])): ?>
-					        					<?php echo number_format($data[$room->id]['totales']['totalPVP'],2,',','.'); ?>€
+					        					<?php echo number_format($data[$room->id]['totales']['totalPVP'],0,',','.'); ?>€
 					        				<?php else: ?>
 					        					-----
 					        				<?php endif ?>
@@ -238,7 +238,7 @@
 					        			<td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
 
 					        				<?php if (isset($data[$room->id]['totales']['totalCost'])): ?>
-					        					<?php echo number_format($data[$room->id]['totales']['totalCost'],2,',','.'); ?>€
+					        					<?php echo number_format($data[$room->id]['totales']['totalCost'],0,',','.'); ?>€
 					        				<?php else: ?>
 					        					-----
 					        				<?php endif ?>
@@ -246,7 +246,7 @@
 
 					        			<td class="text-center"  style="padding: 10px 5px ;">
 					        				<?php if (isset($data[$room->id]['totales']['totalApto'])): ?>
-					        					<?php echo number_format($data[$room->id]['totales']['totalApto'],2,',','.'); ?>€
+					        					<?php echo number_format($data[$room->id]['totales']['totalApto'],0,',','.'); ?>€
 					        				<?php else: ?>
 					        					-----
 					        				<?php endif ?>
@@ -254,7 +254,7 @@
 
 					        			<td class="text-center"  style="padding: 10px 5px ;">
 					        				<?php if (isset($data[$room->id]['totales']['totalParking'])): ?>
-					        					<?php echo number_format($data[$room->id]['totales']['totalParking'],2,',','.'); ?>€
+					        					<?php echo number_format($data[$room->id]['totales']['totalParking'],0,',','.'); ?>€
 					        				<?php else: ?>
 					        					-----
 					        				<?php endif ?>
@@ -262,7 +262,7 @@
 
 					        			<td class="text-center"  style="padding: 10px 5px ;">
 					        				<?php if (isset($data[$room->id]['totales']['totalLujo'])): ?>
-					        					<?php echo number_format($data[$room->id]['totales']['totalLujo'],2,',','.'); ?>€
+					        					<?php echo number_format($data[$room->id]['totales']['totalLujo'],0,',','.'); ?>€
 					        				<?php else: ?>
 					        					-----
 					        				<?php endif ?>
@@ -270,7 +270,7 @@
 
 					        			<td class="text-center"  style="padding: 10px 5px ;">
 					        				<?php if (isset($data[$room->id]['totales']['totalAgencia'])): ?>
-					        					<?php echo number_format($data[$room->id]['totales']['totalAgencia'],2,',','.'); ?>€
+					        					<?php echo number_format($data[$room->id]['totales']['totalAgencia'],0,',','.'); ?>€
 					        				<?php else: ?>
 					        					-----
 					        				<?php endif ?>
@@ -278,7 +278,7 @@
 
 					        			<td class="text-center"  style="padding: 10px 5px ;">
 					        				<?php if (isset($data[$room->id]['totales']['totalLimp'])): ?>
-					        					<?php echo number_format($data[$room->id]['totales']['totalLimp'],2,',','.'); ?>€
+					        					<?php echo number_format($data[$room->id]['totales']['totalLimp'],0,',','.'); ?>€
 					        				<?php else: ?>
 					        					-----
 					        				<?php endif ?>
@@ -289,11 +289,11 @@
 					        					$benefRoom = $data[$room->id]['totales']['totalPVP'] - $data[$room->id]['totales']['totalCost'] 
 					        				?>
 					        				<?php if ($benefRoom > 0): ?>
-					        					<span class="text-success font-w800"><?php echo number_format($benefRoom,2,',','.') ?>€</span>
+					        					<span class="text-success font-w800"><?php echo number_format($benefRoom,0,',','.') ?>€</span>
 					        				<?php elseif($benefRoom == 0): ?>
 					        					-----
 					        				<?php elseif($benefRoom < 0): ?>
-					        					<span class="text-danger font-w800"><?php echo number_format($benefRoom,2,',','.') ?>€</span>
+					        					<span class="text-danger font-w800"><?php echo number_format($benefRoom,0,',','.') ?>€</span>
 					        				<?php endif ?>
 					        			</td>
 
@@ -303,17 +303,17 @@
 					        					$benefPercentageRoom = ( $benefRoom / $divisor  ) *100;
 					        				?>
 					        				<?php if ($benefPercentageRoom > 0): ?>
-					        					<span class="text-success font-w800"><?php echo number_format($benefPercentageRoom,2,',','.') ?>%</span>
+					        					<span class="text-success font-w800"><?php echo number_format($benefPercentageRoom,0,',','.') ?>%</span>
 					        				<?php elseif($benefPercentageRoom == 0): ?>
 					        					-----
 					        				<?php elseif($benefPercentageRoom < 0): ?>
-					        					<span class="text-danger font-w800"><?php echo number_format($benefPercentageRoom,2,',','.') ?>%</span>
+					        					<span class="text-danger font-w800"><?php echo number_format($benefPercentageRoom,0,',','.') ?>%</span>
 					        				<?php endif ?>
 					        			</td>
 
 					        			<td class="text-center"  style="padding: 10px 5px ;">
 					        				<?php if ( $data[$room->id]['pagos'] != 0): ?>
-					        					<?php echo number_format($data[$room->id]['pagos'],2,',','.')?>€
+					        					<?php echo number_format($data[$room->id]['pagos'],0,',','.')?>€
 					        				<?php else: ?>
 					        					-----
 					        				<?php endif ?>
@@ -322,9 +322,9 @@
 					        			<td class="text-center pendiente bordes"  style="padding: 10px 5px ;">
 					        				
 					        				<?php if ($pendiente <= 0): ?>
-					        					<span class="text-success font-w800"><?php echo number_format($pendiente,2,',','.') ?>€</span>
+					        					<span class="text-success font-w800"><?php echo number_format($pendiente,0,',','.') ?>€</span>
 					        				<?php else: ?>
-					        					<span class="text-danger font-w800"><?php echo number_format($pendiente,2,',','.') ?>€</span>
+					        					<span class="text-danger font-w800"><?php echo number_format($pendiente,0,',','.') ?>€</span>
 					        				<?php endif ?>
 					        			</td>
 					            </tr>
@@ -384,45 +384,45 @@
     				<tbody>
     					<tr> 
     						<td class="text-center" style="padding: 8px;">
-    							<?php echo number_format($summary['totalPVP'],2,',','.') ?>€
+    							<?php echo number_format($summary['totalPVP'],0,',','.') ?>€
     						</td>
     						<td class="text-center costeApto bordes">
-    							<b><?php  echo number_format($summary['totalCost'],2,',','.') ?>€</b>
+    							<b><?php  echo number_format($summary['totalCost'],0,',','.') ?>€</b>
     						</td>
     						<td class="text-center">
-    							<b><?php  echo number_format($summary['totalApto'],2,',','.') ?>€</b>
+    							<b><?php  echo number_format($summary['totalApto'],0,',','.') ?>€</b>
     						</td>
     						<td class="text-center" style="padding: 8px;">
-    							<?php  echo number_format($summary['totalParking'],2,',','.') ?>€
+    							<?php  echo number_format($summary['totalParking'],0,',','.') ?>€
     						</td>
     						<td class="text-center" style="padding: 8px;">
-    							<?php  echo number_format($summary['totalLujo'],2,',','.') ?>€
+    							<?php  echo number_format($summary['totalLujo'],0,',','.') ?>€
     						</td>
     						<td class="text-center" style="padding: 8px;">
-    							<?php  echo number_format($summary['totalAgencia'],2,',','.') ?>€
+    							<?php  echo number_format($summary['totalAgencia'],0,',','.') ?>€
     						</td>
     						<td class="text-center" style="padding: 8px;">
-    							<?php  echo number_format($summary['totalLimp'],2,',','.') ?>€
+    							<?php  echo number_format($summary['totalLimp'],0,',','.') ?>€
     						</td>
     						<td class="text-center" style="padding: 8px;">
     							<?php $beneficio = $summary['totalPVP'] - $summary['totalCost']; ?>
     							<?php if ($beneficio > 0): ?>
-    								<span class="text-success font-w800"><?php echo number_format( $beneficio,2,',','.') ?>€</span>
+    								<span class="text-success font-w800"><?php echo number_format( $beneficio,0,',','.') ?>€</span>
     							<?php else: ?>
-    								<span class="text-danger font-w800"><?php echo number_format( $beneficio,2,',','.') ?>€</span>
+    								<span class="text-danger font-w800"><?php echo number_format( $beneficio,0,',','.') ?>€</span>
     							<?php endif ?>
     							
     						</td>
     						<td class="text-center" style="padding: 8px;">
     							<?php $benPercentage = ($beneficio/$summary['totalPVP'])*100;?>
-    							<?php  echo number_format($benPercentage,2,',','.') ?>%
+    							<?php  echo number_format($benPercentage,0,',','.') ?>%
     						</td>
     						<td class="text-center" style="padding: 8px;">
-    							<?php  echo number_format($summary['pagos'],2,',','.') ?> €
+    							<?php  echo number_format($summary['pagos'],0,',','.') ?> €
     						</td>
     						<td class="text-center pendiente bordes" style="padding: 8px;">
     							<?php $pendiente = $summary['totalCost'] - $summary['pagos'];?>
-    							<span class="text-danger font-w800"><b><?php echo number_format($pendiente,2,',','.') ?>€</b></span>
+    							<span class="text-danger font-w800"><b><?php echo number_format($pendiente,0,',','.') ?>€</b></span>
     						</td>
     					</tr>
     				</tbody>
@@ -495,7 +495,7 @@
 				        			</td>
 				        			<td class="text-center"  style="padding: 10px 5px ;">
 				        				<?php if (isset($data[$room->id]['totales']['totalPVP'])): ?>
-				        					<?php echo number_format($data[$room->id]['totales']['totalPVP'],2,',','.'); ?>€
+				        					<?php echo number_format($data[$room->id]['totales']['totalPVP'],0,',','.'); ?>€
 				        				<?php else: ?>
 				        					-----
 				        				<?php endif ?>
@@ -504,7 +504,7 @@
 				        			<td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
 
 				        				<?php if (isset($data[$room->id]['totales']['totalCost'])): ?>
-				        					<?php echo number_format($data[$room->id]['totales']['totalCost'],2,',','.'); ?>€
+				        					<?php echo number_format($data[$room->id]['totales']['totalCost'],0,',','.'); ?>€
 				        				<?php else: ?>
 				        					-----
 				        				<?php endif ?>
@@ -512,7 +512,7 @@
 
 				        			<td class="text-center"  style="padding: 10px 5px ;">
 				        				<?php if (isset($data[$room->id]['totales']['totalApto'])): ?>
-				        					<?php echo number_format($data[$room->id]['totales']['totalApto'],2,',','.'); ?>€
+				        					<?php echo number_format($data[$room->id]['totales']['totalApto'],0,',','.'); ?>€
 				        				<?php else: ?>
 				        					-----
 				        				<?php endif ?>
@@ -520,7 +520,7 @@
 
 				        			<td class="text-center"  style="padding: 10px 5px ;">
 				        				<?php if (isset($data[$room->id]['totales']['totalParking'])): ?>
-				        					<?php echo number_format($data[$room->id]['totales']['totalParking'],2,',','.'); ?>€
+				        					<?php echo number_format($data[$room->id]['totales']['totalParking'],0,',','.'); ?>€
 				        				<?php else: ?>
 				        					-----
 				        				<?php endif ?>
@@ -528,7 +528,7 @@
 
 				        			<td class="text-center"  style="padding: 10px 5px ;">
 				        				<?php if (isset($data[$room->id]['totales']['totalLujo'])): ?>
-				        					<?php echo number_format($data[$room->id]['totales']['totalLujo'],2,',','.'); ?>€
+				        					<?php echo number_format($data[$room->id]['totales']['totalLujo'],0,',','.'); ?>€
 				        				<?php else: ?>
 				        					-----
 				        				<?php endif ?>
@@ -536,7 +536,7 @@
 
 				        			<td class="text-center"  style="padding: 10px 5px ;">
 				        				<?php if (isset($data[$room->id]['totales']['totalAgencia'])): ?>
-				        					<?php echo number_format($data[$room->id]['totales']['totalAgencia'],2,',','.'); ?>€
+				        					<?php echo number_format($data[$room->id]['totales']['totalAgencia'],0,',','.'); ?>€
 				        				<?php else: ?>
 				        					-----
 				        				<?php endif ?>
@@ -544,7 +544,7 @@
 
 				        			<td class="text-center"  style="padding: 10px 5px ;">
 				        				<?php if (isset($data[$room->id]['totales']['totalLimp'])): ?>
-				        					<?php echo number_format($data[$room->id]['totales']['totalLimp'],2,',','.'); ?>€
+				        					<?php echo number_format($data[$room->id]['totales']['totalLimp'],0,',','.'); ?>€
 				        				<?php else: ?>
 				        					-----
 				        				<?php endif ?>
@@ -555,11 +555,11 @@
 				        					$benefRoom = $data[$room->id]['totales']['totalPVP'] - $data[$room->id]['totales']['totalCost'] 
 				        				?>
 				        				<?php if ($benefRoom > 0): ?>
-				        					<span class="text-success font-w800"><?php echo number_format($benefRoom,2,',','.') ?>€</span>
+				        					<span class="text-success font-w800"><?php echo number_format($benefRoom,0,',','.') ?>€</span>
 				        				<?php elseif($benefRoom == 0): ?>
 				        					-----
 				        				<?php elseif($benefRoom < 0): ?>
-				        					<span class="text-danger font-w800"><?php echo number_format($benefRoom,2,',','.') ?>€</span>
+				        					<span class="text-danger font-w800"><?php echo number_format($benefRoom,0,',','.') ?>€</span>
 				        				<?php endif ?>
 				        			</td>
 
@@ -569,17 +569,17 @@
 				        					$benefPercentageRoom = ( $benefRoom / $divisor  ) *100;
 				        				?>
 				        				<?php if ($benefPercentageRoom > 0): ?>
-				        					<span class="text-success font-w800"><?php echo number_format($benefPercentageRoom,2,',','.') ?>%</span>
+				        					<span class="text-success font-w800"><?php echo number_format($benefPercentageRoom,0,',','.') ?>%</span>
 				        				<?php elseif($benefPercentageRoom == 0): ?>
 				        					-----
 				        				<?php elseif($benefPercentageRoom < 0): ?>
-				        					<span class="text-danger font-w800"><?php echo number_format($benefPercentageRoom,2,',','.') ?>%</span>
+				        					<span class="text-danger font-w800"><?php echo number_format($benefPercentageRoom,0,',','.') ?>%</span>
 				        				<?php endif ?>
 				        			</td>
 
 				        			<td class="text-center"  style="padding: 10px 5px ;">
 				        				<?php if ( $data[$room->id]['pagos'] != 0): ?>
-				        					<?php echo number_format($data[$room->id]['pagos'],2,',','.')?>€
+				        					<?php echo number_format($data[$room->id]['pagos'],0,',','.')?>€
 				        				<?php else: ?>
 				        					-----
 				        				<?php endif ?>
@@ -588,9 +588,9 @@
 				        			<td class="text-center pendiente bordes"  style="padding: 10px 5px ;">
 				        				
 				        				<?php if ($pendiente <= 0): ?>
-				        					<span class="text-success font-w800"><?php echo number_format($pendiente,2,',','.') ?>€</span>
+				        					<span class="text-success font-w800"><?php echo number_format($pendiente,0,',','.') ?>€</span>
 				        				<?php else: ?>
-				        					<span class="text-danger font-w800"><?php echo number_format($pendiente,2,',','.') ?>€</span>
+				        					<span class="text-danger font-w800"><?php echo number_format($pendiente,0,',','.') ?>€</span>
 				        				<?php endif ?>
 				        			</td>
 				            </tr>

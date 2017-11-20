@@ -292,7 +292,7 @@
 				<?php if (count($room) > 0): ?>
 					<div class="row">
 						<div class="col-md-6 col-xs-12 resumen blocks">
-							<div class="row">
+							<div class="col-md-6 col-md-offset-3">
 								<h2 class="text-center font-w800">Resumen</h2>
 								<table class="table table-bordered table-hover  no-footer" id="basicTable" role="grid" >
 									<tr>
@@ -306,21 +306,21 @@
 									<tr>
 										<td class="text-center">
 											<?php if ($total > 0): ?>
-												<?php echo number_format($total,2,',','.'); ?>€
+												<?php echo number_format($total,0,',','.'); ?>€
 											<?php else: ?>
 												--- €
 											<?php endif ?>												
 										</td>
 										<td class="text-center">
 											<?php if ($apto > 0): ?>
-												<?php echo number_format($apto,2,',','.'); ?>€
+												<?php echo number_format($apto,0,',','.'); ?>€
 											<?php else: ?>
 												--- €
 											<?php endif ?>
 										</td>
 										<td class="text-center">
 											<?php if ($park > 0): ?>
-												<?php echo number_format($park,2,',','.'); ?>€
+												<?php echo number_format($park,0,',','.'); ?>€
 											<?php else: ?>
 												--- €
 											<?php endif ?>
@@ -328,7 +328,7 @@
 										<?php if ($room->luxury == 1): ?>
 											<td class="text-center">
 												<?php if ($lujo > 0): ?>
-													<?php echo number_format($lujo,2,',','.'); ?>€
+													<?php echo number_format($lujo,0,',','.'); ?>€
 												<?php else: ?>
 													--- €
 												<?php endif ?>
@@ -389,7 +389,7 @@
 														<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
 															<?php $cost = ($book->cost_apto + $book->cost_park + $book->cost_lujo) ?>
 															<?php if ($cost > 0 ): ?>
-																<?php echo number_format($cost,2,',','.') ?>€
+																<?php echo number_format($cost,0,',','.') ?>€
 															<?php else: ?>
 																---€	
 															<?php endif ?>
@@ -402,7 +402,7 @@
 
 														<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
 															<?php if ($book->cost_apto > 0 ): ?>
-																<?php echo number_format($book->cost_apto,2,',','.') ?>€
+																<?php echo number_format($book->cost_apto,0,',','.') ?>€
 															<?php else: ?>
 																---€	
 															<?php endif ?>
@@ -414,7 +414,7 @@
 													<td class="text-center" style="padding: 8px; ">
 														<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
 															<?php if ($book->cost_park > 0 ): ?>
-																<?php echo number_format($book->cost_park,2,',','.') ?>€
+																<?php echo number_format($book->cost_park,0,',','.') ?>€
 															<?php else: ?>
 																---€	
 															<?php endif ?>
@@ -685,21 +685,21 @@
 							<tr>
 								<td class="text-center" style="padding: 8px;">
 									<?php if ($total > 0): ?>
-										<?php echo number_format($total,2,',','.'); ?>€
+										<?php echo number_format($total,0,',','.'); ?>€
 									<?php else: ?>
 										--- €
 									<?php endif ?>												
 								</td>
 								<td class="text-center" style="padding: 8px;">
 									<?php if ($apto > 0): ?>
-										<?php echo number_format($apto,2,',','.'); ?>€
+										<?php echo number_format($apto,0,',','.'); ?>€
 									<?php else: ?>
 										--- €
 									<?php endif ?>
 								</td>
 								<td class="text-center" style="padding: 8px;">
 									<?php if ($park > 0): ?>
-										<?php echo number_format($park,2,',','.'); ?>€
+										<?php echo number_format($park,0,',','.'); ?>€
 									<?php else: ?>
 										--- €
 									<?php endif ?>
@@ -707,7 +707,7 @@
 								<?php if ($room->luxury == 1): ?>
 									<td class="text-center" style="padding: 8px;">
 										<?php if ($lujo > 0): ?>
-											<?php echo number_format($lujo,2,',','.'); ?>€
+											<?php echo number_format($lujo,0,',','.'); ?>€
 										<?php else: ?>
 											--- €
 										<?php endif ?>
@@ -768,7 +768,7 @@
 										<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
 											<?php $cost = ($book->cost_apto + $book->cost_park + $book->cost_lujo) ?>
 											<?php if ($cost > 0 ): ?>
-												<b><?php echo number_format($cost,2,',','.') ?>€</b>
+												<b><?php echo number_format($cost,0,',','.') ?>€</b>
 											<?php else: ?>
 												---€	
 											<?php endif ?>
@@ -778,14 +778,14 @@
 										</td>
 										<td class="text-center">
 											<?php if ($book->cost_apto > 0): ?>
-												<?php echo number_format($book->cost_apto,2,',','.') ?> €
+												<?php echo number_format($book->cost_apto,0,',','.') ?> €
 											<?php else: ?>
 												---€	
 											<?php endif ?>
 										</td>
 										<td class="text-center">
 											<?php if ($book->cost_park > 0): ?>
-												<?php echo number_format($book->cost_park,2,',','.') ?> €
+												<?php echo number_format($book->cost_park,0,',','.') ?> €
 											<?php else: ?>
 												---€	
 											<?php endif ?>

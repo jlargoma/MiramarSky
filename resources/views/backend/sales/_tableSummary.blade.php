@@ -45,52 +45,75 @@
 
                 <tr>
                     <td class="text-center" style="border-left:1px solid black;">
-                        <b><?php echo number_format($totales["total"],2,',','.') ?> €</b>       
+                        <b><?php echo number_format($totales["total"],0,',','.') ?> €</b>       
                     </td>
                     <td class ="text-center" style="border-left:1px solid black;">
-                        <?php echo number_format($totales["bancoJorge"],2,',','.') ?> €     
+                        <?php if ($totales["bancoJorge"] == 0): ?>
+                            ----
+                        <?php else: ?>
+                            <?php echo number_format($totales["bancoJorge"],0,',','.') ?> €
+                        <?php endif ?>     
                     </td>
                     <td class ="text-center" style="border-left:1px solid black;">
-                        <?php echo number_format($totales["bancoJaime"],2,',','.') ?> € 
+                        <?php if ($totales["bancoJaime"] == 0): ?>
+                            ----
+                         <?php else: ?>
+                            <?php echo number_format($totales["bancoJaime"],0,',','.') ?> €
+                         <?php endif ?> 
                     </td>
                     <td class ="text-center" style="border-left:1px solid black;">
-                        <?php echo number_format($totales["jorge"],2,',','.') ?> €  
+                        <?php if ($totales["jorge"] == 0): ?>
+                           ---- 
+                        <?php else: ?>
+                            <?php echo number_format($totales["jorge"],0,',','.') ?> €    
+                        <?php endif ?>
+                        
                     </td>
                     <td class ="text-center" style="border-left:1px solid black;">
-                        <?php echo number_format($totales["jaime"],2,',','.') ?> €  
+                        <?php if ($totales["jaime"] == 0): ?>
+                            ----
+                        <?php else: ?>
+                            <?php echo number_format($totales["jaime"],0,',','.') ?> €    
+                        <?php endif ?>
+                        
                     </td>
                     <td class ="text-center" style="border-left:1px solid black;">
-                        <span class="text-danger"><b><?php echo number_format($totales["pendiente"],2,',','.') ?> €</b></span>
+                        <?php if ($totales["pendiente"] == 0): ?>
+                            ----
+                        <?php else: ?>
+                            <span class="text-danger"><b><?php echo number_format($totales["pendiente"],0,',','.') ?> €</b></span>
+                        <?php endif ?>
+                        
                     </td>
                     <td class ="text-center beneficio" style="border-left:1px solid black;">
-                        <b><?php echo number_format($totales["beneficio"],2,',','.') ?>€</b>
+                        <b><?php echo number_format($totales["beneficio"],0,',','.') ?>€</b>
                     </td>
                     <td class ="text-center beneficio" style="border-left:1px solid black;">
                         <?php echo number_format( ( $totales["beneficio"] / $totales["total"] )* 100 ,2 ,',','.') ?>%
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <b><?php echo number_format($totales["coste"],2,',','.') ?>€</b>
+                        <b><?php echo number_format($totales["coste"],0,',','.') ?>€</b>
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <?php echo number_format($totales["costeApto"],2,',','.') ?>€
+                        <?php echo number_format($totales["costeApto"],0,',','.') ?>€
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <?php echo number_format($totales["costePark"],2,',','.') ?>€
+                        <?php echo number_format($totales["costePark"],0,',','.') ?>€
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <?php echo number_format($totales["costeLujo"],2,',','.') ?>€
+                        <?php echo number_format($totales["costeLujo"],0,',','.') ?>€
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <?php echo number_format($totales["costeLimp"],2,',','.') ?>€
+                        <?php echo number_format($totales["costeLimp"],0,',','.') ?>€
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <?php echo number_format($totales["costeAgencia"],2,',','.') ?>€
+                        <?php echo number_format($totales["costeAgencia"],0,',','.') ?>€
                     </td>
                     <td class ="text-center" style="border-left:1px solid black;">
-                        <?php echo number_format($totales["benJorge"],2,',','.') ?>€
+                        <?php echo number_format($totales["benJorge"],0,',','.') ?>€
                     </td>
                     <td class ="text-center" style="border-left:1px solid black;">
-                        <?php echo number_format($totales["benJaime"],2,',','.') ?>€
+                        <?php echo number_format($totales["benJaime"],0,',','.') ?>€
                     </td>
                 </tr>
             </table>
@@ -116,10 +139,10 @@
                 <th class ="text-center bg-complete text-white" style="width: 5%">Sup. Lujo</th>
                 <th class ="text-center bg-complete text-white" style="width: 5%">Limp</th>
                 <th class ="text-center bg-complete text-white" style="width: 5%">Agencia</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%">Obv</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%">Stripe</th>
                 <th class ="text-center bg-complete text-white" style="width: 5%">Ben <br> Jorge</th>
-                <th class ="text-center bg-complete text-white" style="width: 5%">% <br> Jorge</th>
                 <th class ="text-center bg-complete text-white" style="width: 5%">Ben <br> Jaime</th>
-                <th class ="text-center bg-complete text-white" style="width: 5%">% <br> Jaime</th>
             </thead>
             <tbody >
                 <!-- Totales -->
@@ -152,7 +175,7 @@
                         </td>
                         <td class="text-center pagos bi">
                             <?php if ($book->total_price > 0): ?>
-                                <b><?php echo number_format($book->total_price,2,',','.') ?> €</b>      
+                                <b><?php echo number_format($book->total_price,0,',','.') ?> €</b>      
                             <?php else: ?>
                                 <b>----</b> 
                             <?php endif ?>
@@ -161,7 +184,7 @@
 
                         <td class="text-center pagos bi">
                             <?php if ( $book->getPayment(2) > 0): ?>
-                                <?php echo number_format($book->getPayment(2),2,',','.'); ?> €    
+                                <?php echo number_format($book->getPayment(2),0,',','.'); ?> €    
                             <?php else: ?>
                                 <b>----</b>
                             <?php endif ?>
@@ -169,7 +192,7 @@
                         </td>
                         <td class="text-center pagos ">
                             <?php if ( $book->getPayment(3) > 0): ?>
-                                <?php echo number_format($book->getPayment(3),2,',','.'); ?> €    
+                                <?php echo number_format($book->getPayment(3),0,',','.'); ?> €    
                             <?php else: ?>
                                 <b>----</b>
                             <?php endif ?>
@@ -177,7 +200,7 @@
                         </td>
                         <td class="text-center pagos">
                             <?php if ( $book->getPayment(0) > 0): ?>
-                                <?php echo number_format($book->getPayment(0),2,',','.'); ?> €    
+                                <?php echo number_format($book->getPayment(0),0,',','.'); ?> €    
                             <?php else: ?>
                                 <b>----</b>
                             <?php endif ?>
@@ -185,7 +208,7 @@
                         </td>
                         <td class="text-center pagos">
                             <?php if ( $book->getPayment(1) > 0): ?>
-                                <?php echo number_format($book->getPayment(1),2,',','.'); ?> €    
+                                <?php echo number_format($book->getPayment(1),0,',','.'); ?> €    
                             <?php else: ?>
                                 <b>----</b>
                             <?php endif ?>
@@ -195,13 +218,13 @@
                             <?php if ( ($book->total_price - $book->getPayment(4)) == 0 ): ?>
                                 <b>----</b>
                             <?php else: ?>
-                                <?php echo number_format(($book->total_price - $book->getPayment(4)),2,',','.')." €"; ?>
+                                <?php echo number_format(($book->total_price - $book->getPayment(4)),0,',','.')." €"; ?>
                             <?php endif ?>
                             
                         </td>
                         <td class="text-center beneficio bi" style="border-left: 1px solid black;">
                             <?php if ( $book->total_ben > 0): ?>
-                                <b><?php echo number_format($book->total_ben,2,',','.') ?> €</b>    
+                                <b><?php echo number_format($book->total_ben,0,',','.') ?> €</b>    
                             <?php else: ?>
                                <b>----</b>
                             <?php endif ?>
@@ -217,7 +240,7 @@
                         </td>
                         <td class="text-center coste bi ">
                             <?php if ( $book->cost_total > 0): ?>
-                                <b><?php echo number_format( $book->cost_total,2,',','.')?> €</b>    
+                                <b><?php echo number_format( $book->cost_total,0,',','.')?> €</b>    
                             <?php else: ?>
                                <b>----</b>
                             <?php endif ?>
@@ -225,7 +248,7 @@
                         </td>
                         <td class="text-center coste">
                             <?php if ( $book->cost_apto > 0): ?>
-                                <?php echo number_format($book->cost_apto,2,',','.')?> €    
+                                <?php echo number_format($book->cost_apto,0,',','.')?> €    
                             <?php else: ?>
                                 ----
                             <?php endif ?>
@@ -233,7 +256,7 @@
                         </td>
                         <td class="text-center coste">
                             <?php if ( $book->cost_park > 0): ?>
-                                <?php echo number_format($book->cost_park,2,',','.')?> €    
+                                <?php echo number_format($book->cost_park,0,',','.')?> €    
                             <?php else: ?>
                                 ----
                             <?php endif ?>
@@ -241,7 +264,7 @@
                         </td>
                         <td class="text-center coste" >
                             <?php if ( $book->cost_lujo > 0): ?>
-                                <?php echo number_format($book->cost_lujo,2,',','.')?> €    
+                                <?php echo number_format($book->cost_lujo,0,',','.')?> €    
                             <?php else: ?>
                                 ----
                             <?php endif ?>
@@ -249,29 +272,59 @@
                         </td>
                         <td class="text-center coste"> 
                             <?php if ( $book->cost_limp > 0): ?>
-                                <?php echo number_format($book->cost_limp,2,',','.') ?>€    
+                                <?php echo number_format($book->cost_limp,0,',','.') ?>€    
                             <?php else: ?>
                                 ----
                             <?php endif ?>
                             
                         </td>
-                        <td class="text-center coste bf"> 
+                        <td class="text-center coste "> 
                             <?php if ( $book->PVPAgencia > 0): ?>
-                                <?php echo number_format($book->PVPAgencia,2,',','.') ?>€    
+                                <?php echo number_format($book->PVPAgencia,0,',','.') ?>€    
                             <?php else: ?>
                                 ----
                             <?php endif ?>
                             
+                        </td>
+                        <td class="text-center coste">
+                            <?php if ( $book->extras > 0): ?>
+                                <?php echo number_format($book->extras,0,',','.') ?>€    
+                            <?php else: ?>
+                                --
+                            <?php endif ?>
+                        </td>
+                        <td class="text-center coste bf">
+                            <?php 
+                                $totalStripep = 0;
+                                $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get() 
+                            ?>
+                            <?php if (count($stripePayment) > 0): ?>
+
+                                <?php foreach ($stripePayment as $key => $stripe): ?>
+                                    <?php $totalStripep +=  $stripe->import; ?>
+                                <?php endforeach ?>
+
+                                <?php if ($totalStripep > 0): ?>
+                                    
+                                    <?php echo ((1.4 * $totalStripep)/100)+0.25 ?>€
+
+                                <?php else: ?>
+                                    ----
+                                <?php endif ?>
+
+
+                            <?php else: ?>
+                                ----
+                            <?php endif ?>
+
                         </td>
                         <td class="text-center">
-                            <?php echo number_format($book->ben_jorge,2,',','.') ?>
+                            <?php echo number_format($book->ben_jorge,0,',','.') ?>
                         </td>
-                        <td class="text-center"><?php echo $book->room->typeAptos->PercentJorge ?>%</td>
                         
                         <td class="text-center">
-                            <?php echo number_format($book->ben_jaime,2,',','.') ?>
+                            <?php echo number_format($book->ben_jaime,0,',','.') ?>
                         </td>
-                        <td class="text-center"> <?php echo $book->room->typeAptos->PercentJaime?>%</td>
                     </tr>
                 <?php endforeach ?>
                 
@@ -314,53 +367,53 @@
 
                         <tr>
                             <td class="text-center" style="border-left:1px solid black;">
-                                <b><?php echo number_format($totales["total"],2,',','.') ?> €</b>       
+                                <b><?php echo number_format($totales["total"],0,',','.') ?> €</b>       
                             </td>
                             <td class ="text-center" style="border-left:1px solid black;">
-                                <?php echo number_format($totales["bancoJorge"],2,',','.') ?> €     
+                                <?php echo number_format($totales["bancoJorge"],0,',','.') ?> €     
                             </td>
                             <td class ="text-center" style="border-left:1px solid black;">
-                                <?php echo number_format($totales["bancoJaime"],2,',','.') ?> € 
+                                <?php echo number_format($totales["bancoJaime"],0,',','.') ?> € 
                             </td>
                             <td class ="text-center" style="border-left:1px solid black;">
-                                <?php echo number_format($totales["jorge"],2,',','.') ?> €  
+                                <?php echo number_format($totales["jorge"],0,',','.') ?> €  
                             </td>
                             <td class ="text-center" style="border-left:1px solid black;">
-                                <?php echo number_format($totales["jaime"],2,',','.') ?> €  
+                                <?php echo number_format($totales["jaime"],0,',','.') ?> €  
                             </td>
                             <td class ="text-center" style="border-left:1px solid black;">
-                                <span class="text-danger"><b><?php echo number_format($totales["pendiente"],2,',','.') ?> €</b></span>
+                                <span class="text-danger"><b><?php echo number_format($totales["pendiente"],0,',','.') ?> €</b></span>
                             </td>
                             <td class ="text-center beneficio" style="border-left:1px solid black;">
-                                <b><?php echo number_format($totales["beneficio"],2,',','.') ?>€</b>
+                                <b><?php echo number_format($totales["beneficio"],0,',','.') ?>€</b>
                             </td>
                             <td class ="text-center beneficio" style="border-left:1px solid black;">
                                 <?php echo number_format( ( $totales["beneficio"] / $totales["total"] )* 100 ,2 ,',','.') ?>%
                             </td>
                             <td class ="text-center coste" style="border-left:1px solid black;">
                                 <?php $coste = $totales["coste"] +  $totales["costeLimp"] + $totales["costeAgencia"]?>
-                                <b><?php echo number_format($coste,2,',','.') ?>€</b>
+                                <b><?php echo number_format($coste,0,',','.') ?>€</b>
                             </td>
                             <td class ="text-center coste" style="border-left:1px solid black;">
-                                <?php echo number_format($totales["costeApto"],2,',','.') ?>€
+                                <?php echo number_format($totales["costeApto"],0,',','.') ?>€
                             </td>
                             <td class ="text-center coste" style="border-left:1px solid black;">
-                                <?php echo number_format($totales["costePark"],2,',','.') ?>€
+                                <?php echo number_format($totales["costePark"],0,',','.') ?>€
                             </td>
                             <td class ="text-center coste" style="border-left:1px solid black;">
-                                <?php echo number_format($totales["costeLujo"],2,',','.') ?>€
+                                <?php echo number_format($totales["costeLujo"],0,',','.') ?>€
                             </td>
                             <td class ="text-center coste" style="border-left:1px solid black;">
-                                <?php echo number_format($totales["costeLimp"],2,',','.') ?>€
+                                <?php echo number_format($totales["costeLimp"],0,',','.') ?>€
                             </td>
                             <td class ="text-center coste" style="border-left:1px solid black;">
-                                <?php echo number_format($totales["costeAgencia"],2,',','.') ?>€
+                                <?php echo number_format($totales["costeAgencia"],0,',','.') ?>€
                             </td>
                             <td class ="text-center" style="border-left:1px solid black;">
-                                <?php echo number_format($totales["benJorge"],2,',','.') ?>€
+                                <?php echo number_format($totales["benJorge"],0,',','.') ?>€
                             </td>
                             <td class ="text-center" style="border-left:1px solid black;">
-                                <?php echo number_format($totales["benJaime"],2,',','.') ?>€
+                                <?php echo number_format($totales["benJaime"],0,',','.') ?>€
                             </td>
                         </tr>
                     </table>
@@ -390,9 +443,7 @@
                             <th class ="text-center bg-complete text-white" style="width: 5%">Limp</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Agencia</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Ben <br> Jorge</th>
-                            <th class ="text-center bg-complete text-white" style="width: 5%">% <br> Jorge</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Ben <br> Jaime</th>
-                            <th class ="text-center bg-complete text-white" style="width: 5%">% <br> Jaime</th>
                         </thead>
                         <tbody >
                             <!-- Totales -->
@@ -424,69 +475,57 @@
                                         <?php echo $book->nigths ?>     
                                     </td>
                                     <td class="text-center">
-                                        <b><?php echo number_format($book->total_price,2,',','.') ?> €</b>      
+                                        <b><?php echo number_format($book->total_price,0,',','.') ?> €</b>      
                                     </td>
 
                                     <td class="text-center pagos bi">
-                                        <?php echo number_format($book->getPayment(2),2,',','.'); ?> €
+                                        <?php echo number_format($book->getPayment(2),0,',','.'); ?> €
                                     </td>
                                     <td class="text-center pagos bi">
-                                        <?php echo number_format($book->getPayment(3),2,',','.'); ?> €
+                                        <?php echo number_format($book->getPayment(3),0,',','.'); ?> €
                                     </td>
                                     <td class="text-center pagos">
-                                        <?php echo number_format($book->getPayment(0),2,',','.'); ?> €
+                                        <?php echo number_format($book->getPayment(0),0,',','.'); ?> €
                                     </td>
                                     <td class="text-center pagos">
-                                        <?php echo number_format($book->getPayment(1),2,',','.'); ?> €
+                                        <?php echo number_format($book->getPayment(1),0,',','.'); ?> €
                                     </td>
                                     <td class="text-center pagos pendiente">
-                                        <?php echo number_format(($book->total_price - $book->getPayment(4)),2,',','.')." €"; ?>
+                                        <?php echo number_format(($book->total_price - $book->getPayment(4)),0,',','.')." €"; ?>
                                     </td>
                                     <td class="text-center beneficio bi" style="border-left: 1px solid black;"><b>
-                                        <?php echo number_format($book->total_ben,2,',','.') ?> €</b>
+                                        <?php echo number_format($book->total_ben,0,',','.') ?> €</b>
                                     </td>
                                     <td class="text-center beneficio bf">
                                         <?php echo number_format($book->inc_percent,0)." %" ?>
                                     </td>
                                     <td class="text-center coste bi ">
-                                        <b><?php echo number_format( $book->cost_total,2,',','.')?> €</b>
+                                        <b><?php echo number_format( $book->cost_total,0,',','.')?> €</b>
                                     </td>
                                     <td class="text-center coste">
-                                        <?php echo number_format($book->cost_apto,2,',','.')?> €
+                                        <?php echo number_format($book->cost_apto,0,',','.')?> €
                                     </td>
                                     <td class="text-center coste">
-                                        <?php echo number_format($book->cost_park,2,',','.')?> €
+                                        <?php echo number_format($book->cost_park,0,',','.')?> €
                                     </td>
                                     <td class="text-center coste" >
-                                        <?php echo number_format($book->cost_lujo,2,',','.')?> €
+                                        <?php echo number_format($book->cost_lujo,0,',','.')?> €
                                     </td>
                                     <td class="text-center coste">      
-                                        <?php echo number_format($book->sup_limp,2,',','.') ?>€
+                                        <?php echo number_format($book->sup_limp,0,',','.') ?>€
                                     </td>
                                     <td class="text-center coste bf">   
-                                        <?php echo number_format($book->PVPAgencia,2,',','.') ?>€
+                                        <?php echo number_format($book->PVPAgencia,0,',','.') ?>€
                                     </td>
                                     <td class="text-center">
-                                        <?php echo number_format($book->ben_jorge,2,',','.') ?>
+                                        <?php echo number_format($book->ben_jorge,0,',','.') ?>
                                     </td>
-                                    <?php if ($book->total_ben > 0 && $book->ben_jorge > 0): ?>
-                                    <td class="text-center">
-                                        <?php echo number_format(($book->total_ben/$book->ben_jorge)*100)."%" ?>
-                                    </td>
-                                    <?php else: ?>
-                                    <td class="text-center"> 0%</td>
-                                    <?php endif ?>
+                                    
                                     
                                     <td class="text-center">
-                                        <?php echo number_format($book->ben_jaime,2,',','.') ?>
+                                        <?php echo number_format($book->ben_jaime,0,',','.') ?>
                                     </td>
-                                    <?php if ($book->total_ben > 0 && $book->ben_jaime > 0): ?>
-                                    <td class="text-center">
-                                        <?php echo number_format(($book->total_ben/$book->ben_jaime)*100)."%" ?>
-                                    </td>
-                                    <?php else: ?>
-                                    <td class="text-center"> 0%</td>
-                                    <?php endif ?>
+                                    
                                 </tr>
                             <?php endforeach ?>
                             

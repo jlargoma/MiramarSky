@@ -83,7 +83,8 @@
 
 					<td class ="text-center" ><?php echo $book->nigths ?></td>
 
-					<td class ="text-center font-w800" ><?php echo $book->total_price."€" ?><br>
+					<td class ="text-center font-w800" >
+						<?php echo number_format($book->total_price,0,',','.') ?>€
 					</td>
 
 					<td class ="text-center">
@@ -184,7 +185,7 @@
 
 						<td class ="text-center" ><?php echo $book->nigths ?></td>
 
-						<td class ="text-center font-w800" ><?php echo $book->total_price."€" ?><br>
+						<td class ="text-center font-w800" ><?php echo number_format($book->total_price,0,',','.') ?>€
 						</td>
 
 						<td class ="text-center">

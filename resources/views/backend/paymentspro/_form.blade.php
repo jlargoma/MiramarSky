@@ -175,8 +175,12 @@
         var id = $(this).attr('data-id');
         var line = "#payment-"+id;
 
-        $.get('/admin/paymentspro/delete', {id: id}, function(data) {
-            $(line).hide();
+        $.get('/admin/paymentspro/delete/'+id, function(data) {
+            if (data == "ok") {
+                $(line).hide();
+            } else {
+                alert(data);
+            }
         });
     });
 </script>
