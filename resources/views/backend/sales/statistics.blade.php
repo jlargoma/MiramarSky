@@ -29,6 +29,15 @@
 	.tr-cobros:hover td {
 		background-color: #2ca085!important;
 	}
+	.fa-arrow-up{
+		color: green;
+	}
+	.fa-arrow-down{
+		color: red;
+	}
+	.bg-complete-grey{
+		background-color: #92B6E2!important;
+	}
 </style>
 <div class="container-fluid padding-5 sm-padding-10">
 	<div class="row bg-white"></div>
@@ -252,11 +261,11 @@
 	   	-->
 	        <div class="col-md-12">
 	        	<table class="table table-hover demo-table-search table-responsive " >
-	        	    <thead>
+<!-- 	        	    <thead>
 	        	        <th class="text-center bg-complete text-white" colspan="7">Ingresos de la temporada <?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?></th>
-	        	    </thead>
+	        	    </thead> -->
 	        	    <thead>
-	        	        <th class="text-center bg-complete text-white">&nbsp;</th>
+	        	        <th class="text-center bg-complete text-white"><?php echo $inicio->copy()->format('Y') ?>-<?php echo $inicio->copy()->addYear()->format('Y') ?></th>
 	        	        <th class="text-center bg-complete text-white">Nov/Dic</th>
 	        	        <th class="text-center bg-complete text-white">Ene</th>
 	        	        <th class="text-center bg-complete text-white">Feb</th>
@@ -283,18 +292,20 @@
 	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->format('Y')][4]["beneficio"],0,',','.')?></td>
 	        	            <td class="text-center p-t-5 p-b-5"><?php //echo number_format(array_sum($ventas["Ventas"]),2,',','.')?></td>
 	        	        </tr>
-	        	        <thead>
-	        	            <th colspan="7" class="ingresos_temp">Ingresos de la temporada <?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?> </th>
-	        	        </thead>
-	        	        <tr>
-	        	            <th class="text-center ingresos_temp text-white"></th>
-	        	            <th class="text-center ingresos_temp text-white">Nov/Dic</th>
-	        	            <th class="text-center ingresos_temp text-white">Ene</th>
-	        	            <th class="text-center ingresos_temp text-white">Feb</th>
-	        	            <th class="text-center ingresos_temp text-white">Mar</th>
-	        	            <th class="text-center ingresos_temp text-white">Abr/May</th>
-	        	            <th class="text-center ingresos_temp text-white">Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-	        	        </tr>
+	        	    </tbody>
+<!--         	        <thead>
+        	            <th class="text-center bg-complete-grey text-white" colspan="7">Ingresos de la temporada <?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?></th>
+        	        </thead> -->
+        	        <thead>
+        	            <th class="text-center bg-complete-grey text-white"><?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?></th>
+        	            <th class="text-center bg-complete-grey text-white">Nov/Dic</th>
+        	            <th class="text-center bg-complete-grey text-white">Ene</th>
+        	            <th class="text-center bg-complete-grey text-white">Feb</th>
+        	            <th class="text-center bg-complete-grey text-white">Mar</th>
+        	            <th class="text-center bg-complete-grey text-white">Abr/May</th>
+        	            <th class="text-center bg-complete-grey text-white">Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+        	        </thead>
+        	        <tbody>
 	        	        <tr>
 	        	            <th class="text-center p-t-5 p-b-5">Ventas</th>
 	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->subYear()->format('Y')][12]["ventas"],0,',','.')?></td>
@@ -313,11 +324,11 @@
 	        	            <td class="text-center p-t-5 p-b-5"><?php echo number_format($ventas[$inicio->copy()->subYear()->format('Y')][4]["beneficio"],0,',','.')?></td>
 	        	            <td class="text-center p-t-5 p-b-5"><?php //echo number_format(array_sum($ventas["Ventas"]),2,',','.')?></td>
 	        	        </tr>
-	        	        <thead>
+<!-- 	        	        <thead>
 	        	            <th colspan="7" class="comparativa bg-primary text-center text-white" >Comparativa de la temporada <?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?> </th>
-	        	        </thead>
+	        	        </thead> -->
 	        	        <tr>
-	        	            <th class="text-center  bg-primary text-white"></th>
+	        	            <th class="text-center  bg-primary text-white"><?php echo $inicio->copy()->subYear()->format('Y') ?>-<?php echo $inicio->copy()->format('Y') ?></th>
 	        	            <th class="text-center  bg-primary text-white">Nov/Dic</th>
 	        	            <th class="text-center  bg-primary text-white">Ene</th>
 	        	            <th class="text-center  bg-primary text-white">Feb</th>
@@ -328,28 +339,33 @@
 	        	        <tr>
 	        	            <th class="text-center">Comp. Ventas</th>
 	        	            <td class="text-center">
-	        	                <?php //echo number_format($ventas["Ventas"][12]-$ventasOld["Ventas"][12],2,',','.');
-	        	                    //echo ($ventas["Ventas"][12]-$ventasOld["Ventas"][12] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+	        	            	<?php echo number_format(($ventas[$inicio->copy()->format('Y')][12]["ventas"] - $ventas[$inicio->copy()->subYear()->format('Y')][12]["ventas"]),0,',','.')?>
+	        	                <?php 
+	        	                    echo ($ventas[$inicio->copy()->format('Y')][12]["ventas"] - $ventas[$inicio->copy()->subYear()->format('Y')][12]["ventas"] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
 	        	                     ?>
 	        	            </td>
 	        	            <td class="text-center">
-	        	                <?php //echo number_format($ventas["Ventas"][1]-$ventasOld["Ventas"][1],2,',','.');
-	        	                    //echo ($ventas["Ventas"][1]-$ventasOld["Ventas"][1] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+	        	            	<?php echo number_format(($ventas[$inicio->copy()->format('Y')][1]["ventas"] - $ventas[$inicio->copy()->subYear()->format('Y')][1]["ventas"]),0,',','.')?>
+	        	                <?php 
+	        	                    echo ($ventas[$inicio->copy()->format('Y')][1]["ventas"] - $ventas[$inicio->copy()->subYear()->format('Y')][1]["ventas"] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
 	        	                     ?>
 	        	            </td>
 	        	            <td class="text-center">
-	        	                <?php //echo number_format($ventas["Ventas"][2]-$ventasOld["Ventas"][2],2,',','.');
-	        	                    //echo ($ventas["Ventas"][2]-$ventasOld["Ventas"][2] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+	        	            	<?php echo number_format(($ventas[$inicio->copy()->format('Y')][2]["ventas"] - $ventas[$inicio->copy()->subYear()->format('Y')][2]["ventas"]),0,',','.')?>
+	        	                <?php 
+	        	                    echo ($ventas[$inicio->copy()->format('Y')][2]["ventas"] - $ventas[$inicio->copy()->subYear()->format('Y')][2]["ventas"] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
 	        	                     ?>
 	        	            </td>
 	        	            <td class="text-center">
-	        	                <?php //echo number_format($ventas["Ventas"][3]-$ventasOld["Ventas"][3],2,',','.');
-	        	                    //echo ($ventas["Ventas"][3]-$ventasOld["Ventas"][3] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+	        	            	<?php echo number_format(($ventas[$inicio->copy()->format('Y')][3]["ventas"] - $ventas[$inicio->copy()->subYear()->format('Y')][3]["ventas"]),0,',','.')?>
+	        	                <?php 
+	        	                    echo ($ventas[$inicio->copy()->format('Y')][3]["ventas"] - $ventas[$inicio->copy()->subYear()->format('Y')][3]["ventas"] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
 	        	                     ?>
 	        	            </td>
 	        	            <td class="text-center">
-	        	                <?php //echo number_format($ventas["Ventas"][4]-$ventasOld["Ventas"][4],2,',','.');
-	        	                    //echo ($ventas["Ventas"][4]-$ventasOld["Ventas"][4] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+	        	            	<?php echo number_format(($ventas[$inicio->copy()->format('Y')][4]["ventas"] - $ventas[$inicio->copy()->subYear()->format('Y')][4]["ventas"]),0,',','.')?>
+	        	                <?php 
+	        	                    echo ($ventas[$inicio->copy()->format('Y')][4]["ventas"] - $ventas[$inicio->copy()->subYear()->format('Y')][4]["ventas"] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
 	        	                     ?>
 	        	            </td>
 	        	            <td class="text-center">
@@ -361,28 +377,33 @@
 	        	        <tr>
 	        	            <th class="text-center">Comp. Benº</th>
 	        	            <td class="text-center">
-	        	                <?php //echo number_format($ventas["Ben"][12]-$ventasOld["Ben"][12],2,',','.');
-	        	                    //echo ($ventas["Ben"][12]-$ventasOld["Ben"][12] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+	        	            	<?php echo number_format(($ventas[$inicio->copy()->format('Y')][12]["beneficio"] - $ventas[$inicio->copy()->subYear()->format('Y')][12]["beneficio"]),0,',','.')?>
+	        	                <?php 
+	        	                    echo ($ventas[$inicio->copy()->format('Y')][12]["beneficio"] - $ventas[$inicio->copy()->subYear()->format('Y')][12]["beneficio"] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
 	        	                     ?>
 	        	            </td>
 	        	            <td class="text-center">
-	        	                <?php //echo number_format($ventas["Ben"][1]-$ventasOld["Ben"][1],2,',','.');
-	        	                    //echo ($ventas["Ben"][1]-$ventasOld["Ben"][1] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+	        	            	<?php echo number_format(($ventas[$inicio->copy()->format('Y')][1]["beneficio"] - $ventas[$inicio->copy()->subYear()->format('Y')][1]["beneficio"]),0,',','.')?>
+	        	                <?php 
+	        	                    echo ($ventas[$inicio->copy()->format('Y')][1]["beneficio"] - $ventas[$inicio->copy()->subYear()->format('Y')][1]["beneficio"] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
 	        	                     ?>
 	        	            </td>
 	        	            <td class="text-center">
-	        	                <?php //echo number_format($ventas["Ben"][2]-$ventasOld["Ben"][2],2,',','.');
-	        	                    //echo ($ventas["Ben"][2]-$ventasOld["Ben"][2] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+	        	            	<?php echo number_format(($ventas[$inicio->copy()->format('Y')][2]["beneficio"] - $ventas[$inicio->copy()->subYear()->format('Y')][2]["beneficio"]),0,',','.')?>
+	        	                <?php 
+	        	                    echo ($ventas[$inicio->copy()->format('Y')][2]["beneficio"] - $ventas[$inicio->copy()->subYear()->format('Y')][2]["beneficio"] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
 	        	                     ?>
 	        	            </td>
 	        	            <td class="text-center">
-	        	                <?php //echo number_format($ventas["Ben"][3]-$ventasOld["Ben"][3],2,',','.');
-	        	                    //echo ($ventas["Ben"][3]-$ventasOld["Ben"][3] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+	        	            	<?php echo number_format(($ventas[$inicio->copy()->format('Y')][3]["beneficio"] - $ventas[$inicio->copy()->subYear()->format('Y')][3]["beneficio"]),0,',','.')?>
+	        	                <?php 
+	        	                    echo ($ventas[$inicio->copy()->format('Y')][3]["beneficio"] - $ventas[$inicio->copy()->subYear()->format('Y')][3]["beneficio"] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
 	        	                     ?>
 	        	            </td>
 	        	            <td class="text-center">
-	        	                <?php //echo number_format($ventas["Ben"][4]-$ventasOld["Ben"][4],2,',','.');
-	        	                    //echo ($ventas["Ben"][4]-$ventasOld["Ben"][4] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
+	        	            	<?php echo number_format(($ventas[$inicio->copy()->format('Y')][4]["beneficio"] - $ventas[$inicio->copy()->subYear()->format('Y')][4]["beneficio"]),0,',','.')?>
+	        	                <?php 
+	        	                    echo ($ventas[$inicio->copy()->format('Y')][4]["beneficio"] - $ventas[$inicio->copy()->subYear()->format('Y')][4]["beneficio"] > 0) ? "<i class='fa fa-arrow-up' aria-hidden='true'></i>" : "<i class='fa fa-arrow-down' aria-hidden='true'></i>";
 	        	                     ?>
 	        	            </td>
 	        	            <td class="text-center">
@@ -397,7 +418,7 @@
 		</div>
 		
 	</div>  
-	<div class="row">
+<!-- 	<div class="row">
 		<div class="row">
 		    <div>
 		        <table class="table table-hover demo-table-search table-responsive " >
@@ -544,7 +565,7 @@
 		        </table>
 		    </div>
 		</div>
-	</div>  
+	</div>   -->
 </div>
 @endsection
 
