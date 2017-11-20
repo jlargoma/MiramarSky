@@ -103,7 +103,9 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 	Route::get('admin/clientes/save',['middleware' => 'authAdmin', 'uses' => 'CustomersController@save']);
 	Route::post('admin/clientes/create',['middleware' => 'authAdmin', 'uses' => 'CustomersController@create']);
 	Route::get('admin/clientes/export-excel' , ['middleware' => 'authAdmin', 'uses' => 'CustomersController@createExcel']);
+	Route::get('admin/customers/importExcelData' , ['middleware' => 'authAdmin', 'uses' => 'CustomersController@createExcel']);
 	Route::get('admin/clientes/delete/{id}',['middleware' => 'authAdmin', 'uses' => 'CustomersController@delete']); 
+
 
 // Rooms
 
@@ -284,6 +286,18 @@ Route::group(['middleware' => 'authAdmin'], function () {
 		}
 
 	});
+
+	Route::get('/admin/customer/delete/{id}', function($id){
+
+		if (\App\Customers::find($id)->delete()) {
+			return 'ok';
+		}else{
+			return 'error';
+		}
+
+	});
+
+
 	
 });
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Http\Requests;
+use Excel;
 
 class CustomersController extends Controller
 {
@@ -15,7 +16,19 @@ class CustomersController extends Controller
      */
     public function index()
     {
-        return view('backend/customers/index',['customers' => \App\Customers::all()]);
+        $arraycorreos = array();
+        $correosUsuarios = \App\User::all();
+
+        foreach ($correosUsuarios as $correos) {
+            $arraycorreos[] = $correos->email;
+
+        }
+
+
+            $arraycorreos[] = "iankurosaki@gmail.com";
+            $arraycorreos[] = "jlargoma@gmail.com";
+            $arraycorreos[] = "victorgerocuba@gmail.com";
+        return view('backend/customers/index',['customers' => \App\Customers::whereNotIn('email',$arraycorreos)->where('email', '!=', ' ')->distinct('email')->get()]);
     }
 
     /**
@@ -135,18 +148,13 @@ class CustomersController extends Controller
             }
 
 
-                $arraycorreos[] = "iankurosaki@gmail.com";
-                $arraycorreos[] = "jlargoma@gmail.com";
-                $arraycorreos[] = "victorgerocuba@gmail.com";
+            $arraycorreos[] = "iankurosaki@gmail.com";
+            $arraycorreos[] = "jlargoma@gmail.com";
+            $arraycorreos[] = "victorgerocuba@gmail.com";
 
 
 
             $clientes = \App\Customers::whereNotIn('email',$arraycorreos)->where('email', '!=', ' ')->distinct('email')->get();
-            // echo "<pre>";
-            // echo count($clientes);
-            // // print_r($pruebaclientes);
-            // die();
-            // $clientes = \App\Customers::distinct('email')->where('email','!=', "")->whereNotIn('email',$arraycorreos)->get();
             
             $excel->sheet('Clientes', function($sheet) use($clientes) {
          

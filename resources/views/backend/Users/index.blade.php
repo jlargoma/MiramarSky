@@ -17,45 +17,39 @@
             <h2>Usuarios</h2>
         </div>
         <div class="col-md-8 table-responsive">
-            <div class="pull-left">
-                <div class="col-xs-12 " >
-                    <input type="text" id="searchUser" class="form-control pull-right" placeholder="Buscar">
-                </div>
-            </div>
-            <div class="clearfix"></div>
             <?php if (count($users) > 0): ?>
                 
                
-                <table class="table table-hover demo-table-search table-responsive " id="tableUser">
+                <table class="table table-hover table-condensed ">
                     <thead>
                         <tr>
-                            <th class ="text-center hidden" style="width: 25%">id</th>
-                            <th class ="text-center bg-complete text-white" style="width: 25%">Nombre</th>
-                            <th class ="text-center bg-complete text-white" style="width: 25%">Telefono</th>
-                            <th class ="text-center bg-complete text-white" style="width: 15%"> Tipo</th>
-                            <th class ="text-center bg-complete text-white" style="width: 35%">Email</th>
-                            <th class ="text-center bg-complete text-white" style="width: 25%">Modificar</th>
+                            <th class ="text-center hidden" style="width: 25%;">id</th>
+                            <th class ="text-center bg-complete text-white" style="width: 25%;">Nombre</th>
+                            <th class ="text-center bg-complete text-white" style="width: 25%;">Telefono</th>
+                            <th class ="text-center bg-complete text-white" style="width: 15%;"> Tipo</th>
+                            <th class ="text-center bg-complete text-white" style="width: 35%;">Email</th>
+                            <th class ="text-center bg-complete text-white" style="width: 15%;">ACCIONES</th>
 
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($users as $user): ?>
                             <tr>
-                                <td class="text-center hidden">
+                                <td class="text-center hidden" style="padding: 0px 5px;">
                                     <input type="text" name="<?php echo $user->id?>" value="<?php echo $user->id?>">
                                 </td>
-                                <td class="text-center "><?php echo $user->name?>
+                                <td class="text-center " style="padding: 0px 5px;"><?php echo $user->name?>
                                 </td>
-                                <td class="text-center "><?php echo $user->phone?>
+                                <td class="text-center " style="padding: 0px 5px;"><?php echo $user->phone?>
                                 </td>
-                                <td class="text-center ">
+                                <td class="text-center " style="padding: 0px 5px;">
                                     <?php echo $user->role?>
                                 </td>
                                 <td class="text-center ">
                                     <?php echo $user->email?>
                                 </td>
 
-                                <td class="text-center">
+                                <td class="text-center" style="padding: 0px 5px;">
                                     <div class="btn-group">
                                         <!--  -->
                                         <a class="btn btn-tag btn-complete update-user" type="button"  data-id="<?php echo $user->id ?>" data-toggle="modal" data-target="#myModal" title="Editar Usuario" >

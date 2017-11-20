@@ -661,7 +661,7 @@
 
 <?php setlocale(LC_TIME, "ES"); ?>
 <?php setlocale(LC_TIME, "es_ES");
-	use Carbon\Carbon; 
+	use \Carbon\Carbon; 
 ?>
 <div class="col-md-12 m-b-20">
 	<div class="Alta col-md-1 col-xs-2 text-white m-l-5">ALTA</div>
@@ -715,7 +715,7 @@
 	                            					if (count($daySeasons) > 0) {
 	                            						
 	                            						foreach ($daySeasons as $daySeason){
-	                            							$nameSeason 	= $season->typeSeasons->name;
+	                            							$nameSeason 	= $daySeason->typeSeasons->name;
 	                            							$startseason    = $daySeason->start_date;
 	                            							$endseason      = $daySeason->finish_date;
 	                            							switch ($daySeason->type) {
