@@ -750,11 +750,15 @@
                 var clase = $(this).attr('class');
                 
                 if (clase == 'status form-control minimal') {
+
                     var status = $(this).val();
                     var room = "";
+
                 }else if(clase == 'room form-control minimal'){
+
                     var room = $(this).val();
                     var status = "";
+                    
                 }
 
 
