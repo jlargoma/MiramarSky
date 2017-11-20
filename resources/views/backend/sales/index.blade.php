@@ -10,14 +10,14 @@
 	<link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
 <style>
 	.table>thead>tr>th {
-		padding:0px!important;
+		padding:3px 5px!important;
 	}
 	th{
 		/*font-size: 15px!important;*/
 	}
 	td{
 		font-size: 11px!important;
-		padding: 10px 5px!important;
+		padding: 5px 5px!important;
 	}
 	.pagos{
 		background-color: rgba(255,255,255,0.5)!important;

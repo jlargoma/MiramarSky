@@ -711,5 +711,23 @@ class Book extends Model
         return $ventas;
     }
 
+    public static function getBeneficioJorge()
+    {
+        
+
+
+
+
+    }
+
+    public static function getBeneficioJaime()
+    {
+        
+
+        
+
+
+    }
+
 
 }

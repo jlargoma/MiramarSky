@@ -38,6 +38,8 @@ class LiquidacionController extends Controller
                 "pendiente"    => 0,   
                 "limpieza"     => 0,    
                 "beneficio"    => 0,   
+                "stripe"       => 0,
+                "obs"  => 0,  
             ];
         $liquidacion = new \App\Liquidacion();
         if (empty($year)) {
@@ -54,7 +56,7 @@ class LiquidacionController extends Controller
 
         foreach ($books as $key => $book) {
             $totales["total"]        += $book->total_price;
-            $totales["coste"]        += ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp);
+            $totales["coste"]        += ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp + $book->extraCost);
             $totales["costeApto"]    += $book->cost_apto;
             $totales["costePark"]    += $book->cost_park;
             $totales["costeLujo"]    += $book->cost_lujo;
@@ -64,11 +66,22 @@ class LiquidacionController extends Controller
             $totales["bancoJaime"]   += $book->getPayment(3);
             $totales["jorge"]        += $book->getPayment(0);
             $totales["jaime"]        += $book->getPayment(1);
-            $totales["benJorge"]     += $book->total_price;
-            $totales["benJaime"]     += $book->total_price;
+            $totales["benJorge"]     += $book->ben_jorge;
+            $totales["benJaime"]     += $book->ben_jaime;
             $totales["pendiente"]    += $book->getPayment(4);
             $totales["limpieza"]     += $book->sup_limp;
             $totales["beneficio"]    += ($book->total_price - ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp));
+
+            $totalStripep = 0;
+            $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get(); 
+            foreach ($stripePayment as $key => $stripe):
+                $totalStripep +=  $stripe->import;
+            endforeach;
+            if ($totalStripep > 0):
+                $totales["stripe"] += ((1.4 * $totalStripep)/100)+0.25;
+            endif;
+
+            $totales['obs'] += $book->extraCost;
 
         }
 
@@ -678,6 +691,7 @@ class LiquidacionController extends Controller
                     "pendiente"    => 0,   
                     "limpieza"     => 0,    
                     "beneficio"    => 0,   
+                    "stripe"        => 0,
                 ];
 
         if ($request->year) {
@@ -754,11 +768,22 @@ class LiquidacionController extends Controller
                     $totales["bancoJaime"]   += $book->getPayment(3);
                     $totales["jorge"]        += $book->getPayment(0);
                     $totales["jaime"]        += $book->getPayment(1);
-                    $totales["benJorge"]     += $book->total_price;
-                    $totales["benJaime"]     += $book->total_price;
+                    $totales["benJorge"]     += $book->ben_jorge;
+                    $totales["benJaime"]     += $book->ben_jaime;
                     $totales["pendiente"]    += $book->getPayment(4);
                     $totales["limpieza"]     += $book->sup_limp;
                     $totales["beneficio"]    += ($book->total_price - ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp));
+
+                    $totalStripep = 0;
+                    $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get(); 
+                    foreach ($stripePayment as $key => $stripe):
+                        $totalStripep +=  $stripe->import;
+                    endforeach;
+                    if ($totalStripep > 0):
+                        $totales["stripe"] += ((1.4 * $totalStripep)/100)+0.25;
+                    endif;
+
+    $totales['obs'] += $book->extraCost;
                 
                 }
 
@@ -870,12 +895,22 @@ class LiquidacionController extends Controller
                 $totales["bancoJaime"]   += $book->getPayment(3);
                 $totales["jorge"]        += $book->getPayment(0);
                 $totales["jaime"]        += $book->getPayment(1);
-                $totales["benJorge"]     += $book->total_price;
-                $totales["benJaime"]     += $book->total_price;
+                $totales["benJorge"]     += $book->ben_jorge;
+                $totales["benJaime"]     += $book->ben_jaime;
                 $totales["pendiente"]    += $book->getPayment(4);
                 $totales["limpieza"]     += $book->sup_limp;
                 $totales["beneficio"]    += ($book->total_price - ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp));
+
+                $totalStripep = 0;
+                $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get(); 
+                foreach ($stripePayment as $key => $stripe):
+                    $totalStripep +=  $stripe->import;
+                endforeach;
+                if ($totalStripep > 0):
+                    $totales["stripe"] += ((1.4 * $totalStripep)/100)+0.25;
+                endif;
             
+                $totales['obs'] += $book->extraCost;
             }
             $totBooks    = (count($books) > 0)?count($books):1;
             $countDiasPropios = 0;
@@ -959,7 +994,9 @@ class LiquidacionController extends Controller
                     "benJaime"     => 0,    
                     "pendiente"    => 0,   
                     "limpieza"     => 0,    
-                    "beneficio"    => 0,   
+                    "beneficio"    => 0, 
+                    "stripe"       => 0,
+                    "obs"  => 0, 
                 ];
 
         if ( $request->year ) {
@@ -1037,12 +1074,21 @@ class LiquidacionController extends Controller
                     $totales["bancoJaime"]   += $book->getPayment(3);
                     $totales["jorge"]        += $book->getPayment(0);
                     $totales["jaime"]        += $book->getPayment(1);
-                    $totales["benJorge"]     += $book->total_price;
-                    $totales["benJaime"]     += $book->total_price;
+                    $totales["benJorge"]     += $book->ben_jorge;
+                    $totales["benJaime"]     += $book->ben_jaime;
                     $totales["pendiente"]    += $book->getPayment(4);
                     $totales["limpieza"]     += $book->sup_limp;
                     $totales["beneficio"]    += ($book->total_price - ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp));
+                    $totalStripep = 0;
+                    $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get(); 
+                    foreach ($stripePayment as $key => $stripe):
+                        $totalStripep +=  $stripe->import;
+                    endforeach;
+                    if ($totalStripep > 0):
+                        $totales["stripe"] += ((1.4 * $totalStripep)/100)+0.25;
+                    endif;
                 
+                    $totales['obs'] += $book->extraCost;
                 }
 
                 $totBooks    = (count($books) > 0)?count($books):1;
@@ -1156,12 +1202,21 @@ class LiquidacionController extends Controller
                 $totales["bancoJaime"]   += $book->getPayment(3);
                 $totales["jorge"]        += $book->getPayment(0);
                 $totales["jaime"]        += $book->getPayment(1);
-                $totales["benJorge"]     += $book->total_price;
-                $totales["benJaime"]     += $book->total_price;
+                $totales["benJorge"]     += $book->ben_jorge;
+                $totales["benJaime"]     += $book->ben_jaime;
                 $totales["pendiente"]    += $book->getPayment(4);
                 $totales["limpieza"]     += $book->sup_limp;
                 $totales["beneficio"]    += ($book->total_price - ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp));
+                $totalStripep = 0;
+                $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get(); 
+                foreach ($stripePayment as $key => $stripe):
+                    $totalStripep +=  $stripe->import;
+                endforeach;
+                if ($totalStripep > 0):
+                    $totales["stripe"] += ((1.4 * $totalStripep)/100)+0.25;
+                endif;
             
+                $totales['obs'] += $book->extraCost;
             }
             $totBooks    = (count($books) > 0)?count($books):1;
             $countDiasPropios = 0;

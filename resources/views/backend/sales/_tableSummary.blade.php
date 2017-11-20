@@ -23,45 +23,47 @@
                 Resumen liquidación
             </h2>
         </div>
-        <div class="col-md-9 col-xs-12">
+        <div class="col-md-9 col-xs-12" style="width: 78%; padding-right: 0;">
             <table class="table">
                 <tr>
-                    <th class ="text-center bg-complete text-white" style="width: 5%">PVP</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%">Banc. Jorg</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%">Banc. Jaime</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%">Cash Jorge</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%">Cash Jaime</th>
-                    <th class ="text-center bg-complete text-white" style="width: 4%">Pend</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%">Ing Neto</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%">%Benef</th>
-                    <th class ="text-center bg-complete text-white" style="width: 4%">Cost. Total</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%">Cost. Apto</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%">Park</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%">Sup. Lujo</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%">Limp</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%">Agencia</th>
-                    <th class ="text-center bg-complete text-white" style="width: 1%">Benef  Jorg</th>
-                    <th class ="text-center bg-complete text-white" style="width: 1%">Benef  Jaim</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">PVP</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Banc. Jorg</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Banc. Jaime</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Cash Jorge</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Cash Jaime</th>
+                    <th class ="text-center bg-complete text-white" style="width: 4%; padding: 5px 5px 0">Pend</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Ing Neto</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">%Benef</th>
+                    <th class ="text-center bg-complete text-white" style="width: 4%; padding: 5px 5px 0">Cost. Total</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Cost. Apto</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Park</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Sup. Lujo</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Limp</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Agencia</th>
+                    <th class ="text-center bg-complete text-white" style="width: 3%; padding: 5px 5px 0">Obs</th>
+                    <th class ="text-center bg-complete text-white" style="width: 2%; padding: 5px 5px 0">Stripe</th>
+                    <th class ="text-center bg-complete text-white" style="width: 2%; padding: 5px 5px 0">Benef<br>Jorg</th>
+                    <th class ="text-center bg-complete text-white" style="width: 2%; padding: 5px 5px 0">Benef<br>Jaim</th>
 
                 <tr>
-                    <td class="text-center" style="border-left:1px solid black;">
+                    <td class="text-center coste" style="border-left:1px solid black;">
                         <b><?php echo number_format($totales["total"],0,',','.') ?> €</b>       
                     </td>
-                    <td class ="text-center" style="border-left:1px solid black;">
+                    <td class ="text-center coste" style="border-left:1px solid black;">
                         <?php if ($totales["bancoJorge"] == 0): ?>
                             ----
                         <?php else: ?>
                             <?php echo number_format($totales["bancoJorge"],0,',','.') ?> €
                         <?php endif ?>     
                     </td>
-                    <td class ="text-center" style="border-left:1px solid black;">
+                    <td class ="text-center coste" style="border-left:1px solid black;">
                         <?php if ($totales["bancoJaime"] == 0): ?>
                             ----
                          <?php else: ?>
                             <?php echo number_format($totales["bancoJaime"],0,',','.') ?> €
                          <?php endif ?> 
                     </td>
-                    <td class ="text-center" style="border-left:1px solid black;">
+                    <td class ="text-center coste" style="border-left:1px solid black;">
                         <?php if ($totales["jorge"] == 0): ?>
                            ---- 
                         <?php else: ?>
@@ -69,7 +71,7 @@
                         <?php endif ?>
                         
                     </td>
-                    <td class ="text-center" style="border-left:1px solid black;">
+                    <td class ="text-center coste" style="border-left:1px solid black;">
                         <?php if ($totales["jaime"] == 0): ?>
                             ----
                         <?php else: ?>
@@ -77,7 +79,7 @@
                         <?php endif ?>
                         
                     </td>
-                    <td class ="text-center" style="border-left:1px solid black;">
+                    <td class ="text-center coste" style="border-left:1px solid black;">
                         <?php if ($totales["pendiente"] == 0): ?>
                             ----
                         <?php else: ?>
@@ -109,10 +111,21 @@
                     <td class ="text-center coste" style="border-left:1px solid black;">
                         <?php echo number_format($totales["costeAgencia"],0,',','.') ?>€
                     </td>
-                    <td class ="text-center" style="border-left:1px solid black;">
+                    <td class ="text-center coste" style="border-left:1px solid black;">
+                        <?php if ($totales["obs"] == 0): ?>
+                            <?php echo number_format($totales["obs"],0,',','.') ?>€
+                        <?php else: ?>
+                            --
+                        <?php endif ?>
+                       
+                    </td>
+                    <td class ="text-center coste" style="border-left:1px solid black;">
+                        <?php echo number_format($totales["stripe"],0,',','.') ?>€
+                    </td>
+                    <td class ="text-center coste" style="border-left:1px solid black;">
                         <?php echo number_format($totales["benJorge"],0,',','.') ?>€
                     </td>
-                    <td class ="text-center" style="border-left:1px solid black;">
+                    <td class ="text-center coste" style="border-left:1px solid black;">
                         <?php echo number_format($totales["benJaime"],0,',','.') ?>€
                     </td>
                 </tr>
@@ -139,10 +152,10 @@
                 <th class ="text-center bg-complete text-white" style="width: 5%">Sup. Lujo</th>
                 <th class ="text-center bg-complete text-white" style="width: 5%">Limp</th>
                 <th class ="text-center bg-complete text-white" style="width: 5%">Agencia</th>
-                <th class ="text-center bg-complete text-white" style="width: 5%">Obv</th>
-                <th class ="text-center bg-complete text-white" style="width: 5%">Stripe</th>
-                <th class ="text-center bg-complete text-white" style="width: 5%">Ben <br> Jorge</th>
-                <th class ="text-center bg-complete text-white" style="width: 5%">Ben <br> Jaime</th>
+                <th class ="text-center bg-complete text-white" style="width: 3%">Obv</th>
+                <th class ="text-center bg-complete text-white" style="width: 3%">Stripe</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%">Benef Jorge</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%">Benef Jaime</th>
             </thead>
             <tbody >
                 <!-- Totales -->
@@ -173,7 +186,7 @@
                         <td class="text-center">
                             <?php echo $book->nigths ?>     
                         </td>
-                        <td class="text-center pagos bi">
+                        <td class="text-center coste" style="border-left: 1px solid black;">
                             <?php if ($book->total_price > 0): ?>
                                 <b><?php echo number_format($book->total_price,0,',','.') ?> €</b>      
                             <?php else: ?>
@@ -182,7 +195,7 @@
                             
                         </td>
 
-                        <td class="text-center pagos bi">
+                        <td class="text-center coste" style="border-left: 1px solid black;">
                             <?php if ( $book->getPayment(2) > 0): ?>
                                 <?php echo number_format($book->getPayment(2),0,',','.'); ?> €    
                             <?php else: ?>
@@ -190,7 +203,7 @@
                             <?php endif ?>
                             
                         </td>
-                        <td class="text-center pagos ">
+                        <td class="text-center coste"  style="border-left: 1px solid black;">
                             <?php if ( $book->getPayment(3) > 0): ?>
                                 <?php echo number_format($book->getPayment(3),0,',','.'); ?> €    
                             <?php else: ?>
@@ -198,7 +211,7 @@
                             <?php endif ?>
                             
                         </td>
-                        <td class="text-center pagos">
+                        <td class="text-center coste" style="border-left: 1px solid black;">
                             <?php if ( $book->getPayment(0) > 0): ?>
                                 <?php echo number_format($book->getPayment(0),0,',','.'); ?> €    
                             <?php else: ?>
@@ -206,7 +219,7 @@
                             <?php endif ?>
                             
                         </td>
-                        <td class="text-center pagos">
+                        <td class="text-center coste pagos" style="border-left: 1px solid black;">
                             <?php if ( $book->getPayment(1) > 0): ?>
                                 <?php echo number_format($book->getPayment(1),0,',','.'); ?> €    
                             <?php else: ?>
@@ -214,7 +227,7 @@
                             <?php endif ?>
                             
                         </td>
-                        <td class="text-center pagos pendiente">
+                        <td class="text-center coste pagos pendiente" style="border-left: 1px solid black;">
                             <?php if ( ($book->total_price - $book->getPayment(4)) == 0 ): ?>
                                 <b>----</b>
                             <?php else: ?>
@@ -230,7 +243,7 @@
                             <?php endif ?>
                             
                         </td>
-                        <td class="text-center beneficio bf">
+                        <td class="text-center beneficio bf" style="border-left: 1px solid black;">
                             <?php if ( $book->inc_percent > 0): ?>
                                 <?php echo number_format($book->inc_percent,0)." %" ?>    
                             <?php else: ?>
@@ -238,7 +251,7 @@
                             <?php endif ?>
                             
                         </td>
-                        <td class="text-center coste bi ">
+                        <td class="text-center coste bi " style="border-left: 1px solid black;">
                             <?php if ( $book->cost_total > 0): ?>
                                 <b><?php echo number_format( $book->cost_total,0,',','.')?> €</b>    
                             <?php else: ?>
@@ -246,7 +259,7 @@
                             <?php endif ?>
                             
                         </td>
-                        <td class="text-center coste">
+                        <td class="text-center coste" style="border-left: 1px solid black;">
                             <?php if ( $book->cost_apto > 0): ?>
                                 <?php echo number_format($book->cost_apto,0,',','.')?> €    
                             <?php else: ?>
@@ -254,7 +267,7 @@
                             <?php endif ?>
                             
                         </td>
-                        <td class="text-center coste">
+                        <td class="text-center coste" style="border-left: 1px solid black;">
                             <?php if ( $book->cost_park > 0): ?>
                                 <?php echo number_format($book->cost_park,0,',','.')?> €    
                             <?php else: ?>
@@ -262,7 +275,7 @@
                             <?php endif ?>
                             
                         </td>
-                        <td class="text-center coste" >
+                        <td class="text-center coste"  style="border-left: 1px solid black;">
                             <?php if ( $book->cost_lujo > 0): ?>
                                 <?php echo number_format($book->cost_lujo,0,',','.')?> €    
                             <?php else: ?>
@@ -270,7 +283,7 @@
                             <?php endif ?>
                             
                         </td>
-                        <td class="text-center coste"> 
+                        <td class="text-center coste" style="border-left: 1px solid black;"> 
                             <?php if ( $book->cost_limp > 0): ?>
                                 <?php echo number_format($book->cost_limp,0,',','.') ?>€    
                             <?php else: ?>
@@ -278,7 +291,7 @@
                             <?php endif ?>
                             
                         </td>
-                        <td class="text-center coste "> 
+                        <td class="text-center coste " style="border-left: 1px solid black;"> 
                             <?php if ( $book->PVPAgencia > 0): ?>
                                 <?php echo number_format($book->PVPAgencia,0,',','.') ?>€    
                             <?php else: ?>
@@ -286,14 +299,14 @@
                             <?php endif ?>
                             
                         </td>
-                        <td class="text-center coste">
+                        <td class="text-center coste" style="border-left: 1px solid black;">
                             <?php if ( $book->extras > 0): ?>
                                 <?php echo number_format($book->extras,0,',','.') ?>€    
                             <?php else: ?>
                                 --
                             <?php endif ?>
                         </td>
-                        <td class="text-center coste bf">
+                        <td class="text-center coste bf" style="border-left: 1px solid black;">
                             <?php 
                                 $totalStripep = 0;
                                 $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get() 
@@ -318,12 +331,12 @@
                             <?php endif ?>
 
                         </td>
-                        <td class="text-center">
-                            <?php echo number_format($book->ben_jorge,0,',','.') ?>
+                        <td class="text-center coste" style="border-left: 1px solid black;">
+                            <?php echo number_format($book->ben_jorge,0,',','.') ?>€
                         </td>
                         
-                        <td class="text-center">
-                            <?php echo number_format($book->ben_jaime,0,',','.') ?>
+                        <td class="text-center coste" style="border-left: 1px solid black;">
+                            <?php echo number_format($book->ben_jaime,0,',','.') ?>€
                         </td>
                     </tr>
                 <?php endforeach ?>

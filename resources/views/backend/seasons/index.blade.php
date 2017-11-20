@@ -22,13 +22,7 @@
             <h2>Temporadas</h2>
         </div>
         <div class="col-md-5">
-            <div class="pull-left">
-                <div class="col-xs-12 ">
-                    <input type="text" id="search-table2" class="form-control pull-right" placeholder="Buscar">
-                </div>
-            </div>
-            <div class="clearfix"></div>
-                <table class="table table-hover demo-table-search table-responsive table-striped" id="tableWithSearch2" >
+                <table class="table table-hover  table-condensed table-striped" >
                     <thead>
                         <tr>
                             <th class ="text-center hidden">    id      </th>
