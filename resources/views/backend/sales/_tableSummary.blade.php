@@ -152,7 +152,7 @@
                 <th class ="text-center bg-complete text-white" style="width: 5%">Sup. Lujo</th>
                 <th class ="text-center bg-complete text-white" style="width: 5%">Limp</th>
                 <th class ="text-center bg-complete text-white" style="width: 5%">Agencia</th>
-                <th class ="text-center bg-complete text-white" style="width: 3%">Obv</th>
+                <th class ="text-center bg-complete text-white" style="width: 3%">Obs</th>
                 <th class ="text-center bg-complete text-white" style="width: 3%">Stripe</th>
                 <th class ="text-center bg-complete text-white" style="width: 5%">Benef Jorge</th>
                 <th class ="text-center bg-complete text-white" style="width: 5%">Benef Jaime</th>
