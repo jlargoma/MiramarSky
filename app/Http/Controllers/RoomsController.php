@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use \Carbon\Carbon;
 use Mail;
+use File;
 
 class RoomsController extends Controller
 {
@@ -493,6 +494,33 @@ class RoomsController extends Controller
                                                     'roomsdesc' => $roomsdesc,
                                                     'show'      => 1,
                                                 ]);
+    }
+
+
+    public function getImagesRoom(Request $request, $id)
+    {
+        
+        $room = \App\Rooms::find($id);
+        $path = public_path().'/img/miramarski/apartamentos/'.$room->nameRoom;
+
+        if (File::exists($path)){
+            $images = File::allFiles($path);
+
+            return view('backend/rooms/_imagesByRoom', ['images' => $images, 'room' => $room]);
+
+        }else{
+            return '<h2 class="text-center">NO HAY IMAGENES PARA ESTE APTO.</h2>';
+        }
+        // if ($url == 'apartamento-standard-sierra-nevada' || $url == 'apartamento-lujo-sierra-nevada'  || $url == 'estudio-lujo-sierra-nevada'  || $url == 'estudio-standard-sierra-nevada' ) {
+        //     $slides = File::allFiles(public_path().'/img/miramarski/galerias/'.$url);
+        //     $directory = '/img/miramarski/galerias/';
+        // }else{
+            
+        //     $slides = File::allFiles(public_path().'/img/miramarski/apartamentos/'.$url); 
+        //     $directory = '/img/miramarski/apartamentos/';            
+
+         
+        // }
     }
 
 }

@@ -109,12 +109,13 @@
                                     <tr class="<?php echo $line ?>">
                                         
                                         <td class="text-center fixed-td">
+                                            <button class="font-w800 btn btn-xs getImages" type="button" data-toggle="modal" data-target="#modalRoomImages" style="z-index: 99; border: none; background-color: white; color:black;padding: 0;" data-id="<?php echo $room->id; ?>">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
                                             <b style="cursor: pointer;" data-placement="right" title="" data-toggle="tooltip" data-original-title="<?php echo $room->name ?>">
                                                 <?php echo substr($room->nameRoom, 0,5)?>   
                                             </b>
-                                            <span class="font-w800 hidden-xs hidden-sm" data-toggle="modal" data-target="#modalRoomImages">
-                                                <i class="fa fa-eye"></i>
-                                            </span>
+                                            
                                         </td>
                                         <?php foreach ($arrayMonths as $key => $daysMonth): ?>
                                             <?php for ($i=01; $i <= $daysMonth  ; $i++): ?> 

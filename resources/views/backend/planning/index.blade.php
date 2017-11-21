@@ -260,8 +260,8 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content-wrapper">
                     <div class="modal-content contestado" id="contentEmailing"></div>
-                </div
-            </div
+                </div>
+            </div>
         </div>
         <div class="modal fade slide-up in" id="modalNewBook" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -269,8 +269,8 @@
                     <div class="modal-content">
                         @include('backend.planning.listados._nuevas')
                     </div>
-                </div
-            </div
+                </div>
+            </div>
         </div>
 
         
@@ -278,8 +278,19 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content-wrapper">
                     <div class="modal-content"></div>
-                </div
-            </div
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade slide-up in" id="modalRoomImages" tabindex="-1" role="dialog" aria-hidden="true" w>
+            <div class="modal-dialog modal-lg" style="width: 85%;">
+                <div class="modal-content-wrapper">
+                    
+                    <div class="modal-content" style="max-height: 800px; overflow-y: auto;">
+                        
+                    </div>
+                </div>
+            </div>
         </div>
 
 
@@ -892,6 +903,14 @@
                         $('#resultSearchBook').show();
                     }
                     
+                });
+            });
+
+            $('.getImages').click(function(event) {
+                var idRoom = $(this).attr('data-id');
+
+                $.get('/admin/rooms/getImagesRoom/'+idRoom, function(data) {
+                    $('#modalRoomImages .modal-content').empty().append(data);
                 });
             });
         });
