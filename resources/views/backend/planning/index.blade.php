@@ -260,10 +260,8 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content-wrapper">
                     <div class="modal-content contestado" id="contentEmailing"></div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
+                </div
+            </div
         </div>
         <div class="modal fade slide-up in" id="modalNewBook" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -271,10 +269,8 @@
                     <div class="modal-content">
                         @include('backend.planning.listados._nuevas')
                     </div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
+                </div
+            </div
         </div>
 
         
@@ -282,10 +278,8 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content-wrapper">
                     <div class="modal-content"></div>
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
+                </div
+            </div
         </div>
 
 
@@ -624,9 +618,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /.modal-content -->
                 </div>
-                <!-- /.modal-dialog -->
             </div>
             <!-- Modal de Cobros -->
 
@@ -637,9 +629,7 @@
                             @include('backend.planning.listados._nuevas')
                         </div>
                     </div>
-                  <!-- /.modal-content -->
                 </div>
-              <!-- /.modal-dialog -->
             </div>
 
             <button style="display: none;" id="btnContestado" class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalContestado"> </button>
@@ -650,9 +640,7 @@
                         <div class="modal-content contestado">
                         </div>
                     </div>
-                  <!-- /.modal-content -->
                 </div>
-              <!-- /.modal-dialog -->
             </div>
             
             <div class="modal fade slide-up in" id="modalCalculateBook" tabindex="-1" role="dialog" aria-hidden="true">
@@ -660,10 +648,20 @@
                     <div class="modal-content-wrapper">
                         <div class="modal-content"></div>
                     </div>
-                    <!-- /.modal-content -->
                 </div>
-                <!-- /.modal-dialog -->
             </div>
+
+
+            <div class="modal fade slide-up in" id="modalRoomImages" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content-wrapper">
+                        <div class="modal-content">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             <form role="form">
                 <div class="form-group form-group-default required" style="display: none">

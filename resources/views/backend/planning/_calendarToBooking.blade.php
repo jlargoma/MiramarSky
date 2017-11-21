@@ -2,12 +2,6 @@
         setlocale(LC_TIME, "ES"); 
         setlocale(LC_TIME, "es_ES"); 
 ?>
-<!-- <pre>
-	<?php print_r($arrayReservas[115][2017][12][3]) ?>
-</pre>
-<pre>
-	<?php print_r($arrayReservas[123][2017][12][3]) ?>
-</pre> -->
 <style type="text/css">
 	.calendar-day{
 		width: 20px; height: 15px; float: left; text-align: center;

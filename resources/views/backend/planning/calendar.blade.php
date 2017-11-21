@@ -112,6 +112,9 @@
                                             <b style="cursor: pointer;" data-placement="right" title="" data-toggle="tooltip" data-original-title="<?php echo $room->name ?>">
                                                 <?php echo substr($room->nameRoom, 0,5)?>   
                                             </b>
+                                            <span class="font-w800 hidden-xs hidden-sm" data-toggle="modal" data-target="#modalRoomImages">
+                                                <i class="fa fa-eye"></i>
+                                            </span>
                                         </td>
                                         <?php foreach ($arrayMonths as $key => $daysMonth): ?>
                                             <?php for ($i=01; $i <= $daysMonth  ; $i++): ?> 

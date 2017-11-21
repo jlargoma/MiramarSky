@@ -50,7 +50,6 @@ class BookController extends Controller
         ];
 
         $apartamentos = \App\Rooms::where('state','=',1);
-
         $reservas = \App\Book::whereIn('type_book',[1,2,4,5,7,8,9])->whereYear('start','>=', $date)->orderBy('start', 'ASC')->get();
 
         foreach ($reservas as $reserva) {
@@ -171,29 +170,18 @@ class BookController extends Controller
                 }
             }
         }
+        $rooms = \App\Rooms::where('state','=',1)->get();
+        $roomscalendar = \App\Rooms::where('id', '>=' , 5)->where('state','=',1)->orderBy('order','ASC')->get();
+        $book = new \App\Book();
+        $extras = \App\Extras::all();
+        $pagos = \App\Payments::all();
+        $stripe = StripeController::$stripe;
+        $inicio = $start->copy();
+        $days = $arrayDays;
+        
+        return view('backend/planning/index', compact('arrayBooks', 'arrayMonths', 'arrayTotales', 'rooms', 'roomscalendar', 'arrayReservas', 'mes', 'date', 'book', 'extras', 'payment', 'pagos', 'days', 'inicio', 'paymentSeason', 'proxIn', 'proxOut', 'mobile', 'stripe'));
 
 
-        return view('backend/planning/index',[
-            'arrayBooks'    => $arrayBooks,
-            'arrayMonths'   => $arrayMonths,
-            'arrayTotales'  => $arrayTotales,
-            'rooms'         => \App\Rooms::where('state','=',1)->get(),
-            'roomscalendar' => \App\Rooms::where('id', '>=' , 5)->where('state','=',1)->orderBy('order','ASC')->get(),
-            'arrayReservas' => $arrayReservas,
-            'mes'           => $mes,
-            'date'          => $date,
-            'book'          => new \App\Book(),
-            'extras'        => \App\Extras::all(),
-            'payment'       => $totalPayments,
-            'pagos'         => \App\Payments::all(),
-            'days'          => $arrayDays,
-            'inicio'        => $start,
-            'paymentSeason' => $paymentSeason,
-            'proxIn'        => $proxIn,
-            'proxOut'       => $proxOut,
-            'mobile'        => $mobile,
-            'stripe'        => StripeController::$stripe,
-        ]);
     }
 
     /**

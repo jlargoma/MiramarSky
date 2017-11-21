@@ -143,7 +143,7 @@
                  
                 <div class="col-md-3 col-xs-7">
                     <label>Apartamento</label>
-                    <select class="form-control full-width newroom minimal" name="newroom" id="newroom">
+                    <select class="form-control full-width newroom minimal" name="newroom" id="newroom" required>
                         <option ></option>
                         <?php foreach ($rooms as $room): ?>
                             <option value="<?php echo $room->id ?>" data-luxury="<?php echo $room->luxury ?>" data-size="<?php echo $room->sizeApto ?>">
