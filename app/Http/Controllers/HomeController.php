@@ -466,10 +466,6 @@ class HomeController extends Controller
             $arrayProducts = array();
 
             $data = $request->input();
-            
-            // echo "<pre>";
-            // print_r($data);
-            // die();
 
             $solicitud         = new \App\Solicitudes();
             $solicitud->name   = $data['nombre'];
@@ -481,7 +477,7 @@ class HomeController extends Controller
             if ($solicitud->save()) {
                 
                 foreach ($data['carrito'] as $carrito) { 
-                    $data['carrito'][$i]    = ltrim($carrito);
+                    $carrito   = ltrim($carrito);
                     $producto               = new \App\SolicitudesProductos();
                     $producto->id_solicitud = $solicitud->id;
                     $producto->name         = $carrito;
@@ -492,14 +488,20 @@ class HomeController extends Controller
 
                 }
 
+                // return view('frontend.emails._responseSolicitudForfait' ,['solicitud' => $solicitud, 'productos' => $arrayProducts,'data' => $data]);
 
-                
 
-               
-               return view('frontend.emails._responseSolicitudForfait', [
-                                                                            'solicitud' => $solicitud, 
-                                                                            'productos' => $arrayProducts
-                                                                        ]);
+                $sended = Mail::send(['html' => 'frontend.emails._responseSolicitudForfait'],['solicitud' => $solicitud, 'productos' => $arrayProducts,'data' => $data], function ($message) use ($data) {
+                    $message->from('reservas@apartamentosierranevada.net');
+                    $message->to('iavila@daimonconsulting.com');
+                    $message->replyTo($data['email']);
+                    $message->subject('Solicitud de FORFAIT');
+                });
+
+
+                if ($sended) {
+                    return redirect()->back();
+                }
 
 
             }
