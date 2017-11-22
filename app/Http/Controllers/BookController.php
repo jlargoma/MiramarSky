@@ -1273,4 +1273,90 @@ class BookController extends Controller
             
         
     } 
+
+
+    public function getCalendarMobileView($year = "")
+    {
+
+        $mes           = array();
+        $arrayReservas = array();
+        $totalPayments = array();
+        $arrayMonths   = array();
+        $arrayDays     = array();
+        $arrayTotales  = array();
+        $arrayPruebas  = array();
+        $mobile = new Mobile();
+
+        if ( empty($year) ) {
+            $date = Carbon::now();
+        }else{
+            $year = Carbon::createFromFormat('Y',$year);
+            $date = $year->copy();
+
+        }
+        $apartamentos = \App\Rooms::where('state','=',1);
+        $reservas = \App\Book::whereIn('type_book',[1,2,4,5,7,8,9])->whereYear('start','>=', $date)->orderBy('start', 'ASC')->get();
+
+        foreach ($reservas as $reserva) {
+            $dia = Carbon::createFromFormat('Y-m-d',$reserva->start);
+            $start = Carbon::createFromFormat('Y-m-d',$reserva->start);
+            $finish = Carbon::createFromFormat('Y-m-d',$reserva->finish);
+            $diferencia = $start->diffInDays($finish);
+            for ($i=0; $i <= $diferencia; $i++) {
+                $arrayReservas[$reserva->room_id][$dia->copy()->format('Y')][$dia->copy()->format('n')][$dia->copy()->format('j')][] = $reserva;
+                $dia = $dia->addDay();
+            }
+        }
+
+
+
+        $firstDayOfTheYear = new Carbon('first day of September '.$date->copy()->format('Y'));
+        $book = new \App\Book();
+
+        for ($i=1; $i <= 12; $i++) {
+            $mes[$firstDayOfTheYear->copy()->format('n')] = $firstDayOfTheYear->copy()->format('M Y');
+
+            $startMonth = $firstDayOfTheYear->copy()->startOfMonth();
+            $endMonth   = $firstDayOfTheYear->copy()->endOfMonth();
+            $countDays  = $endMonth->diffInDays($startMonth);
+            $day        = $startMonth;
+
+
+            $arrayMonths[$firstDayOfTheYear->copy()->format('n')] = $day->copy()->format('t');
+            
+            
+
+            for ($j=1; $j <= $day->copy()->format('t') ; $j++) {
+
+                $arrayDays[$firstDayOfTheYear->copy()->format('n')][$j] = $book->getDayWeek($day->copy()->format('w'));
+                $day = $day->copy()->addDay();
+
+            }
+
+            $firstDayOfTheYear->addMonth();
+
+        }
+
+        unset($arrayMonths[6]);
+        unset($arrayMonths[7]);
+        unset($arrayMonths[8]);
+        
+        if ($date->copy()->format('n') >= 9) {
+            $start = new Carbon('first day of September '.$date->copy()->format('Y'));
+        }else{
+            $start = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+        }
+
+
+
+        $rooms = \App\Rooms::where('state','=',1)->get();
+        $roomscalendar = \App\Rooms::where('id', '>=' , 5)->where('state','=',1)->orderBy('order','ASC')->get();
+        $book = new \App\Book();
+        $inicio = $start->copy();
+        $days = $arrayDays;
+        
+        return view('backend/planning/calendar', compact('arrayBooks', 'arrayMonths', 'arrayTotales', 'rooms', 'roomscalendar', 'arrayReservas', 'mes', 'date', 'book', 'extras', 'days', 'inicio'));
+
+
+    }
 }

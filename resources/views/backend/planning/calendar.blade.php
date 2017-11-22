@@ -4,6 +4,39 @@
     setlocale(LC_TIME, "es_ES"); 
 ?>
 <style type="text/css">
+    
+        .table.table-hover tbody tr:hover td {
+            background: #99bce7 !important;
+        }
+
+        .table.table-striped tbody tr.Reservado td select.minimal{
+            background-color: rgba(0,200,10,0.0)  !important;
+            color: black!important;
+            font-weight: bold!important;
+        }
+
+            
+        
+        .table.table-striped tbody tr.Bloqueado td select.minimal{
+            background-color: #D4E2FF  !important;
+            color:red!important;
+            font-weight: bold!important;
+
+        }
+        .nav-tabs-simple > li.active a{
+            font-weight: 800;
+        }
+        span.numPaymentLastBooks{
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: red;
+            border-radius: 100%;
+            padding: 0px 7px;
+            z-index: 15;
+        }
+    </style>
+<style type="text/css">
     .btn-fechas-calendar{
         background-color: #899098;
         color: white;
@@ -327,3 +360,22 @@
 
         </div>
 </div> 
+<script type="text/javascript">
+    
+    $('.btn-fechas-calendar').click(function(event) {
+        event.preventDefault();
+        $('.btn-fechas-calendar').css({
+            'background-color': '#899098',
+            'color': '#fff'
+        });
+        $(this).css({
+            'background-color': '#10cfbd',
+            'color': '#fff'
+        });
+        var target = $(this).attr('data-month');
+        var targetPosition = $('.content-calendar #month-'+target).position();
+        // alert("Left: "+targetPosition.left+ ", right: "+targetPosition.right);
+        $('.content-calendar').animate({ scrollLeft: "+="+targetPosition.left+"px" }, "slow");
+    });
+    $('#btn-active').trigger('click');
+</script>

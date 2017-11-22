@@ -20,7 +20,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
     <style type="text/css">
-    
+        
         .botones{
             padding-top: 0px!important;
             padding-bottom: 0px!important;
@@ -68,36 +68,6 @@
         }
         .paginate_button.active>a{
             color: black!important;
-        }
-        .table.table-hover tbody tr:hover td {
-            background: #99bce7 !important;
-        }
-
-        .table.table-striped tbody tr.Reservado td select.minimal{
-            background-color: rgba(0,200,10,0.0)  !important;
-            color: black!important;
-            font-weight: bold!important;
-        }
-
-            
-        
-        .table.table-striped tbody tr.Bloqueado td select.minimal{
-            background-color: #D4E2FF  !important;
-            color:red!important;
-            font-weight: bold!important;
-
-        }
-        .nav-tabs-simple > li.active a{
-            font-weight: 800;
-        }
-        span.numPaymentLastBooks{
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background: red;
-            border-radius: 100%;
-            padding: 0px 7px;
-            z-index: 15;
         }
     </style>
 
@@ -590,12 +560,18 @@
                             </div>
                         </div>
                     </div>
+    
 
+                    <script type="text/javascript">
+                        $(document).ready(function() {
+                            $('.calendar-mobile').load('/getCalendarMobile');
+                        });
+                    </script>
 
 
                     <!-- Seccion Calendario -->
                     <div class="calendar-mobile row">
-                        @include('backend.planning.calendar')
+                        
                     </div>
                     <!-- Seccion Calendario -->
 					
@@ -844,23 +820,9 @@
             });
                
 
-            $('.btn-fechas-calendar').click(function(event) {
-                event.preventDefault();
-                $('.btn-fechas-calendar').css({
-                    'background-color': '#899098',
-                    'color': '#fff'
-                });
-                $(this).css({
-                    'background-color': '#10cfbd',
-                    'color': '#fff'
-                });
-                var target = $(this).attr('data-month');
-                var targetPosition = $('.content-calendar #month-'+target).position();
-                // alert("Left: "+targetPosition.left+ ", right: "+targetPosition.right);
-                $('.content-calendar').animate({ scrollLeft: "+="+targetPosition.left+"px" }, "slow");
-            });
+            
 
-            $('#btn-active').trigger('click');
+            
 
 
             $('.btn-calcuteBook').click(function(event) {
