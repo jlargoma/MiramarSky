@@ -66,7 +66,9 @@
 		
 
 		<style>
-
+			.phpdebugbar.phpdebugbar-minimized{
+	   			display: none!important
+	   		}
 			.demos-filter {
 				margin: 0;
 				text-align: right;

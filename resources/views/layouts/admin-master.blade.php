@@ -42,6 +42,9 @@
 	   		  background-color: #B0B5B9!important;
 	   		  border-color: #B0B5B9!important;
 	   		}*/
+	   		.phpdebugbar.phpdebugbar-minimized{
+	   			display: none!important
+	   		}
 	   		.navbar-inverse .navbar-nav>li>a {
 	   		    color: white;
 	   		    font-weight: bold;
