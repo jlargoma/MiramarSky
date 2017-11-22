@@ -30,7 +30,7 @@
 		</div>
 	</div>
 	<div class="col-md-5">
-		<div class="col-md-4 bordered">
+		<div class="col-md-3 bordered">
 			<div class="card-title text-black hint-text">
 				Total noches
 			</div>
@@ -38,7 +38,7 @@
 				<h3 class="text-black font-w400 text-center"><?php echo $data['days-ocupation'] + $data['dias-propios']  ?></h3>
 			</div>
 		</div>
-		<div class="col-md-4 bordered">
+		<div class="col-md-3 bordered">
 			<div class="card-title text-black hint-text">
 				Días totales temp.
 			</div>
@@ -46,7 +46,15 @@
 				<input class="form-control text-black font-w400 text-center seasonDays" value="<?php echo $data['total-days-season'] ?>" style="border: none; font-size: 32px;margin: 10px 0;color:red!important"/>
 			</div>
 		</div>
-		<div class="col-md-4 bordered">
+		<div class="col-md-3 bordered">
+			<div class="card-title text-black hint-text">
+				Total reservas
+			</div>
+			<div class="p-l-20">
+				<h3 class="text-black font-w400 text-center"><?php echo count($books) ?></h3>
+			</div>
+		</div>
+		<div class="col-md-3 bordered">
 			<div class="card-title text-black hint-text">
 				% ocupación
 			</div>
