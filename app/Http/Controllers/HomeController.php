@@ -463,10 +463,46 @@ class HomeController extends Controller
 
     public function solicitudForfait(Request $request)
         {   
+            $arrayProducts = array();
 
-            echo "<pre>";
-            print_r($request->input());
-            die();
+            $data = $request->input();
+            
+            // echo "<pre>";
+            // print_r($data);
+            // die();
+
+            $solicitud         = new \App\Solicitudes();
+            $solicitud->name   = $data['nombre'];
+            $solicitud->email  = $data['email'];
+            $solicitud->phone  = $data['telefono'];
+            $solicitud->start  = Carbon::createFromFormat('d-m-Y', $data['date-entrada'])->format('Y-m-d');
+            $solicitud->finish = Carbon::createFromFormat('d-m-Y', $data['date-salida'])->format('Y-m-d');
+
+            if ($solicitud->save()) {
+                
+                foreach ($data['carrito'] as $carrito) { 
+                    $data['carrito'][$i]    = ltrim($carrito);
+                    $producto               = new \App\SolicitudesProductos();
+                    $producto->id_solicitud = $solicitud->id;
+                    $producto->name         = $carrito;
+                    // $producto->price = $solicitud->id;
+                    if ($producto->save()) {
+                        $arrayProducts[] = $producto;
+                    }
+
+                }
+
+
+                
+
+               
+               return view('frontend.emails._responseSolicitudForfait', [
+                                                                            'solicitud' => $solicitud, 
+                                                                            'productos' => $arrayProducts
+                                                                        ]);
+
+
+            }
 
 
 
