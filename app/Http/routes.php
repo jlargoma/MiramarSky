@@ -42,6 +42,10 @@ Route::get('/huesped','HomeController@huesped');
 Route::get('/el-tiempo','HomeController@tiempo');
 
 
+Route::post('/solicitudForfait','HomeController@solicitudForfait');
+
+
+
 Route::post('/getPriceBook','HomeController@getPriceBook');
 Route::get('/getFormBook','HomeController@form');
 Route::get('/getCitiesByCountry','HomeController@getCitiesByCountry');

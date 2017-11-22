@@ -455,6 +455,24 @@ class HomeController extends Controller
         return view('frontend.responses._citiesByCountry', [ 'cities'  => \App\Cities::where('code_country', $request->code )->orderBy('city', 'ASC')->get() ]);
 
     }
+
+
+
+
+
+
+    public function solicitudForfait(Request $request)
+        {   
+
+            echo "<pre>";
+            print_r($request->input());
+            die();
+
+
+
+        }
+
+
  
 }
 

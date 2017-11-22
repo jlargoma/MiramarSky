@@ -73,7 +73,7 @@
     <div id="wrapper" class="clearfix" style="padding-bottom: 0px">
         <!-- Form for Reserve forfait2
         ============================================-->	
-         <form role="form" id='form' method="post" action="http://admin.apartamentosierranevada.net/index.php/booking/book/Reservarmiramar" style="margin-bottom: 0px">
+         <form role="form" id='form' method="post" action="/solicitudForfait" style="margin-bottom: 0px">
 		<section id="content">
 		    <div class="content-wrap nopadding">
 		        <div id="section-works"  class="full-screen" style="padding-top:5px;overflow: scroll">
