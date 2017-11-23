@@ -8,6 +8,7 @@ use App\Http\Requests;
 use \Carbon\Carbon;
 use Mail;
 use File;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class RoomsController extends Controller
 {
@@ -497,30 +498,46 @@ class RoomsController extends Controller
     }
 
 
-    public function getImagesRoom(Request $request, $id)
+    public function getImagesRoom(Request $request, $id="")
     {
-        
-        $room = \App\Rooms::find($id);
-        $path = public_path().'/img/miramarski/apartamentos/'.$room->nameRoom;
+        if ($id != '') {
+            $room = \App\Rooms::find($id);
+            $path = public_path().'/img/miramarski/apartamentos/'.$room->nameRoom;
 
-        if (File::exists($path)){
-            $images = File::allFiles($path);
+            if (File::exists($path)){
+                $images = File::allFiles($path);
 
-            return view('backend/rooms/_imagesByRoom', ['images' => $images, 'room' => $room]);
+                return view('backend/rooms/_imagesByRoom', ['images' => $images, 'room' => $room]);
 
-        }else{
-            return '<h2 class="text-center">NO HAY IMAGENES PARA ESTE APTO.</h2>';
-        }
-        // if ($url == 'apartamento-standard-sierra-nevada' || $url == 'apartamento-lujo-sierra-nevada'  || $url == 'estudio-lujo-sierra-nevada'  || $url == 'estudio-standard-sierra-nevada' ) {
-        //     $slides = File::allFiles(public_path().'/img/miramarski/galerias/'.$url);
-        //     $directory = '/img/miramarski/galerias/';
-        // }else{
+            }else{
+                return '<h2 class="text-center">NO HAY IMAGENES PARA ESTE APTO.</h2>';
+            }
+        } else {
+    
+
+            // $rooms = \App\Rooms::where('state', 1)->orderBy('nameRoom', 'ASC')->get();
+            // foreach ($rooms as $key => $room) {
+            //     $path = public_path().'/img/miramarski/apartamentos/'.$room->nameRoom;
+            //     if ( File::exists($path)) {
+            //        $images = File::allFiles($path);
+
+
+            //         $imagesResized = array();
+            //         foreach ($images as $key => $image) {
+            //            Image::make($path.'/'.$image->getFilename())->resize(370, 300)->save($path."/thumbnails/".$image->getFilename());
+            //         }
+            //     }
+                
+
+
+
+            // }
             
-        //     $slides = File::allFiles(public_path().'/img/miramarski/apartamentos/'.$url); 
-        //     $directory = '/img/miramarski/apartamentos/';            
 
-         
-        // }
+
+       }
+        
+       
     }
 
 }

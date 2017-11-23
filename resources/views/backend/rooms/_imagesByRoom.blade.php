@@ -8,7 +8,7 @@
 		<?php foreach ($images as $key => $image): ?>
 			<div class="col-md-3 col-xs-6 push-10">
 				<!--  -->
-				<img src="{{ asset('/img/miramarski/apartamentos/'.$room->nameRoom.'/'.$image->getFilename()) }}" class="img-responsive" style="height: 300px">
+				<img src="{{ asset('/img/miramarski/apartamentos/'.$room->nameRoom.'/thumbnails/'.$image->getFilename()) }}" class="img-responsive" style="height: 300px">
 			</div>
 		<?php endforeach ?>
 	</div>

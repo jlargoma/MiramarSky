@@ -302,7 +302,7 @@ Route::group(['middleware' => 'authAdmin'], function () {
 
 	});
 
-	Route::get('/admin/rooms/getImagesRoom/{id}', 'RoomsController@getImagesRoom');
+	Route::get('/admin/rooms/getImagesRoom/{id?}', 'RoomsController@getImagesRoom');
 
 	
 });
