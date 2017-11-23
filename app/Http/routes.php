@@ -12,8 +12,27 @@
 */
 
 Route::auth();
+// Route::get('test', function(){
+// 	$books = \App\Book::whereIn('type_book',[1, 2, 4, 5])->get();
 
+// 	foreach ($books as $key => $book) {
+// 		$pax               = \App\Rooms::getPaxRooms(0, $book->room_id);
+		
+// 		$start             = \Carbon\Carbon::createFromFormat('Y-m-d', $book->start)->format('d/m/Y');
+// 		$finish            = \Carbon\Carbon::createFromFormat('Y-m-d', $book->finish)->format('d/m/Y');
+		
+// 		$book->cost_apto   = $book->getCostBook($start,$finish, $pax, $book->room_id);
+// 		$book->cost_total  = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->extraCost;
+// 		$book->total_ben   = $book->total_price - $book->cost_total;
+// 		$divisor           = ($book->cost_total != 0)?$book->cost_total:1;
+// 		$book->inc_percent = number_format(( ($book->total_price * 100) / $divisor)-100,2 , ',', '.') ;
+// 		$book->ben_jorge   = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
+// 		$book->ben_jaime   = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
+		
+// 		$book->save();
+// 	}
 
+// });
 // Route::get('/',['middleware' => 'authSubAdmin','middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
 Route::get('/','HomeController@index');
 Route::get('/sitemap','HomeController@siteMap');

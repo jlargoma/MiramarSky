@@ -106,8 +106,35 @@
                 </div>
 
                 <div class="col-xs-12">
+                    <div class="row push-20">
+                        <div class="container">
+                            <div class="col-xs-12 text-center">
+                                <div class="col-md-2 col-md-offset-3 not-padding">
+                                    <h2 style="margin: 0;">
+                                        <b>Planning</b> 
+                                    </h2>
+                                </div>  
+                                <div class="col-md-3">
+                                    <select id="fecha" class="form-control minimal">
+                                         <?php $fecha = $inicio->copy()->SubYear(2); ?>
+                                         <?php if ($fecha->copy()->format('Y') < 2015): ?>
+                                             <?php $fecha = new Carbon('first day of September 2015'); ?>
+                                         <?php endif ?>
+                                     
+                                         <?php for ($i=1; $i <= 3; $i++): ?>                           
+                                             <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $date->copy()->format('Y') == $fecha->format('Y') ? 'selected' : '' }}>
+                                                 <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
+                                             </option>
+                                             <?php $fecha->addYear(); ?>
+                                         <?php endfor; ?>
+                                     </select>     
+                                </div>  
+
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-md-7 not-padding">
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                             <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalNewBook">
                                 <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Nueva Reserva</span>
                             </button>
@@ -132,30 +159,9 @@
                             <button class="btn btn-success btn-calcuteBook btn-cons" type="button" data-toggle="modal" data-target="#modalCalculateBook"> 
                                 <span class="bold">Calcular reserva</span>
                             </button>
+                            
                         </div>
-                        <div class="col-md-4 text-center pull-right">
-                            <div class="col-md-5 not-padding">
-                                <h2 style="margin: 0;">
-                                    <b>Planning</b> 
-                                </h2>
-                            </div>  
-                            <div class="col-md-7">
-                                <select id="fecha" class="form-control minimal">
-                                     <?php $fecha = $inicio->copy()->SubYear(2); ?>
-                                     <?php if ($fecha->copy()->format('Y') < 2015): ?>
-                                         <?php $fecha = new Carbon('first day of September 2015'); ?>
-                                     <?php endif ?>
-                                 
-                                     <?php for ($i=1; $i <= 3; $i++): ?>                           
-                                         <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $date->copy()->format('Y') == $fecha->format('Y') ? 'selected' : '' }}>
-                                             <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
-                                         </option>
-                                         <?php $fecha->addYear(); ?>
-                                     <?php endfor; ?>
-                                 </select>     
-                            </div>  
-
-                        </div>
+                        
                     </div>
                     <div class="col-md-5">
                         

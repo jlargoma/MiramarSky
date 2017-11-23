@@ -270,6 +270,26 @@ class PaymentsProController extends Controller
 
     public function getBooksByRoom($idRoom , Request $request)
     {
+        $totales = [
+                "total"        => 0,       
+                "coste"        => 0,       
+                "bancoJorge"   => 0,  
+                "bancoJaime"   => 0,  
+                "jorge"        => 0,       
+                "jaime"        => 0,       
+                "costeApto"    => 0,   
+                "costePark"    => 0,   
+                "costeLujo"    => 0,   
+                "costeLimp"    => 0,   
+                "costeAgencia" => 0,
+                "benJorge"     => 0,    
+                "benJaime"     => 0,    
+                "pendiente"    => 0,   
+                "limpieza"     => 0,    
+                "beneficio"    => 0,   
+                "stripe"       => 0,
+                "obs"  => 0,  
+            ];
         $now = Carbon::now();
 
         if ( $request->year ) {
@@ -291,6 +311,89 @@ class PaymentsProController extends Controller
                             ->get();
 
 
-        return view('backend/paymentspro/_tableBooksByRoom', ['books' => $books, 'mobile' => new Mobile()]);
+        foreach ($books as $key => $book) {
+            $totales["total"]        += $book->total_price;
+            $totales["coste"]        += ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp + $book->extraCost);
+            $totales["costeApto"]    += $book->cost_apto;
+            $totales["costePark"]    += $book->cost_park;
+            $totales["costeLujo"]    += $book->cost_lujo;
+            $totales["costeLimp"]    += $book->cost_limp;
+            $totales["costeAgencia"] += $book->PVPAgencia;
+            $totales["bancoJorge"]   += $book->getPayment(2);
+            $totales["bancoJaime"]   += $book->getPayment(3);
+            $totales["jorge"]        += $book->getPayment(0);
+            $totales["jaime"]        += $book->getPayment(1);
+            $totales["benJorge"]     += $book->ben_jorge;
+            $totales["benJaime"]     += $book->ben_jaime;
+            $totales["pendiente"]    += $book->getPayment(4);
+            $totales["limpieza"]     += $book->sup_limp;
+            $totales["beneficio"]    += ($book->total_price - ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp));
+
+            $totalStripep = 0;
+            $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get(); 
+            foreach ($stripePayment as $key => $stripe):
+                $totalStripep +=  $stripe->import;
+            endforeach;
+            if ($totalStripep > 0):
+                $totales["stripe"] += ((1.4 * $totalStripep)/100)+0.25;
+            endif;
+
+            $totales['obs'] += $book->extraCost;
+
+        }
+        $totBooks    = (count($books) > 0)?count($books):1;
+        $diasPropios = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[7,8])->orderBy('created_at','DESC')->get();
+        $countDiasPropios = 0;
+                foreach ($diasPropios as $key => $book) {
+                    $start = Carbon::createFromFormat('Y-m-d' , $book->start);
+                    $finish = Carbon::createFromFormat('Y-m-d' , $book->finish);
+                    $countDays = $start->diffInDays($finish);
+
+                    $countDiasPropios += $countDays;
+                }
+        $data = [
+                    'days-ocupation'    => 0,
+                    'total-days-season' => \App\SeasonDays::first()->numDays,
+                    'num-pax'           => 0,
+                    'estancia-media'    => 0,
+                    'pax-media'         => 0,
+                    'precio-dia-media'  => 0,
+                    'dias-propios'      => $countDiasPropios,
+                    'agencia'           => 0,
+                    'propios'           => 0,
+                ];
+
+        foreach ($books as $key => $book) {
+
+            $start = Carbon::createFromFormat('Y-m-d' , $book->start);
+            $finish = Carbon::createFromFormat('Y-m-d' , $book->finish);
+            $countDays = $start->diffInDays($finish);
+
+            /* Dias ocupados */
+            $data['days-ocupation'] += $countDays;
+
+            /* Nº inquilinos */
+            $data['num-pax'] += $book->pax;
+
+
+            if ($book->agency != 0) {
+                $data['agencia'] ++;
+            }else{
+                $data['propios'] ++;
+            }
+
+        }
+
+        $data['agencia'] = ($data['agencia']/ $totBooks)*100;
+        $data['propios'] = ($data['propios']/ $totBooks)*100;
+
+        /* Estancia media */
+        $data['estancia-media'] = ($data['days-ocupation'] / $totBooks);
+
+        /* Inquilinos media */
+        $data['pax-media'] = ($data['num-pax'] / $totBooks);
+
+
+        return view('backend/paymentspro/_tableBooksByRoom', ['books' => $books, 'mobile' => new Mobile(), 'totales' => $totales, 'data' => $data,]);
     }
 }

@@ -234,7 +234,7 @@ class Book extends Model
         $room = \App\Rooms::find($room);
         $suplimp =  ($room->sizeApto == 1 )? 30 : 40 ;
 
-        $pax = $pax;
+        // $pax = $pax;
         if ($paxPerRoom > $pax) {
             $pax = $paxPerRoom;
         }
@@ -248,6 +248,8 @@ class Book extends Model
             foreach ($costs as $precio) {
                 $cost = $cost + $precio->cost ;
             }
+
+            $start->addDay();
         }
 
         return $cost;

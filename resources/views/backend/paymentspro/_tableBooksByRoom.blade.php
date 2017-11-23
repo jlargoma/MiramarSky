@@ -1,8 +1,14 @@
-<?php   use \Carbon\Carbon;  
-        setlocale(LC_TIME, "ES"); 
-        setlocale(LC_TIME, "es_ES"); 
+<?php   
+	use \Carbon\Carbon;  
+    setlocale(LC_TIME, "ES"); 
+    setlocale(LC_TIME, "es_ES"); 
+
 ?>
+
 <?php if (!$mobile->isMobile()): ?>
+	<div class="row">
+		@include('backend.sales._tableSummaryBoxes', ['totales' => $totales, 'books' => $books, 'data' => $data])
+	</div>
 	<table class="table  table-condensed table-striped" style="margin-top: 0;">
 		<thead>
 			<tr>  

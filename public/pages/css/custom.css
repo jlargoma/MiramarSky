@@ -210,3 +210,38 @@ input.beneficio{
 
   }
 }
+@media only screen and (min-width: 1023px) and (max-width: 1400px){
+  .navbar-collapse{
+    padding: 0;
+  }
+  .navbar-nav > li > a{
+    font-size: 12px!important;
+    padding: 10px 15px;
+  }
+  .btn-fechas-calendar{
+    font-size: 10px!important;
+  }
+  .fixed-td{
+    left: -10px!important;
+  }
+  .btn-fechas-calendar[data-month="9"],
+  .btn-fechas-calendar[data-month="10"],
+  .btn-fechas-calendar[data-month="11"],
+  .bg-info-light.fechas.nav-tabs > li a[data-month="1"],
+  .bg-info-light.fechas.nav-tabs > li a[data-month="2"],
+  .bg-info-light.fechas.nav-tabs > li a[data-month="3"]
+  {
+    display: none;
+  }
+  #tabPendientes {
+        max-height: 850px;
+    overflow-y: auto;
+  }
+  #tabPendientes .table.table-condensed.table-striped{
+    table-layout: auto!important;
+  }
+  .bg-info-light.fechas.nav-tabs > li > a{
+    padding: 10px;
+    font-size: 9px;
+  }
+}

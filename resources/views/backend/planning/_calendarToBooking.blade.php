@@ -18,7 +18,7 @@
 			<?php for ($i=1; $i <= 9 ; $i++) :?>
 				<?php if(!$mobile->isMobile()){ $hidden = "";}else{ $hidden = "hidden"; } ?>
 				<li class='<?php if($i == 4 ){ echo "active";} ?> <?php if($i < 4 || $i > 8){ echo $hidden;} ?>'>
-					<a href="#booking<?php echo $i?>" data-toggle="tab" role="tab" style="padding:10px">
+					<a href="#booking<?php echo $i?>" data-toggle="tab" role="tab" style="padding:10px" data-month="<?php echo $i?>">
 						<?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>
 					</a>
 				</li>

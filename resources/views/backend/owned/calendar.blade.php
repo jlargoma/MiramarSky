@@ -123,7 +123,7 @@
 
                                                                 <?php if($calendars[$x]->finish == $inicio->copy()->format('Y-m-d') && $calendars[$x]->type_book != 5): ?>
                                                                     <a 
-                                                                        href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
+                                                                        href="#" 
                                                                         <?php $titulo =  $calendars[$x]->customer['name'] ?>
                                                                         title="<?php echo $titulo ?>"
                                                                     >
@@ -139,7 +139,7 @@
                                                                 <?php elseif ($calendars[$x]->start == $inicio->copy()->format('Y-m-d') && $calendars[$x]->type_book != 5 ): ?>
 
                                                                     <a 
-                                                                        href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
+                                                                        href="#" 
                                                                         <?php $titulo =  $calendars[$x]->customer['name'] ?>
                                                                         title="<?php echo $titulo ?>"
                                                                     >
@@ -160,7 +160,7 @@
                                                                 <?php else: ?>
                                                                     <?php if ($calendars[$x]->type_book != 9 && $calendars[$x]->type_book != 5): ?>
                                                                         <a 
-                                                                            href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
+                                                                            href="#" 
                                                                             <?php $titulo =  $calendars[$x]->customer['name'] ?>
                                                                             title="<?php echo $titulo ?>"
                                                                         >
@@ -236,7 +236,7 @@
                                                                         &nbsp;
                                                                     </div>
                                                                 <?php else: ?>
-                                                                    <a href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[0]->id ?>">
+                                                                    <a href="#">
                                                                         <div style="width: 100%;height: 100%">
                                                                             &nbsp;
                                                                         </div>

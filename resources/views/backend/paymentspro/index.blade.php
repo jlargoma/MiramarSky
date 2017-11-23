@@ -45,6 +45,15 @@
         color: blue;
       }
 
+		.modal-big{
+			    width: 75%;
+		}
+
+		@media screen and (max-width: 767px){
+			.modal-big{
+				    width: 100%;
+			}
+		}
     </style>
     
 @endsection
@@ -624,7 +633,7 @@
 
 
 <div class="modal fade slide-up disable-scroll in" id="bookByRoom" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
+	<div class="modal-dialog modal-lg modal-big">
 		<div class="modal-content-wrapper">
 			<div class="modal-content">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close fa-2x"></i></button>
