@@ -27,8 +27,8 @@
 			</div>
 
 			<div class="col-xs-12 text-center sended" style="display: none;">
-				<i class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></i><br>
-				<h2 class="text-center">ENVIANDO</h2>
+				<i class="fa fa-check-circle-o text-black" aria-hidden="true"></i><br>
+				<h2 class="text-center">ENVIADO</h2>
 			</div>
 		</div>
 		<form  action="{{ url('/admin/reservas/sendEmail') }}" method="post" id="form-email">
@@ -139,8 +139,8 @@
 			if (data == 1) {
 				sended();
 				setTimeout(function(){
- 					$('.pg-close').trigger('click');
-				}, 2000);
+ 					location.reload();
+				}, 5000);
 			} else {
 				alert('Error al guardar estado');
 			}

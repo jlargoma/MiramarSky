@@ -224,9 +224,11 @@
 
         <form role="form">
             <div class="form-group form-group-default required" style="display: none">
+
                 <label class="highlight">Message</label>
                 <input type="text" hidden="" class="form-control notification-message" placeholder="Type your message here" value="This notification looks so perfect!" required>
             </div>
+            <button id="closeAlerts" type="button" class="close alert" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
             <button class="btn btn-success show-notification hidden" id="boton">Show</button>
         </form>
 
@@ -641,9 +643,11 @@
 
             <form role="form">
                 <div class="form-group form-group-default required" style="display: none">
+
                     <label class="highlight">Message</label>
                     <input type="text" hidden="" class="form-control notification-message" placeholder="Type your message here" value="This notification looks so perfect!" required>
                 </div>
+                <button id="closeAlerts" type="button" class="close alert" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
                 <button class="btn btn-success show-notification hidden" id="boton">Show</button>
             </form>
         </div>
@@ -750,13 +754,13 @@
                    $.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
                         $('.notification-message').val(data);
                         $("#boton").click();
-                        if (data == "Ya hay una reserva para ese apartamento" || data == "No se puede cambiar el estado" || data == "Valor nulo o vacio" ) {
-
+                        setTimeout(function(){
+                            $('.pgn-wrapper').hide('fast');
                             
-
-                        }else{
-                            // setTimeout('document.location.reload()',1000);
-                        }                        
+                            setTimeout(function(){
+                                document.location.reload()
+                            }, 3000);
+                        }, 2000);                      
                    }); 
                 }
                 

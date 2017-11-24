@@ -14255,11 +14255,11 @@ Main components
 }
 
 .pgn-circle .alert .close{
-  display: none;
+  /*display: none;*/
 }
 
 .alert-info{
-    background: yellow!important;
+    /*background: yellow!important;*/
 }
 .Booking{
     /*background: rgba(90,90,0,0.1)!important;*/
