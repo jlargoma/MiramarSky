@@ -320,7 +320,7 @@ class BookController extends Controller
                 $customer->user_id = (Auth::check())?Auth::user()->id:23;
                 $customer->name    = $request->input('name');
                 $customer->email   = $request->input('email');
-                $customer->phone   = $request->input('phone');
+                $customer->phone   = ($request->input('phone'))?$request->input('phone'):"";
                 $customer->DNI     = ($request->input('dni'))?$request->input('dni'):"";
                 $customer->address = ($request->input('address'))?$request->input('address'):"";
                 $customer->country = ($request->input('country'))?$request->input('country'):"";

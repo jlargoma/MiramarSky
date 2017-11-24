@@ -160,8 +160,11 @@
                                 <input class="form-control cliente" type="email" name="email" value="<?php echo $book->customer->email ?>" data-id="<?php echo $book->customer->id ?>">  
                             </div>
                             <div class="col-md-4 push-10">
-                                <label for="phone">Telefono</label> 
-                                <input class="form-control cliente" type="text" name="phone" value="<?php echo $book->customer->phone ?>" data-id="<?php echo $book->customer->id ?>"> 
+                                <label for="phone">Telefono</label>
+                                <?php if ( $book->customer->phone == 0): ?>
+                                     <?php  $book->customer->phone = "" ?>
+                                 <?php endif ?> 
+                                <input class="form-control only-numbers cliente" type="text" name="phone" value="<?php echo $book->customer->phone ?>" data-id="<?php echo $book->customer->id ?>"> 
                             </div> 
                             <div class="col-md-3 col-xs-12 push-10">
                                 <label for="dni">DNI</label> 
@@ -548,6 +551,9 @@
                             <label for="email">Email</label> 
                             <input class="form-control cliente" type="email" name="email" value="<?php echo $book->customer->email ?>" data-id="<?php echo $book->customer->id ?>">  
                         </div>
+                        <?php if ( $book->customer->phone == 0): ?>
+                             <?php  $book->customer->phone = "" ?>
+                         <?php endif ?> 
                         <div class="col-xs-12 push-10">
                             <label for="phone">Telefono</label> 
                             <input class="form-control cliente" type="text" name="phone" value="<?php echo $book->customer->phone ?>" data-id="<?php echo $book->customer->id ?>"> 

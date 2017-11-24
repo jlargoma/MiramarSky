@@ -200,9 +200,6 @@
 		<script src="{{ asset('pages/js/pages.min.js') }}"></script>
 		<!-- END CORE TEMPLATE JS -->
 		<!-- BEGIN PAGE LEVEL JS -->
-		<script src="{{ asset('assets/js/datatables.js') }}" type="text/javascript"></script>
-		 <script src="{{ asset('assets/js/form_elements.js') }}" type="text/javascript"></script>
-		<script src="{{ asset('assets/js/scripts.js') }}" type="text/javascript"></script>
 
 		
 		<!-- END PAGE LEVEL JS -->

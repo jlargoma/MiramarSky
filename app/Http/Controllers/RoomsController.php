@@ -515,29 +515,43 @@ class RoomsController extends Controller
         } else {
     
 
-            // $rooms = \App\Rooms::where('state', 1)->orderBy('nameRoom', 'ASC')->get();
-            // foreach ($rooms as $key => $room) {
-            //     $path = public_path().'/img/miramarski/apartamentos/'.$room->nameRoom;
-            //     if ( File::exists($path)) {
-            //        $images = File::allFiles($path);
-
-
-            //         $imagesResized = array();
-            //         foreach ($images as $key => $image) {
-            //            Image::make($path.'/'.$image->getFilename())->resize(370, 300)->save($path."/thumbnails/".$image->getFilename());
-            //         }
-            //     }
-                
-
-
-
-            // }
-            
-
 
        }
         
        
+    }
+
+    public function sendImagesRoomEmail(Request $request)
+    {
+        
+        $email = $request->email;
+        $room = \App\Rooms::find($request->roomId);
+        $path = public_path().'/img/miramarski/apartamentos/'.$room->nameRoom;
+
+        if (File::exists($path)){
+            $images = File::allFiles($path);
+
+            Mail::send('backend.emails._imagesRoomEmail',['room' => $room], function ($message) use ($email, $images, $room, $path) {
+                $luxury = ($room->luxury == 1)? "Lujo" : "Estandar";
+                $message->from('reservas@apartamentosierranevada.net');
+
+                foreach ($images as $key => $image):
+                    $message->attach($path.'/thumbnails/'.$image->getFilename());
+                endforeach;
+                
+
+                $message->to($email);
+                $message->subject('Imagenes del apartamento '.$room->sizeRooms->name.' // '. $luxury);
+            });
+
+
+
+            
+
+
+
+        }
+
     }
 
 }

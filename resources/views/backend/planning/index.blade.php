@@ -582,13 +582,7 @@
                     <!-- Seccion Calendario -->
 					
                 </div>
-                <?php 
-                    /* No borrar para calendario de booking */
-                    $dateX = $inicio->copy(); 
-                ?>
-                <div class="col-md-12">
-                    @include('backend.planning._calendarToBooking')
-                </div>
+                
                 <div class="col-md-12 push-40 stripe-mobile" >
 				    <!-- {{ url('admin/reservas/stripe/paymentsBooking') }} -->
 				    @include('backend.stripe.stripe', ['bookTocharge' => null])
@@ -640,17 +634,6 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content-wrapper">
                         <div class="modal-content"></div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="modal fade slide-up in" id="modalRoomImages" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content-wrapper">
-                        <div class="modal-content">
-                            
-                        </div>
                     </div>
                 </div>
             </div>
