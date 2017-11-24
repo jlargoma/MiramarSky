@@ -544,7 +544,7 @@ class RoomsController extends Controller
         
         $email = $request->email;
         $room = \App\Rooms::find($request->roomId);
-        $path = public_path().'/img/miramarski/apartamentos/'.$room->nameRoom;
+        $path = public_path().'/img/miramarski/apartamentos/'.$room->nameRoom.'/thumbnails/';
 
         if (File::exists($path)){
             $images = File::allFiles($path);
@@ -554,7 +554,7 @@ class RoomsController extends Controller
                 $message->from('reservas@apartamentosierranevada.net');
 
                 foreach ($images as $key => $image):
-                    $message->attach($path.'/thumbnails/'.$image->getFilename());
+                    $message->attach($path.$image->getFilename());
                 endforeach;
                 
 
