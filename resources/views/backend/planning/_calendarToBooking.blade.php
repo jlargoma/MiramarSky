@@ -1,6 +1,8 @@
 <?php   use \Carbon\Carbon;  
         setlocale(LC_TIME, "ES"); 
         setlocale(LC_TIME, "es_ES"); 
+        use Illuminate\Support\Facades\Cache;
+
 ?>
 <style type="text/css">
 	.calendar-day{
@@ -17,7 +19,7 @@
 		<?php $dateAux = $dateX->copy(); ?>
 			<?php for ($i=1; $i <= 9 ; $i++) :?>
 				<?php if(!$mobile->isMobile()){ $hidden = "";}else{ $hidden = "hidden"; } ?>
-				<li class='<?php if($i == 4 ){ echo "active";} ?> <?php if($i < 4 || $i > 8){ echo $hidden;} ?>'>
+				<li class='<?php if($i == 4 ){ echo "active";} ?> <?php if($i < 4 && $i > 8){ echo $hidden;} ?>'>
 					<a href="#booking<?php echo $i?>" data-toggle="tab" role="tab" style="padding:10px" data-month="<?php echo $i?>">
 						<?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>
 					</a>

@@ -83,30 +83,30 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 	
 	// Route::post('admin/reservas/create' , 'BookController@create');
 	
-	Route::get('admin/reservas/emails/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@emails']);
-	Route::get('admin/reservas/new' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@newBook']);
-	Route::get('admin/reservas/delete/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@delete']);
-	Route::get('admin/reservas/update/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@update']);	
-	Route::post('admin/reservas/saveUpdate/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@saveUpdate']);	
-	Route::get('admin/reservas/changeBook/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@changeBook']);
-	Route::get('/admin/reservas/changeStatusBook/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@changeStatusBook']);
-	Route::get('admin/reservas/ansbyemail/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@ansbyemail']);
+	Route::get('admin/reservas/emails/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@emails']);
+	Route::get('admin/reservas/new' ,['middleware' => 'auth', 'uses' =>  'BookController@newBook']);
+	Route::get('admin/reservas/delete/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@delete']);
+	Route::get('admin/reservas/update/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@update']);	
+	Route::post('admin/reservas/saveUpdate/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@saveUpdate']);	
+	Route::get('admin/reservas/changeBook/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@changeBook']);
+	Route::get('/admin/reservas/changeStatusBook/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@changeStatusBook']);
+	Route::get('admin/reservas/ansbyemail/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@ansbyemail']);
 	Route::post('admin/reservas/sendEmail' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@sendEmail']);
 	Route::get('admin/reservas/sendJaime' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@sendJaime']);
-	Route::get('admin/reservas/getPriceBook' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@getPriceBook']);
-	Route::get('admin/reservas/getCostBook' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@getCostBook']);
-	Route::get('admin/reservas/getPricePark' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@getPricePark']);
-	Route::get('admin/reservas/getCostPark' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@getCostPark']);
-	Route::get('admin/reservas/getPriceLujo' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@getPriceLujo']);
-	Route::get('admin/reservas/getCostLujo' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@getCostLujo']);
-	Route::get('admin/reservas/getPriceLujoAdmin' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@getPriceLujoAdmin']);
-	Route::get('admin/reservas/getCostLujoAdmin' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@getCostLujoAdmin']);
-	Route::get('admin/reservas/saveCobro' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@saveCobro']);
-	Route::get('admin/reservas/deleteCobro/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@deleteCobro']);
-	Route::get('admin/reservas/saveFianza' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@saveFianza']);
-	Route::get('admin/reservas/reserva/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@tabReserva']);
-	Route::get('admin/reservas/cobrar/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@cobroBook']);
-	Route::get('admin/reservas/{year?}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@index']);
+	Route::get('admin/reservas/getPriceBook' ,['middleware' => 'auth', 'uses' =>  'BookController@getPriceBook']);
+	Route::get('admin/reservas/getCostBook' ,['middleware' => 'auth', 'uses' =>  'BookController@getCostBook']);
+	Route::get('admin/reservas/getPricePark' ,['middleware' => 'auth', 'uses' =>  'BookController@getPricePark']);
+	Route::get('admin/reservas/getCostPark' ,['middleware' => 'auth', 'uses' =>  'BookController@getCostPark']);
+	Route::get('admin/reservas/getPriceLujo' ,['middleware' => 'auth', 'uses' =>  'BookController@getPriceLujo']);
+	Route::get('admin/reservas/getCostLujo' ,['middleware' => 'auth', 'uses' =>  'BookController@getCostLujo']);
+	Route::get('admin/reservas/getPriceLujoAdmin' ,['middleware' => 'auth', 'uses' =>  'BookController@getPriceLujoAdmin']);
+	Route::get('admin/reservas/getCostLujoAdmin' ,['middleware' => 'auth', 'uses' =>  'BookController@getCostLujoAdmin']);
+	Route::get('admin/reservas/saveCobro' ,['middleware' => 'auth', 'uses' =>  'BookController@saveCobro']);
+	Route::get('admin/reservas/deleteCobro/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@deleteCobro']);
+	Route::get('admin/reservas/saveFianza' ,['middleware' => 'auth', 'uses' =>  'BookController@saveFianza']);
+	Route::get('admin/reservas/reserva/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@tabReserva']);
+	Route::get('admin/reservas/cobrar/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@cobroBook']);
+	Route::get('admin/reservas/{year?}' ,['middleware' => 'auth', 'uses' =>  'BookController@index']);
 
 	Route::get('admin/reservas/search/searchByName' , 'BookController@searchByName');
 
@@ -123,44 +123,44 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 
 // Clientes
 	Route::get('admin/clientes' ,['middleware' => 'authAdmin', 'uses' => 'CustomersController@index']);
-	Route::get('admin/clientes/update',['middleware' => 'authAdmin', 'uses' => 'CustomersController@update']);
-	Route::get('admin/clientes/save',['middleware' => 'authAdmin', 'uses' => 'CustomersController@save']);
-	Route::post('admin/clientes/create',['middleware' => 'authAdmin', 'uses' => 'CustomersController@create']);
-	Route::get('admin/clientes/export-excel' , ['middleware' => 'authAdmin', 'uses' => 'CustomersController@createExcel']);
-	Route::get('admin/customers/importExcelData' , ['middleware' => 'authAdmin', 'uses' => 'CustomersController@createExcel']);
-	Route::get('admin/clientes/delete/{id}',['middleware' => 'authAdmin', 'uses' => 'CustomersController@delete']); 
+	Route::get('admin/clientes/update',['middleware' => 'auth', 'uses' => 'CustomersController@update']);
+	Route::get('admin/clientes/save',['middleware' => 'auth', 'uses' => 'CustomersController@save']);
+	Route::post('admin/clientes/create',['middleware' => 'auth', 'uses' => 'CustomersController@create']);
+	Route::get('admin/clientes/export-excel' , ['middleware' => 'auth', 'uses' => 'CustomersController@createExcel']);
+	Route::get('admin/customers/importExcelData' , ['middleware' => 'auth', 'uses' => 'CustomersController@createExcel']);
+	Route::get('admin/clientes/delete/{id}',['middleware' => 'auth', 'uses' => 'CustomersController@delete']); 
 
 
 // Rooms
 
-	Route::get('admin/apartamentos' , ['middleware' => 'authAdmin', 'uses' => 'RoomsController@index']);
-	Route::get('admin/apartamentos/new', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@newRoom']);
-	Route::get('admin/apartamentos/new-type', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@newTypeRoom']);
-	Route::get('admin/apartamentos/new-size', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@newSizeRoom']);
-	Route::get('admin/apartamentos/update', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@update']);
-	Route::get('admin/apartamentos/update-type', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateType']);
-	Route::get('admin/apartamentos/update-name', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateName']);
-	Route::get('admin/apartamentos/update-nameRoom', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateNameRoom']);
-	Route::get('admin/apartamentos/update-order', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateOrder']);
-	Route::get('admin/apartamentos/update-size', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateSize']);
-	Route::get('admin/apartamentos/update-owned', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateOwned']);
-	Route::get('admin/apartamentos/update-parking', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateParking']);
-	Route::get('admin/apartamentos/update-taquilla', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updateTaquilla']);
-	Route::post('admin/apartamentos/saveupdate', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@saveUpdate']);
-	Route::post('admin/apartamentos/create', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@create']);
-	Route::post('admin/apartamentos/create-type', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@createType']);
-	Route::post('admin/apartamentos/create-size', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@createSize']);
-	Route::get('admin/apartamentos/state', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@state']);
-	Route::get('admin/apartamentos/percentApto', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@percentApto']);
-	Route::get('admin/apartamentos/update-Percent', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@updatePercent']);
-	Route::get('admin/apartamentos/email/{id}' , ['middleware' => 'authAdmin', 'uses' => 'RoomsController@email']);
-	Route::get('admin/apartamentos/fotos/{id}' , ['middleware' => 'authAdmin', 'uses' => 'RoomsController@photo']);
-	Route::get('admin/apartamentos/deletePhoto/{id}' , ['middleware' => 'authAdmin', 'uses' => 'RoomsController@deletePhoto']);
-	Route::post('admin/apartamentos/send/email/owned' , ['middleware' => 'authAdmin', 'uses' => 'RoomsController@sendEmailToOwned']);
-	Route::get('admin/apartamentos/getPaxPerRooms/{id}', ['middleware' => 'authSubAdmin', 'uses' => 'RoomsController@getPaxPerRooms']);
-	Route::get('admin/apartamentos/getLuxuryPerRooms/{id}', ['middleware' => 'authSubAdmin', 'uses' => 'RoomsController@getLuxuryPerRooms']);
-	Route::post('admin/apartamentos/uploadFile/{id}', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@uploadFile']);
-	Route::get('admin/apartamentos/assingToBooking', ['middleware' => 'authAdmin', 'uses' => 'RoomsController@assingToBooking']);
+	Route::get('admin/apartamentos' , ['middleware' => 'auth', 'uses' => 'RoomsController@index']);
+	Route::get('admin/apartamentos/new', ['middleware' => 'auth', 'uses' => 'RoomsController@newRoom']);
+	Route::get('admin/apartamentos/new-type', ['middleware' => 'auth', 'uses' => 'RoomsController@newTypeRoom']);
+	Route::get('admin/apartamentos/new-size', ['middleware' => 'auth', 'uses' => 'RoomsController@newSizeRoom']);
+	Route::get('admin/apartamentos/update', ['middleware' => 'auth', 'uses' => 'RoomsController@update']);
+	Route::get('admin/apartamentos/update-type', ['middleware' => 'auth', 'uses' => 'RoomsController@updateType']);
+	Route::get('admin/apartamentos/update-name', ['middleware' => 'auth', 'uses' => 'RoomsController@updateName']);
+	Route::get('admin/apartamentos/update-nameRoom', ['middleware' => 'auth', 'uses' => 'RoomsController@updateNameRoom']);
+	Route::get('admin/apartamentos/update-order', ['middleware' => 'auth', 'uses' => 'RoomsController@updateOrder']);
+	Route::get('admin/apartamentos/update-size', ['middleware' => 'auth', 'uses' => 'RoomsController@updateSize']);
+	Route::get('admin/apartamentos/update-owned', ['middleware' => 'auth', 'uses' => 'RoomsController@updateOwned']);
+	Route::get('admin/apartamentos/update-parking', ['middleware' => 'auth', 'uses' => 'RoomsController@updateParking']);
+	Route::get('admin/apartamentos/update-taquilla', ['middleware' => 'auth', 'uses' => 'RoomsController@updateTaquilla']);
+	Route::post('admin/apartamentos/saveupdate', ['middleware' => 'auth', 'uses' => 'RoomsController@saveUpdate']);
+	Route::post('admin/apartamentos/create', ['middleware' => 'auth', 'uses' => 'RoomsController@create']);
+	Route::post('admin/apartamentos/create-type', ['middleware' => 'auth', 'uses' => 'RoomsController@createType']);
+	Route::post('admin/apartamentos/create-size', ['middleware' => 'auth', 'uses' => 'RoomsController@createSize']);
+	Route::get('admin/apartamentos/state', ['middleware' => 'auth', 'uses' => 'RoomsController@state']);
+	Route::get('admin/apartamentos/percentApto', ['middleware' => 'auth', 'uses' => 'RoomsController@percentApto']);
+	Route::get('admin/apartamentos/update-Percent', ['middleware' => 'auth', 'uses' => 'RoomsController@updatePercent']);
+	Route::get('admin/apartamentos/email/{id}' , ['middleware' => 'auth', 'uses' => 'RoomsController@email']);
+	Route::get('admin/apartamentos/fotos/{id}' , ['middleware' => 'auth', 'uses' => 'RoomsController@photo']);
+	Route::get('admin/apartamentos/deletePhoto/{id}' , ['middleware' => 'auth', 'uses' => 'RoomsController@deletePhoto']);
+	Route::post('admin/apartamentos/send/email/owned' , ['middleware' => 'auth', 'uses' => 'RoomsController@sendEmailToOwned']);
+	Route::get('admin/apartamentos/getPaxPerRooms/{id}', ['middleware' => 'auth', 'uses' => 'RoomsController@getPaxPerRooms']);
+	Route::get('admin/apartamentos/getLuxuryPerRooms/{id}', ['middleware' => 'auth', 'uses' => 'RoomsController@getLuxuryPerRooms']);
+	Route::post('admin/apartamentos/uploadFile/{id}', ['middleware' => 'auth', 'uses' => 'RoomsController@uploadFile']);
+	Route::get('admin/apartamentos/assingToBooking', ['middleware' => 'auth', 'uses' => 'RoomsController@assingToBooking']);
 
 // Prices
 	Route::get('admin/precios' ,['middleware' => 'authAdmin', 'uses' =>'PricesController@index']);
@@ -251,10 +251,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::post('admin/reservas/help/getTotalBook', 'BookController@getTotalBook');
 	
-
-});
-Route::group(['middleware' => 'authAdmin'], function () {
-
 	Route::get('admin/delete/nofify/{id}', function ($id) {
 		$notify = \App\BookNotification::find($id);
 
@@ -262,11 +258,6 @@ Route::group(['middleware' => 'authAdmin'], function () {
 			return view('backend.planning._tableAlertBooking', ['notifications' => \App\BookNotification::all()]);
 		}
 	});
-
-	Route::get('admin/liquidation/searchByName', 'LiquidacionController@searchByName');
-
-	Route::get('admin/liquidation/searchByRoom', 'LiquidacionController@searchByRoom');
-
 
 	Route::get('admin/reservas/changeSchedule/{id}/{type}/{schedule}', function ($id,$type, $schedule) {
 		
@@ -283,6 +274,13 @@ Route::group(['middleware' => 'authAdmin'], function () {
 		}
 
 	});
+
+	Route::get('admin/liquidation/searchByName', 'LiquidacionController@searchByName');
+
+	Route::get('admin/liquidation/searchByRoom', 'LiquidacionController@searchByRoom');
+
+
+	
 
 	Route::get('/admin/apartamentos/rooms/getTableRooms/', function(){
 
@@ -321,7 +319,11 @@ Route::group(['middleware' => 'authAdmin'], function () {
 
 	});
 
+});
+Route::group(['middleware' => 'authAdmin'], function () {
+
 	
+
 
 	
 });
