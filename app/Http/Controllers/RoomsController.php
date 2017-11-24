@@ -513,7 +513,25 @@ class RoomsController extends Controller
                 return '<h2 class="text-center">NO HAY IMAGENES PARA ESTE APTO.</h2>';
             }
         } else {
-    
+            
+            $rooms = \App\Rooms::where('state', 1)->get();
+            foreach ($rooms as $key => $room) {
+                $counter = 0;
+                $path = public_path().'/img/miramarski/apartamentos/'.$room->nameRoom.'/thumbnails/';
+
+                if (File::exists($path)){
+
+                    $images = File::allFiles($path);
+
+                    foreach ($images as $key => $image) {
+                        File::move($path.$image->getFilename(), $path.str_replace(' ', '_', $image->getFilename()));
+
+
+                    }
+                    
+                }
+            }
+            
 
 
        }
@@ -543,12 +561,6 @@ class RoomsController extends Controller
                 $message->to($email);
                 $message->subject('Imagenes del apartamento '.$room->sizeRooms->name.' // '. $luxury);
             });
-
-
-
-            
-
-
 
         }
 
