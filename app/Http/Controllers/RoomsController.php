@@ -502,7 +502,7 @@ class RoomsController extends Controller
     {
         if ($id != '') {
             $room = \App\Rooms::find($id);
-            $path = public_path().'/img/miramarski/apartamentos/'.$room->nameRoom;
+            $path = public_path().'/img/miramarski/apartamentos/'.$room->nameRoom.'/thumbnails/';
 
             if (File::exists($path)){
                 $images = File::allFiles($path);
