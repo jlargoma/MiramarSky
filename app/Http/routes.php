@@ -61,8 +61,9 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 //Planing 
 	
 	// Route::post('admin/reservas/create' , 'BookController@create');
+	Route::get('admin/reservas' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@index']);
 	
-	Route::get('admin/reservas/emails/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@emails']);
+	Route::get('admin/reservas/emails/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@emails']);
 	Route::get('admin/reservas/new' ,['middleware' => 'auth', 'uses' =>  'BookController@newBook']);
 	Route::get('admin/reservas/delete/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@delete']);
 	Route::get('admin/reservas/update/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@update']);	
@@ -70,7 +71,7 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 	Route::get('admin/reservas/changeBook/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@changeBook']);
 	Route::get('/admin/reservas/changeStatusBook/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@changeStatusBook']);
 	Route::get('admin/reservas/ansbyemail/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@ansbyemail']);
-	Route::post('admin/reservas/sendEmail' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@sendEmail']);
+	Route::post('admin/reservas/sendEmail' ,['middleware' => 'auth', 'uses' =>  'BookController@sendEmail']);
 	Route::get('admin/reservas/sendJaime' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@sendJaime']);
 	Route::get('admin/reservas/getPriceBook' ,['middleware' => 'auth', 'uses' =>  'BookController@getPriceBook']);
 	Route::get('admin/reservas/getCostBook' ,['middleware' => 'auth', 'uses' =>  'BookController@getCostBook']);
@@ -80,8 +81,8 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 	Route::get('admin/reservas/getCostLujo' ,['middleware' => 'auth', 'uses' =>  'BookController@getCostLujo']);
 	Route::get('admin/reservas/getPriceLujoAdmin' ,['middleware' => 'auth', 'uses' =>  'BookController@getPriceLujoAdmin']);
 	Route::get('admin/reservas/getCostLujoAdmin' ,['middleware' => 'auth', 'uses' =>  'BookController@getCostLujoAdmin']);
-	Route::get('admin/reservas/saveCobro' ,['middleware' => 'auth', 'uses' =>  'BookController@saveCobro']);
-	Route::get('admin/reservas/deleteCobro/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@deleteCobro']);
+	Route::get('admin/reservas/saveCobro' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@saveCobro']);
+	Route::get('admin/reservas/deleteCobro/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@deleteCobro']);
 	Route::get('admin/reservas/saveFianza' ,['middleware' => 'auth', 'uses' =>  'BookController@saveFianza']);
 	Route::get('admin/reservas/reserva/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@tabReserva']);
 	Route::get('admin/reservas/cobrar/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@cobroBook']);
@@ -201,6 +202,7 @@ Route::get('admin/pdf/pdf-reserva/{id}','PdfController@invoice');
 
 Route::group(['middleware' => 'auth'], function () {
 	Route::get('/admin/rooms/getImagesRoom/{id?}', 'RoomsController@getImagesRoom');
+
 	Route::get('/admin', function ()    {
 	$user = \Auth::user(); 
 		if ($user->role == "propietario") {
