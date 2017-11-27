@@ -102,7 +102,7 @@
 
                 <div class="col-md-7">
                     <div class="row push-10">
-                        <div class="col-md-5 col-xs-12 pull-right">
+                        <div class="col-md-5 col-xs-12">
                             <input id="nameCustomer" type="text" name="searchName" class="searchabled form-control" placeholder="nombre del cliente" />
                         </div>
                     </div>
@@ -318,7 +318,7 @@
 
                 <div class="col-md-7">
                     <div class="row push-10">
-                        <div class="col-md-5 col-xs-12 pull-right">
+                        <div class="col-md-5 col-xs-12">
                             <input id="nameCustomer" type="text" name="searchName" class="searchabled form-control" placeholder="nombre del cliente" />
                         </div>
                     </div>
