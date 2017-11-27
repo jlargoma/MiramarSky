@@ -62,7 +62,6 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 	
 	// Route::post('admin/reservas/create' , 'BookController@create');
 	Route::get('admin/reservas' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@index']);
-	
 	Route::get('admin/reservas/emails/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@emails']);
 	Route::get('admin/reservas/new' ,['middleware' => 'auth', 'uses' =>  'BookController@newBook']);
 	Route::get('admin/reservas/delete/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@delete']);
@@ -89,6 +88,10 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 	Route::get('admin/reservas/{year?}' ,['middleware' => 'auth', 'uses' =>  'BookController@index']);
 
 	Route::get('admin/reservas/search/searchByName' , 'BookController@searchByName');
+	Route::get('admin/reservas/api/getTableData' ,['middleware' => 'auth', 'uses' =>  'BookController@getTableData']);
+	Route::get('admin/reservas/api/lastsBooks' ,['middleware' => 'auth', 'uses' =>  'BookController@getLastBooks']);
+	Route::get('admin/reservas/api/calendarBooking' ,['middleware' => 'auth', 'uses' =>  'BookController@getCalendarBooking']);
+	Route::get('admin/reservas/api/alertsBooking' ,['middleware' => 'auth', 'uses' =>  'BookController@getAlertsBooking']);
 
 
 	Route::get('admin/cambiarCostes', 'BookController@changeCostes');

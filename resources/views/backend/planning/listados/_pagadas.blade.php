@@ -3,7 +3,7 @@
 <?php if(!$mobile->isMobile() ): ?>
     <div class="tab-pane" id="tabPagadas">
         <div class="row">
-            <table class="table  table-condensed table-striped" style="margin-top: 0;">
+            <table class="table  table-condensed table-striped table-data"  data-type="confirmadas" style="margin-top: 0;">
                 <thead>
                     <tr>   
                         <th style="display: none">ID</th> 
@@ -20,7 +20,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($arrayBooks["pagadas"] as $book): ?>
+                    <?php foreach ($books as $book): ?>
                         <tr>
 
                             <td class="text-center">
@@ -125,7 +125,8 @@
         </div>
     </div>
 <?php else: ?>
-    <table class="table  table-responsive table-striped" style="margin-top: 0;">
+<div class="table-responsive" style="border: none!important">
+    <table class="table table-striped" style="margin-top: 0;">
         <thead>
             <th class="Pagada-la-señal text-white text-center" ></th>
             <th class="Pagada-la-señal text-white text-center" >Nombre</th>
@@ -139,17 +140,17 @@
             <th class="Pagada-la-señal text-white text-center" style="min-width:200px">Estado</th>
         </thead>
         <tbody>
-            <?php foreach ($arrayBooks["pagadas"] as $pagada): ?>
-                <tr class="<?php echo ucwords($book->getStatus($pagada->type_book)) ;?>">
+            <?php foreach ($books as $book): ?>
+                <tr class="<?php echo ucwords($book->getStatus($book->type_book)) ;?>">
                     
                     <td class="text-center">
-                        <?php if ($pagada->agency != 0): ?>
+                        <?php if ($book->agency != 0): ?>
                             <img style="width: 15px;margin: 0 auto;" src="/pages/booking.png" align="center" />
                         <?php endif ?>
                     </td>
                     <td class="text-center">
-                        <a href="{{url ('/admin/reservas/update')}}/<?php echo $pagada->id ?>">
-                            <?php echo $pagada->customer->name ?>
+                        <a href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
+                            <?php echo $book->customer->name ?>
                         </a>
                         <?php if (isset($payment[$book->id])): ?>
                             <span class="bg-danger text-white" style="padding: 1px 7px; margin-left:5px;border-radius: 100%;">
@@ -157,25 +158,25 @@
                             </span>
                         <?php endif; ?>
                     </td>
-                    <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$pagada->start)->formatLocalized('%d %b') ?></td>
-                    <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$pagada->finish)->formatLocalized('%d %b') ?></td>
+                    <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b') ?></td>
+                    <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b') ?></td>
                     <td class ="text-center" >
-                        <?php if ($pagada->real_pax > 6 ): ?>
-                            <?php echo $pagada->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
-                        <?php elseif($pagada->pax != $pagada->real_pax): ?>
-                            <?php echo $pagada->real_pax ?><i class="fa fa-exclamation-circle" aria-hidden="true" style="color: red"></i>
+                        <?php if ($book->real_pax > 6 ): ?>
+                            <?php echo $book->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
+                        <?php elseif($book->pax != $book->real_pax): ?>
+                            <?php echo $book->real_pax ?><i class="fa fa-exclamation-circle" aria-hidden="true" style="color: red"></i>
                         <?php else: ?>
-                            <?php echo $pagada->pax ?>
+                            <?php echo $book->pax ?>
                         <?php endif ?>
                             
                     </td>
-                    <td class="text-center"><a href="tel:<?php echo $pagada->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
+                    <td class="text-center"><a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
                     <td class="text-center">
-                        <select class="room form-control minimal" data-id="<?php echo $pagada->id ?>"  >
+                        <select class="room form-control minimal" data-id="<?php echo $book->id ?>"  >
                             
                             <?php foreach ($rooms as $room): ?>
-                                <?php if ($room->id == $pagada->room_id): ?>
-                                    <option selected value="<?php echo $pagada->room_id ?>" data-id="<?php echo $room->name ?>">
+                                <?php if ($room->id == $book->room_id): ?>
+                                    <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
                                         <?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?>
                                     </option>
                                 <?php else:?>
@@ -185,24 +186,24 @@
 
                         </select>
                     </td>
-                    <td class="text-center"><?php echo $pagada->nigths ?></td>
+                    <td class="text-center"><?php echo $book->nigths ?></td>
                     <td class="text-center">
-                        <?php echo round($pagada->total_price)."€" ?><br>
-                        <?php if (isset($payment[$pagada->id])): ?>
-                            <?php echo "<p style='color:red'>".$payment[$pagada->id]."</p>" ?>
+                        <?php echo round($book->total_price)."€" ?><br>
+                        <?php if (isset($payment[$book->id])): ?>
+                            <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
                         <?php else: ?>
                         <?php endif ?>
                     </td>
                     <td class="text-center">
-                        <select class="status form-control minimal" data-id="<?php echo $pagada->id ?>">
+                        <select class="status form-control minimal" data-id="<?php echo $book->id ?>">
 
                             <?php for ($i=1; $i < 9; $i++): ?> 
-                                <?php if ($i == 5 && $pagada->customer->email == ""): ?>
+                                <?php if ($i == 5 && $book->customer->email == ""): ?>
                                 <?php else: ?>
-                                    <option <?php echo $i == ($pagada->type_book) ? "selected" : ""; ?> 
+                                    <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
                                     <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
-                                    value="<?php echo $i ?>"  data-id="<?php echo $pagada->id ?>">
-                                        <?php echo $pagada->getStatus($i) ?>
+                                    value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
+                                        <?php echo $book->getStatus($i) ?>
                                         
                                     </option>   
                                 <?php endif ?>
@@ -215,4 +216,5 @@
             <?php endforeach ?>
         </tbody>
     </table>
+</div>
 <?php endif; ?>

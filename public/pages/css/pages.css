@@ -14301,6 +14301,101 @@ Main components
     color: black;
 }
 
+.table.table-striped tbody tr.Reservado td select.minimal{
+      background-color: rgba(0,200,10,0.2) !important;
+    color: black;
+}
+.table.table-striped tbody tr.Bloqueado td select.minimal{
+      background-color: rgba(0,100,255,0.2) !important;
+    color: black;
+}
+
+
+.btn-tables{
+  border-radius: 0!important;
+  padding: 10px 17px;
+}
+
+.btn-blue{
+  background-color: #295d9b!important;
+  border-color: #295d9b!important;
+  color: white!important;
+}
+.btn-blue:hover,.btn-blue:active{
+  background-color: #295d9b!important;
+  border-color: #295d9b!important;
+  color: white!important;
+}
+.btn-orange{
+  background-color: orange!important;
+  border-color: orange!important;
+  color: white!important;
+}
+.btn-orange:hover,.btn-orange:active{
+  background-color: orange!important;
+  border-color: orange!important;
+  color: white!important;
+}
+.btn-green{
+  background-color: green!important;
+  border-color: green!important;
+  color: white!important;
+}
+.btn-green:hover,.btn-green:active{
+  background-color: green!important;
+  border-color: green!important;
+  color: white!important;
+}
+
+
+.botones{
+    padding-top: 0px!important;
+    padding-bottom: 0px!important;
+}
+td{
+    margin: 0px;
+    padding: 0px!important;
+    vertical-align: middle!important;
+}
+a {
+    color: black;
+    cursor: pointer;
+}
+.S, .D{
+    background-color: rgba(0,0,0,0.2);
+    color: red;
+}
+.active>a{
+    color: white!important;
+}
+.bg-info-light>li>a{
+    color: white;
+}
+.active.res{
+    background-color: #295d9b !important; 
+}
+.active.bloq{
+    background-color: orange !important; 
+}
+.active.pag{
+    background-color: green !important; 
+}
+.res,.bloq,.pag{
+    background-color: rgba(98,108,117,0.5);
+}
+.nav-tabs > li > a:hover, .nav-tabs > li > a:focus{
+    color: white!important;
+}
+
+.fechas > li.active{
+    background-color: rgb(81,81,81);
+}
+.nav-tabs ~ .tab-content{
+    padding: 0px;
+}
+.paginate_button.active>a{
+    color: black!important;
+}
 
 @media screen and (max-width: 767px){
   .push-mobile-20{
@@ -14311,5 +14406,10 @@ Main components
       font-size: 10px!important;
       float: left!important;
       width: 65px!important;
+  }
+
+  .btn-tables, .btn-calMobile{ 
+    width: 15.3%!important;
+    padding: 10px 5px;
   }
 }

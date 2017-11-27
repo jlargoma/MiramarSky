@@ -350,7 +350,7 @@ class Book extends Model
 
                 $this->save();
 
-                return "Estado Cambiado a Sin Responder";
+                return ['status' => 'success','title' => 'OK', 'response' => "Estado Cambiado a Sin Responder"];
             }else{
 
                 $dateStart  = Carbon::createFromFormat('Y-m-d',$this->start);
@@ -392,7 +392,7 @@ class Book extends Model
 
                     if ($this->customer->email == "") {
                         $this->save();
-                        return "No tiene Email asignado";
+                        return ['status' => 'warning','title' => 'Cuidado', 'response' => "No tiene Email asignado"];
                     }else{
                         switch ($status) {
                             case '1':
@@ -463,33 +463,29 @@ class Book extends Model
                             }
 
                             if ($status == 1) {
-                                return "Email Enviado Reserva";
+                                return ['status' => 'success','title' => 'OK', 'response' => "Email Enviado Reserva"];
                             }elseif($status == 2){
-                                return "Email Enviado Pagada la señal ";
+                                return ['status' => 'success','title' => 'OK', 'response' => "Email Enviado Pagada la señal"];
                             }elseif($status == 3){
-                                return "Estado Cambiado a Sin Responder ";
+                                return ['status' => 'success','title' => 'OK', 'response' => "Estado Cambiado a Sin Responder"];
                             }elseif($status == 4){
-                                return "Estado Cambiado a Bloqueado ";
+                                return ['status' => 'success','title' => 'OK', 'response' => "Estado Cambiado a Bloqueado"];
                             }elseif($status == 5){
-                                return "Contestado por email";
+                                return ['status' => 'success','title' => 'OK', 'response' => "Contestado por email"];
                             }elseif($status == 6){
-                                return "Email Enviado de Cancelacion ";
+                                return ['status' => 'success','title' => 'OK', 'response' => "Email Enviado de Cancelacion"];
                             }elseif($status == 7){
-                                return "Estado Cambiado a Reserva Propietario ";
+                                return ['status' => 'success','title' => 'OK', 'response' => "Estado Cambiado a Reserva Propietario"];
                             }elseif($status == 8){
-                                return "Estado Cambiado a Subcomunidad ";
+                                return ['status' => 'success','title' => 'OK', 'response' => "Estado Cambiado a Subcomunidad"];
                             }
                         }
                     }
-
-
                 }
                 else{
-                    return false;
-                };
+                    return ['status' => 'danger','title' => 'Peligro', 'response' => "No puedes cambiar el estado"];
+                }
             }
-
-
 
         }
         if (!empty($room)) {
@@ -503,17 +499,12 @@ class Book extends Model
 
 
             $isRooms = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,6,7,8])
-            ->where('id','!=' ,$this->id)
-            ->orderBy('start','DESC')
-            ->get();
-
-
-
+                                                        ->where('id','!=' ,$this->id)
+                                                        ->orderBy('start','DESC')
+                                                        ->get();
 
             $existStart = False;
             $existFinish = False;
-
-
 
             foreach ($isRooms as $isRoom) {
                 if ($existStart == False && $existFinish == False) {
@@ -547,13 +538,13 @@ class Book extends Model
                     }else{
                         $deleted = \App\BookNotification::where('book_id',$book->id)->delete();
                     }
-                    return true;
+                    return ['status' => 'success', 'title' => 'OK', 'response' => "Apartamento cambiado correctamente"];
                 }else{
-                    return false;
+                    return ['status' => 'danger', 'title' => 'Peligro', 'response' => "Error mientrar en el cambio de apartamento"];
                 }
 
             }else{
-                return false;
+                return ['status' => 'danger', 'title' => 'Peligro', 'response' => "Este apartamento ya esta ocupado para estas fechas"];
             }
 
 

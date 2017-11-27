@@ -38,12 +38,12 @@
                     <label for="status">Estado</label>
                 </div> 
                 <div class="col-md-8">
-                    <select name="status" class="form-control minimal" data-id="<?php echo $book->id ?>" >
+                    <select name="status" class="form-control minimal" >
                         <?php for ($i=1; $i <= 9; $i++): ?> 
                             <option <?php echo $i == 3 ? "selected" : ""; ?> 
                             <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
-                            value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
-                                <?php echo $book->getStatus($i) ?>
+                            value="<?php echo $i ?>">
+                                <?php echo \App\Book::getStatus($i) ?>
                                 
                             </option>                                    
 
@@ -157,7 +157,7 @@
                     <select class=" form-control parking minimal"  name="parking">
                         <?php for ($i=1; $i <= 4 ; $i++): ?>
                             <option value="<?php echo $i ?>">
-                                <?php echo $book->getParking($i) ?>
+                                <?php echo \App\Book::getParking($i) ?>
                             </option>
                         <?php endfor;?>
                     </select>
@@ -167,7 +167,7 @@
                     <select class=" form-control full-width type_luxury minimal" name="type_luxury">
                         <?php for ($i=1; $i <= 4 ; $i++): ?>
                             <option value="<?php echo $i ?>" <?php echo ($i == 2)?"selected": "" ?>>
-                                <?php echo $book->getSupLujo($i) ?>
+                                <?php echo \App\Book::getSupLujo($i) ?>
                             </option>
                         <?php endfor;?>
                     </select>
@@ -180,7 +180,7 @@
                         <select class="form-control full-width agency minimal" name="agency">
                             <?php for ($i=0; $i <= 2 ; $i++): ?>
                                 <option value="<?php echo $i ?>">
-                                    <?php echo $book->getAgency($i) ?>
+                                    <?php echo \App\Book::getAgency($i) ?>
                                 </option>
                             <?php endfor;?>
                         </select>

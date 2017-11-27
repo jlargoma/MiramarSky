@@ -2,15 +2,20 @@
         setlocale(LC_TIME, "ES"); 
         setlocale(LC_TIME, "es_ES"); 
 ?>
+<div class="row">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
+        <i class="pg-close fs-20" style="color: #000!important;"></i>
+    </button>
+</div>
 <?php if (!$mobile->isMobile() ): ?>
-<div class="col-md-12 not-padding content-last-books" style="display:none;">
+<div class="col-md-12 not-padding content-last-books">
     <div class="alert alert-info fade in alert-dismissable" style="background-color: #daeffd!important;">
         <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a> -->
         <!-- <strong>Info!</strong> This alert box indicates a neutral informative change or action. -->
         <h4 class="text-center">Últimas confirmadas</h4>
-        <table class="table table-condensed" style="margin-top: 0;">
+        <table class="table" style="margin-top: 0;">
             <tbody>
-                <?php foreach ($arrayBooks["pagadas"] as $key => $book): ?>
+                <?php foreach ($books as $key => $book): ?>
                     <tr>
                         <td class="text-center" style="width: 30px; padding: 5px 0!important">
                             <?php if ($book->agency != 0): ?>
@@ -25,10 +30,10 @@
                             </a> 
                             
                         </td>
-                        <td class="text-center" style="color: black;">   
-                            <?php echo $book->room->nameRoom ?> - <?php echo substr($book->room->name,0,5) ?>  
+                        <td class="text-center" style="color: black; padding: 5px!important">   
+                            <?php echo substr($book->room->nameRoom,0,5) ?>       
                         </th>
-                        <td class="text-center" style="color: black;">   
+                        <td class="text-center" style="color: black;padding: 5px 10px!important">   
                             <b>
                                 <?php
                                     $start = Carbon::createFromFormat('Y-m-d',$book->start);
@@ -42,29 +47,25 @@
                                 ?>        
                             </b>           
                         </td>
-                        <td class="text-center" style="width: 17%!important; color: black;padding: 5px!important;">
-                            
-                            <?php if (isset($payment[$book->id])): ?>
-                                <b><?php echo $book->total_price ?>€</b>
-                            <?php else: ?>
-                                -----
-                            <?php endif ?>
+                        <td class="text-center" style="color: black;padding: 5px!important;">
+                             <b><?php echo $book->total_price ?>€</b>
                         </td>
                         <td class="text-center" style="color: black;">  
-                            <?php if (isset($payment[$book->id])): ?>
-                                <?php echo  $payment[$book->id]." €" ?>
-                            <?php else: ?>
-                                -----&nbsp;&nbsp;
-                            <?php endif ?> 
-                            <?php $paymentBook = \App\Payments::where('book_id', $book->id)->get(); ?>
-                            <?php 
-                                $fromStripe = false;
-                                foreach ($paymentBook as $pay) {
-                                    if (preg_match('/stripe/i', $pay->comment)) {
-                                        $fromStripe = true;
-                                    }
-                                }
-                            ?>
+                            <?php $payments = \App\Payments::where('book_id', $book->id)->get(); ?>
+                            <?php $paymentBook = 0; ?>
+                            <?php $fromStripe = false; ?>
+                            <?php if ( count($payments) > 0): ?>
+                                <?php foreach ($payments as $key => $payment): ?>
+                                    <?php $paymentBook += $payment->import; ?>
+                                    <?php if (preg_match('/stripe/i', $payment->comment)): ?>
+                                        <?php $fromStripe = true; ?>
+                                    <?php endif ?>
+                                    
+                                <?php endforeach ?>
+                            <?php endif ?>
+
+                            <?php echo  $paymentBook." €" ?>
+
                             <?php if ($fromStripe): ?>
                                 <a target="_blank" href="https://dashboard.stripe.com/payments"><img src="/img/stripe-icon.jpg" style="width: 20px;"></a>
                             <?php else: ?>
@@ -81,15 +82,15 @@
 
 <?php else: ?>
 
-    <div class="col-md-12 not-padding content-last-books" style="display:none;">
-        <div class="alert alert-info fade in alert-dismissable" style="background-color: #daeffd!important;">
-            <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a> -->
-            <!-- <strong>Info!</strong> This alert box indicates a neutral informative change or action. -->
-            <h4 class="text-center">Últimas confirmadas</h4>
-            <div class="table-responsive">
-                <table class="table" style="margin-top: 0;">
+    <div class="row table-responsive" >
+        <div class="col-xs-12" style="background-color: #daeffd!important;">
+            <div class="row">
+                <h4 class="text-center">Últimas confirmadas</h4>
+            </div>
+            <div class="row ">
+                <table class="table table-striped" style="margin-top: 0;">
                     <tbody>
-                        <?php foreach ($arrayBooks["pagadas"] as $key => $book): ?>
+                        <?php foreach ($books as $key => $book): ?>
                             <tr>
                                 <td class="text-center" style="width: 30px; padding: 5px 0!important">
                                     <?php if ($book->agency != 0): ?>
@@ -106,14 +107,17 @@
                                 </td>
                                 <td class="text-center" style="color: black; padding: 5px!important">   
                                     <?php echo substr($book->room->nameRoom,0,5) ?>       
-                                </th>
+                                </td>
                                 <td class="text-center" style="color: black;padding: 5px 10px!important">   
                                     <b>
                                         <?php
                                             $start = Carbon::createFromFormat('Y-m-d',$book->start);
                                             echo $start->formatLocalized('%d %b');
                                         ?>        
-                                    </b> - 
+                                    </b>
+                                </td>
+
+                                <td class="text-center" style="color: black;padding: 5px 10px!important">   
                                     <b>
                                         <?php
                                             $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
@@ -122,23 +126,22 @@
                                     </b>           
                                 </td>
                                 <td class="text-center" style="color: black;padding: 5px!important;">
-                                     <b><?php echo $book->total_price ?>€</b>
-                                </td>
-                                <td class="text-center" style="color: black;">  
-                                    <?php if (isset($payment[$book->id])): ?>
-                                        <?php echo  $payment[$book->id]." €" ?>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <?php else: ?>
-                                        -----&nbsp;&nbsp;
-                                    <?php endif ?> 
-                                    <?php $paymentBook = \App\Payments::where('book_id', $book->id)->get(); ?>
-                                    <?php 
-                                        $fromStripe = false;
-                                        foreach ($paymentBook as $pay) {
-                                            if (preg_match('/stripe/i', $pay->comment)) {
-                                                $fromStripe = true;
-                                            }
-                                        }
-                                    ?>
+                                    <b><?php echo $book->total_price ?>€</b><br>
+                                    <?php $payments = \App\Payments::where('book_id', $book->id)->get(); ?>
+                                    <?php $paymentBook = 0; ?>
+                                    <?php $fromStripe = false; ?>
+                                    <?php if ( count($payments) > 0): ?>
+                                        <?php foreach ($payments as $key => $payment): ?>
+                                            <?php $paymentBook += $payment->import; ?>
+                                            <?php if (preg_match('/stripe/i', $payment->comment)): ?>
+                                                <?php $fromStripe = true; ?>
+                                            <?php endif ?>
+                                            
+                                        <?php endforeach ?>
+                                    <?php endif ?>
+
+                                    <?php echo  $paymentBook." €" ?>
+
                                     <?php if ($fromStripe): ?>
                                         <a target="_blank" href="https://dashboard.stripe.com/payments"><img src="/img/stripe-icon.jpg" style="width: 20px;"></a>
                                     <?php else: ?>
