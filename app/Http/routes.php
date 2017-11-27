@@ -204,7 +204,7 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 Route::get('admin/pdf/pdf-reserva/{id}','PdfController@invoice');
 
 Route::group(['middleware' => 'auth'], function () {
-	Route::get('/admin/rooms/getImagesRoom/{id?}', 'RoomsController@getImagesRoom');
+	Route::get('/admin/rooms/api/getImagesRoom/{id?}', 'RoomsController@getImagesRoom');
 
 	Route::get('/admin', function ()    {
 	$user = \Auth::user(); 

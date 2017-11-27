@@ -474,6 +474,7 @@
        
         $(document).ready(function() {
 
+
             // Selector de año
             $('#fecha').change(function(event) {
 
@@ -557,6 +558,12 @@
                     
                 });
             });
+
+
+
+
+
+
 
 
        });

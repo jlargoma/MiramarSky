@@ -84,7 +84,7 @@
 	    	var quantity = $('select[name="quantity"]').val();
 	    	var apto     = $('input:radio[name="apto"]:checked').val();
 	    	var luxury   = $('input:radio[name="luxury"]:checked').val();
-	    	var parking  = $('input:radio[name="parking"]:checked').val();
+	    	var parking  = 'si';
 	    	var comment  = $('textarea[name="comment"]').val();
 
 	    	var url = $(this).attr('action');

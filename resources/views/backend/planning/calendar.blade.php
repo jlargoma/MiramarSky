@@ -378,4 +378,14 @@
         $('.content-calendar').animate({ scrollLeft: "+="+targetPosition.left+"px" }, "slow");
     });
     $('#btn-active').trigger('click');
+
+    // Ver imagenes por piso
+
+    $('.getImages').click(function(event) {
+        var idRoom = $(this).attr('data-id');
+
+        $.get('/admin/rooms/api/getImagesRoom/'+idRoom, function(data) {
+            $('#modalRoomImages .modal-content').empty().append(data);
+        });
+    }); 
 </script>

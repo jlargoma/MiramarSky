@@ -68,7 +68,7 @@
 					<label for="luxury-no" class="radio-style-3-label">No</label>
 				</div>
             </div>
-            <div class="form-group col-sm-12 col-xs-4 col-md-3">
+            <!-- <div class="form-group col-sm-12 col-xs-4 col-md-3">
                 <label style="display: inline!important;" class="col-md-12 parking white">*Parking</label>
                 <div class="col-md-6">
 					<input id="parking-yes" class="radio-style" name="parking" type="radio" checked="" value="si">
@@ -78,7 +78,7 @@
 					<input id="parking-no" class="radio-style" name="parking" type="radio" value="no">
 					<label for="parking-no" class="radio-style-3-label">No</label>
 				</div>
-            </div>
+            </div> -->
             <div style="clear: both;"></div>
             <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12">
                 <div class="input-group col-sm-12 col-xs-12 col-md-12 col-lg-12">
