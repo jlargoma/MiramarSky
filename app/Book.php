@@ -67,7 +67,7 @@ class Book extends Model
     //Para poner nombre al estado de la reserva//
     static function getStatus($status)
     {
-       $array = [1 =>"Reservado - stripe", 2 =>"Pagada-la-señal",3 =>"SIN RESPONDER",4 =>"Bloqueado", 5 =>"Contestado(EMAIL)",6 =>"Cancelada", 7 =>"Reserva Propietario",8 =>"SubComunidad",9=>"Booking"];
+       $array = [1 =>"Reservado - stripe", 2 =>"Pagada-la-señal",3 =>"SIN RESPONDER",4 =>"Bloqueado", 5 =>"Contestado(EMAIL)",6 =>"Denegada", 7 =>"Reserva Propietario",8 =>"SubComunidad",9=>"Booking"];
 
        return $status = $array[$status];
     }
@@ -420,11 +420,11 @@ class Book extends Model
                                 // });
                             break;
                             case '6':
-                                Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
-                                    $message->from('reservas@apartamentosierranevada.net');
-                                    $message->to($book->customer->email);
-                                    $message->subject('Correo cancelación de reserva');
-                                });
+                                // Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
+                                //     $message->from('reservas@apartamentosierranevada.net');
+                                //     $message->to($book->customer->email);
+                                //     $message->subject('Correo cancelación de reserva');
+                                // });
                             break;
                             case '7':
                                 Mail::send('backend.emails.reserva-propietario',['book' => $book], function ($message) use ($book) {
