@@ -522,7 +522,7 @@
 
 
             });
-
+            
 
             // Cargamos el calendario cuando acaba de cargar la pagina
             setTimeout(function(){ 

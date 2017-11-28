@@ -143,6 +143,18 @@
 				#content-book-response label.white, #content-book-response label, .tab-content label{
 					color: white!important;
 				}
+				#primary-menu ul li a{
+					color: #3f51b5!important;
+				}
+				#primary-menu.style-2 ul {
+				    border-top: 2px solid #3f51b5;
+				    border-bottom: 2px solid #3f51b5;
+				}
+
+				.sticky-header #primary-menu.style-2 ul {
+				    border-top: 2px solid #fff;
+				    border-bottom: 2px solid #fff;
+				}
 			</style>
 			
 
@@ -400,29 +412,16 @@
 	   				</h2>
 	   				<div class="col-md-12 col-xs-12">
 
-	   					<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
-	   						<a href="{{ url('/forfait')}}" target="_blank">
-		   						<div class="col-xs-12 not-padding  container-image-box">
-		   							<div class="col-xs-12 not-padding push-0">
-	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/descuento-forfait.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
-		   							</div>
-		   							<div class="col-xs-12 not-padding text-right overlay-text">
-		   								<h2 class="font-w200 center push-10 text-center text font-s24 white" >DESCUENTOS <span class="font-w800 white">EN FORFAIT</span>
-		   								</h2>
-		   							</div>
-		   						</div>
-	   						</a>
-	   					</div>
-					
+	   										
 						<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
-							<a href="#">
+							<a href="{{ url('/forfait')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/fortfait.jpg')}}"  alt="Apartamento standard sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
 		   								<h2 class="font-w200 center push-10 text-center text font-s24 white" >
-		   									DESCUENTOS<span class="font-w800 white"> ALQUILER MATERIAL<span class="font-w800 white">
+		   									DESCUENTOS<span class="font-w800 white"> ALQUILER MATERIAL Y EN FORFAIT</span>
 		   								</h2>
 		   							</div>
 		   						</div>
@@ -444,6 +443,23 @@
 		   						</div>
 		   					</a>
 	   					</div>
+
+	   					<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
+	   						<!-- {{ url('/carrito-en-casa')}} -->
+	   						<a href="#" target="_blank">
+		   						<div class="col-xs-12 not-padding  container-image-box">
+		   							<div class="col-xs-12 not-padding push-0">
+	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/supermercado.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
+		   							</div>
+		   							<div class="col-xs-12 not-padding text-right overlay-text">
+		   								<h2 class="font-w200 center push-10 text-center text font-s24 white" >TE LLEVAMOS <span class="font-w800 white">LA COMPRA A CASA</span>
+		   								</h2>
+		   							</div>
+		   						</div>
+	   						</a>
+	   					</div>
+
+	   					
 	   				</div>
 	   			</div>
 	       		
@@ -722,26 +738,12 @@
 	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/descuento-forfait.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
-		   								<h2 class="font-w200 center push-10 text-center text font-s24 white" >DESCUENTOS <span class="font-w800 white">EN FORFAIT</span>
+		   								<h2 class="font-w200 center push-10 text-center text font-s24 white" >
+		   									DESCUENTOS<span class="font-w800 white"> ALQUILER MATERIAL Y EN FORFAIT</span>
 		   								</h2>
 		   							</div>
 		   						</div>
 	   						</a>
-	   					</div>
-					
-						<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
-							<a href="#">
-		   						<div class="col-xs-12 not-padding  container-image-box">
-		   							<div class="col-xs-12 not-padding push-0">
-	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/fortfait.jpg')}}"  alt="Apartamento standard sierra nevada"/>
-		   							</div>
-		   							<div class="col-xs-12 not-padding text-right overlay-text">
-		   								<h2 class="font-w200 center push-10 text-center text font-s24 white" >
-		   									DESCUENTOS<span class="font-w800 white"> ALQUILER MATERIAL<span class="font-w800 white">
-		   								</h2>
-		   							</div>
-		   						</div>
-							</a>
 	   					</div>
 
 	   					<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
@@ -759,6 +761,24 @@
 		   						</div>
 		   					</a>
 	   					</div>
+					
+						<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
+							<!-- {{ url('/carrito-en-casa')}} -->
+							<a href="#">
+		   						<div class="col-xs-12 not-padding  container-image-box">
+		   							<div class="col-xs-12 not-padding push-0">
+	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/supermercado.jpg')}}"  alt="Apartamento standard sierra nevada"/>
+		   							</div>
+		   							<div class="col-xs-12 not-padding text-right overlay-text">
+		   								<h2 class="font-w200 center push-10 text-center text font-s24 white" >
+		   									TE LLEVAMOS LA <span class="font-w800 white"> COMPRA A CASA</span>
+		   								</h2>
+		   							</div>
+		   						</div>
+							</a>
+	   					</div>
+
+	   					
 	   				</div>
 				</div>
 

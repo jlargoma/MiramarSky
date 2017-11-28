@@ -377,6 +377,8 @@
         // alert("Left: "+targetPosition.left+ ", right: "+targetPosition.right);
         $('.content-calendar').animate({ scrollLeft: "+="+targetPosition.left+"px" }, "slow");
     });
+
+    
     $('#btn-active').trigger('click');
 
     // Ver imagenes por piso

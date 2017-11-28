@@ -117,6 +117,10 @@
 
 		        });
 
+		        $('.content-calendar').empty().append('<div class="col-xs-12 text-center sending" style="padding: 120px 15px;"><i class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></i><br><h2 class="text-center">CARGANDO CALENDARIO</h2></div>');
+
+                $('.content-calendar').empty().load('/getCalendarMobile');
+
 	       }); 
 	    }
 

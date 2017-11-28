@@ -51,6 +51,7 @@ class BookController extends Controller
                                                             ->whereMonth('created_at','=', date('m'))
                                                             ->whereDay('created_at','=', date('d'))
                                                             ->get();
+        // Notificaciones de alertas booking
         $notifyes = \App\BookNotification::all();
         $notifications = 0;
         foreach ($notifyes as $key => $notify):
@@ -1182,7 +1183,30 @@ class BookController extends Controller
 
         $rooms = \App\Rooms::where('state','=',1)->get();
         $type = $request->type;
-        return view('backend/planning/_table', compact('books', 'rooms', 'type', 'mobile'));
+
+        if ($request->type == 'confirmadas' ||  $request->type == 'checkin') {
+            $payment = array();
+            foreach ($books as $key => $book) {
+                $payment[$book->id] = 0;
+                $payments = \App\Payments::where('book_id', $book->id)->get();
+                if ( count($payments) > 0) {
+                    
+                    foreach ($payments as $key => $pay) {
+                        $payment[$book->id] += $pay->import;
+                    }
+
+                }
+
+            }
+
+            return view('backend/planning/_table', compact('books', 'rooms', 'type', 'mobile', 'payment'));
+        } else {
+
+            return view('backend/planning/_table', compact('books', 'rooms', 'type', 'mobile'));
+        }
+        
+
+        
 
     }
 
@@ -1246,6 +1270,8 @@ class BookController extends Controller
             $firstDayOfTheYear->addMonth();
 
         }
+
+
 
         $dateX = $date->copy();
         $days = $arrayDays;
