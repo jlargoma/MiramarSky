@@ -98,21 +98,6 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="col-lg-6 content-alert-success" style="display: none;">
-                    <div class="alert alert-success alert-dismissable">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true" style="right: 0">×</button>
-                        <h3 class="font-w300 push-15">Perfecto</h3>
-                        <p><a class="alert-link" href="javascript:void(0)">Actualizado</a> correctamente!</p>
-                    </div>
-                </div>
-                
-                <div class="col-lg-6 content-alert-error2" style="display: none;">
-                    <div class="alert alert-danger alert-dismissable">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true" style="right: 0">×</button>
-                        <h3 class="font-w300 push-15">Error</h3>
-                        <p><a class="alert-link" href="javascript:void(0)">Ya hay una reserva para ese apartamento</a>!</p>
-                    </div>
-                </div>
 
                 <?php if ( isset($_GET['saveStatus']) && !empty($_GET['saveStatus']) ): ?>
                     <div class="col-lg-6 content-alert-error2" >
@@ -123,15 +108,6 @@
                         </div>
                     </div>
                 <?php endif ?>
-                
-
-                <div class="col-lg-6 content-alert-error1" style="display: none;">
-                    <div class="alert alert-danger alert-dismissable">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true" style="right: 0">×</button>
-                        <h3 class="font-w300 push-15">Error</h3>
-                        <p><a class="alert-link" href="javascript:void(0)">Algo paso al intentar cambiar el estado</a>!</p>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -189,7 +165,7 @@
                                 <label for="city">CIUDAD</label>
                                 <select class="form-control city minimal"  name="city">
                                     <option>--Seleccione ciudad --</option>
-                                    <?php foreach (\App\Cities::where('code_country', $book->customer->country)->orderBy('city', 'ASC')->get() as $city): ?>
+                                    <?php foreach (\App\Cities::orderBy('city', 'ASC')->get() as $city): ?>
                                         <option value="<?php echo $city->id ?>" <?php if ($city->id == $book->customer->city){ echo "selected";} ?>>
                                             <?php echo $city->city ?>
                                         </option>
@@ -1278,21 +1254,50 @@
                        
                 }else{
                     $.get('/admin/reservas/changeStatusBook/'+id, { status:status }, function(data) {
-                        if (data == 1) {
-                            $('.content-alert-success').show();
-                             setTimeout(function(){ 
-                                 $('.alert-success .close').trigger('click');
-                                  }, 1000);                       
-                        } else if (data == 0){
-                            $('.content-alert-error1').show();
-                            setTimeout(function(){ 
-                                $('.alert-error1 .close').trigger('click');
-                                 }, 1000);  
-                        } else{
-                            $('.content-alert-error2').show();
-                                setTimeout(function(){ 
-                                    $('.alert-error2 .close').trigger('click');
-                                     }, 1000);  
+                        if (data.status == 'danger') {
+                            $.notify({
+                                title: '<strong>'+data.title+'</strong>, ',
+                                icon: 'glyphicon glyphicon-star',
+                                message: data.response
+                            },{
+                                type: data.status,
+                                animate: {
+                                    enter: 'animated fadeInUp',
+                                    exit: 'animated fadeOutRight'
+                                },
+                                placement: {
+                                    from: "top",
+                                    align: "left"
+                                },
+                                offset: 80,
+                                spacing: 10,
+                                z_index: 1031,
+                                allow_dismiss: true,
+                                delay: 60000,
+                                timer: 60000,
+                            }); 
+                        } else {
+                            $.notify({
+                                title: '<strong>'+data.title+'</strong>, ',
+                                icon: 'glyphicon glyphicon-star',
+                                message: data.response
+                            },{
+                                type: data.status,
+                                animate: {
+                                    enter: 'animated fadeInUp',
+                                    exit: 'animated fadeOutRight'
+                                },
+                                placement: {
+                                    from: "top",
+                                    align: "left"
+                                },
+                                allow_dismiss: false,
+                                offset: 80,
+                                spacing: 10,
+                                z_index: 1031,
+                                delay: 5000,
+                                timer: 1500,
+                            }); 
                         }
                     }); 
                }

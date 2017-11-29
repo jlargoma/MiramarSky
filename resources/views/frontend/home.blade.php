@@ -1,4 +1,5 @@
 @extends('layouts.master')
+
 @section('title')Apartamentos de lujo en Sierra Nevada a pie de pista @endsection
 
 @section('content')
@@ -445,8 +446,8 @@
 	   					</div>
 
 	   					<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
-	   						<!-- {{ url('/carrito-en-casa')}} -->
-	   						<a href="#" target="_blank">
+	   						
+	   						<a href="{{ url('/carrito-en-casa')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/supermercado.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
@@ -763,8 +764,7 @@
 	   					</div>
 					
 						<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
-							<!-- {{ url('/carrito-en-casa')}} -->
-							<a href="#">
+							<a href="{{ url('/carrito-en-casa')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/supermercado.jpg')}}"  alt="Apartamento standard sierra nevada"/>

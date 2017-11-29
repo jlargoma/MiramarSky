@@ -194,6 +194,7 @@
 		<script src="{{ asset('assets/plugins/jquery-sparkline/jquery.sparkline.min.js') }}" type="text/javascript"></script>
 		<script src="{{ asset('assets/plugins/skycons/skycons.js') }}" type="text/javascript"></script>
 		<script src="{{ asset('assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') }}" type="text/javascript"></script>
+		<script type="text/javascript" src="{{ asset('/pages/js/bootstrap-notify.js')}}"></script>
 		@yield('scripts')
 		<!-- END VENDOR JS -->
 		<!-- BEGIN CORE TEMPLATE JS -->

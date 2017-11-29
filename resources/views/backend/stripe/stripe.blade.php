@@ -41,15 +41,15 @@
 			<?php if ($bookTocharge != null): ?>
 				<?php 
 					if ( count($payments) == 0) {
-						$priceToCharge = round($book->total_price * 0.25);
+						$priceToCharge = ($book->total_price * 0.25);
 
 					}elseif(count($payments) == 1){
 
-						$priceToCharge = round($book->total_price * 0.25);
+						$priceToCharge = ($book->total_price * 0.25);
 
 					}elseif(count($payments) > 1){
 
-						$priceToCharge = round($book->total_price * 0.5);
+						$priceToCharge = ($book->total_price * 0.5);
 					}
 
 				?>

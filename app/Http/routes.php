@@ -44,6 +44,13 @@ Route::post('/solicitudForfait','HomeController@solicitudForfait');
 
 
 
+Route::get('/carrito-en-casa','StoreController@index');
+
+
+
+
+
+
 Route::post('/getPriceBook','HomeController@getPriceBook');
 Route::get('/getFormBook','HomeController@form');
 Route::get('/getCitiesByCountry','HomeController@getCitiesByCountry');

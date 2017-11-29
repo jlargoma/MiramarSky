@@ -86,7 +86,20 @@
     	margin-top: 0!important
     }
 </style>
-<?php $partialPay = ($book->total_price * 25 )/ 100 ?>
+<?php 
+	if ( count($payments) == 0) {
+		$partialPay = ($book->total_price * 0.25);
+
+	}elseif(count($payments) == 1){
+
+		$partialPay = ($book->total_price * 0.25);
+
+	}elseif(count($payments) > 1){
+
+		$partialPay = ($book->total_price * 0.5);
+	}
+
+?>
 <?php if (!$mobile->isMobile()): ?>
 	<section class="section nobottommargin" style="background-image: url({{ asset('/img/mountain.png')}});background-size: cover;background-position: 0; min-height: 564px;" >
 		<div class="container container-mobile clearfix" style="width: 85%;">
@@ -95,10 +108,29 @@
 					
 					<div class="row">
 						<div class="col-xs-12">
-							<h2 class="text-justify font-w300 ls1" style="line-height: 1; font-size: 20px;">
-								Hola <b><?php echo $book->customer->name ?></b>,Para confirmar tu reserva tienes que abonar el 25% de el importe total de tu reserva  mediante nuestra pasarela de pago stripe
-							</h2>
-							<p class="text-justify" style="font-size: 20px;font-family: miramar!important">Te dejamos un resumen de tu reserva:</p>
+							
+							<?php if ( count($payments) == 0): ?>
+								<h2 class="text-justify font-w300 ls1" style="line-height: 1; font-size: 20px;">
+									Hola <b><?php echo $book->customer->name ?></b>,Para confirmar tu reserva tienes que abonar el 25% de el importe total de tu reserva  mediante nuestra pasarela de pago stripe.
+								</h2>
+								<p class="text-justify" style="font-size: 20px;font-family: miramar!important">
+									Te dejamos un resumen de tu reserva:
+								</p>
+							<?php elseif(count($payments) == 1): ?>
+								<h2 class="text-justify font-w300 ls1" style="line-height: 1; font-size: 20px;">
+									Hola <b><?php echo $book->customer->name ?></b>,Aquí puedes abonar el siguiente 25% del importe total de tu reserva  mediante nuestra pasarela de pago stripe.
+								</h2>
+								<p class="text-justify" style="font-size: 20px;font-family: miramar!important">
+									Te recordamos los datos de tu reserva:
+								</p>
+							<?php elseif(count($payments) > 1): ?>
+								<h2 class="text-justify font-w300 ls1" style="line-height: 1; font-size: 20px;">
+									Hola <b><?php echo $book->customer->name ?></b>,Aquí puedes abonar el último pago del 50% del importe total de tu reserva mediante nuestra pasarela de pago stripe.
+								</h2>
+								<p class="text-justify" style="font-size: 20px;font-family: miramar!important">
+									Te recordamos los datos de tu reserva:
+								</p>
+							<?php endif ?>
 						</div>
 						<div class="col-md-12">
 							<p class="font-w300 text-justify" style="font-size: 20px; font-family: miramar!important">
@@ -137,16 +169,16 @@
 							</span>
 						</h2>
 						<p class=" text-center font-w800" style="font-size: 116px;letter-spacing: -15px; line-height: 1;">
-							<?php echo round($partialPay) ?> € <span>*</span>
+							<?php echo $partialPay ?> € <span>*</span>
 						</p>
 					</div>
 					<form action="{{ url('/reservas/stripe/payment') }}" method="POST">
-						<input type="hidden" name="price" value="<?php echo round($partialPay) ?>00">
+						<input type="hidden" name="price" value="<?php echo $partialPay *100 ?>">
 						<input type="hidden" name="id_book" value="<?php echo $book->id ?>">
 			  			<script
 						    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
 						    data-key="<?php echo $stripe['publishable_key']; ?>"
-						    data-amount="<?php echo round($partialPay) ?>00"
+						    data-amount="<?php echo $partialPay *100 ?>"
 						    data-name="Apartamentosierranevada"
 						    data-description="Pago parcial 25% reserva"
 						    data-image="https://stripe.com/img/documentation/checkout/marketplace.png"

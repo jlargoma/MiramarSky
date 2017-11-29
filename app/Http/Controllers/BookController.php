@@ -75,7 +75,7 @@ class BookController extends Controller
 
         $mobile = new Mobile();
 
-        $aux = str_replace('Abr', 'Apr', $request->input('fechas'));
+        $aux = str_replace('Abr', 'Apr', $input('fechas'));
 
         $date = explode('-', $aux);
 
@@ -470,15 +470,10 @@ class BookController extends Controller
 
             if ( $isReservable == 1 ) {
 
-                if ($book->changeBook($request->status,"",$book)) {
-                    return 1;
-                }else{
-                    return 0;
-                }
-
+                return $book->changeBook($request->status,"",$book);
             }else{
 
-                return 2;
+                return ['status' => 'danger','title' => 'Peligro', 'response' => "No puedes cambiar el estado"];
             }
 
         }
@@ -930,7 +925,9 @@ class BookController extends Controller
            $notification->delete();
         }
         if ($book->delete()) {
-            return redirect()->action('BookController@index');
+            return ['status' => 'success','title' => 'OK', 'response' => "Reserva borrada correctamente"];
+        }else{
+            return ['status' => 'danger','title' => 'Error', 'response' => "No se ha podido borrar la reserva"];
         }
 
     }
@@ -1385,7 +1382,7 @@ class BookController extends Controller
         }else{
             $date = new Carbon('first day of September '.$year);
         }
-        switch ($request->type) {
+        switch ($type) {
             case 'pendientes':
                 $books = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[1,3,4,5,6])->orderBy('created_at','DESC')->get();
                 break;
@@ -1405,4 +1402,125 @@ class BookController extends Controller
 
         return count($books);
     }
+
+
+
+
+    // public function actionSendEmailChargeBeforeEnter()
+    //     {   
+    //         $fecha = new DateTime('now');
+    //         $fecha->add(new DateInterval('P15D'));
+    //         $criteria = new CDbCriteria();
+    //         $criteria->condition = 'Start = :fecha AND Type = "1"';        
+    //         /**
+    //          * Esta fue la consulta que se hizo para actualizar
+    //          * todos los registros y llevarlos al dia
+    //         */
+    //         //$criteria->condition = "Start BETWEEN '2015-12-02' AND '2015-12-17'"; 
+            
+    //         $criteria->params = array(':fecha' => $fecha->format('Y-m-d'));
+    //         $modelsBooks = Book::model()->findAll($criteria);
+    //         foreach ($modelsBooks as $modelBook) 
+    //         {
+    //             $email2 = '<p>la reserva de <b>' . $modelBook->customer->FullName . '</b> está pendiente de cobro, y entran dentro de 15 días</p>';
+    //             $email2 .= 'Fecha entrada: ' . $modelBook->Start  . ' <br>';
+    //             $email2 .= 'Fecha salida: ' . $modelBook->Finish  . '<br>';
+    //             $email2 .= 'Noches: ' . $modelBook->noches . '<br>';
+    //             $email2 .= 'Ocupantes: '. $modelBook->Pax .'<br>';
+    //             $email2 .= 'Apartamento: </b>'. $modelBook->room->Name .'<br>';
+    //             $email2 .= '<b>Total Reserva: </b>'. $modelBook->totalPrice .'&euro;<br><br>';
+    //             $email2 .= '<b>-------------------------</b><br>';
+    //             $email2 .= '<b>Cobrado: </b>'.$modelBook->getTotalCobrado().'&euro;<br>';
+    //             $email2 .= '<b>-------------------------</b><br>';
+    //             $email2 .= '<h2 style="color:red"><b>Pendiente: </b>'.$modelBook->getPendCobr().'&euro;</h2>';
+    //             $email2 .= '<b>-------------------------</b><br>';
+    //             $email2 .= 'Si quieres enviarle un recordatorio de pago <a href="http://admin.apartamentosierranevada.net/index.php/booking/book/AlertSendEmailChargeBeforeEnter?idBook='.$modelBook->ID.'">pincha aquí.';
+                
+    //             if((int)$modelBook->getPendCobr() != '0')
+    //             {
+    //                 Functions::sendConsulta("reservas@apartamentosierranevada.net","jlargo@mksport.es",'RECORDARIO RESERVA SIERRA NEVADA - ' . $modelBook->customer->FullName ,$email2);
+    //             }
+    //         }
+    //     }
+    
+    // public function actionAlertSendEmailChargeBeforeEnter()
+    // { 
+    //     if(isset($_GET['idBook']) && is_numeric($_GET['idBook']))
+    //     {
+    //         $modelBook = Book::model()->findByPK($_GET['idBook']);
+    //         $textData= "<b>Nombre:</b> " . $modelBook->customer->FullName . "<br /><br />";  
+    //         $textData.= "<b>Fecha entrada:</b> " . $modelBook->Start  . "<br /><br />"; 
+    //         $textData.= "<b>Fecha salida:</b> " . $modelBook->Finish . "<br /><br />";      
+    //         $textData.= "<b>Noches:</b> " . $modelBook->noches . "<br /><br />";
+    //         $textData.= "<b>Ocupantes:</b> " . $modelBook->Pax . "<br /><br />"; 
+    //         $textData.= '<b>Apartamento: </b>'. $modelBook->room->Name .'<br><br>';
+    //         $textData.= "<b>Total reserva:</b> " . $modelBook->totalPrice . " &euro;<br/><br/>"; 
+    //         $textData .= '<b>-------------------------</b><br>';
+    //         $textData .= '<b>Cobrado: </b>'.$modelBook->getTotalCobrado().'&euro;<br>';
+    //         $textData .= '<b>-------------------------</b><br>';
+    //         $textData .= '<h2 style="color:red"><b>Pendiente: </b>'.$modelBook->getPendCobr().'&euro;</h2>';
+    //         $textData .= '<b>-------------------------</b><br>';
+
+    //         $text = "Hola ".$modelBook->customer->FullName." , te enviamos este email para recordate que tienes que realizarnos una transferencia por las cantidades pendientes :<br/><br/>";
+    //         $text.= $textData;
+    //         $text.= "Por favor realiza una transferencia de al menos ". (int)($modelBook->getPendCobr() * 0.5)  ." &euro;, podras abonar el resto en metalico antes de la entrada:";
+    //         $text.= " <h2>DATOS Bancarios</h2>";
+    //         $text.= " <h2>Titular:  <span style='color:red'>Jorge Largo</span></h2>";
+    //         $text.= " <h2>Concepto: <span style='color:red'>Señal Reserva MiramarSKi</span></h2>";
+    //         $text.= " <h2>Ordenante: <span style='color:red'>".$modelBook->customer->FullName."</span></h2>";
+    //         $text.= " <h2>Datos Bancarios: <span style='color:red'>La Caixa</span></h2>";
+    //         $text.= " <h2>IBAN: <span style='color:red'>ES19 2100 1875 0502 0021 0464</span></h2>";
+    //         $text.= " <h2>BIC(SWIFT): <span style='color:red'>CAIXESBBXXX</span></h2>";  
+    //         $text.=  "Consulta nuestras condiciones de contratación <a href='http://www.apartamentosierranevada.net/condiciones-contratacion.html'>aquí</a><br>";
+    //         $text.= "<br/>Muchas Gracias !!!.<br/>" ;
+    //         $text.= "<br/>Un cordial saludo.<br><br>" ;
+    //         $text .= '<hr></hr><br>';
+    //         $text .= '<b>Hora de Entrada:</b> Desde las <b>17,00h a 19,00h.</b> Si vas a llegar más tarde tienes que avisarnos y podrías tener un cargo adicional por las horas de espera. Consultar  <a href="http://www.apartamentosierranevada.net/condiciones-alquiler.html">link</a> condiciones<br><br>';
+    //         $text .= '<b>Hora de Salida:</b> La vivienda deberá ser desocupada antes de las <b>12,00 a.m</b>.<br><br>';
+    //         $text .= '<b>Fianza:</b> Además del precio del alquiler el día de llegada <b>se pedirá una fianza por el importe de 300&euro;</b> a la entrega de llaves para garantizar el buen uso de la vivienda. La fianza se devolverá a la entregada de llaves, una vez revisada la vivienda <br><br>';
+    //         $text .= '<b>Sabanas y Toallas: </b>En las reservas confirmadas para <b>“El apartamento de Lujo” SI ESTAN INCLUIDAS</b> las sabanas y toallas, en el resto de apartamentos del complejo Mirarmar Ski <b>NO ESTAN INCLUIDAS</b>, por lo que deben traerlas.<br><br>';
+
+    //         $text .= 'Pago: La cantidad total de la reserva deberá estar desembolsada para poder ocupar el apartamento.<br>';
+    //         $text .= '<hr></hr><br>';
+    //         // fin condiciones de uso
+    //         $text.= "<strong>Servicios adicionales:</strong><br/>";
+    //         $text.= "Para tu comodidad te ofrecemos los siguientes servicios<br/>";
+    //         $text.= "<br/><strong>Para tu comodidad te ofrecemos sin coste añadido los siguientes servicios:</strong><br/><br/>";
+
+    //         $text.= "<strong>*Tramitar tu forfait para que no esperes colas</strong><br/>";
+    //         $text.= "<strong>*Gestionar tus clases de ski (Escuela Española Ski)</strong><br/>";
+    //         $text.= "<strong>*Alquiler de material</strong><br/><br/>";
+    //         $text.= "Para solicitar uno de estos servicios solo es necesario que rellenes un fomulario <a href='http://www.apartamentosierranevada.net/forfait.html'>pinchando aqui</a><br/><br/>";
+
+
+
+    //          $text.=   "A la entrega de llaves se pedirá una fianza por 300 &euro;.<br/> 
+    //                     Ver condiciones alquiler en en este <a href='http://www.apartamentosierranevada.net/condiciones-alquiler.html'>link</a>";
+
+
+    //         //porque ya tienen el form para solicitar el servicio$text.= "Si necesitas algun servicio escribenos a este e-mail.<br/>";
+    //         $text.= "<h3>Queremos que disfrutes de tu estancia.</h3>";
+    //         // Functions::sendConsulta("reservas@apartamentosierranevada.net",'$modelBook->customer->Email','RECORDATORIO TRANSFEREMNICA APTO MIRARMAR SKI - ' . $modelBook->customer->FullName ,$text);   
+    //         echo $text; 
+
+    //   //       echo "<h1>Email enviado al cliente ".$modelBook->customer->FullName." correctamente </h1><h2>Redirigiendo a planning en <span id='timeToRedirect'></span></h2>";
+    //   //       echo "   <script>    
+    //   //                var numTimeToRedirect = 6;
+    //   //                setTimeout(function() {   
+    //   //                    window.location.href = 'http://admin.apartamentosierranevada.net/index.php/booking/book/planning'; 
+    //   //                }, 5000); 
+    //                     // window.setInterval(function(){
+    //                     //      setTimeToRedirect();
+    //                     // }, 1000);
+    //                     // setTimeToRedirect();
+    //                     // function setTimeToRedirect()
+    //                     // {
+    //                     //  numTimeToRedirect -=  1;
+    //                     //  document.getElementById('timeToRedirect').innerHTML = numTimeToRedirect.toString();
+    //                     // }
+    //   //            </script>";
+
+
+    //     }
+    // }
 }

@@ -94,21 +94,10 @@
                                         <?php endfor; ?>
                                     </select>
                                 </td>
-                                <td>                                                        
-                                    <!--  -->
-                                    <!-- <?php if ($book->customer['phone'] != 0): ?>
-                                            <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->customer['phone'] ?>"><i class="pg-phone"></i>
-                                            </a>
-                                    <?php endif ?> -->
-                                    
-                                    <!-- <?php if ($book->send == 0): ?>
-                                        <a class="btn btn-tag btn-primary" ><i class=" pg-mail"></i></a>
-                                        </a>
-                                    <?php else: ?>
-                                    <?php endif ?> -->
-                                    <a href="{{ url('/admin/reservas/delete/')}}/<?php echo $book->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
+                                <td class="text-center"> 
+                                    <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-danger deleteBook" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
                                         <i class="fa fa-trash"></i>
-                                    </a>
+                                    </button>
                                 </td>
                             </tr>
                     <?php endforeach ?>
@@ -130,6 +119,7 @@
             <th class="Reserva Propietario text-white text-center"><i class="fa fa-moon-o"></i></th>
             <th class="Reserva Propietario text-white text-center" style="min-width:65px">PVP</th>
             <th class="Reserva Propietario text-white text-center" style="min-width:200px">Estado</th>
+            <th class="Reserva Propietario text-white text-center">A</th>
         </thead>
         <tbody>
             <?php foreach ($books as $book): ?>
@@ -180,6 +170,11 @@
 
                             <?php endfor; ?>
                         </select>
+                    </td>
+                    <td class="text-center">
+                        <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-danger deleteBook" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
+                            <i class="fa fa-trash"></i>
+                        </button>
                     </td>
                 </tr>
             <?php endforeach ?>

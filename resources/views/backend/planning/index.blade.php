@@ -1,4 +1,4 @@
-<?php   use \Carbon\Carbon;  
+<?php   use \Carbon\Carbon;
         setlocale(LC_TIME, "ES"); 
         setlocale(LC_TIME, "es_ES"); 
 ?>
@@ -106,31 +106,46 @@
                             <input id="nameCustomer" type="text" name="searchName" class="searchabled form-control" placeholder="nombre del cliente" />
                         </div>
                     </div>
-                    <div class="row text-left push-0">
+                    <div class="col-xs-12 text-left push-0" style="padding-left: 0;">
                         
                         <button class="btn btn-primary  btn-blue btn-tables btn-cons" type="button" data-type="pendientes"> 
-                            <span class="bold">Pendientes</span>
+                            <span class="bold">Pendientes</span> 
+                            <span class="numPaymentLastBooks">
+                                <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'pendientes'); ?>
+                            </span>
                         </button>
                     
                         <button class="btn btn-primary  btn-orange btn-tables btn-cons" type="button" data-type="especiales"> 
-                            <span class="bold">Especiales</span>
+                            <span class="bold">Especiales</span> 
+                            <span class="numPaymentLastBooks">
+                                <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'especiales'); ?>
+                            </span>
                         </button>
                     
                         <button class="btn  btn-primary btn-green btn-tables btn-cons" type="button" data-type="confirmadas"> 
-                            <span class="bold">Confirmadas</span>
+                            <span class="bold">Confirmadas</span> 
+                            <span class="numPaymentLastBooks">
+                                <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'confirmadas'); ?>
+                            </span>
                         </button>
                     
                         <button class="btn btn-success btn-tables btn-cons" type="button" data-type="checkin"> 
-                            <span class="bold">Check IN</span>
+                            <span class="bold">Check IN</span> 
+                            <span class="numPaymentLastBooks">
+                                <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'checkin'); ?>
+                            </span>
                         </button>
                     
                         <button class="btn btn-primary btn-tables btn-cons" type="button" data-type="checkout"> 
-                            <span class="bold">Check OUT</span>
+                            <span class="bold">Check OUT</span> 
+                            <span class="numPaymentLastBooks">
+                                <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'checkout'); ?>        
+                            </span>
                         </button>
                        
                     </div>
-                    <div class="row" id="resultSearchBook" style="display: none;"></div>
-                    <div class="row content-tables" >
+                    <div class="col-xs-12" id="resultSearchBook" style="display: none; padding-left: 0;"></div>
+                    <div class="col-xs-12 content-tables" style="padding-left: 0;">
                         @include('backend.planning._table', ['type'=> 'pendientes'])
                     </div>
 
@@ -286,26 +301,32 @@
             <div class="row push-10">
                 <div class="col-xs-12">
                     <div class="row">
-                        <div class="col-xs-6 push-10 text-center">
-                            <button id="lastBooks" class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalLastBooks">
-                                <span class="bold">Últimas reservas</span>
+                        <div class="col-xs-4 push-10 text-center">
+                            <button id="lastBooks" class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#modalLastBooks">
+                                <span class="bold">Últ. reser</span>
                                 <span class="numPaymentLastBooks"><?php echo  $stripedsPayments->count(); ?></span>
                             </button>
                         </div>
-                        <div class="col-xs-6 push-10 text-center">
-                            <button class="btn btn-success btn-cons" type="button" id="stripePayment">
-                                <i class="fa fa-money" aria-hidden="true"></i> <span class="bold">Cobros stripe</span>
+                        <div class="col-xs-2 push-10 text-center">
+                            <button class="btn btn-success btn-sm" type="button" id="stripePayment">
+                                <i class="fa fa-money" aria-hidden="true"></i>
                             </button>
                         </div>
-                        <div class="col-xs-6 push-10 text-center">
-                            <button class="btn btn-success btn-calcuteBook btn-cons" type="button" data-toggle="modal" data-target="#modalCalculateBook"> 
-                                <span class="bold">Calcular reserva</span>
+                        <div class="col-xs-2 push-10 text-center">
+                            <button class="btn btn-success btn-calcuteBook btn-sm" type="button" data-toggle="modal" data-target="#modalCalculateBook"> 
+                                <span class="bold"><i class="fa fa-calendar-check-o" aria-hidden="true"></i></span>
                             </button>
                         </div>
-                        <div class="col-xs-6 push-10 text-center">
-                            <button id="btnAlertsBookking" class="btn btn-success btn-cons " type="button" data-toggle="modal" data-target="#modalAlertsBooking">
-                                <span class="bold">Alertas booking</span>
+                        <div class="col-xs-2 push-10 text-center">
+                            <button id="btnAlertsBookking" class="btn btn-success btn-sm " type="button" data-toggle="modal" data-target="#modalAlertsBooking">
+                                <span class="bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
                                 <span class="numPaymentLastBooks"><?php echo  $notifications ?></span>
+                            </button>
+                        </div>
+
+                        <div class="col-xs-2 push-10 text-center">
+                            <button class="btn btn-primary btn-sm calend" type="button" > 
+                                <span class="bold"><i class="fa fa-calendar"></i></span>
                             </button>
                         </div>
 
@@ -326,32 +347,37 @@
 
                         <button class="btn btn-primary  btn-blue btn-tables" type="button" data-type="pendientes"> 
                             <span class="bold">Pend</span>
-                            
+                            <span class="numPaymentLastBooks">
+                                <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'pendientes'); ?>
+                            </span>
                         </button>
 
                         <button class="btn btn-primary  btn-orange btn-tables" type="button" data-type="especiales"> 
                             <span class="bold">Esp</span>
-                            
+                            <span class="numPaymentLastBooks">
+                                <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'especiales'); ?>
+                            </span>
                         </button>
 
                         <button class="btn  btn-primary btn-green btn-tables" type="button" data-type="confirmadas"> 
                             <span class="bold">Confir</span>
-                           
+                           <span class="numPaymentLastBooks">
+                               <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'confirmadas'); ?>
+                           </span>
                         </button>
 
                         <button class="btn btn-success btn-tables" type="button" data-type="checkin"> 
                             <span class="bold">IN</span>
-                            
+                            <span class="numPaymentLastBooks">
+                                <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'checkin'); ?>
+                            </span>
                         </button>
 
                         <button class="btn btn-primary btn-tables" type="button" data-type="checkout"> 
                             <span class="bold">OUT</span>
-                            
-                        </button>
-
-                        <button class="btn btn-default calend btn-calMobile" type="button" > 
-                            <span class="bold"><i class="fa fa-calendar fa-2x"></i></span>
-                            
+                            <span class="numPaymentLastBooks">
+                                <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'checkout'); ?>  
+                            </span>
                         </button>
 
                     </div>
@@ -399,7 +425,7 @@
 
         <!-- ÚLTIMAS RESERVAS -->
         <div class="modal fade slide-up in" id="modalLastBooks" tabindex="-1" role="dialog" aria-hidden="true" >
-            <div class="modal-dialog modal-lg" style="margin: 0;">
+            <div class="modal-dialog modal-lg" >
                 <div class="modal-content-wrapper">
                     <div class="modal-content">
 
@@ -465,7 +491,7 @@
 @endsection
 
 @section('scripts')    
-    <script type="text/javascript" src="{{ asset('/pages/js/bootstrap-notify.js')}}"></script>
+    
     <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
     <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
 

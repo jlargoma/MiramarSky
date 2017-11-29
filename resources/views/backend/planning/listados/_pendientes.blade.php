@@ -111,26 +111,10 @@
                         </select>
                     </td>
 
-                    <td>                                                         
-                            <!--  -->
-                            <!-- <?php if ($book->customer['phone'] != 0): ?>
-                                    <a class="btn btn-tag btn-primary" href="tel:<?php echo $book->customer['phone'] ?>"><i class="pg-phone"></i>
-                                    </a>
-                            <?php endif ?> -->
-                            
-                           <!--  <?php if ($book->send == 0): ?>
-                                <a class="btn btn-tag btn-primary sendJaime" title="Enviar Email a Jaime" data-id="<?php echo $book->id ?>"><i class=" pg-mail"></i></a>
-                                </a>
-                            <?php else: ?>
-                                <a class="btn btn-tag btn-danger" title="enviado" disabled data-id="<?php echo $book->id ?>"><i class=" pg-mail "></i></a>
-                                </a>
-                            <?php endif ?> -->
-                        <div class="col-md-12">
-                            <a href="{{ url('/admin/reservas/delete/')}}/<?php echo $book->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                        </div>
-                            
+                    <td class="text-center">                                                         
+                        <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-danger deleteBook" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
+                            <i class="fa fa-trash"></i>
+                        </button>                            
 
                     </td>
                 </tr>
@@ -141,7 +125,6 @@
 <div class="table-responsive" style="border: none!important">
     <table class="table table-striped table-data"  data-type="pendientes" style="margin-top: 0;">
         <thead>
-            <th class="Reservado-table text-white text-center">&nbsp;</th>
             <th class="Reservado-table text-white text-center">Nombre</th>
             <th class="Reservado-table text-white text-center" style="min-width:50px">In</th>
             <th class="Reservado-table text-white text-center" style="min-width:50px ">Out</th>
@@ -161,15 +144,19 @@
                 <?php endif ?>
                 
                 <tr class="<?php echo $class ;?>"> 
-                    <?php if ($book->agency != 0): ?>
-                    <td class="text-center">
-                        <img style="width: 15px;margin: 0 auto;" src="/pages/booking.png" align="center" />
-                    </td>
-                    <?php else: ?>
-                        <td class="text-center">&nbsp;</td>
-                    <?php endif ?>
-                    <td class="text-center">
-                        <a title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"><?php echo $book->customer->name ?></a>
+                    
+                    <td class="text-left">
+                        <?php if ($book->agency != 0): ?>
+                            <img style="width: 15px;margin: 0 auto; margin-right: 3px;" src="/pages/booking.png" align="center" />
+                            <a title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" >
+                                <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " ")  ?> 
+                            </a>
+                        <?php else: ?>
+                            <a title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="margin-left: 15px;">
+                                <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " ")  ?> 
+                            </a>
+                        <?php endif ?>
+                        
                     </td>
                     <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b') ?></td>
                     <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b') ?></td>
@@ -217,12 +204,10 @@
                             <?php endfor; ?>
                         </select>
                     </td>
-                    <td>
-                        <div class="col-xs-12">
-                            <a href="{{ url('/admin/reservas/delete/')}}/<?php echo $book->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                        </div>
+                    <td class="text-center">
+                        <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-danger deleteBook" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
+                            <i class="fa fa-trash"></i>
+                        </button>   
                     </td>
                 </tr>
             <?php endforeach ?>
