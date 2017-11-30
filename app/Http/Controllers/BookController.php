@@ -1201,10 +1201,6 @@ class BookController extends Controller
 
             return view('backend/planning/_table', compact('books', 'rooms', 'type', 'mobile'));
         }
-        
-
-        
-
     }
 
 
@@ -1404,44 +1400,24 @@ class BookController extends Controller
     }
 
 
+    public function sendSencondEmail(Request $request)
+    {
+        $book = \App\Book::find($request->id);
+        $sended = Mail::send(['html' => 'backend.emails._secondPayBook'],[ 'book' => $book], function ($message) use ($book) {
+                $message->from('reservas@apartamentosierranevada.net');
+                $message->to('iankurosaki17@gmail.com');
+                // $message->to($book->customer->email);
+                $message->subject('Recordatorio de pago Apto. de lujo Miramarski - '.$book->customer->name);
+                $message->replyTo('reservas@apartamentosierranevada.net');
+            });
 
-
-    // public function actionSendEmailChargeBeforeEnter()
-    //     {   
-    //         $fecha = new DateTime('now');
-    //         $fecha->add(new DateInterval('P15D'));
-    //         $criteria = new CDbCriteria();
-    //         $criteria->condition = 'Start = :fecha AND Type = "1"';        
-    //         /**
-    //          * Esta fue la consulta que se hizo para actualizar
-    //          * todos los registros y llevarlos al dia
-    //         */
-    //         //$criteria->condition = "Start BETWEEN '2015-12-02' AND '2015-12-17'"; 
-            
-    //         $criteria->params = array(':fecha' => $fecha->format('Y-m-d'));
-    //         $modelsBooks = Book::model()->findAll($criteria);
-    //         foreach ($modelsBooks as $modelBook) 
-    //         {
-    //             $email2 = '<p>la reserva de <b>' . $modelBook->customer->FullName . '</b> está pendiente de cobro, y entran dentro de 15 días</p>';
-    //             $email2 .= 'Fecha entrada: ' . $modelBook->Start  . ' <br>';
-    //             $email2 .= 'Fecha salida: ' . $modelBook->Finish  . '<br>';
-    //             $email2 .= 'Noches: ' . $modelBook->noches . '<br>';
-    //             $email2 .= 'Ocupantes: '. $modelBook->Pax .'<br>';
-    //             $email2 .= 'Apartamento: </b>'. $modelBook->room->Name .'<br>';
-    //             $email2 .= '<b>Total Reserva: </b>'. $modelBook->totalPrice .'&euro;<br><br>';
-    //             $email2 .= '<b>-------------------------</b><br>';
-    //             $email2 .= '<b>Cobrado: </b>'.$modelBook->getTotalCobrado().'&euro;<br>';
-    //             $email2 .= '<b>-------------------------</b><br>';
-    //             $email2 .= '<h2 style="color:red"><b>Pendiente: </b>'.$modelBook->getPendCobr().'&euro;</h2>';
-    //             $email2 .= '<b>-------------------------</b><br>';
-    //             $email2 .= 'Si quieres enviarle un recordatorio de pago <a href="http://admin.apartamentosierranevada.net/index.php/booking/book/AlertSendEmailChargeBeforeEnter?idBook='.$modelBook->ID.'">pincha aquí.';
-                
-    //             if((int)$modelBook->getPendCobr() != '0')
-    //             {
-    //                 Functions::sendConsulta("reservas@apartamentosierranevada.net","jlargo@mksport.es",'RECORDARIO RESERVA SIERRA NEVADA - ' . $modelBook->customer->FullName ,$email2);
-    //             }
-    //         }
-    //     }
+        if ($sended) {
+            return ['status' => 'success','title' => 'OK', 'response' => "Recordatorio enviado correctamente"];
+        } else {
+            return ['status' => 'danger','title' => 'Error', 'response' => "El email no se ha enviado, por favor intentalo de nuevo"];
+        }
+        
+    }
     
     // public function actionAlertSendEmailChargeBeforeEnter()
     // { 

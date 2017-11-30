@@ -92,7 +92,7 @@
 
 @endsection
 
-@section('script')
+@section('scripts')
 <script type="text/javascript">
 	$(document).ready(function() {
 		
@@ -100,6 +100,11 @@
 					
 			var email    = $('#email').val();
 			var date     = $('#date').val();
+
+			$.get('/searchBook', {email: email, date: date,}, function(data) {
+				$('#resultBooksSearch').empty().append(data);
+				$('#resultBooksSearch').show();
+			});
 
 		});
 

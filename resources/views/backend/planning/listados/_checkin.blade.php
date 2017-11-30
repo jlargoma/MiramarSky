@@ -12,6 +12,7 @@
             <th class="bg-success text-white text-center">Reserva</th>
             <th class="bg-success text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i> in</th>
             <th class="bg-success text-white text-center">Pendiente</th>
+            <th class="bg-success text-white text-center">A</th>
             
         </thead>
         <tbody>
@@ -68,6 +69,12 @@
                         <?php else: ?>
                             <p style="color:red"><?php echo number_format($book->total_price,2,',','.') ?> €<p>
                         <?php endif ?>
+                    </td>
+
+                    <td class="text-center sm-p-t-10 sm-p-b-10">
+                        <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-primary sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" >
+                            <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                        </button> 
                     </td>
                    
                 </tr>

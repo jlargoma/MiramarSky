@@ -45,6 +45,7 @@ Route::post('/solicitudForfait','HomeController@solicitudForfait');
 
 
 Route::get('/carrito-en-casa','StoreController@index');
+Route::get('/searchBook','StoreController@searchBook');
 
 
 
@@ -100,7 +101,8 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 	Route::get('admin/reservas/api/calendarBooking' ,['middleware' => 'auth', 'uses' =>  'BookController@getCalendarBooking']);
 	Route::get('admin/reservas/api/alertsBooking' ,['middleware' => 'auth', 'uses' =>  'BookController@getAlertsBooking']);
 
-
+	Route::get('admin/reservas/api/sendSencondEmail' ,['middleware' => 'auth', 'uses' =>  'BookController@sendSencondEmail']);
+	
 	Route::get('admin/cambiarCostes', 'BookController@changeCostes');
 	
 // Usuarios
