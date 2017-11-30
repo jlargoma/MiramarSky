@@ -14396,7 +14396,72 @@ a {
 .paginate_button.active>a{
     color: black!important;
 }
+.table.table-hover tbody tr:hover td {
+    background: #99bce7 !important;
+}
 
+.table.table-striped tbody tr.Reservado td select.minimal{
+    background-color: rgba(0,200,10,0.0)  !important;
+    color: black!important;
+    font-weight: bold!important;
+}
+
+    
+
+.table.table-striped tbody tr.Bloqueado td select.minimal{
+    background-color: #D4E2FF  !important;
+    color:red!important;
+    font-weight: bold!important;
+
+}
+.nav-tabs-simple > li.active a{
+    font-weight: 800;
+}
+span.numPaymentLastBooks{
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: red;
+    border-radius: 100%;
+    padding: 2px 5px;
+    z-index: 15;
+}
+.btn-fechas-calendar{
+background-color: #899098;
+color: white;
+border-radius: 0px!important;
+text-transform: uppercase;
+}
+.fixed-td{
+position: absolute;
+background-color: #fff;
+left: -20px;
+border: 1px solid #d8d8d8;
+padding: 0px 5px!important;
+border-right: 0px;
+}
+.line-divide{
+border-top: 2px solid #000;
+}
+@media screen and (max-width: 767px){
+.fixed-td{
+    left: 0px;
+}
+.btn-fechas-calendar{
+    font-size: 11px;
+}
+.btn-fechas-calendar[data-month="5"]{
+    display: none;
+}
+
+[data-notify="progressbar"] {
+    margin-bottom: 0px;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    height: 5px;
+}
 @media screen and (max-width: 767px){
   .push-mobile-20{
     margin-bottom: 20px

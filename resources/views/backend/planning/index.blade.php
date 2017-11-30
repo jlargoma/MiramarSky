@@ -8,21 +8,8 @@
 
 @section('externalScripts') 
     <link href="/assets/css/font-icons.css" rel="stylesheet" type="text/css" />
-
     <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
-
     <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
-   
-    <style type="text/css">
-        [data-notify="progressbar"] {
-            margin-bottom: 0px;
-            position: absolute;
-            bottom: 0px;
-            left: 0px;
-            width: 100%;
-            height: 5px;
-        }
-    </style>
 @endsection
     
 @section('content')

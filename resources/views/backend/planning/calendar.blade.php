@@ -3,69 +3,6 @@
     setlocale(LC_TIME, "ES"); 
     setlocale(LC_TIME, "es_ES"); 
 ?>
-<style type="text/css">
-    
-        .table.table-hover tbody tr:hover td {
-            background: #99bce7 !important;
-        }
-
-        .table.table-striped tbody tr.Reservado td select.minimal{
-            background-color: rgba(0,200,10,0.0)  !important;
-            color: black!important;
-            font-weight: bold!important;
-        }
-
-            
-        
-        .table.table-striped tbody tr.Bloqueado td select.minimal{
-            background-color: #D4E2FF  !important;
-            color:red!important;
-            font-weight: bold!important;
-
-        }
-        .nav-tabs-simple > li.active a{
-            font-weight: 800;
-        }
-        span.numPaymentLastBooks{
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background: red;
-            border-radius: 100%;
-            padding: 0px 7px;
-            z-index: 15;
-        }
-    </style>
-<style type="text/css">
-    .btn-fechas-calendar{
-        background-color: #899098;
-        color: white;
-        border-radius: 0px!important;
-        text-transform: uppercase;
-    }
-    .fixed-td{
-        position: absolute;
-        background-color: #fff;
-        left: -20px;
-        border: 1px solid #d8d8d8;
-        padding: 0px 5px!important;
-        border-right: 0px;
-    }
-    .line-divide{
-        border-top: 2px solid #000;
-    }
-    @media screen and (max-width: 767px){
-        .fixed-td{
-            left: 0px;
-        }
-        .btn-fechas-calendar{
-            font-size: 11px;
-        }
-        .btn-fechas-calendar[data-month="5"]{
-            display: none;
-        }
-    }
-</style>
 <div class="col-md-12 col-xs-12">
     <div class="panel">
         <div class="row">
