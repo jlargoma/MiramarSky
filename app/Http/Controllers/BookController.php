@@ -1403,19 +1403,25 @@ class BookController extends Controller
     public function sendSencondEmail(Request $request)
     {
         $book = \App\Book::find($request->id);
-        $sended = Mail::send(['html' => 'backend.emails._secondPayBook'],[ 'book' => $book], function ($message) use ($book) {
-                $message->from('reservas@apartamentosierranevada.net');
-                // $message->to('iankurosaki17@gmail.com');
-                $message->to($book->customer->email);
-                $message->subject('Recordatorio de pago Apto. de lujo Miramarski - '.$book->customer->name);
-                $message->replyTo('reservas@apartamentosierranevada.net');
-            });
+        if (!empty($book->customer->email)) {
+            $sended = Mail::send(['html' => 'backend.emails._secondPayBook'],[ 'book' => $book], function ($message) use ($book) {
+                    $message->from('reservas@apartamentosierranevada.net');
+                    // $message->to('iankurosaki17@gmail.com');
+                    $message->to($book->customer->email);
+                    $message->subject('Recordatorio de pago Apto. de lujo Miramarski - '.$book->customer->name);
+                    $message->replyTo('reservas@apartamentosierranevada.net');
+                });
 
-        if ($sended) {
-            return ['status' => 'success','title' => 'OK', 'response' => "Recordatorio enviado correctamente"];
+            if ($sended) {
+                return ['status' => 'success','title' => 'OK', 'response' => "Recordatorio enviado correctamente"];
+            } else {
+                return ['status' => 'danger','title' => 'Error', 'response' => "El email no se ha enviado, por favor intentalo de nuevo"];
+            }
         } else {
-            return ['status' => 'danger','title' => 'Error', 'response' => "El email no se ha enviado, por favor intentalo de nuevo"];
+           return ['status' => 'warning','title' => 'Cuidado', 'response' => "Este cliente no tiene email"];
         }
+        
+       
         
     }
     
