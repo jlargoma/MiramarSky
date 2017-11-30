@@ -15,6 +15,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
+	<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
 	<!-- Document Title
 	============================================= -->
 	<title>@yield('title')</title>
@@ -39,6 +41,7 @@
 		    color: rgba(255,255,255,0.85) !important;
 		}
 	</style>
+	@yield('css')
 </head>
 
 <body class="stretched no-transition">

@@ -23,7 +23,8 @@
                         </a> 
                     </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
-                        <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?></a>
+                        <a class="hidden-sm hidden-xs" href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?></a>
+                        <a class="hidden-md hidden-lg" href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a>
                     </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
                         <b><?php echo $book->room->nameRoom ?></b>

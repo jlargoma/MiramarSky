@@ -75,7 +75,7 @@ class BookController extends Controller
 
         $mobile = new Mobile();
 
-        $aux = str_replace('Abr', 'Apr', $input('fechas'));
+        $aux = str_replace('Abr', 'Apr', $request->input('fechas'));
 
         $date = explode('-', $aux);
 

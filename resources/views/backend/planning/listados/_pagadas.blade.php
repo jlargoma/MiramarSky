@@ -148,15 +148,16 @@
                             <img style="width: 15px;margin: 0 auto;" src="/pages/booking.png" align="center" />
                         <?php endif ?>
                     </td>
-                    <td class="text-center">
-                        <a href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
-                            <?php echo $book->customer->name ?>
-                        </a>
-                        <?php if (isset($payment[$book->id])): ?>
-                            <span class="bg-danger text-white" style="padding: 1px 7px; margin-left:5px;border-radius: 100%;">
+                    <td class="text-left">
+                        <?php if (isset($payment[$book->id]) && empty($payment[$book->id])): ?>
+                            <span class="bg-danger text-white" style="padding: 1px 1px 1px 5px; margin-left:5px;border-radius: 100%; margin-right: 5px;">
                                 <i class="fa fa-eur" aria-hidden="true"></i>
                             </span>
                         <?php endif; ?>
+                        <a href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
+                            <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " ")  ?> 
+                        </a>
+                        
                     </td>
                     <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b') ?></td>
                     <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b') ?></td>
