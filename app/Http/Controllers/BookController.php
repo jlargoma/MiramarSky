@@ -1405,8 +1405,8 @@ class BookController extends Controller
         $book = \App\Book::find($request->id);
         $sended = Mail::send(['html' => 'backend.emails._secondPayBook'],[ 'book' => $book], function ($message) use ($book) {
                 $message->from('reservas@apartamentosierranevada.net');
-                $message->to('iankurosaki17@gmail.com');
-                // $message->to($book->customer->email);
+                // $message->to('iankurosaki17@gmail.com');
+                $message->to($book->customer->email);
                 $message->subject('Recordatorio de pago Apto. de lujo Miramarski - '.$book->customer->name);
                 $message->replyTo('reservas@apartamentosierranevada.net');
             });
@@ -1419,84 +1419,5 @@ class BookController extends Controller
         
     }
     
-    // public function actionAlertSendEmailChargeBeforeEnter()
-    // { 
-    //     if(isset($_GET['idBook']) && is_numeric($_GET['idBook']))
-    //     {
-    //         $modelBook = Book::model()->findByPK($_GET['idBook']);
-    //         $textData= "<b>Nombre:</b> " . $modelBook->customer->FullName . "<br /><br />";  
-    //         $textData.= "<b>Fecha entrada:</b> " . $modelBook->Start  . "<br /><br />"; 
-    //         $textData.= "<b>Fecha salida:</b> " . $modelBook->Finish . "<br /><br />";      
-    //         $textData.= "<b>Noches:</b> " . $modelBook->noches . "<br /><br />";
-    //         $textData.= "<b>Ocupantes:</b> " . $modelBook->Pax . "<br /><br />"; 
-    //         $textData.= '<b>Apartamento: </b>'. $modelBook->room->Name .'<br><br>';
-    //         $textData.= "<b>Total reserva:</b> " . $modelBook->totalPrice . " &euro;<br/><br/>"; 
-    //         $textData .= '<b>-------------------------</b><br>';
-    //         $textData .= '<b>Cobrado: </b>'.$modelBook->getTotalCobrado().'&euro;<br>';
-    //         $textData .= '<b>-------------------------</b><br>';
-    //         $textData .= '<h2 style="color:red"><b>Pendiente: </b>'.$modelBook->getPendCobr().'&euro;</h2>';
-    //         $textData .= '<b>-------------------------</b><br>';
-
-    //         $text = "Hola ".$modelBook->customer->FullName." , te enviamos este email para recordate que tienes que realizarnos una transferencia por las cantidades pendientes :<br/><br/>";
-    //         $text.= $textData;
-    //         $text.= "Por favor realiza una transferencia de al menos ". (int)($modelBook->getPendCobr() * 0.5)  ." &euro;, podras abonar el resto en metalico antes de la entrada:";
-    //         $text.= " <h2>DATOS Bancarios</h2>";
-    //         $text.= " <h2>Titular:  <span style='color:red'>Jorge Largo</span></h2>";
-    //         $text.= " <h2>Concepto: <span style='color:red'>Señal Reserva MiramarSKi</span></h2>";
-    //         $text.= " <h2>Ordenante: <span style='color:red'>".$modelBook->customer->FullName."</span></h2>";
-    //         $text.= " <h2>Datos Bancarios: <span style='color:red'>La Caixa</span></h2>";
-    //         $text.= " <h2>IBAN: <span style='color:red'>ES19 2100 1875 0502 0021 0464</span></h2>";
-    //         $text.= " <h2>BIC(SWIFT): <span style='color:red'>CAIXESBBXXX</span></h2>";  
-    //         $text.=  "Consulta nuestras condiciones de contratación <a href='http://www.apartamentosierranevada.net/condiciones-contratacion.html'>aquí</a><br>";
-    //         $text.= "<br/>Muchas Gracias !!!.<br/>" ;
-    //         $text.= "<br/>Un cordial saludo.<br><br>" ;
-    //         $text .= '<hr></hr><br>';
-    //         $text .= '<b>Hora de Entrada:</b> Desde las <b>17,00h a 19,00h.</b> Si vas a llegar más tarde tienes que avisarnos y podrías tener un cargo adicional por las horas de espera. Consultar  <a href="http://www.apartamentosierranevada.net/condiciones-alquiler.html">link</a> condiciones<br><br>';
-    //         $text .= '<b>Hora de Salida:</b> La vivienda deberá ser desocupada antes de las <b>12,00 a.m</b>.<br><br>';
-    //         $text .= '<b>Fianza:</b> Además del precio del alquiler el día de llegada <b>se pedirá una fianza por el importe de 300&euro;</b> a la entrega de llaves para garantizar el buen uso de la vivienda. La fianza se devolverá a la entregada de llaves, una vez revisada la vivienda <br><br>';
-    //         $text .= '<b>Sabanas y Toallas: </b>En las reservas confirmadas para <b>“El apartamento de Lujo” SI ESTAN INCLUIDAS</b> las sabanas y toallas, en el resto de apartamentos del complejo Mirarmar Ski <b>NO ESTAN INCLUIDAS</b>, por lo que deben traerlas.<br><br>';
-
-    //         $text .= 'Pago: La cantidad total de la reserva deberá estar desembolsada para poder ocupar el apartamento.<br>';
-    //         $text .= '<hr></hr><br>';
-    //         // fin condiciones de uso
-    //         $text.= "<strong>Servicios adicionales:</strong><br/>";
-    //         $text.= "Para tu comodidad te ofrecemos los siguientes servicios<br/>";
-    //         $text.= "<br/><strong>Para tu comodidad te ofrecemos sin coste añadido los siguientes servicios:</strong><br/><br/>";
-
-    //         $text.= "<strong>*Tramitar tu forfait para que no esperes colas</strong><br/>";
-    //         $text.= "<strong>*Gestionar tus clases de ski (Escuela Española Ski)</strong><br/>";
-    //         $text.= "<strong>*Alquiler de material</strong><br/><br/>";
-    //         $text.= "Para solicitar uno de estos servicios solo es necesario que rellenes un fomulario <a href='http://www.apartamentosierranevada.net/forfait.html'>pinchando aqui</a><br/><br/>";
-
-
-
-    //          $text.=   "A la entrega de llaves se pedirá una fianza por 300 &euro;.<br/> 
-    //                     Ver condiciones alquiler en en este <a href='http://www.apartamentosierranevada.net/condiciones-alquiler.html'>link</a>";
-
-
-    //         //porque ya tienen el form para solicitar el servicio$text.= "Si necesitas algun servicio escribenos a este e-mail.<br/>";
-    //         $text.= "<h3>Queremos que disfrutes de tu estancia.</h3>";
-    //         // Functions::sendConsulta("reservas@apartamentosierranevada.net",'$modelBook->customer->Email','RECORDATORIO TRANSFEREMNICA APTO MIRARMAR SKI - ' . $modelBook->customer->FullName ,$text);   
-    //         echo $text; 
-
-    //   //       echo "<h1>Email enviado al cliente ".$modelBook->customer->FullName." correctamente </h1><h2>Redirigiendo a planning en <span id='timeToRedirect'></span></h2>";
-    //   //       echo "   <script>    
-    //   //                var numTimeToRedirect = 6;
-    //   //                setTimeout(function() {   
-    //   //                    window.location.href = 'http://admin.apartamentosierranevada.net/index.php/booking/book/planning'; 
-    //   //                }, 5000); 
-    //                     // window.setInterval(function(){
-    //                     //      setTimeToRedirect();
-    //                     // }, 1000);
-    //                     // setTimeToRedirect();
-    //                     // function setTimeToRedirect()
-    //                     // {
-    //                     //  numTimeToRedirect -=  1;
-    //                     //  document.getElementById('timeToRedirect').innerHTML = numTimeToRedirect.toString();
-    //                     // }
-    //   //            </script>";
-
-
-    //     }
-    // }
+    
 }
