@@ -78,6 +78,16 @@
                         </div>
 
                     <?php endif ?>
+                    <div class="col-md-2 col-xs-4 text-center push-10 hidden-lg hidden-md">
+                        <h2 class="text-center" style="font-size: 18px; line-height: 18px; margin: 0;">
+                            <?php $text = "En este link podrás realizar el pago de la señal por el 25% del total."."\n"." En el momento en que efectúes el pago, te legará un email confirmando tu reserva - https://www.apartamentosierranevada.net/reservas/stripe/pagos/".base64_encode($book->id);
+                            ?>
+                                
+                                <a href="whatsapp://send?text=<?php echo $text; ?>" data-action="share/whatsapp/share" >
+                                    <i class="fa fa-whatsapp fa-3x" aria-hidden="true"></i>
+                                </a>
+                        </h2>
+                    </div>
                 </div>
                 <div class="col-md-3 col-xs-12 content-guardar" style="padding: 20px 0;">
                     <div id="overlay" style="display: none;"></div>  
@@ -846,16 +856,6 @@
                     <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="Cobrar" data-id="<?php echo $book->id ?>" style="width: 50%;min-height: 50px"> 
                     </div>
             </div>
-                <div class="row">
-                    <h2 class="text-center" style="font-size: 24px; line-height: 18px">
-                        <?php $text = "En este link podrás realizar el pago de la señal por el 25% del total."."\n"." En el momento en que efectúes el pago, te legará un email confirmando tu reserva - https://www.apartamentosierranevada.net/reservas/stripe/pagos/".base64_encode($book->id);
-                        ?>
-                            
-                            <a href="whatsapp://send?text=<?php echo $text; ?>" data-action="share/whatsapp/share" >
-                                <i class="fa fa-whatsapp fa-3x" aria-hidden="true"></i>
-                            </a>
-                    </h2>
-                </div>
             <div class="row">
                 @include('backend.stripe.stripe', [ 'bookTocharge' => $book ])
             </div>
