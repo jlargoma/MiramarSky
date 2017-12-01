@@ -325,7 +325,16 @@ Route::group(['middleware' => 'auth'], function () {
         foreach ($payments as $payment) {
             $totalpayment = $totalpayment + $payment->import;
         }
-		return view('backend.stripe.stripe',['bookTocharge' => $book,'book' => $book,'stripe'  => \App\http\Controllers\StripeController::$stripe, 'payments'     => $payments,'jsStripe' => 0]);
+
+        $stripe = [
+	  					// "secret_key"      => "sk_test_o40xNAzPuB6sGDEY3rPQ2KUN",
+					  	// "publishable_key" => "pk_test_YNbne14yyAOIrYJINoJHV3BQ"
+
+                        "secret_key" => "sk_live_JKRWYAtvJ31tqwZyqNErMEap",
+                        "publishable_key" => "pk_live_wEAGo29RoqPrXWiw3iKQJtWk",
+					];
+
+		return view('backend.stripe.stripe',['bookTocharge' => $book,'book' => $book,'stripe'  => $stripe, 'payments'     => $payments,'jsStripe' => 0]);
 
 	});
 
