@@ -30,12 +30,14 @@
 	transition: box-shadow 150ms ease!important;
 }
 </style>
-<div class="col-md-12 alert alert-info fade in alert-dismissable" style="margin-top: 30px; background-color: #daeffd!important;">
-	<!--  -->
+<div class="row alert alert-info fade in alert-dismissable" style="margin-top: 30px; background-color: #daeffd!important;">
 	<h3 class="text-center font-w300">
 		Cobrar mediante stripe <span class="font-w800">BOOKING.COM</span>
 	</h3>
-	<script src="//js.stripe.com/v3/"></script>
+	<?php if (!isset($jsStripe)): ?>
+		<script src="//js.stripe.com/v3/"></script>
+	<?php endif ?>
+	
 	<div class="row">
 		<form action="{{ url('admin/reservas/stripe/paymentsBooking') }}" method="post" id="payment-form">
 			<?php if ($bookTocharge != null): ?>

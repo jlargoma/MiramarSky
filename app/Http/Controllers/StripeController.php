@@ -224,4 +224,68 @@ class StripeController extends Controller
 
         
     }
+
+
+    public function fianza(Request $request)
+    {
+        $mobile = new Mobile();
+        \Stripe\Stripe::setApiKey(self::$stripe['secret_key']);
+
+
+
+        $token = $request->input('stripeToken');
+        $email = $request->input('email');
+        $price = $request->input('importe') * 100;
+        
+        $customer = \Stripe\Customer::create(array(
+            'email' => $email,
+            'source'  => $token
+        ));
+
+
+        $fianza = new \App\Fianzas();
+        $fianza->book_id = $request->input('id_book');
+        $fianza->customer_id = $customer->id;
+        $fianza->currency = 'eur';
+        $fianza->amount = $price;
+        $fianza->save();
+
+        return redirect()->back();
+    }
+
+    public function payFianza(Request $request){
+
+        $fianza = \App\Fianzas::find($request->input('id_fianza'));
+        
+        try {
+
+            $charge = \Stripe\Charge::create(array(
+                'customer' => $fianza->customer_id,
+                'amount'   => $fianza->amount,
+                'currency' => $fianza->currency
+            ));
+
+            return redirect()->back();
+
+        } catch (\Stripe\Error\Card $e) {
+        
+            $message[] = "No puedes efectuar el pago en estos momentos";
+            $message[] = "Tu tarjeta ha rechazado el cobro.";
+            $message[] = "tarjeta";
+
+            return response()->json($message); 
+            // return view('backend.stripe.response', ['message' => $message, 'mobile'  => new Mobile()]);
+
+        }catch (Exception $e) {
+
+            $message[] = "No puedes efectuar el pago en estos momentos";
+            $message[] = $e->getMessage();//"Tu tarjeta ha rechazado el cobro.";
+            $message[] = "otros";//"Tu tarjeta ha rechazado el cobro.";
+
+            return response()->json($message); 
+            // return view('backend.stripe.response', ['message' => $message, 'mobile'  => new Mobile()]);
+
+        }
+    }
+
 }

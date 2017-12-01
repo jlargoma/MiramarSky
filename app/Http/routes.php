@@ -62,6 +62,9 @@ Route::get('/getCalendarMobile','BookController@getCalendarMobileView');
 
 Route::post('admin/reservas/create' , 'BookController@create');
 
+Route::post('admin/reservas/stripe/save/fianza' ,['middleware' => 'auth', 'uses' =>  'StripeController@fianza']);
+Route::post('admin/reservas/stripe/pay/fianza' ,['middleware' => 'auth', 'uses' =>  'StripeController@payFianza']);
+
 Route::get('/reservas/stripe/pagos/{id_book}', 'StripeController@stripePayment');
 Route::post('/reservas/stripe/payment/', 'StripeController@stripePaymentResponse');
 Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePaymentBooking');
@@ -102,6 +105,9 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 	Route::get('admin/reservas/api/alertsBooking' ,['middleware' => 'auth', 'uses' =>  'BookController@getAlertsBooking']);
 
 	Route::get('admin/reservas/api/sendSencondEmail' ,['middleware' => 'auth', 'uses' =>  'BookController@sendSencondEmail']);
+
+	
+	
 	
 	Route::get('admin/cambiarCostes', 'BookController@changeCostes');
 	
@@ -312,7 +318,20 @@ Route::group(['middleware' => 'auth'], function () {
 
 	});
 
-Route::get('/sendImagesRoomEmail', 'RoomsController@sendImagesRoomEmail');
+	Route::get('/admin/reservas/getPaymentform/{id}', function($id){
+		$book = \App\Book::find($id);
+		$payments = \App\Payments::where('book_id',$book->id)->get();
+        $totalpayment = 0;
+        foreach ($payments as $payment) {
+            $totalpayment = $totalpayment + $payment->import;
+        }
+		return view('backend.stripe.stripe',['bookTocharge' => $book,'book' => $book,'stripe'  => \App\http\Controllers\StripeController::$stripe, 'payments'     => $payments,'jsStripe' => 0]);
+
+	});
+
+	
+
+	Route::get('/sendImagesRoomEmail', 'RoomsController@sendImagesRoomEmail');
 	
 
 });
