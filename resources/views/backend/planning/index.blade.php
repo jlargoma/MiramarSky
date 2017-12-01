@@ -341,28 +341,28 @@
 
                         <button class="btn btn-primary  btn-orange btn-tables" type="button" data-type="especiales"> 
                             <span class="bold">Esp</span>
-                            <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
+                            <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
                                 <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'especiales'); ?>
                             </span>
                         </button>
 
                         <button class="btn  btn-primary btn-green btn-tables" type="button" data-type="confirmadas"> 
-                            <span class="bold">Confir</span>
-                           <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
+                            <span class="bold">Conf</span>
+                           <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
                                <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'confirmadas'); ?>
                            </span>
                         </button>
 
                         <button class="btn btn-success btn-tables" type="button" data-type="checkin"> 
                             <span class="bold">IN</span>
-                            <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
+                            <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
                                 <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'checkin'); ?>
                             </span>
                         </button>
 
                         <button class="btn btn-primary btn-tables" type="button" data-type="checkout"> 
                             <span class="bold">OUT</span>
-                            <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
+                            <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
                                 <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'checkout'); ?>  
                             </span>
                         </button>
