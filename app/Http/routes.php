@@ -105,6 +105,7 @@ Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePa
 	Route::get('admin/reservas/api/alertsBooking' ,['middleware' => 'auth', 'uses' =>  'BookController@getAlertsBooking']);
 
 	Route::get('admin/reservas/api/sendSencondEmail' ,['middleware' => 'auth', 'uses' =>  'BookController@sendSencondEmail']);
+	Route::get('/admin/reservas/fianzas/cobrar/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@cobrarFianzas']);
 
 	
 	
@@ -318,25 +319,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 	});
 
-	Route::get('/admin/reservas/getPaymentform/{id}', function($id){
-		$book = \App\Book::find($id);
-		$payments = \App\Payments::where('book_id',$book->id)->get();
-        $totalpayment = 0;
-        foreach ($payments as $payment) {
-            $totalpayment = $totalpayment + $payment->import;
-        }
-
-        $stripe = [
-	  					// "secret_key"      => "sk_test_o40xNAzPuB6sGDEY3rPQ2KUN",
-					  	// "publishable_key" => "pk_test_YNbne14yyAOIrYJINoJHV3BQ"
-
-                        "secret_key" => "sk_live_JKRWYAtvJ31tqwZyqNErMEap",
-                        "publishable_key" => "pk_live_wEAGo29RoqPrXWiw3iKQJtWk",
-					];
-
-		return view('backend.stripe.stripe',['bookTocharge' => $book,'book' => $book,'stripe'  => $stripe, 'payments'     => $payments,'jsStripe' => 0]);
-
-	});
 
 	
 

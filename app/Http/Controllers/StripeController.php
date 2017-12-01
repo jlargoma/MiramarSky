@@ -250,7 +250,7 @@ class StripeController extends Controller
         $fianza->amount = $price;
         $fianza->save();
 
-        return redirect()->back();
+        return redirect('/admin/reservas/update/'.$request->input('id_book'));
     }
 
     public function payFianza(Request $request){

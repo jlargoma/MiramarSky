@@ -3,16 +3,12 @@
 @section('title') Administrador de reservas MiramarSKI @endsection
 
 @section('externalScripts') 
-    <link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="/assets/css/font-icons.css" rel="stylesheet" type="text/css" />
 
     <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
 
     <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
-
+    <script src="//js.stripe.com/v3/"></script>
     <style>
         .pgn-wrapper[data-position$='-right'] {
             right: : 82%!important;
@@ -81,7 +77,6 @@
     use App\Classes\Mobile; 
     $mobile = new Mobile(); 
 ?>
-<script src="//js.stripe.com/v3/"></script>
 <div class="container-fluid padding-10 sm-padding-10">
     <div class="row">
         <div class="col-md-12 col-xs-12 center text-left0">
@@ -538,127 +533,23 @@
                     <?php $hasFiance = \App\Fianzas::where('book_id', $book->id)->first(); ?>
                     <div class="col-xs-12 push-20 ">
                         <?php if ($book->type_book == 2): ?>
-                            <div class="col-md-6">
-                                <button class="btn btn-success btn-lg" type="button" id="fianza"> <?php if ( count($hasFiance) > 0): ?>COBRAR<?php endif; ?>    FIANZA</button>
-                            </div>
+                            <?php if ( count($hasFiance) > 0): ?>
+                                <div class="col-md-6">
+
+                                    <button class="btn btn-primary btn-lg" type="button" id="fianza"> COBRAR FIANZA</button>
+                                </div>
+                            <?php else: ?>
+                                <div class="col-md-6">
+
+                                    <a class="btn btn-primary btn-lg" href="{{ url('/admin/reservas/fianzas/cobrar/'.$book->id) }}"> RECOGER FIANZA</a>
+                                </div>
+                            <?php endif ?>
+                            
                         <?php endif ?>
-                        
-                        <div class="col-md-6">
-                            <button id="btnPayment" class="btn btn-success btn-cons btn-lg" type="button" data-toggle="modal" data-target="#modalPayment">Cobrar Reserva</button>
-                        </div>
                     </div>
                     <?php if ($book->type_book == 2): ?>
                         <div class="row content-fianza" style="display: none;">
-
-                            <?php if ( count($hasFiance) == 0): ?>
-                                <div class="col-md-8 col-md-offset-2 alert alert-info fade in alert-dismissable" style="margin-top: 30px; background-color: #10cfbd70!important;">
-                                    <h3 class="text-center font-w300">
-                                        GUARDAR DATOS DEL CLIENTE PARA LA FIANZA
-                                    </h3>
-                                    
-                                    <div class="row">
-                                        <form action="{{ url('admin/reservas/stripe/save/fianza') }}" method="post" id="paymentFianza-form">
-                                            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                            
-                                            <input type="hidden" name="id_book" value="<?php echo $book->id; ?>">
-                                            <div class="col-md-6 col-xs-12 text-left push-20">
-                                                <label for="email">Email</label>
-                                                <input type="email" class="form-control stripe-price" name="email" value="<?php echo $book->customer->email ?>" />
-                                            </div>
-                                            <div class="col-md-6 col-xs-12 text-left push-20">
-                                                <label for="importe">Importe de la fianza</label>
-                                                <input type="number" class="form-control stripe-price" name="importe" value="300" />
-                                            </div>
-                                            <div class="form-row col-xs-12 push-20">
-                                                <label for="card-element">
-                                                    Datos de la tarjeta
-                                                </label>
-                                                <div id="card-element">
-                                                    <!-- a Stripe Element will be inserted here. -->
-                                                </div>
-
-                                                <!-- Used to display form errors -->
-                                                <div id="card-errors" role="alert"></div>
-                                            </div>
-                                            <div class="col-xs-12 text-center">
-                                                <button class="btn btn-primary">Cobrar</button>
-                                            </div>
-                                        </form>
-                                    </div>
-
-                                    <script type="text/javascript">
-                                        function stripeTokenHandler(token) {
-                                            // Insert the token ID into the form so it gets submitted to the server
-                                            var form = document.getElementById('paymentFianza-form');
-                                            var hiddenInput = document.createElement('input');
-                                            hiddenInput.setAttribute('type', 'hidden');
-                                            hiddenInput.setAttribute('name', 'stripeToken');
-                                            hiddenInput.setAttribute('value', token.id);
-                                            form.appendChild(hiddenInput);
-
-                                            // Submit the form
-                                            form.submit();
-                                        }
-                                        // Create a Stripe client
-                                        var stripe = Stripe('<?php echo $stripe['publishable_key'] ?>');
-
-                                        // Create an instance of Elements
-                                        var elements = stripe.elements();
-
-                                        // Custom styling can be passed to options when creating an Element.
-                                        // (Note that this demo uses a wider set of styles than the guide below.)
-                                        var style = {
-                                            base: {
-                                                color: '#32325d',
-                                                lineHeight: '24px',
-                                                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                                                fontSmoothing: 'antialiased',
-                                                fontSize: '16px',
-                                                '::placeholder': {
-                                                    color: '#aab7c4'
-                                                }
-                                            },
-                                            invalid: {
-                                                color: '#fa755a',
-                                                iconColor: '#fa755a'
-                                            }
-                                        };
-
-                                        // Create an instance of the card Element
-                                        var card = elements.create('card', {style: style});
-
-                                        // Add an instance of the card Element into the `card-element` <div>
-                                        card.mount('#card-element');
-
-                                        // Handle real-time validation errors from the card Element.
-                                        card.addEventListener('change', function(event) {
-                                            var displayError = document.getElementById('card-errors');
-                                            if (event.error) {
-                                                displayError.textContent = event.error.message;
-                                            } else {
-                                                displayError.textContent = '';
-                                            }
-                                        });
-
-                                        // Handle form submission
-                                        var form = document.getElementById('paymentFianza-form');
-                                        form.addEventListener('submit', function(event) {
-                                            event.preventDefault();
-
-                                            stripe.createToken(card).then(function(result) {
-                                                if (result.error) {
-                                                    // Inform the user if there was an error
-                                                    var errorElement = document.getElementById('paymentFianza-formcard-errors');
-                                                    errorElement.textContent = result.error.message;
-                                                } else {
-                                                    // Send the token to your server
-                                                    stripeTokenHandler(result.token);
-                                                }
-                                            });
-                                        })
-                                    </script>
-                                </div>
-                            <?php else: ?>
+                            <?php if ( count($hasFiance) > 0): ?>
                                 <div class="col-md-6 col-md-offset-3 alert alert-info fade in alert-dismissable" style="margin-top: 30px; background-color: #10cfbd70!important;">
                                     <h3 class="text-center font-w300">
                                         CARGAR LA FIANZA
@@ -674,8 +565,12 @@
                                     </div>
                                 </div>
                             <?php endif ?>
+                            
                         </div>
                     <?php endif; ?>
+                </div>
+                <div class="row">
+                    @include('backend.stripe.stripe', ['bookTocharge' => $book])
                 </div>
             </div>
         </div>
@@ -1034,148 +929,47 @@
             </div>
 
             <div class="row">
-
                 <?php $hasFiance = \App\Fianzas::where('book_id', $book->id)->first(); ?>
                 <div class="col-xs-12 push-20 ">
                     <?php if ($book->type_book == 2): ?>
-                        <div class="col-xs-6 psuh-20">
-                            <button class="btn btn-success" type="button" id="fianza">
-                                    <?php if ( count($hasFiance) > 0): ?>COBRAR<?php endif; ?>    FIANZA
-                            </button>
-                        </div>
-                    <?php endif; ?>
-                    <div class="col-xs-6 psuh-20">
-                        <button id="btnPayment" class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalPayment">COBRAR <span class="font-w800">STRIPE</span></button>
-                    </div>
-                </div>
-                <?php if ($book->type_book == 2): ?>
-                <div class="col-xs-12 push-20 content-fianza" style="display: none;">
-                    <?php if ( count($hasFiance) == 0): ?>
-                        <div class="col-xs-12 alert alert-info fade in alert-dismissable" style="margin-top: 30px; background-color: #10cfbd70!important;">
-                            <h3 class="text-center font-w300">
-                                GUARDAR DATOS DEL CLIENTE PARA LA FIANZA
-                            </h3>
-                            <script src="//js.stripe.com/v3/"></script>
-                            <div class="row">
-                                <form action="{{ url('admin/reservas/stripe/save/fianza') }}" method="post" id="paymentFianza-form">
-                                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                    
-                                    <input type="hidden" name="id_book" value="<?php echo $book->id; ?>">
-                                    <div class="col-md-6 col-xs-12 text-left push-20">
-                                        <label for="email">Email</label>
-                                        <input type="email" class="form-control stripe-price" name="email" value="<?php echo $book->customer->email ?>" />
-                                    </div>
-                                    <div class="col-md-6 col-xs-12 text-left push-20">
-                                        <label for="importe">Importe de la fianza</label>
-                                        <input type="number" class="form-control stripe-price" name="importe" value="300" />
-                                    </div>
-                                    <div class="form-row col-xs-12 push-20">
-                                        <label for="card-element">
-                                            Datos de la tarjeta
-                                        </label>
-                                        <div id="card-element">
-                                            <!-- a Stripe Element will be inserted here. -->
-                                        </div>
+                        <?php if ( count($hasFiance) > 0): ?>
+                            <div class="col-md-6">
 
-                                        <!-- Used to display form errors -->
-                                        <div id="card-errors" role="alert"></div>
-                                    </div>
-                                    <div class="col-xs-12 text-center">
-                                        <button class="btn btn-primary">Cobrar</button>
-                                    </div>
-                                </form>
+                                <button class="btn btn-primary btn-lg" type="button" id="fianza"> COBRAR FIANZA</button>
                             </div>
+                        <?php else: ?>
+                            <div class="col-md-6">
 
-                            <script type="text/javascript">
-                                function stripeTokenHandler(token) {
-                                    // Insert the token ID into the form so it gets submitted to the server
-                                    var form = document.getElementById('paymentFianza-form');
-                                    var hiddenInput = document.createElement('input');
-                                    hiddenInput.setAttribute('type', 'hidden');
-                                    hiddenInput.setAttribute('name', 'stripeToken');
-                                    hiddenInput.setAttribute('value', token.id);
-                                    form.appendChild(hiddenInput);
-
-                                    // Submit the form
-                                    form.submit();
-                                }
-                                // Create a Stripe client
-                                var stripe = Stripe('<?php echo $stripe['publishable_key'] ?>');
-
-                                // Create an instance of Elements
-                                var elements = stripe.elements();
-
-                                // Custom styling can be passed to options when creating an Element.
-                                // (Note that this demo uses a wider set of styles than the guide below.)
-                                var style = {
-                                    base: {
-                                        color: '#32325d',
-                                        lineHeight: '24px',
-                                        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                                        fontSmoothing: 'antialiased',
-                                        fontSize: '16px',
-                                        '::placeholder': {
-                                            color: '#aab7c4'
-                                        }
-                                    },
-                                    invalid: {
-                                        color: '#fa755a',
-                                        iconColor: '#fa755a'
-                                    }
-                                };
-
-                                // Create an instance of the card Element
-                                var card = elements.create('card', {style: style});
-
-                                // Add an instance of the card Element into the `card-element` <div>
-                                card.mount('#card-element');
-
-                                // Handle real-time validation errors from the card Element.
-                                card.addEventListener('change', function(event) {
-                                    var displayError = document.getElementById('card-errors');
-                                    if (event.error) {
-                                        displayError.textContent = event.error.message;
-                                    } else {
-                                        displayError.textContent = '';
-                                    }
-                                });
-
-                                // Handle form submission
-                                var form = document.getElementById('paymentFianza-form');
-                                form.addEventListener('submit', function(event) {
-                                    event.preventDefault();
-
-                                    stripe.createToken(card).then(function(result) {
-                                        if (result.error) {
-                                            // Inform the user if there was an error
-                                            var errorElement = document.getElementById('paymentFianza-formcard-errors');
-                                            errorElement.textContent = result.error.message;
-                                        } else {
-                                            // Send the token to your server
-                                            stripeTokenHandler(result.token);
-                                        }
-                                    });
-                                })
-                            </script>
-                        </div>
-                    <?php else: ?>
-                        <div class="col-md-6 col-md-offset-3 alert alert-info fade in alert-dismissable" style="margin-top: 30px; background-color: #10cfbd70!important;">
-                            <h3 class="text-center font-w300">
-                                CARGAR LA FIANZA
-                            </h3>
-                            <div class="row">
-                                <form action="{{ url('admin/reservas/stripe/pay/fianza') }}" method="post">
-
-                                    <input type="hidden" name="id_fianza" value="<?php echo $hasFiance->id; ?>">
-                                    <div class="col-xs-12 text-center">
-                                        <button class="btn btn-primary">COBRAR</button>
-                                    </div>
-                                </form>
+                                <a class="btn btn-primary btn-lg" href="{{ url('/admin/reservas/fianzas/cobrar/'.$book->id) }}"> RECOGER FIANZA</a>
                             </div>
-                        </div>
+                        <?php endif ?>
+                        
                     <?php endif ?>
                 </div>
+                <?php if ($book->type_book == 2): ?>
+                    <div class="row content-fianza" style="display: none;">
+                        <?php if ( count($hasFiance) > 0): ?>
+                            <div class="col-md-6 col-md-offset-3 alert alert-info fade in alert-dismissable" style="margin-top: 30px; background-color: #10cfbd70!important;">
+                                <h3 class="text-center font-w300">
+                                    CARGAR LA FIANZA
+                                </h3>
+                                <div class="row">
+                                    <form action="{{ url('admin/reservas/stripe/pay/fianza') }}" method="post">
+
+                                        <input type="hidden" name="id_fianza" value="<?php echo $hasFiance->id; ?>">
+                                        <div class="col-xs-12 text-center">
+                                            <button class="btn btn-primary">COBRAR</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        <?php endif ?>
+                        
+                    </div>
                 <?php endif; ?>
+            </div>
+            <div class="row">
+                @include('backend.stripe.stripe', ['bookTocharge' => $book])
             </div>
         </div>
     <?php endif ?>
@@ -1198,19 +992,6 @@
 </form>
 <input type="hidden"  class="precio-oculto" value="<?php echo $book->total_price ?>">
 
-
-<div class="modal fade slide-up in" id="modalPayment" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content-wrapper">
-
-            <div class="modal-content" >
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14" style="font-size: 40px!important;color: black!important"></i>
-                </button>
-                <div class="row" id="contentPayment"></div>
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
 
 @section('scripts')
@@ -1221,13 +1002,6 @@
 <script src="/assets/js/notifications.js" type="text/javascript"></script>
 
 <script type="text/javascript">
-
-    $('#btnPayment').click(function(event) {
-        var id_book = <?php echo $book->id; ?>;
-        $.get('/admin/reservas/getPaymentform/'+id_book).success(function( data ){
-            $('#contentPayment').empty().append(data);
-        });
-    });
 
 
     $('#fianza').click(function(event) {

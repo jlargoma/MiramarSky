@@ -1424,6 +1424,15 @@ class BookController extends Controller
        
         
     }
+
+
+    public function cobrarFianzas($id)
+    {
+        $book = \App\Book::find($id);
+        $hasFiance = \App\Fianzas::where('book_id', $book->id)->first();
+        $stripe = StripeController::$stripe;
+        return view('backend/planning/_fianza', compact('book', 'hasFiance', 'stripe'));
+    }
     
     
 }
