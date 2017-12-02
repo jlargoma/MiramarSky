@@ -19,8 +19,8 @@
 				<b>Nº Taquilla Guarda esquíes: <?php echo $data['book']->room->locker ?></b> 
 				<br>------------------------------------------------------------------------------------------------------<br> 
 				<b>Total Reserva:</b> <?php echo $data['book']->total_price ?>€<br>
-				<b>Cobrado:</b>  <?php echo $data['book']->total_price - $data['pendiente'] ?>€<br>
-				<b>Pendiente de abono:</b> <?php echo $data['pendiente'] ?>€ 
+				<b>Cobrado:</b> <?php echo $data['pendiente'] ?>€<br>
+				<b>Pendiente de abono:</b>  <?php echo $data['book']->total_price - $data['pendiente'] ?>€ 
 				<br>------------------------------------------------------------------------------------------------------<br> 
 				<span style="float:left;"><b>Fianza apartamento 300 €</b></span>
 				<div style="width: 15px; height: 15px; border: 1px solid black; position: absolute; top: 200px; left: 200px;"></div>&nbsp;&nbsp;<span style="position: absolute; top: 200px; left: 220px;">Metálico </span>
