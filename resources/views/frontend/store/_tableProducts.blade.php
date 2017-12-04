@@ -1,48 +1,79 @@
-<div class="table-responsive bottommargin">
-	<table class="table cart">
-		<thead>
-			<tr>
-				<th class="cart-product-thumbnail">&nbsp;</th>
-				<th class="cart-product-name" style="width: 30%;">Producto</th>
-				<th class="cart-product-price">Precio</th>
-				<th class="cart-product-quantity">Cantidad</th>
-				<th class="cart-product-quantity">Añadir</th>
-			</tr>
-		</thead>
-		<tbody>
+
+	<?php if (!$mobile->isMobile()): ?>
+		<div class="table-responsive bottommargin">
+			<table class="table cart">
+				<thead>
+					<tr>
+						<th class="cart-product-thumbnail">&nbsp;</th>
+						<th class="cart-product-name" style="width: 30%;">Producto</th>
+						<th class="cart-product-price">Precio</th>
+						<th class="cart-product-quantity">Cantidad</th>
+						<th class="cart-product-quantity">Añadir</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($products as $key => $product): ?>
+						<tr class="cart_item">
+
+							<td class="cart-product-thumbnail">
+								<img width="64" height="64" src="<?php echo $product->image; ?>" alt="<?php echo $product->name; ?>">
+							</td>
+
+							<td class="cart-product-name">
+								<?php echo $product->name; ?>
+								<input type="hidden" name="product-<?php echo $product->id; ?>" value="<?php echo $product->id; ?>">
+							</td>
+
+							<td class="cart-product-price">
+								<span class="amount"><?php echo number_format($product->price, 2,',','.') ?>€</span>
+							</td>
+
+							<td class="cart-product-quantity">
+								<div class="quantity clearfix">
+									<input type="button" value="-" class="minus" data-target="<?php echo $product->id; ?>" data-opt="minus">
+									<input type="number" name="quantity-<?php echo $product->id; ?>" value="0" id="qty-<?php echo $product->id; ?>" class="qty"  min="0" max="10">
+									<input type="button" value="+" class="plus" data-target="<?php echo $product->id; ?>" data-opt="plus">
+								</div>
+							</td>
+							<td class="cart-product-quantity">
+								<button class="btn btn-primary addCart" data-order="<?php echo $order->id ?>" data-product="<?php echo $product->id; ?>">
+									<i class="icon-shopping-cart"></i>
+								</button>
+							</td>
+						</tr>
+					<?php endforeach ?>
+				</tbody>
+			</table>
+		</div>
+	<?php else: ?>
+		<div class="col-xs-12" style="max-height: 460px; overflow-y: auto;">
 			<?php foreach ($products as $key => $product): ?>
-				<tr class="cart_item">
-
-					<td class="cart-product-thumbnail">
-						<img width="64" height="64" src="<?php echo $product->image; ?>" alt="<?php echo $product->name; ?>">
-					</td>
-
-					<td class="cart-product-name">
+				<div class="col-xs-12 push-20">
+					<div class="col-xs-2 not-padding">
+						<img class="img-responsive" src="<?php echo $product->image; ?>" alt="<?php echo $product->name; ?>">
+					</div>
+					<div class="col-xs-6 text-left">
 						<?php echo $product->name; ?>
 						<input type="hidden" name="product-<?php echo $product->id; ?>" value="<?php echo $product->id; ?>">
-					</td>
-
-					<td class="cart-product-price">
-						<span class="amount"><?php echo number_format($product->price, 2,',','.') ?>€</span>
-					</td>
-
-					<td class="cart-product-quantity">
-						<div class="quantity clearfix">
-							<input type="button" value="-" class="minus" data-target="<?php echo $product->id; ?>" data-opt="minus">
+						<div class="quantity text-center clearfix" style="margin: 0 auto;  width: 170px;">
+							<input type="button" value="-" class="minus" data-target="<?php echo $product->id; ?>" data-opt="minus" style="width: 26px">
 							<input type="number" name="quantity-<?php echo $product->id; ?>" value="0" id="qty-<?php echo $product->id; ?>" class="qty"  min="0" max="10">
-							<input type="button" value="+" class="plus" data-target="<?php echo $product->id; ?>" data-opt="plus">
+							<input type="button" value="+" class="plus" data-target="<?php echo $product->id; ?>" data-opt="plus" style="width: 26px">
 						</div>
-					</td>
-					<td class="cart-product-quantity">
-						<button class="btn btn-primary addCart" data-order="<?php echo $order->id ?>" data-product="<?php echo $product->id; ?>">
+					</div>
+					<div class="col-xs-2">
+						<span class="amount"><?php echo number_format($product->price, 2,',','.') ?>€</span>
+					</div>
+					<div class="col-xs-2">
+						<button class="btn btn-primary btn-xs addCart" data-order="<?php echo $order->id ?>" data-product="<?php echo $product->id; ?>">
 							<i class="icon-shopping-cart"></i>
 						</button>
-					</td>
-				</tr>
+					</div>
+				</div>
 			<?php endforeach ?>
-		</tbody>
-	</table>
-</div>
+		
+		</div>
+	<?php endif; ?>
 <script type="text/javascript">
 	$('.minus, .plus').click(function(event) {
 		var target = "qty-"+$(this).attr('data-target');

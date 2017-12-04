@@ -18,7 +18,6 @@
 	<link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
 	<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
 
-	<script type="text/javascript" src="{{ asset('/js/scripts.js')}}"></script>
 	
 	<!-- Document Title
 	============================================= -->
@@ -45,6 +44,7 @@
 		}
 	</style>
 	@yield('css')
+		<script type="text/javascript" src="{{ asset('/frontend/js/jquery.js') }}"></script>
 </head>
 
 <body class="stretched no-transition">
@@ -66,6 +66,10 @@
 
 	<!-- External JavaScripts
 	============================================= -->
+
+		<script type="text/javascript" src="{{ asset('/frontend/js/plugins.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('/frontend/js/functions.js') }}"></script>
+
 	<script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
 	<script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
 	<?php /* view para todos los scripts generales de la pagina*/ ?>

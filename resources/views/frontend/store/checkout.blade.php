@@ -234,7 +234,158 @@
 	</section>
 <?php else: ?>
 
+	<section class="section page" style="min-height: 420px;  margin-top: 0">
+		<div class="slider-parallax-inner">
+			<div class="container-mobile ">
+			<?php if ($payment == 0): ?>
+				
+				<div class="row" style="background-color: white;">
+					<div class="heading-block center">
+						<h1>CHECKOUT</h1>
+						<span>Estas a un paso de confirmar tu pedido</span>
+					</div>
+					<div class="col-md-12">
+						
+						<div class="row">
+							<div class="col-md-6">
+								<h4>Tu pedido</h4>
+								<div class="table-responsive clearfix">
+									<?php $total = 0; ?>
+									<?php $subTotal = 0; ?>
+									<?php $iva = 0; ?>
+									<table class="table cart">
+										<thead>
+											<tr>
+												<th class="cart-product-thumbnail">&nbsp;</th>
+												<th class="cart-product-name" style="width: 30%;">Producto</th>
+												<th class="cart-product-quantity">Cantidad</th>
+												<th class="cart-product-price">Precio</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php foreach ($ordersProducts as $key => $orderProduct): ?>
+											
+												<tr class="cart_item">
 
+													<td class="cart-product-thumbnail">
+														<img width="64" height="64" src="<?php echo $orderProduct->product->image; ?>" alt="<?php echo $orderProduct->product->name; ?>">
+													</td>
+
+													<td class="cart-product-name">
+														<?php echo $orderProduct->product->name; ?>
+														
+													</td>
+
+													<td class="cart-product-quantity">
+														<?php echo $orderProduct->quantity; ?>
+													</td>
+													<td class="cart-product-price">
+														<span class="amount"><?php echo number_format($orderProduct->product->price, 2,',','.') ?>€</span>
+													</td>
+												</tr>
+												<?php $total    +=  ($orderProduct->product->price * $orderProduct->quantity); ?>
+												<?php $subTotal +=  ($orderProduct->product->unity * $orderProduct->quantity); ?>
+												<?php $iva      +=  (($orderProduct->product->price - $orderProduct->product->unity)* $orderProduct->quantity); ?>
+											<?php endforeach ?>
+										</tbody>
+									</table>
+
+								</div>
+							</div>
+							
+
+							<div class="col-md-6">
+								<div class="table-responsive">
+									<h4>Totales</h4>
+										<table class="table cart">
+											<tbody>
+												<tr class="cart_item">
+													<td class="cart-product-name">
+														<strong>Subtotal</strong>
+													</td>
+
+													<td class="cart-product-name">
+														<span class="amount"><?php echo number_format($subTotal, 2,',','.') ?>€</span>
+													</td>
+												</tr>
+												<tr class="cart_item">
+													<td class="cart-product-name">
+														<strong>Impuestos</strong>
+													</td>
+
+													<td class="cart-product-name">
+														<span class="amount"><?php echo number_format($iva, 2,',','.') ?>€</span>
+													</td>
+												</tr>
+												<tr class="cart_item">
+													<td class="cart-product-name">
+														<strong>Total</strong>
+													</td>
+
+													<td class="cart-product-name">
+														<span class="amount color lead"><strong><?php echo number_format($total, 2,',','.') ?>€</strong></span>
+													</td>
+												</tr>
+											</tbody>
+
+										</table>
+
+								</div>
+								<div class="row alert alert-info fade in alert-dismissable" style="margin-top: 30px; background-color: #daeffd!important;">
+									<form action="{{ url('/supermercado/stripe/payment') }}" method="post" id="payment-form">
+            							<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+
+										<input type="hidden" name="id_order" value="<?php echo $order->id; ?>">
+										<div class="col-md-6 col-xs-12 text-left push-20">
+											<label for="email">Email</label>
+											<input type="email" class="form-control stripe-price" name="email" value="<?php echo $order->book->customer->email ?>" />
+										</div>
+										<div class="col-md-6 col-xs-12 text-left push-20">
+											<label for="importe">Importe a cobrar</label>
+											<input type="number" class="form-control stripe-price" name="importe" value="<?php echo  $total ?>" />
+										</div>
+										<div class="form-row col-xs-12 push-20">
+											<label for="card-element">
+												Datos de la tarjeta
+											</label>
+											<div id="card-element">
+												<!-- a Stripe Element will be inserted here. -->
+											</div>
+
+											<!-- Used to display form errors -->
+											<div id="card-errors" role="alert"></div>
+										</div>
+										<div class="col-xs-12 text-center">
+											<button class="button button-3d fright">Cobrar</button>
+										</div>
+
+									</form>
+								</div>
+							</div>
+						</div>
+						
+						
+					</div>
+				</div>
+			<?php else: ?>
+				
+				
+				<div class="col-md-8 col-md-offset-2 col-xs-12">
+					<div class="col-md-12">
+						<h2 class=" text-center font-w300 ls1 shadow" style="line-height: 1; font-size: 42px;">
+							<?php echo $message[0] ?><br>
+							<span class="font-w800 black shadow" style="font-size: 48px;letter-spacing: -3px;">
+								<?php echo $message[1] ?><br>
+							</span>
+							
+						</h2>
+					</div>							
+				</div>
+
+			<?php endif ?>
+			</div>
+		</div>
+	</section>
 <?php endif; ?>
 
 

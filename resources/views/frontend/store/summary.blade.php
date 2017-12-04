@@ -90,7 +90,44 @@
 		</div>
 	</section>
 <?php else: ?>
+	
+	<section class="section page" style="min-height: 420px; margin-top: 0">
+		<div class="slider-parallax-inner">
+			<div class="container-mobile ">
 
+				<div class="col-xs-12" style="background-color: white;">
+					<div class="heading-block center">
+						<h1>PRODUCTOS</h1>
+						<span>Haz tu compra entre nuestra gran variedad de productos</span>
+					</div>
+					<div class="row">
+						
+
+						<div class="col-xs-12 push-20">
+							<div class="row push-20">
+								<div class="col-xs-12">
+									<input type="text" class="form-control" placeholder="Buscar..." id="searchProduct">
+								</div>
+							</div>
+							<div class="row content-products">
+								@include('frontend.store._tableProducts')
+							</div>
+							
+						</div>
+						<div class="col-xs-12 ">
+							<div class="row summaryCart">
+								<?php $ordersProducts = \App\Products_orders::where('order_id', $order->id)->get(); ?>
+								@include('frontend.store._summaryCart', ['ordersProducts', $ordersProducts])
+							</div>
+							
+						</div>
+						
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
 
 <?php endif; ?>
 

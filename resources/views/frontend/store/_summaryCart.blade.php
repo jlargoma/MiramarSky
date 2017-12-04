@@ -59,7 +59,7 @@
 	</table>
 </div>
 <div class="col-xs-12">
-	<?php if ( count($ordersProducts) > 0 ): ?>
+	<?php if ( count($ordersProducts) > 0  && $total > 10): ?>
 		<a href="{{ url('/supermercado/checkout') }}/<?php echo base64_encode($order->id) ?>" class="button button-desc button-3d button-rounded button-green center">
 			PASAR POR CAJA
 		</a>
