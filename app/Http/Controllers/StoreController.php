@@ -172,11 +172,14 @@ class StoreController extends Controller
                 $order->status = 1;
                 if ($order->save()) {
                     // Mail confirmacion
-                    // 
-                    // 
-                    // 
-                    // 
-                    // 
+                    $orderProducts = \App\Products_orders::where('order_id', $order->id)->get();
+     
+                    Mail::send(['html' => 'frontend.store.emails.order'],[ 'ordersProducts' => $orderProducts], function ($message) use ($order) {
+                        $message->from('reservas@apartamentosierranevada.net');
+                        // $message->to('pedidos@snowpeople.es');
+                        $message->to('iankurosaki17@gmail.com');
+                        $message->subject('Nuevo pedido - apartamentos de lujo MIRAMARSKI');
+                    });
                     $message[] = "Pago aceptado";
                     $message[] = "Tu pedido se ha realizado correctamente";
                     $message[] = "";

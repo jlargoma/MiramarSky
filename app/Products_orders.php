@@ -10,7 +10,7 @@ class Products_orders extends Model
     
     public function order()
     {
-        return $this->hasMany('\App\Orders', 'id', 'order_id');
+        return $this->hasOne('\App\Orders', 'id', 'order_id');
     }
 
     public function product()
