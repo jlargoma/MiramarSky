@@ -80,7 +80,7 @@
 
 			</div>
 		</div>
-		<div class="slider-parallax-inner" id="resultBooksSearch" style="display: none;">
+		<div class="slider-parallax-inner container" id="resultBooksSearch" style="display: none;">
 			
 		</div>
 	</section>

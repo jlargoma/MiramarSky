@@ -171,6 +171,8 @@ class StripeController extends Controller
             $message[] = "Pago aceptado";
             $message[] = "Tu cobro se ha realizado correctamente";
             $message[] = "";
+            return view('backend.stripe.response', ['message' => $message, 'mobile'  => new Mobile()]);
+            
 
         } catch (\Stripe\Error\Card $e) {
         
