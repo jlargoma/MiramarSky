@@ -94,7 +94,7 @@
 			<div class="container-mobile">
 
 				<div class="row">
-					<div class="heading-block center">
+					<div class="col-xs-12 heading-block center">
 						<h1>Cesta de la compra</h1>
 						<span>Compra ONLINE y te lo llevamos al edificio el dia de tu entrada</span>
 					</div>
