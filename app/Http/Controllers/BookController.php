@@ -1410,6 +1410,8 @@ class BookController extends Controller
     {
         $book = \App\Book::find($request->id);
         if (!empty($book->customer->email)) {
+            $book->send = 1;
+            $book->save();
             $sended = Mail::send(['html' => 'backend.emails._secondPayBook'],[ 'book' => $book], function ($message) use ($book) {
                     $message->from('reservas@apartamentosierranevada.net');
                     // $message->to('iankurosaki17@gmail.com');
@@ -1452,23 +1454,29 @@ class BookController extends Controller
                             ->get();
 
         foreach ($books as $key => $book) {
-            if (!empty($book->customer->email)) {
-                $sended = Mail::send(['html' => 'backend.emails._secondPayBook'],[ 'book' => $book], function ($message) use ($book) {
-                        $message->from('reservas@apartamentosierranevada.net');
-                        // $message->to('iankurosaki17@gmail.com');
-                        $message->to($book->customer->email);
-                        $message->subject('Recordatorio de pago Apto. de lujo Miramarski - '.$book->customer->name);
-                        $message->replyTo('reservas@apartamentosierranevada.net');
-                    });
+            if ($book->send == 0) {
+                if (!empty($book->customer->email)) {
+                    $book->send = 1;
+                    $book->save();
 
-                if ($sended) {
-                    echo json_encode( ['status' => 'success','title' => 'OK', 'response' => "Recordatorio enviado correctamente"]);
-                    echo "<br><br>";
-                } else {
-                    echo json_encode( ['status' => 'danger','title' => 'Error', 'response' => "El email no se ha enviado, por favor intentalo de nuevo"]);
-                    echo "<br><br>";
+                    $sended = Mail::send(['html' => 'backend.emails._secondPayBook'],[ 'book' => $book], function ($message) use ($book) {
+                            $message->from('reservas@apartamentosierranevada.net');
+                            // $message->to('iankurosaki17@gmail.com');
+                            $message->to($book->customer->email);
+                            $message->subject('Recordatorio de pago Apto. de lujo Miramarski - '.$book->customer->name);
+                            $message->replyTo('reservas@apartamentosierranevada.net');
+                        });
+
+                    if ($sended) {
+                        echo json_encode( ['status' => 'success','title' => 'OK', 'response' => "Recordatorio enviado correctamente"]);
+                        echo "<br><br>";
+                    } else {
+                        echo json_encode( ['status' => 'danger','title' => 'Error', 'response' => "El email no se ha enviado, por favor intentalo de nuevo"]);
+                        echo "<br><br>";
+                    }
                 }
             }
+            
         }
 
     }
