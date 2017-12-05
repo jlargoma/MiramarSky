@@ -17,7 +17,7 @@
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
 	<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
-
+	
 	
 	<!-- Document Title
 	============================================= -->
@@ -66,10 +66,10 @@
 
 	<!-- External JavaScripts
 	============================================= -->
-
-		<script type="text/javascript" src="{{ asset('/frontend/js/plugins.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('/frontend/js/functions.js') }}"></script>
-
+	<script type="text/javascript" src="{{ asset('/pages/js/bootstrap-notify.js')}}"></script>
+	<script type="text/javascript" src="{{ asset('/frontend/js/plugins.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('/frontend/js/functions.js') }}"></script>
+	
 	<script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
 	<script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
 	<?php /* view para todos los scripts generales de la pagina*/ ?>

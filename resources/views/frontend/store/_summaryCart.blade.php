@@ -1,4 +1,6 @@
 <div class="col-xs-12 push-20">
+	<h4>Resumen</h4>
+
 	<?php $total = 0; ?>
 	<?php $subTotal = 0; ?>
 	<?php $iva = 0; ?>

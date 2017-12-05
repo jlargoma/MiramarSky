@@ -1,6 +1,6 @@
 
 	<?php if (!$mobile->isMobile()): ?>
-		<div class="table-responsive bottommargin">
+		<div class="table-responsive bottommargin" style="max-height: 800px; overflow-y: auto;">
 			<table class="table cart">
 				<thead>
 					<tr>
@@ -103,6 +103,29 @@
 			$.get('/supermercado/addCart',{product: product,order: order,qty: qty}, function(data) {
 				$('.summaryCart').empty();
 				$('.summaryCart').load('/supermercado/getSummaryCart?order='+order);
+
+				$.notify({
+	                title: '<strong>AÑADIDO</strong>, ',
+	                icon: 'glyphicon glyphicon-check',
+	                message: 'Articulo añadido correctamente'
+	            },{
+	                type: 'success',
+	                animate: {
+	                    enter: 'animated fadeInUp',
+	                    exit: 'animated fadeOutRight'
+	                },
+	                placement: {
+	                    from: "top",
+	                    align: "right"
+	                },
+	                allow_dismiss: false,
+	                offset: 80,
+	                spacing: 10,
+	                z_index: 1031,
+	                delay: 5000,
+	                timer: 1500,
+	            }); 
+
 			});
 		}
 

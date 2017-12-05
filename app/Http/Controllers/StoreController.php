@@ -34,12 +34,8 @@ class StoreController extends Controller
 
     public function searchBook(Request $request)
     {
-    	$aux = str_replace('Abr', 'Apr', $request->date);
 
-        $date = explode('-', $aux);
-
-        $start = Carbon::createFromFormat('d M, y' , trim($date[0]))->format('Y-m-d');
-        $finish = Carbon::createFromFormat('d M, y' , trim($date[1]))->format('Y-m-d');
+        $start = Carbon::createFromFormat('d-m-Y' , $request->date)->format('Y-m-d');
         
 
     	$arrayCustomers = array();
@@ -50,13 +46,56 @@ class StoreController extends Controller
     		}
     	}
 
-    	$books = \App\Book::whereIn('customer_id', $arrayCustomers)
+    	$book = \App\Book::whereIn('customer_id', $arrayCustomers)
     						->whereIn('type_book', [1,2,7,8])
     						->where('start','=', $start)
-    						->where('finish','=', $finish)
-    						->get();
+    						->first();
 
-    	return view('frontend.store.responses._searchBook', [ 'books' => $books ]);
+        if (count($book) > 0) {
+            $orderCompleted = \App\Orders::where('book_id', $book->id)->where('status', 1)->get();
+            $orderPendiente = \App\Orders::where('book_id', $book->id)->where('status', 0)->get();
+
+            if ( count($orderCompleted) > 0) {
+
+                return[
+                        'status'   => 'danger',
+                        'title'    => 'Lo sentimos', 
+                        'response' => "Esta reserva ya tiene un pedido realizado correctamente",
+                        'data'     => json_encode($book)
+                    ];
+
+            }else{
+                if (count($orderPendiente) > 0) {
+                    return[
+                            'status'   => 'warning',
+                            'title'    => 'Lo sentimos', 
+                            'response' => "Esta reserva ya tiene un pedido en curso, te estamos redirigiendo",
+                            'data'     => base64_encode($book->id)
+                        ];
+                }else{
+                    return [
+                            'status'   => 'success',
+                            'title'    => 'Perfecto', 
+                            'response' => "¡¡ Reserva encontrada !!, te estamos redirigiendo.",
+                            'data'     => base64_encode($book->id)
+                        ];
+
+                }
+                
+            }
+        } else {
+            return[
+                        'status'   => 'danger',
+                        'title'    => 'Lo sentimos', 
+                        'response' => "No hay ninguna reserva con estos datos",
+                        'data'     => 0
+                    ];
+        }
+        
+
+        
+
+    	
     }
 
 
