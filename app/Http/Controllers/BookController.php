@@ -1381,18 +1381,24 @@ class BookController extends Controller
         switch ($type) {
             case 'pendientes':
                 $books = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[1,3,4,5,6])->orderBy('created_at','DESC')->get();
+
                 break;
             case 'especiales':
                 $books = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[7,8])->orderBy('created_at','DESC')->get();
+
                 break;
             case 'confirmadas':
                 $books = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[2])->orderBy('created_at','DESC')->get();
+
                 break;
             case 'checkin':
-                $books = \App\Book::where('start','>=',$date->copy()->subWeek())->where('type_book',2)->orderBy('start','ASC')->get();
+                $dateX = Carbon::now();
+                $books = \App\Book::where('start','>=',$dateX->copy()->subDays(3))->where('type_book',2)->orderBy('start','ASC')->get();
+
                 break;
             case 'checkout':
-                $books = \App\Book::where('start','>=',$date->copy()->subWeek())->where('type_book',2)->orderBy('start','ASC')->get();
+                $dateX = Carbon::now();
+                $books = \App\Book::where('start','>=',$dateX->copy()->subDays(3))->where('type_book',2)->orderBy('start','ASC')->get();
                 break;
         }
 
@@ -1432,6 +1438,39 @@ class BookController extends Controller
         $hasFiance = \App\Fianzas::where('book_id', $book->id)->first();
         $stripe = StripeController::$stripe;
         return view('backend/planning/_fianza', compact('book', 'hasFiance', 'stripe'));
+    }
+
+
+    public function checkSecondPay()
+    {
+        /* Esta funcion tiene una cron asosciada que se ejecuta los dia 1 y 15 de cada mes, es decir cad 2 semanas */
+        $date = Carbon::now();
+        $books = \App\Book::where('start','>',$date->copy())
+                            ->where('finish','<',$date->copy()->addDays(15))
+                            ->whereIn('type_book',[2])
+                            ->orderBy('created_at','DESC')
+                            ->get();
+
+        foreach ($books as $key => $book) {
+            if (!empty($book->customer->email)) {
+                $sended = Mail::send(['html' => 'backend.emails._secondPayBook'],[ 'book' => $book], function ($message) use ($book) {
+                        $message->from('reservas@apartamentosierranevada.net');
+                        // $message->to('iankurosaki17@gmail.com');
+                        $message->to($book->customer->email);
+                        $message->subject('Recordatorio de pago Apto. de lujo Miramarski - '.$book->customer->name);
+                        $message->replyTo('reservas@apartamentosierranevada.net');
+                    });
+
+                if ($sended) {
+                    echo json_encode( ['status' => 'success','title' => 'OK', 'response' => "Recordatorio enviado correctamente"]);
+                    echo "<br><br>";
+                } else {
+                    echo json_encode( ['status' => 'danger','title' => 'Error', 'response' => "El email no se ha enviado, por favor intentalo de nuevo"]);
+                    echo "<br><br>";
+                }
+            }
+        }
+
     }
     
     

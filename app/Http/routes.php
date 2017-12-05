@@ -43,7 +43,7 @@ Route::get('/el-tiempo','HomeController@tiempo');
 Route::post('/solicitudForfait','HomeController@solicitudForfait');
 
 
-
+/* SUPERMERCADO */
 Route::get('/supermercado','StoreController@index');
 Route::get('/supermercado/reserva/{id}','StoreController@cartByBook');
 Route::get('/supermercado/addCart','StoreController@addCart');
@@ -60,31 +60,26 @@ Route::get('/supermercado/pedidos/delete/{id}',function ($id)
 Route::get('/supermercado/checkout/{id}','StoreController@checkout');
 Route::post('/supermercado/stripe/payment','StoreController@payment');
 
+/* FIN SUPERMERCADO */
+/* CRONTABS */
+Route::get('/admin/reservas/api/checkSecondPay','BookController@checkSecondPay');
 
 
+/* Planing */
+	Route::post('/getPriceBook','HomeController@getPriceBook');
+	Route::get('/getFormBook','HomeController@form');
+	Route::get('/getCitiesByCountry','HomeController@getCitiesByCountry');
+	Route::get('/getCalendarMobile','BookController@getCalendarMobileView');
+	Route::post('admin/reservas/create' , 'BookController@create');
+
+	Route::post('admin/reservas/stripe/save/fianza' ,['middleware' => 'auth', 'uses' =>  'StripeController@fianza']);
+	Route::post('admin/reservas/stripe/pay/fianza' ,['middleware' => 'auth', 'uses' =>  'StripeController@payFianza']);
+
+	Route::get('/reservas/stripe/pagos/{id_book}', 'StripeController@stripePayment');
+	Route::post('/reservas/stripe/payment/', 'StripeController@stripePaymentResponse');
+	Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePaymentBooking');
 
 
-
-
-
-Route::post('/getPriceBook','HomeController@getPriceBook');
-Route::get('/getFormBook','HomeController@form');
-Route::get('/getCitiesByCountry','HomeController@getCitiesByCountry');
-Route::get('/getCalendarMobile','BookController@getCalendarMobileView');
-
-
-
-
-Route::post('admin/reservas/create' , 'BookController@create');
-
-Route::post('admin/reservas/stripe/save/fianza' ,['middleware' => 'auth', 'uses' =>  'StripeController@fianza']);
-Route::post('admin/reservas/stripe/pay/fianza' ,['middleware' => 'auth', 'uses' =>  'StripeController@payFianza']);
-
-Route::get('/reservas/stripe/pagos/{id_book}', 'StripeController@stripePayment');
-Route::post('/reservas/stripe/payment/', 'StripeController@stripePaymentResponse');
-Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePaymentBooking');
-
-//Planing 
 	
 	// Route::post('admin/reservas/create' , 'BookController@create');
 	Route::get('admin/reservas' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@index']);
