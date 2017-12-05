@@ -65,10 +65,13 @@
 		<a href="{{ url('/supermercado/checkout') }}/<?php echo base64_encode($order->id) ?>" class="button button-desc button-3d button-rounded button-green center">
 			PASAR POR CAJA
 		</a>
+		<p class="text-center" style="font-size: 12px"><span class="text-danger">*</span> Los pedidos deben realizarse con un minimo de 48 Horas </p>
 	<?php else: ?>
 		<button class="button button-desc button-3d button-rounded button-leaf center" disabled>
 			PASAR POR CAJA
 		</button>
+		<p class="text-center" style="font-size: 12px"><span class="text-danger">*</span> Pedido minímo 10€ </p>
+		<p class="text-center" style="font-size: 12px"><span class="text-danger">*</span> Los pedidos deben realizarse con un minimo de 48 Horas </p>
 	<?php endif ?>
 	
 

@@ -80,16 +80,18 @@
 @section('content')
 <script src="//js.stripe.com/v3/"></script>
 <?php if (!$mobile->isMobile()): ?>
-	<section class="section page" style="min-height: 420px">
+	<section class="section page" style="min-height: 420px; padding-top: 0;">
 		<div class="slider-parallax-inner">
-			<div class="container ">
+			<div class="row text-center push-20" style="background-image: url({{ asset('/img/miramarski/supermercado.jpg')}}); background-size: cover; padding: 40px 0 0;">
+				<div class="heading-block center text-white">
+					<h1 style="color:white; text-shadow: 1px 1px #000">CHECKOUT</h1>
+					<span style="color:white; text-shadow: 1px 1px #000">Estas a un paso de confirmar tu pedido</span>
+				</div>
+			</div>
+			<div class="container">
 			<?php if ($payment == 0): ?>
 				
 				<div class="row" style="background-color: white;">
-					<div class="heading-block center">
-						<h1>CHECKOUT</h1>
-						<span>Estas a un paso de confirmar tu pedido</span>
-					</div>
 					<div class="col-md-12">
 						
 						<div class="row">
