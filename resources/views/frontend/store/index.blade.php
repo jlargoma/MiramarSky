@@ -58,7 +58,7 @@
 <?php if (!$mobile->isMobile()): ?>
 <section class="section page" style="min-height: 420px; padding-top: 0">
 	<div class="slider-parallax-inner" style="background-color: white;">
-		<div class="row text-center push-20" style="background-image: url({{ asset('/img/miramarski/supermercado.jpg')}}); background-size: cover; padding: 40px 0 0;">
+		<div class="row text-center push-20" style="background-image: url({{ asset('/img/miramarski/supermercado.jpg')}}); background-size: cover; background-position: 50% 35%; padding: 40px 0 0;">
 			<div class="heading-block center text-white">
 				<h1 style="color:white; text-shadow: 1px 1px #000">Cesta de la compra</h1>
 				<span style="color:white; text-shadow: 1px 1px #000">Compra ONLINE y te lo llevamos al edificio el dia de tu entrada</span>

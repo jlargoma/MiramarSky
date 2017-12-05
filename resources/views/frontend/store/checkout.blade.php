@@ -82,7 +82,7 @@
 <?php if (!$mobile->isMobile()): ?>
 	<section class="section page" style="min-height: 420px; padding-top: 0;">
 		<div class="slider-parallax-inner">
-			<div class="row text-center push-20" style="background-image: url({{ asset('/img/miramarski/supermercado.jpg')}}); background-size: cover; padding: 40px 0 0;">
+			<div class="row text-center push-20" style="background-image: url({{ asset('/img/miramarski/supermercado.jpg')}}); background-size: cover; background-position: 50% 35%; padding: 40px 0 0;">
 				<div class="heading-block center text-white">
 					<h1 style="color:white; text-shadow: 1px 1px #000">CHECKOUT</h1>
 					<span style="color:white; text-shadow: 1px 1px #000">Estas a un paso de confirmar tu pedido</span>
