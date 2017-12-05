@@ -1467,7 +1467,7 @@ class BookController extends Controller
                             $message->replyTo('reservas@apartamentosierranevada.net');
                         });
 
-                    if ($sended) {
+                    if ($sended = 1) {
                         echo json_encode( ['status' => 'success','title' => 'OK', 'response' => "Recordatorio enviado correctamente"]);
                         echo "<br><br>";
                     } else {
