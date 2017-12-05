@@ -119,7 +119,11 @@
 	                    align: "right"
 	                },
 	                allow_dismiss: false,
-	                offset: 80,
+	                <?php if (!$mobile->isMobile()): ?>
+			        	offset: 120,
+			        <?php else: ?>
+			        	offset: 10,
+			        <?php endif ?>
 	                spacing: 10,
 	                z_index: 1031,
 	                delay: 5000,

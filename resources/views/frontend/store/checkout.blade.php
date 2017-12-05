@@ -236,26 +236,28 @@
 	</section>
 <?php else: ?>
 
-	<section class="section page" style="min-height: 420px;  margin-top: 0">
+	<section class="section page" style="min-height: 420px;  margin-top: 20px; padding-top: 0">
+		<div class="row text-center push-20" style="background-image: url({{ asset('/img/miramarski/supermercado.jpg')}}); background-size: cover; background-position: 50% 35%; padding: 40px 0 0;">
+			<div class="heading-block center text-white">
+				<h1 style="color:white; text-shadow: 1px 1px #000">CHECKOUT</h1>
+				<span style="color:white; text-shadow: 1px 1px #000">Estas a un paso de confirmar tu pedido</span>
+			</div>
+		</div>
 		<div class="slider-parallax-inner">
 			<div class="container-mobile ">
 			<?php if ($payment == 0): ?>
 				
 				<div class="row" style="background-color: white;">
-					<div class="heading-block center">
-						<h1>CHECKOUT</h1>
-						<span>Estas a un paso de confirmar tu pedido</span>
-					</div>
 					<div class="col-md-12">
 						
 						<div class="row">
-							<div class="col-md-6">
-								<h4>Tu pedido</h4>
+							<div class="col-md-6 col-xs-12">
+								<h4 class="text-center push-10">Tu pedido</h4>
 								<div class="table-responsive clearfix">
 									<?php $total = 0; ?>
 									<?php $subTotal = 0; ?>
 									<?php $iva = 0; ?>
-									<table class="table cart">
+									<table class="table">
 										<thead>
 											<tr>
 												<th class="cart-product-thumbnail">&nbsp;</th>
@@ -267,10 +269,10 @@
 										<tbody>
 											<?php foreach ($ordersProducts as $key => $orderProduct): ?>
 											
-												<tr class="cart_item">
+												<tr class="">
 
-													<td class="cart-product-thumbnail">
-														<img width="64" height="64" src="<?php echo $orderProduct->product->image; ?>" alt="<?php echo $orderProduct->product->name; ?>">
+													<td class="">
+														<img width="32" height="32" src="<?php echo $orderProduct->product->image; ?>" alt="<?php echo $orderProduct->product->name; ?>">
 													</td>
 
 													<td class="cart-product-name">
@@ -296,17 +298,17 @@
 							</div>
 							
 
-							<div class="col-md-6">
+							<div class="col-md-6 col-xs-12">
 								<div class="table-responsive">
-									<h4>Totales</h4>
+									<h4 class="text-center push-10">Totales</h4>
 										<table class="table cart">
 											<tbody>
 												<tr class="cart_item">
 													<td class="cart-product-name">
 														<strong>Subtotal</strong>
 													</td>
-
-													<td class="cart-product-name">
+													
+													<td class="cart-product-name text-right">
 														<span class="amount"><?php echo number_format($subTotal, 2,',','.') ?>€</span>
 													</td>
 												</tr>
@@ -315,7 +317,7 @@
 														<strong>Impuestos</strong>
 													</td>
 
-													<td class="cart-product-name">
+													<td class="cart-product-name text-right">
 														<span class="amount"><?php echo number_format($iva, 2,',','.') ?>€</span>
 													</td>
 												</tr>
@@ -324,7 +326,7 @@
 														<strong>Total</strong>
 													</td>
 
-													<td class="cart-product-name">
+													<td class="cart-product-name text-right">
 														<span class="amount color lead"><strong><?php echo number_format($total, 2,',','.') ?>€</strong></span>
 													</td>
 												</tr>
@@ -358,7 +360,7 @@
 											<div id="card-errors" role="alert"></div>
 										</div>
 										<div class="col-xs-12 text-center">
-											<button class="button button-3d fright">Cobrar</button>
+											<button class="button button-3d fright">PAGAR</button>
 										</div>
 
 									</form>

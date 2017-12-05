@@ -105,18 +105,40 @@
 		</div>
 	</section>
 <?php else: ?>
-	
-	<section class="section page" style="min-height: 420px; margin-top: 0">
+	<style type="text/css">
+		.content-cart{
+			position: absolute;
+			background: white;
+			left: 0;
+			top: 35px;
+			z-index: 150;
+			border: 1px solid #d4d4d4;
+			width: 90%;
+			margin: 0 20px;
+			max-height: 500px;
+			padding: 15px;
+			overflow-y: auto;
+		}
+	</style>
+	<section class="section page" style="min-height: 450px; margin-top: 20px; padding-top: 0">
 		<div class="slider-parallax-inner">
+			<div class="row text-center push-20" style="background-image: url({{ asset('/img/miramarski/supermercado.jpg')}}); background-size: cover; background-position: 50% 35%; padding: 40px 0 0;">
+				<div class="col-xs-12 heading-block center text-white">
+					<h1 style="color:white; text-shadow: 1px 1px #000">Productos</h1>
+					<span style="color:white; text-shadow: 1px 1px #000">Haz tu compra entre nuestra gran variedad de productos</span>
+				</div>
+			</div>
 			<div class="container-mobile ">
 
 				<div class="col-xs-12" style="background-color: white;">
-					<div class="heading-block center">
-						<h1>PRODUCTOS</h1>
-						<span>Haz tu compra entre nuestra gran variedad de productos</span>
-					</div>
 					<div class="row">
-						
+						<div class="col-xs-12 ">
+							<div class="row summaryCart">
+								<?php $ordersProducts = \App\Products_orders::where('order_id', $order->id)->get(); ?>
+								@include('frontend.store._summaryCart', ['ordersProducts', $ordersProducts])
+							</div>
+							
+						</div>
 
 						<div class="col-xs-12 push-20">
 							<div class="row push-20">
@@ -129,13 +151,7 @@
 							</div>
 							
 						</div>
-						<div class="col-xs-12 ">
-							<div class="row summaryCart">
-								<?php $ordersProducts = \App\Products_orders::where('order_id', $order->id)->get(); ?>
-								@include('frontend.store._summaryCart', ['ordersProducts', $ordersProducts])
-							</div>
-							
-						</div>
+						
 						
 					</div>
 				</div>
@@ -164,6 +180,10 @@
             });
         });
 
+		$('#cartButton').click(function(event) {
+            $('.content-cart').toggle();
+
+        });
 		
 	</script>
 @endsection

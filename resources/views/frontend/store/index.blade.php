@@ -78,7 +78,7 @@
 					</div>
 					<div class="form-group col-sm-12 col-xs-12 col-md-3">
 					    <label for="date" style="display: inherit!important;">*Fecha Entrada</label>
-					    <input type="text" value="<?php echo date('d-m-Y') ?>" class="sm-form-control tleft date" placeholder="DD-MM-YYYY">
+					    <input style="cursor:pointer;" type="text" value="<?php echo date('d-m-Y') ?>" class="sm-form-control tleft date" placeholder="DD-MM-YYYY">
 					</div>
 					<div class="form-group col-sm-12 col-xs-12 col-md-3" style="padding: 20px 0;">
 						<button class="button button-3d button-large button-rounded button-green font-w300" id="seachBook">
@@ -96,28 +96,32 @@
 </section>
 <?php else: ?>
 
-	<section class="section page" style="min-height: 420px">
+	<section class="section page" style="min-height: 420px; padding-top: 0;margin-top: 25px;">
 		<div class="slider-parallax-inner">
+			<div class="row text-center push-20" style="background-image: url({{ asset('/img/miramarski/supermercado.jpg')}}); background-size: cover; background-position: 50% 35%; padding: 40px 0 0;">
+				<div class="col-xs-12 heading-block center text-white">
+					<h1 style="color:white; text-shadow: 1px 1px #000; line-height: 1; letter-spacing: -2px;">Supermercado online</h1>
+					<span style="color:white; text-shadow: 1px 1px #000; line-height: 1; letter-spacing: -1px;">Compra ONLINE y te lo llevamos al edificio el dia de tu entrada</span>
+				</div>
+			</div>
 			<div class="container-mobile">
 
 				<div class="row">
-					<div class="col-xs-12 heading-block center">
-						<h1>Cesta de la compra</h1>
-						<span>Compra ONLINE y te lo llevamos al edificio el dia de tu entrada</span>
-					</div>
 					<div class="col-md-12">
-
-						<div class="form-group col-sm-12 col-xs-12 col-md-6 col-lg-6">
+						<h4 class="text-center" style="line-height: 1; letter-spacing: -1px;">
+							Introduce los datos de tu reserva para entrar.
+						</h4>
+						<div class="form-group col-sm-12 col-xs-8 col-md-6 col-lg-6 push-10">
 						    <label for="email">*Email</label>
 						    <input type="email" class="sm-form-control"  name="email" id="email" placeholder="Email..." maxlength="40" required="">
 						</div>
-						<div class="form-group col-sm-12 col-xs-12 col-md-3">
-						    <label for="date" style="display: inherit!important;">*Fecha Entrada</label>
-					    	<input type="text" value="<?php echo date('d-m-Y') ?>" class="sm-form-control tleft date" placeholder="DD-MM-YYYY">
+						<div class="form-group col-sm-12 col-xs-4 push-10" style="padding-left: 0">
+						    <label for="date" style="display: inherit!important;">*Entrada</label>
+					    	<input style="cursor:pointer;" type="text" value="<?php echo date('d-m-Y') ?>" class="sm-form-control tleft date" placeholder="DD-MM-YYYY">
 						</div>
-						<div class="form-group col-sm-12 col-xs-12 col-md-3" style="padding: 20px 0;">
+						<div class="form-group text-center col-sm-12 col-xs-12 col-md-3" style="padding: 20px 0;">
 							<button class="button button-3d button-large button-rounded button-green font-w300" id="seachBook">
-								<i class="fa fa-search"></i> BUSCAR
+								<i class="fa fa-sign-in"></i> ENTRAR
 							</button>
 						</div>
 					</div>
@@ -151,64 +155,94 @@
 			var email    = $('#email').val();
 			var date     = $('.date').val();
 
-			$.get('/searchBook', {email: email, date: date,}, function(data) {
+			if (email != '' ) {
+				if (validateEmail(email)) {
+					
+					$.get('/searchBook', {email: email, date: date,}, function(data) {
 
-				if (data.status == 'danger') {
-				    $.notify({
-				        title: '<strong>'+data.title+'</strong>, ',
-				        icon: 'glyphicons-remove-circle',
-				        message: data.response
-				    },{
-				        type: data.status,
-				        animate: {
-				            enter: 'animated fadeInUp',
-				            exit: 'animated fadeOutRight'
-				        },
-				        placement: {
-				            from: "top",
-				            align: "right"
-				        },
-				        offset: 120,
-				        spacing: 10,
-				        z_index: 1031,
-				        allow_dismiss: true,
-				        delay: 5000,
-				        timer: 1500,
-				    }); 
-				}else {
-	                $.notify({
-	                    title: '<strong>'+data.title+'</strong>, ',
-	                    icon: 'glyphicons-ok-circle',
-	                    message: data.response
-	                },{
-	                    type: data.status,
-	                    animate: {
-	                        enter: 'animated fadeInUp',
-	                        exit: 'animated fadeOutRight'
-	                    },
-	                    placement: {
-	                        from: "top",
-	                        align: "right"
-	                    },
-	                    allow_dismiss: false,
-	                    offset: 120,
-	                    spacing: 10,
-	                    z_index: 1031,
-	                    delay: 5000,
-	                    timer: 1500,
-	                }); 
-	            }
-	            if (data.status == 'warning' || data.status == 'success') {
-	            	setTimeout(function(){
-	            	 	window.location.replace("/supermercado/reserva/"+data.data);
-            		}, 3000);
-	            }
+						if (data.status == 'danger') {
+						    $.notify({
+						        title: '<strong>'+data.title+'</strong>, ',
+						        icon: 'glyphicons-remove-circle',
+						        message: data.response
+						    },{
+						        type: data.status,
+						        animate: {
+						            enter: 'animated fadeInUp',
+						            exit: 'animated fadeOutRight'
+						        },
+						        placement: {
+						            from: "top",
+						            align: "right"
+						        },
+						        <?php if (!$mobile->isMobile()): ?>
+						        	offset: 120,
+						        <?php else: ?>
+						        	offset: 10,
+						        <?php endif ?>
+						        
+						        spacing: 10,
+						        z_index: 1031,
+						        allow_dismiss: true,
+						        delay: 5000,
+						        timer: 1500,
+						    }); 
+						}else {
+			                $.notify({
+			                    title: '<strong>'+data.title+'</strong>, ',
+			                    icon: 'glyphicons-ok-circle',
+			                    message: data.response
+			                },{
+			                    type: data.status,
+			                    animate: {
+			                        enter: 'animated fadeInUp',
+			                        exit: 'animated fadeOutRight'
+			                    },
+			                    placement: {
+			                        from: "top",
+			                        align: "right"
+			                    },
+			                    allow_dismiss: false,
+			                    <?php if (!$mobile->isMobile()): ?>
+						        	offset: 120,
+						        <?php else: ?>
+						        	offset: 10,
+						        <?php endif ?>
+			                    spacing: 10,
+			                    z_index: 1031,
+			                    delay: 5000,
+			                    timer: 1500,
+			                }); 
+			            }
+			            if (data.status == 'warning' || data.status == 'success') {
+			            	setTimeout(function(){
+			            	 	window.location.replace("/supermercado/reserva/"+data.data);
+		            		}, 3000);
+			            }
 
 
-			});
+					});
+
+				} else {
+					alert('Email incorrecto');
+				}
+
+			} else {
+				alert('Rellena el email');
+			}
 
 		});
 
 	});
+
+	function validateEmail(sEmail) {
+	    var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+	    if (filter.test(sEmail)) {
+	        return true;
+	    }
+	    else {
+	        return false;
+	    }
+	}
 </script>
 @endsection

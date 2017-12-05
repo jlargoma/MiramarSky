@@ -68,7 +68,7 @@ class StoreController extends Controller
                 if (count($orderPendiente) > 0) {
                     return[
                             'status'   => 'warning',
-                            'title'    => 'Lo sentimos', 
+                            'title'    => 'Vaya!', 
                             'response' => "Esta reserva ya tiene un pedido en curso, te estamos redirigiendo",
                             'data'     => base64_encode($book->id)
                         ];
