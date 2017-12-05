@@ -36,7 +36,7 @@
 								</div>
 							</td>
 							<td class="cart-product-quantity">
-								<button class="btn btn-primary addCart" data-order="<?php echo $order->id ?>" data-product="<?php echo $product->id; ?>">
+								<button class="btn btn-success addCart" data-order="<?php echo $order->id ?>" data-product="<?php echo $product->id; ?>">
 									<i class="icon-shopping-cart"></i>
 								</button>
 							</td>

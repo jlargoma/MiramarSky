@@ -1,5 +1,5 @@
 <div class="col-xs-12 push-20">
-	<h4>Resumen</h4>
+	<h4 class="text-center" style="line-height: 1; letter-spacing: -1px; margin: 10px 0;">Resumen <span><?php echo $order->book->customer->email ?></span></h4>
 
 	<?php $total = 0; ?>
 	<?php $subTotal = 0; ?>
@@ -7,7 +7,7 @@
 	<?php foreach ($ordersProducts as $key => $orderProduct): ?>
 		<div class="col-xs-12 push-10" style="border-bottom: 1px solid black;padding: 10px 15px 10px 0;">
 			<div class="col-xs-2">
-				<a href="{{ url ('/supermercado/pedidos/delete')}}/<?php echo $orderProduct->id ?>" class="remove" title="Eliminar <?php echo $orderProduct->product->name; ?> "><i class="icon-trash2"></i></a>
+				<a href="{{ url ('/supermercado/pedidos/delete')}}/<?php echo $orderProduct->id ?>" class="remove text-danger" title="Eliminar <?php echo $orderProduct->product->name; ?> "><i class="icon-trash2"></i></a>
 			</div>
 			<div class="col-xs-6" style="font-size: 14px; line-height: 1">
 				<?php echo $orderProduct->product->name; ?> 
