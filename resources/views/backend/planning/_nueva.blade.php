@@ -251,13 +251,12 @@
 </div>
 
 
-<script src="{{ asset('assets/plugins/jquery/jquery-1.11.1.min.js') }}" type="text/javascript"></script>
 <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
 <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
 <script type="text/javascript">
 
-        $(function() {
-          $(".daterange1").daterangepicker({
+    $(function() {
+        $(".daterange1").daterangepicker({
             "buttonClasses": "button button-rounded button-mini nomargin",
             "applyClass": "button-color",
             "cancelClass": "button-light",            
@@ -265,272 +264,273 @@
             locale: {
                 format: 'DD MMM, YY',
                 "applyLabel": "Aplicar",
-                  "cancelLabel": "Cancelar",
-                  "fromLabel": "From",
-                  "toLabel": "To",
-                  "customRangeLabel": "Custom",
-                  "daysOfWeek": [
-                      "Do",
-                      "Lu",
-                      "Mar",
-                      "Mi",
-                      "Ju",
-                      "Vi",
-                      "Sa"
-                  ],
-                  "monthNames": [
-                      "Enero",
-                      "Febrero",
-                      "Marzo",
-                      "Abril",
-                      "Mayo",
-                      "Junio",
-                      "Julio",
-                      "Agosto",
-                      "Septiembre",
-                      "Octubre",
-                      "Noviembre",
-                      "Diciembre"
-                  ],
-                  "firstDay": 1,
-              },
-              
-          });
+                "cancelLabel": "Cancelar",
+                "fromLabel": "From",
+                "toLabel": "To",
+                "customRangeLabel": "Custom",
+                "daysOfWeek": [
+                "Do",
+                "Lu",
+                "Mar",
+                "Mi",
+                "Ju",
+                "Vi",
+                "Sa"
+                ],
+                "monthNames": [
+                "Enero",
+                "Febrero",
+                "Marzo",
+                "Abril",
+                "Mayo",
+                "Junio",
+                "Julio",
+                "Agosto",
+                "Septiembre",
+                "Octubre",
+                "Noviembre",
+                "Diciembre"
+                ],
+                "firstDay": 1,
+            },
+
         });
+    });
 
-        function calculate( notModifyPrice = 0){
-                var room       = $('#newroom').val();
-                var pax        = $('.pax').val();
-                var park       = $('.parking').val();
-                var lujo       = $('select[name=type_luxury]').val();
-                var status     = $('select[name=status]').val();
-                var sizeApto   = $('option:selected', 'select[name=newroom]').attr('data-size');;
-                var beneficio  = 0;
-                var costPark   = 0;
-                var pricePark  = 0;
-                var costLujo   = 0;
-                var priceLujo  = 0;
-                var agencia    = 0;
-                var beneficio_ = 0;
-                var comentario =$('.book_comments').val();
-                var date       = $('.daterange1').val();
-                
-                var arrayDates = date.split('-');
-                var res1       = arrayDates[0].replace("Abr", "Apr");
-                var date1      = new Date(res1);
-                var start      = date1.getTime();
-                
-                var res2       = arrayDates[1].replace("Abr", "Apr");
-                var date2      = new Date(res2);
-                var timeDiff   = Math.abs(date2.getTime() - date1.getTime());
-                var diffDays   = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-                $('.nigths').val(diffDays);
-                
-                var start      = date1.toLocaleDateString();
-                var finish     = date2.toLocaleDateString();
+    function calculate( notModifyPrice = 0){
+        var room       = $('#newroom').val();
+        var pax        = $('.pax').val();
+        var park       = $('.parking').val();
+        var lujo       = $('select[name=type_luxury]').val();
+        var status     = $('select[name=status]').val();
+        var sizeApto   = $('option:selected', 'select[name=newroom]').attr('data-size');;
+        var beneficio  = 0;
+        var costPark   = 0;
+        var pricePark  = 0;
+        var costLujo   = 0;
+        var priceLujo  = 0;
+        var agencia    = 0;
+        var beneficio_ = 0;
+        var comentario =$('.book_comments').val();
+        var date       = $('.daterange1').val();
+
+        var arrayDates = date.split('-');
+        var res1       = arrayDates[0].replace("Abr", "Apr");
+        var date1      = new Date(res1);
+        var start      = date1.getTime();
+
+        var res2       = arrayDates[1].replace("Abr", "Apr");
+        var date2      = new Date(res2);
+        var timeDiff   = Math.abs(date2.getTime() - date1.getTime());
+        var diffDays   = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+        $('.nigths').val(diffDays);
+
+        var start      = date1.toLocaleDateString();
+        var finish     = date2.toLocaleDateString();
 
 
 
-                
-                if ( status == 8) {
-                    $('.total').empty();
-                    $('.total').val(0);
-                    $('.cost').empty();
-                    $('.cost').val(0);
 
-                    $('.beneficio').empty();
-                    $('.beneficio').val(0);
-                }else if ( status == 7 ){
-                    if (sizeApto == 1) {
-                        $('.total').empty();
-                        $('.total').val(30);
+        if ( status == 8) {
+            $('.total').empty();
+            $('.total').val(0);
+            $('.cost').empty();
+            $('.cost').val(0);
 
-                        $('.cost').empty();
-                        $('.cost').val(30);
+            $('.beneficio').empty();
+            $('.beneficio').val(0);
+        }else if ( status == 7 ){
+            if (sizeApto == 1) {
+                $('.total').empty();
+                $('.total').val(30);
 
-                        $('.beneficio').empty();
-                        $('.beneficio').val(0);
-                    }else{
-                        $('.total').empty();
-                        $('.total').val(50);
+                $('.cost').empty();
+                $('.cost').val(30);
 
-                        $('.cost').empty();
-                        $('.cost').val(40);
+                $('.beneficio').empty();
+                $('.beneficio').val(0);
+            }else{
+                $('.total').empty();
+                $('.total').val(50);
 
-                        $('.beneficio').empty();
-                        $('.beneficio').val(10);
-                    }
-                }else{
-                    $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays}).success(function( data ) {
-                        pricePark = data;
-                        $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
-                            priceLujo = data;
+                $('.cost').empty();
+                $('.cost').val(40);
 
-                            $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                                price = data;
-                                
-                                price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
+                $('.beneficio').empty();
+                $('.beneficio').val(10);
+            }
+        }else{
 
-                                if ( notModifyPrice == 0) {
-                                    $('.total').empty();
-                                    $('.total').val(price);
-                                }
-                                    $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays}).success(function( data ) {
-                                        costPark = data;
-                                        $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
-                                            costLujo = data;
-                                            $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                                                cost = data;
-                                                agencia = $('.agencia').val();
-                                                if (agencia == "") {
-                                                    agencia = 0;
-                                                }
-                                                cost = (parseFloat(cost) + parseFloat(costPark) + parseFloat(agencia) + parseFloat(costLujo));
-                                                $('.cost').empty();
-                                                $('.cost').val(cost);
-                                                beneficio = price - cost;
-                                                $('.beneficio').empty;
-                                                $('.beneficio').val(beneficio);
-                                                beneficio_ = (beneficio / price)*100
-                                                $('.beneficio-text').empty();
-                                                $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
+            $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays}).success(function( data ) {
+                pricePark = data;
+                $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
+                    priceLujo = data;
 
-                                            });
-                                        });
-                                    });
+                    $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                        price = data;
+
+                        price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
+
+                        if ( notModifyPrice == 0) {
+                            $('.total').empty();
+                            $('.total').val(price);
+                        }
+                        $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays}).success(function( data ) {
+                            costPark = data;
+                            $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
+                                costLujo = data;
+                                $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                                    cost = data;
+                                    agencia = $('.agencia').val();
+                                    if (agencia == "") {
+                                        agencia = 0;
+                                    }
+                                    cost = (parseFloat(cost) + parseFloat(costPark) + parseFloat(agencia) + parseFloat(costLujo));
+                                    $('.cost').empty();
+                                    $('.cost').val(cost);
+                                    beneficio = price - cost;
+                                    $('.beneficio').empty;
+                                    $('.beneficio').val(beneficio);
+                                    beneficio_ = (beneficio / price)*100
+                                    $('.beneficio-text').empty();
+                                    $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
+
+                                });
                             });
                         });
-                    }); 
-                }
-                 
-
-                
-
+                    });
+                });
+            }); 
         }
 
 
-        $(document).ready(function() {          
 
 
-            var start  = 0;
-            var finish = 0;
-            var noches = 0;
-            var price = 0;
-            var cost = 0;
-
-            $('.daterange1').change(function(event) {
-                var date = $(this).val();
-
-                var arrayDates = date.split('-');
-                var res1 = arrayDates[0].replace("Abr", "Apr");
-                var date1 = new Date(res1);
-                var start = date1.getTime();
-
-                var res2 = arrayDates[1].replace("Abr", "Apr");
-                var date2 = new Date(res2);
-                var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-                $('.nigths').val(diffDays);
-
-                calculate();
-
-            });
+    }
 
 
-
-            
-            $('#newroom').change(function(event){ 
-
-                var room = $('#newroom').val();
-                var pax = $('.pax').val();
-                $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
-
-                    if (pax < data) {
-                        $('.personas-antiguo').empty();
-                        $('.personas-antiguo').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
-                    }else{
-                        $('.personas-antiguo').empty();
-                    }
-                });
-
-                
-                var dataLuxury = $('option:selected', this).attr('data-luxury');;
-
-                if (dataLuxury == 1) {
-                    $('.type_luxury option[value=1]').attr('selected','selected');
-                    $('.type_luxury option[value=2]').removeAttr('selected');
-                } else {
-                    $('.type_luxury option[value=1]').removeAttr('selected');
-                    $('.type_luxury option[value=2]').attr('selected','selected');
-                }
+    $(document).ready(function() {          
 
 
+        var start  = 0;
+        var finish = 0;
+        var noches = 0;
+        var price = 0;
+        var cost = 0;
 
-                calculate();
-            });
+        $('.daterange1').change(function(event) {
+            var date = $(this).val();
 
+            var arrayDates = date.split('-');
+            var res1 = arrayDates[0].replace("Abr", "Apr");
+            var date1 = new Date(res1);
+            var start = date1.getTime();
 
-            $('.pax').change(function(event){ 
-                var room = $('#newroom').val();
-                var real_pax =$('.real_pax').val();
-                var pax = $('.pax').val();
+            var res2 = arrayDates[1].replace("Abr", "Apr");
+            var date2 = new Date(res2);
+            var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+            $('.nigths').val(diffDays);
 
-                $('.real_pax option[value='+pax+']').attr('selected','selected');
-                $('.real_pax option[value='+real_pax+']').removeAttr('selected');
-
-                $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
-
-                    if (pax < data) {
-                        $('.personas-antiguo').empty();
-                        $('.personas-antiguo').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
-                    }else{
-                        $('.personas-antiguo').empty();
-                    }
-                });
-
-
-                calculate();
-            });
-
-            $('.parking').change(function(event){ 
-                var commentBook = $('.book_comments').val();
-                $('.book_comments').empty();
-                var res = commentBook.replace("Parking: Si\n","");
-                res = res.replace("Parking: No\n","");
-                res = res.replace("Parking: Gratis\n","");
-                res = res.replace("Parking: 50 %\n","");
-                calculate();
-                
-                $('.book_comments').text( $.trim(res+'Parking:'+ $('option:selected', this).text())+"\n");
-            });
-
-            $('.type_luxury').change(function(event){ 
-                var commentBook = $('.book_comments').val();
-                $('.book_comments').empty();
-                var res = commentBook.replace("Suplemento de lujo: Si\n","");
-                res = res.replace("Suplemento de lujo: No\n","");
-                res = res.replace("Suplemento de lujo: Gratis\n","");
-                res = res.replace("Suplemento de lujo: 50 %\n","");
-
-                calculate();
-                $('.book_comments').text( $.trim(res+'Suplemento de lujo:'+ $('option:selected', this).text())+"\n");
-            });
-
-            $('.agencia').change(function(event){ 
-                calculate(1);
-            });
-
-           
-                
-            
-            $('.total').change(function(event) {
-                var price = $(this).val();
-                var cost = $('.cost').val();
-                var beneficio = (parseFloat(price) - parseFloat(cost));
-                console.log(beneficio);
-                $('.beneficio').empty;
-                $('.beneficio').val(beneficio);
-            });
+            calculate();
 
         });
+
+
+
+
+        $('#newroom').change(function(event){ 
+
+            var room = $('#newroom').val();
+            var pax = $('.pax').val();
+            $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
+
+                if (pax < data) {
+                    $('.personas-antiguo').empty();
+                    $('.personas-antiguo').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
+                }else{
+                    $('.personas-antiguo').empty();
+                }
+            });
+
+
+            var dataLuxury = $('option:selected', this).attr('data-luxury');;
+
+            if (dataLuxury == 1) {
+                $('.type_luxury option[value=1]').attr('selected','selected');
+                $('.type_luxury option[value=2]').removeAttr('selected');
+            } else {
+                $('.type_luxury option[value=1]').removeAttr('selected');
+                $('.type_luxury option[value=2]').attr('selected','selected');
+            }
+
+
+
+            calculate();
+        });
+
+
+        $('.pax').change(function(event){ 
+            var room = $('#newroom').val();
+            var real_pax =$('.real_pax').val();
+            var pax = $('.pax').val();
+
+            $('.real_pax option[value='+pax+']').attr('selected','selected');
+            $('.real_pax option[value='+real_pax+']').removeAttr('selected');
+
+            $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
+
+                if (pax < data) {
+                    $('.personas-antiguo').empty();
+                    $('.personas-antiguo').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
+                }else{
+                    $('.personas-antiguo').empty();
+                }
+            });
+
+
+            calculate();
+        });
+
+        $('.parking').change(function(event){ 
+            var commentBook = $('.book_comments').val();
+            $('.book_comments').empty();
+            var res = commentBook.replace("Parking: Si\n","");
+            res = res.replace("Parking: No\n","");
+            res = res.replace("Parking: Gratis\n","");
+            res = res.replace("Parking: 50 %\n","");
+            calculate();
+
+            $('.book_comments').text( $.trim(res+'Parking:'+ $('option:selected', this).text())+"\n");
+        });
+
+        $('.type_luxury').change(function(event){ 
+            var commentBook = $('.book_comments').val();
+            $('.book_comments').empty();
+            var res = commentBook.replace("Suplemento de lujo: Si\n","");
+            res = res.replace("Suplemento de lujo: No\n","");
+            res = res.replace("Suplemento de lujo: Gratis\n","");
+            res = res.replace("Suplemento de lujo: 50 %\n","");
+
+            calculate();
+            $('.book_comments').text( $.trim(res+'Suplemento de lujo:'+ $('option:selected', this).text())+"\n");
+        });
+
+        $('.agencia').change(function(event){ 
+            calculate(1);
+        });
+
+
+
+
+        $('.total').change(function(event) {
+            var price = $(this).val();
+            var cost = $('.cost').val();
+            var beneficio = (parseFloat(price) - parseFloat(cost));
+            // console.log(beneficio);
+            $('.beneficio').empty;
+            $('.beneficio').val(beneficio);
+        });
+
+    });
 </script>

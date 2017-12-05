@@ -57,37 +57,40 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php for ($i=4; $i <= 8 ; $i++): ?>
-                                <tr>
+                            <?php for ($i=4; $i <= 12 ; $i++): ?>
+                                <?php if ($i != 9 && $i != 11): ?>
+                                    <tr>
+                                    
+                                        <td class ="text-center"> 
+                                          <b><?php echo $i ?></b>
+                                        </td>
+                                        <?php foreach ($seasons as $key => $season): ?>
+                                            <?php $price =  \App\Prices::where('occupation', $i)->where('season', $season->id )->first(); ?>
+                                            <?php if ( count($price) > 0): ?>
+                                                <td class="text-center" style="border-left: 1px solid #48b0f7">
+                                                    <input class="editable price-<?php echo $price->id?>" type="text" name="cost" data-id="<?php echo $price->id ?>" value="<?php echo $price->price ?>" style="width: 100%;text-align: center;border-style: none none">
+                                                </td>
+                                                <td class="text-center">
+                                                    <input class="editable cost-<?php echo $price->id?>" type="text" name="cost" data-id="<?php echo $price->id ?>" value="<?php echo $price->cost ?>" style="width: 100%;text-align: center;border-style: none none">
+                                                </td>
+                                                <td class="text-center" style="border-right: : 1px solid #48b0f7">
+                                                    <?php if ($price->price == 0 || $price->cost == 0): ?>
+                                                        0%
+                                                    <?php else: ?>
+                                                        <?php $ben = ( ($price->price * 100) / $price->cost)-100; ?>
+                                                        <?php echo number_format($ben, 2 , ',', '.') ?>%
+                                                    <?php endif ?>
+                                                </td>
+                                            <?php else: ?>
+                                                <td style="border-left: 1px solid #48b0f7"></td>
+                                                <td></td>
+                                                <td style="border-right: : 1px solid #48b0f7"></td>
+                                            <?php endif ?>
+                                            
+                                        <?php endforeach ?>
+                                    </tr>
+                                <?php endif ?>
                                 
-                                    <td class ="text-center"> 
-                                      <b><?php echo $i ?></b>
-                                    </td>
-                                    <?php foreach ($seasons as $key => $season): ?>
-                                        <?php $price =  \App\Prices::where('occupation', $i)->where('season', $season->id )->first(); ?>
-                                        <?php if ( count($price) > 0): ?>
-                                                        <td class="text-center" style="border-left: 1px solid #48b0f7">
-                                                            <input class="editable price-<?php echo $price->id?>" type="text" name="cost" data-id="<?php echo $price->id ?>" value="<?php echo $price->price ?>" style="width: 100%;text-align: center;border-style: none none">
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <input class="editable cost-<?php echo $price->id?>" type="text" name="cost" data-id="<?php echo $price->id ?>" value="<?php echo $price->cost ?>" style="width: 100%;text-align: center;border-style: none none">
-                                                        </td>
-                                                        <td class="text-center" style="border-right: : 1px solid #48b0f7">
-                                                            <?php if ($price->price == 0 || $price->cost == 0): ?>
-                                                                0%
-                                                            <?php else: ?>
-                                                                <?php $ben = ( ($price->price * 100) / $price->cost)-100; ?>
-                                                                <?php echo number_format($ben, 2 , ',', '.') ?>%
-                                                            <?php endif ?>
-                                                        </td>
-                                        <?php else: ?>
-                                            <td style="border-left: 1px solid #48b0f7"></td>
-                                            <td></td>
-                                            <td style="border-right: : 1px solid #48b0f7"></td>
-                                        <?php endif ?>
-                                        
-                                    <?php endforeach ?>
-                                </tr>
                             <?php endfor?>
                         </tbody>
                     </table>

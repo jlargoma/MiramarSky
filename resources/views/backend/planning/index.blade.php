@@ -50,7 +50,7 @@
             <div class="row push-10">
                 <div class="col-md-7">
                     <div class="row">
-                        <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalNewBook">
+                        <button class="btn btn-success btn-cons btn-newBook" type="button" data-toggle="modal" data-target="#modalNewBook">
                             <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Nueva Reserva</span>
                         </button>
 
@@ -157,8 +157,8 @@
         <div class="modal fade slide-up in" id="modalNewBook" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content-wrapper">
-                    <div class="modal-content">
-                        @include('backend.planning._nueva')
+                    <div class="modal-content contentNewBook">
+                        
                     </div>
                 </div>
             </div>
@@ -280,7 +280,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-3" style="position: fixed; bottom: 20px; right: 10px; z-index: 100">
-                    <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalNewBook" style="min-width: 10px!important;width: 80px!important; padding: 25px; border-radius: 100%;">
+                    <button class="btn btn-success btn-cons btn-newBook" type="button" data-toggle="modal" data-target="#modalNewBook" style="min-width: 10px!important;width: 80px!important; padding: 25px; border-radius: 100%;">
                         <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
                     </button>
                 </div>
@@ -394,8 +394,8 @@
         <div class="modal fade slide-up in" id="modalNewBook" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content-wrapper">
-                    <div class="modal-content">
-                        @include('backend.planning._nueva')
+                    <div class="modal-content contentNewBook">
+
                     </div>
                 </div>
             </div>
@@ -495,6 +495,18 @@
                 window.location = '/admin/reservas/'+year;
 
             });
+
+            // Modal de nueva reserva
+            $('.btn-newBook').click(function(event) {
+               
+                $.get('/admin/reservas/new', function(data) {
+                    
+                    $('.contentNewBook').empty().append(data);
+
+                });
+
+            });
+
 
             // Modal de calcular reserva
             $('.btn-calcuteBook').click(function(event) {

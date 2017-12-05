@@ -65,6 +65,12 @@ class BookController extends Controller
 
     }
 
+    public function newBook(Request $request)
+    {
+        $rooms = \App\Rooms::where('state','=',1)->get();
+        return view('backend/planning/_nueva', compact('rooms'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -506,7 +512,9 @@ class BookController extends Controller
         $finish = Carbon::createFromFormat('d/m/Y' , $request->finish);
         $countDays = $finish->diffInDays($start);
 
+
         $paxPerRoom = \App\Rooms::getPaxRooms($request->pax,$request->room);
+
         $room = \App\Rooms::find($request->room);
         $suplimp =  ($room->sizeApto == 1 )? 30 : 50 ;
         $pax = $request->pax;
@@ -516,16 +524,18 @@ class BookController extends Controller
 
         $price = 0;
 
-
         for ($i=1; $i <= $countDays; $i++) {
 
             $seasonActive = \App\Seasons::getSeason($start->copy()->format('Y-m-d'));
 
-            $prices = \App\Prices::where('season' ,  $seasonActive)
+
+            $prices = \App\Prices::where('season' , $seasonActive)
             ->where('occupation', $pax)->get();
+            
 
             foreach ($prices as $precio) {
                 $price = $price + $precio->price ;
+
             }
         }
 
