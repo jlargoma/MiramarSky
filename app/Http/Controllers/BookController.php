@@ -1390,7 +1390,7 @@ class BookController extends Controller
         }
         switch ($type) {
             case 'pendientes':
-                $books = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[1,3,4,5,6])->orderBy('created_at','DESC')->get();
+                $books = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[3])->orderBy('created_at','DESC')->get();
 
                 break;
             case 'especiales':

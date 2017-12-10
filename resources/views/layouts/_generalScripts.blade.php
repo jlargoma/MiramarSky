@@ -87,15 +87,33 @@
 	    	var parking  = 'si';
 	    	var comment  = $('textarea[name="comment"]').val();
 
-	    	var url = $(this).attr('action');
+			var url        = $(this).attr('action');
+			
+			var dateAux    = date;
+			
+			var arrayDates = dateAux.split('-');
+			var res1       = arrayDates[0].replace("Abr", "Apr");
+			var date1      = new Date(res1);
+			var start      = date1.getTime();
+			
+			var res2       = arrayDates[1].replace("Abr", "Apr");
+			var date2      = new Date(res2);
+			var timeDiff   = Math.abs(date2.getTime() - date1.getTime());
+			var diffDays   = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+	    	if(diffDays >= 2 ){
+	    		$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   fechas : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
+	    			
+	    			$('#content-book-response .back').empty();
+	    			$('#content-book-response .back').append(data);
+	    			$("#content-book-response").flip(true);
 
-	    	$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   fechas : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
-	    		
-	    		$('#content-book-response .back').empty();
-	    		$('#content-book-response .back').append(data);
-	    		$("#content-book-response").flip(true);
+	    		});
+	    	}else{
+	    		alert('Estancia minima 2 NOCHES')
+	    	}
 
-	    	});
+
+	    	
 
 	    });
 	    

@@ -61,7 +61,7 @@
 		<div class="row text-center push-20" style="background-image: url({{ asset('/img/miramarski/supermercado.jpg')}}); background-size: cover; background-position: 50% 35%; padding: 40px 0 0;">
 			<div class="heading-block center text-white">
 				<h1 style="color:white; text-shadow: 1px 1px #000">Supermercado online</h1>
-				<span style="color:white; text-shadow: 1px 1px #000">Compra ONLINE y te lo llevamos al edificio el dia de tu entrada</span>
+				<span style="color:white; text-shadow: 1px 1px #000">Te llevamos la compra al edificio el dia de tu entrada</span>
 			</div>
 		</div>
 		<div class="container">
@@ -101,7 +101,7 @@
 			<div class="row text-center push-20" style="background-image: url({{ asset('/img/miramarski/supermercado.jpg')}}); background-size: cover; background-position: 50% 35%; padding: 40px 0 0;">
 				<div class="col-xs-12 heading-block center text-white">
 					<h1 style="color:white; text-shadow: 1px 1px #000; line-height: 1; letter-spacing: -2px;">Supermercado online</h1>
-					<span style="color:white; text-shadow: 1px 1px #000; line-height: 1; letter-spacing: -1px;">Compra ONLINE y te lo llevamos al edificio el dia de tu entrada</span>
+					<span style="color:white; text-shadow: 1px 1px #000">Te llevamos la compra al edificio el dia de tu entrada</span>
 				</div>
 			</div>
 			<div class="container-mobile">

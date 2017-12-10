@@ -130,9 +130,30 @@
 	    		</div>
 			
 				<div class="container">
-					<div class="col-md-12 text-center">
-						<h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1>
-					</div>
+					<?php $roomsForUser = \App\Rooms::where('owned', $room->user->id)->get(); ?>
+					
+						
+						<?php if ( count($roomsForUser) <= 1): ?>
+							<div class="col-md-12 text-center">
+								<h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?></h1>
+							</div>
+						<?php else: ?>
+							<div class="col-md-3 col-md-offset-3 text-center">
+								<h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1>
+							</div>
+							<div class="col-md-2 text-left"  style="padding: 15px;">
+								<select class="form-control minimal" id="selectorRoom">
+									<?php foreach ($roomsForUser as $key => $roomForUser): ?>
+										<option value="<?php echo $roomForUser->nameRoom ?>">
+											<?php echo $roomForUser->nameRoom ?>
+										</option>
+									<?php endforeach ?>
+								</select>
+							</div>
+							
+						<?php endif ?>
+						
+					
 
 				</div>
 				<div style="clear: both;"></div>
@@ -801,3 +822,13 @@
 	</div>
 
 <?php endif ?>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#selectorRoom').change(function(event) {
+			var apto = $(this).val();
+			var url = "/admin/propietario/"+apto;
+
+			window.location.href = url;
+		});
+	});
+</script>

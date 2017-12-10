@@ -12,11 +12,18 @@
 </style>
 <?php use \Carbon\Carbon; ?>
 <div class="row">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 15px; right: 15px; z-index: 9999"><i class="fa fa-close fa-2x"></i></button>
+    <div class="container">
+        <h2> <?php echo $room->nameRoom." de (".$room->user->name ?>)</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 15px; right: 15px; z-index: 9999"><i class="fa fa-close fa-2x"></i></button>
+    </div>
+</div>
+<div class="row">
+
     <div class="col-xs-12">
         <!-- START PANEL -->
-        <h2> <?php echo $room->nameRoom." de (".$room->user->name ?>)</h2>
+        
         <div class="row">
+
             <div class="col-md-3 col-xs-12" style="border-right: 1px solid black">
                 <div class="col-md-12">
                     <div class="panel-heading">

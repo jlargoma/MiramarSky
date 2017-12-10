@@ -41,6 +41,9 @@
                                     <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>
                                 <?php else: ?>
                                     <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" ><?php echo $book->customer['name']  ?></a>
+                                <?php endif ?>   
+                                <?php if (!empty($book->comment)): ?>
+                                   <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
                                 <?php endif ?>                                                        
                             </td>
 
@@ -159,7 +162,9 @@
                         <a href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                             <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " ")  ?> 
                         </a>
-                        
+                        <?php if (!empty($book->comment)): ?>
+                           <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
+                        <?php endif ?>   
                     </td>
                     <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b') ?></td>
                     <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b') ?></td>

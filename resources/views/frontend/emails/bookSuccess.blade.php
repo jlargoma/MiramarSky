@@ -95,14 +95,13 @@
 											Fecha Salida: 		<b><?php echo date('d-m-Y', strtotime($data->finish)) ?></b> <br>
 											Noches:  			<b><?php echo $data->nigths ?></b> <br>
 											Ocupantes: 			<b><?php echo $data->pax ?></b> <br>
-											Suplemento parking: <b><?php echo number_format($data->sup_park,0,'','.') ?> €</b> <br>
 											Suplemento lujo: 	<b><?php echo number_format($data->sup_lujo,0,'','.') ?> €</b> <br>
-											Comentarios: 		<b><?php echo $data->comment ?> € </b><br>
+											Comentarios: 		<b><?php echo $data->comment ?> </b><br>
 
   	 	  									<h2 style="text-align: left">
   	 	  										<b>Precio total: </b>  <?php echo number_format($data->total_price,0,'','.') ?> €
   	 	  									</h2> <br>
-
+											El precio incluye una plaza de parking cubierta, piscina climatizada, gimnasio, taquilla guarda esquíes, sabanas y toallas.
   	 	  								</td>
   	 	  							</tr>
   	 	  						</table>
@@ -184,9 +183,9 @@
   	 	  									<b>Fecha Salida:</b> <?php echo date('d-m-Y', strtotime($data->finish)) ?> <br>
   	 	  									<b>Noches: </b> <?php echo $data->nigths ?> <br>
   	 	  									<b>Ocupantes: </b> <?php echo $data->pax ?> <br>
-  	 	  									<b>Suplemento parking: </b> <?php echo $data->sup_parking ?> €<br>
+  	 	  									<!-- <b>Suplemento parking: </b> <?php echo $data->sup_parking ?> €<br> -->
   	 	  									<b>Suplemento lujo:  <?php echo $data->sup_lujo ?> €</b><br>
-  	 	  									<b>Comentarios: </b>  <?php echo $data->comment ?> € <br>
+  	 	  									<b>Comentarios: </b>  <?php echo $data->comment ?> <br>
 
 		  									<h2 style="text-align: left;"><b>Precio total: </b> <?php echo $data->total_price ?> €</h2> <br>
 

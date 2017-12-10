@@ -66,8 +66,8 @@
 		<div class="slider-parallax-inner">
 			<div class="row text-center push-20" style="background-image: url({{ asset('/img/miramarski/supermercado.jpg')}}); background-size: cover; background-position: 50% 35%; padding: 40px 0 0;">
 				<div class="heading-block center text-white">
-					<h1 style="color:white; text-shadow: 1px 1px #000">Productos</h1>
-					<span style="color:white; text-shadow: 1px 1px #000">Haz tu compra entre nuestra gran variedad de productos</span>
+					<h1 style="color:white; text-shadow: 1px 1px #000">Supermercado online</h1>
+					<span style="color:white; text-shadow: 1px 1px #000">Te llevamos la compra al edificio el dia de tu entrada</span>
 				</div>
 			</div>
 			<div class="container ">
@@ -124,8 +124,8 @@
 		<div class="slider-parallax-inner">
 			<div class="row text-center push-20" style="background-image: url({{ asset('/img/miramarski/supermercado.jpg')}}); background-size: cover; background-position: 50% 35%; padding: 40px 0 0;">
 				<div class="col-xs-12 heading-block center text-white">
-					<h1 style="color:white; text-shadow: 1px 1px #000">Productos</h1>
-					<span style="color:white; text-shadow: 1px 1px #000">Haz tu compra entre nuestra gran variedad de productos</span>
+					<h1 style="color:white; text-shadow: 1px 1px #000; font-size: 22px;">Supermercado online</h1>
+					<span style="color:white; text-shadow: 1px 1px #000">Te llevamos la compra al edificio el dia de tu entrada</span>
 				</div>
 			</div>
 			<div class="container-mobile ">
@@ -180,10 +180,6 @@
             });
         });
 
-		$('#cartButton').click(function(event) {
-            $('.content-cart').toggle();
-
-        });
 		
 	</script>
 @endsection

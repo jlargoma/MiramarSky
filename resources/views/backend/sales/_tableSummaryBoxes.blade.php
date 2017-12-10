@@ -103,7 +103,7 @@
 
 	<div class="row">
 	<div class="col-xs-12">
-		<div class="col-xs-6 bordered">
+		<div class="col-xs-4 bordered">
 			<div class="card-title text-black hint-text">
 				Dias ocupados
 			</div>
@@ -111,7 +111,7 @@
 				<h3 class="text-black font-w400 text-center"><?php echo $data['days-ocupation'] ?></h3>
 			</div>
 		</div>
-		<div class="col-xs-6 bordered">
+		<div class="col-xs-4 bordered">
 			<div class="card-title text-black hint-text">
 				Dias propios
 			</div>
@@ -119,8 +119,17 @@
 				<h3 class="text-black font-w400 text-center"><?php echo $data['dias-propios']; ?></h3>
 			</div>
 		</div>
+		<div class="col-xs-4 bordered">
+			<div class="card-title text-black hint-text">
+				Total reservas
+			</div>
+			<div class="p-l-20">
+				<h3 class="text-black font-w400 text-center"><?php echo count($books) ?></h3>
+			</div>
+		</div>
 	</div>
 	<div class="col-xs-12">
+		
 		<div class="col-xs-4 bordered">
 			<div class="card-title text-black hint-text">
 				Total noches
@@ -147,35 +156,35 @@
 		</div>
 	</div>
 	<div class="col-xs-12">
-		<div class="col-xs-6 bordered">
+		<div class="col-xs-3 bordered">
 			<div class="card-title text-black hint-text">
 				Nº Inquilinos
 			</div>
-			<div class="p-l-20">
+			<div class="">
 				<h3 class="text-black font-w400 text-center"><?php echo $data['num-pax'] ?></h3>
 			</div>
 		</div>
-		<div class="col-xs-6 bordered">
+		<div class="col-xs-3 bordered">
 			<div class="card-title text-black hint-text">
-				Estan. media (días)
+				Estan. (días)
 			</div>
-			<div class="p-l-20">
+			<div class="">
 				<h3 class="text-black font-w400 text-center"><?php echo round($data['estancia-media']) ?></h3>
 			</div>
 		</div>
-		<div class="col-xs-6 bordered">
+		<div class="col-xs-3 bordered">
 			<div class="card-title text-black hint-text">
 				Venta propia
 			</div>
-			<div class="p-l-20">
+			<div class="">
 				<h3 class="text-black font-w400 text-center"><?php echo round($data['propios']) ?>%</h3>
 			</div>
 		</div>
-		<div class="col-xs-6 bordered">
+		<div class="col-xs-3 bordered">
 			<div class="card-title text-black hint-text">
 				Venta agencia
 			</div>
-			<div class="p-l-20">
+			<div class="">
 				<h3 class="text-black font-w400 text-center"><?php echo round($data['agencia']) ?>%</h3>
 			</div>
 		</div>

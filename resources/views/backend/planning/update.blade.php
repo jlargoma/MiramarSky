@@ -826,20 +826,60 @@
                     </div>
                     <div class="row push-40 bg-white padding-block">
                         <div class="col-md-4 col-md-offset-4 col-xs-12 text-center">
-                            <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;">Guardar</button>
+                            <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;">Guardar reserva</button>
                         </div>  
                     </div>
                 </form>
             </div>
 
             <div class="col-md-6 col-xs-12 padding-block">
-               <div class="row">
-                   <div class="col-xs-12 bg-black push-0">
+                <div class="row push-20">
+                    <?php $hasFiance = \App\Fianzas::where('book_id', $book->id)->first(); ?>
+                    <div class="col-xs-12 push-20 ">
+                        <?php if ($book->type_book == 2): ?>
+                            <?php if ( count($hasFiance) > 0): ?>
+                                <div class="col-md-6 col-xs-12 text-center">
+
+                                    <button class="btn btn-primary btn-lg" type="button" id="fianza" style="color: #fff;background-color: #337ab7;border-color: #2e6da4;"> COBRAR FIANZA</button>
+                                </div>
+                            <?php else: ?>
+                                <div class="col-md-6 col-xs-12 text-center">
+
+                                    <a class="btn btn-primary btn-lg" href="{{ url('/admin/reservas/fianzas/cobrar/'.$book->id) }}" style="color: #fff;background-color: #337ab7;border-color: #2e6da4;"> RECOGER FIANZA</a>
+                                </div>
+                            <?php endif ?>
+                            
+                        <?php endif ?>
+                    </div>
+                    <?php if ($book->type_book == 2): ?>
+                        <div class="row content-fianza" style="display: none;">
+                            <?php if ( count($hasFiance) > 0): ?>
+                                <div class="col-md-6 col-md-offset-3 alert alert-info fade in alert-dismissable" style="margin-top: 30px; background-color: #10cfbd70!important;">
+                                    <h3 class="text-center font-w300">
+                                        CARGAR LA FIANZA
+                                    </h3>
+                                    <div class="row">
+                                        <form action="{{ url('admin/reservas/stripe/pay/fianza') }}" method="post">
+
+                                            <input type="hidden" name="id_fianza" value="<?php echo $hasFiance->id; ?>">
+                                            <div class="col-xs-12 text-center">
+                                                <button class="btn btn-primary">COBRAR</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            <?php endif ?>
+                            
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 bg-black push-0">
                         <h4 class="text-center white">
                            COBROS
                         </h4>
-                   </div>
-                   <div class="col-xs-12 not-padding">
+                    </div>
+                    <div class="col-xs-12 not-padding">
                        <div class="col-xs-4 not-padding bg-success text-white text-center" style="min-height: 50px">
                            <span class="font-s18">Total:</span><br>
                            <span class="font-w600 font-s18"><?php echo number_format($book->total_price,2,',','.') ?> €</span>
@@ -853,8 +893,8 @@
                            <!-- si esta pendiente nada,.si esta de mas +X -->
                            <span class="font-w600 font-s18"><?php echo ($book->total_price-$totalpayment) >= 0 ? "" : "+";echo number_format($totalpayment-$book->total_price,2,',','.') ?> €</span>
                        </div>
-                   </div>
-                   <div class="col-md-12 table-responsive not-padding ">
+                    </div>
+                    <div class="col-md-12 table-responsive not-padding ">
                        <table class="table  table-responsive table-striped" style="margin-top: 0;">
                            <thead>
                                <tr>
@@ -922,52 +962,13 @@
                                    </tr>
                            </tbody>
                        </table>
-                   </div>  
-                   <div class="col-xs-12 text-center push-40">
-                    <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="Cobrar" data-id="<?php echo $book->id ?>" style="width: 50%;min-height: 50px"> 
+                    </div>  
+                    <div class="col-xs-12 text-center push-40">
+                        <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="Cobrar" data-id="<?php echo $book->id ?>" style="width: 50%;min-height: 50px"> 
                     </div>
             </div>
 
-            <div class="row">
-                <?php $hasFiance = \App\Fianzas::where('book_id', $book->id)->first(); ?>
-                <div class="col-xs-12 push-20 ">
-                    <?php if ($book->type_book == 2): ?>
-                        <?php if ( count($hasFiance) > 0): ?>
-                            <div class="col-md-6">
-
-                                <button class="btn btn-primary btn-lg" type="button" id="fianza"> COBRAR FIANZA</button>
-                            </div>
-                        <?php else: ?>
-                            <div class="col-md-6">
-
-                                <a class="btn btn-primary btn-lg" href="{{ url('/admin/reservas/fianzas/cobrar/'.$book->id) }}"> RECOGER FIANZA</a>
-                            </div>
-                        <?php endif ?>
-                        
-                    <?php endif ?>
-                </div>
-                <?php if ($book->type_book == 2): ?>
-                    <div class="row content-fianza" style="display: none;">
-                        <?php if ( count($hasFiance) > 0): ?>
-                            <div class="col-md-6 col-md-offset-3 alert alert-info fade in alert-dismissable" style="margin-top: 30px; background-color: #10cfbd70!important;">
-                                <h3 class="text-center font-w300">
-                                    CARGAR LA FIANZA
-                                </h3>
-                                <div class="row">
-                                    <form action="{{ url('admin/reservas/stripe/pay/fianza') }}" method="post">
-
-                                        <input type="hidden" name="id_fianza" value="<?php echo $hasFiance->id; ?>">
-                                        <div class="col-xs-12 text-center">
-                                            <button class="btn btn-primary">COBRAR</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        <?php endif ?>
-                        
-                    </div>
-                <?php endif; ?>
-            </div>
+            
             <div class="row">
                 @include('backend.stripe.stripe', ['bookTocharge' => $book])
             </div>

@@ -68,7 +68,7 @@ class StoreController extends Controller
                 if (count($orderPendiente) > 0) {
                     return[
                             'status'   => 'warning',
-                            'title'    => 'Vaya!', 
+                            'title'    => 'Encontrada!', 
                             'response' => "Esta reserva ya tiene un pedido en curso, te estamos redirigiendo",
                             'data'     => base64_encode($book->id)
                         ];
@@ -155,7 +155,7 @@ class StoreController extends Controller
     {
         $orderProducts = \App\Products_orders::where('order_id', $request->order)->get();
         $order = \App\Orders::find($request->order);
-        return view('frontend.store._summaryCart', ['ordersProducts' => $orderProducts, 'order' => $order]);
+        return view('frontend.store._summaryCart', ['ordersProducts' => $orderProducts, 'order' => $order, 'mobile'         => new Mobile(),]);
 
     }
 

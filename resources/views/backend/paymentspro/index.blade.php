@@ -96,6 +96,9 @@
 	    							C. Total.   
 	    						</th>
 	    						<th class ="text-center bg-complete text-white">
+	    							C. Prop.   
+	    						</th>
+	    						<th class ="text-center bg-complete text-white">
 	    							C. Apto.   
 	    						</th>
 	    						<th class ="text-center bg-complete text-white">
@@ -131,6 +134,10 @@
 	    						</td>
 	    						<td class="text-center costeApto bordes">
 	    							<b><?php  echo number_format($summary['totalCost'],0,',','.') ?>€</b>
+	    						</td>
+	    						<td class="text-center costeApto bordes">
+	    							<?php $costeProp =  $summary['totalApto'] + $summary['totalParking'] + $summary['totalLujo']?>
+	    							<b><?php  echo number_format( $costeProp ,0,',','.') ?>€</b>
 	    						</td>
 	    						<td class="text-center">
 	    							<b><?php  echo number_format($summary['totalApto'],0,',','.') ?>€</b>
@@ -190,6 +197,9 @@
 			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
 									C. Total.   
 								</th>
+								<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+									C. Prop.   
+								</th>
 			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
 									C. Apto.   
 								</th>
@@ -248,6 +258,14 @@
 
 					        				<?php if (isset($data[$room->id]['totales']['totalCost'])): ?>
 					        					<?php echo number_format($data[$room->id]['totales']['totalCost'],0,',','.'); ?>€
+					        				<?php else: ?>
+					        					-----
+					        				<?php endif ?>
+					        			</td>
+					        			<td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
+											<?php $costPropTot =  $data[$room->id]['totales']['totalApto']+$data[$room->id]['totales']['totalParking']+$data[$room->id]['totales']['totalLujo']?>
+					        				<?php if ( $costPropTot  != 0): ?>
+					        					<?php echo number_format($costPropTot ,0,',','.'); ?>€
 					        				<?php else: ?>
 					        					-----
 					        				<?php endif ?>
@@ -620,10 +638,8 @@
 <div class="modal fade slide-up disable-scroll in" id="payments" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content-wrapper">
-			<div class="modal-content">
-				<div class="modal-body text-center" style="overflow-y: auto; max-height: 764px; padding: 15px;">
+			<div class="modal-content contentPayments" style="max-height: 650px; overflow-y: auto;">
 
-				</div>
 			</div>
 		</div>
 		<!-- /.modal-content -->
@@ -670,7 +686,7 @@
 				var id   = $(this).attr('data-id');
 				var month = $(this).attr('data-month');
 				$.get('/admin/pagos-propietarios/update/'+id+'/'+month,{ debt: debt}, function(data) {
-					$('.modal-body').empty().append(data);
+					$('.contentPayments').empty().append(data);
 				});
 			});
 

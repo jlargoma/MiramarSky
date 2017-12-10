@@ -147,9 +147,6 @@
 								<?php if ($book->type_luxury != 2): ?>
 									Sup. Lujo: <b><?php echo number_format($book->sup_lujo,2,',','.') ?> €</b><br>
 								<?php endif ?>
-								<?php if ($book->type_park != 2): ?>
-									Parking: <b><?php echo number_format($book->sup_park,2,',','.'); ?> €</b><br>
-								<?php endif ?>
 								Precio total: <b><?php echo number_format($book->total_price,2,',','.') ?> € </b><br>
 							</p>
 						</div>
@@ -232,9 +229,6 @@
 								Noches: <b><?php echo $book->nigths ?></b>  <br>
 								<?php if ($book->type_luxury != 2): ?>
 									Sup. Lujo: <b><?php echo number_format($book->sup_lujo,2,',','.') ?> €</b><br>
-								<?php endif ?>
-								<?php if ($book->type_park != 2): ?>
-									Parking: <b><?php echo number_format($book->sup_park,2,',','.'); ?> €</b><br>
 								<?php endif ?>
 								Precio total: <b><?php echo number_format($book->total_price,2,',','.') ?> € </b><br>
 							</p>

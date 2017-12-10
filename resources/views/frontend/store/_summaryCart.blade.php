@@ -171,3 +171,9 @@
 	</div>
 </div>
 <?php endif; ?>
+<script type="text/javascript">
+	$('#cartButton').click(function(event) {
+        $('.content-cart').toggle();
+
+    });
+</script>

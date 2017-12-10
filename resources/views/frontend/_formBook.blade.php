@@ -143,7 +143,7 @@
 
                 <div style="clear:both;"></div>
                 
-                <div class="form-group col-sm-12 col-xs-6 col-md-2">
+                <!-- <div class="form-group col-sm-12 col-xs-6 col-md-2">
                     <label class="col-md-12 parking white">*Parking</label>
                     <div class="col-xs-6 not-padding-mobile">
                         <input id="parking-yes" class="radio-style" name="parking" type="radio" checked="" value="si">
@@ -153,7 +153,7 @@
                         <input id="parking-no" class="radio-style" name="parking" type="radio" value="no">
                         <label for="parking-no" class="radio-style-3-label">No</label>
                     </div>
-                </div>
+                </div> -->
                 <div class="form-group col-sm-12 col-xs-6 col-md-2">
                     <label for="luxury" class="col-md-12 luxury white">* sup. lujo</label>
                     <div class="col-xs-6 not-padding-mobile"> 
