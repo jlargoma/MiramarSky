@@ -191,23 +191,6 @@
                            <?php else: ?>
                            <?php endif ?>
                        </div>
-
-                       <?php if (isset($payment[$book->id])): ?>
-                           <?php if ($payment[$book->id] == 0): ?>
-                               <div class="col-md-5 bg-success m-t-10">
-                               <b style="color: red;font-weight: bold">0%</b>
-                               </div>
-                           <?php else:?>
-                               <div class="col-md-5 ">
-                                   <p class="text-white m-t-10"><b style="color: red;font-weight: bold"><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></b></p>
-                               </div> 
-                                                                                          
-                           <?php endif; ?>
-                       <?php else: ?>
-                           <div class="col-md-5 bg-success">
-                               <b style="color: red;font-weight: bold">0%</b>
-                               </div>
-                       <?php endif ?>
                     </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
                         <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-primary sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" >
