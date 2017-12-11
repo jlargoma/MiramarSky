@@ -108,7 +108,8 @@
 					      	<li class="{{ Request::path() == 'admin/clientes' ? 'active' : '' }}"><a href="{{ url('admin/clientes') }}" class="detailed">Clientes</a></li>
 
 					      	<li class="{{ Request::path() == 'admin/apartamentos' ? 'active' : '' }}"><a href="{{ url('admin/apartamentos') }}" class="detailed">Apartamentos</a></li>
-
+							
+							<li class="{{ Request::path() == 'admin/facturas' ? 'active' : '' }}"><a href="{{ url('admin/facturas') }}" class="detailed">Facturas</a></li>
 						<?php endif ?>
 						
 

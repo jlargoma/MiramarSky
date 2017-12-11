@@ -133,9 +133,9 @@
 					<?php $roomsForUser = \App\Rooms::where('owned', $room->user->id)->get(); ?>
 					
 						
-						<?php if ( count($roomsForUser) <= 1): ?>
+						<?php if ( count($roomsForUser)  == 1): ?>
 							<div class="col-md-12 text-center">
-								<h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?></h1>
+								<h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1>
 							</div>
 						<?php else: ?>
 							<div class="col-md-3 col-md-offset-3 text-center">
@@ -204,6 +204,11 @@
 					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-4 push-10">
 						<button class="btn btn-success btn-cons text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/fiscalidad" ?>">
 							Fiscalidad
+						</button>
+					</div>
+					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-4 push-10">
+						<button class="btn btn-success btn-cons text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/facturas" ?>">
+							Facturas
 						</button>
 					</div>
 				</div>
@@ -578,6 +583,11 @@
 					<div class="col-xs-4 push-10" style="padding: 0px 5px">
 						<button class="btn btn-success text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/fiscalidad" ?>" style="width: 100%">
 							Fiscalidad
+						</button>
+					</div>
+					<div class="col-xs-4 push-10" style="padding: 0px 5px">
+						<button class="btn btn-success text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/facturas" ?>" style="width: 100%">
+							Facturas
 						</button>
 					</div>
 				</div>

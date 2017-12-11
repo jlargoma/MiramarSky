@@ -349,4 +349,37 @@ class OwnedController extends Controller
         }
     }
 
+
+    public function facturasOwned($name)
+    {
+        $room = \App\Rooms::where('nameRoom', $name)->first();
+        
+        if ($room->owned == Auth::user()->id) {
+
+
+            $room = \App\Rooms::where('nameRoom', $name)->first();
+
+        }elseif(Auth::user()->role == 'admin'){
+
+            $room = \App\Rooms::where('nameRoom', $name)->first();  
+
+        }else{ 
+            
+            return view('errors.owned-access');
+
+        }
+        // Año
+        if ( empty($year) ) {
+            $date = Carbon::now();
+        }else{
+            $year = Carbon::createFromFormat('Y',$year);
+            $date = $year->copy();
+
+        }
+
+        $books = \App\Book::where('room_id', $room->id)->whereIn('type_book',[2,7,8])->where('start','>=',$date->copy())->where('start','<=',$date->copy()->addYear())->orderBy('start','ASC')->get();
+
+
+        return view('backend.owned.facturas' , ['mobile'      => new Mobile(), 'books' => $books]);   
+    }
 }

@@ -4,8 +4,9 @@
 			<h2 style="font-weight: 800; color: red; text-align: center; font-family: 'Verdana'; font-size: 20px;">Documento Check In</h2>
 			<p style="color: black; font-family: 'Verdana';margin-bottom: 0;font-size: 12px; text-align: justify;">
 				<b>Nombre: <?php echo ucfirst($data['book']->customer->name) ?></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<b>DNI: _______________ </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<b>Teléfono: <?php echo ($data['book']->customer->phone)?$data['book']->customer->phone:"_______________"; ?></b>
+				<b>DNI: _______________ </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<b>Dirección: <?php echo ($data['book']->customer->address)?$data['book']->customer->address:"_________________________"; ?></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<b>Teléfono: <?php echo ($data['book']->customer->phone)?$data['book']->customer->phone:"___________"; ?></b>
 				<br>------------------------------------------------------------------------------------------------------<br> 
 				<b>Fecha reserva: 
 					<?php 
@@ -74,7 +75,7 @@
 			</span>
 			
 			<span style="position: absolute; bottom: 0px; right: 0px;">
-				Firmado: <b>Jaime Fernández Diez</b>
+				Firmado: <b>Jaime Díaz Fernández</b>
 			</span>
 
 <?php endfor; ?>

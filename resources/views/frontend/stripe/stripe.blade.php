@@ -144,9 +144,6 @@
 								Nº Ocupantes: <b><?php echo $book->pax ?> Pers </b><br>
 								Fechas: <b><?php echo $start->formatLocalized('%d %B %Y') ?> - <?php echo $finish->formatLocalized('%d %B %Y') ?> </b><br>
 								Noches: <b><?php echo $book->nigths ?></b>  <br>
-								<?php if ($book->type_luxury != 2): ?>
-									Sup. Lujo: <b><?php echo number_format($book->sup_lujo,2,',','.') ?> €</b><br>
-								<?php endif ?>
 								Precio total: <b><?php echo number_format($book->total_price,2,',','.') ?> € </b><br>
 							</p>
 						</div>
@@ -227,9 +224,6 @@
 								Nº Pers: <b><?php echo $book->pax ?> Pers </b><br>
 								Fechas: <b><?php echo $start->formatLocalized('%d %B') ?> - <?php echo $finish->formatLocalized('%d %B ') ?> </b><br>
 								Noches: <b><?php echo $book->nigths ?></b>  <br>
-								<?php if ($book->type_luxury != 2): ?>
-									Sup. Lujo: <b><?php echo number_format($book->sup_lujo,2,',','.') ?> €</b><br>
-								<?php endif ?>
 								Precio total: <b><?php echo number_format($book->total_price,2,',','.') ?> € </b><br>
 							</p>
 						</div>

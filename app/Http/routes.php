@@ -208,14 +208,18 @@ Route::get('/admin/reservas/api/checkSecondPay','BookController@checkSecondPay')
 	Route::get('admin/contabilidad/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@contabilidad']);
 	Route::get('admin/perdidas-ganancias' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@perdidas']);
 
+//Facturas
+	Route::get('admin/facturas/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'InvoicesController@index']);
+	Route::get('admin/facturas/ver/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@view']);
+	Route::get('admin/facturas/descargar/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@download']);
 	
-
 //Propietario
 	Route::get('admin/propietario/bloquear' , 'OwnedController@bloqOwned');
 	Route::get('admin/propietario/{name?}/operativa' , 'OwnedController@operativaOwned');
 	Route::get('admin/propietario/{name?}/tarifas' , 'OwnedController@tarifasOwned');
 	Route::get('admin/propietario/{name?}/descuentos' , 'OwnedController@descuentosOwned');
 	Route::get('admin/propietario/{name?}/fiscalidad' , 'OwnedController@fiscalidadOwned');
+	Route::get('admin/propietario/{name?}/facturas' , 'OwnedController@facturasOwned');
 	Route::get('admin/propietario/{name?}/{year?}' , 'OwnedController@index');
 
 
