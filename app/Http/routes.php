@@ -12,7 +12,6 @@
 */
 
 Route::auth();
-// Route::get('/',['middleware' => 'authSubAdmin','middleware' => 'authRole','uses' => 'Admin\BackendController@index']);
 Route::get('/','HomeController@index');
 Route::get('/sitemap','HomeController@siteMap');
 Route::get('/apartamentos/galeria/{apto}','HomeController@galeriaApartamento');
@@ -20,12 +19,13 @@ Route::get('/apartamentos/{apto}','HomeController@apartamento');
 Route::get('/fotos/{apto}','HomeController@apartamento');
 Route::get('/edificio-miramarski-sierra-nevada','HomeController@edificio');
 Route::get('/contacto','HomeController@contacto');
-//Correos Frontend
+
+/*Correos Frontend */
 	Route::post('/contacto-form','HomeController@formContacto');
 	Route::post('/contacto-ayuda','HomeController@formAyuda');
 	Route::post('/contacto-propietario','HomeController@formPropietario');
 	Route::post('/contacto-grupos','HomeController@formGrupos');
-// Correos Frontend
+/* Correos Frontend */
 Route::get('/terminos-condiciones','HomeController@terminos');
 Route::get('/politica-cookies','HomeController@politicaCookies');
 Route::get('/politica-privacidad','HomeController@politicaPrivacidad');
@@ -44,23 +44,29 @@ Route::post('/solicitudForfait','HomeController@solicitudForfait');
 
 
 /* SUPERMERCADO */
-Route::get('/supermercado','StoreController@index');
-Route::get('/supermercado/reserva/{id}','StoreController@cartByBook');
-Route::get('/supermercado/addCart','StoreController@addCart');
-Route::get('/supermercado/search/searchByName','StoreController@searchByName');
-Route::get('/supermercado/getSummaryCart','StoreController@getSummaryCart');
-Route::get('/searchBook','StoreController@searchBook');
-Route::get('/supermercado/pedidos/delete/{id}',function ($id)
-{
-	$orderProduct = \App\Products_orders::find($id);
-	if ($orderProduct->delete()) {
-		return redirect()->back();
-	}
-});
-Route::get('/supermercado/checkout/{id}','StoreController@checkout');
-Route::post('/supermercado/stripe/payment','StoreController@payment');
-
+	Route::get('/supermercado','StoreController@index');
+	Route::get('/supermercado/reserva/{id}','StoreController@cartByBook');
+	Route::get('/supermercado/addCart','StoreController@addCart');
+	Route::get('/supermercado/search/searchByName','StoreController@searchByName');
+	Route::get('/supermercado/getSummaryCart','StoreController@getSummaryCart');
+	Route::get('/searchBook','StoreController@searchBook');
+	Route::get('/supermercado/pedidos/delete/{id}',function ($id)
+	{
+		$orderProduct = \App\Products_orders::find($id);
+		if ($orderProduct->delete()) {
+			return redirect()->back();
+		}
+	});
+	Route::get('/supermercado/checkout/{id}','StoreController@checkout');
+	Route::post('/supermercado/stripe/payment','StoreController@payment');
 /* FIN SUPERMERCADO */
+
+/* ENCUESTAS */
+Route::get('/encuesta-satisfaccion','QuestionsController@index');
+Route::post('/questions/vote','QuestionsController@vote');
+
+
+/* FIN ENCUESTAS*/
 /* CRONTABS */
 Route::get('/admin/reservas/api/checkSecondPay','BookController@checkSecondPay');
 
@@ -79,9 +85,6 @@ Route::get('/admin/reservas/api/checkSecondPay','BookController@checkSecondPay')
 	Route::post('/reservas/stripe/payment/', 'StripeController@stripePaymentResponse');
 	Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePaymentBooking');
 
-
-	
-	// Route::post('admin/reservas/create' , 'BookController@create');
 	Route::get('admin/reservas' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@index']);
 	Route::get('admin/reservas/emails/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@emails']);
 	Route::get('admin/reservas/new' ,['middleware' => 'auth', 'uses' =>  'BookController@newBook']);
@@ -116,10 +119,6 @@ Route::get('/admin/reservas/api/checkSecondPay','BookController@checkSecondPay')
 
 	Route::get('admin/reservas/api/sendSencondEmail' ,['middleware' => 'auth', 'uses' =>  'BookController@sendSencondEmail']);
 	Route::get('/admin/reservas/fianzas/cobrar/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@cobrarFianzas']);
-
-	
-	
-	
 	Route::get('admin/cambiarCostes', 'BookController@changeCostes');
 	
 // Usuarios
