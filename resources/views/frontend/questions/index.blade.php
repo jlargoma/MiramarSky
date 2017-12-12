@@ -62,7 +62,7 @@
 							<?php foreach ($questions as $key => $question): ?>
 								<div class="col-md-6 col-xs-12 push-20">
 									<div class="col-xs-12">
-										<h3 class="text-left font-w300 push-0">
+										<h3 class="text-left font-w800 push-0" style="line-height: 1; letter-spacing: -1px;">
 											<?php echo $question->question; ?>
 										</h3>
 									</div>
@@ -92,9 +92,15 @@
 			<?php else: ?>
 				<div class="row">
 					<div class="col-padding">
-						<div class="heading-block center nobottomborder nobottommargin">
+						<div class="heading-block center nobottomborder push-20">
 							<h2 class="black">Muchas gracias por tus valoraciones!</h2>
-							<span class="black">Las tendremos muy en cuenta para seguir mejorando tus vacaciones..</span>
+							<span class="black">Las tendremos muy en cuenta para seguir mejorando tus vacaciones.</span>
+						</div>
+						<div class="heading-block center nobottomborder nobottommargin">
+							Nos encantaria contar con tu opinión tambien en Google, por favor rellena este formulario y ayudanos a crecer en Google.<br>
+							<a href="https://www.google.es/maps/place/Alquiler+Apartamento+de+Lujo+Sierra+Nevada+-+Edif+Miramar+Ski/@37.093311,-3.3991607,17z/data=!3m1!4b1!4m7!3m6!1s0xd71dd38d505f85f:0x4a99a1314ca01a9!8m2!3d37.093311!4d-3.396972!9m1!1b1">
+								Escribir reseña
+							</a>
 						</div>
 					</div>
 				</div>
@@ -127,11 +133,11 @@
 						</div>
 						<form id="form-votes" class="form-horizontal" action="{{ url('questions/vote')}}" method="post">
 		    				<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-							<div class="col-xs-12 push-20">
+							<div class="col-xs-12 push-30">
 								<?php foreach ($questions as $key => $question): ?>
 									<div class="col-md-6 col-xs-12 push-20">
 										<div class="col-xs-12">
-											<h3 class="text-left font-w300 push-0">
+											<h3 class="text-left font-w800 push-10" style="line-height: 1; letter-spacing: -1px;font-size: 18px;">
 												<?php echo $question->question; ?>
 											</h3>
 										</div>
@@ -164,9 +170,15 @@
 				<?php else: ?>
 					<div class="row">
 						<div class="col-padding">
+							<div class="heading-block center nobottomborder push-20">
+								<h2 class="black">Muchas gracias por tus valoraciones!</h2>
+								<span class="black">Las tendremos muy en cuenta para seguir mejorando tus vacaciones.</span>
+							</div>
 							<div class="heading-block center nobottomborder nobottommargin">
-								<h2 class="white">Muchas gracias por tus valoraciones!</h2>
-								<span class="white">Las tendremos muy en cuenta para seguir mejorando tus vacaciones..</span>
+								Nos encantaria contar con tu opinión tambien en Google, por favor rellena este formulario y ayudanos a crecer en Google.<br>
+								<a href="https://www.google.es/maps/place/Alquiler+Apartamento+de+Lujo+Sierra+Nevada+-+Edif+Miramar+Ski/@37.093311,-3.3991607,17z/data=!3m1!4b1!4m7!3m6!1s0xd71dd38d505f85f:0x4a99a1314ca01a9!8m2!3d37.093311!4d-3.396972!9m1!1b1">
+									Escribir reseña
+								</a>
 							</div>
 						</div>
 					</div>
