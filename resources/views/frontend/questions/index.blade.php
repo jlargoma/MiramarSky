@@ -58,6 +58,7 @@
 					</div>
 					<form id="form-votes" class="form-horizontal" action="{{ url('questions/vote')}}" method="post">
 	    				<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+	    				<input type="hidden" name="room_id" value="<?php echo $book->room_id; ?>">
 						<div class="col-xs-12 push-20">
 							<?php foreach ($questions as $key => $question): ?>
 								<div class="col-md-6 col-xs-12 push-20">
@@ -133,6 +134,7 @@
 						</div>
 						<form id="form-votes" class="form-horizontal" action="{{ url('questions/vote')}}" method="post">
 		    				<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+		    				<input type="hidden" name="room_id" value="<?php echo $book->room_id; ?>">
 							<div class="col-xs-12 push-30">
 								<?php foreach ($questions as $key => $question): ?>
 									<div class="col-md-6 col-xs-12 push-20">

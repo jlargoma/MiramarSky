@@ -92,19 +92,26 @@
                     </h4>
                     <h5>Creado por <?php echo "<b>".strtoupper($book->user->name)."</b>" ?></h5>
                     <?php if ($book->type_book == 2): ?>
-                        <div class="col-md-2 col-xs-4 text-center push-10">
+                        <div class="col-md-2 col-xs-3 text-center push-10">
                             <a href="{{ url('/admin/pdf/pdf-reserva/'.$book->id) }}">
-                                <img src="/img/pdf.png" style="width: 50px; float:left;">
+                                <img src="/img/pdf.png" style="width: 50px; float:left; margin: 0 auto;">
                             </a>
                         </div>
-                        <div class="col-md-2 col-xs-4 text-center push-10">
-                            <a href="tel:<?php echo $book->customer->phone ?>" style="width: 50px; float:left;">
-                                <i class="fa fa-phone  text-success" style="font-size: 48px;"></i>
+                        <div class="col-md-2 col-xs-3 text-center push-10">
+                            <?php $text = "Hola, esperamos que hayas disfrutado de tu estancia con nosotros."."\n"."Nos gustaria que valorarás, para ello te dejamos este link : https://www.apartamentosierranevada.net/encuesta-satisfaccion/".base64_encode($book->id);
+                                ?>
+                                    
+                            <a href="whatsapp://send?text=<?php echo $text; ?>" data-action="share/whatsapp/share" data-original-title="Enviar encuesta de satisfacción" data-toggle="tooltip">
+                                <i class="fa fa-share-square fa-3x" aria-hidden="true"></i><br>Encuesta
                             </a>
                         </div>
-
                     <?php endif ?>
-                    <div class="col-md-2 col-xs-4 text-center push-10 hidden-lg hidden-md">
+                    <div class="col-md-2 col-xs-3 text-center push-10">
+                        <a href="tel:<?php echo $book->customer->phone ?>" style="width: 50px; float:left;">
+                            <i class="fa fa-phone  text-success" style="font-size: 48px;"></i>
+                        </a>
+                    </div>
+                    <div class="col-md-2 col-xs-3 text-center push-10 hidden-lg hidden-md">
                         <h2 class="text-center" style="font-size: 18px; line-height: 18px; margin: 0;">
                             <?php $text = "En este link podrás realizar el pago de la señal por el 25% del total."."\n"." En el momento en que efectúes el pago, te legará un email confirmando tu reserva - https://www.apartamentosierranevada.net/reservas/stripe/pagos/".base64_encode($book->id);
                             ?>

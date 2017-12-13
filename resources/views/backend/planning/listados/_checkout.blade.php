@@ -12,6 +12,7 @@
             <th class="bg-primary text-white text-center">Out</th>
             <th class="bg-primary text-white text-center">Apto</th>
             <th class="bg-primary text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i>Salida</th>
+            <th class="bg-primary text-white text-center">A</th>
         </thead>
         <tbody>
             <?php foreach ($books as $book): ?>
@@ -57,7 +58,14 @@
                             <?php echo number_format($book->total_price,2,',','.') ?> €
                         <?php endif ?> -->
                     </td>
-                    
+                    <td class="text-center">
+                        <?php $text = "Hola, esperamos que hayas disfrutado de tu estancia con nosotros."."\n"."Nos gustaria que valorarás, para ello te dejamos este link : https://www.apartamentosierranevada.net/encuesta-satisfaccion/".base64_encode($book->id);
+                            ?>
+                                
+                        <a href="whatsapp://send?text=<?php echo $text; ?>" data-action="share/whatsapp/share" class="btn btn-success btn-sm" data-original-title="Enviar encuesta de satisfacción" data-toggle="tooltip">
+                            <i class="fa fa-whatsapp" aria-hidden="true"></i>
+                        </a>
+                    </td>
                 </tr>
             <?php endforeach ?>
         </tbody>

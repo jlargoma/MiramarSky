@@ -62,7 +62,7 @@ Route::post('/solicitudForfait','HomeController@solicitudForfait');
 /* FIN SUPERMERCADO */
 
 /* ENCUESTAS */
-Route::get('/encuesta-satisfaccion','QuestionsController@index');
+Route::get('/encuesta-satisfaccion/{id}','QuestionsController@index');
 Route::post('/questions/vote','QuestionsController@vote');
 
 
@@ -211,6 +211,9 @@ Route::get('/admin/reservas/api/checkSecondPay','BookController@checkSecondPay')
 	Route::get('admin/facturas/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'InvoicesController@index']);
 	Route::get('admin/facturas/ver/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@view']);
 	Route::get('admin/facturas/descargar/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@download']);
+
+//Facturas
+	Route::get('admin/encuestas/{year?}/{apto?}' ,['middleware' => 'authAdmin', 'uses' => 'QuestionsController@admin']);
 	
 //Propietario
 	Route::get('admin/propietario/bloquear' , 'OwnedController@bloqOwned');
