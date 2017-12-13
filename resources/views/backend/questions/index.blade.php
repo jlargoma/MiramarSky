@@ -10,7 +10,7 @@
 
     
 
-@endsection
+@endsection 
 
 @section('content')
 
@@ -70,7 +70,7 @@
                     <?php else: ?>
                         <?php $resultsQuestion =  \App\Http\Controllers\QuestionsController::getDataByQuestion($question->id, "" , $date->copy()->format('Y')) ?> 
                     <?php endif ?>
-                    <div class="col-md-3 push-20" >
+                    <div class="col-md-3 col-xs-12 push-20" >
                         <div class="col-xs-12" style="background-color: green; height: 110px">
                             <div class="col-xs-12">
                                 <div class="row">
