@@ -1181,10 +1181,20 @@ class BookController extends Controller
                 $books = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[2])->orderBy('created_at','DESC')->get();
                 break;
             case 'checkin':
-                $books = \App\Book::where('start','>=',$date->copy()->subWeek())->where('type_book',2)->orderBy('start','ASC')->get();
+                $dateX = Carbon::now();
+                $books = \App\Book::where('start','>',$dateX->copy()->subDays(3))
+                                    ->where('finish','<',$dateX->copy()->addYear())
+                                    ->where('type_book',2)
+                                    ->orderBy('start','ASC')
+                                    ->get();
                 break;
             case 'checkout':
-                $books = \App\Book::where('start','>=',$date->copy()->subWeek())->where('type_book',2)->orderBy('start','ASC')->get();
+                $dateX = Carbon::now();
+                $books = \App\Book::where('start','>',$dateX->copy()->subDays(3))
+                                    ->where('finish','<',$dateX->copy()->addYear())
+                                    ->where('type_book',2)
+                                    ->orderBy('start','ASC')
+                                    ->get();
                 break;
         }
 
@@ -1388,6 +1398,7 @@ class BookController extends Controller
         }else{
             $date = new Carbon('first day of September '.$year);
         }
+
         switch ($type) {
             case 'pendientes':
                 $books = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[3])->orderBy('created_at','DESC')->get();
@@ -1402,13 +1413,23 @@ class BookController extends Controller
 
                 break;
             case 'checkin':
+
+
                 $dateX = Carbon::now();
-                $books = \App\Book::where('start','>=',$dateX->copy()->subDays(3))->where('type_book',2)->orderBy('start','ASC')->get();
+                $books = \App\Book::where('start','>',$dateX->copy()->subDays(3))
+                                    ->where('finish','<',$dateX->copy()->addYear())
+                                    ->where('type_book',2)
+                                    ->orderBy('start','ASC')
+                                    ->get();
 
                 break;
             case 'checkout':
                 $dateX = Carbon::now();
-                $books = \App\Book::where('start','>=',$dateX->copy()->subDays(3))->where('type_book',2)->orderBy('start','ASC')->get();
+                $books = \App\Book::where('start','>=',$dateX->copy()
+                                    ->subDays(3))
+                                    ->where('type_book',2)
+                                    ->orderBy('start','ASC')
+                                    ->get();
                 break;
         }
 
