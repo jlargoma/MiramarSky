@@ -121,10 +121,12 @@
                 <div class="col-md-2 col-xs-6">
                     <label>Pax</label>
                     <select class=" form-control pax minimal"  name="pax">
-                        <?php for ($i=1; $i <= 10 ; $i++): ?>
-                            <option value="<?php echo $i ?>">
-                                <?php echo $i ?>
-                            </option>
+                        <?php for ($i=1; $i <= 12 ; $i++): ?>
+                            <?php if ($i != 9 && $i != 11): ?>
+                                <option value="<?php echo $i ?>">
+                                    <?php echo $i ?>
+                                </option>
+                            <?php endif; ?>
                         <?php endfor;?>
                     </select>
                    
@@ -132,11 +134,13 @@
                 <div class="col-md-2 col-xs-6">
                      <label style="color: red">Pax-reales</label>
                      <select class=" form-control real_pax minimal"  name="real_pax" style="color:red">
-                         <?php for ($i=1; $i <= 10 ; $i++): ?>
-                             <option value="<?php echo $i ?>" style="color:red">
-                                 <?php echo $i ?>
-                             </option>
-                         <?php endfor;?>
+                        <?php for ($i=1; $i <= 12 ; $i++): ?>
+                            <?php if ($i != 9 && $i != 11): ?>
+                                <option value="<?php echo $i ?>">
+                                    <?php echo $i ?>
+                                </option>
+                            <?php endif; ?>
+                        <?php endfor;?>
                      </select>
                    
                 </div>
@@ -472,8 +476,8 @@
 
         $('.pax').change(function(event){ 
             var room = $('#newroom').val();
-            var real_pax =$('.real_pax').val();
-            var pax = $('.pax').val();
+            var real_pax = $('.real_pax').val();
+            var pax = parseInt($('.pax').val());
 
             $('.real_pax option[value='+pax+']').attr('selected','selected');
             $('.real_pax option[value='+real_pax+']').removeAttr('selected');

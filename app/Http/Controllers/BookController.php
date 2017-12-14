@@ -47,10 +47,10 @@ class BookController extends Controller
 
         $stripe = StripeController::$stripe;
         $stripedsPayments = \App\Payments::where('comment', 'LIKE', '%stripe%')
-                                                            ->whereYear('created_at','=', date('Y'))
-                                                            ->whereMonth('created_at','=', date('m'))
-                                                            ->whereDay('created_at','=', date('d'))
-                                                            ->get();
+                                                    ->whereYear('created_at','=', date('Y'))
+                                                    ->whereMonth('created_at','=', date('m'))
+                                                    ->whereDay('created_at','=', date('d'))
+                                                    ->get();
         // Notificaciones de alertas booking
         $notifyes = \App\BookNotification::all();
         $notifications = 0;
@@ -934,6 +934,10 @@ class BookController extends Controller
         foreach ($book->notifications as $key => $notification) {
            $notification->delete();
         }
+        foreach ($book->pago as $key => $payment) {
+           $payment->delete();
+        }
+
         if ($book->delete()) {
             return ['status' => 'success','title' => 'OK', 'response' => "Reserva borrada correctamente"];
         }else{
@@ -1238,7 +1242,22 @@ class BookController extends Controller
             $date = new Carbon('first day of September '.$request->year);
         }
 
-        $books = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[2])->orderBy('created_at','DESC')->take(10)->get();
+        $Idbooks = array();//\
+
+        foreach (\App\Payments::orderBy('id', 'DESC')->get() as $key => $payment) {
+            if (! in_array($payment->book_id, $Idbooks) ) {
+
+                $Idbooks[] = $payment->book_id;
+
+            }
+            
+            if (count($Idbooks) == 10) 
+                break;
+            
+        }
+
+        $books = \App\Book::whereIn('id',$Idbooks)->get();
+
 
         return view('backend.planning._lastBookPayment', compact('books', 'mobile'));
 

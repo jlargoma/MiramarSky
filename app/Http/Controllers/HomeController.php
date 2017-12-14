@@ -323,7 +323,7 @@ class HomeController extends Controller
 
         $pax = $request->input('quantity');
 
-        if ($paxPerRoom > $request->input('quantity')) {
+        if ($paxPerRoom > $pax) {
             $pax = $paxPerRoom;
         }
 

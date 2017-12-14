@@ -33,14 +33,17 @@
 					<!-- <input type="button" value="-" class="minus black" style=" color: black;">
 					<input id="quantity" type="text" name="quantity" value="4" class="qty" style="background: white; color: black;"> -->
                     <select id="quantity" class="sm-form-control" name="quantity">
-                        <?php for ($i = 1;  $i <= 8 ; $i++): ?>
-                            <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                        <?php for ($i = 1;  $i <= 12 ; $i++): ?>
+                            <?php if ($i != 9 && $i != 11): ?>
+                                <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                            <?php endif ?>
+                            
                         <?php endfor ?>
                     </select>
 					<!-- <input type="button" value="+" class="plus black" style=" color: black;"> -->
 				</div>
                 
-                <p class="help-block white hidden-sm hidden-xs" style="line-height:1.2">Máx 8 pers</p>
+                <p class="help-block white hidden-sm hidden-xs" style="line-height:1.2">Máx 12 pers</p>
                <!--  <p class="help-block white hidden-sm hidden-xs" style="color: white; line-height:1.2;">    
                     <b>* SOLICITAR APTO DOS DORM 6 PAX</b>
                 </p> -->
@@ -120,13 +123,15 @@
                     <label for="quantity" style="display: inherit!important;">*Pers</label>
                     <div class="quantity center clearfix divcenter">
                         <select id="quantity" class="sm-form-control" name="quantity" aria-label="Selecciona el numero de personas">
-                            <?php for ($i = 1;  $i <= 8 ; $i++): ?>
-                                <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                            <?php for ($i = 1;  $i <= 12 ; $i++): ?>
+                                <?php if ($i != 9 && $i != 11): ?>
+                                    <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                                <?php endif ?>
                             <?php endfor ?>
                         </select>
                     </div>
                     
-                    <p class="help-block white hidden-sm hidden-xs" style="line-height:1.2">Máximo 8 personas</p>
+                    <p class="help-block white hidden-sm hidden-xs" style="line-height:1.2">Máximo 12 personas</p>
 
                 </div>
                 <div class="form-group col-sm-12 col-xs-7 col-md-3" style="padding: 0">

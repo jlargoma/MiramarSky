@@ -62,12 +62,14 @@
                                         <label for="quantity" style="display: inherit!important;">*Personas</label>
                                         <div class="quantity center clearfix divcenter">
                                             <select id="quantity" class="form-control minimal" name="quantity">
-                                                <?php for ($i = 1;  $i <= 8 ; $i++): ?>
-                                                    <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                                                <?php for ($i = 1;  $i <= 12 ; $i++): ?>
+                                                    <?php if ($i != 9 && $i != 11): ?>
+                                                        <option value="<?php echo $i ?>"><?php echo $i ?></option>  
+                                                    <?php endif ?>
                                                 <?php endfor ?>
                                             </select>
                                         </div>
-                                        <p class="help-block hidden-sm hidden-xs" style="line-height:1.2">Máx 8 pers</p>
+                                        <p class="help-block hidden-sm hidden-xs" style="line-height:1.2">Máx 12 pers</p>
                                     </div>
                                         
                                     <div class="form-group col-sm-12 col-xs-4 col-md-3" style="padding: 0">

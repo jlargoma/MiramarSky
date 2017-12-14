@@ -12,7 +12,7 @@
     <div class="alert alert-info fade in alert-dismissable" style="background-color: #daeffd!important;">
         <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a> -->
         <!-- <strong>Info!</strong> This alert box indicates a neutral informative change or action. -->
-        <h4 class="text-center">Últimas confirmadas</h4>
+        <h4 class="text-center">Últimas Pagadas</h4>
         <table class="table" style="margin-top: 0;">
             <tbody>
                 <?php foreach ($books as $key => $book): ?>
@@ -51,6 +51,7 @@
                              <b><?php echo $book->total_price ?>€</b>
                         </td>
                         <td class="text-center" style="color: black;">  
+
                             <?php $payments = \App\Payments::where('book_id', $book->id)->get(); ?>
                             <?php $paymentBook = 0; ?>
                             <?php $fromStripe = false; ?>
@@ -63,14 +64,13 @@
                                     
                                 <?php endforeach ?>
                             <?php endif ?>
-
-                            <?php echo  $paymentBook." €" ?>
-
+                            <?php echo  $paymentBook." €" ?> <br>
+                            <b><?php echo  round(($paymentBook/$book->total_price)*100)?>%</b>
+                        </td>
+                        <td class="text-center">
                             <?php if ($fromStripe): ?>
                                 <a target="_blank" href="https://dashboard.stripe.com/payments"><img src="/img/stripe-icon.jpg" style="width: 20px;"></a>
-                            <?php else: ?>
-                                &nbsp;
-                            <?php endif ?>      
+                            <?php endif ?> 
                         </td>
                     </tr>
                     <?php if($key == 4) break; ?>
@@ -82,12 +82,12 @@
 
 <?php else: ?>
 
-    <div class="row table-responsive" >
+    <div class="row" >
         <div class="col-xs-12" style="background-color: #daeffd!important;">
             <div class="row">
                 <h4 class="text-center">Últimas confirmadas</h4>
             </div>
-            <div class="row ">
+            <div class="row table-responsive">
                 <table class="table table-striped" style="margin-top: 0;">
                     <tbody>
                         <?php foreach ($books as $key => $book): ?>
@@ -101,7 +101,7 @@
                                 </td>
                                 <td class ="text-center" style="color: black;padding: 5px!important;">  
                                     <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
-                                        <?php echo $book->customer->name ?>
+                                        <?php echo substr($book->customer->name, 0, 10) ?>
                                     </a> 
                                     
                                 </td>
@@ -125,8 +125,11 @@
                                         ?>        
                                     </b>           
                                 </td>
-                                <td class="text-center" style="color: black;padding: 5px!important;">
-                                    <b><?php echo $book->total_price ?>€</b><br>
+                                <td class="text-center" style="color: black;padding: 5px!important;font-size: 12px;">
+                                    <b><?php echo round($book->total_price) ?>€</b>
+                                </td>
+                                <td class="text-center" style="color: black;font-size: 12px;">  
+
                                     <?php $payments = \App\Payments::where('book_id', $book->id)->get(); ?>
                                     <?php $paymentBook = 0; ?>
                                     <?php $fromStripe = false; ?>
@@ -139,14 +142,13 @@
                                             
                                         <?php endforeach ?>
                                     <?php endif ?>
-
-                                    <?php echo  $paymentBook." €" ?>
-
+                                    <?php echo  $paymentBook." €" ?> <br>
+                                    <b class="text-danger"><?php echo  round(($paymentBook/$book->total_price)*100)?>%</b>
+                                </td>
+                                <td class="text-center">
                                     <?php if ($fromStripe): ?>
                                         <a target="_blank" href="https://dashboard.stripe.com/payments"><img src="/img/stripe-icon.jpg" style="width: 20px;"></a>
-                                    <?php else: ?>
-                                        &nbsp;
-                                    <?php endif ?>      
+                                    <?php endif ?> 
                                 </td>
                             </tr>
                             <?php if($key == 4) break; ?>

@@ -243,18 +243,22 @@
                             <div class="col-md-1 col-xs-3 p-l-0 p-r-0" style="margin-bottom: -10px!important">
                                 <label>Pax</label>
                                 <select class=" form-control pax minimal"  name="pax">
-                                    <?php for ($i=1; $i <= 10 ; $i++): ?>
-                                        <option value="<?php echo $i ?>" <?php echo ($i == $book->pax)?"selected":""; ?>>
-                                            <?php echo $i ?>
-                                        </option>
+                                    <?php for ($i=1; $i <= 12 ; $i++): ?>
+                                        <?php if ($i != 9 && $i != 11): ?>
+                                            <option value="<?php echo $i ?>">
+                                                <?php echo $i ?>
+                                            </option>
+                                        <?php endif; ?>
                                     <?php endfor;?>
                                 </select>
                                 <label class="m-t-5" style="color: red">Pax-Real</label>
                                 <select class=" form-control real_pax minimal"  name="real_pax">
-                                    <?php for ($i=1; $i <= 10 ; $i++): ?>
-                                        <option value="<?php echo $i ?>" <?php echo ($i == $book->real_pax)?"selected":""; ?> style="color: red">
-                                            <?php echo $i ?>
-                                        </option>
+                                    <?php for ($i=1; $i <= 12 ; $i++): ?>
+                                        <?php if ($i != 9 && $i != 11): ?>
+                                            <option value="<?php echo $i ?>" <?php echo ($i == $book->real_pax)?"selected":""; ?> style="color: red">
+                                                <?php echo $i ?>
+                                            </option>
+                                        <?php endif; ?>
                                     <?php endfor;?>
                                 </select>
                             </div>
