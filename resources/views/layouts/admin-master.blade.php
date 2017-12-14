@@ -114,7 +114,7 @@
 							</li>
 
 							<li class="{{ Request::path() == 'admin/supermercado' ? 'active' : '' }}">
-								<a href="#" class="detailed">Supermercado</a>
+								<a href="#" class="detailed">Super</a>
 							</li>
 						<?php endif ?>
 						
