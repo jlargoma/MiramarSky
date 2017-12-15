@@ -361,12 +361,16 @@ class HomeController extends Controller
             $parking = 2;
         }
 
+        if ($typeApto == "3 DORM Lujo") {
+            $priceParking = $priceParking * 3;
+        }
+
         if ($request->input('luxury') == 'si') {
             $luxury = 50;
         }else{
             $luxury = 0;
         }
-        
+     
         $total =  $price + $priceParking + $limp + $luxury;  
         $dni = $request->input('dni');
         $address = $request->input('address');

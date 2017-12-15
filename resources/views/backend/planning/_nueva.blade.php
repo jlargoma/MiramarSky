@@ -365,7 +365,7 @@
             }
         }else{
 
-            $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays}).success(function( data ) {
+            $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays, room: room}).success(function( data ) {
                 pricePark = data;
                 $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
                     priceLujo = data;
