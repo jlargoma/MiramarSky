@@ -1107,7 +1107,7 @@ class BookController extends Controller
         if ($request->input('parking') == 'si') {
             $priceParking = 18 * $countDays;
             if ($typeApto == "3 DORM Lujo") {
-                $priceParking = $priceParking;
+                $priceParking = $priceParking * 3;
             }
             $parking = 1;
         }else{
