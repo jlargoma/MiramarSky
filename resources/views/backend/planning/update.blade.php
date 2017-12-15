@@ -140,17 +140,15 @@
                     <h5 class="guardar" style="font-weight: bold; display: none; font-size: 15px;"></h5>
                 </div>
             </div>
-            <div class="col-md-6">
-
-                <?php if ( isset($_GET['saveStatus']) && !empty($_GET['saveStatus']) ): ?>
-                    <div class="col-lg-6 content-alert-error2" >
-                        <div class="alert alert-danger alert-dismissable">
+            <div class="col-md-6 col-xs-12">
+                @if(Request::has('msg_type'))
+                    <div class="col-lg-12 col-xs-12 content-alert-error2" >
+                        <div class="alert alert-success alert-dismissable">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true" style="right: 0">×</button>
-                            <h3 class="font-w300 push-15">Error</h3>
-                            <p><a class="alert-link" href="javascript:void(0)">Ya hay una reserva para ese apartamento</a>!</p>
+                            <h3 class="font-w300 push-15">OK, Cobrado correctamente</h3>
                         </div>
                     </div>
-                <?php endif ?>
+                @endif
             </div>
         </div>
     </div>

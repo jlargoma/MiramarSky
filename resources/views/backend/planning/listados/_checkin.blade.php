@@ -2,7 +2,8 @@
         setlocale(LC_TIME, "ES"); 
         setlocale(LC_TIME, "es_ES"); 
 ?>
-
+<?php $startWeek = Carbon::now()->startOfWeek(); ?>
+<?php $endWeek = Carbon::now()->endOfWeek(); ?>
 <?php if(!$mobile->isMobile() ): ?>
     <div class="tab-pane" id="tabPagadas">
         <div class="row">
@@ -26,8 +27,16 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <?php $count = 0 ?>
                     <?php foreach ($books as $book): ?>
-                        <tr>
+                        <?php if ( $book->start >= $startWeek->copy()->format('Y-m-d') && $book->start <= $endWeek->copy()->format('Y-m-d')): ?>
+                            <?php $class = "" ?>
+                        <?php else: ?>
+                            <?php $class = "lined"; $count++ ?>
+                        <?php endif ?>
+
+
+                        <tr class="<?php if($count <= 1){echo $class;} ?>">
 
                             <td class="text-center">
                                 <?php if ($book->agency != 0): ?>
@@ -119,9 +128,17 @@
                                                 
                             </td>
                             <td class="text-center sm-p-t-10 sm-p-b-10">
-                                <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-primary sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" >
-                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
-                                </button> 
+
+                                <?php if ($book->send == 1): ?>
+                                    <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-default sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="1">
+                                        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                    </button> 
+                                <?php else: ?>
+                                    <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-primary sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="0">
+                                        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                    </button> 
+                                <?php endif ?>
+                                
                             </td>
                         </tr>
                     <?php endforeach ?>
@@ -145,8 +162,15 @@
             <th class="bg-success text-white text-center" style="min-width:60px">a</th>
         </thead>
         <tbody>
+            <?php $count = 0 ?>
             <?php foreach ($books as $book): ?>
-                <tr class="<?php echo ucwords($book->getStatus($book->type_book)) ;?>">
+                <?php if ( $book->start >= $startWeek->copy()->format('Y-m-d') && $book->start <= $endWeek->copy()->format('Y-m-d')): ?>
+                    <?php $class = "" ?>
+                <?php else: ?>
+                    <?php $class = "lined"; $count++ ?>
+                <?php endif ?>
+
+                <tr class="<?php if($count <= 1){echo $class;} ?> <?php echo ucwords($book->getStatus($book->type_book)) ;?>">
                     
                     <td class="text-center">
                         <?php if ($book->agency != 0): ?>
@@ -193,9 +217,15 @@
                        </div>
                     </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
-                        <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-primary sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" >
-                            <i class="fa fa-paper-plane" aria-hidden="true"></i>
-                        </button> 
+                        <?php if ($book->send == 1): ?>
+                            <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-default sendSecondPay" type="button" data-toggle="   tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="1">
+                               <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                            </button> 
+                        <?php else: ?>
+                            <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-primary sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="0">
+                               <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                            </button> 
+                        <?php endif ?>
                     </td>
                 </tr>
             <?php endforeach ?>

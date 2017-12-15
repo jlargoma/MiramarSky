@@ -28,10 +28,10 @@
 			<span class="push-10 font-s18 black font-w300 pull-left">Sup. Lujo:<?php if($luxury > 0): ?>(SI)<?php else: ?>(NO)<?php endif; ?></span>
 			<span class="center push-10 font-s18 black font-w300 pull-right"><span class="font-w800"><?php echo number_format($luxury,0,'','.')?>€</span></span>
 		</div>
-		<div class="row push-10">
+		<!-- <div class="row push-10">
 			<span class="push-10 font-s18 black font-w300 pull-left">Parking:<?php if($priceParking > 0): ?>(SI)<?php else: ?>(NO)<?php endif; ?></span>
 			<span class="center push-10 font-s18 black font-w300 pull-right"><span class="font-w800"><?php echo number_format($priceParking,0,'','.')?>€</span></span>
-		</div>
+		</div> -->
 	</div>
 	<div class="line" style="margin-bottom: 10px;"></div>
 

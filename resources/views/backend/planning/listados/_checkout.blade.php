@@ -15,8 +15,14 @@
             <th class="bg-primary text-white text-center">A</th>
         </thead>
         <tbody>
+            <?php $count = 0 ?>
             <?php foreach ($books as $book): ?>
-                <tr>
+                <?php if ( $book->start >= $startWeek->copy()->format('Y-m-d') && $book->start <= $endWeek->copy()->format('Y-m-d')): ?>
+                    <?php $class = "" ?>
+                <?php else: ?>
+                    <?php $class = "lined"; $count++ ?>
+                <?php endif ?>
+                <tr class="<?php if($count <= 1){echo $class;} ?>">
                     <td class="text-center sm-p-t-10 sm-p-b-10">
                         <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                             <?php echo substr($book->customer->name, 0, 10) ?>

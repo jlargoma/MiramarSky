@@ -117,7 +117,7 @@ class BookController extends Controller
 
             if($customer->save()){
                 //Creacion de la reserva
-                $book->user_id       = $customer->user_id;
+                $book->user_id       = 39;
                 $book->customer_id   = $customer->id;
                 $book->room_id       = $request->input('newroom');
                 $book->start         = Carbon::createFromFormat('d/m/Y',$start);
@@ -132,9 +132,26 @@ class BookController extends Controller
                 $book->PVPAgencia    = ( $request->input('agencia') )?$request->input('agencia'):0;
 
                 $room                = \App\Rooms::find($request->input('newroom'));
-                $book->sup_limp      = ($room->sizeApto == 1) ? 30 : 50;
+                if ($room->sizeApto == 1) {
+
+                    $book->sup_limp      = 30;
+                    $book->cost_limp     = 30;
 
 
+                } elseif($room->sizeApto == 2) {
+
+                    $book->sup_limp      = 50;
+                    $book->cost_limp     = 40;
+
+
+                }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
+
+                    $book->sup_limp      = 100;
+                    $book->cost_limp     = 90;
+
+
+                }
+                
                 $book->sup_park      = $this->getPriceParkController($request->input('parking'), $request->input('nigths'));
                 $book->type_park     = $request->input('parking');
 
@@ -146,7 +163,7 @@ class BookController extends Controller
                 if ($room->typeApto == 3 || $room->typeApto == 1) {
                     $book->cost_apto     = 0;        
                 }else{
-                    $book->cost_apto     = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
+                    $book->cost_apto     = $book->getCostBook( $start, $finish, $request->input('pax'), $request->input('newroom'));
                 }
                 
                 $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
@@ -272,7 +289,25 @@ class BookController extends Controller
 
                         $book->PVPAgencia  = ( $request->input('agencia') )?$request->input('agencia'):0;
                         $book->sup_limp    = ($room->sizeApto == 1) ? 30 : 50;
-                        $book->cost_limp   = ($room->sizeApto == 1) ? 30 : 40;
+                        if ($room->sizeApto == 1) {
+
+                            $book->sup_limp      = 30;
+                            $book->cost_limp     = 30;
+
+
+                        } elseif($room->sizeApto == 2) {
+
+                            $book->sup_limp      = 50;
+                            $book->cost_limp     = 40;
+
+
+                        }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
+
+                            $book->sup_limp      = 100;
+                            $book->cost_limp     = 90;
+
+
+                        }
                         $book->sup_park    = $this->getPriceParkController($request->input('parking'), $request->input('nigths'));
                         $book->cost_park   = $this->getCostParkController($request->input('parking'),$request->input('nigths'));
                         $book->sup_lujo    = $this->getPriceLujo($request->input('type_luxury'));
@@ -516,7 +551,22 @@ class BookController extends Controller
         $paxPerRoom = \App\Rooms::getPaxRooms($request->pax,$request->room);
 
         $room = \App\Rooms::find($request->room);
-        $suplimp =  ($room->sizeApto == 1 )? 30 : 50 ;
+        if ($room->sizeApto == 1) {
+
+            $suplimp      = 30;
+
+
+        } elseif($room->sizeApto == 2) {
+
+            $suplimp      = 50;
+
+
+        }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
+
+            $suplimp      = 100;
+
+
+        }
         $pax = $request->pax;
         if ($paxPerRoom > $request->pax) {
             $pax = $paxPerRoom;
@@ -960,64 +1010,33 @@ class BookController extends Controller
         $finish = Carbon::createFromFormat('d M, y' , trim($date[1]));
         $countDays = $finish->diffInDays($start);
 
-        $roomAssigned = 111;
-        if ($request->input('apto') == '2dorm' && $request->input('luxury') == 'si') {
-            
-            $rooms = \App\Rooms::where('sizeApto', 2)->where('luxury', 1)->orderBy('order', 'ASC')->get();
+        if ($request->input('quantity') <= 8) {
+            if ($request->input('apto') == '2dorm' && $request->input('luxury') == 'si') {
+               $roomAssigned = 115;
+               $typeApto  = "2 DORM Lujo";
+               $limp = 50;
+           }elseif($request->input('apto') == '2dorm' && $request->input('luxury') == 'no'){
+               $roomAssigned = 122;
+               $typeApto  = "2 DORM estandar";
+               $limp = 50;
+           }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'si'){
+               $roomAssigned = 138;
+               $limp = 30;
+               $typeApto  = "Estudio Lujo";
 
-            if ( count($rooms) > 0) {
-                    foreach ($rooms as $key => $room) {
-                        if ( \App\Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'), $room->id) ) {
-                            $roomAssigned =  $room->id;
-                            break;
-                        }
-                    }
-            }
-            $typeApto  = "2 DORM Lujo";
-            $limp = 50;
-        }
-        if($request->input('apto') == '2dorm' && $request->input('luxury') == 'no'){
-            $rooms = \App\Rooms::where('sizeApto', 2)->where('luxury', 0)->orderBy('order', 'ASC')->get();
+           }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'no'){
+               $roomAssigned = 110;
+               $typeApto  = "Estudio estandar";
+               $limp = 30;
+           }
+        } else {
+            /* Rooms para grandes capacidades */
 
-            if ( count($rooms) > 0) {
-                foreach ($rooms as $key => $room) {
-                    if ( \App\Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'), $room->id) ) {
-                        $roomAssigned =  $room->id;
-                        break;
-                    }
-                }
-            }
-            $typeApto  = "2 DORM estandar";
-            $limp = 50;
-        }
-        if($request->input('apto') == 'estudio' && $request->input('luxury') == 'si'){
-            $rooms = \App\Rooms::where('sizeApto', 1)->where('luxury', 1)->orderBy('order', 'ASC')->get();
-            if ( count($rooms) > 0) {
-                foreach ($rooms as $key => $room) {
-                    if ( \App\Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'), $room->id) ) {
-                        $roomAssigned =  $room->id;
-                        break;
-                    }
-                }
-            }
-            /* $room = 116;  A definir por jorge */
-            $limp = 30;
-            $typeApto  = "Estudio Lujo";
+            $roomAssigned = 149;
+            $typeApto  = "3 DORM Lujo";
+            $limp = 100;
 
-        }
-        if($request->input('apto') == 'estudio' && $request->input('luxury') == 'no'){
-            $rooms = \App\Rooms::where('sizeApto', 1)->where('luxury', 0)->orderBy('order', 'ASC')->get();
 
-            if ( count($rooms) > 0) {
-                foreach ($rooms as $key => $room) {
-                    if ( \App\Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'), $room->id) ) {
-                        $roomAssigned =  $room->id;
-                        break;
-                    }
-                }
-            }
-            $typeApto  = "Estudio estandar";
-            $limp = 30;
         }
 
 

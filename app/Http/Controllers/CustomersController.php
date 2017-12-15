@@ -28,7 +28,8 @@ class CustomersController extends Controller
             $arraycorreos[] = "iankurosaki@gmail.com";
             $arraycorreos[] = "jlargoma@gmail.com";
             $arraycorreos[] = "victorgerocuba@gmail.com";
-        return view('backend/customers/index',['customers' => \App\Customers::whereNotIn('email',$arraycorreos)->where('email', '!=', ' ')->distinct('email')->get()]);
+
+        return view('backend/customers/index',['customers' => \App\Customers::whereNotIn('email',$arraycorreos)->where('email', '!=', ' ')->distinct('email')->orderBy('created_at', 'DESC')->get()]);
     }
 
     /**

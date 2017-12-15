@@ -299,25 +299,35 @@ class HomeController extends Controller
         $countDays = $finish->diffInDays($start);
 
         
-        if ($request->input('apto') == '2dorm' && $request->input('luxury') == 'si') {
-            $roomAssigned = 115;
-            $typeApto  = "2 DORM Lujo";
-            $limp = 50;
-        }elseif($request->input('apto') == '2dorm' && $request->input('luxury') == 'no'){
-            $roomAssigned = 122;
-            $typeApto  = "2 DORM estandar";
-            $limp = 50;
-        }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'si'){
-            $roomAssigned = 138;
-            $limp = 30;
-            $typeApto  = "Estudio Lujo";
+        if ($request->input('quantity') <= 8) {
+            if ($request->input('apto') == '2dorm' && $request->input('luxury') == 'si') {
+               $roomAssigned = 115;
+               $typeApto  = "2 DORM Lujo";
+               $limp = 50;
+           }elseif($request->input('apto') == '2dorm' && $request->input('luxury') == 'no'){
+               $roomAssigned = 122;
+               $typeApto  = "2 DORM estandar";
+               $limp = 50;
+           }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'si'){
+               $roomAssigned = 138;
+               $limp = 30;
+               $typeApto  = "Estudio Lujo";
 
-        }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'no'){
-            $roomAssigned = 110;
-            $typeApto  = "Estudio estandar";
-            $limp = 30;
+           }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'no'){
+               $roomAssigned = 110;
+               $typeApto  = "Estudio estandar";
+               $limp = 30;
+           }
+        } else {
+            /* Rooms para grandes capacidades */
+
+            $roomAssigned = 149;
+            $typeApto  = "3 DORM Lujo";
+            $limp = 100;
+
+
         }
-
+        
 
         $paxPerRoom = \App\Rooms::getPaxRooms($request->input('quantity'), $roomAssigned);
 
@@ -363,22 +373,22 @@ class HomeController extends Controller
 
         if ($seasonActive != 0) {
             return view('frontend.bookStatus.response', [
-                                                            'id_apto' => $roomAssigned,
-                                                            'pax'     => $pax,
-                                                            'nigths'  => $countDays,
-                                                            'apto'    => $typeApto,
-                                                            'name'    => $request->input('name'),
-                                                            'phone'   => $request->input('phone'),
-                                                            'email'   => $request->input('email'),
-                                                            'start'   => $start,
-                                                            'finish'  => $finish,
-                                                            'parking' => $parking,
+                                                            'id_apto'      => $roomAssigned,
+                                                            'pax'          => $pax,
+                                                            'nigths'       => $countDays,
+                                                            'apto'         => $typeApto,
+                                                            'name'         => $request->input('name'),
+                                                            'phone'        => $request->input('phone'),
+                                                            'email'        => $request->input('email'),
+                                                            'start'        => $start,
+                                                            'finish'       => $finish,
+                                                            'parking'      => $parking,
                                                             'priceParking' => $priceParking,
-                                                            'luxury'  => $luxury,
-                                                            'total'   => $total,
-                                                            'dni'   => $dni,
-                                                            'address'   => $address,
-                                                            'comment' => $request->input('comment'),
+                                                            'luxury'       => $luxury,
+                                                            'total'        => $total,
+                                                            'dni'          => $dni,
+                                                            'address'      => $address,
+                                                            'comment'      => $request->input('comment'),
                                                         ]);
 
         } else {

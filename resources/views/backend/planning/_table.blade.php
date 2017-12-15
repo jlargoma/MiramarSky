@@ -172,53 +172,111 @@
 
 	$('.sendSecondPay').click(function(event) {
 		var id = $(this).attr('data-id');
-		$.get('/admin/reservas/api/sendSencondEmail', { id:id }, function(data) {
-			if (data.status == 'danger') {
-			    $.notify({
-			        title: '<strong>'+data.title+'</strong>, ',
-			        icon: 'glyphicon glyphicon-star',
-			        message: data.response
-			    },{
-			        type: data.status,
-			        animate: {
-			            enter: 'animated fadeInUp',
-			            exit: 'animated fadeOutRight'
-			        },
-			        placement: {
-			            from: "top",
-			            align: "left"
-			        },
-			        offset: 80,
-			        spacing: 10,
-			        z_index: 1031,
-			        allow_dismiss: true,
-			        delay: 60000,
-			        timer: 60000,
-			    }); 
-			} else {
-			    $.notify({
-			        title: '<strong>'+data.title+'</strong>, ',
-			        icon: 'glyphicon glyphicon-star',
-			        message: data.response
-			    },{
-			        type: data.status,
-			        animate: {
-			            enter: 'animated fadeInUp',
-			            exit: 'animated fadeOutRight'
-			        },
-			        placement: {
-			            from: "top",
-			            align: "left"
-			        },
-			        allow_dismiss: false,
-			        offset: 80,
-			        spacing: 10,
-			        z_index: 1031,
-			        delay: 5000,
-			        timer: 1500,
-			    }); 
+		var sended = $(this).attr('data-sended');
+
+		if (sended == 0) {
+			$.get('/admin/reservas/api/sendSencondEmail', { id:id }, function(data) {
+				if (data.status == 'danger') {
+				    $.notify({
+				        title: '<strong>'+data.title+'</strong>, ',
+				        icon: 'glyphicon glyphicon-star',
+				        message: data.response
+				    },{
+				        type: data.status,
+				        animate: {
+				            enter: 'animated fadeInUp',
+				            exit: 'animated fadeOutRight'
+				        },
+				        placement: {
+				            from: "top",
+				            align: "left"
+				        },
+				        offset: 80,
+				        spacing: 10,
+				        z_index: 1031,
+				        allow_dismiss: true,
+				        delay: 60000,
+				        timer: 60000,
+				    }); 
+				} else {
+				    $.notify({
+				        title: '<strong>'+data.title+'</strong>, ',
+				        icon: 'glyphicon glyphicon-star',
+				        message: data.response
+				    },{
+				        type: data.status,
+				        animate: {
+				            enter: 'animated fadeInUp',
+				            exit: 'animated fadeOutRight'
+				        },
+				        placement: {
+				            from: "top",
+				            align: "left"
+				        },
+				        allow_dismiss: false,
+				        offset: 80,
+				        spacing: 10,
+				        z_index: 1031,
+				        delay: 5000,
+				        timer: 1500,
+				    }); 
+				}
+			});
+		} else {
+			if (confirm("Quieres reenviarlo!")) {
+				$.get('/admin/reservas/api/sendSencondEmail', { id:id }, function(data) {
+					if (data.status == 'danger') {
+					    $.notify({
+					        title: '<strong>'+data.title+'</strong>, ',
+					        icon: 'glyphicon glyphicon-star',
+					        message: data.response
+					    },{
+					        type: data.status,
+					        animate: {
+					            enter: 'animated fadeInUp',
+					            exit: 'animated fadeOutRight'
+					        },
+					        placement: {
+					            from: "top",
+					            align: "left"
+					        },
+					        offset: 80,
+					        spacing: 10,
+					        z_index: 1031,
+					        allow_dismiss: true,
+					        delay: 60000,
+					        timer: 60000,
+					    }); 
+					} else {
+					    $.notify({
+					        title: '<strong>'+data.title+'</strong>, ',
+					        icon: 'glyphicon glyphicon-star',
+					        message: data.response
+					    },{
+					        type: data.status,
+					        animate: {
+					            enter: 'animated fadeInUp',
+					            exit: 'animated fadeOutRight'
+					        },
+					        placement: {
+					            from: "top",
+					            align: "left"
+					        },
+					        allow_dismiss: false,
+					        offset: 80,
+					        spacing: 10,
+					        z_index: 1031,
+					        delay: 5000,
+					        timer: 1500,
+					    }); 
+					}
+				});
+			}else{
+				alert('NO actuamos');
 			}
-		});
+			
+		}
+		
 	});
 
 </script>
