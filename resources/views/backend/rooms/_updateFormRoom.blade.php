@@ -21,11 +21,11 @@
 			</div>
 			<div class="col-md-1 col-xs-4 push-20">
 				<label for="parking">Parking</label>
-				<input type="number" name="parking" class="form-control" value="<?php echo $room->parking; ?>"/>
+				<input type="text" name="parking" class="form-control only-numbers" value="<?php echo $room->parking; ?>"/>
 			</div>
 			<div class="col-md-1 col-xs-4 push-20">
 				<label for="locker">Taquilla</label>
-				<input type="number" name="locker" class="form-control" value="<?php echo $room->locker; ?>"/>
+				<input type="text" name="locker" class="form-control only-numbers" value="<?php echo $room->locker; ?>"/>
 			</div>
 			<div class="col-md-2 col-xs-12 push-20">
 				<label for="sizeApto">Tamaño Apto.</label>
@@ -86,3 +86,25 @@
 		</div>
 	</form>
 </div>
+
+<script type="text/javascript">
+	$(".only-numbers").keydown(function (e) {
+	       // Allow: backspace, delete, tab, escape, enter and .
+	       if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190, 188]) !== -1 ||
+	            // Allow: Ctrl/cmd+A
+	           (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+	            // Allow: Ctrl/cmd+C
+	           (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+	            // Allow: Ctrl/cmd+X
+	           (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
+	            // Allow: home, end, left, right
+	           (e.keyCode >= 35 && e.keyCode <= 39)) {
+	                // let it happen, don't do anything
+	                return;
+	       }
+	       // Ensure that it is a number and stop the keypress
+	       if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+	           e.preventDefault();
+	       }
+	   });
+</script>

@@ -633,7 +633,7 @@ class BookController extends Controller
         $supPark = 0;
         switch ($request->park) {
             case 1:
-            $supPark = 15 * $request->noches;
+            $supPark = 18 * $request->noches;
             break;
             case 2:
             $supPark = 0;
@@ -642,7 +642,7 @@ class BookController extends Controller
             $supPark = 0;
             break;
             case 4:
-            $supPark = (15 * $request->noches) / 2;
+            $supPark = (18 * $request->noches) / 2;
             break;
         }
         return $supPark;
@@ -655,7 +655,7 @@ class BookController extends Controller
         $supPark = 0;
         switch ($park) {
             case 1:
-            $supPark = 15 * $noches;
+            $supPark = 18 * $noches;
             break;
             case 2:
             $supPark = 0;
@@ -664,7 +664,7 @@ class BookController extends Controller
             $supPark = 0;
             break;
             case 4:
-            $supPark = (15 * $noches) / 2;
+            $supPark = (18 * $noches) / 2;
             break;
         }
         return $supPark;
@@ -1065,7 +1065,7 @@ class BookController extends Controller
         }
  
         if ($request->input('parking') == 'si') {
-            $priceParking = 15 * $countDays;
+            $priceParking = 18 * $countDays;
             $parking = 1;
         }else{
             $priceParking = 0;

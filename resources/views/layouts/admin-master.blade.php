@@ -203,13 +203,8 @@
 		<script src="{{ asset('assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') }}" type="text/javascript"></script>
 		<script type="text/javascript" src="{{ asset('/pages/js/bootstrap-notify.js')}}"></script>
 		@yield('scripts')
-		<!-- END VENDOR JS -->
-		<!-- BEGIN CORE TEMPLATE JS -->
-		<script src="{{ asset('pages/js/pages.min.js') }}"></script>
-		<!-- END CORE TEMPLATE JS -->
-		<!-- BEGIN PAGE LEVEL JS -->
-
 		
-		<!-- END PAGE LEVEL JS -->
+		<script src="{{ asset('pages/js/pages.min.js') }}"></script>
+
 	</body>
 </html>
