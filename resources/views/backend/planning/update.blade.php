@@ -243,7 +243,7 @@
                                 <select class=" form-control pax minimal"  name="pax">
                                     <?php for ($i=1; $i <= 12 ; $i++): ?>
                                         <?php if ($i != 9 && $i != 11): ?>
-                                            <option value="<?php echo $i ?>">
+                                            <option value="<?php echo $i ?>" <?php echo ($i == $book->pax)?"selected":""; ?>>
                                                 <?php echo $i ?>
                                             </option>
                                         <?php endif; ?>
@@ -1127,26 +1127,30 @@
                         $('.beneficio').val(10);
                     }
                 }else{
-                    $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays, room: room}).success(function( data ) {
-                        pricePark = data;
-                        $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
-                            priceLujo = data;
 
-                            $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                                price = data;
-                                
-                                price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
 
-                                if ( notModifyPrice == 0) {
-                                    $('.total').empty();
-                                    $('.total').val(price);
-                                }
-                                    $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays, room: room}).success(function( data ) {
-                                        costPark = data;
-                                        $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
+                    if ( room != "" && pax != "") {
+
+                            $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays, room: room}).success(function( data ) {
+                                pricePark = data;
+                                $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
+                                    priceLujo = data;
+
+                                    $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
+                                        price = data;
+
+                                        price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
+
+                                        if ( notModifyPrice == 0) {
+                                            $('.total').empty();
+                                            $('.total').val(price);
+                                        }
+                                        $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays, room: room}).success(function( data ) {
+                                            costPark = data;
+                                            $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
                                             costLujo = data;
                                             $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                                                cost = data;
+                                                var cost = data;
                                                 agencia = $('.agencia').val();
                                                 if (agencia == "") {
                                                     agencia = 0;
@@ -1163,10 +1167,11 @@
 
                                             });
                                         });
-                                    });
-                            });
-                        });
-                    }); 
+                                      });
+                                  });
+                              });
+                          }); 
+                    }
                 }
                  
 
@@ -1244,15 +1249,17 @@
                 $('.real_pax option[value='+pax+']').attr('selected','selected');
                 $('.real_pax option[value='+real_pax+']').removeAttr('selected');
 
-                $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
+                if (room != "") {
+                    $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
 
-                    if (pax < data) {
-                        $('.personas-antiguo').empty();
-                        $('.personas-antiguo').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
-                    }else{
-                        $('.personas-antiguo').empty();
-                    }
-                });
+                        if (pax < data) {
+                            $('.personas-antiguo').empty();
+                            $('.personas-antiguo').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
+                        }else{
+                            $('.personas-antiguo').empty();
+                        }
+                    });
+                }
 
                 calculate();
             });
@@ -1429,6 +1436,16 @@
                 });
             }
             
+        });
+
+        $('.country').change(function(event) {
+            var value = $(this).val();
+            if ( value != 'ES') {
+                $('.content-cities').hide();
+            } else {
+                $('.content-cities').show();
+
+            }
         });
 
 </script>
