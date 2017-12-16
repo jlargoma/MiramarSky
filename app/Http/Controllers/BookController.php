@@ -668,14 +668,13 @@ class BookController extends Controller
             break;
         }
 
-        if ($request->room && $request->park != '') {
+        if ($request->room && $request->room != '') {
             if ($request->room == 149 || $request->room == 150) {
-                return $supPark * 3;
+                $supPark =  $supPark * 3;
             }
-        }else{
-            return $supPark;
         }
 
+        return $supPark;
         
     }
 
@@ -725,6 +724,12 @@ class BookController extends Controller
             $supPark = (13.5 * $request->noches) / 2;
             break;
         }
+        if ($request->room && $request->room != '') {
+            if ($request->room == 149 || $request->room == 150) {
+                $supPark =  $supPark * 3;
+            }
+        }
+
         return $supPark;
     }
 

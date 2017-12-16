@@ -1141,7 +1141,7 @@
                                     $('.total').empty();
                                     $('.total').val(price);
                                 }
-                                    $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays}).success(function( data ) {
+                                    $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays, room: room}).success(function( data ) {
                                         costPark = data;
                                         $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
                                             costLujo = data;

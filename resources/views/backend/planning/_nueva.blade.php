@@ -379,12 +379,12 @@
                             $('.total').empty();
                             $('.total').val(price);
                         }
-                        $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays}).success(function( data ) {
+                        $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays, room: room}).success(function( data ) {
                             costPark = data;
                             $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
                                 costLujo = data;
                                 $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                                    cost = data;
+                                    var cost = data;
                                     agencia = $('.agencia').val();
                                     if (agencia == "") {
                                         agencia = 0;
