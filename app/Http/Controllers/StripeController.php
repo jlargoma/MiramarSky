@@ -172,6 +172,42 @@ class StripeController extends Controller
             $message[] = "Tu cobro se ha realizado correctamente";
             $message[] = "";
             
+            if ( $request->input('id_book') ) {
+                $book = \App\Book::find($request->input('id_book'));
+                if ($charge->status == "succeeded") {
+                    
+                    if ($book->changeBook(2, "", $book)) {
+
+                        /* Make a charge on apartamentosierranevada.net */
+                        $realPrice = ($price / 100);
+
+                        $payment = new \App\Payments();
+            
+                        $date = Carbon::now()->format('Y-m-d');
+                        $payment->book_id     = $book->id;
+                        $payment->datePayment = $date;
+                        $payment->import      = $realPrice;
+                        $payment->comment     = "Pago desde stripe";
+                        $payment->type        = 2;
+
+                        $payment->save();
+
+
+                        $msg_params = array(
+                          'msg_type' => 'success',
+                          'msg_text' => 'my text to show',
+                        );
+
+
+                        return redirect('/admin/reservas/update/'.$book->id."?".http_build_query($msg_params));
+                    }
+                }
+
+            }else{
+
+                return view('backend.stripe.response', ['message' => $message, 'mobile'  => new Mobile()]);
+
+            }
 
         } catch (\Stripe\Error\Card $e) {
         
@@ -179,54 +215,29 @@ class StripeController extends Controller
             $message[] = "Tu tarjeta ha rechazado el cobro.";
             $message[] = "tarjeta";
 
+            $msg_params = array(
+              'msg_type' => 'success',
+              'msg_text' => $message,
+            );
+
+
+            return redirect('/admin/reservas/update/'.$book->id."?".http_build_query($msg_params));
+
         }catch (Exception $e) {
 
             $message[] = "No puedes efectuar el pago en estos momentos";
             $message[] = $e->getMessage();//"Tu tarjeta ha rechazado el cobro.";
             $message[] = "otros";//"Tu tarjeta ha rechazado el cobro.";
 
-        }
+            $msg_params = array(
+              'msg_type' => 'success',
+              'msg_text' => $message,
+            );
 
 
-        if ( $request->input('id_book') ) {
-            $book = \App\Book::find($request->input('id_book'));
-            if ($charge->status == "succeeded") {
-                
-                if ($book->changeBook(2, "", $book)) {
-
-                    /* Make a charge on apartamentosierranevada.net */
-                    $realPrice = ($price / 100);
-
-                    $payment = new \App\Payments();
-        
-                    $date = Carbon::now()->format('Y-m-d');
-                    $payment->book_id     = $book->id;
-                    $payment->datePayment = $date;
-                    $payment->import      = $realPrice;
-                    $payment->comment     = "Pago desde stripe";
-                    $payment->type        = 2;
-
-                    $payment->save();
-
-
-                    $msg_params = array(
-                      'msg_type' => 'success',
-                      'msg_text' => 'my text to show',
-                    );
-
-
-                    return redirect('/admin/reservas/update/'.$book->id."?".http_build_query($msg_params));
-                }
-            }
-
-        }else{
-
-            return view('backend.stripe.response', ['message' => $message, 'mobile'  => new Mobile()]);
+            return redirect('/admin/reservas/update/'.$book->id."?".http_build_query($msg_params));
 
         }
-
-
-        
     }
 
 

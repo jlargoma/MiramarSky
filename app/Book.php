@@ -341,30 +341,37 @@ class Book extends Model
     }
 
     // Funcion para cambiar la reserva de habitacion o estado
-    public function changeBook($status,$room,$book)
+    public function changeBook($status, $room, $book)
     {
         if (!empty($status)) {
             if ($status == 3) {
 
                 $this->type_book = $status;
-
                 $this->save();
 
                 return ['status' => 'success','title' => 'OK', 'response' => "Estado Cambiado a Sin Responder"];
+
+            }elseif($status == 6){
+
+                $this->type_book = $status;
+                $this->save();
+
+                return ['status' => 'success','title' => 'OK', 'response' => "Email Enviado de Cancelacion"];
             }else{
 
                 $dateStart  = Carbon::createFromFormat('Y-m-d',$this->start);
-                $dateFinish  = Carbon::createFromFormat('Y-m-d',$this->finish);
-
-                $roomStart = $dateStart->format('U');
+                $dateFinish = Carbon::createFromFormat('Y-m-d',$this->finish);
+                
+                $roomStart  = $dateStart->format('U');
                 $roomFinish = $dateFinish->format('U');
 
-                $isRooms = \App\Book::where('room_id',$this->room_id)->whereIn('type_book',[1,2,4,6,7,8])
-                ->where('id','!=' ,$this->id)
-                ->orderBy('start','DESC')
-                ->get();
+                $isRooms    = \App\Book::where('room_id',$this->room_id)
+                                        ->whereIn('type_book',[1,2,4,6,7,8])
+                                        ->where('id','!=' ,$this->id)
+                                        ->orderBy('start','DESC')
+                                        ->get();
 
-                $existStart = false;
+                $existStart  = false;
                 $existFinish = false;
 
                 foreach ($isRooms as $isRoom) {
@@ -419,13 +426,6 @@ class Book extends Model
                                 //     $message->subject('Correo de Bloqueo');
                                 // });
                             break;
-                            case '6':
-                                // Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use ($book) {
-                                //     $message->from('reservas@apartamentosierranevada.net');
-                                //     $message->to($book->customer->email);
-                                //     $message->subject('Correo cancelación de reserva');
-                                // });
-                            break;
                             case '7':
                                 Mail::send('backend.emails.reserva-propietario',['book' => $book], function ($message) use ($book) {
                                     $message->from('reservas@apartamentosierranevada.net');
@@ -439,10 +439,6 @@ class Book extends Model
                                     //         $message->to('alquilerapartamentosmiramarski@gmail.com');
                                     //         $message->subject('Correo de Subcomunidad');
                                     //     });
-                            break;
-                            default:
-
-                                    # code...
                             break;
                         }
                         if ($this->save()) {
@@ -466,14 +462,10 @@ class Book extends Model
                                 return ['status' => 'success','title' => 'OK', 'response' => "Email Enviado Reserva"];
                             }elseif($status == 2){
                                 return ['status' => 'success','title' => 'OK', 'response' => "Email Enviado Pagada la señal"];
-                            }elseif($status == 3){
-                                return ['status' => 'success','title' => 'OK', 'response' => "Estado Cambiado a Sin Responder"];
                             }elseif($status == 4){
                                 return ['status' => 'success','title' => 'OK', 'response' => "Estado Cambiado a Bloqueado"];
                             }elseif($status == 5){
                                 return ['status' => 'success','title' => 'OK', 'response' => "Contestado por email"];
-                            }elseif($status == 6){
-                                return ['status' => 'success','title' => 'OK', 'response' => "Email Enviado de Cancelacion"];
                             }elseif($status == 7){
                                 return ['status' => 'success','title' => 'OK', 'response' => "Estado Cambiado a Reserva Propietario"];
                             }elseif($status == 8){
@@ -488,9 +480,8 @@ class Book extends Model
             }
 
         }
+
         if (!empty($room)) {
-
-
             $dateStart  = Carbon::createFromFormat('Y-m-d',$this->start);
             $dateFinish  = Carbon::createFromFormat('Y-m-d',$this->finish);
 
@@ -546,9 +537,6 @@ class Book extends Model
             }else{
                 return ['status' => 'danger', 'title' => 'Peligro', 'response' => "Este apartamento ya esta ocupado para estas fechas"];
             }
-
-
-
         }
     }
 
