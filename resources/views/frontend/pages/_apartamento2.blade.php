@@ -178,7 +178,7 @@
 		<div class="col-xs-12">
 			<?php foreach ($aptos as $key => $apartamento): ?>
 				<?php if ($apartamento != $url): ?>
-					<div class="col-md-4 not-padding-mobile hover-effect">
+					<div class="col-md-4 not-padding-mobile hover-effect push-20">
 						<a href="{{url('/apartamentos')}}/<?php echo $apartamento ?>">
 							<div class="col-xs-12 not-padding  container-image-box push-mobile-20">
 								<div class="col-xs-12 not-padding push-0">
