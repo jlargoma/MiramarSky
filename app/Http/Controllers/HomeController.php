@@ -121,6 +121,7 @@ class HomeController extends Controller
 
          
         }
+
         $aptos  = ['apartamento-lujo-sierra-nevada', 'estudio-lujo-sierra-nevada','apartamento-standard-sierra-nevada','estudio-standard-sierra-nevada'];
 
 
