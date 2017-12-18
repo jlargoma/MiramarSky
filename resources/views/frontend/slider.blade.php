@@ -27,7 +27,7 @@
 <?php else: ?>
 <section id="slider" class="section nomargin noborder" style="padding: 0; max-height: 450px">
 
-	<div class="force-full-screen parallax full-screen dark" style="background-image: url({{asset('/img/miramarski/mobile-slide.jpg')}});background-position: 50% 0; background-size: contain; background-repeat: no-repeat; max-height: 450px">
+	<div class="full-screen" style="background-image: url({{asset('/img/miramarski/mobile-slide.jpg')}});background-position: 50% 100%; background-size: cover; background-repeat: no-repeat; max-height: 450px">
 
 		<div class="row">
 			<div class="col-xs-12" style="padding: 100px 20px 0 20px">

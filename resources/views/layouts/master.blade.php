@@ -4,6 +4,7 @@
 		<meta name="description" content="Apartamentos de lujo en Sierra Nievada a pie de pista , sin remontes ni autobuses">
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="keywords" content="Alquiler apartamento Sierra Nevada;edificio miramarski; a pie de pista; apartamentos capacidad 6 / 8 personas; estudios capacidad 4 /5 personas; zona baja;piscina climatizada;gimansio;parking cubierto; a 5 minutos  de la plaza de Andalucia">
 
 		<link href="//fonts.googleapis.com/css?family=Open+Sans%3A800|Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700,800,900|Crete+Round:400italic" rel="stylesheet" type="text/css" />
 		
@@ -41,7 +42,12 @@
 		
 		<link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
 		<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
+		<link rel="stylesheet" href="{{ asset('/frontend/custom.css')}}" type="text/css" />
 
+		
+
+		<link href="{{ asset('/frontend/hover.css')}}" rel="stylesheet" media="all">
+		<link rel="stylesheet" href="{{ asset('/frontend/css/components/radio-checkbox.css')}}" type="text/css" />
 		<!-- Global site tag (gtag.js) - Google Analytics -->
 		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-66225892-1"></script>
 		<script>

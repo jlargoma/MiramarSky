@@ -107,6 +107,8 @@
 						@include('frontend.pages._infoEstudioLujo')
 					<?php elseif($typeApto == 4): ?>
 						@include('frontend.pages._infoEstudioStandard')
+					<?php elseif($typeApto == 5): ?>
+						@include('frontend.pages._infoChalet')
 					<?php endif ?>
 				</div>
 				

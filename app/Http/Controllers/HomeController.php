@@ -82,6 +82,12 @@ class HomeController extends Controller
 
                 $typeApto = 4;
                 break; 
+            case 'chalet los pinos':
+                $aptoHeading       = "CHALET - LOS PINOS";
+                $aptoHeadingMobile = "Chalet los pinos";
+
+                $typeApto = 5;
+                break;     
             default:
                 $room = \App\Rooms::where('nameRoom',$url)->first();
                 if (count($room) > 0) {
@@ -104,7 +110,8 @@ class HomeController extends Controller
         }
 
 
-        if ($url == 'apartamento-standard-sierra-nevada' || $url == 'apartamento-lujo-sierra-nevada'  || $url == 'estudio-lujo-sierra-nevada'  || $url == 'estudio-standard-sierra-nevada' ) {
+        if ($url == 'apartamento-standard-sierra-nevada' || $url == 'apartamento-lujo-sierra-nevada'  || $url == 'estudio-lujo-sierra-nevada'  || $url == 'estudio-standard-sierra-nevada' || $url == 'chalet-los-pinos-sierra-nevada') {
+
             $slides = File::allFiles(public_path().'/img/miramarski/galerias/'.$url);
             $directory = '/img/miramarski/galerias/';
         }else{

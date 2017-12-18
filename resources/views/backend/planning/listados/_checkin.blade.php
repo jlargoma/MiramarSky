@@ -66,7 +66,19 @@
                                     
                             </td>
                             <td class ="text-center">
-                                <b><?php echo $book->room->nameRoom ?></b>
+                                <select class="room form-control minimal" data-id="<?php echo $book->id ?>"  >
+                            
+                                    <?php foreach ($rooms as $room): ?>
+                                        <?php if ($room->id == $book->room_id): ?>
+                                            <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
+                                               <?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?>
+                                            </option>
+                                        <?php else:?>
+                                            <option value="<?php echo $room->id ?>"><?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?></option>
+                                        <?php endif ?>
+                                    <?php endforeach ?>
+
+                                </select>
                             </td>
                             <td class ="text-center"><?php echo $book->nigths ?></td>
                             <td class ="text-center" style="width: 20%!important">
@@ -101,7 +113,7 @@
                                 </select>
                             </td>
                             <td class ="text-center">
-                                <div class="col-md-6">
+                                <div class="col-md-6 col-xs-12 not-padding">
                                     <?php echo round($book->total_price)."€" ?><br>
                                     <?php if (isset($payment[$book->id])): ?>
                                         <?php echo "<p style='color:red'>".$payment[$book->id]."€</p>" ?>
@@ -111,17 +123,17 @@
 
                                 <?php if (isset($payment[$book->id])): ?>
                                     <?php if ($payment[$book->id] == 0): ?>
-                                        <div class="col-md-5 bg-success m-t-10">
+                                        <div class="col-md-5 col-xs-12 not-padding bg-success">
                                         <b style="color: red;font-weight: bold">0%</b>
                                         </div>
                                     <?php else:?>
-                                        <div class="col-md-5 ">
+                                        <div class="col-md-5  col-xs-12 not-padding">
                                             <p class="text-white m-t-10"><b style="color: red;font-weight: bold"><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></b></p>
                                         </div> 
                                                                                                    
                                     <?php endif; ?>
                                 <?php else: ?>
-                                    <div class="col-md-5 bg-success">
+                                    <div class="col-md-5 col-xs-12 not-padding bg-success">
                                         <b style="color: red;font-weight: bold">0%</b>
                                         </div>
                                 <?php endif ?>
