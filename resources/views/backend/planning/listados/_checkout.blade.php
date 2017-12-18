@@ -2,7 +2,8 @@
         setlocale(LC_TIME, "ES"); 
         setlocale(LC_TIME, "es_ES"); 
 ?>
-
+<?php $startWeek = Carbon::now()->startOfWeek(); ?>
+<?php $endWeek = Carbon::now()->endOfWeek(); ?>
 <div class="table-responsive">
     <table class="table table-striped no-footer" style="margin: 0;">
         <thead>

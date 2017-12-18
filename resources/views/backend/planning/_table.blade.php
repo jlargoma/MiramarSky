@@ -279,4 +279,18 @@
 		
 	});
 
+	// Comentarios flotantes
+	$('.icons-comment').hover(function() {
+		var content = $(this).attr('data-class-content');
+
+		$('.'+content).show();
+
+
+	}, function() {
+		
+		var content = $(this).attr('data-class-content');
+
+		$('.'+content).hide();
+
+	});
 </script>
