@@ -3,7 +3,7 @@
 	setlocale(LC_TIME, "ES"); 
     setlocale(LC_TIME, "es_ES"); 
 ?>
-	Hola teresa , te enviamos este email para recordate que tienes que realizarnos una transferencia por las cantidades pendientes :<br><br>
+	Hola , te enviamos este email para recordate que tienes que realizarnos una transferencia por las cantidades pendientes :<br><br>
 
 	<b>Nombre:</b> <?php echo strtoupper($book->customer->name) ?><br><br>
 

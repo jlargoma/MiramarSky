@@ -104,7 +104,7 @@
 									<p class="text-justify font-s18 font-w300">
 										Calle Cauchiles Escalera 1<br>
 										Edificio Miramar Ski<br>
-										18916 Monachil Sierra Nevada, Granada<br>
+										18196 Monachil Sierra Nevada, Granada<br>
 									</p>							
 								</div>
 								<h4 class="text-center" >
@@ -245,7 +245,7 @@
 								<p class="text-justify font-s18 font-w300 white">
 									Calle Cauchiles Escalera 1<br>
 									Edificio Miramar Ski<br>
-									18916 Monachil Sierra Nevada, Granada<br>
+									18196 Monachil Sierra Nevada, Granada<br>
 								</p>							
 							</div>
 							<h4 class="text-center" >
