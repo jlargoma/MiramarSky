@@ -4,112 +4,93 @@
 	<title>Alquiler de apartamentos de lujo Miramarski</title>
 	
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<meta name="author" content="Apartamentos de lujo" />
-	<meta name="Description" content="Miramar Ski te ofrece lujo con sus apartamentos en alquiler en Sierra Nevada. Totalmente a pie de pista, sólo tienes que salir del apartamento y a esquiar.">
-	
+
 	<!-- Stylesheets
 	============================================= -->
-	<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700|Roboto:300,400,500,700" rel="stylesheet" type="text/css" />
-	<link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
-	<link rel="stylesheet" href="style.css" type="text/css" />
-	<link rel="shortcut icon" href="images/imagenes-reales/favicons/favicon.png">
-	
-    <link rel="icon" type="image/png" href="images/imagenes-reales/favicons/favicon-16x16.png" sizes="16x16">
-    <link rel="icon" type="image/png" href="images/imagenes-reales/favicons/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="images/imagenes-reales/favicons/favicon-96x96.png" sizes="96x96">
-    <link rel="icon" type="image/png" href="images/imagenes-reales/favicons/favicon-160x160.png" sizes="160x160">
-    <link rel="icon" type="image/png" href="images/imagenes-reales/favicons/favicon-192x192.png" sizes="192x192">
+	<link href="http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="/css/app.css" type="text/css" />
 
-    <link rel="apple-touch-icon" sizes="57x57" href="images/imagenes-reales/favicons/apple-touch-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="images/imagenes-reales/favicons/apple-touch-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="images/imagenes-reales/favicons/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="images/imagenes-reales/favicons/apple-touch-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="images/imagenes-reales/favicons/apple-touch-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="images/imagenes-reales/favicons/apple-touch-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="images/imagenes-reales/favicons/apple-touch-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="images/imagenes-reales/favicons/apple-touch-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="images/imagenes-reales/favicons/apple-touch-icon-180x180.png">
-	<!-- One Page Module Specific Stylesheet -->
-	<link rel="stylesheet" href="one-page/onepage.css" type="text/css" />
-	<!-- / -->
-
-	<link rel="stylesheet" href="css/dark.css" type="text/css" />
-	<link rel="stylesheet" href="css/font-icons.css" type="text/css" />
-	<link rel="stylesheet" href="one-page/css/et-line.css" type="text/css" />
-	<link rel="stylesheet" href="css/animate.css" type="text/css" />
-	<link rel="stylesheet" href="css/magnific-popup.css" type="text/css" />
-
-	<link rel="stylesheet" href="one-page/css/fonts.css" type="text/css" />
-
-	<link rel="stylesheet" href="css/responsive.css" type="text/css" />
+	<link rel="stylesheet" href="/frontend/css/dark.css" type="text/css" />
+	<link rel="stylesheet" href="/frontend/css/responsive.css" type="text/css" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<!--[if lt IE 9]>
-		<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
-	<![endif]-->
 
-	<!-- External JavaScripts
-	============================================= -->
-	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" src="js/plugins.min.js"></script>
-    <script type="text/javascript" src="js/canvas.slider.fade.js"></script>
-    <!-- SLIDER REVOLUTION 4.x SCRIPTS  -->
-	<script type="text/javascript" src="include/rs-plugin/js/jquery.themepunch.tools.min.js"></script>
-	<script type="text/javascript" src="include/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
-
-	<!-- SLIDER REVOLUTION 4.x CSS SETTINGS -->
-	<link rel="stylesheet" type="text/css" href="include/rs-plugin/css/settings.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
+	<link rel="stylesheet" href="/frontend/css/components/daterangepicker.css" type="text/css" />
 
     <!-- Plugin for date picker 
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.css"/>-->
     <link rel="stylesheet" type="text/css" href="css/datepicker.css"/>
 	<!-- Document Title
 	============================================= -->
-	
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
+    <style type="text/css">
+    	div.forfait{
+    		cursor: pointer;
+    		padding: 0 10px;
+    	}
+    	.title-forfait{
+		    line-height: 1;
+			font-size: 16px;
+			text-transform: uppercase;
+			font-weight: 300;
+    	}
+    	#Forfait0, #Forfait1, #Forfait2, #Forfait3, #Forfait4, #Forfait5{
+    		padding: 0 15px;
+    	}
+    	h2.text-center.font-w300.text-black.black{
+    		line-height: 1; 
+    		text-transform: uppercase;
+    	}
+    	.fancy-title.title-bottom-border h1, .fancy-title.title-bottom-border h2, .fancy-title.title-bottom-border h3, .fancy-title.title-bottom-border h4, .fancy-title.title-bottom-border h5, .fancy-title.title-bottom-border h6{
+    		border-bottom: 1px solid #00b5ec!important;
+    	}
+    </style>
 </head>
 
-<body class="stretched no-transition">
+<body class="stretched no-transition" >
 
     <!-- Document Wrapper=============================================-->
     <div id="wrapper" class="clearfix" style="padding-bottom: 0px">
         <!-- Form for Reserve forfait2
         ============================================-->	
-         <form role="form" id='form' method="post" action="/solicitudForfait" style="margin-bottom: 0px">
-		<section id="content">
+    <form role="form" id='form' method="post" action="/solicitudForfait" style="margin-bottom: 0px">
+		<section id="content" style="background-image: url('/img/fortfait/background.jpg')!important; background-repeat: no-repeat; background-size: cover;">
 		    <div class="content-wrap nopadding">
 		        <div id="section-works"  class="full-screen" style="padding-top:5px;overflow: scroll">
 		            <div class="col-md-10 col-lg-6 col-lg-offset-3 col-md-offset-1 sin-margin-mobile" style="padding:0!important;">
 		                <div id='calendar-content' class='container-fluid'>
 		                   
-		                        <div class="panel panel-default">
-		                            <div class="panel-body" style="padding:0px">
+		                        <div class="panel panel-default" style="background-color: rgba(255,255,255,0.75);">
+		                            <div class="panel-body" >
 		                            	<!-- Cabecera -->
 			                            	<div class="heading-block fancy-title nobottomborder title-bottom-border col-xs-12">
-		                            			<h2 class="center t400 ls1 " style="color:white;font-size:23px">
+		                            			<h2 class="black font-w800 center t400 ls1 push-20 " style="font-size:23px; letter-spacing: -2px">
 						                        	Petición ForFaits y Clases
 						                        </h2>
 			                            	</div>
 			                            	
 			                                <div class="form-group col-sm-4">
 			                                    <span>*Nombre</span>
-			                                    <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Introduce aqui tu Nombre" maxlength="40" required>
+			                                    <input type="text" class="sm-form-control" name="nombre" id="nombre" placeholder="Introduce aqui tu Nombre" maxlength="40" required>
 			                                </div>
 
 			                                <div class="form-group col-sm-4">
 			                                    <span>*Email</span>
-			                                    <input type="email" class="form-control" name="email" id="email" placeholder="Aquí pon tu email" maxlength="40" required>
+			                                    <input type="email" class="sm-form-control" name="email" id="email" placeholder="Aquí pon tu email" maxlength="40" required>
 			                                </div>
 
 			                                <div class="form-group col-sm-4">
 			                                    <span>*Telefono</span>
-			                                    <input type="text" class="form-control" name="telefono" id="telefono" placeholder="Aquí pon el telefono" maxlength="9" required>
+			                                    <input type="text" class="sm-form-control" name="telefono" id="telefono" placeholder="Aquí pon el telefono" maxlength="9" required>
 			                                </div>
 
 			                                <div class="form-group col-md-6 col-sm-offset-3">
 			                                    <span>*Desde / Hasta</span>
 			                                    <div class='input-group'>
-			                                        <input class="form-control" type="text" name="date-entrada" id="date-entrada" name="example-daterange1" placeholder="Desde" maxlength="10" readonly="readonly" required>
+			                                        <input class="sm-form-control" type="text" name="date-entrada" id="date-entrada" name="example-daterange1" placeholder="Desde" maxlength="10" readonly="readonly" required>
 			                                        <span class="input-group-addon" id="btnCalendarEntrada"><span class="icon-calendar"></span></span>
-			                                        <input class="form-control" type="text" name="date-salida" id="date-salida" name="example-daterange1" placeholder="Hasta" maxlength="10"
+			                                        <input class="sm-form-control" type="text" name="date-salida" id="date-salida" name="example-daterange1" placeholder="Hasta" maxlength="10"
 			                                        readonly="readonly" required>
 			                                    </div>
 			                                </div>		
@@ -117,35 +98,81 @@
 		                                <!-- Forfaits -->
 
 					                        <div class="heading-block fancy-title nobottomborder title-bottom-border col-xs-12">
-		                            			<h2 class="center t400 ls1 " style="color:white;font-size:23px">
+		                            			<h2 class="black font-w800 center t400 ls1 push-20 " style="color:white;font-size:23px">
 						                        	ForFaits
 						                        </h2>
 			                            	</div>
 		                            	
 		                            	<!-- Selector Forfaits -->
-			                                <div class="col-sm-2 left">
-				                                
-				                                <div class="form-group">
-				                                    <input type="radio" name="forfait" value="0">Juvenil<br />
-				                                    <input type="radio" name="forfait" value="1">Junior<br />
-				                                    <input type="radio" name="forfait" value="2">Adulto<br />
-				                                    <input type="radio" name="forfait" value="3">Senior<br />
-				                                    <input type="radio" name="forfait" value="4">Juvenil Familiar<br />
-				                                    <input type="radio" name="forfait" value="5">Junior Familiar <br />
-			                                    </div>
+			                                <div class="col-sm-12 push-20">
+				                                <div class="col-md-2 col-xs-6 forfait" data-value="0">
+				                                	<div class="col-xs-12 not-padding">
+					                                	<img src="/img/fortfait/juvenil.jpg" class="img-responsive push-10"/>
+					                                	<h3 class="text-center title-forfait push-5">
+					                                		Forfait Juvenil
+					                                	</h3>
+				                                	</div>
+				                                </div>
+				                                <div class="col-md-2 col-xs-6 forfait" data-value="1">
+				                                	<div class="col-xs-12 not-padding">
+					                                	<img src="/img/fortfait/junior.jpg" class="img-responsive push-10"/>
+					                                	<h3 class="text-center title-forfait push-5">
+					                                		Forfait Junior
+					                                	</h3>
+				                                	</div>
+				                                </div>
+				                                <div class="col-md-2 col-xs-6 forfait" data-value="2">
+				                                	<div class="col-xs-12 not-padding">
+					                                	<img src="/img/fortfait/adulto.jpg" class="img-responsive push-10"/>
+					                                	<h3 class="text-center title-forfait push-5">
+					                                		Forfait Adulto
+					                                	</h3>
+				                                	</div>
+				                                </div>
+				                                <div class="col-md-2 col-xs-6 forfait" data-value="3">
+				                                	<div class="col-xs-12 not-padding">
+					                                	<img src="/img/fortfait/senior.jpg" class="img-responsive push-10"/>
+					                                	<h3 class="text-center title-forfait push-5">
+					                                		Forfait Senior
+					                                	</h3>
+				                                	</div>
+				                                </div>
+				                                <div class="col-md-2 col-xs-6 forfait" data-value="4">
+				                                	<div class="col-xs-12 not-padding">
+					                                	<img src="/img/fortfait/juvenil-familiar.jpg" class="img-responsive push-10"/>
+					                                	<h3 class="text-center title-forfait push-5">
+					                                		Forfait Juvenil Familia
+					                                	</h3>
+				                                	</div>
+				                                </div>
+				                                <div class="col-md-2 col-xs-6 forfait" data-value="5">
+				                                	<div class="col-xs-12 not-padding">
+					                                	<img src="/img/fortfait/junior_familiar.jpg" class="img-responsive push-10"/>
+					                                	<h3 class="text-center title-forfait push-5">
+					                                		Forfait Junior Familiar
+					                                	</h3>
+				                                	</div>
+				                                </div>
 			                                </div>
 
-			                                <div class="form-group col-sm-10">
+			                                <div class="form-group col-sm-12">
 			                                	
 			                                	<!-- Juvenil -->
-				                                    <div id="Forfait0" class="desc" style="display: none;border-left: solid;border-right: solid">
-				                                        <span><h2 align="center">Reserva Forfait Juvenil</h2></span>
-														
-														Ahora, al alquilar cualquier tu equipo puedes reservar tu Forfait Express, para que lo tengas preparado cuando entres en tu apartamento .<br /><br />
+				                                    <div id="Forfait0" class="row desc" style="display: none;border-left: solid;border-right: solid">
+				                                    	<div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
+				                                    		<div class="col-md-3 col-xs-12">
+				                                    			<img src="/img/fortfait/juvenil.jpg" class="img-responsive" style="margin-top: 30px;">
+				                                    		</div>
+				                                    		<div class="col-md-9 col-xs-12">
+				                                    			<h2 class="text-center font-w300 text-black black" >Reserva <span class="font-w800">Forfait Juvenil</span></h2>
+				                                    			Ahora, al alquilar cualquier tu equipo puedes reservar tu Forfait Express, para que lo tengas preparado cuando entres en tu apartamento .<br /><br />
 
-														El precio varía según la temporada Baja/Alta/Primavera o en Promoción, por lo que tan solo tienes que hacer la reserva y ya efectuaras el pago una vez que se pongan en contacto contigo .<br /><br />
+				                                    			El precio varía según la temporada Baja/Alta/Primavera o en Promoción, por lo que tan solo tienes que hacer la reserva y ya efectuaras el pago una vez que se pongan en contacto contigo .<br /><br />
 
-														<strong>NOTA: Para reservar tu Forfait, es obligatorio enviar este formulario con  3-4 dias de antelación, de lo contrario, no se tramitará el pedido.</strong>
+				                                    			<strong>NOTA: Para reservar tu Forfait, es obligatorio enviar este formulario con  3-4 dias de antelación, de lo contrario, no se tramitará el pedido.</strong>
+				                                    		</div>
+				                                    	</div>
+				                                       
 														<br /><br />
 														<div class="form-group col-sm-4">
 						                                    <span>*Cantidad</span>
@@ -179,19 +206,26 @@
 				                                    	</div>
 				                                    	<div class="form-group col-sm-3">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonjuv" class="form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonjuv" class="btn btn-success form-control" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>
 			                                    
 			                                    <!-- Junior -->
 				                                    <div id="Forfait1" class="desc" style="display: none;border-left: solid;border-right: solid">
-				                                        <span><h2 align="center">Reserva Forfait Junior / Discapacitado Adulto Senior</h2></span>
+				                                        
+														<div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
+															<div class="col-md-3 col-xs-12">
+																<img src="/img/fortfait/junior.jpg" class="img-responsive" style="margin-top: 30px;">
+															</div>
+															<div class="col-md-9 col-xs-12">
+																<h2 class="text-center font-w300 text-black black" >Reserva <span class="font-w800">Forfait Junior</span> / Discapacitado Adulto Senior</h2>
+																Ahora, al alquilar cualquier tu equipo puedes reservar tu Forfait Express, para que lo tengas preparado cuando entres en tu apartamento .<br /><br />
 
-														Ahora, al alquilar cualquier tu equipo puedes reservar tu Forfait Express, para que lo tengas preparado cuando entres en tu apartamento .<br /><br />
+																El precio varía según la temporada Baja/Alta/Primavera o en Promoción, por lo que tan solo tienes que hacer la reserva y ya efectuaras el pago una vez que se pongan en contacto contigo .<br /><br />
 
-														El precio varía según la temporada Baja/Alta/Primavera o en Promoción, por lo que tan solo tienes que hacer la reserva y ya efectuaras el pago una vez que se pongan en contacto contigo .<br /><br />
-
-														<strong>NOTA: Para reservar tu Forfait, es obligatorio enviar este formulario con  3-4 dias de antelación, de lo contrario, no se tramitará el pedido.</strong>
+																<strong>NOTA: Para reservar tu Forfait, es obligatorio enviar este formulario con  3-4 dias de antelación, de lo contrario, no se tramitará el pedido.</strong>
+															</div>
+														</div>
 														<br /><br />
 														<div class="form-group col-sm-4">
 						                                    <span>*Cantidad</span>
@@ -225,20 +259,25 @@
 				                                    	</div>
 				                                    	<div class="form-group col-sm-3">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonjun" class="form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonjun" class="btn btn-success form-control" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>
 			                                    
 			                                    <!-- Adulto -->
 				                                    <div id="Forfait2" class="desc" style="display: none;border-left: solid;border-right: solid">
-				                                        <span><h2 align="center">Reserva Forfait Adulto</h2></span>
+				                                    	<div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
+					                                    	<div class="col-md-3 col-xs-12">
+					                                    		<img src="/img/fortfait/adulto.jpg" class="img-responsive" style="margin-top: 30px;">
+					                                    	</div>
+					                                    	<div class="col-md-9 col-xs-12">
+					                                    		<h2 class="text-center font-w300 text-black black" >Reserva <span class="font-w800">Forfait Adulto</span> </h2>
+					                                    		Ahora, al alquilar cualquier tu equipo puedes reservar tu Forfait Express, para que lo tengas preparado cuando entres en tu apartamento .<br /><br />
 
-														Ahora, al alquilar cualquier tu equipo puedes reservar tu Forfait Express, para que lo tengas preparado cuando entres en tu apartamento .<br /><br />
+																El precio varía según la temporada Baja/Alta/Primavera o en Promoción, por lo que tan solo tienes que hacer la reserva y ya efectuaras el pago una vez que se pongan en contacto contigo .<br /><br />
 
-														El precio varía según la temporada Baja/Alta/Primavera o en Promoción, por lo que tan solo tienes que hacer la reserva y ya efectuaras el pago una vez que se pongan en contacto contigo .<br /><br />
-
-														<strong>NOTA: Para reservar tu Forfait, es obligatorio enviar este formulario con  3-4 dias de antelación, de lo contrario, no se tramitará el pedido.</strong>
-														<br /><br />
+																<strong>NOTA: Para reservar tu Forfait, es obligatorio enviar este formulario con  3-4 dias de antelación, de lo contrario, no se tramitará el pedido.</strong>
+					                                    	</div>
+														</div>
 														<div class="form-group col-sm-4">
 						                                    <span>*Cantidad</span>
 							                                    <div class="input-group">
@@ -271,20 +310,25 @@
 				                                    	</div>
 				                                    	<div class="form-group col-sm-3">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonadult" class="form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonadult" class="btn btn-success form-control" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>
 			                                    
 			                                    <!-- Senior -->
 				                                    <div id="Forfait3" class="desc" style="display: none;border-left: solid;border-right: solid">
-				                                        <span><h2 align="center">Reserva Forfait Senior</h2></span>
+				                                    	<div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
+					                                    	<div class="col-md-3 col-xs-12">
+					                                    		<img src="/img/fortfait/adulto.jpg" class="img-responsive" style="margin-top: 30px;">
+					                                    	</div>
+					                                    	<div class="col-md-9 col-xs-12">
+					                                    		<h2 class="text-center font-w300 text-black black" >Reserva <span class="font-w800">Forfait Senior</span> </h2>
+					                                    		Ahora, al alquilar cualquier tu equipo puedes reservar tu Forfait Express, para que lo tengas preparado cuando entres en tu apartamento .<br /><br />
 
-														Ahora, al alquilar cualquier tu equipo puedes reservar tu Forfait Express, para que lo tengas preparado cuando entres en tu apartamento .<br /><br />
+																El precio varía según la temporada Baja/Alta/Primavera o en Promoción, por lo que tan solo tienes que hacer la reserva y ya efectuaras el pago una vez que se pongan en contacto contigo .<br /><br />
 
-														El precio varía según la temporada Baja/Alta/Primavera o en Promoción, por lo que tan solo tienes que hacer la reserva y ya efectuaras el pago una vez que se pongan en contacto contigo .<br /><br />
-
-														<strong>NOTA: Para reservar tu Forfait, es obligatorio enviar este formulario con  3-4 dias de antelación, de lo contrario, no se tramitará el pedido.</strong>
-														<br /><br />
+																<strong>NOTA: Para reservar tu Forfait, es obligatorio enviar este formulario con  3-4 dias de antelación, de lo contrario, no se tramitará el pedido.</strong>
+					                                    	</div>
+														</div>
 														<div class="form-group col-sm-4">
 						                                    <span>*Cantidad</span>
 							                                    <div class="input-group">
@@ -317,20 +361,26 @@
 				                                    	</div>
 				                                    	<div class="form-group col-sm-3">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonsenior" class="form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonsenior" class="btn btn-success form-control" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>
 			                                    
 			                                    <!-- Juvenil Familiar -->
 				                                    <div id="Forfait4" class="desc" style="display: none;border-left: solid;border-right: solid">
-				                                        <span><h2 align="center">Reserva Forfait Junior Formula Familiar</h2></span>
+				                                    	<div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
+					                                    	<div class="col-md-3 col-xs-12">
+					                                    		<img src="/img/fortfait/adulto.jpg" class="img-responsive" style="margin-top: 30px;">
+					                                    	</div>
+					                                    	<div class="col-md-9 col-xs-12">
+					                                    		<h2 class="text-center font-w300 text-black black" >Reserva <span class="font-w800">Forfait Junior Formula Familiar</span> </h2>
+					                                    		Ahora, al alquilar cualquier tu equipo puedes reservar tu Forfait Express, para que lo tengas preparado cuando entres en tu apartamento .<br /><br />
 
-														Ahora, al alquilar cualquier tu equipo puedes reservar tu Forfait Express, para que lo tengas preparado cuando entres en tu apartamento .<br /><br />
+																El precio varía según la temporada Baja/Alta/Primavera o en Promoción, por lo que tan solo tienes que hacer la reserva y ya efectuaras el pago una vez que se pongan en contacto contigo .<br /><br />
 
-														El precio varía según la temporada Baja/Alta/Primavera o en Promoción, por lo que tan solo tienes que hacer la reserva y ya efectuaras el pago una vez que se pongan en contacto contigo .<br /><br />
-
-														<strong>NOTA: Para reservar tu Forfait, es obligatorio enviar este formulario con  3-4 dias de antelación, de lo contrario, no se tramitará el pedido.</strong>
-														<br /><br />
+																<strong>NOTA: Para reservar tu Forfait, es obligatorio enviar este formulario con  3-4 dias de antelación, de lo contrario, no se tramitará el pedido.</strong>
+					                                    	</div>
+														</div>
+				                                    
 				                                    	<div class="form-group col-sm-4">
 						                                    <span>*Cantidad</span>
 							                                    <div class="input-group">
@@ -363,20 +413,25 @@
 				                                    	</div>
 				                                    	<div class="form-group col-sm-3">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonjuvfam" class="form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonjuvfam" class="btn btn-success form-control" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>
 				                                    
 			                                    <!-- Junio Familiar -->
 				                                    <div id="Forfait5" class="desc" style="display: none;border-left: solid;border-right: solid">
-				                                        <span><h2 align="center">Reserva Forfait Juvenil Formula Familiar</h2></span>
+				                                    	<div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
+					                                    	<div class="col-md-3 col-xs-12">
+					                                    		<img src="/img/fortfait/adulto.jpg" class="img-responsive" style="margin-top: 30px;">
+					                                    	</div>
+					                                    	<div class="col-md-9 col-xs-12">
+					                                    		<h2 class="text-center font-w300 text-black black" >Reserva <span class="font-w800">Forfait Juvenil Formula Familiar</span> </h2>
+					                                    		Ahora, al alquilar cualquier tu equipo puedes reservar tu Forfait Express, para que lo tengas preparado cuando entres en tu apartamento .<br /><br />
 
-				                                        Ahora, al alquilar cualquier tu equipo puedes reservar tu Forfait Express, para que lo tengas preparado cuando entres en tu apartamento .<br /><br />
+																El precio varía según la temporada Baja/Alta/Primavera o en Promoción, por lo que tan solo tienes que hacer la reserva y ya efectuaras el pago una vez que se pongan en contacto contigo .<br /><br />
 
-														El precio varía según la temporada Baja/Alta/Primavera o en Promoción, por lo que tan solo tienes que hacer la reserva y ya efectuaras el pago una vez que se pongan en contacto contigo .<br /><br />
-
-														<strong>NOTA: Para reservar tu Forfait, es obligatorio enviar este formulario con  3-4 dias de antelación, de lo contrario, no se tramitará el pedido.</strong>
-				                                        <br /><br />
+																<strong>NOTA: Para reservar tu Forfait, es obligatorio enviar este formulario con  3-4 dias de antelación, de lo contrario, no se tramitará el pedido.</strong>
+					                                    	</div>
+														</div>
 				                                    	<div class="form-group col-sm-4">
 						                                    <span>*Cantidad</span>
 							                                    <div class="input-group">
@@ -409,14 +464,14 @@
 				                                    	</div>
 				                                    	<div class="form-group col-sm-3">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonjunfam" class="form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonjunfam" class="btn btn-success form-control" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>
 			                                </div>
 		                              
 		                                <!-- Alquiler de Material -->
 					                        <div class="heading-block fancy-title nobottomborder title-bottom-border col-xs-12">
-		                            			<h2 class="center t400 ls1 " style="color:white;font-size:23px">
+		                            			<h2 class="black font-w800 center t400 ls1 push-20 " style="color:white;font-size:23px">
 						                        	Alquiler de material
 						                        </h2>
 			                            	</div>
@@ -530,7 +585,7 @@
 				                                    	</div>
 				                                    	<div class="form-group col-sm-2">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonpack" class="form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonpack" class="btn btn-success form-control" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>
 
@@ -633,7 +688,7 @@
 
 				                                    	<div class="form-group col-sm-2">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonesquis" class="form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonesquis" class="btn btn-success form-control" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>		                                  
 
@@ -736,7 +791,7 @@
 				                                    	
 				                                    	<div class="form-group col-sm-2">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonsnow" class="form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonsnow" class="btn btn-success form-control" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>		
 
@@ -802,7 +857,7 @@
 				                                    	
 				                                    	<div class="form-group col-sm-2">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonblade" class="form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonblade" class="btn btn-success form-control" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>		
 
@@ -868,7 +923,7 @@
 				                                    	
 				                                    	<div class="form-group col-sm-2 col-xs-12">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botoncasco" class="form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botoncasco" class="btn btn-success form-control" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>		
 		                                	</div>
@@ -876,8 +931,8 @@
 		                                <!-- Clases -->
 
 					                        <div class="heading-block fancy-title nobottomborder title-bottom-border col-xs-12">
-		                            			<h2 class="center t400 ls1 " style="color:white;font-size:23px">
-						                        	Clases
+		                            			<h2 class="black font-w800 center t400 ls1 push-20 " style="color:white;font-size:23px">
+						                        	Clases/sursillo esquí
 						                        </h2>
 			                            	</div>
 
@@ -992,7 +1047,7 @@
 
 				                                    	<div class="form-group col-sm-3 col-sm-offset-4" >
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonparticular" class="form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonparticular" class="btn btn-success form-control" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>
 
@@ -1101,7 +1156,7 @@
 
 				                                    	<div class="form-group col-sm-3 col-sm-offset-4" >
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botoncolectivo" class="form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botoncolectivo" class="btn btn-success form-control" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>
 		                                	</div>		                       		                                
@@ -1111,21 +1166,20 @@
 		                                </div>
 		                                
 		                            </div>
-		                            <div style="text-align: right; margin-right: 5px"><h3 style="color: white">Atencion al cliente: 958-48-01-68</h3></div>
+		                            <div style="text-align: right; margin-right: 5px"><h3 style="color: black">Atencion al cliente: 958-48-01-68</h3></div>
 		                        </div>
 
 
 		                	
 		                </div>
 		            </div>
-		            <div class="col-md-10 col-lg-2  sin-margin-mobile" style="padding:0!important;">
+		            <div class="col-md-10 col-lg-3  sin-margin-mobile" style="padding:0!important;">
 		                <div id='calendar-content' class='container-fluid'>		                   
-		                        <div class="panel panel-default">
-		                            <div class="panel-body" style="padding:0px">		                            		                                
-
+		                        <div class="panel panel-default" style="background-color: rgba(255,255,255,0.75);">
+		                            <div class="panel-body">		                            		                                
 		                                <!-- Carrito -->
 		                                <div class="form-group col-sm-12"  id="content-carrito">
-		                                	<h3 class="form-group" style="color:white">Resumen Solicitud</h3>
+		                                	<h3 class="form-group text-center black font-w300" style="text-transform: uppercase;">Resumen Solicitud</h3>
 		                                	<p class="carrito"></p>
 		                                </div>
 		                            </div>
@@ -1140,13 +1194,9 @@
 		
     </div>
 
-
-	<script type="text/javascript" src="js/functions.js"></script>
-	<!--Plugin for poup -->
-	<script src="js/solo-formulario-reservas/popup/sweetalert.min.js"></script> 
-	<link rel="stylesheet" type="text/css" href="js/solo-formulario-reservas/popup/sweetalert.css">
-
-	
+	<script type="text/javascript" src="/pages/js/bootstrap-notify.js"></script>
+	<script type="text/javascript" src="/frontend/js/plugins.js"></script>
+	<script type="text/javascript" src="/frontend/js/functions.js"></script>	
 
     <script>
         jQuery(document).ready(function(){
@@ -1177,33 +1227,6 @@
          });
 	   
     </script>
-    <style type="text/css">
-        .btn-success {
-            color: #ffffff;
-            background-color: #46c37b;
-            border-color: #34a263;
-        }
-        .fancy-title{
-        	position: relative;
-    		margin-bottom: 10px;
-    		margin-top: 0px;
-        }
-        .fancy-title.title-bottom-border h1, 
-        .fancy-title.title-bottom-border h2, 
-        .fancy-title.title-bottom-border h3, 
-        .fancy-title.title-bottom-border h4, 
-        .fancy-title.title-bottom-border h5, 
-        .fancy-title.title-bottom-border h6{
-        	margin-top: 0px;
-		    display: block;
-		    background: 0 0;
-		    padding: 0 0 5px;
-		    border-bottom: 1px solid #FFF;
-        }
-        h2{
-        	color: white;
-        }
-    </style>
     <script type="text/javascript">
         if(typeof wabtn4fg==="undefined"){
             wabtn4fg=1;
@@ -1216,11 +1239,17 @@
 		var cont = 0;
 		// Forfaits
 		$(document).ready(function(){
-			$("input[name$='forfait']").click(function() {
-		        var test = $(this).val();
-
+			// $("input[name$='forfait']").click(function() {
+			$(".forfait").click(function() {
+		        var test = $(this).attr('data-value');
 		        $("div.desc").hide();
 		        $("#Forfait" + test).show();
+
+		        $("div.forfait").each(function(index, el) {
+					$(this).css('border', 'none');		        	
+		        });
+
+		        $(this).css('border', '3px solid #00b4e9');
 		    });
 
 			
@@ -1711,7 +1740,6 @@
 		}); 
     </script>
 
-    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
     <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="js/solo-formulario-reservas/datepicker/daterange.datepicker.js"></script>
     <script type="text/javascript" src="js/solo-formulario-reservas/codigo-desarrollo-form.js"></script>

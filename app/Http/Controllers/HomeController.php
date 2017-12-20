@@ -484,56 +484,55 @@ class HomeController extends Controller
 
 
     public function solicitudForfait(Request $request)
-        {   
-            $arrayProducts = array();
+    {   
+        $arrayProducts = array();
 
-            $data = $request->input();
+        $data = $request->input();
 
-            $solicitud         = new \App\Solicitudes();
-            $solicitud->name   = $data['nombre'];
-            $solicitud->email  = $data['email'];
-            $solicitud->phone  = $data['telefono'];
-            $solicitud->start  = Carbon::createFromFormat('d-m-Y', $data['date-entrada'])->format('Y-m-d');
-            $solicitud->finish = Carbon::createFromFormat('d-m-Y', $data['date-salida'])->format('Y-m-d');
+        $solicitud         = new \App\Solicitudes();
+        $solicitud->name   = $data['nombre'];
+        $solicitud->email  = $data['email'];
+        $solicitud->phone  = $data['telefono'];
+        $solicitud->start  = Carbon::createFromFormat('d-m-Y', $data['date-entrada'])->format('Y-m-d');
+        $solicitud->finish = Carbon::createFromFormat('d-m-Y', $data['date-salida'])->format('Y-m-d');
 
-            if ($solicitud->save()) {
-                
-                foreach ($data['carrito'] as $carrito) { 
-                    $carrito   = ltrim($carrito);
-                    $producto               = new \App\SolicitudesProductos();
-                    $producto->id_solicitud = $solicitud->id;
-                    $producto->name         = $carrito;
-                    // $producto->price = $solicitud->id;
-                    if ($producto->save()) {
-                        $arrayProducts[] = $producto;
-                    }
-
+        if ($solicitud->save()) {
+            
+            foreach ($data['carrito'] as $carrito) { 
+                $carrito   = ltrim($carrito);
+                $producto               = new \App\SolicitudesProductos();
+                $producto->id_solicitud = $solicitud->id;
+                $producto->name         = $carrito;
+                // $producto->price = $solicitud->id;
+                if ($producto->save()) {
+                    $arrayProducts[] = $producto;
                 }
-
-                // return view('frontend.emails._responseSolicitudForfait' ,['solicitud' => $solicitud, 'productos' => $arrayProducts,'data' => $data]);
-
-
-                $sended = Mail::send(['html' => 'frontend.emails._responseSolicitudForfait'],['solicitud' => $solicitud, 'productos' => $arrayProducts,'data' => $data], function ($message) use ($data) {
-                    $message->from('reservas@apartamentosierranevada.net');
-                    $message->to('reservas@apartamentosierranevada.net');
-                    $message->to('escuela@sierranevadaeee.com');
-                    $message->to($data['email']);
-                    $message->replyTo($data['email']);
-                    $message->subject('Solicitud de FORFAIT');
-                });
-
-
-                if ($sended) {
-                    return redirect()->back();
-                }
-
 
             }
 
+            // return view('frontend.emails._responseSolicitudForfait' ,['solicitud' => $solicitud, 'productos' => $arrayProducts,'data' => $data]);
+
+
+            $sended = Mail::send(['html' => 'frontend.emails._responseSolicitudForfait'],['solicitud' => $solicitud, 'productos' => $arrayProducts,'data' => $data], function ($message) use ($data) {
+                $message->from('reservas@apartamentosierranevada.net');
+                $message->to('reservas@apartamentosierranevada.net');
+                $message->to('escuela@sierranevadaeee.com');
+                $message->to($data['email']);
+                $message->replyTo($data['email']);
+                $message->subject('Solicitud de FORFAIT');
+            });
+
+
+            if ($sended) {
+                return redirect()->back();
+            }
 
 
         }
 
+
+
+    }
 
  
 }
