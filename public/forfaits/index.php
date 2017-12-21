@@ -25,6 +25,10 @@
 	============================================= -->
     <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
     <style type="text/css">
+    	div.clase{
+    		cursor: pointer;
+    		padding: 0 10px;
+    	}
     	div.forfait{
     		cursor: pointer;
     		padding: 0 10px;
@@ -85,8 +89,8 @@
 			                                    <input type="text" class="sm-form-control" name="telefono" id="telefono" placeholder="Aquí pon el telefono" maxlength="9" required>
 			                                </div>
 
-			                                <div class="form-group col-md-6 col-sm-offset-3">
-			                                    <span>*Desde / Hasta</span>
+			                                <div class="form-group col-md-6 col-sm-offset-3 push-30">
+			                                	<h4 class="text-center push-0">* Fecha de tu reserva</h4>
 			                                    <div class='input-group'>
 			                                        <input class="sm-form-control" type="text" name="date-entrada" id="date-entrada" name="example-daterange1" placeholder="Desde" maxlength="10" readonly="readonly" required>
 			                                        <span class="input-group-addon" id="btnCalendarEntrada"><span class="icon-calendar"></span></span>
@@ -180,7 +184,7 @@
 							                                    	<span class="input-group-btn">
 							                                    		<button class="btn btn-default rest-clients" type="button" >-</button>
 							                                    	</span> 
-							                                        <input type="text" name="forfait-Juvenil-cant" class="form-control text-center count-clients" id='forfait-Juvenil-cant' readonly="readonly" required>
+							                                        <input type="text" name="forfait-juvenil" class="form-control text-center count-clients" id='forfait-juvenil' readonly="readonly" required>
 							                                        <span class="input-group-btn">
 							                                        	<button class="btn btn-default add-client" type="button">+</button>
 							                                        </span>
@@ -211,7 +215,7 @@
 				                                    </div>
 			                                    
 			                                    <!-- Junior -->
-				                                    <div id="Forfait1" class="desc" style="display: none;border-left: solid;border-right: solid">
+				                                    <div id="Forfait1" class="row desc" style="display: none;border-left: solid;border-right: solid">
 				                                        
 														<div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
 															<div class="col-md-3 col-xs-12">
@@ -233,7 +237,7 @@
 							                                    	<span class="input-group-btn">
 							                                    		<button class="btn btn-default rest-clients" type="button" >-</button>
 							                                    	</span> 
-							                                        <input type="text" name="forfait-Junior-cant" class="form-control text-center count-clients" id='forfait-Junior-cant' readonly="readonly" required>
+							                                        <input type="text" name="forfait-junior" class="form-control text-center count-clients" id='forfait-junior' readonly="readonly" required>
 							                                        <span class="input-group-btn">
 							                                        	<button class="btn btn-default add-client" type="button">+</button>
 							                                        </span>
@@ -264,7 +268,7 @@
 				                                    </div>
 			                                    
 			                                    <!-- Adulto -->
-				                                    <div id="Forfait2" class="desc" style="display: none;border-left: solid;border-right: solid">
+				                                    <div id="Forfait2" class="row desc" style="display: none;border-left: solid;border-right: solid">
 				                                    	<div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
 					                                    	<div class="col-md-3 col-xs-12">
 					                                    		<img src="/img/fortfait/adulto.jpg" class="img-responsive" style="margin-top: 30px;">
@@ -284,7 +288,7 @@
 							                                    	<span class="input-group-btn">
 							                                    		<button class="btn btn-default rest-clients" type="button" >-</button>
 							                                    	</span> 
-							                                        <input type="text" name="forfait-Adultos-cant" class="form-control text-center count-clients" id='forfait-Adultos-cant' readonly="readonly" required>
+							                                        <input type="text" name="forfait-adulto" class="form-control text-center count-clients" id='forfait-adulto' readonly="readonly" required>
 							                                        <span class="input-group-btn">
 							                                        	<button class="btn btn-default add-client" type="button">+</button>
 							                                        </span>
@@ -315,7 +319,7 @@
 				                                    </div>
 			                                    
 			                                    <!-- Senior -->
-				                                    <div id="Forfait3" class="desc" style="display: none;border-left: solid;border-right: solid">
+				                                    <div id="Forfait3" class="row desc" style="display: none;border-left: solid;border-right: solid">
 				                                    	<div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
 					                                    	<div class="col-md-3 col-xs-12">
 					                                    		<img src="/img/fortfait/adulto.jpg" class="img-responsive" style="margin-top: 30px;">
@@ -335,7 +339,7 @@
 							                                    	<span class="input-group-btn">
 							                                    		<button class="btn btn-default rest-clients" type="button" >-</button>
 							                                    	</span> 
-							                                        <input type="text" name="forfait-Senior-cant" class="form-control text-center count-clients" id='forfait-Senior-cant' readonly="readonly" required>
+							                                        <input type="text" name="forfait-senior" class="form-control text-center count-clients" id='forfait-senior' readonly="readonly" required>
 							                                        <span class="input-group-btn">
 							                                        	<button class="btn btn-default add-client" type="button">+</button>
 							                                        </span>
@@ -366,7 +370,7 @@
 				                                    </div>
 			                                    
 			                                    <!-- Juvenil Familiar -->
-				                                    <div id="Forfait4" class="desc" style="display: none;border-left: solid;border-right: solid">
+				                                    <div id="Forfait4" class="row desc" style="display: none;border-left: solid;border-right: solid">
 				                                    	<div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
 					                                    	<div class="col-md-3 col-xs-12">
 					                                    		<img src="/img/fortfait/adulto.jpg" class="img-responsive" style="margin-top: 30px;">
@@ -387,7 +391,7 @@
 							                                    	<span class="input-group-btn">
 							                                    		<button class="btn btn-default rest-clients" type="button" >-</button>
 							                                    	</span> 
-							                                        <input type="text" name="forfait-juvenil-familiar-cant" class="form-control text-center count-clients" id='forfait-juvenil-familiar-cant' readonly="readonly" required>
+							                                        <input type="text" name="forfait-juvenil-familiar" class="form-control text-center count-clients" id='forfait-juvenil-familiar' readonly="readonly" required>
 							                                        <span class="input-group-btn">
 							                                        	<button class="btn btn-default add-client" type="button">+</button>
 							                                        </span>
@@ -418,7 +422,7 @@
 				                                    </div>
 				                                    
 			                                    <!-- Junio Familiar -->
-				                                    <div id="Forfait5" class="desc" style="display: none;border-left: solid;border-right: solid">
+				                                    <div id="Forfait5" class="row desc" style="display: none;border-left: solid;border-right: solid">
 				                                    	<div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
 					                                    	<div class="col-md-3 col-xs-12">
 					                                    		<img src="/img/fortfait/adulto.jpg" class="img-responsive" style="margin-top: 30px;">
@@ -438,7 +442,7 @@
 							                                    	<span class="input-group-btn">
 							                                    		<button class="btn btn-default rest-clients" type="button" >-</button>
 							                                    	</span> 
-							                                        <input type="text" name="forfait-junior-familiar-cant" class="form-control text-center count-clients" id='forfait-junior-familiar-cant' readonly="readonly" required>
+							                                        <input type="text" name="forfait-junior-familiar" class="form-control text-center count-clients" id='forfait-junior-familiar' readonly="readonly" required>
 							                                        <span class="input-group-btn">
 							                                        	<button class="btn btn-default add-client" type="button">+</button>
 							                                        </span>
@@ -491,7 +495,7 @@
 		                                	<div class="form-group col-sm-10">
 			                                	
 				                                <!-- Packs -->
-					                                <div id="material0" class="desc" style="display: none;border-left: solid;border-right: solid">
+					                                <div id="material0" class="row desc" style="display: none;border-left: solid;border-right: solid">
 				                                        <span><h2 align="center">Reservas de Packs</h2></span>
 														
 														<table class="table table-bordered table-inverse table-responsive" style="width: 98%;margin-left: 5px">
@@ -590,7 +594,7 @@
 				                                    </div>
 
 			                                    <!-- Esquis -->
-				                                    <div id="material1" class="desc" style="display: none;border-left: solid;border-right: solid">
+				                                    <div id="material1" class="row desc" style="display: none;border-left: solid;border-right: solid">
 				                                        <span><h2 align="center">Reservas de Esquís</h2></span>
 				                                        	
 				                                        <table class="table table-bordered table-inverse" style="width: 98%;margin-left: 5px">
@@ -693,7 +697,7 @@
 				                                    </div>		                                  
 
 			                                    <!-- Snowboard -->
-				                                    <div id="material2" class="desc" style="display: none;border-left: solid;border-right: solid">
+				                                    <div id="material2" class="row desc" style="display: none;border-left: solid;border-right: solid">
 				                                        <span><h2 align="center">Reservas de Snowboard</h2></span>
 				                                        	
 				                                        <table class="table table-bordered table-inverse" style="width: 98%;margin-left: 5px">
@@ -796,7 +800,7 @@
 				                                    </div>		
 
 			                                    <!-- Snowblade -->
-				                                    <div id="material3" class="desc" style="display: none;border-left: solid;border-right: solid">
+				                                    <div id="material3" class="row desc" style="display: none;border-left: solid;border-right: solid">
 				                                        <span><h2 align="center">Reservas de Snowblade</h2></span>
 				                                        	
 				                                        <table class="table table-bordered table-inverse" style="width: 98%;margin-left: 5px">
@@ -862,7 +866,7 @@
 				                                    </div>		
 
 			                                    <!-- Cascos -->
-				                                    <div id="material4" class="desc" style="display: none;border-left: solid;border-right: solid">
+				                                    <div id="material4" class="row desc" style="display: none;border-left: solid;border-right: solid">
 				                                        <span><h2 align="center">Reservas de Cascos</h2></span>
 				                                        	
 				                                        <table class="table table-bordered table-inverse" style="width: 98%;margin-left: 5px">
@@ -938,121 +942,133 @@
 
 			                            <!-- Selector de clases -->
 
-        	                                <div class="col-sm-2 left">
+        	                                <div class="col-sm-12 push-30">
         		                                
-        		                                <div class="form-group">
-        		                                    <input type="radio" name="clase" value="0">Particular<br />
-        		                                    <input type="radio" name="clase" value="1">Colectiva<br />
-        	                                    </div>
+												<div class="col-md-2 col-xs-6 clase" data-value="0">
+				                                	<div class="col-xs-12 not-padding">
+					                                	<img src="/img/fortfait/clase-particular.jpg" class="img-responsive push-10"/>
+					                                	<h3 class="text-center title-forfait push-5">
+					                                		Clases particulares
+					                                	</h3>
+				                                	</div>
+				                                </div>
+				                                <div class="col-md-2 col-xs-6 clase" data-value="1">
+				                                	<div class="col-xs-12 not-padding">
+					                                	<img src="/img/fortfait/clase-colectiva-semanal.jpg" class="img-responsive push-10"/>
+					                                	<h3 class="text-center title-forfait push-5">
+					                                		Clases colectivas semanal
+					                                	</h3>
+				                                	</div>
+				                                </div>
+
         	                                </div>
         	                                	
 
-		                                	<div class="form-group col-sm-10">
+		                                	<div class="form-group col-sm-12">
 		                                		<!-- Particulares -->
-					                                <div id="clase0" class="desc" style="display: none;border-left: solid;border-right: solid">				     	<span><h2 align="center">Reserva Clase Particular</h2></span>
-														
-														Son clases personalizadas, se recomienda que mínimo contraten a partir de 2 horas de duración, para que sea mayor el aprovechamiento de las mismas. Se imparten de 1 a 4 personas, del mismo nivel y estilo (esquí o snow), la agrupación de los alumnos es por cuenta del cliente.<br /><br />
+			                                	<div id="clase0" class="row desc" style="display: none;border-left: solid;border-right: solid">			
+			                                		<div class="col-xs-12 push-12">
+			                                			<div class="col-md-3">
+			                                				<img src="/img/fortfait/clase-particular.jpg" class="img-responsive push-10" style="margin-top: 30px;" />
+			                                			</div>
+			                                			<div class="col-md-9">
+			                                				<h2 class="text-center font-w300 text-black black" >CLASES <span class="font-w800">Particulares</span> </h2>
+			                                				Son clases personalizadas, se recomienda que mínimo contraten a partir de 2 horas de duración, para que sea mayor el aprovechamiento de las mismas. Se imparten de 1 a 4 personas, del mismo nivel y estilo (esquí o snow), la agrupación de los alumnos es por cuenta del cliente.<br /><br />
 
-														Para niños de 3 y 4 años, debe ir 1 niño por profesor. No se recomienda que den clases juntos adultos y niños, ya que el sistema de enseñanza es diferente y el profesor tiene que estar pendiente de los niños por los que los adultos no aprovecharían bien la clase.<br /><br />                               
+			                                				Para niños de 3 y 4 años, debe ir 1 niño por profesor. No se recomienda que den clases juntos adultos y niños, ya que el sistema de enseñanza es diferente y el profesor tiene que estar pendiente de los niños por los que los adultos no aprovecharían bien la clase.<br /><br />
+			                                			</div>
+			                                		</div>	                  
 
-														<!-- nº Personas -->
-															<div class="form-group col-sm-4">
-							                                    <span>*Personas</span>
-								                                    <div class="input-group">
-								                                    	<span class="input-group-btn">
-								                                    		<button class="btn btn-default rest-clients" type="button" >-</button>
-								                                    	</span> 
-								                                        <input type="text" name="clase-particular-cant" class="form-control text-center count-clients" id='clase-particular-cant' readonly="readonly" required>
-								                                        <span class="input-group-btn">
-								                                        	<button class="btn btn-default add-client" type="button">+</button>
-								                                        </span>
-								                                    </div>
-					                                    	</div>
-				                                    	
-				                                    	<!-- Hora de inicio -->
-					                                    	<div class="form-group col-sm-4">
-							                                    <span>Hora</span>
-								                                    <div class="input-group" >
-								                                    	<select type="text" class="form-control" id="clasehora">
-								                                    		<option>Hora de inicio</option>
-								                                    		<option value="10:00">10:00</option>
-								                                    		<option value="12:00">12:00</option>
-								                                    		<option value="13:00">13:00</option>
-								                                    		<option value="14:00">14:00</option>
-								                                    		<option value="15:00">15:00</option>
-								                                    		<option value="16:00">16:00</option>
-								                                    	</select>
-								                                    </div>
-					                                    	</div>
-
-					                                    <!-- nº Horas -->
-					                                    	<div class="form-group col-sm-4">
-							                                    <span>Nª de horas</span>
-								                                    <div class="input-group" >
-								                                    	<select type="text" class="form-control" id="clasehoras">
-								                                    		<option>Nº de horas</option>
-								                                    		<option value="1">1 Horas</option>
-								                                    		<option value="2">2 Horas</option>
-								                                    		<option value="3">3 Horas</option>
-								                                    		<option value="4">4 Horas</option>
-								                                    		<option value="5">5 Horas</option>
-								                                    		<option value="6">6 Horas</option>
-								                                    	</select>
-								                                    </div>
-					                                    	</div>
-
-					                                    <!-- nº Horas -->
-					                                    	<div class="form-group col-sm-4">
-							                                    <span>*Modalidad</span>
-								                                    <div class="input-group" >
-								                                    	<select type="text" class="form-control" id="clasetipo">
-								                                    		<option>Clase</option>
-								                                    		<option value="Esquí niños principiantes">Esquí niños principiantes</option>
-								                                    		<option value="Esquí niños avanzados">Esquí niños avanzados</option>
-								                                    		<option value="Esquí">Esquí</option>
-								                                    		<option value="Snow">Snow</option>
-								                                    		<option value="Ciegos">Ciegos</option>
-								                                    	</select>
-								                                    </div>
-					                                    	</div>
-
-					                                    <!-- Profesor -->
-					                                    	<div class="form-group col-sm-4">
-							                                    <span>*Profesor</span>
-								                                    <div class="input-group" >
-								                                    	<select type="text" class="form-control" id="claseprofesor">
-								                                    		<option>Profesor</option>
-								                                    		<option value="Hombre">Hombre</option>
-								                                    		<option value="Mujer">Mujer</option>
-								                                    	</select>
-								                                    </div>
-					                                    	</div>
-					                                    	
-					                                    <!-- Idioma -->
-					                                    	<div class="form-group col-sm-4">
-							                                    <span>*Idioma</span>
-								                                    <div class="input-group" >
-								                                    	<select type="text" class="form-control" id="claseidioma">
-								                                    		<option>Idioma</option>
-								                                    		<option value="Español">Español</option>
-								                                    		<option value="Ingles">Ingles</option>
-								                                    		<option value="Portugues">Portugues</option>
-								                                    		<option value="Frances">Frances</option>
-								                                    		<option value="Aleman">Aleman</option>
-								                                    		<option value="Ruso">Ruso</option>
-								                                    	</select>
-								                                    </div>
-					                                    	</div>
-
-
-				                                    	<div class="form-group col-sm-3 col-sm-offset-4" >
-						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonparticular" class="btn btn-success form-control" type="button">Solicitar</button>
+													<!-- nº Personas -->
+														<div class="form-group col-sm-4">
+						                                    <span>*Personas</span>
+							                                <div class="input-group" >
+							                                	<select type="text" class="form-control clase-particular-cant" id="clase-particular-cant">
+							                                		<option>seleccione alumnos</option>
+							                                		<option value="1" data-price="47.00">1</option>
+							                                		<option value="2" data-price="51.00">2</option>
+							                                		<option value="3" data-price="56.00">3</option>
+							                                		<option value="4" data-price="60.00">4</option>
+							                                	</select>
+							                                </div>
 				                                    	</div>
-				                                    </div>
+				                                    	
+			                                    	<!-- Hora de inicio -->
+				                                    	<div class="form-group col-sm-4">
+						                                    <span>Hora</span>
+							                                    <div class="input-group" >
+							                                    	<select type="text" class="form-control" id="clasehora">
+							                                    		<option>Hora de inicio</option>
+							                                    		<option value="10:00">10:00</option>
+							                                    		<option value="12:00">12:00</option>
+							                                    		<option value="13:00">13:00</option>
+							                                    		<option value="14:00">14:00</option>
+							                                    		<option value="15:00">15:00</option>
+							                                    		<option value="16:00">16:00</option>
+							                                    	</select>
+							                                    </div>
+				                                    	</div>
+
+				                                    <!-- nº Horas -->
+				                                    	<div class="form-group col-sm-4">
+						                                    <span>Nª de horas</span>
+						                                    <div class="input-group" >
+						                                    	<select type="text" class="form-control" id="clasehoras">
+						                                    		<option>Nº de horas</option>
+						                                    		<option value="1">1 Horas</option>
+						                                    		<option value="2">2 Horas</option>
+						                                    		<option value="3">3 Horas</option>
+						                                    		<option value="4">4 Horas</option>
+						                                    		<option value="5">5 Horas</option>
+						                                    		<option value="6">6 Horas</option>
+						                                    	</select>
+						                                    </div>
+				                                    	</div>
+
+				                                    <!-- nº Horas -->
+				                                    	<div class="form-group col-sm-4">
+						                                    <span>*Modalidad</span>
+						                                    <div class="input-group" >
+						                                    	<select type="text" class="form-control" id="clasetipo">
+						                                    		<option>Seleccione clase</option>
+						                                    		<option value="Esquí niños principiantes">Esquí niños principiantes</option>
+						                                    		<option value="Esquí niños avanzados">Esquí niños avanzados</option>
+						                                    		<option value="Esquí">Esquí</option>
+						                                    		<option value="Snow">Snow</option>
+						                                    		<option value="Ciegos">Ciegos</option>
+						                                    	</select>
+						                                    </div>
+				                                    	</div>
+
+				                                    <!-- Profesor -->
+				                                    	
+				                                    	<input type="hidden" id="claseprofesor" value="---">
+						                                 
+				                                    	
+				                                    <!-- Idioma -->
+				                                    	<div class="form-group col-sm-4">
+						                                    <span>*Idioma</span>
+							                                    <div class="input-group" >
+							                                    	<select type="text" class="form-control" id="claseidioma">
+							                                    		<option>Idioma</option>
+							                                    		<option value="Español">Español</option>
+							                                    		<option value="Ingles">Ingles</option>
+							                                    		<option value="Portugues">Portugues</option>
+							                                    		<option value="Frances">Frances</option>
+							                                    		<option value="Aleman">Aleman</option>
+							                                    		<option value="Ruso">Ruso</option>
+							                                    	</select>
+							                                    </div>
+				                                    	</div>
+
+
+				                                    	<div class="form-group col-sm-4" >
+			                                    			<button name="boton" id="botonparticular" class="btn btn-success form-control" type="button">Solicitar</button>
+				                                    	</div>
+			                                    </div>
 
 				                                <!-- colectivo -->
-					                                <div id="clase1" class="desc" style="display: none;border-left: solid;border-right: solid">				     	<span><h2 align="center">Reserva Clase Colectivas</h2></span>
+					                                <div id="clase1" class="row desc" style="display: none;border-left: solid;border-right: solid">				     	<span><h2 align="center">Reserva Clase Colectivas</h2></span>
 														
 														<table class="table table-bordered table-inverse table-responsive" style="width: 98%;margin-left: 5px">
 															<th>Tipo</th>
@@ -1257,9 +1273,9 @@
 				$("#botonjuv").click(function(){
 					
 					if ($(".carrito").text() == "") {
-						if ($("#forfait-Juvenil-cant").val() != 0 && $("#JuvenilDias option:selected").html() != "Elige una opcion") {
+						if ($("#forfait-juvenil").val() != 0 && $("#JuvenilDias option:selected").html() != "Elige una opcion") {
 							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-Juvenil-cant").val()+" Forfait Juvenil ");
+							$("#"+cont).append($("#forfait-juvenil").val()+" Forfait Juvenil ");
 							$("#"+cont).append($("#JuvenilDias").val()+" Dias"+"");
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
 							$("button#btdel"+cont).on('click', function() {
@@ -1271,9 +1287,9 @@
 						}
 						
 					}else{
-						if ($("#forfait-Juvenil-cant").val() != 0 && $("#JuvenilDias option:selected").html() != "Elige una opcion") {
+						if ($("#forfait-juvenil").val() != 0 && $("#JuvenilDias option:selected").html() != "Elige una opcion") {
 							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-Juvenil-cant").val()+" Forfait Juvenil ");
+							$("#"+cont).append($("#forfait-juvenil").val()+" Forfait Juvenil ");
 							$("#"+cont).append($("#JuvenilDias").val()+" Dias"+"");
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
 							$("button#btdel"+cont).on('click', function() {
@@ -1289,9 +1305,9 @@
 				$("#botonjun").click(function(){
 					
 					if ($(".carrito").text() == "") {
-						if ($("#forfait-Junior-cant").val() != 0 && $("#JuniorDias option:selected").html() != "Elige una opcion") {
+						if ($("#forfait-junior").val() != 0 && $("#JuniorDias option:selected").html() != "Elige una opcion") {
 							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-Junior-cant").val()+" Forfait Junior ");
+							$("#"+cont).append($("#forfait-junior").val()+" Forfait Junior ");
 							$("#"+cont).append($("#JuniorDias").val()+" Dias"+"");
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
 
@@ -1303,9 +1319,9 @@
 						}
 						
 					}else{
-						if ($("#forfait-Junior-cant").val() != 0 && $("#JuniorDias option:selected").html() != "Elige una opcion") {
+						if ($("#forfait-junior").val() != 0 && $("#JuniorDias option:selected").html() != "Elige una opcion") {
 							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-Junior-cant").val()+" Forfait Junior ");
+							$("#"+cont).append($("#forfait-junior").val()+" Forfait Junior ");
 							$("#"+cont).append($("#JuniorDias").val()+" Dias"+"");
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
 
@@ -1322,9 +1338,9 @@
 				$("#botonadult").click(function(){
 					
 					if ($(".carrito").text() == "") {
-						if ($("#forfait-Adultos-cant").val() != 0 && $("#AdultosDias option:selected").html() != "Elige una opcion") {
+						if ($("#forfait-adulto").val() != 0 && $("#AdultosDias option:selected").html() != "Elige una opcion") {
 							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-Adultos-cant").val()+" Forfait Adultos ");
+							$("#"+cont).append($("#forfait-adulto").val()+" Forfait Adultos ");
 							$("#"+cont).append($("#AdultosDias").val()+" Dias"+"");
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
 
@@ -1336,9 +1352,9 @@
 						}
 						
 					}else{
-						if ($("#forfait-Adultos-cant").val() != 0 && $("#AdultosDias option:selected").html() != "Elige una opcion") {
+						if ($("#forfait-adulto").val() != 0 && $("#AdultosDias option:selected").html() != "Elige una opcion") {
 							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-Adultos-cant").val()+" Forfait Adultos ");
+							$("#"+cont).append($("#forfait-adulto").val()+" Forfait Adultos ");
 							$("#"+cont).append($("#AdultosDias").val()+" Dias"+"");
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
 
@@ -1355,9 +1371,9 @@
 				$("#botonsenior").click(function(){
 					
 					if ($(".carrito").text() == "") {
-						if ($("#forfait-Senior-cant").val() != 0 && $("#SeniorDias option:selected").html() != "Elige una opcion") {
+						if ($("#forfait-senior").val() != 0 && $("#SeniorDias option:selected").html() != "Elige una opcion") {
 							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-Senior-cant").val()+" Forfait Senior ");
+							$("#"+cont).append($("#forfait-senior").val()+" Forfait Senior ");
 							$("#"+cont).append($("#SeniorDias").val()+" Dias"+"");
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
 
@@ -1369,9 +1385,9 @@
 						}
 						
 					}else{
-						if ($("#forfait-Senior-cant").val() != 0 && $("#SeniorDias option:selected").html() != "Elige una opcion") {
+						if ($("#forfait-senior").val() != 0 && $("#SeniorDias option:selected").html() != "Elige una opcion") {
 							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-Senior-cant").val()+" Forfait Senior ");
+							$("#"+cont).append($("#forfait-senior").val()+" Forfait Senior ");
 							$("#"+cont).append($("#SeniorDias").val()+" Dias"+"");
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
 
@@ -1388,9 +1404,9 @@
 				$("#botonjuvfam").click(function(){
 					
 					if ($(".carrito").text() == "") {
-						if ($("#forfait-juvenil-familiar-cant").val() != 0 && $("#juvfaDias option:selected").html() != "Elige una opcion") {
+						if ($("#forfait-juvenil-familiar").val() != 0 && $("#juvfaDias option:selected").html() != "Elige una opcion") {
 							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-juvenil-familiar-cant").val()+" Forfait juvenil-Familiar ");
+							$("#"+cont).append($("#forfait-juvenil-familiar").val()+" Forfait juvenil-Familiar ");
 							$("#"+cont).append($("#juvfaDias").val()+" Dias"+"");
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");							
 
@@ -1402,9 +1418,9 @@
 						}
 						
 					}else{
-						if ($("#forfait-juvenil-familiar-cant").val() != 0 && $("#juvfaDias option:selected").html() != "Elige una opcion") {
+						if ($("#forfait-juvenil-familiar").val() != 0 && $("#juvfaDias option:selected").html() != "Elige una opcion") {
 							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-juvenil-familiar-cant").val()+" Forfait juvenil-Familiar ");
+							$("#"+cont).append($("#forfait-juvenil-familiar").val()+" Forfait juvenil-Familiar ");
 							$("#"+cont).append($("#juvfaDias").val()+" Dias"+"");
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
 
@@ -1421,9 +1437,9 @@
 				$("#botonjunfam").click(function(){
 					
 					if ($(".carrito").text() == "") {
-						if ($("#forfait-junior-familiar-cant").val() != 0 && $("#junfaDias option:selected").html() != "Elige una opcion") {
+						if ($("#forfait-junior-familiar").val() != 0 && $("#junfaDias option:selected").html() != "Elige una opcion") {
 							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-junior-familiar-cant").val()+" Forfait junior-Familiar ");
+							$("#"+cont).append($("#forfait-junior-familiar").val()+" Forfait junior-Familiar ");
 							$("#"+cont).append($("#junfaDias").val()+" Dias"+"");
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
 
@@ -1435,9 +1451,9 @@
 						}
 						
 					}else{
-						if ($("#forfait-junior-familiar-cant").val() != 0 && $("#junfaDias option:selected").html() != "Elige una opcion") {
+						if ($("#forfait-junior-familiar").val() != 0 && $("#junfaDias option:selected").html() != "Elige una opcion") {
 							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-junior-familiar-cant").val()+" Forfait junior-Familiar ");
+							$("#"+cont).append($("#forfait-junior-familiar").val()+" Forfait junior-Familiar ");
 							$("#"+cont).append($("#junfaDias").val()+" Dias"+"");
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
 
@@ -1467,7 +1483,7 @@
 					if ($(".carrito").text() == "") {
 						if ($("#material-pack-cant").val() != 0 && $("#packtipo option:selected").html() != "Tipo" && $("#packdias option:selected").html() != "Dias") {
 							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");					
-							$("#"+cont).append($("#material-pack-cant").val()+" Packs,Tipo ");
+							$("#"+cont).append($("#material-pack-cant").val()+" Alquiler material "+" Packs, Tipo ");
 							$("#"+cont).append($("#packtipo").val()+",");
 							$("#"+cont).append($("#packdias").val()+" Dias ");
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
@@ -1482,7 +1498,7 @@
 					}else{
 						if ($("#material-pack-cant").val() != 0 && $("#packtipo option:selected").html() != "Tipo" && $("#packdias option:selected").html() != "Dias") {
 							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");					
-							$("#"+cont).append($("#material-pack-cant").val()+" Packs,Tipo ");
+							$("#"+cont).append($("#material-pack-cant").val()+" Packs, Tipo ");
 							$("#"+cont).append($("#packtipo").val()+",");
 							$("#"+cont).append($("#packdias").val()+" Dias ");
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
@@ -1502,7 +1518,7 @@
 					if ($(".carrito").text() == "") {
 						if ($("#material-Esquis-cant").val() != 0 && $("#EsquisDias option:selected").html() != "Dias" && $("#esquitipo option:selected").html() != "Tipo" && $("#esquisgama option:selected").html() != "Gama") {
 							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>");					
-							$("#"+cont).append($("#material-Esquis-cant").val()+$("#esquitipo").val()+" ,");
+							$("#"+cont).append($("#material-Esquis-cant").val()+" Alquiler material "+$("#esquitipo").val()+" ,");
 							$("#"+cont).append($("#EsquisDias").val()+" Dias,Gama  " );
 							$("#"+cont).append($("#esquisgama").val());
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
@@ -1517,7 +1533,7 @@
 					}else{
 						if ($("#material-Esquis-cant").val() != 0 && $("#EsquisDias option:selected").html() != "Dias" && $("#esquitipo option:selected").html() != "Tipo" && $("#esquisgama option:selected").html() != "Gama") {
 							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>");					
-							$("#"+cont).append($("#material-Esquis-cant").val()+$("#esquitipo").val()+" ,");
+							$("#"+cont).append($("#material-Esquis-cant").val()+" Alquiler material "+$("#esquitipo").val()+" ,");
 							$("#"+cont).append($("#EsquisDias").val()+" Dias,Gama  " );
 							$("#"+cont).append($("#esquisgama").val());
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
@@ -1537,7 +1553,7 @@
 					if ($(".carrito").text() == "") {
 						if ($("#material-snow-cant").val() != 0 && $("#snowDias option:selected").html() != "Dias" && $("#snowtipo option:selected").html() != "Tipo" && $("#snowgama option:selected").html() != "Gama") {
 							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");					
-							$("#"+cont).append($("#material-snow-cant").val()+$("#snowtipo").val()+" ,");
+							$("#"+cont).append($("#material-snow-cant").val()+" Alquiler material "+$("#snowtipo").val()+" ,");
 							$("#"+cont).append($("#snowDias").val()+" Dias,Gama " );
 							$("#"+cont).append($("#snowgama").val());
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
@@ -1552,7 +1568,7 @@
 					}else{
 						if ($("#material-snow-cant").val() != 0 && $("#snowDias option:selected").html() != "Dias" && $("#snowtipo option:selected").html() != "Tipo" && $("#snowgama option:selected").html() != "Gama") {
 							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");					
-							$("#"+cont).append($("#material-snow-cant").val()+$("#snowtipo").val()+" ,");
+							$("#"+cont).append($("#material-snow-cant").val()+" Alquiler material "+$("#snowtipo").val()+" ,");
 							$("#"+cont).append($("#snowDias").val()+" Dias,Gama " );
 							$("#"+cont).append($("#snowgama").val());
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
@@ -1572,7 +1588,7 @@
 					if ($(".carrito").text() == "") {
 						if ($("#material-blade-cant").val() != 0 && $("#bladeDias option:selected").html() != "Dias" && $("#bladeTipo option:selected").html() != "Tipo") {
 							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");					
-							$("#"+cont).append($("#material-blade-cant").val()+$("#bladeTipo").val()+", ");
+							$("#"+cont).append($("#material-blade-cant").val()+" Alquiler material "+$("#bladeTipo").val()+", ");
 							$("#"+cont).append($("#bladeDias").val()+" Dias,Tipo ");						
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
 
@@ -1586,7 +1602,7 @@
 					}else{
 						if ($("#material-blade-cant").val() != 0 && $("#bladeDias option:selected").html() != "Dias" && $("#bladeTipo option:selected").html() != "Tipo") {
 							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");					
-							$("#"+cont).append($("#material-blade-cant").val()+$("#bladeTipo").val()+" ,");
+							$("#"+cont).append($("#material-blade-cant").val()+" Alquiler material "+$("#bladeTipo").val()+" ,");
 							$("#"+cont).append($("#bladeDias").val()+" Dias,Tipo ");
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
 
@@ -1606,9 +1622,9 @@
 						if ($("#material-casco-cant").val() != 0 && $("#cascoDias option:selected").html() != "Dias" && $("#cascoTipo option:selected").html() != "Tipo") {
 							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
 							if ($("#material-casco-cant").val() == 1) {					
-							 	$("#"+cont).append($("#material-casco-cant").val()+" casco,");
+							 	$("#"+cont).append($("#material-casco-cant").val() +" Alquiler material "+" casco,");
 							}else{
-								$("#"+cont).append($("#material-casco-cant").val()+" cascos,");
+								$("#"+cont).append($("#material-casco-cant").val() +" Alquiler material "+" cascos,");
 							}
 							$("#"+cont).append($("#cascoDias").val()+" Dias,Tipo " );
 							$("#"+cont).append($("#cascoTipo").val());
@@ -1646,11 +1662,19 @@
 
 		//Clases
 		$(document).ready(function() {
-		    $("input[name$='clase']").click(function() {
-		        var test = $(this).val();
+		    $("div.clase").click(function() {
+		        var test = $(this).attr('data-value');
+
+
 
 		        $("div.desc").hide();
 		        $("#clase" + test).show();
+
+		        $("div.clase").each(function(index, el) {
+					$(this).css('border', 'none');		        	
+		        });
+
+		        $(this).css('border', '3px solid #00b4e9');
 		    });
 
 		    $("#botonparticular").click(function(){
@@ -1661,9 +1685,8 @@
 							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbspClase Particular ");					
 							$("#"+cont).append($("#clase-particular-cant").val()+" Personas,a las  ");
 							$("#"+cont).append($("#clasehora").val()+",");
-							$("#"+cont).append($("#clasehoras").val()+" horas, para  ");							
-							$("#"+cont).append($("#clasetipo").val()+", con  ");
-							$("#"+cont).append($("#claseprofesor").val()+" de profesor ,e idioma ");			
+							$("#"+cont).append($("#clasehoras").val()+" hora/as, para  ");							
+							$("#"+cont).append($("#clasetipo").val()+", en  ");			
 							$("#"+cont).append($("#claseidioma").val());
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");																		
 
@@ -1680,9 +1703,8 @@
 							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbspClase Particular ");					
 							$("#"+cont).append($("#clase-particular-cant").val()+" Personas,a las  ");
 							$("#"+cont).append($("#clasehora").val()+",");
-							$("#"+cont).append($("#clasehoras").val()+" horas, para  ");							
-							$("#"+cont).append($("#clasetipo").val()+", con  ");
-							$("#"+cont).append($("#claseprofesor").val()+" de profesor ,e idioma ");			
+							$("#"+cont).append($("#clasehoras").val()+" hora/as, para  ");							
+							$("#"+cont).append($("#clasetipo").val()+", en  ");			
 							$("#"+cont).append($("#claseidioma").val());
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
 
@@ -1703,9 +1725,8 @@
 
 							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbspClase Colectiva ");
 							$("#"+cont).append($("#colecDias").val()+" ,para ");					
-							$("#"+cont).append($("#clase-colectivo-cant").val()+" personas,para ");							
-							$("#"+cont).append($("#colectipo").val()+", con  ");
-							$("#"+cont).append($("#colecprofesor").val()+" de profesor e idioma ");			
+							$("#"+cont).append($("#clase-colectivo-cant").val()+" persona/as, para ");							
+							$("#"+cont).append($("#colectipo").val()+", en  ");	
 							$("#"+cont).append($("#colecidioma").val());
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");																		
 
@@ -1721,9 +1742,8 @@
 
 							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbspClase Colectiva ");
 							$("#"+cont).append($("#colecDias").val()+",para ");					
-							$("#"+cont).append($("#clase-colectivo-cant").val()+" personas,para ");							
-							$("#"+cont).append($("#colectipo").val()+", con  ");
-							$("#"+cont).append($("#colecprofesor").val()+" de profesor e idioma ");			
+							$("#"+cont).append($("#clase-colectivo-cant").val()+" persona/as, para ");							
+							$("#"+cont).append($("#colectipo").val()+", en ");		
 							$("#"+cont).append($("#colecidioma").val());
 							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
 

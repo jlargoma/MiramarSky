@@ -100,21 +100,54 @@
 			                								</tr>
 			                								<?php $total = 0; ?>
 			                								<?php foreach ($productos as $key => $producto): ?>
-																<?php $dataProduct = explode(' ', $producto->name); ?>
-																<?php if ($dataProduct[0] == " "){  echo "hay un espacio"; } ?>
-																
+																<?php $dataProduct = explode(' ', $producto->name); ?>								
 			                									<tr>
 			                										<td style="text-align: left;border: 1px double #e8e8e8; padding: 10px">
-																		<b><?php echo $dataProduct[1] ?> <?php echo $dataProduct[2] ?></b>
+			                											<b><?php if ($dataProduct[0] != " "): ?>
+			                												<?php echo $dataProduct[0] ?>
+			                											<?php endif ?>
+																		<?php echo $dataProduct[1] ?> <?php echo $dataProduct[2] ?></b>
 																		<br>
 																		<?php echo $dataProduct[3] ?> <?php echo $dataProduct[4] ?>
+																		<?php if (isset($dataProduct[5]) ): ?>
+																			<?php echo $dataProduct[5] ?>
+																		<?php endif ?>
+																		<?php if (isset($dataProduct[6]) ): ?>
+																			<?php echo $dataProduct[6] ?>
+																		<?php endif ?>
+																		<?php if (isset($dataProduct[7]) ): ?>
+																			<?php echo $dataProduct[7] ?>
+																		<?php endif ?>
+																		<?php if (isset($dataProduct[8]) ): ?>
+																			<?php echo $dataProduct[8] ?>
+																		<?php endif ?>
+																		<?php if (isset($dataProduct[9]) ): ?>
+																			<?php echo $dataProduct[9] ?>
+																		<?php endif ?>
+																		<?php if (isset($dataProduct[10]) ): ?>
+																			<?php echo $dataProduct[10] ?>
+																		<?php endif ?>
+																		<?php if (isset($dataProduct[11]) ): ?>
+																			<?php echo $dataProduct[11] ?>
+																		<?php endif ?>
+																		<?php if (isset($dataProduct[12]) ): ?>
+																			<?php echo $dataProduct[12] ?>
+																		<?php endif ?>
+																		<?php if (isset($dataProduct[13]) ): ?>
+																			<?php echo $dataProduct[13] ?>
+																		<?php endif ?>
+																		<?php if (isset($dataProduct[14]) ): ?>
+																			<?php echo $dataProduct[14] ?>
+																		<?php endif ?>
 																		<br>
 																		Inicio: <?php echo Carbon::createFromFormat('Y-m-d', $solicitud->start)->formatLocalized('%d-%B-%Y') ?>
 																		<br>
 																		Fin: <?php echo Carbon::createFromFormat('Y-m-d', $solicitud->finish)->formatLocalized('%d-%B-%Y') ?>
 			                										</td>
 			                										<td style="text-align: center;border: 1px double #e8e8e8; padding: 10px">
-			                											<b><?php echo $dataProduct[0] ?></b>
+			                											
+			                												<b><?php echo $dataProduct[0] ?></b>
+			                											
 			                										</td>
 			                										<td style="text-align: center;border: 1px double #e8e8e8; padding: 10px">
 			                											<?php if( $producto->price == 0 ){ $producto->price = 0; }?>

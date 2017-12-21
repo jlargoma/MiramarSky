@@ -487,6 +487,10 @@ class HomeController extends Controller
     {   
         $arrayProducts = array();
 
+        
+
+        // die();
+
         $data = $request->input();
 
         $solicitud         = new \App\Solicitudes();
@@ -499,7 +503,7 @@ class HomeController extends Controller
         if ($solicitud->save()) {
             
             foreach ($data['carrito'] as $carrito) { 
-                $carrito   = ltrim($carrito);
+                $carrito                = ltrim($carrito);
                 $producto               = new \App\SolicitudesProductos();
                 $producto->id_solicitud = $solicitud->id;
                 $producto->name         = $carrito;
@@ -510,14 +514,19 @@ class HomeController extends Controller
 
             }
 
+            // echo "<pre>";
+            // print_r($request->input());
+            // echo "</pre>";
+
             // return view('frontend.emails._responseSolicitudForfait' ,['solicitud' => $solicitud, 'productos' => $arrayProducts,'data' => $data]);
 
 
             $sended = Mail::send(['html' => 'frontend.emails._responseSolicitudForfait'],['solicitud' => $solicitud, 'productos' => $arrayProducts,'data' => $data], function ($message) use ($data) {
                 $message->from('reservas@apartamentosierranevada.net');
-                $message->to('reservas@apartamentosierranevada.net');
-                $message->to('escuela@sierranevadaeee.com');
-                $message->to($data['email']);
+                $message->to('iankurosaki17@gmail.com');
+                // $message->to('reservas@apartamentosierranevada.net');
+                // $message->to('escuela@sierranevadaeee.com');
+                // $message->to($data['email']);
                 $message->replyTo($data['email']);
                 $message->subject('Solicitud de FORFAIT');
             });
