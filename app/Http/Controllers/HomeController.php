@@ -523,10 +523,10 @@ class HomeController extends Controller
 
             $sended = Mail::send(['html' => 'frontend.emails._responseSolicitudForfait'],['solicitud' => $solicitud, 'productos' => $arrayProducts,'data' => $data], function ($message) use ($data) {
                 $message->from('reservas@apartamentosierranevada.net');
-                $message->to('iankurosaki17@gmail.com');
-                // $message->to('reservas@apartamentosierranevada.net');
-                // $message->to('escuela@sierranevadaeee.com');
-                // $message->to($data['email']);
+                // $message->to('iankurosaki17@gmail.com');
+                $message->to('reservas@apartamentosierranevada.net');
+                $message->to('escuela@sierranevadaeee.com');
+                $message->to($data['email']);
                 $message->replyTo($data['email']);
                 $message->subject('Solicitud de FORFAIT');
             });
