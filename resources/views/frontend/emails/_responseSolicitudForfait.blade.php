@@ -55,7 +55,7 @@
 		                    			<td height="70">
 		                    				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 		                    					<tr>
-		                    						<td class="h1" style="padding: 5px 0 0 0;">
+		                    						<td class="h1" style="padding: 5px 0 0 0; color: white; font-size: 32px;">
 		                    							Solicitud Forfaits & Clases Ski – Miramar ski
 		                    						</td>
 		                    					</tr>
@@ -151,7 +151,7 @@
 			                										</td>
 			                										<td style="text-align: center;border: 1px double #e8e8e8; padding: 10px">
 			                											<?php if( $producto->price == 0 ){ $producto->price = 0; }?>
-			                											<b><?php echo number_format($producto->price, 2,',','.'); ?>€</b>
+			                											<b><?php echo number_format($producto->price, 2,',','.'); ?>€ <span style="color: red">*</span></b>
 			                										</td>
 			                									</tr>
 			                									<?php $total += $producto->price; ?>
@@ -192,12 +192,23 @@
 			                	</table>
 						      </td>
 					  	</tr>
+					  	<tr>
+							<td class="footer">
+								<table width="100%" border="0" cellspacing="0" cellpadding="0">
+									<tr>
+										<td align="center" style="color: #000">
+											* En breves te haremos llegar por email el precio de los servicios que has solicitado.
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
 						<tr>
 							<td class="footer" bgcolor="#3F51B5">
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 									<tr>
 										<td align="center" class="footercopy" style="color: #FFF">
-											© Copyright <?php echo date('Y') ?> apartamentosierranevada.net
+											© Copyright <?php echo date('Y') ?> <span style="color: white;">apartamentosierranevada.net</span>
 										</td>
 									</tr>
 								</table>

@@ -74,22 +74,22 @@
 						                        </h2>
 			                            	</div>
 			                            	
-			                                <div class="form-group col-sm-4">
+			                                <div class="form-group col-sm-4 col-xs-12">
 			                                    <span>*Nombre</span>
 			                                    <input type="text" class="sm-form-control" name="nombre" id="nombre" placeholder="Introduce aqui tu Nombre" maxlength="40" required>
 			                                </div>
 
-			                                <div class="form-group col-sm-4">
+			                                <div class="form-group col-sm-4 col-xs-12">
 			                                    <span>*Email</span>
 			                                    <input type="email" class="sm-form-control" name="email" id="email" placeholder="Aquí pon tu email" maxlength="40" required>
 			                                </div>
 
-			                                <div class="form-group col-sm-4">
+			                                <div class="form-group col-sm-4 col-xs-12">
 			                                    <span>*Telefono</span>
 			                                    <input type="text" class="sm-form-control" name="telefono" id="telefono" placeholder="Aquí pon el telefono" maxlength="9" required>
 			                                </div>
 
-			                                <div class="form-group col-md-6 col-sm-offset-3 push-30">
+			                                <div class="form-group col-md-6 col-sm-offset-3 col-xs-12 push-30">
 			                                	<h4 class="text-center push-0">* Fecha de tu reserva</h4>
 			                                    <div class='input-group'>
 			                                        <input class="sm-form-control" type="text" name="date-entrada" id="date-entrada" name="example-daterange1" placeholder="Desde" maxlength="10" readonly="readonly" required>
@@ -159,7 +159,7 @@
 				                                </div>
 			                                </div>
 
-			                                <div class="form-group col-sm-12">
+			                                <div class="form-group col-sm-12 col-xs-12">
 			                                	
 			                                	<!-- Juvenil -->
 				                                    <div id="Forfait0" class="row desc" style="display: none;border-left: solid;border-right: solid">
@@ -481,7 +481,7 @@
 			                            	</div>
 
 	                            		<!-- Selector material -->
-			                            	<div class="col-sm-2 left">
+			                            	<div class="col-sm-2 col-xs-12  left">
 				                                
 				                                <div class="form-group">
 				                                    <input type="radio" name="material" value="0">Packs clases<br />
@@ -942,7 +942,7 @@
 
 			                            <!-- Selector de clases -->
 
-        	                                <div class="col-sm-12 push-30">
+        	                                <div class="col-sm-12 col-xs-12 push-30">
         		                                
 												<div class="col-md-2 col-xs-6 clase" data-value="0">
 				                                	<div class="col-xs-12 not-padding">
@@ -964,7 +964,7 @@
         	                                </div>
         	                                	
 
-		                                	<div class="form-group col-sm-12">
+		                                	<div class="form-group col-sm-12 col-xs-12">
 		                                		<!-- Particulares -->
 			                                	<div id="clase0" class="row desc" style="display: none;border-left: solid;border-right: solid">			
 			                                		<div class="col-xs-12 push-12">
@@ -1177,9 +1177,9 @@
 				                                    </div>
 		                                	</div>		                       		                                
 		                                
-		                                <div class="form-group col-xs-12 text-center" style="margin-top: 20px;">
-		                                    <button type="button" class="btn btn-primary btn-lg text-center" id='confirm-reserva'>Solicitar reserva</button>
-		                                </div>
+			                                <div class="form-group col-xs-12 text-center" style="margin-top: 20px;">
+			                                    <button type="button" class="btn btn-primary btn-lg text-center" id='confirm-reserva'>Solicitar reserva</button>
+			                                </div>
 		                                
 		                            </div>
 		                            <div style="text-align: right; margin-right: 5px"><h3 style="color: black">Atencion al cliente: 958-48-01-68</h3></div>
