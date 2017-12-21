@@ -1309,22 +1309,9 @@ class BookController extends Controller
             $date = new Carbon('first day of September '.$request->year);
         }
 
-        $Idbooks = array();//\
+        
 
-        foreach (\App\Payments::orderBy('id', 'DESC')->get() as $key => $payment) {
-            if (! in_array($payment->book_id, $Idbooks) ) {
-
-                $Idbooks[] = $payment->book_id;
-
-            }
-            
-            if (count($Idbooks) == 10) 
-                break;
-            
-        }
-
-        $books = \App\Book::whereIn('id',$Idbooks)->get();
-
+        $books = \App\Payments::orderBy('id', 'DESC')->take(10)->get();
 
         return view('backend.planning._lastBookPayment', compact('books', 'mobile'));
 
