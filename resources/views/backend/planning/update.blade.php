@@ -719,7 +719,7 @@
                                 <?php endfor;?>
                             </select>
                         </div>
-                        <div class="col-md-2 col-xs-3 push-20">
+                        <div class="col-md-2 col-xs-3 push-20" style="padding: 0 5px;">
                             <label >IN</label>
                             <select id="schedule" class="form-control " style="width: 100%;" name="schedule">
                                 <option>-- Sin asignar --</option>
@@ -739,7 +739,7 @@
                                 <?php endfor ?>
                             </select>
                         </div>
-                        <div class="col-md-2 col-xs-3 push-20">
+                        <div class="col-md-2 col-xs-3 push-20" style="padding: 0 5px;">
                             <label>Out</label>
                             <select id="scheduleOut" class="form-control " style="width: 100%;" name="scheduleOut">
                                 <option>-- Sin asignar --</option>
