@@ -97,7 +97,7 @@
 	}elseif(count($payments) > 1){
 		$payed = 0;
 		foreach ($payments as $key => $pay) {
-			$payed += $payment->import;
+			$payed += $pay->import;
 		}
 		$partialPay = $book->total_price - $payed;
 	}
