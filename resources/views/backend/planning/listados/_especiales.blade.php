@@ -124,7 +124,13 @@
         <tbody>
             <?php foreach ($books as $book): ?>
                 <tr class="<?php echo ucwords($book->getStatus($book->type_book)) ;?>">
-                    <td class="text-center sm-p-t-10 sm-p-b-10" title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"><?php echo $book->customer->name ?></td>
+                    <td class="text-center sm-p-t-10 sm-p-b-10" title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>">
+                        <?php if (isset($payment[$book->id])): ?>
+                            <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>
+                        <?php else: ?>
+                            <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" ><?php echo $book->customer['name']  ?></a>
+                        <?php endif ?> 
+                    </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b') ?></td>
                     <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b') ?></td>
                     <td class ="text-center" >

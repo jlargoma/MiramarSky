@@ -178,6 +178,7 @@
             <th class="bg-success text-white text-center" >Nombre</th>
             <th class="bg-success text-white text-center" style="min-width:50px">In</th>
             <th class="bg-success text-white text-center" style="min-width:50px ">Out</th>
+            <th class="bg-success text-white text-center" style="min-width:50px ">Hor</th>
             <th class="bg-success text-white text-center">Pax</th>
             <th class="bg-success text-white text-center">Tel</th>
             <th class="bg-success text-white text-center" style="min-width:50px">Apart</th>
@@ -216,6 +217,25 @@
                     </td>
                     <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b') ?></td>
                     <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b') ?></td>
+                    <td class="text-center sm-p-t-10 sm-p-b-10">
+                        <select id="schedule" style="width: 100%;" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?>" data-type="in" data-id="<?php echo $book->id ?>">
+                            <option>-- Sin asignar --</option>
+                            <?php for ($i = 0; $i < 24; $i++): ?>
+                                <option value="<?php echo $i ?>" <?php if($i == $book->schedule) { echo 'selected';}?>>
+                                    <?php if ($i < 10): ?>
+                                        <?php if ($i == 0): ?>
+                                            --
+                                        <?php else: ?>
+                                            0<?php echo $i ?>
+                                        <?php endif ?>
+                                        
+                                    <?php else: ?>
+                                        <?php echo $i ?>
+                                    <?php endif ?>
+                                </option>
+                            <?php endfor ?>
+                        </select>
+                    </td>
                     <td class ="text-center" >
                         <?php if ($book->real_pax > 6 ): ?>
                             <?php echo $book->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
