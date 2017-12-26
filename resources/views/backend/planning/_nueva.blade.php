@@ -106,20 +106,19 @@
                         DATOS DE LA RESERVA
                     </h4>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 col-xs-12 push-xs-10">
                     <label>Entrada</label>
                     <div class="input-prepend input-group">
-                    
                         <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="">
 
                     </div>
                 </div>
-                <div class="col-md-1 col-xs-6">
+                <div class="col-md-1 col-xs-6 push-xs-10">
                     <label>Noches</label>
                     <input type="text" class="form-control nigths" name="nigths" style="width: 100%" disabled>
                     <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%" >
                 </div> 
-                <div class="col-md-2 col-xs-6">
+                <div class="col-md-2 col-xs-6 push-xs-10">
                     <label>Pax</label>
                     <select class=" form-control pax minimal"  name="pax">
                         <?php for ($i=1; $i <= 12 ; $i++): ?>
@@ -132,7 +131,7 @@
                     </select>
                    
                 </div>
-                <div class="col-md-2 col-xs-6">
+                <div class="col-md-2 col-xs-5 push-xs-10">
                      <label style="color: red">Pax-reales</label>
                      <select class="form-control real_pax "  name="real_pax" style="color:red">
                         <?php for ($i=1; $i <= 12 ; $i++): ?>
@@ -146,7 +145,7 @@
                    
                 </div>
                  
-                <div class="col-md-3 col-xs-7">
+                <div class="col-md-3 col-xs-7 push-xs-10">
                     <label>Apartamento</label>
                     <select class="form-control full-width newroom minimal" name="newroom" id="newroom" required>
                         <option ></option>
@@ -157,7 +156,7 @@
                         <?php endforeach ?>
                     </select>
                 </div>
-                <div class="col-md-4 col-xs-5">
+                <div class="col-md-4 col-xs-6 push-xs-10">
                     <label>Parking</label>
                     <select class=" form-control parking minimal"  name="parking">
                         <?php for ($i=1; $i <= 4 ; $i++): ?>
@@ -167,7 +166,7 @@
                         <?php endfor;?>
                     </select>
                 </div>
-                <div class="col-md-4 col-xs-6">
+                <div class="col-md-4 col-xs-6 push-xs-10">
                     <label>Sup. Lujo</label>
                     <select class=" form-control full-width type_luxury minimal" name="type_luxury">
                         <?php for ($i=1; $i <= 4 ; $i++): ?>
@@ -175,6 +174,47 @@
                                 <?php echo \App\Book::getSupLujo($i) ?>
                             </option>
                         <?php endfor;?>
+                    </select>
+                </div>
+                <div class="col-md-2 col-xs-6 push-xs-10">
+
+                    <label >IN</label>
+                    <select id="schedule" class="form-control " style="width: 100%;" name="schedule">
+                        <option>-- Sin asignar --</option>
+                        <?php for ($i = 0; $i < 24; $i++): ?>
+                            <option value="<?php echo $i ?>" >
+                                <?php if ($i < 10): ?>
+                                    <?php if ($i == 0): ?>
+                                        --
+                                    <?php else: ?>
+                                        0<?php echo $i ?>
+                                    <?php endif ?>
+                                    
+                                <?php else: ?>
+                                    <?php echo $i ?>
+                                <?php endif ?>
+                            </option>
+                        <?php endfor ?>
+                    </select>
+                </div>
+                <div class="col-md-2 col-xs-6 push-xs-10" style="padding: 0 5px;">
+                    <label>Out</label>
+                    <select id="scheduleOut" class="form-control " style="width: 100%;" name="scheduleOut">
+                        <option>-- Sin asignar --</option>
+                        <?php for ($i = 0; $i < 24; $i++): ?>
+                            <option value="<?php echo $i ?>" >
+                                <?php if ($i < 10): ?>
+                                    <?php if ($i == 0): ?>
+                                        --
+                                    <?php else: ?>
+                                        0<?php echo $i ?>
+                                    <?php endif ?>
+                                    
+                                <?php else: ?>
+                                    <?php echo $i ?>
+                                <?php endif ?>
+                            </option>
+                        <?php endfor ?>
                     </select>
                 </div>
             </div>
@@ -195,14 +235,14 @@
                         <input type="number" class="agencia form-control" name="agencia">
                     </div>
                     <div style="clear: both;"></div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 col-xs-12">
                         <label>Extras</label>
                         <select class="full-width form-control select2-hidden-accessible " data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true" style="cursor: pointer">
-                            <?php // foreach ($extras as $extra): ?>
-                                <option value="<?php // echo $extra->id ?>">
-                                    <?php // echo $extra->name ?>
+                            <?php  foreach ($extras as $extra): ?>
+                                <option value="<?php echo $extra->id ?>">
+                                    <?php  echo $extra->name ?>
                                 </option>
-                            <?php // endforeach ?>
+                            <?php  endforeach ?>
                         </select>
                     </div>
                 </div>
@@ -235,15 +275,11 @@
             <div class="col-xs-12 bg-white padding-block">
                 <div class="col-md-6 col-xs-12">
                     <label>Comentarios Cliente </label>
-                    <textarea class="form-control" name="comments" rows="5" >
-                        
-                    </textarea>
+                    <textarea class="form-control" name="comments" rows="5" ></textarea>
                 </div>
                 <div class="col-md-6 col-xs-12">
                     <label>Comentarios Internos</label>
-                    <textarea class="form-control book_comments" name="book_comments" rows="5" >
-                        
-                    </textarea>
+                    <textarea class="form-control book_comments" name="book_comments" rows="5" ></textarea>
                 </div>
             </div>
             <div class="row bg-white padding-block">

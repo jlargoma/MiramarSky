@@ -226,6 +226,15 @@ input.beneficio{
     font-size: 16px!important;
 
   }
+  .push-xs-10{
+    margin-bottom: 10px!important;
+  }
+  .push-xs-20{
+    margin-bottom: 20px!important;
+  }
+  .push-xs-30{
+    margin-bottom: 30px!important;
+  }
 }
 tr.lined{
   border-top: 2px solid #000;

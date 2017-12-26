@@ -68,7 +68,8 @@ class BookController extends Controller
     public function newBook(Request $request)
     {
         $rooms = \App\Rooms::where('state','=',1)->get();
-        return view('backend/planning/_nueva', compact('rooms'));
+        $extras = \App\Extras::all();
+        return view('backend/planning/_nueva', compact('rooms', 'extras'));
     }
 
     /**
@@ -334,7 +335,8 @@ class BookController extends Controller
 
                     $book->extraPrice    = $extraPrice;
                     $book->extraCost     = $extraCost;
-
+                    $book->schedule      = ($request->input('schedule'))?$request->input('schedule'):0;
+                    $book->scheduleOut   = ($request->input('scheduleOut'))?$request->input('scheduleOut'):12;
                     if($book->save()){
 
                         /* Creamos las notificaciones de booking */

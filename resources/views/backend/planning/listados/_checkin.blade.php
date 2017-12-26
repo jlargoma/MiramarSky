@@ -17,11 +17,12 @@
                         <th class ="text-center bg-success text-white" style="width: 7%!important">   Pax         </th>
                         <th class ="text-center bg-success text-white" style="width: 7%!important">   Apart       </th>
                         <th class ="text-center bg-success text-white" style="width: 9%!important">  <i class="fa fa-moon-o"></i> </th>
-                        <th class ="text-center bg-success text-white" style="width: 8%!important">   IN     </th>
-                        <th class ="text-center bg-success text-white" style="width: 8%!important">   OUT      </th>
-                        <th class="bg-success text-white text-center" style="width: 8%!important">
+                         <th class="bg-success text-white text-center" style="width: 8%!important">
                             <i class="fa fa-clock-o" aria-hidden="true"></i> Hora
                         </th>
+                        <th class ="text-center bg-success text-white" style="width: 8%!important">   IN     </th>
+                        <th class ="text-center bg-success text-white" style="width: 8%!important">   OUT      </th>
+                       
                         <th class ="text-center bg-success text-white" style="width: 15%!important">   Precio      </th>
                         <th class ="text-center bg-success text-white" style="width: 4%!important">   a      </th>
                     </tr>
@@ -93,18 +94,6 @@
                                 </select>
                             </td>
                             <td class ="text-center"><?php echo $book->nigths ?></td>
-                            <td class ="text-center" style="width: 20%!important">
-                                <b><?php
-                                    $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                    echo $start->formatLocalized('%d %b');
-                                ?></b>
-                            </td>
-                            <td class ="text-center" style="width: 20%!important">
-                                <b><?php
-                                    $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                    echo $finish->formatLocalized('%d %b');
-                                ?></b>
-                            </td>
                             <td class="text-center sm-p-t-10 sm-p-b-10">
                                 <select id="schedule" style="width: 100%;" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?>" data-type="in" data-id="<?php echo $book->id ?>">
                                     <option>-- Sin asignar --</option>
@@ -124,6 +113,19 @@
                                     <?php endfor ?>
                                 </select>
                             </td>
+                            <td class ="text-center" style="width: 20%!important">
+                                <b><?php
+                                    $start = Carbon::createFromFormat('Y-m-d',$book->start);
+                                    echo $start->formatLocalized('%d %b');
+                                ?></b>
+                            </td>
+                            <td class ="text-center" style="width: 20%!important">
+                                <b><?php
+                                    $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
+                                    echo $finish->formatLocalized('%d %b');
+                                ?></b>
+                            </td>
+                           
                             <td class ="text-center">
                                 <div class="col-md-6 col-xs-12 not-padding">
                                     <?php echo round($book->total_price)."€" ?><br>
@@ -176,9 +178,9 @@
         <thead>
             <th class="bg-success text-white text-center" ></th>
             <th class="bg-success text-white text-center" >Nombre</th>
+            <th class="bg-success text-white text-center" style="min-width:50px ">Hor</th>
             <th class="bg-success text-white text-center" style="min-width:50px">In</th>
             <th class="bg-success text-white text-center" style="min-width:50px ">Out</th>
-            <th class="bg-success text-white text-center" style="min-width:50px ">Hor</th>
             <th class="bg-success text-white text-center">Pax</th>
             <th class="bg-success text-white text-center">Tel</th>
             <th class="bg-success text-white text-center" style="min-width:50px">Apart</th>
@@ -215,8 +217,6 @@
                            <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
                         <?php endif ?>   
                     </td>
-                    <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b') ?></td>
-                    <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b') ?></td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
                         <select id="schedule" style="width: 100%;" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?>" data-type="in" data-id="<?php echo $book->id ?>">
                             <option>-- Sin asignar --</option>
@@ -236,6 +236,9 @@
                             <?php endfor ?>
                         </select>
                     </td>
+                    <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b') ?></td>
+                    <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b') ?></td>
+                    
                     <td class ="text-center" >
                         <?php if ($book->real_pax > 6 ): ?>
                             <?php echo $book->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
