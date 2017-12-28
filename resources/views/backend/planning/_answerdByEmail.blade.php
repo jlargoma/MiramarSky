@@ -1,4 +1,4 @@
-<?php if (!$mobile->isMobile()): ?>
+<?php if (!$mobile->isMobile()): ?> 
 	<link href="/assets/plugins/summernote/css/summernote.css" rel="stylesheet" type="text/css" media="screen">
 <?php endif; ?>
 <?php 	use \Carbon\Carbon;

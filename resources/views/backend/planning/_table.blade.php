@@ -1,4 +1,4 @@
-<?php if ( $type == 'pendientes'): ?>
+ <?php if ( $type == 'pendientes'): ?>
 
 	@include('backend.planning.listados._pendientes', ['books' => $books ])
 

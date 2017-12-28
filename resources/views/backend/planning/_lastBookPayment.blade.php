@@ -1,6 +1,6 @@
 <?php   use \Carbon\Carbon;  
         setlocale(LC_TIME, "ES"); 
-        setlocale(LC_TIME, "es_ES"); 
+        setlocale(LC_TIME, "es_ES");  
 ?>
 <div class="row">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">

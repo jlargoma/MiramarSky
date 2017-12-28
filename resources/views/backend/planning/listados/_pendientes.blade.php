@@ -1,5 +1,5 @@
 <?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
-<?php if (!$mobile->isMobile()): ?>
+<?php if (!$mobile->isMobile()): ?> 
     
 
 <table class="table table-condensed table-striped table-data"  data-type="pendientes" style="margin-top: 0;">

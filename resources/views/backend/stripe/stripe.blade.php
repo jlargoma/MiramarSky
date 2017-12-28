@@ -1,4 +1,4 @@
-<style type="text/css">
+<style type="text/css"> 
 .StripeElement {
 	background-color: white;
 	padding: 8px 12px;

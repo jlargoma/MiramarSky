@@ -1,6 +1,6 @@
 <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
 <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
-<style type="text/css" media="screen">
+<style type="text/css" media="screen"> 
     .daterangepicker{
         z-index: 10000!important;
     }

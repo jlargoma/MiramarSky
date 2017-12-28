@@ -1,6 +1,6 @@
 <?php 
 	use \App\Classes\Mobile;
-	$mobile = new Mobile(); 
+	$mobile = new Mobile();  
 ?>
 @extends('layouts.admin-master')
 
