@@ -1,11 +1,11 @@
 <div class="row">
 	<div class="col-xs-12"> 
-		<h2 class="tect-center font-w300">
+		<h2 class="text-center font-w300" style="letter-spacing: -1px;">
 			GENERADOR DE LINKS STRIPE
 		</h2>
 	</div>
 	<div class="col-md-3 col-xs-12 push-20">
-		<input type="text" class="form-control only-numbers" name="importe_stripe" id="importe_stripe" />
+		<input type="text" class="form-control only-numbers" name="importe_stripe" id="importe_stripe" placeholder="importe..." />
 	</div>
 	<div class="col-md-3 col-xs-12 push-20">
 		<button id="btnGenerate" class="btn btn-success" type="button">Generar</button>

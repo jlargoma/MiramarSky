@@ -324,6 +324,7 @@
                 </div>
             </div>
             <div class="col-md-12" id="stripe-conten-index" style="display: none;">
+                @include('backend.stripe.link')
                 @include('backend.stripe.stripe', ['bookTocharge' => null])
             </div>
 
@@ -392,6 +393,7 @@
                     </div>
 
                     <div class="col-md-12" id="stripe-conten-index" style="display: none;">
+                       
                         @include('backend.stripe.stripe', ['bookTocharge' => null])
                     </div>
                 </div>
