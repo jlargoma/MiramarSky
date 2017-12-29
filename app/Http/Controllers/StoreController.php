@@ -12,11 +12,11 @@ use \Stripe\Stripe as Stripe;
 class StoreController extends Controller
 {
     public static   $stripe = [
-                        "secret_key"      => "sk_test_rqTqvjOVCPcnme6FL7TWPVpY",
-                        "publishable_key" => "pk_test_4bixTma4boJT7CFkldwfdHQZ"
+                        // "secret_key"      => "sk_test_rqTqvjOVCPcnme6FL7TWPVpY",
+                        // "publishable_key" => "pk_test_4bixTma4boJT7CFkldwfdHQZ"
 
-                        // "secret_key" => "sk_live_JKRWYAtvJ31tqwZyqNErMEap",
-                        // "publishable_key" => "pk_live_wEAGo29RoqPrXWiw3iKQJtWk",
+                        "secret_key" => "sk_live_JKRWYAtvJ31tqwZyqNErMEap",
+                        "publishable_key" => "pk_live_wEAGo29RoqPrXWiw3iKQJtWk",
                     ];
 
 
@@ -215,8 +215,8 @@ class StoreController extends Controller
      
                     Mail::send(['html' => 'frontend.store.emails.order'],[ 'ordersProducts' => $orderProducts], function ($message) use ($order) {
                         $message->from('reservas@apartamentosierranevada.net');
-                        // $message->to('pedidos@snowpeople.es');
-                        $message->to('iankurosaki17@gmail.com');
+                        $message->to('pedidos@snowpeople.es');
+                        // $message->to('iankurosaki17@gmail.com');
                         $message->subject('Nuevo pedido - apartamentos de lujo MIRAMARSKI');
                     });
                     $message[] = "Pago aceptado";

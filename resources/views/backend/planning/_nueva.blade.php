@@ -596,7 +596,7 @@
 
         $('.only-numbers').keydown(function (e) {
             // Allow: backspace, delete, tab, escape, enter and .
-            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190, 32, 107 ]) !== -1 ||
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190, 32, 107, 17, 67, 86, 88  ]) !== -1 ||
                  // Allow: Ctrl/cmd+A
                 (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
                  // Allow: Ctrl/cmd+C
