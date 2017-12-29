@@ -40,7 +40,7 @@ class BookController extends Controller
         }
         $inicio = $start->copy();
 
-        $books = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[1,3,4,5,6])->orderBy('created_at','DESC')->get();
+        $books = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[1,3,4,5,6,10])->orderBy('created_at','DESC')->get();
 
         $rooms = \App\Rooms::where('state','=',1)->get();
         $roomscalendar = \App\Rooms::where('id', '>=' , 5)->where('state','=',1)->orderBy('order','ASC')->get();
@@ -472,12 +472,12 @@ class BookController extends Controller
             $book->cost_lujo     = $this->getCostLujo($request->input('type_luxury'));
 
             $book->cost_apto     = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
-            $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo;
+            $book->cost_total    = $request->input('cost');
 
             $book->total_price   = $request->input('total');
             $book->real_price    = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
 
-            $book->total_ben     = $book->total_price - $book->cost_total;
+            $book->total_ben     = $request->input('beneficio');
             $book->extra         = $request->input('extra');
             $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
             $book->ben_jorge = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
@@ -1245,7 +1245,7 @@ class BookController extends Controller
 
         switch ($request->type) {
             case 'pendientes':
-                $books = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[1,3,4,5,6])->orderBy('created_at','DESC')->get();
+                $books = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[1,3,4,5,6,10])->orderBy('created_at','DESC')->get();
                 break;
             case 'especiales':
                 $books = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[7,8])->orderBy('created_at','DESC')->get();
@@ -1310,10 +1310,19 @@ class BookController extends Controller
         }else{
             $date = new Carbon('first day of September '.$request->year);
         }
-
-        
-
-        $books = \App\Payments::orderBy('id', 'DESC')->take(10)->get();
+        $booksAux = array();
+        foreach (\App\Payments::orderBy('id', 'DESC')->get() as $key => $payment) {
+            if (!in_array($payment->book_id, $booksAux)) {
+                $booksAux[] = $payment->book_id;
+            }
+            if (count($booksAux) == 10) {
+                break;
+            }
+        }
+        $books = array();
+        for ($i=0; $i < count($booksAux); $i++) { 
+            $books[] = \App\Book::find($booksAux[$i]);
+        }
 
         return view('backend.planning._lastBookPayment', compact('books', 'mobile'));
 
@@ -1393,7 +1402,7 @@ class BookController extends Controller
 
         }
         $apartamentos = \App\Rooms::where('state','=',1);
-        $reservas = \App\Book::whereIn('type_book',[1,2,4,5,7,8,9])->whereYear('start','>=', $date)->orderBy('start', 'ASC')->get();
+        $reservas = \App\Book::whereIn('type_book',[1,2,4,5,7,8,9,10])->whereYear('start','>=', $date)->orderBy('start', 'ASC')->get();
 
         foreach ($reservas as $reserva) {
             $dia = Carbon::createFromFormat('Y-m-d',$reserva->start);

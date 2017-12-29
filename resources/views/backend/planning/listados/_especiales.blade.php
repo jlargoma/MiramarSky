@@ -79,7 +79,7 @@
                                 </td>
                                 <td class ="text-center">
                                     <select class="status form-control minimal" data-id="<?php echo $book->id ?>" >
-                                        <?php for ($i=1; $i < 9; $i++): ?> 
+                                        <?php for ($i=1; $i <= 10; $i++): ?> 
                                             <?php if ($i == 5 && $book->customer->email == ""): ?>
                                             <?php else: ?>
                                                 <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
@@ -162,7 +162,7 @@
                     <td class="text-center sm-p-t-10 sm-p-b-10 sm-p-l-10 sm-p-r-10">
                         <select class="status form-control minimal" data-id="<?php echo $book->id ?>">
 
-                            <?php for ($i=1; $i < 9; $i++): ?> 
+                            <?php for ($i=1; $i <= 10; $i++): ?> 
                                 <?php if ($i == 5 && $book->customer->email == ""): ?>
                                 <?php else: ?>
                                     <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 

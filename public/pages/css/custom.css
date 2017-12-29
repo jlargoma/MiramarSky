@@ -239,6 +239,31 @@ input.beneficio{
 tr.lined{
   border-top: 2px solid #000;
 }
+.Overbooking {
+    background-color: #f55753 !important;
+    color: black;
+}
+
+.Overbooking.start {
+    background-color: #f55753!important;
+    color: black;
+}
+.Overbooking.end {
+    background-color:  #f55753!important ;
+    color: black;
+}
+.table.table-striped tbody tr.Overbooking td{
+    background-color: #f55753 !important;
+    color: black;
+}
+.Overbooking td select.minimal{
+    background-color: #f55753 !important;
+    color: black;
+}
+
+
+
+
 @media only screen and (min-width: 1023px) and (max-width: 1400px){
   .navbar-collapse{
     padding: 0;

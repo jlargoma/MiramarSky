@@ -67,7 +67,7 @@ class Book extends Model
     //Para poner nombre al estado de la reserva//
     static function getStatus($status)
     {
-       $array = [1 =>"Reservado - stripe", 2 =>"Pagada-la-señal",3 =>"SIN RESPONDER",4 =>"Bloqueado", 5 =>"Contestado(EMAIL)",6 =>"Denegada", 7 =>"Reserva Propietario",8 =>"SubComunidad",9=>"Booking"];
+       $array = [1 =>"Reservado - stripe", 2 =>"Pagada-la-señal",3 =>"SIN RESPONDER",4 =>"Bloqueado", 5 =>"Contestado(EMAIL)",6 =>"Denegada", 7 =>"Reserva Propietario",8 =>"SubComunidad",9=>"Booking", 10 => 'Overbooking'];
 
        return $status = $array[$status];
     }
@@ -357,6 +357,12 @@ class Book extends Model
                 $this->save();
 
                 return ['status' => 'success','title' => 'OK', 'response' => "Email Enviado de Cancelacion"];
+            }elseif($status == 10){
+
+                $this->type_book = $status;
+                $this->save();
+
+                return ['status' => 'success','title' => 'OK', 'response' => "Reserva cambiada a Overbooking"];
             }else{
 
                 $dateStart  = Carbon::createFromFormat('Y-m-d',$this->start);

@@ -335,6 +335,17 @@ Route::group(['middleware' => 'auth'], function () {
 
 	});
 
+	Route::get('/admin/customer/change/phone/{id}/{phone}', function($id, $phone){
+		$customer = \App\Customers::find($id);
+		$customer->phone = $phone;
+		if ($customer->save()) {
+			return ['status' => 'success','title' => 'OK', 'response' => "Teléfono cambiado"];
+		}else{
+			return ['status' => 'danger','title' => 'Error', 'response' => "No se ha cambiado el teléfono"];
+		}
+
+	});
+
 
 	
 

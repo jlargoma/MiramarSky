@@ -422,7 +422,7 @@
         <div class="modal fade slide-up in" id="modalLastBooks" tabindex="-1" role="dialog" aria-hidden="true" >
             <div class="modal-dialog modal-lg" >
                 <div class="modal-content-wrapper">
-                    <div class="modal-content">
+                    <div class="modal-content" style="width: 90%;">
 
                     </div>
                 </div>

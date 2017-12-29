@@ -380,6 +380,9 @@
     							C. Total.   
     						</th>
     						<th class ="text-center bg-complete text-white">
+    							C. Prop.   
+    						</th>
+    						<th class ="text-center bg-complete text-white">
     							C. Apto.   
     						</th>
     						<th class ="text-center bg-complete text-white">
@@ -415,6 +418,10 @@
     						</td>
     						<td class="text-center costeApto bordes">
     							<b><?php  echo number_format($summary['totalCost'],0,',','.') ?>€</b>
+    						</td>
+    						<td class="text-center costeApto bordes">
+    							<?php $costeProp =  $summary['totalApto'] + $summary['totalParking'] + $summary['totalLujo']?>
+    							<b><?php  echo number_format( $costeProp ,0,',','.') ?>€</b>
     						</td>
     						<td class="text-center">
     							<b><?php  echo number_format($summary['totalApto'],0,',','.') ?>€</b>
@@ -474,6 +481,9 @@
 		    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
 								C. Total.   
 							</th>
+							<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+									C. Prop.   
+								</th>
 		    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
 								C. Apto.   
 							</th>
@@ -536,6 +546,15 @@
 				        					-----
 				        				<?php endif ?>
 				        			</td>
+
+    			        			<td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
+    									<?php $costPropTot =  $data[$room->id]['totales']['totalApto']+$data[$room->id]['totales']['totalParking']+$data[$room->id]['totales']['totalLujo']?>
+    			        				<?php if ( $costPropTot  != 0): ?>
+    			        					<?php echo number_format($costPropTot ,0,',','.'); ?>€
+    			        				<?php else: ?>
+    			        					-----
+    			        				<?php endif ?>
+    			        			</td>
 
 				        			<td class="text-center"  style="padding: 10px 5px ;">
 				        				<?php if (isset($data[$room->id]['totales']['totalApto'])): ?>

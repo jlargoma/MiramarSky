@@ -125,7 +125,7 @@
                 <div class="col-md-3 col-xs-12 content-guardar" style="padding: 20px 0;">
                     <div id="overlay" style="display: none;"></div>  
                     <select class="status form-control minimal" data-id="<?php echo $book->id ?>" name="status" >
-                        <?php for ($i=1; $i < 9; $i++): ?> 
+                        <?php for ($i=1; $i <= 10; $i++): ?> 
                             <?php if ($i == 5 && $book->customer->email == ""): ?>
                             <?php else: ?>
                                 <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 

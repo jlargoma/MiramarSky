@@ -18,41 +18,41 @@
                 <?php foreach ($books as $key => $book): ?>
                     <tr>
                         <td class="text-center" style="width: 30px; padding: 5px 0!important">
-                            <?php if ($book->book->agency != 0): ?>
+                            <?php if ($book->agency != 0): ?>
                                 <img src="/pages/booking.png" style="width: 20px;"/>
                             <?php else: ?>
 
                             <?php endif ?>
                         </td>
                         <td class ="text-center" style="color: black;padding: 5px!important;">  
-                            <a class="update-book" data-id="<?php echo $book->book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->book->id ?>">
-                                <?php echo $book->book->customer->name ?>
+                            <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
+                                <?php echo $book->customer->name ?>
                             </a> 
                             
                         </td>
                         <td class="text-center" style="color: black; padding: 5px!important">   
-                            <?php echo substr($book->book->room->nameRoom,0,5) ?>       
+                            <?php echo substr($book->room->nameRoom,0,5) ?>       
                         </th>
                         <td class="text-center" style="color: black;padding: 5px 10px!important">   
                             <b>
                                 <?php
-                                    $start = Carbon::createFromFormat('Y-m-d',$book->book->start);
+                                    $start = Carbon::createFromFormat('Y-m-d',$book->start);
                                     echo $start->formatLocalized('%d %b');
                                 ?>        
                             </b> - 
                             <b>
                                 <?php
-                                    $finish = Carbon::createFromFormat('Y-m-d',$book->book->finish);
+                                    $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
                                     echo $finish->formatLocalized('%d %b');
                                 ?>        
                             </b>           
                         </td>
                         <td class="text-center" style="color: black;padding: 5px!important;">
-                             <b><?php echo $book->book->total_price ?>€</b>
+                             <b><?php echo $book->total_price ?>€</b>
                         </td>
                         <td class="text-center" style="color: black;">  
 
-                            <?php $payments = \App\Payments::where('book_id', $book->book->id)->get(); ?>
+                            <?php $payments = \App\Payments::where('book_id', $book->id)->get(); ?>
                             <?php $paymentBook = 0; ?>
                             <?php $fromStripe = false; ?>
                             <?php if ( count($payments) > 0): ?>
@@ -65,7 +65,7 @@
                                 <?php endforeach ?>
                             <?php endif ?>
                             <?php echo  $paymentBook." €" ?> <br>
-                            <b><?php echo  round(($paymentBook/$book->book->total_price)*100)?>%</b>
+                            <b><?php echo  round(($paymentBook/$book->total_price)*100)?>%</b>
                         </td>
                         <td class="text-center">
                             <?php if ($fromStripe): ?>
@@ -93,25 +93,25 @@
                         <?php foreach ($books as $key => $book): ?>
                             <tr>
                                 <td class="text-center" style="width: 30px; padding: 5px 0!important">
-                                    <?php if ($book->book->agency != 0): ?>
+                                    <?php if ($book->agency != 0): ?>
                                         <img src="/pages/booking.png" style="width: 20px;"/>
                                     <?php else: ?>
 
                                     <?php endif ?>
                                 </td>
                                 <td class ="text-center" style="color: black;padding: 5px!important;">  
-                                    <a class="update-book" data-id="<?php echo $book->book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->book->id ?>">
-                                        <?php echo substr($book->book->customer->name, 0, 10) ?>
+                                    <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
+                                        <?php echo substr($book->customer->name, 0, 10) ?>
                                     </a> 
                                     
                                 </td>
                                 <td class="text-center" style="color: black; padding: 5px!important">   
-                                    <?php echo substr($book->book->room->nameRoom,0,5) ?>       
+                                    <?php echo substr($book->room->nameRoom,0,5) ?>       
                                 </td>
                                 <td class="text-center" style="color: black;padding: 5px 10px!important">   
                                     <b>
                                         <?php
-                                            $start = Carbon::createFromFormat('Y-m-d',$book->book->start);
+                                            $start = Carbon::createFromFormat('Y-m-d',$book->start);
                                             echo $start->formatLocalized('%d %b');
                                         ?>        
                                     </b>
@@ -120,17 +120,17 @@
                                 <td class="text-center" style="color: black;padding: 5px 10px!important">   
                                     <b>
                                         <?php
-                                            $finish = Carbon::createFromFormat('Y-m-d',$book->book->finish);
+                                            $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
                                             echo $finish->formatLocalized('%d %b');
                                         ?>        
                                     </b>           
                                 </td>
                                 <td class="text-center" style="color: black;padding: 5px!important;font-size: 12px;">
-                                    <b><?php echo round($book->book->total_price) ?>€</b>
+                                    <b><?php echo round($book->total_price) ?>€</b>
                                 </td>
                                 <td class="text-center" style="color: black;font-size: 12px;">  
 
-                                    <?php $payments = \App\Payments::where('book_id', $book->book->id)->get(); ?>
+                                    <?php $payments = \App\Payments::where('book_id', $book->id)->get(); ?>
                                     <?php $paymentBook = 0; ?>
                                     <?php $fromStripe = false; ?>
                                     <?php if ( count($payments) > 0): ?>
@@ -143,7 +143,7 @@
                                         <?php endforeach ?>
                                     <?php endif ?>
                                     <?php echo  $paymentBook." €" ?> <br>
-                                    <b class="text-danger"><?php echo  round(($paymentBook/$book->book->total_price)*100)?>%</b>
+                                    <b class="text-danger"><?php echo  round(($paymentBook/$book->total_price)*100)?>%</b>
                                 </td>
                                 <td class="text-center">
                                     <?php if ($fromStripe): ?>

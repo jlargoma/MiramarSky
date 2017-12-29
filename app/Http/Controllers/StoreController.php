@@ -15,8 +15,8 @@ class StoreController extends Controller
                         // "secret_key"      => "sk_test_rqTqvjOVCPcnme6FL7TWPVpY",
                         // "publishable_key" => "pk_test_4bixTma4boJT7CFkldwfdHQZ"
 
-                        "secret_key" => "sk_live_JKRWYAtvJ31tqwZyqNErMEap",
-                        "publishable_key" => "pk_live_wEAGo29RoqPrXWiw3iKQJtWk",
+                        "secret_key" => "sk_live_7CR9HczyRHTohr1FVotbVvZR",
+                        "publishable_key" => "pk_live_CZw7yAY1YdjMpA75JvZ8lNU2",
                     ];
 
 
