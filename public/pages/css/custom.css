@@ -299,3 +299,6 @@ tr.lined{
     font-size: 9px;
   }
 }
+.alerta-horarios{
+  border: 2px solid red;
+}

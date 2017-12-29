@@ -7,12 +7,16 @@
 	<table class="table  table-condensed table-striped" style="margin-top: 0;">
 		<thead>
 			<tr>  
+				<th class ="text-center bg-complete text-white" style="width: 4%!important">&nbsp;</th> 
 				<th class ="text-center bg-complete text-white" >   
 					Cliente     
 				</th>
+				<th class ="text-center bg-complete text-white" style="width: 4%!important">&nbsp;</th> 
 				<th class ="text-center bg-complete text-white" >   
 					Telefono     
 				</th>
+				
+
 				<th class ="text-center bg-complete text-white" style="width: 7%!important">
 					Pax         
 				</th>
@@ -39,21 +43,41 @@
 		<tbody>
 			<?php foreach ($books as $book): ?>
 				
-				
-
 				<tr> 
+					<td class="text-center">
+					    <?php if ($book->agency != 0): ?>
+					        <img style="width: 20px;margin: 0 auto;" src="/pages/booking.png" align="center" />
+					    <?php endif ?>
+					</td>
 					<td class ="text-center"  style="padding: 10px 15px!important">
 						<a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: black; text-decoration: underline;">
-								<?php echo $book->customer['name']  ?>
+							<?php echo $book->customer['name']  ?>
 									
 						</a>                   
 					</td>
 
-					<td class ="text-center"  > 
+					<?php $payments = \App\Payments::where('book_id', $book->id)->get(); ?>
+					<?php $fromStripe = false; ?>
+					<?php if ( count($payments) > 0): ?>
+                        <?php foreach ($payments as $key => $payment): ?>
+                            <?php if (preg_match('/stripe/i', $payment->comment)): ?>
+                                <?php $fromStripe = true; ?>
+                            <?php endif ?>
+                            
+                        <?php endforeach ?>
+                    <?php endif ?>
+					
+					<td class="text-center">
+						<?php if ($fromStripe): ?>
+						    <a target="_blank" href="https://dashboard.stripe.com/payments"><img src="/img/stripe-icon.jpg" style="width: 20px;"></a>
+						<?php endif ?> 
+					</td>
+					<td class ="text-center"> 
 						<?php if ($book->customer->phone != 0): ?>
 							<a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?></a>
 						<?php endif ?>
 					</td>
+
 
 					<td class ="text-center" >
 						<?php if ($book->real_pax > 6 ): ?>
@@ -65,7 +89,19 @@
 					</td>
 
 					<td class ="text-center" >
-						<?php echo $book->room->nameRoom ?> - <?php echo substr($book->room->name,0,5) ?>
+						<select class="room form-control minimal" data-id="<?php echo $book->id ?>"  >
+						
+						    <?php foreach (\App\Rooms::where('state', 1)->get() as $room): ?>
+						        <?php if ($room->id == $book->room_id): ?>
+						            <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
+						               <?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?>
+						            </option>
+						        <?php else:?>
+						            <option value="<?php echo $room->id ?>"><?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?></option>
+						        <?php endif ?>
+						    <?php endforeach ?>
+
+						</select>
 					</td>
 
 					<td class ="text-center"  style="width: 20%!important">
@@ -84,7 +120,33 @@
 
 					<td class ="text-center" ><?php echo $book->nigths ?></td>
 
-					<td class ="text-center font-w800" ><?php echo $book->total_price."€" ?><br>
+					<td class ="text-center font-w800" >
+						
+						<div class="col-md-6 col-xs-12 not-padding">
+                            <?php echo round($book->total_price)."€" ?><br>
+                            <?php if (isset($payment[$book->id])): ?>
+                                <?php echo "<p style='color:red'>".$payment[$book->id]."€</p>" ?>
+                            <?php else: ?>
+                            <?php endif ?>
+                        </div>
+
+                        <?php if (isset($payment[$book->id])): ?>
+                            <?php if ($payment[$book->id] == 0): ?>
+                                <div class="col-md-5 col-xs-12 not-padding bg-success">
+                                <b style="color: red;font-weight: bold">0%</b>
+                                </div>
+                            <?php else:?>
+                                <div class="col-md-5  col-xs-12 not-padding">
+                                    <p class="text-white m-t-10"><b style="color: red;font-weight: bold"><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></b></p>
+                                </div> 
+                                                                                           
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <div class="col-md-5 col-xs-12 not-padding bg-success">
+                                <b style="color: red;font-weight: bold">0%</b>
+                                </div>
+                        <?php endif ?>
+
 					</td>
 
 					<td class ="text-center">
@@ -110,6 +172,9 @@
 		<table class="table table-striped" style="margin-bottom: 15px;">
 			<thead>
 				<tr>  
+					<th class ="text-center bg-complete text-white" >   
+						&nbsp;     
+					</th>
 					<th class ="text-center bg-complete text-white" >   
 						Cliente     
 					</th>
@@ -143,6 +208,11 @@
 				<?php foreach ($books as $book): ?>
 					
 					<tr> 
+						<td class="text-center">
+						    <?php if ($book->agency != 0): ?>
+						        <img style="width: 20px;margin: 0 auto;" src="/pages/booking.png" align="center" />
+						    <?php endif ?>
+						</td>
 						<td class ="text-center"  style="padding: 10px 15px!important">
 							<a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: black; text-decoration: underline;">
 									<?php echo $book->customer['name']  ?>
@@ -166,7 +236,19 @@
 						</td>
 
 						<td class ="text-center" >
-							<b><?php echo substr($book->room->nameRoom,0,5)?></b>
+							<select class="room form-control minimal" data-id="<?php echo $book->id ?>"  >
+							
+							    <?php foreach (\App\Rooms::where('state', 1)->get() as $room): ?>
+							        <?php if ($room->id == $book->room_id): ?>
+							            <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
+							               <?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?>
+							            </option>
+							        <?php else:?>
+							            <option value="<?php echo $room->id ?>"><?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?></option>
+							        <?php endif ?>
+							    <?php endforeach ?>
+
+							</select>
 						</td>
 
 						<td class ="text-center"  style="width: 20%!important">
@@ -185,7 +267,33 @@
 
 						<td class ="text-center" ><?php echo $book->nigths ?></td>
 
-						<td class ="text-center font-w800" ><?php echo $book->total_price."€" ?><br>
+						<td class ="text-center font-w800" >
+
+							<div class="col-md-6 col-xs-12 not-padding">
+							    <?php echo round($book->total_price)."€" ?><br>
+							    <?php if (isset($payment[$book->id])): ?>
+							        <?php echo "<p style='color:red'>".$payment[$book->id]."€</p>" ?>
+							    <?php else: ?>
+							    <?php endif ?>
+							</div>
+
+							<?php if (isset($payment[$book->id])): ?>
+							    <?php if ($payment[$book->id] == 0): ?>
+							        <div class="col-md-5 col-xs-12 not-padding bg-success">
+							        <b style="color: red;font-weight: bold">0%</b>
+							        </div>
+							    <?php else:?>
+							        <div class="col-md-5  col-xs-12 not-padding">
+							            <p class="text-white m-t-10"><b style="color: red;font-weight: bold"><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></b></p>
+							        </div> 
+							                                                                   
+							    <?php endif; ?>
+							<?php else: ?>
+							    <div class="col-md-5 col-xs-12 not-padding bg-success">
+							        <b style="color: red;font-weight: bold">0%</b>
+							        </div>
+							<?php endif ?>
+
 						</td>
 
 						<td class ="text-center">
@@ -208,3 +316,91 @@
 		</table>  
 	</div>
 <?php endif ?>
+<script type="text/javascript">
+		$('.status, .room').change(function(event) {
+		    var id = $(this).attr('data-id');
+		    var clase = $(this).attr('class');
+		    
+		    if (clase == 'status form-control minimal') {
+		        var status = $(this).val();
+		        var room = "";
+
+		    }else if(clase == 'room form-control minimal'){
+		        var room = $(this).val();
+		        var status = "";
+		    }
+
+
+
+		    if (status == 5) {
+
+		        $('.modal-content.contestado').empty().load('/admin/reservas/ansbyemail/'+id);
+		        $('#btnContestado').trigger('click');      
+
+		    }else{
+		        
+		       	$.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
+
+		            if (data.status == 'danger') {
+		                $.notify({
+		                    title: '<strong>'+data.title+'</strong>, ',
+		                    icon: 'glyphicon glyphicon-star',
+		                    message: data.response
+		                },{
+		                    type: data.status,
+		                    animate: {
+		                        enter: 'animated fadeInUp',
+		                        exit: 'animated fadeOutRight'
+		                    },
+		                    placement: {
+		                        from: "top",
+		                        align: "left"
+		                    },
+		                    offset: 80,
+		                    spacing: 10,
+		                    z_index: 1031,
+		                    allow_dismiss: true,
+		                    delay: 60000,
+		                    timer: 60000,
+		                }); 
+		            } else {
+		                $.notify({
+		                    title: '<strong>'+data.title+'</strong>, ',
+		                    icon: 'glyphicon glyphicon-star',
+		                    message: data.response
+		                },{
+		                    type: data.status,
+		                    animate: {
+		                        enter: 'animated fadeInUp',
+		                        exit: 'animated fadeOutRight'
+		                    },
+		                    placement: {
+		                        from: "top",
+		                        align: "left"
+		                    },
+		                    allow_dismiss: false,
+		                    offset: 80,
+		                    spacing: 10,
+		                    z_index: 1031,
+		                    delay: 5000,
+		                    timer: 1500,
+		                }); 
+		            }
+
+		            var type = $('.table-data').attr('data-type');
+			        var year = $('#fecha').val();
+			        $.get('/admin/reservas/api/getTableData', { type: type, year: year }, function(data) {
+			    
+			            $('.content-tables').empty().append(data);
+
+			        });
+
+			        $('.content-calendar').empty().append('<div class="col-xs-12 text-center sending" style="padding: 120px 15px;"><i class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></i><br><h2 class="text-center">CARGANDO CALENDARIO</h2></div>');
+
+	                $('.content-calendar').empty().load('/getCalendarMobile');
+
+		       }); 
+		    }
+		});
+
+</script>

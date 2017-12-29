@@ -1189,8 +1189,22 @@ class BookController extends Controller
                                     ->orderBy('start', 'ASC')
                                     ->get();
 
+                $payment = array();
+                foreach ($books as $key => $book) {
+                    $payment[$book->id] = 0;
+                    $payments = \App\Payments::where('book_id', $book->id)->get();
+                    if ( count($payments) > 0) {
+                        
+                        foreach ($payments as $key => $pay) {
+                            $payment[$book->id] += $pay->import;
+                        }
 
-                return view('backend/planning/responses/_resultSearch',  [ 'books' => $books ]);
+                    }
+
+                }
+
+
+                return view('backend/planning/responses/_resultSearch',  [ 'books' => $books, 'payment' => $payment ]);
             }else{
                 return "<h2>No hay reservas para este término '".$request->searchString."'</h2>";
             }

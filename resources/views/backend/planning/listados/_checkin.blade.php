@@ -95,12 +95,8 @@
                             </td>
                             <td class ="text-center"><?php echo $book->nigths ?></td>
                             <td class="text-center sm-p-t-10 sm-p-b-10">
-                                <?php if ($book->schedule < 17 && $book->schedule > 0): ?>
-                                    <span class="text-danger" style="float:left">
-                                        <i class="fa fa-exclamation fa-2x" aria-hidden="true"></i>
-                                    </span>
-                                <?php endif ?>
-                                <select id="schedule" style="width: 80%;float: left;margin-left: 5px;" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?>" data-type="in" data-id="<?php echo $book->id ?>">
+                                
+                                <select id="schedule" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?> <?php if ($book->schedule < 17 && $book->schedule > 0): ?>alerta-horarios<?php endif ?>" data-type="in" data-id="<?php echo $book->id ?>">
                                     <option>-- Sin asignar --</option>
                                     <?php for ($i = 0; $i < 24; $i++): ?>
                                         <option value="<?php echo $i ?>" <?php if($i == $book->schedule) { echo 'selected';}?>>
@@ -223,7 +219,7 @@
                         <?php endif ?>   
                     </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
-                        <select id="schedule" style="width: 100%;" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?>" data-type="in" data-id="<?php echo $book->id ?>">
+                        <select id="schedule" style="width: 100%;" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?> <?php if ($book->schedule < 17 && $book->schedule > 0): ?>alerta-horarios<?php endif ?>" data-type="in" data-id="<?php echo $book->id ?>">
                             <option>-- Sin asignar --</option>
                             <?php for ($i = 0; $i < 24; $i++): ?>
                                 <option value="<?php echo $i ?>" <?php if($i == $book->schedule) { echo 'selected';}?>>
