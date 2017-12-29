@@ -39,6 +39,13 @@ Route::get('/aviso-legal','HomeController@avisoLegal');
 Route::get('/huesped','HomeController@huesped');
 Route::get('/el-tiempo','HomeController@tiempo');
 
+Route::get('/restaurantes', function ()
+{
+	
+	$mobile = new \App\Classes\Mobile();
+	return view('frontend.restaurantes', ['mobile' => $mobile]);
+});
+
 
 Route::post('/solicitudForfait','HomeController@solicitudForfait');
 

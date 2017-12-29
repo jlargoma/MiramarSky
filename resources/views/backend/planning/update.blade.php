@@ -150,6 +150,16 @@
                     </div>
                 @endif
             </div>
+            <div class="col-md-6 col-xs-12">
+                <?php if (isset($_GET['saveStatus']) && $_GET['saveStatus'] != ''): ?>
+                    <div class="col-lg-12 col-xs-12 content-alert-error2" >
+                        <div class="alert alert-danger alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true" style="right: 0">×</button>
+                            <h3 class="font-w300 push-15"><?php echo str_replace('_', ' ', $_GET['saveStatus']) ?></h3>
+                        </div>
+                    </div>
+                <?php endif ?>
+            </div>
         </div>
     </div>
     <?php if (!$mobile->isMobile()): ?>
