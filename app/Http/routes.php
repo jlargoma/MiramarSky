@@ -42,6 +42,7 @@ Route::get('/el-tiempo','HomeController@tiempo');
 
 Route::post('/solicitudForfait','HomeController@solicitudForfait');
 
+Route::get('/admin/links-stripe', 'StripeController@link');
 
 /* SUPERMERCADO */
 	Route::get('/supermercado','StoreController@index');
@@ -346,10 +347,10 @@ Route::group(['middleware' => 'auth'], function () {
 
 	});
 
-
 	
 
 	Route::get('/sendImagesRoomEmail', 'RoomsController@sendImagesRoomEmail');
+	
 	
 
 });

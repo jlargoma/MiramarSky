@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use \Carbon\Carbon;
 use App\Http\Requests;
 
 class PricesController extends Controller
@@ -15,12 +15,18 @@ class PricesController extends Controller
      */
     public function index()
     {
-
+        $date = new Carbon('first day of September 2017');
+                    
         return view('backend/prices/index',[
 
                     'seasons' => \App\TypeSeasons::all(),
                     'newseasons' => \App\TypeSeasons::all(),
                     'extras' => \App\Extras::all(),
+
+                    'seasonsTemp'  => \App\Seasons::all(),
+                    'newtypeSeasonsTemp' => \App\TypeSeasons::all(),
+                    'typeSeasonsTemp' => \App\TypeSeasons::all(),
+                    'date'       => $date,      
                 ]);
     }
 

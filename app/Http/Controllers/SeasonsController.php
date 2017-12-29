@@ -16,6 +16,8 @@ class SeasonsController extends Controller
      */
     public function index()
     {
+        return redirect()->action('PricesController@index');
+
         $date = new Carbon('first day of September 2017');
         return view('backend/seasons/index',[
                     'seasons'  => \App\Seasons::all(),

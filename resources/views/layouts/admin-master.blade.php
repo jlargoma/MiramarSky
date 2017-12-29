@@ -97,9 +97,7 @@
 
 							<li class="{{ Request::path() == 'admin/propietario/8D'  ? 'active' : '' }}"><a href="{{ url('admin/propietario/8D') }}" class="detailed">Area Propietario</a></li>
 
-					      	<li class="{{ Request::path() == 'admin/precios' ? 'active' : '' }}"><a href="{{ url('admin/precios') }}" class="detailed">Precios</a></li>
-
-					      	<li class="{{ Request::path() == 'admin/temporadas' ? 'active' : '' }}"><a href="{{ url('admin/temporadas') }}" class="detailed">Temporadas</a></li>
+					      	<li class="{{ Request::path() == 'admin/precios' ? 'active' : '' }}"><a href="{{ url('admin/precios') }}" class="detailed">Precios y temporadas</a></li>
 
 					      	<li class="{{ Request::path() == 'admin/usuarios' ? 'active' : '' }}"><a href="{{ url('admin/usuarios') }}" class="detailed">Usuarios</a></li>
 
