@@ -77,6 +77,10 @@
 												</li>
 
 												<li>
+													<a class="font-w600" href="{{ url('/apartamentos/apartamento-lujo-gran-capacidad-sierra-nevada')}}"><div>Apartamento 3 DORM GRAN OCUPACION</div></a>
+												</li>
+
+												<li>
 													<a class="font-w300" href="{{ url('/apartamentos/apartamento-standard-sierra-nevada')}}"><div>Apartamento 2 DORM Standard</div></a>
 												</li>
 											</ul>

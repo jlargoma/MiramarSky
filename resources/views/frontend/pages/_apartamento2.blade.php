@@ -109,6 +109,8 @@
 						@include('frontend.pages._infoEstudioStandard')
 					<?php elseif($typeApto == 5): ?>
 						@include('frontend.pages._infoChalet')
+					<?php elseif($typeApto == 6): ?>
+						@include('frontend.pages._infoAptoGranCapacidad')
 					<?php endif ?>
 				</div>
 				
@@ -178,7 +180,7 @@
 		<div class="col-xs-12">
 			<?php foreach ($aptos as $key => $apartamento): ?>
 				<?php if ($apartamento != $url): ?>
-					<div class="col-md-4 not-padding-mobile hover-effect push-20">
+					<div class="col-md-3 not-padding-mobile hover-effect push-20">
 						<a href="{{url('/apartamentos')}}/<?php echo $apartamento ?>">
 							<div class="col-xs-12 not-padding  container-image-box push-mobile-20">
 								<div class="col-xs-12 not-padding push-0">

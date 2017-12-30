@@ -295,8 +295,7 @@
 	   				<div class="col-md-12 col-xs-12">
 
 						<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect" style="width:20%">
-	   						<!-- <a href="{{url('/apartamentos/apartamento-lujo-gran-capacidad-sierra-nevada')}}"> -->
-	   						<a href="#">
+	   						<a href="{{url('/apartamentos/apartamento-lujo-gran-capacidad-sierra-nevada')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/small/apartamento-lujo-gran-capacidad-sierra-nevada.jpeg')}}" alt="Apartamento de lujo sierra nevada"/>
@@ -662,8 +661,7 @@
 				</div>
 
 				<div class=" row animatable" data-aos="zoom-in">
-					<!-- <a href="{{url('/apartamentos/apartamento-lujo-gran-capacidad-sierra-nevada')}}" >  -->
-					<a href="{{url('/apartamentos/apartamento-lujo-sierra-nevada')}}" > 
+					<a href="{{url('/apartamentos/apartamento-lujo-gran-capacidad-sierra-nevada')}}" > 
 						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/small/apartamento-lujo-gran-capacidad-sierra-nevada.jpeg')}}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 2px 1px #000;">APTO GRAN CAPACIDAD<br> DE LUJO</h3>
 						</div>
