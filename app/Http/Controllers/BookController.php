@@ -1407,13 +1407,17 @@ class BookController extends Controller
         $arrayTotales  = array();
         $arrayPruebas  = array();
         $mobile = new Mobile();
-
+        $now = Carbon::now();
         if ( empty($year) ) {
             $date = Carbon::now();
         }else{
             $year = Carbon::createFromFormat('Y',$year);
             $date = $year->copy();
-
+        }
+        if ($date->copy()->format('n') >= 9) {
+            $date = new Carbon('first day of September '.$now->copy()->format('Y'));
+        }else{
+            $date = new Carbon('first day of September '.$now->copy()->subYear()->format('Y'));
         }
         $apartamentos = \App\Rooms::where('state','=',1);
         $reservas = \App\Book::whereIn('type_book',[1,2,4,5,7,8,9,10])->whereYear('start','>=', $date)->orderBy('start', 'ASC')->get();
