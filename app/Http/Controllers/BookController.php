@@ -60,7 +60,6 @@ class BookController extends Controller
             endif;
         endforeach;
 
-
         return view('backend/planning/index', compact('books','mobile', 'stripe','inicio', 'rooms', 'roomscalendar', 'date', 'stripedsPayments', 'notifications'));
 
     }

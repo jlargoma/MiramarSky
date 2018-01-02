@@ -88,13 +88,14 @@
 							
 				        	<li class="{{ Request::path() == 'admin/pagos-propietarios'  ? 'active' : '' }}"><a href="{{ url('admin/pagos-propietarios') }}" class="detailed">Pagos a propietarios</a></li>
 
-						<?php endif ?>
-						<?php if ( Auth::user()->role == "admin" ): ?>
+						
 							
 							<li class="{{ Request::path() == 'admin/contabilidad'  ? 'active' : '' }}"><a href="{{ url('admin/contabilidad') }}" class="detailed">Contabilidad</a></li>
 
 							<li class="{{ Request::path() == 'admin/perdidas-ganancias'  ? 'active' : '' }}"><a href="{{ url('admin/perdidas-ganancias') }}" class="detailed">P&G</a></li>
 
+							<?php endif ?>
+							<?php if ( Auth::user()->role == "admin" ): ?>
 							<li class="{{ Request::path() == 'admin/propietario/8D'  ? 'active' : '' }}"><a href="{{ url('admin/propietario/8D') }}" class="detailed">Area Propietario</a></li>
 
 					      	<li class="{{ Request::path() == 'admin/precios' ? 'active' : '' }}"><a href="{{ url('admin/precios') }}" class="detailed">Precios y temporadas</a></li>

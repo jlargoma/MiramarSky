@@ -28,6 +28,7 @@
                             <th class ="text-center bg-complete text-white" style="width: 25%;">Telefono</th>
                             <th class ="text-center bg-complete text-white" style="width: 15%;"> Tipo</th>
                             <th class ="text-center bg-complete text-white" style="width: 35%;">Email</th>
+                            <th class ="text-center bg-complete text-white" style="width: 15%;">pantalla inicio</th>
                             <th class ="text-center bg-complete text-white" style="width: 15%;">ACCIONES</th>
 
                         </tr>
@@ -47,6 +48,25 @@
                                 </td>
                                 <td class="text-center ">
                                     <?php echo $user->email?>
+                                </td>
+
+                                <td class="text-center ">
+                                    <select class="form-control minimal"  >
+                                        <option>---</option>
+                                    <?php $array = [
+                                                'pendientes',
+                                                'especiales',
+                                                'confirmadas',
+                                                'checkin',
+                                                'checkout',
+                                                ] 
+                                    ?>
+                                    <?php for ($i = 1; $i <= 4; $i++): ?>
+                                        <option value="<?php echo $array[$i] ?>" <?php if($array[$i] == $user->defaultTable){ echo "selected";} ?>>
+                                            <?php echo $array[$i] ?>
+                                        </option>
+                                    <?php endfor ?>
+                                    </select>
                                 </td>
 
                                 <td class="text-center" style="padding: 0px 5px;">

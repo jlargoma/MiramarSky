@@ -357,8 +357,6 @@
                            <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
                                 <?php $counterConfir = \App\Http\Controllers\BookController::getCounters(date('Y'), 'confirmadas') ?>
                                 <?php echo $counterConfir; ?>
- 
-
                            </span>
                         </button>
 
@@ -596,7 +594,10 @@
             });
 
 
-
+            <?php if (Auth::user()->defaultTable != ''): ?>
+                var type = '<?php echo Auth::user()->defaultTable ?>';
+                $('button[data-type="'+type+'"]').trigger('click');
+            <?php endif ?>
 
 
 

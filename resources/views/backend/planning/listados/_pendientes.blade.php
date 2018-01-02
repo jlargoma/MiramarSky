@@ -61,7 +61,7 @@
                         <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
                             <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?>
                         <?php else: ?>
-                            <input type="text" class="only-numbers customer-phone" data-id="<?php echo $book->customer->id ?>" />
+                            <input type="text" class="only-numbers customer-phone" data-id="<?php echo $book->customer->id ?>" placeholder="telefono..."/>
                         <?php endif ?>
                     </td>
 
@@ -187,7 +187,14 @@
                         <?php endif ?>
                         
                     </td>
-                    <td class="text-center"><a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a></td>
+                    <td class="text-center">
+                        <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
+                            <a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a>
+                        <?php else: ?>
+                            <input type="text" class="only-numbers customer-phone" data-id="<?php echo $book->customer->id ?>" placeholder="telefono..."/>
+                        <?php endif ?>
+                        
+                    </td>
                     <td class ="text-center" >
                         <select class="room form-control minimal" data-id="<?php echo $book->id ?>"  >
                             
