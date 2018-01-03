@@ -343,6 +343,7 @@ tr.lined{
   input.costParking
   {
     font-size: 18px;
+    padding: 0;
   }
 }
 @media only screen and (min-width: 1023px) and (max-width: 1444px){
@@ -364,3 +365,25 @@ tr.lined{
     /*width: 100%;*/
   }
 }
+.blurred-line {
+    background-color: #d3d0d0 !important;
+    color: black;
+}
+
+.blurred-line.start {
+    background-color: #d3d0d0!important;
+    color: black;
+}
+.blurred-line.end {
+    background-color:  #d3d0d0!important ;
+    color: black;
+}
+.table.table-striped tbody tr.blurred-line td{
+    background-color: #d3d0d0 !important;
+    color: black;
+}
+.blurred-line td select.minimal{
+    background-color: #d3d0d0 !important;
+    color: black;
+}
+
