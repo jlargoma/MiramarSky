@@ -144,7 +144,10 @@ form .form-control, form select.form-control, form textarea, form .select2, .for
 }
 input.total,
 input.cost,
-input.beneficio{
+input.beneficio,
+input.costApto,
+input.costParking
+{
   width: 100%;
   border: none;
   font-weight: 300;
@@ -153,7 +156,7 @@ input.beneficio{
   color: white!important;
   text-align: center;
   padding: 30px;
-  font-size: 32px;
+  font-size: 26px;
 }
 input.beneficio{
   text-align: left;
@@ -322,4 +325,42 @@ tr.lined{
 }
 .customer-phone:-moz-placeholder { /* Firefox 18- */
   color: #000!important;
+}
+.boxtotales{
+  width: 20%;
+}
+@media only screen  and (max-width: 767px){
+  .boxtotales{
+    width: 25%;
+  }
+  .boxtotales .fisrt{
+    width: 100%;
+  }
+  input.total,
+  input.cost,
+  input.beneficio,
+  input.costApto,
+  input.costParking
+  {
+    font-size: 18px;
+  }
+}
+@media only screen and (min-width: 1023px) and (max-width: 1444px){
+  input.total,
+  input.cost,
+  input.beneficio,
+  input.costApto,
+  input.costParking
+  {
+    font-size: 18px;
+    padding: 0;
+  }
+  .boxtotales{
+    width: 20%;
+  }
+  .boxtotales label{
+    font-size: 11px;
+    line-height: 1;
+    /*width: 100%;*/
+  }
 }

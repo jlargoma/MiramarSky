@@ -338,7 +338,7 @@
                             </div>
                         </div>
                         <div class="col-xs-12 bg-white">
-                            <div class="col-md-4 col-xs-6 push-20 not-padding" style="min-height: 150px">
+                            <div class="col-md-4 col-xs-6 push-20 not-padding">
                                 <div class="col-md-6 col-xs-12 push-10">
                                     <label>Agencia</label>
                                     <select class="form-control full-width agency minimal" name="agency">
@@ -355,35 +355,35 @@
                                         <input type="number" class="agencia form-control" name="agencia" value="<?php echo $book->PVPAgencia ?>">
                                     <?php endif ?>
                                 </div>
-                                <div style="clear: both;"></div>
-                                <div class="col-md-6">
-                                    <label>Extras</label>
-                                    <select class="full-width form-control select2-hidden-accessible " data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true" style="cursor: pointer">
-                                        <?php foreach ($extras as $extra): ?>
-                                            <option value="<?php echo $extra->id ?>"><?php echo $extra->name ?></option>
-                                        <?php endforeach ?>
-                                    </select>
-                                </div>
+                            
                             </div>
                            
                                 
                            
-                            <div class="col-md-8 col-xs-6 push-20 not-padding">
-                                <div class="col-md-4 col-xs-12 text-center" style="background-color: #0c685f;">
+                            <div class="col-md-12 col-xs-6 push-20 not-padding">
+                                <div class="col-md-3 col-xs-12 text-center boxtotales" style="background-color: #0c685f;">
                                     <label class="font-w800 text-white" for="">TOTAL</label>
                                     <input type="text" class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>">
                                 </div>
-                                <?php if (Auth::user()->role == 'admin'): ?>
-                                    <div class="col-md-4 col-xs-12 text-center" style="background: #99D9EA;">
-                                        <label class="font-w800 text-white" for="">COSTE</label>
-                                        <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost" value="<?php echo $book->cost_total ?>">
+                                <?php if (Auth::user()->role == "admin"): ?>
+                                    <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #99D9EA;">
+                                        <label class="font-w800 text-white" for="">COSTE TOTAL</label>
+                                        <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost"  value="<?php echo $book->cost_total ?>">
                                     </div>
-                                    <div class="col-md-4 col-xs-12 text-center not-padding" style="background: #ff7f27;">
+                                    <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #91cf81;">
+                                        <label class="font-w800 text-white" for="">COSTE APTO</label>
+                                        <input type="text" class="form-control costApto m-t-10 m-b-10 white" name="costApto"  value="<?php echo $book->cost_apto ?>">
+                                    </div>
+                                    <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #337ab7;">
+                                        <label class="font-w800 text-white" for="">COSTE PARKING</label>
+                                        <input type="text" class="form-control costParking m-t-10 m-b-10 white" name="costParking"  value="<?php echo $book->cost_park ?>">
+                                    </div>
+                                    <div class="col-md-3 col-xs-12 text-center boxtotales not-padding" style="background: #ff7f27;">
                                         <label class="font-w800 text-white" for="">BENEFICIO</label>
-                                        <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>" style="width: 80%; float: left;">
+                                        <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio"  style="width: 80%; float: left;" value="<?php echo $book->total_ben ?>">
                                         <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;"><?php echo number_format($book->inc_percent,0)."%" ?></div>
                                     </div>
-                                <?php endif ?>    
+                                <?php endif ?>
                                                      
                         </div>
                         <div class="col-md-8 col-xs-12 push-20 not-padding">
@@ -772,8 +772,8 @@
                     </div>
 
                     <div class="col-xs-12 bg-white">
-                        <div class="col-md-4 col-xs-6 push-20 not-padding" style="min-height: 150px">
-                            <div class="col-md-6 col-xs-12 push-10">
+                        <div class="col-md-4 col-xs-12 push-20 not-padding" style="min-height: 150px">
+                            <div class="col-md-6 col-xs-6 push-10">
                                 <label>Agencia</label>
                                 <select class="form-control full-width agency minimal" name="agency">
                                     <?php for ($i=0; $i <= 2 ; $i++): ?>
@@ -781,7 +781,7 @@
                                     <?php endfor;?>
                                 </select>
                             </div>
-                            <div class="col-md-6 col-xs-12 push-10">                                                        
+                            <div class="col-md-6 col-xs-6 push-10">                                                        
                                 <label>Cost Agencia</label>
                                 <?php if ($book->PVPAgencia == 0.00): ?>
                                     <input type="number" class="agencia form-control" name="agencia" value="">
@@ -789,37 +789,34 @@
                                     <input type="number" class="agencia form-control" name="agencia" value="<?php echo $book->PVPAgencia ?>">
                                 <?php endif ?>
                             </div>
-                            <div style="clear: both;"></div>
-                            <div class="col-md-6">
-                                <label>Extras</label>
-                                <select class="full-width form-control select2-hidden-accessible " data-init-plugin="select2" multiple="" name="extras[]" tabindex="-1" aria-hidden="true" style="cursor: pointer">
-                                    <?php foreach ($extras as $extra): ?>
-                                        <option value="<?php echo $extra->id ?>"><?php echo $extra->name ?></option>
-                                    <?php endforeach ?>
-                                </select>
-                            </div>
                         </div>
                        
-                            
-                       
-                        <div class="col-md-8 col-xs-6 push-20 not-padding">
-                            <div class="col-md-4 col-xs-12 text-center" style="background-color: #0c685f;">
+                        <div class="col-md-8 col-xs-12 push-20 not-padding">
+                            <div class="col-md-3 col-xs-12 text-center" style="background-color: #0c685f;">
                                 <label class="font-w800 text-white" for="">TOTAL</label>
                                 <input type="text" class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>">
                             </div>
-                            <?php if (Auth::user()->role == 'admin'): ?>
-                                <div class="col-md-4 col-xs-12 text-center" style="background: #99D9EA;">
-                                    <label class="font-w800 text-white" for="">COSTE</label>
-                                    <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost" value="<?php echo $book->cost_total ?>">
+                            <?php if (Auth::user()->role == "admin"): ?>
+                                <div class="col-md-3 col-xs-6 text-center" style="background: #99D9EA;">
+                                    <label class="font-w800 text-white" for="">COSTE TOTAL</label>
+                                    <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost"  value="<?php echo $book->cost_total ?>">
                                 </div>
-                                <div class="col-md-4 col-xs-12 text-center not-padding" style="background: #ff7f27;">
+                                <div class="col-md-3 col-xs-6 text-center" style="background: #91cf81;">
+                                    <label class="font-w800 text-white" for="">COSTE APTO</label>
+                                    <input type="text" class="form-control costApto m-t-10 m-b-10 white" name="costApto"  value="<?php echo $book->cost_apto ?>">
+                                </div>
+                                <div class="col-md-3 col-xs-6 text-center" style="background: #337ab7;">
+                                    <label class="font-w800 text-white" for="">COSTE PARKING</label>
+                                    <input type="text" class="form-control costParking m-t-10 m-b-10 white" name="costParking"  value="<?php echo $book->cost_park ?>">
+                                </div>
+                                <div class="col-md-3 col-xs-6 text-center not-padding" style="background: #ff7f27;">
                                     <label class="font-w800 text-white" for="">BENEFICIO</label>
-                                    <input type="text" class="form-control text-right beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>" style="width: 80%; float: left;">
+                                    <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio"  style="width: 80%; float: left;" value="<?php echo $book->total_ben ?>">
                                     <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;"><?php echo number_format($book->inc_percent,0)."%" ?></div>
                                 </div>
-                            <?php endif ?>    
+                            <?php endif ?>  
                                                  
-                    </div>
+                        </div>
 
                     <div class="col-md-8 col-xs-12 push-20 not-padding">
                         <p class="personas-antiguo" style="color: red">
@@ -1141,46 +1138,65 @@
 
                     if ( room != "" && pax != "") {
 
-                            $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays, room: room}).success(function( data ) {
-                                pricePark = data;
-                                $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
-                                    priceLujo = data;
+                        $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays, room: room}).done(function( data ) {
+                            pricePark = data;
+                        });
 
-                                    $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                                        price = data;
+                        $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).done(function( data ) {
+                            priceLujo = data;
+                        });
 
-                                        price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
+                        $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).done(function( data ) {
+                            price = data;
 
-                                        if ( notModifyPrice == 0) {
-                                            $('.total').empty();
-                                            $('.total').val(price);
-                                        }
-                                        $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays, room: room}).success(function( data ) {
-                                            costPark = data;
-                                            $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
-                                            costLujo = data;
-                                            $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                                                var cost = data;
-                                                agencia = $('.agencia').val();
-                                                if (agencia == "") {
-                                                    agencia = 0;
-                                                }
-                                                cost = (parseFloat(cost) + parseFloat(costPark) + parseFloat(agencia) + parseFloat(costLujo));
-                                                $('.cost').empty();
-                                                $('.cost').val(cost);
-                                                beneficio = price - cost;
-                                                $('.beneficio').empty;
-                                                $('.beneficio').val(beneficio);
-                                                beneficio_ = (beneficio / price)*100
-                                                $('.beneficio-text').empty();
-                                                $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
+                            price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
 
-                                            });
-                                        });
-                                      });
-                                  });
-                              });
-                          }); 
+                            if ( notModifyPrice == 0) {
+                                $('.total').empty();
+                                $('.total').val(price);
+                            }
+                        });
+
+
+                        //COSTES 
+                        //Coste Parking
+                        var costPark = 0;
+                        $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays, room: room}).done(function( data ) {
+                            costPark = data;
+                            $('.costParking').val(parseFloat(data))
+                        });
+                        //Coste Lujo
+                        var costLujo = 0;
+                        $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).done(function( data ) {
+                            costLujo = data;
+                        });
+
+
+                        $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).done(function( data ) {
+
+                            var cost = data;
+
+                            //Coste Apartamento
+                            $('.costApto').val(parseFloat(cost));
+
+                            agencia = $('.agencia').val();
+                            if (agencia == "") {
+                                agencia = 0;
+                            }
+                            //Coste Total
+                            cost = (parseFloat(cost) + parseFloat(costPark) + parseFloat(agencia) + parseFloat(costLujo));
+
+                            $('.cost').empty();
+                            $('.cost').val(cost);
+                            beneficio = price - cost;
+                            $('.beneficio').empty;
+                            $('.beneficio').val(beneficio);
+                            beneficio_ = (beneficio / price)*100
+                            $('.beneficio-text').empty();
+                            $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
+
+                        });
+                                        
                     }
                 }
                  
@@ -1456,6 +1472,27 @@
                 $('.content-cities').show();
 
             }
+        });
+
+        $('.costApto').change(function(event) {
+
+            var cost     = 0;
+            var costLujo = 0;
+            var lujo     = $('select[name=type_luxury]').val();
+
+            if (lujo == 1) {
+                costLujo = 40;
+            } else if(lujo == 2 && lujo == 3) {
+                costLujo = 0;
+            }else{
+                costLujo == 20;
+            }
+
+            cost = parseFloat( $(this).val() ) + parseFloat( $('.costParking').val() ) + costLujo;
+
+            $('.cost').val(cost);
+            $('.content_book_owned_comments').show();
+            
         });
 
         $('.only-numbers').keydown(function (e) {

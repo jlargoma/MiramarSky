@@ -78,6 +78,9 @@ class BookController extends Controller
      */
     public function create(Request $request)
     {
+        // dd($request->input());
+        // die();
+
 
         $mobile = new Mobile();
 
@@ -138,7 +141,7 @@ class BookController extends Controller
                     $book->cost_limp     = 30;
 
                     $book->sup_park      = $this->getPriceParkController($request->input('parking'), $request->input('nigths'));
-                    $book->cost_park     = $this->getCostParkController($request->input('parking'),$request->input('nigths'));
+                    $book->cost_park     = $this->getCostParkController($request->input('parking'), $request->input('nigths'));
                 } elseif($room->sizeApto == 2) {
 
                     $book->sup_limp      = 50;
@@ -243,6 +246,7 @@ class BookController extends Controller
                     $book->finish        = Carbon::createFromFormat('d/m/Y',$finish);
                     $book->comment       = ($request->input('comments'))?$request->input('comments'): "";
                     $book->book_comments = ($request->input('book_comments'))?$request->input('book_comments'): "";
+                    $book->book_owned_comments = ($request->input('book_owned_comments'))?$request->input('book_owned_comments'): "";
                     $book->type_book     = ( $request->input('status') ) ? $request->input('status') : 3;
                     $book->pax           = $request->input('pax');
                     $book->real_pax      = ($request->input('real_pax'))?$request->input('real_pax'):$request->input('pax');
@@ -318,7 +322,7 @@ class BookController extends Controller
                         if ($room->typeApto == 3 || $room->typeApto == 1) {
                             $book->cost_apto     = 0;        
                         }else{
-                            $book->cost_apto     = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
+                            $book->cost_apto     = $request->input('costApto');//$book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
                         }
                         $book->cost_total  = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
                         $book->total_price = $request->input('total');
@@ -435,6 +439,7 @@ class BookController extends Controller
             $book->finish        = Carbon::createFromFormat('d/m/Y',$finish);
             $book->comment       = ltrim($request->input('comments'));
             $book->book_comments = ltrim($request->input('book_comments'));
+            $book->book_owned_comments = ($request->input('book_owned_comments'))?$request->input('book_owned_comments'): "";
             $book->pax           = $request->input('pax');
             $book->real_pax           = $request->input('real_pax');
             $book->nigths        = $request->input('nigths');
@@ -444,33 +449,33 @@ class BookController extends Controller
                 $book->cost_limp     = 30;
 
                 $book->sup_park    = $this->getPriceParkController($request->input('parking'), $request->input('nigths'));
-                $book->cost_park   = $this->getCostParkController($request->input('parking'),$request->input('nigths'));
+                $book->cost_park   = $request->input('costParking');//$this->getCostParkController($request->input('parking'),$request->input('nigths'));
             } elseif($room->sizeApto == 2) {
 
                 $book->sup_limp      = 50;
                 $book->cost_limp     = 40;
 
                 $book->sup_park    = $this->getPriceParkController($request->input('parking'), $request->input('nigths'));
-                $book->cost_park   = $this->getCostParkController($request->input('parking'),$request->input('nigths'));
+                $book->cost_park   = $request->input('costParking');//$this->getCostParkController($request->input('parking'),$request->input('nigths'));
             }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
 
                 $book->sup_limp      = 100;
                 $book->cost_limp     = 90;
                 $book->sup_park    = $this->getPriceParkController($request->input('parking'), $request->input('nigths') , 3);
-                $book->cost_park   = $this->getCostParkController($request->input('parking'),$request->input('nigths'), 3);
+                $book->cost_park   = $request->input('costParking');//$this->getCostParkController($request->input('parking'),$request->input('nigths'), 3);
 
             }
             $book->type_park     = $request->input('parking');
             $book->agency        = $request->input('agency');
             $book->PVPAgencia    = $request->input('agencia');
 
-            $book->cost_park     = $book->getCostPark($request->parking,$request->nigths);
+            // $book->cost_park     = $request->input('costParking');
 
             $book->type_luxury     = $request->input('type_luxury');                
             $book->sup_lujo      = $this->getPriceLujo($request->input('type_luxury'));
             $book->cost_lujo     = $this->getCostLujo($request->input('type_luxury'));
 
-            $book->cost_apto     = $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
+            $book->cost_apto     = $request->input('costApto');
             $book->cost_total    = $request->input('cost');
 
             $book->total_price   = $request->input('total');
@@ -680,7 +685,7 @@ class BookController extends Controller
     }
 
     //Funcion para el precio del Aparcamiento
-    static function getPriceParkController($park,$noches,$multipler="")
+    static function getPriceParkController($park, $noches, $multipler="")
     {
 
         $supPark = 0;
