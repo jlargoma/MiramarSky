@@ -721,7 +721,7 @@
                                 <?php endfor;?>
                             </select>
                         </div>
-                        <div class="col-md-2 col-xs-6 push-20">
+                        <div class="col-md-2 col-xs-6 push-0">
                             <label>Sup. Lujo</label>
                             <select class=" form-control full-width type_luxury minimal" name="type_luxury">
                                 <?php for ($i=1; $i <= 4 ; $i++): ?>
@@ -729,7 +729,7 @@
                                 <?php endfor;?>
                             </select>
                         </div>
-                        <div class="col-md-2 col-xs-3 push-20" style="padding: 0 5px;">
+                        <div class="col-md-2 col-xs-3 push-0" style="padding: 0 5px;">
                             <label >IN</label>
                             <select id="schedule" class="form-control " style="width: 100%;" name="schedule">
                                 <option>-- Sin asignar --</option>
@@ -749,7 +749,7 @@
                                 <?php endfor ?>
                             </select>
                         </div>
-                        <div class="col-md-2 col-xs-3 push-20" style="padding: 0 5px;">
+                        <div class="col-md-2 col-xs-3 push-0" style="padding: 0 5px;">
                             <label>Out</label>
                             <select id="scheduleOut" class="form-control " style="width: 100%;" name="scheduleOut">
                                 <option>-- Sin asignar --</option>
@@ -772,7 +772,7 @@
                     </div>
 
                     <div class="col-xs-12 bg-white">
-                        <div class="col-md-4 col-xs-12 push-20 not-padding" style="min-height: 150px">
+                        <div class="col-md-4 col-xs-12 push-20 not-padding">
                             <div class="col-md-6 col-xs-6 push-10">
                                 <label>Agencia</label>
                                 <select class="form-control full-width agency minimal" name="agency">
@@ -797,22 +797,25 @@
                                 <input type="text" class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>">
                             </div>
                             <?php if (Auth::user()->role == "admin"): ?>
+                                
+                                <div class="col-md-3 col-xs-6 text-center" style="background: #91cf81;">
+                                    <label class="font-w800 text-white" for="">APTO</label>
+                                    <input type="text" class="form-control costApto m-t-10 m-b-10 white" name="costApto"  value="<?php echo $book->cost_apto ?>">
+                                </div>
+                                <div class="col-md-3 col-xs-6 text-center" style="background: #337ab7;">
+                                    <label class="font-w800 text-white" for="">PARKING</label>
+                                    <input type="text" class="form-control costParking m-t-10 m-b-10 white" name="costParking"  value="<?php echo $book->cost_park ?>">
+                                </div>
                                 <div class="col-md-3 col-xs-6 text-center" style="background: #99D9EA;">
                                     <label class="font-w800 text-white" for="">COSTE TOTAL</label>
                                     <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost"  value="<?php echo $book->cost_total ?>">
                                 </div>
-                                <div class="col-md-3 col-xs-6 text-center" style="background: #91cf81;">
-                                    <label class="font-w800 text-white" for="">COSTE APTO</label>
-                                    <input type="text" class="form-control costApto m-t-10 m-b-10 white" name="costApto"  value="<?php echo $book->cost_apto ?>">
-                                </div>
-                                <div class="col-md-3 col-xs-6 text-center" style="background: #337ab7;">
-                                    <label class="font-w800 text-white" for="">COSTE PARKING</label>
-                                    <input type="text" class="form-control costParking m-t-10 m-b-10 white" name="costParking"  value="<?php echo $book->cost_park ?>">
-                                </div>
                                 <div class="col-md-3 col-xs-6 text-center not-padding" style="background: #ff7f27;">
-                                    <label class="font-w800 text-white" for="">BENEFICIO</label>
-                                    <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio"  style="width: 80%; float: left;" value="<?php echo $book->total_ben ?>">
-                                    <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;"><?php echo number_format($book->inc_percent,0)."%" ?></div>
+                                    <label class="font-w800 text-white" style="width: 100%;" for="">BENEFICIO</label>
+                                    <input type="text" class="form-control text-center beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>">
+                                    <div class="beneficio-text font-w400 font-s18 white">
+                                        <?php echo number_format($book->inc_percent,0)."%" ?>    
+                                   </div>
                                 </div>
                             <?php endif ?>  
                                                  
