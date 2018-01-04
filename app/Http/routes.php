@@ -10,7 +10,9 @@
 | and give it the controller to call when that URI is requested.
 | 
 */
-
+Route::get('testt', function() {
+	return 'ok';
+});
 Route::auth();
 Route::get('/','HomeController@index');
 Route::get('/sitemap','HomeController@siteMap');

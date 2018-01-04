@@ -537,9 +537,7 @@
 
             });
 
-
             // Alertas de booking
-
             $('#btnAlertsBookking').click(function(event) {
                 $('#modalAlertsBooking .modal-content').empty().load('/admin/reservas/api/alertsBooking');
             });

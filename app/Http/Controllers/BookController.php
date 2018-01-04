@@ -24,35 +24,38 @@ class BookController extends Controller
      */
     public function index($year = "")
     {
-        $mobile = new Mobile();
-
         if ( empty($year) ) {
             $date = Carbon::now();
-        }else{
+        } else {
             $year = Carbon::createFromFormat('Y',$year);
             $date = $year->copy();
         }
 
         if ($date->copy()->format('n') >= 9) {
             $start = new Carbon('first day of September '.$date->copy()->format('Y'));
-        }else{
+        } else {
             $start = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
         }
         $inicio = $start->copy();
 
-        $books = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[1,3,4,5,6,10])->orderBy('created_at','DESC')->get();
+        $books = \App\Book::where('start','>',$date->copy()->subMonth())
+            ->where('finish','<',$date->copy()->addYear())
+            ->whereIn('type_book',[1,3,4,5,6,10])
+            ->orderBy('created_at','DESC')
+            ->get();
 
         $rooms = \App\Rooms::where('state','=',1)->get();
         $roomscalendar = \App\Rooms::where('id', '>=' , 5)->where('state','=',1)->orderBy('order','ASC')->get();
 
         $stripe = StripeController::$stripe;
         $stripedsPayments = \App\Payments::where('comment', 'LIKE', '%stripe%')
-                                                    ->whereYear('created_at','=', date('Y'))
-                                                    ->whereMonth('created_at','=', date('m'))
-                                                    ->whereDay('created_at','=', date('d'))
-                                                    ->get();
+            ->whereYear('created_at','=', date('Y'))
+            ->whereMonth('created_at','=', date('m'))
+            ->whereDay('created_at','=', date('d'))
+            ->get();
+        
         // Notificaciones de alertas booking
-        $notifyes = \App\BookNotification::all();
+        $notifyes = \App\BookNotification::with('book')->get();
         $notifications = 0;
         foreach ($notifyes as $key => $notify):
             if ($notify->book->type_book != 3 || $notify->book->type_book != 5 || $notify->book->type_book != 6):
@@ -60,8 +63,12 @@ class BookController extends Controller
             endif;
         endforeach;
 
-        return view('backend/planning/index', compact('books','mobile', 'stripe','inicio', 'rooms', 'roomscalendar', 'date', 'stripedsPayments', 'notifications'));
+        $mobile = new Mobile();
 
+        return view(
+            'backend/planning/index', 
+            compact('books','mobile', 'stripe','inicio', 'rooms', 'roomscalendar', 'date', 'stripedsPayments', 'notifications')
+        );
     }
 
     public function newBook(Request $request)
@@ -109,7 +116,7 @@ class BookController extends Controller
 
             //createacion del cliente
             $customer          = new \App\Customers();
-            $customer->user_id = (Auth::check())?Auth::user()->id:23;
+            $customer->user_id = (Auth::check()) ?Auth::user()->id : 23;
             $customer->name    = $request->input('name');
             $customer->email   = $request->input('email');
             $customer->phone   = $request->input('phone');
@@ -195,25 +202,18 @@ class BookController extends Controller
 
                 }
             }
-
-
             return redirect('admin/reservas');
-        }else{
-
+        } else {
             $isReservable  = 0;
             if (in_array($request->input('status'), [1, 2, 4, 7, 8])) {
-
                 if ($book->existDate($start, $finish, $request->input('newroom'))) {
                     $isReservable = 1;
                 }
-
-            }else{
+            } else {
                 $isReservable = 1;
             }
 
             if ( $isReservable == 1 ) {
-
-
                 if ($request->input('extras') != "") {
                     foreach ($request->input('extras') as $extra) {
                        $precios    = \App\Extras::find($extra);
@@ -236,8 +236,6 @@ class BookController extends Controller
                 if($customer->save()){
                     //Creacion de la reserva
                     $room                = \App\Rooms::find($request->input('newroom'));
-
-
 
                     $book->user_id       = $customer->user_id;
                     $book->customer_id   = $customer->id;
@@ -1485,8 +1483,6 @@ class BookController extends Controller
         $days = $arrayDays;
         
         return view('backend/planning/calendar', compact('arrayBooks', 'arrayMonths', 'arrayTotales', 'rooms', 'roomscalendar', 'arrayReservas', 'mes', 'date', 'book', 'extras', 'days', 'inicio'));
-
-
     }
 
     static function getCounters($year, $type)
