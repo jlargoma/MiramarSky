@@ -372,14 +372,27 @@
 	   				</div>
 	   			</div>
 	       			
-				<div class="container push-20" style="margin-top: 20px;">
+				<div class="col-md-10 col-md-offset-1  push-20" style="margin-top: 20px;">
 	   				<h2 class="text-center black font-w300">
 	   					OTROS <span class="font-w800 green ">SERVICIOS</span>
 	   				</h2>
 	   				<div class="col-md-12 col-xs-12">
-
+						<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect">
+							<a href="{{ url('/restaurantes')}}">
+		   						<div class="col-xs-12 not-padding  container-image-box">
+		   							<div class="col-xs-12 not-padding push-0">
+	   									<img class="img-responsive imga" src="{{ asset('/img/posts/restaurante-sierra-nevada.jpg')}}"  alt="Apartamento standard sierra nevada"/>
+		   							</div>
+		   							<div class="col-xs-12 not-padding text-right overlay-text">
+		   								<h2 class="font-w200 center push-10 text-center text font-s24 white" >
+		   									<span class="font-w800 white"> BARES Y  RESTAURANTES</span>
+		   								</h2>
+		   							</div>
+		   						</div>
+							</a>
+	   					</div>
 	   										
-						<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
+						<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect">
 							<a href="{{ url('/forfait')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
@@ -394,7 +407,7 @@
 							</a>
 	   					</div>
 
-	   					<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
+	   					<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect">
 		   					<a href="{{ url('/actividades')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
@@ -410,7 +423,7 @@
 		   					</a>
 	   					</div>
 
-	   					<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
+	   					<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect">
 	   						
 	   						<a href="{{ url('/supermercado')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
@@ -705,8 +718,21 @@
 	   					OTROS <span class="font-w800 green ">SERVICIOS</span>
 	   				</h2>
 	   				<div class="col-md-12 col-xs-12">
-
-	   					<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
+						<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect">
+							<a href="{{ url('/restaurantes')}}">
+		   						<div class="col-xs-12 not-padding  container-image-box">
+		   							<div class="col-xs-12 not-padding push-0">
+	   									<img class="img-responsive imga" src="{{ asset('/img/posts/restaurante-sierra-nevada.jpg')}}"  alt="Apartamento standard sierra nevada"/>
+		   							</div>
+		   							<div class="col-xs-12 not-padding text-right overlay-text">
+		   								<h2 class="font-w200 center push-10 text-center text font-s24 white" >
+		   									<span class="font-w800 white"> BARES Y  RESTAURANTES</span>
+		   								</h2>
+		   							</div>
+		   						</div>
+							</a>
+	   					</div>
+	   					<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect">
 	   						<a href="{{ url('/forfait')}}" target="_blank">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
@@ -721,7 +747,7 @@
 	   						</a>
 	   					</div>
 
-	   					<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
+	   					<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect">
 		   					<a href="{{ url('/actividades')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
@@ -737,7 +763,7 @@
 		   					</a>
 	   					</div>
 					
-						<div class="col-md-4 col-xs-12 push-mobile-20 hover-effect">
+						<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect">
 							<a href="{{ url('/supermercado')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
