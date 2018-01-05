@@ -1009,20 +1009,38 @@ class BookController extends Controller
 
     public function delete($id)
     {
-        $book = \App\Book::find($id);
+        
+       try {
+           $book = \App\Book::find($id);
 
-        foreach ($book->notifications as $key => $notification) {
-           $notification->delete();
-        }
-        foreach ($book->pago as $key => $payment) {
-           $payment->delete();
-        }
+            foreach ($book->notifications as $key => $notification) {
+               $notification->delete();
+            }
+            foreach ($book->pago as $key => $payment) {
+               $payment->delete();
+            }
 
-        if ($book->delete()) {
+            $ordersBook = \App\Orders::where('book_id', $book->id)->get();
+            if (count($ordersBook) > 0) {
+                foreach ( $ordersBook as $key => $order) {
+                    
+                    $productos = $order->getProducts();
+                    foreach ($productos as $key => $producto) {
+                        $producto->delete();
+                    }
+
+                    $order->delete();
+
+                }
+            }
+
             return ['status' => 'success','title' => 'OK', 'response' => "Reserva borrada correctamente"];
-        }else{
-            return ['status' => 'danger','title' => 'Error', 'response' => "No se ha podido borrar la reserva"];
-        }
+       
+       } catch (Exception $e) {
+
+           return ['status' => 'danger','title' => 'Error', 'response' => "No se ha podido borrar la reserva error: ".$e->message()];
+
+       }
 
     }
 

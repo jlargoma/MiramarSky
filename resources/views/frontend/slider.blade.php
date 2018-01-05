@@ -12,7 +12,7 @@
 
 					<h4 class="text-white white font-w300 push-40" data-animate="fadeInUp" data-delay="600" style="text-align:center;text-shadow: 1px 1px #000;font-size: 42px;">Piscina, gimnasio, parking, guarda esquis, salida directa a las pistas</h4>
 					<p class="text-center">
-						<button class="tp-caption rev-btn  tp-static-layer button button-rounded button-large button-green tright  center hvr-grow-shadow menu-booking" data-animate="fadeInUp" data-delay="1000"
+						<button class="button button-rounded button-large button-green tright  center hvr-grow-shadow menu-booking" data-animate="fadeInUp" data-delay="1000"
 						style="z-index: 8; ">SOLICITA TU RESERVA
 						</button>
 					</p>
