@@ -192,41 +192,41 @@
 	   				</h2>
 	   				<div class="col-md-12 col-xs-12">
 
-						<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect" style="width:20%">
+						<div class="col-md-2 col-xs-12 push-mobile-20 hover-effect" >
 	   						<a href="{{url('/apartamentos/apartamento-lujo-gran-capacidad-sierra-nevada')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/small/apartamento-lujo-gran-capacidad-sierra-nevada.jpeg')}}" alt="Apartamento de lujo sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
-		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 65px 35px;width: 90%;">APARTAMENTO<br>GRAN CAPACIDAD DE LUJO
+		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding:55px 10px;width: 90%;">APARTAMENTO<br>GRAN CAPACIDAD DE LUJO
 		   								</h2>
 		   							</div>
 		   						</div>
 	   						</a>
 	   					</div>
-	   					<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect" style="width:20%">
+	   					<div class="col-md-2 col-xs-12 push-mobile-20 hover-effect" >
 	   						<a href="{{url('/apartamentos/apartamento-lujo-sierra-nevada')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/small/apartamento-lujo-sierra-nevada.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
-		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 65px 55px;width: 90%;">APARTAMENTO<br>2 DORMITORIOS DE LUJO
+		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 55px 10px;width: 90%;">APARTAMENTO<br>2 DORMITORIOS DE LUJO
 		   								</h2>
 		   							</div>
 		   						</div>
 	   						</a>
 	   					</div>
 					
-						<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect" style="width:20%">
+						<div class="col-md-2 col-xs-12 push-mobile-20 hover-effect" >
 							<a href="{{url('/apartamentos/apartamento-standard-sierra-nevada')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/small/apartamento-standard-sierra-nevada.jpg')}}"  alt="Apartamento standard sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
-		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 65px 55px;width: 90%;">
+		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 55px 10px;width: 90%;">
 		   									APARTAMENTO<br>2 DORMITORIOS STANDARD
 		   								</h2>
 		   							</div>
@@ -234,7 +234,7 @@
 							</a>
 	   					</div>
 
-	   					<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect" style="width:20%">
+	   					<div class="col-md-2 col-xs-12 push-mobile-20 hover-effect" >
 		   					<a href="{{url('/apartamentos/estudio-lujo-sierra-nevada')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
@@ -251,7 +251,7 @@
 	   					</div>
 
 	   					
-	   					<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect" style="width:20%">
+	   					<div class="col-md-2 col-xs-12 push-mobile-20 hover-effect" >
 	   						<a href="{{url('/apartamentos/estudio-standard-sierra-nevada')}}">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
@@ -261,6 +261,22 @@
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
 		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 90px 95px;">
 		   									ESTUDIO STANDARD
+		   								</h2>
+		   							</div>
+		   						</div>
+		   					</a>
+	   					</div>
+
+	   					<div class="col-md-2 col-xs-12 push-mobile-20 hover-effect" >
+	   						<a href="{{url('/apartamentos/chalet-los-pinos-sierra-nevada')}}">
+		   						<div class="col-xs-12 not-padding  container-image-box">
+		   							<div class="col-xs-12 not-padding push-0">
+		   								
+	   									<img class="img-responsive" src="{{ asset('/img/miramarski/galerias/chalet-los-pinos-sierra-nevada/chalet-pinos-(1).jpg')}}"  alt="Estudio standard sierra nevada"/>
+		   							</div>
+		   							<div class="col-xs-12 not-padding text-right overlay-text">
+		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 90px 95px;">
+		   									CHALET ADOSADO
 		   								</h2>
 		   							</div>
 		   						</div>
