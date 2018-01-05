@@ -547,8 +547,11 @@
                 var type = $(this).attr('data-type');
                 var year = $('#fecha').val();
                 $.get('/admin/reservas/api/getTableData', { type: type, year: year }, function(data) {
+
+                    $('#resultSearchBook').empty();
                     
                     $('.content-tables').empty().append(data);
+                    $('.content-tables').show();
 
                 });
 

@@ -33,7 +33,27 @@
         }
 
         $.get('/admin/reservas/changeSchedule/'+id+'/'+typeNum+'/'+schedule, function(data) {
-            alert(data);
+    		$.notify({
+                title: '<strong>'+data.title+'</strong>, ',
+                icon: 'glyphicon glyphicon-star',
+                message: data.response
+            },{
+                type: data.status,
+                animate: {
+                    enter: 'animated fadeInUp',
+                    exit: 'animated fadeOutRight'
+                },
+                placement: {
+                    from: "top",
+                    align: "left"
+                },
+                allow_dismiss: false,
+                offset: 80,
+                spacing: 10,
+                z_index: 1031,
+                delay: 500,
+                timer: 500,
+            }); 
         });
     });
 

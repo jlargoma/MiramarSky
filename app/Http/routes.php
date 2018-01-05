@@ -10,9 +10,9 @@
 | and give it the controller to call when that URI is requested.
 | 
 */
-Route::get('testt', function() {
-	return 'ok';
-});
+Route::get('/admin/ical/create', 'iCalController@create');
+Route::get('/admin/ical/read', 'iCalController@read');
+
 Route::auth();
 Route::get('/','HomeController@index');
 Route::get('/sitemap','HomeController@siteMap');
@@ -296,7 +296,7 @@ Route::group(['middleware' => 'auth'], function () {
 		}
 
 		if ($book->save()) {
-			echo "Cambiado!";
+			return ['status' => 'success','title' => 'OK', 'response' => "Hora actualizada"];
 		}
 
 	});
