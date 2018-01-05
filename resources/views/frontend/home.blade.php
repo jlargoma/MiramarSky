@@ -394,7 +394,7 @@
 		   				</div>
 						<div class="container clearfix"  style="padding: 20px 0;">
 							<div class="row">
-								<div class="col-md-6 col-md-offset-3">
+								<div class="col-md-6 col-md-offset-3 not-padding">
 									<div class="row" id="content-book-response">
 										<div class="front" style="min-height: 600px!important;">
 											<div class="col-xs-12">
