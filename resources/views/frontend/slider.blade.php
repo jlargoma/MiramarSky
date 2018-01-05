@@ -23,17 +23,17 @@
 
 	</section>
 <?php else: ?>
-<section id="slider" class="section nomargin noborder" style="padding: 0; max-height: 450px">
+<section id="slider" class="section nomargin noborder" style="padding: 0; max-height: 520px">
 
-	<div class="full-screen" style="background-image: url({{asset('/img/miramarski/mobile-slide.jpg')}});background-position: 50% 100%; background-size: cover; background-repeat: no-repeat; max-height: 450px">
+	<div class="full-screen" style="background-image: url({{asset('/img/miramarski/mobile-slide.jpg')}});background-position: 50% 100%; background-size: cover; background-repeat: no-repeat; max-height: 520px">
 		<div class="overlay"></div>
 		<div class="row" style="z-index: 5">
 			<div class="col-xs-12 push-0" style="padding: 100px 20px 65px 20px; z-index: 10;">
-				<h2 class="text-white white font-w800" data-aos="fade-up" style="text-align:center;text-shadow: 1px 1px #000;font-size: 38px;letter-spacing: -2px;line-height: 1; margin: 50px 10px;">APARTAMENTOS DE LUJO EN SIERRA NEVADA</h2>
+				<h2 class="text-white white font-w800" data-aos="fade-up" style="text-align:center;text-shadow: 1px 1px #000;font-size: 38px;letter-spacing: -2px;line-height: 1; margin: 60px 10px;">APARTAMENTOS DE LUJO EN SIERRA NEVADA</h2>
 
 				
 				<p class="text-center push-30">
-					<button class="btn btn-lg white menu-booking heart font-w300" style="z-index: 8; background-color: #59BA41; border-radius: 0; padding: 25px; font-size: 21px;letter-spacing: -1px;text-shadow: 1px 1px #000;">SOLICITA TU <span class="font-w800">RESERVA</span>
+					<button class="btn btn-lg white menu-booking heart font-w300" style="z-index: 8; background-color: #59BA41; border-radius: 0; padding: 20px; font-size: 21px;letter-spacing: -1px;text-shadow: 1px 1px #000;">SOLICITA TU <span class="font-w800">RESERVA</span>
 					</button>
 				</p>
 			</div>
