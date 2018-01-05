@@ -27,7 +27,7 @@
 		<meta name="theme-color" content="#ffffff">
 
  
-			<link rel="stylesheet" href="{{ asset ('/css/app.css')}}" type="text/css" />
+		<link rel="stylesheet" href="{{ asset ('/css/app.css')}}" type="text/css" />
 
 		<?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
 			<link rel="stylesheet" href="{{ asset ('/frontend/css/responsive-mobile.css')}}" type="text/css" />
@@ -72,7 +72,14 @@
 		
 
 		<style>
-			
+			.full-screen.slider-mobile{
+				background-image: url('/img/miramarski/mobile-slide.jpg');
+				background-position: 50% 100%; 
+				background-size: cover; 
+				background-repeat: no-repeat; 
+				max-height: 520px;
+			}
+
 		</style>
 
 		

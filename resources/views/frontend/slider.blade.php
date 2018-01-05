@@ -25,7 +25,7 @@
 <?php else: ?>
 <section id="slider" class="section nomargin noborder" style="padding: 0; max-height: 520px">
 
-	<div class="full-screen" style="background-image: url({{asset('/img/miramarski/mobile-slide.jpg')}});background-position: 50% 100%; background-size: cover; background-repeat: no-repeat; max-height: 520px">
+	<div class="full-screen slider-mobile" >
 		<div class="overlay"></div>
 		<div class="row" style="z-index: 5">
 			<div class="col-xs-12 push-0" style="padding: 100px 20px 65px 20px; z-index: 10;">

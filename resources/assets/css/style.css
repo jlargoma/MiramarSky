@@ -15698,79 +15698,79 @@ label{
 	left: 0px;
     width: 35px;
     height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/apto.png') }}');
+    background: url('/img/miramarski/iconos/small/apto. }}');
 }
 #parking{
 	left: 35px;
     width: 35px;
     height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/parking.png') }}') -36px 0;
+    background: url('/img/miramarski/iconos/small/parking.png') }}6px 0;
 }
 #ascensor{
 	left: 70px;
     width: 35px;
     height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/ascensor.png') }}') -71px 0;
+    background: url('/img/miramarski/iconos/small/ascensor.png') }}1px 0;
 }
 #piscina{
 	left: 105px;
     width: 35px;
     height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/piscina.png') }}') -106px 0;
+    background: url('/img/miramarski/iconos/small/piscina.png') }}'6px 0;
 }
 #gimnasio{
 	left: 0px;
 	top: 35px;
     width: 35px;
     height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/gimnasio.png') }}') 0 0;
+    background: url('/img/miramarski/iconos/small/gimnasio.png') 0 0;
 }
 #guarda-esqui{
 	left: 35px;
 	top: 35px;
     width: 35px;
     height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/guardaesqui.png') }}') 0 0;
+    background: url('/img/miramarski/iconos/small/guardaesqui.png') 0 0;
 }
 #mascota{
 	left: 70px;
 	top: 35px;
     width: 35px;
     height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/mascotas.png') }}') 0 0;
+    background: url('/img/miramarski/iconos/small/mascotas.png') 0 0;
 }
 #toalla{
 	left: 105px;
 	top: 35px;
     width: 35px;
     height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/ropa-toallas.png') }}') 0 0;
+    background: url('/img/miramarski/iconos/small/ropa-toallas.png') 0 0;
 }
 #cocina{
 	left: 0px;
 	top: 70px;
     width: 35px;
     height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/cocina.png') }}') 0 0;
+    background: url('/img/miramarski/iconos/small/cocina.png') 0 0;
 }
 #ducha{
 	left: 35px;
 	top: 70px;
     width: 35px;
     height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/ducha.png') }}') 0 0;
+    background: url('/img/miramarski/iconos/small/ducha.png') 0 0;
 }
 #calefaccion{
 	left: 70px;
 	top: 70px;
     width: 35px;
     height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/chimenea.png') }}') 0 0;
+    background: url('/img/miramarski/iconos/small/chimenea.png') 0 0;
 }
 #shopping{
 	left: 105px;
 	top: 70px;
     width: 35px;
     height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/shopping.png') }}') 0 0;
+    background: url('/img/miramarski/iconos/small/shopping.png') 0 0;
 }
