@@ -72,90 +72,7 @@
 		
 
 		<style>
-			.phpdebugbar.phpdebugbar-minimized{
-	   			display: none!important
-	   		}
-			.demos-filter {
-				margin: 0;
-				text-align: right;
-			}
-
-			.demos-filter li {
-				list-style: none;
-				margin: 10px 0px;
-			}
-
-			.demos-filter li a {
-				display: block;
-				border: 0;
-				text-transform: uppercase;
-				letter-spacing: 1px;
-				color: #444;
-			}
-
-			.demos-filter li a:hover,
-			.demos-filter li.activeFilter a { color: #1ABC9C; }
-
-			@media (max-width: 991px) {
-				.demos-filter { text-align: center; }
-
-				.demos-filter li {
-					float: left;
-					width: 33.3%;
-					padding: 0 20px;
-				}
-			}
-
-			@media (max-width: 767px) {
-				.demos-filter li { width: 50%; }
-			}
-
-			#rev_slider_15_1_wrapper .tp-loader.spinner3 { background-color: #333333 !important; }
-			#rev_slider_15_1 .uranus.tparrows {
-				width:50px;
-				height:50px;
-				background:rgba(255,255,255,0);
-				z-index: 60;
-			}
-			#rev_slider_15_1 .uranus.tparrows:before {
-				width:50px;
-				height:50px;
-				line-height:50px;
-				font-size:40px;
-				transition:all 0.3s;
-				-webkit-transition:all 0.3s;
-			}
-			#rev_slider_15_1 .uranus.tparrows:hover:before{opacity:0.75; }
 			
-				.button-green{
-					position: inherit;
-				    top: -114px;
-				    left: 43%;
-				}
-				.imagen-slider{
-					width: 100%;
-					margin-top: -130px!important;
-					max-height: 700px!important
-				}
-			
-			@media (max-width: 767px) {
-				.button-green{
-					position: inherit;
-					top: -61px!important;
-					left: 26%!important;
-					max-width: 164px!important;
-			      	font-size: 10px!important;
-			      	max-height: 40px!important;
-				}
-				.imagen-slider{
-					width: 100%;
-					margin-top: -100px!important;
-				}
-				.button.button-reveal.button-large {
-				    padding: 0 20px;
-				}
-			}
-
 		</style>
 
 		
@@ -166,11 +83,6 @@
 		<div id="wrapper" class="clearfix">
 			
 			@include('layouts._header')
-			
-<!-- 				<img class="imagen-slider" src="{{ asset('/img/miramarski/salon-slider-2.jpg') }}" alt="texto" />
-				<h2 class="m-b-0">Apartamentos de lujo</h2>
-
-				<button class="tp-caption rev-btn  tp-static-layer button button-rounded button-reveal button-large button-green tright  center hvr-grow-shadow menu-booking" style=""> <i class="icon-angle-right"></i><span>SOLICITA TU RESERVA</span> </button> -->
 	
 			@include('frontend.slider')
 

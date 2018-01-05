@@ -42,16 +42,9 @@
 
 		<div class="container container-mobile clearfix">
 
-			<div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
+			<div id="primary-menu-trigger"><i class="fa fa-bars"></i></div>
 			<div>
 				<div>
-					<!-- Logo
-					============================================= -->
-					
-					<!-- <div id="logo">
-						<a href="{{url('/')}}" class="standard-logo" data-dark-logo="{{ asset ('frontend/images/logo-dark.png')}}" data-sticky-logo="{{ asset ('frontend/images/logo-dark.png')}}" data-mobile-logo="{{ asset ('frontend/images/logo.png')}}"><img src="{{ asset ('frontend/images/logo.png')}}" alt="Logo"></a>
-						<a href="{{url('/')}}" class="retina-logo" data-dark-logo="{{ asset ('frontend/images/logo-dark.png')}}" data-sticky-logo="{{ asset ('frontend/images/logo-dark.png')}}" data-mobile-logo="{{ asset ('frontend/images/logo.png')}}"><img src="{{ asset ('frontend/images/logo.png')}}" alt="Logo"></a>
-					</div> -->
 				</div>
 				<div>
 					

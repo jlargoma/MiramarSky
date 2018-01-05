@@ -3,114 +3,12 @@
 @section('title')Apartamentos de lujo en Sierra Nevada a pie de pista @endsection
 
 @section('content')
-<style type="text/css">
-	
-#tele-esqui{
-	left: 0px;
-    width: 35px;
-    height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/apto.png') }}');
-}
-#parking{
-	left: 35px;
-    width: 35px;
-    height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/parking.png') }}') -36px 0;
-}
-#ascensor{
-	left: 70px;
-    width: 35px;
-    height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/ascensor.png') }}') -71px 0;
-}
-#piscina{
-	left: 105px;
-    width: 35px;
-    height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/piscina.png') }}') -106px 0;
-}
-#gimnasio{
-	left: 0px;
-	top: 35px;
-    width: 35px;
-    height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/gimnasio.png') }}') 0 0;
-}
-#guarda-esqui{
-	left: 35px;
-	top: 35px;
-    width: 35px;
-    height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/guardaesqui.png') }}') 0 0;
-}
-#mascota{
-	left: 70px;
-	top: 35px;
-    width: 35px;
-    height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/mascotas.png') }}') 0 0;
-}
-#toalla{
-	left: 105px;
-	top: 35px;
-    width: 35px;
-    height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/ropa-toallas.png') }}') 0 0;
-}
-#cocina{
-	left: 0px;
-	top: 70px;
-    width: 35px;
-    height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/cocina.png') }}') 0 0;
-}
-#ducha{
-	left: 35px;
-	top: 70px;
-    width: 35px;
-    height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/ducha.png') }}') 0 0;
-}
-#calefaccion{
-	left: 70px;
-	top: 70px;
-    width: 35px;
-    height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/chimenea.png') }}') 0 0;
-}
-#shopping{
-	left: 105px;
-	top: 70px;
-    width: 35px;
-    height: 35px;
-    background: url('{{ asset('/img/miramarski/iconos/small/shopping.png') }}') 0 0;
-}
-</style>
 <section id="content" >
 	
     <div class="content-wrap notoppadding" style="padding-bottom: 0;">
        
 		<?php if (!$mobile->isMobile()): ?>
 		<!-- DESKTOP -->
-			<style type="text/css">
-				#content-book-response label.white, #content-book-response label, .tab-content label{
-					color: white!important;
-				}
-				#primary-menu ul li a{
-					color: #3f51b5!important;
-				}
-				#primary-menu.style-2 ul {
-				    border-top: 2px solid #3f51b5;
-				    border-bottom: 2px solid #3f51b5;
-				}
-
-				.sticky-header #primary-menu.style-2 ul {
-				    border-top: 2px solid #fff;
-				    border-bottom: 2px solid #fff;
-				}
-			</style>
-			
-
 
 			<div class="row clearfix" style="background-color: #3F51B5; background-image: url({{asset('/img/miramarski/esquiadores.png')}}); background-position: left bottom; background-repeat: no-repeat; background-size: 50%;">
    				<div id="close-form-book" style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
@@ -470,27 +368,6 @@
 		
 		<?php else: ?>
 		<!-- MOBILE -->
-			<style type="text/css">
-				label{
-					color: white!important
-				}
-				.degradado-background1{
-					background: rgb(175,0,198); /* Old browsers */
-					background: -moz-linear-gradient(45deg,  rgba(175,0,198,1) 0%, rgba(234,0,125,1) 13%, rgba(167,12,245,1) 49%, rgba(167,12,245,1) 73%, rgba(48,49,199,1) 100%); /* FF3.6-15 */
-					background: -webkit-linear-gradient(45deg,  rgba(175,0,198,1) 0%,rgba(234,0,125,1) 13%,rgba(167,12,245,1) 49%,rgba(167,12,245,1) 73%,rgba(48,49,199,1) 100%); /* Chrome10-25,Safari5.1-6 */
-					background: linear-gradient(45deg,  rgba(175,0,198,1) 0%,rgba(234,0,125,1) 13%,rgba(167,12,245,1) 49%,rgba(167,12,245,1) 73%,rgba(48,49,199,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#af00c6', endColorstr='#3031c7',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-
-				}
-				.degradado-background2{
-					background: rgb(175,0,198); /* Old browsers */
-					background: -moz-linear-gradient(45deg,  rgba(175,0,198,1) 0%, rgba(234,0,125,1) 13%, rgba(167,12,245,1) 49%, rgba(167,12,245,1) 73%, rgba(48,49,199,1) 100%); /* FF3.6-15 */
-					background: -webkit-linear-gradient(45deg,  rgba(175,0,198,1) 0%,rgba(234,0,125,1) 13%,rgba(167,12,245,1) 49%,rgba(167,12,245,1) 73%,rgba(48,49,199,1) 100%); /* Chrome10-25,Safari5.1-6 */
-					background: linear-gradient(45deg,  rgba(175,0,198,1) 0%,rgba(234,0,125,1) 13%,rgba(167,12,245,1) 49%,rgba(167,12,245,1) 73%,rgba(48,49,199,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#af00c6', endColorstr='#3031c7',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-
-				}
-			</style>
 	       	<section class="page-section degradado-background1" style="letter-spacing: 0;line-height: 1;color: #fff!important;">
 	   		
 	   			<div class="row degradado-background1" style="">
@@ -526,14 +403,17 @@
 			<section id="desc-section" class="page-section" style="letter-spacing: 0;line-height: 1; ">
 				<div class="col-xs-12 degradado-background2" style="padding: 30px 0 0;">
 					<div class="col-xs-12 white" style="margin-bottom: 20px">
-   						<h1 class="font-w800 white center " style="letter-spacing: 0; margin-bottom: 10px; line-height: 1;font-size: 24px">
+   						<h1 class="font-w800 white center " style="text-shadow: 1px 1px #000;letter-spacing: 0; margin-bottom: 10px; line-height: 1;font-size: 28px; letter-spacing: -2px;">
    							APARTAMENTOS DE LUJO<br>A PIE DE PISTA
    						</h1>
-   					
+   						<h3 class="text-white white push-0" data-animate="fadeInUp" data-delay="400" style="text-align:center;text-shadow: 1px 1px #000;font-size: 24px;letter-spacing: -2px;line-height: 1;">SERVICIO EXCLUSIVO</h3>
+
+   						<h4 class="text-white white font-w300 push-40" data-animate="fadeInUp" data-delay="600" style="text-align:center;text-shadow: 1px 1px #000;font-size: 22px;line-height: 1;letter-spacing: -1px;">Piscina, gimnasio, parking, guarda esquis, salida directa a las pistas</h4>
+
        					<p class="lead  text-justify white ls-15 font-s13 white">
        						Todos nuestros Apartamentos están en el Edificio Miramar Ski, situado <b>en la zona baja de Sierra Nevada</b>. <br>Tienen excelentes vistas y todos disponen del equipamiento completo.
        					</p>
-       					<h2 class="font-w300 text-center nobottommargin white push-20" style="line-height: 1;font-size: 16px!important; text-transform: uppercase;">
+       					<h2 class="font-w300 text-center nobottommargin white push-20" style="line-height: 1;font-size: 16px!important; text-transform: uppercase; ">
        						<span class="font-w800 white">Edificio con salida directa a las pistas</span><br>
        						<span class="font-s14 white">solo tienes que salir de casa y esquiar!!</span>
        					</h2>
@@ -740,7 +620,7 @@
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
 		   								<h2 class="font-w200 center push-10 text-center text font-s24 white" >
-		   									DESCUENTOS<span class="font-w800 white"> ALQUILER MATERIAL Y EN FORFAIT</span>
+		   									<span class="font-w800 white" style="letter-spacing: -2px;">SOLICITA<br>CLASES DE SKI, ALQUILER MATERIAL Y EN FORFAITS</span>
 		   								</h2>
 		   							</div>
 		   						</div>
@@ -756,7 +636,7 @@
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
 		   								<h2 class="font-w200 center push-10 text-center text font-s24 white">
-		   									¿QUÉ HACER EN SIERRA NEVADA?
+		   									<span class="font-w800 white" style="letter-spacing: -2px;">¿QUÉ HACER EN SIERRA NEVADA?</span>
 		   								</h2>
 		   							</div>
 		   						</div>
