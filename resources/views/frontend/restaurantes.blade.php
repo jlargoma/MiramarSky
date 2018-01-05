@@ -55,7 +55,7 @@
 @section('content')
 	<section id="content">
 
-		<div class="content-wrap">
+		<div class="content-wrap" style="padding: 20px 0;">
 
 			<div class="container container-mobile clearfix">
 
@@ -112,7 +112,7 @@
 							</div>
 
 							<div class="col-xs-12 push-20">
-								<h2 class="text-justify">Especialidad en carne y comida casera</h3>
+								<h2 class="text-justify">1 - Especialidad en carne y comida casera</h3>
 								<img class="img-responsive push-20" src="http://www.apartamentosierranevada.net/actividades/wp-content/uploads/2017/12/especialidad-carne.png" alt="especialidad carne" style="margin: 0 auto;"/>
 								<p class="text-justify font-s18 font-w300">
 									En Sierra Nevada a la hora de buscar restaurantes en Sierra Nevada buscamos en no pocas ocasiones buenos platos y en especial buena carne. Vamos a recomendaros algunos sitios donde seguro que vuestro apetito quedará bien saciado.
@@ -216,7 +216,7 @@
 							</div>
 
 							<div class="col-xs-12 push-20">
-								<h2 class="text-justify">Comida granadina y andaluza</h2>
+								<h2 class="text-justify">2 - Comida granadina y andaluza</h2>
 								<img class="img-responsive push-20 aligncenter" src="http://www.apartamentosierranevada.net/actividades/wp-content/uploads/2017/12/comida-andaluza.jpg" alt="comida andaluza" width="640" height="427" style="margin: 0 auto;"/>
 								<p class="text-justify font-s18 font-w300" >
 									Estamos en Granada ¿no?, Andalucía ¿no? pues que mejor que probar los ricos platos de la gastronomía de la zona. Si buscamos restaurantes en Granada y queremos descubrirlos o bien volver a probarlos te decimos algunos de los mejores lugares para disfrutar. ¡Buen provecho!
@@ -277,7 +277,7 @@
 							</div>
 
 							<div class="col-xs-12 push-20">
-								<h2 class="text-justify">Cocina de estilo mediterráneo o variada</h2>
+								<h2 class="text-justify">3 - Cocina de estilo mediterráneo o variada</h2>
 								<img class="wp-image-6223 aligncenter" src="http://www.apartamentosierranevada.net/actividades/wp-content/uploads/2017/12/comida-mediterranea.jpg" alt="comida mediterranea" width="694" height="399" />
 								<p class="text-justify font-s18 font-w300" >
 									La comida mediterránea es valorada en todo el mundo y también hay sitio para ella en muchos restaurantes en Sierra Nevada. Si estás preparado para probar una de las mejores gastronomías del mundo, aquí tienes unos buenos lugares para quedar satisfecho.
@@ -377,7 +377,7 @@
 							
 							
 							<div class="col-xs-12 push-20">
-								<h2>Pizzerias</h2>
+								<h2>4 - Pizzerias</h2>
 								<img class="aligncenter wp-image-6230" src="http://www.apartamentosierranevada.net/actividades/wp-content/uploads/2017/12/pizza-1024x683.jpg" alt="pizza" width="641" height="428" />
 								<p class="text-justify font-s18 font-w300" >
 									En los restaurantes en Sierra Nevada hay sitio para la famosa pizza. Si hay un plato en todo el mundo conocido y consumido por antonomasia son las pizzas. Si quieres probar las mejores de la zona y además, en muchos casos, disfrutar de otros platos típicos de la gastronomía italiana como la pasta, aquí tienes una buena selección.
@@ -432,7 +432,7 @@
 
 							
 							<div class="col-xs-12 push-20">
-								<h2>Comida rápida y en pista</h2>
+								<h2>5 - Comida rápida y en pista</h2>
 								<img class="aligncenter wp-image-6236" src="http://www.apartamentosierranevada.net/actividades/wp-content/uploads/2017/12/restaurante-en-pista-1024x768.jpg" alt="restaurante en pista" width="690" height="517" />
 								<p class="text-justify font-s18 font-w300" >
 									Cuando vamos buscando restaurantes en Sierra Nevada, no siempre vamos con la misma disposición, en ocasiones hay ganas de comer a pie de pista sin tener que desplazarse de la misma. ¿Las vistas bien lo merecen no?
@@ -480,7 +480,7 @@
 							</div>
 
 							<div class="col-xs-12 push-20">
-								<h2>Bares</h2>
+								<h2>6 - Bares</h2>
 								<img class="alignnone size-medium wp-image-6233" src="http://www.apartamentosierranevada.net/actividades/wp-content/uploads/2017/12/cartujano-300x225.jpg" alt="cartujano" width="300" height="225" />
 								<p class="text-justify font-s18 font-w300" >
 									Algo tan español como los bares no podíamos dejar de tocarlo a la hora de hablar de restaurantes en Sierra Nevada. Desde los típicos bares para tomar una buena cerveza con su tapa reglamentaria hasta sitios de ambiente más nocturno. Te dejamos algunos para que los descubras.
