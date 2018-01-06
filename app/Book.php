@@ -67,9 +67,20 @@ class Book extends Model
     //Para poner nombre al estado de la reserva//
     static function getStatus($status)
     {
-       $array = [1 =>"Reservado - stripe", 2 =>"Pagada-la-señal",3 =>"SIN RESPONDER",4 =>"Bloqueado", 5 =>"Contestado(EMAIL)",6 =>"Denegada", 7 =>"Reserva Propietario",8 =>"SubComunidad",9=>"Booking", 10 => 'Overbooking'];
+        $array = [
+            1 =>"Reservado - stripe", 
+            2 =>"Pagada-la-señal",
+            3 =>"SIN RESPONDER",
+            4 =>"Bloqueado", 
+            5 =>"Contestado(EMAIL)",
+            6 =>"Denegada", 
+            7 =>"Reserva Propietario",
+            8 =>"SubComunidad",
+            9=>"Booking", 
+            10 => 'Overbooking'
+        ];
 
-       return $status = $array[$status];
+       return $array[$status];
     }
 
     //Para poner nombre al tipo de cobro//

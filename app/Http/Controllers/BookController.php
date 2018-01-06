@@ -30,7 +30,7 @@ class BookController extends Controller
         $start = \Carbon\Carbon::now()->subYear($yearsToSubstract);
         $inicio = $start->copy();
 
-        $booksCollection = \App\Book::where('start','>',$date->copy()->subMonth())
+        $booksCollection = \App\Book::with('customer')->where('start','>',$date->copy()->subMonth())
             ->where('finish', '<', $date->copy()->addYear())
             ->get();
 
@@ -62,7 +62,7 @@ class BookController extends Controller
             return in_array($notification->book->type_book, [3,5,6]);
         })->count();
 
-        $mobile = new Mobile();
+        $mobile = new Mobile();        
 
         return view(
             'backend/planning/index',
