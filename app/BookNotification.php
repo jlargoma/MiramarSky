@@ -12,6 +12,4 @@ class BookNotification extends Model
     {
         return $this->hasOne('\App\Book', 'id', 'book_id');
     }
-
-
 }

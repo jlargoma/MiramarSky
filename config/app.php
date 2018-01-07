@@ -151,6 +151,8 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Spatie\GoogleSearch\GoogleSearchServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
@@ -209,6 +211,7 @@ return [
         'Excel'     => Maatwebsite\Excel\Facades\Excel::class,
         'Image'     => Intervention\Image\Facades\Image::class,
         'GoogleSearch' => Spatie\GoogleSearch\Facades\GoogleSearch::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];
