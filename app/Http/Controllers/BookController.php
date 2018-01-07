@@ -1033,8 +1033,12 @@ class BookController extends Controller
                 }
             }
 
-            return ['status' => 'success','title' => 'OK', 'response' => "Reserva borrada correctamente"];
+            if ($book->delete()) {
+                return ['status' => 'success','title' => 'OK', 'response' => "Reserva borrada correctamente"];
        
+            }
+
+            
        } catch (Exception $e) {
 
            return ['status' => 'danger','title' => 'Error', 'response' => "No se ha podido borrar la reserva error: ".$e->message()];
