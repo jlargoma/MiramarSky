@@ -68,15 +68,15 @@ class Book extends Model
     static function getStatus($status)
     {
         $array = [
-            1 =>"Reservado - stripe", 
-            2 =>"Pagada-la-señal",
-            3 =>"SIN RESPONDER",
-            4 =>"Bloqueado", 
-            5 =>"Contestado(EMAIL)",
-            6 =>"Denegada", 
-            7 =>"Reserva Propietario",
-            8 =>"SubComunidad",
-            9=>"Booking", 
+            1 => 'Reservado - stripe', 
+            2 => 'Pagada-la-señal',
+            3 => 'SIN RESPONDER',
+            4 => 'Bloqueado', 
+            5 => 'Contestado(EMAIL)',
+            6 => 'Denegada', 
+            7 => 'Reserva Propietario',
+            8 => 'SubComunidad',
+            9 => 'Booking', 
             10 => 'Overbooking'
         ];
 

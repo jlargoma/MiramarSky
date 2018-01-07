@@ -51,15 +51,12 @@ class BookController extends Controller
 
         $stripe = StripeController::$stripe;
         $stripedsPayments = \App\Payments::where('comment', 'LIKE', '%stripe%')
-            ->whereYear('created_at','=', date('Y'))
-            ->whereMonth('created_at','=', date('m'))
-            ->whereDay('created_at','=', date('d'))
+            ->where('created_at', '>=', Carbon::today()->toDateString())
             ->get();
         
         // Notificaciones de alertas booking
-        $notifyes = \App\BookNotification::with('book')->get();
-        $notifications = $notifyes->filter(function($notification) {
-            return in_array($notification->book->type_book, [3,5,6]);
+        $notifications = \App\BookNotification::whereHas('book', function($q) { 
+            return $q->whereIn('type_book', [3,5,6]); 
         })->count();
 
         $mobile = new Mobile();        
