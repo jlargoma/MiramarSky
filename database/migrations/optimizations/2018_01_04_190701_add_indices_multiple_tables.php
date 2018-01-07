@@ -53,6 +53,8 @@ class AddIndicesMultipleTables extends Migration
     {
         return [
             'book' => ['start|index', 'finish|index', 'type_book|index'],
+            'rooms' => ['state|index'],
+            'payments' => ['comment|index', 'created_at|index'],
         ];
     }
 
