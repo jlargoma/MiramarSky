@@ -490,24 +490,24 @@ class BookController extends Controller
 
             if ($book->save()) {
 
-               if ( $book->room->isAssingToBooking() ) {
+                if ( $book->room->isAssingToBooking() ) {
 
-                $isAssigned = \App\BookNotification::where('book_id',$book->id)->get();
+                    $isAssigned = \App\BookNotification::where('book_id',$book->id)->get();
 
-                if (count($isAssigned) == 0) {
-                    $notification = new \App\BookNotification();
-                    $notification->book_id = $book->id;
-                    $notification->save();
+                    if (count($isAssigned) == 0) {
+                        $notification = new \App\BookNotification();
+                        $notification->book_id = $book->id;
+                        $notification->save();
+                    }
+                }else{
+                    $deleted = \App\BookNotification::where('book_id',$book->id)->delete();
                 }
-            }else{
-                $deleted = \App\BookNotification::where('book_id',$book->id)->delete();
-            }
 
-            return redirect('admin/reservas/update/'.$id);
+                return ['status' => 'success','title' => 'OK', 'response' => "ACTUALIZACION CORRECTA"];
             }
         }else{
 
-            return redirect('admin/reservas/update/'.$id.'?saveStatus=Error_no_hay_disponibilidad_para_este_piso');
+            return ['status' => 'danger','title' => 'ERROR', 'response' => "NO HAY DISPONIBILIDAD EN EL PISO PARA LAS FECHAS SELECCIONADAS"];
         }
     }
 
@@ -1033,8 +1033,10 @@ class BookController extends Controller
                 }
             }
 
+            $bookDeleted = \App\BookDeleted::replicateFromBook($book);
+
             if ($book->delete()) {
-                return ['status' => 'success','title' => 'OK', 'response' => "Reserva borrada correctamente"];
+                return ['status' => 'success','title' => 'OK', 'response' => "Reserva enviada a eliminadas"];
        
             }
 
@@ -1286,6 +1288,9 @@ class BookController extends Controller
                                     ->where('type_book',2)
                                     ->orderBy('start','ASC')
                                     ->get();
+            case 'eliminadas':
+                $dateX = Carbon::now();
+                $books = \App\BookDeleted::all();
                 break;
         }
 

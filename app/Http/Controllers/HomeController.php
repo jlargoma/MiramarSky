@@ -90,8 +90,8 @@ class HomeController extends Controller
                 break; 
 
              case 'apartamento lujo gran capacidad':
-                $aptoHeading       = "APARTAMENTO 3 DORM - GRAN CAPACIDAD";
-                $aptoHeadingMobile = "3DORM gran capacidad";
+                $aptoHeading       = "APTOS 3/4 DORMITORIOS LUJO";
+                $aptoHeadingMobile = "3DORM GRAN CAPACIDAD";
 
                 $typeApto = 6;
                 break;       

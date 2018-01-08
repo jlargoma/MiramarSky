@@ -331,7 +331,10 @@ tr.lined{
 .boxtotales{
   width: 20%;
 }
-
+input.beneficio,
+.beneficio-text{
+  float: left;
+}
 @media only screen  and (max-width: 767px){
   .boxtotales{
     width: auto!important;
@@ -347,6 +350,24 @@ tr.lined{
   {
     font-size: 18px;
     padding: 0;
+  }
+}
+@media only screen and (min-width: 991px) and (max-width: 1441px){
+  input.beneficio{
+    width: 65%;
+  }
+  .beneficio-text{
+    width: 35%;
+    padding: 15px 0;
+  }
+}
+@media only screen and (min-width:1441px){
+  input.beneficio{
+    width: 80%;
+  }
+  .beneficio-text{
+    width: 20%;
+    padding: 15px 0;
   }
 }
 @media only screen and (min-width: 1023px) and (max-width: 1444px){

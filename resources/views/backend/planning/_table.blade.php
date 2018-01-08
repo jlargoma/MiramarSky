@@ -16,6 +16,8 @@
 <?php elseif( $type == 'checkout'): ?>
 	@include('backend.planning.listados._checkout', ['books' => $books ])
 
+<?php elseif( $type == 'eliminadas'): ?>
+	@include('backend.planning.listados._eliminadas', ['books' => $books ])
 <?php endif ?>
 <script type="text/javascript">
 	// Cambiamos los horarios para Check IN y Check Out
