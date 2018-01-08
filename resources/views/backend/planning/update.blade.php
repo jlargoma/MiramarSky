@@ -163,249 +163,265 @@
         </div>
     </div>
     <?php if (!$mobile->isMobile()): ?>
-        <div class="col-md-12 col-xs-12 center text-center">
-            <div class="col-xs-12">
-                <!-- DATOS DE LA RESERVA -->
-                <div class="col-md-6 col-xs-12">
-                    <form role="form"  action="{{ url('/admin/reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post" >
-                        <!-- DATOS DEL CLIENTE -->
-                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                        <input type="hidden" name="customer_id" value="<?php echo $book->customer->id ?>">
-                        <div class="col-xs-12 bg-white padding-block">
-                            <div class="col-xs-12 bg-black push-20">
-                                <h4 class="text-center white">
-                                    DATOS DEL CLIENTE
-                                </h4>
-                            </div>
-
-                            <div class="col-md-4 push-10">
-                                <label for="name">Nombre</label> 
-                                <input class="form-control cliente" type="text" name="nombre" value="<?php echo $book->customer->name ?>" data-id="<?php echo $book->customer->id ?>">
-                            </div>
-                            <div class="col-md-4 push-10">
-                                <label for="email">Email</label> 
-                                <input class="form-control cliente" type="email" name="email" value="<?php echo $book->customer->email ?>" data-id="<?php echo $book->customer->id ?>">  
-                            </div>
-                            <div class="col-md-4 push-10">
-                                <label for="phone">Telefono</label>
-                                <?php if ( $book->customer->phone == 0): ?>
-                                     <?php  $book->customer->phone = "" ?>
-                                 <?php endif ?> 
-                                <input class="form-control only-numbers cliente" type="text" name="phone" value="<?php echo $book->customer->phone ?>" data-id="<?php echo $book->customer->id ?>"> 
-                            </div> 
-                            <div class="col-md-3 col-xs-12 push-10">
-                                <label for="dni">DNI</label> 
-                                <input class="form-control cliente" type="text" name="dni" value="<?php echo $book->customer->DNI ?>">
-                            </div>
-                            <div class="col-md-3 col-xs-12 push-10">
-                                <label for="address">DIRECCION</label> 
-                                <input class="form-control cliente" type="text" name="address"  value="<?php echo $book->customer->address ?>">
-                            </div>
-                            <div class="col-md-3 col-xs-12 push-10">
-                                <label for="country">PAÍS</label> 
-                                <select class="form-control country minimal"  name="country">
-                                    <option>--Seleccione país --</option>
-                                    <?php foreach (\App\Countries::orderBy('code', 'ASC')->get() as $country): ?>
-                                        <option value="<?php echo $country->code ?>" <?php if ($country->code == $book->customer->country){echo "selected";} ?>>
-                                            <?php echo $country->country ?>
-                                        </option>
-                                    <?php endforeach;?>
-                                </select>
-                            </div>  
-                            <div class="col-md-3 col-xs-12 push-10 content-cities">
-                                <label for="city">CIUDAD</label>
-                                <select class="form-control city minimal"  name="city">
-                                    <option>--Seleccione ciudad --</option>
-                                    <?php foreach (\App\Cities::orderBy('city', 'ASC')->get() as $city): ?>
-                                        <option value="<?php echo $city->id ?>" <?php if ($city->id == $book->customer->city){ echo "selected";} ?>>
-                                            <?php echo $city->city ?>
-                                        </option>
-                                    <?php endforeach;?>
-                                </select>
-                            </div>  
+        <div class="row center text-center">
+            <!-- DATOS DE LA RESERVA -->
+            <div class="col-md-6 col-xs-12">
+                <div class="overlay loading-div" style="background-color: rgba(255,255,255,0.6); ">
+                    <div style="position: absolute; top: 50%; left: 35%; width: 40%; z-index: 1011; color: #000;">
+                        <i class="fa fa-spinner fa-spin fa-5x"></i><br>
+                        <h3 class="text-center font-w800" style="letter-spacing: -2px;">CALCULANDO...</h3>
+                    </div>
+                </div>
+                <form role="form" id="updateForm"  action="{{ url('/admin/reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post" >
+                    <!-- DATOS DEL CLIENTE -->
+                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                    <input type="hidden" name="customer_id" value="<?php echo $book->customer->id ?>">
+                    <div class="col-xs-12 bg-white padding-block push-0" style="padding-bottom:0">
+                        <div class="col-xs-12 bg-black push-20">
+                            <h4 class="text-center white">
+                                DATOS DEL CLIENTE
+                            </h4>
                         </div>
-                        <!-- DATOS DE LA RESERVA -->
-                        <div class="col-xs-12 bg-white padding-block">
-                            <div class="col-xs-12 bg-black push-20">
-                                <h4 class="text-center white">
-                                    DATOS DE LA RESERVA
-                                </h4>
-                            </div>
-                            <div class="col-md-4 push-20">
-                                <label>Entrada</label>
-                                <div class="input-prepend input-group">
-                                    <?php $start = Carbon::createFromFormat('Y-m-d', $book->start);
-                                            $start1 = str_replace('Apr','Abr',$start->format('d M, y')); ?>
-                                    <?php $finish = Carbon::createFromFormat('Y-m-d', $book->finish); 
-                                            $finish1 = str_replace('Apr','Abr',$finish->format('d M, y')); ?>
 
-                                    <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;" value="<?php echo $start1 ;?> - <?php echo $finish1 ?>" readonly="">
-
-                                </div>
-                            </div>
-                            <div class="col-md-1 col-xs-3 push-20 p-l-0">
-                                <label>Noches</label>
-                                <input type="number" class="form-control nigths" name="nigths" style="width: 100%" disabled value="<?php echo $book->nigths ?>">
-                            <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%" value="<?php echo $book->nigths ?>">
-                            </div> 
-                            <div class="col-md-1 col-xs-3 p-l-0 p-r-0" style="margin-bottom: -10px!important">
-                                <label>Pax</label>
-                                <select class=" form-control pax minimal"  name="pax">
-                                    <?php for ($i=1; $i <= 12 ; $i++): ?>
-                                        <?php if ($i != 9 && $i != 11): ?>
-                                            <option value="<?php echo $i ?>" <?php echo ($i == $book->pax)?"selected":""; ?>>
-                                                <?php echo $i ?>
-                                            </option>
-                                        <?php endif; ?>
-                                    <?php endfor;?>
-                                </select>
-                                <label class="m-t-5" style="color: red">Pax-Real</label>
-                                <select class=" form-control real_pax minimal"  name="real_pax">
-                                    <?php for ($i=1; $i <= 12 ; $i++): ?>
-                                        <?php if ($i != 9 && $i != 11): ?>
-                                            <option value="<?php echo $i ?>" <?php echo ($i == $book->real_pax)?"selected":""; ?> style="color: red">
-                                                <?php echo $i ?>
-                                            </option>
-                                        <?php endif; ?>
-                                    <?php endfor;?>
-                                </select>
-                            </div>
-                            <div class="col-md-3 col-xs-6 push-20">
-                                <label>Apartamento</label>
-
-                                <select class="form-control full-width minimal newroom" name="newroom" id="newroom" <?php if ( isset($_GET['saveStatus']) && !empty($_GET['saveStatus']) ): echo "style='border: 1px solid red'"; endif ?>>
-                                    <?php foreach ($rooms as $room): ?>
-                                        <option data-luxury="<?php echo $room->luxury ?>" value="<?php echo $room->id ?>" {{ $room->id == $book->room_id ? 'selected' : '' }} >
-                                            <?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?>
-                                        </option>
-                                    <?php endforeach ?>
-                                </select>
-                            </div>
-                            <div class="col-md-1 col-xs-6 push-20 p-l-0 p-r-0">
-                                <label>Parking</label>
-                                <select class=" form-control parking minimal"  name="parking">
-                                    <?php for ($i=1; $i <= 4 ; $i++): ?>
-                                        <option value="<?php echo $i ?>" {{ $book->type_park == $i ? 'selected' : '' }}><?php echo $book->getParking($i) ?></option>
-                                    <?php endfor;?>
-                                </select>
-                                <label class="m-t-5">Hora IN</label>
-                                <select id="schedule" class="form-control minimal" style="width: 100%;" name="schedule">
-                                    <option>-- Sin asignar --</option>
-                                    <?php for ($i = 0; $i < 24; $i++): ?>
-                                        <option value="<?php echo $i ?>" <?php if($i == $book->schedule) { echo 'selected';}?>>
-                                            <?php if ($i < 10): ?>
-                                                <?php if ($i == 0): ?>
-                                                    --
-                                                <?php else: ?>
-                                                    0<?php echo $i ?>
-                                                <?php endif ?>
-                                                
-                                            <?php else: ?>
-                                                <?php echo $i ?>
-                                            <?php endif ?>
-                                        </option>
-                                    <?php endfor ?>
-                                </select>
-                                
+                        <div class="col-md-4 push-10">
+                            <label for="name">Nombre</label> 
+                            <input class="form-control cliente" type="text" name="nombre" value="<?php echo $book->customer->name ?>" data-id="<?php echo $book->customer->id ?>">
+                        </div>
+                        <div class="col-md-4 push-10">
+                            <label for="email">Email</label> 
+                            <input class="form-control cliente" type="email" name="email" value="<?php echo $book->customer->email ?>" data-id="<?php echo $book->customer->id ?>">  
+                        </div>
+                        <div class="col-md-4 push-10">
+                            <label for="phone">Telefono</label>
+                            <?php if ( $book->customer->phone == 0): ?>
+                                 <?php  $book->customer->phone = "" ?>
+                             <?php endif ?> 
+                            <input class="form-control only-numbers cliente" type="text" name="phone" value="<?php echo $book->customer->phone ?>" data-id="<?php echo $book->customer->id ?>"> 
+                        </div> 
+                    </div>
+                    <div class="col-xs-12 bg-white">
+                        <div class="col-md-3 col-xs-12 push-10">
+                            <label for="dni">DNI</label> 
+                            <input class="form-control cliente" type="text" name="dni" value="<?php echo $book->customer->DNI ?>">
+                        </div>
+                        <div class="col-md-3 col-xs-12 push-10">
+                            <label for="address">DIRECCION</label> 
+                            <input class="form-control cliente" type="text" name="address"  value="<?php echo $book->customer->address ?>">
+                        </div>
+                        <div class="col-md-3 col-xs-12 push-10">
+                            <label for="country">PAÍS</label> 
+                            <select class="form-control country minimal"  name="country">
+                                <option>--Seleccione país --</option>
+                                <?php foreach (\App\Countries::orderBy('code', 'ASC')->get() as $country): ?>
+                                    <option value="<?php echo $country->code ?>" <?php if ($country->code == $book->customer->country){echo "selected";} ?>>
+                                        <?php echo $country->country ?>
+                                    </option>
+                                <?php endforeach;?>
                             </select>
+                        </div>  
+                        <div class="col-md-3 col-xs-12 push-10 content-cities">
+                            <label for="city">CIUDAD</label>
+                            <select class="form-control city minimal"  name="city">
+                                <option>--Seleccione ciudad --</option>
+                                <?php foreach (\App\Cities::orderBy('city', 'ASC')->get() as $city): ?>
+                                    <option value="<?php echo $city->id ?>" <?php if ($city->id == $book->customer->city){ echo "selected";} ?>>
+                                        <?php echo $city->city ?>
+                                    </option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>  
+                    </div>
+                    <!-- DATOS DE LA RESERVA -->
+                    <div class="col-md-12 col-xs-12 bg-white padding-block" style="padding-bottom:0">
+                        <div class="col-xs-12 bg-black push-20">
+                            <h4 class="text-center white">
+                                DATOS DE LA RESERVA
+                            </h4>
+                        </div>
+                        <div class="col-md-4 push-10">
+                            <label>Entrada</label>
+                            <div class="input-prepend input-group">
+                                <?php   
+                                    $start = Carbon::createFromFormat('Y-m-d', $book->start);
+                                    $start1 = str_replace('Apr','Abr',$start->format('d M, y')); 
+                                    $finish = Carbon::createFromFormat('Y-m-d', $book->finish); 
+                                    $finish1 = str_replace('Apr','Abr',$finish->format('d M, y')); 
+                                ?>
+
+                                <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;" value="<?php echo $start1 ;?> - <?php echo $finish1 ?>" readonly="">
+
                             </div>
-                            <div class="col-md-2 col-xs-6 push-20">
-                                <label>Sup. Lujo</label>
-                                <select class=" form-control full-width type_luxury minimal" name="type_luxury">
-                                    <?php for ($i=1; $i <= 4 ; $i++): ?>
-                                        <option value="<?php echo $i ?>" {{ $book->type_luxury == $i ? 'selected' : '' }}><?php echo $book->getSupLujo($i) ?></option>
+                        </div>
+                        <div class="col-md-1 col-xs-3 push-10 p-l-0">
+                            <label>Noches</label>
+                            <input type="number" class="form-control nigths" name="nigths" style="width: 100%" disabled value="<?php echo $book->nigths ?>">
+                            <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%" value="<?php echo $book->nigths ?>">
+                        </div> 
+                        <div class="col-md-2 col-xs-3" >
+                            <label>Pax</label>
+                            <select class=" form-control pax minimal"  name="pax">
+                                <?php for ($i=1; $i <= 12 ; $i++): ?>
+                                    <?php if ($i != 9 && $i != 11): ?>
+                                        <option value="<?php echo $i ?>" <?php echo ($i == $book->pax)?"selected":""; ?>>
+                                            <?php echo $i ?>
+                                        </option>
+                                    <?php endif; ?>
+                                <?php endfor;?>
+                            </select>
+                            
+                        </div>
+                        <div class="col-md-2 col-xs-3 " >
+                            <label style="color: red">Pax-Real</label>
+                            <select class=" form-control real_pax minimal"  name="real_pax">
+                                <?php for ($i=1; $i <= 12 ; $i++): ?>
+                                    <?php if ($i != 9 && $i != 11): ?>
+                                        <option value="<?php echo $i ?>" <?php echo ($i == $book->real_pax)?"selected":""; ?> style="color: red">
+                                            <?php echo $i ?>
+                                        </option>
+                                    <?php endif; ?>
+                                <?php endfor;?>
+                            </select>
+                        </div>
+                        <div class="col-md-3 col-xs-6 push-10">
+                            <label>Apartamento</label>
+
+                            <select class="form-control full-width minimal newroom" name="newroom" id="newroom" <?php if ( isset($_GET['saveStatus']) && !empty($_GET['saveStatus']) ): echo "style='border: 1px solid red'"; endif ?>>
+                                <?php foreach ($rooms as $room): ?>
+                                    <option data-luxury="<?php echo $room->luxury ?>" value="<?php echo $room->id ?>" {{ $room->id == $book->room_id ? 'selected' : '' }} >
+                                        <?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?>
+                                    </option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2 col-xs-6 push-20 ">
+                            <label>Parking</label>
+                            <select class=" form-control parking minimal"  name="parking">
+                                <?php for ($i=1; $i <= 4 ; $i++): ?>
+                                    <option value="<?php echo $i ?>" {{ $book->type_park == $i ? 'selected' : '' }}><?php echo $book->getParking($i) ?></option>
+                                <?php endfor;?>
+                            </select>    
+                        </div>
+                        <div class="col-md-2 col-xs-6 push-20">
+                            <label>Sup. Lujo</label>
+                            <select class=" form-control full-width type_luxury minimal" name="type_luxury">
+                                <?php for ($i=1; $i <= 4 ; $i++): ?>
+                                    <option value="<?php echo $i ?>" {{ $book->type_luxury == $i ? 'selected' : '' }}><?php echo $book->getSupLujo($i) ?></option>
+                                <?php endfor;?>
+                            </select>
+                        </div>
+                        <div class="col-md-2 col-xs-6 push-20">
+                            <label>IN</label>
+                            <select id="schedule" class="form-control minimal" style="width: 100%;" name="schedule">
+                                <option>-- Sin asignar --</option>
+                                <?php for ($i = 0; $i < 24; $i++): ?>
+                                    <option value="<?php echo $i ?>" <?php if($i == $book->schedule) { echo 'selected';}?>>
+                                        <?php if ($i < 10): ?>
+                                            <?php if ($i == 0): ?>
+                                                --
+                                            <?php else: ?>
+                                                0<?php echo $i ?>
+                                            <?php endif ?>
+                                            
+                                        <?php else: ?>
+                                            <?php echo $i ?>
+                                        <?php endif ?>
+                                    </option>
+                                <?php endfor ?>
+                            </select>
+                        </div>
+                        <div class="col-md-2 col-xs-6 push-20">
+                            <label>Out</label>
+                            <select id="scheduleOut" class="form-control minimal" style="width: 100%;" name="scheduleOut">
+                                <option>-- Sin asignar --</option>
+                                <?php for ($i = 0; $i < 24; $i++): ?>
+                                    <option value="<?php echo $i ?>" <?php if($i == $book->scheduleOut) { echo 'selected';}?>>
+                                        <?php if ($i < 10): ?>
+                                            <?php if ($i == 0): ?>
+                                                --
+                                            <?php else: ?>
+                                                0<?php echo $i ?>
+                                            <?php endif ?>
+                                            
+                                        <?php else: ?>
+                                            <?php echo $i ?>
+                                        <?php endif ?>
+                                    </option>
+                                <?php endfor ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 bg-white">
+                        <div class="col-md-5 col-xs-6 push-20 not-padding">
+                            <div class="col-md-5 col-xs-12 push-10">
+                                <label>Agencia</label>
+                                <select class="form-control full-width agency minimal" name="agency">
+                                    <?php for ($i=0; $i <= 2 ; $i++): ?>
+                                        <option value="<?php echo $i ?>" {{ $book->agency == $i ? 'selected' : '' }}><?php echo $book->getAgency($i) ?></option>
                                     <?php endfor;?>
                                 </select>
-
-                                <label class="m-t-5">Hora Out</label>
-                                <select id="scheduleOut" class="form-control minimal" style="width: 100%;" name="scheduleOut">
-                                    <option>-- Sin asignar --</option>
-                                    <?php for ($i = 0; $i < 24; $i++): ?>
-                                        <option value="<?php echo $i ?>" <?php if($i == $book->scheduleOut) { echo 'selected';}?>>
-                                            <?php if ($i < 10): ?>
-                                                <?php if ($i == 0): ?>
-                                                    --
-                                                <?php else: ?>
-                                                    0<?php echo $i ?>
-                                                <?php endif ?>
-                                                
-                                            <?php else: ?>
-                                                <?php echo $i ?>
-                                            <?php endif ?>
-                                        </option>
-                                    <?php endfor ?>
-                                </select>
                             </div>
-                        </div>
-                        <div class="col-xs-12 bg-white">
-                            <div class="col-md-4 col-xs-6 push-20 not-padding">
-                                <div class="col-md-6 col-xs-12 push-10">
-                                    <label>Agencia</label>
-                                    <select class="form-control full-width agency minimal" name="agency">
-                                        <?php for ($i=0; $i <= 2 ; $i++): ?>
-                                            <option value="<?php echo $i ?>" {{ $book->agency == $i ? 'selected' : '' }}><?php echo $book->getAgency($i) ?></option>
-                                        <?php endfor;?>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 col-xs-12 push-10">                                                        
-                                    <label>Cost Agencia</label>
-                                    <?php if ($book->PVPAgencia == 0.00): ?>
-                                        <input type="number" class="agencia form-control" name="agencia" value="">
-                                    <?php else: ?>
-                                        <input type="number" class="agencia form-control" name="agencia" value="<?php echo $book->PVPAgencia ?>">
-                                    <?php endif ?>
-                                </div>
-                            
-                            </div>
-                           
-                                
-                           
-                            <div class="col-md-12 col-xs-6 push-20 not-padding">
-                                <div class="col-md-3 col-xs-12 text-center boxtotales" style="background-color: #0c685f;">
-                                    <label class="font-w800 text-white" for="">TOTAL</label>
-                                    <input type="text" class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>">
-                                </div>
-                                <?php if (Auth::user()->role == "admin"): ?>
-                                    <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #99D9EA;">
-                                        <label class="font-w800 text-white" for="">COSTE TOTAL</label>
-                                        <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost"  value="<?php echo $book->cost_total ?>">
-                                    </div>
-                                    <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #91cf81;">
-                                        <label class="font-w800 text-white" for="">COSTE APTO</label>
-                                        <input type="text" class="form-control costApto m-t-10 m-b-10 white" name="costApto"  value="<?php echo $book->cost_apto ?>">
-                                    </div>
-                                    <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #337ab7;">
-                                        <label class="font-w800 text-white" for="">COSTE PARKING</label>
-                                        <input type="text" class="form-control costParking m-t-10 m-b-10 white" name="costParking"  value="<?php echo $book->cost_park ?>">
-                                    </div>
-                                    <div class="col-md-3 col-xs-12 text-center boxtotales not-padding" style="background: #ff7f27;">
-                                        <label class="font-w800 text-white" for="">BENEFICIO</label>
-                                        <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio"  style="width: 80%; float: left;" value="<?php echo $book->total_ben ?>">
-                                        <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;"><?php echo number_format($book->inc_percent,0)."%" ?></div>
-                                    </div>
+                            <div class="col-md-7 col-xs-12 push-10">                                                        
+                                <label>Cost Agencia</label>
+                                <?php if ($book->PVPAgencia == 0.00): ?>
+                                    <input type="number" class="agencia form-control" name="agencia" value="">
+                                <?php else: ?>
+                                    <input type="number" class="agencia form-control" name="agencia" value="<?php echo $book->PVPAgencia ?>">
                                 <?php endif ?>
-                                                     
+                            </div>
+                        
                         </div>
-                        <div class="col-md-8 col-xs-12 push-20 not-padding">
+                       
+                        <div class="col-md-12 col-xs-12 push-20 not-padding">
+                            <div class="col-md-3 col-xs-12 text-center boxtotales" style="background-color: #0c685f;">
+                                <label class="font-w800 text-white" for="">TOTAL</label>
+                                <input type="text" class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>">
+                            </div>
+                            <?php if (Auth::user()->role == "admin"): ?>
+                                <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #99D9EA;">
+                                    <label class="font-w800 text-white" for="">COSTE TOTAL</label>
+                                    <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost"  value="<?php echo $book->cost_total ?>">
+                                </div>
+                                <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #91cf81;">
+                                    <label class="font-w800 text-white" for="">APTO</label>
+                                    <input type="text" class="form-control costApto m-t-10 m-b-10 white" name="costApto"  value="<?php echo $book->cost_apto ?>">
+                                </div>
+                                <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #337ab7;">
+                                    <label class="font-w800 text-white" for="">PARKING</label>
+                                    <input type="text" class="form-control costParking m-t-10 m-b-10 white" name="costParking"  value="<?php echo $book->cost_park ?>">
+                                </div>
+                                <div class="col-md-3 col-xs-12 text-center boxtotales not-padding" style="background: #ff7f27;">
+                                    <label class="font-w800 text-white" for="">BENEFICIO</label>
+                                    <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>">
+                                    <div class="beneficio-text font-w400 font-s18 white"><?php echo number_format($book->inc_percent,0)."%" ?></div>
+                                </div>
+                            <?php endif ?>
+                                                 
+                        </div>
+                        <div class="col-md-12 col-xs-12 push-20 not-padding">
                             <p class="personas-antiguo" style="color: red">
                                 <?php if ($book->pax < $book->room->minOcu): ?>
                                     Van menos personas que la ocupacion minima del apartamento.
                                 <?php endif ?>
                             </p>
                         </div>
-                        <div class="col-md-8 col-xs-12 not-padding text-left">
+                        <div class="col-md-12 col-xs-12 not-padding text-left">
                             <p class="precio-antiguo font-s18">
                                 <b>El precio asignado <?php echo $book->total_price ?> y el precio de tarifa es <?php echo $book->real_price ?></b>
                             </p>
                         </div> 
                         <div class="col-xs-12 bg-white padding-block">
-                            <div class="col-md-6 col-xs-12">
+                            <div class="col-md-4 col-xs-12">
                                 <label>Comentarios Cliente </label>
                                 <textarea class="form-control" name="comments" rows="5" ><?php echo $book->comment ?></textarea>
                             </div>
-                            <div class="col-md-6 col-xs-12">
+                            <div class="col-md-4 col-xs-12">
                                 <label>Comentarios Internos</label>
                                 <textarea class="form-control book_comments" name="book_comments" rows="5" ><?php echo $book->book_comments ?></textarea>
+                            </div>
+                            <div class="col-md-4 col-xs-12 content_book_owned_comments" style="display: none;">
+                                <label>Comentarios Propietario</label>
+                                <textarea class="form-control book_owned_comments" name="book_owned_comments" rows="5" ></textarea>
                             </div>
                         </div>
                         <div class="row push-40 bg-white padding-block">
@@ -413,10 +429,9 @@
                                 <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;">Guardar</button>
                             </div>  
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
-
             <div class="col-md-6 col-xs-12 padding-block">
                 <div class="row">
                     <div class="col-xs-12 bg-black push-0">
@@ -604,6 +619,12 @@
         </style>
         <div class="row">
             <div class="col-xs-12">
+                <div class="overlay loading-div" style="background-color: rgba(255,255,255,0.4);">
+                    <div style="position: absolute; top: 50%; left: 35%;">
+                        <i class="fa fa-loading fa-spin fa-5x"></i><br>
+                        <h3 class="text-center">CALCULANDO...</h3>
+                    </div>
+                </div>
                 <!-- DATOS DE LA RESERVA -->
                 <form role="form"  action="{{ url('/admin/reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post" >
                     <!-- DATOS DEL CLIENTE -->
@@ -1020,503 +1041,5 @@
 <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
 
 <script src="/assets/js/notifications.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-
-
-    $('#fianza').click(function(event) {
-        $('.content-fianza').toggle(function() {
-            $('#fianza').css('background-color', '#f55753');
-        }, function() {
-            $('#fianza').css('background-color', '#10cfbd');
-        });
-
-    });
-
-        $(function() {
-          $(".daterange1").daterangepicker({
-            "buttonClasses": "button button-rounded button-mini nomargin",
-            "applyClass": "button-color",
-            "cancelClass": "button-light",
-            locale: {
-                format: 'DD MMM, YY',
-                "applyLabel": "Aplicar",
-                  "cancelLabel": "Cancelar",
-                  "fromLabel": "From",
-                  "toLabel": "To",
-                  "customRangeLabel": "Custom",
-                  "daysOfWeek": [
-                      "Do",
-                      "Lu",
-                      "Mar",
-                      "Mi",
-                      "Ju",
-                      "Vi",
-                      "Sa"
-                  ],
-                  "monthNames": [
-                      "Enero",
-                      "Febrero",
-                      "Marzo",
-                      "Abril",
-                      "Mayo",
-                      "Junio",
-                      "Julio",
-                      "Agosto",
-                      "Septiembre",
-                      "Octubre",
-                      "Noviembre",
-                      "Diciembre"
-                  ],
-                  "firstDay": 1,
-              },
-              
-          });
-        });
-
-        function calculate( notModifyPrice = 0){
-                var room       = $('#newroom').val();
-                var pax        = $('.pax').val();
-                var park       = $('.parking').val();
-                var lujo       = $('select[name=type_luxury]').val();
-                var status     = $('select[name=status]').val();
-                var sizeApto   = $('option:selected', 'select[name=newroom]').attr('data-size');;
-                var beneficio  = 0;
-                var costPark   = 0;
-                var pricePark  = 0;
-                var costLujo   = 0;
-                var priceLujo  = 0;
-                var agencia    = 0;
-                var beneficio_ = 0;
-                var comentario =$('.book_comments').val();
-                var date       = $('.daterange1').val();
-                
-                var arrayDates = date.split('-');
-                var res1       = arrayDates[0].replace("Abr", "Apr");
-                var date1      = new Date(res1);
-                var start      = date1.getTime();
-                
-                var res2       = arrayDates[1].replace("Abr", "Apr");
-                var date2      = new Date(res2);
-                var timeDiff   = Math.abs(date2.getTime() - date1.getTime());
-                var diffDays   = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-                $('.nigths').val(diffDays);
-                
-                var start      = date1.toLocaleDateString();
-                var finish     = date2.toLocaleDateString();
-
-
-
-                
-                if ( status == 8) {
-                    $('.total').empty();
-                    $('.total').val(0);
-                    $('.cost').empty();
-                    $('.cost').val(0);
-
-                    $('.beneficio').empty();
-                    $('.beneficio').val(0);
-                }else if ( status == 7 ){
-                    if (sizeApto == 1) {
-                        $('.total').empty();
-                        $('.total').val(30);
-
-                        $('.cost').empty();
-                        $('.cost').val(30);
-
-                        $('.beneficio').empty();
-                        $('.beneficio').val(0);
-                    }else{
-                        $('.total').empty();
-                        $('.total').val(50);
-
-                        $('.cost').empty();
-                        $('.cost').val(40);
-
-                        $('.beneficio').empty();
-                        $('.beneficio').val(10);
-                    }
-                }else{
-
-
-                    if ( room != "" && pax != "") {
-
-                        $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays, room: room}).done(function( data ) {
-                            pricePark = data;
-                        });
-
-                        $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).done(function( data ) {
-                            priceLujo = data;
-                        });
-
-                        $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).done(function( data ) {
-                            price = data;
-
-                            price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
-
-                            if ( notModifyPrice == 0) {
-                                $('.total').empty();
-                                $('.total').val(price);
-                            }
-                        });
-
-
-                        //COSTES 
-                        //Coste Parking
-                        var costPark = 0;
-                        $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays, room: room}).done(function( data ) {
-                            costPark = data;
-                            $('.costParking').val(parseFloat(data))
-                        });
-                        //Coste Lujo
-                        var costLujo = 0;
-                        $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).done(function( data ) {
-                            costLujo = data;
-                        });
-
-
-                        $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).done(function( data ) {
-
-                            var cost = data;
-
-                            //Coste Apartamento
-                            $('.costApto').val(parseFloat(cost));
-
-                            agencia = $('.agencia').val();
-                            if (agencia == "") {
-                                agencia = 0;
-                            }
-                            //Coste Total
-                            cost = (parseFloat(cost) + parseFloat(costPark) + parseFloat(agencia) + parseFloat(costLujo));
-
-                            $('.cost').empty();
-                            $('.cost').val(cost);
-                            beneficio = price - cost;
-                            $('.beneficio').empty;
-                            $('.beneficio').val(beneficio);
-                            beneficio_ = (beneficio / price)*100
-                            $('.beneficio-text').empty();
-                            $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
-
-                        });
-                                        
-                    }
-                }
-                 
-
-                
-
-        }
-
-
-        $(document).ready(function() {          
-
-
-            var start  = 0;
-            var finish = 0;
-            var noches = 0;
-            var price = 0;
-            var cost = 0;
-
-            $('.daterange1').change(function(event) {
-                var date = $(this).val();
-
-                var arrayDates = date.split('-');
-                var res1 = arrayDates[0].replace("Abr", "Apr");
-                var date1 = new Date(res1);
-                var start = date1.getTime();
-
-                var res2 = arrayDates[1].replace("Abr", "Apr");
-                var date2 = new Date(res2);
-                var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-                $('.nigths').val(diffDays);
-
-                calculate();
-                $('.status').attr("disabled", "disabled");
-                $('.btn-complete').removeAttr('disabled');
-
-            });
-
-
-            
-            $('#newroom').change(function(event){ 
-
-                var room = $('#newroom').val();
-                var pax = $('.pax').val();
-                $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
-
-                    if (pax < data) {
-                        $('.personas-antiguo').empty();
-                        $('.personas-antiguo').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
-                    }else{
-                        $('.personas-antiguo').empty();
-                    }
-                });
-
-                
-                var dataLuxury = $('option:selected', this).attr('data-luxury');;
-
-                if (dataLuxury == 1) {
-                    $('.type_luxury option[value=1]').attr('selected','selected');
-                    $('.type_luxury option[value=2]').removeAttr('selected');
-                } else {
-                    $('.type_luxury option[value=1]').removeAttr('selected');
-                    $('.type_luxury option[value=2]').attr('selected','selected');
-                }
-
-
-
-                calculate();
-            });
-
-            $('.pax').change(function(event){ 
-                var room = $('#newroom').val();
-                var real_pax =$('.real_pax').val();
-                var pax = $('.pax').val();
-
-                $('.real_pax option[value='+pax+']').attr('selected','selected');
-                $('.real_pax option[value='+real_pax+']').removeAttr('selected');
-
-                if (room != "") {
-                    $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
-
-                        if (pax < data) {
-                            $('.personas-antiguo').empty();
-                            $('.personas-antiguo').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
-                        }else{
-                            $('.personas-antiguo').empty();
-                        }
-                    });
-                }
-
-                calculate();
-            });
-
-            $('.parking').change(function(event){ 
-                var commentBook = $('.book_comments').val();
-                $('.book_comments').empty();
-                var res = commentBook.replace("Parking: Si\n","");
-                res = res.replace("Parking: No\n","");
-                res = res.replace("Parking: Gratis\n","");
-                res = res.replace("Parking: 50 %\n","");
-                calculate();
-                
-                $('.book_comments').text( $.trim(res+'Parking: '+ $('option:selected', this).text())+"\n");
-            });
-
-            $('.type_luxury').change(function(event){ 
-                var commentBook = $('.book_comments').val();
-                $('.book_comments').empty();
-                var res = commentBook.replace("Suplemento de lujo: Si\n","");
-                res = res.replace("Suplemento de lujo: No\n","");
-                res = res.replace("Suplemento de lujo: Gratis\n","");
-                res = res.replace("Suplemento de lujo: 50 %\n","");
-                calculate();
-                $('.book_comments').text( $.trim(res+'Suplemento de lujo: '+ $('option:selected', this).text())+"\n");
-            });
-
-            $('.agencia').change(function(event){ 
-                calculate(1);
-            });
-
-           
-                
-            
-            $('.total').change(function(event) {
-                var price = $(this).val();
-                var cost = $('.cost').val();
-                var beneficio = (parseFloat(price) - parseFloat(cost));
-                
-                $('.precio-antiguo').empty;
-                $('.precio-antiguo').text('El precio asignado '+price+' y el precio tarifa '+price);
-                
-                $('.beneficio').empty;
-                $('.beneficio').val(beneficio);
-                
-            });
-
-
-            $('.editable').change(function(event) {
-                var id = $(this).attr('data-id');               
-                var importe = $(this).val();
-                console.log(id);
-                $.get('/admin/pagos/update', {  id: id, importe: importe}, function(data) {
-                    window.location.reload();
-                });
-
-            });
-
-            $('.cliente').change(function(event) {
-                var id = $(this).attr('data-id');;
-                var name = $('[name=nombre]').val();
-                var email = $('[name=email]').val();
-                var phone = $('[name=phone]').val();
-                $.get('/admin/clientes/save', { id: id,  name: name, email: email,phone: phone}, function(data) {
-                        $('.notification-message').val(data);
-                        document.getElementById("boton").click();
-                        setTimeout(function(){ 
-                            $('.pgn-wrapper .pgn .alert .close').trigger('click');
-                             }, 1000);
-                });
-            });
-
-            $('#overlay').hover(function() {
-                $('.guardar').show();
-            }, function() {
-                $('.guardar').hide();
-            });
-            $('.status').change(function(event) {
-
-
-
-                $('.content-alert-success').hide();
-                $('.content-alert-error1').hide();
-                $('.content-alert-error2').hide();
-                // content-alert-success
-                // content-alert-error1
-                // content-alert-error2
-                var status = $(this).val();
-                var id     = $(this).attr('data-id');
-                var clase  = $(this).attr('class');
-                var email = $('input[name=email]').val();
-
-                if (email == "") {
-                    $('.guardar').emtpy;
-
-                    $('.guardar').text("Usuario sin e-mail");
-                    $('.guardar').show();
-                }
-
-                if (status == 5) {
-                    
-                    
-
-                    $('#contentEmailing').empty().load('/admin/reservas/ansbyemail/'+id);  
-                    $('#btnEmailing').trigger('click');
-
-                       
-                }else{
-                    $.get('/admin/reservas/changeStatusBook/'+id, { status:status }, function(data) {
-                        if (data.status == 'danger') {
-                            $.notify({
-                                title: '<strong>'+data.title+'</strong>, ',
-                                icon: 'glyphicon glyphicon-star',
-                                message: data.response
-                            },{
-                                type: data.status,
-                                animate: {
-                                    enter: 'animated fadeInUp',
-                                    exit: 'animated fadeOutRight'
-                                },
-                                placement: {
-                                    from: "top",
-                                    align: "left"
-                                },
-                                offset: 80,
-                                spacing: 10,
-                                z_index: 1031,
-                                allow_dismiss: true,
-                                delay: 60000,
-                                timer: 60000,
-                            }); 
-                        } else {
-                            $.notify({
-                                title: '<strong>'+data.title+'</strong>, ',
-                                icon: 'glyphicon glyphicon-star',
-                                message: data.response
-                            },{
-                                type: data.status,
-                                animate: {
-                                    enter: 'animated fadeInUp',
-                                    exit: 'animated fadeOutRight'
-                                },
-                                placement: {
-                                    from: "top",
-                                    align: "left"
-                                },
-                                allow_dismiss: false,
-                                offset: 80,
-                                spacing: 10,
-                                z_index: 1031,
-                                delay: 5000,
-                                timer: 1500,
-                            }); 
-                        }
-                    }); 
-               }
-
-           });
-
-
-        });
-
-        $('.cobrar').click(function(event){ 
-            var id = $(this).attr('data-id');
-            var date = $('.fecha-cobro').val();
-            var importe = $('.importe').val();
-            var comment = $('.comment').val();
-            var type = $('.type_payment').val();
-            if (importe == 0) {
-
-            }else{
-                $.get('/admin/pagos/create', {id: id, date: date, importe: importe, comment: comment, type: type}).success(function( data ) {
-                    window.location.reload();
-                });
-            }
-            
-        });
-
-        $('.country').change(function(event) {
-            var value = $(this).val();
-            if ( value != 'ES') {
-                $('.content-cities').hide();
-            } else {
-                $('.content-cities').show();
-
-            }
-        });
-
-        $('.costApto').change(function(event) {
-
-            var cost     = 0;
-            var costLujo = 0;
-            var lujo     = $('select[name=type_luxury]').val();
-
-            if (lujo == 1) {
-                costLujo = 40;
-            } else if(lujo == 2 && lujo == 3) {
-                costLujo = 0;
-            }else{
-                costLujo == 20;
-            }
-
-            cost = parseFloat( $(this).val() ) + parseFloat( $('.costParking').val() ) + costLujo;
-
-            $('.cost').val(cost);
-            $('.content_book_owned_comments').show();
-            
-        });
-
-        $('.only-numbers').keydown(function (e) {
-            // Allow: backspace, delete, tab, escape, enter and .
-            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190, 32, 107, 17, 67, 86, 88 ]) !== -1 ||
-                 // Allow: Ctrl/cmd+A
-                (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) ||
-                 // Allow: Ctrl/cmd+C
-                (e.keyCode == 67 && (e.ctrlKey === true || e.metaKey === true)) ||
-                 // Allow: Ctrl/cmd+X
-                (e.keyCode == 88 && (e.ctrlKey === true || e.metaKey === true)) ||
-                 // Allow: home, end, left, right
-                (e.keyCode >= 35 && e.keyCode <= 39)) {
-                     // let it happen, don't do anything
-                     return;
-            }
-            // Ensure that it is a number and stop the keypress
-            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-                e.preventDefault();
-            }
-        });
-
-</script>
+@include('backend.planning._bookScripts', ['update' => 1])
 @endsection

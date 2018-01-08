@@ -129,6 +129,10 @@
                                 {{ $booksCount['checkout'] }}
                             </span>
                         </button>
+
+                        <button class="btn btn-danger btn-tables btn-cons" type="button" data-type="eliminadas"> 
+                            <span class="bold">Eliminadas</span>
+                        </button>
                        
                     </div>
                     <div class="col-xs-12" id="resultSearchBook" style="display: none; padding-left: 0;"></div>

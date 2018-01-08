@@ -1,8 +1,9 @@
 <?php if (!$mobile->isMobile()): ?>
-	<p class="font-s16 ls-15 miramar font-w300 text-justify  push-10" style="letter-spacing: -1px; line-height: 1.3"><b>Los apartamentos de lujo</b>, cuentan con <b><u>dos dormitorios</u></b>, pudiendo alojarse entre <b><u>8 a 14 personas</u></b> según cada caso.</p>
+	<p class="font-s16 ls-15 miramar font-w300 text-justify  push-10" style="letter-spacing: -1px; line-height: 1.3"><b>Los apartamentos familiares de lujo, tienen 3/4 Dormitorios</b> . </p>
 
 	<p class="font-s16 ls-15 miramar font-w300 text-justify hidden-sm hidden-xs  push-10" style="letter-spacing: -1px; line-height: 1.3">
-		<b><u>Están recién reformados</u> y cuentan con todo el equipamiento necesario</b> para hacer su estancia agradable y con el máximo confort.
+		<b><u>Están recién reformados</u>,</b> son prefectos para alojar a 2 o 3 familias en el mismo espacio pero con total intimidad, también a un  grupo de amigos.<br>
+		Estos apartamentos son de gran ocupación, <b>pudiendo alojarse entre 8 y 14 personas</b> según cada caso y las necesidades del grupo familiar. 
 	</p>
 	<p class="font-s16 ls-15 miramar font-w300 text-justify push-10" style="padding: 0 15px; letter-spacing: -1px; line-height: 1.3">
 		<ul class="text-left miramar font-s16 push-10" style="list-style: none;">

@@ -3,6 +3,7 @@
         setlocale(LC_TIME, "es_ES");  
         $mobile = new \App\Classes\Mobile();
 ?>
+
 <?php if (!$mobile->isMobile()): ?>
 	<table class="table  table-condensed table-striped" style="margin-top: 0;">
 		<thead>
@@ -59,8 +60,8 @@
 					<?php $payments = \App\Payments::where('book_id', $book->id)->get(); ?>
 					<?php $fromStripe = false; ?>
 					<?php if ( count($payments) > 0): ?>
-                        <?php foreach ($payments as $key => $payment): ?>
-                            <?php if (preg_match('/stripe/i', $payment->comment)): ?>
+                        <?php foreach ($payments as $key => $pay): ?>
+                            <?php if (preg_match('/stripe/i', $pay->comment)): ?>
                                 <?php $fromStripe = true; ?>
                             <?php endif ?>
                             
@@ -121,7 +122,6 @@
 					<td class ="text-center" ><?php echo $book->nigths ?></td>
 
 					<td class ="text-center font-w800" >
-						
 						<div class="col-md-6 col-xs-12 not-padding">
                             <?php echo round($book->total_price)."€" ?><br>
                             <?php if (isset($payment[$book->id])): ?>
@@ -133,7 +133,7 @@
                         <?php if (isset($payment[$book->id])): ?>
                             <?php if ($payment[$book->id] == 0): ?>
                                 <div class="col-md-5 col-xs-12 not-padding bg-success">
-                                <b style="color: red;font-weight: bold">0%</b>
+                                	<b style="color: red;font-weight: bold">0%</b>
                                 </div>
                             <?php else:?>
                                 <div class="col-md-5  col-xs-12 not-padding">
@@ -144,7 +144,7 @@
                         <?php else: ?>
                             <div class="col-md-5 col-xs-12 not-padding bg-success">
                                 <b style="color: red;font-weight: bold">0%</b>
-                                </div>
+                            </div>
                         <?php endif ?>
 
 					</td>

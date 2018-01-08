@@ -1,22 +1,24 @@
 <?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
-<?php if (!$mobile->isMobile()): ?> 
-    
 
+
+
+
+<?php if (!$mobile->isMobile()): ?> 
 <table class="table table-condensed table-striped table-data"  data-type="pendientes" style="margin-top: 0;">
     <thead>
         <tr>  
             <th style="display: none">ID</th> 
-            <th class ="text-center Reservado-table text-white" style="width: 4%!important">&nbsp;</th> 
-            <th class ="text-center Reservado-table text-white" >   Cliente     </th>
-            <th class ="text-center Reservado-table text-white" >   Telefono     </th>
-            <th class ="text-center Reservado-table text-white" style="width: 7%!important">   Pax         </th>
-            <th class ="text-center Reservado-table text-white" style="width: 10%!important">   Apart       </th>
-            <th class ="text-center Reservado-table text-white" style="width: 6%!important">   IN     </th>
-            <th class ="text-center Reservado-table text-white" style="width: 8%!important">   OUT      </th>
-            <th class ="text-center Reservado-table text-white" style="width: 6%!important">  <i class="fa fa-moon-o"></i> </th>
-            <th class ="text-center Reservado-table text-white" >   Precio      </th>
-            <th class ="text-center Reservado-table text-white" style="width: 17%!important">   Estado      </th>
-            <th class ="text-center Reservado-table text-white" style="width: 6%!important">A</th>
+            <th class ="bg-danger text-center text-white" style="width: 4%!important">&nbsp;</th> 
+            <th class ="bg-danger text-center text-white" >   Cliente     </th>
+            <th class ="bg-danger text-center text-white" >   Telefono     </th>
+            <th class ="bg-danger text-center text-white" style="width: 7%!important">   Pax         </th>
+            <th class ="bg-danger text-center text-white" style="width: 10%!important">   Apart       </th>
+            <th class ="bg-danger text-center text-white" style="width: 6%!important">   IN     </th>
+            <th class ="bg-danger text-center text-white" style="width: 8%!important">   OUT      </th>
+            <th class ="bg-danger text-center text-white" style="width: 6%!important">  <i class="fa fa-moon-o"></i> </th>
+            <th class ="bg-danger text-center text-white" >   Precio      </th>
+            <th class ="bg-danger text-center text-white" style="width: 17%!important">   Estado      </th>
+            <th class ="bg-danger text-center text-white" style="width: 6%!important">A</th>
         </tr>
     </thead>
     <tbody>
@@ -128,12 +130,12 @@
                         </select>
                     </td>
 
-                    <td class="text-center">                                                         
+                    <!-- <td class="text-center">                                                         
                         <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-danger deleteBook" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
                             <i class="fa fa-trash"></i>
                         </button>                            
 
-                    </td>
+                    </td> -->
                 </tr>
         <?php endforeach ?>
     </tbody>
@@ -230,11 +232,11 @@
                             <?php endfor; ?>
                         </select>
                     </td>
-                    <td class="text-center">
+                    <!-- <td class="text-center">
                         <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-danger deleteBook" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
                             <i class="fa fa-trash"></i>
                         </button>   
-                    </td>
+                    </td> -->
                 </tr>
             <?php endforeach ?>
         </tbody>
