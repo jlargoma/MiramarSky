@@ -626,7 +626,7 @@
                     </div>
                 </div>
                 <!-- DATOS DE LA RESERVA -->
-                <form role="form"  action="{{ url('/admin/reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post" >
+                <form role="form" id='updateForm' action="{{ url('/admin/reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post" >
                     <!-- DATOS DEL CLIENTE -->
                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                     <input type="hidden" name="customer_id" value="<?php echo $book->customer->id ?>">
