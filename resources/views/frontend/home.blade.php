@@ -357,7 +357,7 @@
 	   			</div>
 	       		
 	       	</section>
-
+<div style="clear: both;"></div>
 	       	<section class="page-section" style="margin-top: 60px;">
 	       		<div class="container container-mobile clearfix">
 	       			<div class="row">

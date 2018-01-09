@@ -210,7 +210,7 @@ class StripeController extends Controller
             }
 
         } catch (\Stripe\Error\Card $e) {
-        
+            $book = \App\Book::find($request->input('id_book'));
             $message[] = "No puedes efectuar el pago en estos momentos";
             $message[] = "Tu tarjeta ha rechazado el cobro.";
             $message[] = "tarjeta";
@@ -224,7 +224,7 @@ class StripeController extends Controller
             return redirect('/admin/reservas/update/'.$book->id."?".http_build_query($msg_params));
 
         }catch (Exception $e) {
-
+            $book = \App\Book::find($request->input('id_book'));
             $message[] = "No puedes efectuar el pago en estos momentos";
             $message[] = $e->getMessage();//"Tu tarjeta ha rechazado el cobro.";
             $message[] = "otros";//"Tu tarjeta ha rechazado el cobro.";
