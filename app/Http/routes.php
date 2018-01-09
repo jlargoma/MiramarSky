@@ -300,6 +300,18 @@ Route::group(['middleware' => 'auth'], function () {
 		}
 
 	});
+	Route::get('admin/reservas/restore/{id}/', function ($id) {
+		
+
+		$book = \App\Book::find($id);
+		$book->type_book = 3;
+		if ($book->save()) {
+			return ['status' => 'success','title' => 'OK', 'response' => "Reserva restaurada"];
+		}
+
+	});
+
+	
 
 	Route::get('admin/liquidation/searchByName', 'LiquidacionController@searchByName');
 

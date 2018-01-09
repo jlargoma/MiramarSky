@@ -84,9 +84,6 @@ class BookController extends Controller
      */
     public function create(Request $request)
     {
-        // dd($request->input());
-        // die();
-
 
         $mobile = new Mobile();
 
@@ -1033,9 +1030,9 @@ class BookController extends Controller
                 }
             }
 
-            $bookDeleted = \App\BookDeleted::replicateFromBook($book);
+            $book->type_book = 0;
 
-            if ($book->delete()) {
+            if ($book->save()) {
                 return ['status' => 'success','title' => 'OK', 'response' => "Reserva enviada a eliminadas"];
        
             }
@@ -1289,8 +1286,11 @@ class BookController extends Controller
                                     ->orderBy('start','ASC')
                                     ->get();
             case 'eliminadas':
-                $dateX = Carbon::now();
-                $books = \App\BookDeleted::all();
+                $books = \App\Book::where('start','>',$date->copy()->subDays(3))
+                                    ->where('finish','<',$date->copy()->addYear())
+                                    ->where('type_book',0)
+                                    ->orderBy('start','ASC')
+                                    ->get();
                 break;
         }
 
