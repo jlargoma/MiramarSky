@@ -314,7 +314,7 @@
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
 		   								<h2 class="font-w200 center push-10 text-center text font-s24 white" >
-		   									DESCUENTOS<span class="font-w800 white"> ALQUILER MATERIAL Y EN FORFAIT</span>
+		   									<span class="font-w800 white" style="letter-spacing: -2px;">SOLICITA<br>CLASES DE SKI, ALQUILER MATERIAL Y EN FORFAITS</span>
 		   								</h2>
 		   							</div>
 		   						</div>
@@ -371,7 +371,7 @@
 	       						<br><br>
 	       						<b>A pie de pista... Sin coger remontes. El acceso a las pistas es directo, todo pensado para que disfrutes.</b>
 	       						<br><br>
-	       						Tambien <b>te ofrecemos nuestros descuentos para la compra de Forfaits, ofertas en alquiler de material y packs cobinados con cursillos de Ski. <a href="{{ url('/forfait')}}" target="_blank">Pincha aquí. </a></b>
+	       						Tambien <b>te ofrecemos nuestra gestión para la compra de Forfaits y descuentos en alquiler de material y packs combinados con cursillos de Ski. <a href="{{ url('/forfait')}}" target="_blank">Pincha aquí. </a></b>
 	       						<br><br>
 	       						Si quieres saber más información sobre la estación de Sierra Nevada <b><a href="{{url('/actividades')}}">consulta nuestro blog</a></b>,  encontraras información sobre la estación, cosas que hacer,actividades de esqui y de a preski,  que visitar, como divertirte con los niños, bares y restaurantes de la estación y de Padrollano….etc
 	       					</p>
@@ -691,7 +691,7 @@
 						<br><br>
 						<b>A pie de pista... Sin coger remontes. El acceso a las pistas es directo, todo pensado para que disfrutes.</b>
 						<br><br>
-						Tambien <b>te ofrecemos nuestros descuentos para la compra de Forfaits, ofertas en alquiler de material y packs cobinados con cursillos de Ski. <a href="{{ url('/forfait')}}" target="_blank">Pincha aquí. </a></b>
+						Tambien <b>te ofrecemos nuestra gestión para la compra de Forfaits y descuentos en alquiler de material y packs combinados con cursillos de Ski. <a href="{{ url('/forfait')}}" target="_blank">Pincha aquí. </a></b>
 						<br><br>
 						Si quieres saber más información sobre la estación de Sierra Nevada <b><a href="{{url('/actividades')}}">consulta nuestro blog</a></b>,  encontraras información sobre la estación, cosas que hacer,actividades de esqui y de a preski,  que visitar, como divertirte con los niños, bares y restaurantes de la estación y de Padrollano….etc
 					</p>
