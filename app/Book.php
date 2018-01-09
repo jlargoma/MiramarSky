@@ -68,6 +68,7 @@ class Book extends Model
     static function getStatus($status)
     {
         $array = [
+            0 => 'ELIMINADA', 
             1 => 'Reservado - stripe', 
             2 => 'Pagada-la-señal',
             3 => 'SIN RESPONDER',
