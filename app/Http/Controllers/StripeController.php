@@ -216,7 +216,7 @@ class StripeController extends Controller
             $message[] = "tarjeta";
 
             $msg_params = array(
-              'msg_type' => 'success',
+              'msg_type' => 'danger',
               'msg_text' => $message,
             );
 
@@ -230,7 +230,7 @@ class StripeController extends Controller
             $message[] = "otros";//"Tu tarjeta ha rechazado el cobro.";
 
             $msg_params = array(
-              'msg_type' => 'success',
+              'msg_type' => 'danger',
               'msg_text' => $message,
             );
 
