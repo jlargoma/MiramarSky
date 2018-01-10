@@ -70,10 +70,10 @@
 		  						<table width="100%" border="0" cellspacing="0" cellpadding="0">
 		  							<tr>
 		  								<td class="bodycopy" style="color: #000">
-		  									Hola has recibido una nueva solicitud:<br><br>
+		  									Hola, has recibido una nueva solicitud:<br><br>
 											<span style="font-weight: 800; font-size: 18px;">
 												<?php $date = Carbon::createFromFormat('Y-m-d H:i:s', $solicitud->created_at); ?>
-												Fecha solicitud <?php echo $date->formatLocalized('%d %B %Y') ?>
+												Fecha solicitud : <?php echo $date->formatLocalized('%d %B %Y') ?>
 											</span><br><br>
 
 											<b><?php echo ucfirst($solicitud->name) ?></b><br>
@@ -197,7 +197,7 @@
 								<table width="100%" border="0" cellspacing="0" cellpadding="0">
 									<tr>
 										<td align="center" style="color: #000">
-											* En breves te haremos llegar por email el precio de los servicios que has solicitado.
+											* En breve te enviaremos el precio de los servicios que has solicitado, también puedes llamarnos al <a href="tel:958480168">958480168</a>. Gracias!
 										</td>
 									</tr>
 								</table>
