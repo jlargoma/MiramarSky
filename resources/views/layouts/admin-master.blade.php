@@ -38,10 +38,6 @@
 	    <![endif]-->
 	    <link rel="stylesheet" type="text/css" href="{{ asset('/pages/css/custom.css')}}">
 	   	<style>
-	   		/*.navbar-inverse {
-	   		  background-color: #B0B5B9!important;
-	   		  border-color: #B0B5B9!important;
-	   		}*/
 	   		.phpdebugbar.phpdebugbar-minimized{
 	   			display: none!important
 	   		}
@@ -116,7 +112,6 @@
 								<a href="#" class="detailed">Super</a>
 							</li>
 						<?php endif ?>
-						
 
 			        </ul>
 			        <ul class="nav navbar-nav navbar-right">
@@ -148,27 +143,8 @@
 			</div>
 		<!-- END CONTAINER FLUID -->
 	</div>
-	<!-- FOOTER -->
-	<!-- <div class="container-fluid container-fixed-lg footer">
-		<div class="copyright sm-text-center">
-			<p class="small no-margin pull-left sm-pull-reset">
-				<span class="hint-text">Copyright &copy; 2014 </span>
-				<span class="font-montserrat">REVOX</span>.
-				<span class="hint-text">All rights reserved. </span>
-				<span class="sm-block"><a href="#" class="m-l-10 m-r-10">Terms of use</a> | <a href="#" class="m-l-10">Privacy Policy</a></span>
-			</p>
-			<p class="small no-margin pull-right sm-pull-reset">
-				<a href="#">Hand-crafted</a> <span class="hint-text">&amp; Made with Love ®</span>
-			</p>
-			<div class="clearfix"></div>
-		</div>
-	</div> -->
-	<!-- END FOOTER -->
-</div>
-	<!-- END PAGE CONTENT WRAPPER -->
-	<!-- END PAGE CONTAINER -->
 
-			
+</div>			
 		<!-- BEGIN VENDOR JS -->
 		<script src="{{ asset('assets/plugins/pace/pace.min.js') }}" type="text/javascript"></script>
 		

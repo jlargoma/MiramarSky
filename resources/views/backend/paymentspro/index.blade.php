@@ -784,8 +784,9 @@
 
 		$('button.bookByRoom').click(function(event) {
 			event.preventDefault();
+			var year = $('#fechas').val();
 			var idRoom = $(this).attr('data-id');
-			$.get('/admin/paymentspro/getBooksByRoom/'+idRoom,{ idRoom: idRoom}, function(data) {
+			$.get('/admin/paymentspro/getBooksByRoom/'+idRoom,{ idRoom: idRoom, year: year}, function(data) {
 				$('.contentBookRoom').empty().append(data);
 			});
 			
