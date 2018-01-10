@@ -526,7 +526,7 @@ class HomeController extends Controller
             // echo "</pre>";
 
             // return view('frontend.emails._responseSolicitudForfait' ,['solicitud' => $solicitud, 'productos' => $arrayProducts,'data' => $data]);
-
+            // die();
 
             $sended = Mail::send(['html' => 'frontend.emails._responseSolicitudForfait'],['solicitud' => $solicitud, 'productos' => $arrayProducts,'data' => $data], function ($message) use ($data) {
                 $message->from('reservas@apartamentosierranevada.net');
