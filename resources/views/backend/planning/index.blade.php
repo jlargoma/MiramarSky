@@ -338,45 +338,48 @@
                             <input id="nameCustomer" type="text" name="searchName" class="searchabled form-control" placeholder="nombre del cliente" />
                         </div>
                     </div>
-                    <div class="row text-left push-0">
+                    <div class="row text-left push-0" style="overflow-x:auto;">
+                        <div style=" width: 460px;">
+                            <button class="btn btn-primary  btn-blue btn-tables" type="button" data-type="pendientes"> 
+                                <span class="bold">Pend</span>
+                                <span class="numPaymentLastBooks">
+                                    <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'pendientes'); ?>
+                                </span>
+                            </button>
 
-                        <button class="btn btn-primary  btn-blue btn-tables" type="button" data-type="pendientes"> 
-                            <span class="bold">Pend</span>
-                            <span class="numPaymentLastBooks">
-                                <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'pendientes'); ?>
-                            </span>
-                        </button>
+                            <button class="btn btn-primary  btn-orange btn-tables" type="button" data-type="especiales"> 
+                                <span class="bold">Esp</span>
+                                <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
+                                    <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'especiales'); ?>
+                                </span>
+                            </button>
 
-                        <button class="btn btn-primary  btn-orange btn-tables" type="button" data-type="especiales"> 
-                            <span class="bold">Esp</span>
-                            <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
-                                <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'especiales'); ?>
-                            </span>
-                        </button>
+                            <button class="btn  btn-primary btn-green btn-tables" type="button" data-type="confirmadas"> 
+                                <span class="bold">Conf</span>
+                               <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
+                                    <?php $counterConfir = \App\Http\Controllers\BookController::getCounters(date('Y'), 'confirmadas') ?>
+                                    <?php echo $counterConfir; ?>
+                               </span>
+                            </button>
 
-                        <button class="btn  btn-primary btn-green btn-tables" type="button" data-type="confirmadas"> 
-                            <span class="bold">Conf</span>
-                           <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
-                                <?php $counterConfir = \App\Http\Controllers\BookController::getCounters(date('Y'), 'confirmadas') ?>
-                                <?php echo $counterConfir; ?>
-                           </span>
-                        </button>
+                            <button class="btn btn-success btn-tables" type="button" data-type="checkin"> 
+                                <span class="bold">IN</span>
+                                <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
+                                    <?php  $counterCheckIn = \App\Http\Controllers\BookController::getCounters(date('Y'), 'checkin'); ?>
+                                    <?php echo $counterCheckIn ; ?>
+                                </span>
+                            </button>
 
-                        <button class="btn btn-success btn-tables" type="button" data-type="checkin"> 
-                            <span class="bold">IN</span>
-                            <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
-                                <?php  $counterCheckIn = \App\Http\Controllers\BookController::getCounters(date('Y'), 'checkin'); ?>
-                                <?php echo $counterCheckIn ; ?>
-                            </span>
-                        </button>
-
-                        <button class="btn btn-primary btn-tables" type="button" data-type="checkout"> 
-                            <span class="bold">OUT</span>
-                            <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
-                                  <?php echo $counterConfir - $counterCheckIn ?>
-                            </span>
-                        </button>
-
+                            <button class="btn btn-primary btn-tables" type="button" data-type="checkout"> 
+                                <span class="bold">OUT</span>
+                                <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
+                                      <?php echo $counterConfir - $counterCheckIn ?>
+                                </span>
+                            </button>
+                            <button class="btn btn-danger btn-tables" type="button" data-type="eliminadas"> 
+                                <span class="bold">Elimin...</span>
+                            </button>
+                        </div>
                     </div>
                     <div class="row" id="resultSearchBook" style="display: none;"></div>
                     <div class="row content-tables" >
