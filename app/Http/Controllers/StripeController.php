@@ -195,11 +195,11 @@ class StripeController extends Controller
 
                         $msg_params = array(
                           'msg_type' => 'success',
-                          'msg_text' => 'my text to show',
+                          'msg_text' => 'Cobrado correctamente',
                         );
 
 
-                        return redirect('/admin/reservas/update/'.$book->id."?".http_build_query($msg_params));
+                        return redirect()->back();
                     }
                 }
 
