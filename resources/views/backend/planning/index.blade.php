@@ -342,7 +342,7 @@
                         <div style=" width: 460px;">
                             <button class="btn btn-primary  btn-blue btn-tables" type="button" data-type="pendientes"> 
                                 <span class="bold">Pend</span>
-                                <span class="numPaymentLastBooks">
+                                <span class="numPaymentLastBooks" style="top: 0px;right: 0;padding: 0px 7px;">
                                     <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'pendientes'); ?>
                                 </span>
                             </button>
