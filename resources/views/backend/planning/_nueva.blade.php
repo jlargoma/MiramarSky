@@ -223,7 +223,7 @@
                     <div class="col-md-6 col-xs-12 push-10">
                         <label>Agencia</label>
                         <select class="form-control full-width agency minimal" name="agency">
-                            <?php for ($i=0; $i <= 2 ; $i++): ?>
+                            <?php for ($i=0; $i <= 4 ; $i++): ?>
                                 <option value="<?php echo $i ?>">
                                     <?php echo \App\Book::getAgency($i) ?>
                                 </option>

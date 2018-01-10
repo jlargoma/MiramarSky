@@ -134,21 +134,33 @@
 					
 						
 						<?php if ( count($roomsForUser)  == 1): ?>
-							<div class="col-md-12 text-center">
-								<h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1>
-							</div>
+							<?php if (Auth::user()->role == 'propietario'): ?>
+								<div class="col-md-12 text-center">
+									<h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1>
+								</div>
+							<?php else: ?>
+								<div class="col-md-2 col-md-offset-4 text-center push-20">
+									<!-- <h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1> -->
+									<select class="form-control full-width minimal selectorRoom">
+		                                <?php foreach (\App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get() as $roomX): ?>
+		                                    <option value="<?php echo $roomX->nameRoom ?>" {{ $roomX->id == $room->id ? 'selected' : '' }} >
+		                                        <?php echo substr($roomX->nameRoom." - ".$roomX->name, 0, 15)  ?>
+		                                    </option>
+		                                <?php endforeach ?>
+		                            </select>
+								</div>
+							<?php endif ?>
+							
 						<?php else: ?>
-							<div class="col-md-3 col-md-offset-3 text-center">
-								<h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1>
-							</div>
-							<div class="col-md-2 text-left"  style="padding: 15px;">
-								<select class="form-control minimal" id="selectorRoom">
-									<?php foreach ($roomsForUser as $key => $roomForUser): ?>
-										<option value="<?php echo $roomForUser->nameRoom ?>">
-											<?php echo $roomForUser->nameRoom ?>
-										</option>
-									<?php endforeach ?>
-								</select>
+							<div class="col-md-2 col-md-offset-4 text-center push-20">
+								<!-- <h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1> -->
+								<select class="form-control full-width minimal selectorRoom">
+	                                <?php foreach (\App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get() as $roomX): ?>
+	                                    <option value="<?php echo $roomX->nameRoom ?>" {{ $roomX->id == $room->id ? 'selected' : '' }} >
+	                                        <?php echo substr($roomX->nameRoom." - ".$roomX->name, 0, 15)  ?>
+	                                    </option>
+	                                <?php endforeach ?>
+	                            </select>
 							</div>
 							
 						<?php endif ?>
@@ -834,7 +846,7 @@
 <?php endif ?>
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('#selectorRoom').change(function(event) {
+		$('.selectorRoom').change(function(event) {
 			var apto = $(this).val();
 			var url = "/admin/propietario/"+apto;
 
