@@ -35,7 +35,7 @@
 						SOBRE TU RESERVA
 					</h4>
 					<ul class="toggle-footer list-group bullet center" style="list-style: none;">
-						<li><a href="{{ url('/forfait')}}" target="_blank" style="color: #666">Descuentos en forfait</a></li>
+						<li><a href="{{ url('/forfait')}}" target="_blank" style="color: #666">Gestión de forfait</a></li>
 						<li><a href="{{url('/condiciones-generales')}}" style="color: #666">Condiciones Generales</a></li>
 						<li><a href="{{url('/preguntas-frecuentes')}}" style="color: #666">Preguntas Frecuentes</a></li>
 						<li><a href="{{ url('/ayudanos-a-mejorar') }}" style="color: #666">Ayudanos a Mejorar</a></li>
