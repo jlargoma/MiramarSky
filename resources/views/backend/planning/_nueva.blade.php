@@ -247,7 +247,7 @@
                         <label class="font-w800 text-white" for="">TOTAL</label>
                         <input type="text" class="form-control total m-t-10 m-b-10 white" name="total" >
                     </div>
-                    <?php if (Auth::user()->role == "admin"): ?>
+                    
                         <div class="col-md-3 col-xs-6 text-center " style="background: #99D9EA;">
                             <label class="font-w800 text-white" for="">COSTE TOTAL</label>
                             <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost" >
@@ -260,6 +260,7 @@
                             <label class="font-w800 text-white" for="">PARKING</label>
                             <input type="text" class="form-control costParking m-t-10 m-b-10 white" name="costParking" >
                         </div>
+                    <?php if (Auth::user()->role == "admin"): ?>
                         <div class="col-md-2 col-xs-6 text-center  not-padding" style="background: #ff7f27;">
                             <label class="font-w800 text-white" style="width: 100%;" for="">BENEFICIO</label>
                             <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio"  style="width: 80%; float: left;">
