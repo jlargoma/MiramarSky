@@ -185,11 +185,11 @@
         <thead>
             <th class="bg-success text-white text-center" ></th>
             <th class="bg-success text-white text-center" >Nombre</th>
+            <th class="bg-success text-white text-center">Tel</th>
             <th class="bg-success text-white text-center" style="min-width:50px ">Hor</th>
             <th class="bg-success text-white text-center" style="min-width:50px">In</th>
             <th class="bg-success text-white text-center" style="min-width:50px ">Out</th>
             <th class="bg-success text-white text-center">Pax</th>
-            <th class="bg-success text-white text-center">Tel</th>
             <th class="bg-success text-white text-center" style="min-width:50px">Apart</th>
             <th class="bg-success text-white text-center"><i class="fa fa-moon-o"></i></th>
             <th class="bg-success text-white text-center" style="min-width:65px">PVP</th>
@@ -224,6 +224,14 @@
                            <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
                         <?php endif ?>   
                     </td>
+                    <td class="text-center">
+                        <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
+                             <a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a>
+                        <?php else: ?>
+                            <input type="text" class="only-numbers customer-phone" data-id="<?php echo $book->customer->id ?>"/>
+                        <?php endif ?>
+                       
+                    </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
                         <select id="schedule" style="width: 100%;" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?> <?php if ($book->schedule < 17 && $book->schedule > 0): ?>alerta-horarios<?php endif ?>" data-type="in" data-id="<?php echo $book->id ?>">
                             <option>-- Sin asignar --</option>
@@ -256,14 +264,7 @@
                         <?php endif ?>
                             
                     </td>
-                    <td class="text-center">
-                        <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
-                             <a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a>
-                        <?php else: ?>
-                            <input type="text" class="only-numbers customer-phone" data-id="<?php echo $book->customer->id ?>"/>
-                        <?php endif ?>
-                       
-                    </td>
+                    
                     <td class="text-center">
                         <b><?php echo $book->room->nameRoom ?></b>
                     </td>
