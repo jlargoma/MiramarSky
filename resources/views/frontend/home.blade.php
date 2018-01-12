@@ -339,7 +339,7 @@
 
 	   					<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect">
 	   						
-	   						<a href="{{ url('/supermercado')}}">
+	   						<a href="//miramarski.com/supermercado">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/supermercado.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
@@ -660,7 +660,7 @@
 	   					</div>
 					
 						<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect">
-							<a href="{{ url('/supermercado')}}">
+							<a href="//miramarski.com/supermercado">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/supermercado.jpg')}}"  alt="Apartamento standard sierra nevada"/>
