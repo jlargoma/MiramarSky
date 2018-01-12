@@ -54,21 +54,25 @@ Route::post('/solicitudForfait','HomeController@solicitudForfait');
 Route::get('/admin/links-stripe', 'StripeController@link');
 
 /* SUPERMERCADO */
-	Route::get('/supermercado','StoreController@index');
-	Route::get('/supermercado/reserva/{id}','StoreController@cartByBook');
-	Route::get('/supermercado/addCart','StoreController@addCart');
-	Route::get('/supermercado/search/searchByName','StoreController@searchByName');
-	Route::get('/supermercado/getSummaryCart','StoreController@getSummaryCart');
-	Route::get('/searchBook','StoreController@searchBook');
-	Route::get('/supermercado/pedidos/delete/{id}',function ($id)
-	{
-		$orderProduct = \App\Products_orders::find($id);
-		if ($orderProduct->delete()) {
-			return redirect()->back();
-		}
+	Route::get('/supermercado', function(){
+		return redirect('http://miramarski.com/supermercado');
 	});
-	Route::get('/supermercado/checkout/{id}','StoreController@checkout');
-	Route::post('/supermercado/stripe/payment','StoreController@payment');
+
+	// Route::get('/supermercado','StoreController@index');
+	// Route::get('/supermercado/reserva/{id}','StoreController@cartByBook');
+	// Route::get('/supermercado/addCart','StoreController@addCart');
+	// Route::get('/supermercado/search/searchByName','StoreController@searchByName');
+	// Route::get('/supermercado/getSummaryCart','StoreController@getSummaryCart');
+	// Route::get('/searchBook','StoreController@searchBook');
+	// Route::get('/supermercado/pedidos/delete/{id}',function ($id)
+	// {
+	// 	$orderProduct = \App\Products_orders::find($id);
+	// 	if ($orderProduct->delete()) {
+	// 		return redirect()->back();
+	// 	}
+	// });
+	// Route::get('/supermercado/checkout/{id}','StoreController@checkout');
+	// Route::post('/supermercado/stripe/payment','StoreController@payment');
 /* FIN SUPERMERCADO */
 
 /* ENCUESTAS */
