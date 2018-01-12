@@ -71,12 +71,12 @@
 		  							<tr>
 		  								<td class="bodycopy" style="color: #000">
 		  									Hola, has recibido una nueva solicitud:<br><br>
-											<span style="font-weight: 800; font-size: 18px;">
+											<span style="font-weight: 300; font-size: 18px;">
 												<?php $date = Carbon::createFromFormat('Y-m-d H:i:s', $solicitud->created_at); ?>
 												Fecha solicitud : <?php echo $date->formatLocalized('%d %B %Y') ?>
 											</span><br><br>
 
-											<b><?php echo ucfirst($solicitud->name) ?></b><br>
+											<span style="font-size: 18px"><b><?php echo ucfirst($solicitud->name) ?></b></span><br>
 											<a href="mailto:<?php echo $solicitud->email ?>"><?php echo $solicitud->email ?></a><br>
 											<a href="tel:<?php echo $solicitud->phone ?>"><?php echo $solicitud->phone ?></a>
 			  							</td>
@@ -140,9 +140,9 @@
 																			<?php echo $dataProduct[14] ?>
 																		<?php endif ?>
 																		<br>
-																		Inicio: <?php echo Carbon::createFromFormat('Y-m-d', $solicitud->start)->formatLocalized('%d-%B-%Y') ?>
+																		<b style="font-size: 18px;">Inicio: <?php echo Carbon::createFromFormat('Y-m-d', $solicitud->start)->formatLocalized('%d-%B-%Y') ?></b>
 																		<br>
-																		Fin: <?php echo Carbon::createFromFormat('Y-m-d', $solicitud->finish)->formatLocalized('%d-%B-%Y') ?>
+																		<b style="font-size: 18px;">Fin: <?php echo Carbon::createFromFormat('Y-m-d', $solicitud->finish)->formatLocalized('%d-%B-%Y') ?></b>
 			                										</td>
 			                										<td style="text-align: center;border: 1px double #e8e8e8; padding: 10px">
 			                											
