@@ -18,7 +18,6 @@ elixir(function (mix) {
     mix.styles([
                 "css/bootstrap.css",
                 "style.css",
-                "css/font-icons.css",
                 "css/animate.css",
                 "css/magnific-popup.css",
     ], 'public/css/app.css');

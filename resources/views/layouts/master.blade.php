@@ -28,7 +28,7 @@
 
  
 		<link rel="stylesheet" href="{{ asset ('/css/app.css')}}" type="text/css" />
-
+		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/font-icons.css')}}">
 		<?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
 			<link rel="stylesheet" href="{{ asset ('/frontend/css/responsive-mobile.css')}}" type="text/css" />
 		<?php else: ?>
