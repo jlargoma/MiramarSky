@@ -74,9 +74,11 @@
 						<?php endif ?> 
 					</td>
 					<td class ="text-center"> 
-						<?php if ($book->customer->phone != 0): ?>
-							<a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?></a>
-						<?php endif ?>
+                        <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
+                            <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?>
+                        <?php else: ?>
+                            <input type="text" class="only-numbers customer-phone" data-id="<?php echo $book->customer->id ?>"/>
+                        <?php endif ?>
 					</td>
 
 
@@ -257,6 +259,43 @@
 	</div>
 <?php endif ?>
 <script type="text/javascript">
+	$('.customer-phone').change(function(event) {
+	    var id = $(this).attr('data-id');
+	    var phone = $(this).val();
+	    $.get('/admin/customer/change/phone/'+id+'/'+phone, function(data) {
+
+
+	        $.notify({
+	            title: '<strong>'+data.title+'</strong>, ',
+	            icon: 'glyphicon glyphicon-star',
+	            message: data.response
+	        },{
+	            type: data.status,
+	            animate: {
+	                enter: 'animated fadeInUp',
+	                exit: 'animated fadeOutRight'
+	            },
+	            placement: {
+	                from: "top",
+	                align: "left"
+	            },
+	            offset: 80,
+	            spacing: 10,
+	            z_index: 1031,
+	            allow_dismiss: true,
+	            delay: 60000,
+	            timer: 60000,
+	        });
+	    });
+
+	    var type = $('.table-data').attr('data-type');
+	    var year = $('#fecha').val();
+	    $.get('/admin/reservas/api/getTableData', { type: type, year: year }, function(data) {
+	
+	        $('.content-tables').empty().append(data);
+
+	    });
+	});
 		$('.status, .room').change(function(event) {
 		    var id = $(this).attr('data-id');
 		    var clase = $(this).attr('class');

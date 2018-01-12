@@ -307,7 +307,7 @@
 	   					</div>
 	   										
 						<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect">
-							<a href="{{ url('/forfait')}}">
+							<a href="//miramarski.com/forfait">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/fortfait.jpg')}}"  alt="Apartamento standard sierra nevada"/>
@@ -371,7 +371,7 @@
 	       						<br><br>
 	       						<b>A pie de pista... Sin coger remontes. El acceso a las pistas es directo, todo pensado para que disfrutes.</b>
 	       						<br><br>
-	       						Tambien <b>te ofrecemos nuestra gestión para la compra de Forfaits y descuentos en alquiler de material y packs combinados con cursillos de Ski. <a href="{{ url('/forfait')}}" target="_blank">Pincha aquí. </a></b>
+	       						Tambien <b>te ofrecemos nuestra gestión para la compra de Forfaits y descuentos en alquiler de material y packs combinados con cursillos de Ski. <a href="//miramarski.com/forfait" target="_blank">Pincha aquí. </a></b>
 	       						<br><br>
 	       						Si quieres saber más información sobre la estación de Sierra Nevada <b><a href="{{url('/actividades')}}">consulta nuestro blog</a></b>,  encontraras información sobre la estación, cosas que hacer,actividades de esqui y de a preski,  que visitar, como divertirte con los niños, bares y restaurantes de la estación y de Padrollano….etc
 	       					</p>
@@ -629,7 +629,7 @@
 							</a>
 	   					</div>
 	   					<div class="col-md-3 col-xs-12 push-mobile-20 hover-effect">
-	   						<a href="{{ url('/forfait')}}" target="_blank">
+	   						<a href="//miramarski.com/forfait" target="_blank">
 		   						<div class="col-xs-12 not-padding  container-image-box">
 		   							<div class="col-xs-12 not-padding push-0">
 	   									<img class="img-responsive imga" src="{{ asset('/img/miramarski/descuento-forfait.jpg')}}" alt="Apartamento de lujo sierra nevada"/>
@@ -691,7 +691,7 @@
 						<br><br>
 						<b>A pie de pista... Sin coger remontes. El acceso a las pistas es directo, todo pensado para que disfrutes.</b>
 						<br><br>
-						Tambien <b>te ofrecemos nuestra gestión para la compra de Forfaits y descuentos en alquiler de material y packs combinados con cursillos de Ski. <a href="{{ url('/forfait')}}" target="_blank">Pincha aquí. </a></b>
+						Tambien <b>te ofrecemos nuestra gestión para la compra de Forfaits y descuentos en alquiler de material y packs combinados con cursillos de Ski. <a href="//miramarski.com/forfait" target="_blank">Pincha aquí. </a></b>
 						<br><br>
 						Si quieres saber más información sobre la estación de Sierra Nevada <b><a href="{{url('/actividades')}}">consulta nuestro blog</a></b>,  encontraras información sobre la estación, cosas que hacer,actividades de esqui y de a preski,  que visitar, como divertirte con los niños, bares y restaurantes de la estación y de Padrollano….etc
 					</p>
