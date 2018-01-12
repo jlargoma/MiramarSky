@@ -106,14 +106,14 @@ Route::get('/admin/reservas/api/checkSecondPay','BookController@checkSecondPay')
 	Route::get('admin/reservas/ansbyemail/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@ansbyemail']);
 	Route::post('admin/reservas/sendEmail' ,['middleware' => 'auth', 'uses' =>  'BookController@sendEmail']);
 	Route::get('admin/reservas/sendJaime' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@sendJaime']);
-	Route::get('admin/reservas/getPriceBook' ,['middleware' => 'auth', 'uses' =>  'BookController@getPriceBook']);
-	Route::get('admin/reservas/getCostBook' ,['middleware' => 'auth', 'uses' =>  'BookController@getCostBook']);
-	Route::get('admin/reservas/getPricePark' ,['middleware' => 'auth', 'uses' =>  'BookController@getPricePark']);
-	Route::get('admin/reservas/getCostPark' ,['middleware' => 'auth', 'uses' =>  'BookController@getCostPark']);
-	Route::get('admin/reservas/getPriceLujo' ,['middleware' => 'auth', 'uses' =>  'BookController@getPriceLujo']);
-	Route::get('admin/reservas/getCostLujo' ,['middleware' => 'auth', 'uses' =>  'BookController@getCostLujo']);
-	Route::get('admin/reservas/getPriceLujoAdmin' ,['middleware' => 'auth', 'uses' =>  'BookController@getPriceLujoAdmin']);
-	Route::get('admin/reservas/getCostLujoAdmin' ,['middleware' => 'auth', 'uses' =>  'BookController@getCostLujoAdmin']);
+	Route::get('admin/reservas/getPriceBook' , 'BookController@getPriceBook');
+	Route::get('admin/reservas/getCostBook' , 'BookController@getCostBook');
+	Route::get('admin/reservas/getPricePark' , 'BookController@getPricePark');
+	Route::get('admin/reservas/getCostPark' , 'BookController@getCostPark');
+	Route::get('admin/reservas/getPriceLujo' , 'BookController@getPriceLujo');
+	Route::get('admin/reservas/getCostLujo' , 'BookController@getCostLujo');
+	Route::get('admin/reservas/getPriceLujoAdmin' , 'BookController@getPriceLujoAdmin');
+	Route::get('admin/reservas/getCostLujoAdmin' , 'BookController@getCostLujoAdmin');
 	Route::get('admin/reservas/saveCobro' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@saveCobro']);
 	Route::get('admin/reservas/deleteCobro/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@deleteCobro']);
 	Route::get('admin/reservas/saveFianza' ,['middleware' => 'auth', 'uses' =>  'BookController@saveFianza']);
@@ -175,8 +175,8 @@ Route::get('/admin/reservas/api/checkSecondPay','BookController@checkSecondPay')
 	Route::get('admin/apartamentos/fotos/{id}' , ['middleware' => 'auth', 'uses' => 'RoomsController@photo']);
 	Route::get('admin/apartamentos/deletePhoto/{id}' , ['middleware' => 'auth', 'uses' => 'RoomsController@deletePhoto']);
 	Route::post('admin/apartamentos/send/email/owned' , ['middleware' => 'auth', 'uses' => 'RoomsController@sendEmailToOwned']);
-	Route::get('admin/apartamentos/getPaxPerRooms/{id}', ['middleware' => 'auth', 'uses' => 'RoomsController@getPaxPerRooms']);
-	Route::get('admin/apartamentos/getLuxuryPerRooms/{id}', ['middleware' => 'auth', 'uses' => 'RoomsController@getLuxuryPerRooms']);
+	Route::get('admin/apartamentos/getPaxPerRooms/{id}', 'RoomsController@getPaxPerRooms');
+	Route::get('admin/apartamentos/getLuxuryPerRooms/{id}', 'RoomsController@getLuxuryPerRooms');
 	Route::post('admin/apartamentos/uploadFile/{id}', ['middleware' => 'auth', 'uses' => 'RoomsController@uploadFile']);
 	Route::get('admin/apartamentos/assingToBooking', ['middleware' => 'auth', 'uses' => 'RoomsController@assingToBooking']);
 
