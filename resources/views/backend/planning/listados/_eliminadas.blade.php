@@ -135,16 +135,16 @@
         <div class="table-responsive" style="border: none!important">
             <table class="table table-striped table-data"  data-type="pendientes" style="margin-top: 0;">
                 <thead>
-                    <th class="Reservado-table text-white text-center">Nombre</th>
-                    <th class="Reservado-table text-white text-center" style="min-width:50px">In</th>
-                    <th class="Reservado-table text-white text-center" style="min-width:50px ">Out</th>
-                    <th class="Reservado-table text-white text-center">Pax</th>
-                    <th class="Reservado-table text-white text-center">Tel</th>
-                    <th class="Reservado-table text-white text-center" style="min-width:100px">Apart</th>
-                    <th class="Reservado-table text-white text-center"><i class="fa fa-moon-o"></i></th>
-                    <th class="Reservado-table text-white text-center" style="min-width:65px">PVP</th>
-                    <th class="Reservado-table text-white text-center" style="min-width:200px">Estado</th>
-                    <th class="Reservado-table text-white text-center" style="min-width:50px">A</th>
+                    <th class="bg-danger text-white text-center">Nombre</th>
+                    <th class="bg-danger text-white text-center" style="min-width:50px">In</th>
+                    <th class="bg-danger text-white text-center" style="min-width:50px ">Out</th>
+                    <th class="bg-danger text-white text-center">Pax</th>
+                    <th class="bg-danger text-white text-center">Tel</th>
+                    <th class="bg-danger text-white text-center" style="min-width:100px">Apart</th>
+                    <th class="bg-danger text-white text-center"><i class="fa fa-moon-o"></i></th>
+                    <th class="bg-danger text-white text-center" style="min-width:65px">PVP</th>
+                    <th class="bg-danger text-white text-center" style="min-width:200px">Estado</th>
+                    <th class="bg-danger text-white text-center" style="min-width:50px">A</th>
                 </thead>
                 <tbody>
                     <?php foreach ($books as $book): ?>
