@@ -1293,7 +1293,7 @@ class BookController extends Controller
                 $books = \App\Book::where('start','>',$date->copy()->subDays(3))
                                     ->where('finish','<',$date->copy()->addYear())
                                     ->where('type_book',0)
-                                    ->orderBy('start','ASC')
+                                    ->orderBy('updated_at','DESC')
                                     ->get();
                 break;
         }
