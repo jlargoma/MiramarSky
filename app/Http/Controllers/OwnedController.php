@@ -377,9 +377,15 @@ class OwnedController extends Controller
 
         }
 
+        if ($date->copy()->format('n') >= 9) {
+            $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+        }else{
+            $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+        }
+
         $books = \App\Book::where('room_id', $room->id)->whereIn('type_book',[2,7,8])->where('start','>=',$date->copy())->where('start','<=',$date->copy()->addYear())->orderBy('start','ASC')->get();
 
 
-        return view('backend.owned.facturas' , ['mobile'      => new Mobile(), 'books' => $books]);   
+        return view('backend.owned.facturas' , ['mobile'      => new Mobile(), 'books' => $books , 'date' => $date]);   
     }
 }

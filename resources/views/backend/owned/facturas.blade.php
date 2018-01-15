@@ -13,7 +13,10 @@
 
 <div class="container">
 	<div class="col-md-6 col-xs-12 text-left push-30">
-	    <h2 class="font-w300" style="margin: 0">LISTADO DE <span class="font-w800">FACTURA</span></h2>
+	    <h2 class="font-w300" style="margin: 0">
+	    	LISTADO DE <span class="font-w800">FACTURA</span> 
+	    	<span class="font-w800"><?php echo $date->copy()->format('Y') ?></span> - <span class="font-w800"><?php echo $date->copy()->addYear()->format('Y') ?></span>
+	    </h2>
 	</div>
 	<div class="col-xs-12 bg-white">
 	    <div class="row">
@@ -69,7 +72,8 @@
 	                            <b><?php echo ucfirst($book->customer->name) ?></b>
 	                        </td>
 	                        <td class="text-center font-s16">
-	                            <b><?php echo number_format($book->total_price/2, 2, ',','.') ?>€</b>
+								<?php $costeProp = $book->cost_apto + $book->cost_park + $book->cost_lujo?>
+	                            <b><?php echo number_format(($costeProp/2), 2, ',','.') ?>€</b>
 	                        </td>
 	                        <td class="text-center font-s16">
 	                            <div class="btn-group">
