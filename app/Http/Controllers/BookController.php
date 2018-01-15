@@ -17,10 +17,6 @@ setlocale(LC_TIME, "es_ES");
 class BookController extends Controller
 {
 
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
     /**
      * Display a listing of the resource.
      *
@@ -101,10 +97,6 @@ class BookController extends Controller
         $extraPrice = 0 ;
         $extraCost  = 0 ;
 
-
-
-
-
         if ( $request->input('from') ) {
             if ($request->input('extras') != "") {
                     foreach ($request->input('extras') as $extra) {
@@ -147,23 +139,23 @@ class BookController extends Controller
                     $book->sup_limp      = 30;
                     $book->cost_limp     = 30;
 
-                    $book->sup_park      = $this->getPriceParkController($request->input('parking'), $request->input('nigths'));
-                    $book->cost_park     = $this->getCostParkController($request->input('parking'), $request->input('nigths'));
+                    $book->sup_park      = $this->getPricePark($request->input('parking'), $request->input('nigths'));
+                    $book->cost_park     = $this->getCostPark($request->input('parking'), $request->input('nigths'));
                 } elseif($room->sizeApto == 2) {
 
                     $book->sup_limp      = 50;
                     $book->cost_limp     = 40;
 
-                    $book->sup_park      = $this->getPriceParkController($request->input('parking'), $request->input('nigths'));
-                    $book->cost_park     = $this->getCostParkController($request->input('parking'),$request->input('nigths') );
+                    $book->sup_park      = $this->getPricePark($request->input('parking'), $request->input('nigths'));
+                    $book->cost_park     = $this->getCostPark($request->input('parking'),$request->input('nigths') );
                 }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
 
                     $book->sup_limp      = 100;
                     $book->cost_limp     = 90;
 
-                    $book->sup_park      = $this->getPriceParkController($request->input('parking'), $request->input('nigths') , 3);
+                    $book->sup_park      = $this->getPricePark($request->input('parking'), $request->input('nigths') , 3);
+                    $book->cost_park      = $this->getCostPark($request->input('parking'), $request->input('nigths') , 3);
                 }
-                
                 
                 $book->type_park     = $request->input('parking');
 
@@ -173,12 +165,12 @@ class BookController extends Controller
                 // if ($room->typeApto == 3 || $room->typeApto == 1) {
                 //     $book->cost_apto     = 0;        
                 // }else{
-                    $book->cost_apto     = $book->getCostBook( $start, $finish, $request->input('pax'), $request->input('newroom'));
+                    $book->cost_apto     = $this->getCostBook( $start, $finish, $request->input('pax'), $request->input('newroom')) + $book->cost_limp;
                 // }
                 
                 $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
 
-                $book->total_price   = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
+                $book->total_price   = $this->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
 
                 $book->real_price    = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
 
@@ -295,21 +287,21 @@ class BookController extends Controller
                             $book->sup_limp      = 30;
                             $book->cost_limp     = 30;
 
-                            $book->sup_park    = $this->getPriceParkController($request->input('parking'), $request->input('nigths'));
-                            $book->cost_park   = $this->getCostParkController($request->input('parking'),$request->input('nigths'));
+                            $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths'));
+                            $book->cost_park   = $this->getCostPark($request->input('parking'),$request->input('nigths'));
                         } elseif($room->sizeApto == 2) {
 
                             $book->sup_limp      = 50;
                             $book->cost_limp     = 40;
 
-                            $book->sup_park    = $this->getPriceParkController($request->input('parking'), $request->input('nigths'));
-                            $book->cost_park   = $this->getCostParkController($request->input('parking'),$request->input('nigths'));
+                            $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths'));
+                            $book->cost_park   = $this->getCostPark($request->input('parking'),$request->input('nigths'));
                         }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
 
                             $book->sup_limp      = 100;
                             $book->cost_limp     = 90;
-                            $book->sup_park    = $this->getPriceParkController($request->input('parking'), $request->input('nigths') , 3);
-                            $book->cost_park   = $this->getCostParkController($request->input('parking'),$request->input('nigths'), 3);
+                            $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths') , 3);
+                            $book->cost_park   = $this->getCostPark($request->input('parking'),$request->input('nigths'), 3);
 
                         }
                         
@@ -319,11 +311,13 @@ class BookController extends Controller
                         // if ($room->typeApto == 3 || $room->typeApto == 1) {
                         //     $book->cost_apto     = 0;        
                         // }else{
-                            $book->cost_apto     = ($request->input('costApto'))?$request->input('costApto'): $book->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom'));
+                            $book->cost_apto     = ($request->input('costApto'))? $request->input('costApto'): $this->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->cost_limp;
                         // }
                         $book->cost_total  = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
+
                         $book->total_price = $request->input('total');
-                        $book->real_price  = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
+
+                        $book->real_price  = $this->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
 
                         $book->total_ben     = $book->total_price - $book->cost_total;
 
@@ -337,6 +331,7 @@ class BookController extends Controller
                     $book->extraCost     = $extraCost;
                     $book->schedule      = ($request->input('schedule'))?$request->input('schedule'):0;
                     $book->scheduleOut   = ($request->input('scheduleOut'))?$request->input('scheduleOut'):12;
+
                     if($book->save()){
 
                         /* Creamos las notificaciones de booking */
@@ -429,36 +424,36 @@ class BookController extends Controller
             $book = \App\Book::find($id);
             $room = \App\Rooms::find($request->input('newroom'));
 
-            $book->user_id       = Auth::user()->id;
-            $book->customer_id   = $request->input('customer_id');
-            $book->room_id       = $request->input('newroom');
-            $book->start         = Carbon::createFromFormat('d/m/Y',$start);
-            $book->finish        = Carbon::createFromFormat('d/m/Y',$finish);
-            $book->comment       = ltrim($request->input('comments'));
-            $book->book_comments = ltrim($request->input('book_comments'));
+            $book->user_id             = Auth::user()->id;
+            $book->customer_id         = $request->input('customer_id');
+            $book->room_id             = $request->input('newroom');
+            $book->start               = Carbon::createFromFormat('d/m/Y',$start);
+            $book->finish              = Carbon::createFromFormat('d/m/Y',$finish);
+            $book->comment             = ltrim($request->input('comments'));
+            $book->book_comments       = ltrim($request->input('book_comments'));
             $book->book_owned_comments = ($request->input('book_owned_comments'))?$request->input('book_owned_comments'): "";
-            $book->pax           = $request->input('pax');
-            $book->real_pax           = $request->input('real_pax');
-            $book->nigths        = $request->input('nigths');
+            $book->pax                 = $request->input('pax');
+            $book->real_pax            = $request->input('real_pax');
+            $book->nigths              = $request->input('nigths');
             if ($room->sizeApto == 1) {
 
                 $book->sup_limp      = 30;
                 $book->cost_limp     = 30;
 
-                $book->sup_park    = $this->getPriceParkController($request->input('parking'), $request->input('nigths'));
+                $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths'));
                 $book->cost_park   = $request->input('costParking');//$this->getCostParkController($request->input('parking'),$request->input('nigths'));
             } elseif($room->sizeApto == 2) {
 
                 $book->sup_limp      = 50;
                 $book->cost_limp     = 40;
 
-                $book->sup_park    = $this->getPriceParkController($request->input('parking'), $request->input('nigths'));
+                $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths'));
                 $book->cost_park   = $request->input('costParking');//$this->getCostParkController($request->input('parking'),$request->input('nigths'));
             }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
 
                 $book->sup_limp      = 100;
                 $book->cost_limp     = 90;
-                $book->sup_park    = $this->getPriceParkController($request->input('parking'), $request->input('nigths') , 3);
+                $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths') , 3);
                 $book->cost_park   = $request->input('costParking');//$this->getCostParkController($request->input('parking'),$request->input('nigths'), 3);
 
             }
@@ -476,7 +471,7 @@ class BookController extends Controller
             $book->cost_total    = $request->input('cost');
 
             $book->total_price   = $request->input('total');
-            $book->real_price    = $book->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
+            $book->real_price    = $this->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
 
             $book->total_ben     = $request->input('beneficio');
             $book->extra         = $request->input('extra');
@@ -565,78 +560,126 @@ class BookController extends Controller
         }
     }
 
-    static function getPriceBook(Request $request)
-    {
-
-        $start = Carbon::createFromFormat('d/m/Y' , $request->start);
-        $finish = Carbon::createFromFormat('d/m/Y' , $request->finish);
-        $countDays = $finish->diffInDays($start);
 
 
-        $paxPerRoom = \App\Rooms::getPaxRooms($request->pax,$request->room);
+    public function getPricePark($park, $noches, $room="", $multipler=""){
 
-        $room = \App\Rooms::find($request->room);
-        if ($room->sizeApto == 1) {
-
-            $suplimp      = 30;
-
-
-        } elseif($room->sizeApto == 2) {
-
-            $suplimp      = 50;
-
-
-        }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
-
-            $suplimp      = 100;
-
-
+        $priceParking = 0;
+        switch ($park) {
+            case 1:
+            $priceParking = 18 * $noches;
+            break;
+            case 2:
+            $priceParking = 0;
+            break;
+            case 3:
+            $priceParking = 0;
+            break;
+            case 4:
+            $priceParking = (18 * $noches) / 2;
+            break;
         }
-        $pax = $request->pax;
-        if ($paxPerRoom > $request->pax) {
-            $pax = $paxPerRoom;
+        if ( $room != "") {
+            if ($room == 149 || $room == 150) {
+                $priceParking =  $priceParking * 3;
+            }
+        }
+        return $priceParking;
+
+    }
+
+    public function getCostPark($park, $noches, $room="", $multipler=""){
+
+        $costParking = 0;
+        switch ($park) {
+            case 1:
+            $costParking = 13.5 * $noches;
+            break;
+            case 2:
+            $costParking = 0;
+            break;
+            case 3:
+            $costParking = 0;
+            break;
+            case 4:
+            $costParking = (13.5 * $noches) / 2;
+            break;
         }
 
-        $price = 0;
-
-        for ($i=1; $i <= $countDays; $i++) {
-
-            $seasonActive = \App\Seasons::getSeason($start->copy()->format('Y-m-d'));
-
-
-            $prices = \App\Prices::where('season' , $seasonActive)
-            ->where('occupation', $pax)->get();
-            
-
-            foreach ($prices as $precio) {
-                $price = $price + $precio->price ;
-
+        if ( $room != "") {
+            if ($room == 149 || $room == 150) {
+                $costParking =  $costParking * 3;
             }
         }
 
+        
+        return $costParking;
 
-        return $price + $suplimp;
     }
 
-    static function getCostBook(Request $request)
-    {
+    public function getPriceLujo($typeLuxury){
+        $priceLuxury = 0;
+        if ($typeLuxury > 4) {
+            $priceLuxury = $typeLuxury;
+        }else{
 
+            switch ($typeLuxury) {
+                case 1:
+                $priceLuxury = 50;
+                break;
+                case 2:
+                $priceLuxury = 0;
+                break;
+                case 3:
+                $priceLuxury = 0;
+                break;
+                case 4:
+                $priceLuxury = 50/2;
+                break;
+            }
+        }
+        return $priceLuxury;
+    }
 
-        $start = Carbon::createFromFormat('d/m/Y' , $request->start);
-        $finish = Carbon::createFromFormat('d/m/Y' , $request->finish);
+    public function getCostLujo($typeLuxury){
+        $costLuxury = 0;
+        if ($typeLuxury > 4) {
+            $costLuxury = $typeLuxury - 10;
+        } else {
+            switch ($typeLuxury) {
+                case 1:
+                $costLuxury = 40;
+                break;
+                case 2:
+                $costLuxury = 0;
+                break;
+                case 3:
+                $costLuxury = 0;
+                break;
+                case 4:
+                $costLuxury = 40/2;
+                break;
+            }
+        }
+
+        return $costLuxury;
+    }
+
+    public function getCostBook($start, $finish, $pax, $room){
+        $start = Carbon::createFromFormat('d/m/Y' , $start);
+        $finish = Carbon::createFromFormat('d/m/Y' , $finish);
         $countDays = $finish->diffInDays($start);
 
 
-        $paxPerRoom = \App\Rooms::getPaxRooms($request->pax,$request->room);
+        $paxPerRoom = \App\Rooms::getPaxRooms($pax,$room);
 
-        $room = \App\Rooms::find($request->room);
-        $suplimp =  ($room->sizeApto == 1 )? 30 : 40 ;
+        $room = \App\Rooms::find($room);
 
-        $pax = $request->pax;
-        if ($paxPerRoom > $request->pax) {
+        $pax = $pax;
+        if ($paxPerRoom > $pax) {
             $pax = $paxPerRoom;
         }
-        $cost = 0;
+        $costBook = 0;
         for ($i=1; $i <= $countDays; $i++) {
 
             $seasonActive = \App\Seasons::getSeason($start->copy()->format('Y-m-d'));
@@ -644,220 +687,42 @@ class BookController extends Controller
             ->where('occupation', $pax)->get();
 
             foreach ($costs as $precio) {
-                $cost = $cost + $precio->cost ;
+                $costBook = $costBook + $precio->cost ;
             }
         }
 
-        return $cost + $suplimp;
+        return $costBook;
     }
 
-    //Funcion para el precio del Aparcamiento
-    static function getPricePark(Request $request)
-    {
+    public function getPriceBook($start, $finish, $pax, $room){
+        $start = Carbon::createFromFormat('d/m/Y' , $start);
+        $finish = Carbon::createFromFormat('d/m/Y' , $finish);
+        $countDays = $finish->diffInDays($start);
 
-        $supPark = 0;
-        switch ($request->park) {
-            case 1:
-            $supPark = 18 * $request->noches;
-            break;
-            case 2:
-            $supPark = 0;
-            break;
-            case 3:
-            $supPark = 0;
-            break;
-            case 4:
-            $supPark = (18 * $request->noches) / 2;
-            break;
+
+        $paxPerRoom = \App\Rooms::getPaxRooms($pax,$room);
+
+        $room = \App\Rooms::find($room);
+
+        $pax = $pax;
+        if ($paxPerRoom > $pax) {
+            $pax = $paxPerRoom;
         }
+        $priceBook = 0;
+        for ($i=1; $i <= $countDays; $i++) {
 
-        if ($request->room && $request->room != '') {
-            if ($request->room == 149 || $request->room == 150) {
-                $supPark =  $supPark * 3;
+            $seasonActive = \App\Seasons::getSeason($start->copy()->format('Y-m-d'));
+            $costs = \App\Prices::where('season' ,  $seasonActive)
+            ->where('occupation', $pax)->get();
+
+            foreach ($costs as $precio) {
+                $priceBook = $priceBook + $precio->price ;
             }
         }
 
-        return $supPark;
-        
+        return $priceBook;
     }
 
-    //Funcion para el precio del Aparcamiento
-    static function getPriceParkController($park, $noches, $multipler="")
-    {
-
-        $supPark = 0;
-        switch ($park) {
-            case 1:
-            $supPark = 18 * $noches;
-            break;
-            case 2:
-            $supPark = 0;
-            break;
-            case 3:
-            $supPark = 0;
-            break;
-            case 4:
-            $supPark = (18 * $noches) / 2;
-            break;
-        }
-        if ($multipler != '') {
-            return $supPark * 3;
-        }else{
-            return $supPark;
-        }
-        
-    }
-
-    //Funcion para el coste del Aparcamiento
-    static function getCostPark(Request $request)
-    {
-
-        $supPark = 0;
-        switch ($request->park) {
-            case 1:
-            $supPark = 13.5 * $request->noches;
-            break;
-            case 2:
-            $supPark = 0;
-            break;
-            case 3:
-            $supPark = 0;
-            break;
-            case 4:
-            $supPark = (13.5 * $request->noches) / 2;
-            break;
-        }
-        if ($request->room && $request->room != '') {
-            if ($request->room == 149 || $request->room == 150) {
-                $supPark =  $supPark * 3;
-            }
-        }
-
-        return $supPark;
-    }
-
-    //Funcion para el coste del Aparcamiento
-    static function getCostParkController($park,$noches,$multipler="")
-    {
-
-        $supPark = 0;
-        switch ($park) {
-            case 1:
-            $supPark = 13.5 * $noches;
-            break;
-            case 2:
-            $supPark = 0;
-            break;
-            case 3:
-            $supPark = 0;
-            break;
-            case 4:
-            $supPark = (13.5 * $noches) / 2;
-            break;
-        }
-        if ($multipler != '') {
-            return $supPark * 3;
-        }else{
-            return $supPark;
-        }
-    }
-
-    //Funcion para el precio del Suplemento de Lujo
-    static function getPriceLujo($lujo)
-    {
-        $supLujo = 0;
-        if ($lujo > 4) {
-            $supLujo = $lujo;
-        }else{
-
-            switch ($lujo) {
-                case 1:
-                $supLujo = 50;
-                break;
-                case 2:
-                $supLujo = 0;
-                break;
-                case 3:
-                $supLujo = 0;
-                break;
-                case 4:
-                $supLujo = 50/2;
-                break;
-            }
-        }
-        return $supLujo;
-    }
-
-    //Funcion para el precio del Suplemento de Lujo desde Admin
-    static function getPriceLujoAdmin(Request $request)
-    {
-        $supLujo = 0;
-
-        switch ($request->lujo) {
-            case 1:
-            $supLujo = 50;
-            break;
-            case 2:
-            $supLujo = 0;
-            break;
-            case 3:
-            $supLujo = 0;
-            break;
-            case 4:
-            $supLujo = 50/2;
-            break;
-        }
-        return $supLujo;
-    }
-
-    //Funcion para el precio del Suplemento de Lujo
-    static function getCostLujo($lujo)
-    {
-        $supLujo = 0;
-        if ($lujo > 4) {
-            $supLujo = $lujo - 10;
-        } else {
-            switch ($lujo) {
-                case 1:
-                $supLujo = 40;
-                break;
-                case 2:
-                $supLujo = 0;
-                break;
-                case 3:
-                $supLujo = 0;
-                break;
-                case 4:
-                $supLujo = 40/2;
-                break;
-            }
-        }
-
-        return $supLujo;
-    }
-
-    //Funcion para el precio del Suplemento de Lujo desde Admin
-    static function getCostLujoAdmin(Request $request)
-    {
-        $supLujo = 0;
-        switch ($request->lujo) {
-            case 1:
-            $supLujo = 40;
-            
-            break;
-            case 2:
-            $supLujo = 0;
-            break;
-            case 3:
-            $supLujo = 0;
-            break;
-            case 4:
-            $supLujo = 40/2;
-            break;
-        }
-
-        return $supLujo;
-    }
 
     // Funcion para la migracion de la base antigua  a la nuevas "cobros"
     public function getCobrosBD()
@@ -1620,5 +1485,58 @@ class BookController extends Controller
 
     }
     
+
+    public function getAllDataToBook(Request $request)
+    {
+        $room  = \App\Rooms::find($request->input('room'));
+        if ($room->sizeApto == 1) {
+
+            $data['costes']['parking']  = $this->getCostPark($request->input('park'),$request->input('noches') );
+            $data['totales']['parking'] = $this->getPricePark($request->input('park'), $request->input('noches'));
+
+            $sup_limp      = 30;
+            $cost_limp     = 30;
+
+        } elseif($room->sizeApto == 2) {
+            /* PARKING */
+            $data['costes']['parking']  = $this->getCostPark($request->input('park'),$request->input('noches') );
+            $data['totales']['parking'] = $this->getPricePark($request->input('park'), $request->input('noches'));
+
+            $sup_limp      = 50;
+            $cost_limp     = 40;
+
+        }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
+            /* PARKING */
+            $data['costes']['parking']  = $this->getCostPark($request->input('park'),$request->input('noches') , 3);
+            $data['totales']['parking'] = $this->getPricePark($request->input('park'), $request->input('noches'), 3);
+
+            $sup_limp      = 100;
+            $cost_limp     = 90;
+        
+        }
+       
+        /* LUJO */
+        $data['costes']['lujo'] = $this->getCostLujo($request->input('lujo'));
+        $data['totales']['lujo'] = $this->getPriceLujo($request->input('lujo'));
+
+
+        /* LIMPIEZA */
+
+        $data['costes']['limp']  = $cost_limp;
+        $data['totales']['limp'] = $sup_limp;
+
+        /* RESERVA */
+       
+        $data['costes']['book'] = $this->getCostBook($request->input('start'),$request->input('finish'),$request->input('pax'),$request->input('room')) ;
+
+        $data['totales']['book'] = $this->getPriceBook($request->input('start'),$request->input('finish'),$request->input('pax'),$request->input('room'));
+
+
+        return $data;
+
+
+
+
+    }
     
 }
