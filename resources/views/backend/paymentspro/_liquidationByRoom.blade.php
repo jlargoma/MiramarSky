@@ -6,8 +6,6 @@
 ?>
 <style type="text/css">
 	.total{
-		border-right: 2px solid black !important;
-		border-left: 2px solid black !important;
 		font-weight: bold;
 		color: black;
 		background-color: rgba(0,100,255,0.2) !important;
@@ -15,23 +13,34 @@
 
 </style>
 <div class="row">
-	<h2 class="text-center font-w800">
+	<h2 class="text-center font-w800" style="margin-top: 0;">
 		<?php echo strtoupper($room->user->name) ?> (<?php echo $room->nameRoom ?>)
 	</h2>
 </div>
 <div class="row">
 	<div class="col-md-12 col-xs-12 resumen blocks">
 		<div class="col-md-5 col-xs-12">
-			<h3 class="text-center font-w300" style="line-height: 1; letter-spacing: -1px;">
-				TOTAL GENERADO AL AÑO <br>
+			<h3 class="text-center font-w300 hidden-sm hidden-xs" style="line-height: 1; letter-spacing: -1px;">
+				TOTAL GENERADO TEMP. <br>
 				<span class="font-w800">
-					<?php echo $costeProp; ?>€
+					<?php echo number_format($costeProp, 2,',','.'); ?>€
 				</span>
 			</h3>
+			<h4 class="text-center font-w300 hidden-md hidden-lg" style="line-height: 1; letter-spacing: -1px;">
+				TOTAL GENERADO TEMP. <br>
+				<span class="font-w800">
+					<?php echo number_format($costeProp, 2,',','.'); ?>€
+				</span>
+			</h4>
 		</div>
 		<div class="col-md-6 col-md-offset-1 col-xs-12" style="background-color: rgba(16,207,189,0.5);">
-			<h4 class="text-left" style="line-height: 1; letter-spacing: -1px;">
+			<h4 class="text-left hidden-sm hidden-xs" style="line-height: 1; letter-spacing: -1px;">
 				Liquidación: 
+				<span class="font-w800"><?php echo $dates['start']->copy()->formatLocalized('%d %b %Y') ?></span> - 
+				<span class="font-w800"><?php echo $dates['finish']->copy()->formatLocalized('%d %b %Y') ?></span>
+			</h4>
+			<h4 class="text-left  hidden-md hidden-lg" style="line-height: 1; letter-spacing: -1px;">
+				Liquidación:<br> 
 				<span class="font-w800"><?php echo $dates['start']->copy()->formatLocalized('%d %b %Y') ?></span> - 
 				<span class="font-w800"><?php echo $dates['finish']->copy()->formatLocalized('%d %b %Y') ?></span>
 			</h4>
@@ -45,7 +54,7 @@
 					<?php endif ?>
 				</tr>
 				<tr>
-					<td class="text-center total" style="    font-size: 20px;">
+					<td class="text-center total">
 						<?php if ($total > 0): ?>
 							<?php echo number_format($total,0,',','.'); ?>€
 						<?php else: ?>
@@ -87,9 +96,8 @@
 			<div class="col-md-12">
 				<h2 class="text-center font-w800">Listado de reservas</h2>
 			</div>
-			<div class="col-md-12">
+			<div class="row table-responsive">
 				<table class="table no-footer ">
-					
 					<thead>
 						<th class ="text-center bg-complete text-white" style="width: 20%; padding: 4px 10px">Cliente</th>
 						<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Pers</th>
