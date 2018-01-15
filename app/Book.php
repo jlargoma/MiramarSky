@@ -645,31 +645,13 @@ class Book extends Model
     //Funcion para guardar los metodos de Pago
     public  function getPayment($tipo)
     {
-        // $payments = \App\Payments::where('book_id',$id)->where('type',2)->get();
-
-        // foreach ($payments as $payment) {
-
-        //     $this->banco += $payment->import;
-        // }
-        foreach ($this->pago as $pago) {
-            if ($pago->type == $tipo && $tipo == 2) {
-                $this->banco += $pago->import;
-            }else if ($pago->type == $tipo && $tipo == 1) {
-                $this->cobJorge += $pago->import;
-            }else if ($pago->type == $tipo && $tipo == 0) {
-                $this->cobJaime += $pago->import;
-            }
+       
+        $paymentImport = 0;
+        foreach (\App\Payments::where('book_id',$this->id)->where('type', $tipo)->get() as $pago) {
+            $paymentImport += $pago->import;
 
         }
-        if ($tipo == 2) {
-            return  $this->banco;
-        }else if($tipo == 1) {
-            return  $this->cobJorge;
-        }else if($tipo == 0) {
-            return  $this->cobJaime;
-        }else if($tipo == 4){
-            return $this->banco + $this->cobJorge + $this->cobJaime;
-        }
+        return $paymentImport;
 
     }
 
