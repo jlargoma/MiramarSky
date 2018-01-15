@@ -154,6 +154,9 @@
                     if (notModifyPrice == 1) {
                         costeTotal = costeTotal + parseInt($('.agencia').val())
                     }
+                    if (notModifyPrice == 2) {
+                        costeTotal = costeTotal - parseInt($('.promociones').val())
+                    }
 
                     $('.total').val( parseInt(total) );
                     $('.cost').val( parseInt(costeTotal) );
@@ -270,6 +273,11 @@
         $('.agencia').change(function(event){ 
             calculate(1);
         });
+        $('.promociones').change(function(event){ 
+            calculate(2);
+            $('.content_book_owned_comments').show();
+
+        });
 
         $('.total').change(function(event) {
             var price = $(this).val();
@@ -307,7 +315,7 @@
             cost = parseFloat( $(this).val() ) + parseFloat( $('.costParking').val() ) + costLujo;
 
             $('.cost').val(cost);
-            $('.content_book_owned_comments').show();
+            // $('.content_book_owned_comments').show();
             
         });
 
@@ -489,6 +497,7 @@
                 var scheduleOut         = $('select[name="scheduleOut"]').val();
                 var agency              = $('select[name="agency"]').val();
                 var agencia             = $('input[name="agencia"]').val();
+                var promociones         = $('.promociones').val();
                 var total               = $('input[name="total"]').val();
                 var cost                = $('input[name="cost"]').val();
                 var costApto            = $('input[name="costApto"]').val();
@@ -530,6 +539,7 @@
                                 costParking: costParking,
                                 beneficio: beneficio,
                                 comments: comments,
+                                promociones: promociones,
                                 book_comments: book_comments,
                                 book_owned_comments: book_owned_comments }, 
                 function(data) {
