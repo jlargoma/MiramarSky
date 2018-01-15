@@ -86,9 +86,6 @@
     <?php endif ?>
 
     function calculate( notModifyPrice = 0){
-
-        $('.loading-div').show();
-
         var room       = $('#newroom').val();
         var pax        = $('.pax').val();
         var park       = $('.parking').val();
@@ -144,70 +141,41 @@
         }else{
 
             if ( room != "" && pax != "") {
+                $('.loading-div').show();
 
-                $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays, room: room}).done(function( data ) {
-                    pricePark = data;
-                });
+                $.get('/admin/api/reservas/getDataBook', {start: start, finish: finish, noches: diffDays, pax: pax, room: room, park: park, lujo: lujo,}).done(function( data ) {
 
-                $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).done(function( data ) {
-                    priceLujo = data;
-                });
+                    console.log(data);
+                    var costeApto  = data.costes.book +  data.costes.limp;
+                    var costeTotal = costeApto + data.costes.parking + data.costes.lujo;
+                    var total      = data.totales.book + data.totales.parking + data.totales.lujo +  data.totales.limp;
+                    var parking    = data.costes.parking;
 
-                $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).done(function( data ) {
-                    price = data;
-
-                    price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
-
-                    if ( notModifyPrice == 0) {
-                        $('.total').empty();
-                        $('.total').val(price);
+                    if (notModifyPrice == 1) {
+                        costeTotal = costeTotal + parseInt($('.agencia').val())
                     }
-                });
+
+                    $('.total').val( parseInt(total) );
+                    $('.cost').val( parseInt(costeTotal) );
+                    $('.costApto').val( parseInt(costeApto) );
+                    $('.costParking').val( parseInt(parking) );
 
 
-                //COSTES 
-                //Coste Parking
-                var costPark = 0;
-                $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays, room: room}).done(function( data ) {
-                    costPark = data;
-                    $('.costParking').val(parseFloat(data))
-                });
-                //Coste Lujo
-                var costLujo = 0;
-                $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).done(function( data ) {
-                    costLujo = data;
-                });
-
-
-                $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).done(function( data ) {
-
-                    var cost = data;
-
-                    //Coste Apartamento
-                    $('.costApto').val(parseFloat(cost));
-
-                    agencia = $('.agencia').val();
-                    if (agencia == "") {
-                        agencia = 0;
-                    }
-                    //Coste Total
-                    cost = (parseFloat(cost) + parseFloat(costPark) + parseFloat(agencia) + parseFloat(costLujo));
-
-                    $('.cost').empty();
-                    $('.cost').val(cost);
-                    beneficio = price - cost;
+                    var beneficio = total - costeTotal;
                     $('.beneficio').empty;
                     $('.beneficio').val(beneficio);
-                    beneficio_ = (beneficio / price)*100
+                    beneficio_ = (beneficio / total)*100
                     $('.beneficio-text').empty();
                     $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
-
+                    
                 });
+
+                $('.loading-div').hide();
                                 
             }
         }
 
-        $('.loading-div').hide();
+        
 
     };
 

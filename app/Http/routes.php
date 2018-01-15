@@ -75,22 +75,6 @@ Route::get('/admin/links-stripe', 'StripeController@link');
 	Route::get('/supermercado', function(){
 		return redirect('http://miramarski.com/supermercado');
 	});
-
-	// Route::get('/supermercado','StoreController@index');
-	// Route::get('/supermercado/reserva/{id}','StoreController@cartByBook');
-	// Route::get('/supermercado/addCart','StoreController@addCart');
-	// Route::get('/supermercado/search/searchByName','StoreController@searchByName');
-	// Route::get('/supermercado/getSummaryCart','StoreController@getSummaryCart');
-	// Route::get('/searchBook','StoreController@searchBook');
-	// Route::get('/supermercado/pedidos/delete/{id}',function ($id)
-	// {
-	// 	$orderProduct = \App\Products_orders::find($id);
-	// 	if ($orderProduct->delete()) {
-	// 		return redirect()->back();
-	// 	}
-	// });
-	// Route::get('/supermercado/checkout/{id}','StoreController@checkout');
-	// Route::post('/supermercado/stripe/payment','StoreController@payment');
 /* FIN SUPERMERCADO */
 
 /* ENCUESTAS */
@@ -128,14 +112,14 @@ Route::get('/admin/reservas/api/checkSecondPay','BookController@checkSecondPay')
 	Route::get('admin/reservas/ansbyemail/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@ansbyemail']);
 	Route::post('admin/reservas/sendEmail' ,['middleware' => 'auth', 'uses' =>  'BookController@sendEmail']);
 	Route::get('admin/reservas/sendJaime' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@sendJaime']);
-	Route::get('admin/reservas/getPriceBook' , 'BookController@getPriceBook');
-	Route::get('admin/reservas/getCostBook' , 'BookController@getCostBook');
-	Route::get('admin/reservas/getPricePark' , 'BookController@getPricePark');
-	Route::get('admin/reservas/getCostPark' , 'BookController@getCostPark');
-	Route::get('admin/reservas/getPriceLujo' , 'BookController@getPriceLujo');
-	Route::get('admin/reservas/getCostLujo' , 'BookController@getCostLujo');
-	Route::get('admin/reservas/getPriceLujoAdmin' , 'BookController@getPriceLujoAdmin');
-	Route::get('admin/reservas/getCostLujoAdmin' , 'BookController@getCostLujoAdmin');
+	// Route::get('admin/reservas/getPriceBook' , 'BookController@getPriceBook');
+	// Route::get('admin/reservas/getCostBook' , 'BookController@getCostBook');
+	// Route::get('admin/reservas/getPricePark' , 'BookController@getPricePark');
+	// Route::get('admin/reservas/getCostPark' , 'BookController@getCostPark');
+	// Route::get('admin/reservas/getPriceLujo' , 'BookController@getPriceLujo');
+	// Route::get('admin/reservas/getCostLujo' , 'BookController@getCostLujo');
+	// Route::get('admin/reservas/getPriceLujoAdmin' , 'BookController@getPriceLujoAdmin');
+	// Route::get('admin/reservas/getCostLujoAdmin' , 'BookController@getCostLujoAdmin');
 	Route::get('admin/reservas/saveCobro' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@saveCobro']);
 	Route::get('admin/reservas/deleteCobro/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@deleteCobro']);
 	Route::get('admin/reservas/saveFianza' ,['middleware' => 'auth', 'uses' =>  'BookController@saveFianza']);
@@ -148,6 +132,11 @@ Route::get('/admin/reservas/api/checkSecondPay','BookController@checkSecondPay')
 	Route::get('admin/reservas/api/lastsBooks' ,['middleware' => 'auth', 'uses' =>  'BookController@getLastBooks']);
 	Route::get('admin/reservas/api/calendarBooking' ,['middleware' => 'auth', 'uses' =>  'BookController@getCalendarBooking']);
 	Route::get('admin/reservas/api/alertsBooking' ,['middleware' => 'auth', 'uses' =>  'BookController@getAlertsBooking']);
+
+	
+	Route::get('admin/api/reservas/getDataBook' ,['middleware' => 'auth', 'uses' =>  'BookController@getAllDataToBook']);
+
+	
 
 	Route::get('admin/reservas/api/sendSencondEmail' ,['middleware' => 'auth', 'uses' =>  'BookController@sendSencondEmail']);
 	Route::get('/admin/reservas/fianzas/cobrar/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@cobrarFianzas']);
@@ -358,9 +347,7 @@ Route::group(['middleware' => 'auth'], function () {
 	});
 	
 	Route::get('/admin/rooms/search/searchByName', 'RoomsController@searchByName');
-	
 	Route::get('/admin/rooms/getUpdateForm', 'RoomsController@getUpdateForm');
-
 	Route::get('/admin/paymentspro/delete/{id}', function($id){
 
 		if ( \App\PaymentsPro::find($id)->delete() ) {
@@ -392,18 +379,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 	});
 
-	
-
 	Route::get('/sendImagesRoomEmail', 'RoomsController@sendImagesRoomEmail');
 	
 	
 
 });
-Route::group(['middleware' => 'authAdmin'], function () {
-
-	
-
-
-	
-});
-

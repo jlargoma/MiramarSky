@@ -251,7 +251,7 @@
                         <div class="col-md-2 col-xs-3" >
                             <label>Pax</label>
                             <select class=" form-control pax minimal"  name="pax">
-                                <?php for ($i=1; $i <= 12 ; $i++): ?>
+                                <?php for ($i=1; $i <= 14 ; $i++): ?>
                                     <?php if ($i != 9 && $i != 11): ?>
                                         <option value="<?php echo $i ?>" <?php echo ($i == $book->pax)?"selected":""; ?>>
                                             <?php echo $i ?>
@@ -264,7 +264,7 @@
                         <div class="col-md-2 col-xs-3 " >
                             <label style="color: red">Pax-Real</label>
                             <select class=" form-control real_pax minimal"  name="real_pax">
-                                <?php for ($i=1; $i <= 12 ; $i++): ?>
+                                <?php for ($i=1; $i <= 14 ; $i++): ?>
                                     <?php if ($i != 9 && $i != 11): ?>
                                         <option value="<?php echo $i ?>" <?php echo ($i == $book->real_pax)?"selected":""; ?> style="color: red">
                                             <?php echo $i ?>
@@ -699,7 +699,7 @@
                         <div class="col-md-1 col-xs-4 push-20 ">
                             <label>Pax</label>
                             <select class=" form-control pax minimal"  name="pax">
-                                <?php for ($i=1; $i <= 10 ; $i++): ?>
+                                <?php for ($i=1; $i <= 14 ; $i++): ?>
                                     <option value="<?php echo $i ?>" <?php echo ($i == $book->pax)?"selected":""; ?>>
                                         <?php echo $i ?>
                                     </option>
@@ -707,7 +707,7 @@
                             </select> 
                             <label class="m-t-20" style="color: red">Pax-Real</label>
                             <select class=" form-control real_pax minimal"  name="real_pax">
-                                <?php for ($i=1; $i <= 10 ; $i++): ?>
+                                <?php for ($i=1; $i <= 14 ; $i++): ?>
                                     <option value="<?php echo $i ?>" <?php echo ($i == $book->real_pax)?"selected":""; ?> style="color: red">
                                         <?php echo $i ?>
                                     </option>

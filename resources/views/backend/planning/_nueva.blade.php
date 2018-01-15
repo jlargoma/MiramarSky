@@ -121,7 +121,7 @@
                 <div class="col-md-2 col-xs-6 push-xs-10">
                     <label>Pax</label>
                     <select class=" form-control pax minimal"  name="pax">
-                        <?php for ($i=1; $i <= 12 ; $i++): ?>
+                        <?php for ($i=1; $i <= 14 ; $i++): ?>
                             <?php if ($i != 9 && $i != 11): ?>
                                 <option value="<?php echo $i ?>">
                                     <?php echo $i ?>
@@ -134,7 +134,7 @@
                 <div class="col-md-2 col-xs-5 push-xs-10">
                      <label style="color: red">Pax-reales</label>
                      <select class="form-control real_pax "  name="real_pax" style="color:red">
-                        <?php for ($i=1; $i <= 12 ; $i++): ?>
+                        <?php for ($i=1; $i <= 14 ; $i++): ?>
                             <?php if ($i != 9 && $i != 11): ?>
                                 <option value="<?php echo $i ?>">
                                     <?php echo $i ?>
