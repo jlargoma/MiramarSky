@@ -55,6 +55,25 @@
 			}
 		}
     </style>
+
+    <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
+	<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
+	<style type="text/css" media="screen"> 
+	    .daterangepicker{
+	        z-index: 10000!important;
+	    }
+	    .pg-close{
+	        font-size: 45px!important;
+	        color: white!important;
+	    }
+	    @media only screen and (max-width: 767px){
+	       .daterangepicker {
+	            left: 12%!important;
+	            top: 3%!important; 
+	        }
+	    }
+
+	</style>
     
 @endsection
 
@@ -63,8 +82,12 @@
 @section('content')
 
 <div class="container-fluid padding-25 sm-padding-10">
-    <div class="row">
-        <div class="col-md-2 col-md-offset-4 col-xs-12 text-center">
+    <div class="row push-20">
+    	<div class="col-md-2 col-xs-12 text-center">
+			<h5 class="text-center push-10">GENERAR LIQUIDACIÓN:</h5>
+			<input type="text" class="form-control dateRange" id="dateRange" name="dateRange" required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="">
+		</div>
+        <div class="col-md-2 col-md-offset-1 col-xs-12 text-center">
             <h2 class="font-w300">Pagos a <span class="font-w800">propietarios</span> </h2>
         </div>
         <div class="col-md-1 col-xs-12">
@@ -85,18 +108,18 @@
 	    <div class="row">
 	    	
 	    	<div class="col-md-8 col-xs-12 push-0">
-	    		<div class="col-md-9 col-xs-12 pull-right not-padding" style="width: 76.6%">
+	    		<div class="col-md-9 col-xs-12 pull-right not-padding" style="width: 72.6%">
 	    			<table class="table table-hover" >
 	    				<thead>
 	    					<tr>
+	    						<th class ="text-center bg-complete text-white">
+	    							C. Prop.   
+	    						</th>
 	    						<th class ="text-center bg-complete text-white">
 	    							PVP    
 	    						</th>
 	    						<th class ="text-center bg-complete text-white">
 	    							C. Total.   
-	    						</th>
-	    						<th class ="text-center bg-complete text-white">
-	    							C. Prop.   
 	    						</th>
 	    						<th class ="text-center bg-complete text-white">
 	    							C. Apto.   
@@ -129,15 +152,15 @@
 	    				</thead>
 	    				<tbody>
 	    					<tr> 
+	    						<td class="text-center costeApto bordes">
+	    							<?php $costeProp =  $summary['totalApto'] + $summary['totalParking'] + $summary['totalLujo']?>
+	    							<b><?php  echo number_format( $costeProp ,0,',','.') ?>€</b>
+	    						</td>
 	    						<td class="text-center" style="padding: 8px;">
 	    							<?php echo number_format($summary['totalPVP'],0,',','.') ?>€
 	    						</td>
 	    						<td class="text-center costeApto bordes">
 	    							<b><?php  echo number_format($summary['totalCost'],0,',','.') ?>€</b>
-	    						</td>
-	    						<td class="text-center costeApto bordes">
-	    							<?php $costeProp =  $summary['totalApto'] + $summary['totalParking'] + $summary['totalLujo']?>
-	    							<b><?php  echo number_format( $costeProp ,0,',','.') ?>€</b>
 	    						</td>
 	    						<td class="text-center">
 	    							<b><?php  echo number_format($summary['totalApto'],0,',','.') ?>€</b>
@@ -188,18 +211,20 @@
 			    					Prop.
 			    				</th>
 			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 1%">&nbsp;</th>
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 1%">&nbsp;</th>
 			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 3%">
 			    					Tipo 
 			    				</th>
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+									C. Prop.   
+								</th>
 			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: " >
 			    					PVP  
 			    				</th>
 			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
 									C. Total.   
 								</th>
-								<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
-									C. Prop.   
-								</th>
+								
 			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
 									C. Apto.   
 								</th>
@@ -232,6 +257,7 @@
 					        <tbody>
 					        	<?php foreach ($rooms as $room): ?>
 					        		<?php $pendiente = $data[$room->id]['totales']['totalCost'] - $data[$room->id]['pagos'] ?>
+					        		<?php $costPropTot =  $data[$room->id]['totales']['totalApto']+$data[$room->id]['totales']['totalParking']+$data[$room->id]['totales']['totalLujo']?>
 					        		<tr>
 					        			<td class="text-left"  style="padding: 10px 5px ;">
 					        				<a class="update-payments" data-debt="<?php echo $pendiente ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments" title="Añadir pago" style="cursor: pointer">
@@ -239,12 +265,25 @@
 					        				</a>
 					        			</td>
 					        			<td class="text-center"  style="padding: 10px 5px ;">
-					        				<button class="btn btn-default btn-sm bookByRoom" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#bookByRoom" style="cursor: pointer" title="Reservas de <?php echo $room->nameRoom?>">
+					        				<button class="btn btn-default btn-sm bookByRoom" data-id="<?php echo $room->id ?>"  data-toggle="modal" data-target="#bookByRoom" style="cursor: pointer" title="Reservas de <?php echo $room->nameRoom?>">
+					        					<i class="fa fa-address-book" aria-hidden="true"></i>
+					        				</button>
+					        			</td>
+					        			<td class="text-center"  style="padding: 10px 5px ;">
+					        				<button class="btn btn-primary btn-sm liquidationByRoom" data-id="<?php echo $room->id ?>" data-costeProp="<?php echo $costPropTot; ?>"data-toggle="modal" data-target="#liquidationByRoom" style="cursor: pointer" title="Liquidación de <?php echo $room->nameRoom?>">
 					        					<i class="fa fa-address-book" aria-hidden="true"></i>
 					        				</button>
 					        			</td>
 					        			<td class="text-center"  style="padding: 10px 5px ;">
 					        				<?php echo $room->typeAptos->name ?>		
+					        			</td>
+					        			<td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
+											
+					        				<?php if ( $costPropTot  != 0): ?>
+					        					<?php echo number_format($costPropTot ,0,',','.'); ?>€
+					        				<?php else: ?>
+					        					-----
+					        				<?php endif ?>
 					        			</td>
 					        			<td class="text-center"  style="padding: 10px 5px ;">
 					        				<?php if (isset($data[$room->id]['totales']['totalPVP'])): ?>
@@ -262,14 +301,7 @@
 					        					-----
 					        				<?php endif ?>
 					        			</td>
-					        			<td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
-											<?php $costPropTot =  $data[$room->id]['totales']['totalApto']+$data[$room->id]['totales']['totalParking']+$data[$room->id]['totales']['totalLujo']?>
-					        				<?php if ( $costPropTot  != 0): ?>
-					        					<?php echo number_format($costPropTot ,0,',','.'); ?>€
-					        				<?php else: ?>
-					        					-----
-					        				<?php endif ?>
-					        			</td>
+					        			
 
 					        			<td class="text-center"  style="padding: 10px 5px ;">
 					        				<?php if (isset($data[$room->id]['totales']['totalApto'])): ?>
@@ -374,14 +406,15 @@
     				<thead>
     					<tr>
     						<th class ="text-center bg-complete text-white">
+    							C. Prop.   
+    						</th>
+    						<th class ="text-center bg-complete text-white">
     							PVP    
     						</th>
     						<th class ="text-center bg-complete text-white">
     							C. Total.   
     						</th>
-    						<th class ="text-center bg-complete text-white">
-    							C. Prop.   
-    						</th>
+    						
     						<th class ="text-center bg-complete text-white">
     							C. Apto.   
     						</th>
@@ -413,16 +446,17 @@
     				</thead>
     				<tbody>
     					<tr> 
+    						<td class="text-center costeApto bordes">
+    							<?php $costeProp =  $summary['totalApto'] + $summary['totalParking'] + $summary['totalLujo']?>
+    							<b><?php  echo number_format( $costeProp ,0,',','.') ?>€</b>
+    						</td>
     						<td class="text-center" style="padding: 8px;">
     							<?php echo number_format($summary['totalPVP'],0,',','.') ?>€
     						</td>
     						<td class="text-center costeApto bordes">
     							<b><?php  echo number_format($summary['totalCost'],0,',','.') ?>€</b>
     						</td>
-    						<td class="text-center costeApto bordes">
-    							<?php $costeProp =  $summary['totalApto'] + $summary['totalParking'] + $summary['totalLujo']?>
-    							<b><?php  echo number_format( $costeProp ,0,',','.') ?>€</b>
-    						</td>
+    						
     						<td class="text-center">
     							<b><?php  echo number_format($summary['totalApto'],0,',','.') ?>€</b>
     						</td>
@@ -516,6 +550,7 @@
 				        <tbody>
 				        	<?php foreach ($rooms as $room): ?>
 				        		<?php $pendiente = $data[$room->id]['totales']['totalCost'] - $data[$room->id]['pagos'] ?>
+				        		<?php $costPropTot =  $data[$room->id]['totales']['totalApto']+$data[$room->id]['totales']['totalParking']+$data[$room->id]['totales']['totalLujo']?>
 				        		<tr>
 				        			<td class="text-left"  style="padding: 10px 5px ;">
 				        				<a class="update-payments" data-debt="<?php echo $pendiente ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments" title="Añadir pago" style="cursor: pointer">
@@ -524,6 +559,11 @@
 				        			</td>
 				        			<td class="text-center"  style="padding: 10px 5px ;">
 				        				<button class="btn btn-default btn-sm bookByRoom" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#bookByRoom" style="cursor: pointer" title="Reservas de <?php echo $room->nameRoom?>">
+				        					<i class="fa fa-address-book" aria-hidden="true"></i>
+				        				</button>
+				        			</td>
+				        			<td class="text-center"  style="padding: 10px 5px ;">
+				        				<button class="btn btn-primary btn-sm liquidationByRoom" data-id="<?php echo $room->id ?>" data-costeProp="<?php echo $costPropTot; ?>"data-toggle="modal" data-target="#liquidationByRoom" style="cursor: pointer" title="Liquidación de <?php echo $room->nameRoom?>">
 				        					<i class="fa fa-address-book" aria-hidden="true"></i>
 				        				</button>
 				        			</td>
@@ -685,6 +725,24 @@
 	</div>
 	<!-- /.modal-dialog -->
 </div>
+<div class="modal fade slide-up disable-scroll in" id="liquidationByRoom" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content-wrapper">
+			<div class="modal-content">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close fa-2x"></i></button>
+				<div class="container-xs-height full-height">
+					<div class="row-xs-height">
+						<div class="modal-body contentLiquidationByRoom">
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
 @endsection
 
 @section('scripts')
@@ -695,9 +753,51 @@
 	<script src="/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
 	<script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
 
-
+	<script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
+	<script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
 
 	<script type="text/javascript">
+		$(function() {
+            $(".dateRange").daterangepicker({
+                "buttonClasses": "button button-rounded button-mini nomargin",
+                "applyClass": "button-color",
+                "cancelClass": "button-light",            
+                "startDate": '01 Nov, 17',
+                locale: {
+                    format: 'DD MMM, YY',
+                    "applyLabel": "Aplicar",
+                    "cancelLabel": "Cancelar",
+                    "fromLabel": "From",
+                    "toLabel": "To",
+                    "customRangeLabel": "Custom",
+                    "daysOfWeek": [
+                    "Do",
+                    "Lu",
+                    "Mar",
+                    "Mi",
+                    "Ju",
+                    "Vi",
+                    "Sa"
+                    ],
+                    "monthNames": [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre"
+                    ],
+                    "firstDay": 1,
+                },
+
+            });
+        });
 		$(document).ready(function() {
 
 			$('.update-payments').click(function(event) {
@@ -788,6 +888,17 @@
 			var idRoom = $(this).attr('data-id');
 			$.get('/admin/paymentspro/getBooksByRoom/'+idRoom,{ idRoom: idRoom, year: year}, function(data) {
 				$('.contentBookRoom').empty().append(data);
+			});
+			
+		});
+		$('button.liquidationByRoom').click(function(event) {
+			event.preventDefault();
+			var date = $('#dateRange').val();
+
+			var idRoom = $(this).attr('data-id');
+			var costeProp = $(this).attr('data-costeProp');
+			$.get('/admin/paymentspro/getLiquidationByRoom',{ idRoom: idRoom, date: date, costeProp:costeProp}, function(data) {
+				$('.contentLiquidationByRoom').empty().append(data);
 			});
 			
 		});
