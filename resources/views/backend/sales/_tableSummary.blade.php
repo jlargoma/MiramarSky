@@ -40,7 +40,7 @@
                     <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Sup. Lujo</th>
                     <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Limp</th>
                     <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Agencia</th>
-                    <th class ="text-center bg-complete text-white" style="width: 3%; padding: 5px 5px 0">Obs</th>
+                    <th class ="text-center bg-complete text-white" style="width: 3%; padding: 5px 5px 0">Extras</th>
                     <th class ="text-center bg-complete text-white" style="width: 2%; padding: 5px 5px 0">Stripe</th>
                     <th class ="text-center bg-complete text-white" style="width: 2%; padding: 5px 5px 0">Benef<br>Jorg</th>
                     <th class ="text-center bg-complete text-white" style="width: 2%; padding: 5px 5px 0">Benef<br>Jaim</th>
@@ -152,7 +152,7 @@
                 <th class ="text-center bg-complete text-white" style="width: 5%">Sup. Lujo</th>
                 <th class ="text-center bg-complete text-white" style="width: 5%">Limp</th>
                 <th class ="text-center bg-complete text-white" style="width: 5%">Agencia</th>
-                <th class ="text-center bg-complete text-white" style="width: 3%">Obs</th>
+                <th class ="text-center bg-complete text-white" style="width: 3%">Extras</th>
                 <th class ="text-center bg-complete text-white" style="width: 3%">Stripe</th>
                 <th class ="text-center bg-complete text-white" style="width: 5%">Benef Jorge</th>
                 <th class ="text-center bg-complete text-white" style="width: 5%">Benef Jaime</th>
@@ -162,15 +162,20 @@
                 
                 <?php foreach ($books as $book): ?>
                     <tr >
-                        <td class="text-center">
+                        <td class="text-center"> 
+                            <!-- PVP -->
                             <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                                 <?php  echo $book->customer['name'] ?>      
                             </a>
                         </td>
                         <td class="text-center">
+                            <!-- pax -->
+
                             <?php echo $book->pax ?>        
                         </td>
                         <td class="text-center">
+                            <!-- apto -->
+
                             <?php echo $book->room->name ?>     
                         </td>
                         <td class="text-center">
@@ -252,6 +257,7 @@
                             
                         </td>
                         <td class="text-center coste bi " style="border-left: 1px solid black;">
+                            <?php $book->cost_total = $book->cost_total?>
                             <?php if ( $book->cost_total > 0): ?>
                                 <b><?php echo number_format( $book->cost_total,0,',','.')?> €</b>    
                             <?php else: ?>
@@ -319,7 +325,7 @@
 
                                 <?php if ($totalStripep > 0): ?>
                                     
-                                    <?php echo ((1.4 * $totalStripep)/100)+0.25 ?>€
+                                    <?php echo number_format((((1.4 * $totalStripep)/100)+0.25), 2,',','.') ?>€
 
                                 <?php else: ?>
                                     ----
@@ -375,6 +381,8 @@
                             <th class ="text-center bg-complete text-white" style="width: 5%">Sup. Lujo</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Limp</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Agencia</th>
+                            <th class ="text-center bg-complete text-white" style="width: 1%">Extras</th>
+                            <th class ="text-center bg-complete text-white" style="width: 1%">Stripe</th>
                             <th class ="text-center bg-complete text-white" style="width: 1%">Benef  Jorg</th>
                             <th class ="text-center bg-complete text-white" style="width: 1%">Benef  Jaim</th>
 
@@ -422,6 +430,17 @@
                             <td class ="text-center coste" style="border-left:1px solid black;">
                                 <?php echo number_format($totales["costeAgencia"],0,',','.') ?>€
                             </td>
+                            <td class ="text-center coste" style="border-left:1px solid black;">
+                                <?php if ($totales["obs"] > 0): ?>
+                                    <?php echo number_format($totales["obs"],0,',','.') ?>€
+                                <?php else: ?>
+                                    --
+                                <?php endif ?>
+                               
+                            </td>
+                            <td class ="text-center coste" style="border-left:1px solid black;">
+                                <?php echo number_format($totales["stripe"],0,',','.') ?>€
+                            </td>
                             <td class ="text-center" style="border-left:1px solid black;">
                                 <?php echo number_format($totales["benJorge"],0,',','.') ?>€
                             </td>
@@ -455,6 +474,8 @@
                             <th class ="text-center bg-complete text-white" style="width: 5%">Sup. Lujo</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Limp</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Agencia</th>
+                            <th class ="text-center bg-complete text-white" style="width: 1%">Extras</th>
+                            <th class ="text-center bg-complete text-white" style="width: 1%">Stripe</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Ben <br> Jorge</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Ben <br> Jaime</th>
                         </thead>
@@ -530,6 +551,39 @@
                                     <td class="text-center coste bf">   
                                         <?php echo number_format($book->PVPAgencia,0,',','.') ?>€
                                     </td>
+                                    <td class ="text-center coste" style="border-left:1px solid black;">
+                                    <td class="text-center coste" style="border-left: 1px solid black;">
+                                        <?php if ( $book->extraCost > 0): ?>
+                                            <?php echo number_format($book->extraCost,0,',','.') ?>€    
+                                        <?php else: ?>
+                                            --
+                                        <?php endif ?>
+                                    </td>
+                                    <td class="text-center coste bf" style="border-left: 1px solid black;">
+                                        <?php 
+                                            $totalStripep = 0;
+                                            $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get() 
+                                        ?>
+                                        <?php if (count($stripePayment) > 0): ?>
+
+                                            <?php foreach ($stripePayment as $key => $stripe): ?>
+                                                <?php $totalStripep +=  $stripe->import; ?>
+                                            <?php endforeach ?>
+
+                                            <?php if ($totalStripep > 0): ?>
+                                                
+                                                <?php echo number_format((((1.4 * $totalStripep)/100)+0.25), 2,',','.') ?>€
+
+                                            <?php else: ?>
+                                                ----
+                                            <?php endif ?>
+
+
+                                        <?php else: ?>
+                                            ----
+                                        <?php endif ?>
+
+                                    </td>
                                     <td class="text-center">
                                         <?php echo number_format($book->ben_jorge,0,',','.') ?>
                                     </td>
@@ -548,4 +602,5 @@
             </div>
 
         </div>
+    </div>
 <?php endif ?>
