@@ -94,7 +94,7 @@
                         <?php echo number_format( ( $totales["beneficio"] / $totales["total"] )* 100 ,2 ,',','.') ?>%
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <b><?php echo number_format($totales["coste"],0,',','.') ?>€</b>
+                        <b><?php echo number_format(($totales["coste"] + $totales["stripe"]),0,',','.') ?>€</b>
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
                         <?php echo number_format($totales["costeApto"],0,',','.') ?>€
@@ -233,10 +233,12 @@
                             
                         </td>
                         <td class="text-center coste pagos pendiente" style="border-left: 1px solid black;">
-                            <?php if ( ($book->total_price - $book->getPayment(4)) == 0 ): ?>
+                            <?php $sumPayme = $book->getPayment(0) + $book->getPayment(1) + $book->getPayment(2) + $book->getPayment(3); ?>
+                            <?php $pend = $book->total_price -  $sumPayme?>
+                            <?php if ( ($pend) == 0 ): ?>
                                 <b>----</b>
                             <?php else: ?>
-                                <?php echo number_format(($book->total_price - $book->getPayment(4)),0,',','.')." €"; ?>
+                                <?php echo number_format($pend,0,',','.')." €"; ?>
                             <?php endif ?>
                             
                         </td>
@@ -257,7 +259,15 @@
                             
                         </td>
                         <td class="text-center coste bi " style="border-left: 1px solid black;">
-                            <?php $book->cost_total = $book->cost_total?>
+                            <?php 
+                                $totalStripep = 0;
+                                $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get() 
+                            ?>
+                            <?php foreach ($stripePayment as $key => $stripe): ?>
+                                <?php $totalStripep +=  $stripe->import; ?>
+                            <?php endforeach ?>
+                            <?php $totalStripep = (((1.4 * $totalStripep)/100)+0.25) ?>
+                            <?php $book->cost_total += $totalStripep?>
                             <?php if ( $book->cost_total > 0): ?>
                                 <b><?php echo number_format( $book->cost_total,0,',','.')?> €</b>    
                             <?php else: ?>
@@ -412,7 +422,7 @@
                                 <?php echo number_format( ( $totales["beneficio"] / $totales["total"] )* 100 ,2 ,',','.') ?>%
                             </td>
                             <td class ="text-center coste" style="border-left:1px solid black;">
-                                <?php $coste = $totales["coste"] +  $totales["costeLimp"] + $totales["costeAgencia"]?>
+                                <?php $coste = $totales["coste"] + $totales["stripe"]?>
                                 <b><?php echo number_format($coste,0,',','.') ?>€</b>
                             </td>
                             <td class ="text-center coste" style="border-left:1px solid black;">
@@ -525,16 +535,31 @@
                                         <?php echo number_format($book->getPayment(1),0,',','.'); ?> €
                                     </td>
                                     <td class="text-center pagos pendiente">
-                                        <?php echo number_format(($book->total_price - $book->getPayment(4)),0,',','.')." €"; ?>
+                                        
+                                        <?php $sumPayme = $book->getPayment(0) + $book->getPayment(1) + $book->getPayment(2) + $book->getPayment(3); ?>
+                                        <?php $pend = $book->total_price -  $sumPayme?>
+                                        <?php if ( ($pend) == 0 ): ?>
+                                            <b>----</b>
+                                        <?php else: ?>
+                                            <?php echo number_format($pend,0,',','.')." €"; ?>
+                                        <?php endif ?>
+
                                     </td>
                                     <td class="text-center beneficio bi" style="border-left: 1px solid black;"><b>
                                         <?php echo number_format($book->total_ben,0,',','.') ?> €</b>
-                                    </td>
-                                    <td class="text-center beneficio bf">
+                                    </td><td class="text-center beneficio bf">
                                         <?php echo number_format($book->inc_percent,0)." %" ?>
                                     </td>
                                     <td class="text-center coste bi ">
-                                        <b><?php echo number_format( $book->cost_total,0,',','.')?> €</b>
+                                        <?php 
+                                            $totalStripep = 0;
+                                            $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get() 
+                                        ?>
+                                        <?php $totalStripep = (((1.4 * $totalStripep)/100)+0.25) ?>
+                                        <?php foreach ($stripePayment as $key => $stripe): ?>
+                                            <?php $totalStripep +=  $stripe->import; ?>
+                                        <?php endforeach ?>
+                                        <b><?php echo number_format( ($book->cost_total + $totalStripep),0,',','.')?> €</b>
                                     </td>
                                     <td class="text-center coste">
                                         <?php echo number_format($book->cost_apto,0,',','.')?> €
@@ -560,29 +585,18 @@
                                         <?php endif ?>
                                     </td>
                                     <td class="text-center coste bf" style="border-left: 1px solid black;">
-                                        <?php 
-                                            $totalStripep = 0;
-                                            $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get() 
-                                        ?>
-                                        <?php if (count($stripePayment) > 0): ?>
+                                    
+                                        <?php foreach ($stripePayment as $key => $stripe): ?>
+                                            <?php $totalStripep +=  $stripe->import; ?>
+                                        <?php endforeach ?>
 
-                                            <?php foreach ($stripePayment as $key => $stripe): ?>
-                                                <?php $totalStripep +=  $stripe->import; ?>
-                                            <?php endforeach ?>
-
-                                            <?php if ($totalStripep > 0): ?>
-                                                
-                                                <?php echo number_format((((1.4 * $totalStripep)/100)+0.25), 2,',','.') ?>€
-
-                                            <?php else: ?>
-                                                ----
-                                            <?php endif ?>
-
+                                        <?php if ($totalStripep > 0): ?>
+                                            
+                                            <?php echo number_format((((1.4 * $totalStripep)/100)+0.25), 2,',','.') ?>€
 
                                         <?php else: ?>
                                             ----
                                         <?php endif ?>
-
                                     </td>
                                     <td class="text-center">
                                         <?php echo number_format($book->ben_jorge,0,',','.') ?>
