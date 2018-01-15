@@ -231,6 +231,8 @@ Route::get('/admin/reservas/api/checkSecondPay','BookController@checkSecondPay')
 	Route::post('admin/pagos-propietarios/create', ['middleware' => 'authAdmin', 'uses' =>'PaymentsProController@create']);
 	Route::get('admin/pagos-propietarios/update/{id}/{month?}',['middleware' => 'authAdmin', 'uses' => 'PaymentsProController@update']);
 	Route::get('admin/paymentspro/getBooksByRoom/{idRoom}' , 'PaymentsProController@getBooksByRoom');
+	Route::get('admin/paymentspro/getLiquidationByRoom' , 'PaymentsProController@getLiquidationByRoom');
+
 
 //Liquidacion
 	Route::get('admin/liquidacion/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@index']);

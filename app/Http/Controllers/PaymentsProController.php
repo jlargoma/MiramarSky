@@ -396,4 +396,60 @@ class PaymentsProController extends Controller
 
         return view('backend/paymentspro/_tableBooksByRoom', ['books' => $books, 'mobile' => new Mobile(), 'totales' => $totales, 'data' => $data,]);
     }
+
+
+    public function getLiquidationByRoom(Request $request)
+    {
+
+        $aux = str_replace('Abr', 'Apr', $request->date);
+
+        $date = explode('-', $aux);
+
+        $start = Carbon::createFromFormat('d M, y' , trim($date[0]));
+        $finish = Carbon::createFromFormat('d M, y' , trim($date[1]));
+
+
+        $room = \App\Rooms::find( $request->idRoom);
+        $total = 0;
+        $apto = 0;
+        $park = 0;
+        $lujo = 0;
+        $books = \App\Book::where('room_id', $room->id)
+                            ->whereIn('type_book',[2,7,8])
+                            ->where('start','>=',$start->copy()->format('Y-m-d'))
+                            ->where('finish','<=',$finish->copy()->format('Y-m-d'))
+                            ->orderBy('start','ASC')
+                            ->get();
+
+        foreach ($books as $book) {
+
+           if ($book->type_book != 7 && $book->type_book != 8 && $book->type_book != 9) {
+               $apto  +=  $book->cost_apto;
+               $park  +=  $book->cost_park;
+               $lujo  +=  $book->cost_lujo;
+               
+           }
+
+          
+
+       }
+       $total += ( $apto + $park + $lujo);
+
+
+       return view('backend/paymentspro/_liquidationByRoom', [
+                                                                'books' => $books, 
+                                                                'costeProp' => $request->costeProp, 
+                                                                'apto' => $apto, 
+                                                                'park' => $park, 
+                                                                'lujo' => $lujo, 
+                                                                'total' => $total, 
+                                                                'room' => $room, 
+                                                                'dates' => [
+                                                                            'start' => $start,
+                                                                            'finish' => $finish,
+                                                                            ], 
+                                                                'mobile' => new Mobile(), 
+                                                            ]);
+
+    }
 }
