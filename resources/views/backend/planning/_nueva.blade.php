@@ -219,7 +219,7 @@
                 </div>
             </div>
             <div class="col-xs-12 bg-white">
-                <div class="col-xs-4 not-padding">
+                <div class="col-xs-6 col-md-4 not-padding">
                     <div class="col-md-6 col-xs-12 push-10">
                         <label>Agencia</label>
                         <select class="form-control full-width agency minimal" name="agency">
@@ -236,7 +236,13 @@
                     </div>
                    
                 </div>
-                <div class="col-xs-8 not-padding">
+                <div class="col-xs-6 col-md-2 not-padding">
+                    <label>Promociones</label>
+                    <input type="number" class="promociones form-control" name="promociones">
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="col-xs-12 not-padding">
                     <p class="personas-antiguo" style="color: red">
                     </p>
                 </div>

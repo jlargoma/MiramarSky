@@ -184,7 +184,7 @@ class BookController extends Controller
                 $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
                 $book->ben_jorge = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
                 $book->ben_jaime = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
-
+                $book->promociones     = 0;
                 if($book->save()){
                     /* Notificacion via email */
                     if ($customer->email) {
@@ -313,7 +313,7 @@ class BookController extends Controller
                         // }else{
                             $book->cost_apto     = ($request->input('costApto'))? $request->input('costApto'): $this->getCostBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->cost_limp;
                         // }
-                        $book->cost_total  = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
+                        $book->cost_total  = ($request->input('cost'))?$request->input('cost'):$book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
 
                         $book->total_price = $request->input('total');
 
@@ -331,6 +331,7 @@ class BookController extends Controller
                     $book->extraCost     = $extraCost;
                     $book->schedule      = ($request->input('schedule'))?$request->input('schedule'):0;
                     $book->scheduleOut   = ($request->input('scheduleOut'))?$request->input('scheduleOut'):12;
+                    $book->promociones     = ($request->input('promociones'))?$request->input('promociones'):0;
 
                     if($book->save()){
 
@@ -482,7 +483,7 @@ class BookController extends Controller
 
             $book->schedule       = $request->input('schedule');
             $book->scheduleOut    = $request->input('scheduleOut');
-
+            $book->promociones     = ($request->input('promociones'))?$request->input('promociones'):0;
             if ($book->save()) {
 
                 if ( $book->room->isAssingToBooking() ) {

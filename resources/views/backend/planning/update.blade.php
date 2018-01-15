@@ -362,7 +362,10 @@
                             </div>
                         
                         </div>
-                       
+                        <div class="col-md-2 col-xs-4 not-padding">
+                            <label>Promociones</label>
+                            <input type="text" class="promociones only-numbers form-control" name="promociones" value="<?php echo $book->promociones ?>">
+                        </div>
                         <div class="col-md-12 col-xs-12 push-20 not-padding">
                             <div class="col-md-3 col-xs-12 text-center boxtotales" style="background-color: #0c685f;">
                                 <label class="font-w800 text-white" for="">TOTAL</label>
@@ -410,9 +413,9 @@
                                 <label>Comentarios Internos</label>
                                 <textarea class="form-control book_comments" name="book_comments" rows="5" ><?php echo $book->book_comments ?></textarea>
                             </div>
-                            <div class="col-md-4 col-xs-12 content_book_owned_comments" style="display: none;">
+                            <div class="col-md-4 col-xs-12 content_book_owned_comments">
                                 <label>Comentarios Propietario</label>
-                                <textarea class="form-control book_owned_comments" name="book_owned_comments" rows="5" ></textarea>
+                                <textarea class="form-control book_owned_comments" name="book_owned_comments" rows="5" ><?php echo $book->book_owned_comments ?></textarea>
                             </div>
                         </div>
                         <div class="row push-40 bg-white padding-block">
@@ -802,7 +805,10 @@
                                 <?php endif ?>
                             </div>
                         </div>
-                       
+                       <div class="col-md-2 col-xs-5 push-20 ">
+                           <label>Promociones</label>
+                           <input type="text" class="promociones only-numbers form-control" name="promociones" value="<?php echo $book->promociones ?>">
+                       </div>
                         <div class="col-md-8 col-xs-12 push-20 not-padding">
                             <div class="col-md-3 col-xs-12 text-center" style="background-color: #0c685f;">
                                 <label class="font-w800 text-white" for="">TOTAL</label>
@@ -846,13 +852,17 @@
                         </p>
                     </div> 
                     <div class="col-xs-12 bg-white padding-block">
-                        <div class="col-md-6 col-xs-12">
+                        <div class="col-md-4 col-xs-12">
                             <label>Comentarios Cliente </label>
                             <textarea class="form-control" name="comments" rows="5" ><?php echo $book->comment ?></textarea>
                         </div>
-                        <div class="col-md-6 col-xs-12">
+                        <div class="col-md-4 col-xs-12">
                             <label>Comentarios Internos</label>
                             <textarea class="form-control book_comments" name="book_comments" rows="5" ><?php echo $book->book_comments ?></textarea>
+                        </div>
+                        <div class="col-md-4 col-xs-12 content_book_owned_comments">
+                            <label>Comentarios Propietario</label>
+                            <textarea class="form-control book_owned_comments" name="book_owned_comments" rows="5" ><?php echo $book->book_owned_comments ?></textarea>
                         </div>
                     </div>
                     <div class="row push-40 bg-white padding-block">
