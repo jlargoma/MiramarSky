@@ -10,6 +10,24 @@
 | and give it the controller to call when that URI is requested.
 | 
 */
+
+// Route::get('/test', function ()
+// {
+// 	foreach (\App\Book::all() as $key => $book) {
+// 		// $book->cost_total
+
+// 		$sumatorio = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp + $book->extraCost;
+
+// 		if ($sumatorio > $book->cost_total) {
+// 			$book->cost_total = $sumatorio;
+// 			if ($book->save()) {
+// 				echo $book->cost_apto."+".$book->cost_park."+".$book->cost_lujo."+".$book->PVPAgencia."+".$book->extraCost." = ".$book->cost_total."<br>";
+// 			}
+
+			
+// 		}
+// 	}
+// });
 Route::get('/admin/ical/create', 'iCalController@create');
 Route::get('/admin/ical/read', 'iCalController@read');
 
