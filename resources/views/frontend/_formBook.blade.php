@@ -33,8 +33,8 @@
 					<!-- <input type="button" value="-" class="minus black" style=" color: black;">
 					<input id="quantity" type="text" name="quantity" value="4" class="qty" style="background: white; color: black;"> -->
                     <select id="quantity" class="sm-form-control" name="quantity">
-                        <?php for ($i = 1;  $i <= 12 ; $i++): ?>
-                            <?php if ($i != 9 && $i != 11): ?>
+                        <?php for ($i = 1;  $i <= 14 ; $i++): ?>
+                            <?php if ($i != 9 && $i != 11 && $i != 13): ?>
                                 <option value="<?php echo $i ?>"><?php echo $i ?></option>
                             <?php endif ?>
                             
@@ -43,19 +43,27 @@
 					<!-- <input type="button" value="+" class="plus black" style=" color: black;"> -->
 				</div>
                 
-                <p class="help-block white hidden-sm hidden-xs" style="line-height:1.2">Máx 12 pers</p>
+                <p class="help-block white hidden-sm hidden-xs" style="line-height:1.2">Máx 14 pers</p>
                <!--  <p class="help-block white hidden-sm hidden-xs" style="color: white; line-height:1.2;">    
                     <b>* SOLICITAR APTO DOS DORM 6 PAX</b>
                 </p> -->
             </div>
             
-            <div class="form-group col-sm-12 col-xs-4 col-md-3" style="padding: 0">
-                <label for="parking" style="display: inline!important;" class="col-md-12 parking white">* Tipo Apto</label>
-                <div class="col-md-6">
+            <div class="form-group col-sm-12 col-xs-6 col-md-5" style="padding: 0">
+                <label for="parking" style="display: inline!important;" class="col-md-12 text-left parking white">* Tipo Apto</label>
+                <div class="col-md-3 col-xs-6">
 					<input id="apto-2dorm" class="radio-style apto-2dorm form-control" name="apto" type="radio" value="2dorm">
 					<label for="apto-2dorm" class="radio-style-3-label">2Dor</label>
 				</div>
-				<div class="col-md-6">
+                <div class="col-md-3 col-xs-6">
+                    <input id="apto-3dorm" class="radio-style apto-3dorm form-control" name="apto" type="radio" value="3dorm">
+                    <label for="apto-3dorm" class="radio-style-3-label">3Dor</label>
+                </div>
+                <div class="col-md-3 col-xs-6">
+                    <input id="apto-chlt" class="radio-style apto-chlt form-control" name="apto" type="radio" value="chlt">
+                    <label for="apto-chlt" class="radio-style-3-label">Chlt</label>
+                </div>
+				<div class="col-md-3 col-xs-6">
 					<input id="apto-estudio" class="radio-style apto-estudio form-control" name="apto" type="radio" value="estudio">
 					<label for="apto-estudio" class="radio-style-3-label">Est.</label>
 				</div>
