@@ -314,34 +314,34 @@ class HomeController extends Controller
         $countDays = $finish->diffInDays($start);
 
         
-        if ($request->input('quantity') <= 8) {
-            if ($request->input('apto') == '2dorm' && $request->input('luxury') == 'si') {
-               $roomAssigned = 115;
-               $typeApto  = "2 DORM Lujo";
-               $limp = 50;
-           }elseif($request->input('apto') == '2dorm' && $request->input('luxury') == 'no'){
-               $roomAssigned = 122;
-               $typeApto  = "2 DORM estandar";
-               $limp = 50;
-           }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'si'){
-               $roomAssigned = 138;
-               $limp = 30;
-               $typeApto  = "Estudio Lujo";
+        if ($request->input('apto') == '2dorm' && $request->input('luxury') == 'si') {
+           $roomAssigned = 115;
+           $typeApto  = "2 DORM Lujo";
+           $limp = 50;
+        }elseif($request->input('apto') == '2dorm' && $request->input('luxury') == 'no'){
+           $roomAssigned = 122;
+           $typeApto  = "2 DORM estandar";
+           $limp = 50;
+        }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'si'){
+           $roomAssigned = 138;
+           $limp = 30;
+           $typeApto  = "Estudio Lujo";
 
-           }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'no'){
-               $roomAssigned = 110;
-               $typeApto  = "Estudio estandar";
-               $limp = 30;
-           }
-        } else {
+        }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'no'){
+           $roomAssigned = 110;
+           $typeApto  = "Estudio estandar";
+           $limp = 30;
+        }elseif($request->input('apto') == 'chlt' && $request->input('luxury') == 'no'){
+           $roomAssigned = 144;
+           $typeApto  = "CHALET los pinos";
+           $limp = 50;
+        }elseif($request->input('apto') == '3dorm' && $request->input('luxury') == 'si'){
             /* Rooms para grandes capacidades */
-
-            $roomAssigned = 149;
-            $typeApto  = "3 DORM Lujo";
-            $limp = 100;
-
-
+           $roomAssigned = 149;
+           $typeApto  = "3 DORM Lujo";
+           $limp = 100;
         }
+
         
 
         $paxPerRoom = \App\Rooms::getPaxRooms($request->input('quantity'), $roomAssigned);

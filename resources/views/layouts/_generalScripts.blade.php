@@ -181,6 +181,16 @@
 			}
 
 	    });
+	    $(".apto-chlt").click(function(event) {
+
+	    	$("#luxury-no").trigger('click');
+
+
+	    	$("#luxury-yes").prop("disabled",true);
+			$("#luxury-yes").hide();
+
+			
+	    });
 
 	    $('#quantity').change(function(event) {
 	    	var pax = $(this).val();
@@ -192,9 +202,19 @@
 	    		$("#apto-estudio").show();
 
 	    	}else if (pax > 4) {
-	    		$(".apto-2dorm").trigger('click');
-	    		$("#apto-estudio").prop("disabled",true);
-	    		$("#apto-estudio").hide();
+	    		if (pax <= 8) {
+	    			$(".apto-2dorm").trigger('click');
+	    			$("#apto-estudio").prop("disabled",true);
+	    			$("#apto-estudio").hide();
+	    		} else {
+	    			$(".apto-3dorm").trigger('click');
+	    			
+	    			$("#apto-2dorm").prop("disabled",true);
+	    			$("#apto-2dorm").hide();
+
+	    			$("#apto-estudio").prop("disabled",true);
+	    			$("#apto-estudio").hide();
+	    		}
 	    	}
 	    });
 
