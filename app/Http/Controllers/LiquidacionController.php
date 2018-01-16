@@ -691,7 +691,8 @@ class LiquidacionController extends Controller
                     "pendiente"    => 0,   
                     "limpieza"     => 0,    
                     "beneficio"    => 0,   
-                    "stripe"        => 0,
+                    "stripe"       => 0,
+                    "obs"          => 0,
                 ];
 
         if ($request->year) {
@@ -783,7 +784,7 @@ class LiquidacionController extends Controller
                         $totales["stripe"] += ((1.4 * $totalStripep)/100)+0.25;
                     endif;
 
-    $totales['obs'] += $book->extraCost;
+                    $totales['obs'] += $book->extraCost;
                 
                 }
 
