@@ -41,7 +41,7 @@
 
                             <td class="text-center">
                                 <?php if ($book->agency != 0): ?>
-                                    <img style="width: 20px;margin: 0 auto;" src="/pages/booking.png" align="center" />
+                                    <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
                                 <?php endif ?>
                             </td>
                             <td class ="text-center" style="padding: 10px 15px!important">
@@ -208,7 +208,7 @@
                     
                     <td class="text-center">
                         <?php if ($book->agency != 0): ?>
-                            <img style="width: 15px;margin: 0 auto;" src="/pages/booking.png" align="center" />
+                            <img style="width: 15px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
                         <?php endif ?>
                     </td>
                     <td class="text-left">

@@ -12,7 +12,6 @@
 				<th class ="text-center bg-complete text-white" >   
 					Cliente     
 				</th>
-				<th class ="text-center bg-complete text-white" style="width: 4%!important">&nbsp;</th> 
 				<th class ="text-center bg-complete text-white" >   
 					Telefono     
 				</th>
@@ -55,23 +54,6 @@
 							<?php echo $book->customer['name']  ?>
 									
 						</a>                   
-					</td>
-
-					<?php $payments = \App\Payments::where('book_id', $book->id)->get(); ?>
-					<?php $fromStripe = false; ?>
-					<?php if ( count($payments) > 0): ?>
-                        <?php foreach ($payments as $key => $pay): ?>
-                            <?php if (preg_match('/stripe/i', $pay->comment)): ?>
-                                <?php $fromStripe = true; ?>
-                            <?php endif ?>
-                            
-                        <?php endforeach ?>
-                    <?php endif ?>
-					
-					<td class="text-center">
-						<?php if ($fromStripe): ?>
-						    <a target="_blank" href="https://dashboard.stripe.com/payments"><img src="/img/stripe-icon.jpg" style="width: 20px;"></a>
-						<?php endif ?> 
 					</td>
 					<td class ="text-center"> 
                         <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>

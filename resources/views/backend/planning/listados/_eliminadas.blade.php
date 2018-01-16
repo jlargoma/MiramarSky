@@ -25,7 +25,7 @@
                         <td style="display: none"><?php echo $book->id ?></td>
                         <td class="text-center">
                             <?php if ($book->agency != 0): ?>
-                                <img style="width: 20px;margin: 0 auto;" src="/pages/booking.png" align="center" />
+                                <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
                             <?php endif ?>
                         </td>
                         <td class ="text-center"  style="padding: 10px 15px!important">
@@ -153,7 +153,7 @@
                             
                             <td class="text-left">
                                 <?php if ($book->agency != 0): ?>
-                                    <img style="width: 15px;margin: 0 auto; margin-right: 3px;" src="/pages/booking.png" align="center" />
+                                    <img style="width: 15px;margin: 0 auto; margin-right: 3px;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
                                     <a title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" >
                                         <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " ")  ?> 
                                     </a>
