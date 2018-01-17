@@ -237,7 +237,7 @@
                    
                 </div>
                 <div class="col-xs-6 col-md-2 not-padding">
-                    <label>Promociones</label>
+                    <label>promoción 3x2</label>
                     <input type="number" class="promociones form-control" name="promociones">
                 </div>
             </div>

@@ -110,6 +110,105 @@
 							<?php if ($room->luxury == 1): ?>
 								<th class ="text-center bg-complete text-white" style="width: 12%">Sup.Lujo</th>
 							<?php endif ?>
+							<th class ="text-center bg-complete text-white">&nbsp;</th>
+						</thead>
+						<tbody>
+							<?php foreach ($books as $book): ?>
+								<tr>
+									<td class="text-center" style="padding: 8px" data-id="<?php echo $book->id; ?>">
+										<a href="{{ url('/admin/reservas/update') }}/ <?php echo $book->id ?>">
+											<?php echo ucfirst(strtolower($book->customer->name)) ?>
+										</a>
+									</td>
+									<td class="text-center" style="padding: 8px"><?php echo $book->pax ?> </td>
+									<td class="text-center" style="padding: 8px">
+										<?php 
+											$start = Carbon::CreateFromFormat('Y-m-d',$book->start);
+											echo $start->formatLocalized('%d-%b');
+										?> 
+									</td>
+									<td class="text-center" style="padding: 8px">
+										<?php 
+											$finish = Carbon::CreateFromFormat('Y-m-d',$book->finish);
+											echo $finish->formatLocalized('%d-%b');
+										?> 
+									</td>
+									<td class="text-center total" style="padding: 8px; ">
+										<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
+											<?php $cost = ($book->cost_apto + $book->cost_park + $book->cost_lujo) ?>
+											<?php if ($cost > 0 ): ?>
+												<?php echo number_format($cost,0,',','.') ?>€
+											<?php else: ?>
+												---€	
+											<?php endif ?>
+										<?php else: ?>
+											---€
+										<?php endif ?>
+										
+									</td>
+									<td class="text-center" style="padding: 8px; ">
+
+										<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
+											<?php if ($book->cost_apto > 0 ): ?>
+												<?php echo number_format($book->cost_apto,0,',','.') ?>€
+											<?php else: ?>
+												---€	
+											<?php endif ?>
+										<?php else: ?>
+											---€
+										<?php endif ?>
+
+									</td>
+									<td class="text-center" style="padding: 8px; ">
+										<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
+											<?php if ($book->cost_park > 0 ): ?>
+												<?php echo number_format($book->cost_park,0,',','.') ?>€
+											<?php else: ?>
+												---€	
+											<?php endif ?>
+										<?php else: ?>
+												---€	
+										<?php endif ?>
+									</td>
+									<?php if ($room->luxury == 1): ?>
+										<td class="text-center" style="padding: 8px; ">
+											<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
+												<?php $auxLuxury = $book->cost_lujo ?>
+												<?php if ($auxLuxury > 0): ?>
+													<?php echo $auxLuxury ?>€
+												<?php else: ?>
+													---€	
+												<?php endif ?>
+											<?php else: ?>
+												---€	
+											<?php endif ?>
+										</td>
+									<?php endif ?>
+									<?php if (!empty($book->book_owned_comments)): ?>
+										<td class="text-center" style="padding: 8px; ">
+											<img src="/pages/oferta.png" style="width: 40px;">
+										</td>
+									<?php endif ?>
+								</tr>
+							<?php endforeach ?>
+						</tbody>
+					</table>
+				</div>
+			<?php else: ?>
+				<div class="table-responsive" style="overflow-y: auto; max-height: 250px;">
+					<table class="table no-footer ">
+						<thead>
+							<th class ="text-center bg-complete text-white" style="width: 20%; padding: 4px 10px">Cliente</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Pers</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">IN</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">OUT</th>
+							<th class ="text-center bg-complete text-white" style="width: 15%; padding: 4px 10px">ING. PROP</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Apto</th>
+							<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Park.</th>
+							<?php if ($room->luxury == 1): ?>
+								<th class ="text-center bg-complete text-white" style="width: 12%">Sup.Lujo</th>
+							<?php endif ?>
+							<th class ="text-center bg-complete text-white">&nbsp;</th>
 						</thead>
 						<tbody>
 							<?php foreach ($books as $book): ?>
@@ -179,92 +278,9 @@
 											<?php endif ?>
 										</td>
 									<?php endif ?>
-								</tr>
-							<?php endforeach ?>
-						</tbody>
-					</table>
-				</div>
-			<?php else: ?>
-				<div class="table-responsive" style="overflow-y: auto; max-height: 250px;">
-					<table class="table no-footer ">
-						<thead>
-							<th class ="text-center bg-complete text-white" style="width: 20%; padding: 4px 10px">Cliente</th>
-							<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Pers</th>
-							<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">IN</th>
-							<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">OUT</th>
-							<th class ="text-center bg-complete text-white" style="width: 15%; padding: 4px 10px">ING. PROP</th>
-							<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Apto</th>
-							<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Park.</th>
-							<?php if ($room->luxury == 1): ?>
-								<th class ="text-center bg-complete text-white" style="width: 12%">Sup.Lujo</th>
-							<?php endif ?>
-						</thead>
-						<tbody>
-							<?php foreach ($books as $book): ?>
-								<tr>
-									<td class="text-center" style="padding: 8px" data-id="<?php echo $book->id; ?>"><?php echo ucfirst(strtolower($book->customer->name)) ?> </td>
-									<td class="text-center" style="padding: 8px"><?php echo $book->pax ?> </td>
-									<td class="text-center" style="padding: 8px">
-										<?php 
-											$start = Carbon::CreateFromFormat('Y-m-d',$book->start);
-											echo $start->formatLocalized('%d-%b');
-										?> 
-									</td>
-									<td class="text-center" style="padding: 8px">
-										<?php 
-											$finish = Carbon::CreateFromFormat('Y-m-d',$book->finish);
-											echo $finish->formatLocalized('%d-%b');
-										?> 
-									</td>
-									<td class="text-center total" style="padding: 8px; ">
-										<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
-											<?php $cost = ($book->cost_apto + $book->cost_park + $book->cost_lujo) ?>
-											<?php if ($cost > 0 ): ?>
-												<?php echo number_format($cost,0,',','.') ?>€
-											<?php else: ?>
-												---€	
-											<?php endif ?>
-										<?php else: ?>
-											---€
-										<?php endif ?>
-										
-									</td>
-									<td class="text-center" style="padding: 8px; ">
-
-										<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
-											<?php if ($book->cost_apto > 0 ): ?>
-												<?php echo number_format($book->cost_apto,0,',','.') ?>€
-											<?php else: ?>
-												---€	
-											<?php endif ?>
-										<?php else: ?>
-											---€
-										<?php endif ?>
-
-									</td>
-									<td class="text-center" style="padding: 8px; ">
-										<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
-											<?php if ($book->cost_park > 0 ): ?>
-												<?php echo number_format($book->cost_park,0,',','.') ?>€
-											<?php else: ?>
-												---€	
-											<?php endif ?>
-										<?php else: ?>
-												---€	
-										<?php endif ?>
-									</td>
-									<?php if ($room->luxury == 1): ?>
+									<?php if (!empty($book->book_owned_comments)): ?>
 										<td class="text-center" style="padding: 8px; ">
-											<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
-												<?php $auxLuxury = $book->cost_lujo ?>
-												<?php if ($auxLuxury > 0): ?>
-													<?php echo $auxLuxury ?>€
-												<?php else: ?>
-													---€	
-												<?php endif ?>
-											<?php else: ?>
-												---€	
-											<?php endif ?>
+											<img src="/pages/oferta.png" style="width: 40px;">
 										</td>
 									<?php endif ?>
 								</tr>

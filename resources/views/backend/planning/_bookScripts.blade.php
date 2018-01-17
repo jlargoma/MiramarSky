@@ -152,10 +152,12 @@
                     var parking    = data.costes.parking;
 
                     if (notModifyPrice == 1) {
-                        costeTotal = costeTotal + parseInt($('.agencia').val())
+                        costeTotal = parseInt($('.cost').val()) + parseInt($('.agencia').val());
                     }
                     if (notModifyPrice == 2) {
-                        costeTotal = costeTotal - parseInt($('.promociones').val())
+                        costeApto = costeApto - parseInt($('.promociones').val());
+                        costeTotal = costeApto + data.costes.parking + data.costes.lujo;
+                        $('.book_owned_comments').append('( PROMOCION 3 x 2 DESCUENTO '+parseInt($('.promociones').val())+' €)'); 
                     }
 
                     $('.total').val( parseInt(total) );
