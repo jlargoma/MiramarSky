@@ -155,40 +155,20 @@
                     var parking    = data.costes.parking;
 
                     if (notModifyPrice == 1) {
+                       
                         costeTotal = parseFloat($('.cost').val()) + parseFloat($('.agencia').val());
                         $('.total').val( parseFloat(auxTotal) );
-
-                        if (auxCosteApto == costeApto || auxCosteApto == 0) {
-                            costeApto = costeApto - parseFloat($('.promociones').val());
-                        }else{
-                            costeApto = auxCosteApto - parseFloat($('.promociones').val());
-                        }
                         $('.cost').val( parseFloat(costeTotal) );
 
                     }else if (notModifyPrice == 2) {
 
-                        // alert(auxCosteApto);
-                        // 
-                        // alert(auxCoste);
-
-                        if (auxCosteApto == costeApto || auxCosteApto == 0) {
-
-                            costeApto = costeApto - parseFloat($('.promociones').val());
-                        }else{
-                            costeApto = auxCosteApto - parseFloat($('.promociones').val());
-                        }
-                        
-                        // alert(costeApto);
-
+                        costeApto = costeApto - parseFloat($('.promociones').val());
                         costeTotal = auxCoste - parseFloat($('.promociones').val());
-
-                        // alert(costeTotal);
-
 
                         $('.cost').val( parseFloat(costeTotal) );
                         $('.total').val( parseFloat(auxTotal) );
 
-                        $('.book_owned_comments').append('( PROMOCION 3 x 2 DESCUENTO '+parseFloat($('.promociones').val())+' €)'); 
+                        $('.book_owned_comments').empty().append('(PROMOCIÓN 3x2 DESCUENTO : -'+parseFloat($('.promociones').val())+' €)'); 
 
                     }else if(notModifyPrice == 0){
                         $('.total').val( parseFloat(total) );
