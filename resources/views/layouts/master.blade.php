@@ -41,8 +41,9 @@
 		<link rel="stylesheet" href="{{ asset ('/css/slider.css')}}" type="text/css" />
 		
 		<link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
+		
 		<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
-		<link rel="stylesheet" href="{{ asset('/frontend/custom.css')}}" type="text/css" />
+		<!-- <link rel="stylesheet" href="{{ asset('/frontend/custom.css')}}" type="text/css" /> -->
 
 		
 

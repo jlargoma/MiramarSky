@@ -153,8 +153,8 @@ class BookController extends Controller
                     $book->sup_limp      = 100;
                     $book->cost_limp     = 90;
 
-                    $book->sup_park      = $this->getPricePark($request->input('parking'), $request->input('nigths') , 3);
-                    $book->cost_park      = $this->getCostPark($request->input('parking'), $request->input('nigths') , 3);
+                    $book->sup_park      = $this->getPricePark($request->input('parking'), $request->input('nigths'),$room->id , 3);
+                    $book->cost_park      = $this->getCostPark($request->input('parking'), $request->input('nigths'),$room->id , 3);
                 }
                 
                 $book->type_park     = $request->input('parking');
@@ -300,8 +300,8 @@ class BookController extends Controller
 
                             $book->sup_limp      = 100;
                             $book->cost_limp     = 90;
-                            $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths') , 3);
-                            $book->cost_park   = $this->getCostPark($request->input('parking'),$request->input('nigths'), 3);
+                            $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths'),$room->id , 3);
+                            $book->cost_park   = $this->getCostPark($request->input('parking'),$request->input('nigths'),$room->id , 3);
 
                         }
                         
@@ -454,7 +454,7 @@ class BookController extends Controller
 
                 $book->sup_limp      = 100;
                 $book->cost_limp     = 90;
-                $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths') , 3);
+                $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths'),$room->id , 3);
                 $book->cost_park   = $request->input('costParking');//$this->getCostParkController($request->input('parking'),$request->input('nigths'), 3);
 
             }
@@ -1493,7 +1493,7 @@ class BookController extends Controller
         if ($room->sizeApto == 1) {
 
             $data['costes']['parking']  = $this->getCostPark($request->input('park'),$request->input('noches') );
-            $data['totales']['parking'] = $this->getPricePark($request->input('park'), $request->input('noches'));
+            $data['totales']['parking'] = $this->getPricePark($request->input('park'), $request->input('noches') );
 
             $sup_limp      = 30;
             $cost_limp     = 30;
@@ -1501,15 +1501,15 @@ class BookController extends Controller
         } elseif($room->sizeApto == 2) {
             /* PARKING */
             $data['costes']['parking']  = $this->getCostPark($request->input('park'),$request->input('noches') );
-            $data['totales']['parking'] = $this->getPricePark($request->input('park'), $request->input('noches'));
+            $data['totales']['parking'] = $this->getPricePark($request->input('park'), $request->input('noches') );
 
             $sup_limp      = 50;
             $cost_limp     = 40;
 
         }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
             /* PARKING */
-            $data['costes']['parking']  = $this->getCostPark($request->input('park'),$request->input('noches') , 3);
-            $data['totales']['parking'] = $this->getPricePark($request->input('park'), $request->input('noches'), 3);
+            $data['costes']['parking']  = $this->getCostPark($request->input('park'),$request->input('noches'),$room->id , 3);
+            $data['totales']['parking'] = $this->getPricePark($request->input('park'), $request->input('noches'),$room->id, 3);
 
             $sup_limp      = 100;
             $cost_limp     = 90;
