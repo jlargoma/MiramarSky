@@ -350,7 +350,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/admin/rooms/getUpdateForm', 'RoomsController@getUpdateForm');
 	Route::get('/admin/paymentspro/delete/{id}', function($id){
 
-		if ( \App\PaymentsPro::find($id)->delete() ) {
+		if ( \App\Paymentspro::find($id)->delete() ) {
 			return 'ok';
 		}else{
 			return 'error';
