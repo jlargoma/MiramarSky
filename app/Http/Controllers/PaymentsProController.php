@@ -202,39 +202,42 @@ class PaymentsProController extends Controller
         $metalico = 0;
 
         $room  = \App\Rooms::find($id);
-        $month = Carbon::createFromFormat('Y',$month);
 
-        if ($month->copy()->format('n') >= 9) {
-            $date = new Carbon('first day of September '.$month->copy()->format('Y'));
-        }else{
-            $date = new Carbon('first day of September '.$month->copy()->subYear()->format('Y'));
-        }
+        $date = empty($month) ? Carbon::now() : Carbon::createFromFormat('Y', $month);
 
-        $payments = \App\Paymentspro::where('room_id',$id)->where('datePayment','>',$date->copy())->where('datePayment','<',$date->copy()->addYear())->get();
+        $start = new Carbon('first day of September');
+        $start = $date->format('n') >= 9 ? $start : $start->subYear();
+        
+        $payments = \App\Paymentspro::where('room_id',$id)
+                                    ->where('datePayment','>',$start->copy())
+                                    ->where('datePayment','<',$start->copy()->addYear())
+                                    ->get();
+
+        // echo "<pre>";
+        // print_r($payments);
+        // die();
 
         $pagado = 0;
-
+        $metalico = 0;
+        $banco = 0;
         foreach ($payments as $payment) {
             if ($payment->type == 1 || $payment->type == 2) {
-                if (isset($metalico)) {
-                    $metalico += $payment->import;
-                }else{
-                    $metalico = $payment->import;
-                }
+
+                $metalico += $payment->import;
+
             }elseif($payment->type == 3){
-                if (isset($banco)) {
-                    $banco += $payment->import;
-                }else{
-                    $banco = $payment->import;
-                }
+             
+                $banco += $payment->import;
+
             }
+
             $pagado += $payment->import;
         }
 
         $books = \App\Book::where('start','>',$date->copy())->where('start','<',$date->copy()->addYear())->where('room_id',$id)->get();
 
         foreach ($books as $book) {
-                $total += $book->cost_total;
+            $total += $book->cost_total;
 
         }
         if ($total > 0 && $request->debt > 0) {

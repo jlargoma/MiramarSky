@@ -363,7 +363,7 @@
                         
                         </div>
                         <div class="col-md-2 col-xs-4 not-padding">
-                            <label>Promociones</label>
+                            <label>promoción 3x2</label>
                             <input type="text" class="promociones only-numbers form-control" name="promociones" value="<?php echo $book->promociones ?>">
                         </div>
                         <div class="col-md-12 col-xs-12 push-20 not-padding">
@@ -806,7 +806,7 @@
                             </div>
                         </div>
                        <div class="col-md-2 col-xs-5 push-20 ">
-                           <label>Promociones</label>
+                           <label>promoción 3x2</label>
                            <input type="text" class="promociones only-numbers form-control" name="promociones" value="<?php echo $book->promociones ?>">
                        </div>
                         <div class="col-md-8 col-xs-12 push-20 not-padding">

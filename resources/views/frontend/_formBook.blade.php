@@ -131,8 +131,8 @@
                     <label for="quantity" style="display: inherit!important;">*Pers</label>
                     <div class="quantity center clearfix divcenter">
                         <select id="quantity" class="sm-form-control" name="quantity" aria-label="Selecciona el numero de personas">
-                            <?php for ($i = 1;  $i <= 12 ; $i++): ?>
-                                <?php if ($i != 9 && $i != 11): ?>
+                            <?php for ($i = 1;  $i <= 14 ; $i++): ?>
+                                <?php if ($i != 9 && $i != 11  && $i != 13): ?>
                                     <option value="<?php echo $i ?>"><?php echo $i ?></option>
                                 <?php endif ?>
                             <?php endfor ?>
@@ -142,39 +142,34 @@
                     <p class="help-block white hidden-sm hidden-xs" style="line-height:1.2">Máximo 12 personas</p>
 
                 </div>
-                <div class="form-group col-sm-12 col-xs-7 col-md-3" style="padding: 0">
-                    <label class="col-md-12 parking white">* Tipo Apto</label>
-                    <div class="col-xs-6 not-padding-mobile">
-                        <input id="apto-2dorm" class="apto-2dorm radio-style" name="apto" type="radio" checked="" value="2dorm">
-                        <label for="apto-2dorm" class="radio-style-3-label" style="font-size: 12px;">2 dorm</label>
+                <div class="form-group col-sm-12 col-xs-7 col-md-5" style="padding: 0">
+                    <label for="parking" style="display: inline!important;" class="col-xs-12 col-md-12 text-left parking white">* Tipo Apto</label>
+                    <div style="clear: both;"></div>
+                    <div class="col-md-3 col-xs-3">
+                        <input id="apto-2dorm" class="radio-style apto-2dorm form-control" name="apto" type="radio" value="2dorm">
+                        <label for="apto-2dorm" class="radio-style-3-label">2Dor</label>
                     </div>
-                    <div class="col-xs-6 not-padding-mobile">
-                        <input id="apto-estudio" class="apto-estudio radio-style" name="apto" type="radio" value="estudio">
-                        <label for="apto-estudio" class="radio-style-3-label" style="font-size: 12px;">Estud.</label>
+                    <div class="col-md-3 col-xs-3">
+                        <input id="apto-3dorm" class="radio-style apto-3dorm form-control" name="apto" type="radio" value="3dorm">
+                        <label for="apto-3dorm" class="radio-style-3-label">3Dor</label>
+                    </div>
+                    <div class="col-md-3 col-xs-3">
+                        <input id="apto-chlt" class="radio-style apto-chlt form-control" name="apto" type="radio" value="chlt">
+                        <label for="apto-chlt" class="radio-style-3-label">Chlt</label>
+                    </div>
+                    <div class="col-md-3 col-xs-3">
+                        <input id="apto-estudio" class="radio-style apto-estudio form-control" name="apto" type="radio" value="estudio">
+                        <label for="apto-estudio" class="radio-style-3-label">Est.</label>
                     </div>
                 </div>
-
-                <div style="clear:both;"></div>
-                
-                <!-- <div class="form-group col-sm-12 col-xs-6 col-md-2">
-                    <label class="col-md-12 parking white">*Parking</label>
-                    <div class="col-xs-6 not-padding-mobile">
-                        <input id="parking-yes" class="radio-style" name="parking" type="radio" checked="" value="si">
-                        <label for="parking-yes" class="radio-style-3-label">Si</label>
-                    </div>
-                    <div class="col-xs-6 not-padding-mobile">
-                        <input id="parking-no" class="radio-style" name="parking" type="radio" value="no">
-                        <label for="parking-no" class="radio-style-3-label">No</label>
-                    </div>
-                </div> -->
-                <div class="form-group col-sm-12 col-xs-6 col-md-2">
-                    <label for="luxury" class="col-md-12 luxury white">* sup. lujo</label>
-                    <div class="col-xs-6 not-padding-mobile"> 
-                        <input id="luxury-yes" class="radio-style" name="luxury" type="radio" value="si">
+                <div class="form-group col-sm-12 col-xs-5 col-md-3">
+                    <label style="display: inline!important;" class="col-md-12 luxury white">*lujo</label>
+                    <div class="col-md-6 col-xs-6"> 
+                        <input id="luxury-yes" class="radio-style" name="luxury" type="radio"  value="si">
                         <label for="luxury-yes" class="radio-style-3-label">Si</label>
                     </div>
-                    <div class="col-xs-6 not-padding-mobile">
-                        <input id="luxury-no" class="radio-style" name="luxury" type="radio" value="no" checked="" >
+                    <div class="col-md-6 col-xs-6">
+                        <input id="luxury-no" class="radio-style" name="luxury" type="radio" value="no" checked="">
                         <label for="luxury-no" class="radio-style-3-label">No</label>
                     </div>
                 </div>
