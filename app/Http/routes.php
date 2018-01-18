@@ -32,13 +32,13 @@ Route::get('/admin/ical/create', 'iCalController@create');
 Route::get('/admin/ical/read', 'iCalController@read');
 
 Route::auth();
-Route::get('/','HomeController@index');
-Route::get('/sitemap','HomeController@siteMap');
-Route::get('/apartamentos/galeria/{apto}','HomeController@galeriaApartamento');
-Route::get('/apartamentos/{apto}','HomeController@apartamento');
-Route::get('/fotos/{apto}','HomeController@apartamento');
-Route::get('/edificio-miramarski-sierra-nevada','HomeController@edificio');
-Route::get('/contacto','HomeController@contacto');
+Route::get('/','HomeController@index')->middleware('web');
+Route::get('/sitemap','HomeController@siteMap')->middleware('web');
+Route::get('/apartamentos/galeria/{apto}','HomeController@galeriaApartamento')->middleware('web');
+Route::get('/apartamentos/{apto}','HomeController@apartamento')->middleware('web');
+Route::get('/fotos/{apto}','HomeController@apartamento')->middleware('web');
+Route::get('/edificio-miramarski-sierra-nevada','HomeController@edificio')->middleware('web');
+Route::get('/contacto','HomeController@contacto')->middleware('web');
 
 /*Correos Frontend */
 	Route::post('/contacto-form','HomeController@formContacto');
