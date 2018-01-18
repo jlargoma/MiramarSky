@@ -1,18 +1,35 @@
 <?php if (!$mobile->isMobile()): ?>
-	<p class="font-s16 ls-15 miramar font-w300 text-justify  push-10" style="letter-spacing: -1px; line-height: 1.3"><b>Los apartamentos familiares de lujo, tienen 3/4 Dormitorios</b> . </p>
+	<?php if ($url == '9F'): ?>
+		<p class="font-s16 ls-15 miramar font-w300 text-justify hidden-sm hidden-xs  push-10" style="letter-spacing: -1px; line-height: 1.3">
+			<b><u>Nuestro Apartamento tiene excelentes vistas y dispone de equipamiento completo </u></b><br>
+			Estos apartamentos son de gran ocupación, cuenta con con 4 habitaciones, y un altillo donde se encuentran dos sofá camas. <b>Es un verdadero apartamento de lujo que se puede disfrutar al máximo en todas las épocas del año</b>
+		</p>
+		<p class="font-s16 ls-15 miramar font-w300 text-justify push-10" style="padding: 0 15px; letter-spacing: -1px; line-height: 1.3">
+			<ul class="text-left miramar font-s16 push-10" style="list-style: none;">
+				<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>1º Habitación</u> Suite con cama matrimonio 2m x 2m  (y baño privado) </span></li>
+				<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>2º Habitación</u>:  dos camas individuales </span></li>
+				<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>3º Habitación</u>:  dos camas individuales </span></li>
+				<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>3º Habitación</u>:  2 camas en litera </span></li>
+				
+				<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Sofá cama</u> en el salón ático </span></li>
+			</ul>
+		</p>
+	<?php else: ?>
+		<p class="font-s16 ls-15 miramar font-w300 text-justify  push-10" style="letter-spacing: -1px; line-height: 1.3"><b>Los apartamentos familiares de lujo, tienen 3/4 Dormitorios</b> . </p>
 
-	<p class="font-s16 ls-15 miramar font-w300 text-justify hidden-sm hidden-xs  push-10" style="letter-spacing: -1px; line-height: 1.3">
-		<b><u>Están recién reformados</u>,</b> son prefectos para alojar a 2 o 3 familias en el mismo espacio pero con total intimidad, también a un  grupo de amigos.<br>
-		Estos apartamentos son de gran ocupación, <b>pudiendo alojarse entre 8 y 14 personas</b> según cada caso y las necesidades del grupo familiar. 
-	</p>
-	<p class="font-s16 ls-15 miramar font-w300 text-justify push-10" style="padding: 0 15px; letter-spacing: -1px; line-height: 1.3">
-		<ul class="text-left miramar font-s16 push-10" style="list-style: none;">
-			<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Habitación principal</u> con cama de matrimonio </span></li>
-			<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Habitación secundaría</u>: con dos camas en litera (en algunas apartamentos hay 3 camas)</span></li>
-			<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Sofá cama</u> de matrimonio en el salón </span></li>
-			<li class=" miramar font-s16"><b>*</b> <span class="font-w300">Cama adicional en salón</span></li>
-		</ul>
-	</p>	
+		<p class="font-s16 ls-15 miramar font-w300 text-justify hidden-sm hidden-xs  push-10" style="letter-spacing: -1px; line-height: 1.3">
+			<b><u>Están recién reformados</u>,</b> son prefectos para alojar a 2 o 3 familias en el mismo espacio pero con total intimidad, también a un  grupo de amigos.<br>
+			Estos apartamentos son de gran ocupación, <b>pudiendo alojarse entre 8 y 14 personas</b> según cada caso y las necesidades del grupo familiar. 
+		</p>
+		<p class="font-s16 ls-15 miramar font-w300 text-justify push-10" style="padding: 0 15px; letter-spacing: -1px; line-height: 1.3">
+			<ul class="text-left miramar font-s16 push-10" style="list-style: none;">
+				<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Habitación principal</u> con cama de matrimonio </span></li>
+				<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Habitación secundaría</u>: con dos camas en litera (en algunas apartamentos hay 3 camas)</span></li>
+				<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Sofá cama</u> de matrimonio en el salón </span></li>
+				<li class=" miramar font-s16"><b>*</b> <span class="font-w300">Cama adicional en salón</span></li>
+			</ul>
+		</p>
+	<?php endif ?>
 	<p class="font-s16 ls-15 miramar font-w300 text-justify"  style="letter-spacing: -1px; line-height: 1.3">
 		Nuestro edificio (Miramaski) <b>es uno de los más modernos de Sierra Nevada</b>, cuenta con las siguientes comodidades<br><br>
 		<b><u>Piscina climatizada, gimnasio, parking cubierto, taquilla guardaesquis, acceso directo a las pistas.</u></b><br><br>
@@ -129,19 +146,38 @@
 
 				<div class="tab-content clearfix ui-tabs-panel ui-widget-content ui-corner-bottom" id="tabs-29" aria-labelledby="ui-id-13" role="tabpanel" aria-hidden="false">
 					<div class="col-xs-12">
-						<p class="font-s16 ls-15 miramar font-w300 text-justify" style="letter-spacing: -1px; line-height: 1.3"><b>Los apartamentos de lujo</b>, cuentan con <b><u>dos dormitorios</u></b>, pudiendo alojarse entre <b><u>8 y 14 personas</u></b> según cada caso.</p>
+						<?php if ($url == '9F'): ?>
+							<p class="font-s16 ls-15 miramar font-w300 text-justify hidden-sm hidden-xs  push-10" style="letter-spacing: -1px; line-height: 1.3">
+								<b><u>Nuestro Apartamento tiene excelentes vistas y dispone de equipamiento completo </u></b><br>
+								Estos apartamentos son de gran ocupación, cuenta con con 4 habitaciones, y un altillo donde se encuentran dos sofá camas. <b>Es un verdadero apartamento de lujo que se puede disfrutar al máximo en todas las épocas del año</b>
+							</p>
+							<p class="font-s16 ls-15 miramar font-w300 text-justify push-10" style="padding: 0 15px; letter-spacing: -1px; line-height: 1.3">
+								<ul class="text-left miramar font-s16 push-10" style="list-style: none;">
+									<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>1º Habitación</u> Suite con cama matrimonio 2m x 2m  (y baño privado) </span></li>
+									<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>2º Habitación</u>:  dos camas individuales </span></li>
+									<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>3º Habitación</u>:  dos camas individuales </span></li>
+									<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>3º Habitación</u>:  2 camas en litera </span></li>
+									
+									<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Sofá cama</u> en el salón ático </span></li>
+								</ul>
+							</p>
+						<?php else: ?>
+								<p class="font-s16 ls-15 miramar font-w300 text-justify" style="letter-spacing: -1px; line-height: 1.3"><b>Los apartamentos de lujo</b>, cuentan con <b><u>dos dormitorios</u></b>, pudiendo alojarse entre <b><u>8 y 14 personas</u></b> según cada caso.</p>
 
-						<p class="font-s16 ls-15 miramar font-w300 text-justify hidden-sm hidden-xs"style="letter-spacing: -1px; line-height: 1.3">
-							<b><u>Están recién reformados</u> y cuentan con todo el equipamiento necesario</b> para hacer su estancia agradable y con el máximo confort.
-						</p>
-						<p class="font-s16 ls-15 miramar font-w300 text-justify" style="padding: 0 15px; letter-spacing: -1px; line-height: 1.3">
-							<ul class="text-left miramar font-s16" style="list-style: none;">
-								<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Habitación principal</u> con cama de matrimonio </span></li>
-								<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Habitación secundaría</u>: con dos camas en litera (en algunas apartamentos hay 3 camas)</span></li>
-								<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Sofá cama</u> de matrimonio en el salón </span></li>
-								<li class=" miramar font-s16"><b>*</b> <span class="font-w300">Cama adicional en salón</span></li>
-							</ul>
-						</p>	
+								<p class="font-s16 ls-15 miramar font-w300 text-justify hidden-sm hidden-xs"style="letter-spacing: -1px; line-height: 1.3">
+									<b><u>Están recién reformados</u> y cuentan con todo el equipamiento necesario</b> para hacer su estancia agradable y con el máximo confort.
+								</p>
+								<p class="font-s16 ls-15 miramar font-w300 text-justify" style="padding: 0 15px; letter-spacing: -1px; line-height: 1.3">
+									<ul class="text-left miramar font-s16" style="list-style: none;">
+										<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Habitación principal</u> con cama de matrimonio </span></li>
+										<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Habitación secundaría</u>: con dos camas en litera (en algunas apartamentos hay 3 camas)</span></li>
+										<li class=" miramar font-s16"><b>*</b> <span class="font-w300"><u>Sofá cama</u> de matrimonio en el salón </span></li>
+										<li class=" miramar font-s16"><b>*</b> <span class="font-w300">Cama adicional en salón</span></li>
+									</ul>
+								</p>	
+								
+						<?php endif ?>
+						
 						<p class="font-s16 ls-15 miramar font-w300 text-justify" style="letter-spacing: -1px; line-height: 1.3">
 							Nuestro edificio (Miramaski) <b>es uno de los más modernos de Sierra Nevada</b>, cuenta con las siguientes comodidades<br><br>
 							<b><u>Piscina climatizada, gimnasio, parking cubierto, taquilla guardaesquis, acceso directo a las pistas.</u></b><br><br>

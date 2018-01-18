@@ -50,7 +50,9 @@
 			height: 250px!important;
 		}
 	}
-	
+	.flex-control-nav.flex-control-paging{
+		display: none;
+	}
 </style>
 @section('metadescription') {{ $aptoHeading }} en Sierra Nevada @endsection
 @section('title') {{ $aptoHeading }} en Sierra Nevada @endsection
@@ -61,33 +63,30 @@
 
 		<div class="container container-mobile clearfix push-0">
 			<div class="row">
-				<h1 class="center hidden-sm hidden-xs psuh-20"><?php echo strtoupper($aptoHeading); ?></h2>
-				<h1 class="center hidden-lg hidden-md green push-10"><?php echo strtoupper($aptoHeadingMobile); ?></h2>
+				<?php if ($url == '9F'): ?>
+					
+					<h1 class="center hidden-sm hidden-xs psuh-20">ATICO DUPLEX DE LUJO</h2>
+					<h1 class="center hidden-lg hidden-md green push-10">ATICO DUPLEX DE LUJO</h2>
+				<?php else: ?>
+					<h1 class="center hidden-sm hidden-xs psuh-20"><?php echo strtoupper($aptoHeading); ?></h2>
+					<h1 class="center hidden-lg hidden-md green push-10"><?php echo strtoupper($aptoHeadingMobile); ?></h2>
+				<?php endif ?>
+				
 				
 			</div>
 		</div>
 		
 		<div class="row clearfix  push-30">
 			<div class="col-xs-12 col-md-6">
-				<div class="fslider" data-easing="easeInQuad">
+				<div class="fslider" data-animation="fade" data-thumbs="flase" data-arrows="true" data-speed="1200" >
 					<div class="flexslider">
 						<div class="slider-wrap">
 							<?php foreach ($slides as $key => $slide): ?>
-								<?php $fotos = explode(",", $slide->getFilename()) ?>
-								<?php if (isset($fotos[1])): ?>
-									<div class="slide" data-thumb="{{ asset('')}}<?php echo $directory.$url ?>/<?php echo $fotos[1] ?>">
-										<a>
-											<img class="img img-slider-apto" src="{{ asset('')}}<?php echo $directory.$url ?>/<?php echo $slide->getFilename() ?>" alt="<?php echo $fotos[2] ?>" title="<?php echo $fotos[2] ?>" style="height: 600px">
-										</a>
-									</div>
-								<?php else: ?>
-									<div class="slide" data-thumb="{{ asset('')}}<?php echo $directory.$url ?>/<?php echo $slide->getFilename() ?>">
-										<a>
-											<img class="img img-slider-apto" src="{{ asset('')}}<?php echo $directory.$url ?>/<?php echo $slide->getFilename() ?>" alt="<?php echo $slide->getFilename()  ?>" title="<?php echo $slide->getFilename()  ?>" style="height: 600px">
-										</a>
-									</div>
-								<?php endif ?>
-								
+								<div class="slide" data-thumb="<?php echo $slide ?>">
+									<a>
+										<img class="img img-slider-apto" src="<?php echo $slide ?>" alt="<?php echo str_replace('-', ' ', $url) ?>" title="<?php echo str_replace('-', ' ', $url) ?>" style="height: 600px">
+									</a>
+								</div>
 							<?php endforeach ?>
 						</div>
 					</div>

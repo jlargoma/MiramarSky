@@ -132,6 +132,24 @@ class HomeController extends Controller
          
         }
 
+        
+        foreach ($slides as $key => $slide) {
+            $arraySlides[] = $slide->getFilename();
+        }
+        natcasesort($arraySlides);
+        $slides = array();
+        foreach ($arraySlides as $key => $sl) {
+            if ($url == 'apartamento-standard-sierra-nevada' || $url == 'apartamento-lujo-sierra-nevada'  || $url == 'estudio-lujo-sierra-nevada'  || $url == 'estudio-standard-sierra-nevada' || $url == 'chalet-los-pinos-sierra-nevada' || $url == 'apartamento-lujo-gran-capacidad-sierra-nevada' ) {
+
+                $slides[] = '/img/miramarski/galerias/'.$url.'/'.$sl;
+            }else{
+                
+                $slides[] = '/img/miramarski/apartamentos/'.$url.'/'.$sl;      
+
+             
+            }
+        }
+
         $aptos  = ['apartamento-lujo-gran-capacidad-sierra-nevada','apartamento-lujo-sierra-nevada', 'estudio-lujo-sierra-nevada','apartamento-standard-sierra-nevada','estudio-standard-sierra-nevada'];
 
 
