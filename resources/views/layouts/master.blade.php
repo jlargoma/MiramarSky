@@ -80,6 +80,14 @@
 				background-repeat: no-repeat; 
 				max-height: 520px;
 			}
+			@media screen and (max-width: 767px) {
+				#primary-menu.style-2{
+					position: absolute;
+				    left: 15px;
+				    top: 80px;
+				    width: 90%;
+				}
+			}
 
 		</style>
 
