@@ -100,14 +100,17 @@ class HomeController extends Controller
                 if (count($room) > 0) {
                     $aptoHeading       = ($room->luxury) ? $room->sizeRooms->name." - LUJO" : $room->sizeRooms->name." - ESTANDAR";
                     $aptoHeadingMobile = ($room->luxury) ? $room->sizeRooms->name." - lujo" : $room->sizeRooms->name." - estandar";
-                    if ($room->sizeApto == 1 && $room->luxury == 0) {
+                    
+                    if ( $room->sizeApto == 1 && $room->luxury == 0 ) {
                         $typeApto = 4;
                     }elseif ($room->sizeApto == 1 && $room->luxury == 1) {
                         $typeApto = 3;
                     }elseif ($room->sizeApto == 2 && $room->luxury == 0) {
                         $typeApto = 2;
-                    }else{
+                    }elseif($room->sizeApto == 2 && $room->luxury == 1){
                         $typeApto = 1;
+                    }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
+                        $typeApto = 6;
                     }
                     break;
                 }else{
