@@ -52,5 +52,7 @@ class Kernel extends HttpKernel
         'authAdmin' => \App\Http\Middleware\RoleMiddleware::class,
         'authPropietario' => \App\Http\Middleware\RolePropietario::class,
         'authSubAdmin' => \App\Http\Middleware\RoleSubAdmin::class,
+        \Cuatao\LaravelHtmlCaching\Http\Middleware\ResponseHtmlCachingBeforeMiddleware::class,
+        \Cuatao\LaravelHtmlCaching\Http\Middleware\ResponseHtmlCachingAfterMiddleware::class,
     ];
 }

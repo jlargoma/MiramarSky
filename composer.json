@@ -21,7 +21,8 @@
         "phpunit/phpunit": "~5.7",
         "symfony/css-selector": "2.8.*|3.0.*",
         "symfony/dom-crawler": "2.8.*|3.0.*",
-        "stripe/stripe-php": "^5.2"
+        "stripe/stripe-php": "^5.2",
+        "cuatao/laravel-html-caching": "dev-master"
     },
     "autoload": {
         "classmap": [
