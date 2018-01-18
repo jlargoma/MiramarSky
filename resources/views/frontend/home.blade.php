@@ -3,7 +3,7 @@
 @section('title')Apartamentos de lujo en Sierra Nevada a pie de pista @endsection
 
 @section('content')
-<section id="content" >
+<section id="content" style="margin-top: -100px;">
 	
     <div class="content-wrap notoppadding" style="padding-bottom: 0;">
        
@@ -357,7 +357,7 @@
 	   			</div>
 	       		
 	       	</section>
-<div style="clear: both;"></div>
+			<div style="clear: both;"></div>
 	       	<section class="page-section" style="margin-top: 60px;">
 	       		<div class="container container-mobile clearfix">
 	       			<div class="row">
