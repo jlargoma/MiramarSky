@@ -15676,7 +15676,20 @@ label,
 	    border-top: 2px solid #fff;
 	    border-bottom: 2px solid #fff;
 	}
+
+	
 }
+
+@media screen and (max-width: 767px) {
+	#primary-menu.style-2{
+		position: absolute;
+	    left: 15px;
+	    top: 80px;
+	    width: 90%;
+	}
+}
+
+
 
 
 .overlay{
