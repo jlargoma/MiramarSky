@@ -242,7 +242,7 @@
 	   									<img class="img-responsive" src="{{ asset('/img/miramarski/small/estudio-lujo-sierra-nevada.jpg')}}"  alt="Estudio de lujo sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
-		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 90px 95px;">
+		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding:65px 70px;">
 		   									ESTUDIO DE LUJO
 		   								</h2>
 		   							</div>
@@ -259,7 +259,7 @@
 	   									<img class="img-responsive" src="{{ asset('/img/miramarski/small/estudio-standard-sierra-nevada.jpg')}}"  alt="Estudio standard sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
-		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 90px 95px;">
+		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding:65px 70px;">
 		   									ESTUDIO STANDARD
 		   								</h2>
 		   							</div>
@@ -275,7 +275,7 @@
 	   									<img class="img-responsive" src="{{ asset('/img/miramarski/galerias/chalet-los-pinos-sierra-nevada/chalet-pinos-(1).jpg')}}"  alt="Estudio standard sierra nevada"/>
 		   							</div>
 		   							<div class="col-xs-12 not-padding text-right overlay-text">
-		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding: 90px 95px;">
+		   								<h2 class="font-w600 center push-10 text-center text font-s24 white hvr-reveal" style="padding:65px 70px;">
 		   									CHALET ADOSADO
 		   								</h2>
 		   							</div>
