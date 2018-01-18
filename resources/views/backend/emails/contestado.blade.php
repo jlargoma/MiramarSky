@@ -13,9 +13,6 @@ Noches: <b><?php echo $book->nigths ?> </b> <br><br>
 <?php if ($book->type_luxury != 2): ?>
 	Sup. Lujo: <b><?php echo number_format($book->sup_lujo,2,',','.') ?> €</b><br><br>
 <?php endif ?>
-<?php if ($book->type_park != 2): ?>
-	Parking: <b><?php echo number_format($book->sup_park,2,',','.'); ?> €</b><br><br>
-<?php endif ?>
 <b>Precio total: <?php echo number_format($book->total_price,2,',','.') ?> € </b><br><br>
 El precio te incluye todo, piscina climatizada, gimnasio, taquilla guarda esquíes <?php if ($book->type_park != 2): ?>y parking cubierto <?php endif ?>  . <br>
 <br>
