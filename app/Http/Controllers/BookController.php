@@ -1058,6 +1058,7 @@ class BookController extends Controller
                                     ->where('start' , '>=' , $date->format('Y-m-d'))
                                     ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
                                     ->where('type_book', '!=', 9)
+                                    ->where('type_book', '!=', 0)
                                     ->orderBy('start', 'ASC')
                                     ->get();
 
