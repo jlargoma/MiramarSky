@@ -15,6 +15,7 @@
                     <th class ="bg-danger text-center text-white" style="width: 6%!important">  <i class="fa fa-moon-o"></i> </th>
                     <th class ="bg-danger text-center text-white" >   Precio      </th>
                     <th class ="bg-danger text-center text-white" style="width: 17%!important">   Estado      </th>
+                    <th class ="bg-danger text-center text-white" style="width: 6%!important">&nbsp;</th>
                     <th class ="bg-danger text-center text-white" style="width: 6%!important">A</th>
                 </tr>
             </thead>
@@ -120,6 +121,15 @@
                                 <?php endfor; ?>
                             </select>
                         </td>
+                        <td class="text-center">
+                            <?php if (!empty($book->book_owned_comments)): ?>
+                                <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
+                                    <img src="/pages/oferta.png" style="width: 40px;">
+                                </span>
+                                <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
+                                
+                            <?php endif ?>
+                        </td>
 
                         <td class="text-center">                                                         
                             <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-primary restoreBook" type="button" data-toggle="tooltip" title="" data-original-title="Restaurar Reserva" onclick="return confirm('¿Quieres restaurar la reserva?');">
@@ -144,6 +154,7 @@
                     <th class="bg-danger text-white text-center"><i class="fa fa-moon-o"></i></th>
                     <th class="bg-danger text-white text-center" style="min-width:65px">PVP</th>
                     <th class="bg-danger text-white text-center" style="min-width:200px">Estado</th>
+                    <th class="bg-danger text-white text-center" style="min-width:50px">&nbsp;</th>
                     <th class="bg-danger text-white text-center" style="min-width:50px">A</th>
                 </thead>
                 <tbody>
@@ -218,6 +229,15 @@
 
                                     <?php endfor; ?>
                                 </select>
+                            </td>
+                            <td class="text-center">
+                                <?php if (!empty($book->book_owned_comments)): ?>
+                                    <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
+                                        <img src="/pages/oferta.png" style="width: 40px;">
+                                    </span>
+                                    <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
+                                    
+                                <?php endif ?>
                             </td>
                             <td class="text-center">
                                 <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-primary restoreBook" type="button" data-toggle="tooltip" title="" data-original-title="Restaurar Reserva" onclick="return confirm('¿Quieres restaurar la reserva?');">

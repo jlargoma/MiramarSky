@@ -24,7 +24,10 @@
                         <th class ="text-center bg-success text-white" style="width: 8%!important">   OUT      </th>
                        
                         <th class ="text-center bg-success text-white" style="width: 15%!important">   Precio      </th>
+                        
+                        <th class ="text-center bg-success text-white" style="width: 4%!important">&nbsp;</th>
                         <th class ="text-center bg-success text-white" style="width: 4%!important">   a      </th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -160,6 +163,17 @@
                                 <?php endif ?>
                                                 
                             </td>
+                            <td class="text-center">
+                                <?php if (!empty($book->book_owned_comments)): ?>
+                                    <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
+                                        <img src="/pages/oferta.png" style="width: 40px;">
+                                    </span>
+                                    <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
+                                    
+                                <?php endif ?>
+                            </td>
+                            
+                            
                             <td class="text-center sm-p-t-10 sm-p-b-10">
 
                                 <?php if ($book->send == 1): ?>
@@ -173,6 +187,9 @@
                                 <?php endif ?>
                                 
                             </td>
+
+                            
+                            
                         </tr>
                     <?php endforeach ?>
                 </tbody>
@@ -194,6 +211,7 @@
             <th class="bg-success text-white text-center"><i class="fa fa-moon-o"></i></th>
             <th class="bg-success text-white text-center" style="min-width:65px">PVP</th>
             <th class="bg-success text-white text-center" style="min-width:60px">a</th>
+            <th class ="text-center bg-success text-white">&nbsp;</th>
         </thead>
         <tbody>
             <?php $count = 0 ?>
@@ -277,6 +295,16 @@
                            <?php else: ?>
                            <?php endif ?>
                        </div>
+                    </td>
+                    
+                    <td class="text-center">
+                        <?php if (!empty($book->book_owned_comments)): ?>
+                            <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
+                                <img src="/pages/oferta.png" style="width: 40px;">
+                            </span>
+                            <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
+                            
+                        <?php endif ?>
                     </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
                         <?php if ($book->send == 1): ?>

@@ -295,16 +295,18 @@
 									<table class="table no-footer ">
 										
 										<thead>
-											<th class ="text-center bg-complete text-white" style="width: 20%; padding: 4px 10px">Cliente</th>
+											<th class ="text-center bg-complete text-white" style="width: 25%; padding: 4px 10px">Cliente</th>
 											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Pers</th>
 											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">IN</th>
 											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">OUT</th>
-											<th class ="text-center bg-complete text-white" style="width: 20%; padding: 4px 10px">ING. PROP</th>
+											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">ING. PROP</th>
 											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Apto</th>
 											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Park.</th>
 											<?php if ($room->luxury == 1): ?>
 												<th class ="text-center bg-complete text-white" style="width: 10%">Sup.Lujo</th>
 											<?php endif ?>
+                        					<th class ="text-center bg-complete text-white" style="width: 50px!important">   &nbsp;      </th>
+
 										</thead>
 										<tbody>
 											<?php foreach ($books as $book): ?>
@@ -374,6 +376,13 @@
 															<?php endif ?>
 														</td>
 													<?php endif ?>
+													<td class="text-center">
+						                                <?php if (!empty($book->book_owned_comments)): ?>
+				                                        	<img src="/pages/oferta.png" style="width: 40px;" title="<?php echo $book->book_owned_comments ?>">
+						                                   
+						                                    
+						                                <?php endif ?>
+						                            </td>
 												</tr>
 											<?php endforeach ?>
 										</tbody>
@@ -687,7 +696,7 @@
 								<?php if ($room->luxury == 1): ?>
 									<th class ="text-center bg-complete text-white">Sup.Lujo</th>
 								<?php endif ?>
-									
+								<th class ="text-center bg-complete text-white" style="width: 50px!important">   &nbsp;      </th>
 								
 							</thead>
 							<tbody>
@@ -742,6 +751,13 @@
 												<?php endif ?>
 											</td>
 										<?php endif ?>
+										<td class="text-center">
+			                                <?php if (!empty($book->book_owned_comments)): ?>
+	                                        	<img src="/pages/oferta.png" style="width: 40px;" title="<?php echo $book->book_owned_comments ?>">
+			                                   
+			                                    
+			                                <?php endif ?>
+			                            </td>
 									</tr>
 								<?php endforeach ?>
 							</tbody>

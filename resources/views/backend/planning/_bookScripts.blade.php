@@ -161,14 +161,25 @@
                         $('.cost').val( parseFloat(costeTotal) );
 
                     }else if (notModifyPrice == 2) {
+                        var promo = $('.promociones').val();
+                        if (promo == "") {
+                            promo = 0;
+                        }
 
-                        costeApto = costeApto - parseFloat($('.promociones').val());
-                        costeTotal = auxCoste - parseFloat($('.promociones').val());
+                        
+
+
+                        costeApto = costeApto - parseFloat(promo);
+                        costeTotal = auxCoste - parseFloat(promo);
 
                         $('.cost').val( parseFloat(costeTotal) );
                         $('.total').val( parseFloat(auxTotal) );
-
-                        $('.book_owned_comments').empty().append('(PROMOCIÓN 3x2 DESCUENTO : -'+parseFloat($('.promociones').val())+' €)'); 
+                        if (promo == 0) {
+                            $('.book_owned_comments').empty();
+                        }else{
+                            $('.book_owned_comments').empty().append('(PROMOCIÓN 3x2 DESCUENTO : -'+ promo +' €)');
+                        }
+                         
 
                     }else if(notModifyPrice == 0){
                         $('.total').val( parseFloat(total) );
@@ -186,7 +197,7 @@
                     $('.beneficio').val(beneficio);
                     beneficio_ = (beneficio / total)*100
                     $('.beneficio-text').empty();
-                    $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
+                    $('.beneficio-text').html(beneficio_.toFixed(0)+"%");
                     
                 });
 
