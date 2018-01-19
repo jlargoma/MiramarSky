@@ -186,7 +186,7 @@
 									<?php endif ?>
 									<?php if (!empty($book->book_owned_comments)): ?>
 										<td class="text-center" style="padding: 8px; ">
-											<img src="/pages/oferta.png" style="width: 40px;">
+											<img src="/pages/oferta.png" style="width: 40px;" >
 										</td>
 									<?php endif ?>
 								</tr>

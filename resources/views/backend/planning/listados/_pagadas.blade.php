@@ -16,6 +16,7 @@
                         <th class ="text-center Pagada-la-señal text-white" style="width: 6%!important">   IN     </th>
                         <th class ="text-center Pagada-la-señal text-white" style="width: 8%!important">   OUT      </th>
                         <th class ="text-center Pagada-la-señal text-white" style="width: 17%!important">   Precio      </th>
+                        <th class ="text-center Pagada-la-señal text-white" style="width: 50px!important">   &nbsp;      </th>
                         <th class ="text-center Pagada-la-señal text-white" style="width: 17%!important">   Estado      </th>
                     </tr>
                 </thead>
@@ -122,6 +123,15 @@
                                 <?php endif ?>
                                                 
                             </td>
+                            <td class="text-center">
+                                <?php if (!empty($book->book_owned_comments)): ?>
+                                    <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
+                                        <img src="/pages/oferta.png" style="width: 40px;">
+                                    </span>
+                                    <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
+                                    
+                                <?php endif ?>
+                            </td>
                             <td class ="text-center">
                                 <select class="status form-control minimal" data-id="<?php echo $book->id ?>" style="width: 95%">
                                     <?php for ($i=1; $i <= 10; $i++): ?> 
@@ -158,6 +168,8 @@
             <th class="Pagada-la-señal text-white text-center" style="min-width:100px">Apart</th>
             <th class="Pagada-la-señal text-white text-center"><i class="fa fa-moon-o"></i></th>
             <th class="Pagada-la-señal text-white text-center" style="min-width:65px">PVP</th>
+            <th class ="text-center Pagada-la-señal text-white" style="width: 50px!important">   &nbsp;      </th>
+            
             <th class="Pagada-la-señal text-white text-center" style="min-width:200px">Estado</th>
         </thead>
         <tbody>
@@ -223,6 +235,15 @@
                         <?php if (isset($payment[$book->id])): ?>
                             <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
                         <?php else: ?>
+                        <?php endif ?>
+                    </td>
+                    <td class="text-center">
+                        <?php if (!empty($book->book_owned_comments)): ?>
+                            <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
+                                <img src="/pages/oferta.png" style="width: 40px;">
+                            </span>
+                            <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
+                            
                         <?php endif ?>
                     </td>
                     <td class="text-center">
