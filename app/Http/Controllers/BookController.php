@@ -151,7 +151,7 @@ class BookController extends Controller
                 }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
 
                     $book->sup_limp      = 100;
-                    $book->cost_limp     = 90;
+                    $book->cost_limp     = 70;
 
                     $book->sup_park      = $this->getPricePark($request->input('parking'), $request->input('nigths'),$room->id , 3);
                     $book->cost_park      = $this->getCostPark($request->input('parking'), $request->input('nigths'),$room->id , 3);
@@ -299,7 +299,7 @@ class BookController extends Controller
                         }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
 
                             $book->sup_limp      = 100;
-                            $book->cost_limp     = 90;
+                            $book->cost_limp     = 70;
                             $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths'),$room->id , 3);
                             $book->cost_park   = $this->getCostPark($request->input('parking'),$request->input('nigths'),$room->id , 3);
 
@@ -453,7 +453,7 @@ class BookController extends Controller
             }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
 
                 $book->sup_limp      = 100;
-                $book->cost_limp     = 90;
+                $book->cost_limp     = 70;
                 $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths'),$room->id , 3);
                 $book->cost_park   = $request->input('costParking');//$this->getCostParkController($request->input('parking'),$request->input('nigths'), 3);
 
@@ -581,8 +581,11 @@ class BookController extends Controller
             break;
         }
         if ( $room != "") {
-            if ($room == 149 || $room == 150) {
+            if ($room == 150) {
                 $priceParking =  $priceParking * 3;
+            }
+            if ($room == 149) {
+                $priceParking =  $priceParking * 2;
             }
         }
         return $priceParking;
@@ -608,8 +611,11 @@ class BookController extends Controller
         }
 
         if ( $room != "") {
-            if ($room == 149 || $room == 150) {
+            if ($room == 150) {
                 $costParking =  $costParking * 3;
+            }
+            if ($room == 149) {
+                $costParking =  $costParking * 2;
             }
         }
 
@@ -1513,7 +1519,7 @@ class BookController extends Controller
             $data['totales']['parking'] = $this->getPricePark($request->input('park'), $request->input('noches'),$room->id, 3);
 
             $sup_limp      = 100;
-            $cost_limp     = 90;
+            $cost_limp     = 70;
         
         }
        

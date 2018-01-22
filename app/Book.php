@@ -158,10 +158,11 @@ class Book extends Model
             $requestStart = Carbon::createFromFormat('d/m/Y',$start);
             $requestFinish = Carbon::createFromFormat('d/m/Y',$finish);
 
-            $books =  \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,6,7,8])
+            $books =  \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,7,8])
                                         ->where('id','!=' ,$id_excluded)
                                         ->orderBy('start','DESC')
                                         ->get();
+
             //\App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,7,8])->where('id','!=',$id_excluded)->get();
 
             $existStart = False;

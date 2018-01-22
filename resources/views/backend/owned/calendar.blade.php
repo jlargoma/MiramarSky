@@ -35,6 +35,7 @@
         }
     }
 </style>
+<?php $userRole = Auth::user()->role; ?>
     <div class="panel">
         <div class="row">
           <?php $dateAux = $inicio->copy(); ?>
@@ -123,7 +124,11 @@
 
                                                                 <?php if($calendars[$x]->finish == $inicio->copy()->format('Y-m-d') && $calendars[$x]->type_book != 5): ?>
                                                                     <a 
-                                                                        href="#" 
+                                                                        <?php  if ( $userRole == "admin"): ?>
+                                                                            href="{{ url('/admin/reservas/update') }}/<?php echo  $calendars[$x]->id; ?>" 
+                                                                        <?php else: ?>
+                                                                            href="#" 
+                                                                        <?php endif; ?>
                                                                         <?php $titulo =  $calendars[$x]->customer['name'] ?>
                                                                         title="<?php echo $titulo ?>"
                                                                     >
@@ -139,7 +144,11 @@
                                                                 <?php elseif ($calendars[$x]->start == $inicio->copy()->format('Y-m-d') && $calendars[$x]->type_book != 5 ): ?>
 
                                                                     <a 
-                                                                        href="#" 
+                                                                        <?php  if ( $userRole == "admin"): ?>
+                                                                            href="{{ url('/admin/reservas/update') }}/<?php echo  $calendars[$x]->id; ?>" 
+                                                                        <?php else: ?>
+                                                                            href="#" 
+                                                                        <?php endif; ?>
                                                                         <?php $titulo =  $calendars[$x]->customer['name'] ?>
                                                                         title="<?php echo $titulo ?>"
                                                                     >
@@ -148,7 +157,7 @@
                                                                             <?php if ($class == "Contestado(EMAIL)"): ?>
                                                                                  <?php $class = "contestado-email" ?>
                                                                             <?php endif ?>
-                                                                                
+                                                                            
                                                                             <div class="<?php echo $class ;?> start" style="width: 45%;float: right;">
                                                                                 &nbsp;
                                                                             </div>
@@ -160,7 +169,11 @@
                                                                 <?php else: ?>
                                                                     <?php if ($calendars[$x]->type_book != 9 && $calendars[$x]->type_book != 5): ?>
                                                                         <a 
-                                                                            href="#" 
+                                                                            <?php  if ( $userRole == "admin"): ?>
+                                                                                href="{{ url('/admin/reservas/update') }}/<?php echo  $calendars[$x]->id; ?>" 
+                                                                            <?php else: ?>
+                                                                                href="#" 
+                                                                            <?php endif; ?>
                                                                             <?php $titulo =  $calendars[$x]->customer['name'] ?>
                                                                             title="<?php echo $titulo ?>"
                                                                         >
@@ -170,8 +183,8 @@
                                                                             <?php endif ?>
                                                                                 
                                                                             <div class="<?php echo $class ;?>" style="width: 100%;float: left;">
-                                                                            &nbsp;
-                                                                        </div>
+                                                                                &nbsp;
+                                                                            </div>
                                                                     </a>
                                                                     <?php endif ?>
                                                                 <?php endif ?>
@@ -185,6 +198,7 @@
 
                                                         <?php if ($calendars[0]->start == $inicio->copy()->format('Y-m-d')): ?>
                                                             <td 
+                                                                
                                                                 <?php $titulo =  $calendars[0]->customer['name'] ?>
 
                                                                 title="<?php echo $titulo ?>"
@@ -194,11 +208,17 @@
                                                                 <?php if ($class == "Contestado(EMAIL)"): ?>
                                                                      <?php $class = "contestado-email" ?>
                                                                 <?php endif ?>
-                                                                    
-                                                                <div class="<?php echo $class ;?> start" style="width: 45%;float: right;">
-                                                                    &nbsp;
-                                                                </div>
-
+                                                                <a 
+                                                                    <?php  if ( $userRole == "admin"): ?>
+                                                                        href="{{ url('/admin/reservas/update') }}/<?php echo  $calendars[0]->id; ?>" 
+                                                                    <?php else: ?>
+                                                                        href="#" 
+                                                                    <?php endif; ?>
+                                                                > 
+                                                                    <div class="<?php echo $class ;?> start" style="width: 45%;float: right;">
+                                                                        &nbsp;
+                                                                    </div>
+                                                                </a> 
                                                             </td>    
                                                         <?php elseif($calendars[0]->finish == $inicio->copy()->format('Y-m-d')): ?>
                                                             <td 
@@ -211,11 +231,18 @@
                                                                 <?php if ($class == "Contestado(EMAIL)"): ?>
                                                                      <?php $class = "contestado-email" ?>
                                                                 <?php endif ?>
-                                                                    
-                                                                <div class="<?php echo $class ;?> end" style="width: 45%;float: left;">
-                                                                    &nbsp;
-                                                                </div>
-
+                                                                
+                                                                <a 
+                                                                    <?php  if ( $userRole == "admin"): ?>
+                                                                        href="{{ url('/admin/reservas/update') }}/<?php echo  $calendars[0]->id; ?>" 
+                                                                    <?php else: ?>
+                                                                        href="#" 
+                                                                    <?php endif; ?>
+                                                                > 
+                                                                    <div class="<?php echo $class ;?> end" style="width: 45%;float: left;">
+                                                                        &nbsp;
+                                                                    </div>
+                                                                </a>
 
                                                             </td>
                                                         <?php else: ?>
@@ -231,18 +258,23 @@
                                                                     
                                                                 class="<?php echo $class ;?>"
                                                             >
-                                                                <?php if ($calendars[0]->type_book == 9): ?>
-                                                                    <div style="width: 100%;height: 100%">
-                                                                        &nbsp;
-                                                                    </div>
-                                                                <?php else: ?>
-                                                                    <a href="#">
+                                                                <a 
+                                                                    <?php  if ( $userRole == "admin"): ?>
+                                                                        href="{{ url('/admin/reservas/update') }}/<?php echo  $calendars[0]->id; ?>" 
+                                                                    <?php else: ?>
+                                                                        href="#" 
+                                                                    <?php endif; ?>
+                                                                > 
+                                                                    <?php if ($calendars[0]->type_book == 9): ?>
                                                                         <div style="width: 100%;height: 100%">
                                                                             &nbsp;
                                                                         </div>
-                                                                    </a>
-                                                                <?php endif ?>
-
+                                                                    <?php else: ?>
+                                                                            <div style="width: 100%;height: 100%">
+                                                                                &nbsp;
+                                                                            </div>
+                                                                    <?php endif ?>
+                                                                </a>
 
                                                             </td>
 

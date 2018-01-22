@@ -527,7 +527,7 @@
 
 							<div class="col-xs-12">
 								<p class="text-justify font-s18">
-									Para ver el listado completo de bares y restaurantes de Sierra Nevada haz clic <a href="https://www.apartamentosierranevada.net/actividades/sin-categoria/conoce-los-mejores-restaurantes-en-sierra-nevada.html?preview_id=6178&preview_nonce=3e7ad1b84e&post_format=standard&_thumbnail_id=6179&preview=true" target="_blank" rel="noopener">aquí</a>
+									Para ver el listado completo de bares y restaurantes de Sierra Nevada haz clic <a href="https://www.apartamentosierranevada.net/actividades/sin-categoria/conoce-los-mejores-restaurantes-en-sierra-nevada.html" target="_blank" rel="noopener">aquí</a>
 								</p>
 							</div>
 
