@@ -148,8 +148,8 @@
                 var auxCoste = parseInt($('.cost').val());
 
                 $.get('/admin/api/reservas/getDataBook', {start: start, finish: finish, noches: diffDays, pax: pax, room: room, park: park, lujo: lujo,}).done(function( data ) {
-
-                    var costeApto  = data.costes.book +  data.costes.limp;
+                    console.log(data);
+                    var costeApto  = data.costes.book; // +  data.costes.limp;
                     var costeTotal = costeApto + data.costes.parking + data.costes.lujo;
                     var total      = data.totales.book + data.totales.parking + data.totales.lujo +  data.totales.limp;
                     var parking    = data.costes.parking;

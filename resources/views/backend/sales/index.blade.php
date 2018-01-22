@@ -57,11 +57,11 @@
     	<div class="col-md-4 push-20">
     		<div class="col-md-8">
     			<label>Nombre del cliente:</label>
-    			<input id="nameCustomer" type="text" name="searchName" class="searchabled form-control" placeholder="nombre del cliente" />
+    			<input id="nameCustomer" type="text" name="searchName" class="searchabled form-control" placeholder="nombre del cliente" value="{{ old('searchName') }}"/>
     		</div>
     		<div class="col-md-4">
     			<label>APTO:</label>
-    			<select class="form-control searchSelect minimal" name="searchByRoom">
+    			<select class="form-control searchSelect minimal" name="searchByRoom" >
     				<option value="all">Todos</option>
     				<?php foreach (\App\Rooms::where('state', 1)->get() as $key => $room): ?>
     					<option value="<?php echo $room->id ?>">
