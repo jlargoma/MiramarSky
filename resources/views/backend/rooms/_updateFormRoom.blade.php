@@ -77,6 +77,10 @@
 						<?php endforeach ?>
 					</select>
 				</div>
+				<div class="col-md-2 col-xs-12 push-20">
+					<label for="type">Link Expor. cal. Apto</label>
+					<p><?php echo route("import-iCalendar", ["aptoID" => $room->id])?></p>					
+				</div>				
 			</div>
 		</div>
 		<div class="col-xs-12 text-center push-20">
