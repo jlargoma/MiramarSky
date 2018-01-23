@@ -82,7 +82,11 @@
         <div class="col-md-12 col-xs-12 center text-left0">
             <div class="col-md-6">
                 <div class="col-md-9 col-xs-12">
-                    <a href="{{ url()->previous() }}" class=" m-b-10" style="min-width: 10px!important">
+                    @if( url()->previous() != "" )
+                        <a href="{{ url()->previous() }}" class=" m-b-10" style="min-width: 10px!important">
+                    @else
+                        <a href="{{ url('/admin/reservas') }}" class=" m-b-10" style="min-width: 10px!important">
+                    @endif
                         <img src="{{ asset('/img/miramarski/iconos/close.png') }}" style="width: 20px" />
                     </a>
                     <h4 class="" style="line-height: 1; letter-spacing: -1px">
