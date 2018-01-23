@@ -79,7 +79,10 @@
 				</div>
 				<div class="col-md-2 col-xs-12 push-20">
 					<label for="type">Link Expor. cal. Apto</label>
-					<p><?php echo route("import-iCalendar", ["aptoID" => $room->id])?></p>					
+					<p><?php echo route("import-iCalendar", ["aptoID" => $room->id])?></p>
+					<button class="btn btn-cons" type="button" id="copy-link-export" data-link="<?php echo route("import-iCalendar", ["aptoID" => $room->id])?>">
+		                <span class="bold">Copiar Link</span>
+		            </button>					
 				</div>				
 			</div>
 		</div>
@@ -111,4 +114,12 @@
 	           e.preventDefault();
 	       }
 	   });
+		$(document).on("click","#copy-link-export", function(){
+			var link = $(this).data("link");
+			var $temp = $("<input>");
+			$("body").append($temp);
+			$temp.val(link).select();
+			document.execCommand("copy");
+			$temp.remove();
+		});
 </script>
