@@ -148,44 +148,35 @@
                 var auxCoste = parseInt($('.cost').val());
 
                 $.get('/admin/api/reservas/getDataBook', {start: start, finish: finish, noches: diffDays, pax: pax, room: room, park: park, lujo: lujo,}).done(function( data ) {
+
+
                     console.log(data);
-                    var costeApto  = data.costes.book; // +  data.costes.limp;
-                    var costeTotal = costeApto + data.costes.parking + data.costes.lujo;
+
+                    var promo = $('.promociones').val();
+                    if (promo == "") {
+                        promo = 0;
+                    }
+
+                    var agencia = $('.agencia').val();
+                    if (agencia == "") {
+                        agencia = 0;
+                    }
+
+                    var costeApto  = data.costes.book - parseFloat(promo); // + data.costes.limp;
+                    var costeTotal = costeApto + data.costes.parking + data.costes.lujo + data.costes.limp + parseFloat(agencia);
                     var total      = data.totales.book + data.totales.parking + data.totales.lujo +  data.totales.limp;
                     var parking    = data.costes.parking;
 
-                    if (notModifyPrice == 1) {
-                       
-                        costeTotal = parseFloat($('.cost').val()) + parseFloat($('.agencia').val());
-                        $('.total').val( parseFloat(auxTotal) );
-                        $('.cost').val( parseFloat(costeTotal) );
 
-                    }else if (notModifyPrice == 2) {
-                        var promo = $('.promociones').val();
-                        if (promo == "") {
-                            promo = 0;
-                        }
-
-                        
-
-
-                        costeApto = costeApto - parseFloat(promo);
-                        costeTotal = auxCoste - parseFloat(promo);
-
-                        $('.cost').val( parseFloat(costeTotal) );
-                        $('.total').val( parseFloat(auxTotal) );
-                        if (promo == 0) {
-                            $('.book_owned_comments').empty();
-                        }else{
-                            $('.book_owned_comments').empty().append('(PROMOCIÓN 3x2 DESCUENTO : -'+ promo +' €)');
-                        }
-                         
-
-                    }else if(notModifyPrice == 0){
-                        $('.total').val( parseFloat(total) );
-                        $('.cost').val( parseFloat(costeTotal) );
+                    if (promo == 0) {
+                        $('.book_owned_comments').empty();
+                    }else{
+                        $('.book_owned_comments').empty().append('(PROMOCIÓN 3x2 DESCUENTO : -'+ promo +' €)');
                     }
 
+                    
+                    $('.total').val( parseFloat(total) );
+                    $('.cost').val( parseFloat(costeTotal) );
                     total = $('.total').val();
                     
                     $('.costApto').val( parseFloat(costeApto) );
