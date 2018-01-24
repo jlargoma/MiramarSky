@@ -1,5 +1,5 @@
 @extends('layouts.admin-master') 
-
+ 
 @section('title') Administrador de reservas MiramarSKI @endsection
 
 @section('externalScripts') 
@@ -83,7 +83,12 @@
             <div class="col-md-6">
                 <div class="col-md-9 col-xs-12">
                     @if( url()->previous() != "" )
-                        <a href="{{ url()->previous() }}" class=" m-b-10" style="min-width: 10px!important">
+                        @if( url()->previous() == url()->current() )
+                            <a href="{{ url('/admin/reservas') }}" class=" m-b-10" style="min-width: 10px!important">
+                        @else
+                            <a href="{{ url()->previous() }}" class=" m-b-10" style="min-width: 10px!important">
+                        @endif
+                        
                     @else
                         <a href="{{ url('/admin/reservas') }}" class=" m-b-10" style="min-width: 10px!important">
                     @endif
@@ -809,32 +814,35 @@
                                 <?php endif ?>
                             </div>
                         </div>
-                       <div class="col-md-2 col-xs-5 push-20 ">
+                       <div class="col-md-2 col-xs-6 push-20 ">
                            <label>promoción 3x2</label>
                            <input type="text" class="promociones only-numbers form-control" name="promociones" value="<?php echo $book->promociones ?>">
                        </div>
+                       <div class="col-md-6 col-xs-6 push-10 content_image_offert" style="display: none;">
+                            <img src="/pages/oferta.png" style="width: 90px;">
+                        </div>
                         <div class="col-md-8 col-xs-12 push-20 not-padding">
                             <div class="col-md-3 col-xs-12 text-center" style="background-color: #0c685f;">
                                 <label class="font-w800 text-white" for="">TOTAL</label>
-                                <input type="text" class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>">
+                                <input type="number" class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>">
                             </div>
                             <?php if (Auth::user()->role == "admin"): ?>
                                 
                                 <div class="col-md-3 col-xs-6 text-center" style="background: #91cf81;">
                                     <label class="font-w800 text-white" for="">APTO</label>
-                                    <input type="text" class="form-control costApto m-t-10 m-b-10 white" name="costApto"  value="<?php echo $book->cost_apto ?>">
+                                    <input type="number" class="form-control costApto m-t-10 m-b-10 white" name="costApto"  value="<?php echo $book->cost_apto ?>">
                                 </div>
                                 <div class="col-md-3 col-xs-6 text-center" style="background: #337ab7;">
                                     <label class="font-w800 text-white" for="">PARKING</label>
-                                    <input type="text" class="form-control costParking m-t-10 m-b-10 white" name="costParking"  value="<?php echo $book->cost_park ?>">
+                                    <input type="number" class="form-control costParking m-t-10 m-b-10 white" name="costParking"  value="<?php echo $book->cost_park ?>">
                                 </div>
                                 <div class="col-md-3 col-xs-6 text-center" style="background: #99D9EA;">
                                     <label class="font-w800 text-white" for="">COSTE TOTAL</label>
-                                    <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost"  value="<?php echo $book->cost_total ?>">
+                                    <input type="number" class="form-control cost m-t-10 m-b-10 white" name="cost"  value="<?php echo $book->cost_total ?>">
                                 </div>
                                 <div class="col-md-3 col-xs-6 text-center not-padding" style="background: #ff7f27;">
                                     <label class="font-w800 text-white" style="width: 100%;" for="">BENEFICIO</label>
-                                    <input type="text" class="form-control text-center beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>">
+                                    <input type="number" class="form-control text-center beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>">
                                     <div class="beneficio-text font-w400 font-s18 white">
                                         <?php echo number_format($book->inc_percent,0)."%" ?>    
                                    </div>

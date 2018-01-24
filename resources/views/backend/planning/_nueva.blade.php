@@ -1,3 +1,7 @@
+<?php    
+    use App\Classes\Mobile; 
+    $mobile = new Mobile(); 
+?>
 <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
 <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
 <style type="text/css" media="screen"> 
@@ -219,8 +223,8 @@
                 </div>
             </div>
             <div class="col-xs-12 bg-white">
-                <div class="col-xs-6 col-md-4 not-padding">
-                    <div class="col-md-6 col-xs-12 push-10">
+                <div class="col-xs-12 col-md-4 not-padding">
+                    <div class="col-md-6 col-xs-6 push-10">
                         <label>Agencia</label>
                         <select class="form-control full-width agency minimal" name="agency">
                             <?php for ($i=0; $i <= 4 ; $i++): ?>
@@ -230,15 +234,20 @@
                             <?php endfor;?>
                         </select>
                     </div>
-                    <div class="col-md-6 col-xs-12 push-10">                                                        
+                    <div class="col-md-6 col-xs-6 push-10">                                                        
                         <label>Cost Agencia</label>
                         <input type="number" class="agencia form-control" name="agencia">
                     </div>
                    
                 </div>
-                <div class="col-xs-6 col-md-2 not-padding">
-                    <label>promoción 3x2</label>
-                    <input type="number" class="promociones form-control" name="promociones">
+                <div class="col-xs-12 col-md-2 not-padding">
+                    <div class="col-md-6 col-xs-6 push-10">
+                        <label>promoción 3x2</label>
+                        <input type="number" class="promociones form-control" name="promociones">
+                    </div>
+                    <div class="col-md-6 col-xs-6 push-10 content_image_offert" style="display: none;">
+                        <img src="/pages/oferta.png" style="width: 90px;">
+                    </div>
                 </div>
             </div>
             <div class="col-xs-12">
@@ -248,33 +257,64 @@
                 </div>
             </div>
             <div class="col-xs-12 bg-white">
-                <div class="col-xs-12 not-padding">
-                    <div class="col-md-3 col-xs-12 text-center  first" style="background-color: #0c685f;">
-                        <label class="font-w800 text-white" for="">TOTAL</label>
-                        <input type="text" class="form-control total m-t-10 m-b-10 white" name="total" >
-                    </div>
-                    
-                        <div class="col-md-3 col-xs-6 text-center " style="background: #99D9EA;">
-                            <label class="font-w800 text-white" for="">COSTE TOTAL</label>
-                            <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost" >
+                <?php if (!$mobile->isMobile()): ?>
+                    <div class="col-xs-12 not-padding">
+                        <div class="col-md-3 col-xs-12 text-center  first" style="background-color: #0c685f;">
+                            <label class="font-w800 text-white" for="">TOTAL</label>
+                            <input type="text" class="form-control total m-t-10 m-b-10 white" name="total" >
                         </div>
-                        <div class="col-md-2 col-xs-6 text-center " style="background: #91cf81;">
-                            <label class="font-w800 text-white" for="">APTO</label>
-                            <input type="text" class="form-control costApto m-t-10 m-b-10 white" name="costApto" >
-                        </div>
-                        <div class="col-md-2 col-xs-6 text-center " style="background: #337ab7;">
-                            <label class="font-w800 text-white" for="">PARKING</label>
-                            <input type="text" class="form-control costParking m-t-10 m-b-10 white" name="costParking" >
-                        </div>
-                    <?php if (Auth::user()->role == "admin"): ?>
-                        <div class="col-md-2 col-xs-6 text-center  not-padding" style="background: #ff7f27;">
-                            <label class="font-w800 text-white" style="width: 100%;" for="">BENEFICIO</label>
-                            <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio"  style="width: 80%; float: left;">
-                            <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;">
-
+                        
+                            <div class="col-md-3 col-xs-6 text-center " style="background: #99D9EA;">
+                                <label class="font-w800 text-white" for="">COSTE TOTAL</label>
+                                <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost" >
                             </div>
+                            <div class="col-md-2 col-xs-6 text-center " style="background: #91cf81;">
+                                <label class="font-w800 text-white" for="">APTO</label>
+                                <input type="text" class="form-control costApto m-t-10 m-b-10 white" name="costApto" >
+                            </div>
+                            <div class="col-md-2 col-xs-6 text-center " style="background: #337ab7;">
+                                <label class="font-w800 text-white" for="">PARKING</label>
+                                <input type="text" class="form-control costParking m-t-10 m-b-10 white" name="costParking" >
+                            </div>
+                        <?php if (Auth::user()->role == "admin"): ?>
+                            <div class="col-md-2 col-xs-6 text-center  not-padding" style="background: #ff7f27;">
+                                <label class="font-w800 text-white" style="width: 100%;" for="">BENEFICIO</label>
+                                <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio"  style="width: 80%; float: left;">
+                                <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;">
+
+                                </div>
+                            </div>
+                        <?php endif ?>
+                <?php else: ?>
+                    <div class="col-md-8 col-xs-12 push-20 not-padding">
+                        <div class="col-md-3 col-xs-12 text-center" style="background-color: #0c685f;">
+                            <label class="font-w800 text-white" for="">TOTAL</label>
+                            <input type="number" class="form-control total m-t-10 m-b-10 white" name="total" >
                         </div>
-                    <?php endif ?>
+                        <?php if (Auth::user()->role == "admin"): ?>
+                            
+                            <div class="col-md-3 col-xs-6 text-center" style="background: #91cf81;">
+                                <label class="font-w800 text-white" for="">APTO</label>
+                                <input type="number" class="form-control costApto m-t-10 m-b-10 white" name="costApto"  >
+                            </div>
+                            <div class="col-md-3 col-xs-6 text-center" style="background: #337ab7;">
+                                <label class="font-w800 text-white" for="">PARKING</label>
+                                <input type="number" class="form-control costParking m-t-10 m-b-10 white" name="costParking"  v>
+                            </div>
+                            <div class="col-md-3 col-xs-6 text-center" style="background: #99D9EA;">
+                                <label class="font-w800 text-white" for="">COSTE TOTAL</label>
+                                <input type="number" class="form-control cost m-t-10 m-b-10 white" name="cost"  >
+                            </div>
+                            <div class="col-md-3 col-xs-6 text-center not-padding" style="background: #ff7f27;">
+                                <label class="font-w800 text-white" style="width: 100%;" for="">BENEFICIO</label>
+                                <input type="number" class="form-control text-center beneficio m-t-10 m-b-10 white" name="beneficio" >
+                                <div class="beneficio-text font-w400 font-s18 white"></div>
+                            </div>
+                        <?php endif ?>  
+                                             
+                    </div>
+                <?php endif ?>
+                
                     
                 </div>
                 

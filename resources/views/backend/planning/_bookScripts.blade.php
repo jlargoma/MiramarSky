@@ -295,6 +295,7 @@
         $('.promociones').change(function(event){ 
             calculate(2);
             $('.content_book_owned_comments').show();
+            $('.content_image_offert').toggle();
 
         });
 
