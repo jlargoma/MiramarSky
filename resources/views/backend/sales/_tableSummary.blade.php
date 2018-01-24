@@ -164,10 +164,25 @@
                 <?php foreach ($books as $book): ?>
                     <tr >
                         <td class="text-center"> 
-                            <!-- PVP -->
-                            <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
-                                <?php  echo $book->customer['name'] ?>      
-                            </a>
+                            <div class="col-xs-2 not-padding">
+                                <?php if ($book->agency != 0): ?>
+                                    <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
+                                <?php endif ?>
+                            </div>
+                            <div class="col-xs-8">
+                                <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
+                                    <?php  echo $book->customer['name'] ?>      
+                                </a>
+                            </div>
+                            <div class="col-xs-2 not-padding">
+                                <?php if (!empty($book->book_owned_comments)): ?>
+                                    <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
+                                        <img src="/pages/oferta.png" style="width: 40px;">
+                                    </span>
+                                    <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
+                                    
+                                <?php endif ?>
+                            </div>
                         </td>
                         <td class="text-center">
                             <!-- pax -->
@@ -496,9 +511,26 @@
                             <?php foreach ($books as $book): ?>
                                 <tr >
                                     <td class="text-center">
-                                        <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
-                                            <?php  echo $book->customer['name'] ?>      
-                                        </a>
+                                        <div class="col-xs-2 not-padding">
+                                            <?php if ($book->agency != 0): ?>
+                                                <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
+                                            <?php endif ?>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
+                                                <?php  echo $book->customer['name'] ?>      
+                                            </a>
+                                        </div>
+                                        <div class="col-xs-2 not-padding">
+                                            <?php if (!empty($book->book_owned_comments)): ?>
+                                                <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
+                                                    <img src="/pages/oferta.png" style="width: 40px;">
+                                                </span>
+                                                <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
+                                                
+                                            <?php endif ?>
+                                        </div>
+                                        
                                     </td>
                                     <td class="text-center">
                                         <?php echo $book->pax ?>        
