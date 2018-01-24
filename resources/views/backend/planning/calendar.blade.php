@@ -9,7 +9,7 @@
           <?php $dateAux = $inicio->copy(); ?>
           <?php for ($i=1; $i <= 9 ; $i++) :?>
 				
-              	<button <?php if($i == 4){ echo 'id="btn-active"';} ?> class='btn btn-sm btn-default btn-fechas-calendar <?php if($i < 4){ echo 'hidden-xs'; }?>' data-month="<?php echo $dateAux->copy()->format('n') ?>">
+              	<button <?php if($dateAux->copy()->format('n') == date('n')){ echo 'id="btn-active"';} ?> class='btn btn-sm btn-default btn-fechas-calendar <?php if($i < 4){ echo 'hidden-xs'; }?>' data-month="<?php echo $dateAux->copy()->format('n') ?>">
               		<?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>
               	</button>
               <?php $dateAux->addMonth(); ?>
