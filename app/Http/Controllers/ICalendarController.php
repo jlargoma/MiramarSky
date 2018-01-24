@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use DateTime;
-
+use DateInterval;
 class ICalendarController extends Controller
 {
     /**
@@ -30,7 +30,7 @@ class ICalendarController extends Controller
         $date = new DateTime();
 
         //Set ical name roomID+date
-        $iCalName = $room->id . "-" . $date->format("Y-m-d-H-i-s");
+        $iCalName = $room->nameRoom . "-" . $date->format("Y-m-d-H-i-s");
 
         //instance iCalendar
         $iCalendar = new \Eluceo\iCal\Component\Calendar('www.apartamentosierranevada.net');
@@ -45,10 +45,11 @@ class ICalendarController extends Controller
         //for each book we add a avent to the iCalendar
         foreach ($books as $book) {
             $vEvent = new \Eluceo\iCal\Component\Event();
-
-            $vEvent->setDtStart(new \DateTime($book->start))
-                    ->setDtEnd(new \DateTime($book->finish))
-                    ->setNoTime(true)
+            $in = new \DateTime($book->start);
+            $out = new \DateTime($book->finish);
+            $out->sub(new \DateInterval('P1D'));
+            $vEvent->setDtStart($in)
+                    ->setDtEnd($out)
                     ->setSummary($book->customer->name);
 
             //Add event to the iCalendar
