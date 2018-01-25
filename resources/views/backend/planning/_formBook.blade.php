@@ -10,6 +10,22 @@
 @section('externalScripts')
     <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
     <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
+    <style type="text/css" media="screen"> 
+        .daterangepicker{
+            z-index: 10000!important;
+        }
+        .pg-close{
+            font-size: 45px!important;
+            color: white!important;
+        }
+        @media only screen and (max-width: 767px){
+           .daterangepicker {
+                left: 12%!important;
+                top: 3%!important; 
+            }
+        }
+
+    </style>
 @endsection
     
 @section('content') 
@@ -29,7 +45,7 @@
                 </p>
             </div>
         </div>
-        <div class="row padding-block">
+        <div class="row">
             <div class="col-xs-12 bg-black push-20">
                 <h4 class="text-center white">
                     NUEVA RESERVA
@@ -77,11 +93,11 @@
                         </div>  
                         <div class="col-md-3 col-xs-12 push-10">
                             <label for="dni">DNI</label> 
-                            <input class="form-control cliente" type="text" name="dni">
+                            <input class="form-control cliente" type="text" name="dni" value="<?php echo $request->dni; ?>">
                         </div>
                         <div class="col-md-3 col-xs-12 push-10">
                             <label for="address">DIRECCION</label> 
-                            <input class="form-control cliente" type="text" name="address" >
+                            <input class="form-control cliente" type="text" name="address" value="<?php echo $request->address; ?>">
                         </div>
                         <div class="col-md-3 col-xs-12 push-10">
                             <label for="country">PAÍS</label> 
@@ -110,7 +126,7 @@
                                 DATOS DE LA RESERVA
                             </h4>
                         </div>
-                        <div class="col-md-3 col-xs-12">
+                        <div class="col-md-3 col-xs-9">
                             <label>Entrada</label>
                             <div class="input-prepend input-group push-20">
                                 <!-- <?php echo $request->fechas; ?> -->
@@ -132,7 +148,7 @@
                                 <?php endfor;?>
                             </select>
                         </div>
-                        <div class="col-md-3 col-xs-6 push-20">
+                        <div class="col-md-3 col-xs-9 push-20">
                             <label>Apartamento</label>
                             <select class="form-control full-width newroom minimal" name="newroom" id="newroom">
                                 <?php foreach ($rooms as $room): ?>
@@ -163,62 +179,84 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-xs-12 bg-white push-20">
-                        <div class="col-md-4 col-xs-6 not-padding">
-                            <div class="col-md-6 col-xs-12 push-10">
+                    <div class="col-xs-12 bg-white">
+                        <div class="col-md-5 col-xs-12 push-20 not-padding">
+                            <div class="col-md-5 col-xs-6 push-10">
                                 <label>Agencia</label>
-                                <select class="form-control full-width agency minimal" data-init-plugin="select2" name="agency">
-                                    <?php for ($i=0; $i <= 2 ; $i++): ?>
-                                        <option value="<?php echo $i ?>" <?php echo $i == $request->agency ? "selected" : ""; ?>>
-                                            <?php echo $book->getAgency($i) ?>
-                                        </option>
+                                <select class="form-control full-width agency minimal" name="agency">
+                                    <?php for ($i=0; $i <= 4 ; $i++): ?>
+                                        <option value="<?php echo $i ?>" {{ $request->agency == $i ? 'selected' : '' }}><?php echo $book->getAgency($i) ?></option>
                                     <?php endfor;?>
                                 </select>
                             </div>
-                            <div class="col-md-6 col-xs-12 push-10">                                                        
+                            <div class="col-md-7 col-xs-6 push-10">                                                        
                                 <label>Cost Agencia</label>
-                                <input type="number" class="agencia form-control" name="agencia" value="<?php echo $request->agencia ?>">
+                                <?php if ($request->agencia == 0.00): ?>
+                                    <input type="number" class="agencia form-control" name="agencia" value="">
+                                <?php else: ?>
+                                    <input type="number" class="agencia form-control" name="agencia" value="<?php echo $request->agencia ?>">
+                                <?php endif ?>
                             </div>
-                            <div style="clear: both;"></div>
+                        
                         </div>
-                        <div class="col-md-8 col-xs-6 not-padding push-20">
-                            <div class="col-md-4 col-xs-12 text-center" style="background-color: #0c685f;">
+                        <div class="col-md-2 col-xs-6 not-padding push-20">
+                            <label>promoción 3x2</label>
+                            <input type="text" class="promociones only-numbers form-control" name="promociones" value="<?php echo $request->promociones ?>">
+                        </div>
+                        <div class="col-md-12 col-xs-12 push-20 not-padding">
+                            <div class="col-md-3 col-xs-12 text-center " style="background-color: #0c685f;">
                                 <label class="font-w800 text-white" for="">TOTAL</label>
-                                <input type="text" class="form-control total m-t-10 m-b-10 white" name="total"  value="<?php echo $request->total ?>">
+                                <input type="text" class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $request->total ?>">
                             </div>
-                            <div class="col-md-4 col-xs-12 text-center" style="background: #99D9EA;">
-                                <label class="font-w800 text-white" for="">COSTE</label>
-                                <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost"  value="<?php echo $request->cost ?>">
-                            </div>
-                            <div class="col-md-4 col-xs-12 text-center not-padding" style="background: #ff7f27;">
-                                <label class="font-w800 text-white" for="">BENEFICIO</label>
-                                <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio"  style="width: 80%; float: left;" value="<?php echo $request->beneficio ?>">
-                                <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;">
-
+                            
+                                <div class="col-md-3 col-xs-6 text-center " style="background: #99D9EA;">
+                                    <label class="font-w800 text-white" for="">COSTE TOTAL</label>
+                                    <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost"  value="<?php echo $request->cost ?>">
                                 </div>
-                            </div>
+                                <div class="col-md-3 col-xs-6 text-center " style="background: #91cf81;">
+                                    <label class="font-w800 text-white" for="">APTO</label>
+                                    <input type="text" class="form-control costApto m-t-10 m-b-10 white" name="costApto"  value="<?php echo $request->costApto ?>">
+                                </div>
+                                <div class="col-md-3 col-xs-6 text-center " style="background: #337ab7;">
+                                    <label class="font-w800 text-white" for="">PARKING</label>
+                                    <input type="text" class="form-control costParking m-t-10 m-b-10 white" name="costParking"  value="<?php echo $request->costParking ?>">
+                                </div>
+                            <?php if (Auth::user()->role == "admin"): ?>
+                                <div class="col-md-3 col-xs-6 text-center  not-padding" style="background: #ff7f27;">
+                                    <label class="font-w800 text-white" for="">BENEFICIO</label>
+                                    <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $request->beneficio ?>">
+                                    <div class="beneficio-text font-w400 font-s18 white"></div>
+                                </div>
+                            <?php endif ?>
+                                                 
                         </div>
                         
-                    </div>
-                    <div class="col-xs-12 bg-white padding-block">
-                        <div class="col-md-6 col-xs-12 push-20">
-                            <label>Comentarios Cliente </label>
-                            <textarea class="form-control" name="comments" rows="5" >
-                                <?php echo trim( $request->comments ); ?>
-                            </textarea>
+                        <div class="col-md-12 col-xs-12 not-padding text-left">
+                            <p class="precio-antiguo font-s18">
+                                <b>El precio asignado <?php echo $book->total_price ?> y el precio de tarifa es <?php echo $book->real_price ?></b>
+                            </p>
+                        </div> 
+                        <div class="col-xs-12 bg-white padding-block">
+                            <div class="col-md-4 col-xs-12">
+                                <label>Comentarios Cliente </label>
+                                <textarea class="form-control" name="comments" rows="5" ><?php echo $book->comment ?></textarea>
+                            </div>
+                            <div class="col-md-4 col-xs-12">
+                                <label>Comentarios Internos</label>
+                                <textarea class="form-control book_comments" name="book_comments" rows="5" ><?php echo $book->book_comments ?></textarea>
+                            </div>
+                            <div class="col-md-4 col-xs-12 content_book_owned_comments">
+                                <label>Comentarios Propietario</label>
+                                <textarea class="form-control book_owned_comments" name="book_owned_comments" rows="5" ><?php echo $book->book_owned_comments ?></textarea>
+                            </div>
                         </div>
-                        <div class="col-md-6 col-xs-12 push-20">
-                            <label>Comentarios Internos</label>
-                            <textarea class="form-control book_comments" name="book_comments" rows="5" >
-                                <?php echo trim( $request->book_comments ); ?>
-                            </textarea>
+                        <div class="row push-40 bg-white padding-block">
+                            <div class="col-md-4 col-md-offset-4 col-xs-12 text-center">
+                                <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;">Guardar</button>
+                            </div>  
                         </div>
                     </div>
-                    <div class="row bg-white padding-block">
-                        <div class="col-md-4 col-md-offset-4 text-center">
-                            <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;">Guardar</button>
-                        </div>  
-                    </div>
+                    
                 </form>
             </div>
         </div>
@@ -232,278 +270,5 @@
 @section('scripts')
 <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
 <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
-<script type="text/javascript">
-
-        $(function() {
-          $(".daterange1").daterangepicker({
-            "buttonClasses": "button button-rounded button-mini nomargin",
-            "applyClass": "button-color",
-            "cancelClass": "button-light", 
-            locale: {
-                format: 'DD MMM, YY',
-                "applyLabel": "Aplicar",
-                  "cancelLabel": "Cancelar",
-                  "fromLabel": "From",
-                  "toLabel": "To",
-                  "customRangeLabel": "Custom",
-                  "daysOfWeek": [
-                      "Do",
-                      "Lu",
-                      "Mar",
-                      "Mi",
-                      "Ju",
-                      "Vi",
-                      "Sa"
-                  ],
-                  "monthNames": [
-                      "Enero",
-                      "Febrero",
-                      "Marzo",
-                      "Abril",
-                      "Mayo",
-                      "Junio",
-                      "Julio",
-                      "Agosto",
-                      "Septiembre",
-                      "Octubre",
-                      "Noviembre",
-                      "Diciembre"
-                  ],
-                  "firstDay": 1,
-              },
-              
-          });
-        });
-
-        function calculate( notModifyPrice = 0){
-                var room       = $('#newroom').val();
-                var pax        = $('.pax').val();
-                var park       = $('.parking').val();
-                var lujo       = $('select[name=type_luxury]').val();
-                var status     = $('select[name=status]').val();
-                var sizeApto   = $('option:selected', 'select[name=newroom]').attr('data-size');;
-                var beneficio  = 0;
-                var costPark   = 0;
-                var pricePark  = 0;
-                var costLujo   = 0;
-                var priceLujo  = 0;
-                var agencia    = 0;
-                var beneficio_ = 0;
-                var comentario =$('.book_comments').val();
-                var date       = $('.daterange1').val();
-                
-                var arrayDates = date.split('-');
-                var res1       = arrayDates[0].replace("Abr", "Apr");
-                var date1      = new Date(res1);
-                var start      = date1.getTime();
-                
-                var res2       = arrayDates[1].replace("Abr", "Apr");
-                var date2      = new Date(res2);
-                var timeDiff   = Math.abs(date2.getTime() - date1.getTime());
-                var diffDays   = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-                $('.nigths').val(diffDays);
-                
-                var start      = date1.toLocaleDateString();
-                var finish     = date2.toLocaleDateString();
-
-
-
-                
-                if ( status == 8) {
-                    $('.total').empty();
-                    $('.total').val(0);
-                    $('.cost').empty();
-                    $('.cost').val(0);
-
-                    $('.beneficio').empty();
-                    $('.beneficio').val(0);
-                }else if ( status == 7 ){
-                    if (sizeApto == 1) {
-                        $('.total').empty();
-                        $('.total').val(30);
-
-                        $('.cost').empty();
-                        $('.cost').val(30);
-
-                        $('.beneficio').empty();
-                        $('.beneficio').val(0);
-                    }else{
-                        $('.total').empty();
-                        $('.total').val(50);
-
-                        $('.cost').empty();
-                        $('.cost').val(40);
-
-                        $('.beneficio').empty();
-                        $('.beneficio').val(10);
-                    }
-                }else{
-                    $.get('/admin/reservas/getPricePark', {park: park, noches: diffDays}).success(function( data ) {
-                        pricePark = data;
-                        $.get('/admin/reservas/getPriceLujoAdmin', {lujo: lujo}).success(function( data ) {
-                            priceLujo = data;
-
-                            $.get('/admin/reservas/getPriceBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                                price = data;
-                                
-                                price = (parseFloat(price) + parseFloat(pricePark) + parseFloat(priceLujo));
-
-                                if ( notModifyPrice == 0) {
-                                    $('.total').empty();
-                                    $('.total').val(price);
-                                }
-                                    $.get('/admin/reservas/getCostPark', {park: park, noches: diffDays}).success(function( data ) {
-                                        costPark = data;
-                                        $.get('/admin/reservas/getCostLujoAdmin', {lujo: lujo}).success(function( data ) {
-                                            costLujo = data;
-                                            $.get('/admin/reservas/getCostBook', {start: start, finish: finish, pax: pax, room: room, park: park}).success(function( data ) {
-                                                cost = data;
-                                                agencia = $('.agencia').val();
-                                                if (agencia == "") {
-                                                    agencia = 0;
-                                                }
-                                                cost = (parseFloat(cost) + parseFloat(costPark) + parseFloat(agencia) + parseFloat(costLujo));
-                                                $('.cost').empty();
-                                                $('.cost').val(cost);
-                                                beneficio = price - cost;
-                                                $('.beneficio').empty;
-                                                $('.beneficio').val(beneficio);
-                                                beneficio_ = (beneficio / price)*100
-                                                $('.beneficio-text').empty();
-                                                $('.beneficio-text').html(beneficio_.toFixed(0)+"%")
-
-                                            });
-                                        });
-                                    });
-                            });
-                        });
-                    }); 
-                }
-                 
-
-                
-
-        }
-
-
-        $(document).ready(function() {          
-
-
-            var start  = 0;
-            var finish = 0;
-            var noches = 0;
-            var price = 0;
-            var cost = 0;
-
-            $('.daterange1').change(function(event) {
-                var date = $(this).val();
-
-                var arrayDates = date.split('-');
-                var res1 = arrayDates[0].replace("Abr", "Apr");
-                var date1 = new Date(res1);
-                var start = date1.getTime();
-
-                var res2 = arrayDates[1].replace("Abr", "Apr");
-                var date2 = new Date(res2);
-                var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-                $('.nigths').val(diffDays);
-
-                calculate();
-
-            });
-
-
-
-            
-            $('#newroom').change(function(event){ 
-
-                var room = $('#newroom').val();
-                var pax = $('.pax').val();
-                $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
-
-                    if (pax < data) {
-                        $('.personas-antiguo').empty();
-                        $('.personas-antiguo').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
-                    }else{
-                        $('.personas-antiguo').empty();
-                    }
-                });
-
-                
-                var dataLuxury = $('option:selected', this).attr('data-luxury');;
-
-                if (dataLuxury == 1) {
-                    $('.type_luxury option[value=1]').attr('selected','selected');
-                    $('.type_luxury option[value=2]').removeAttr('selected');
-                } else {
-                    $('.type_luxury option[value=1]').removeAttr('selected');
-                    $('.type_luxury option[value=2]').attr('selected','selected');
-                }
-
-
-
-                calculate();
-            });
-
-
-            $('.pax').change(function(event){ 
-                var room = $('#newroom').val();
-                var pax = $('.pax').val();
-                $.get('/admin/apartamentos/getPaxPerRooms/'+room).success(function( data ){
-
-                    if (pax < data) {
-                        $('.personas-antiguo').empty();
-                        $('.personas-antiguo').append('Van menos personas que el minimo, se le cobrara el minimo de la habitacion que son :'+data);
-                    }else{
-                        $('.personas-antiguo').empty();
-                    }
-                });
-
-                calculate();
-            });
-
-            $('.parking').change(function(event){ 
-                var commentBook = $('.book_comments').val();
-                $('.book_comments').empty();
-                var res = commentBook.replace("Parking: Si\n","");
-                res = res.replace("Parking: No\n","");
-                res = res.replace("Parking: Gratis\n","");
-                res = res.replace("Parking: 50 %\n","");
-                calculate();
-                
-                $('.book_comments').text( $.trim(res+'Parking:'+ $('option:selected', this).text())+"\n");
-            });
-
-            $('.type_luxury').change(function(event){ 
-                var commentBook = $('.book_comments').val();
-                $('.book_comments').empty();
-                var res = commentBook.replace("Suplemento de lujo: Si\n","");
-                res = res.replace("Suplemento de lujo: No\n","");
-                res = res.replace("Suplemento de lujo: Gratis\n","");
-                res = res.replace("Suplemento de lujo: 50 %\n","");
-
-                calculate();
-                $('.book_comments').text( $.trim(res+'Suplemento de lujo:'+ $('option:selected', this).text())+"\n");
-            });
-
-            $('.agencia').change(function(event){ 
-                calculate(1);
-            });
-
-           
-                
-            
-            $('.total').change(function(event) {
-                var price = $(this).val();
-                var cost = $('.cost').val();
-                var beneficio = (parseFloat(price) - parseFloat(cost));
-                console.log(beneficio);
-                $('.beneficio').empty;
-                $('.beneficio').val(beneficio);
-            });
-
-           
-        });
-</script>
+@include('backend.planning._bookScripts', ['update' => 0])
 @endsection
