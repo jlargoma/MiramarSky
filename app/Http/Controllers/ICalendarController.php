@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use DateTime;
 
+//Uses for import ICalendars
+use ICal\ICal;
+use Log;
+
 class ICalendarController extends Controller
 {
     /**
@@ -49,7 +53,7 @@ class ICalendarController extends Controller
             $vEvent->setDtStart(new \DateTime($book->start))
                     ->setDtEnd(new \DateTime($book->finish))
                     ->setNoTime(true)
-                    ->setSummary($book->customer->name);
+                    ->setSummary("#ADMIN " . $book->customer->name);
 
             //Add event to the iCalendar
             $iCalendar->addComponent($vEvent);
@@ -62,5 +66,44 @@ class ICalendarController extends Controller
         header('Content-Type: text/calendar; charset=utf-8');
         header('Content-Disposition: attachment; filename="'.$iCalName.'.ics"');
         echo $iCalendar->render();
+    }
+
+    public function getImportICalendar($value='')
+    {
+        $array_icalendars_to_import = [
+            [
+                "id" => 1,
+                "room_id" => 150,
+                "ical_url_to_import" => "https://www.airbnb.es/calendar/ical/22508643.ics?s=ae3dbf6adbcf82580f66eb42e6bde359"
+            ],
+            [
+                "id" => 2,
+                "room_id" => 140,
+                "ical_url_to_import" => "https://www.airbnb.es/calendar/ical/7031146.ics?s=25bb4fac0eff707c01a322ce143e6a6b"
+            ]
+        ];
+
+        foreach ($array_icalendars_to_import as $ical_to_import) {
+            //id releated with the icalendar to import
+            $room_id = $ical_to_import["room_id"];
+
+            //Read a iCal
+            
+            try {
+                $ical = new ICal($ical_to_import["ical_url_to_import"]);
+            } catch (\Exception $e) {
+                Log::error("Error importing icalendar " . $ical_to_import["id"] . ". Error  message => " . $e->getMessage());
+                continue;
+            }
+    
+            // All events on iCal
+            $events = $ical->sortEventsWithOrder($ical->events());
+
+            foreach ($events as $event) {
+
+            }
+            
+        }
+        die();
     }
 }
