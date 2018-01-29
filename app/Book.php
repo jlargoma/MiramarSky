@@ -121,13 +121,13 @@ class Book extends Model
     {
 
         $books = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,7,8])->get();
-        $existStart = False;
-        $existFinish = False;
+        $existStart = false;
+        $existFinish = false;
         $requestStart = Carbon::createFromFormat('d/m/Y',$start);
         $requestFinish = Carbon::createFromFormat('d/m/Y',$finish);
 
         foreach ($books as $book) {
-            if ($existStart == False && $existFinish == False) {
+            if ($existStart == false && $existFinish == false) {
 
                 $start = Carbon::createFromFormat('Y-m-d', $book->start);
                 $finish = Carbon::createFromFormat('Y-m-d', $book->finish);
@@ -144,54 +144,61 @@ class Book extends Model
                 break;
             }
         }
-        if ($existStart == False && $existFinish == False) {
-            return True;
+        if ($existStart == false && $existFinish == false) {
+            return true;
         }else{
-            return False;
+            return false;
         }
     }
 
-    static function existDateOverrride($start,$finish,$room, $id_excluded)
+    public function existDateOverrride($start,$finish,$room, $id_excluded)
     {
 
         if ($room >= 5) {
-            $requestStart = Carbon::createFromFormat('d/m/Y',$start);
-            $requestFinish = Carbon::createFromFormat('d/m/Y',$finish);
 
-            $books =  \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,7,8])
-                                        ->where('id','!=' ,$id_excluded)
-                                        ->orderBy('start','DESC')
-                                        ->get();
+            if ($this->type_book == 3 || $this->type_book == 0 || $this->type_book == 6) {
+                return true;
+            } else {
+                   
+                
 
-            //\App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,7,8])->where('id','!=',$id_excluded)->get();
+                $requestStart = Carbon::createFromFormat('d/m/Y',$start);
+                $requestFinish = Carbon::createFromFormat('d/m/Y',$finish);
 
-            $existStart = False;
-            $existFinish = False;
+                $books =  \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,7,8])
+                                            ->where('id','!=' ,$id_excluded)
+                                            ->orderBy('start','DESC')
+                                            ->get();
+
+                //\App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,7,8])->where('id','!=',$id_excluded)->get();
+
+                $existStart = false;
+                $existFinish = false;
 
 
-            foreach ($books as $book) {
-                if ($existStart == False && $existFinish == False) {
-                    $start = Carbon::createFromFormat('Y-m-d', $book->start);
-                    $finish = Carbon::createFromFormat('Y-m-d', $book->finish);
+                foreach ($books as $book) {
+                    if ($existStart == false && $existFinish == false) {
+                        $start = Carbon::createFromFormat('Y-m-d', $book->start);
+                        $finish = Carbon::createFromFormat('Y-m-d', $book->finish);
 
-                    if ($start < $requestStart && $requestStart < $finish){
-                        $existStart = true;
-                    }elseif($start <= $requestStart && $requestStart < $finish){
-                        $existStart = true;
-                    }elseif($requestStart <= $start && $start < $requestFinish){
-                        $existStart = true;
+                        if ($start < $requestStart && $requestStart < $finish){
+                            $existStart = true;
+                        }elseif($start <= $requestStart && $requestStart < $finish){
+                            $existStart = true;
+                        }elseif($requestStart <= $start && $start < $requestFinish){
+                            $existStart = true;
+                        }
+                    }
+                    else{
+                        break;
                     }
                 }
-                else{
-                    break;
+                if ($existStart == false && $existFinish == false) {
+                    return true;
+                }else{
+                    return false;
                 }
             }
-            if ($existStart == False && $existFinish == False) {
-                return True;
-            }else{
-                return False;
-            }
-
         }else{
             return true;
         }

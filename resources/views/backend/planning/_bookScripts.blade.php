@@ -360,7 +360,6 @@
             }
         });
 
-
         <?php if ($update == 1): // Datepicker and more for update book?>
             
             $('#fianza').click(function(event) {
