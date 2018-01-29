@@ -346,7 +346,7 @@ class BookController extends Controller
 
                         // MailController::sendEmailBookSuccess( $book, 0);
                         return redirect('admin/reservas');
-
+                        
                     }
                 }
 
@@ -420,10 +420,10 @@ class BookController extends Controller
         $customer->city    = ($request->input('city'))?$request->input('city'):"";
 
         $customer->save();
+        $book = \App\Book::find($id);
 
-
-        if ( \App\Book::existDateOverrride($start,$finish,$request->input('newroom'), $id) ) {
-            $book = \App\Book::find($id);
+        if ( $book->existDateOverrride($start,$finish,$request->input('newroom'), $id) ) {
+            
             $room = \App\Rooms::find($request->input('newroom'));
 
             $book->user_id             = Auth::user()->id;
