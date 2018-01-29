@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use DateTime;
 use DateInterval;
+
 class ICalendarController extends Controller
 {
     /**
@@ -42,15 +43,26 @@ class ICalendarController extends Controller
                         ->orderBy('start','ASC')
                         ->get();
 
+        //this is for set from where come the book
+        $start_summary = [
+            0 => "#ADMIN" ,
+            1 => "#BOOKING", 
+            2 => "#TRIVAGO", 
+            3 => "#BED&SNOW", 
+            4 => "#AIRBNB"
+        ];
+
         //for each book we add a avent to the iCalendar
         foreach ($books as $book) {
             $vEvent = new \Eluceo\iCal\Component\Event();
+
             $in = new \DateTime($book->start);
             $out = new \DateTime($book->finish);
             $out->sub(new \DateInterval('P1D'));
             $vEvent->setDtStart($in)
                     ->setDtEnd($out)
-                    ->setSummary($book->customer->name);
+                    ->setNoTime(true)
+                    ->setSummary($start_summary[$book->agency] . " " . $book->customer->name);                   
 
             //Add event to the iCalendar
             $iCalendar->addComponent($vEvent);
