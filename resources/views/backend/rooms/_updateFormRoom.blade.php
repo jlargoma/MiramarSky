@@ -3,7 +3,7 @@
 		Datos de <span class="font-w800"><?php echo $room->name ?> (<?php echo $room->nameRoom ?>)</span>
 	</h3>
 </div>
-<div class="row">
+<div class="row push-20">
 	<form class="form" action="{{ url('admin/apartamentos/saveupdate') }}" method="post">
 		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 		<input type="hidden" name="id" value="<?php echo $room->id; ?>">
@@ -93,6 +93,28 @@
 		</div>
 	</form>
 </div>
+<!-- FORMULARIO DE IMPORTACION DE ICAL POR ROOM -->
+<div class="row">
+	<div class="col-xs-12" style="padding: 0 15px">
+		<h3 class="text-left font-w300">
+			Importar ICAL <span class="font-w800"><?php echo $room->name ?> (<?php echo $room->nameRoom ?>)</span>
+		</h3>
+		<form class="form" action="#" method="post">
+			<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+			<input type="hidden" name="id" value="<?php echo $room->id; ?>">
+			<div class="col-md-3 col-xs-12 push-20">
+				<input type="url" name="urlIcal" class="form-control" placeholder="url para importar..." required>
+			</div>
+			<div class="col-md-3 col-xs-12 push-20 text-left">
+				<button class="btn btn-primary btn-cons" type="submit">
+	                <span class="bold">IMPORTAR</span>
+	            </button>
+			</div>
+		</form>
+	</div>
+</div>
+<!-- FIN FORMULARIO DE IMPORTACION DE ICAL POR ROOM -->
+
 
 <script type="text/javascript">
 	$(".only-numbers").keydown(function (e) {
