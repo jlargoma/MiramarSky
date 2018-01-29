@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use DateTime;
-
-//Uses for import ICalendars
-use ICal\ICal;
-use Log;
+use DateInterval;
 
 class ICalendarController extends Controller
 {
@@ -34,7 +31,7 @@ class ICalendarController extends Controller
         $date = new DateTime();
 
         //Set ical name roomID+date
-        $iCalName = $room->id . "-" . $date->format("Y-m-d-H-i-s");
+        $iCalName = $room->nameRoom . "-" . $date->format("Y-m-d-H-i-s");
 
         //instance iCalendar
         $iCalendar = new \Eluceo\iCal\Component\Calendar('www.apartamentosierranevada.net');
@@ -46,14 +43,26 @@ class ICalendarController extends Controller
                         ->orderBy('start','ASC')
                         ->get();
 
+        //this is for set from where come the book
+        $start_summary = [
+            0 => "#ADMIN" ,
+            1 => "#BOOKING", 
+            2 => "#TRIVAGO", 
+            3 => "#BED&SNOW", 
+            4 => "#AIRBNB"
+        ];
+
         //for each book we add a avent to the iCalendar
         foreach ($books as $book) {
             $vEvent = new \Eluceo\iCal\Component\Event();
 
-            $vEvent->setDtStart(new \DateTime($book->start))
-                    ->setDtEnd(new \DateTime($book->finish))
+            $in = new \DateTime($book->start);
+            $out = new \DateTime($book->finish);
+            $out->sub(new \DateInterval('P1D'));
+            $vEvent->setDtStart($in)
+                    ->setDtEnd($out)
                     ->setNoTime(true)
-                    ->setSummary("#ADMIN " . $book->customer->name);
+                    ->setSummary($start_summary[$book->agency] . " " . $book->customer->name);                   
 
             //Add event to the iCalendar
             $iCalendar->addComponent($vEvent);
@@ -66,44 +75,5 @@ class ICalendarController extends Controller
         header('Content-Type: text/calendar; charset=utf-8');
         header('Content-Disposition: attachment; filename="'.$iCalName.'.ics"');
         echo $iCalendar->render();
-    }
-
-    public function getImportICalendar($value='')
-    {
-        $array_icalendars_to_import = [
-            [
-                "id" => 1,
-                "room_id" => 150,
-                "ical_url_to_import" => "https://www.airbnb.es/calendar/ical/22508643.ics?s=ae3dbf6adbcf82580f66eb42e6bde359"
-            ],
-            [
-                "id" => 2,
-                "room_id" => 140,
-                "ical_url_to_import" => "https://www.airbnb.es/calendar/ical/7031146.ics?s=25bb4fac0eff707c01a322ce143e6a6b"
-            ]
-        ];
-
-        foreach ($array_icalendars_to_import as $ical_to_import) {
-            //id releated with the icalendar to import
-            $room_id = $ical_to_import["room_id"];
-
-            //Read a iCal
-            
-            try {
-                $ical = new ICal($ical_to_import["ical_url_to_import"]);
-            } catch (\Exception $e) {
-                Log::error("Error importing icalendar " . $ical_to_import["id"] . ". Error  message => " . $e->getMessage());
-                continue;
-            }
-    
-            // All events on iCal
-            $events = $ical->sortEventsWithOrder($ical->events());
-
-            foreach ($events as $event) {
-
-            }
-            
-        }
-        die();
     }
 }

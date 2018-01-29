@@ -230,7 +230,7 @@ class Book extends Model
                 $roomFinish = $dateFinish->format('U');
 
                 $isRooms    = \App\Book::where('room_id',$this->room_id)
-                                        ->whereIn('type_book',[1,2,4,6,7,8])
+                                        ->whereIn('type_book',[1,2,4,7,8])
                                         ->where('id','!=' ,$this->id)
                                         ->orderBy('start','DESC')
                                         ->get();

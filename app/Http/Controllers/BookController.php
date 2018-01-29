@@ -352,6 +352,7 @@ class BookController extends Controller
 
             }else{
 
+                    
                 return view('backend/planning/_formBook',  [
                     'request'   => (object) $request->input(),
                     'book'      => new \App\Book(),
