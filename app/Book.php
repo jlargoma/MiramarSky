@@ -346,39 +346,9 @@ class Book extends Model
         }
 
         if (!empty($room)) {
-            $dateStart  = Carbon::createFromFormat('Y-m-d',$this->start);
-            $dateFinish  = Carbon::createFromFormat('Y-m-d',$this->finish);
-
-            $roomStart = $dateStart->format('U');
-            $roomFinish = $dateFinish->format('U');
 
 
-            $isRooms = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,6,7,8])
-                                                        ->where('id','!=' ,$this->id)
-                                                        ->orderBy('start','DESC')
-                                                        ->get();
-
-            $existStart = False;
-            $existFinish = False;
-
-            foreach ($isRooms as $isRoom) {
-                if ($existStart == False && $existFinish == False) {
-
-                    $start = Carbon::createFromFormat('Y-m-d', $isRoom->start)->format('U');
-                    $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish)->format('U');
-
-                    if ($start < $roomStart && $roomStart < $finish){
-                        $existStart = true;
-                    }elseif($start <= $roomStart && $roomStart < $finish){
-                        $existStart = true;
-                    }elseif($roomStart <= $start && $start < $roomFinish){
-                        $existStart = true;
-                    }
-                }else{
-                    break;
-                }
-            }
-            if ($existStart == false && $existFinish == false) {
+            if ($this->type_book == 3){
                 $this->room_id = $room;
                 if($this->save()){
                     if ( $this->room->isAssingToBooking() ) {
@@ -394,12 +364,67 @@ class Book extends Model
                         $deleted = \App\BookNotification::where('book_id',$book->id)->delete();
                     }
                     return ['status' => 'success', 'title' => 'OK', 'response' => "Apartamento cambiado correctamente"];
+                }
+            }else{
+
+
+                $dateStart   = Carbon::createFromFormat('Y-m-d',$this->start);
+                $dateFinish  = Carbon::createFromFormat('Y-m-d',$this->finish);
+
+                $roomStart  = $dateStart->format('U');
+                $roomFinish = $dateFinish->format('U');
+
+
+                $isRooms = \App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,7,8])
+                                                            ->where('id','!=' ,$this->id)
+                                                            ->orderBy('start','DESC')
+                                                            ->get();
+
+                $existStart = False;
+                $existFinish = False;
+
+                foreach ($isRooms as $isRoom) {
+                    if ($existStart == False && $existFinish == False) {
+
+                        $start = Carbon::createFromFormat('Y-m-d', $isRoom->start)->format('U');
+                        $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish)->format('U');
+
+                        if ($start < $roomStart && $roomStart < $finish){
+                            $existStart = true;
+                        }elseif($start <= $roomStart && $roomStart < $finish){
+                            $existStart = true;
+                        }elseif($roomStart <= $start && $start < $roomFinish){
+                            $existStart = true;
+                        }
+                    }else{
+                        break;
+                    }
+                }
+                if ($existStart == false && $existFinish == false) {
+                    $this->room_id = $room;
+                    if($this->save()){
+                        if ( $this->room->isAssingToBooking() ) {
+
+                            $isAssigned = \App\BookNotification::where('book_id',$book->id)->get();
+
+                            if (count($isAssigned) == 0) {
+                                $notification = new \App\BookNotification();
+                                $notification->book_id = $book->id;
+                                $notification->save();
+                            }
+                        }else{
+                            $deleted = \App\BookNotification::where('book_id',$book->id)->delete();
+                        }
+                        return ['status' => 'success', 'title' => 'OK', 'response' => "Apartamento cambiado correctamente"];
+                    }else{
+                        return ['status' => 'danger', 'title' => 'Peligro', 'response' => "Error mientrar en el cambio de apartamento"];
+                    }
+
                 }else{
-                    return ['status' => 'danger', 'title' => 'Peligro', 'response' => "Error mientrar en el cambio de apartamento"];
+                    return ['status' => 'danger', 'title' => 'Peligro', 'response' => "Este apartamento ya esta ocupado para estas fechas"];
                 }
 
-            }else{
-                return ['status' => 'danger', 'title' => 'Peligro', 'response' => "Este apartamento ya esta ocupado para estas fechas"];
+
             }
         }
     }
