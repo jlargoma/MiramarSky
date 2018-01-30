@@ -7,6 +7,7 @@ use DateTime;
 use DateInterval;
 use ICal\ICal;
 use Log;
+use App\IcalImport;
 
 class ImportICal extends Command
 {
@@ -63,32 +64,21 @@ class ImportICal extends Command
      */
     public function importICalendar()
     {
-        $icalendars_to_import = [
-            [
-                "id" => 1,
-                "room_id" => 150,
-                "ical_url_to_import" => "https://www.airbnb.es/calendar/ical/22508643.ics?s=ae3dbf6adbcf82580f66eb42e6bde359"
-            ],
-            [
-                "id" => 2,
-                "room_id" => 140,
-                "ical_url_to_import" => "https://www.airbnb.es/calendar/ical/7031146.ics?s=25bb4fac0eff707c01a322ce143e6a6b"
-            ]
-        ];
+        $icalendars_to_import = IcalImport::all();
+        
         foreach ($icalendars_to_import as $ical_to_import) {
             //id releated with the icalendar to import
-            $room_id = $ical_to_import["room_id"];
+            $room_id = $ical_to_import->room_id;
 
-            //FIXME: Use model of import ical
             //agency from where we are importing the calendar
-            $agency = $this->getAgencyFromURL($ical_to_import["ical_url_to_import"]);
+            $agency = $this->getAgencyFromURL($ical_to_import->url);
 
             //Read a iCal            
             try {
                 //FIXME: Use model of import ical
-                $ical = new ICal($ical_to_import["ical_url_to_import"]);
+                $ical = new ICal($ical_to_import->url);
             } catch (\Exception $e) {
-                Log::error("Error importing icalendar " . $ical_to_import["id"] . ". Error  message => " . $e->getMessage());
+                Log::error("Error importing icalendar " . $ical_to_import->id . ". Error  message => " . $e->getMessage());
                 echo $e->getMessage();
                 continue;
             }
