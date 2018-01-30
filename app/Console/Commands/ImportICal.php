@@ -119,7 +119,7 @@ class ImportICal extends Command
         $book->start         = $start->format("Y-m-d");
         $book->finish        = $finish->format("Y-m-d");
         $book->comment       = $event->summary;
-        $book->book_comments = $event->summary;
+        $book->book_comments = $event->summary . " #IMPORTING_TASK_SCHEDULED";
         $book->type_book     = 2;
         $book->nigths        = $nights;
         $book->agency        = $agency;
