@@ -72,7 +72,9 @@
 @endsection
 
 @section('content')
-<?php use \Carbon\Carbon; ?>
+<?php 
+    use \Carbon\Carbon; 
+?>
 <?php   
     use App\Classes\Mobile; 
     $mobile = new Mobile(); 

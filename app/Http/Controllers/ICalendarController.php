@@ -76,4 +76,34 @@ class ICalendarController extends Controller
         header('Content-Disposition: attachment; filename="'.$iCalName.'.ics"');
         echo $iCalendar->render();
     }
+
+    public function saveUrl(Request $request)
+    {
+        $icalImport = new \App\IcalImport();
+        $icalImport->room_id = $request->idRoom;
+        $icalImport->url = $request->urlIcal;
+
+        if ($icalImport->save()) {
+            return ['status' => 'success','title' => 'OK', 'response' => "URL añadida correctamente"];
+        }else{
+            return ['status' => 'danger','title' => 'Error', 'response' => "la URL no se ha guardado correctamente"];
+        }
+    }
+
+    public function deleteUrl(Request $request)
+    {
+        $icalImport = \App\IcalImport::find($request->id);
+
+        if ($icalImport->delete()) {
+            return ['status' => 'success','title' => 'OK', 'response' => "URL eliminada correctamente"];
+        }else{
+            return ['status' => 'danger','title' => 'Error', 'response' => "la URL no se ha eliminado correctamente"];
+        }
+    }
+
+
+    public function getAllUrl(Request $request, $aptoID)
+    {
+        return view('backend.rooms._listUrlByRoom', ['urls' => \App\IcalImport::where('room_id', $aptoID)->get()]);
+    }
 }
