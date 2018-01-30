@@ -30,7 +30,11 @@
 // });
 
 /*ICalendar links*/
+Route::post('/ical/import/saveUrl', 'ICalendarController@saveUrl');
+Route::get('/ical/urls/deleteUrl', 'ICalendarController@deleteUrl');
+Route::get('/ical/urls/getAllUrl/{aptoID}', 'ICalendarController@getAllUrl');
 Route::get('/ical/{aptoID}', ['as' => 'import-iCalendar', 'uses' =>  'ICalendarController@getIcalendar'])->where('aptoID', '[0-9]+');
+
 
 Route::auth();
 Route::get('/','HomeController@index')->middleware('web');
