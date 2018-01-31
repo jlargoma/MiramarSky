@@ -366,38 +366,44 @@
                             <div class="col-md-7 col-xs-12 push-10">                                                        
                                 <label>Cost Agencia</label>
                                 <?php if ($book->PVPAgencia == 0.00): ?>
-                                    <input type="number" class="agencia form-control" name="agencia" value="">
+                                    <input type="number" step='0.01' class="agencia form-control" name="agencia" value="">
                                 <?php else: ?>
-                                    <input type="number" class="agencia form-control" name="agencia" value="<?php echo $book->PVPAgencia ?>">
+                                    <input type="number" step='0.01' class="agencia form-control" name="agencia" value="<?php echo $book->PVPAgencia ?>">
                                 <?php endif ?>
                             </div>
                         
                         </div>
                         <div class="col-md-2 col-xs-4 not-padding">
                             <label>promoción 3x2</label>
-                            <input type="text" class="promociones only-numbers form-control" name="promociones" value="<?php echo $book->promociones ?>">
+                            <input type="number" step='0.01' class="promociones only-numbers form-control" name="promociones" value="<?php echo $book->promociones ?>">
                         </div>
+                        <?php if ($book->book_owned_comments != "" ): ?>
+                            <div class="col-md-2 col-xs-6 push-10 content_image_offert">
+                                <img src="/pages/oferta.png" style="width: 90px;">
+                            </div>
+                        <?php endif ?>
+                        
                         <div class="col-md-12 col-xs-12 push-20 not-padding">
                             <div class="col-md-3 col-xs-12 text-center boxtotales" style="background-color: #0c685f;">
                                 <label class="font-w800 text-white" for="">TOTAL</label>
-                                <input type="text" class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>">
+                                <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>">
                             </div>
                             <?php if (Auth::user()->role == "admin"): ?>
                                 <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #99D9EA;">
                                     <label class="font-w800 text-white" for="">COSTE TOTAL</label>
-                                    <input type="text" class="form-control cost m-t-10 m-b-10 white" name="cost"  value="<?php echo $book->cost_total ?>">
+                                    <input type="number" step='0.01' class="form-control cost m-t-10 m-b-10 white" name="cost"  value="<?php echo $book->cost_total ?>">
                                 </div>
                                 <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #91cf81;">
                                     <label class="font-w800 text-white" for="">APTO</label>
-                                    <input type="text" class="form-control costApto m-t-10 m-b-10 white" name="costApto"  value="<?php echo $book->cost_apto ?>">
+                                    <input type="number" step='0.01' class="form-control costApto m-t-10 m-b-10 white" name="costApto"  value="<?php echo $book->cost_apto ?>">
                                 </div>
                                 <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #337ab7;">
                                     <label class="font-w800 text-white" for="">PARKING</label>
-                                    <input type="text" class="form-control costParking m-t-10 m-b-10 white" name="costParking"  value="<?php echo $book->cost_park ?>">
+                                    <input type="number" step='0.01' class="form-control costParking m-t-10 m-b-10 white" name="costParking"  value="<?php echo $book->cost_park ?>">
                                 </div>
                                 <div class="col-md-3 col-xs-12 text-center boxtotales not-padding" style="background: #ff7f27;">
                                     <label class="font-w800 text-white" for="">BENEFICIO</label>
-                                    <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>">
+                                    <input type="number" step='0.01' class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>">
                                     <div class="beneficio-text font-w400 font-s18 white"><?php echo number_format($book->inc_percent,0)."%" ?></div>
                                 </div>
                             <?php endif ?>
@@ -810,41 +816,44 @@
                             <div class="col-md-6 col-xs-6 push-10">                                                        
                                 <label>Cost Agencia</label>
                                 <?php if ($book->PVPAgencia == 0.00): ?>
-                                    <input type="number" class="agencia form-control" name="agencia" value="">
+                                    <input type="number" step='0.01' class="agencia form-control" name="agencia" value="">
                                 <?php else: ?>
-                                    <input type="number" class="agencia form-control" name="agencia" value="<?php echo $book->PVPAgencia ?>">
+                                    <input type="number" step='0.01' class="agencia form-control" name="agencia" value="<?php echo $book->PVPAgencia ?>">
                                 <?php endif ?>
                             </div>
                         </div>
                        <div class="col-md-2 col-xs-6 push-20 ">
                            <label>promoción 3x2</label>
-                           <input type="text" class="promociones only-numbers form-control" name="promociones" value="<?php echo $book->promociones ?>">
+                           <input type="number" step='0.01' class="promociones only-numbers form-control" name="promociones" value="<?php echo $book->promociones ?>">
                        </div>
-                       <div class="col-md-6 col-xs-6 push-10 content_image_offert" style="display: none;">
-                            <img src="/pages/oferta.png" style="width: 90px;">
-                        </div>
+                       <?php if ($book->book_owned_comments != "" ): ?>
+                            <div class="col-md-2 col-xs-6 push-10 content_image_offert">
+                                <img src="/pages/oferta.png" style="width: 90px;">
+                            </div>
+                        <?php endif ?>
+                       
                         <div class="col-md-8 col-xs-12 push-20 not-padding">
                             <div class="col-md-3 col-xs-12 text-center" style="background-color: #0c685f;">
                                 <label class="font-w800 text-white" for="">TOTAL</label>
-                                <input type="number" class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>">
+                                <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>">
                             </div>
                             <?php if (Auth::user()->role == "admin"): ?>
                                 
                                 <div class="col-md-3 col-xs-6 text-center" style="background: #91cf81;">
                                     <label class="font-w800 text-white" for="">APTO</label>
-                                    <input type="number" class="form-control costApto m-t-10 m-b-10 white" name="costApto"  value="<?php echo $book->cost_apto ?>">
+                                    <input type="number" step='0.01' class="form-control costApto m-t-10 m-b-10 white" name="costApto"  value="<?php echo $book->cost_apto ?>">
                                 </div>
                                 <div class="col-md-3 col-xs-6 text-center" style="background: #337ab7;">
                                     <label class="font-w800 text-white" for="">PARKING</label>
-                                    <input type="number" class="form-control costParking m-t-10 m-b-10 white" name="costParking"  value="<?php echo $book->cost_park ?>">
+                                    <input type="number" step='0.01' class="form-control costParking m-t-10 m-b-10 white" name="costParking"  value="<?php echo $book->cost_park ?>">
                                 </div>
                                 <div class="col-md-3 col-xs-6 text-center" style="background: #99D9EA;">
                                     <label class="font-w800 text-white" for="">COSTE TOTAL</label>
-                                    <input type="number" class="form-control cost m-t-10 m-b-10 white" name="cost"  value="<?php echo $book->cost_total ?>">
+                                    <input type="number" step='0.01' class="form-control cost m-t-10 m-b-10 white" name="cost"  value="<?php echo $book->cost_total ?>">
                                 </div>
                                 <div class="col-md-3 col-xs-6 text-center not-padding" style="background: #ff7f27;">
                                     <label class="font-w800 text-white" style="width: 100%;" for="">BENEFICIO</label>
-                                    <input type="number" class="form-control text-center beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>">
+                                    <input type="number" step='0.01' class="form-control text-center beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>">
                                     <div class="beneficio-text font-w400 font-s18 white">
                                         <?php echo number_format($book->inc_percent,0)."%" ?>    
                                    </div>

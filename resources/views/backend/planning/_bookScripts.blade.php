@@ -83,6 +83,129 @@
               
           });
         });
+
+        function saveAllChanges() {
+            var _token              = $('input[name="_token"]').val();
+            var nombre              = $('input[name="nombre"]').val();
+            var email               = $('input[name="email"]').val();
+            var phone               = $('input[name="phone"]').val();
+            var customer_id         = $('input[name="customer_id"]').val();
+            var dni                 = $('input[name="dni"]').val();
+            var address             = $('input[name="address"]').val();
+            var country             = $('select[name="country"]').val();
+            var city                = $('select[name="city"]').val();
+            var fechas              = $('input[name="fechas"]').val();
+            var nigths              = $('input[name="nigths"]').val();
+            var pax                 = $('select[name="pax"]').val();
+            var real_pax            = $('select[name="real_pax"]').val();
+            var newroom             = $('select[name="newroom"]').val();
+            var parking             = $('select[name="parking"]').val();
+            var type_luxury         = $('select[name="type_luxury"]').val();
+            var schedule            = $('select[name="schedule"]').val();
+            var scheduleOut         = $('select[name="scheduleOut"]').val();
+            var agency              = $('select[name="agency"]').val();
+            var agencia             = $('input[name="agencia"]').val();
+            var promociones         = $('.promociones').val();
+            var total               = $('input[name="total"]').val();
+            var cost                = $('input[name="cost"]').val();
+            var costApto            = $('input[name="costApto"]').val();
+            var costParking         = $('input[name="costParking"]').val();
+            var beneficio           = $('input[name="beneficio"]').val();
+            var comments            = $('textarea[name="comments"]').val();
+            var book_comments       = $('textarea[name="book_comments"]').val();
+            var book_owned_comments = $('textarea[name="book_owned_comments"]').val();
+
+
+            var url        = $('#updateForm').attr('action');
+
+            
+
+
+            $.post( url , { _token: _token,
+                            nombre: nombre,
+                            email: email,
+                            phone: phone,
+                            dni: dni,
+                            customer_id: customer_id,
+                            address: address,
+                            country: country,
+                            city: city,
+                            fechas: fechas,
+                            nigths: nigths,
+                            pax: pax,
+                            real_pax: real_pax,
+                            newroom: newroom,
+                            parking: parking,
+                            type_luxury: type_luxury,
+                            schedule: schedule,
+                            scheduleOut: scheduleOut,
+                            agency: agency,
+                            agencia: agencia,
+                            total: total,
+                            cost: cost,
+                            costApto: costApto,
+                            costParking: costParking,
+                            beneficio: beneficio,
+                            comments: comments,
+                            promociones: promociones,
+                            book_comments: book_comments,
+                            book_owned_comments: book_owned_comments }, 
+            function(data) {
+
+                if (data.status == 'danger') {
+                    $.notify({
+                        title: '<strong>'+data.title+'</strong>, ',
+                        icon: 'glyphicon glyphicon-star',
+                        message: '<strong>'+data.response+'</strong> '
+                    },{
+                        type: data.status,
+                        animate: {
+                            enter: 'animated fadeInUp',
+                            exit: 'animated fadeOutRight'
+                        },
+                        placement: {
+                            from: "top",
+                            align: "left"
+                        },
+                        offset: 80,
+                        spacing: 10,
+                        z_index: 1031,
+                        allow_dismiss: true,
+                        delay: 60000,
+                        timer: 60000,
+                    }); 
+                } else {
+                    $.notify({
+                        title: '<strong>'+data.title+'</strong>, ',
+                        icon: 'glyphicon glyphicon-star',
+                        message: data.response
+                    },{
+                        type: data.status,
+                        animate: {
+                            enter: 'animated fadeInUp',
+                            exit: 'animated fadeOutRight'
+                        },
+                        placement: {
+                            from: "top",
+                            align: "left"
+                        },
+                        allow_dismiss: false,
+                        offset: 80,
+                        spacing: 10,
+                        z_index: 1031,
+                        allow_dismiss: true,
+                        delay: 1000,
+                        timer: 1500,
+                    }); 
+                }
+
+
+                if (data.status == "success") {
+                    // location.reload();
+                }
+
+            });
+        }
     <?php endif ?>
 
     function calculate( notModifyPrice = 0){
@@ -189,9 +312,13 @@
                     beneficio_ = (beneficio / total)*100
                     $('.beneficio-text').empty();
                     $('.beneficio-text').html(beneficio_.toFixed(0)+"%");
+
+                    <?php if ($update == 1): ?>
+                        saveAllChanges();
+                    <?php endif; ?>
                     
                 });
-
+                
                 $('.loading-div').hide();
                                 
             }
@@ -496,127 +623,12 @@
 
             $('#updateForm').submit(function(event) {
                 event.preventDefault();
-                var _token              = $('input[name="_token"]').val();
-                var nombre              = $('input[name="nombre"]').val();
-                var email               = $('input[name="email"]').val();
-                var phone               = $('input[name="phone"]').val();
-                var customer_id         = $('input[name="customer_id"]').val();
-                var dni                 = $('input[name="dni"]').val();
-                var address             = $('input[name="address"]').val();
-                var country             = $('select[name="country"]').val();
-                var city                = $('select[name="city"]').val();
-                var fechas              = $('input[name="fechas"]').val();
-                var nigths              = $('input[name="nigths"]').val();
-                var pax                 = $('select[name="pax"]').val();
-                var real_pax            = $('select[name="real_pax"]').val();
-                var newroom             = $('select[name="newroom"]').val();
-                var parking             = $('select[name="parking"]').val();
-                var type_luxury         = $('select[name="type_luxury"]').val();
-                var schedule            = $('select[name="schedule"]').val();
-                var scheduleOut         = $('select[name="scheduleOut"]').val();
-                var agency              = $('select[name="agency"]').val();
-                var agencia             = $('input[name="agencia"]').val();
-                var promociones         = $('.promociones').val();
-                var total               = $('input[name="total"]').val();
-                var cost                = $('input[name="cost"]').val();
-                var costApto            = $('input[name="costApto"]').val();
-                var costParking         = $('input[name="costParking"]').val();
-                var beneficio           = $('input[name="beneficio"]').val();
-                var comments            = $('textarea[name="comments"]').val();
-                var book_comments       = $('textarea[name="book_comments"]').val();
-                var book_owned_comments = $('textarea[name="book_owned_comments"]').val();
-
-
-                var url        = $(this).attr('action');
-
+                saveAllChanges();
                 
 
-
-                $.post( url , { _token: _token,
-                                nombre: nombre,
-                                email: email,
-                                phone: phone,
-                                dni: dni,
-                                customer_id: customer_id,
-                                address: address,
-                                country: country,
-                                city: city,
-                                fechas: fechas,
-                                nigths: nigths,
-                                pax: pax,
-                                real_pax: real_pax,
-                                newroom: newroom,
-                                parking: parking,
-                                type_luxury: type_luxury,
-                                schedule: schedule,
-                                scheduleOut: scheduleOut,
-                                agency: agency,
-                                agencia: agencia,
-                                total: total,
-                                cost: cost,
-                                costApto: costApto,
-                                costParking: costParking,
-                                beneficio: beneficio,
-                                comments: comments,
-                                promociones: promociones,
-                                book_comments: book_comments,
-                                book_owned_comments: book_owned_comments }, 
-                function(data) {
-
-                    if (data.status == 'danger') {
-                        $.notify({
-                            title: '<strong>'+data.title+'</strong>, ',
-                            icon: 'glyphicon glyphicon-star',
-                            message: '<strong>'+data.response+'</strong> '
-                        },{
-                            type: data.status,
-                            animate: {
-                                enter: 'animated fadeInUp',
-                                exit: 'animated fadeOutRight'
-                            },
-                            placement: {
-                                from: "top",
-                                align: "left"
-                            },
-                            offset: 80,
-                            spacing: 10,
-                            z_index: 1031,
-                            allow_dismiss: true,
-                            delay: 60000,
-                            timer: 60000,
-                        }); 
-                    } else {
-                        $.notify({
-                            title: '<strong>'+data.title+'</strong>, ',
-                            icon: 'glyphicon glyphicon-star',
-                            message: data.response
-                        },{
-                            type: data.status,
-                            animate: {
-                                enter: 'animated fadeInUp',
-                                exit: 'animated fadeOutRight'
-                            },
-                            placement: {
-                                from: "top",
-                                align: "left"
-                            },
-                            allow_dismiss: false,
-                            offset: 80,
-                            spacing: 10,
-                            z_index: 1031,
-                            delay: 5000,
-                            timer: 1500,
-                        }); 
-                    }
-
-
-                    if (data.status == "success") {
-                        location.reload();
-                    }
-
-                });
-
             });
+
+            
 
         <?php endif ?>
 

@@ -400,6 +400,9 @@ class BookController extends Controller
     //Funcion para actualizar la reserva
     public function saveUpdate(Request $request, $id)
     {
+        // echo "<pre>";
+        // print_r($request->input());
+        // die();
         
 
         $aux = str_replace('Abr', 'Apr', $request->input('fechas'));
@@ -455,6 +458,7 @@ class BookController extends Controller
 
                 $book->sup_limp      = 100;
                 $book->cost_limp     = 70;
+
                 $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths'),$room->id , 3);
                 $book->cost_park   = $request->input('costParking');//$this->getCostParkController($request->input('parking'),$request->input('nigths'), 3);
 

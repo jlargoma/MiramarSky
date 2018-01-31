@@ -38,6 +38,9 @@
 				<th class ="text-center bg-complete text-white" style="width: 17%!important">
 					Estado      
 				</th>
+				<th class ="text-center bg-complete text-white" style="width: 6%!important"> 
+					A
+				</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -147,6 +150,19 @@
 						
 
 					</td>
+					<td class="text-center sm-p-t-10 sm-p-b-10">
+
+                        <?php if ($book->send == 1): ?>
+                            <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-default sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="1">
+                                <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                            </button> 
+                        <?php else: ?>
+                            <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-primary sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="0">
+                                <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                            </button> 
+                        <?php endif ?>
+                        
+                    </td>
 				</tr>
 			<?php endforeach ?>
 		</tbody>
@@ -164,6 +180,7 @@
 	            <th class="bg-complete text-white text-center" style="min-width:50px ">&nbsp;Out</th>
 	            <th class="bg-complete text-white text-center"><i class="fa fa-moon-o"></i></th>
 	            <th class="bg-complete text-white text-center" style="min-width:65px">PVP</th>
+	            <th class="bg-complete text-white text-center" style="min-width:60px">EST</th>
 	            <th class="bg-complete text-white text-center" style="min-width:60px">a</th>
 	        </thead>
 	        <tbody>
@@ -234,6 +251,19 @@
 	                                <b>SUBCOM...</b>
 	                            <?php endif ?>
 	                    </td>
+    					<td class="text-center sm-p-t-10 sm-p-b-10">
+
+                            <?php if ($book->send == 1): ?>
+                                <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-default sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="1">
+                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                </button> 
+                            <?php else: ?>
+                                <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-primary sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="0">
+                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                </button> 
+                            <?php endif ?>
+                            
+                        </td>
 	                </tr>
 	            <?php endforeach ?>
 	        </tbody>

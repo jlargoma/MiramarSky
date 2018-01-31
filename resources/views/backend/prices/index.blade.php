@@ -57,8 +57,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php for ($i=4; $i <= 12 ; $i++): ?>
-                                <?php if ($i != 9 && $i != 11): ?>
+                            <?php for ($i=4; $i <= 14 ; $i++): ?>
                                     <tr>
                                     
                                         <td class ="text-center"> 
@@ -89,7 +88,6 @@
                                             
                                         <?php endforeach ?>
                                     </tr>
-                                <?php endif ?>
                                 
                             <?php endfor?>
                         </tbody>

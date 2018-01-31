@@ -34,7 +34,11 @@
                     <?php $count = 0 ?>
                     <?php foreach ($books as $book): ?>
                         <?php if ( $book->start >= $startWeek->copy()->format('Y-m-d') && $book->start <= $endWeek->copy()->format('Y-m-d')): ?>
-                            <?php $class = "blurred-line" ?>
+                            <?php if ( $book->start <= Carbon::now()->copy()->subDay()->format('Y-m-d') ): ?>
+                                <?php $class = "blurred-line" ?>
+                            <?php else: ?>
+                                <?php $class = "" ?>
+                            <?php endif ?>
                         <?php else: ?>
                             <?php $class = "lined"; $count++ ?>
                         <?php endif ?>
@@ -217,7 +221,11 @@
             <?php $count = 0 ?>
             <?php foreach ($books as $book): ?>
                 <?php if ( $book->start >= $startWeek->copy()->format('Y-m-d') && $book->start <= $endWeek->copy()->format('Y-m-d')): ?>
-                    <?php $class = "blurred-line" ?>
+                    <?php if ( $book->start <= Carbon::now()->copy()->subDay()->format('Y-m-d') ): ?>
+                        <?php $class = "blurred-line" ?>
+                    <?php else: ?>
+                        <?php $class = "" ?>
+                    <?php endif ?>
                 <?php else: ?>
                     <?php $class = "lined"; $count++ ?>
                 <?php endif ?>
