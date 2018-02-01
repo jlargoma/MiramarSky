@@ -147,6 +147,13 @@ class ImportICal extends Command
         if ($date_now->format("Y-m-d") >= $date_end_book->format("Y-m-d"))
             return false;
 
+        // if summary event start on #ADMIN, #BOOKING, #TRIVAGO, #BED&SNOW, #AIRBNB
+
+        if (  preg_match("/^#ADMIN/", $event->summary ) || preg_match("/^#BOOKING/", $event->summary ) || preg_match("/^#TRIVAGO/", $event->summary ) || preg_match("/^#BED&SNOW/", $event->summary ) || preg_match("/^#AIRBNB/", $event->summary )
+            )
+           return false;
+
+
         $books  = \App\Book::where('room_id',$room_id)
                         ->where('user_id', $this->user_id)
                         ->where('customer_id', $this->customer_id)
