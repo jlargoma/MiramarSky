@@ -54,6 +54,13 @@
 	                <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Nuevo Apto.</span>
 	            </button>
 			</div>
+			
+				<div class="col-md-1 col-xs-4 push-20">
+					<a href="{{ url('ical/importFromUrl') }}" class="btn btn-success btn-cons" <?php if ( count( \App\IcalImport::all() ) == 0): ?> disabled="" <?php endif ?>>
+						<span class="bold">Importar calendarios</span>
+					</a>
+				</div>
+			
 			<div class="clearfix"></div>
 			<div class="row">
 				<div class="col-md-5 col-xs-12 content-table-rooms" style="max-height: 680px; overflow-y: auto;">
@@ -140,6 +147,7 @@
 				</div>
 				<div class="col-md-7 col-xs-12">
 					<div class="row push-20">
+
 						<div class="col-xs-12 contentUpdateForm" style="border: 2px dashed black; padding: 15px;">
 							<div class="col-xs-12" style="">
 								<h2 class="text-center">

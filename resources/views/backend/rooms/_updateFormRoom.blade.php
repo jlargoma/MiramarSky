@@ -113,6 +113,8 @@
 		</form>
 	</div>
 	<div class="col-md-6 col-xs-12" style="padding: 0 15px" id="listUrl">
+		
+		
 		<?php $urls = \App\IcalImport::where('room_id', $room->id)->get(); ?>
 		@include('backend.rooms._listUrlByRoom', ['urls' => $urls])
 	</div>

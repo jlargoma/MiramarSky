@@ -1,5 +1,5 @@
 <?php if (count($urls) > 0): ?>
-
+	
 	<table class="table table-striped table-condesed">
 		<tr>
 			<th class="text-center bg-complete text-white font-s12">

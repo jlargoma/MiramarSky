@@ -34,7 +34,10 @@ Route::post('/ical/import/saveUrl', 'ICalendarController@saveUrl');
 Route::get('/ical/urls/deleteUrl', 'ICalendarController@deleteUrl');
 Route::get('/ical/urls/getAllUrl/{aptoID}', 'ICalendarController@getAllUrl');
 Route::get('/ical/{aptoID}', ['as' => 'import-iCalendar', 'uses' =>  'ICalendarController@getIcalendar'])->where('aptoID', '[0-9]+');
-
+Route::get('/ical/importFromUrl', function () {
+    \Artisan::call('ical:import') ;
+    return redirect('/admin/apartamentos'); 
+});
 
 Route::auth();
 Route::get('/','HomeController@index')->middleware('web');
