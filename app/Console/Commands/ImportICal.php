@@ -114,7 +114,7 @@ class ImportICal extends Command
 
         //Create Book
         $book->user_id       = $this->user_id;
-        $book->customer_id   = $this->customer_id;
+        $book->customer_id   = ($agency == 1)? 1780: 1787;//$this->customer_id;// user to book imports / user to airbnb imports
         $book->room_id       = $room_id;
         $book->start         = $start->format("Y-m-d");
         $book->finish        = $finish->format("Y-m-d");
@@ -155,8 +155,8 @@ class ImportICal extends Command
 
 
         $books  = \App\Book::where('room_id',$room_id)
-                        ->where('user_id', $this->user_id)
-                        ->where('customer_id', $this->customer_id)
+                        // ->where('user_id', $this->user_id)
+                        // ->where('customer_id', $this->customer_id)
                         ->where('start', $date_start_book->format("Y-m-d"))
                         ->where('finish', $date_end_book->format("Y-m-d"))
                         ->where('agency', $agency)
