@@ -36,7 +36,8 @@ Route::get('/ical/urls/getAllUrl/{aptoID}', 'ICalendarController@getAllUrl');
 Route::get('/ical/{aptoID}', ['as' => 'import-iCalendar', 'uses' =>  'ICalendarController@getIcalendar'])->where('aptoID', '[0-9]+');
 Route::get('/ical/importFromUrl', function () {
     \Artisan::call('ical:import') ;
-    return redirect('/admin/apartamentos'); 
+
+    return redirect('/admin/reservas'); 
 });
 
 Route::auth();

@@ -56,7 +56,7 @@ class ImportICal extends Command
      */
     public function handle()
     {
-        $this->importICalendar();
+       $this->importICalendar();
     }
 
     /**
@@ -86,13 +86,16 @@ class ImportICal extends Command
             // All events on iCal
             $events = $ical->sortEventsWithOrder($ical->events());
 
+            $valid_events = [];
+
             foreach ($events as $event) {
                 if ($this->isEventValidForAdd($event, $agency, $room_id)) {
-                    if (!$this->addBook($event, $agency, $room_id))
-                        Log::error("Adding event => " . print_r($event,true));
+                	$valid_events[] = $event;
+                    //if (!$this->addBook($event, $agency, $room_id))
+                        //Log::error("Adding event => " . print_r($event,true));
                 }
             }
-            
+            file_put_contents("/var/www/vhosts/apartamentosierranevada.net/httpdocs/miramarski/test.json", json_encode($valid_events));
         }
     }
 

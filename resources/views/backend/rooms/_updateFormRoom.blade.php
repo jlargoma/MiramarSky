@@ -107,7 +107,7 @@
 			</div>
 			<div class="col-md-3 col-xs-12 push-20 text-left">
 				<button class="btn btn-primary btn-cons" type="submit">
-	                <span class="bold">IMPORTAR</span>
+	                <span class="bold">AÑADIR URL A IMPORTAR</span>
 	            </button>
 			</div>
 		</form>

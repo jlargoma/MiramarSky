@@ -66,6 +66,11 @@
                         <button class="btn btn-success btn-calcuteBook btn-cons" type="button" data-toggle="modal" data-target="#modalCalculateBook"> 
                             <span class="bold">Calcular reserva</span>
                         </button>
+
+                        
+						<a href="{{ url('ical/importFromUrl') }}" class="btn btn-success btn-cons" <?php if ( count( \App\IcalImport::all() ) == 0): ?> disabled="" <?php endif ?>>
+							<span class="bold">Importar Calendarios</span>
+						</a>
                         
                     </div>
                     
