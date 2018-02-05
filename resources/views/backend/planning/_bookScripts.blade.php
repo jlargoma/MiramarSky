@@ -167,10 +167,14 @@
 
                     var total      = data.totales.book + data.totales.parking + data.totales.lujo +  data.totales.limp;
 
-                    if (auxTotal != total) {
-                        total = auxTotal;
 
+                    var isEdited = $('.total').attr('data-edited');
+
+                    if (isEdited == 1) {
+                        total = auxTotal;
                     }
+
+
 
                     var parking    = data.costes.parking;
 
@@ -315,6 +319,8 @@
             var cost = $('.cost').val();
             var beneficio = (parseFloat(price) - parseFloat(cost));
             // console.log(beneficio);
+            $('.alert-edited').show();
+            $('.total').attr('data-edited', '1');
             $('.beneficio').empty;
             $('.beneficio').val(beneficio);
         });
