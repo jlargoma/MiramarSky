@@ -837,8 +837,11 @@
                        
                         <div class="col-md-8 col-xs-12 push-20 not-padding">
                             <div class="col-md-3 col-xs-12 text-center" style="background-color: #0c685f;">
+                               <span class="alert-edited text-white" style="position: absolute; top: 5px; right:5px; z-index: 500; display: none;">
+                                    <i class="fa  fa-hand-o-down fa-2x"></i>
+                                </span>
                                 <label class="font-w800 text-white" for="">TOTAL</label>
-                                <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>">
+                                <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>" data-edited="0">
                             </div>
                             <?php if (Auth::user()->role == "admin"): ?>
                                 
