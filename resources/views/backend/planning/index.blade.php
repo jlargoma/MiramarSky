@@ -80,7 +80,7 @@
                     </button>
 
                     <a href="{{ url('ical/importFromUrl') }}" class="btn btn-primary btn-cons" <?php if ( count( \App\IcalImport::all() ) == 0): ?> disabled="" <?php endif ?> style="background-color: #337ab7; border-color: #2e6da4;">
-                        <span class="bold">Importar Calendarios</span>
+                        <span class="bold">IMPORTACIÓN</span>
                     </a>
 
                 </div>
