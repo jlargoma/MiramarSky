@@ -640,10 +640,7 @@
                 });
                 
 
-            });
-            // var comments            = $('textarea[name="comments"]').val();
-            // var book_comments       = $('textarea[name="book_comments"]').val();
-            // var book_owned_comments = $('textarea[name="book_owned_comments"]').val();
+            }); 
 
             $('textarea[name="comments"],textarea[name="book_comments"], textarea[name="book_owned_comments"]').change(function(event) {
                 
@@ -679,6 +676,8 @@
                 });
 
             });
+
+           
 
         <?php endif ?>
 

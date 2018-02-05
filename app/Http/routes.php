@@ -77,6 +77,7 @@ Route::get('/restaurantes', function ()
 Route::post('/getDiffIndays', 'HomeController@getDiffIndays');
 
 
+
 Route::post('/solicitudForfait','HomeController@solicitudForfait');
 
 Route::get('/admin/links-stripe', 'StripeController@link');
@@ -394,5 +395,15 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/sendImagesRoomEmail', 'RoomsController@sendImagesRoomEmail');
 	
 	
-
+	Route::get('/admin/books/getStripeLink/{book}/{importe}', function ($book, $importe)
+	{
+		$book = \App\Book::find($book);
+		$import = $importe;
+		
+		return view('backend.planning._links',[
+				                    'book'     => $book,
+				                    'import' => $import,
+								]);
+		
+	});
 });
