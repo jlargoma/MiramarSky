@@ -385,11 +385,12 @@
                         
                         <div class="col-md-12 col-xs-12 push-20 not-padding">
                             <div class="col-md-3 col-xs-12 text-center boxtotales" style="background-color: #0c685f;">
-                                <span class="alert-edited text-white" style="position: absolute; top: 5px; right:5px; z-index: 500; display: none;">
+                               
+                                <span class="alert-edited text-white" style="position: absolute; top: 5px; right:5px; z-index: 500; <?php if ($book->real_price == $book->total_price):  echo "display: none; "; endif ?>">
                                     <i class="fa  fa-hand-o-down fa-2x"></i>
                                 </span>
                                 <label class="font-w800 text-white" for="">TOTAL</label>
-                                <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>" data-edited="0">
+                                <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>" data-edited="<?php if ($book->real_price != $book->total_price):  echo '1'; else: echo '0'; endif ?>">
                             </div>
                             <?php if (Auth::user()->role == "admin"): ?>
                                 <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #99D9EA;">
@@ -837,11 +838,11 @@
                        
                         <div class="col-md-8 col-xs-12 push-20 not-padding">
                             <div class="col-md-3 col-xs-12 text-center" style="background-color: #0c685f;">
-                               <span class="alert-edited text-white" style="position: absolute; top: 5px; right:5px; z-index: 500; display: none;">
+                               <span class="alert-edited text-white" style="position: absolute; top: 5px; right:5px; z-index: 500; <?php if ($book->real_price == $book->total_price):  echo "display: none; "; endif ?>">
                                     <i class="fa  fa-hand-o-down fa-2x"></i>
                                 </span>
                                 <label class="font-w800 text-white" for="">TOTAL</label>
-                                <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>" data-edited="0">
+                                <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>" data-edited="<?php if ($book->real_price != $book->total_price):  echo '1'; else: echo '0'; endif ?>">
                             </div>
                             <?php if (Auth::user()->role == "admin"): ?>
                                 

@@ -174,6 +174,11 @@
                         total = auxTotal;
                     }
 
+                    if (total ==  auxTotal) {
+                        $('.alert-edited').hide();
+                    }
+
+
 
 
                     var parking    = data.costes.parking;
