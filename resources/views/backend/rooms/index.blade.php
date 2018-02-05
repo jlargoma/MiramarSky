@@ -55,12 +55,6 @@
 	            </button>
 			</div>
 			
-				<div class="col-md-1 col-xs-4 push-20">
-					<a href="{{ url('ical/importFromUrl') }}" class="btn btn-success btn-cons" <?php if ( count( \App\IcalImport::all() ) == 0): ?> disabled="" <?php endif ?>>
-						<span class="bold">Importar calendarios</span>
-					</a>
-				</div>
-			
 			<div class="clearfix"></div>
 			<div class="row">
 				<div class="col-md-5 col-xs-12 content-table-rooms" style="max-height: 680px; overflow-y: auto;">

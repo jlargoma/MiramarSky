@@ -45,8 +45,47 @@
 
 
                         <tr class="<?php if($count <= 1){echo $class;} ?>">
+                            <?php 
+                                $dateStart = Carbon::createFromFormat('Y-m-d', $book->start);
+                                $now = Carbon::now();
+                            ?>
 
+
+
+                            
                             <td class="text-center">
+                                <?php if ( !isset($payment[$book->id])): ?>
+                                    <?php if ( $now->diffInDays($dateStart) <= 15 ):?>
+                                        <span class=" label label-danger alertDay heart text-white">
+                                            <i class="fa fa-bell"></i>
+                                        </span>
+                                    <?php elseif($now->diffInDays($dateStart) <= 7):?>
+                                        <span class=" label label-danger alertDay heart text-white">
+                                            <i class="fa fa-bell"></i>
+                                        </span>
+                                    <?php endif; ?>
+                                <?php else: ?>
+                                    <?php $divisor = ($payment[$book->id] == 0)?1: $payment[$book->id]; ?>
+                                    <?php $percent = 100/( $book->total_price / $divisor ); ?>
+                                    <?php if ( $percent <= 25 ): ?>
+
+                                        <?php if ( $now->diffInDays($dateStart) <= 15 ):?>
+                                            <span class=" label label-danger alertDay heart text-white">
+                                                <i class="fa fa-bell"></i>
+                                            </span>
+                                        <?php elseif($now->diffInDays($dateStart) <= 7):?>
+                                            <span class=" label label-danger alertDay heart text-white">
+                                                <i class="fa fa-bell"></i>
+                                            </span>
+                                        <?php endif; ?>
+                                        
+                                    <?php endif ?>
+                                    
+
+                                <?php endif ?>
+
+
+
                                 <?php if ($book->agency != 0): ?>
                                     <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
                                 <?php endif ?>

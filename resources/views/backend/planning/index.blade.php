@@ -28,14 +28,17 @@
                         </div>  
                         <div class="col-md-2">
                             <select id="fecha" class="form-control minimal">
-                                 <?php $fecha = $inicio->copy()->SubYear(2); ?>
+                                 <?php $fecha = $inicio->copy()->SubYears(2); ?>
                                  <?php if ($fecha->copy()->format('Y') < 2015): ?>
                                      <?php $fecha = new Carbon('first day of September 2015'); ?>
                                  <?php endif ?>
                              
                                  <?php for ($i=1; $i <= 3; $i++): ?>                           
-                                     <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $date->copy()->format('Y') == $fecha->format('Y') ? 'selected' : '' }}>
-                                         <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
+                                     <option value="<?php echo $fecha->copy()->format('Y'); ?>" 
+                                        <?php if (  $fecha->copy()->format('Y') == date('Y') || 
+                                                    $fecha->copy()->addYear()->format('Y') == date('Y') 
+                                                ){ echo "selected"; }?> >
+                                        <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
                                      </option>
                                      <?php $fecha->addYear(); ?>
                                  <?php endfor; ?>
