@@ -13,6 +13,7 @@ class VerifyCsrfToken extends BaseVerifier
      */
     protected $except = [
         'reservas/stripe/payment',
+        '/getDiffIndays',
         '/admin/reservas/stripe/paymentsBooking',
         '/solicitudForfait',
     ];

@@ -74,6 +74,7 @@ Route::get('/restaurantes', function ()
 	$mobile = new \App\Classes\Mobile();
 	return view('frontend.restaurantes', ['mobile' => $mobile]);
 });
+Route::post('/getDiffIndays', 'HomeController@getDiffIndays');
 
 
 Route::post('/solicitudForfait','HomeController@solicitudForfait');
@@ -333,6 +334,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 	});
 
+	Route::get('/admin/books/{idBook}/comments/{type}/save', 'BookController@saveComment');
+	
 	
 
 	Route::get('admin/liquidation/searchByName', 'LiquidacionController@searchByName');

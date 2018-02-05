@@ -47,6 +47,8 @@ class HomeController extends Controller
     }
 
 
+
+
     public function apartamento($apto){
         $url     = $apto;
         $apto    = str_replace('-', ' ', $apto);
@@ -569,6 +571,15 @@ class HomeController extends Controller
 
 
 
+    }
+
+
+    public function getDiffIndays(Request $request)
+    {
+        $date1 = Carbon::createFromFormat('d M, y', trim($request->date1));
+        $date2 = Carbon::createFromFormat(' d M, y', trim($request->date2));
+
+        return $date1->diffInDays($date2);
     }
 
  

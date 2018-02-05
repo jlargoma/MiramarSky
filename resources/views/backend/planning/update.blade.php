@@ -424,15 +424,15 @@
                         <div class="col-xs-12 bg-white padding-block">
                             <div class="col-md-4 col-xs-12">
                                 <label>Comentarios Cliente </label>
-                                <textarea class="form-control" name="comments" rows="5" ><?php echo $book->comment ?></textarea>
+                                <textarea class="form-control" name="comments" rows="5" data-idBook="<?php echo $book->id ?>" data-type="1"><?php echo $book->comment ?></textarea>
                             </div>
                             <div class="col-md-4 col-xs-12">
                                 <label>Comentarios Internos</label>
-                                <textarea class="form-control book_comments" name="book_comments" rows="5" ><?php echo $book->book_comments ?></textarea>
+                                <textarea class="form-control book_comments" name="book_comments" rows="5" data-idBook="<?php echo $book->id ?>" data-type="2"><?php echo $book->book_comments ?></textarea>
                             </div>
                             <div class="col-md-4 col-xs-12 content_book_owned_comments">
                                 <label>Comentarios Propietario</label>
-                                <textarea class="form-control book_owned_comments" name="book_owned_comments" rows="5" ><?php echo $book->book_owned_comments ?></textarea>
+                                <textarea class="form-control book_owned_comments" name="book_owned_comments" rows="5" data-idBook="<?php echo $book->id ?>" data-type="3"><?php echo $book->book_owned_comments ?></textarea>
                             </div>
                         </div>
                         <div class="row push-40 bg-white padding-block">
@@ -877,15 +877,15 @@
                     <div class="col-xs-12 bg-white padding-block">
                         <div class="col-md-4 col-xs-12">
                             <label>Comentarios Cliente </label>
-                            <textarea class="form-control" name="comments" rows="5" ><?php echo $book->comment ?></textarea>
+                            <textarea class="form-control" name="comments" rows="5" data-idBook="<?php echo $book->id ?>" data-type="1"><?php echo $book->comment ?></textarea>
                         </div>
                         <div class="col-md-4 col-xs-12">
                             <label>Comentarios Internos</label>
-                            <textarea class="form-control book_comments" name="book_comments" rows="5" ><?php echo $book->book_comments ?></textarea>
+                            <textarea class="form-control book_comments" name="book_comments" rows="5" data-idBook="<?php echo $book->id ?>" data-type="2"><?php echo $book->book_comments ?></textarea>
                         </div>
                         <div class="col-md-4 col-xs-12 content_book_owned_comments">
                             <label>Comentarios Propietario</label>
-                            <textarea class="form-control book_owned_comments" name="book_owned_comments" rows="5" ><?php echo $book->book_owned_comments ?></textarea>
+                            <textarea class="form-control book_owned_comments" name="book_owned_comments" rows="5" data-idBook="<?php echo $book->id ?>" data-type="3"><?php echo $book->book_owned_comments ?></textarea>
                         </div>
                     </div>
                     <div class="row push-40 bg-white padding-block">

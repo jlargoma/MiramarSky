@@ -17,59 +17,45 @@
             <h2>Usuarios</h2>
         </div>
         <div class="col-md-8 table-responsive">
+            <div class="pull-left">
+                <div class="col-xs-12 " >
+                    <input type="text" id="searchUser" class="form-control pull-right" placeholder="Buscar">
+                </div>
+            </div>
+            <div class="clearfix"></div>
             <?php if (count($users) > 0): ?>
                 
                
-                <table class="table table-hover table-condensed ">
+                <table class="table table-hover demo-table-search table-responsive " id="tableUser">
                     <thead>
                         <tr>
-                            <th class ="text-center hidden" style="width: 25%;">id</th>
-                            <th class ="text-center bg-complete text-white" style="width: 25%;">Nombre</th>
-                            <th class ="text-center bg-complete text-white" style="width: 25%;">Telefono</th>
-                            <th class ="text-center bg-complete text-white" style="width: 15%;"> Tipo</th>
-                            <th class ="text-center bg-complete text-white" style="width: 35%;">Email</th>
-                            <th class ="text-center bg-complete text-white" style="width: 15%;">pantalla inicio</th>
-                            <th class ="text-center bg-complete text-white" style="width: 15%;">ACCIONES</th>
+                            <th class ="text-center hidden" style="width: 25%">id</th>
+                            <th class ="text-center bg-complete text-white" style="width: 25%">Nombre</th>
+                            <th class ="text-center bg-complete text-white" style="width: 25%">Telefono</th>
+                            <th class ="text-center bg-complete text-white" style="width: 15%"> Tipo</th>
+                            <th class ="text-center bg-complete text-white" style="width: 35%">Email</th>
+                            <th class ="text-center bg-complete text-white" style="width: 25%">Modificar</th>
 
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($users as $user): ?>
                             <tr>
-                                <td class="text-center hidden" style="padding: 0px 5px;">
+                                <td class="text-center hidden">
                                     <input type="text" name="<?php echo $user->id?>" value="<?php echo $user->id?>">
                                 </td>
-                                <td class="text-center " style="padding: 0px 5px;"><?php echo $user->name?>
+                                <td class="text-center "><?php echo $user->name?>
                                 </td>
-                                <td class="text-center " style="padding: 0px 5px;"><?php echo $user->phone?>
+                                <td class="text-center "><?php echo $user->phone?>
                                 </td>
-                                <td class="text-center " style="padding: 0px 5px;">
+                                <td class="text-center ">
                                     <?php echo $user->role?>
                                 </td>
                                 <td class="text-center ">
                                     <?php echo $user->email?>
                                 </td>
 
-                                <td class="text-center ">
-                                    <select class="form-control minimal"  >
-                                        <option>---</option>
-                                    <?php $array = [
-                                                'pendientes',
-                                                'especiales',
-                                                'confirmadas',
-                                                'checkin',
-                                                'checkout',
-                                                ] 
-                                    ?>
-                                    <?php for ($i = 1; $i <= 4; $i++): ?>
-                                        <option value="<?php echo $array[$i] ?>" <?php if($array[$i] == $user->defaultTable){ echo "selected";} ?>>
-                                            <?php echo $array[$i] ?>
-                                        </option>
-                                    <?php endfor ?>
-                                    </select>
-                                </td>
-
-                                <td class="text-center" style="padding: 0px 5px;">
+                                <td class="text-center">
                                     <div class="btn-group">
                                         <!--  -->
                                         <a class="btn btn-tag btn-complete update-user" type="button"  data-id="<?php echo $user->id ?>" data-toggle="modal" data-target="#myModal" title="Editar Usuario" >
@@ -122,7 +108,7 @@
                                             </span>
                                             <input type="number" class="form-control" name="phone" placeholder="Telefono" required="" aria-required="true" aria-invalid="false">
                                         </div>
-                                            <br> 
+                                            <br>
                                         <div class="input-group">
                                             <span class="input-group-addon">
                                                 <i class="pg-plus_circle"></i>
@@ -130,7 +116,7 @@
                                             <select class="full-width" data-init-plugin="select2" name="role">
                                                 <option></option>
                                                 <option value="admin">Admin</option>
-                                                <option value="subadmin">subadmin</option>
+                                                <option value="jaime">Jaime</option>
                                                 <option value="limpieza">Limpieza</option>
                                                 <option value="agente">Agente</option>
                                                 <option value="propietario">Propietario</option>

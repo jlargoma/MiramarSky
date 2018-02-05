@@ -66,14 +66,7 @@
                         <button class="btn btn-success btn-calcuteBook btn-cons" type="button" data-toggle="modal" data-target="#modalCalculateBook"> 
                             <span class="bold">Calcular reserva</span>
                         </button>
-
-                        
-						<a href="{{ url('ical/importFromUrl') }}" class="btn btn-success btn-cons" <?php if ( count( \App\IcalImport::all() ) == 0): ?> disabled="" <?php endif ?>>
-							<span class="bold">Importar Calendarios</span>
-						</a>
-                        
                     </div>
-                    
                 </div>
                 <div class="col-md-5">
                     
@@ -85,6 +78,10 @@
                     <button class="btn btn-primary btn-calendarBooking btn-cons" type="button" data-toggle="modal" data-target="#modalCalendarBooking"> 
                         <span class="bold">Calendario booking</span>
                     </button>
+
+                    <a href="{{ url('ical/importFromUrl') }}" class="btn btn-primary btn-cons" <?php if ( count( \App\IcalImport::all() ) == 0): ?> disabled="" <?php endif ?> style="background-color: #337ab7; border-color: #2e6da4;">
+                        <span class="bold">Importar Calendarios</span>
+                    </a>
 
                 </div>
             </div>

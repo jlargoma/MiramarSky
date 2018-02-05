@@ -1551,5 +1551,30 @@ class BookController extends Controller
 
 
     }
+
+    public function saveComment(Request $request, $idBook, $type)
+    {
+        $book = \App\Book::find($idBook);
+
+        switch ($type) {
+            case '1':
+                $book->comment = $request->value;
+                break;
+
+            case '2':
+                $book->book_comments = $request->value;
+                break;
+
+            case '3':
+                $book->book_owned_comments = $request->value;
+                break;
+        }
+
+        if ($book->save()) {
+            return ['status' => 'success','title' => 'OK', 'response' => "Comentarios guardados"];
+        };
+
+        
+    }
     
 }

@@ -46,6 +46,14 @@
     	$("#content-book-response").flip(false);
     	$('#content-book-response .back').empty();
     }
+    // function calculateDays(date1, date2){
+    // 	var result = "";
+    // 	$.post( '/getDiffIndays' , { date1: date1, date2: date2}, function(data) {
+	   //  	result = data;
+	   //  });
+
+	   //  return result;
+    // }
 
 	$(document).ready(function() {
 
@@ -99,18 +107,28 @@
 			var res2       = arrayDates[1].replace("Abr", "Apr");
 			var date2      = new Date(res2);
 			var timeDiff   = Math.abs(date2.getTime() - date1.getTime());
-			var diffDays   = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-	    	if(diffDays >= 2 ){
-	    		$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   fechas : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
-	    			
-	    			$('#content-book-response .back').empty();
-	    			$('#content-book-response .back').append(data);
-	    			$("#content-book-response").flip(true);
+			
 
-	    		});
-	    	}else{
-	    		alert('Estancia minima 2 NOCHES')
-	    	}
+			$.post( '/getDiffIndays' , { date1: arrayDates[0], date2: arrayDates[1]}, function( data ) {
+				var diffDays =  data;
+				
+				// alert(diffDays);
+
+		    	if(diffDays >= 2 ){
+		    		$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   fechas : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
+		    			
+		    			$('#content-book-response .back').empty();
+		    			$('#content-book-response .back').append(data);
+		    			$("#content-book-response").flip(true);
+
+		    		});
+		    	}else{
+		    		alert('Estancia minima 2 NOCHES')
+		    	}
+			});	
+
+			
+
 
 
 	    	
