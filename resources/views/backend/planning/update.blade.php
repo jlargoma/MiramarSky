@@ -582,7 +582,7 @@
                             <?php if ( count($hasFiance) > 0): ?>
                                 <div class="col-md-6">
 
-                                    <button class="btn btn-primary btn-lg" type="button" id="fianza"> COBRAR FIANZA</button>
+                                    <button class="btn btn-primary btn-lg" type="button" id="fianza"> COBRAR FIANZA  </button>
                                 </div>
                             <?php else: ?>
                                 <div class="col-md-6">
@@ -598,11 +598,11 @@
                             <?php if ( count($hasFiance) > 0): ?>
                                 <div class="col-md-6 col-md-offset-3 alert alert-info fade in alert-dismissable" style="margin-top: 30px; background-color: #10cfbd70!important;">
                                     <h3 class="text-center font-w300">
-                                        CARGAR LA FIANZA
+                                        CARGAR LA FIANZA DE <span class="font-w800"><?php echo ($hasFiance->amount/100) ?>€</span>
                                     </h3>
                                     <div class="row">
                                         <form action="{{ url('admin/reservas/stripe/pay/fianza') }}" method="post">
-
+                                            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                             <input type="hidden" name="id_fianza" value="<?php echo $hasFiance->id; ?>">
                                             <div class="col-xs-12 text-center">
                                                 <button class="btn btn-primary">COBRAR</button>
