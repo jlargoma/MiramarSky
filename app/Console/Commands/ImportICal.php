@@ -164,6 +164,9 @@ class ImportICal extends Command
             )
            return false;
 
+        //  $start & $finish in format d/m/Y
+        //  \App\Book::existDate($start, $finish, %room_id ) 
+
 
         $books  = \App\Book::where('room_id',$room_id)
                         // ->where('user_id', $this->user_id)

@@ -21,8 +21,7 @@ class Store extends Migration
 
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('book_id')->unsigned();
-            $table->foreign('book_id')->references('id')->on('book');
+            $table->string('email_customer');
             $table->date('date');
             $table->string('status')->default(0);
             $table->timestamps();
