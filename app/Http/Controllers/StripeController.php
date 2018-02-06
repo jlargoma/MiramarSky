@@ -269,7 +269,7 @@ class StripeController extends Controller
     }
 
     public function payFianza(Request $request){
-
+        \Stripe\Stripe::setApiKey(self::$stripe['secret_key']);
         $fianza = \App\Fianzas::find($request->input('id_fianza'));
         
         try {
