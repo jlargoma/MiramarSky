@@ -54,7 +54,7 @@
 
                             
                             <td class="text-center">
-                                <?php if ( !isset($payment[$book->id])): ?>
+                                <?php if ( $payment[$book->id] == 0): ?>
                                     <?php if ( $now->diffInDays($dateStart) <= 15 ):?>
                                         <span class=" label label-danger alertDay heart text-white">
                                             <i class="fa fa-bell"></i>
@@ -65,8 +65,7 @@
                                         </span>
                                     <?php endif; ?>
                                 <?php else: ?>
-                                    <?php $divisor = ($payment[$book->id] == 0)?1: $payment[$book->id]; ?>
-                                    <?php $percent = 100/( $book->total_price / $divisor ); ?>
+                                    <?php $percent = 100 / ( $book->total_price / $payment[$book->id] ); ?>
                                     <?php if ( $percent <= 25 ): ?>
 
                                         <?php if ( $now->diffInDays($dateStart) <= 15 ):?>
