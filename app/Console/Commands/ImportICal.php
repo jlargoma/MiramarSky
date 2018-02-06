@@ -115,9 +115,17 @@ class ImportICal extends Command
 
         $book = new \App\Book();
 
+        $customer          = new \App\Customers();
+        $customer->user_id = 23;
+        $customer->name    = ($agency == 1)? "-BOOKING-": "-AIRBNB-";
+        $customer->email   = "-";
+        $customer->phone   = "-";
+        $customer->DNI     = "-";
+        $customer->save();
+
         //Create Book
         $book->user_id       = $this->user_id;
-        $book->customer_id   = ($agency == 1)? 1780: 1787;//$this->customer_id;// user to book imports / user to airbnb imports
+        $book->customer_id   = $customer->id;//$this->customer_id;// user to book imports / user to airbnb imports
         $book->room_id       = $room_id;
         $book->start         = $start->format("Y-m-d");
         $book->finish        = $finish->format("Y-m-d");

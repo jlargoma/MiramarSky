@@ -11,24 +11,6 @@
 | 
 */
 
-// Route::get('/test', function ()
-// {
-// 	foreach (\App\Book::all() as $key => $book) {
-// 		// $book->cost_total
-
-// 		$sumatorio = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp + $book->extraCost;
-
-// 		if ($sumatorio > $book->cost_total) {
-// 			$book->cost_total = $sumatorio;
-// 			if ($book->save()) {
-// 				echo $book->cost_apto."+".$book->cost_park."+".$book->cost_lujo."+".$book->PVPAgencia."+".$book->extraCost." = ".$book->cost_total."<br>";
-// 			}
-
-			
-// 		}
-// 	}
-// });
-
 /*ICalendar links*/
 Route::post('/ical/import/saveUrl', 'ICalendarController@saveUrl');
 Route::get('/ical/urls/deleteUrl', 'ICalendarController@deleteUrl');
@@ -405,5 +387,36 @@ Route::group(['middleware' => 'auth'], function () {
 				                    'import' => $import,
 								]);
 		
+	});
+
+	Route::get('/admin/customers/searchByName/{searchString?}', function($searchString=""){
+
+		if ($searchString == "") {
+			$arraycorreos = array();
+        $correosUsuarios = \App\User::all();
+
+        foreach ($correosUsuarios as $correos) {
+            $arraycorreos[] = $correos->email;
+
+        }
+
+
+            $arraycorreos[] = "iankurosaki@gmail.com";
+            $arraycorreos[] = "jlargoma@gmail.com";
+            $arraycorreos[] = "victorgerocuba@gmail.com";
+			$customers = \App\Customers::whereNotIn('email',$arraycorreos)
+										->where('email', '!=', ' ')
+										->distinct('email')
+										->orderBy('created_at', 'DESC')
+										->get();
+		}else{
+			$customers = \App\Customers::where('name','LIKE', '%'.$searchString.'%')
+    									->orWhere('email', 'LIKE' ,'%'.$searchString.'%')
+										->get();
+		}
+
+		return view('backend.customers._table',[
+						                    'customers'     => $customers,
+										]);
 	});
 });
