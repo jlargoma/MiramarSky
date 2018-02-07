@@ -7,17 +7,17 @@
                 <thead>
                     <tr>   
                         <th style="display: none">ID</th> 
-                        <th class ="text-center Pagada-la-señal text-white" style="width: 4%!important">&nbsp;</th> 
-                        <th class ="text-center Pagada-la-señal text-white" style="width: 11%!important">   Cliente     </th>
-                        <th class ="text-center Pagada-la-señal text-white" style="width: 10%!important">   Telefono     </th>
-                        <th class ="text-center Pagada-la-señal text-white" style="width: 7%!important">   Pax         </th>
-                        <th class ="text-center Pagada-la-señal text-white" style="width: 10%!important">   Apart       </th>
-                        <th class ="text-center Pagada-la-señal text-white" style="width: 5%!important">  <i class="fa fa-moon-o"></i> </th>
-                        <th class ="text-center Pagada-la-señal text-white" style="width: 6%!important">   IN     </th>
-                        <th class ="text-center Pagada-la-señal text-white" style="width: 8%!important">   OUT      </th>
-                        <th class ="text-center Pagada-la-señal text-white" style="width: 17%!important">   Precio      </th>
-                        <th class ="text-center Pagada-la-señal text-white" style="width: 50px!important">   &nbsp;      </th>
-                        <th class ="text-center Pagada-la-señal text-white" style="width: 17%!important">   Estado      </th>
+                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 4%!important">&nbsp;</th> 
+                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 11%!important">   Cliente     </th>
+                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 10%!important">   Telefono     </th>
+                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 7%!important">   Pax         </th>
+                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 10%!important">   Apart       </th>
+                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 5%!important">  <i class="fa fa-moon-o"></i> </th>
+                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 6%!important">   IN     </th>
+                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 8%!important">   OUT      </th>
+                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 17%!important">   Precio      </th>
+                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 50px!important">   &nbsp;      </th>
+                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 17%!important">   Estado      </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -134,7 +134,7 @@
                             </td>
                             <td class ="text-center">
                                 <select class="status form-control minimal" data-id="<?php echo $book->id ?>" style="width: 95%">
-                                    <?php for ($i=1; $i <= 10; $i++): ?> 
+                                    <?php for ($i=1; $i <= 11; $i++): ?> 
                                         <?php if ($i == 5 && $book->customer->email == ""): ?>
                                         <?php else: ?>
                                             <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
@@ -159,16 +159,16 @@
 <div class="table-responsive" style="border: none!important">
     <table class="table table-striped" style="margin-top: 0;">
         <thead>
-            <th class="Pagada-la-señal text-white text-center" ></th>
-            <th class="Pagada-la-señal text-white text-center" >Nombre</th>
-            <th class="Pagada-la-señal text-white text-center" style="min-width:50px">In</th>
-            <th class="Pagada-la-señal text-white text-center" style="min-width:50px ">Out</th>
-            <th class="Pagada-la-señal text-white text-center">Pax</th>
-            <th class="Pagada-la-señal text-white text-center">Tel</th>
-            <th class="Pagada-la-señal text-white text-center" style="min-width:100px">Apart</th>
-            <th class="Pagada-la-señal text-white text-center"><i class="fa fa-moon-o"></i></th>
-            <th class="Pagada-la-señal text-white text-center" style="min-width:65px">PVP</th>
-            <th class ="text-center Pagada-la-señal text-white" style="width: 50px!important">   &nbsp;      </th>
+            <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center" ></th>
+            <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center" >Nombre</th>
+            <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center" style="min-width:50px">In</th>
+            <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center" style="min-width:50px ">Out</th>
+            <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center">Pax</th>
+            <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center">Tel</th>
+            <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center" style="min-width:100px">Apart</th>
+            <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center"><i class="fa fa-moon-o"></i></th>
+            <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center" style="min-width:65px">PVP</th>
+            <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-center  text-white" style="width: 50px!important">   &nbsp;      </th>
             
             <th class="Pagada-la-señal text-white text-center" style="min-width:200px">Estado</th>
         </thead>
@@ -249,7 +249,7 @@
                     <td class="text-center">
                         <select class="status form-control minimal" data-id="<?php echo $book->id ?>">
 
-                            <?php for ($i=1; $i <= 10; $i++): ?> 
+                            <?php for ($i=1; $i <= 11; $i++): ?> 
                                 <?php if ($i == 5 && $book->customer->email == ""): ?>
                                 <?php else: ?>
                                     <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 

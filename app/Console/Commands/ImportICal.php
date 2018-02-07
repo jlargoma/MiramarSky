@@ -117,7 +117,8 @@ class ImportICal extends Command
 
         $customer          = new \App\Customers();
         $customer->user_id = 23;
-        $customer->name    = ($agency == 1)? "-BOOKING-": "-AIRBNB-";
+        $customer->name    = $event->summary
+        $customer->name    .= ($agency == 1)? " -BOOKING-": " -AIRBNB-";
         $customer->email   = "-";
         $customer->phone   = "-";
         $customer->DNI     = "-";
@@ -131,7 +132,7 @@ class ImportICal extends Command
         $book->finish        = $finish->format("Y-m-d");
         $book->comment       = $event->summary;
         $book->book_comments = $event->summary . " #IMPORTING_TASK_SCHEDULED";
-        $book->type_book     = 2;
+        $book->type_book     = 11;
         $book->nigths        = $nights;
         $book->agency        = $agency;
         return $book->save();

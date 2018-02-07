@@ -113,6 +113,12 @@
                                 {{ $booksCount['special'] }}
                             </span>
                         </button>
+                        <button class="btn btn-success btn-grey btn-tables btn-cons" type="button" data-type="blocked-ical"> 
+                            <span class="bold">Blocked ICal</span> 
+                            <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
+                                {{ $booksCount['blocked-ical'] }}
+                            </span>
+                        </button>
                     
                         <button class="btn  btn-primary btn-green btn-tables btn-cons" type="button" data-type="confirmadas"> 
                             <span class="bold">Confirmadas</span> 
@@ -356,6 +362,13 @@
                                 <span class="bold">Esp</span>
                                 <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
                                     <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'especiales'); ?>
+                                </span>
+                            </button>
+
+                            <button class="btn btn-primary  btn-grey btn-tables" type="button" data-type="blocked-ical"> 
+                                <span class="bold">ICal</span>
+                                <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
+                                    <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'blocked-ical'); ?>
                                 </span>
                             </button>
 

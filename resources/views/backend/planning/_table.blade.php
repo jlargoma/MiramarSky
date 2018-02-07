@@ -6,9 +6,9 @@
 
 	@include('backend.planning.listados._especiales', ['books' => $books ])
 
-<?php elseif( $type == 'confirmadas'): ?>
+<?php elseif( $type == 'confirmadas' || $type == 'blocked-ical' ): ?>
 
-	@include('backend.planning.listados._pagadas', ['books' => $books ])
+	@include('backend.planning.listados._pagadas', ['books' => $books, "type" => $type ])
 
 <?php elseif( $type == 'checkin'): ?>
 	@include('backend.planning.listados._checkin', ['books' => $books ])

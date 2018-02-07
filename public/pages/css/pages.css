@@ -14275,6 +14275,10 @@ Main components
     background-color: green  !important;
     color: black;
 }
+.blocked-ical{
+    background-color: grey  !important;
+    color: black;
+}
 .contestado-email{
   background-color: rgba(246,244,179, 0.6) !important;
     color: black;
@@ -14334,6 +14338,16 @@ Main components
 .btn-orange:hover,.btn-orange:active{
   background-color: orange!important;
   border-color: orange!important;
+  color: white!important;
+}
+.btn-grey{
+  background-color: grey!important;
+  border-color: grey!important;
+  color: white!important;
+}
+.btn-grey:hover,.btn-grey:active{
+  background-color: grey!important;
+  border-color: grey!important;
   color: white!important;
 }
 .btn-green{

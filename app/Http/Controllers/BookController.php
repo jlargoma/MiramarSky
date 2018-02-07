@@ -35,12 +35,13 @@ class BookController extends Controller
             ->where('finish', '<', $start->copy()->addYear())
             ->get();
 
-        $books = $booksCollection->whereIn('type_book', [1,3,4,5,6,10])
+        $books = $booksCollection->whereIn('type_book', [1,3,4,5,6,10,11])
             ->sortByDesc('created_at');
 
         $booksCount['pending'] = $booksCollection->where('type_book', 3)->count();
         $booksCount['special'] = $booksCollection->whereIn('type_book', [7,8])->count();
         $booksCount['confirmed'] = $booksCollection->where('type_book', 2)->count();
+        $booksCount['blocked-ical'] = $booksCollection->where('type_book', 11)->count();
         $booksCount['checkin'] = $this->getCounters($start,'checkin');
         $booksCount['checkout'] = $booksCount['confirmed'] - $booksCount['checkin'];
 
@@ -1172,6 +1173,12 @@ class BookController extends Controller
                                     ->where('type_book',0)
                                     ->orderBy('updated_at','DESC')
                                     ->get();
+            case 'blocked-ical':
+                $books = \App\Book::where('start','>',$date->copy()->subDays(3))
+                                    ->where('finish','<',$date->copy()->addYear())
+                                    ->where('type_book',11)
+                                    ->orderBy('updated_at','DESC')
+                                    ->get();
                 break;
         }
 
@@ -1310,7 +1317,7 @@ class BookController extends Controller
             $date = new Carbon('first day of September '.$now->copy()->subYear()->format('Y'));
         }
         $apartamentos = \App\Rooms::where('state','=',1);
-        $reservas = \App\Book::whereIn('type_book',[1,2,4,5,7,8,9,10])->whereYear('start','>=', $date)->orderBy('start', 'ASC')->get();
+        $reservas = \App\Book::whereIn('type_book',[1,2,4,5,7,8,9,10,11])->whereYear('start','>=', $date)->orderBy('start', 'ASC')->get();
 
         foreach ($reservas as $reserva) {
             $dia = Carbon::createFromFormat('Y-m-d',$reserva->start);
@@ -1409,6 +1416,13 @@ class BookController extends Controller
                 $booksCount = \App\Book::where('start','>',$dateX->copy()->subDays(3))
                     ->where('finish','<',$dateX->copy()->addYear())
                     ->where('type_book',2)
+                    ->count();
+                break;
+            case 'blocked-ical':
+                $dateX = Carbon::now();
+                $booksCount = \App\Book::where('start','>',$date->copy()->subMonth())
+                    ->where('finish','<',$date->copy()->addYear())
+                    ->where('type_book',11)
                     ->count();
                 break;
             case 'checkout':

@@ -78,7 +78,8 @@ class Book extends Model
             7  => 'Reserva Propietario',
             8  => 'SubComunidad',
             9  => 'Booking', 
-            10 => 'Overbooking'
+            10 => 'Overbooking',
+            11 => 'blocked-ical'
         ];
 
        return $array[$status];
