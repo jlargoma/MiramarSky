@@ -897,19 +897,19 @@ class BookController extends Controller
                $payment->delete();
             }
 
-            $ordersBook = \App\Orders::where('book_id', $book->id)->get();
-            if (count($ordersBook) > 0) {
-                foreach ( $ordersBook as $key => $order) {
+            // $ordersBook = \App\Orders::where('book_id', $book->id)->get();
+            // if (count($ordersBook) > 0) {
+            //     foreach ( $ordersBook as $key => $order) {
                     
-                    $productos = $order->getProducts();
-                    foreach ($productos as $key => $producto) {
-                        $producto->delete();
-                    }
+            //         $productos = $order->getProducts();
+            //         foreach ($productos as $key => $producto) {
+            //             $producto->delete();
+            //         }
 
-                    $order->delete();
+            //         $order->delete();
 
-                }
-            }
+            //     }
+            // }
 
             $book->type_book = 0;
 
