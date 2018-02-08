@@ -117,7 +117,7 @@ class ImportICal extends Command
 
         $customer          = new \App\Customers();
         $customer->user_id = 23;
-        $customer->name    = $event->summary
+        $customer->name    = $event->summary;
         $customer->name    .= ($agency == 1)? " -BOOKING-": " -AIRBNB-";
         $customer->email   = "-";
         $customer->phone   = "-";
