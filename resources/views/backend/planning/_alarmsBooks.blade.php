@@ -65,7 +65,7 @@
                                 <?php endforeach ?>
                             <?php endif ?>
                             <?php echo  $paymentBook." €" ?> <br>
-                            <b><?php echo  round(($paymentBook/$book->total_price)*100)?>%</b>
+                            <b><?php //echo  round(($paymentBook/$book->total_price)*100)?>%</b>
                         </td>
                         <td class="text-center">
                             <?php if ($fromStripe): ?>
