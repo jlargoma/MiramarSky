@@ -79,7 +79,8 @@ class Book extends Model
             8  => 'SubComunidad',
             9  => 'Booking', 
             10 => 'Overbooking',
-            11 => 'blocked-ical'
+            11 => 'blocked-ical',
+            12 => 'ICAL - INVISIBLE'
         ];
 
        return $array[$status];

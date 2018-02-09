@@ -14236,6 +14236,10 @@ Main components
     background-color: #bdf9bd  !important;
     color: black;
 }
+.Reservado{
+    background-color: #bdf9bd  !important;
+    color: black;
+}
 .Reservado.end{
     background-color: #bdf9bd;
     color: black;
@@ -14275,7 +14279,7 @@ Main components
     background-color: green  !important;
     color: black;
 }
-.blocked-ical{
+.blocked-ical, .Blocked-ical{
     background-color: grey  !important;
     color: black;
 }
