@@ -343,6 +343,8 @@ class Book extends Model
                                 return ['status' => 'success','title' => 'OK', 'response' => "Estado Cambiado a Reserva Propietario"];
                             }elseif($status == 8){
                                 return ['status' => 'success','title' => 'OK', 'response' => "Estado Cambiado a Subcomunidad"];
+                            } else{
+                                return ['status' => 'success','title' => 'OK', 'response' => "Estado Cambiado"];
                             }
                         }
                     }

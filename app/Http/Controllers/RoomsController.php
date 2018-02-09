@@ -506,31 +506,38 @@ class RoomsController extends Controller
 
             if (File::exists($path)){
                 $images = File::allFiles($path);
-
-                return view('backend/rooms/_imagesByRoom', ['images' => $images, 'room' => $room]);
+                foreach ($images as $key => $slide) {
+                    $arraySlides[] = $slide->getFilename();
+                }
+                natcasesort($arraySlides);
+                $slides = array();
+                foreach ($arraySlides as $key => $sl) {
+                 $slides[] = '/img/miramarski/apartamentos/'.$room->nameRoom.'/thumbnails/'.$sl;      
+                }
+                return view('backend/rooms/_imagesByRoom', ['images' => $slides, 'room' => $room]);
 
             }else{
                 return '<h2 class="text-center">NO HAY IMAGENES PARA ESTE APTO.</h2>';
             }
         } else {
             
-            $rooms = \App\Rooms::where('state', 1)->get();
-            foreach ($rooms as $key => $room) {
-                $counter = 0;
-                $path = public_path().'/img/miramarski/apartamentos/'.$room->nameRoom.'/thumbnails/';
+            // $rooms = \App\Rooms::where('state', 1)->get();
+            // foreach ($rooms as $key => $room) {
+            //     $counter = 0;
+            //     $path = public_path().'/img/miramarski/apartamentos/'.$room->nameRoom.'/thumbnails/';
 
-                if (File::exists($path)){
+            //     if (File::exists($path)){
 
-                    $images = File::allFiles($path);
+            //         $images = File::allFiles($path);
 
-                    foreach ($images as $key => $image) {
-                        File::move($path.$image->getFilename(), $path.str_replace(' ', '_', $image->getFilename()));
+            //         foreach ($images as $key => $image) {
+            //             File::move($path.$image->getFilename(), $path.str_replace(' ', '_', $image->getFilename()));
 
 
-                    }
+            //         }
                     
-                }
-            }
+            //     }
+            // }
             
 
 

@@ -1206,6 +1206,7 @@ class BookController extends Controller
                                     ->where('type_book',0)
                                     ->orderBy('updated_at','DESC')
                                     ->get();
+                break;
             case 'blocked-ical':
                 $books = \App\Book::where('start','>',$date->copy()->subDays(3))
                                     ->where('finish','<',$date->copy()->addYear())
@@ -1462,6 +1463,13 @@ class BookController extends Controller
                 $dateX = Carbon::now();
                 $booksCount = \App\Book::where('start','>=',$dateX->copy()->subDays(3))
                     ->where('type_book',2)
+                    ->count();
+                break;
+            case 'eliminadas':
+                $dateX = Carbon::now();
+                $booksCount = \App\Book::where('start','>',$date->copy()->subMonth())
+                    ->where('finish','<',$date->copy()->addYear())
+                    ->whereIn('type_book',0 )
                     ->count();
                 break;
         }

@@ -368,7 +368,7 @@
                         </div>
                     </div>
                     <div class="row text-left push-0" style="overflow-x:auto;">
-                        <div style=" width: 460px;">
+                        <div style=" width: 515px;">
                             <button class="btn btn-primary  btn-blue btn-tables" type="button" data-type="pendientes"> 
                                 <span class="bold">Pend</span>
                                 <span class="numPaymentLastBooks" style="top: 0px;right: 0;padding: 0px 7px;">
@@ -498,7 +498,7 @@
 
         <!-- IMAGENES POR PISO -->
         <div class="modal fade slide-up in" id="modalRoomImages" tabindex="-1" role="dialog" aria-hidden="true" >
-            <div class="modal-dialog modal-lg" style="width: 85%;">
+            <div class="modal-dialog modal-lg" style="width: 95%;">
                 <div class="modal-content-wrapper">
 
                     <div class="modal-content" style="max-height: 800px; overflow-y: auto;">

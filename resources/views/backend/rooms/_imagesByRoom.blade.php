@@ -12,19 +12,19 @@
 		    <i class="pg-close fs-14" style="color: black!important"></i>
 		</button>
 	</div>
-	<div class="col-xs-12">
-		<div class="col-md-4">
+	<div class="col-xs-12" style="padding: 0">
+		<div class="col-md-4 col-xs-12">
 			<div class="col-xs-12">
 				<h2 class="text-left font-w300" style="margin: 0;">
 					ENVIAR POR <span class="font-w800">EMAIL</span>: 
 				</h2>
 				
 			</div>
-			<div class="col-xs-10 push-20">
+			<div class="col-xs-8 col-md-10 push-20">
 				<input type="email" id="shareEmailImages" class="form-control minimal" placeholder="Email...">
 			</div>
-			<div class="col-xs-2 push-20">
-				<button class="btn btn-primary" id="sendShareImagesEmail">
+			<div class="col-xs-4 col-md-2 push-20">
+				<button class="btn btn-primary btn-md" id="sendShareImagesEmail">
 					<i class="fa fa-envelope"></i> Enviar
 				</button>
 			</div>
@@ -34,7 +34,7 @@
 		<?php foreach ($images as $key => $image): ?>
 			<div class="col-md-2 col-xs-12 push-10">
 				<!--  -->
-				<img src="{{ asset('/img/miramarski/apartamentos/'.$room->nameRoom.'/thumbnails/'.$image->getFilename()) }}" class="img-responsive" style="height: 200px">
+				<img src="<?php echo $image ?>" class="img-responsive" style="height: 200px">
 			</div>
 		<?php endforeach ?>
 	</div>
@@ -50,9 +50,10 @@
 			$.get('/sendImagesRoomEmail', {email: email, roomId: roomId,}, function(data) {
 				$('.loading-emailImages').hide();
 				$('.sended-emailImages').show();
+
 				$(".content-loading").css({ opacity: 1 });
 				$('#shareEmailImages').val('');
-				$('.sended-emailImages').hide();
+				$('.close').trigger('click');
 			});
 		});
 	});

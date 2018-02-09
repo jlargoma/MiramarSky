@@ -266,8 +266,18 @@ tr.lined{
     color: black;
 }
 
-
-
+.Blocked-ical{
+  background-color: rgba(128,128,128,0.5) !important;
+  color: black;
+}
+.table.table-striped tbody tr.Blocked-ical td{
+  background-color: rgba(128,128,128,0.5) !important;
+  color: black;
+}
+.Blocked-ical td select.minimal{
+     background-color: rgba(128,128,128,0.5) !important;
+    color: black;
+}
 
 @media only screen and (min-width: 1023px) and (max-width: 1400px){
   .navbar-collapse{
@@ -475,4 +485,8 @@ input.beneficio,
   padding: 5px;
   animation: pulsebtn 1s infinite!important;
   transform-origin: center!important;
+}
+.pg-close.fs-20, .pg-close{
+      font-size: 50px!important;
+    font-weight: 800;
 }
