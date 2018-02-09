@@ -54,7 +54,7 @@
 
 	<b>Fianza:</b> Además del precio del alquiler el día de llegada <b>se pedirá una fianza por el importe de 300€</b> a la entrega de llaves para garantizar el buen uso de la vivienda. La fianza se devolverá a la entregada de llaves, una vez revisada la vivienda <br><br>
 
-	<b>Sabanas y Toallas: </b>En las reservas confirmadas para <b>“El apartamento de Lujo” SI ESTAN INCLUIDAS</b> las sabanas y toallas, en el resto de apartamentos del complejo Mirarmar Ski <b>NO ESTAN INCLUIDAS</b>, por lo que deben traerlas.<br><br>
+	<b>Sabanas y Toallas: </b>En las reservas confirmadas las sabanas y toallas <b>ESTAN INCLUIDAS</b> <br><br>
 
 	Pago: La cantidad total de la reserva deberá estar desembolsada para poder ocupar el apartamento.<br><hr><br><strong>Servicios adicionales:</strong><br>Para tu comodidad te ofrecemos los siguientes servicios<br><br>
 
@@ -65,5 +65,5 @@
 	Para solicitar uno de estos servicios solo es necesario que rellenes un fomulario <a href="https://www.apartamentosierranevada.net/forfait">pinchando aqui</a><br><br>
 
 	A la entrega de llaves se pedirá una fianza por 300 €.<br> 
-                            Ver condiciones alquiler en en este <a href="https://www.apartamentosierranevada.net/condiciones-generales">link</a><h3>Queremos que disfrutes de tu estancia.</h3>
+    Ver condiciones alquiler en en este <a href="https://www.apartamentosierranevada.net/condiciones-generales">link</a><h3>Queremos que disfrutes de tu estancia.</h3>
 </body>
