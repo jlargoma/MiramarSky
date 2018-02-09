@@ -64,10 +64,43 @@ class BookController extends Controller
 
         $mobile = new Mobile();
 
+        $booksAlarms = \App\Book::where('start','>',Carbon::now())
+                    ->where('finish','<',Carbon::now()->copy()->addDays(15))
+                    ->where('type_book',2)
+                    ->get();
+        $alarms = array();
+        foreach ($booksAlarms as $key => $book) {
+            $dateStart = Carbon::createFromFormat('Y-m-d', $book->start);
+            $now = Carbon::now();
+
+            $payments = \App\Payments::where('book_id',$book->id)->get();
+
+
+            if ( count($payments) == 0 ) {
+                if ( $now->diffInDays($dateStart) <= 15 ):
+                    $alarms[] = $book;
+                endif;
+            } else {
+                $total = 0;
+                foreach ($payments as $key => $pay) {
+                    $total += $pay->import;
+                }
+                $percent = 100 / ( $book->total_price / $total );
+                if ( $percent <= 25 ): 
+                    if ( $now->diffInDays($dateStart) <= 15 ):
+                        $alarms[] = $book;
+                    endif;
+                endif;
+            }
+            
+
+            
+        }
+
         return view(
             'backend/planning/index',
             compact('books','mobile', 'stripe','inicio', 'rooms', 'roomscalendar', 'date', 
-                'stripedsPayments', 'notifications', 'booksCount')
+                'stripedsPayments', 'notifications', 'booksCount', 'alarms')
         );
     }
 

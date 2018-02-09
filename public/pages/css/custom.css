@@ -443,3 +443,36 @@ input.beneficio,
   animation: pulse 1.2s infinite;
   transform-origin: center;
 }
+
+@-webkit-keyframes pulsebtn {
+  0% {
+    -webkit-box-shadow: 1px 1px  rgba(237, 26, 17, 0.65);
+  }
+  70% {
+      -webkit-box-shadow: 1px 1px rgba(237, 26, 17, 0.65);
+  }
+  100% {
+      -webkit-box-shadow: 1px 1px  rgba(237, 26, 17, 0.65);
+  }
+}
+@keyframes pulsebtn {
+  0% {
+    -moz-box-shadow: 0px 0px 0px 0px rgba(237, 26, 17, 1.);
+    box-shadow: 0px 0px 0px 0px rgba(237, 26, 17, 1.);
+  }
+  70% {
+      -moz-box-shadow: 0px 0px 1px 2px rgba(237, 26, 17, 0.65);
+      box-shadow: 0px 0px 1px 2px rgba(237, 26, 17, 0.65);
+  }
+  100% {
+      -moz-box-shadow: 0px 0px 2px 5px rgba(204,169,44, 0);
+      box-shadow: 0px 0px 2px 5px rgba(204,169,44, 0);
+  }
+}
+
+.btn-alarms{
+  margin-left: 5px;
+  padding: 5px;
+  animation: pulsebtn 1s infinite!important;
+  transform-origin: center!important;
+}
