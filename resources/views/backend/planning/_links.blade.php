@@ -30,7 +30,7 @@
 
 ?>
 
-<div class="col-md-4">
+<div class="col-md-4 col-xs-12">
     <h2 class="text-center font-w300" style="letter-spacing: -1px;">
         LINKS PAGOS  STRIPE
     </h2>
@@ -41,7 +41,7 @@
         <button id="btnGenerate" class="btn btn-success" type="button">Generar</button>
     </div>
 </div>
-<div class="col-md-8 " style="padding: 0 15px;">
+<div class="col-md-8 col-xs-12" style="padding: 0 15px;">
     <h2 class="text-left" style="font-size: 20px; line-height: 15px;">
         <span style="font-size: 18px; line-height: 15px;">En este link podrás realizar el pago de la señal por el <?php echo $multipler * 100; ?>% del total.<br> En el momento en que efectúes el pago, te legará un email confirmando tu reserva</span><br>
         <a target="_blank" href="https://www.miramarski.com/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>/<?php echo base64_encode($price) ?>">
