@@ -34,14 +34,21 @@
                     <?php $count = 0 ?>
                     <?php foreach ($books as $book): ?>
                         <?php if ( $book->start >= $startWeek->copy()->format('Y-m-d') && $book->start <= $endWeek->copy()->format('Y-m-d')): ?>
-                            <?php if ( $book->start <= Carbon::now()->copy()->subDay()->format('Y-m-d') ): ?>
-                                <?php $class = "blurred-line" ?>
-                            <?php else: ?>
-                                <?php $class = "" ?>
-                            <?php endif ?>
-                        <?php else: ?>
-                            <?php $class = "lined"; $count++ ?>
-                        <?php endif ?>
+
+                           <?php if ( $book->start <= Carbon::now()->copy()->subDay()->format('Y-m-d') ): ?>
+                               <?php $class = "blurred-line" ?>
+                           <?php else: ?>
+                               <?php $class = "" ?>
+                           <?php endif ?>
+
+                       <?php else: ?>
+                           
+                           <?php if ( $book->start <= Carbon::now()->copy()->subDay()->format('Y-m-d') ): ?>
+                               <?php $class = "blurred-line" ?>
+                           <?php else: ?>
+                               <?php $class = "lined"; $count++ ?>
+                           <?php endif ?>
+                       <?php endif ?>
 
 
                         <tr class="<?php if($count <= 1){echo $class;} ?>">
@@ -245,13 +252,13 @@
             <th class="bg-success text-white text-center" ></th>
             <th class="bg-success text-white text-center" >Nombre</th>
             <th class="bg-success text-white text-center">Tel</th>
-            <th class="bg-success text-white text-center" style="min-width:50px ">Hor</th>
+            <th class="bg-success text-white text-center" style="min-width:55px">PVP</th>
+            <th class="bg-success text-white text-center" style="min-width:30px ">Hor</th>
             <th class="bg-success text-white text-center" style="min-width:50px">In</th>
             <th class="bg-success text-white text-center" style="min-width:50px ">Out</th>
             <th class="bg-success text-white text-center">Pax</th>
             <th class="bg-success text-white text-center" style="min-width:50px">Apart</th>
             <th class="bg-success text-white text-center"><i class="fa fa-moon-o"></i></th>
-            <th class="bg-success text-white text-center" style="min-width:65px">PVP</th>
             <th class="bg-success text-white text-center" style="min-width:60px">a</th>
             <th class ="text-center bg-success text-white">&nbsp;</th>
         </thead>
@@ -259,13 +266,20 @@
             <?php $count = 0 ?>
             <?php foreach ($books as $book): ?>
                 <?php if ( $book->start >= $startWeek->copy()->format('Y-m-d') && $book->start <= $endWeek->copy()->format('Y-m-d')): ?>
+
                     <?php if ( $book->start <= Carbon::now()->copy()->subDay()->format('Y-m-d') ): ?>
                         <?php $class = "blurred-line" ?>
                     <?php else: ?>
                         <?php $class = "" ?>
                     <?php endif ?>
+
                 <?php else: ?>
-                    <?php $class = "lined"; $count++ ?>
+                    
+                    <?php if ( $book->start <= Carbon::now()->copy()->subDay()->format('Y-m-d') ): ?>
+                        <?php $class = "blurred-line" ?>
+                    <?php else: ?>
+                        <?php $class = "lined"; $count++ ?>
+                    <?php endif ?>
                 <?php endif ?>
 
                 <tr class="<?php if($count <= 1){echo $class;} ?> <?php echo ucwords($book->getStatus($book->type_book)) ;?>">
@@ -296,8 +310,17 @@
                         <?php endif ?>
                        
                     </td>
+                    <td class="text-center">
+                       <div class="col-md-6">
+                           <?php echo round($book->total_price)."€" ?><br>
+                           <?php if (isset($payment[$book->id])): ?>
+                               <?php echo "<p style='color:red'>".$payment[$book->id]."€</p>" ?>
+                           <?php else: ?>
+                           <?php endif ?>
+                       </div>
+                    </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
-                        <select id="schedule" style="width: 100%;" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?> <?php if ($book->schedule < 17 && $book->schedule > 0): ?>alerta-horarios<?php endif ?>" data-type="in" data-id="<?php echo $book->id ?>">
+                        <select id="schedule" style="width: 70%;" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?> <?php if ($book->schedule < 17 && $book->schedule > 0): ?>alerta-horarios<?php endif ?>" data-type="in" data-id="<?php echo $book->id ?>">
                             <option>-- Sin asignar --</option>
                             <?php for ($i = 0; $i < 24; $i++): ?>
                                 <option value="<?php echo $i ?>" <?php if($i == $book->schedule) { echo 'selected';}?>>
@@ -333,15 +356,7 @@
                         <b><?php echo $book->room->nameRoom ?></b>
                     </td>
                     <td class="text-center"><?php echo $book->nigths ?></td>
-                    <td class="text-center">
-                       <div class="col-md-6">
-                           <?php echo round($book->total_price)."€" ?><br>
-                           <?php if (isset($payment[$book->id])): ?>
-                               <?php echo "<p style='color:red'>".$payment[$book->id]."€</p>" ?>
-                           <?php else: ?>
-                           <?php endif ?>
-                       </div>
-                    </td>
+                    
                     
                     <td class="text-center">
                         <?php if (!empty($book->book_owned_comments)): ?>
