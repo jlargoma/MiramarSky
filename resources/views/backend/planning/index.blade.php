@@ -325,7 +325,7 @@
                         <div class="col-xs-4 push-10 text-center">
                             <button id="lastBooks" class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#modalLastBooks">
                                 <span class="bold">Últ. reser</span>
-                                <span class="numPaymentLastBooks"><?php echo  $stripedsPayments->count(); ?></span>
+                                <span class="numPaymentLastBooks">&nbsp;<?php echo  $stripedsPayments->count(); ?>&nbsp;</span>
                             </button>
                         </div>
                         <div class="col-xs-2 push-10 text-center">
@@ -339,9 +339,9 @@
                             </button>
                         </div>
                         <div class="col-xs-2 push-10 text-center">
-                            <button id="btnAlertsBookking" class="btn btn-success btn-sm " type="button" data-toggle="modal" data-target="#modalAlertsBooking">
-                                <span class="bold"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
-                                <span class="numPaymentLastBooks"><?php echo  $notifications ?></span>
+                             <button class="btn btn-danger btn-sm btn-alarms" type="button" data-toggle="modal" data-target="#modalAlarms"> 
+                                &nbsp;&nbsp;<i class="fa fa-bell" aria-hidden="true"></i>&nbsp;&nbsp;
+                                <span class="numPaymentLastBooks">&nbsp;<?php echo  count($alarms); ?>&nbsp;</span>
                             </button>
                         </div>
 

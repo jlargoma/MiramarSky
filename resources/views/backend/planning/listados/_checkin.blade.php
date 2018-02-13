@@ -249,22 +249,27 @@
 <div class="table-responsive" style="border: none!important">
     <table class="table table-striped" style="margin-top: 0;">
         <thead>
-            <th class="bg-success text-white text-center" ></th>
             <th class="bg-success text-white text-center" >Nombre</th>
+            <th class="bg-success text-white text-center" style="min-width:50px">Apto</th>
             <th class="bg-success text-white text-center">Tel</th>
             <th class="bg-success text-white text-center" style="min-width:55px">PVP</th>
             <th class="bg-success text-white text-center" style="min-width:30px ">Hor</th>
             <th class="bg-success text-white text-center" style="min-width:50px">In</th>
             <th class="bg-success text-white text-center" style="min-width:50px ">Out</th>
             <th class="bg-success text-white text-center">Pax</th>
-            <th class="bg-success text-white text-center" style="min-width:50px">Apart</th>
+            
             <th class="bg-success text-white text-center"><i class="fa fa-moon-o"></i></th>
             <th class="bg-success text-white text-center" style="min-width:60px">a</th>
             <th class ="text-center bg-success text-white">&nbsp;</th>
         </thead>
         <tbody>
+
             <?php $count = 0 ?>
             <?php foreach ($books as $book): ?>
+                <?php 
+                    $dateStart = Carbon::createFromFormat('Y-m-d', $book->start);
+                    $now = Carbon::now();
+                ?>
                 <?php if ( $book->start >= $startWeek->copy()->format('Y-m-d') && $book->start <= $endWeek->copy()->format('Y-m-d')): ?>
 
                     <?php if ( $book->start <= Carbon::now()->copy()->subDay()->format('Y-m-d') ): ?>
@@ -283,24 +288,46 @@
                 <?php endif ?>
 
                 <tr class="<?php if($count <= 1){echo $class;} ?> <?php echo ucwords($book->getStatus($book->type_book)) ;?>">
-                    
-                    <td class="text-center">
-                        <?php if ($book->agency != 0): ?>
-                            <img style="width: 15px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
+
+                    <td class="text-left" style="padding: 5px !important;">
+                        <?php if ( $payment[$book->id] == 0): ?>
+                            <?php if ( $now->diffInDays($dateStart) <= 15 ):?>
+                                <span class=" label label-danger alertDay heart text-white">
+                                    <i class="fa fa-bell"></i>
+                                </span>&nbsp;
+                            <?php elseif($now->diffInDays($dateStart) <= 7):?>
+                                <span class=" label label-danger alertDay heart text-white">
+                                    <i class="fa fa-bell"></i>
+                                </span>&nbsp;
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <?php $percent = 100 / ( $book->total_price / $payment[$book->id] ); ?>
+                            <?php if ( $percent <= 25 ): ?>
+
+                                <?php if ( $now->diffInDays($dateStart) <= 15 ):?>
+                                    <span class=" label label-danger alertDay heart text-white">
+                                        <i class="fa fa-bell"></i>
+                                    </span>&nbsp;
+                                <?php elseif($now->diffInDays($dateStart) <= 7):?>
+                                    <span class=" label label-danger alertDay heart text-white">
+                                        <i class="fa fa-bell"></i>
+                                    </span>&nbsp;
+                                <?php endif; ?>
+                                
+                            <?php endif ?>
+                            
+
                         <?php endif ?>
-                    </td>
-                    <td class="text-left">
-                        <?php if (isset($payment[$book->id]) && empty($payment[$book->id])): ?>
-                            <span class="bg-danger text-white" style="padding: 1px 1px 1px 5px; margin-left:5px;border-radius: 100%; margin-right: 5px;">
-                                <i class="fa fa-eur" aria-hidden="true"></i>
-                            </span>
-                        <?php endif; ?>
+
                         <a href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                             <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " ")  ?> 
                         </a>
                         <?php if (!empty($book->comment)): ?>
                            <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
                         <?php endif ?>   
+                    </td>
+                    <td class="text-center">
+                        <b><?php echo $book->room->nameRoom ?></b>
                     </td>
                     <td class="text-center">
                         <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
@@ -352,9 +379,7 @@
                             
                     </td>
                     
-                    <td class="text-center">
-                        <b><?php echo $book->room->nameRoom ?></b>
-                    </td>
+                    
                     <td class="text-center"><?php echo $book->nigths ?></td>
                     
                     
