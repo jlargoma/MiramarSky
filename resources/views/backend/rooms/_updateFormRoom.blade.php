@@ -78,6 +78,10 @@
 					</select>
 				</div>
 				<div class="col-md-2 col-xs-12 push-20">
+					<label for="minOcu">% Min Benef</label>
+					<input type="number" name="profit_percent" class="form-control" value="<?php echo $room->profit_percent; ?>"/>
+				</div>
+				<div class="col-md-2 col-xs-12 push-20">
 					<label for="type">Link Expor. cal. Apto</label>
 					<p><?php echo route("import-iCalendar", ["aptoID" => $room->id])?></p>
 					<button class="btn btn-cons" type="button" id="copy-link-export" data-link="<?php echo route("import-iCalendar", ["aptoID" => $room->id])?>">

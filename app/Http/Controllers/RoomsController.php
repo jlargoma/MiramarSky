@@ -56,6 +56,7 @@ class RoomsController extends Controller
         $room->owned = $request->input('owner');
         $room->typeApto = $request->input('type');
         $room->sizeApto = $request->input('sizeRoom');
+        $room->profit_percent = 0;
         $room->luxury = $luxury;
         $room->order = 99;
         $room->state = 1;
@@ -472,6 +473,7 @@ class RoomsController extends Controller
         $room->sizeApto = $request->input('sizeApto');
         $room->parking  = $request->input('parking');
         $room->locker   = $request->input('locker');
+        $room->profit_percent   = $request->input('profit_percent');
 
         if ($room->save()) {
             return redirect()->action('RoomsController@index');

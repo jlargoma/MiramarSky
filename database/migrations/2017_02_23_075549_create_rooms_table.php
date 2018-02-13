@@ -22,6 +22,7 @@ class CreateRoomsTable extends Migration
             $table->integer('minOcu');
             $table->integer('maxOcu');
             $table->integer('luxury');
+            $table->integer('profit_percent');
             $table->timestamps();
         });
     }
