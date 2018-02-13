@@ -249,9 +249,9 @@
 <div class="table-responsive" style="border: none!important">
     <table class="table table-striped" style="margin-top: 0;">
         <thead>
-            <th class="bg-success text-white text-center" >Nombre</th>
+            <th class="bg-success text-white text-center" >Nom</th>
             <th class="bg-success text-white text-center" style="min-width:50px">Apto</th>
-            <th class="bg-success text-white text-center">Tel</th>
+            <th class="bg-success text-white text-center" style="max-width:50px">T</th>
             <th class="bg-success text-white text-center" style="min-width:55px">PVP</th>
             <th class="bg-success text-white text-center" style="min-width:30px ">Hor</th>
             <th class="bg-success text-white text-center" style="min-width:50px">In</th>
@@ -292,26 +292,26 @@
                     <td class="text-left" style="padding: 5px !important;">
                         <?php if ( $payment[$book->id] == 0): ?>
                             <?php if ( $now->diffInDays($dateStart) <= 15 ):?>
-                                <span class=" label label-danger alertDay heart text-white">
+                                <span class=" lertDay heart text-danger">
                                     <i class="fa fa-bell"></i>
-                                </span>&nbsp;
+                                </span>
                             <?php elseif($now->diffInDays($dateStart) <= 7):?>
-                                <span class=" label label-danger alertDay heart text-white">
+                                <span class=" lertDay heart text-danger">
                                     <i class="fa fa-bell"></i>
-                                </span>&nbsp;
+                                </span>
                             <?php endif; ?>
                         <?php else: ?>
                             <?php $percent = 100 / ( $book->total_price / $payment[$book->id] ); ?>
                             <?php if ( $percent <= 25 ): ?>
 
                                 <?php if ( $now->diffInDays($dateStart) <= 15 ):?>
-                                    <span class=" label label-danger alertDay heart text-white">
+                                    <span class="alertDay heart text-danger">
                                         <i class="fa fa-bell"></i>
-                                    </span>&nbsp;
+                                    </span>
                                 <?php elseif($now->diffInDays($dateStart) <= 7):?>
-                                    <span class=" label label-danger alertDay heart text-white">
+                                    <span class="alertDay heart text-danger">
                                         <i class="fa fa-bell"></i>
-                                    </span>&nbsp;
+                                    </span>
                                 <?php endif; ?>
                                 
                             <?php endif ?>
@@ -320,10 +320,10 @@
                         <?php endif ?>
 
                         <a href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
-                            <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " ")  ?> 
+                            <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " "); ?> 
                         </a>
                         <?php if (!empty($book->comment)): ?>
-                           <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
+                           <!-- <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i> -->
                         <?php endif ?>   
                     </td>
                     <td class="text-center">
@@ -341,7 +341,7 @@
                        <div class="col-md-6">
                            <?php echo round($book->total_price)."€" ?><br>
                            <?php if (isset($payment[$book->id])): ?>
-                               <?php echo "<p style='color:red'>".$payment[$book->id]."€</p>" ?>
+                               <?php echo "<p style='color:red'>".number_format($payment[$book->id],0,',','.')."€</p>" ?>
                            <?php else: ?>
                            <?php endif ?>
                        </div>
