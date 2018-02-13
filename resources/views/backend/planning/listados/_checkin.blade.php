@@ -320,7 +320,7 @@
                        </div>
                     </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
-                        <select id="schedule" style="width: 75%;" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?> <?php if ($book->schedule < 17 && $book->schedule > 0): ?>alerta-horarios<?php endif ?>" data-type="in" data-id="<?php echo $book->id ?>">
+                        <select id="schedule" style="width: 80%;" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?> <?php if ($book->schedule < 17 && $book->schedule > 0): ?>alerta-horarios<?php endif ?>" data-type="in" data-id="<?php echo $book->id ?>">
                             <option>-- Sin asignar --</option>
                             <?php for ($i = 0; $i < 24; $i++): ?>
                                 <option value="<?php echo $i ?>" <?php if($i == $book->schedule) { echo 'selected';}?>>
