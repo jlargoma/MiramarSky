@@ -270,7 +270,7 @@
                                 <?php endif ?>
                                 
                             </td>
-                            <td class="text-center beneficio bf" style="border-left: 1px solid black;@if ($book->inc_percent < $book->room->profit_percent) color: #FFF; background-color: red !important;@endif">
+                            <td class="text-center beneficio bf" style="border-left: 1px solid black;@if ($book->inc_percent > 0 && $book->inc_percent < $book->room->profit_percent) color: #FFF; background-color: red !important;@endif">
                                 <?php if ( $book->inc_percent > 0): ?>
                                     <?php echo number_format($book->inc_percent,0)." %" ?>    
                                 <?php else: ?>
@@ -390,13 +390,15 @@
             @include('backend.sales._tableSummaryBoxes', ['totales' => $totales, 'books' => $books, 'data' => $data])
         </div>
         <div class="col-xs-12">
-            <h2 class="text-center font-w800">
-                Resumen liquidación
-            </h2>
             <div class="row">
                 <div class="table-responsive" style="border: none!important">
                     <table class="table push-30">
-                        <tr>
+                        <thead>
+                        	<th class ="text-center text-white" rowspan="2" colspan="5" style="width: 24%; padding: 5px 5px 0">
+		                        <h2 class="text-center font-w800">
+		                            Resumen liquidación
+		                        </h2>
+		                    </th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">PVP</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Banc. Jorg</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Banc. Jaime</th>
@@ -415,8 +417,10 @@
                             <th class ="text-center bg-complete text-white" style="width: 1%">Stripe</th>
                             <th class ="text-center bg-complete text-white" style="width: 1%">Benef  Jorg</th>
                             <th class ="text-center bg-complete text-white" style="width: 1%">Benef  Jaim</th>
-
+                        </thead>
                         <tr>
+                        	<td class="text-center" colspan="5" >
+                    		</td>
                             <td class="text-center" style="border-left:1px solid black;">
                                 <b><?php echo number_format($totales["total"],0,',','.') ?> €</b>       
                             </td>
@@ -478,12 +482,11 @@
                                 <?php echo number_format($totales["benJaime"],0,',','.') ?>€
                             </td>
                         </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="row">
-                <div class="table-responsive" style="border: none!important">
-                    <table class="table table-hover table-responsive">
+                        <tr>
+		                    <td class="text-center" colspan="23" style="height: 35px;">
+		                        
+		                    </td>                    
+		                </tr>
                         <thead >
                             <th class ="text-center bg-complete text-white" style="width: 7%">Nombre</th>
                             <th class ="text-center bg-complete text-white" style="width: 3%">Pax</th>
@@ -584,8 +587,13 @@
                                     </td>
                                     <td class="text-center beneficio bi" style="border-left: 1px solid black;"><b>
                                         <?php echo number_format($book->total_ben,0,',','.') ?> €</b>
-                                    </td><td class="text-center beneficio bf">
-                                        <?php echo number_format($book->inc_percent,0)." %" ?>
+                                    </td>
+                                    <td class="text-center beneficio bf" style="@if ($book->inc_percent > 0 && $book->inc_percent < $book->room->profit_percent) color: #FFF; background-color: red !important;@endif">
+                                        <?php if ( $book->inc_percent > 0): ?>
+		                                    <?php echo number_format($book->inc_percent,0)." %" ?>    
+		                                <?php else: ?>
+		                                    ----
+		                                <?php endif ?>
                                     </td>
                                     <td class="text-center coste bi ">
                                         <?php 
@@ -613,7 +621,6 @@
                                     <td class="text-center coste bf">   
                                         <?php echo number_format($book->PVPAgencia,0,',','.') ?>€
                                     </td>
-                                    <td class ="text-center coste" style="border-left:1px solid black;">
                                     <td class="text-center coste" style="border-left: 1px solid black;">
                                         <?php if ( $book->extraCost > 0): ?>
                                             <?php echo number_format($book->extraCost,0,',','.') ?>€    
