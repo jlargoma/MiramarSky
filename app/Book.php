@@ -230,6 +230,12 @@ class Book extends Model
                 $this->save();
 
                 return ['status' => 'success','title' => 'OK', 'response' => "Reserva cambiada a Overbooking"];
+            }elseif($status == 12){
+
+                $this->type_book = $status;
+                $this->save();
+
+                return ['status' => 'success','title' => 'OK', 'response' => "Reserva cambiada a ICAL - INVISIBLE"];
             }else{
 
                 $dateStart  = Carbon::createFromFormat('Y-m-d',$this->start);
