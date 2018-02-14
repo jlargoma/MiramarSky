@@ -444,102 +444,7 @@ class LiquidacionController extends Controller
             $inicio = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
         }
 
-        $arrayMonth       = [11 => "Noviembre",12 =>"Diciembre",1 => "Enero", 2 => "Febrero",3 => "Marzo",4=> "Abril"];
-        $arrayStadisticas = array();
-        $arrayYear        = array();
-        $años             = array();
-        $books            = \App\Book::whereIn('type_book',[2,7,8])->get();
-        $arrayBooks       = array();
-        $arrayPrices      = array();
-        $arrayTotal       = 0;
-        $arrayCobro       = [
-                                "banco" ,
-                                "metalico"
-                            ];
-        //Para sacar las reservas por temporada
-        foreach ($books as $book) {
-            $fecha = Carbon::CreateFromFormat('Y-m-d',$book->start);
-            
-            if ($fecha->format('m')< 11 ) {
-                $año = ($fecha->format('Y')-1)."-".($fecha->format('Y'));
-            }else{
-                $año = ($fecha->format('Y'))."-".($fecha->format('Y')+1);
-            }
-            if (isset($arrayYear[$año])) {
-                $arrayYear[$año] += $book->total_price;
-            }else{
-                $arrayYear[$año] = $book->total_price;
-            }
-            if ($fecha->copy()->format('m') <= 11 && $fecha->copy()->format('m') >= 5) {
-                $mes = 12;
-            }else{
-                $mes  = $fecha->copy()->format('n');
-            }
-
-            if (isset($arrayPrices[$año][$mes][$book->room_id])) {
-                $arrayPrices[$año][$mes][$book->room_id]['total_price'] += $book->total_price;
-
-            }else{
-                $arrayPrices[$año][$mes][$book->room_id]['total_price'] = $book->total_price;
-
-            }
-
-            
-
-            $arrayBooks[$año][$mes][] = $book;
-        }
-
-        $cobros = \App\Payments::where('datePayment','>=',$inicio->copy()->format('Y-m-d'))->where('datePayment','<=',$inicio->copy()->addYear()->format('Y-m-d'))->get();
-
-        //Pasa sacar los metodos de pago
-        foreach ($cobros as $key => $cobro) {
-            $fecha = Carbon::CreateFromFormat('Y-m-d',$cobro->datePayment);
-            
-            if ($fecha->format('m')< 11 ) {
-                $año = ($fecha->format('Y')-1)."-".($fecha->format('Y'));
-            }else{
-                $año = ($fecha->format('Y'))."-".($fecha->format('Y')+1);
-            }
-
-            if ($fecha->copy()->format('m') < 11 && $fecha->copy()->format('m') >= 5) {
-                $mes = 11;
-            }else{
-                $mes  = $fecha->copy()->format('n');
-            }
-            if ($cobro->type == 0 || $cobro->type == 1) {
-                if (isset($arrayCobro["banco"][$mes])) {
-                    $arrayCobro["banco"][$mes] += $cobro->import;
-                }else{
-                    $arrayCobro["banco"][$mes] = $cobro->import;
-                }
-            }else{
-                if (isset($arrayCobro["metalico"][$mes])) {
-                    $arrayCobro["metalico"][$mes] += $cobro->import;
-                }else{
-                    $arrayCobro["metalico"][$mes] = $cobro->import;
-                }
-            }
-        }
-
-        //Para sacar los nombres de la temporada
-        foreach ($arrayBooks as $key => $value){
-            $años[] = $key;
-        }
-
-        
-        //Para sacar la leyenda del grafico
-        for ($i=0; $i <= count($arrayBooks) ; $i++) { 
-            if ($i == 0) {
-                $leyenda = "['Mes',";
-            }elseif($i == count($arrayBooks)){
-                $leyenda .= "'".$años[count($arrayBooks)-1]."'],";
-            }else{
-                $leyenda .= "'".$años[$i-1]."',";
-            }
-        }
-
-
-
+        $rooms = \App\Rooms::where('state',1)->orderBy('order','ASC')->get();
         $books = \App\Book::whereIn('type_book', [2,7,8])->get();
 
         foreach ($books as $book) {
@@ -558,48 +463,84 @@ class LiquidacionController extends Controller
                 }
             }
         }
-
-        $rooms = \App\Rooms::where('state',1)->orderBy('order','ASC')->get();
-
-        $totalRoom = array();
-        $totalAño = 0;
-        foreach ($rooms as $room) {
-            $totalRoom[$room->id] = 0;
-            $reservas = \App\Book::whereIn('type_book',[2,7,8])
-                                ->where('start','>=', $inicio->copy()->format('Y-m-d'))
-                                ->where('start','<=', $inicio->copy()->addYear()->format('Y-m-d'))
-                                ->where('room_id',$room->id)->get();
-
-            foreach ($reservas as $reserva) {
-                if (isset($totalRoom[$room->id])) {
-                    $totalRoom[$room->id] += $reserva->total_price;
-                }else{
-                    $totalRoom[$room->id] = $reserva->total_price;
-
+        $priceBookRoom = array();
+        foreach ($rooms as $key => $room) {
+            for ($i=2015; $i <= intval(date('Y')) + 1; $i++) { 
+                
+                for ($j=1; $j <= 12 ; $j++) { 
+                    $priceBookRoom[$room->id][$i][$j] = 0;
                 }
-                $totalAño +=$reserva->total_price ;
             }
+        }
+        
+        foreach ($books as $key => $book) {
+            $auxDate = Carbon::createFromFormat('Y-m-d', $book->start);
+            if ( ! isset($priceBookRoom[$book->room->id][$auxDate->copy()->format('Y')][$auxDate->copy()->format('n')])) {
+                $priceBookRoom[$book->room->id][$auxDate->copy()->format('Y')][$auxDate->copy()->format('n')] = 0; 
+            }else {
+                $priceBookRoom[$book->room->id][$auxDate->copy()->format('Y')][$auxDate->copy()->format('n')] += $book->total_price;
+            }
+            
+        }
+        // echo "<pre>";
+        // print_r($priceBookRoom);
+        // die();
+
+        return view ('backend/sales/contabilidad',  [   
+                                                        'date'         => $date,
+                                                        'inicio'         => $inicio,
+                                                        'arrayTotales' => $arrayTotales,
+                                                        'rooms'        => $rooms,
+                                                        'priceBookRoom' => $priceBookRoom,
+                                                    ]);
+    }
+
+    public function gastos($year="")
+    {
+        if ( empty($year) ) {
+            $date = Carbon::now();
+        }else{
+            $year = Carbon::createFromFormat('Y',$year);
+            $date = $year->copy();
 
         }
-        return view ('backend/sales/contabilidad',[   
-                                                    'rooms'        => $rooms,
-                                                    'arrayTotales' => $arrayTotales,
-                                                    'date'         => $date,
-                                                    'meses'        => $arrayMonth,
-                                                    'estadisticas' => $arrayStadisticas,
-                                                    'arrayYear'    => $arrayYear,
-                                                    'leyenda'      => $leyenda,
-                                                    'arrayBooks'   => $arrayBooks,
-                                                    'arrayPrices'  => $arrayPrices,
-                                                    'arrayCobro'   => $arrayCobro,
-                                                    'arrayTotal'   => $arrayTotal,
-                                                    'años'         => $años,
-                                                    'totalRoom'    => $totalRoom,
-                                                    'totalAño'     => $totalAño,
-                                                    'inicio'       => $inicio,
+        if ($date->copy()->format('n') >= 9) {
+            $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
+        }else{
+            $inicio = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+        }
 
-                                                ]);
+
+        $gastos = \App\Expenses::whereYear('date', '>=', $date->copy()->format('Y'))
+                                ->whereYear('date', '>=', $date->copy()->addYears(1)->format('Y'))->get();
+
+        return view ('backend/sales/gastos',  [   
+                                                        'date'         => $date,
+                                                        'inicio'         => $inicio,
+                                                    ]);
     }
+
+
+    public function ingresos($year="")
+    {
+        if ( empty($year) ) {
+            $date = Carbon::now();
+        }else{
+            $year = Carbon::createFromFormat('Y',$year);
+            $date = $year->copy();
+
+        }
+        if ($date->copy()->format('n') >= 9) {
+            $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
+        }else{
+            $inicio = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+        }
+
+        return view ('backend/sales/ingresos',  [   
+                                                        'date'         => $date,
+                                                    ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
