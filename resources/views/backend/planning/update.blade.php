@@ -705,10 +705,10 @@
                         </div>
                         <div class="col-md-4  col-xs-8 push-20">
                             <label>Entrada</label>
-                            <?php $start = Carbon::createFromFormat('Y-m-d', $book->start);
-                                    $start1 = str_replace('Apr','Abr',$start->format('d M, y')); ?>
-                            <?php $finish = Carbon::createFromFormat('Y-m-d', $book->finish); 
-                                    $finish1 = str_replace('Apr','Abr',$finish->format('d M, y')); ?>
+                            <?php $start1 = Carbon::createFromFormat('Y-m-d', $book->start)->format('d M, y');
+                                    // $start1 = str_replace('Apr','Abr',$start->format('d M, y')); ?>
+                            <?php $finish1 = Carbon::createFromFormat('Y-m-d', $book->finish)->format('d M, y'); 
+                                    // $finish1 = str_replace('Apr','Abr',$finish->format('d M, y')); ?>
 
                             <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;" value="<?php echo $start1 ;?> - <?php echo $finish1 ?>" readonly="">
                         </div>

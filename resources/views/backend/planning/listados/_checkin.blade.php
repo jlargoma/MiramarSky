@@ -321,7 +321,10 @@
 
                         <a href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                             <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " "); ?> 
-                        </a>
+                        </a><br>
+                        <?php if ($book->agency != 0): ?>
+                            <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
+                        <?php endif ?>
                         <?php if (!empty($book->comment)): ?>
                            <!-- <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i> -->
                         <?php endif ?>   
