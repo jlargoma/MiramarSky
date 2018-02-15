@@ -298,10 +298,11 @@ class LiquidacionController extends Controller
         }else{
             $inicio = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
         }
+        
 
-
-        $gastos = \App\Expenses::whereYear('date', '>=', $date->copy()->format('Y'))
-                                ->whereYear('date', '<=', $date->copy()->addYears(1)->format('Y'))
+        $gastos = \App\Expenses::where('date', '>=', $inicio->copy()->format('Y-m-d'))
+                                ->Where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                                ->orderBy('date', 'ASC')
                                 ->get();
 
                                 
