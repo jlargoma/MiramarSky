@@ -16,12 +16,12 @@
 
 <div class="col-md-12 col-xs-12 push-20">
 	<div class="col-md-2 col-xs-2">
-		<?php if ($url == "estadisticas"): ?>
+		<?php if ($url == "contabilidad"): ?>
 			<button class="btn btn-md" style="width: 100%; background-color: #6600ff;pointer-events: none" disabled>
 				<a class="text-white" >Estadisticas</a>
 			</button>
 		<?php else: ?>
-			<a class="text-white" href="{{url('/admin/estadisticas/')}}">
+			<a class="text-white" href="{{url('/admin/contabilidad/')}}">
 				<button class="btn btn-md btn-primary" style="width: 100%;">
 					Estadisticas
 				</button>

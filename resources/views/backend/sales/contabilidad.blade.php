@@ -62,6 +62,10 @@
 		       <canvas id="barChart2" style="width: 100%; height: 250px;"></canvas>
 		   </div>
 		</div>
+        <div class="col-md-8">
+            @include('backend.sales._stats')
+        </div>
+
 	</div>
 	<div class="row">
 	    <div class="col-md-8 col-xs-12">
@@ -69,12 +73,13 @@
     			<thead>
     				<tr>
     					<th class="text-center bg-complete text-white">Apto</th>
+                        <th class="text-center bg-complete text-white">total</th>
     					<?php $months = $inicio->copy(); ?>
     					<?php for ($i=1; $i <= 12 ; $i++): ?>
     						<th class="text-center bg-complete text-white">&nbsp;<?php echo $months->formatLocalized('%b') ?>&nbsp;</th>
     						<?php $months->addMonth() ?>
     					<?php endfor; ?>
-    					<th class="text-center bg-complete text-white">total</th>
+    					
 
     				</tr>
     			</thead>
@@ -84,7 +89,16 @@
     						<td class="text-center" style="padding: 12px 20px!important">
     							<?php echo $room->name ?> <b><?php echo $room->nameRoom ?></b>
     						</td>
-    						<?php $totalRoom = 0; ?>
+                            <?php $totalRoom = 0; ?>
+                            <?php $monthsRooms = $inicio->copy(); ?>
+                            <?php for ($i=1; $i <= 12 ; $i++): ?>
+                                <?php $totalRoom += $priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')] ?>
+                                <?php $monthsRooms->addMonth() ?>
+                            <?php endfor; ?>
+                            <td class="text-center">
+                                <b><?php echo number_format($totalRoom,0,',','.') ?> €</b>
+                            </td>
+    						
     						<?php $monthsRooms = $inicio->copy(); ?>
 	    					<?php for ($i=1; $i <= 12 ; $i++): ?>
 	    						<td class="text-center" style="padding: 12px 20px!important">
@@ -93,13 +107,11 @@
 	    							<?php else: ?>
 	    								<b><?php echo number_format($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')],0,',','.') ?> €</b>
 	    							<?php endif ?>
-	    							<?php $totalRoom += $priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')] ?>
+	    							
 	    						</td>
 	    						<?php $monthsRooms->addMonth() ?>
 	    					<?php endfor; ?>
-    						<td class="text-center">
-    							<b><?php echo number_format($totalRoom,0,',','.') ?> €</b>
-    						</td>
+    						
     					</tr>
     				<?php endforeach ?>
 					

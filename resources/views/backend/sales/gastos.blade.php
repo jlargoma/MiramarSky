@@ -147,114 +147,93 @@ background: white;
 	</div>
 
 	<div class="row bg-white push-30">
-		<a href="https://admin.evolutio.fit/admin/cashbox"></a><table class="table table-bordered table-striped table-header-bg no-footer">
+		<table class="table table-bordered table-striped table-header-bg no-footer">
 			<thead>
 				<tr>
 					<th class="text-center">#</th>
 					<th class="text-center">Fecha</th>
 					<th class="text-center">Concepto</th>
 					<th class="text-center type" style="width: 250px;">Tipo</th>
-					<th class="text-center">Debe</th>
-					<th class="text-center">Haber</th>
-					<th class="text-center">Saldo</th>
+					<th class="text-center type" style="width: 250px;">Método de pago</th>
+					<th class="text-center">Importe</th>
+					<th class="text-center">Pisos</th>
 					<th class="text-center">Comentario</th>
 				</tr>
 			</thead>	
 			<tbody>
-				<tr>
-					<td class="text-center">
-					1							</td>
-					<td class="text-center">
-						<b>02-01-2018</b>
-						<input type="hidden" id="date-484" value="2018-01-02">
-					</td>
-					<td class="text-center">
-						<input type="text" class="form-control selectAddGasto" id="concept-484" value="SALDO INICIAL" data-idcashbox="484">
-					</td>
+				<?php $array = [0 =>"Metalico Jorge", 1 =>"Metalico Jaime",2 =>"Banco Jorge",3=>"Banco Jaime"] ?>
+				<?php foreach ($gastos as $key => $gasto): ?>
+					
+				
+					<tr>
+						<td class="text-center"></td>
+						<td class="text-center">
+							<b><?php echo $gasto->date ?></b>
+							<input type="hidden" id="date-484" value="<?php echo $gasto->date ?>">
+						</td>
+						<td class="text-center">
+							<input type="text" class="form-control selectAddGasto" id="concept-<?php echo $gasto->id ?>" value="<?php echo $gasto->concept ?>" data-idGasto="<?php echo $gasto->id ?>">
+						</td>
 
-					<td class="text-center">
-						<select class="js-select2 form-control selectAddGasto" id="typePayment-484" style="width: 100%;" data-placeholder="Seleccione un tipo" required="" data-idcashbox="484">
-							<option></option>
-							<optgroup label="REPARTO DIVIDENDO">
-								<option value="DIVIDENDO JORGE">DIVIDENDO JORGE</option>
-								<option value="DIVIDENDO VICTOR">DIVIDENDO VICTOR</option>
-								<option value="DIVIDENDO BELTRAN">DIVIDENDO BELTRAN</option>
-							</optgroup>
-							<optgroup label="APORTACION SOCIOS">
-								<option value="APORT. JORGE">APORT. JORGE</option>
-								<option value="APORT. VICTOR">APORT. VICTOR</option>
-								<option value="APORT. BELTRAN">APORT. BELTRAN</option>
-							</optgroup>
-							<optgroup label="INGRESO">
-								<option value="INGRESO" selected="">INGRESO CLIENTES</option>
-							</optgroup>
-							<optgroup label="INVERSION">
-								<option value="INVERSION">INVERSION</option>
-							</optgroup>
-							<optgroup label="TRASPASO">
-								<option value="TRASPASO">TRASPASO</option>
-							</optgroup>
-							<optgroup label="GASTO">
-								<option value="MOBILIARIO">MOBILIARIO</option>
-								<option value="SERVICIOS PROFESIONALES INDEPENDIENTES">SERVICIOS PROFESIONALES INDEPENDIENTES</option>
-								<option value="VARIOS">VARIOS</option>
-								<option value="EQUIPAMIENTO DEPORTIVO">EQUIPAMIENTO DEPORTIVO</option>
-								<option value="IMPUESTOS">IMPUESTOS</option>
-								<option value="SUMINISTROS">SUMINISTROS</option>
-								<option value="GASTOS BANCARIOS">GASTOS BANCARIOS</option>
-								<option value="PUBLICIDAD">PUBLICIDAD</option>
-								<option value="REPARACION Y CONSERVACION">REPARACION Y CONSERVACION</option>
-								<option value="ALQUILER NAVE">ALQUILER NAVE</option>
-								<option value="SEGUROS SOCIALES">SEGUROS SOCIALES</option>
-								<option value="NOMINAS">NOMINAS</option>
-								<option value="TARJETA VISA">TARJETA VISA</option>
-								<option value="MATERIAL OFICINA">MATERIAL OFICINA</option>
-								<option value="MENSAJERIA">MENSAJERIA</option>
-								<option value="PRODUCTOS VENDING">PRODUCTOS VENDING</option>
-								<option value="LIMPIEZA">LIMPIEZA</option>
-								<option value="INTERNET">INTERNET</option>
-								<option value="RENTING EQUIPAMIENTO DEPORTIVO">RENTING EQUIPAMIENTO DEPORTIVO</option>
-								<option value="COMISONES COMERCIALES">COMISONES COMERCIALES</option>
-							</optgroup>
-						</select>
-					</td>
+						<td class="text-center">
+							<?php echo $gasto->type ?>
+						</td>
 
-					<td class="text-center">
+						<td class="text-center">
+							<?php echo $array[$gasto->typePayment]; ?>
+						</td>
+						<td class="text-center">
+							<b><?php echo $gasto->import ?> €</b>
+						</td>
+						<td class="text-center">
+							<?php if ($gasto->PayFor != "" ): ?>
+								<?php $roomsIds = explode(',', $gasto->PayFor) ?>
+								<?php for ($i=0; $i < count($roomsIds); $i++): ?>
+									<?php if ($roomsIds[$i] != ""): ?>
+										<?php $room = \App\Rooms::find($roomsIds[$i]) ?>
+										<?php echo $room->nameRoom; ?>,  
+									<?php endif ?>
+								<?php endfor; ?>
+							<?php else: ?>
+								Todos
+							<?php endif ?>
+						</td>
 
-					</td>
-					<td class="text-center">
-						<b class="text-success">+1.793,89 €</b>
-						<input type="hidden" class="form-control" id="import-484" value="1793.89">
-
-					</td>
-					<td class="text-center">
-						<b>1.793,89 €</b>
-					</td>
-
-					<td class="text-center">
-						<input type="text" class="form-control selectAddGasto" data-idcashbox="484" id="comment-484" value="SALDO INICIAL">
-					</td>
-				</tr>
+						<td class="text-center">
+							<input type="text" class="form-control selectAddGasto" data-idGasto="484" id="comment-484" value="<?php echo $gasto->comment ?>">
+						</td>
+					</tr>
+				<?php endforeach ?>
 			</tbody>			
 		</table>
 	</div>
 
 </div>
+<div class="modal fade slide-up in" id="modal-cashbox" tabindex="-1" role="dialog" aria-hidden="true" >
+            <div class="modal-dialog modal-lg" style="">
 
+                <div class="modal-content-wrapper">
+                    
+                    <div class="modal-content">
+                        @include('backend.sales._formGastos')
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<div class="modal fade" id="modal-cashbox" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
 	<div class="modal-dialog modal-dialog-popout">
 		<div class="modal-content">
 			<div class="block block-themed block-transparent remove-margin-b">
-				<div class="block-header bg-primary-dark">
+				<div class="block-header">
 					<ul class="block-options">
 						<li>
-							<button data-dismiss="modal" type="button"><i class="fa fa-times 2x"></i></button>
+							
 						</li>
 					</ul>
 				</div>
 				<div class="row block-content" id="contentListCashBox">
-
+					@
 				</div>
 			</div>
 		</div>

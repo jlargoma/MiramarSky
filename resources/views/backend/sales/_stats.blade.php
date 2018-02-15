@@ -1,0 +1,195 @@
+
+<style>
+    .table-ingresos , .table-ingresos >tbody> tr > td{
+        background-color: #92B6E2!important;
+        margin: 0px ;
+        padding: 5px 8px;
+    }
+    .table-cobros , .table-cobros >tbody> tr > td{
+        background-color: #38C8A7!important;
+        margin: 0px ;
+        padding: 5px 8px;
+    }
+    .tr-cobros:hover{
+        background-color: #2ca085!important;
+    }
+    .tr-cobros:hover td {
+        background-color: #2ca085!important;
+    }
+    .fa-arrow-up{
+        color: green;
+    }
+    .fa-arrow-down{
+        color: red;
+    }
+    .bg-complete-grey{
+        background-color: #92B6E2!important;
+    }
+</style>
+
+<?php $dataStats = \App\http\Controllers\LiquidacionController::getSalesByYear($inicio->copy()->format('Y')); ?>
+<div class="col-md-3">
+	
+	<table class="table table-hover table-striped table-ingresos" style="background-color: #92B6E2">
+		<thead class="bg-complete">
+			<th colspan="2" class="text-white text-center"> Ingresos Temporada</th>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="" style="padding: 5px 8px!important; background-color: #FFF!important;"><b>VENTAS TEMPORADA</b></td>
+				<td class=" text-center" style="padding: 5px 8px!important; background-color: #FFF!important;">
+					<?php echo number_format( round($dataStats['ventas']),0,',','.')?> €
+				</td>
+			</tr>
+			<tr style="background-color: #3e95cd;">
+				<td class="text-white" style="padding: 5px 8px!important;background-color: #3e95cd!important;">
+					Cobrado Temporada
+				</td>
+				<td class="text-white text-center" style="padding: 5px 8px!important;background-color: #3e95cd!important;">
+					<?php echo number_format( round($dataStats['cobrado']),0,',','.')?> € 
+				</td>
+			</tr>
+			<tr style="background-color: #8e5ea2;">
+				<td class="text-white" style="padding: 5px 8px!important;background-color: #8e5ea2!important;">Pendiente Cobro</td>
+				<td class="text-white text-center" style="padding: 5px 8px!important;background-color: #8e5ea2!important;">
+					<?php echo number_format( round($dataStats['pendiente']),0,',','.') ?> €
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div>
+		<canvas id="pieIng" style="width: 100%; height: 250px;"></canvas>
+	</div>
+</div>
+
+<div class="col-md-3">
+
+	<table class="table table-hover table-striped table-cobros" style="background-color: #38C8A7">
+		<thead style="background-color: #38C8A7">
+			<th colspan="2" class="text-white text-center">Cobros Temporada</th>
+		</thead>
+		<tbody style="background-color: #38C8A7">
+			<tr class="tr-cobros">
+				<td class="text-white" style="padding: 5px 8px!important; background-color: #38c8a7!important;">Metalico</td>
+				<td class="text-white text-center" style="padding: 5px 8px!important; background-color: #38c8a7!important;">
+					<?php echo number_format( round($dataStats['metalico']),0,',','.')?> €
+				</td>
+			</tr>
+			<tr class="tr-cobros">
+				<td class="text-white" style="padding: 5px 8px!important;background-color: #2ca085!important;">Banco</td>
+				<td class="text-white text-center" style="padding: 5px 8px!important;background-color: #2ca085!important;">
+					<?php echo number_format( round($dataStats['banco']),0,',','.')?> €
+				</td>
+			</tr>
+			<tr class="tr-cobros">
+				<th class="" style="padding: 5px 8px!important;background-color: #FFF!important;">TOTAL COBRADO</th>
+				<th class=" text-center" style="padding: 5px 8px!important;background-color: #FFF!important;"><?php echo number_format( round($dataStats['cobrado']),0,',','.')?> €
+				</th>
+			</tr>
+		</tbody>
+	</table>
+
+	<div>
+		<canvas id="pieCobros" style="width: 100%; height: 250px;"></canvas>
+	</div>
+</div>
+
+<div class="col-md-6">
+	<div class="row table-responsive">
+		
+		<?php $lastThreeSeason = $inicio->copy()->subYears(2) ?>
+		<?php for ($i=1; $i < 4; $i++): ?>
+			<div class="col-md-12">
+				<table class="table table-striped" style="margin: 0;">
+					<thead>
+						<th class="text-center bg-complete text-white"><?php echo $lastThreeSeason->copy()->format('Y') ?>/<?php echo $lastThreeSeason->copy()->addYear()->format('Y') ?></th>
+						<th class="text-center bg-complete text-white"> Total </th>
+						<?php $months = $lastThreeSeason->copy(); ?>
+						<?php for ($i=1; $i <= 12 ; $i++): ?>
+							<th class="text-center bg-complete text-white"><?php echo $months->formatLocalized('%b') ?>
+							</th>
+							<?php $months->addMonth() ?>
+						<?php endfor; ?>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="text-center p-t-5 p-b-5">Ventas</td>
+							<td class="text-center p-t-5 p-b-5"> --- </td>
+							<?php $months = $lastThreeSeason->copy(); ?>
+							<?php for ($i=1; $i <= 12 ; $i++): ?>
+								<td class="text-center p-t-5 p-b-5">
+								--- 
+								</td>
+								<?php $months->addMonth() ?>
+							<?php endfor; ?>
+						</tr>
+						<tr>
+							<th class="text-center p-t-5 p-b-5">Benº</th>
+							<td class="text-center p-t-5 p-b-5"> --- </td>
+							<?php $months = $lastThreeSeason->copy(); ?>
+							<?php for ($i=1; $i <= 12 ; $i++): ?>
+								<td class="text-center p-t-5 p-b-5">
+								--- 
+								</td>
+								<?php $months->addMonth() ?>
+							<?php endfor; ?>
+						</tr>
+					</tbody>
+	        	</table>
+	        </div>
+			<?php $lastThreeSeason->addYear(); ?>
+		<?php endfor; ?>
+    </div>
+	    
+</div>  
+
+
+<script type="text/javascript">
+	
+    new Chart(document.getElementById("pieIng"), {
+        type: 'pie',
+        data: {
+         labels: ["Cobrado", "Pendiente",],
+          datasets: [{
+            label: "Population (millions)",
+            backgroundColor: ["#3e95cd", "#8e5ea2"],
+            data: [
+
+            	//Comprobamos si existen cobros
+            	<?php echo round($dataStats['cobrado']) ?>, 
+            	<?php echo round($dataStats['pendiente']) ?>, 
+            	
+                ]
+          }]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'Ingresos de la temporada <?php echo $fecha->copy()->subYear()->format('Y');?> - <?php echo $fecha->copy()->format('Y');?>'
+          }
+        }
+    });
+
+    new Chart(document.getElementById("pieCobros"), {
+        type: 'pie',
+        data: {
+         labels: ["Metalico", "Banco",],
+          datasets: [{
+            backgroundColor: ["#38C8A7", "#2ca085"],
+            data: [
+            	//Comprobamos si existen cobros
+            	<?php echo round($dataStats['metalico']) ?>, 
+            	<?php echo round($dataStats['banco']) ?>, 
+                ]
+          }]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'Cobros de la temporada <?php echo $fecha->copy()->subYear()->format('Y');?> - <?php echo $fecha->copy()->format('Y');?>'
+          }
+        }
+    });
+
+</script>

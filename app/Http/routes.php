@@ -221,6 +221,8 @@ Route::get('admin/liquidacion/{year?}' ,['middleware' => 'authAdmin', 'uses' => 
 Route::get('admin/liquidacion-apartamentos/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@apto']);
 
 Route::get('admin/gastos/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@gastos']);
+Route::post('admin/gastos/create' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@gastoCreate']);
+Route::get('admin/gastos/delete/{id_gasto}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@gastoDelete']);
 Route::get('admin/ingresos/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@ingresos']);
 Route::get('admin/estadisticas/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@Statistics']);
 Route::get('admin/contabilidad/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@contabilidad']);
