@@ -17,7 +17,11 @@ padding: 15px;
 border:1px solid #e8e8e8;
 background: white;
 }
+.form-control{
+		border: 1px solid rgba(0, 0, 0, 0.07)!important;
+	}
 </style>
+
 @endsection
 
 @section('content')
@@ -57,6 +61,15 @@ background: white;
 
 			@include('backend.sales._button-contabiliad')
 
+		</div>
+		<div class="col-md-6 col-xs-12 push-20">
+			<div class="col-md-12 col-xs-12 push-20">
+				<div class="col-md-2 col-xs-2">
+					<button class="btn btn-md btn-complete" data-toggle="modal" data-target="#expencesByRoom">
+						Hoja de gastos
+					</button>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="row bg-white push-30">
@@ -141,109 +154,56 @@ background: white;
 	</div>
 
 	<div class="row bg-white push-30">
-		<button id="addCashBox" class="btn btn-success pull-left" data-toggle="modal" data-target="#modal-cashbox" style="border-radius: 100%;padding: 6px 10px 2px;"> 
-			<i class="fa fa-plus fa-3x"></i>
-		</button>
+
+
+		@include('backend.sales.gastos._formGastos')
+
+
 	</div>
 
-	<div class="row bg-white push-30">
-		<table class="table table-bordered table-striped table-header-bg no-footer">
-			<thead>
-				<tr>
-					<th class="text-center">#</th>
-					<th class="text-center">Fecha</th>
-					<th class="text-center">Concepto</th>
-					<th class="text-center type" style="width: 250px;">Tipo</th>
-					<th class="text-center type" style="width: 250px;">Método de pago</th>
-					<th class="text-center">Importe</th>
-					<th class="text-center">Pisos</th>
-					<th class="text-center">Comentario</th>
-				</tr>
-			</thead>	
-			<tbody>
-				<?php $array = [0 =>"Metalico Jorge", 1 =>"Metalico Jaime",2 =>"Banco Jorge",3=>"Banco Jaime"] ?>
-				<?php foreach ($gastos as $key => $gasto): ?>
-					
-				
-					<tr>
-						<td class="text-center"></td>
-						<td class="text-center">
-							<b><?php echo $gasto->date ?></b>
-							<input type="hidden" id="date-484" value="<?php echo $gasto->date ?>">
-						</td>
-						<td class="text-center">
-							<input type="text" class="form-control selectAddGasto" id="concept-<?php echo $gasto->id ?>" value="<?php echo $gasto->concept ?>" data-idGasto="<?php echo $gasto->id ?>">
-						</td>
-
-						<td class="text-center">
-							<?php echo $gasto->type ?>
-						</td>
-
-						<td class="text-center">
-							<?php echo $array[$gasto->typePayment]; ?>
-						</td>
-						<td class="text-center">
-							<b><?php echo $gasto->import ?> €</b>
-						</td>
-						<td class="text-center">
-							<?php if ($gasto->PayFor != "" ): ?>
-								<?php $roomsIds = explode(',', $gasto->PayFor) ?>
-								<?php for ($i=0; $i < count($roomsIds); $i++): ?>
-									<?php if ($roomsIds[$i] != ""): ?>
-										<?php $room = \App\Rooms::find($roomsIds[$i]) ?>
-										<?php echo $room->nameRoom; ?>,  
-									<?php endif ?>
-								<?php endfor; ?>
-							<?php else: ?>
-								Todos
-							<?php endif ?>
-						</td>
-
-						<td class="text-center">
-							<input type="text" class="form-control selectAddGasto" data-idGasto="484" id="comment-484" value="<?php echo $gasto->comment ?>">
-						</td>
-					</tr>
-				<?php endforeach ?>
-			</tbody>			
-		</table>
+	<div class="row bg-white push-30" id="contentTableExpenses">
+		@include('backend.sales.gastos._tableExpenses', ['gastos' => $gastos])
 	</div>
 
 </div>
-<div class="modal fade slide-up in" id="modal-cashbox" tabindex="-1" role="dialog" aria-hidden="true" >
-            <div class="modal-dialog modal-lg" style="">
 
-                <div class="modal-content-wrapper">
-                    
-                    <div class="modal-content">
-                        @include('backend.sales._formGastos')
-                    </div>
-                </div>
-            </div>
-        </div>
-
-<div class="modal fade" id="" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog modal-dialog-popout">
-		<div class="modal-content">
-			<div class="block block-themed block-transparent remove-margin-b">
-				<div class="block-header">
-					<ul class="block-options">
-						<li>
-							
-						</li>
-					</ul>
-				</div>
-				<div class="row block-content" id="contentListCashBox">
-					@
+<div class="modal fade slide-up disable-scroll in" id="expencesByRoom" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg modal-big" style="width: 85%;">
+		<div class="modal-content-wrapper">
+			<div class="modal-content">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close fa-2x"></i></button>
+				<div class="container-xs-height full-height">
+					<div class="row-xs-height">
+						<div class="modal-body contentExpencesByRoom">
+							@include('backend.sales.gastos._expensesByRoom', ['gastos' => $gastos, 'room' => 'all'])
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
+		<!-- /.modal-content -->
 	</div>
+	<!-- /.modal-dialog -->
 </div>
-
 @endsection	
 
 
 @section('scripts')
+	
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.deleteExpense').click(function(event) {
+				var id = $(this).attr('data-id');
+				var year = $('#fecha').val();
+				$.get('/admin/gastos/delete/'+id, function(data) {
+					
+					if (data == "ok") {
+						$('#contentTableExpenses').empty().load('/admin/gastos/getTableGastos/'+year)
+					}
 
+				});
+			});
+		});
+	</script>
 
 @endsection

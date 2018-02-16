@@ -208,24 +208,27 @@ class PaymentsProController extends Controller
         $start = new Carbon('first day of September');
         $start = $date->format('n') >= 9 ? $start : $start->subYear();
         
-        $payments = \App\Paymentspro::where('room_id',$id)
-                                    ->where('datePayment','>',$start->copy())
-                                    ->where('datePayment','<',$start->copy()->addYear())
-                                    ->get();
+        // $payments = \App\Paymentspro::where('room_id',$id)
+        //                             ->where('datePayment','>',$start->copy())
+        //                             ->where('datePayment','<',$start->copy()->addYear())
+        //                             ->get();
+        $gastos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
+                                ->Where('date', '<=', $start->copy()->addYear()->format('Y-m-d'))
+                                ->Where('PayFor', 'LIKE', '%'.$room->id.'%')
+                                ->orderBy('date', 'DESC')
+                                ->get();
 
-        // echo "<pre>";
-        // print_r($payments);
-        // die();
+        
 
         $pagado = 0;
         $metalico = 0;
         $banco = 0;
-        foreach ($payments as $payment) {
-            if ($payment->type == 1 || $payment->type == 2) {
+        foreach ($gastos as $payment) {
+            if ($payment->typePayment == 0 || $payment->typePayment == 1) {
 
                 $metalico += $payment->import;
 
-            }elseif($payment->type == 3){
+            }elseif($payment->typePayment == 2 || $payment->typePayment == 3){
              
                 $banco += $payment->import;
 
@@ -233,13 +236,27 @@ class PaymentsProController extends Controller
 
             $pagado += $payment->import;
         }
+        $total = 0;
+        $apto = 0;
+        $park = 0;
+        $lujo = 0;
 
-        $books = \App\Book::where('start','>',$date->copy())->where('start','<',$date->copy()->addYear())->where('room_id',$id)->get();
+
+        $books = \App\Book::whereIn('type_book', [2])
+                        ->where('room_id', $room->id)
+                        ->where('start', '>=', $start->copy()->format('Y-m-d'))
+                        ->where('start', '<=', $start->copy()->addYear()->format('Y-m-d'))
+                        ->orderBy('start', 'ASC')
+                        ->get();
 
         foreach ($books as $book) {
-            $total += $book->cost_total;
 
+            $apto  +=  $book->cost_apto;
+            $park  +=  $book->cost_park;
+            $lujo  +=  $book->cost_lujo;
         }
+        $total += ( $apto + $park + $lujo);
+        
         if ($total > 0 && $request->debt > 0) {
            $deuda = ($total - $request->debt)/$total*100;
         }else{
@@ -249,7 +266,7 @@ class PaymentsProController extends Controller
 
         return view('backend/paymentspro/_form',  [
                                                 'room'        => $room,
-                                                'payments'    => $payments,
+                                                'payments'    => $gastos,
                                                 'debt'        => $request->debt,
                                                 'total'       => $total,
                                                 'deuda'       => $deuda,

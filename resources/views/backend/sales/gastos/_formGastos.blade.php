@@ -2,51 +2,46 @@
 <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
 <style type="text/css">
 	.roomEspecifica{
-		padding: 15px;
+		/*padding: 15px;*/
 		border: 2px solid black;
 		margin-bottom: 5px;
 		cursor: pointer;
 	}
 	.roomEspecifica.selected{
-		padding: 15px;
+		/*padding: 15px;*/
 		border: 2px solid black;
 		background-color: rgba(179,221,234,0.62);
 		cursor: pointer;
 	}
+	
 </style>
-<div class="row">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
-        <i class="fa fa-times fa-2x" style="color: #000!important;"></i>
-    </button>
-</div>
 <div class="col-xs-12 bg-white">
 	<div class="row">
-		<div class="col-xs-12 push-20">
-			<h2 class="text-center">Nuevo Gasto</h2>
-		</div>
 		<div class="col-xs-12">
 			<form action="{{ url('/admin/gastos/create') }}" method="post" id="formAddGasto">
 				<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-				<div class="col-xs-12">
-					<div class="col-xs-12 col-md-3 push-20">
+				<div class="col-xs-12 col-md-10">
+
+					<div class="col-xs-12 col-md-1 push-10" style="padding: 0">
 						<label for="date">fecha</label>
 						 <div id="datepicker-component" class="input-group date col-xs-12">
-                      		<input type="text" class="form-control" name="fecha" id="fecha">
+                      		<input type="text" class="form-control" name="fecha" id="fecha" value="<?php echo date('d/m/Y') ?>" style="font-size: 12px">
                       		<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     	</div>
 						
 					</div>
-					<div class=" col-xs-12 col-md-3 push-20">
-						<div class="col-xs-12 col-md-12 push-20">
+					<div class=" col-xs-12 col-md-3 push-10">
+						<div class="col-xs-12 col-md-12 push-10">
 							<label for="concept">Concepto</label>
 							<input  type="text" class="form-control" name="concept" id="concept" />
 						</div>
 					</div>
 
-					<div class="col-xs-12 col-md-3 push-20">
-						<label for="type">Tipo de Gasto</label>
+					<div class="col-xs-12 col-md-1 push-10">
+						<label for="type">T. Gasto</label>
 						<select class="js-select2 form-control" id="type" name="type" style="width: 100%;" data-placeholder="Seleccione un tipo" required >
 			                <option></option>
+			                <option value="PAGO PROPIETARIO">PAGO PROPIETARIO</option>
 			                <option value="MOBILIARIO">MOBILIARIO</option>
 			                <option value="SERVICIOS PROFESIONALES INDEPENDIENTES">SERVICIOS PROFESIONALES INDEPENDIENTES</option>
 			                <option value="VARIOS">VARIOS</option>
@@ -69,23 +64,13 @@
 			                <option value="COMISONES COMERCIALES">COMISONES COMERCIALES</option>
 			            </select>
 					</div>
-					<div class="col-xs-12 col-md-3 push-20">
-						<label for="type">Imputacion</label>
-						<select class="js-select2 form-control" id="type_payFor" name="type_payFor" style="width: 100%;" data-placeholder="Seleccione un tipo" required >
-			                <option value="0">Generíco</option>
-			                <option value="1">Especifico</option>
-						</select>
-					</div>
 
-					
-				</div>
-				<div class="col-xs-12 push-20">
-					<div class="col-xs-12 col-md-2 push-20">
+					<div class="col-xs-12 col-md-1 push-10">
 						<label for="import">Importe</label>
-						<input  type="number" step="0.01" name="import" id="import" class="form-control" value="0" />
+						<input  type="number" step="0.01" name="import" id="import" class="form-control"  />
 					</div>
-					<div class="col-xs-12 col-md-3 push-20">
-						<label for="pay_for">Metodo de pago</label>
+					<div class="col-xs-12 col-md-1 push-10">
+						<label for="pay_for">Met de pago</label>
 						<select class="js-select2 form-control" id="type_payment" name="type_payment" style="width: 100%;" data-placeholder="Seleccione una" required>
 			                <option></option>
 			                <option value="0"> Tarjeta visa </option>
@@ -95,33 +80,51 @@
 			            </select>
 
 					</div>
-					<div class="col-xs-12 col-md-7 push-20" id="contentRooms" style="display: none;">
+
+					<div class="col-xs-12 col-md-1 push-10">
+						<label for="type">Imputacion</label>
+						<select class="js-select2 form-control" id="type_payFor" name="type_payFor" style="width: 100%;" data-placeholder="Seleccione un tipo" required >
+			                <option value="0">Generíco</option>
+			                <option value="1">Especifico</option>
+						</select>
+					</div>
+
+				</div>
+				<div style="clear:both"></div>
+				<div class="col-xs-12 col-md-6">
+					
+					<div class="col-md-10 col-xs-12">
+						<div class="row form-group push-10">
+							<label for="comment">Observaciones</label>
+							<textarea class="form-control" name="comment" id="comment"></textarea>
+						</div>
+					</div>
+
+					<div class="col-md-2 form-group text-center push-10" style="padding: 20px;">
+						<button class="btn btn-lg btn-success">Añadir</button>
+					</div>
+				</div>
+
+				<div class="col-md-3 col-xs-12">
+					
+					<div class="row" id="contentRooms" style="display: none;">
 						<?php foreach (\App\Rooms::where('state', 1)->orderBy('order','ASC')->get() as $key => $room): ?>
-							<div class="col-md-2 col-xs-12 roomEspecifica text-center" data-idRoom="<?php echo $room->id; ?>" data-selected="0">
+							<div class=" roomEspecifica text-center" data-idRoom="<?php echo $room->id; ?>" data-selected="0" style="width: 30px; height: 30px;float: left; margin: 5px 2px;">
 								<?php echo substr($room->nameRoom, -2); ?>
 							</div>
 						<?php endforeach ?>
 					</div>
-
-					
-				</div>
-				<div class="col-xs-12 content-notifications" style="display: none;">
-					<h4 class="text-center">
-						Gasto especifico para: <span class="font-w800 totalRooms">0</span><br>
-						Se asignará un gasto a cada propietario de: <span class="font-w800 notifiations"></span> €
-					</h4>
-					
-				</div>
-				<div class="col-xs-12">
-					<div class=" col-xs-12 form-group push-20">
-						<label for="comment">Observaciones</label>
-						<textarea class="form-control" name="comment" id="comment"></textarea>
+					<div class="row content-notifications" style="display: none;">
+						<p class="text-center">
+							Gasto especifico para: <span class="font-w800 totalRooms">0</span><br>
+							Se asignará un gasto a cada propietario de: <span class="font-w800 notifiations"></span> €
+						</p>
+						
 					</div>
+					
 				</div>
 
-				<div class=" col-xs-12 form-group text-center push-20">
-					<button class="btn btn-lg btn-success">Añadir</button>
-				</div>
+				
 			</form>
 		</div>
 	</div>

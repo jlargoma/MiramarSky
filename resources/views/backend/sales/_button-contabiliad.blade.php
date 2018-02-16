@@ -57,6 +57,35 @@
     	<?php endif ?>
 	</div>
 
+	<div class="col-md-2 col-xs-2">
+    	<?php if ($url == "banco"): ?>
+    		<button class="btn btn-md" style="width: 100%; background-color: #6600ff;pointer-events: none" disabled>
+    			<a class="text-white" >Banco</a>
+    		</button>
+    	<?php else: ?>
+    		<a class="text-white" href="#">
+    			<!-- {{url('/admin/banco/')}} -->
+	    		<button class="btn btn-md btn-primary" style="width: 100%;">
+		        	Banco
+	    		</button>
+    		</a>
+    	<?php endif ?>
+	</div>
+
+	<div class="col-md-2 col-xs-2">
+    	<?php if ($url == "caja"): ?>
+    		<button class="btn btn-md" style="width: 100%; background-color: #6600ff;pointer-events: none" disabled>
+    			<a class="text-white" >Caja</a>
+    		</button>
+    	<?php else: ?>
+    		<a class="text-white" href="#">
+    			<!-- {{url('/admin/caja/')}} -->
+	    		<button class="btn btn-md btn-primary" style="width: 100%;">
+		        	Caja
+	    		</button>
+    		</a>
+    	<?php endif ?>
+	</div>
 
 	<div class="col-md-2 col-xs-2">
     	<?php if ($url == "perdidas-ganancias"): ?>

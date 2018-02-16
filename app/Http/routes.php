@@ -10,6 +10,27 @@
 | and give it the controller to call when that URI is requested.
 | 
 */
+// Route::get('/test', function () {
+  
+// 	foreach (\App\Paymentspro::All() as $key => $pay) {
+// 		$gasto = new \App\Expenses();
+// 		$gasto->concept = 'Pago propietario';
+//         $gasto->date = $pay->datePayment;
+//         $gasto->import = $pay->import;
+//         $gasto->typePayment = $pay->type;
+//         $gasto->type = 'PAGO PROPIETARIO';
+//         $gasto->comment = $pay->comment;
+//         $gasto->PayFor = $pay->room_id;
+
+//         if ($gasto->save()) {
+//             echo "OK<br>";
+//         }
+// 	}
+
+
+// });
+
+
 
 /*ICalendar links*/
 Route::post('/ical/import/saveUrl', 'ICalendarController@saveUrl');
@@ -222,7 +243,19 @@ Route::get('admin/liquidacion-apartamentos/{year?}' ,['middleware' => 'authAdmin
 
 Route::get('admin/gastos/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@gastos']);
 Route::post('admin/gastos/create' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@gastoCreate']);
-Route::get('admin/gastos/delete/{id_gasto}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@gastoDelete']);
+Route::get('/admin/gastos/getTableGastos/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@getTableGastos']);
+Route::get('admin/gastos/update/{id}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@updateGasto']);
+Route::get('/admin/gastos/getHojaGastosByRoom/{year?}/{id}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@getHojaGastosByRoom']);
+
+Route::get('/admin/gastos/delete/{id}', function($id){
+
+		if ( \App\Expenses::find($id)->delete() ) {
+			return 'ok';
+		}else{
+			return 'error';
+		}
+
+	});
 Route::get('admin/ingresos/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@ingresos']);
 Route::get('admin/estadisticas/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@Statistics']);
 Route::get('admin/contabilidad/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@contabilidad']);

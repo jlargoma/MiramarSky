@@ -302,24 +302,24 @@ class LiquidacionController extends Controller
 
         $gastos = \App\Expenses::where('date', '>=', $inicio->copy()->format('Y-m-d'))
                                 ->Where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
-                                ->orderBy('date', 'ASC')
+                                ->orderBy('date', 'DESC')
                                 ->get();
 
                                 
 
-        return view ('backend/sales/gastos',  [   
+        return view ('backend/sales/gastos/gastos',  [   
                                                         'date'         => $date,
                                                         'inicio'         => $inicio,
                                                         'gastos'         => $gastos,
                                                     ]);
     }
 
+    
+
 
     public function gastoCreate(Request $request){
 
-        // echo "<pre>";
-        // print_r($request->input());
-        // die();
+    
         $gasto = new \App\Expenses();
         $gasto->concept = $request->input('concept');
         $gasto->date = Carbon::createFromFormat('d/m/Y', $request->input('fecha'))->format('Y-m-d');
@@ -334,10 +334,45 @@ class LiquidacionController extends Controller
         if ($gasto->save()) {
             return "OK";
         }
-        
-        
+    }
+
+    public function updateGasto(Request $request, $id)
+    {
+        $gasto = \App\Expenses::find($id);
+        $gasto->concept = $request->concept;
+        $gasto->typePayment = $request->typePayment;
+        $gasto->type = $request->type;
+        $gasto->comment = $request->comment;
+
+        if ($gasto->save()) {
+            return "OK";
+        }
+    }
 
 
+    public function getTableGastos($year='')
+    {
+        if ( empty($year) ) {
+            $date = Carbon::now();
+        }else{
+            $year = Carbon::createFromFormat('Y',$year);
+            $date = $year->copy();
+
+        }
+        
+        $inicio = new Carbon('first day of September '.$year->format('Y'));
+        
+
+        $gastos = \App\Expenses::where('date', '>=', $inicio->copy()->format('Y-m-d'))
+                                ->Where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                                ->orderBy('date', 'ASC')
+                                ->get();
+
+                                
+
+        return view ('backend/sales/gastos/_tableExpenses',  [
+                                                        'gastos'         => $gastos,
+                                                    ]);
     }
 
 
@@ -365,6 +400,9 @@ class LiquidacionController extends Controller
 
     static function getSalesByYear($year="")
     {
+        if ($year == "") {
+            $year = date('Y');
+        }
         $start = new Carbon('first day of September '.$year);
         $end  = $start->copy()->addYear();
 
@@ -396,6 +434,121 @@ class LiquidacionController extends Controller
 
 
     }
+
+    static function getSalesByYearByRoom($year="", $room="all")
+    {
+        if ( empty($year) ) {
+            $date = Carbon::now();
+        }else{
+            $year = Carbon::createFromFormat('Y',$year);
+            $date = $year->copy();
+
+        }
+        if ($date->copy()->format('n') >= 9) {
+            $start = new Carbon('first day of September '.$date->copy()->format('Y'));
+        }else{
+            $start = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+        }
+
+        $end  = $start->copy()->addYear();
+
+        if ($room == "all") {
+            $rooms = \App\Rooms::where('state', 1)->get(['id']);
+            $books = \App\Book::whereIn('type_book', [2])
+                            ->whereIn('room_id', $rooms)
+                            ->where('start', '>=', $start->copy()->format('Y-m-d'))
+                            ->where('start', '<=', $end->copy()->format('Y-m-d'))
+                            ->orderBy('start', 'ASC')
+                            ->get();
+
+            $gastos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
+                                ->Where('date', '<=', $end->copy()->format('Y-m-d'))
+                                ->orderBy('date', 'DESC')
+                                ->get();
+
+        }else{
+
+            $books = \App\Book::whereIn('type_book', [2])
+                        ->where('room_id', $room)
+                        ->where('start', '>=', $start->copy()->format('Y-m-d'))
+                        ->where('start', '<=', $end->copy()->format('Y-m-d'))
+                        ->orderBy('start', 'ASC')
+                        ->get();
+
+            $gastos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
+                                ->Where('date', '<=', $end->copy()->format('Y-m-d'))
+                                ->Where('PayFor', 'LIKE', '%'.$room.'%')
+                                ->orderBy('date', 'DESC')
+                                ->get();
+        }
+        
+        // $result = ['ventas' => 0,'cobrado' => 0,'pendiente' => 0, 'metalico' => 0 , 'banco' => 0];
+        $total = 0;
+        $apto = 0;
+        $park = 0;
+        $lujo = 0;
+        foreach ($books as $book) {
+
+           if ($book->type_book != 7 && $book->type_book != 8 && $book->type_book != 9) {
+               $apto  +=  $book->cost_apto;
+               $park  +=  $book->cost_park;
+               $lujo  +=  $book->cost_lujo;
+               
+           }
+        }
+        $total += ( $apto + $park + $lujo);
+
+
+        
+
+        return [
+                'total' => $total,
+                'apto' => $apto,
+                'park' => $park,
+                'lujo' => $lujo,
+                'room' => $room,
+                'pagado' => $gastos->sum('import'),
+            ];
+
+
+    }
+
+
+
+    public function getHojaGastosByRoom($year="", $id)
+    {
+        if ( empty($year) ) {
+            $date = Carbon::now();
+        }else{
+            $year = Carbon::createFromFormat('Y',$year);
+            $date = $year->copy();
+
+        }
+        $start = new Carbon('first day of September '.$date->copy()->format('Y'));
+        
+        // return $start;
+        $end  = $start->copy()->addYear();
+
+        $gastos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
+                            ->Where('date', '<=', $end->copy()->format('Y-m-d'))
+                            ->Where('PayFor', 'LIKE', '%'.$id.'%')
+                            ->orderBy('date', 'ASC')
+                            ->get();
+
+        return view('backend.sales.gastos._expensesByRoom', ['gastos' => $gastos, 'room' => \App\Rooms::find($id)]);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function searchByName(Request $request)
     {
