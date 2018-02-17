@@ -190,6 +190,15 @@
             });
         });
 
+		$('.percentBenef').change(function(event) {
+            var percentBenef = $(this).val();
+            $.get('/admin/update/percentBenef/'+percentBenef,{percentBenef: percentBenef}, function(data) {
+                alert(data);
+                location.reload();
+            });
+        });
+        
+
 	});
 </script>
 @endsection

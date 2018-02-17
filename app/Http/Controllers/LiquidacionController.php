@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use \Carbon\Carbon;
+use \DB;
 use App\Classes\Mobile;
 setlocale(LC_TIME, "ES"); 
 setlocale(LC_TIME, "es_ES");
@@ -150,6 +151,7 @@ class LiquidacionController extends Controller
                                                     'totales' => $totales,
                                                     'temporada' => $date,
                                                     'data' => $data,
+                                                    'percentBenef' => DB::table('percent')->find(1)->percent,
                                                 ]);
         }else{
             return view('backend/sales/index',  [
@@ -157,6 +159,7 @@ class LiquidacionController extends Controller
                                                     'totales' => $totales,
                                                     'temporada' => $date,
                                                     'data' => $data,
+                                                    'percentBenef' => DB::table('percent')->find(1)->percent,
                                                 ]);
         }
     }
@@ -217,6 +220,7 @@ class LiquidacionController extends Controller
                                                         'apartamentos' => $apartamentos,
                                                         'temporada'    => $date,
                                                         'pendientes'   => $pendientes,
+                                                        'percentBenef' => DB::table('percent')->find(1)->percent,
                                                         ]);
     }
 
@@ -753,7 +757,8 @@ class LiquidacionController extends Controller
                 return view('backend/sales/_tableSummary',  [
                                                         'books'   => $books,
                                                         'totales' => $totales,
-                                                        'data' => $data
+                                                        'data' => $data,
+                                                        'percentBenef' => DB::table('percent')->find(1)->percent,
                                                     ]);
             }else{
                 return "<h2>No hay reservas para este término '".$request->searchString."'</h2>";
@@ -878,7 +883,8 @@ class LiquidacionController extends Controller
             return view('backend/sales/_tableSummary',  [
                                                     'books'   => $books,
                                                     'totales' => $totales,
-                                                    'data' => $data
+                                                    'data' => $data,
+                                                    'percentBenef' => DB::table('percent')->find(1)->percent,
                                                 ]);
 
         }  
@@ -1058,6 +1064,7 @@ class LiquidacionController extends Controller
                                                         'books'   => $books,
                                                         'totales' => $totales,
                                                         'data' => $data,
+                                                        'percentBenef' => DB::table('percent')->find(1)->percent,
                                                     ]);
             }else{
                 return "<h2>No hay reservas para este término '".$request->searchString."'</h2>";
@@ -1184,9 +1191,16 @@ class LiquidacionController extends Controller
             return view('backend/sales/_tableSummary',  [
                                                     'books'   => $books,
                                                     'totales' => $totales,
-                                                    'data' => $data
+                                                    'data' => $data,
+                                                    'percentBenef' => DB::table('percent')->find(1)->percent,
                                                 ]);
 
         }
+    }
+
+    public function changePercentBenef(Request $request, $val)
+    {
+        DB::table('percent')->where('id', 1)->update(['percent' => $val]);
+        return "Cambiado";
     }
 }

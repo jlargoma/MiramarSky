@@ -323,6 +323,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 	});
 
+	Route::get('admin/update/percentBenef/{val}', 'LiquidacionController@changePercentBenef');
+
 	Route::post('admin/reservas/help/getTotalBook', 'BookController@getTotalBook');
 	
 	Route::get('admin/delete/nofify/{id}', function ($id) {

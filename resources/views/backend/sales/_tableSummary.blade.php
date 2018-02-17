@@ -12,9 +12,16 @@
         }
     </style>
     <div class="col-md-12 pull-right push-20">
-        <h2 class="text-left">
-            Indicadores de ocupación
-        </h2>
+        <div class="col-md-11 col-xs-12">
+            <h2 class="text-left">
+                Indicadores de ocupación
+            </h2>
+        </div>
+        <div class="col-md-1 col-xs-12 pull-right">
+            <label>Porcentaje benef</label>
+            <input class="form-control text-black font-w400 text-center percentBenef" value="<?php echo $percentBenef ?>" style="border: none; font-size: 32px;margin: 10px 0;color:red!important"/>
+        </div>
+        <div style="clear: both;"></div>
         @include('backend.sales._tableSummaryBoxes', ['totales' => $totales, 'books' => $books, 'data' => $data])
     </div>
     <div class="col-xs-12">
@@ -270,8 +277,15 @@
                                 <?php endif ?>
                                 
                             </td>
-                            <td class="text-center beneficio bf" style="border-left: 1px solid black;@if ($book->inc_percent > 0 && $book->inc_percent < $book->room->profit_percent) color: #FFF; background-color: red !important;@endif">
-                                <?php if ( $book->inc_percent > 0): ?>
+                            <?php if(round($book->inc_percent) < $percentBenef): ?>
+                                <?php $classDanger = "background-color: #f55753!important; color:white!important;" ?>
+                            <?php elseif(round($book->inc_percent) == 0): ?>
+                                <?php $classDanger = "background-color: #f8d053!important; color:black!important;" ?>
+                            <?php else: ?>
+                                <?php $classDanger = "" ?>
+                            <?php endif; ?>
+                            <td class="text-center beneficio bf " style="border-left: 1px solid black; <?php echo $classDanger ?>">
+                                <?php if ( $book->inc_percent > 0): ?> 
                                     <?php echo number_format($book->inc_percent,0)." %" ?>    
                                 <?php else: ?>
                                     ----
@@ -588,12 +602,20 @@
                                     <td class="text-center beneficio bi" style="border-left: 1px solid black;"><b>
                                         <?php echo number_format($book->total_ben,0,',','.') ?> €</b>
                                     </td>
-                                    <td class="text-center beneficio bf" style="@if ($book->inc_percent > 0 && $book->inc_percent < $book->room->profit_percent) color: #FFF; background-color: red !important;@endif">
-                                        <?php if ( $book->inc_percent > 0): ?>
-		                                    <?php echo number_format($book->inc_percent,0)." %" ?>    
-		                                <?php else: ?>
-		                                    ----
-		                                <?php endif ?>
+                                    <?php if(round($book->inc_percent) < $percentBenef): ?>
+                                        <?php $classDanger = "background-color: #f55753!important; color:white!important;" ?>
+                                    <?php elseif(round($book->inc_percent) == 0): ?>
+                                        <?php $classDanger = "background-color: #f8d053!important; color:black!important;" ?>
+                                    <?php else: ?>
+                                        <?php $classDanger = "" ?>
+                                    <?php endif; ?>
+                                    <td class="text-center beneficio bf " style="border-left: 1px solid black; <?php echo $classDanger ?>">
+                                        <?php if ( $book->inc_percent > 0): ?> 
+                                            <?php echo number_format($book->inc_percent,0)." %" ?>    
+                                        <?php else: ?>
+                                            ----
+                                        <?php endif ?>
+                                        
                                     </td>
                                     <td class="text-center coste bi ">
                                         <?php 
