@@ -72,14 +72,16 @@ background: white;
 			</div>
 		</div>
 	</div>
+		<?php $dataX = \App\Http\Controllers\LiquidacionController::getSalesByYearByRoom("","all") ?>
+
 	<div class="row bg-white push-30">
 		<div class="col-md-4">
 			<div class="col-md-4 bordered">
 				<div class="card-title text-black hint-text">
-					PVP
+					COBRADO
 				</div>
 				<div class="p-l-20">
-					<h3 class="text-black font-w400 text-center">1251</h3>
+					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['pagado'],2,',','.') ?>€</h3>
 				</div>
 			</div>
 			<div class="col-md-4 bordered">
@@ -87,7 +89,7 @@ background: white;
 					Banc Jorge
 				</div>
 				<div class="p-l-20">
-					<input class="form-control text-black font-w400 text-center seasonDays" value="120" style="border: none; font-size: 32px;margin: 10px 0;color:red!important">
+					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['banco_jorge'],2,',','.') ?>€</h3>
 				</div>
 			</div>
 			<div class="col-md-4 bordered">
@@ -95,37 +97,37 @@ background: white;
 					Banc Jaime
 				</div>
 				<div class="p-l-20">
-					<h3 class="text-black font-w400 text-center">333</h3>
+					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['banco_jaime'],2,',','.') ?>€</h3>
 				</div>
 			</div>
 		</div>
 		<div class="col-md-4">
 			<div class="col-md-4 bordered">
 				<div class="card-title text-black hint-text">
-					Cash Jorg
+					Metalíco Jorg
 				</div>
 				<div class="p-l-20">
-					<h3 class="text-black font-w400 text-center">1251</h3>
+					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['metalico_jorge'],2,',','.') ?>€</h3>
 				</div>
 			</div>
 			<div class="col-md-4 bordered">
 				<div class="card-title text-black hint-text">
-					Cash Jaime
+					Metalíco Jaime
 				</div>
 				<div class="p-l-20">
-					<input class="form-control text-black font-w400 text-center seasonDays" value="120" style="border: none; font-size: 32px;margin: 10px 0;color:red!important">
+					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['metalico_jaime'],2,',','.') ?>€</h3>
 				</div>
 			</div>
 			<div class="col-md-4 bordered">
 				<div class="card-title text-black hint-text">
-					Pend
+					Pendiente
 				</div>
 				<div class="p-l-20">
-					<h3 class="text-black font-w400 text-center">333</h3>
+					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['total'] - $dataX['pagado'],2,',','.') ?>€</h3>
 				</div>
 			</div>
 		</div>
-		<div class="col-md-4">
+		<!-- <div class="col-md-4">
 			<div class="col-md-4 bordered">
 				<div class="card-title text-black hint-text">
 					Ingreso Neto
@@ -150,7 +152,7 @@ background: white;
 					<h3 class="text-black font-w400 text-center">333</h3>
 				</div>
 			</div>
-		</div>
+		</div> -->
 	</div>
 
 	<div class="row bg-white push-30">

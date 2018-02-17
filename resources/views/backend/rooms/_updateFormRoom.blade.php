@@ -81,13 +81,7 @@
 					<label for="minOcu">% Min Benef</label>
 					<input type="number" name="profit_percent" class="form-control" value="<?php echo $room->profit_percent; ?>"/>
 				</div>
-				<div class="col-md-2 col-xs-12 push-20">
-					<label for="type">Link Expor. cal. Apto</label>
-					<p><?php echo route("import-iCalendar", ["aptoID" => $room->id])?></p>
-					<button class="btn btn-cons" type="button" id="copy-link-export" data-link="<?php echo route("import-iCalendar", ["aptoID" => $room->id])?>">
-		                <span class="bold">Copiar Link</span>
-		            </button>					
-				</div>				
+							
 			</div>
 		</div>
 		<div class="col-xs-12 text-center push-20">
@@ -98,10 +92,10 @@
 	</form>
 </div>
 <!-- FORMULARIO DE IMPORTACION DE ICAL POR ROOM -->
-<div class="row">
+<div class="row" style="border-top: 2px dashed #000;">
 	<div class="col-md-6 col-xs-12" style="padding: 0 15px">
 		<h3 class="text-left font-w300">
-			Importar ICAL <span class="font-w800"><?php echo $room->name ?> (<?php echo $room->nameRoom ?>)</span>
+			Importar ICAL
 		</h3>
 		<form class="form" action="{{ url('ical/import/saveUrl') }}" method="post" id="icalForm">
 			<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
@@ -116,11 +110,16 @@
 			</div>
 		</form>
 	</div>
-	<div class="col-md-6 col-xs-12" style="padding: 0 15px" id="listUrl">
+	<div class="col-md-6 col-xs-12" style="padding: 0 15px" >
+		<div class="col-md-6 col-xs-12 " style="    padding: 20px 15px;">
+			<label for="type">Link Expor. cal. Apto</label>
+			<p><?php echo route("import-iCalendar", ["aptoID" => $room->id])?></p>
+			<button class="btn btn-cons" type="button" id="copy-link-export" data-link="<?php echo route("import-iCalendar", ["aptoID" => $room->id])?>">
+                <span class="bold">Copiar Link</span>
+            </button>					
+		</div>	
 		
 		
-		<?php $urls = \App\IcalImport::where('room_id', $room->id)->get(); ?>
-		@include('backend.rooms._listUrlByRoom', ['urls' => $urls])
 	</div>
 </div>
 <!-- FIN FORMULARIO DE IMPORTACION DE ICAL POR ROOM -->

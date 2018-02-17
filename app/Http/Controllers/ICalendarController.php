@@ -104,6 +104,6 @@ class ICalendarController extends Controller
 
     public function getAllUrl(Request $request, $aptoID)
     {
-        return view('backend.rooms._listUrlByRoom', ['urls' => \App\IcalImport::where('room_id', $aptoID)->get()]);
+        return view('backend.rooms._listUrlByRoom', ['urls' => \App\IcalImport::all()]);
     }
 }

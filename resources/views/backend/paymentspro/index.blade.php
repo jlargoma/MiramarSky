@@ -54,6 +54,14 @@
 				    width: 100%;
 			}
 		}
+		.btn-transparent{
+			background: transparent;
+			border: 0;
+		}
+		.btn-transparent:hover{
+			color: #48b0f7;
+			text-decoration: underline;
+		}
     </style>
 
     <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
@@ -106,9 +114,8 @@
     </div>
     <?php if (!$mobile->isMobile()): ?>
 	    <div class="row">
-	    	
-	    	<div class="col-md-8 col-xs-12 push-0">
-	    		<div class="col-md-9 col-xs-12 pull-right not-padding" style="width: 72.6%">
+	    	<div class="col-md-8 col-xs-12">
+	    		<div class="col-md-11 col-xs-12 pull-right not-padding" style="width: 90.80%;">
 	    			<table class="table table-hover" >
 	    				<thead>
 	    					<tr>
@@ -152,12 +159,12 @@
 	    				</thead>
 	    				<tbody>
 	    					<tr> 
-	    						<td class="text-center costeApto bordes">
+	    						<td class="text-center costeApto bordes" style="background: #89cfff;">
 	    							<?php $costeProp =  $summary['totalApto'] + $summary['totalParking'] + $summary['totalLujo']?>
 	    							<b><?php  echo number_format( $costeProp ,0,',','.') ?>€</b>
 	    						</td>
-	    						<td class="text-center" style="padding: 8px;">
-	    							<?php echo number_format($summary['totalPVP'],0,',','.') ?>€
+	    						<td class="text-center" style="padding: 8px;background: #89cfff;">
+	    							<b><?php echo number_format($summary['totalPVP'],0,',','.') ?>€</b>
 	    						</td>
 	    						<td class="text-center costeApto bordes">
 	    							<b><?php  echo number_format($summary['totalCost'],0,',','.') ?>€</b>
@@ -201,7 +208,11 @@
 	    				</tbody>
 	    			</table>
 	    		</div>
-
+	    	</div>
+	    	<div class="col-md-4 col-xs-12"></div>
+	    </div>
+	    <div class="row">
+	    	<div class="col-md-8 col-xs-12 push-0">
 	    		<div class="col-md-12 col-xs-12 pull-right not-padding">
 		    		<table class="table tableRooms">
 
@@ -209,11 +220,6 @@
 		    				<tr>
 			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 8%">
 			    					Prop.
-			    				</th>
-			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 1%">&nbsp;</th>
-			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 1%">&nbsp;</th>
-			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 3%">
-			    					Tipo 
 			    				</th>
 			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
 									C. Prop.   
@@ -264,33 +270,28 @@
 					        					<?php echo ucfirst($room->user->name) ?> (<?php echo $room->nameRoom ?>)
 					        				</a>
 					        			</td>
-					        			<td class="text-center"  style="padding: 10px 5px ;">
-					        				<button class="btn btn-default btn-sm bookByRoom" data-id="<?php echo $room->id ?>"  data-toggle="modal" data-target="#bookByRoom" style="cursor: pointer" title="Reservas de <?php echo $room->nameRoom?>">
-					        					<i class="fa fa-address-book" aria-hidden="true"></i>
-					        				</button>
-					        			</td>
-					        			<td class="text-center"  style="padding: 10px 5px ;">
-					        				<button class="btn btn-primary btn-sm liquidationByRoom" data-id="<?php echo $room->id ?>" data-costeProp="<?php echo $costPropTot; ?>"data-toggle="modal" data-target="#liquidationByRoom" style="cursor: pointer" title="Liquidación de <?php echo $room->nameRoom?>">
-					        					<i class="fa fa-address-book" aria-hidden="true"></i>
-					        				</button>
-					        			</td>
-					        			<td class="text-center"  style="padding: 10px 5px ;">
-					        				<?php echo $room->typeAptos->name ?>		
-					        			</td>
 					        			<td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
-											
-					        				<?php if ( $costPropTot  != 0): ?>
-					        					<?php echo number_format($costPropTot ,0,',','.'); ?>€
-					        				<?php else: ?>
-					        					-----
-					        				<?php endif ?>
+
+											<button class="btn-transparent liquidationByRoom" data-id="<?php echo $room->id ?>" data-costeProp="<?php echo $costPropTot; ?>" data-toggle="modal" data-target="#liquidationByRoom" style="cursor: pointer; font-weight: 600" title="Liquidación de <?php echo $room->nameRoom?>">
+												<?php if ( $costPropTot  != 0): ?>
+													<?php echo number_format($costPropTot ,0,',','.'); ?>€
+												<?php else: ?>
+													-----
+												<?php endif ?>
+											</button>
+						        				
+					        				
 					        			</td>
-					        			<td class="text-center"  style="padding: 10px 5px ;">
-					        				<?php if (isset($data[$room->id]['totales']['totalPVP'])): ?>
-					        					<?php echo number_format($data[$room->id]['totales']['totalPVP'],0,',','.'); ?>€
-					        				<?php else: ?>
-					        					-----
-					        				<?php endif ?>
+					        			<td class="text-center"  style="padding: 10px 5px ; background: #89cfff;">
+					        				
+					        				<button class="btn-transparent bookByRoom" data-id="<?php echo $room->id ?>"  data-toggle="modal" data-target="#bookByRoom" style="cursor: pointer; font-weight: 800" title="Reservas de <?php echo $room->nameRoom?>">
+					        					<?php if (isset($data[$room->id]['totales']['totalPVP'])): ?>
+					        						<?php echo number_format($data[$room->id]['totales']['totalPVP'],0,',','.'); ?>€
+					        					<?php else: ?>
+					        						-----
+					        					<?php endif ?>
+					        				</button>
+					        				
 					        			</td>
 					        			
 					        			<td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
@@ -394,9 +395,57 @@
 					</table>
 	    		</div>
 	    	</div>
-	    	<div class="col-md-5 col-xs-12">
-	    	
+	    	<div class="col-md-4 col-xs-12">
+	    		<table class="table table-striped">
+
+	    			<thead>
+	    				<tr>
+	    					<th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
+	    						Apart
+	    					</th>
+	    					<?php $lastThreeSeason = $date->copy()->subYears(2) ?>
+							<?php for ($i=1; $i < 4; $i++): ?>
+								<th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
+									Temp. <?php echo $lastThreeSeason->copy()->format('y'); ?> - <?php echo $lastThreeSeason->copy()->addYear()->format('y'); ?>
+								</th>
+	    						<?php $lastThreeSeason->addYear(); ?>
+							<?php endfor; ?>
+		    			
+	    				</tr>
+			        </thead>
+				        <tbody>
+				        	<?php foreach ($rooms as $room): ?>
+				        		
+				        		<tr>
+				        			<td class="text-center"  style="padding: 10px 5px ;">
+				        				<?php echo ucfirst(substr($room->user->name, 0, 6)) ?> (<?php echo substr($room->nameRoom, 0, 6) ?>)
+				        			</td>
+				        			<?php $lastThreeSeason = $date->copy()->subYears(2) ?>
+									<?php for ($i=1; $i < 4; $i++): ?>
+					        			<td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
+											<!-- <?php echo $lastThreeSeason->copy()->format('Y') ?><br> -->
+											<?php echo $room->getCostPropByYear($lastThreeSeason->copy()->format('Y')); ?> €
+						        				
+					        				
+					        			</td>
+				        				<?php $lastThreeSeason->addYear(); ?>
+									<?php endfor; ?>
+				        			
+				        			
+				        			
+				            </tr>
+
+				        <?php endforeach ?>
+				    </tbody>
+
+				</table>
 	    	</div>
+	    </div>
+	    	
+	    	
+	    		
+
+	    		
 	    </div>
     <?php else: ?>
 	    <div class="row">
@@ -450,8 +499,8 @@
     							<?php $costeProp =  $summary['totalApto'] + $summary['totalParking'] + $summary['totalLujo']?>
     							<b><?php  echo number_format( $costeProp ,0,',','.') ?>€</b>
     						</td>
-    						<td class="text-center" style="padding: 8px;">
-    							<?php echo number_format($summary['totalPVP'],0,',','.') ?>€
+    						<td class="text-center" style="padding: 8px; background: #89cfff;">
+    							<b><?php echo number_format($summary['totalPVP'],0,',','.') ?>€</b>
     						</td>
     						<td class="text-center costeApto bordes">
     							<b><?php  echo number_format($summary['totalCost'],0,',','.') ?>€</b>
@@ -505,16 +554,14 @@
 		    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 8%">
 		    					Prop.
 		    				</th>
-		    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 1%">&nbsp;</th>
-		    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 3%">
-		    					Tipo 
-		    				</th>
-		    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: " >
-		    					PVP  
-		    				</th>
+		    				
+		    				
 		    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
 								C. Total.   
 							</th>
+							<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: " >
+		    					PVP  
+		    				</th>
 							<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
 									C. Prop.   
 								</th>
@@ -557,25 +604,30 @@
 				        					<?php echo ucfirst(substr($room->user->name, 0, 6)) ?> (<?php echo substr($room->nameRoom, 0, 6) ?>)
 				        				</a>
 				        			</td>
-				        			<td class="text-center"  style="padding: 10px 5px ;">
-				        				<button class="btn btn-default btn-sm bookByRoom" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#bookByRoom" style="cursor: pointer" title="Reservas de <?php echo $room->nameRoom?>">
-				        					<i class="fa fa-address-book" aria-hidden="true"></i>
+				        			<td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
+    									
+
+										<button class="btn-transparent liquidationByRoom" data-id="<?php echo $room->id ?>" data-costeProp="<?php echo $costPropTot; ?>" data-toggle="modal" data-target="#liquidationByRoom" style="cursor: pointer; font-weight: 600" title="Liquidación de <?php echo $room->nameRoom?>">
+											<?php $costPropTot =  $data[$room->id]['totales']['totalApto']+$data[$room->id]['totales']['totalParking']+$data[$room->id]['totales']['totalLujo']?>
+					        				<?php if ( $costPropTot  != 0): ?>
+					        					<?php echo number_format($costPropTot ,0,',','.'); ?>€
+					        				<?php else: ?>
+					        					-----
+					        				<?php endif ?>
+										</button>
+					        				
+				        				
+				        			</td>
+				        			<td class="text-center"  style="padding: 10px 5px ; background: #89cfff;">
+				        				
+				        				<button class="btn-transparent bookByRoom" data-id="<?php echo $room->id ?>"  data-toggle="modal" data-target="#bookByRoom" style="cursor: pointer; font-weight: 800" title="Reservas de <?php echo $room->nameRoom?>">
+				        					<?php if (isset($data[$room->id]['totales']['totalPVP'])): ?>
+				        						<?php echo number_format($data[$room->id]['totales']['totalPVP'],0,',','.'); ?>€
+				        					<?php else: ?>
+				        						-----
+				        					<?php endif ?>
 				        				</button>
-				        			</td>
-				        			<td class="text-center"  style="padding: 10px 5px ;">
-				        				<button class="btn btn-primary btn-sm liquidationByRoom" data-id="<?php echo $room->id ?>" data-costeProp="<?php echo $costPropTot; ?>"data-toggle="modal" data-target="#liquidationByRoom" style="cursor: pointer" title="Liquidación de <?php echo $room->nameRoom?>">
-				        					<i class="fa fa-address-book" aria-hidden="true"></i>
-				        				</button>
-				        			</td>
-				        			<td class="text-center"  style="padding: 10px 5px ;">
-				        				<?php echo $room->typeAptos->name ?>		
-				        			</td>
-				        			<td class="text-center"  style="padding: 10px 5px ;">
-				        				<?php if (isset($data[$room->id]['totales']['totalPVP'])): ?>
-				        					<?php echo number_format($data[$room->id]['totales']['totalPVP'],0,',','.'); ?>€
-				        				<?php else: ?>
-				        					-----
-				        				<?php endif ?>
+				        				
 				        			</td>
 				        			
 				        			<td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
@@ -587,15 +639,7 @@
 				        				<?php endif ?>
 				        			</td>
 
-    			        			<td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
-    									<?php $costPropTot =  $data[$room->id]['totales']['totalApto']+$data[$room->id]['totales']['totalParking']+$data[$room->id]['totales']['totalLujo']?>
-    			        				<?php if ( $costPropTot  != 0): ?>
-    			        					<?php echo number_format($costPropTot ,0,',','.'); ?>€
-    			        				<?php else: ?>
-    			        					-----
-    			        				<?php endif ?>
-    			        			</td>
-
+    			        			
 				        			<td class="text-center"  style="padding: 10px 5px ;">
 				        				<?php if (isset($data[$room->id]['totales']['totalApto'])): ?>
 				        					<?php echo number_format($data[$room->id]['totales']['totalApto'],0,',','.'); ?>€
@@ -686,8 +730,52 @@
 
 				</table>
     		</div>
-	    	<div class="col-xs-12">
-	    	
+	    	<div class="table-responsive push-20" style="border: none!important">
+		    	<div class="col-md-4 col-xs-12">
+		    		<table class="table table-striped">
+
+		    			<thead>
+		    				<tr>
+		    					<th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
+		    						Apart
+		    					</th>
+		    					<?php $lastThreeSeason = $date->copy()->subYears(2) ?>
+								<?php for ($i=1; $i < 4; $i++): ?>
+									<th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
+										Temp. <?php echo $lastThreeSeason->copy()->format('y'); ?> - <?php echo $lastThreeSeason->copy()->addYear()->format('y'); ?>
+									</th>
+		    						<?php $lastThreeSeason->addYear(); ?>
+								<?php endfor; ?>
+			    			
+		    				</tr>
+				        </thead>
+					        <tbody>
+					        	<?php foreach ($rooms as $room): ?>
+					        		
+					        		<tr>
+					        			<td class="text-center"  style="padding: 10px 5px ;">
+					        				<?php echo ucfirst(substr($room->user->name, 0, 6)) ?> (<?php echo substr($room->nameRoom, 0, 6) ?>)
+					        			</td>
+					        			<?php $lastThreeSeason = $date->copy()->subYears(2) ?>
+										<?php for ($i=1; $i < 4; $i++): ?>
+						        			<td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
+												<!-- <?php echo $lastThreeSeason->copy()->format('Y') ?><br> -->
+												<?php echo $room->getCostPropByYear($lastThreeSeason->copy()->format('Y')); ?> €
+							        				
+						        				
+						        			</td>
+					        				<?php $lastThreeSeason->addYear(); ?>
+										<?php endfor; ?>
+					        			
+					        			
+					        			
+					            </tr>
+
+					        <?php endforeach ?>
+					    </tbody>
+
+					</table>
+		    	</div>
 	    	</div>
 	    </div>
     <?php endif ?>
@@ -762,7 +850,8 @@
                 "buttonClasses": "button button-rounded button-mini nomargin",
                 "applyClass": "button-color",
                 "cancelClass": "button-light",            
-                "startDate": '01 Nov, 17',
+                "startDate": '01 Nov, <?php echo $date->copy()->format('y') ?>',
+                "endDate": '01 Nov, <?php echo $date->copy()->addYear()->format('y') ?>',
                 locale: {
                     format: 'DD MMM, YY',
                     "applyLabel": "Aplicar",
@@ -799,6 +888,51 @@
             });
         });
 		$(document).ready(function() {
+
+			$('.close').click(function(event) {
+				$(function() {
+		            $(".dateRange").daterangepicker({
+		                "buttonClasses": "button button-rounded button-mini nomargin",
+		                "applyClass": "button-color",
+		                "cancelClass": "button-light",            
+		                "startDate": '01 Nov, <?php echo $date->copy()->format('y') ?>',
+		                "endDate": '01 Nov, <?php echo $date->copy()->addYear()->format('y') ?>',
+		                locale: {
+		                    format: 'DD MMM, YY',
+		                    "applyLabel": "Aplicar",
+		                    "cancelLabel": "Cancelar",
+		                    "fromLabel": "From",
+		                    "toLabel": "To",
+		                    "customRangeLabel": "Custom",
+		                    "daysOfWeek": [
+		                    "Do",
+		                    "Lu",
+		                    "Mar",
+		                    "Mi",
+		                    "Ju",
+		                    "Vi",
+		                    "Sa"
+		                    ],
+		                    "monthNames": [
+		                    "Enero",
+		                    "Febrero",
+		                    "Marzo",
+		                    "Abril",
+		                    "Mayo",
+		                    "Junio",
+		                    "Julio",
+		                    "Agosto",
+		                    "Septiembre",
+		                    "Octubre",
+		                    "Noviembre",
+		                    "Diciembre"
+		                    ],
+		                    "firstDay": 1,
+		                },
+
+		            });
+		        });
+			});
 
 			$('.update-payments').click(function(event) {
 				var debt = $(this).attr('data-debt');

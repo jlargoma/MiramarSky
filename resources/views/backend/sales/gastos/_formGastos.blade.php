@@ -16,7 +16,7 @@
 	
 </style>
 <div class="col-xs-12 bg-white">
-	<div class="row">
+	<div class="row" style="padding: 20px; border: 2px solid #000;">
 		<div class="col-xs-12">
 			<form action="{{ url('/admin/gastos/create') }}" method="post" id="formAddGasto">
 				<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
@@ -42,26 +42,23 @@
 						<select class="js-select2 form-control" id="type" name="type" style="width: 100%;" data-placeholder="Seleccione un tipo" required >
 			                <option></option>
 			                <option value="PAGO PROPIETARIO">PAGO PROPIETARIO</option>
-			                <option value="MOBILIARIO">MOBILIARIO</option>
-			                <option value="SERVICIOS PROFESIONALES INDEPENDIENTES">SERVICIOS PROFESIONALES INDEPENDIENTES</option>
-			                <option value="VARIOS">VARIOS</option>
-			                <option value="EQUIPAMIENTO DEPORTIVO">EQUIPAMIENTO DEPORTIVO</option>
-			                <option value="IMPUESTOS">IMPUESTOS</option>
-			                <option value="SUMINISTROS">SUMINISTROS</option>
-			                <option value="GASTOS BANCARIOS">GASTOS BANCARIOS</option>
-			                <option value="PUBLICIDAD">PUBLICIDAD</option>
-			                <option value="REPARACION Y CONSERVACION">REPARACION Y CONSERVACION</option>
-			                <option value="ALQUILER NAVE">ALQUILER NAVE</option>
-			                <option value="SEGUROS SOCIALES">SEGUROS SOCIALES</option>
-			                <option value="NOMINAS">NOMINAS</option>
-			                <option value="TARJETA VISA">TARJETA VISA</option>
-			                <option value="MATERIAL OFICINA">MATERIAL OFICINA</option>
-			                <option value="MENSAJERIA">MENSAJERIA</option>
-			                <option value="PRODUCTOS VENDING">PRODUCTOS VENDING</option>
-			                <option value="LIMPIEZA">LIMPIEZA</option>
-			                <option value="INTERNET">INTERNET</option>
-			                <option value="RENTING EQUIPAMIENTO DEPORTIVO">RENTING EQUIPAMIENTO DEPORTIVO</option>
-			                <option value="COMISONES COMERCIALES">COMISONES COMERCIALES</option>
+			                <option value="SERVICIOS PROF INDEPENDIENTES"> SERVICIOS PROF INDEPENDIENTES</option>
+			                <option value="VARIOS"> VARIOS</option>
+			                <option value="REGALO BIENVENIDA"> REGALO BIENVENIDA</option>
+			                <option value="LAVANDERIA"> LAVANDERIA</option>
+			                <option value="LIMPIEZA"> LIMPIEZA</option>
+			                <option value="EQUIPAMIENTO VIVIENDA"> EQUIPAMIENTO VIVIENDA</option>
+			                <option value="DECORACION"> DECORACION</option>
+			                <option value="MENAJE"> MENAJE</option>
+			                <option value="SABANAS Y TOALLAS"> SABANAS Y TOALLAS</option>
+			                <option value="IMPUESTOS"> IMPUESTOS</option>
+			                <option value="GASTOS BANCARIOS"> GASTOS BANCARIOS</option>
+			                <option value="MARKETING Y PUBLICIDAD"> MARKETING Y PUBLICIDAD</option>
+			                <option value="REPARACION Y CONSERVACION"> REPARACION Y CONSERVACION</option>
+			                <option value="SUELDOS Y SALARIOS"> SUELDOS Y SALARIOS</option>
+			                <option value="SEG SOCIALES"> SEG SOCIALES</option>
+			                <option value="MENSAJERIA"> MENSAJERIA</option>
+			                <option value="COMISIONES COMERCIALES"> COMISIONES COMERCIALES</option>
 			            </select>
 					</div>
 

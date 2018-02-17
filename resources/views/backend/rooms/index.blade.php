@@ -70,40 +70,47 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-md-5 col-xs-12">
-					    <div class="row">
+					<div class="col-md-12 col-xs-12">
+						<div class="col-md-5 col-xs-12">
+						    <div class="row">
 
-				        	<div class="col-xs-12 col-md-12 push-20">
-				        		<h3 class="text-center">
-				        			Reparto de Beneficios por tipo
-				        		</h3>
-				        	</div>
-					        		
-				        	<div class="col-md-12 col-xs-12">
-				        		<table class="table table-condensed table-hover">
-									<thead>
-										<th class="text-center bg-complete text-white font-s12">Tipo</th>
-										<th class="text-center bg-complete text-white font-s12">% Jorge</th>
-										<th class="text-center bg-complete text-white font-s12">% Jaime</th>
-									</thead>
-									<tbody>
-										<?php foreach ($typesApto as $typeApto): ?>
-											<?php if ( $typeApto->name != 'Propio'): ?>											
-												<tr>
-													<td><?php echo $typeApto->name ?></td>
-													<td>
-														<input class="percentage percentJorge-<?php echo $typeApto->id?>" type="text" name="Jorge" data-id="<?php echo $typeApto->id ?>" value="<?php echo $typeApto->PercentJorge?>" style="width: 100%;text-align: center;border-style: none none ">
-													</td>
-													<td>
-														<input class="percentage percentJaime-<?php echo $typeApto->id?>" type="text" name="Jaime" data-id="<?php echo $typeApto->id ?>" value="<?php echo $typeApto->PercentJaime?>" style="width: 100%;text-align: center;border-style: none none ">
-													</td>
-												</tr>
-											<?php endif ?>
-										<?php endforeach ?>
-									</tbody>
-				        		</table>
-				        	</div>
-					    </div>
+					        	<div class="col-xs-12 col-md-12 push-20">
+					        		<h3 class="text-center">
+					        			Reparto de Beneficios por tipo
+					        		</h3>
+					        	</div>
+						        		
+					        	<div class="col-md-12 col-xs-12">
+					        		<table class="table table-condensed table-hover">
+										<thead>
+											<th class="text-center bg-complete text-white font-s12">Tipo</th>
+											<th class="text-center bg-complete text-white font-s12">% Jorge</th>
+											<th class="text-center bg-complete text-white font-s12">% Jaime</th>
+										</thead>
+										<tbody>
+											<?php foreach ($typesApto as $typeApto): ?>
+												<?php if ( $typeApto->name != 'Propio'): ?>											
+													<tr>
+														<td><?php echo $typeApto->name ?></td>
+														<td>
+															<input class="percentage percentJorge-<?php echo $typeApto->id?>" type="text" name="Jorge" data-id="<?php echo $typeApto->id ?>" value="<?php echo $typeApto->PercentJorge?>" style="width: 100%;text-align: center;border-style: none none ">
+														</td>
+														<td>
+															<input class="percentage percentJaime-<?php echo $typeApto->id?>" type="text" name="Jaime" data-id="<?php echo $typeApto->id ?>" value="<?php echo $typeApto->PercentJaime?>" style="width: 100%;text-align: center;border-style: none none ">
+														</td>
+													</tr>
+												<?php endif ?>
+											<?php endforeach ?>
+										</tbody>
+					        		</table>
+					        	</div>
+						    </div>
+						</div>
+						<div class="col-md-7 col-xs-12" id="listUrl">
+							<?php $urls = \App\IcalImport::all(); ?>
+							@include('backend.rooms._listUrlByRoom', ['urls' => $urls])
+						</div>
+					    
 					</div>
 				</div>
 			</div>

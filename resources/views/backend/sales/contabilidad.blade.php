@@ -51,7 +51,7 @@
 		
 		</div>
 	</div>
-	<div class="row push-30">
+	<div class="row bg-white push-30">
 		<div class="col-md-2 col-xs-12">
 		   <div>
 		       <canvas id="barChart" style="width: 100%; height: 250px;"></canvas>
@@ -67,13 +67,14 @@
         </div>
 
 	</div>
-	<div class="row">
+	<div class="row bg-white">
 	    <div class="col-md-8 col-xs-12">
             <table class="table  table-striped " style="margin-top: 0;">
     			<thead>
     				<tr>
     					<th class="text-center bg-complete text-white">Apto</th>
                         <th class="text-center bg-complete text-white">total</th>
+                        <th class="text-center bg-complete text-white">%</th>
     					<?php $months = $inicio->copy(); ?>
     					<?php for ($i=1; $i <= 12 ; $i++): ?>
     						<th class="text-center bg-complete text-white">&nbsp;<?php echo $months->formatLocalized('%b') ?>&nbsp;</th>
@@ -84,6 +85,17 @@
     				</tr>
     			</thead>
     			<tbody>
+                    <?php $totalAllRoom = 0; ?>
+
+                    <?php foreach ($rooms as $key => $room): ?>
+                        <?php $totalRoom = 0; ?>
+                        <?php $monthsRooms = $inicio->copy(); ?>
+                        <?php for ($i=1; $i <= 12 ; $i++): ?>
+                            <?php $totalRoom += $priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')] ?>
+                            <?php $monthsRooms->addMonth() ?>
+                        <?php endfor; ?>
+                        <?php $totalAllRoom += $totalRoom; ?>
+                    <?php endforeach ?>    
     				<?php foreach ($rooms as $key => $room): ?>
     					<tr>
     						<td class="text-center" style="padding: 12px 20px!important">
@@ -95,8 +107,13 @@
                                 <?php $totalRoom += $priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')] ?>
                                 <?php $monthsRooms->addMonth() ?>
                             <?php endfor; ?>
+
                             <td class="text-center">
-                                <b><?php echo number_format($totalRoom,0,',','.') ?> €</b>
+                                <b><?php echo number_format($totalRoom,0,',','.') ?>€</b>
+                            </td>
+                            <td class="text-center">
+                                <?php $percent = ($totalRoom / $totalAllRoom) * 100; ?>
+                                &nbsp;&nbsp;<b><?php echo number_format($percent,0,',','.') ?>%</b>&nbsp;&nbsp;
                             </td>
     						
     						<?php $monthsRooms = $inicio->copy(); ?>
@@ -118,6 +135,15 @@
     			</tbody>
             </table>
 	    </div>
+        <div class="col-md-4 col-xs-12">
+            <div class="col-md-12 col-xs-12">
+               <div>
+                    <?php $dataChartMonths = \App\Rooms::getPvpByMonth($inicio->copy()->format('Y')) ?>
+
+                   <canvas id="barChartMonth" style="width: 100%; height: 250px;"></canvas>
+               </div>
+            </div>
+        </div>
 	</div>
 </div>
 	
@@ -190,5 +216,56 @@
         type: 'bar',
         data: data,
     });
+
+    var myBarChart = new Chart('barChartMonth', {
+        type: 'bar',
+        data: {
+                labels: [
+                        <?php foreach ($dataChartMonths as $key => $value): ?>
+                            <?php echo "'".$key."'," ?>
+                        <?php endforeach ?>
+                        ],
+                datasets: [
+                            {
+                                label: "Ingresos por Año",
+                                backgroundColor: [
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                ],
+                                borderColor: [
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                ],
+                                borderWidth: 1,
+                                data: [
+                                        <?php foreach ($dataChartMonths as $key => $value): ?>
+                                            <?php echo "'".round($value)."'," ?>
+                                        <?php endforeach ?>
+                                        ],
+                            }
+                        ]
+            },
+    });
+    
 </script>
 @endsection

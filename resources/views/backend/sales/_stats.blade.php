@@ -31,14 +31,14 @@
 <div class="col-md-3">
 	
 	<table class="table table-hover table-striped table-ingresos" style="background-color: #92B6E2">
-		<thead class="bg-complete">
-			<th colspan="2" class="text-white text-center"> Ingresos Temporada</th>
+		<thead class="bg-complete" style="background: #d3e8f7">
+			<th colspan="2" class="text-black text-center"> Ingresos Temporada</th>
 		</thead>
 		<tbody>
 			<tr>
-				<td class="" style="padding: 5px 8px!important; background-color: #FFF!important;"><b>VENTAS TEMPORADA</b></td>
-				<td class=" text-center" style="padding: 5px 8px!important; background-color: #FFF!important;">
-					<?php echo number_format( round($dataStats['ventas']),0,',','.')?> €
+				<td class="" style="padding: 5px 8px!important; background-color: #d3e8f7!important;"><b>VENTAS TEMPORADA</b></td>
+				<td class=" text-center" style="padding: 5px 8px!important; background-color: #d3e8f7!important;">
+					<b><?php echo number_format( round($dataStats['ventas']),0,',','.')?> €</b>
 				</td>
 			</tr>
 			<tr style="background-color: #3e95cd;">
@@ -96,50 +96,48 @@
 </div>
 
 <div class="col-md-6">
-	<div class="row table-responsive">
-		
+	<div class="row ">
+		<?php $oldTotalPVP = 0; ?>
+		<?php $arrayColors = [ 1 => 'bg-info', 2 => 'bg-complete', 3 => 'bg-primary', ]; ?>
 		<?php $lastThreeSeason = $inicio->copy()->subYears(2) ?>
 		<?php for ($i=1; $i < 4; $i++): ?>
-			<div class="col-md-12">
-				<table class="table table-striped" style="margin: 0;">
-					<thead>
-						<th class="text-center bg-complete text-white"><?php echo $lastThreeSeason->copy()->format('Y') ?>/<?php echo $lastThreeSeason->copy()->addYear()->format('Y') ?></th>
-						<th class="text-center bg-complete text-white"> Total </th>
-						<?php $months = $lastThreeSeason->copy(); ?>
-						<?php for ($i=1; $i <= 12 ; $i++): ?>
-							<th class="text-center bg-complete text-white"><?php echo $months->formatLocalized('%b') ?>
-							</th>
-							<?php $months->addMonth() ?>
-						<?php endfor; ?>
-					</thead>
-					<tbody>
-						<tr>
-							<td class="text-center p-t-5 p-b-5">Ventas</td>
-							<td class="text-center p-t-5 p-b-5"> --- </td>
-							<?php $months = $lastThreeSeason->copy(); ?>
-							<?php for ($i=1; $i <= 12 ; $i++): ?>
-								<td class="text-center p-t-5 p-b-5">
-								--- 
-								</td>
-								<?php $months->addMonth() ?>
-							<?php endfor; ?>
-						</tr>
-						<tr>
-							<th class="text-center p-t-5 p-b-5">Benº</th>
-							<td class="text-center p-t-5 p-b-5"> --- </td>
-							<?php $months = $lastThreeSeason->copy(); ?>
-							<?php for ($i=1; $i <= 12 ; $i++): ?>
-								<td class="text-center p-t-5 p-b-5">
-								--- 
-								</td>
-								<?php $months->addMonth() ?>
-							<?php endfor; ?>
-						</tr>
-					</tbody>
-	        	</table>
-	        </div>
+			<div class="col-md-4 m-b-10">
+			
+				<div class="widget-9 no-border <?php echo $arrayColors[$i] ?> no-margin widget-loader-bar">
+					<div class="full-height d-flex flex-column">
+
+						<div class="p-l-20" style="padding: 10px 20px;">
+							<h5 class="no-margin p-b-5 text-white ">
+								Temp <b><?php echo $lastThreeSeason->copy()->format('y'); ?>-<?php echo $lastThreeSeason->copy()->addYear()->format('y'); ?></b>
+							</h5>
+							<?php $totalPVP = \App\Rooms::getPvpByYear($lastThreeSeason->copy()->format('Y')); ?>
+							<h3 class="no-margin p-b-5 text-white">
+								<?php echo number_format( $totalPVP, 0, ',', '.'); ?>€ 
+								<span style="font-size: 14px;">
+									<?php if ($i > 1): ?>
+										<?php if ($totalPVP > $oldTotalPVP): ?>
+											<i class="fa fa-arrow-up text-success fa-2x"></i>
+										<?php else: ?>
+											<i class="fa fa-arrow-down text-danger fa-2x"></i>
+
+										<?php endif ?>
+									<?php endif ?>
+								</span>
+							</h3>
+							
+							
+							
+							
+						</div>
+						
+					</div>
+				</div>
+
+			</div>
+			<?php $oldTotalPVP = $totalPVP; ?>
 			<?php $lastThreeSeason->addYear(); ?>
 		<?php endfor; ?>
+		
     </div>
 	    
 </div>  

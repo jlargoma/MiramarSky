@@ -42,66 +42,23 @@ setlocale(LC_TIME, "es_ES");
 		                <option <?php if($gasto->type == 'PAGO PROPIETARIO'){ echo "selected"; } ?> value="PAGO PROPIETARIO">
 		                	PAGO PROPIETARIO
 		                </option>
-		                <option <?php if($gasto->type == 'MOBILIARIO'){ echo "selected"; } ?> value="MOBILIARIO">
-		                	MOBILIARIO
-		                </option>
-		                <option <?php if($gasto->type == 'SERVICIOS PROFESIONALES INDEPENDIENTES'){ echo "selected"; } ?> value="SERVICIOS PROFESIONALES INDEPENDIENTES">
-		                	SERVICIOS PROFESIONALES INDEPENDIENTES
-		                </option>
-		                <option <?php if($gasto->type == 'VARIOS'){ echo "selected"; } ?> value="VARIOS">
-		                	VARIOS
-		                </option>
-		                <option <?php if($gasto->type == 'EQUIPAMIENTO DEPORTIVO'){ echo "selected"; } ?> value="EQUIPAMIENTO DEPORTIVO">
-		                	EQUIPAMIENTO DEPORTIVO
-		                </option>
-		                <option <?php if($gasto->type == 'IMPUESTOS'){ echo "selected"; } ?> value="IMPUESTOS">
-		                	IMPUESTOS
-		                </option>
-		                <option <?php if($gasto->type == 'SUMINISTROS'){ echo "selected"; } ?> value="SUMINISTROS">
-		                	SUMINISTROS
-		                </option>
-		                <option <?php if($gasto->type == 'GASTOS BANCARIOS'){ echo "selected"; } ?> value="GASTOS BANCARIOS">
-		                	GASTOS BANCARIOS
-		                </option>
-		                <option <?php if($gasto->type == 'PUBLICIDAD'){ echo "selected"; } ?> value="PUBLICIDAD">
-		                	PUBLICIDAD
-		                </option>
-		                <option <?php if($gasto->type == 'REPARACION Y CONSERVACION'){ echo "selected"; } ?> value="REPARACION Y CONSERVACION">
-		                	REPARACION Y CONSERVACION
-		                </option>
-		                <option <?php if($gasto->type == 'ALQUILER NAVE'){ echo "selected"; } ?> value="ALQUILER NAVE">
-		                	ALQUILER NAVE
-		                </option>
-		                <option <?php if($gasto->type == 'SEGUROS SOCIALES'){ echo "selected"; } ?> value="SEGUROS SOCIALES">
-		                	SEGUROS SOCIALES
-		                </option>
-		                <option <?php if($gasto->type == 'NOMINAS'){ echo "selected"; } ?> value="NOMINAS">
-		                	NOMINAS
-		                </option>
-		                <option <?php if($gasto->type == 'TARJETA VISA'){ echo "selected"; } ?> value="TARJETA VISA">
-		                	TARJETA VISA
-		                </option>
-		                <option <?php if($gasto->type == 'MATERIAL OFICINA'){ echo "selected"; } ?> value="MATERIAL OFICINA">
-		                	MATERIAL OFICINA
-		                </option>
-		                <option <?php if($gasto->type == 'MENSAJERIA'){ echo "selected"; } ?> value="MENSAJERIA">
-		                	MENSAJERIA
-		                </option>
-		                <option <?php if($gasto->type == 'PRODUCTOS VENDING'){ echo "selected"; } ?> value="PRODUCTOS VENDING">
-		                	PRODUCTOS VENDING
-		                </option>
-		                <option <?php if($gasto->type == 'LIMPIEZA'){ echo "selected"; } ?> value="LIMPIEZA">
-		                	LIMPIEZA
-		                </option>
-		                <option <?php if($gasto->type == 'INTERNET'){ echo "selected"; } ?> value="INTERNET">
-		                	INTERNET
-		                </option>
-		                <option <?php if($gasto->type == 'RENTING EQUIPAMIENTO DEPORTIVO'){ echo "selected"; } ?> value="RENTING EQUIPAMIENTO DEPORTIVO">
-		                	RENTING EQUIPAMIENTO DEPORTIVO
-		                </option>
-		                <option <?php if($gasto->type == 'COMISONES COMERCIALES'){ echo "selected"; } ?> value="COMISONES COMERCIALES">
-		                	COMISONES COMERCIALES
-		                </option>
+		                <option <?php if($gasto->type == 'SERVICIOS PROF INDEPENDIENTES'){ echo "selected"; } ?> value="SERVICIOS PROF INDEPENDIENTES"> SERVICIOS PROF INDEPENDIENTES</option>
+		                <option <?php if($gasto->type == 'VARIOS'){ echo "selected"; } ?> value="VARIOS"> VARIOS</option>
+		                <option <?php if($gasto->type == 'REGALO'){ echo "selected"; } ?> value="REGALO BIENVENIDA"> REGALO BIENVENIDA</option>
+		                <option <?php if($gasto->type == 'LAVANDERIA'){ echo "selected"; } ?> value="LAVANDERIA"> LAVANDERIA</option>
+		                <option <?php if($gasto->type == 'LIMPIEZA'){ echo "selected"; } ?> value="LIMPIEZA"> LIMPIEZA</option>
+		                <option <?php if($gasto->type == 'EQUIPAMIENTO'){ echo "selected"; } ?> value="EQUIPAMIENTO VIVIENDA"> EQUIPAMIENTO VIVIENDA</option>
+		                <option <?php if($gasto->type == 'DECORACION'){ echo "selected"; } ?> value="DECORACION"> DECORACION</option>
+		                <option <?php if($gasto->type == 'MENAJE'){ echo "selected"; } ?> value="MENAJE"> MENAJE</option>
+		                <option <?php if($gasto->type == 'SABANAS Y TOALLAS'){ echo "selected"; } ?> value="SABANAS Y TOALLAS"> SABANAS Y TOALLAS</option>
+		                <option <?php if($gasto->type == 'IMPUESTOS'){ echo "selected"; } ?> value="IMPUESTOS"> IMPUESTOS</option>
+		                <option <?php if($gasto->type == 'GASTOS'){ echo "selected"; } ?> value="GASTOS BANCARIOS"> GASTOS BANCARIOS</option>
+		                <option <?php if($gasto->type == 'MARKETING Y PUBLICIDAD'){ echo "selected"; } ?> value="MARKETING Y PUBLICIDAD"> MARKETING Y PUBLICIDAD</option>
+		                <option <?php if($gasto->type == 'REPARACION Y CONSERVACION'){ echo "selected"; } ?> value="REPARACION Y CONSERVACION"> REPARACION Y CONSERVACION</option>
+		                <option <?php if($gasto->type == 'SUELDOS Y SALARIOS'){ echo "selected"; } ?> value="SUELDOS Y SALARIOS"> SUELDOS Y SALARIOS</option>
+		                <option <?php if($gasto->type == 'SEG SOCIALES'){ echo "selected"; } ?> value="SEG SOCIALES"> SEG SOCIALES</option>
+		                <option <?php if($gasto->type == 'MENSAJERIA'){ echo "selected"; } ?> value="MENSAJERIA"> MENSAJERIA</option>
+		                <option <?php if($gasto->type == 'COMISIONES'){ echo "selected"; } ?> value="COMISIONES COMERCIALES"> COMISIONES COMERCIALES</option>
 		            </select>
 				</td>
 

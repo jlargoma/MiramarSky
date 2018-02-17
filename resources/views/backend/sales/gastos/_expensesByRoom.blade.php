@@ -94,24 +94,39 @@ setlocale(LC_TIME, "es_ES");
     <?php endif ?>
 	
     <div class="col-md-4 col-xs-12">
-        <h3 class="tex-center">Grafica de pagos</h3>
-        <table class="table table-hover">
-            <thead>
-                <th class="text-center bg-complete text-white">Generado</th>
-                <th class="text-center bg-success text-white">Pagado</th>
-                <th class="text-center bg-danger text-white">Pendiente</th>
-            </thead>
-            <thead >
-                <th class ="text-center bg-complete text-white"><?php echo number_format($data['total'],2,',','.') ?>€</th>
+        <div class="row">
+            <h3 class="tex-center">Grafica de pagos</h3>
+            <table class="table table-hover">
+                <thead>
+                    <th class="text-center bg-complete text-white">Generado</th>
+                    <th class="text-center bg-success text-white">Pagado</th>
+                    <th class="text-center bg-danger text-white">Pendiente</th>
+                </thead>
+                <thead >
+                    <th class ="text-center bg-complete text-white"><?php echo number_format($data['total'],2,',','.') ?>€</th>
 
-                <th class ="text-center bg-success text-white" ><?php echo number_format($data['pagado'],2,',','.') ?>€</th>
-        
-                <th class ="text-center bg-danger text-white" style=""><?php echo number_format($data['total'] - $data['pagado'],2,',','.') ?>€</th>
-               
-                
-            </thead>
-        </table>
-        
+                    <th class ="text-center bg-success text-white" ><?php echo number_format($data['pagado'],2,',','.') ?>€</th>
+            
+                    <th class ="text-center bg-danger text-white" style=""><?php echo number_format($data['total'] - $data['pagado'],2,',','.') ?>€</th>
+                   
+                    
+                </thead>
+            </table>
+        </div>
+        <div class="row">
+            <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
+                <thead >
+                    <tr>
+                        <th class ="text-center bg-complete text-white">Metalico</th>
+                        <th class="text-center" style="color: #000;"><?php echo number_format($data['metalico'] ,2,',','.') ?>€</th>
+                    </tr>
+                    <tr>
+                        <th class ="text-center bg-complete text-white">Banco</th>
+                        <th class="text-center" style="color: #000;"><?php echo number_format($data['banco'] ,2,',','.') ?>€</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
        
     </div>
 </div>

@@ -400,6 +400,7 @@ class LiquidacionController extends Controller
 
     static function getSalesByYear($year="")
     {
+        // $array = [0 =>"Metalico Jorge", 1 =>"Metalico Jaime",2 =>"Banco Jorge",3=>"Banco Jaime"];
         if ($year == "") {
             $year = date('Y');
         }
@@ -423,6 +424,8 @@ class LiquidacionController extends Controller
                 } elseif($pay->type == 2 || $pay->type == 3) {
                     $result['banco'] += $pay->import;
                 }
+
+               
                 
             }
         
@@ -487,6 +490,12 @@ class LiquidacionController extends Controller
         $apto = 0;
         $park = 0;
         $lujo = 0;
+        $metalico = 0;
+        $banco = 0;
+        $metalico_jorge = 0;
+        $metalico_jaime = 0;
+        $banco_jorge = 0;
+        $banco_jaime = 0;
         foreach ($books as $book) {
 
            if ($book->type_book != 7 && $book->type_book != 8 && $book->type_book != 9) {
@@ -495,11 +504,25 @@ class LiquidacionController extends Controller
                $lujo  +=  $book->cost_lujo;
                
            }
+           foreach ($book->pago as $key => $pay) {
+
+               if ($pay->type == 0 || $pay->type == 1) {
+                   $metalico += $pay->import;
+               } elseif($pay->type == 2 || $pay->type == 3) {
+                   $banco += $pay->import;
+               }
+                if ($pay->type == 0) {
+                    $metalico_jorge += $pay->import;
+                } elseif($pay->type == 1) {
+                    $metalico_jaime += $pay->import;
+                }elseif($pay->type == 2) {
+                    $banco_jorge += $pay->import;
+                }elseif($pay->type == 3) {
+                    $banco_jaime += $pay->import;
+                }
+           }
         }
         $total += ( $apto + $park + $lujo);
-
-
-        
 
         return [
                 'total' => $total,
@@ -507,6 +530,12 @@ class LiquidacionController extends Controller
                 'park' => $park,
                 'lujo' => $lujo,
                 'room' => $room,
+                'metalico' => $metalico,
+                'metalico_jorge' => $metalico_jorge,
+                'metalico_jaime' => $metalico_jaime,
+                'banco_jorge' => $banco_jorge,
+                'banco_jaime' => $banco_jaime,
+                'banco' => $banco,
                 'pagado' => $gastos->sum('import'),
             ];
 
