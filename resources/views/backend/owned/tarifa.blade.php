@@ -49,7 +49,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php for ($i=4; $i <= 8 ; $i++): ?>
+                        <?php for ($i=4; $i <= 14 ; $i++): ?>
                             <tr>
                             
                                 <td class ="text-center font-s16 font-w600" style="padding: 10px 5px"> 
