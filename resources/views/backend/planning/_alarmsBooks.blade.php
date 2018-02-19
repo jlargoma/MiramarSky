@@ -17,11 +17,9 @@
             <tbody>
                 <?php foreach ($alarms as $key => $book): ?>
                     <tr>
-                        <td class="text-center" style="width: 30px; padding: 5px 0!important">
+                        <td class="text-center"  style="width: 30px; padding: 5px 0!important">
                             <?php if ($book->agency != 0): ?>
-                                <img src="/pages/booking.png" style="width: 20px;"/>
-                            <?php else: ?>
-
+                                <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
                             <?php endif ?>
                         </td>
                         <td class ="text-center" style="color: black;padding: 5px!important;">  
@@ -32,6 +30,9 @@
                         </td>
                         <td class="text-center" style="color: black; padding: 5px!important">   
                             <?php echo substr($book->room->nameRoom,0,5) ?>       
+                        </th>
+                        <td class="text-center" style="color: black; padding: 5px!important">   
+                            <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?>
                         </th>
                         <td class="text-center" style="color: black;padding: 5px 10px!important">   
                             <b>
@@ -77,6 +78,19 @@
                                 <a target="_blank" href="https://dashboard.stripe.com/payments"><img src="/img/stripe-icon.jpg" style="width: 20px;"></a>
                             <?php endif ?> 
                         </td>
+                        <td class="text-center">
+
+                            <?php if ($book->send == 1): ?>
+                                <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-default sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="1">
+                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                </button> 
+                            <?php else: ?>
+                                <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-primary sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="0">
+                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                </button> 
+                            <?php endif ?>
+                            
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
@@ -96,11 +110,9 @@
                     <tbody>
                         <?php foreach ($alarms as $key => $book): ?>
                             <tr>
-                                <td class="text-center" style="width: 30px; padding: 5px 0!important">
+                                <td class="text-center"  style="width: 30px; padding: 5px 0!important">
                                     <?php if ($book->agency != 0): ?>
-                                        <img src="/pages/booking.png" style="width: 20px;"/>
-                                    <?php else: ?>
-
+                                        <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
                                     <?php endif ?>
                                 </td>
                                 <td class ="text-center" style="color: black;padding: 5px!important;">  
@@ -112,6 +124,10 @@
                                 <td class="text-center" style="color: black; padding: 5px!important">   
                                     <?php echo substr($book->room->nameRoom,0,5) ?>       
                                 </td>
+                                <td class="text-center" style="color: black; padding: 5px!important">   
+                                    <a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a>      
+                                </td>
+                                
                                 <td class="text-center" style="color: black;padding: 5px 10px!important">   
                                     <b>
                                         <?php
@@ -154,6 +170,19 @@
                                         <a target="_blank" href="https://dashboard.stripe.com/payments"><img src="/img/stripe-icon.jpg" style="width: 20px;"></a>
                                     <?php endif ?> 
                                 </td>
+                                <td class="text-center">
+
+                                    <?php if ($book->send == 1): ?>
+                                        <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-default sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="1">
+                                            <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                        </button> 
+                                    <?php else: ?>
+                                        <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-primary sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="0">
+                                            <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                        </button> 
+                                    <?php endif ?>
+                                    
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -162,3 +191,115 @@
         </div>
     </div> 
 <?php endif ?>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.sendSecondPay').click(function(event) {
+            var id = $(this).attr('data-id');
+            var sended = $(this).attr('data-sended');
+
+            if (sended == 0) {
+                $.get('/admin/reservas/api/sendSencondEmail', { id:id }, function(data) {
+                    if (data.status == 'danger') {
+                        $.notify({
+                            title: '<strong>'+data.title+'</strong>, ',
+                            icon: 'glyphicon glyphicon-star',
+                            message: data.response
+                        },{
+                            type: data.status,
+                            animate: {
+                                enter: 'animated fadeInUp',
+                                exit: 'animated fadeOutRight'
+                            },
+                            placement: {
+                                from: "top",
+                                align: "left"
+                            },
+                            offset: 80,
+                            spacing: 10,
+                            z_index: 1031,
+                            allow_dismiss: true,
+                            delay: 60000,
+                            timer: 60000,
+                        }); 
+                    } else {
+                        $.notify({
+                            title: '<strong>'+data.title+'</strong>, ',
+                            icon: 'glyphicon glyphicon-star',
+                            message: data.response
+                        },{
+                            type: data.status,
+                            animate: {
+                                enter: 'animated fadeInUp',
+                                exit: 'animated fadeOutRight'
+                            },
+                            placement: {
+                                from: "top",
+                                align: "left"
+                            },
+                            allow_dismiss: false,
+                            offset: 80,
+                            spacing: 10,
+                            z_index: 1031,
+                            delay: 5000,
+                            timer: 1500,
+                        }); 
+                    }
+                });
+            } else {
+                if (confirm("Quieres reenviarlo!")) {
+                    $.get('/admin/reservas/api/sendSencondEmail', { id:id }, function(data) {
+                        if (data.status == 'danger') {
+                            $.notify({
+                                title: '<strong>'+data.title+'</strong>, ',
+                                icon: 'glyphicon glyphicon-star',
+                                message: data.response
+                            },{
+                                type: data.status,
+                                animate: {
+                                    enter: 'animated fadeInUp',
+                                    exit: 'animated fadeOutRight'
+                                },
+                                placement: {
+                                    from: "top",
+                                    align: "left"
+                                },
+                                offset: 80,
+                                spacing: 10,
+                                z_index: 1031,
+                                allow_dismiss: true,
+                                delay: 60000,
+                                timer: 60000,
+                            }); 
+                        } else {
+                            $.notify({
+                                title: '<strong>'+data.title+'</strong>, ',
+                                icon: 'glyphicon glyphicon-star',
+                                message: data.response
+                            },{
+                                type: data.status,
+                                animate: {
+                                    enter: 'animated fadeInUp',
+                                    exit: 'animated fadeOutRight'
+                                },
+                                placement: {
+                                    from: "top",
+                                    align: "left"
+                                },
+                                allow_dismiss: false,
+                                offset: 80,
+                                spacing: 10,
+                                z_index: 1031,
+                                delay: 5000,
+                                timer: 1500,
+                            }); 
+                        }
+                    });
+                }else{
+                    alert('NO actuamos');
+                }
+                
+            }
+            
+        });
+    });
+</script>
