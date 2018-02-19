@@ -18,6 +18,35 @@ setlocale(LC_TIME, "es_ES");
 	</thead>	
 	<tbody>
 		<?php $array = [0 =>"Metalico Jorge", 1 =>"Metalico Jaime",2 =>"Banco Jorge",3=>"Banco Jaime"] ?>
+				<tr>
+					<td class="text-center" style="padding: 8px 5px!important">
+						
+					</td>
+					<td class="text-center" style="padding: 8px 5px!important">
+						-- ---. ----
+					</td>
+					<td class="text-center" style="padding: 8px 5px!important">
+						COMISION STRIPE
+					</td>
+					<td class="text-center" style="padding: 8px 5px!important">
+						COMISION
+					</td>
+
+					<td class="text-center" style="padding: 8px 5px!important">
+						BANCO JORGE
+						
+					</td>
+					<td class="text-center" style="padding: 8px 5px!important">
+						<b><?php echo number_format($totalStripep, 0, ',', '.'); ?> €</b>
+					</td>
+					<td class="text-center" style="padding: 8px 5px!important">
+						TODOS
+					</td>
+
+					<td class="text-center" style="padding: 8px 5px!important">
+						PAGOS A STRIPE
+					</td>
+				</tr>
 		<?php foreach ($gastos as $key => $gasto): ?>
 			
 		

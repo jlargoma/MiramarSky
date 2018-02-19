@@ -336,9 +336,43 @@
         }
     });
 
+	$('.customer-phone').change(function(event) {
+		var idCustomer = $(this).attr('data-id');
+		var phone = $(this).val();
+		$.get('/admin/customer/change/phone/'+idCustomer+'/'+phone, function(data) {
+			$.notify({
+			    title: '<strong>'+data.title+'</strong>, ',
+			    icon: 'glyphicon glyphicon-star',
+			    message: data.response
+			},{
+			    type: data.status,
+			    animate: {
+			        enter: 'animated fadeInUp',
+			        exit: 'animated fadeOutRight'
+			    },
+			    placement: {
+			        from: "top",
+			        align: "left"
+			    },
+			    allow_dismiss: true,
+			    offset: 80,
+			    spacing: 10,
+			    z_index: 1031,
+			    delay: 1500,
+			    timer: 1500,
+			}); 
+
+    		// recargamos la actual tabla
+    		var type = $('.table-data').attr('data-type');
+	        var year = $('#fecha').val();
+	        $.get('/admin/reservas/api/getTableData', { type: type, year: year }, function(data) {
+	            $('.content-tables').empty().append(data);
+	        });
+		});
+	});
 	
 
-	    $('.restoreBook').click(function(event) {
+    $('.restoreBook').click(function(event) {
     	var id = $(this).attr('data-id');
     	$.get('/admin/reservas/restore/'+id, function(data) {
            	
@@ -382,4 +416,6 @@
 
         });
     });
+
+
 </script>

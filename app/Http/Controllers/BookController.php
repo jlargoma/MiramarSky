@@ -295,6 +295,11 @@ class BookController extends Controller
                         $book->inc_percent   = 0 ;
                         $book->ben_jorge     = 0 ;
                         $book->ben_jaime     = 0 ;   
+
+                        /* Asiento automatico para reservas propietarios*/
+                        LiquidacionController::setExpenseLimpieza($request->input('status'), $room->id, $finish);
+                        /* Asiento automatico */
+
                     }elseif($request->input('status') == 7){
                         $book->PVPAgencia    = ( $request->input('agencia') )?$request->input('agencia'):0;
                         $book->sup_limp      = ($room->sizeApto == 1) ? 30 : 50;
@@ -312,6 +317,12 @@ class BookController extends Controller
                         $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
                         $book->ben_jorge = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
                         $book->ben_jaime = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
+
+                        /* Asiento automatico para reservas subcomunidad*/
+                        LiquidacionController::setExpenseLimpieza($request->input('status'), $room->id, $finish);
+                        /* Asiento automatico */
+                        
+
                     }else{
 
                         $book->PVPAgencia  = ( $request->input('agencia') )?$request->input('agencia'):0;

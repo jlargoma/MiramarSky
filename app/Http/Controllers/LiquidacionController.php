@@ -309,12 +309,29 @@ class LiquidacionController extends Controller
                                 ->orderBy('date', 'DESC')
                                 ->get();
 
+        $books = \App\Book::whereIn('type_book', [2])
+                            ->where('start', '>', $inicio->copy()->format('Y-m-d'))
+                            ->where('start', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                            ->orderBy('start', 'ASC')
+                            ->get();
+        $totalStripep = 0;
+        foreach ($books as $key => $book) {
+            
+            if (count($book->pago) > 0) {
+                foreach ($book->pago as $key => $pay) {
+                    $totalStripep +=  (((1.4 * $pay->import)/100)+0.25);
+                }
+            }
+
+        }
+
                                 
 
         return view ('backend/sales/gastos/gastos',  [   
                                                         'date'         => $date,
                                                         'inicio'         => $inicio,
                                                         'gastos'         => $gastos,
+                                                        'totalStripep'         => $totalStripep,
                                                     ]);
     }
 
@@ -573,7 +590,33 @@ class LiquidacionController extends Controller
 
 
 
-
+    static function setExpenseLimpieza($status, $room_id, $fecha)
+    {
+        $room = \App\Rooms::find($room_id);
+        $expenseLimp = 0;
+        if ($room->sizeApto == 1) {
+            $expenseLimp     = 30;
+         } elseif($room->sizeApto == 2) {
+            $expenseLimp     = 40;
+        }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
+            $expenseLimp     = 70;
+        }
+        
+        $gasto = new \App\Expenses();
+        $gasto->concept = "Limpieza reserva prop. ".$room->nameRoom;
+        $gasto->date = Carbon::createFromFormat('d/m/Y', $fecha)->format('Y-m-d');
+        $gasto->import = $expenseLimp;
+        $gasto->typePayment = 1;
+        $gasto->type = 'LIMPIEZA';
+        $gasto->comment = 'CARGO DE LIMPIEZA PARA EL '.$room->nameRoom.' CORRESPONDIENTE A LA RESERVA PROPIETARIO';
+        $gasto->PayFor = $room->nameRoom;
+        if ($gasto->save()) {
+            return true;
+        } else {
+            return false;
+        }
+        
+    }
 
 
 
