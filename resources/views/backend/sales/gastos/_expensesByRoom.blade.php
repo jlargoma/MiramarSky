@@ -96,6 +96,11 @@ setlocale(LC_TIME, "es_ES");
     <div class="col-md-4 col-xs-12">
         <div class="row">
             <h3 class="tex-center">Grafica de pagos</h3>
+            <!-- <div class="row">
+                <pre>
+                    <?php print_r($data); ?>
+                </pre>
+            </div> -->
             <table class="table table-hover">
                 <thead>
                     <th class="text-center bg-complete text-white">Generado</th>
@@ -114,18 +119,20 @@ setlocale(LC_TIME, "es_ES");
             </table>
         </div>
         <div class="row">
-            <table class="table table-hover demo-table-search table-responsive-block" id="tableWithSearch" >
-                <thead >
-                    <tr>
-                        <th class ="text-center bg-complete text-white">Metalico</th>
-                        <th class="text-center" style="color: #000;"><?php echo number_format($data['metalico'] ,2,',','.') ?>€</th>
-                    </tr>
-                    <tr>
-                        <th class ="text-center bg-complete text-white">Banco</th>
-                        <th class="text-center" style="color: #000;"><?php echo number_format($data['banco'] ,2,',','.') ?>€</th>
-                    </tr>
-                </thead>
-            </table>
+            <div class="col-md-8 col-xs-12">
+                <table class="table table-striped">
+                    <thead >
+                        <tr>
+                            <th class ="text-center bg-success text-white">Metalico</th>
+                            <th class="text-center" style="color: #000;"><?php echo number_format($data['metalico'] ,2,',','.') ?>€</th>
+                        </tr>
+                        <tr>
+                            <th class ="text-center bg-success text-white">Banco</th>
+                            <th class="text-center" style="color: #000;"><?php echo number_format($data['banco'] ,2,',','.') ?>€</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
        
     </div>

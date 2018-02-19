@@ -23,7 +23,7 @@ setlocale(LC_TIME, "es_ES");
 						
 					</td>
 					<td class="text-center" style="padding: 8px 5px!important">
-						-- ---. ----
+						Acutalizado a <?php echo Carbon::now()->formatLocalized('%d %b %Y') ?>
 					</td>
 					<td class="text-center" style="padding: 8px 5px!important">
 						COMISION STRIPE
@@ -40,7 +40,7 @@ setlocale(LC_TIME, "es_ES");
 						<b><?php echo number_format($totalStripep, 0, ',', '.'); ?> €</b>
 					</td>
 					<td class="text-center" style="padding: 8px 5px!important">
-						TODOS
+						GENERICO
 					</td>
 
 					<td class="text-center" style="padding: 8px 5px!important">
@@ -113,7 +113,7 @@ setlocale(LC_TIME, "es_ES");
 							<?php endif ?>
 						<?php endfor; ?>
 					<?php else: ?>
-						Todos
+						GENERICO
 					<?php endif ?>
 				</td>
 

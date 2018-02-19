@@ -20,29 +20,37 @@ class PaymentsProController extends Controller
 
         if ( empty($year) ) {
             $date = Carbon::now();
+            if ($date->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+            }else{
+                $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            }
+            
         }else{
             $year = Carbon::createFromFormat('Y',$year);
             $date = $year->copy();
 
         }
 
+        $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
+        
+       
+        
+        // echo "<pre>";
+        // print_r($inicio);
+        // die();
 
-
-        if ($date->copy()->format('n') >= 9) {
-            $date = new Carbon('first day of September '.$date->copy()->format('Y'));
-        }else{
-            $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
-        }
         $arrayIdRooms = array();
-        $rooms = \App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get();
-
+        $rooms = \App\Rooms::orderBy('order', 'ASC')->get();
 
         /*Calculamos los ingresos por reserva y room */
         $books = \App\Book::whereIn('type_book',[2])
-                            ->where('start','>=',$date->copy())
-                            ->where('start','<=',$date->copy()->addYear())
+                            ->where('start','>=',$inicio->copy())
+                            ->where('start','<=',$inicio->copy()->addYear())
                             ->orderBy('start', 'ASC')
                             ->get();
+
+
 
         $data    = array();
         $summary = [
@@ -55,30 +63,36 @@ class PaymentsProController extends Controller
                     'totalPVP'     => 0,
                     'pagos'        => 0,
                     ];
-
+        foreach (\App\Rooms::orderBy('order', 'ASC')->get() as $room) {
+            $data[$room->id] = [];
+        }
+        // echo "<pre>";
+        // print_r($data);
+        // die();
         /* Calculamos los pagos por room */
         
         foreach ($rooms as $room) {
-            $paymentspro = \App\Paymentspro::where('room_id', $room->id)
-                                            ->where('datePayment','>',$date->copy())
-                                            ->where('datePayment','<',$date->copy()->addYear())
-                                            ->get();
+            $gastos = \App\Expenses::where('date', '>=', $inicio->copy()->format('Y-m-d'))
+                                ->Where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                                ->Where('PayFor', 'LIKE', '%'.$room->id.'%')
+                                ->orderBy('date', 'DESC')
+                                ->get();
 
-            if ( count($paymentspro) > 0) {
+            if ( count($gastos) > 0) {
 
-                foreach ($paymentspro as $payments) {
+                foreach ($gastos as $gasto) {
 
                     if ( isset($data[$room->id]['pagos']) ) {
 
-                        $data[$room->id]['pagos'] += $payments->import;
+                        $data[$room->id]['pagos'] += $gasto->import;
 
                     }else{
 
-                        $data[$room->id]['pagos'] = $payments->import;
+                        $data[$room->id]['pagos'] = $gasto->import;
 
                     }
 
-                    $summary['pagos'] += $payments->import;
+                    $summary['pagos'] += $gasto->import;
                 }
 
 
@@ -101,7 +115,6 @@ class PaymentsProController extends Controller
         foreach ($books as $book) {
             $costTotal = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->cost_limp + $book->PVPAgencia;
 
-                
             $data[$book->room_id]['totales']['totalLimp']    += $book->cost_limp;
             $data[$book->room_id]['totales']['totalAgencia'] += $book->PVPAgencia;
             $data[$book->room_id]['totales']['totalParking'] += $book->cost_park;
@@ -122,7 +135,7 @@ class PaymentsProController extends Controller
 
 
         return view('backend/paymentspro/index',[
-                                                    'date'    => $date,
+                                                    'date'    => $inicio,
                                                     'data'    => $data,
                                                     'summary' => $summary,
                                                     'rooms'   => $rooms
@@ -323,13 +336,21 @@ class PaymentsProController extends Controller
             $date = new Carbon('first day of September '.$request->year);
         }
 
-        $books = \App\Book::where('start' , '>=' , $date->format('Y-m-d'))
+        if ($idRoom == "all") {
+            $books = \App\Book::where('start' , '>=' , $date->format('Y-m-d'))
+                            ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
+                            ->whereIn('type_book',[2, 7, 8])
+                            ->orderBy('start', 'ASC')
+                            ->get();
+        } else {
+            $books = \App\Book::where('start' , '>=' , $date->format('Y-m-d'))
                             ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
                             ->whereIn('type_book',[2, 7, 8])
                             ->where('room_id',$idRoom)
                             ->orderBy('start', 'ASC')
                             ->get();
-
+        }
+        
 
         foreach ($books as $key => $book) {
             $totales["total"]        += $book->total_price;
@@ -362,6 +383,7 @@ class PaymentsProController extends Controller
 
         }
         $totBooks    = (count($books) > 0)?count($books):1;
+
         $diasPropios = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[7,8])->orderBy('created_at','DESC')->get();
         $countDiasPropios = 0;
                 foreach ($diasPropios as $key => $book) {
@@ -429,17 +451,29 @@ class PaymentsProController extends Controller
         $finish = Carbon::createFromFormat('d M, y' , trim($date[1]));
 
 
-        $room = \App\Rooms::find( $request->idRoom);
+        
         $total = 0;
         $apto = 0;
         $park = 0;
         $lujo = 0;
-        $books = \App\Book::where('room_id', $room->id)
+
+        if ($request->idRoom != 'all') {
+            $room = \App\Rooms::find( $request->idRoom);
+            $books = \App\Book::where('room_id', $room->id)
                             ->whereIn('type_book',[2,7,8])
                             ->where('start','>=',$start->copy()->format('Y-m-d'))
                             ->where('finish','<=',$finish->copy()->format('Y-m-d'))
                             ->orderBy('start','ASC')
                             ->get();
+        } else {
+            $room = "all";
+            $books = \App\Book::whereIn('type_book',[2,7,8])
+                            ->where('start','>=',$start->copy()->format('Y-m-d'))
+                            ->where('finish','<=',$finish->copy()->format('Y-m-d'))
+                            ->orderBy('start','ASC')
+                            ->get();
+        }
+        
 
         foreach ($books as $book) {
 

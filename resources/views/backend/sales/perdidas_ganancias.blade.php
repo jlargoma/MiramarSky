@@ -1,219 +1,337 @@
-<?php setlocale(LC_TIME, "ES"); ?>
-<?php setlocale(LC_TIME, "es_ES"); ?>
-<?php use \Carbon\Carbon; ?>
-
+<?php   use \Carbon\Carbon;  
+        setlocale(LC_TIME, "ES"); 
+        setlocale(LC_TIME, "es_ES"); 
+?>
 @extends('layouts.admin-master')
 
-@section('title') Cuenta de perdidas y ganancias @endsection
+@section('title') Perdidas y ganancias  @endsection
 
-
-@section('content')
+@section('externalScripts') 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
-<style type="text/css">
-		#main-container{
-			padding-top: 10px!important
-		}
-</style>
-<div class="bg-white push-10">
-	<section class="content content-full">
-		<div class="row">
-			<div class="col-xs-12 col-md-6">
-				<div class="col-xs-12 col-md-6">
-					<canvas id="barChart" style="width: 100%; height: 250px;"></canvas>
-				</div>
-				<div class="col-xs-12 col-md-6">
-					<canvas id="barChartClient" style="width: 100%; height: 250px;"></canvas>
-				</div>
-			</div>
-			<div class="col-xs-12 col-md-6">
-				<div class="col-xs-12 col-md-4 not-padding">
-					<div class="col-xs-12 not-padding">
-						<div class="block block-link-hover3 text-center push-0">
-							
-							<div class="block-content block-content-full bg-success">
-								<div class="h1 font-w700 text-white"> XXXXXX<span class="h2 text-white-op">€</span></div>
-								<div class="h5 text-white-op text-uppercase push-5-t">Ingresos anuales</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-12 col-md-4 not-padding">
-					<div class="col-xs-12 not-padding">
-						<div class="block block-link-hover3 text-center push-0">
-							<div class="block-content block-content-full bg-danger">
-								<div class="h1 font-w700 text-white"> XXXXX<span class="h2 text-white-op">€</span></div>
-								<div class="h5 text-white-op text-uppercase push-5-t">Gastos anuales</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-xs-12 col-md-4 not-padding">
-					<div class="col-xs-12 not-padding">
-						<div class="block block-link-hover3 text-center push-0">
-							<div class="block-content block-content-full bg-primary">
-								<div class="h1 font-w700 text-white"> 
-									XXXXXXX 
-								</div>
-								<div class="h5 text-white-op text-uppercase push-5-t">Resultado</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="clearfix"></div>
-
-				<?php for ($i=1; $i <= 3 ; $i++): ?>
-					<div class="col-xs-12 col-md-4 not-padding push-0">
-						<div class="block block-link-hover3 text-centerpush-0">
-						
-							<div class="row block-content  bg-gray-light" style="padding: 10px 5px;">
-							
-									<div class="col-md-6 not-padding">
-										<div class="col-md-12">
-											Clientes <br>
-											<span class="font-w700 font-s18">XXXXXXX</span>/<span class="font-w700 font-s18">XXXXXX</span>
-											
-										</div>
-									</div>
-									<div class="col-md-6 not-padding">
-										<div class="col-md-12 text-center  h1 text-black-op text-uppercase">
-											<span class="font-w700">XXXXXXXX</span>
-												<i class="fa fa-arrow-up text-success"></i>
-										</div>
-									</div>
-									<div class="col-md-12 not-padding">
-										<div class="col-md-5">Cuota/mes</div> 
-										<div class="col-md-7 text-center">
-											<span class="font-w700 font-s18 ">
-												XXXXXXx
-													<i class="fa fa-arrow-down text-danger"></i>
-												
-											</span>
-										</div>
-									</div>
-
-							</div>
-						</div>
-					</div>
-				<?php endfor; ?>
-			</div>
-		</div>
-	</section>
-</div>
-<div class="bg-white">
-	<section class="content content-full">
-		<div class="row">
-			<div class="col-xs-9 push-20">
-				<h2 class="font-w300 text-center"><b>CUENTA DE PERDIDAS Y GANACIAS DE XXXXXXX</b></h2>
-			</div>
-			<div class="col-xs-3 col-md-3 push-30">
-				<div class="col-md-4 pull-right">
-					XXXXXXXXXX
-				</div>
-			</div>
-			<div class="col-xs-12">
-				<!-- col-md-6  -->
-				
-				<table class="js-table-sections table table-hover table-bordered table-striped table-header-bg">
-					<thead>
-						<tr>
-							<th class="text-center" style="width: 30px;"></th>
-							<th class="text-center"></th>
-							<?php for($i = 1 ; $i <= 12; $i++): ?>
-								<th class="text-center">XXXXXXXX</th>
-							<?php endfor; ?>
-							<th class="text-center">Total</th>
-						</tr>
-					</thead >
-					<tbody class="js-table-sections-header">
-						<tr>
-						 	<td class="text-center" style="color: #fff; background-color: #46c37b;">
-                                <i class="fa fa-angle-right"></i>
-                            </td>
-							<td class="text-center" style="color: #fff; background-color:#46c37b; border-bottom-color:#46c37b;">
-								<b>INGRESOS</b>
-							</td>
-							<?php for($i = 1 ; $i <= 12; $i++): ?>
-								<td class="text-center" style="color: #fff; background-color:#46c37b; border-bottom-color:#46c37b;">
-								
-									<b>
-										XXXXXXXX
-									</b>
-								</td>
-							<?php endfor; ?>
-							<td class="text-center" style="color: #fff; background-color: #46c37b; border-bottom-color:#46c37b;">
-								<b>
-									XXXXXXXX
-								</b>
-							</td>
-						</tr>	
-					</tbody>
-					<tbody>			
-						
-					</tbody>		
-						<!-- FIN INGRESOS -->
-						<!-- GASTOS -->
-					<tbody class="js-table-sections-header">
-						<tr>
-							<td class="text-center" style="color: #fff; background-color: #a94442;">
-							    <i class="fa fa-angle-right"></i>
-							</td>
-							<td class="text-center" style="color: #fff; background-color: #a94442; border-bottom-color: #a94442;">
-								<b>GASTOS</b>
-							</td>
-							<?php for($i = 1 ; $i <= 12; $i++): ?>
-								<td class="text-center" style="color: #fff; background-color: #a94442; border-bottom-color: #a94442;">
-									
-									<b>
-										xxxxxxx
-									</b>
-									
-								</td>
-							<?php endfor; ?>
-							<td class="text-center" style="color: #fff; background-color: #a94442; border-bottom-color: #a94442;">
-								<b>
-									xxxxxxx
-								</b>
-							</td>
-						</tr>
-					</tbody>
-					<tbody>
-					</tbody>
-					<tbody class="js-table-sections-header">
-						<!-- FIN GASTOS -->
-						<tr >
-							<td class="text-center"  style="color: #fff; background-color: #5c90d2;">
-							    <i class="fa fa-angle-right"></i>
-							</td>
-
-							<td class="text-center" style="color: #fff; background-color: #5c90d2; border-bottom-color: #5c90d2; font-size: 18px;">
-								<b>BENEFICIO CONTABLE</b>
-							</td>
-							<?php for($i = 1 ; $i <= 12; $i++): ?>
-								<td class="text-center" style="color: #fff; background-color: #5c90d2; border-bottom-color: #5c90d2; font-size: 18px;">
-									<b>
-										xxxxxxx
-									</b>
-								</td>
-							<?php endfor; ?>
-							<td class="text-center" style="color: #fff; background-color: #5c90d2; border-bottom-color: #5c90d2; font-size: 18px;">
-								<b>xxxxxx €</b>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</section>
-</div>
 @endsection
-@section('scripts') 
-	<script>
-        jQuery(function () {
-            // Init page helpers (Table Tools helper)
-            App.initHelpers('table-tools');
-        });
-    </script>
+
+@section('content')
+<div class="container padding-5 sm-padding-10">
+	<div class="row bg-white">
+		<div class="col-md-12 col-xs-12">
+
+			<div class="col-md-4 col-md-offset-3 col-xs-12">
+				<h2 class="text-center">
+					PRDIDAS Y GANANCIAS
+				</h2>
+			</div>
+			<div class="col-md-2 col-xs-12 sm-padding-10" style="padding: 10px">
+				<select id="fecha" class="form-control minimal">
+                     <?php $fecha = $inicio->copy()->SubYears(2); ?>
+                     <?php if ($fecha->copy()->format('Y') < 2015): ?>
+                         <?php $fecha = new Carbon('first day of September 2015'); ?>
+                     <?php endif ?>
+                 
+                     <?php for ($i=1; $i <= 3; $i++): ?>                           
+                         <option value="<?php echo $fecha->copy()->format('Y'); ?>" 
+                            <?php if (  $fecha->copy()->format('Y') == date('Y') || 
+                                        $fecha->copy()->addYear()->format('Y') == date('Y') 
+                                    ){ echo "selected"; }?> >
+                            <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
+                         </option>
+                         <?php $fecha->addYear(); ?>
+                     <?php endfor; ?>
+                 </select>     
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container-fluid">
+	<div class="row bg-white push-30">
+		<div class="col-md-6 col-xs-12 push-20">
+			
+			@include('backend.sales._button-contabiliad')
+		
+		</div>
+	</div>
+	<div class="row bg-white push-30">
+		<div class="col-md-3 col-xs-12">
+		   <div>
+		       <canvas id="barChart" style="width: 100%; height: 250px;"></canvas>
+		   </div>
+		</div>
+		<?php $totalYearIncomes = 0; ?>
+		<?php $totalYearExpenses = 0; ?>
+		<?php $init = $inicio->copy(); ?>
+			<?php for($i = 1 ; $i <= 12; $i++): ?>
+
+				<?php $totalMonthIncomes = 	
+									$arrayTotales['meses'][$init->copy()->format('n')] + 
+    								$arrayIncomes['INGRESOS EXTRAORDINARIOS'][$init->copy()->format('n')] + 
+    								$arrayIncomes['RAPPEL CLOSES'][$init->copy()->format('n')] + 
+    								$arrayIncomes['RAPPEL FORFAITS'][$init->copy()->format('n')] + 
+    								$arrayIncomes['RAPPEL ALQUILER MATERIAL'][$init->copy()->format('n')];
+				?>
+				<?php $totalYearIncomes += $totalMonthIncomes; ?>
+
+				<?php 
+					$totalMonthExpenses = 
+									$arrayExpenses['PAGO PROPIETARIO'][$init->copy()->format('n')] +
+									$arrayExpenses['SERVICIOS PROF INDEPENDIENTES'][$init->copy()->format('n')] +
+									$arrayExpenses['VARIOS'][$init->copy()->format('n')] +
+									$arrayExpenses['REGALO BIENVENIDA'][$init->copy()->format('n')] +
+									$arrayExpenses['LAVANDERIA'][$init->copy()->format('n')] +
+									$arrayExpenses['LIMPIEZA'][$init->copy()->format('n')] +
+									$arrayExpenses['EQUIPAMIENTO VIVIENDA'][$init->copy()->format('n')] +
+									$arrayExpenses['DECORACION'][$init->copy()->format('n')] +
+									$arrayExpenses['MENAJE'][$init->copy()->format('n')] +
+									$arrayExpenses['SABANAS Y TOALLAS'][$init->copy()->format('n')] +
+									$arrayExpenses['IMPUESTOS'][$init->copy()->format('n')] +
+									$arrayExpenses['GASTOS BANCARIOS'][$init->copy()->format('n')] +
+									$arrayExpenses['MARKETING Y PUBLICIDAD'][$init->copy()->format('n')] +
+									$arrayExpenses['REPARACION Y CONSERVACION'][$init->copy()->format('n')] +
+									$arrayExpenses['SUELDOS Y SALARIOS'][$init->copy()->format('n')] +
+									$arrayExpenses['SEG SOCIALES'][$init->copy()->format('n')] +
+									$arrayExpenses['MENSAJERIA'][$init->copy()->format('n')] +
+									$arrayExpenses['COMISIONES COMERCIALES'][$init->copy()->format('n')] ;
+				?>
+				<?php $totalYearExpenses += $totalMonthExpenses; ?>
+
+				<?php $init->addMonths(1); ?>
+		<?php endfor; ?>
+		<div class="col-md-6 col-xs-12">
+		   <div class="col-md-12 col-xs-12">
+		   		<div class="col-md-4 m-b-10">
+		   			<div class="widget-9 no-border bg-success no-margin widget-loader-bar" style="background-color: #46c37b!important;">
+		   				<div class="full-height d-flex flex-column">
+
+		   					<div class="p-l-20" style="padding: 10px 20px;">
+		   						<h5 class="no-margin p-b-5 text-white ">
+		   							<b>INGRESOS</b>
+		   						</h5>
+		   						
+		   						<h3 class="no-margin p-b-5 text-white font-w600">
+									
+									<?php if ($totalYearIncomes > 0): ?>
+										<?php echo number_format($totalYearIncomes, 0, ',', '.') ?> €
+									<?php else: ?>
+										---
+									<?php endif ?>
+		   						</h3>
+		   					</div>
+		   				</div>
+		   			</div>
+		   		</div>
+
+		   		<div class="col-md-4 m-b-10">
+		   			<div class="widget-9 no-border bg-danger no-margin widget-loader-bar" style="background-color: #a94442!important;">
+		   				<div class="full-height d-flex flex-column">
+
+		   					<div class="p-l-20" style="padding: 10px 20px;">
+		   						<h5 class="no-margin p-b-5 text-white ">
+		   							<b>GASTOS</b>
+		   						</h5>
+		   						
+		   						<h3 class="no-margin p-b-5 text-white font-w600">
+		   							<?php if ($totalYearExpenses > 0): ?>
+										<?php echo number_format($totalYearExpenses, 0, ',', '.') ?> €
+									<?php else: ?>
+										---
+									<?php endif ?>
+		   						</h3>
+		   					</div>
+		   				</div>
+		   			</div>
+		   		</div>
+		   		<div class="col-md-4 m-b-10">
+		   			<div class="widget-9 no-border bg-complete no-margin widget-loader-bar">
+		   				<div class="full-height d-flex flex-column">
+
+		   					<div class="p-l-20" style="padding: 10px 20px;">
+		   						<h5 class="no-margin p-b-5 text-white ">
+		   							<b>RESULTADO</b>
+		   						</h5>
+		   						
+		   						<h3 class="no-margin text-white font-w600">
+		   							<?php if (($totalYearIncomes - $totalYearExpenses) > 0): ?>
+										<?php echo number_format(($totalYearIncomes - $totalYearExpenses), 0, ',', '.') ?> €
+									<?php else: ?>
+										---
+									<?php endif ?>
+
+									<?php if (($totalYearIncomes - $totalYearExpenses) > 0): ?>
+										<i class="fa fa-arrow-up text-success "></i>
+									<?php else: ?>
+										<i class="fa fa-arrow-down text-danger "></i>
+									<?php endif ?>
+		   							
+		   						</h3>
+		   					</div>
+		   				</div>
+		   			</div>
+
+		   		</div>
+		   </div>
+		</div>
+
+	</div>
+	<div class="row bg-white">
+	    <div class="col-md-12 col-xs-12">
+           @include('backend.sales._tablePerdidasGanancias')
+	    </div>
+       
+	</div>
+</div>
+	
+@endsection	
 
 
+@section('scripts')
+<script type="text/javascript">
+
+	$('#fecha').change(function(event) {
+	    
+	    var year = $(this).val();
+	    window.location = '/admin/perdidas-ganancias/'+year;
+
+	});
+
+
+	/* GRAFICA INGRESOS/GASTOS */
+	var data = {
+	    labels: [
+	    			<?php $init = $inicio->copy(); ?>
+					<?php for($i = 1 ; $i <= 12; $i++): ?>
+						<?php if ($i == 12): ?>
+							"<?php echo substr(ucfirst($init->formatlocalized('%B')), 0, 3); ?>"
+						<?php else: ?>
+							"<?php echo substr(ucfirst($init->formatlocalized('%B')), 0, 3); ?>",
+						<?php endif; ?>
+						<?php $init->addMonths(1); ?>
+					<?php endfor; ?>
+	    			],
+	    datasets: [
+	        {
+	            label: "Ingresos",
+	            backgroundColor: [
+	                'rgba(67, 160, 71, 0.3)',
+	                'rgba(67, 160, 71, 0.3)',
+	                'rgba(67, 160, 71, 0.3)',
+	                'rgba(67, 160, 71, 0.3)',
+	                'rgba(67, 160, 71, 0.3)',
+	                'rgba(67, 160, 71, 0.3)',
+	                'rgba(67, 160, 71, 0.3)',
+	                'rgba(67, 160, 71, 0.3)',
+	                'rgba(67, 160, 71, 0.3)',
+	                'rgba(67, 160, 71, 0.3)',
+	                'rgba(67, 160, 71, 0.3)',
+	                'rgba(67, 160, 71, 0.3)',
+	            ],
+	            borderColor: [
+	                'rgba(67, 160, 71, 1)',
+	                'rgba(67, 160, 71, 1)',
+	                'rgba(67, 160, 71, 1)',
+	                'rgba(67, 160, 71, 1)',
+	                'rgba(67, 160, 71, 1)',
+	                'rgba(67, 160, 71, 1)',
+	                'rgba(67, 160, 71, 1)',
+	                'rgba(67, 160, 71, 1)',
+	                'rgba(67, 160, 71, 1)',
+	                'rgba(67, 160, 71, 1)',
+	                'rgba(67, 160, 71, 1)',
+	                'rgba(67, 160, 71, 1)',
+	            ],
+	            borderWidth: 1,
+	            data: [
+
+		    			<?php $init = $inicio->copy(); ?>
+						<?php for($i = 1 ; $i <= 12; $i++): ?>
+							<?php 
+	            				$totalMonth = 	$arrayTotales['meses'][$init->copy()->format('n')] + 
+	            								$arrayIncomes['INGRESOS EXTRAORDINARIOS'][$init->copy()->format('n')] + 
+	            								$arrayIncomes['RAPPEL CLOSES'][$init->copy()->format('n')] + 
+	            								$arrayIncomes['RAPPEL FORFAITS'][$init->copy()->format('n')] + 
+	            								$arrayIncomes['RAPPEL ALQUILER MATERIAL'][$init->copy()->format('n')];
+	            			?>
+            				<?php if ($i == 12): ?>
+            					<?php echo $totalMonth; ?>
+            				<?php else: ?>
+            					<?php echo $totalMonth; ?>,
+            				<?php endif ?>
+							<?php $init->addMonths(1); ?>
+						<?php endfor; ?>
+
+	            	],
+	        },
+	        {
+	            label: "Gastos",
+	            backgroundColor: [
+	                'rgba(229, 57, 53, 0.3)',
+	                'rgba(229, 57, 53, 0.3)',
+	                'rgba(229, 57, 53, 0.3)',
+	                'rgba(229, 57, 53, 0.3)',
+	                'rgba(229, 57, 53, 0.3)',
+	                'rgba(229, 57, 53, 0.3)',
+	                'rgba(229, 57, 53, 0.3)',
+	                'rgba(229, 57, 53, 0.3)',
+	                'rgba(229, 57, 53, 0.3)',
+	                'rgba(229, 57, 53, 0.3)',
+	                'rgba(229, 57, 53, 0.3)',
+	                'rgba(229, 57, 53, 0.3)',
+	            ],
+	            borderColor: [
+	                'rgba(229, 57, 53, 1)',
+	                'rgba(229, 57, 53, 1)',
+	                'rgba(229, 57, 53, 1)',
+	                'rgba(229, 57, 53, 1)',
+	                'rgba(229, 57, 53, 1)',
+	                'rgba(229, 57, 53, 1)',
+	                'rgba(229, 57, 53, 1)',
+	                'rgba(229, 57, 53, 1)',
+	                'rgba(229, 57, 53, 1)',
+	                'rgba(229, 57, 53, 1)',
+	                'rgba(229, 57, 53, 1)',
+	                'rgba(229, 57, 53, 1)',
+	            ],
+	            borderWidth: 1,
+	            data: [
+	            	<?php $init = $inicio->copy(); ?>
+            		<?php for($i = 1 ; $i <= 12; $i++): ?>
+            			<?php 
+            				$totalMonth = 
+            								$arrayExpenses['PAGO PROPIETARIO'][$init->copy()->format('n')] +
+											$arrayExpenses['SERVICIOS PROF INDEPENDIENTES'][$init->copy()->format('n')] +
+											$arrayExpenses['VARIOS'][$init->copy()->format('n')] +
+											$arrayExpenses['REGALO BIENVENIDA'][$init->copy()->format('n')] +
+											$arrayExpenses['LAVANDERIA'][$init->copy()->format('n')] +
+											$arrayExpenses['LIMPIEZA'][$init->copy()->format('n')] +
+											$arrayExpenses['EQUIPAMIENTO VIVIENDA'][$init->copy()->format('n')] +
+											$arrayExpenses['DECORACION'][$init->copy()->format('n')] +
+											$arrayExpenses['MENAJE'][$init->copy()->format('n')] +
+											$arrayExpenses['SABANAS Y TOALLAS'][$init->copy()->format('n')] +
+											$arrayExpenses['IMPUESTOS'][$init->copy()->format('n')] +
+											$arrayExpenses['GASTOS BANCARIOS'][$init->copy()->format('n')] +
+											$arrayExpenses['MARKETING Y PUBLICIDAD'][$init->copy()->format('n')] +
+											$arrayExpenses['REPARACION Y CONSERVACION'][$init->copy()->format('n')] +
+											$arrayExpenses['SUELDOS Y SALARIOS'][$init->copy()->format('n')] +
+											$arrayExpenses['SEG SOCIALES'][$init->copy()->format('n')] +
+											$arrayExpenses['MENSAJERIA'][$init->copy()->format('n')] +
+											$arrayExpenses['COMISIONES COMERCIALES'][$init->copy()->format('n')] ;
+            			?>
+        				<?php if ($i == 12): ?>
+        					<?php echo abs($totalMonth); ?>
+        				<?php else: ?>
+        					<?php echo abs($totalMonth); ?>,
+        				<?php endif ?>
+							<?php $init->addMonths(1); ?>
+
+            		<?php endfor; ?>
+            		],
+	        }
+
+	    ]
+	};
+
+	var myBarChart = new Chart('barChart', {
+	    type: 'line',
+	    data: data,
+	});
+
+</script>
 @endsection

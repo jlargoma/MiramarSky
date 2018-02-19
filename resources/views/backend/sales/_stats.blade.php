@@ -41,11 +41,11 @@
 					<b><?php echo number_format( round($dataStats['ventas']),0,',','.')?> €</b>
 				</td>
 			</tr>
-			<tr style="background-color: #3e95cd;">
-				<td class="text-white" style="padding: 5px 8px!important;background-color: #3e95cd!important;">
+			<tr style="background-color: #38C8A7;">
+				<td class="text-white" style="padding: 5px 8px!important;background-color: #38C8A7!important;">
 					Cobrado Temporada
 				</td>
-				<td class="text-white text-center" style="padding: 5px 8px!important;background-color: #3e95cd!important;">
+				<td class="text-white text-center" style="padding: 5px 8px!important;background-color: #38C8A7!important;">
 					<?php echo number_format( round($dataStats['cobrado']),0,',','.')?> € 
 				</td>
 			</tr>
@@ -71,8 +71,13 @@
 		</thead>
 		<tbody style="background-color: #38C8A7">
 			<tr class="tr-cobros">
-				<td class="text-white" style="padding: 5px 8px!important; background-color: #38c8a7!important;">Metalico</td>
-				<td class="text-white text-center" style="padding: 5px 8px!important; background-color: #38c8a7!important;">
+				<th class="text-white" style="padding: 5px 8px!important;background-color: #38C8A7!important;">TOTAL COBRADO</th>
+				<th class="text-white text-center" style="padding: 5px 8px!important;background-color: #38C8A7!important;"><?php echo number_format( round($dataStats['cobrado']),0,',','.')?> €
+				</th>
+			</tr>
+			<tr class="tr-cobros">
+				<td class="text-white" style="padding: 5px 8px!important; background-color: #2ba840!important;">Metalico</td>
+				<td class="text-white text-center" style="padding: 5px 8px!important; background-color: #2ba840!important;">
 					<?php echo number_format( round($dataStats['metalico']),0,',','.')?> €
 				</td>
 			</tr>
@@ -82,11 +87,7 @@
 					<?php echo number_format( round($dataStats['banco']),0,',','.')?> €
 				</td>
 			</tr>
-			<tr class="tr-cobros">
-				<th class="" style="padding: 5px 8px!important;background-color: #FFF!important;">TOTAL COBRADO</th>
-				<th class=" text-center" style="padding: 5px 8px!important;background-color: #FFF!important;"><?php echo number_format( round($dataStats['cobrado']),0,',','.')?> €
-				</th>
-			</tr>
+			
 		</tbody>
 	</table>
 
@@ -124,12 +125,7 @@
 									<?php endif ?>
 								</span>
 							</h3>
-							
-							
-							
-							
 						</div>
-						
 					</div>
 				</div>
 
@@ -151,7 +147,7 @@
          labels: ["Cobrado", "Pendiente",],
           datasets: [{
             label: "Population (millions)",
-            backgroundColor: ["#3e95cd", "#8e5ea2"],
+            backgroundColor: ["#38C8A7", "#8e5ea2"],
             data: [
 
             	//Comprobamos si existen cobros
@@ -174,7 +170,7 @@
         data: {
          labels: ["Metalico", "Banco",],
           datasets: [{
-            backgroundColor: ["#38C8A7", "#2ca085"],
+            backgroundColor: ["#2ba840", "#2ca085"],
             data: [
             	//Comprobamos si existen cobros
             	<?php echo round($dataStats['metalico']) ?>, 

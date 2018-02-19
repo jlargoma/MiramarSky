@@ -24,14 +24,25 @@ class BookController extends Controller
      */
     public function index($year = "")
     {
-        $date = empty($year) ? Carbon::now() : Carbon::createFromFormat('Y', $year);
+        if ( empty($year) ) {
+            $date = Carbon::now();
+            if ($date->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+            }else{
+                $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            }
+            
+        }else{
+            $year = Carbon::createFromFormat('Y',$year);
+            $date = $year->copy();
 
-        $start = new Carbon('first day of September');
-        $start = $date->format('n') >= 9 ? $start : $start->subYear();
-        $inicio = $start->copy();
+        }
+
+        $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
+        $start = $inicio->copy();
 
         $booksCollection = \App\Book::with('customer')
-            ->where('start', '>', $start->copy()->subMonth())
+            ->where('start', '>', $start->copy())
             ->where('finish', '<', $start->copy()->addYear())
             ->get();
 
@@ -1172,48 +1183,75 @@ class BookController extends Controller
 
     public function getTableData(Request $request)
     {
-        $now = Carbon::now();
         $mobile = new Mobile();
 
-        if ( $request->year ) {
-            if ($now->copy()->format('n') >= 9) {
-                $date = new Carbon('first day of September '.$now->copy()->format('Y'));
+        
+        if ( empty($request->year) ) {
+            $date = Carbon::now();
+            if ($date->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$date->copy()->format('Y'));
             }else{
-                $date = new Carbon('first day of September '.$now->copy()->subYear()->format('Y'));
+                $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
             }
             
         }else{
-            $date = new Carbon('first day of September '.$request->year);
+            $year = Carbon::createFromFormat('Y',$request->year);
+            $date = $year->copy();
+
         }
+
+        $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+        if (date('Y') == $date->copy()->format('y')) {
+            $dateX = Carbon::now();
+        }else{
+            $dateX = $date->copy();
+        }
+        // echo "<pre>";
+        // print_r($date);
+        // die();
 
         switch ($request->type) {
             case 'pendientes':
-                $books = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[1,3,4,5,6,10,11])->orderBy('created_at','DESC')->get();
+                $books = \App\Book::where('start','>',$date->copy())
+                                    ->where('start','<',$date->copy()->addYear())
+                                    ->whereIn('type_book',[1,3,4,5,6,10,11])
+                                    ->orderBy('created_at','DESC')
+                                    ->get();
                 break;
             case 'especiales':
-                $books = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[7,8])->orderBy('created_at','DESC')->get();
+                $books = \App\Book::where('start','>',$date->copy()->subMonth())
+                                    ->where('start','<',$date->copy()->addYear())
+                                    ->whereIn('type_book',[7,8])
+                                    ->orderBy('created_at','DESC')
+                                    ->get();
                 break;
             case 'confirmadas':
-                $books = \App\Book::where('start','>',$date->copy()->subMonth())->where('finish','<',$date->copy()->addYear())->whereIn('type_book',[2])->orderBy('created_at','DESC')->get();
+                $books = \App\Book::where('start','>',$date->copy()->subMonth())
+                                    ->where('start','<',$date->copy()->addYear())
+                                    ->whereIn('type_book',[2])
+                                    ->orderBy('created_at','DESC')
+                                    ->get();
                 break;
             case 'checkin':
-                $dateX = Carbon::now();
+               
+
                 $books = \App\Book::where('start','>',$dateX->copy()->subDays(3))
-                                    ->where('finish','<',$dateX->copy()->addYear())
+                                    ->where('start','<',$dateX->copy()->addYear())
                                     ->where('type_book',2)
                                     ->orderBy('start','ASC')
                                     ->get();
                 break;
             case 'checkout':
-                $dateX = Carbon::now();
+                
+
                 $books = \App\Book::where('start','>',$dateX->copy()->subDays(3))
-                                    ->where('finish','<',$dateX->copy()->addYear())
+                                    ->where('start','<',$dateX->copy()->addYear())
                                     ->where('type_book',2)
                                     ->orderBy('start','ASC')
                                     ->get();
             case 'eliminadas':
                 $books = \App\Book::where('start','>',$date->copy()->subDays(3))
-                                    ->where('finish','<',$date->copy()->addYear())
+                                    ->where('start','<',$date->copy()->addYear())
                                     ->where('type_book',0)
                                     ->orderBy('updated_at','DESC')
                                     ->get();

@@ -84,7 +84,7 @@
 	</style>
     
 @endsection
-
+<?php use \Carbon\Carbon; ?>
 <?php setlocale(LC_TIME, "ES"); ?>
 <?php setlocale(LC_TIME, "es_ES");?>  
 @section('content')
@@ -93,23 +93,24 @@
     <div class="row push-20">
     	<div class="col-md-2 col-xs-12 text-center">
 			<h5 class="text-center push-10">GENERAR LIQUIDACIÓN:</h5>
-			<input type="text" class="form-control dateRange" id="dateRange" name="dateRange" required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="">
+			<input type="text" class="form-control dateRange" id="dateRange" name="dateRange" required="" style="cursor: pointer; text-align: center;min-height: 28px; width: 85%;float: left;" readonly="">
+			<button class="btn btn-xs btn-primary liquidationByRoom" data-id="all" data-costeProp="<?php echo $summary['totalApto'] + $summary['totalParking'] + $summary['totalLujo']; ?>" data-toggle="modal" data-target="#liquidationByRoom" style="cursor: pointer; font-weight: 600; width: 15%; height: 35px;" title="Liquidacion total">
+				<i class="fa fa-eye"></i>
+			</button>
 		</div>
         <div class="col-md-2 col-md-offset-1 col-xs-12 text-center">
             <h2 class="font-w300">Pagos a <span class="font-w800">propietarios</span> </h2>
         </div>
         <div class="col-md-1 col-xs-12">
-        	<select id="fechas" class="form-control minimal" style="margin: 15px 0;">
-        	    <?php $fecha = $date->copy()->subYear(); ?>
-        	    <?php for ($i=1; $i <= 3; $i++): ?>
-        	      	<?php echo $date->copy()->format('Y') ?>
-        	      	<?php echo $fecha->copy()->format('Y') ?>
-        	        <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $date->copy()->format('Y') == $fecha->format('Y') ? 'selected' : '' }}>
-        	            <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
-        	        </option>
-        	        <?php $fecha->addYear(); ?>
-        	    <?php endfor; ?>
-        	</select>
+        	<select id="fechas" class="form-control minimal">
+				<?php $fecha = Carbon::now()->SubYear(3)->copy(); ?>			
+                <?php for ($i=1; $i <= 4; $i++): ?>                           
+                    <option value="<?php echo $fecha->copy()->format('Y'); ?>" <?php if ($fecha->copy()->format('Y') == $date->copy()->format('Y')): ?>selected<?php endif ?>> 
+                        <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
+                    </option>
+                    <?php $fecha->addYear(); ?>
+                <?php endfor; ?>
+            </select>
         </div>
     </div>
     <?php if (!$mobile->isMobile()): ?>
@@ -260,8 +261,11 @@
 			    				</th>
 		    				</tr>
 				        </thead>
-					        <tbody>
-					        	<?php foreach ($rooms as $room): ?>
+				        <tbody>
+				        	<?php foreach ($rooms as $room): ?>
+				        		<?php if ($room->state == 1): ?>
+				        			
+				        		
 					        		<?php $pendiente = $data[$room->id]['totales']['totalCost'] - $data[$room->id]['pagos'] ?>
 					        		<?php $costPropTot =  $data[$room->id]['totales']['totalApto']+$data[$room->id]['totales']['totalParking']+$data[$room->id]['totales']['totalLujo']?>
 					        		<tr>
@@ -387,17 +391,20 @@
 					        					<span class="text-danger font-w800"><?php echo number_format($pendiente,0,',','.') ?>€</span>
 					        				<?php endif ?>
 					        			</td>
-					            </tr>
+					            	</tr>
+					            <?php endif ?>
 
-					        <?php endforeach ?>
-					    </tbody>
+				        	<?php endforeach ?>
+				    	</tbody>
 
 					</table>
 	    		</div>
 	    	</div>
 	    	<div class="col-md-4 col-xs-12">
+	    		<h3 class="text-center font-w300">
+	    			RESUMEN <span class="font-w800">PAGOS PROP</span>.
+	    		</h3>
 	    		<table class="table table-striped">
-
 	    			<thead>
 	    				<tr>
 	    					<th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
@@ -413,31 +420,24 @@
 		    			
 	    				</tr>
 			        </thead>
-				        <tbody>
-				        	<?php foreach ($rooms as $room): ?>
-				        		
-				        		<tr>
-				        			<td class="text-center"  style="padding: 10px 5px ;">
-				        				<?php echo ucfirst(substr($room->user->name, 0, 6)) ?> (<?php echo substr($room->nameRoom, 0, 6) ?>)
+			        <tbody>
+			        	<?php foreach ($rooms as $room): ?>
+			        		<?php if ($room->state == 1): ?>
+			        		<tr>
+			        			<td class="text-center"  style="padding: 10px 5px ;">
+			        				<?php echo ucfirst(substr($room->user->name, 0, 6)) ?> (<?php echo substr($room->nameRoom, 0, 6) ?>)
+			        			</td>
+			        			<?php $lastThreeSeason = $date->copy()->subYears(2) ?>
+								<?php for ($i=1; $i < 4; $i++): ?>
+				        			<td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
+										<?php echo  number_format( $room->getCostPropByYear($lastThreeSeason->copy()->format('Y')) ,0,',','.'); ?> €
 				        			</td>
-				        			<?php $lastThreeSeason = $date->copy()->subYears(2) ?>
-									<?php for ($i=1; $i < 4; $i++): ?>
-					        			<td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
-											<!-- <?php echo $lastThreeSeason->copy()->format('Y') ?><br> -->
-											<?php echo $room->getCostPropByYear($lastThreeSeason->copy()->format('Y')); ?> €
-						        				
-					        				
-					        			</td>
-				        				<?php $lastThreeSeason->addYear(); ?>
-									<?php endfor; ?>
-				        			
-				        			
-				        			
-				            </tr>
-
-				        <?php endforeach ?>
-				    </tbody>
-
+			        				<?php $lastThreeSeason->addYear(); ?>
+								<?php endfor; ?>
+			            	</tr>
+							<?php endif; ?>
+			        	<?php endforeach ?>
+			    	</tbody>
 				</table>
 	    	</div>
 	    </div>
@@ -730,8 +730,12 @@
 
 				</table>
     		</div>
+
 	    	<div class="table-responsive push-20" style="border: none!important">
 		    	<div class="col-md-4 col-xs-12">
+		    		<h3 class="text-center font-w300">
+		    			RESUMEN <span class="font-w800">PAGOS PROP</span>.
+		    		</h3>
 		    		<table class="table table-striped">
 
 		    			<thead>
@@ -760,7 +764,7 @@
 										<?php for ($i=1; $i < 4; $i++): ?>
 						        			<td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
 												<!-- <?php echo $lastThreeSeason->copy()->format('Y') ?><br> -->
-												<?php echo $room->getCostPropByYear($lastThreeSeason->copy()->format('Y')); ?> €
+												<?php echo  number_format( $room->getCostPropByYear($lastThreeSeason->copy()->format('Y')) ,0,',','.'); ?> €
 							        				
 						        				
 						        			</td>
@@ -889,51 +893,6 @@
         });
 		$(document).ready(function() {
 
-			$('.close').click(function(event) {
-				$(function() {
-		            $(".dateRange").daterangepicker({
-		                "buttonClasses": "button button-rounded button-mini nomargin",
-		                "applyClass": "button-color",
-		                "cancelClass": "button-light",            
-		                "startDate": '01 Nov, <?php echo $date->copy()->format('y') ?>',
-		                "endDate": '01 Nov, <?php echo $date->copy()->addYear()->format('y') ?>',
-		                locale: {
-		                    format: 'DD MMM, YY',
-		                    "applyLabel": "Aplicar",
-		                    "cancelLabel": "Cancelar",
-		                    "fromLabel": "From",
-		                    "toLabel": "To",
-		                    "customRangeLabel": "Custom",
-		                    "daysOfWeek": [
-		                    "Do",
-		                    "Lu",
-		                    "Mar",
-		                    "Mi",
-		                    "Ju",
-		                    "Vi",
-		                    "Sa"
-		                    ],
-		                    "monthNames": [
-		                    "Enero",
-		                    "Febrero",
-		                    "Marzo",
-		                    "Abril",
-		                    "Mayo",
-		                    "Junio",
-		                    "Julio",
-		                    "Agosto",
-		                    "Septiembre",
-		                    "Octubre",
-		                    "Noviembre",
-		                    "Diciembre"
-		                    ],
-		                    "firstDay": 1,
-		                },
-
-		            });
-		        });
-			});
-
 			$('.update-payments').click(function(event) {
 				var debt = $(this).attr('data-debt');
 				var id   = $(this).attr('data-id');
@@ -951,69 +910,18 @@
 
 
 		});
-		window.onload = function () {
-			var chart = new CanvasJS.Chart("chartContainer",
-			{
-				title:{
-					text: "Grafico  de pagos a propietarios"
-				},
-				axisX: {
-					labelAngle: -90,
-					labelFontSize: 15,
-				},
-				axisY: {
-					title: "Porcentaje",
-					labelFontSize: 15,
-				},
-				dataPointWidth: 25,
-				data: [
-				{
-					type: "stackedColumn100",
-					legendText: "Pagado",
-					showInLegend: "true",
-					indexLabel: "{y}",
-					indexLabelOrientation: "vertical",
-					indexLabelFontColor: "black",
-					color: "Green",
-					bevelEnabled: true,
 
-					dataPoints: [
-					<?php foreach ($rooms as $room): ?>
-					<?php if (isset($data[$room->id]['pagos'])): ?>
-					{  y: <?php echo $data[$room->id]['pagos'] ?> , label: "<?php echo $room->nameRoom ?>"},
-					<?php else: ?>
-					{  y: 0 , label: "<?php echo $room->nameRoom ?>"},
-					<?php endif ?>
+		$('.ver').click(function(event) {
 
-					<?php endforeach ?>
+			var year = $('#fechas').val();
+			var idRoom = 'all';
+			alert(year+' '+idRoom);
+			// $.get('/admin/paymentspro/getBooksByRoom/'+idRoom,{ idRoom: idRoom, year: year}, function(data) {
+			// 	$('.contentBookRoom').empty().append(data);
+			// });
 
-					]
-				},  
-				{
-					indexLabel: "#total",
-					legendText: "Deuda",
-					showInLegend: "true",
-					indexLabelPlacement: "outside", 
-					indexLabelOrientation: "vertical",
-					indexLabelFontColor: "black",
-					type: "stackedColumn100",
-					color:"LightCoral ",
-					dataPoints: [
-					<?php foreach ($rooms as $room): ?>
-					<?php $pendiente = $data[$room->id]['totales']['totalCost'] - $data[$room->id]['pagos'] ?>
-					<?php if (isset($pendiente)): ?>
-					{  y: <?php echo $pendiente ?> , label: "<?php echo $room->nameRoom ?>"},
-					<?php else: ?>
-					{  y: 0 , label: "<?php echo $room->nameRoom ?>"},
-					<?php endif ?>
-					<?php endforeach ?>
-					]
-				}
-				]
-			});
 
-			chart.render();
-		}
+		});
 
 
 		$('button.bookByRoom').click(function(event) {

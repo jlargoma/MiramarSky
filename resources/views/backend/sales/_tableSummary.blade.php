@@ -18,8 +18,8 @@
             </h2>
         </div>
         <div class="col-md-1 col-xs-12 pull-right">
-            <label>Porcentaje benef</label>
-            <input class="form-control text-black font-w400 text-center percentBenef" value="<?php echo $percentBenef ?>" style="border: none; font-size: 32px;margin: 10px 0;color:red!important"/>
+            <label style="width: 100%; float:left;">Benef critico</label>
+            <input class="form-control text-black font-w400 text-center percentBenef" value="<?php echo $percentBenef ?>" style="border: none; font-size: 32px;margin: 10px 0;color:red!important; width: 70%; float:left;"/> <span class="font-w800" style="font-size: 32px">%</span>
         </div>
         <div style="clear: both;"></div>
         @include('backend.sales._tableSummaryBoxes', ['totales' => $totales, 'books' => $books, 'data' => $data])
@@ -259,13 +259,13 @@
                                 <?php endif ?>
                                 
                             </td>
-                            <td class="text-center coste pagos pendiente" style="border-left: 1px solid black;">
+                            <td class="text-center coste pagos pendiente" style="border-left: 1px solid black;"" >
                                 <?php $sumPayme = $book->getPayment(0) + $book->getPayment(1) + $book->getPayment(2) + $book->getPayment(3); ?>
                                 <?php $pend = $book->total_price -  $sumPayme?>
                                 <?php if ( ($pend) == 0 ): ?>
-                                    <b>----</b>
+                                    <b><span style="color:black!important">----</span></b>
                                 <?php else: ?>
-                                    <?php echo number_format($pend,0,',','.')." €"; ?>
+                                    <b><?php echo number_format($pend,0,',','.')." €"; ?></b>
                                 <?php endif ?>
                                 
                             </td>
@@ -278,7 +278,7 @@
                                 
                             </td>
                             <?php if(round($book->inc_percent) < $percentBenef): ?>
-                                <?php $classDanger = "background-color: #f55753!important; color:white!important;" ?>
+                                <?php $classDanger = "background-color: #f8d053!important; color:black!important;" ?>
                             <?php elseif(round($book->inc_percent) == 0): ?>
                                 <?php $classDanger = "background-color: #f8d053!important; color:black!important;" ?>
                             <?php else: ?>

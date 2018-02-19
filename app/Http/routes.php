@@ -244,22 +244,33 @@ Route::get('admin/liquidacion-apartamentos/{year?}' ,['middleware' => 'authAdmin
 Route::get('admin/gastos/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@gastos']);
 Route::post('admin/gastos/create' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@gastoCreate']);
 Route::get('/admin/gastos/getTableGastos/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@getTableGastos']);
+
 Route::get('admin/gastos/update/{id}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@updateGasto']);
 Route::get('/admin/gastos/getHojaGastosByRoom/{year?}/{id}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@getHojaGastosByRoom']);
 
 Route::get('/admin/gastos/delete/{id}', function($id){
 
-		if ( \App\Expenses::find($id)->delete() ) {
-			return 'ok';
-		}else{
-			return 'error';
-		}
+	if ( \App\Expenses::find($id)->delete() ) {
+		return 'ok';
+	}else{
+		return 'error';
+	}
 
-	});
+});
 Route::get('admin/ingresos/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@ingresos']);
+Route::post('admin/ingresos/create' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@ingresosCreate']);
+Route::get('/admin/ingresos/delete/{id}', function($id){
+
+	if ( \App\Incomes::find($id)->delete() ) {
+		return 'ok';
+	}else{
+		return 'error';
+	}
+
+});
 Route::get('admin/estadisticas/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@Statistics']);
 Route::get('admin/contabilidad/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@contabilidad']);
-Route::get('admin/perdidas-ganancias' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@perdidas']);
+Route::get('admin/perdidas-ganancias' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@perdidasGanancias']);
 
 
 

@@ -27,22 +27,15 @@
                             </h2>
                         </div>  
                         <div class="col-md-2">
-                            <select id="fecha" class="form-control minimal">
-                                 <?php $fecha = $inicio->copy()->SubYears(2); ?>
-                                 <?php if ($fecha->copy()->format('Y') < 2015): ?>
-                                     <?php $fecha = new Carbon('first day of September 2015'); ?>
-                                 <?php endif ?>
-                             
-                                 <?php for ($i=1; $i <= 3; $i++): ?>                           
-                                     <option value="<?php echo $fecha->copy()->format('Y'); ?>" 
-                                        <?php if (  $fecha->copy()->format('Y') == date('Y') || 
-                                                    $fecha->copy()->addYear()->format('Y') == date('Y') 
-                                                ){ echo "selected"; }?> >
+                            <select id="fechas" class="form-control minimal">
+                                <?php $fecha = Carbon::now()->SubYear(3)->copy(); ?>            
+                                <?php for ($i=1; $i <= 4; $i++): ?>                           
+                                    <option value="<?php echo $fecha->copy()->format('Y'); ?>" <?php if ($fecha->copy()->format('Y') == $date->copy()->format('Y')): ?>selected<?php endif ?>> 
                                         <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
-                                     </option>
-                                     <?php $fecha->addYear(); ?>
-                                 <?php endfor; ?>
-                             </select>     
+                                    </option>
+                                    <?php $fecha->addYear(); ?>
+                                <?php endfor; ?>
+                            </select>     
                         </div>  
 
                     </div>
@@ -552,7 +545,7 @@
 
 
             // Selector de año
-            $('#fecha').change(function(event) {
+            $('#fechas').change(function(event) {
 
                 var year = $(this).val();
                 window.location = '/admin/reservas/'+year;
@@ -599,7 +592,7 @@
             // Cargar tablas de reservas
             $('.btn-tables').click(function(event) {
                 var type = $(this).attr('data-type');
-                var year = $('#fecha').val();
+                var year = $('#fechas').val();
                 $.get('/admin/reservas/api/getTableData', { type: type, year: year }, function(data) {
 
                     $('#resultSearchBook').empty();
@@ -628,7 +621,7 @@
 
             $('.searchabled').keyup(function(event) {
                 var searchString = $(this).val();
-                var year = '<?php echo $inicio->copy()->format('Y')?>';
+                var year = $('#fechas').val();
 
                 $.get('/admin/reservas/search/searchByName', { searchString: searchString,  year: year}, function(data) {
 

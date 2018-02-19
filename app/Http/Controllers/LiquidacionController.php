@@ -43,16 +43,22 @@ class LiquidacionController extends Controller
                 "obs"  => 0,  
             ];
         $liquidacion = new \App\Liquidacion();
-        if (empty($year)) {
-            if ($now->copy()->format('n') >= 9) {
-                $date = new Carbon('first day of September '.$now->copy()->format('Y'));
+        if ( empty($year) ) {
+            $date = Carbon::now();
+            if ($date->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$date->copy()->format('Y'));
             }else{
-                $date = new Carbon('first day of September '.$now->copy()->subYear()->format('Y'));
+                $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
             }
             
         }else{
-            $date = new Carbon('first day of September '.$year);
+            $year = Carbon::createFromFormat('Y',$year);
+            $date = $year->copy();
+
         }
+
+        $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+        
         $books = \App\Book::where('start' , '>=' , $date)->where('start', '<=', $date->copy()->AddYear()->SubMonth())->where('type_book',2)->orderBy('start', 'ASC')->get();
 
         foreach ($books as $key => $book) {
@@ -224,12 +230,6 @@ class LiquidacionController extends Controller
                                                         ]);
     }
 
-    public function perdidas()
-    {
-        return view ('backend/sales/perdidas_ganancias');
-    }
-
-
     public function contabilidad($year="")
     {
         if ( empty($year) ) {
@@ -335,10 +335,8 @@ class LiquidacionController extends Controller
                                                     ]);
     }
 
-    
-
-
-    public function gastoCreate(Request $request){
+    public function gastoCreate(Request $request)
+    {
 
     
         $gasto = new \App\Expenses();
@@ -388,11 +386,27 @@ class LiquidacionController extends Controller
                                 ->Where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
                                 ->orderBy('date', 'ASC')
                                 ->get();
-
                                 
+        $books = \App\Book::whereIn('type_book', [2])
+                            ->where('start', '>', $inicio->copy()->format('Y-m-d'))
+                            ->where('start', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                            ->orderBy('start', 'ASC')
+                            ->get();
+
+        $totalStripep = 0;
+        foreach ($books as $key => $book) {
+            
+            if (count($book->pago) > 0) {
+                foreach ($book->pago as $key => $pay) {
+                    $totalStripep +=  (((1.4 * $pay->import)/100)+0.25);
+                }
+            }
+
+        }                  
 
         return view ('backend/sales/gastos/_tableExpenses',  [
                                                         'gastos'         => $gastos,
+                                                        'totalStripep'         => $totalStripep,
                                                     ]);
     }
 
@@ -401,20 +415,206 @@ class LiquidacionController extends Controller
     {
         if ( empty($year) ) {
             $date = Carbon::now();
+            if ($date->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+            }else{
+                $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            }
+            
         }else{
             $year = Carbon::createFromFormat('Y',$year);
             $date = $year->copy();
 
         }
-        if ($date->copy()->format('n') >= 9) {
-            $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
+
+        $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
+
+
+        $books = \App\Book::whereIn('type_book', [2])
+                            ->where('start', '>', $inicio->copy()->format('Y-m-d'))
+                            ->where('start', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                            ->get();
+
+        $arrayTotales = ['totales' => 0, 'meses' => []];
+        for ($i=1; $i <=12 ; $i++) { 
+              $arrayTotales['meses'][$i] = 0;
+        }
+        foreach ($books as $book) {
+            $fecha = Carbon::createFromFormat('Y-m-d',$book->start);
+            $arrayTotales['meses'][$fecha->copy()->format('n')] += $book->total_price;    
+
+            $arrayTotales['totales'] += $book->total_price;           
+        }
+        $arrayIncomes = array();
+        $conceptIncomes = ['INGRESOS EXTRAORDINARIOS', 'RAPPEL CLOSES', 'RAPPEL FORFAITS', 'RAPPEL ALQUILER MATERIAL'];
+
+        foreach ($conceptIncomes as $typeIncome) {
+            for ($i=1; $i <= 12 ; $i++) { 
+                $arrayIncomes[$typeIncome][$i] = 0;
+            }
+        }
+        foreach ($conceptIncomes as $typeIncome) {
+            $incomes = \App\Incomes::where('concept', $typeIncome)
+                                    ->where('date', '>', $inicio->copy()->format('Y-m-d'))
+                                    ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                                    ->get();
+
+            if ( count($incomes) > 0) {
+                
+                foreach ($incomes as $key => $income) {
+                    $fecha = Carbon::createFromFormat('Y-m-d',$income->date);
+                    $arrayIncomes[$typeIncome][$fecha->copy()->format('n')] += $income->import;    
+                }
+            } else {
+                for ($i=1; $i <= 12 ; $i++) { 
+                    $arrayIncomes[$typeIncome][$i] = 0;
+                }
+            }
+            
+
+        }
+        // echo "<pre>";
+        // print_r($arrayIncomes);
+        // die();
+
+        return view ('backend/sales/ingresos/ingresos',  [   
+                                                        'inicio'         => $inicio,
+                                                        'arrayTotales'         => $arrayTotales,
+                                                        'incomes'         => $arrayIncomes,
+                                                    ]);
+    }
+
+
+    public function ingresosCreate(Request $request)
+    {
+        $ingreso = new \App\Incomes();
+        $ingreso->concept = $request->input('concept');
+        $ingreso->date = Carbon::createFromFormat('d/m/Y', $request->input('fecha'))->format('Y-m-d');
+        $ingreso->import = $request->input('import');
+        if ($ingreso->save()) {
+            return redirect('/admin/ingresos');
+        }
+    }
+
+
+    public function perdidasGanancias($year="")
+    {
+        if ( empty($year) ) {
+            $date = Carbon::now();
+            if ($date->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+            }else{
+                $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            }
+            
         }else{
-            $inicio = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            $year = Carbon::createFromFormat('Y',$year);
+            $date = $year->copy();
+
         }
 
-        return view ('backend/sales/ingresos',  [   
-                                                        'date'         => $date,
-                                                    ]);
+        $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
+
+        $books = \App\Book::whereIn('type_book', [2])
+                            ->where('start', '>', $inicio->copy()->format('Y-m-d'))
+                            ->where('start', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                            ->get();
+        /* INGRESOS */
+        $arrayTotales = ['totales' => 0, 'meses' => []];
+        for ($i=1; $i <=12 ; $i++) { 
+              $arrayTotales['meses'][$i] = 0;
+        }
+        foreach ($books as $book) {
+            $fecha = Carbon::createFromFormat('Y-m-d',$book->start);
+            $arrayTotales['meses'][$fecha->copy()->format('n')] += $book->total_price;    
+
+            $arrayTotales['totales'] += $book->total_price;           
+        }
+        $arrayIncomes = array();
+        $conceptIncomes = ['INGRESOS EXTRAORDINARIOS', 'RAPPEL CLOSES', 'RAPPEL FORFAITS', 'RAPPEL ALQUILER MATERIAL'];
+
+        foreach ($conceptIncomes as $typeIncome) {
+            for ($i=1; $i <= 12 ; $i++) { 
+                $arrayIncomes[$typeIncome][$i] = 0;
+            }
+        }
+        foreach ($conceptIncomes as $typeIncome) {
+            $incomes = \App\Incomes::where('concept', $typeIncome)
+                                    ->where('date', '>', $inicio->copy()->format('Y-m-d'))
+                                    ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                                    ->get();
+
+            if ( count($incomes) > 0) {
+                
+                foreach ($incomes as $key => $income) {
+                    $fecha = Carbon::createFromFormat('Y-m-d',$income->date);
+                    $arrayIncomes[$typeIncome][$fecha->copy()->format('n')] += $income->import;    
+                }
+            } else {
+                for ($i=1; $i <= 12 ; $i++) { 
+                    $arrayIncomes[$typeIncome][$i] = 0;
+                }
+            }
+        }
+        /* FIN INGRESOS */
+
+
+        $conceptExpenses = 
+                            [
+                            'PAGO PROPIETARIO',
+                            'SERVICIOS PROF INDEPENDIENTES',
+                            'VARIOS',
+                            'REGALO BIENVENIDA',
+                            'LAVANDERIA',
+                            'LIMPIEZA',
+                            'EQUIPAMIENTO VIVIENDA',
+                            'DECORACION',
+                            'MENAJE',
+                            'SABANAS Y TOALLAS',
+                            'IMPUESTOS',
+                            'GASTOS BANCARIOS',
+                            'MARKETING Y PUBLICIDAD',
+                            'REPARACION Y CONSERVACION',
+                            'SUELDOS Y SALARIOS',
+                            'SEG SOCIALES',
+                            'MENSAJERIA',
+                            'COMISIONES COMERCIALES'
+                        ];
+
+        /* GASTOS */
+        for ($i=1; $i <= 12; $i++) { 
+            for ($j=0; $j < count($conceptExpenses); $j++) { 
+                $arrayExpenses[$conceptExpenses[$j]][$i] = 0;
+            }
+            
+        }
+
+        $gastos = \App\Expenses::where('date', '>', $inicio->copy()->format('Y-m-d'))
+                                ->Where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                                ->orderBy('date', 'DESC')
+                                ->get();
+
+        foreach ($gastos as $key => $gasto) {
+
+            $fecha = Carbon::createFromFormat('Y-m-d',$gasto->date);
+            $arrayExpenses[$gasto->type][$fecha->copy()->format('n')] += $gasto->import;    
+
+        }
+
+        /* FIN GASTOS */
+
+        // echo "<pre>";
+        // print_r($arrayTotales);
+        // print_r($arrayIncomes);
+        // print_r($arrayExpenses);
+        // die();
+
+        return view ('backend/sales/perdidas_ganancias', [
+                                                            'arrayTotales' => $arrayTotales, 
+                                                            'arrayIncomes' => $arrayIncomes, 
+                                                            'arrayExpenses' => $arrayExpenses, 
+                                                            'inicio' => $inicio
+                                                        ]);
     }
 
 
@@ -428,7 +628,7 @@ class LiquidacionController extends Controller
         $start = new Carbon('first day of September '.$year);
         $end  = $start->copy()->addYear();
 
-        $books = \App\Book::whereIn('type_book', [2,7,8])
+        $books = \App\Book::whereIn('type_book', [2])
                             ->where('start', '>', $start->copy()->format('Y-m-d'))
                             ->where('start', '<=', $end->copy()->format('Y-m-d'))
                             ->orderBy('start', 'ASC')
@@ -513,35 +713,13 @@ class LiquidacionController extends Controller
         $lujo = 0;
         $metalico = 0;
         $banco = 0;
-        $metalico_jorge = 0;
-        $metalico_jaime = 0;
-        $banco_jorge = 0;
-        $banco_jaime = 0;
-        foreach ($books as $book) {
+        foreach ($gastos as $gasto) {
 
-           if ($book->type_book != 7 && $book->type_book != 8 && $book->type_book != 9) {
-               $apto  +=  $book->cost_apto;
-               $park  +=  $book->cost_park;
-               $lujo  +=  $book->cost_lujo;
-               
-           }
-           foreach ($book->pago as $key => $pay) {
-
-               if ($pay->type == 0 || $pay->type == 1) {
-                   $metalico += $pay->import;
-               } elseif($pay->type == 2 || $pay->type == 3) {
-                   $banco += $pay->import;
-               }
-                if ($pay->type == 0) {
-                    $metalico_jorge += $pay->import;
-                } elseif($pay->type == 1) {
-                    $metalico_jaime += $pay->import;
-                }elseif($pay->type == 2) {
-                    $banco_jorge += $pay->import;
-                }elseif($pay->type == 3) {
-                    $banco_jaime += $pay->import;
-                }
-           }
+            if ($gasto->type == 0 || $gasto->type == 1) {
+                $metalico += $gasto->import;
+            } elseif($gasto->type == 2 || $gasto->type == 3) {
+                $banco += $gasto->import;
+            }
         }
         $total += ( $apto + $park + $lujo);
 
@@ -551,12 +729,8 @@ class LiquidacionController extends Controller
                 'park' => $park,
                 'lujo' => $lujo,
                 'room' => $room,
-                'metalico' => $metalico,
-                'metalico_jorge' => $metalico_jorge,
-                'metalico_jaime' => $metalico_jaime,
-                'banco_jorge' => $banco_jorge,
-                'banco_jaime' => $banco_jaime,
                 'banco' => $banco,
+                'metalico' => $metalico,
                 'pagado' => $gastos->sum('import'),
             ];
 
@@ -578,14 +752,26 @@ class LiquidacionController extends Controller
         
         // return $start;
         $end  = $start->copy()->addYear();
+        if ($id != "all") {
+            $room = \App\Rooms::find($id);
+            $gastos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
+                                ->Where('date', '<=', $end->copy()->format('Y-m-d'))
+                                ->Where('PayFor', 'LIKE', '%'.$id.'%')
+                                ->orderBy('date', 'ASC')
+                                ->get();
+        }else{
+            $room = "all";
+            $gastos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
+                                ->Where('date', '<=', $end->copy()->format('Y-m-d'))
+                                ->orderBy('date', 'ASC')
+                                ->get();
 
-        $gastos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
-                            ->Where('date', '<=', $end->copy()->format('Y-m-d'))
-                            ->Where('PayFor', 'LIKE', '%'.$id.'%')
-                            ->orderBy('date', 'ASC')
-                            ->get();
+        }
+        
 
-        return view('backend.sales.gastos._expensesByRoom', ['gastos' => $gastos, 'room' => \App\Rooms::find($id)]);
+        
+
+        return view('backend.sales.gastos._expensesByRoom', ['gastos' => $gastos, 'room' => $room]);
     }
 
 
@@ -650,16 +836,21 @@ class LiquidacionController extends Controller
                     "obs"          => 0,
                 ];
 
-        if ($request->year) {
-            if ($now->copy()->format('n') >= 9) {
-                $date = new Carbon('first day of September '.$now->copy()->format('Y'));
+        if ( empty($request->year) ) {
+            $date = Carbon::now();
+            if ($date->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$date->copy()->format('Y'));
             }else{
-                $date = new Carbon('first day of September '.$now->copy()->subYear()->format('Y'));
+                $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
             }
             
         }else{
-            $date = new Carbon('first day of September '.$request->year);
+            $year = Carbon::createFromFormat('Y',$request->year);
+            $date = $year->copy();
+
         }
+
+        $date = new Carbon('first day of September '.$date->copy()->format('Y'));
 
 
         if ($request->searchString != "") {
@@ -957,16 +1148,21 @@ class LiquidacionController extends Controller
                     "obs"  => 0, 
                 ];
 
-        if ( $request->year ) {
-            if ($now->copy()->format('n') >= 9) {
-                $date = new Carbon('first day of September '.$now->copy()->format('Y'));
+        if ( empty($request->year) ) {
+            $date = Carbon::now();
+            if ($date->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$date->copy()->format('Y'));
             }else{
-                $date = new Carbon('first day of September '.$now->copy()->subYear()->format('Y'));
+                $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
             }
             
         }else{
-            $date = new Carbon('first day of September '.$request->year);
+            $year = Carbon::createFromFormat('Y',$request->year);
+            $date = $year->copy();
+
         }
+
+        $date = new Carbon('first day of September '.$date->copy()->format('Y'));
 
 
         if ($request->searchString != "") {
