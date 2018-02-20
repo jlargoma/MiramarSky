@@ -349,7 +349,17 @@ class LiquidacionController extends Controller
         if ($request->input('type_payFor') == 1) {
             $gasto->PayFor = $request->input('stringRooms');
         }
+        if ($request->input('type_payment') == 1 || $request->input('type_payment') == 2) {
 
+            $data['concept'] = ( $request->input('type_payment') == 1 )? 'GASTO METALICO JAIME':'GASTO METALICO JORGE';
+            $data['date'] = Carbon::createFromFormat('d/m/Y', $request->input('fecha'))->format('Y-m-d');
+            $data['import'] = $request->input('importe');
+            $data['comment'] = $request->input('comment');
+            $data['typePayment'] = ($request->input('type_payment') == 1)? 1: 0;
+            $data['type'] = 1;
+
+            $this->addCashbox($data);
+        }
         if ($gasto->save()) {
             return "OK";
         }
@@ -495,6 +505,102 @@ class LiquidacionController extends Controller
             return redirect('/admin/ingresos');
         }
     }
+
+
+    public function caja($year="")
+    {
+        if ( empty($year) ) {
+            $date = Carbon::now();
+            if ($date->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+            }else{
+                $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            }
+            
+        }else{
+            $year = Carbon::createFromFormat('Y',$year);
+            $date = $year->copy();
+
+        }
+
+        $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
+
+        $cashJaime = \App\Cashbox::where('typePayment', 1)
+                                    ->where('date', '>', $inicio->copy()->format('Y-m-d'))
+                                    ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                                    ->get();
+        $saldoInicial = \App\Cashbox::where('concept', 'SALDO INICIAL')->where('typePayment', 1)->first();
+
+        // $cashJorge = \App\Cashbox::where('typePayment', 0)
+        //                             ->where('date', '>', $inicio->copy()->format('Y-m-d'))
+        //                             ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+        //                             ->get();
+
+        return view('backend.sales.cashbox.cashbox', [
+                                                        'inicio'    => $inicio, 
+                                                        'cashJaime' => $cashJaime, 
+                                                        'saldoInicial' => $saldoInicial, 
+                                                    ]);
+    }
+
+
+    public function getTableMoves($year, $type)
+    {
+        if ( empty($year) ) {
+            $date = Carbon::now();
+            if ($date->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+            }else{
+                $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            }
+            
+        }else{
+            $year = Carbon::createFromFormat('Y',$year);
+            $date = $year->copy();
+
+        }
+
+        $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
+        if ($type == 'jaime') {
+            $cashbox = \App\Cashbox::where('typePayment', 1)
+                                    ->where('date', '>', $inicio->copy()->format('Y-m-d'))
+                                    ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                                    ->get();
+            $saldoInicial = \App\Cashbox::where('concept', 'SALDO INICIAL')->where('typePayment', 1)->first();
+
+        }else{
+            $cashbox = \App\Cashbox::where('typePayment', 0)
+                                        ->where('date', '>', $inicio->copy()->format('Y-m-d'))
+                                        ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                                        ->get();
+            $saldoInicial = \App\Cashbox::where('concept', 'SALDO INICIAL')->where('typePayment', 0)->first();
+
+        }
+        return view('backend.sales.cashbox._tableMoves', [
+                                                        'cashbox'    => $cashbox, 
+                                                        'saldoInicial'    => $saldoInicial, 
+                                                    ]);
+    }
+
+
+    static function addCashbox($data)
+    {
+        
+        $cashbox = new \App\Cashbox();
+        $cashbox->concept = $data['concept'];
+        $cashbox->date = Carbon::createFromFormat('Y-m-d', $data['date']);
+        $cashbox->import = $data['import'];
+        $cashbox->comment = $data['comment'];
+        $cashbox->typePayment = $data['typePayment'];
+        $cashbox->type = $data['type'];
+        if ($cashbox->save()) {
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
 
 
     public function perdidasGanancias($year="")
@@ -737,8 +843,6 @@ class LiquidacionController extends Controller
 
     }
 
-
-
     public function getHojaGastosByRoom($year="", $id)
     {
         if ( empty($year) ) {
@@ -774,8 +878,6 @@ class LiquidacionController extends Controller
         return view('backend.sales.gastos._expensesByRoom', ['gastos' => $gastos, 'room' => $room]);
     }
 
-
-
     static function setExpenseLimpieza($status, $room_id, $fecha)
     {
         $room = \App\Rooms::find($room_id);
@@ -803,14 +905,6 @@ class LiquidacionController extends Controller
         }
         
     }
-
-
-
-
-
-
-
-
 
     public function searchByName(Request $request)
     {

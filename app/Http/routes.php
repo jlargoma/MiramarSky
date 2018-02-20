@@ -268,6 +268,11 @@ Route::get('/admin/ingresos/delete/{id}', function($id){
 	}
 
 });
+
+Route::get('admin/caja/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@caja']);
+Route::get('admin/caja/getTableMoves/{year?}/{type}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@getTableMoves']);
+
+
 Route::get('admin/estadisticas/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@Statistics']);
 Route::get('admin/contabilidad/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@contabilidad']);
 Route::get('admin/perdidas-ganancias' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@perdidasGanancias']);

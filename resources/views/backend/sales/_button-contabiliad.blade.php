@@ -78,8 +78,7 @@
     			<a class="text-white" >Caja</a>
     		</button>
     	<?php else: ?>
-    		<a class="text-white" href="#">
-    			<!-- {{url('/admin/caja/')}} -->
+    		<a class="text-white" href="{{url('/admin/caja/')}}">
 	    		<button class="btn btn-md btn-primary" style="width: 100%;">
 		        	Caja
 	    		</button>

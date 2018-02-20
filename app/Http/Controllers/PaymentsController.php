@@ -38,9 +38,22 @@ class PaymentsController extends Controller
         $payment->import = $request->importe;
         $payment->comment = $request->comment;
         $payment->type = $request->type;
-            if ($payment->save()) {
-                return 'cobro guardado';
-            }
+
+        if ($request->type == 1 || $request->type == 0) {
+
+            $data['concept'] = ( $request->type == 0 )? 'COBRO METALICO JAIME':'COBRO METALICO JORGE';
+            $data['date'] = $date->copy()->format('Y-m-d');
+            $data['import'] = $request->importe;
+            $data['comment'] = $request->comment;
+            $data['typePayment'] = $request->type;
+            $data['type'] = 0;
+
+            LiquidacionController::addCashbox($data);
+        }
+
+        if ($payment->save()) {
+            return 'cobro guardado';
+        }
             
         
     }
