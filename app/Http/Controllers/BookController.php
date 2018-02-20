@@ -1201,11 +1201,7 @@ class BookController extends Controller
         }
 
         $date = new Carbon('first day of September '.$date->copy()->format('Y'));
-        if (date('Y') == $date->copy()->format('y')) {
-            $dateX = Carbon::now();
-        }else{
-            $dateX = $date->copy();
-        }
+        
         // echo "<pre>";
         // print_r($date);
         // die();
@@ -1233,8 +1229,7 @@ class BookController extends Controller
                                     ->get();
                 break;
             case 'checkin':
-               
-
+                $dateX = Carbon::now();
                 $books = \App\Book::where('start','>',$dateX->copy()->subDays(3))
                                     ->where('start','<',$dateX->copy()->addYear())
                                     ->where('type_book',2)
@@ -1242,7 +1237,7 @@ class BookController extends Controller
                                     ->get();
                 break;
             case 'checkout':
-                
+                $dateX = Carbon::now();
 
                 $books = \App\Book::where('start','>',$dateX->copy()->subDays(3))
                                     ->where('start','<',$dateX->copy()->addYear())
