@@ -61,16 +61,15 @@
 		<?php $init = $inicio->copy(); ?>
 			<?php for($i = 1 ; $i <= 12; $i++): ?>
 
-				<?php $totalMonthIncomes = 	
+				<?php 
+					$totalMonthIncomes = 	
 									$arrayTotales['meses'][$init->copy()->format('n')] + 
     								$arrayIncomes['INGRESOS EXTRAORDINARIOS'][$init->copy()->format('n')] + 
     								$arrayIncomes['RAPPEL CLOSES'][$init->copy()->format('n')] + 
     								$arrayIncomes['RAPPEL FORFAITS'][$init->copy()->format('n')] + 
     								$arrayIncomes['RAPPEL ALQUILER MATERIAL'][$init->copy()->format('n')];
-				?>
-				<?php $totalYearIncomes += $totalMonthIncomes; ?>
-
-				<?php 
+					
+					$totalYearIncomes += $totalMonthIncomes;
 					$totalMonthExpenses = 
 									$arrayExpenses['PAGO PROPIETARIO'][$init->copy()->format('n')] +
 									$arrayExpenses['SERVICIOS PROF INDEPENDIENTES'][$init->copy()->format('n')] +
@@ -90,8 +89,8 @@
 									$arrayExpenses['SEG SOCIALES'][$init->copy()->format('n')] +
 									$arrayExpenses['MENSAJERIA'][$init->copy()->format('n')] +
 									$arrayExpenses['COMISIONES COMERCIALES'][$init->copy()->format('n')] ;
-				?>
-				<?php $totalYearExpenses += $totalMonthExpenses; ?>
+					
+					$totalYearExpenses += $totalMonthExpenses; ?>
 
 				<?php $init->addMonths(1); ?>
 		<?php endfor; ?>
@@ -129,8 +128,18 @@
 		   						</h5>
 		   						
 		   						<h3 class="no-margin p-b-5 text-white font-w600">
+		   							<?php 
+		   									$totalExpensesPending = array_sum($arrayExpensesPending['PAGO PROPIETARIO']) +  
+																	array_sum($arrayExpensesPending['AGENCIAS']) + 
+																	array_sum($arrayExpensesPending['STRIPE']) + 
+																	array_sum($arrayExpensesPending['LIMPIEZA']) + 
+																	array_sum($arrayExpensesPending['LAVANDERIA']);
+
+											$totalYearExpenses = $totalYearExpenses + ($totalExpensesPending - $totalYearExpenses)
+
+		   							?>
 		   							<?php if ($totalYearExpenses > 0): ?>
-										<?php echo number_format($totalYearExpenses, 0, ',', '.') ?> €
+										<?php echo number_format(($totalYearExpenses), 0, ',', '.') ?> €
 									<?php else: ?>
 										---
 									<?php endif ?>

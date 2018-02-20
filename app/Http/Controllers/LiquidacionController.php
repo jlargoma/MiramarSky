@@ -627,14 +627,37 @@ class LiquidacionController extends Controller
                             ->get();
         /* INGRESOS */
         $arrayTotales = ['totales' => 0, 'meses' => []];
+
+        $arrayExpensesPending = ['PAGO PROPIETARIO' => [], 'AGENCIAS' => [], 'STRIPE' => [], 'LIMPIEZA' => [], 'LAVANDERIA' => []];
+
         for ($i=1; $i <=12 ; $i++) { 
-              $arrayTotales['meses'][$i] = 0;
+            $arrayTotales['meses'][$i] = 0;
+
+            $arrayExpensesPending['PAGO PROPIETARIO'][$i] = 0;
+            $arrayExpensesPending['AGENCIAS'][$i] = 0;
+            $arrayExpensesPending["STRIPE"][$i] = 0;
+
+            $arrayExpensesPending['LIMPIEZA'][$i] = 0;
+            $arrayExpensesPending['LAVANDERIA'][$i] = 0;
         }
+
+        
+
         foreach ($books as $book) {
             $fecha = Carbon::createFromFormat('Y-m-d',$book->start);
             $arrayTotales['meses'][$fecha->copy()->format('n')] += $book->total_price;    
+            $arrayTotales['totales'] += $book->total_price;        
 
-            $arrayTotales['totales'] += $book->total_price;           
+
+            $arrayExpensesPending['PAGO PROPIETARIO'][$fecha->copy()->format('n')] += ($book->cost_apto + $book->cost_park + $book->cost_lujo);
+            $arrayExpensesPending['AGENCIAS'][$fecha->copy()->format('n')] += $book->PVPAgencia;
+            $arrayExpensesPending["STRIPE"][$fecha->copy()->format('n')] += ((1.4 * $book->total_price)/100)+0.25;
+
+            $arrayExpensesPending['LIMPIEZA'][$fecha->copy()->format('n')] += ($book->cost_limp - 10);
+            $arrayExpensesPending['LAVANDERIA'][$fecha->copy()->format('n')] += 10;
+            
+            //
+
         }
         $arrayIncomes = array();
         $conceptIncomes = ['INGRESOS EXTRAORDINARIOS', 'RAPPEL CLOSES', 'RAPPEL FORFAITS', 'RAPPEL ALQUILER MATERIAL'];
@@ -668,6 +691,8 @@ class LiquidacionController extends Controller
         $conceptExpenses = 
                             [
                             'PAGO PROPIETARIO',
+                            'AGENCIAS',
+                            'STRIPE',
                             'SERVICIOS PROF INDEPENDIENTES',
                             'VARIOS',
                             'REGALO BIENVENIDA',
@@ -707,11 +732,17 @@ class LiquidacionController extends Controller
 
         }
 
+        // for ($i=1; $i <= 12; $i++) { 
+        //     $arrayExpenses['PAGO PROPIETARIO'][$i] += $arrayExpensesPending['PAGO PROPIETARIO'][$i];
+        //     $arrayExpenses['AGENCIAS'][$i] += $arrayExpensesPending['AGENCIAS'][$i];
+        //     $arrayExpenses['STRIPE'][$i] += $arrayExpensesPending['STRIPE'][$i];
+        //     $arrayExpenses['LIMPIEZA'][$i] += $arrayExpensesPending['LIMPIEZA'][$i];
+        //     $arrayExpenses['LAVANDERIA'][$i] += $arrayExpensesPending['LAVANDERIA'][$i];
+        // }
+
         /* FIN GASTOS */
 
         // echo "<pre>";
-        // print_r($arrayTotales);
-        // print_r($arrayIncomes);
         // print_r($arrayExpenses);
         // die();
 
@@ -719,7 +750,8 @@ class LiquidacionController extends Controller
                                                             'arrayTotales' => $arrayTotales, 
                                                             'arrayIncomes' => $arrayIncomes, 
                                                             'arrayExpenses' => $arrayExpenses, 
-                                                            'inicio' => $inicio
+                                                            'inicio' => $inicio,
+                                                            'arrayExpensesPending' => $arrayExpensesPending
                                                         ]);
     }
 
