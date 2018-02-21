@@ -107,7 +107,7 @@
 							<b><?php echo number_format($pagototal,2,',','.') ?>€</b>
 						</td>
 						<td class="text-center" style="padding: 8px!important">
-							<?php echo \App\Book::getTypeCobro($pago->type) ?>
+							<?php echo \App\Book::getTypeCobro($pago->typePayment) ?>
 						</td>
 
 						<td class="text-center" style="padding: 8px!important">
