@@ -531,7 +531,7 @@ class LiquidacionController extends Controller
         $cashJaime = \App\Cashbox::where('typePayment', 1)
                                     ->where('date', '>', $inicio->copy()->format('Y-m-d'))
                                     ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
-                                    ->orderBy('date', 'DESC')
+                                    ->orderBy('date', 'ASC')
                                     ->get();
         $saldoInicial = \App\Cashbox::where('concept', 'SALDO INICIAL')->where('typePayment', 1)->first();
 
@@ -569,7 +569,7 @@ class LiquidacionController extends Controller
             $cashbox = \App\Cashbox::where('typePayment', 1)
                                     ->where('date', '>', $inicio->copy()->format('Y-m-d'))
                                     ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
-                                    ->orderBy('date', 'DESC')
+                                    ->orderBy('date', 'ASC')
                                     ->get();
             $saldoInicial = \App\Cashbox::where('concept', 'SALDO INICIAL')->where('typePayment', 1)->first();
 
@@ -577,7 +577,7 @@ class LiquidacionController extends Controller
             $cashbox = \App\Cashbox::where('typePayment', 0)
                                         ->where('date', '>', $inicio->copy()->format('Y-m-d'))
                                         ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
-                                        ->orderBy('date', 'DESC')
+                                        ->orderBy('date', 'ASC')
                                         ->get();
             $saldoInicial = \App\Cashbox::where('concept', 'SALDO INICIAL')->where('typePayment', 0)->first();
 
