@@ -566,6 +566,7 @@ class LiquidacionController extends Controller
 
         $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
         if ($type == 'jaime') {
+
             $cashbox = \App\Cashbox::where('typePayment', 1)
                                     ->where('date', '>=', $inicio->copy()->format('Y-m-d'))
                                     ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
@@ -579,11 +580,12 @@ class LiquidacionController extends Controller
                                         ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
                                         ->orderBy('date', 'ASC')
                                         ->get();
+
             $saldoInicial = \App\Cashbox::where('concept', 'SALDO INICIAL')->where('typePayment', 0)->first();
 
         }
         return view('backend.sales.cashbox._tableMoves', [
-                                                        'cashbox'    => $cashbox, 
+                                                        'cashbox'         => $cashbox, 
                                                         'saldoInicial'    => $saldoInicial, 
                                                     ]);
     }

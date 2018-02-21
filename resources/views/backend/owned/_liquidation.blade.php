@@ -100,7 +100,7 @@
 					<tr>
 
 						<td class="text-center"  style="padding: 8px!important">
-							<?php $date = Carbon::createFromFormat('Y-m-d',$pago->datePayment) ?>
+							<?php $date = Carbon::createFromFormat('Y-m-d',$pago->date) ?>
 							<?php echo $date->format('d')?>-<?php echo $date->format('M')?>-<?php echo $date->format('y')?>
 						</td>
 						<td class="text-center" style="padding: 8px!important">

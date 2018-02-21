@@ -10,43 +10,114 @@
 | and give it the controller to call when that URI is requested.
 | 
 */
-// Route::get('/test', function () {
+Route::get('/test', function () {
   
-// 	foreach (\App\Payments::All() as $key => $pay) {
+	foreach (\App\Paymentspro::All() as $key => $pay) {
+
+		if ($pay->type == 0 || $pay->type == 1) {
+			$gasto = new \App\Expenses();
+			$gasto->concept = 'Pago propietario';
+	        $gasto->date = $pay->datePayment;
+	        $gasto->import = $pay->import;
+	        $gasto->typePayment = $pay->type;
+	        $gasto->type = 'PAGO PROPIETARIO';
+	        $gasto->comment = $pay->comment;
+	        $gasto->PayFor = $pay->room_id;
+
+	        if ($gasto->save()) {
+	    		
+				$data['concept']     = $gasto->concept;
+				$data['date']        = $gasto->date;
+				$data['import']      = $gasto->import;
+				$data['comment']     = $gasto->comment;
+				$data['type']        = 1;
+
+				$cashbox = new \App\Cashbox();
+				$cashbox->concept = $data['concept'];
+				$cashbox->date = \Carbon\Carbon::createFromFormat('Y-m-d', $data['date']);
+				$cashbox->import = $data['import'];
+				$cashbox->comment = $data['comment'];
+				$cashbox->typePayment = $pay->type;
+				$cashbox->type = $data['type'];
+				if ($cashbox->save()) {
+				    echo "Ok <br>";
+				}
+	    		
+	        }
+		}
+
 		
-// 		if ($pay->type == 0 || $pay->type == 1 ) {
-// 			$data['concept']     = ( $pay->type == 0 )? 'COBRO METALICO JAIME '.$pay->book->customer->name:'COBRO METALICO JORGE '.$pay->book->customer->name;
-// 			$data['date']        = $pay->datePayment;
-// 			$data['import']      = $pay->import;
-// 			$data['comment']     = $pay->comment;
-// 			$data['typePayment'] = $pay->type;
-// 			$data['type']        = 0;
+	}
 
-// 			if (\App\http\Controllers\LiquidacionController::addCashbox($data)) {
-// 				echo "Ok <br>";
-// 			}
-// 		}
-// 	}
-
-
-// 	foreach (\App\Expenses::All() as $key => $gasto) {
+	foreach (\App\Payments::All() as $key => $pay) {
 		
-// 		if ($gasto->typePayment == 1 || $gasto->typePayment == 2 ) {
-// 			$data['concept']     = $gasto->concept;
-// 			$data['date']        = $gasto->date;
-// 			$data['import']      = $gasto->import;
-// 			$data['comment']     = $gasto->comment;
-// 			$data['typePayment'] = ( $gasto->type == 2 )? 0: 1;
-// 			$data['type']        = 1;
+		if ($pay->type == 0 || $pay->type == 1 ) {
+			switch ($pay->type) {
+				case 0:
+					$data['concept'] ='COBRO METALICO JORGE '.$pay->book->customer->name;
+					
+					break;
+				
+				case 1:
+					$data['concept'] = 'COBRO METALICO JAIME '.$pay->book->customer->name;
+					break;
+			}
+			$data['typePayment'] = $pay->type;
+			$data['date']        = $pay->datePayment;
+			$data['import']      = $pay->import;
+			$data['comment']     = $pay->comment;
+			$data['type']        = 0;
 
-// 			if (\App\http\Controllers\LiquidacionController::addCashbox($data)) {
-// 				echo "Ok <br>";
-// 			}
-// 		}
-// 	}
+			$cashbox = new \App\Cashbox();
+			$cashbox->concept = $data['concept'];
+			$cashbox->date = \Carbon\Carbon::createFromFormat('Y-m-d', $data['date']);
+			$cashbox->import = $data['import'];
+			$cashbox->comment = $data['comment'];
+			$cashbox->typePayment = $data['typePayment'];
+			$cashbox->type = $data['type'];
+			if ($cashbox->save()) {
+			    echo "Ok <br>";
+			}
+		}
+	}
 
 
-// });
+	foreach (\App\Expenses::All() as $key => $gasto) {
+		
+		if ($gasto->typePayment == 1 || $gasto->typePayment == 2 ) {
+
+			switch ($gasto->type) {
+				case 1:
+					$data['typePayment'] = 1;
+					
+					break;
+				
+				case 2:
+					$data['typePayment'] = 0;
+					break;
+			}
+
+			$data['concept']     = $gasto->concept;
+			$data['date']        = $gasto->date;
+			$data['import']      = $gasto->import;
+			$data['comment']     = $gasto->comment;
+			$data['type']        = 1;
+
+			$cashbox = new \App\Cashbox();
+			$cashbox->concept = $data['concept'];
+			$cashbox->date = \Carbon\Carbon::createFromFormat('Y-m-d', $data['date']);
+			$cashbox->import = $data['import'];
+			$cashbox->comment = $data['comment'];
+			$cashbox->typePayment = $data['typePayment'];
+			$cashbox->type = $data['type'];
+			if ($cashbox->save()) {
+			    echo "Ok <br>";
+			}
+		}
+	}
+
+
+});
 
 
 
