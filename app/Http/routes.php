@@ -12,19 +12,37 @@
 */
 // Route::get('/test', function () {
   
-// 	foreach (\App\Paymentspro::All() as $key => $pay) {
-// 		$gasto = new \App\Expenses();
-// 		$gasto->concept = 'Pago propietario';
-//         $gasto->date = $pay->datePayment;
-//         $gasto->import = $pay->import;
-//         $gasto->typePayment = $pay->type;
-//         $gasto->type = 'PAGO PROPIETARIO';
-//         $gasto->comment = $pay->comment;
-//         $gasto->PayFor = $pay->room_id;
+// 	foreach (\App\Payments::All() as $key => $pay) {
+		
+// 		if ($pay->type == 0 || $pay->type == 1 ) {
+// 			$data['concept']     = ( $pay->type == 0 )? 'COBRO METALICO JAIME '.$pay->book->customer->name:'COBRO METALICO JORGE '.$pay->book->customer->name;
+// 			$data['date']        = $pay->datePayment;
+// 			$data['import']      = $pay->import;
+// 			$data['comment']     = $pay->comment;
+// 			$data['typePayment'] = $pay->type;
+// 			$data['type']        = 0;
 
-//         if ($gasto->save()) {
-//             echo "OK<br>";
-//         }
+// 			if (\App\http\Controllers\LiquidacionController::addCashbox($data)) {
+// 				echo "Ok <br>";
+// 			}
+// 		}
+// 	}
+
+
+// 	foreach (\App\Expenses::All() as $key => $gasto) {
+		
+// 		if ($gasto->typePayment == 1 || $gasto->typePayment == 2 ) {
+// 			$data['concept']     = $gasto->concept;
+// 			$data['date']        = $gasto->date;
+// 			$data['import']      = $gasto->import;
+// 			$data['comment']     = $gasto->comment;
+// 			$data['typePayment'] = ( $gasto->type == 2 )? 0: 1;
+// 			$data['type']        = 1;
+
+// 			if (\App\http\Controllers\LiquidacionController::addCashbox($data)) {
+// 				echo "Ok <br>";
+// 			}
+// 		}
 // 	}
 
 
@@ -271,6 +289,15 @@ Route::get('/admin/ingresos/delete/{id}', function($id){
 
 Route::get('admin/caja/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@caja']);
 Route::get('admin/caja/getTableMoves/{year?}/{type}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@getTableMoves']);
+Route::get('admin/cashbox/updateSaldoInicial/{id}/{type}/{importe}' ,function ($id, $type, $importe)
+{
+	$cashbox = \App\Cashbox::find($id);
+	$cashbox->import = $importe;
+	if ($cashbox->save()) {
+		return "OK";
+	}
+
+});
 
 
 Route::get('admin/estadisticas/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@Statistics']);

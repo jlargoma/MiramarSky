@@ -20,7 +20,6 @@ class OwnedController extends Controller
             
         // Rooms
         
-        try {
 
             $room = \App\Rooms::where('nameRoom', $name)->first();
             
@@ -139,10 +138,25 @@ class OwnedController extends Controller
             }
             $total += ( $apto + $park + $lujo);
 
-            $paymentspro = \App\Paymentspro::where('room_id',$room->id)->where('datePayment','>=',$date->copy()->format('Y-m-d'))->where('datePayment','<=',$date->copy()->addYear()->format('Y-m-d'))->get();
+            // $paymentspro = \App\Paymentspro::where('room_id',$room->id)->where('datePayment','>=',$date->copy()->format('Y-m-d'))->where('datePayment','<=',$date->copy()->addYear()->format('Y-m-d'))->get();
+
+
+
+            $gastos = \App\Expenses::where('date', '>=', $date->copy()->format('Y-m-d'))
+                                    ->where('date', '<=', $date->copy()->addYear()->format('Y-m-d'))
+                                    ->where('PayFor', 'LIKE', '%'.$room->id.'%')
+                                    ->orderBy('date', 'DESC')
+                                    ->get();
+
+            // echo "<pre>";
+            // print_r($gastos);
+            // die();
+
             $pagototal = 0;
-            foreach ($paymentspro as $pago) {
+            foreach ($gastos as $pago) {
+
                 $pagototal += $pago->import;
+
             }
 
         
@@ -198,7 +212,7 @@ class OwnedController extends Controller
                                             'apto'        => $apto,
                                             'park'        => $park,
                                             'lujo'        => $lujo,
-                                            'pagos'       => $paymentspro,
+                                            'pagos'       => $gastos,
                                             'pagototal'   => $pagototal,
                                             'mobile'      => new Mobile(),
                                             'estadisticas'      => $estadisticas,
@@ -206,11 +220,7 @@ class OwnedController extends Controller
                                             'roomscalendar' => \App\Rooms::where('nameRoom', $name)->get(),
                                             'arrayReservas' => $arrayReservas,
                                             ]);
-        
-        } catch (\Exception $e) {
-            // print_r($e);
-            $e   ? abort(404) : abort(500);
-        }
+
 
     }
 

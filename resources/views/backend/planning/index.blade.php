@@ -480,7 +480,7 @@
 
         
         <div class="modal fade slide-up in" id="modalAlarms" tabindex="-1" role="dialog" aria-hidden="true" >
-            <div class="modal-dialog modal-lg" style="margin: 0;">
+            <div class="modal-dialog modal-lg" >
                 <div class="modal-content-wrapper">
                     <div class="modal-content">
                         @include('backend.planning._alarmsBooks', ['alarms' => $alarms])

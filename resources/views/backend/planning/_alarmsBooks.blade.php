@@ -165,11 +165,7 @@
                                     <?php echo  $paymentBook." €" ?> <br>
                                     <b class="text-danger"><?php echo  round(($paymentBook/$book->total_price)*100)?>%</b>
                                 </td>
-                                <td class="text-center">
-                                    <?php if ($fromStripe): ?>
-                                        <a target="_blank" href="https://dashboard.stripe.com/payments"><img src="/img/stripe-icon.jpg" style="width: 20px;"></a>
-                                    <?php endif ?> 
-                                </td>
+                               
                                 <td class="text-center">
 
                                     <?php if ($book->send == 1): ?>

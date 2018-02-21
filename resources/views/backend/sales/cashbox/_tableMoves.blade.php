@@ -46,7 +46,12 @@
 					
 				</td>
 				<td class="text-center">
-					<b><?php echo number_format($total,2,',','.'); ?> €</b>
+					<?php if ( preg_match('/SALDO INICIAL/i', $cash->comment) ): ?>
+						<input class="form-control text-center saldoInicial" type="number" step="0.01" name="import" value="<?php echo $total; ?>" data-type="<?php echo $cash->typePayment; ?>" data-id="<?php echo $cash->id; ?>">
+					<?php else: ?>
+						<b><?php echo number_format($total,2,',','.'); ?> €</b>
+					<?php endif ?>
+					
 				</td>
 				
 				<td class="text-center" style="padding: 8px 5px!important">
@@ -58,3 +63,18 @@
 		<?php endforeach ?>
 	</tbody>			
 </table>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('.saldoInicial').change(function(event) {
+
+			var type = $(this).attr('data-type');
+			var id = $(this).attr('data-id');
+			$.get('/admin/cashbox/updateSaldoInicial/'+id+'/'+type+'/'+$(this).val(), {type: type, importe: $(this).val() }, function(data) {
+				if (data == "OK") {
+					location.reload();
+				}
+			});
+			
+		});
+	});
+</script>

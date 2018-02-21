@@ -45,7 +45,7 @@
 				<div class="col-md-12 ">
 					<div class="col-md-3 not-padding" >
 						<div class="col-xs-12  push-20">
-							<h5 class="text-left"><?php echo Carbon::createFromFormat('Y-m-d',$pago->datePayment)->format('d-m-Y')?></h5>
+							<h5 class="text-left"><?php echo Carbon::createFromFormat('Y-m-d',$pago->date)->format('d-m-Y')?></h5>
 						</div>
 					</div>
 					<div class="col-md-3 not-padding" >
@@ -60,7 +60,7 @@
 					</div>
 					<div class="col-md-3 not-padding">
 						<div class="col-xs-12  push-20" style="">
-							<h5 class="text-left"><?php echo number_format($total-$pagototal,2,',','.'); ?>€</h5>
+							<h5 class="text-left"><?php echo number_format($total - $pagototal,2,',','.'); ?>€</h5>
 						</div>
 					</div>
 				</div>

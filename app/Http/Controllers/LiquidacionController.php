@@ -319,7 +319,10 @@ class LiquidacionController extends Controller
             
             if (count($book->pago) > 0) {
                 foreach ($book->pago as $key => $pay) {
-                    $totalStripep +=  (((1.4 * $pay->import)/100)+0.25);
+                    if ($pay->comment == 'Pago desde stripe') {
+                        $totalStripep +=  (((1.4 * $pay->import)/100)+0.25);
+                    }
+                    
                 }
             }
 
@@ -394,7 +397,7 @@ class LiquidacionController extends Controller
 
         $gastos = \App\Expenses::where('date', '>=', $inicio->copy()->format('Y-m-d'))
                                 ->Where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
-                                ->orderBy('date', 'ASC')
+                                ->orderBy('date', 'DESC')
                                 ->get();
                                 
         $books = \App\Book::whereIn('type_book', [2])
@@ -651,7 +654,16 @@ class LiquidacionController extends Controller
 
             $arrayExpensesPending['PAGO PROPIETARIO'][$fecha->copy()->format('n')] += ($book->cost_apto + $book->cost_park + $book->cost_lujo);
             $arrayExpensesPending['AGENCIAS'][$fecha->copy()->format('n')] += $book->PVPAgencia;
-            $arrayExpensesPending["STRIPE"][$fecha->copy()->format('n')] += ((1.4 * $book->total_price)/100)+0.25;
+            if (count($book->pago) > 0) {
+                foreach ($book->pago as $key => $pay) {
+                    if ($pay->comment == 'Pago desde stripe') {
+                        // $arrayExpensesPending["STRIPE"][$fecha->copy()->format('n')] += ((1.4 * $book->total_price)/100)+0.25;
+                        $arrayExpensesPending["STRIPE"][$fecha->copy()->format('n')] +=  (((1.4 * $pay->import)/100)+0.25);
+                    }
+                    
+                }
+            }
+            
 
             $arrayExpensesPending['LIMPIEZA'][$fecha->copy()->format('n')] += ($book->cost_limp - 10);
             $arrayExpensesPending['LAVANDERIA'][$fecha->copy()->format('n')] += 10;
