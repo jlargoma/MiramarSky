@@ -529,7 +529,7 @@ class LiquidacionController extends Controller
         $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
 
         $cashJaime = \App\Cashbox::where('typePayment', 1)
-                                    ->where('date', '>', $inicio->copy()->format('Y-m-d'))
+                                    ->where('date', '>=', $inicio->copy()->format('Y-m-d'))
                                     ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
                                     ->orderBy('date', 'ASC')
                                     ->get();
@@ -567,7 +567,7 @@ class LiquidacionController extends Controller
         $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
         if ($type == 'jaime') {
             $cashbox = \App\Cashbox::where('typePayment', 1)
-                                    ->where('date', '>', $inicio->copy()->format('Y-m-d'))
+                                    ->where('date', '>=', $inicio->copy()->format('Y-m-d'))
                                     ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
                                     ->orderBy('date', 'ASC')
                                     ->get();
@@ -575,7 +575,7 @@ class LiquidacionController extends Controller
 
         }else{
             $cashbox = \App\Cashbox::where('typePayment', 0)
-                                        ->where('date', '>', $inicio->copy()->format('Y-m-d'))
+                                        ->where('date', '>=', $inicio->copy()->format('Y-m-d'))
                                         ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
                                         ->orderBy('date', 'ASC')
                                         ->get();
