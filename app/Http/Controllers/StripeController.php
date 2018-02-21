@@ -122,7 +122,14 @@ class StripeController extends Controller
 
                     $payment->save();
 
+                    $data['concept'] = $payment->comment;
+                    $data['date'] = $date;
+                    $data['import'] = $realPrice;
+                    $data['comment'] = $payment->comment;
+                    $data['typePayment'] = 3;
+                    $data['type'] = 1;
 
+                    LiquidacionController::addBank($data);
 
                     return view('frontend.stripe.stripe', [ 
                                                             'mobile'         => $mobile,
@@ -192,7 +199,16 @@ class StripeController extends Controller
 
                         $payment->save();
 
+                        $data['concept'] = $payment->comment;
+                        $data['date'] = $date;
+                        $data['import'] = $realPrice;
+                        $data['comment'] = $payment->comment;
+                        $data['typePayment'] = 3;
+                        $data['type'] = 1;
 
+
+                        LiquidacionController::addBank($data);
+                        
                         $msg_params = array(
                           'msg_type' => 'success',
                           'msg_text' => 'Cobrado correctamente',

@@ -609,6 +609,24 @@ class LiquidacionController extends Controller
 
     }
 
+    static function addBank($data)
+    {
+        
+        $bank = new \App\Bank();
+        $bank->concept = $data['concept'];
+        $bank->date = Carbon::createFromFormat('Y-m-d', $data['date']);
+        $bank->import = $data['import'];
+        $bank->comment = $data['comment'];
+        $bank->typePayment = $data['typePayment'];
+        $bank->type = $data['type'];
+        if ($bank->save()) {
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
 
 
     public function perdidasGanancias($year="")

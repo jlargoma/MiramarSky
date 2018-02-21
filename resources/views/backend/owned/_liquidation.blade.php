@@ -29,7 +29,7 @@
 				<div class="col-md-3 not-padding" >
 					<div class="col-xs-12   bg-complete push-0">
 						<h5 class="text-left white">
-							Observaciones
+							Concepto
 						</h5>
 					</div>
 				</div>
@@ -42,24 +42,24 @@
 				</div>
 			</div>
 			<?php foreach ($pagos as $pago): ?>
-				<div class="col-md-12 ">
+				<div class="col-md-12 push-0">
 					<div class="col-md-3 not-padding" >
-						<div class="col-xs-12  push-20">
+						<div class="col-xs-12 push-0">
 							<h5 class="text-left"><?php echo Carbon::createFromFormat('Y-m-d',$pago->date)->format('d-m-Y')?></h5>
 						</div>
 					</div>
 					<div class="col-md-3 not-padding" >
-						<div class="col-xs-12 push-20">
+						<div class="col-xs-12push-0">
 							<h5 class="text-left"><?php echo number_format($pago->import,2,',','.') ?>€</h5>
 						</div>
 					</div>
 					<div class="col-md-3 not-padding" >
-						<div class="col-xs-12  push-20">
-							<h5 class="text-left"><?php echo $pago->comment ?></h5>
+						<div class="col-xs-12 push-0">
+							<h5 class="text-left"><?php echo $pago->concept ?></h5>
 						</div>
 					</div>
 					<div class="col-md-3 not-padding">
-						<div class="col-xs-12  push-20" style="">
+						<div class="col-xs-12 push-0" style="">
 							<h5 class="text-left"><?php echo number_format($total - $pagototal,2,',','.'); ?>€</h5>
 						</div>
 					</div>
@@ -104,10 +104,10 @@
 							<?php echo $date->format('d')?>-<?php echo $date->format('M')?>-<?php echo $date->format('y')?>
 						</td>
 						<td class="text-center" style="padding: 8px!important">
-							<b><?php echo number_format($pagototal,2,',','.') ?>€</b>
+							<b><?php echo number_format($pago->import,2,',','.') ?>€</b>
 						</td>
 						<td class="text-center" style="padding: 8px!important">
-							<?php echo \App\Book::getTypeCobro($pago->typePayment) ?>
+							<?php echo $pago->concept ?>
 						</td>
 
 						<td class="text-center" style="padding: 8px!important">
