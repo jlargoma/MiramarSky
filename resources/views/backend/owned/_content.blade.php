@@ -472,7 +472,7 @@
 		            			</h2>
 		            		</div>
 		            		<div class="block block-content" style="padding:20px">
-		            			<div class="row">
+		            			<div class="row" style=" max-height: 650px; overflow-y: auto;">
 		            				@include('backend.owned._liquidation')
 		            			</div>
 		            		</div>
@@ -846,7 +846,7 @@
 	            				Liquidación
 	            			</h2>
 	            		</div>
-	            		<div class="block block-content not-padding table-responsive" >
+	            		<div class="block block-content not-padding table-responsive" style=" max-height: 650px; overflow-y: auto;">
 	            			@include('backend.owned._liquidation')
 	            		</div>
 	            	</div>
