@@ -633,7 +633,7 @@ class LiquidacionController extends Controller
                                     ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
                                     ->orderBy('date', 'ASC')
                                     ->get();
-        $saldoInicial = \App\Bank::where('concept', 'SALDO INICIAL')->where('typePayment', 1)->first();
+        $saldoInicial = \App\Bank::where('concept', 'SALDO INICIAL')->where('typePayment', 3)->first();
 
         // $cashJorge = \App\Cashbox::where('typePayment', 0)
         //                             ->where('date', '>', $inicio->copy()->format('Y-m-d'))
@@ -672,7 +672,7 @@ class LiquidacionController extends Controller
                                     ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
                                     ->orderBy('date', 'ASC')
                                     ->get();
-            $saldoInicial = \App\Bank::where('concept', 'SALDO INICIAL')->where('typePayment', 1)->first();
+            $saldoInicial = \App\Bank::where('concept', 'SALDO INICIAL')->where('typePayment', 3)->first();
 
         }else{
             $bank = \App\Bank::where('typePayment', 2)
@@ -681,7 +681,7 @@ class LiquidacionController extends Controller
                                         ->orderBy('date', 'ASC')
                                         ->get();
 
-            $saldoInicial = \App\Bank::where('concept', 'SALDO INICIAL')->where('typePayment', 0)->first();
+            $saldoInicial = \App\Bank::where('concept', 'SALDO INICIAL')->where('typePayment', 2)->first();
 
         }
         return view('backend.sales.bank._tableMoves', [

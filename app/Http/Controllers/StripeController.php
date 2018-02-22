@@ -126,8 +126,8 @@ class StripeController extends Controller
                     $data['date'] = $date;
                     $data['import'] = $realPrice;
                     $data['comment'] = $payment->comment;
-                    $data['typePayment'] = 3;
-                    $data['type'] = 1;
+                    $data['typePayment'] = 2;
+                    $data['type'] = 0;
 
                     LiquidacionController::addBank($data);
 
@@ -203,8 +203,8 @@ class StripeController extends Controller
                         $data['date'] = $date;
                         $data['import'] = $realPrice;
                         $data['comment'] = $payment->comment;
-                        $data['typePayment'] = 3;
-                        $data['type'] = 1;
+                        $data['typePayment'] = 2;
+                        $data['type'] = 0;
 
 
                         LiquidacionController::addBank($data);
