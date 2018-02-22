@@ -63,9 +63,9 @@
     			<label>APTO:</label>
     			<select class="form-control searchSelect minimal" name="searchByRoom" >
     				<option value="all">Todos</option>
-    				<?php foreach (\App\Rooms::where('state', 1)->get() as $key => $room): ?>
+    				<?php foreach (\App\Rooms::where('state', 1)->orderBy('order')->get() as $key => $room): ?>
     					<option value="<?php echo $room->id ?>">
-    						<?php echo $room->name ?>
+    						<?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?>
     					</option>
     				<?php endforeach ?>
     			</select>
@@ -91,6 +91,12 @@
                 <?php endfor; ?>
             </select>
     	</div>
+
+    	<div class="col-md-1 pull-right">
+            <button class="btn btn-md btn-primary exportExcel">
+                Exportar Excel
+            </button>
+        </div>
     </div>
 
 	<div class="row">
@@ -147,6 +153,7 @@
 		
 			
 		colorPendienteCobro();
+
 		$('.dataTables_paginate').click(function(event) {
 			colorPendienteCobro();
 		});
@@ -196,6 +203,17 @@
                 alert(data);
                 location.reload();
             });
+        });
+
+
+        $('.exportExcel').click(function(event) {
+        	var searchString = $('.searchabled').val();
+			var searchRoom = $('.searchSelect').val();
+			var year = '<?php echo $temporada->copy()->format('Y')?>';
+
+			window.open('/admin/liquidacion/export/excel?searchString='+searchString+'&year='+year+'&searchRoom='+searchRoom, '_blank' );
+			
+
         });
         
 

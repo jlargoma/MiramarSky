@@ -46,7 +46,7 @@
                     </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
-                        <b><?php echo $book->room->nameRoom ?></b>
+                        <b><?php echo substr($book->room->nameRoom." - ".$book->room->name, 0, 15)  ?></b>
                     </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
                         <select id="scheduleOut" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?>" style="width: 100%;" data-type="out" data-id="<?php echo $book->id ?>">

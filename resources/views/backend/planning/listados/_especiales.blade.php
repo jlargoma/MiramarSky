@@ -55,10 +55,10 @@
                                         <?php foreach ($rooms as $room): ?>
                                             <?php if ($room->id == $book->room_id): ?>
                                                 <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                                    <?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?>
+                                                   <?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?>
                                                 </option>
                                             <?php else:?>
-                                                <option value="<?php echo $room->id ?>"><?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?></option>
+                                                <option value="<?php echo $room->id ?>"><?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?></option>
                                             <?php endif ?>
                                         <?php endforeach ?>
 
@@ -160,10 +160,12 @@
                             <?php foreach ($rooms as $room): ?>
                                 <?php if ($room->id == $book->room_id): ?>
                                     <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                       <?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?>
+                                       <?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?>
                                     </option>
                                 <?php else:?>
-                                    <option value="<?php echo $room->id ?>"><?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?></option>
+                                    <option value="<?php echo $room->id ?>">
+                                        <?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?>
+                                    </option>
                                 <?php endif ?>
                             <?php endforeach ?>
 

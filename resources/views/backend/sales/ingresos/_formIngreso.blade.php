@@ -18,9 +18,9 @@
 <div class="col-xs-12">
 	<form action="{{ url('/admin/ingresos/create') }}" method="post" id="formAddIngreso" >
 		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-		<div class="col-xs-12 col-md-10">
+		<div class="col-xs-12 col-md-12 col-lg-12">
 
-			<div class="col-xs-12 col-md-1 push-10" style="padding: 0">
+			<div class="col-xs-12 col-lg-1 col-md-3 push-10" style="padding: 0">
 				<label for="date">fecha</label>
 				<div id="datepicker-component" class="input-group date col-xs-12">
 					<input type="text" class="form-control" name="fecha" id="fecha" value="<?php echo date('d/m/Y') ?>" style="font-size: 12px">
@@ -28,7 +28,7 @@
 				</div>
 
 			</div>
-			<div class=" col-xs-12 col-md-3 push-10">
+			<div class=" col-xs-12 col-lg-3 col-md-5 push-10">
 				<div class="col-xs-12 col-md-12 push-10">
 					<label for="concept">Concepto</label>
 					<select class="js-select2 form-control" id="concept" name="concept" style="width: 100%;" data-placeholder="Seleccione un tipo" required>
@@ -40,11 +40,11 @@
 				</div>
 			</div>
 
-			<div class="col-xs-12 col-md-1 push-10">
+			<div class="col-xs-12 col-lg-1 col-md-2 push-10">
 				<label for="import">Importe</label>
 				<input  type="number" step="0.01" name="import" id="import" class="form-control"  />
 			</div>
-			<div class="col-md-2 form-group text-center push-10" style="padding: 20px;">
+			<div class="col-lg-2 col-md-2 form-group text-center push-10" style="padding: 20px;">
 				<button class="btn btn-lg btn-success">Añadir</button>
 			</div>
 		</div>

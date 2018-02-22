@@ -29,6 +29,14 @@
 
 		});
 
+		$(document).on("click","#copy-link-stripe", function(){
+            var link = $(this).data("link");
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val(link).select();
+            document.execCommand("copy");
+            $temp.remove();
+        });
 
 
 		$('.only-numbers').keydown(function (e) {

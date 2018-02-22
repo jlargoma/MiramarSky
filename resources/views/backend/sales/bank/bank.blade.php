@@ -22,7 +22,7 @@
 
 			<div class="col-md-3 col-md-offset-3 col-xs-12">
 				<h2 class="text-center">
-					CAJA
+					BANCO
 				</h2>
 			</div>
 			<div class="col-md-2 col-xs-12 sm-padding-10" style="padding: 10px">
@@ -56,21 +56,21 @@
 	</div>
 	
 	<div class="row bg-white">
-       <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-xs-12">
+        <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-xs-12">
             <div class="col-lg-6 col-md-6">
                 <h2 class="text-center selectCash selected" data-type="jaime" style="cursor: pointer;">
-                    CAJA JAIME
+                    BANCO JAIME
                 </h2>
             </div>
             <div class="col-lg-6 col-md-6">
                 <h2 class="text-center selectCash" data-type="jorge" style="cursor: pointer;">
-                    CAJA JORGE
+                    BANCO JORGE
                 </h2>
             </div>
         </div>
-	    <div class="col-md-12 col-xs-12 contentCashbox">
+	    <div class="col-md-12 col-xs-12 contentBank">
            
-           @include('backend.sales.cashbox._tableMoves', ['cashbox' => $cashJaime, 'saldoInicial' => $saldoInicial ])
+           @include('backend.sales.bank._tableMoves', ['bank' => $bankJaime, 'saldoInicial' => $saldoInicial ])
 	       
         </div>
 	</div>
@@ -85,7 +85,7 @@
 	$('#fecha').change(function(event) {
 	    
 	    var year = $(this).val();
-	    window.location = '/admin/caja/'+year;
+	    window.location = '/admin/banco/'+year;
 
 	});
 
@@ -100,7 +100,7 @@
 
         $(this).addClass('selected');
 
-        $('.contentCashbox').empty().load('/admin/caja/getTableMoves/'+year+'/'+type);
+        $('.contentBank').empty().load('/admin/banco/getTableMoves/'+year+'/'+type);
 
         // 
 

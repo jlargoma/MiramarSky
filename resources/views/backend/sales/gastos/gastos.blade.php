@@ -57,12 +57,12 @@ background: white;
 </div>
 <div class="container-fluid">
 	<div class="row bg-white push-30">
-		<div class="col-md-6 col-xs-12 push-20">
+		<div class="col-lg-6 col-md-10 col-xs-12 push-20">
 
 			@include('backend.sales._button-contabiliad')
 
 		</div>
-		<div class="col-md-6 col-xs-12 push-20">
+		<div class="col-lg-6 col-md-2 col-xs-12 push-20">
 			<div class="col-md-12 col-xs-12 push-20">
 				<div class="col-md-2 col-xs-2">
 					<button class="btn btn-md btn-complete" data-toggle="modal" data-target="#expencesByRoom">
@@ -72,88 +72,7 @@ background: white;
 			</div>
 		</div>
 	</div>
-	<?php //$dataX = \App\Http\Controllers\LiquidacionController::getSalesByYearByRoom("","all") ?>
-
-	<!-- <div class="row bg-white push-30">
-		<div class="col-md-4">
-			<div class="col-md-4 bordered">
-				<div class="card-title text-black hint-text">
-					COBRADO
-				</div>
-				<div class="p-l-20">
-					<h3 class="text-black font-w400 text-center"><?php // echo number_format($dataX['pagado'],0,',','.') ?>€</h3>
-				</div>
-			</div>
-			<div class="col-md-4 bordered">
-				<div class="card-title text-black hint-text">
-					Banc Jorge
-				</div>
-				<div class="p-l-20">
-					<h3 class="text-black font-w400 text-center"><?php // echo number_format($dataX['banco_jorge'],0,',','.') ?>€</h3>
-				</div>
-			</div>
-			<div class="col-md-4 bordered">
-				<div class="card-title text-black hint-text">
-					Banc Jaime
-				</div>
-				<div class="p-l-20">
-					<h3 class="text-black font-w400 text-center"><?php // echo number_format($dataX['banco_jaime'],0,',','.') ?>€</h3>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-4">
-			<div class="col-md-4 bordered">
-				<div class="card-title text-black hint-text">
-					Metalíco Jorg
-				</div>
-				<div class="p-l-20">
-					<h3 class="text-black font-w400 text-center"><?php // echo number_format($dataX['metalico_jorge'],0,',','.') ?>€</h3>
-				</div>
-			</div>
-			<div class="col-md-4 bordered">
-				<div class="card-title text-black hint-text">
-					Metalíco Jaime
-				</div>
-				<div class="p-l-20">
-					<h3 class="text-black font-w400 text-center"><?php // echo number_format($dataX['metalico_jaime'],0,',','.') ?>€</h3>
-				</div>
-			</div>
-			<div class="col-md-4 bordered">
-				<div class="card-title text-black hint-text">
-					Pendiente
-				</div>
-				<div class="p-l-20">
-					<h3 class="text-black font-w400 text-center"><?php // echo number_format($dataX['total'] - $dataX['pagado'],0,',','.') ?>€</h3>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-4">
-			<div class="col-md-4 bordered">
-				<div class="card-title text-black hint-text">
-					Ingreso Neto
-				</div>
-				<div class="p-l-20">
-					<h3 class="text-black font-w400 text-center">1251</h3>
-				</div>
-			</div>
-			<div class="col-md-4 bordered">
-				<div class="card-title text-black hint-text">
-					% benef
-				</div>
-				<div class="p-l-20">
-					<input class="form-control text-black font-w400 text-center seasonDays" value="120" style="border: none; font-size: 32px;margin: 10px 0;color:red!important">
-				</div>
-			</div>
-			<div class="col-md-4 bordered">
-				<div class="card-title text-black hint-text">
-					Coste Total
-				</div>
-				<div class="p-l-20">
-					<h3 class="text-black font-w400 text-center">333</h3>
-				</div>
-			</div>
-		</div> 
-	</div> -->
+	
 
 	<div class="row bg-white push-30">
 

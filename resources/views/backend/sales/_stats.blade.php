@@ -25,10 +25,15 @@
     .bg-complete-grey{
         background-color: #92B6E2!important;
     }
+    .bordered{
+		padding: 15px;
+		border:1px solid #e8e8e8;
+		background: white;
+		}
 </style>
 
 <?php $dataStats = \App\http\Controllers\LiquidacionController::getSalesByYear($inicio->copy()->format('Y')); ?>
-<div class="col-md-3">
+<div class="col-lg-3 col-md-6 col-xs-12">
 	
 	<table class="table table-hover table-striped table-ingresos" style="background-color: #92B6E2">
 		<thead class="bg-complete" style="background: #d3e8f7">
@@ -63,7 +68,7 @@
 	</div>
 </div>
 
-<div class="col-md-3">
+<div class="col-lg-3 col-md-6 col-xs-12">
 
 	<table class="table table-hover table-striped table-cobros" style="background-color: #38C8A7">
 		<thead style="background-color: #38C8A7">
@@ -96,7 +101,7 @@
 	</div>
 </div>
 
-<div class="col-md-6">
+<div class="col-lg-6 col-md-12 col-xs-12">
 	<div class="row ">
 		<?php $oldTotalPVP = 0; ?>
 		<?php $arrayColors = [ 1 => 'bg-info', 2 => 'bg-complete', 3 => 'bg-primary', ]; ?>
@@ -108,11 +113,11 @@
 					<div class="full-height d-flex flex-column">
 
 						<div class="p-l-20" style="padding: 10px 20px;">
-							<h5 class="no-margin p-b-5 text-white ">
+							<h4 class="no-margin p-b-5 text-white ">
 								Temp <b><?php echo $lastThreeSeason->copy()->format('y'); ?>-<?php echo $lastThreeSeason->copy()->addYear()->format('y'); ?></b>
-							</h5>
+							</h4>
 							<?php $totalPVP = \App\Rooms::getPvpByYear($lastThreeSeason->copy()->format('Y')); ?>
-							<h3 class="no-margin p-b-5 text-white">
+							<h4 class="no-margin p-b-5 text-white">
 								<?php echo number_format( $totalPVP, 0, ',', '.'); ?>€ 
 								<span style="font-size: 14px;">
 									<?php if ($i > 1): ?>
@@ -124,7 +129,7 @@
 										<?php endif ?>
 									<?php endif ?>
 								</span>
-							</h3>
+							</h4>
 						</div>
 					</div>
 				</div>
@@ -134,6 +139,64 @@
 			<?php $lastThreeSeason->addYear(); ?>
 		<?php endfor; ?>
 		
+    </div>
+    <div class="row">
+    	<?php $dataX = \App\Http\Controllers\LiquidacionController::getSalesByYearByRoomGeneral("","all") ?>
+    	<div class="row bg-white push-30">
+    		<div class="col-md-12">
+    			<div class="col-md-6 bordered">
+    				<div class="card-title text-black hint-text">
+    					COBRADO
+    				</div>
+    				<div class="p-l-20">
+    					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['pagado'],0,',','.') ?>€</h3>
+    				</div>
+    			</div>
+    			<div class="col-md-6 bordered">
+    				<div class="card-title text-black hint-text">
+    					PENDIENTE
+    				</div>
+    				<div class="p-l-20">
+    					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['total'] - $dataX['pagado'],0,',','.') ?>€</h3>
+    				</div>
+    			</div>
+    		</div>
+    		<div class="col-md-12">
+    			<div class="col-md-3 bordered">
+    				<div class="card-title text-black hint-text">
+    					CAJA JORG
+    				</div>
+    				<div class="p-l-20">
+    					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['metalico_jorge'],0,',','.') ?>€</h3>
+    				</div>
+    			</div>
+    			<div class="col-md-3 bordered">
+    				<div class="card-title text-black hint-text">
+    					CAJA JAIME
+    				</div>
+    				<div class="p-l-20">
+    					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['metalico_jaime'],0,',','.') ?>€</h3>
+    				</div>
+    			</div>
+    			<div class="col-md-3 bordered">
+    				<div class="card-title text-black hint-text">
+    					BANCO JORG
+    				</div>
+    				<div class="p-l-20">
+    					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['banco_jorge'],0,',','.') ?>€</h3>
+    				</div>
+    			</div>
+
+    			<div class="col-md-3 bordered">
+    				<div class="card-title text-black hint-text">
+    					BANCO JAIME
+    				</div>
+    				<div class="p-l-20">
+    					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['banco_jaime'],0,',','.') ?>€</h3>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
     </div>
 	    
 </div>  

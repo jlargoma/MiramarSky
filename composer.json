@@ -8,7 +8,7 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
         "barryvdh/laravel-dompdf": "dev-master",
-        "maatwebsite/excel": "^2.1",
+        "maatwebsite/excel": "~2.1.0",
         "intervention/image": "^2.4",
         "spatie/googlesearch": "^2.0",
         "eluceo/ical": "^0.13.0",

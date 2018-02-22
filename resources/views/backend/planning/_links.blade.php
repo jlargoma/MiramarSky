@@ -48,6 +48,9 @@
             https://www.miramarski.com/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>/<?php echo base64_encode($price) ?>   
         </a>
     </h2>
+    <button class="btn btn-cons" type="button" id="copy-link-stripe" data-link="https://www.miramarski.com/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>/<?php echo base64_encode($price) ?>">
+        <span class="bold">Copiar Link</span>
+    </button>       
 </div>
 <script type="text/javascript">
     $('button#btnGenerate').click(function(event) {
@@ -59,4 +62,13 @@
 
 
     });
+
+    $(document).on("click","#copy-link-stripe", function(){
+            var link = $(this).data("link");
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val(link).select();
+            document.execCommand("copy");
+            $temp.remove();
+        });
 </script>

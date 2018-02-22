@@ -535,31 +535,71 @@
 
 	    	    <div class="col-md-12">
 	    	    	<div class="row">
-		    			<div class="col-xs-7 not-padding">
-		    				<h4 class="text-center push-10" style="font-size: 19px;"><b>Planning de reservas</b></h4>
-		    			</div>
-		    		        
-		    		    <div class="col-xs-5 m-t-10 p-r-0" style="padding:0 15px;">  
-		    		        <select id="fecha" class="form-control minimal">
-		    		            <?php $fecha = $date->copy()->SubYear(); ?>
-		    		            <?php if ($fecha->copy()->format('Y') < 2015): ?>
-		    		                <?php $fecha = new Carbon('first day of September 2015'); ?>
-		    		            <?php endif ?>
-		    		        
-		    		            <?php for ($i=1; $i <= 3; $i++): ?>                           
-		    		                <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $date->copy()->format('Y') == $fecha->format('Y') ? 'selected' : '' }}>
-		    		                    <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
-		    		                </option>
-		    		                <?php $fecha->addYear(); ?>
-		    		            <?php endfor; ?>
-		    		        </select>
-		    		    
-		    			</div> 
-	    	    	</div>       
+		    		    <?php if (!preg_match('/propietario/i', Auth::user()->role)): ?>
+		    		    	<div class="col-md-6 col-xs-12">
+			    				<h2 class="text-center"><b>Planning de reservas</b></h2>
+			    			</div>
+	    		    	    <div class="col-xs-6 col-xs-offset-3" style="padding: 15px;">  
+	    		    	        <select id="fecha" class="form-control minimal">
+	    		    	            <?php $fecha = $date->copy()->SubYear(); ?>
+	    		    	            <?php if ($fecha->copy()->format('Y') < 2015): ?>
+	    		    	                <?php $fecha = new Carbon('first day of September 2015'); ?>
+	    		    	            <?php endif ?>
+	    		    	        
+	    		    	            <?php for ($i=1; $i <= 3; $i++): ?>                           
+	    		    	                <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $date->copy()->format('Y') == $fecha->format('Y') ? 'selected' : '' }}>
+	    		    	                    <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
+	    		    	                </option>
+	    		    	                <?php $fecha->addYear(); ?>
+	    		    	            <?php endfor; ?>
+	    		    	        </select>
+	    		    		</div> 
+	    		    	<?php else: ?>
+	    		    		<div class="col-xs-6 col-xs-offset-3">
+	    		    			<?php $fecha = $date->copy(); ?>
+			    				<h2 class="text-center">
+			    					<b>Planning de reservas</b> <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?>
+			    				</h2>
+			    			</div>
+		    		    <?php endif ?>
+	    	    	</div> 
+	    	    	<div class="row">
+						<?php $roomsForUser = \App\Rooms::where('owned', $room->user->id)->get(); ?>
+	    	    						
+	    	    							
+						<?php if ( count($roomsForUser)  == 1): ?>
+							<?php if (Auth::user()->role == 'propietario'): ?>
+								<div class="col-xs-12 text-center">
+									<h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1>
+								</div>
+							<?php else: ?>
+								<div class="col-xs-6 col-xs-offset-3 text-center push-20">
+									<!-- <h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1> -->
+									<select class="form-control full-width minimal selectorRoom">
+		                                <?php foreach (\App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get() as $roomX): ?>
+		                                    <option value="<?php echo $roomX->nameRoom ?>" {{ $roomX->id == $room->id ? 'selected' : '' }} >
+		                                        <?php echo substr($roomX->nameRoom." - ".$roomX->name, 0, 15)  ?>
+		                                    </option>
+		                                <?php endforeach ?>
+		                            </select>
+								</div>
+							<?php endif ?>
+							
+						<?php else: ?>
+							<div class="col-xs-6 col-xs-offset-3 text-center push-20">
+								<!-- <h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1> -->
+								<select class="form-control full-width minimal selectorRoom">
+	                                <?php foreach (\App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get() as $roomX): ?>
+	                                    <option value="<?php echo $roomX->nameRoom ?>" {{ $roomX->id == $room->id ? 'selected' : '' }} >
+	                                        <?php echo substr($roomX->nameRoom." - ".$roomX->name, 0, 15)  ?>
+	                                    </option>
+	                                <?php endforeach ?>
+	                            </select>
+							</div>
+							
+						<?php endif ?>
+	    	    	</div>      
 	    		</div>
-				<div class="col-md-12 text-center">
-					<h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1>
-				</div>
 				<div class="row">
 					<div class="col-xs-4 push-10" style="padding: 0px 5px">
 						<button class="btn btn-success   text-white btn-blocks" data-block="resumen" style="width: 100%">

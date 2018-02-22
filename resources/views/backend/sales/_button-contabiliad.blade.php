@@ -63,8 +63,8 @@
     			<a class="text-white" >Banco</a>
     		</button>
     	<?php else: ?>
-    		<a class="text-white" href="#">
-    			<!-- {{url('/admin/banco/')}} -->
+    		<a class="text-white" href="{{url('/admin/banco/')}}">
+    			<!--  -->
 	    		<button class="btn btn-md btn-primary" style="width: 100%;">
 		        	Banco
 	    		</button>

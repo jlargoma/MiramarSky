@@ -8,6 +8,7 @@ use App\Http\Requests;
 use \Carbon\Carbon;
 use \DB;
 use App\Classes\Mobile;
+use Excel;
 setlocale(LC_TIME, "ES"); 
 setlocale(LC_TIME, "es_ES");
 
@@ -59,7 +60,7 @@ class LiquidacionController extends Controller
 
         $date = new Carbon('first day of September '.$date->copy()->format('Y'));
         
-        $books = \App\Book::where('start' , '>=' , $date)->where('start', '<=', $date->copy()->AddYear()->SubMonth())->where('type_book',2)->orderBy('start', 'ASC')->get();
+        $books = \App\Book::where('start' , '>=' , $date)->where('start', '<=', $date->copy()->addYear()->subMonth())->where('type_book',2)->orderBy('start', 'ASC')->get();
 
         foreach ($books as $key => $book) {
             $totales["total"]        += $book->total_price;
@@ -196,7 +197,7 @@ class LiquidacionController extends Controller
                             "%ben"      => [],
                             "costes"    => [],
                         ];
-        $books = \App\Book::where('type_book',2)->where('start' , '>=' , $date)->where('start', '<=', $date->copy()->AddYear()->SubMonth())->get();
+        $books = \App\Book::where('type_book',2)->where('start' , '>=' , $date)->where('start', '<=', $date->copy()->addYear()->subMonth())->get();
 
         foreach ($books as $key => $book) {
             if (isset($apartamentos["noches"][$book->room_id])) {
@@ -212,7 +213,7 @@ class LiquidacionController extends Controller
             }
         }
 
-        $pagos = \App\Paymentspro::where('datePayment' , '>=' , $date)->where('datePayment', '<=', $date->copy()->AddYear()->SubMonth())->get();
+        $pagos = \App\Paymentspro::where('datePayment' , '>=' , $date)->where('datePayment', '<=', $date->copy()->addYear()->subMonth())->get();
 
         foreach ($pagos as $pago) {
             if (isset($pendientes[$pago->room_id])) {
@@ -609,6 +610,86 @@ class LiquidacionController extends Controller
 
     }
 
+    public function bank($year="")
+    {
+        if ( empty($year) ) {
+            $date = Carbon::now();
+            if ($date->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+            }else{
+                $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            }
+            
+        }else{
+            $year = Carbon::createFromFormat('Y',$year);
+            $date = $year->copy();
+
+        }
+
+        $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
+
+        $bankJaime = \App\Bank::where('typePayment', 3)
+                                    ->where('date', '>=', $inicio->copy()->format('Y-m-d'))
+                                    ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                                    ->orderBy('date', 'ASC')
+                                    ->get();
+        $saldoInicial = \App\Bank::where('concept', 'SALDO INICIAL')->where('typePayment', 1)->first();
+
+        // $cashJorge = \App\Cashbox::where('typePayment', 0)
+        //                             ->where('date', '>', $inicio->copy()->format('Y-m-d'))
+        //                             ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+        //                             ->get();
+
+        return view('backend.sales.bank.bank', [
+                                                        'inicio'    => $inicio, 
+                                                        'bankJaime' => $bankJaime, 
+                                                        'saldoInicial' => $saldoInicial, 
+                                                    ]);
+    }
+
+
+    public function getTableMovesBank($year, $type)
+    {
+        if ( empty($year) ) {
+            $date = Carbon::now();
+            if ($date->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+            }else{
+                $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            }
+            
+        }else{
+            $year = Carbon::createFromFormat('Y',$year);
+            $date = $year->copy();
+
+        }
+
+        $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
+        if ($type == 'jaime') {
+
+            $bank = \App\Bank::where('typePayment', 3)
+                                    ->where('date', '>=', $inicio->copy()->format('Y-m-d'))
+                                    ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                                    ->orderBy('date', 'ASC')
+                                    ->get();
+            $saldoInicial = \App\Bank::where('concept', 'SALDO INICIAL')->where('typePayment', 1)->first();
+
+        }else{
+            $bank = \App\Bank::where('typePayment', 2)
+                                        ->where('date', '>=', $inicio->copy()->format('Y-m-d'))
+                                        ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                                        ->orderBy('date', 'ASC')
+                                        ->get();
+
+            $saldoInicial = \App\Bank::where('concept', 'SALDO INICIAL')->where('typePayment', 0)->first();
+
+        }
+        return view('backend.sales.bank._tableMoves', [
+                                                        'bank'         => $bank, 
+                                                        'saldoInicial'    => $saldoInicial, 
+                                                    ]);
+    }
+
     static function addBank($data)
     {
         
@@ -910,6 +991,94 @@ class LiquidacionController extends Controller
 
     }
 
+
+    static function getSalesByYearByRoomGeneral($year="", $room="all")
+    {
+        if ( empty($year) ) {
+            $date = Carbon::now();
+        }else{
+            $year = Carbon::createFromFormat('Y',$year);
+            $date = $year->copy();
+
+        }
+        if ($date->copy()->format('n') >= 9) {
+            $start = new Carbon('first day of September '.$date->copy()->format('Y'));
+        }else{
+            $start = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+        }
+
+        $end  = $start->copy()->addYear();
+
+        if ($room == "all") {
+            $rooms = \App\Rooms::where('state', 1)->get(['id']);
+            $books = \App\Book::whereIn('type_book', [2])
+                            ->whereIn('room_id', $rooms)
+                            ->where('start', '>=', $start->copy()->format('Y-m-d'))
+                            ->where('start', '<=', $end->copy()->format('Y-m-d'))
+                            ->orderBy('start', 'ASC')
+                            ->get();
+        }else{
+
+            $books = \App\Book::whereIn('type_book', [2])
+                        ->where('room_id', $room)
+                        ->where('start', '>=', $start->copy()->format('Y-m-d'))
+                        ->where('start', '<=', $end->copy()->format('Y-m-d'))
+                        ->orderBy('start', 'ASC')
+                        ->get();
+
+        }
+    
+        $total = 0;
+        $metalico = 0;
+        $metalico_jaime = 0;
+        $metalico_jorge = 0;
+        $banco = 0;
+        $banco_jorge = 0;
+        $banco_jaime = 0;
+        $pagado = 0;
+
+        foreach ($books as $key => $book) {
+            $total += $book->total_price;
+            if (count($book->pago) > 0) {
+                foreach ($book->pago as $key => $pay) {
+                    $pagado += $pay->import;
+
+                    switch ($pay->type) {
+                        case 0:
+                            $metalico_jaime += $pay->import;
+                            $metalico += $pay->import;
+                            break;
+                        case 1:
+                            $metalico_jorge += $pay->import;
+                            $metalico += $pay->import;
+                            break;
+                        case 2:
+                            $banco_jorge += $pay->import;
+                            $banco += $pay->import;
+                            break;
+                        case 3:
+                            $banco_jaime += $pay->import;
+                            $banco += $pay->import;
+                            break;
+                    }
+                }
+            }
+        }
+
+        return [
+                'total' => $total,
+                'banco' => $banco,
+                'metalico_jaime' => $metalico_jaime,
+                'metalico_jorge' => $metalico_jorge,
+                'banco_jorge' => $banco_jorge,
+                'banco_jaime' => $banco_jaime,
+                'metalico' => $metalico,
+                'pagado' => $pagado
+            ];
+
+
+    }
+
     public function getHojaGastosByRoom($year="", $id)
     {
         if ( empty($year) ) {
@@ -1031,7 +1200,7 @@ class LiquidacionController extends Controller
                     
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
                                         ->where('start' , '>=' , $date->format('Y-m-d'))
-                                        ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
+                                        ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
                                         ->where('type_book',2)
                                         ->where('room_id', $request->searchRoom)
                                         ->orderBy('start', 'ASC')
@@ -1048,7 +1217,7 @@ class LiquidacionController extends Controller
                 } else {
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
                                         ->where('start' , '>=' , $date->format('Y-m-d'))
-                                        ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
+                                        ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
                                         ->where('type_book',2)
                                         ->orderBy('start', 'ASC')
                                         ->get();
@@ -1163,7 +1332,7 @@ class LiquidacionController extends Controller
             if ($request->searchRoom && $request->searchRoom != "all") {
 
                 $books = \App\Book::where('start' , '>=' , $date)
-                                ->where('start', '<=', $date->copy()->AddYear()->SubMonth())
+                                ->where('start', '<=', $date->copy()->addYear()->subMonth())
                                 ->where('type_book', 2)
                                 ->where('room_id', $request->searchRoom)
                                 ->orderBy('start', 'ASC')
@@ -1177,7 +1346,7 @@ class LiquidacionController extends Controller
                                         ->get();
             } else {
                 $books = \App\Book::where('start' , '>=' , $date)
-                                    ->where('start', '<=', $date->copy()->AddYear()->SubMonth())
+                                    ->where('start', '<=', $date->copy()->addYear()->subMonth())
                                     ->where('type_book', 2)
                                     ->orderBy('start', 'ASC')
                                     ->get();
@@ -1343,7 +1512,7 @@ class LiquidacionController extends Controller
 
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
                                     ->where('start' , '>=' , $date->format('Y-m-d'))
-                                    ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
+                                    ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
                                     ->where('type_book',2)
                                     ->where('room_id',$request->searchRoom)
                                     ->orderBy('start', 'ASC')
@@ -1360,7 +1529,7 @@ class LiquidacionController extends Controller
                 }else{
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
                                     ->where('start' , '>=' , $date->format('Y-m-d'))
-                                    ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
+                                    ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
                                     ->where('type_book',2)
                                     ->orderBy('start', 'ASC')
                                     ->get();
@@ -1475,7 +1644,7 @@ class LiquidacionController extends Controller
             if ($request->searchRoom && $request->searchRoom != "all") {
                     
                     $books = \App\Book::where('start' , '>=' , $date)
-                                        ->where('start', '<=', $date->copy()->AddYear()->SubMonth())
+                                        ->where('start', '<=', $date->copy()->addYear()->subMonth())
                                         ->where('type_book',2)
                                         ->where('room_id',$request->searchRoom)
                                         ->orderBy('start', 'ASC')
@@ -1492,7 +1661,7 @@ class LiquidacionController extends Controller
 
                 }else{
                     $books = \App\Book::where('start' , '>=' , $date)
-                                        ->where('start', '<=', $date->copy()->AddYear()->SubMonth())
+                                        ->where('start', '<=', $date->copy()->addYear()->subMonth())
                                         ->where('type_book',2)
                                         ->orderBy('start', 'ASC')
                                         ->get();
@@ -1602,5 +1771,99 @@ class LiquidacionController extends Controller
     {
         DB::table('percent')->where('id', 1)->update(['percent' => $val]);
         return "Cambiado";
+    }
+
+
+    public function exportExcel(Request $request)
+    {
+        $now = Carbon::now();
+        
+        if ( empty($request->year) ) {
+            $date = Carbon::now();
+            if ($date->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+            }else{
+                $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            }
+            
+        }else{
+            $year = Carbon::createFromFormat('Y',$request->year);
+            $date = $year->copy();
+
+        }
+
+        $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+
+
+        if ($request->searchString != "") {
+            $customers = \App\Customers::where('name', 'LIKE', '%'.$request->searchString.'%')->get();
+            
+            if (count($customers) > 0) {
+                $arrayCustomersId = [];
+                foreach ($customers as $key => $customer) {
+                    if (!in_array($customer->id, $arrayCustomersId)) {
+                        $arrayCustomersId[] = $customer->id;
+                    }
+                    
+                }
+
+
+                if ($request->searchRoom && $request->searchRoom != "all") {
+                    
+                    $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
+                                        ->where('start' , '>=' , $date->format('Y-m-d'))
+                                        ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
+                                        ->where('type_book',2)
+                                        ->where('room_id', $request->searchRoom)
+                                        ->orderBy('start', 'ASC')
+                                        ->get();
+
+                    
+                } else {
+
+                    $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
+                                        ->where('start' , '>=' , $date->format('Y-m-d'))
+                                        ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
+                                        ->where('type_book',2)
+                                        ->orderBy('start', 'ASC')
+                                        ->get();
+
+                  
+
+                }
+
+            }
+        }else{
+
+            if ($request->searchRoom != "all" ) {
+
+                $books = \App\Book::where('start' , '>=' , $date)
+                                ->where('start', '<=', $date->copy()->addYear()->subMonth())
+                                ->where('type_book', 2)
+                                ->where('room_id', $request->searchRoom)
+                                ->orderBy('start', 'ASC')
+                                ->get();
+            } else {
+
+                $books = \App\Book::where('start' , '>=' , $date)
+                                    ->where('start', '<=', $date->copy()->addYear()->subMonth())
+                                    ->where('type_book', 2)
+                                    ->orderBy('start', 'ASC')
+                                    ->get();
+            }
+            
+        }  
+        // echo "<pre>";
+        // print_r($books);
+
+        Excel::create('Liquidacion '.$date->copy()->format('Y'), function($excel) use ($books) {
+
+            $excel->sheet('Liquidacion', function($sheet) use ($books){
+
+                $sheet->loadView('backend.sales._tableExcelExport', ['books' => $books]);
+
+            });
+
+        })->download('xls');
     }
 }

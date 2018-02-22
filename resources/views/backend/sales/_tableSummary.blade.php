@@ -25,6 +25,7 @@
         @include('backend.sales._tableSummaryBoxes', ['totales' => $totales, 'books' => $books, 'data' => $data])
     </div>
     <div class="col-xs-12">
+    
         <div class="col-md-12 col-xs-12" style="padding-right: 0;">
             <table>
                 <thead>

@@ -142,10 +142,10 @@
                                     <?php foreach ($rooms as $room): ?>
                                         <?php if ($room->id == $book->room_id): ?>
                                             <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                               <?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?>
+                                               <?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?>
                                             </option>
                                         <?php else:?>
-                                            <option value="<?php echo $room->id ?>"><?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?></option>
+                                            <option value="<?php echo $room->id ?>"><?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?></option>
                                         <?php endif ?>
                                     <?php endforeach ?>
 
@@ -290,6 +290,12 @@
                 <tr class="<?php if($count <= 1){echo $class;} ?> <?php echo ucwords($book->getStatus($book->type_book)) ;?>">
 
                     <td class="text-left" style="padding: 5px !important;">
+                        
+
+                        <a href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
+                            <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " "); ?> 
+                        </a><br>
+                        
                         <?php if ( $payment[$book->id] == 0): ?>
                             <?php if ( $now->diffInDays($dateStart) <= 15 ):?>
                                 <span class=" lertDay heart text-danger">
@@ -315,22 +321,14 @@
                                 <?php endif; ?>
                                 
                             <?php endif ?>
-                            
-
-                        <?php endif ?>
-
-                        <a href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
-                            <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " "); ?> 
-                        </a><br>
+                        <?php endif ?>  
+                        
                         <?php if ($book->agency != 0): ?>
                             <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
                         <?php endif ?>
-                        <?php if (!empty($book->comment)): ?>
-                           <!-- <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i> -->
-                        <?php endif ?>   
                     </td>
                     <td class="text-center">
-                        <b><?php echo $book->room->nameRoom ?></b>
+                        <b><?php echo substr($book->room->nameRoom." - ".$book->room->name, 0, 15)  ?></b>
                     </td>
                     <td class="text-center">
                         <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>

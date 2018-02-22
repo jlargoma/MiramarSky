@@ -339,6 +339,12 @@ class StripeController extends Controller
                                 http://www.miramarski.com/stripe/pagos/'.$importe.'     
                             </a>
                         </h2>
+                        <div class="row text-center">
+                            <button class="btn btn-cons" type="button" id="copy-link-stripe" data-link="https://www.miramarski.com/stripe/pagos/'. $importe.'">
+                                <span class="bold">Copiar Link</span>
+                            </button>  
+                        </div>
+
                     </div>';
 
         return $response;

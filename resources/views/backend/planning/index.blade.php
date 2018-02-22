@@ -286,7 +286,7 @@
                             </h2>
                         </div>  
                         <div class="col-md-2 col-xs-7">
-                            <select id="fecha" class="form-control minimal">
+                            <select id="fechas" class="form-control minimal">
                                 <?php $fecha = $inicio->copy()->SubYear(2); ?>
                                 <?php if ($fecha->copy()->format('Y') < 2015): ?>
                                     <?php $fecha = new Carbon('first day of September 2015'); ?>

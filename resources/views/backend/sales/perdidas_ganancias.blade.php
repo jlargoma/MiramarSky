@@ -16,9 +16,9 @@
 	<div class="row bg-white">
 		<div class="col-md-12 col-xs-12">
 
-			<div class="col-md-4 col-md-offset-3 col-xs-12">
+			<div class="col-lg-4 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-12">
 				<h2 class="text-center">
-					PRDIDAS Y GANANCIAS
+					PERDIDAS Y GANANCIAS
 				</h2>
 			</div>
 			<div class="col-md-2 col-xs-12 sm-padding-10" style="padding: 10px">
@@ -44,14 +44,14 @@
 </div>
 <div class="container-fluid">
 	<div class="row bg-white push-30">
-		<div class="col-md-6 col-xs-12 push-20">
+		<div class="col-lg-8 col-md-10 col-xs-12 push-20">
 			
 			@include('backend.sales._button-contabiliad')
 		
 		</div>
 	</div>
 	<div class="row bg-white push-30">
-		<div class="col-md-3 col-xs-12">
+		<div class="col-lg-3 col-md-4 col-xs-12">
 		   <div>
 		       <canvas id="barChart" style="width: 100%; height: 250px;"></canvas>
 		   </div>
@@ -94,7 +94,7 @@
 
 				<?php $init->addMonths(1); ?>
 		<?php endfor; ?>
-		<div class="col-md-6 col-xs-12">
+		<div class="col-lg-6 col-md-8 col-xs-12">
 		   <div class="col-md-12 col-xs-12">
 		   		<div class="col-md-4 m-b-10">
 		   			<div class="widget-9 no-border bg-success no-margin widget-loader-bar" style="background-color: #46c37b!important;">
@@ -182,7 +182,9 @@
 	</div>
 	<div class="row bg-white">
 	    <div class="col-md-12 col-xs-12">
-           @include('backend.sales._tablePerdidasGanancias')
+           <div class="row table-responsive" style="border: 0px!important">
+           		@include('backend.sales._tablePerdidasGanancias')
+           </div>
 	    </div>
        
 	</div>

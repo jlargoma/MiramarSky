@@ -222,6 +222,7 @@ Route::get('admin/paymentspro/getLiquidationByRoom' , 'PaymentsProController@get
 //Liquidacion
 Route::get('admin/liquidacion/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@index']);
 Route::get('admin/liquidacion-apartamentos/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@apto']);
+Route::get('admin/liquidacion/export/excel' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@exportExcel']);
 
 Route::get('admin/gastos/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@gastos']);
 Route::post('admin/gastos/create' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@gastoCreate']);
@@ -262,6 +263,19 @@ Route::get('admin/cashbox/updateSaldoInicial/{id}/{type}/{importe}' ,function ($
 	}
 
 });
+
+Route::get('admin/banco/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@bank']);
+Route::get('admin/banco/getTableMoves/{year?}/{type}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@getTableMovesBank']);
+Route::get('admin/bank/updateSaldoInicial/{id}/{type}/{importe}' ,function ($id, $type, $importe)
+{
+	$cashbox = \App\Cashbox::find($id);
+	$cashbox->import = $importe;
+	if ($cashbox->save()) {
+		return "OK";
+	}
+
+});
+
 
 
 Route::get('admin/estadisticas/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@Statistics']);

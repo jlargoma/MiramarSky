@@ -56,7 +56,7 @@ class BookController extends Controller
         $booksCount['checkin'] = $this->getCounters($start,'checkin');
         $booksCount['checkout'] = $booksCount['confirmed'] - $booksCount['checkin'];
 
-        $rooms = \App\Rooms::where('state','=',1)->get();
+        $rooms = \App\Rooms::where('state','=',1)->orderBy('order')->get();
         $roomscalendar = $rooms->filter(function($room) {
             return $room->id >= 5;
         })->sortBy('order');
@@ -441,7 +441,7 @@ class BookController extends Controller
         $mobile = new Mobile();
         return view('backend/planning/update',  [
             'book'         => $book ,
-            'rooms'        => \App\Rooms::where('state',1)->get(),
+            'rooms'        => \App\Rooms::where('state','=',1)->orderBy('order')->get(),
             'extras'       => \App\Extras::all(),
             'start'        => Carbon::createFromFormat('Y-m-d',$book->start)->format('d M,y'),
             'payments'     => $payments,
@@ -1096,15 +1096,19 @@ class BookController extends Controller
     
         $now = Carbon::now();
 
-        if ( $request->year ) {
-            if ($now->copy()->format('n') >= 9) {
-                $date = new Carbon('first day of September '.$now->copy()->format('Y'));
-            }else{
-                $date = new Carbon('first day of September '.$now->copy()->subYear()->format('Y'));
-            }
-            
+
+
+        if ( empty($request->year) ) {
+            $date = Carbon::now();
         }else{
-            $date = new Carbon('first day of September '.$request->year);
+            $year = Carbon::createFromFormat('Y',$request->year);
+            $date = $year->copy();
+
+        }
+        if ($date->copy()->format('n') >= 9) {
+            $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+        }else{
+            $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
         }
 
 
@@ -1260,7 +1264,7 @@ class BookController extends Controller
                 break;
         }
 
-        $rooms = \App\Rooms::where('state','=',1)->get();
+        $rooms = \App\Rooms::where('state','=',1)->orderBy('order')->get();
         $type = $request->type;
 
         if ($request->type == 'confirmadas' ||  $request->type == 'checkin') {

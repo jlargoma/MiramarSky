@@ -57,7 +57,7 @@ background: white;
 </div>
 <div class="container-fluid">
 	<div class="row bg-white push-30">
-		<div class="col-md-6 col-xs-12 push-20">
+		<div class="col-lg-6 col-md-10 col-xs-12 push-20">
 
 			@include('backend.sales._button-contabiliad')
 
@@ -70,10 +70,10 @@ background: white;
 		<div class="col-xs-12 col-md-12 push-30" >
 			@include('backend.sales.ingresos._formIngreso')
 		</div>
-		<div class="col-xs-12 col-md-10">
+		<div class="col-xs-12 col-md-12">
 			
-			
-            <table class="table  table-striped " style="margin-top: 0;">
+			<div class="row table-responsive" style="border: 0px!important">
+            <table class="table table-striped " style="margin-top: 0;">
     			<thead>
     				<tr>
     					<th class="text-center bg-complete text-white">AREA DE NEGOCIO</th>
@@ -99,11 +99,11 @@ background: white;
 						</td>
                        
                         <td class="text-center">
-                            <b><?php echo  number_format($arrayTotales['totales'], 0,',','.'); ?> €</b>
+                            <b><?php echo  number_format($arrayTotales['totales'], 0,',','.'); ?>€</b>
                         </td>
                         <td class="text-center">
                         	<?php $percent = ($arrayTotales['totales'] / $totalIngresosYear) *100; ?>
-                            <b><?php echo  number_format( $percent, 2, '.', ',') ?> %</b>
+                            <b><?php echo  number_format( $percent, 2, '.', ',') ?>%</b>
                         </td>
 						
 						<?php $monthsRooms = $inicio->copy(); ?>
@@ -118,7 +118,7 @@ background: white;
 					<?php foreach ($incomes as $key => $income): ?>
 						<tr>
 							<td class="text-center" style="padding: 12px 20px!important">
-								<b><?php echo $key ?></b>
+								<b><?php echo substr($key, 0, 15) ?>...</b>
 							</td>
 	                       
 	                        <td class="text-center">
@@ -152,7 +152,7 @@ background: white;
     			</tbody>
             </table>
 
-
+			</div>
 		</div>
 
 

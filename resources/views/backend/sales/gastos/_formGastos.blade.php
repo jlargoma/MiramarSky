@@ -22,7 +22,7 @@
 				<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 				<div class="col-xs-12 col-md-10">
 
-					<div class="col-xs-12 col-md-1 push-10" style="padding: 0">
+					<div class="col-xs-12 col-lg-1 col-md-2 push-10" style="padding: 0">
 						<label for="date">fecha</label>
 						 <div id="datepicker-component" class="input-group date col-xs-12">
                       		<input type="text" class="form-control" name="fecha" id="fecha" value="<?php echo date('d/m/Y') ?>" style="font-size: 12px">
@@ -30,14 +30,14 @@
                     	</div>
 						
 					</div>
-					<div class=" col-xs-12 col-md-3 push-10">
+					<div class=" col-xs-12 col-lg-3 col-md-3 push-10">
 						<div class="col-xs-12 col-md-12 push-10">
 							<label for="concept">Concepto</label>
 							<input  type="text" class="form-control" name="concept" id="concept" />
 						</div>
 					</div>
 
-					<div class="col-xs-12 col-md-1 push-10">
+					<div class="col-xs-12 col-lg-1 col-md-2 push-10">
 						<label for="type">T. Gasto</label>
 						<select class="js-select2 form-control" id="type" name="type" style="width: 100%;" data-placeholder="Seleccione un tipo" required >
 			                <option></option>
@@ -62,11 +62,11 @@
 			            </select>
 					</div>
 
-					<div class="col-xs-12 col-md-1 push-10">
+					<div class="col-xs-12 col-lg-1 col-md-1 push-10">
 						<label for="import">Importe</label>
 						<input  type="number" step="0.01" name="import" id="import" class="form-control"  />
 					</div>
-					<div class="col-xs-12 col-md-1 push-10">
+					<div class="col-xs-12 col-lg-1 col-md-2  push-10">
 						<label for="pay_for">Met de pago</label>
 						<select class="js-select2 form-control" id="type_payment" name="type_payment" style="width: 100%;" data-placeholder="Seleccione una" required>
 			                <option></option>
@@ -78,7 +78,7 @@
 
 					</div>
 
-					<div class="col-xs-12 col-md-1 push-10">
+					<div class="col-xs-12 col-lg-1 col-md-2 push-10">
 						<label for="type">Imputacion</label>
 						<select class="js-select2 form-control" id="type_payFor" name="type_payFor" style="width: 100%;" data-placeholder="Seleccione un tipo" required >
 			                <option value="0">Generíco</option>
@@ -88,21 +88,21 @@
 
 				</div>
 				<div style="clear:both"></div>
-				<div class="col-xs-12 col-md-6">
+				<div class="col-xs-12 col-md-5 col-lg-6">
 					
-					<div class="col-md-10 col-xs-12">
+					<div class="col-lg-10 col-md-8 col-xs-12">
 						<div class="row form-group push-10">
 							<label for="comment">Observaciones</label>
 							<textarea class="form-control" name="comment" id="comment"></textarea>
 						</div>
 					</div>
 
-					<div class="col-md-2 form-group text-center push-10" style="padding: 20px;">
+					<div class="col-lg-2 col-md-4 form-group text-center push-10" style="padding: 20px;">
 						<button class="btn btn-lg btn-success">Añadir</button>
 					</div>
 				</div>
 
-				<div class="col-md-3 col-xs-12">
+				<div class="col-lg-3 col-md-6 col-xs-12">
 					
 					<div class="row" id="contentRooms" style="display: none;">
 						<?php foreach (\App\Rooms::where('state', 1)->orderBy('order','ASC')->get() as $key => $room): ?>

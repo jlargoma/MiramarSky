@@ -571,6 +571,11 @@ class RoomsController extends Controller
                 $message->subject('Imagenes del apartamento '.$room->sizeRooms->name.' // '. $luxury);
             });
 
+            $log          = new \App\LogImages();
+            $log->email   = $email;
+            $log->room_id = $room->id;
+            $log->save();
+
         }
 
     }

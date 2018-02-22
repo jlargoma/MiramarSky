@@ -27,7 +27,7 @@ class BackendController extends Controller
 	        $gasto->comment = $pay->comment;
 	        $gasto->PayFor = $pay->room_id;
 	        $gasto->save();
-			if ($pay->type == 0 || $pay->type == 1) {
+			if ($pay->type == 1 || $pay->type == 2) {
 				$data['concept']     = $gasto->concept;
 				$data['date']        = $gasto->date;
 				$data['import']      = $gasto->import;
@@ -39,13 +39,13 @@ class BackendController extends Controller
 				$cashbox->date = \Carbon\Carbon::createFromFormat('Y-m-d', $data['date']);
 				$cashbox->import = $data['import'];
 				$cashbox->comment = $data['comment'];
-				$cashbox->typePayment = $pay->type;
+				$cashbox->typePayment = ($pay->type - 1);
 				$cashbox->type = $data['type'];
 				if ($cashbox->save()) {
 				    echo "Ok <br>";
 				}	
 			}
-			if ($pay->type == 2 || $pay->type == 3) {
+			if ($pay->type == 3 || $pay->type == 4) {
 
 				$data['concept']     = $gasto->concept;
 				$data['date']        = $gasto->date;
@@ -58,7 +58,7 @@ class BackendController extends Controller
 				$bank->date = \Carbon\Carbon::createFromFormat('Y-m-d', $data['date']);
 				$bank->import = $data['import'];
 				$bank->comment = $data['comment'];
-				$bank->typePayment = $pay->type;
+				$bank->typePayment = ($pay->type - 1);
 				$bank->type = $data['type'];
 				if ($bank->save()) {
 				    echo "Ok <br>";
@@ -68,134 +68,134 @@ class BackendController extends Controller
 			
 		}
 
-		foreach (\App\Payments::All() as $key => $pay) {
+		// foreach (\App\Payments::All() as $key => $pay) {
 
 			
-			if ($pay->type == 0 || $pay->type == 1 ) {
-				switch ($pay->type) {
-					case 0:
-						$data['concept'] ='COBRO METALICO JORGE '.$pay->book->customer->name;
+		// 	if ($pay->type == 0 || $pay->type == 1 ) {
+		// 		switch ($pay->type) {
+		// 			case 0:
+		// 				$data['concept'] ='COBRO METALICO JORGE '.$pay->book->customer->name;
 						
-						break;
+		// 				break;
 					
-					case 1:
-						$data['concept'] = 'COBRO METALICO JAIME '.$pay->book->customer->name;
-						break;
-				}
-				$data['typePayment'] = $pay->type;
-				$data['date']        = $pay->datePayment;
-				$data['import']      = $pay->import;
-				$data['comment']     = $pay->comment;
-				$data['type']        = 0;
+		// 			case 1:
+		// 				$data['concept'] = 'COBRO METALICO JAIME '.$pay->book->customer->name;
+		// 				break;
+		// 		}
+		// 		$data['typePayment'] = $pay->type;
+		// 		$data['date']        = $pay->datePayment;
+		// 		$data['import']      = $pay->import;
+		// 		$data['comment']     = $pay->comment;
+		// 		$data['type']        = 0;
 
-				$cashbox = new \App\Cashbox();
-				$cashbox->concept = $data['concept'];
-				$cashbox->date = \Carbon\Carbon::createFromFormat('Y-m-d', $data['date']);
-				$cashbox->import = $data['import'];
-				$cashbox->comment = $data['comment'];
-				$cashbox->typePayment = $data['typePayment'];
-				$cashbox->type = $data['type'];
-				if ($cashbox->save()) {
-				    echo "Ok <br>";
-				}
-			}
-			if ($pay->type == 2 || $pay->type == 3 ) {
+		// 		$cashbox = new \App\Cashbox();
+		// 		$cashbox->concept = $data['concept'];
+		// 		$cashbox->date = \Carbon\Carbon::createFromFormat('Y-m-d', $data['date']);
+		// 		$cashbox->import = $data['import'];
+		// 		$cashbox->comment = $data['comment'];
+		// 		$cashbox->typePayment = $data['typePayment'];
+		// 		$cashbox->type = $data['type'];
+		// 		if ($cashbox->save()) {
+		// 		    echo "Ok <br>";
+		// 		}
+		// 	}
+		// 	if ($pay->type == 2 || $pay->type == 3 ) {
 
-				switch ($pay->type) {
-					case 2:
-						$data['concept'] ='COBRO BANCO JORGE '.$pay->book->customer->name;
+		// 		switch ($pay->type) {
+		// 			case 2:
+		// 				$data['concept'] ='COBRO BANCO JORGE '.$pay->book->customer->name;
 						
-						break;
+		// 				break;
 					
-					case 3:
-						$data['concept'] = 'COBRO BANCO JAIME '.$pay->book->customer->name;
-						break;
-				}
-				$data['typePayment'] = $pay->type;
-				$data['date']        = $pay->datePayment;
-				$data['import']      = $pay->import;
-				$data['comment']     = $pay->comment;
-				$data['type']        = 0;
+		// 			case 3:
+		// 				$data['concept'] = 'COBRO BANCO JAIME '.$pay->book->customer->name;
+		// 				break;
+		// 		}
+		// 		$data['typePayment'] = $pay->type;
+		// 		$data['date']        = $pay->datePayment;
+		// 		$data['import']      = $pay->import;
+		// 		$data['comment']     = $pay->comment;
+		// 		$data['type']        = 0;
 
-				$bank = new \App\Bank();
-				$bank->concept = $data['concept'];
-				$bank->date = \Carbon\Carbon::createFromFormat('Y-m-d', $data['date']);
-				$bank->import = $data['import'];
-				$bank->comment = $data['comment'];
-				$bank->typePayment = $data['typePayment'];
-				$bank->type = $data['type'];
-				if ($bank->save()) {
-				    echo "Ok <br>";
-				}
+		// 		$bank = new \App\Bank();
+		// 		$bank->concept = $data['concept'];
+		// 		$bank->date = \Carbon\Carbon::createFromFormat('Y-m-d', $data['date']);
+		// 		$bank->import = $data['import'];
+		// 		$bank->comment = $data['comment'];
+		// 		$bank->typePayment = $data['typePayment'];
+		// 		$bank->type = $data['type'];
+		// 		if ($bank->save()) {
+		// 		    echo "Ok <br>";
+		// 		}
 
-			}
+		// 	}
 
-		}
+		// }
 
 
-		foreach (\App\Expenses::All() as $key => $gasto) {
+		// foreach (\App\Expenses::All() as $key => $gasto) {
 			
-			if ($gasto->typePayment == 1 || $gasto->typePayment == 2 ) {
+		// 	if ($gasto->typePayment == 1 || $gasto->typePayment == 2 ) {
 
-				switch ($gasto->type) {
-					case 1:
-						$data['typePayment'] = 1;
+		// 		switch ($gasto->type) {
+		// 			case 1:
+		// 				$data['typePayment'] = 1;
 						
-						break;
+		// 				break;
 					
-					case 2:
-						$data['typePayment'] = 0;
-						break;
-				}
+		// 			case 2:
+		// 				$data['typePayment'] = 0;
+		// 				break;
+		// 		}
 
-				$data['concept']     = $gasto->concept;
-				$data['date']        = $gasto->date;
-				$data['import']      = $gasto->import;
-				$data['comment']     = $gasto->comment;
-				$data['type']        = 1;
+		// 		$data['concept']     = $gasto->concept;
+		// 		$data['date']        = $gasto->date;
+		// 		$data['import']      = $gasto->import;
+		// 		$data['comment']     = $gasto->comment;
+		// 		$data['type']        = 1;
 
-				$cashbox = new \App\Cashbox();
-				$cashbox->concept = $data['concept'];
-				$cashbox->date = \Carbon\Carbon::createFromFormat('Y-m-d', $data['date']);
-				$cashbox->import = $data['import'];
-				$cashbox->comment = $data['comment'];
-				$cashbox->typePayment = $data['typePayment'];
-				$cashbox->type = $data['type'];
-				if ($cashbox->save()) {
-				    echo "Ok <br>";
-				}
-			}
-			if ($gasto->typePayment == 0 || $gasto->typePayment == 3 ) {
+		// 		$cashbox = new \App\Cashbox();
+		// 		$cashbox->concept = $data['concept'];
+		// 		$cashbox->date = \Carbon\Carbon::createFromFormat('Y-m-d', $data['date']);
+		// 		$cashbox->import = $data['import'];
+		// 		$cashbox->comment = $data['comment'];
+		// 		$cashbox->typePayment = $data['typePayment'];
+		// 		$cashbox->type = $data['type'];
+		// 		if ($cashbox->save()) {
+		// 		    echo "Ok <br>";
+		// 		}
+		// 	}
+		// 	if ($gasto->typePayment == 0 || $gasto->typePayment == 3 ) {
 
-				switch ($gasto->type) {
-					case 0:
-						$data['typePayment'] = 3;
+		// 		switch ($gasto->type) {
+		// 			case 0:
+		// 				$data['typePayment'] = 3;
 						
-						break;
+		// 				break;
 					
-					case 3:
-						$data['typePayment'] = 2;
-						break;
-				}
+		// 			case 3:
+		// 				$data['typePayment'] = 2;
+		// 				break;
+		// 		}
 
-				$data['concept']     = $gasto->concept;
-				$data['date']        = $gasto->date;
-				$data['import']      = $gasto->import;
-				$data['comment']     = $gasto->comment;
-				$data['type']        = 1;
+		// 		$data['concept']     = $gasto->concept;
+		// 		$data['date']        = $gasto->date;
+		// 		$data['import']      = $gasto->import;
+		// 		$data['comment']     = $gasto->comment;
+		// 		$data['type']        = 1;
 
-				$bank = new \App\Bank();
-				$bank->concept = $data['concept'];
-				$bank->date = \Carbon\Carbon::createFromFormat('Y-m-d', $data['date']);
-				$bank->import = $data['import'];
-				$bank->comment = $data['comment'];
-				$bank->typePayment = $data['typePayment'];
-				$bank->type = $data['type'];
-				if ($bank->save()) {
-				    echo "Ok <br>";
-				}
-			}
-		}
+		// 		$bank = new \App\Bank();
+		// 		$bank->concept = $data['concept'];
+		// 		$bank->date = \Carbon\Carbon::createFromFormat('Y-m-d', $data['date']);
+		// 		$bank->import = $data['import'];
+		// 		$bank->comment = $data['comment'];
+		// 		$bank->typePayment = $data['typePayment'];
+		// 		$bank->type = $data['type'];
+		// 		if ($bank->save()) {
+		// 		    echo "Ok <br>";
+		// 		}
+		// 	}
+		// }
     }
 
 }
