@@ -128,7 +128,7 @@
                             ?>
                                 
                             <a href="whatsapp://send?text=<?php echo $text; ?>" data-action="share/whatsapp/share" >
-                                <i class="fa fa-whatsapp fa-3x" aria-hidden="true"></i>
+                                <i class="fa fa-eye fa-3x" aria-hidden="true"></i>
                             </a>
                         </h2>
                     </div>

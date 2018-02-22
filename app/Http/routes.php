@@ -276,6 +276,9 @@ Route::get('admin/bank/updateSaldoInicial/{id}/{type}/{importe}' ,function ($id,
 
 });
 
+Route::get('/admin/rules/stripe/update' ,['middleware' => 'authAdmin', 'uses' => 'RulesStripeController@update']);
+
+
 
 
 Route::get('admin/estadisticas/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@Statistics']);

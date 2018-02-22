@@ -87,21 +87,22 @@
     }
 </style>
 <?php 
-	if ( count($payments) == 0) {
-		$partialPay = ($book->total_price * 0.25);
+	$date = Carbon::createFromFormat('Y-m-d', $book->start);
+	$now = Carbon::now();
+	$rules = \App\RulesStripe::all();
+	$diff = $now->diffInDays($date);
 
-	}elseif(count($payments) == 1){
+	if ( $diff <= $rules[0]->numDays ) {
 
-		$partialPay = ($book->total_price * 0.25);
+		$percent = ($rules[0]->percent/100);
 
-	}elseif(count($payments) > 1){
-		$payed = 0;
-		foreach ($payments as $key => $pay) {
-			$payed += $pay->import;
-		}
-		$partialPay = $book->total_price - $payed;
+	}elseif($diff > $rules[0]->numDays && $diff <= $rules[1]->percent){
+
+		$percent = ($rules[1]->percent/100);
+
 	}
 
+	$partialPay = ($book->total_price * $percent);
 ?>
 <?php if (!$mobile->isMobile()): ?>
 	<section class="section nobottommargin" style="background-image: url({{ asset('/img/mountain.png')}});background-size: cover;background-position: 0; min-height: 564px;" >
@@ -141,6 +142,8 @@
 									$start = Carbon::createFromFormat('Y-m-d', $book->start);
 									$finish = Carbon::createFromFormat('Y-m-d', $book->finish);
 								?>
+
+
 
 								Nombre: <b><?php echo $book->customer->name ?></b><br>
 								Apartamento: <b><?php echo $book->room->sizeRooms->name ?> // <?php echo ($book->type_luxury == 1)? "Lujo" : "Estandar" ?></b><br>

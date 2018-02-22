@@ -182,6 +182,38 @@
                             </div>
                         </div>
                     </div>
+                     <div class="col-md-4">
+                         
+                        
+                        <table class="table table-hover  table-responsive" >
+                            <thead>
+                                <tr>
+                                    <th class ="text-center bg-complete text-white" style="width: 1%" colspan="2"> Condiciones cobro link stripe  
+                                    </th>
+                                </tr>
+                                <tr>
+                                                                    
+                                    <th class ="text-center bg-complete text-white" style="width: 1%" rowspan="2"> PORCENTAJE  </th>
+                                    <th class ="text-center bg-complete text-white" style="width: 1%" rowspan="2"> > DIAS  </th>
+                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach (\App\RulesStripe::all() as $key => $rule): ?>
+                                    <tr>
+                                        <td class="text-center" style="border-left: 1px solid #48b0f7">
+                                            <input class="rules percent-<?php echo $rule->id?>" type="text" name="cost" data-id="<?php echo $rule->id ?>" value="<?php echo $rule->percent ?>" style="width: 100%;text-align: center;">
+                                        </td>
+                                        <td class="text-center">
+                                            <input class="rules days-<?php echo $rule->id?>" type="text" name="cost" data-id="<?php echo $rule->id ?>" value="<?php echo $rule->numDays ?>" style="width: 100%;text-align: center;">
+                                        </td>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
+
+
+                     </div>
                 </div>
 
             </div>
@@ -409,6 +441,19 @@
                 });
 
             });
+
+            $('.rules').change(function(event) {
+                var id = $(this).attr('data-id');               
+                var percent = $('.percent-'+id).val();
+                var numDays  = $('.days-'+id).val();
+
+                $.get('/admin/rules/stripe/update', {  id: id, percent: percent,numDays: numDays}, function(data) {
+                    // alert(data);
+                    window.location.reload();
+                });
+
+            });
+
 
             $('.extra-editable').change(function(event) {
                 var id = $(this).attr('data-id');
