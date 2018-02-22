@@ -145,7 +145,7 @@ class OwnedController extends Controller
             $gastos = \App\Expenses::where('date', '>=', $date->copy()->format('Y-m-d'))
                                     ->where('date', '<=', $date->copy()->addYear()->format('Y-m-d'))
                                     ->where('PayFor', 'LIKE', '%'.$room->id.'%')
-                                    ->orderBy('date', 'DESC')
+                                    ->orderBy('date', 'ASC')
                                     ->get();
 
             // echo "<pre>";
