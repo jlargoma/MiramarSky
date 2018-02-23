@@ -6,7 +6,7 @@ setlocale(LC_TIME, "es_ES");
 <table class="table table-bordered table-striped table-header-bg no-footer">
 	<thead>
 		<tr>
-			<th class="text-center bg-complete text-white">#</th>
+			
 			<th class="text-center bg-complete text-white">Fecha</th>
 			<th class="text-center bg-complete text-white">Concepto</th>
 			<th class="text-center bg-complete text-white type" style="width: 250px;">Tipo</th>
@@ -14,14 +14,13 @@ setlocale(LC_TIME, "es_ES");
 			<th class="text-center bg-complete text-white">Importe</th>
 			<th class="text-center bg-complete text-white">Pisos</th>
 			<th class="text-center bg-complete text-white">Comentario</th>
+			<th class="text-center bg-complete text-white">#</th>
 		</tr>
 	</thead>	
 	<tbody>
 		<?php $array = [0 =>"Metalico Jorge", 1 =>"Metalico Jaime",2 =>"Banco Jorge",3=>"Banco Jaime"] ?>
 				<tr>
-					<td class="text-center" style="padding: 8px 5px!important">
-						
-					</td>
+					
 					<td class="text-center" style="padding: 8px 5px!important">
 						Acutalizado a <?php echo Carbon::now()->formatLocalized('%d %b %Y') ?>
 					</td>
@@ -46,16 +45,15 @@ setlocale(LC_TIME, "es_ES");
 					<td class="text-center" style="padding: 8px 5px!important">
 						PAGOS A STRIPE
 					</td>
+					<td class="text-center" style="padding: 8px 5px!important">
+						
+					</td>
 				</tr>
 		<?php foreach ($gastos as $key => $gasto): ?>
 			
 		
 			<tr>
-				<td class="text-center">
-					<button  class="btn btn-xs btn-danger deleteExpense" data-id="{{ $gasto->id }}" onclick="return confirm('¿Quieres Eliminar el gasto?');">
-	                    <i class="fa fa-trash"></i>
-	                </button>
-				</td>
+				
 				<td class="text-center">
 					<b><?php echo Carbon::createFromFormat('Y-m-d', $gasto->date)->formatLocalized('%d %b %Y') ?></b>
 					<input type="hidden" id="date-<?php echo $gasto->id ?>" value="<?php echo $gasto->date ?>">
@@ -119,6 +117,11 @@ setlocale(LC_TIME, "es_ES");
 
 				<td class="text-center">
 					<input type="text" class="form-control editedExpensed"  id="comment-<?php echo $gasto->id ?>" value="<?php echo $gasto->comment ?>" data-id="<?php echo $gasto->id ?>">
+				</td>
+				<td class="text-center">
+					<button  class="btn btn-xs btn-danger deleteExpense" data-id="{{ $gasto->id }}" onclick="return confirm('¿Quieres Eliminar el gasto?');">
+	                    <i class="fa fa-trash"></i>
+	                </button>
 				</td>
 			</tr>
 		<?php endforeach ?>

@@ -38,8 +38,8 @@ setlocale(LC_TIME, "es_ES");
         
         <h3 class="tex-center">listado de gastos</h3>
             
-        <div class="row push-20" style="overflow-y: auto; max-height: 500px;">
-            <table class="table table-condensed  table-striped">
+        <div class="row table-responsive push-20" style="overflow-y: auto; max-height: 450px; border: 0px;">
+            <table class="table table-striped">
                 <thead >
                     <th class ="text-center bg-complete text-white">Fecha</th>
                     <th class ="text-center bg-complete text-white">Concepto</th>

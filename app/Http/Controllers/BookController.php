@@ -75,8 +75,8 @@ class BookController extends Controller
 
         $mobile = new Mobile();
 
-        $booksAlarms = \App\Book::where('start','>',Carbon::now())
-                    ->where('finish','<',Carbon::now()->copy()->addDays(15))
+        $booksAlarms = \App\Book::where('start','>=',Carbon::now())
+                    ->where('finish','<=',Carbon::now()->copy()->addDays(15))
                     ->where('type_book',2)
                     ->get();
         $alarms = array();

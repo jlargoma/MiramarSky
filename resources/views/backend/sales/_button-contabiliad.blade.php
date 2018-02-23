@@ -15,7 +15,7 @@
  	
 
 <div class="col-md-12 col-xs-12 push-20">
-	<div class="col-md-2 col-xs-2">
+	<div class="col-md-2 col-xs-4 push-10">
 		<?php if ($url == "contabilidad"): ?>
 			<button class="btn btn-md" style="width: 100%; background-color: #6600ff;pointer-events: none" disabled>
 				<a class="text-white" >Estadisticas</a>
@@ -29,7 +29,7 @@
 		<?php endif ?>	
 	</div>
 
-	<div class="col-md-2 col-xs-2">
+	<div class="col-md-2 col-xs-4 push-10">
     	<?php if ($url == "gastos"): ?>
     		<button class="btn btn-md" style="width: 100%; background-color: #6600ff;pointer-events: none" disabled>
     			<a class="text-white" >Gastos</a>
@@ -43,7 +43,7 @@
     	<?php endif ?>	
 	</div>
 
-	<div class="col-md-2 col-xs-2">
+	<div class="col-md-2 col-xs-4 push-10">
     	<?php if ($url == "ingresos"): ?>
     		<button class="btn btn-md" style="width: 100%; background-color: #6600ff;pointer-events: none" disabled>
     			<a class="text-white" >Ingresos</a>
@@ -57,7 +57,7 @@
     	<?php endif ?>
 	</div>
 
-	<div class="col-md-2 col-xs-2">
+	<div class="col-md-2 col-xs-4 push-10">
     	<?php if ($url == "banco"): ?>
     		<button class="btn btn-md" style="width: 100%; background-color: #6600ff;pointer-events: none" disabled>
     			<a class="text-white" >Banco</a>
@@ -72,7 +72,7 @@
     	<?php endif ?>
 	</div>
 
-	<div class="col-md-2 col-xs-2">
+	<div class="col-md-2 col-xs-4 push-10">
     	<?php if ($url == "caja"): ?>
     		<button class="btn btn-md" style="width: 100%; background-color: #6600ff;pointer-events: none" disabled>
     			<a class="text-white" >Caja</a>
@@ -86,7 +86,7 @@
     	<?php endif ?>
 	</div>
 
-	<div class="col-md-2 col-xs-2">
+	<div class="col-md-2 col-xs-4 push-10">
     	<?php if ($url == "perdidas-ganancias"): ?>
     		<button class="btn btn-md" style="width: 100%; background-color: #6600ff;pointer-events: none" disabled>
     			<a class="text-white" >CTA P &amp; G</a>

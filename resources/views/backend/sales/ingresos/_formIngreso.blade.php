@@ -29,7 +29,6 @@
 
 			</div>
 			<div class=" col-xs-12 col-lg-3 col-md-5 push-10">
-				<div class="col-xs-12 col-md-12 push-10">
 					<label for="concept">Concepto</label>
 					<select class="js-select2 form-control" id="concept" name="concept" style="width: 100%;" data-placeholder="Seleccione un tipo" required>
 		                <option value="INGRESOS EXTRAORDINARIOS">INGRESOS EXTRAORDINARIOS</option>
@@ -37,7 +36,6 @@
 		                <option value="RAPPEL FORFAITS"> RAPPEL FORFAITS</option>
 		                <option value="RAPPEL ALQUILER MATERIAL"> RAPPEL ALQUILER MATERIAL</option>
 					</select>
-				</div>
 			</div>
 
 			<div class="col-xs-12 col-lg-1 col-md-2 push-10">

@@ -59,12 +59,34 @@
         <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-xs-12">
             <div class="col-lg-6 col-md-6">
                 <h2 class="text-center selectCash selected" data-type="jaime" style="cursor: pointer;">
-                    BANCO JAIME
+                    <?php $totalJaime = 0;//$saldoInicial->import; ?>
+                    <?php foreach ($bankJaime as $key => $cash): ?>
+                        <?php if ($cash->type == 1): ?>
+                            <?php $totalJaime -= $cash->import ?>
+                        <?php endif ?>
+                        <?php if ($cash->type == 0): ?>
+                            <?php $totalJaime += $cash->import ?>
+                        <?php endif ?>
+                        
+                        
+                    <?php endforeach ?>
+                    BANCO JAIME (<?php echo number_format($totalJaime, 0, ',','.') ?>€)
                 </h2>
             </div>
             <div class="col-lg-6 col-md-6">
                 <h2 class="text-center selectCash" data-type="jorge" style="cursor: pointer;">
-                    BANCO JORGE
+                    <?php $totalJorge = 0;//$saldoInicial->import; ?>
+                    <?php foreach ($bankJorge as $key => $cash): ?>
+                        <?php if ($cash->type == 1): ?>
+                            <?php $totalJorge -= $cash->import ?>
+                        <?php endif ?>
+                        <?php if ($cash->type == 0): ?>
+                            <?php $totalJorge += $cash->import ?>
+                        <?php endif ?>
+                        
+                        
+                    <?php endforeach ?>
+                    BANCO JORGE (<?php echo number_format($totalJorge, 0, ',','.') ?>€)
                 </h2>
             </div>
         </div>

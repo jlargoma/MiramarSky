@@ -4,7 +4,7 @@ setlocale(LC_TIME, "es_ES");
 ?>
 @extends('layouts.admin-master')
 
-@section('title') Gastos  @endsection
+@section('title') Ingresos  @endsection
 
 @section('externalScripts') 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

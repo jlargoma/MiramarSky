@@ -536,14 +536,15 @@ class LiquidacionController extends Controller
                                     ->get();
         $saldoInicial = \App\Cashbox::where('concept', 'SALDO INICIAL')->where('typePayment', 1)->first();
 
-        // $cashJorge = \App\Cashbox::where('typePayment', 0)
-        //                             ->where('date', '>', $inicio->copy()->format('Y-m-d'))
-        //                             ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
-        //                             ->get();
+        $cashJorge = \App\Cashbox::where('typePayment', 0)
+                                    ->where('date', '>', $inicio->copy()->format('Y-m-d'))
+                                    ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                                    ->get();
 
         return view('backend.sales.cashbox.cashbox', [
                                                         'inicio'    => $inicio, 
                                                         'cashJaime' => $cashJaime, 
+                                                        'cashboxJor' => $cashJorge, 
                                                         'saldoInicial' => $saldoInicial, 
                                                     ]);
     }
@@ -635,14 +636,16 @@ class LiquidacionController extends Controller
                                     ->get();
         $saldoInicial = \App\Bank::where('concept', 'SALDO INICIAL')->where('typePayment', 3)->first();
 
-        // $cashJorge = \App\Cashbox::where('typePayment', 0)
-        //                             ->where('date', '>', $inicio->copy()->format('Y-m-d'))
-        //                             ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
-        //                             ->get();
+        $bankJorge = \App\Bank::where('typePayment', 2)
+                                    ->where('date', '>', $inicio->copy()->format('Y-m-d'))
+                                    ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                                    ->orderBy('date', 'ASC')
+                                    ->get();
 
         return view('backend.sales.bank.bank', [
                                                         'inicio'    => $inicio, 
                                                         'bankJaime' => $bankJaime, 
+                                                        'bankJorge' => $bankJorge, 
                                                         'saldoInicial' => $saldoInicial, 
                                                     ]);
     }
