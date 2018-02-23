@@ -41,7 +41,7 @@ class PaymentsController extends Controller
 
         if ($request->type == 1 || $request->type == 0) {
 
-            $data['concept'] = ( $request->type == 0 )? 'COBRO METALICO JAIME':'COBRO METALICO JORGE';
+            $data['concept'] = ( $request->type == 1 )? 'COBRO METALICO JAIME':'COBRO METALICO JORGE';
             $data['date'] = $date->copy()->format('Y-m-d');
             $data['import'] = $request->importe;
             $data['comment'] = $request->comment;
@@ -49,6 +49,15 @@ class PaymentsController extends Controller
             $data['type'] = 0;
 
             LiquidacionController::addCashbox($data);
+        }elseif($request->type == 2 || $request->type == 3){
+             $data['concept'] = ( $request->type == 3 )? 'COBRO BANCO JAIME':'COBRO BANCO JORGE';
+            $data['date'] = $date->copy()->format('Y-m-d');
+            $data['import'] = $request->importe;
+            $data['comment'] = $request->comment;
+            $data['typePayment'] = $request->type;
+            $data['type'] = 0;
+
+            LiquidacionController::addBank($data);
         }
 
         if ($payment->save()) {

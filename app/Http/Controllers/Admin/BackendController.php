@@ -22,12 +22,33 @@ class BackendController extends Controller
 			$gasto->concept = 'Pago propietario';
 	        $gasto->date = $pay->datePayment;
 	        $gasto->import = $pay->import;
-	        $gasto->typePayment = $pay->type;
+
+	        switch ($pay->type) {
+	        	case 0:
+	        		$gasto->typePayment = 1;
+	        		break;
+	        	case 1:
+	        		$gasto->typePayment = 2;
+	        		break;
+	        	case 2:
+	        		$gasto->typePayment = 1;
+	        		break;
+	        	case 3:
+	        		$gasto->typePayment = 3;
+	        		break;
+	        	case 4:
+	        		$gasto->typePayment = 0;
+	        		break;
+	        	
+	        }
+	        // $array = [1=> "Metalico Jorge",2 =>"Metalico Jaime",3=> "Banco Jorge", 4 => "Banco Jaime"];
+
+
 	        $gasto->type = 'PAGO PROPIETARIO';
 	        $gasto->comment = $pay->comment;
 	        $gasto->PayFor = $pay->room_id;
 	        $gasto->save();
-			if ($pay->type == 1 || $pay->type == 2) {
+			if ( $pay->type == 1 || $pay->type == 2) {
 				$data['concept']     = $gasto->concept;
 				$data['date']        = $gasto->date;
 				$data['import']      = $gasto->import;
@@ -39,13 +60,21 @@ class BackendController extends Controller
 				$cashbox->date = \Carbon\Carbon::createFromFormat('Y-m-d', $data['date']);
 				$cashbox->import = $data['import'];
 				$cashbox->comment = $data['comment'];
-				$cashbox->typePayment = ($pay->type - 1);
+				switch ($pay->type) {
+		        	case 1:
+		        		$cashbox->typePayment = 0;
+		        		break;
+		        	case 2:
+		        		$cashbox->typePayment = 1;
+		        		break;
+		        	
+		        }
 				$cashbox->type = $data['type'];
 				if ($cashbox->save()) {
 				    echo "Ok <br>";
 				}	
 			}
-			if ($pay->type == 3 || $pay->type == 4) {
+			if ($pay->type == 0 || $pay->type == 3 || $pay->type == 4) {
 
 				$data['concept']     = $gasto->concept;
 				$data['date']        = $gasto->date;
@@ -58,7 +87,18 @@ class BackendController extends Controller
 				$bank->date = \Carbon\Carbon::createFromFormat('Y-m-d', $data['date']);
 				$bank->import = $data['import'];
 				$bank->comment = $data['comment'];
-				$bank->typePayment = ($pay->type - 1);
+				switch ($pay->type) {
+		        	case 0:
+		        		$bank->typePayment = 3;
+		        		break;
+		        	case 3:
+		        		$bank->typePayment = 2;
+		        		break;
+		        	case 4:
+		        		$bank->typePayment = 3;
+		        		break;
+		        	
+		        }
 				$bank->type = $data['type'];
 				if ($bank->save()) {
 				    echo "Ok <br>";
