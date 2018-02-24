@@ -39,7 +39,7 @@
         </div>
 
         <div class="col-md-6 col-xs-12 text-left push-30">
-            <h2 class="font-w300" style="margin: 0">LISTADO DE <span class="font-w800">FACTURA</span></h2>
+            <h2 class="font-w300" style="margin: 0">LISTADO DE <span class="font-w800">FACTURA ISDE</span></h2>
         </div>
         <div class="col-xs-12 bg-white">
             <div class="row">
@@ -75,15 +75,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($books as $key => $book): ?>
+                        <?php foreach ($invoices as $key => $invoice): ?>
                             <?php $num = $key + 1; ?>
+                            <?php $book = \App\Book::find($invoice->book_id); ?>
                             <tr>
                                 <td class="text-left font-s16" >
-                                    <span class="hidden"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->format('U'); ?></span>
-                                    <?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d %B %Y'); ?>
+                                    <span class="hidden"><?php echo Carbon::CreateFromFormat('Y-m-d',$invoice->date)->format('U'); ?></span>
+                                    <?php echo Carbon::CreateFromFormat('Y-m-d',$invoice->date)->formatLocalized('%d %B %Y'); ?>
                                 </td>
                                 <td class="text-center font-s16">
-                                    <b>#<?php echo substr($book->room->nameRoom , 0,2)?>/<?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->format('Y'); ?>/<?php echo str_pad($num, 5, "0", STR_PAD_LEFT);  ?></b>
+                                    <b>#SN<?php echo Carbon::CreateFromFormat('Y-m-d',$invoice->date)->format('Y'); ?>/<?php echo str_pad($invoice->id, 5, "0", STR_PAD_LEFT);  ?></b>
                                 </td>
                                 <td class="text-center font-s16">
                                     <b><?php echo $book->room->nameRoom ?></b>
@@ -95,13 +96,13 @@
                                     <b><?php echo ucfirst($book->customer->name) ?></b>
                                 </td>
                                 <td class="text-center font-s16">
-                                    <b><?php echo number_format($book->total_price/2, 2, ',','.') ?>€</b>
+                                    <b><?php echo number_format($book->total_price, 2, ',','.') ?>€</b>
                                 </td>
                                 <td class="text-center font-s16">
                                     <div class="btn-group">
-                                        <a href="{{ url ('/admin/facturas/ver') }}/<?php echo base64_encode($book->id."-".$num) ?>" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>
+                                        <a href="{{ url ('/admin/facturas/isde/ver') }}/<?php echo base64_encode($invoice->id) ?>" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>
                                         </a>
-                                        <a href="{{ url ('/admin/facturas/descargar') }}/<?php echo base64_encode($book->id."-".$num) ?>" class="btn btn-sm btn-success">    <i class="fa fa-download"></i>
+                                        <a href="{{ url ('/admin/facturas/isde/descargar') }}/<?php echo base64_encode($invoice->id) ?>" class="btn btn-sm btn-success">    <i class="fa fa-download"></i>
                                         </a>
                                     </div>
                                 </td>

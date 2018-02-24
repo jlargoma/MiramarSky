@@ -22,6 +22,7 @@ class CreateInvoices extends Migration
             $table->string('phone');
             $table->string('postalcode');
             $table->string('nif');
+            $table->integer('status');
             $table->timestamps();
         });
     }

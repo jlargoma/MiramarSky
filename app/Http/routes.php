@@ -290,9 +290,13 @@ Route::get('admin/perdidas-ganancias' ,['middleware' => 'authAdmin', 'uses' => '
 
 
 //Facturas
-Route::get('admin/facturas/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'InvoicesController@index']);
+Route::get('admin/facturas/' ,['middleware' => 'authAdmin', 'uses' => 'InvoicesController@index']);
 Route::get('admin/facturas/ver/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@view']);
 Route::get('admin/facturas/descargar/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@download']);
+
+Route::get('admin/facturas/isde/{year?}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@isde']);
+Route::get('admin/facturas/isde/ver/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@viewIsde']);
+Route::get('admin/facturas/isde/descargar/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@downloadIsde']);
 
 //Facturas
 Route::get('admin/encuestas/{year?}/{apto?}' ,['middleware' => 'authAdmin', 'uses' => 'QuestionsController@admin']);
