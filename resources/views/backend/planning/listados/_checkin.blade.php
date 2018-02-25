@@ -328,7 +328,7 @@
                         <?php endif ?>
                     </td>
                     <td class="text-center">
-                        <b><?php echo substr($book->room->nameRoom." - ".$book->room->name, 0, 15)  ?></b>
+                        <b><?php echo substr($book->room->nameRoom, 0, 4)  ?></b>
                     </td>
                     <td class="text-center">
                         <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>

@@ -65,7 +65,7 @@
     				<option value="all">Todos</option>
     				<?php foreach (\App\Rooms::where('state', 1)->orderBy('order')->get() as $key => $room): ?>
     					<option value="<?php echo $room->id ?>">
-    						<?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?>
+    						<?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?>
     					</option>
     				<?php endforeach ?>
     			</select>

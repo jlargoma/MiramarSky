@@ -1856,9 +1856,6 @@ class LiquidacionController extends Controller
             }
             
         }  
-        // echo "<pre>";
-        // print_r($books);
-
         Excel::create('Liquidacion '.$date->copy()->format('Y'), function($excel) use ($books) {
 
             $excel->sheet('Liquidacion', function($sheet) use ($books){

@@ -204,7 +204,7 @@
                             <td class="text-center">
                                 <!-- apto -->
 
-                                <?php echo $book->room->name ?>     
+                                <?php echo $book->room->nameRoom ?>     
                             </td>
                             <td class="text-center">
                                 <?php 

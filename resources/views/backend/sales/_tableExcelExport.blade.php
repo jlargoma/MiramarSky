@@ -55,7 +55,7 @@
                 </td>
                 <td style="text-align: center;">
                     <?php if ($book->total_price > 0): ?>
-                        <b><?php echo number_format($book->total_price,0,',','.') ?> €</b>      
+                        <b><?php echo round($book->total_price) ?> €</b>      
                     <?php else: ?>
                         <b>----</b> 
                     <?php endif ?>
@@ -64,7 +64,7 @@
 
                 <td style="text-align: center;">
                     <?php if ( $book->getPayment(2) > 0): ?>
-                        <?php echo number_format($book->getPayment(2),0,',','.'); ?> €    
+                        <?php echo round($book->getPayment(2)); ?> €    
                     <?php else: ?>
                         <b>----</b>
                     <?php endif ?>
@@ -72,7 +72,7 @@
                 </td>
                 <td class="text-center coste"  style="border-left: 1px solid black;">
                     <?php if ( $book->getPayment(3) > 0): ?>
-                        <?php echo number_format($book->getPayment(3),0,',','.'); ?> €    
+                        <?php echo round($book->getPayment(3)); ?> €    
                     <?php else: ?>
                         <b>----</b>
                     <?php endif ?>
@@ -80,7 +80,7 @@
                 </td>
                 <td style="text-align: center;">
                     <?php if ( $book->getPayment(0) > 0): ?>
-                        <?php echo number_format($book->getPayment(0),0,',','.'); ?> €    
+                        <?php echo round($book->getPayment(0)); ?> €    
                     <?php else: ?>
                         <b>----</b>
                     <?php endif ?>
@@ -88,7 +88,7 @@
                 </td>
                 <td class="text-center coste pagos" style="border-left: 1px solid black;">
                     <?php if ( $book->getPayment(1) > 0): ?>
-                        <?php echo number_format($book->getPayment(1),0,',','.'); ?> €    
+                        <?php echo round($book->getPayment(1)); ?> €    
                     <?php else: ?>
                         <b>----</b>
                     <?php endif ?>
@@ -100,13 +100,13 @@
                     <?php if ( ($pend) == 0 ): ?>
                         <b><span style="color:black!important">----</span></b>
                     <?php else: ?>
-                        <b><?php echo number_format($pend,0,',','.')." €"; ?></b>
+                        <b><?php echo round($pend)." €"; ?></b>
                     <?php endif ?>
                     
                 </td>
                 <td class="text-center beneficio bi" style="border-left: 1px solid black;">
                     <?php if ( $book->total_ben > 0): ?>
-                        <b><?php echo number_format($book->total_ben,0,',','.') ?> €</b>    
+                        <b><?php echo round($book->total_ben) ?> €</b>    
                     <?php else: ?>
                        <b>----</b>
                     <?php endif ?>
@@ -114,7 +114,7 @@
                 </td>
                 <td style="text-align: center;">
                     <?php if ( $book->inc_percent > 0): ?> 
-                        <?php echo number_format($book->inc_percent,0)." %" ?>    
+                        <?php echo round($book->inc_percent,0)." %" ?>    
                     <?php else: ?>
                         ----
                     <?php endif ?>
@@ -131,7 +131,7 @@
                     <?php $totalStripep = (((1.4 * $totalStripep)/100)+0.25) ?>
                     <?php $book->cost_total += $totalStripep?>
                     <?php if ( $book->cost_total > 0): ?>
-                        <b><?php echo number_format( $book->cost_total,0,',','.')?> €</b>    
+                        <b><?php echo round( $book->cost_total)?> €</b>    
                     <?php else: ?>
                        <b>----</b>
                     <?php endif ?>
@@ -139,7 +139,7 @@
                 </td>
                 <td style="text-align: center;">
                     <?php if ( $book->cost_apto > 0): ?>
-                        <?php echo number_format($book->cost_apto,0,',','.')?> €    
+                        <?php echo round($book->cost_apto)?> €    
                     <?php else: ?>
                         ----
                     <?php endif ?>
@@ -147,7 +147,7 @@
                 </td>
                 <td style="text-align: center;">
                     <?php if ( $book->cost_park > 0): ?>
-                        <?php echo number_format($book->cost_park,0,',','.')?> €    
+                        <?php echo round($book->cost_park)?> €    
                     <?php else: ?>
                         ----
                     <?php endif ?>
@@ -155,7 +155,7 @@
                 </td>
                 <td class="text-center coste"  style="border-left: 1px solid black;">
                     <?php if ( $book->cost_lujo > 0): ?>
-                        <?php echo number_format($book->cost_lujo,0,',','.')?> €    
+                        <?php echo round($book->cost_lujo)?> €    
                     <?php else: ?>
                         ----
                     <?php endif ?>
@@ -163,7 +163,7 @@
                 </td>
                 <td style="text-align: center;"> 
                     <?php if ( $book->cost_limp > 0): ?>
-                        <?php echo number_format($book->cost_limp,0,',','.') ?>€    
+                        <?php echo round($book->cost_limp) ?>€    
                     <?php else: ?>
                         ----
                     <?php endif ?>
@@ -171,7 +171,7 @@
                 </td>
                 <td class="text-center coste " style="border-left: 1px solid black;"> 
                     <?php if ( $book->PVPAgencia > 0): ?>
-                        <?php echo number_format($book->PVPAgencia,0,',','.') ?>€    
+                        <?php echo round($book->PVPAgencia) ?>€    
                     <?php else: ?>
                         ----
                     <?php endif ?>
@@ -179,7 +179,7 @@
                 </td>
                 <td style="text-align: center;">
                     <?php if ( $book->extraCost > 0): ?>
-                        <?php echo number_format($book->extraCost,0,',','.') ?>€    
+                        <?php echo round($book->extraCost) ?>€    
                     <?php else: ?>
                         --
                     <?php endif ?>
@@ -197,7 +197,7 @@
 
                         <?php if ($totalStripep > 0): ?>
                             
-                            <?php echo number_format((((1.4 * $totalStripep)/100)+0.25), 2,',','.') ?>€
+                            <?php echo round((((1.4 * $totalStripep)/100)+0.25)) ?>€
 
                         <?php else: ?>
                             ----
@@ -210,11 +210,11 @@
 
                 </td>
                 <td style="text-align: center;">
-                    <?php echo number_format($book->ben_jorge,0,',','.') ?>€
+                    <?php echo round($book->ben_jorge) ?>€
                 </td>
                 
                 <td style="text-align: center;">
-                    <?php echo number_format($book->ben_jaime,0,',','.') ?>€
+                    <?php echo round($book->ben_jaime) ?>€
                 </td>
             </tr>
         <?php endforeach ?>
