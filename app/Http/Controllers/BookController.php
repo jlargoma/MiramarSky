@@ -226,7 +226,7 @@ class BookController extends Controller
                 $book->extraPrice    = $extraPrice;
                 $book->extraCost     = $extraCost;
                     //Porcentaje de beneficio
-                $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
+                $book->inc_percent   = round(($book->total_ben / $book->total_price) * 100, 2 );
                 $book->ben_jorge = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
                 $book->ben_jaime = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
                 $book->promociones     = 0;
@@ -325,7 +325,7 @@ class BookController extends Controller
                         $book->real_price    = ($room->sizeApto == 1) ? 30 : 50 ;
                         $book->total_ben     = $book->total_price - $book->cost_total ;
 
-                        $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
+                        $book->inc_percent   = round(($book->total_ben / $book->total_price) * 100, 2 );
                         $book->ben_jorge = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
                         $book->ben_jaime = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
 
@@ -377,7 +377,7 @@ class BookController extends Controller
 
                         $book->total_ben     = $book->total_price - $book->cost_total;
 
-                        $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
+                        $book->inc_percent   = round(($book->total_ben / $book->total_price) * 100, 2 );
                         $book->ben_jorge     = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
                         $book->ben_jaime     = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
                     }
@@ -537,7 +537,7 @@ class BookController extends Controller
 
             $book->total_ben     = $request->input('beneficio');
             $book->extra         = $request->input('extra');
-            $book->inc_percent   = number_format(( ($book->total_price * 100) / $book->cost_total)-100,2 , ',', '.') ;
+            $book->inc_percent   = round(($book->total_ben / $book->total_price) * 100, 2 );
             $book->ben_jorge = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
             $book->ben_jaime = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
 

@@ -67,12 +67,13 @@
 
 	<!-- External JavaScripts
 	============================================= -->
-	<script type="text/javascript" src="{{ asset('/pages/js/bootstrap-notify.js')}}"></script>
+	<script type="text/javascript" src="{{ asset('/js/bootstrap-notify.js')}}"></script>
 	<script type="text/javascript" src="{{ asset('/frontend/js/plugins.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/frontend/js/functions.js') }}"></script>
 	
 	<script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
 	<script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
+
 	<?php /* view para todos los scripts generales de la pagina*/ ?>
 	@include('layouts._generalScripts')	
 	@yield('scripts')
