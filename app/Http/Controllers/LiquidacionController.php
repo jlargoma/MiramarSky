@@ -890,6 +890,7 @@ class LiquidacionController extends Controller
                             ->where('start', '<=', $end->copy()->format('Y-m-d'))
                             ->orderBy('start', 'ASC')
                             ->get();
+                            
         $result = ['ventas' => 0,'cobrado' => 0,'pendiente' => 0, 'metalico' => 0 , 'banco' => 0];
         foreach ($books as $key => $book) {
             $result['ventas'] += $book->total_price;
@@ -1326,6 +1327,7 @@ class LiquidacionController extends Controller
                                                         'totales' => $totales,
                                                         'data' => $data,
                                                         'percentBenef' => DB::table('percent')->find(1)->percent,
+                                                        'temporada' => $date
                                                     ]);
             }else{
                 return "<h2>No hay reservas para este término '".$request->searchString."'</h2>";
@@ -1452,6 +1454,7 @@ class LiquidacionController extends Controller
                                                     'totales' => $totales,
                                                     'data' => $data,
                                                     'percentBenef' => DB::table('percent')->find(1)->percent,
+                                                    'temporada' => $date
                                                 ]);
 
         }  
@@ -1765,6 +1768,321 @@ class LiquidacionController extends Controller
                                                     'totales' => $totales,
                                                     'data' => $data,
                                                     'percentBenef' => DB::table('percent')->find(1)->percent,
+                                                ]);
+
+        }
+    }
+
+    public function orderByBenefCritico(Request $request)
+    {
+        $now = Carbon::now();
+        $totales = [
+                    "total"        => 0,       
+                    "coste"        => 0,       
+                    "bancoJorge"   => 0,  
+                    "bancoJaime"   => 0,  
+                    "jorge"        => 0,       
+                    "jaime"        => 0,       
+                    "costeApto"    => 0,   
+                    "costePark"    => 0,   
+                    "costeLujo"    => 0,   
+                    "costeLimp"    => 0,   
+                    "costeAgencia" => 0,
+                    "benJorge"     => 0,    
+                    "benJaime"     => 0,    
+                    "pendiente"    => 0,   
+                    "limpieza"     => 0,    
+                    "beneficio"    => 0, 
+                    "stripe"       => 0,
+                    "obs"  => 0, 
+                ];
+
+        if ( empty($request->year) ) {
+            $date = Carbon::now();
+            if ($date->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+            }else{
+                $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            }
+            
+        }else{
+            $year = Carbon::createFromFormat('Y',$request->year);
+            $date = $year->copy();
+
+        }
+
+        $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+
+
+        if ($request->searchString != "") {
+
+            $customers = \App\Customers::where('name', 'LIKE', '%'.$request->searchString.'%')->get();
+            
+            if (count($customers) > 0) {
+                $arrayCustomersId = [];
+                foreach ($customers as $key => $customer) {
+                    if (!in_array($customer->id, $arrayCustomersId)) {
+                        $arrayCustomersId[] = $customer->id;
+                    }
+                    
+                }
+
+                if ( $request->searchRoom && $request->searchRoom != "all" ) {
+
+                    $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
+                                    ->where('start' , '>=' , $date->format('Y-m-d'))
+                                    ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
+                                    ->where('type_book',2)
+                                    ->where('room_id',$request->searchRoom)
+                                    ->orderBy('inc_percent', 'ASC')
+                                    ->get();
+
+                    $diasPropios = \App\Book::whereIn('customer_id', $arrayCustomersId)
+                                            ->where('start','>',$date->copy()->subMonth())
+                                            ->where('finish','<',$date->copy()->addYear())
+                                            ->whereIn('type_book',[7,8])
+                                            ->where('room_id', $request->searchRoom)
+                                            ->orderBy('inc_percent', 'ASC')
+                                            ->get();
+
+                }else{
+                    $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
+                                    ->where('start' , '>=' , $date->format('Y-m-d'))
+                                    ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
+                                    ->where('type_book',2)
+                                    ->orderBy('inc_percent', 'ASC')
+                                    ->get();
+
+                    $diasPropios = \App\Book::whereIn('customer_id', $arrayCustomersId)
+                                            ->where('start','>',$date->copy()->subMonth())
+                                            ->where('finish','<',$date->copy()->addYear())
+                                            ->whereIn('type_book',[7,8])
+                                            ->orderBy('inc_percent', 'ASC')
+                                            ->get();
+                }
+
+                
+
+
+                foreach ($books as $key => $book) {
+
+                    $totales["total"]        += $book->total_price;
+                    $totales["coste"]        += ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp);
+                    $totales["costeApto"]    += $book->cost_apto;
+                    $totales["costePark"]    += $book->cost_park;
+                    $totales["costeLujo"]    += $book->cost_lujo;
+                    $totales["costeLimp"]    += $book->cost_limp;
+                    $totales["costeAgencia"] += $book->PVPAgencia;
+                    $totales["bancoJorge"]   += $book->getPayment(2);
+                    $totales["bancoJaime"]   += $book->getPayment(3);
+                    $totales["jorge"]        += $book->getPayment(0);
+                    $totales["jaime"]        += $book->getPayment(1);
+                    $totales["benJorge"]     += $book->ben_jorge;
+                    $totales["benJaime"]     += $book->ben_jaime;
+                    $totales["pendiente"]    += $book->getPayment(4);
+                    $totales["limpieza"]     += $book->sup_limp;
+                    $totales["beneficio"]    += ($book->total_price - ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp));
+                    $totalStripep = 0;
+                    $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get(); 
+                    foreach ($stripePayment as $key => $stripe):
+                        $totalStripep +=  $stripe->import;
+                    endforeach;
+                    if ($totalStripep > 0):
+                        $totales["stripe"] += ((1.4 * $totalStripep)/100)+0.25;
+                    endif;
+                
+                    $totales['obs'] += $book->extraCost;
+                }
+
+                $totBooks    = (count($books) > 0)?count($books):1;
+                $countDiasPropios = 0;
+                foreach ($diasPropios as $key => $book) {
+                    $start = Carbon::createFromFormat('Y-m-d' , $book->start);
+                    $finish = Carbon::createFromFormat('Y-m-d' , $book->finish);
+                    $countDays = $start->diffInDays($finish);
+
+                    $countDiasPropios += $countDays;
+                }
+
+                /* INDICADORES DE LA TEMPORADA */
+                $data = [
+                            'days-ocupation'    => 0,
+                            'total-days-season' => \App\SeasonDays::first()->numDays,
+                            'num-pax'           => 0,
+                            'estancia-media'    => 0,
+                            'pax-media'         => 0,
+                            'precio-dia-media'  => 0,
+                            'dias-propios'      => $countDiasPropios,
+                            'agencia'           => 0,
+                            'propios'           => 0,
+                        ];
+
+                foreach ($books as $key => $book) {
+
+                    $start = Carbon::createFromFormat('Y-m-d' , $book->start);
+                    $finish = Carbon::createFromFormat('Y-m-d' , $book->finish);
+                    $countDays = $start->diffInDays($finish);
+
+                    /* Dias ocupados */
+                    $data['days-ocupation'] += $countDays;
+
+                    /* Nº inquilinos */
+                    $data['num-pax'] += $book->pax;
+
+
+                    if ($book->agency != 0) {
+                        $data['agencia'] ++;
+                    }else{
+                        $data['propios'] ++;
+                    }
+
+                }
+
+                $data['agencia'] = ($data['agencia']/ $totBooks)*100;
+                $data['propios'] = ($data['propios']/ $totBooks)*100;
+
+                /* Estancia media */
+                $data['estancia-media'] = ($data['days-ocupation'] / $totBooks);
+
+                /* Inquilinos media */
+                $data['pax-media'] = ($data['num-pax'] / $totBooks);
+
+
+                return view('backend/sales/_tableSummary',  [
+                                                        'books'   => $books,
+                                                        'totales' => $totales,
+                                                        'data' => $data,
+                                                        'percentBenef' => DB::table('percent')->find(1)->percent,
+                                                        'temporada' => $date
+                                                    ]);
+            }else{
+                return "<h2>No hay reservas para este término '".$request->searchString."'</h2>";
+            }
+        }else{
+
+
+            if ($request->searchRoom && $request->searchRoom != "all") {
+                    
+                    $books = \App\Book::where('start' , '>=' , $date)
+                                        ->where('start', '<=', $date->copy()->addYear()->subMonth())
+                                        ->where('type_book',2)
+                                        ->where('room_id',$request->searchRoom)
+                                        ->orderBy('inc_percent', 'ASC')
+                                        ->get();
+
+                    $diasPropios = \App\Book::where('start','>',$date->copy()->subMonth())
+                                        ->where('room_id', $request->searchRoom)
+                                        ->where('finish','<',$date->copy()->addYear())
+                                        ->whereIn('type_book',[7,8])
+                                        ->orderBy('inc_percent', 'ASC')
+                                        ->get();
+
+
+
+                }else{
+                    $books = \App\Book::where('start' , '>=' , $date)
+                                        ->where('start', '<=', $date->copy()->addYear()->subMonth())
+                                        ->where('type_book',2)
+                                        ->orderBy('inc_percent', 'ASC')
+                                        ->get();
+
+                    $diasPropios = \App\Book::where('start','>',$date->copy()->subMonth())
+                                            ->where('finish','<',$date->copy()->addYear())
+                                            ->whereIn('type_book',[7,8])
+                                            ->orderBy('inc_percent', 'ASC')
+                                            ->get();
+
+
+                }
+
+            foreach ($books as $key => $book) {
+                $totales["total"]        += $book->total_price;
+                $totales["coste"]        += ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp);
+                $totales["costeApto"]    += $book->cost_apto;
+                $totales["costePark"]    += $book->cost_park;
+                $totales["costeLujo"]    += $book->cost_lujo;
+                $totales["costeLimp"]    += $book->cost_limp;
+                $totales["costeAgencia"] += $book->PVPAgencia;
+                $totales["bancoJorge"]   += $book->getPayment(2);
+                $totales["bancoJaime"]   += $book->getPayment(3);
+                $totales["jorge"]        += $book->getPayment(0);
+                $totales["jaime"]        += $book->getPayment(1);
+                $totales["benJorge"]     += $book->ben_jorge;
+                $totales["benJaime"]     += $book->ben_jaime;
+                $totales["pendiente"]    += $book->getPayment(4);
+                $totales["limpieza"]     += $book->sup_limp;
+                $totales["beneficio"]    += ($book->total_price - ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp));
+                $totalStripep = 0;
+                $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get(); 
+                foreach ($stripePayment as $key => $stripe):
+                    $totalStripep +=  $stripe->import;
+                endforeach;
+                if ($totalStripep > 0):
+                    $totales["stripe"] += ((1.4 * $totalStripep)/100)+0.25;
+                endif;
+            
+                $totales['obs'] += $book->extraCost;
+            }
+            $totBooks    = (count($books) > 0)?count($books):1;
+            $countDiasPropios = 0;
+            foreach ($diasPropios as $key => $book) {
+                $start = Carbon::createFromFormat('Y-m-d' , $book->start);
+                $finish = Carbon::createFromFormat('Y-m-d' , $book->finish);
+                $countDays = $start->diffInDays($finish);
+
+                $countDiasPropios += $countDays;
+            }
+
+            /* INDICADORES DE LA TEMPORADA */
+            $data = [
+                        'days-ocupation'    => 0,
+                        'total-days-season' => \App\SeasonDays::first()->numDays,
+                        'num-pax'           => 0,
+                        'estancia-media'    => 0,
+                        'pax-media'         => 0,
+                        'precio-dia-media'  => 0,
+                        'dias-propios'      => $countDiasPropios,
+                        'agencia'           => 0,
+                        'propios'           => 0,
+                    ];
+
+            foreach ($books as $key => $book) {
+
+                $start = Carbon::createFromFormat('Y-m-d' , $book->start);
+                $finish = Carbon::createFromFormat('Y-m-d' , $book->finish);
+                $countDays = $start->diffInDays($finish);
+
+                /* Dias ocupados */
+                $data['days-ocupation'] += $countDays;
+
+                /* Nº inquilinos */
+                $data['num-pax'] += $book->pax;
+
+
+                if ($book->agency != 0) {
+                    $data['agencia'] ++;
+                }else{
+                    $data['propios'] ++;
+                }
+
+            }
+
+            $data['agencia'] = ($data['agencia']/ $totBooks)*100;
+            $data['propios'] = ($data['propios']/ $totBooks)*100;
+
+            /* Estancia media */
+            $data['estancia-media'] = ($data['days-ocupation'] / $totBooks);
+
+            /* Inquilinos media */
+            $data['pax-media'] = ($data['num-pax'] / $totBooks);
+
+
+            return view('backend/sales/_tableSummary',  [
+                                                    'books'   => $books,
+                                                    'totales' => $totales,
+                                                    'data' => $data,
+                                                    'percentBenef' => DB::table('percent')->find(1)->percent,
+                                                    'temporada' => $date
                                                 ]);
 
         }

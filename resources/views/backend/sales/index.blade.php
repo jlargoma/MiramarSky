@@ -91,17 +91,23 @@
                 <?php endfor; ?>
             </select>
     	</div>
-
+		
+		
     	<div class="col-md-1 pull-right">
             <button class="btn btn-md btn-primary exportExcel">
                 Exportar Excel
             </button>
-        </div>
+		</div>
+		<div class="col-md-1 pull-right">
+				<button class="btn btn-md btn-danger orderPercentBenef">
+					Ord benef critico
+				</button>
+			</div>
     </div>
 
 	<div class="row">
 		<div class="liquidationSummary">
-    		@include('backend.sales._tableSummary', ['totales' => $totales, 'books' => $books])
+    		@include('backend.sales._tableSummary', ['totales' => $totales, 'books' => $books, 'temporada' => $temporada])
     	</div>
     </div>   
 </div>
@@ -203,7 +209,19 @@
                 alert(data);
                 location.reload();
             });
-        });
+		});
+		
+		$('.orderPercentBenef').click(function(){
+			var searchRoom = $('.searchSelect').val();
+			var searchString = $('.searchabled').val();
+			var year = '<?php echo $temporada->copy()->format('Y')?>';
+			$.get('/admin/liquidation/orderByBenefCritico', { searchRoom: searchRoom, searchString: searchString,  year: year }, function(data) {
+
+				$('.liquidationSummary').empty();
+				$('.liquidationSummary').append(data);
+
+			});
+		});
 
 
         $('.exportExcel').click(function(event) {

@@ -422,6 +422,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('admin/liquidation/searchByName', 'LiquidacionController@searchByName');
 
 	Route::get('admin/liquidation/searchByRoom', 'LiquidacionController@searchByRoom');
+	Route::get('admin/liquidation/orderByBenefCritico', 'LiquidacionController@orderByBenefCritico');
 
 
 	
