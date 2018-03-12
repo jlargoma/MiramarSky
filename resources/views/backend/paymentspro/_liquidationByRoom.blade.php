@@ -278,7 +278,7 @@
 												---€	
 										<?php endif ?>
 									</td>
-									<?php if ($room != 'all' && $room->luxury == 1): ?>
+									@if ($room != 'all' && $room->luxury == 1)
 										<td class="text-center" style="padding: 8px; ">
 											<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
 												<?php $auxLuxury = $book->cost_lujo ?>
@@ -291,7 +291,7 @@
 												---€	
 											<?php endif ?>
 										</td>
-									<?php endif ?>
+									@endif
 									<?php if (!empty($book->book_owned_comments)): ?>
 										<td class="text-center" style="padding: 8px; ">
 											<img src="/pages/oferta.png" style="width: 40px;">

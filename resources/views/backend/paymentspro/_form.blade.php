@@ -110,11 +110,10 @@
         </div>
     </div>
 </div>
-
-
+{{-- @TODO remove this, something is causing a conflict with the custom.js --}}
 <script>
     $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
+        $('[data-toggle="tooltip"]').tooltip();
     })
 </script>
 

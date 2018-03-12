@@ -178,8 +178,7 @@
 		<script src="{{ asset('assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') }}" type="text/javascript"></script>
 		<script type="text/javascript" src="{{ asset('/pages/js/bootstrap-notify.js')}}"></script>
 		@yield('scripts')
-		
 		<script src="{{ asset('pages/js/pages.min.js') }}"></script>
-
+		<script src="{{ asset('js/custom.js') }}"></script>
 	</body>
 </html>
