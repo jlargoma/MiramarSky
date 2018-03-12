@@ -309,7 +309,7 @@ Route::get('/admin/rules/stripe/update' ,['middleware' => 'authAdmin', 'uses' =>
 
 Route::get('admin/estadisticas/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@Statistics']);
 Route::get('admin/contabilidad/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@contabilidad']);
-Route::get('admin/perdidas-ganancias' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@perdidasGanancias']);
+Route::get('admin/perdidas-ganancias/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@perdidasGanancias']);
 
 
 

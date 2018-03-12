@@ -21,7 +21,7 @@ class LiquidacionController extends Controller
      */
    
     public function index($year="")
-    {   
+    {
         $now = Carbon::now();
         $totales = [
                 "total"        => 0,       
@@ -726,7 +726,6 @@ class LiquidacionController extends Controller
         }else{
             $year = Carbon::createFromFormat('Y',$year);
             $date = $year->copy();
-
         }
 
         $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
@@ -870,7 +869,8 @@ class LiquidacionController extends Controller
                                                             'arrayIncomes' => $arrayIncomes, 
                                                             'arrayExpenses' => $arrayExpenses, 
                                                             'inicio' => $inicio,
-                                                            'arrayExpensesPending' => $arrayExpensesPending
+                                                            'arrayExpensesPending' => $arrayExpensesPending,
+                                                            'selectedYear' => empty($year) ? (date('Y') - 1) : $year->format('Y'),
                                                         ]);
     }
 

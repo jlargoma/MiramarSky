@@ -23,21 +23,12 @@
 			</div>
 			<div class="col-md-2 col-xs-12 sm-padding-10" style="padding: 10px">
 				<select id="fecha" class="form-control minimal">
-                     <?php $fecha = $inicio->copy()->SubYears(2); ?>
-                     <?php if ($fecha->copy()->format('Y') < 2015): ?>
-                         <?php $fecha = new Carbon('first day of September 2015'); ?>
-                     <?php endif ?>
-                 
-                     <?php for ($i=1; $i <= 3; $i++): ?>                           
-                         <option value="<?php echo $fecha->copy()->format('Y'); ?>" 
-                            <?php if (  $fecha->copy()->format('Y') == date('Y') || 
-                                        $fecha->copy()->addYear()->format('Y') == date('Y') 
-                                    ){ echo "selected"; }?> >
-                            <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
-                         </option>
-                         <?php $fecha->addYear(); ?>
-                     <?php endfor; ?>
-                 </select>     
+					@for ($year = 2015; $year < date('Y'); $year++)
+						<option value="{{ $year }}" {{ $year == $selectedYear ? 'selected' : '' }}>
+							{{ $year . '-' . ($year + 1) }}
+						</option>
+					@endfor
+                 </select>
 			</div>
 		</div>
 	</div>
