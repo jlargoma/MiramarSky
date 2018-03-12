@@ -28,13 +28,13 @@
 	<div class="col-md-12 col-xs-12 resumen blocks">
 		<div class="col-md-5 col-xs-12">
 			<h3 class="text-center font-w300 hidden-sm hidden-xs" style="line-height: 1; letter-spacing: -1px;">
-				TOTAL GENERADO TEMP. <br>
+				TOTAL INGR. PROPIETARIOS <br>
 				<span class="font-w800">
 					<?php echo number_format($costeProp, 2,',','.'); ?>€
 				</span>
 			</h3>
 			<h4 class="text-center font-w300 hidden-md hidden-lg" style="line-height: 1; letter-spacing: -1px;">
-				TOTAL GENERADO TEMP. <br>
+				TOTAL INGR. PROPIETARIOS <br>
 				<span class="font-w800">
 					<?php echo number_format($costeProp, 2,',','.'); ?>€
 				</span>
@@ -219,9 +219,9 @@
 							<th class ="text-center bg-complete text-white" style="width: 15%; padding: 4px 10px">ING. PROP</th>
 							<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Apto</th>
 							<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Park.</th>
-							<?php if ($room->luxury == 1): ?>
-								<th class ="text-center bg-complete text-white" style="width: 12%">Sup.Lujo</th>
-							<?php endif ?>
+								@if ($room != 'all' && $room->luxury == 1)
+									<th class ="text-center bg-complete text-white" style="width: 12%">Sup.Lujo</th>
+								@endif
 							<th class ="text-center bg-complete text-white">&nbsp;</th>
 						</thead>
 						<tbody>
@@ -278,7 +278,7 @@
 												---€	
 										<?php endif ?>
 									</td>
-									<?php if ($room->luxury == 1): ?>
+									<?php if ($room != 'all' && $room->luxury == 1): ?>
 										<td class="text-center" style="padding: 8px; ">
 											<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
 												<?php $auxLuxury = $book->cost_lujo ?>
