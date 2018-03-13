@@ -44,6 +44,14 @@
 	.blue{
 		color: blue;
 	}
+	.updateLimp{
+		background-color: rgba(200,200,200,0.5)!important;
+		color: black;
+		width: 85%;
+		height: 25px;
+		text-align: center;
+		border: 0px;
+	}
 	
 </style>
 @endsection
@@ -233,6 +241,14 @@
 			
 
         });
+
+		$('.updateLimp').change(function(){
+			var id = $(this).attr('data-idBook');
+			var limp = $(this).val();
+			$.get( "/admin/sales/updateLimpBook/"+id+"/"+limp).done(function( data ) {
+				
+			});
+		});
         
 
 	});

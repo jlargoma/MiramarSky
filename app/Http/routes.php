@@ -488,6 +488,19 @@ Route::group(['middleware' => 'auth'], function () {
 		
 	});
 
+	Route::get('/admin/sales/updateLimpBook/{id}/{importe}', function ($id, $importe)
+	{
+		$book = \App\Book::find($id);
+		$book->cost_limp = $importe;
+		if ($book->save()) {
+			return "OK";
+		}
+		
+		
+	});
+
+	
+
 	Route::get('/admin/customers/searchByName/{searchString?}', function($searchString=""){
 
 		if ($searchString == "") {

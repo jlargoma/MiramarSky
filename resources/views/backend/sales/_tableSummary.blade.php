@@ -335,11 +335,8 @@
                                 
                             </td>
                             <td class="text-center coste" style="border-left: 1px solid black;"> 
-                                <?php if ( $book->cost_limp > 0): ?>
-                                    <?php echo number_format($book->cost_limp,0,',','.') ?>€    
-                                <?php else: ?>
-                                    ----
-                                <?php endif ?>
+                                <input class="updateLimp" type="number" step="0.01" value="<?php echo $book->cost_limp; ?>" data-idBook="<?php echo $book->id; ?>"/>
+                                <?php //echo number_format($book->cost_limp,0,',','.') ?>
                                 
                             </td>
                             <td class="text-center coste " style="border-left: 1px solid black;"> 
@@ -638,8 +635,9 @@
                                     <td class="text-center coste" >
                                         <?php echo number_format($book->cost_lujo,0,',','.')?> €
                                     </td>
-                                    <td class="text-center coste">      
-                                        <?php echo number_format($book->sup_limp,0,',','.') ?>€
+                                    <td class="text-center coste">   
+                                        <input class="form-control updateLimp" type="number" step="0.01" value="<?php echo $book->cost_limp; ?>" data-idBook="<?php echo $book->id; ?>"/>
+                                        <?php //echo number_format($book->cost_limp,0,',','.') ?>
                                     </td>
                                     <td class="text-center coste bf">   
                                         <?php echo number_format($book->PVPAgencia,0,',','.') ?>€
