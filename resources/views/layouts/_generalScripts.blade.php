@@ -110,12 +110,12 @@
 			
 
 			$.post( '/getDiffIndays' , { date1: arrayDates[0], date2: arrayDates[1]}, function( data ) {
-				var diffDays =  data;
+				var diffDays =  data.diff;
 				
 				// alert(diffDays);
 
 		    	if(diffDays >= 2 ){
-		    		$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   fechas : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
+		    		$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   fechas : data.dates,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
 		    			
 		    			$('#content-book-response .back').empty();
 		    			$('#content-book-response .back').append(data);

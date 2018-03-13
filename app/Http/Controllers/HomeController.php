@@ -376,10 +376,10 @@ class HomeController extends Controller
         }
 
         $price = 0;
-
+        $counter = $start->copy();
         for ($i=1; $i <= $countDays; $i++) { 
 
-            $seasonActive = \App\Seasons::getSeason($start->copy()->format('Y-m-d'));
+            $seasonActive = \App\Seasons::getSeason($counter->copy()->format('Y-m-d'));
             if ($seasonActive == null) {
                $seasonActive = 0;
             }
@@ -390,7 +390,7 @@ class HomeController extends Controller
                 $price = $price + $precio->price;
             }
 
-            $start->addDay();
+            $counter->addDay();
         }
  
         if ($request->input('parking') == 'si') {
@@ -410,8 +410,7 @@ class HomeController extends Controller
         }else{
             $luxury = 0;
         }
-        $extraPrice = (int) \App\Extras::find(4)->price;
-        $total =  $price + $priceParking + $limp + $luxury + $extraPrice;  
+        $total =  $price + $priceParking + $limp + $luxury;  
         $dni = $request->input('dni');
         $address = $request->input('address');
 
@@ -581,7 +580,7 @@ class HomeController extends Controller
         $date1 = Carbon::createFromFormat('d M, y', trim($request->date1));
         $date2 = Carbon::createFromFormat(' d M, y', trim($request->date2));
 
-        return $date1->diffInDays($date2);
+        return ['diff' => $date1->diffInDays($date2), 'dates' => $date1->copy()->format('d M, y').' - '.$date2->copy()->format('d M, y')];
     }
 
  

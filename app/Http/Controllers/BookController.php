@@ -140,10 +140,8 @@ class BookController extends Controller
         $finish = Carbon::createFromFormat('d M, y' , trim($date[1]))->format('d/m/Y');
         $book = new \App\Book();
 
-        
-
         // 4 es el extra correspondiente a el obsequio
-        $extraPrice = (int) \App\Extras::find(4)->price;
+        $extraPrice  = \App\Extras::find(4)->price;
         $extraCost  = \App\Extras::find(4)->cost;
 
         if ( $request->input('from') ) {
@@ -212,9 +210,9 @@ class BookController extends Controller
                 
                 $book->cost_total    = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
 
-                $book->total_price   = $this->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
+                $book->total_price   = $this->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp;
 
-                $book->real_price    = $this->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
+                $book->real_price    = $this->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp;
 
 
                 $book->total_ben     = $book->total_price - $book->cost_total;
@@ -227,6 +225,7 @@ class BookController extends Controller
                 $book->ben_jorge = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
                 $book->ben_jaime = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
                 $book->promociones     = 0;
+
                 if($book->save()){
                     /* Notificacion via email */
                     if ($customer->email) {
@@ -364,7 +363,7 @@ class BookController extends Controller
 
                         $book->total_price = $request->input('total');
 
-                        $book->real_price  = $this->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
+                        $book->real_price  = $this->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp;
 
                         $book->total_ben     = $book->total_price - $book->cost_total;
 
@@ -447,11 +446,6 @@ class BookController extends Controller
     //Funcion para actualizar la reserva
     public function saveUpdate(Request $request, $id)
     {
-        // echo "<pre>";
-        // print_r($request->input());
-        // die();
-        
-
         $aux = str_replace('Abr', 'Apr', $request->input('fechas'));
 
         $date = explode('-', $aux);
@@ -525,7 +519,7 @@ class BookController extends Controller
             $book->cost_total    = $request->input('cost');
 
             $book->total_price   = $request->input('total');
-            $book->real_price    = $this->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp + $extraPrice;
+            $book->real_price    = $this->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp;
 
             $book->total_ben     = $request->input('beneficio');
             $book->extra         = $request->input('extra');
@@ -741,16 +735,17 @@ class BookController extends Controller
             $pax = $paxPerRoom;
         }
         $costBook = 0;
+        $counter = $start->copy();
         for ($i=1; $i <= $countDays; $i++) {
 
-            $seasonActive = \App\Seasons::getSeason($start->copy()->format('Y-m-d'));
+            $seasonActive = \App\Seasons::getSeason($counter->copy()->format('Y-m-d'));
             $costs = \App\Prices::where('season' ,  $seasonActive)
             ->where('occupation', $pax)->get();
 
             foreach ($costs as $precio) {
                 $costBook = $costBook + $precio->cost ;
             }
-            $start->addDay();
+            $counter->addDay();
         }
 
         return $costBook;
@@ -770,17 +765,18 @@ class BookController extends Controller
         if ($paxPerRoom > $pax) {
             $pax = $paxPerRoom;
         }
+        $counter = $start->copy();
         $priceBook = 0;
         for ($i=1; $i <= $countDays; $i++) {
 
-            $seasonActive = \App\Seasons::getSeason($start->copy()->format('Y-m-d'));
+            $seasonActive = \App\Seasons::getSeason($counter->copy()->format('Y-m-d'));
             $costs = \App\Prices::where('season' ,  $seasonActive)
             ->where('occupation', $pax)->get();
 
             foreach ($costs as $precio) {
                 $priceBook = $priceBook + $precio->price ;
             }
-            $start->addDay();
+            $counter->addDay();
         }
 
         return $priceBook;
@@ -1643,7 +1639,7 @@ class BookController extends Controller
        
         $data['costes']['book'] = $this->getCostBook($request->input('start'),$request->input('finish'),$request->input('pax'),$request->input('room')) + $extraCost;
 
-        $data['totales']['book'] = $this->getPriceBook($request->input('start'),$request->input('finish'),$request->input('pax'),$request->input('room')) + $extra;
+        $data['totales']['book'] = $this->getPriceBook($request->input('start'),$request->input('finish'),$request->input('pax'),$request->input('room'));
 
 
         return $data;
