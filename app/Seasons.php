@@ -45,6 +45,6 @@ class Seasons extends Model
                                 ->where('finish_date', '>=' , $start)
                                 ->first();
                 
-        return ($season)?$season->type: 0 ;
+        return ($season) ? $season->type: 0 ;
     }
 }

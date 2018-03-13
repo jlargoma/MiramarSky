@@ -227,102 +227,102 @@ class HomeController extends Controller
     }
 
     // Correos frontend
-        public function formContacto(Request $request){
-            
-            $data['name']    = $request->input('name');
-            $data['email']   = $request->input('email');
-            $data['phone']   = $request->input('phone');
-            $data['subject'] = $request->input('subject');
-            $data['message'] = $request->input('message');
+    public function formContacto(Request $request){
+        
+        $data['name']    = $request->input('name');
+        $data['email']   = $request->input('email');
+        $data['phone']   = $request->input('phone');
+        $data['subject'] = $request->input('subject');
+        $data['message'] = $request->input('message');
 
 
-            $contact = Mail::send(['html' => 'frontend.emails.contact'],[ 'data' => $data,], function ($message) use ($data) {
-                $message->from($data['email'], $data['name']);
-                $message->to('reservas@apartamentosierranevada.net'); 
-                $message->subject('Formulario de contacto MiramarSKI');
-            });
+        $contact = Mail::send(['html' => 'frontend.emails.contact'],[ 'data' => $data,], function ($message) use ($data) {
+            $message->from($data['email'], $data['name']);
+            $message->to('reservas@apartamentosierranevada.net'); 
+            $message->subject('Formulario de contacto MiramarSKI');
+        });
 
-            if ( $contact ) {
-                return view('frontend.contacto', ['mobile' => new Mobile(),'contacted' => 1]);
-            }else{
-                return view('frontend.contacto', ['mobile' => new Mobile(),'contacted' => 0]);
+        if ( $contact ) {
+            return view('frontend.contacto', ['mobile' => new Mobile(),'contacted' => 1]);
+        }else{
+            return view('frontend.contacto', ['mobile' => new Mobile(),'contacted' => 0]);
 
-            }
         }
+    }
 
-        public function formAyuda(Request $request){
-            
-            $data['name']    = $request->input('name');
-            $data['email']   = $request->input('email');
-            $data['phone']   = $request->input('phone');
-            $data['subject'] = $request->input('subject');
-            $data['message'] = $request->input('message');
+    public function formAyuda(Request $request){
+        
+        $data['name']    = $request->input('name');
+        $data['email']   = $request->input('email');
+        $data['phone']   = $request->input('phone');
+        $data['subject'] = $request->input('subject');
+        $data['message'] = $request->input('message');
 
-            $contact = Mail::send(['html' => 'frontend.emails.ayuda'],[ 'data' => $data,], function ($message) use ($data) {
-                $message->from($data['email'], $data['name']);
-                $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */
-                // $message->bcc('jlargo@mksport.es');
-                // $message->bcc('jlargoma@gmail.com');
-                $message->subject('Formulario de Ayudanos a Mejorar MiramarSKI');
-            });
+        $contact = Mail::send(['html' => 'frontend.emails.ayuda'],[ 'data' => $data,], function ($message) use ($data) {
+            $message->from($data['email'], $data['name']);
+            $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */
+            // $message->bcc('jlargo@mksport.es');
+            // $message->bcc('jlargoma@gmail.com');
+            $message->subject('Formulario de Ayudanos a Mejorar MiramarSKI');
+        });
 
-            if ( $contact ) {
-                return view('frontend.ayudanos-a-mejorar', ['mobile' => new Mobile(),'contacted' => 1]);
-            }else{
-                return view('frontend.ayudanos-a-mejorar', ['mobile' => new Mobile(),'contacted' => 0]);
+        if ( $contact ) {
+            return view('frontend.ayudanos-a-mejorar', ['mobile' => new Mobile(),'contacted' => 1]);
+        }else{
+            return view('frontend.ayudanos-a-mejorar', ['mobile' => new Mobile(),'contacted' => 0]);
 
-            }            
+        }            
+    }
+
+    public function formPropietario(Request $request){
+        
+        $data['name']    = $request->input('name');
+        $data['email']   = $request->input('email');
+        $data['phone']   = $request->input('phone');
+        $data['subject'] = $request->input('subject');
+        $data['message'] = $request->input('message');
+
+        $contact = Mail::send(['html' => 'frontend.emails.propietario'],[ 'data' => $data,], function ($message) use ($data) {
+            $message->from($data['email'], $data['name']);
+            $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */
+            // $message->bcc('jlargo@mksport.es');
+            // $message->bcc('jlargoma@gmail.com');
+            $message->subject('Formulario de Propietario MiramarSKI');
+        });
+
+        if ( $contact ) {
+            return view('frontend.eres-propietario', ['mobile' => new Mobile(),'contacted' => 1]);
+        }else{
+            return view('frontend.eres-propietario', ['mobile' => new Mobile(),'contacted' => 0]);
+
         }
+    }
 
-        public function formPropietario(Request $request){
-            
-            $data['name']    = $request->input('name');
-            $data['email']   = $request->input('email');
-            $data['phone']   = $request->input('phone');
-            $data['subject'] = $request->input('subject');
-            $data['message'] = $request->input('message');
+    public function formGrupos(Request $request){
+        
+        $data['name']    = $request->input('name');
+        $data['email']   = $request->input('email');
+        $data['phone']   = $request->input('phone');
+        $data['destino'] = $request->input('destino');
+        $data['personas'] = $request->input('personas');
+        $data['message'] = $request->input('message');
 
-            $contact = Mail::send(['html' => 'frontend.emails.propietario'],[ 'data' => $data,], function ($message) use ($data) {
-                $message->from($data['email'], $data['name']);
-                $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */
-                // $message->bcc('jlargo@mksport.es');
-                // $message->bcc('jlargoma@gmail.com');
-                $message->subject('Formulario de Propietario MiramarSKI');
-            });
+        $contact = Mail::send(['html' => 'frontend.emails.grupos'],[ 'data' => $data,], function ($message) use ($data) {
+            $message->from($data['email'], $data['name']);
+            $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */
+            // $message->to('jbaz@daimonconsulting.com'); /* $data['email'] */
+            // $message->bcc('jlargo@mksport.es');
+            // $message->bcc('jlargoma@gmail.com');
+            $message->subject('Formulario de Grupos MiramarSKI');
+        });
 
-            if ( $contact ) {
-                return view('frontend.eres-propietario', ['mobile' => new Mobile(),'contacted' => 1]);
-            }else{
-                return view('frontend.eres-propietario', ['mobile' => new Mobile(),'contacted' => 0]);
+        if ( $contact ) {
+            return view('frontend.grupos', ['mobile' => new Mobile(),'contacted' => 1]);
+        }else{
+            return view('frontend.grupos', ['mobile' => new Mobile(),'contacted' => 0]);
 
-            }
         }
-
-        public function formGrupos(Request $request){
-            
-            $data['name']    = $request->input('name');
-            $data['email']   = $request->input('email');
-            $data['phone']   = $request->input('phone');
-            $data['destino'] = $request->input('destino');
-            $data['personas'] = $request->input('personas');
-            $data['message'] = $request->input('message');
-
-            $contact = Mail::send(['html' => 'frontend.emails.grupos'],[ 'data' => $data,], function ($message) use ($data) {
-                $message->from($data['email'], $data['name']);
-                $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */
-                // $message->to('jbaz@daimonconsulting.com'); /* $data['email'] */
-                // $message->bcc('jlargo@mksport.es');
-                // $message->bcc('jlargoma@gmail.com');
-                $message->subject('Formulario de Grupos MiramarSKI');
-            });
-
-            if ( $contact ) {
-                return view('frontend.grupos', ['mobile' => new Mobile(),'contacted' => 1]);
-            }else{
-                return view('frontend.grupos', ['mobile' => new Mobile(),'contacted' => 0]);
-
-            }
-        }
+    }
     // Correos frontend
 
 
@@ -340,29 +340,29 @@ class HomeController extends Controller
         if ($request->input('apto') == '2dorm' && $request->input('luxury') == 'si') {
            $roomAssigned = 115;
            $typeApto  = "2 DORM Lujo";
-           $limp = 50;
+           $limp = (int) \App\Extras::find(1)->price;
         }elseif($request->input('apto') == '2dorm' && $request->input('luxury') == 'no'){
            $roomAssigned = 122;
            $typeApto  = "2 DORM estandar";
-           $limp = 50;
+           $limp = (int) \App\Extras::find(1)->price;
         }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'si'){
            $roomAssigned = 138;
-           $limp = 30;
+           $limp = (int) \App\Extras::find(2)->price;
            $typeApto  = "Estudio Lujo";
 
         }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'no'){
            $roomAssigned = 110;
            $typeApto  = "Estudio estandar";
-           $limp = 30;
+           $limp = (int) \App\Extras::find(2)->price;
         }elseif($request->input('apto') == 'chlt' && $request->input('luxury') == 'no'){
            $roomAssigned = 144;
            $typeApto  = "CHALET los pinos";
-           $limp = 50;
+           $limp = (int) \App\Extras::find(1)->price;
         }elseif($request->input('apto') == '3dorm' && $request->input('luxury') == 'si'){
             /* Rooms para grandes capacidades */
            $roomAssigned = 149;
            $typeApto  = "3 DORM Lujo";
-           $limp = 100;
+           $limp = (int) \App\Extras::find(3)->price;
         }
 
         
@@ -389,6 +389,8 @@ class HomeController extends Controller
             foreach ($prices as $precio) {
                 $price = $price + $precio->price;
             }
+
+            $start->addDay();
         }
  
         if ($request->input('parking') == 'si') {
@@ -408,8 +410,8 @@ class HomeController extends Controller
         }else{
             $luxury = 0;
         }
-     
-        $total =  $price + $priceParking + $limp + $luxury;  
+        $extraPrice = (int) \App\Extras::find(4)->price;
+        $total =  $price + $priceParking + $limp + $luxury + $extraPrice;  
         $dni = $request->input('dni');
         $address = $request->input('address');
 

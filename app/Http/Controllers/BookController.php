@@ -139,18 +139,15 @@ class BookController extends Controller
         $start = Carbon::createFromFormat('d M, y' , trim($date[0]))->format('d/m/Y');
         $finish = Carbon::createFromFormat('d M, y' , trim($date[1]))->format('d/m/Y');
         $book = new \App\Book();
-        $extraPrice = 0 ;
-        $extraCost  = 0 ;
+
+        
+
+        // 4 es el extra correspondiente a el obsequio
+        $extraPrice = (int) \App\Extras::find(4)->price;
+        $extraCost  = \App\Extras::find(4)->cost;
 
         if ( $request->input('from') ) {
-            if ($request->input('extras') != "") {
-                    foreach ($request->input('extras') as $extra) {
-                     $precios = \App\Extras::find($extra);
-                     $extraPrice += $precios->price;
-                     $extraCost += $precios->cost;
-                }
-            }
-
+            
             //createacion del cliente
             $customer          = new \App\Customers();
             $customer->user_id = (Auth::check()) ?Auth::user()->id : 23;
@@ -181,22 +178,22 @@ class BookController extends Controller
                 $room                = \App\Rooms::find($request->input('newroom'));
                 if ($room->sizeApto == 1) {
 
-                    $book->sup_limp      = 30;
-                    $book->cost_limp     = 30;
+                    $book->sup_limp      = \App\Extras::find(2)->price;//30;
+                    $book->cost_limp     = \App\Extras::find(2)->cost;//30;
 
                     $book->sup_park      = $this->getPricePark($request->input('parking'), $request->input('nigths'));
                     $book->cost_park     = $this->getCostPark($request->input('parking'), $request->input('nigths'));
                 } elseif($room->sizeApto == 2) {
 
-                    $book->sup_limp      = 50;
-                    $book->cost_limp     = 40;
+                    $book->sup_limp      = \App\Extras::find(1)->price;//50;
+                    $book->cost_limp     = \App\Extras::find(1)->cost;//40;
 
                     $book->sup_park      = $this->getPricePark($request->input('parking'), $request->input('nigths'));
                     $book->cost_park     = $this->getCostPark($request->input('parking'),$request->input('nigths') );
                 }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
 
-                    $book->sup_limp      = 100;
-                    $book->cost_limp     = 70;
+                    $book->sup_limp      = \App\Extras::find(3)->price;//100;
+                    $book->cost_limp     = \App\Extras::find(3)->cost;//70;
 
                     $book->sup_park      = $this->getPricePark($request->input('parking'), $request->input('nigths'),$room->id , 3);
                     $book->cost_park      = $this->getCostPark($request->input('parking'), $request->input('nigths'),$room->id , 3);
@@ -250,13 +247,6 @@ class BookController extends Controller
             }
 
             if ( $isReservable == 1 ) {
-                if ($request->input('extras') != "") {
-                    foreach ($request->input('extras') as $extra) {
-                       $precios    = \App\Extras::find($extra);
-                       $extraPrice += $precios->price;
-                       $extraCost  += $precios->cost;
-                    }
-                }
 
                 //createacion del cliente
                 $customer          = new \App\Customers();
@@ -338,27 +328,28 @@ class BookController extends Controller
 
                         $book->PVPAgencia  = ( $request->input('agencia') )?$request->input('agencia'):0;
                         $book->sup_limp    = ($room->sizeApto == 1) ? 30 : 50;
+                        $room                = \App\Rooms::find($request->input('newroom'));
                         if ($room->sizeApto == 1) {
 
-                            $book->sup_limp      = 30;
-                            $book->cost_limp     = 30;
+                            $book->sup_limp      = \App\Extras::find(2)->price;//30;
+                            $book->cost_limp     = \App\Extras::find(2)->cost;//30;
 
-                            $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths'));
-                            $book->cost_park   = $this->getCostPark($request->input('parking'),$request->input('nigths'));
+                            $book->sup_park      = $this->getPricePark($request->input('parking'), $request->input('nigths'));
+                            $book->cost_park     = $this->getCostPark($request->input('parking'), $request->input('nigths'));
                         } elseif($room->sizeApto == 2) {
 
-                            $book->sup_limp      = 50;
-                            $book->cost_limp     = 40;
+                            $book->sup_limp      = \App\Extras::find(1)->price;//50;
+                            $book->cost_limp     = \App\Extras::find(1)->cost;//40;
 
-                            $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths'));
-                            $book->cost_park   = $this->getCostPark($request->input('parking'),$request->input('nigths'));
+                            $book->sup_park      = $this->getPricePark($request->input('parking'), $request->input('nigths'));
+                            $book->cost_park     = $this->getCostPark($request->input('parking'),$request->input('nigths') );
                         }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
 
-                            $book->sup_limp      = 100;
-                            $book->cost_limp     = 70;
-                            $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths'),$room->id , 3);
-                            $book->cost_park   = $this->getCostPark($request->input('parking'),$request->input('nigths'),$room->id , 3);
+                            $book->sup_limp      = \App\Extras::find(3)->price;//100;
+                            $book->cost_limp     = \App\Extras::find(3)->cost;//70;
 
+                            $book->sup_park      = $this->getPricePark($request->input('parking'), $request->input('nigths'),$room->id , 3);
+                            $book->cost_park      = $this->getCostPark($request->input('parking'), $request->input('nigths'),$room->id , 3);
                         }
                         
                         $book->sup_lujo    = $this->getPriceLujo($request->input('type_luxury'));
@@ -468,8 +459,9 @@ class BookController extends Controller
         $start = Carbon::createFromFormat('d M, y' , trim($date[0]))->format('d/m/Y');
         $finish = Carbon::createFromFormat('d M, y' , trim($date[1]))->format('d/m/Y');
         $book = new \App\Book();
-        $extraPrice = 0 ;
-        $extraCost  = 0;
+        // 4 es el extra correspondiente a el obsequio
+        $extraPrice = (int) \App\Extras::find(4)->price;
+        $extraCost  = (int) \App\Extras::find(4)->cost;
 
 
         $customer          = \App\Customers::find($request->input('customer_id'));
@@ -498,22 +490,22 @@ class BookController extends Controller
             $book->nigths              = $request->input('nigths');
             if ($room->sizeApto == 1) {
 
-                $book->sup_limp      = 30;
-                $book->cost_limp     = 30;
+                $book->sup_limp      = (int) \App\Extras::find(2)->price;
+                $book->cost_limp     = (int) \App\Extras::find(2)->cost;
 
                 $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths'));
                 $book->cost_park   = $request->input('costParking');//$this->getCostParkController($request->input('parking'),$request->input('nigths'));
             } elseif($room->sizeApto == 2) {
 
-                $book->sup_limp      = 50;
-                $book->cost_limp     = 40;
+                $book->sup_limp      = (int) \App\Extras::find(1)->price;
+                $book->cost_limp     = (int) \App\Extras::find(1)->cost;
 
                 $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths'));
                 $book->cost_park   = $request->input('costParking');//$this->getCostParkController($request->input('parking'),$request->input('nigths'));
             }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
 
-                $book->sup_limp      = 100;
-                $book->cost_limp     = 70;
+                $book->sup_limp      =  (int) \App\Extras::find(3)->price;
+                $book->cost_limp     = (int) \App\Extras::find(3)->cost;
 
                 $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths'),$room->id , 3);
                 $book->cost_park   = $request->input('costParking');//$this->getCostParkController($request->input('parking'),$request->input('nigths'), 3);
@@ -538,13 +530,14 @@ class BookController extends Controller
             $book->total_ben     = $request->input('beneficio');
             $book->extra         = $request->input('extra');
             $book->inc_percent   = round(($book->total_ben / $book->total_price) * 100, 2 );
-            $book->ben_jorge = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
-            $book->ben_jaime = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
+            $book->ben_jorge     = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
+            $book->ben_jaime     = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
 
-
-            $book->schedule       = $request->input('schedule');
-            $book->scheduleOut    = $request->input('scheduleOut');
-            $book->promociones     = ($request->input('promociones'))?$request->input('promociones'):0;
+            $book->extraPrice    = $extraPrice;
+            $book->extraCost     = $extraCost;
+            $book->schedule      = $request->input('schedule');
+            $book->scheduleOut   = $request->input('scheduleOut');
+            $book->promociones   = ($request->input('promociones'))?$request->input('promociones'):0;
             if ($book->save()) {
 
                 if ( $book->room->isAssingToBooking() ) {
@@ -757,6 +750,7 @@ class BookController extends Controller
             foreach ($costs as $precio) {
                 $costBook = $costBook + $precio->cost ;
             }
+            $start->addDay();
         }
 
         return $costBook;
@@ -786,6 +780,7 @@ class BookController extends Controller
             foreach ($costs as $precio) {
                 $priceBook = $priceBook + $precio->price ;
             }
+            $start->addDay();
         }
 
         return $priceBook;
@@ -1000,27 +995,27 @@ class BookController extends Controller
             if ($request->input('apto') == '2dorm' && $request->input('luxury') == 'si') {
                $roomAssigned = 115;
                $typeApto  = "2 DORM Lujo";
-               $limp = 50;
+               $limp = (int) \App\Extras::find(1)->price;
            }elseif($request->input('apto') == '2dorm' && $request->input('luxury') == 'no'){
                $roomAssigned = 122;
                $typeApto  = "2 DORM estandar";
-               $limp = 50;
+               $limp = (int) \App\Extras::find(1)->price;
            }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'si'){
                $roomAssigned = 138;
-               $limp = 30;
+               $limp = (int) \App\Extras::find(2)->price;
                $typeApto  = "Estudio Lujo";
 
            }elseif($request->input('apto') == 'estudio' && $request->input('luxury') == 'no'){
                $roomAssigned = 110;
                $typeApto  = "Estudio estandar";
-               $limp = 30;
+               $limp = (int) \App\Extras::find(2)->price;
            }
         } else {
             /* Rooms para grandes capacidades */
 
             $roomAssigned = 149;
             $typeApto  = "3 DORM Lujo";
-            $limp = 100;
+            $limp = (int) \App\Extras::find(2)->price;
 
 
         }
@@ -1048,6 +1043,7 @@ class BookController extends Controller
             foreach ($prices as $precio) {
                 $price = $price + $precio->price;
             }
+            $start->addDay();
         }
  
         if ($request->input('parking') == 'si') {
@@ -1604,30 +1600,32 @@ class BookController extends Controller
 
     public function getAllDataToBook(Request $request)
     {
+        $extra      = (int) \App\Extras::find(4)->price;
+        $extraCost     = (int) \App\Extras::find(4)->cost;
         $room  = \App\Rooms::find($request->input('room'));
         if ($room->sizeApto == 1) {
 
             $data['costes']['parking']  = $this->getCostPark($request->input('park'),$request->input('noches') );
             $data['totales']['parking'] = $this->getPricePark($request->input('park'), $request->input('noches') );
 
-            $sup_limp      = 30;
-            $cost_limp     = 30;
+            $sup_limp      = (int) \App\Extras::find(2)->price;
+            $cost_limp     = (int) \App\Extras::find(2)->cost;
 
         } elseif($room->sizeApto == 2) {
             /* PARKING */
             $data['costes']['parking']  = $this->getCostPark($request->input('park'),$request->input('noches') );
             $data['totales']['parking'] = $this->getPricePark($request->input('park'), $request->input('noches') );
 
-            $sup_limp      = 50;
-            $cost_limp     = 40;
+            $sup_limp      = (int) \App\Extras::find(1)->price;
+            $cost_limp     = (int) \App\Extras::find(1)->cost;
 
         }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
             /* PARKING */
             $data['costes']['parking']  = $this->getCostPark($request->input('park'),$request->input('noches'),$room->id , 3);
             $data['totales']['parking'] = $this->getPricePark($request->input('park'), $request->input('noches'),$room->id, 3);
 
-            $sup_limp      = 100;
-            $cost_limp     = 70;
+            $sup_limp      =  (int) \App\Extras::find(3)->price;
+            $cost_limp     = (int) \App\Extras::find(3)->cost;
         
         }
        
@@ -1643,9 +1641,9 @@ class BookController extends Controller
 
         /* RESERVA */
        
-        $data['costes']['book'] = $this->getCostBook($request->input('start'),$request->input('finish'),$request->input('pax'),$request->input('room')) ;
+        $data['costes']['book'] = $this->getCostBook($request->input('start'),$request->input('finish'),$request->input('pax'),$request->input('room')) + $extraCost;
 
-        $data['totales']['book'] = $this->getPriceBook($request->input('start'),$request->input('finish'),$request->input('pax'),$request->input('room'));
+        $data['totales']['book'] = $this->getPriceBook($request->input('start'),$request->input('finish'),$request->input('pax'),$request->input('room')) + $extra;
 
 
         return $data;
