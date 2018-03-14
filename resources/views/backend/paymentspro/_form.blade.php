@@ -68,7 +68,7 @@
                                     <th class ="text-center bg-complete text-white">Fecha</th>
                                     <th class ="text-center bg-complete text-white">Importe</th>
                                     <th class ="text-center bg-complete text-white">Metodo</th>
-                                    <th class ="text-center bg-complete text-white">Comentario</th>                                        
+                                    <th class ="text-center bg-complete text-white">Concepto</th>
                                 </thead>
                                 <tbody>
                                 <?php if (count($payments) > 0): ?>
@@ -87,7 +87,10 @@
                                                 <?php echo $array[$payment->typePayment] ?>
                                             </td>
                                             <td class="text-center">
-                                                <?php echo $payment->comment ?>
+                                                {{ $payment->concept }}
+                                                @if (! empty($payment->comment))
+                                                    <span data-toggle="tooltip" data-placement="top" title="{{ $payment->comment }}"><i class="fa fa-comment"></i></button>
+                                                @endif
                                             </td>
                                         </tr>
                                     <?php endforeach ?>
@@ -107,7 +110,10 @@
         </div>
     </div>
 </div>
-
-
-
+{{-- @TODO remove this, something is causing a conflict with the custom.js --}}
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    })
+</script>
 
