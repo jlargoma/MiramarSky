@@ -1649,6 +1649,79 @@ class BookController extends Controller
 
     }
 
+    public function updateBooksCosts(){
+        $reservas = \App\Book::whereIn('type_book',[1,2,4,5])->where('start','>=', '2017-09-01')->orderBy('start', 'ASC')->get();
+        // $reservas = \App\Book::where('id', 2844)->get();
+        foreach ($reservas as $key => $book):
+            
+            $extraPrice     = (int) \App\Extras::find(4)->price;
+            $extraCost     = (int) \App\Extras::find(4)->cost;
+            if ($book->room->sizeApto == 1) {
+
+                $data['costes']['parking']  = $this->getCostPark($book->type_park,$book->nights );
+                $data['totales']['parking'] = $this->getPricePark($book->type_park, $book->nights );
+
+                $sup_limp      = (int) \App\Extras::find(2)->price;
+                $cost_limp     = (int) \App\Extras::find(2)->cost;
+
+            } elseif($book->room->sizeApto == 2) {
+                /* PARKING */
+                $data['costes']['parking']  = $this->getCostPark($book->type_park,$book->nigths );
+                $data['totales']['parking'] = $this->getPricePark($book->type_park, $book->nigths );
+
+                $sup_limp      = (int) \App\Extras::find(1)->price;
+                $cost_limp     = (int) \App\Extras::find(1)->cost;
+
+            }elseif($book->room->sizeApto == 3 || $book->room->sizeApto == 4){
+                /* PARKING */
+                $data['costes']['parking']  = $this->getCostPark($book->type_park,$book->nigths,$book->room->id , 3);
+                $data['totales']['parking'] = $this->getPricePark($book->type_park, $book->nigths,$book->room->id, 3);
+
+                $sup_limp      =  (int) \App\Extras::find(3)->price;
+                $cost_limp     = (int) \App\Extras::find(3)->cost;
+            
+            }
+        
+            /* LUJO */
+            $data['costes']['lujo'] = $this->getCostLujo($book->type_luxury);
+            $data['totales']['lujo'] = $this->getPriceLujo($book->type_luxury);
+
+
+            /* LIMPIEZA */
+
+            $data['costes']['limp']  = $cost_limp;
+            $data['totales']['limp'] = $sup_limp;
+
+            /* RESERVA */
+            $start = Carbon::createFromFormat('Y-m-d', $book->start)->format('d/m/Y');
+            $finish = Carbon::createFromFormat('Y-m-d', $book->finish)->format('d/m/Y');
+
+            $data['costes']['book'] = $this->getCostBook($start, $finish,$book->pax,$book->room->id) + $extraCost;
+            $totalCost = $data['costes']['book'] + $data['costes']['parking'] + $data['costes']['lujo'] + $data['costes']['limp'] + $book->PVPAgencia ;
+            $book->cost_apto = $data['costes']['book'];
+            $book->cost_park = $data['costes']['parking'];
+            $book->cost_lujo = $data['costes']['lujo'];
+            $book->cost_limp = $data['costes']['limp'];
+            $book->extraPrice = $extraPrice;
+            $book->extraCost = $extraCost;
+
+            $book->cost_total    = $totalCost;
+            $book->total_ben     = $book->total_price - $totalCost;
+            if ($book->total_price == 0) {
+                $book->total_price = 1;
+            }
+            $book->inc_percent   = round(($book->total_ben / $book->total_price) * 100, 2 );
+            $book->save();
+
+            // echo $book->id."<br>";
+            // dd($data);
+            // die();
+        endforeach;
+
+
+    }
+
+
     public function saveComment(Request $request, $idBook, $type)
     {
         $book = \App\Book::find($idBook);

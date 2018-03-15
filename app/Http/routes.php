@@ -10,31 +10,7 @@
 | and give it the controller to call when that URI is requested.
 | 
 */
-// Route::get('/test', function () {
-//    	$extraCost = 6;
-//    	$books = \App\Book::whereIn('type_book', [2])
-//    						->where('start', '>=', '2017-11-01')
-//    						->where('start', '<=', '2018-10-31')
-//    						->orderBy('id')
-//    						->get();
-
-// 	foreach ($books as $key => $book) {
-		
-// 		$costeTotal = $book->cost_total + $extraCost;
-// 		$pvp = ($book->total_price == 0)? 1: $book->total_price;
-
-// 		$benef = $pvp - $costeTotal;
-
-// 		$porcentBenef = ($benef / $pvp) * 100;
-// 		$book->inc_percent = round($porcentBenef, 2);
-// 		$book->save();
-// 		echo $book->id."------TOTAL : ".$pvp." COSTE : ".$costeTotal." -----> BENEFICIO ".$benef."(".round($porcentBenef, 2)."%)";
-// 		echo "<br>";
-
-// 	}
-
-
-// });
+Route::get('/test', 'BookController@updateBooksCosts');
 
 
 

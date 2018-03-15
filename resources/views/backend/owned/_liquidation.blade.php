@@ -68,7 +68,7 @@
 					</div>
 					<div class="col-md-2 not-padding" >
 						<div class="col-xs-12push-0">
-							<h5 class="text-left"><?php echo number_format($pago->import,2,',','.') ?>€</h5>
+							<h5 class="text-left"><?php echo number_format(($pago->import / count($pagos)),2,',','.') ?>€</h5>
 						</div>
 					</div>
 					<div class="col-md-5 not-padding" >
@@ -138,7 +138,7 @@
 								<?php echo $date->format('d')?>-<?php echo $date->format('M')?>-<?php echo $date->format('y')?>
 							</td>
 							<td class="text-center" style="padding: 8px!important">
-								<b><?php echo number_format($pago->import,2,',','.') ?>€</b>
+								<b><?php echo number_format(($pago->import / count($pagos)),2,',','.') ?>€</b>
 							</td>
 							<td class="text-center" style="padding: 8px!important">
 								<?php echo $pago->concept ?>

@@ -74,7 +74,7 @@ setlocale(LC_TIME, "es_ES");
 		                <option <?php if($gasto->type == 'REGALO'){ echo "selected"; } ?> value="REGALO BIENVENIDA"> REGALO BIENVENIDA</option>
 		                <option <?php if($gasto->type == 'LAVANDERIA'){ echo "selected"; } ?> value="LAVANDERIA"> LAVANDERIA</option>
 		                <option <?php if($gasto->type == 'LIMPIEZA'){ echo "selected"; } ?> value="LIMPIEZA"> LIMPIEZA</option>
-		                <option <?php if($gasto->type == 'EQUIPAMIENTO'){ echo "selected"; } ?> value="EQUIPAMIENTO VIVIENDA"> EQUIPAMIENTO VIVIENDA</option>
+		                <option <?php if($gasto->type == 'EQUIPAMIENTO VIVIENDA'){ echo "selected"; } ?> value="EQUIPAMIENTO VIVIENDA"> EQUIPAMIENTO VIVIENDA</option>
 		                <option <?php if($gasto->type == 'DECORACION'){ echo "selected"; } ?> value="DECORACION"> DECORACION</option>
 		                <option <?php if($gasto->type == 'MENAJE'){ echo "selected"; } ?> value="MENAJE"> MENAJE</option>
 		                <option <?php if($gasto->type == 'SABANAS Y TOALLAS'){ echo "selected"; } ?> value="SABANAS Y TOALLAS"> SABANAS Y TOALLAS</option>
