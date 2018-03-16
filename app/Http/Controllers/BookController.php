@@ -1696,8 +1696,8 @@ class BookController extends Controller
             $start = Carbon::createFromFormat('Y-m-d', $book->start)->format('d/m/Y');
             $finish = Carbon::createFromFormat('Y-m-d', $book->finish)->format('d/m/Y');
 
-            $data['costes']['book'] = $this->getCostBook($start, $finish,$book->pax,$book->room->id) + $extraCost;
-            $totalCost = $data['costes']['book'] + $data['costes']['parking'] + $data['costes']['lujo'] + $data['costes']['limp'] + $book->PVPAgencia ;
+            $data['costes']['book'] = $this->getCostBook($start, $finish,$book->pax,$book->room->id) ;
+            $totalCost = $data['costes']['book'] + $data['costes']['parking'] + $data['costes']['lujo'] + $data['costes']['limp'] + $book->PVPAgencia + $extraCost;
             $book->cost_apto = $data['costes']['book'];
             $book->cost_park = $data['costes']['parking'];
             $book->cost_lujo = $data['costes']['lujo'];
