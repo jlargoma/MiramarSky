@@ -52,6 +52,12 @@
 		text-align: center;
 		border: 0px;
 	}
+	.updateLimp.alert-limp{
+		background-color: #f8d053!important;
+	}
+	.alert-limp{
+		background-color: #f8d053!important;
+	}
 	
 </style>
 @endsection

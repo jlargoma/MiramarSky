@@ -256,6 +256,8 @@ Route::get('/admin/ingresos/delete/{id}', function($id){
 
 Route::get('admin/caja/{year?}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@caja']);
 Route::get('admin/caja/getTableMoves/{year?}/{type}' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@getTableMoves']);
+Route::post('admin/cashBox/create' ,['middleware' => 'authAdmin', 'uses' => 'LiquidacionController@cashBoxCreate']);
+
 Route::get('admin/cashbox/updateSaldoInicial/{id}/{type}/{importe}' ,function ($id, $type, $importe)
 {
 	$cashbox = \App\Cashbox::find($id);

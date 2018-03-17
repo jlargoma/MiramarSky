@@ -592,6 +592,17 @@ class LiquidacionController extends Controller
                                                     ]);
     }
 
+    public function cashBoxCreate(Request $request){
+
+        $data = $request->input();
+        $data['date'] = Carbon::createFromFormat('d/m/Y', $data['fecha'])->format('Y-m-d');
+        $data['import'] = $data['importe'];
+        $data['typePayment'] = $data['type_payment'];
+        if($this->addCashbox($data)){
+            return "OK";
+        }
+        
+    }
 
     static function addCashbox($data)
     {
