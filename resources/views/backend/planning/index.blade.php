@@ -621,25 +621,31 @@
 
             $('.searchabled').keyup(function(event) {
                 var searchString = $(this).val();
+                if (searchString.length < 3 && searchString.length != 0) {
+                    return false;
+                }
                 var year = $('#fechas').val();
 
-                $.get('/admin/reservas/search/searchByName', { searchString: searchString,  year: year}, function(data) {
+                bookSearch(searchString, year);
+            });
 
-                    if ( data == 0) {
+            var delayTimer;
+            function bookSearch(searchString, year) {
+                clearTimeout(delayTimer);
+
+                delayTimer = setTimeout(function () {
+                    $.get('/admin/reservas/search/searchByName', { searchString: searchString,  year: year}, function(data) {
+                        $('#resultSearchBook').empty();
+                        $('#resultSearchBook').append(data);
+                        $('.content-tables').hide();
+                        $('#resultSearchBook').show();
+                    }).fail(function() {
                         $('#resultSearchBook').empty();
                         $('#resultSearchBook').hide();
                         $('.content-tables').show();
-                       
-                    } else {
-                        $('#resultSearchBook').empty();
-                        $('#resultSearchBook').append(data);
-
-                        $('.content-tables').hide();
-                        $('#resultSearchBook').show();
-                    }
-                    
-                });
-            });
+                    });
+                }, 300);
+            }
             
             <?php if (Auth::user()->defaultTable != ''): ?>
                 var type = '<?php echo Auth::user()->defaultTable ?>';
