@@ -558,5 +558,10 @@ class Book extends Model
 
     }
 
+    public function payments()
+    {
+        return $this->hasMany(Payments::class);
+    }
+
 
 }

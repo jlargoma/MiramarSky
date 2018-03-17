@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
@@ -1085,69 +1086,40 @@ class BookController extends Controller
 
     public function searchByName(Request $request)
     {
-    
-        $now = Carbon::now();
-
-
-
-        if ( empty($request->year) ) {
-            $date = Carbon::now();
-        }else{
-            $year = Carbon::createFromFormat('Y',$request->year);
-            $date = $year->copy();
-
-        }
-        if ($date->copy()->format('n') >= 9) {
-            $date = new Carbon('first day of September '.$date->copy()->format('Y'));
-        }else{
-            $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+        if ($request->searchString == '') {
+            return response()->json('', JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
+        $year = $request->input('year', date('Y'));
+        $dateFrom = (new Carbon("first day of September {$year}"));
+        $dateTo = $dateFrom->copy()->addYear();
 
-        if ($request->searchString != "") {
+        $customerIds = \App\Customers::where('name', 'LIKE', '%'.$request->searchString.'%')
+            ->pluck('id')->toArray();
 
-            $customers = \App\Customers::where('name', 'LIKE', '%'.$request->searchString.'%')->get();
-            
-            if (count($customers) > 0) {
-                $arrayCustomersId = [];
-                foreach ($customers as $key => $customer) {
-                    if (!in_array($customer->id, $arrayCustomersId)) {
-                        $arrayCustomersId[] = $customer->id;
-                    }
-                    
-                }
-
-                $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
-                                    ->where('start' , '>=' , $date->format('Y-m-d'))
-                                    ->where('start', '<=', $date->copy()->AddYear()->SubMonth()->format('Y-m-d'))
-                                    ->where('type_book', '!=', 9)
-                                    ->where('type_book', '!=', 0)
-                                    ->orderBy('start', 'ASC')
-                                    ->get();
-
-                $payment = array();
-                foreach ($books as $key => $book) {
-                    $payment[$book->id] = 0;
-                    $payments = \App\Payments::where('book_id', $book->id)->get();
-                    if ( count($payments) > 0) {
-                        
-                        foreach ($payments as $key => $pay) {
-                            $payment[$book->id] += $pay->import;
-                        }
-
-                    }
-
-                }
-
-
-                return view('backend/planning/responses/_resultSearch',  [ 'books' => $books, 'payment' => $payment ]);
-            }else{
-                return "<h2>No hay reservas para este término '".$request->searchString."'</h2>";
-            }
-        }else{
-
-            return 0;
+        if (count($customerIds) <= 0) {
+            return "<h2>No hay reservas para este término '".$request->searchString."'</h2>";
         }
+
+        $books = \App\Book::with('payments')
+            ->whereIn('customer_id', $customerIds)
+            ->where('start' , '>=' , $dateFrom)
+            ->where('start', '<=', $dateTo)
+            ->where('type_book', '!=', 9)
+            ->where('type_book', '!=', 0)
+            ->orderBy('start', 'ASC')
+            ->get();
+
+        $payments = [];
+        foreach ($books as $book) {
+            $payments[$book->id] = $book->payments->pluck('import')->sum();
+        }
+
+        return view('backend/planning/responses/_resultSearch',  [
+            'books' => $books,
+            'payment' => $payments
+        ]);
+
     }
 
     public function changeCostes()
