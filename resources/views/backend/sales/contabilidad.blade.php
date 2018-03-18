@@ -24,19 +24,16 @@
 			</div>
 			<div class="col-md-2 col-xs-12 sm-padding-10" style="padding: 10px">
 				<select id="fecha" class="form-control minimal">
-                     <?php $fecha = $inicio->copy()->SubYears(2); ?>
-                     <?php if ($fecha->copy()->format('Y') < 2015): ?>
-                         <?php $fecha = new Carbon('first day of September 2015'); ?>
-                     <?php endif ?>
-                 
-                     <?php for ($i=1; $i <= 3; $i++): ?>                           
-                         <option value="<?php echo $fecha->copy()->format('Y'); ?>" 
-                            <?php if (  $fecha->copy()->format('Y') == date('Y') || 
-                                        $fecha->copy()->addYear()->format('Y') == date('Y') 
+                     <?php $fecha = $inicio->copy(); ?>
+                     <?php $init = Carbon::now()->copy()->SubYears(3); ?>
+                     <?php for ($i=1; $i <= 3; $i++): ?>
+                         <option value="<?php echo $init->copy()->format('Y'); ?>"
+                            <?php if (  $fecha->copy()->format('Y') == $init->copy()->format('Y') ||
+                                        $fecha->copy()->addYear()->format('Y') == $init->copy()->format('Y')
                                     ){ echo "selected"; }?> >
                             <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
                          </option>
-                         <?php $fecha->addYear(); ?>
+                         <?php $init->addYear(); ?>
                      <?php endfor; ?>
                  </select>     
 			</div>
@@ -115,6 +112,7 @@
                                     <b><?php echo number_format($totalRoom,0,',','.') ?>€</b>
                                 </td>
                                 <td class="text-center">
+                                    <?php if($totalAllRoom == 0) {$totalAllRoom = 1;}?>
                                     <?php $percent = ($totalRoom / $totalAllRoom) * 100; ?>
                                     &nbsp;&nbsp;<b><?php echo number_format($percent,0,',','.') ?>%</b>&nbsp;&nbsp;
                                 </td>

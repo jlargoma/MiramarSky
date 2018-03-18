@@ -281,6 +281,11 @@ Route::get('admin/bank/updateSaldoInicial/{id}/{type}/{importe}' ,function ($id,
 });
 
 Route::get('/admin/rules/stripe/update' ,['middleware' => 'authAdmin', 'uses' => 'RulesStripeController@update']);
+Route::get('/admin/days/secondPay/update/{id}/{days}' , function ($id, $days){
+    $day = \App\DaysSecondPay::find($id);
+    $day->days = $days;
+    $day->save();
+});
 
 
 

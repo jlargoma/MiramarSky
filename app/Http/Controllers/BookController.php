@@ -1027,10 +1027,10 @@ class BookController extends Controller
         }
 
         $price = 0;
-
+        $auxDate = $start->copy();
         for ($i=1; $i <= $countDays; $i++) { 
 
-            $seasonActive = \App\Seasons::getSeason($start->copy()->format('Y-m-d'));
+            $seasonActive = \App\Seasons::getSeason($auxDate->copy()->format('Y-m-d'));
             if ($seasonActive == null) {
                $seasonActive = 0;
             }
@@ -1040,7 +1040,7 @@ class BookController extends Controller
             foreach ($prices as $precio) {
                 $price = $price + $precio->price;
             }
-            $start->addDay();
+            $auxDate->addDay();
         }
  
         if ($request->input('parking') == 'si') {
@@ -1529,17 +1529,21 @@ class BookController extends Controller
 
     public function checkSecondPay()
     {
+
+        $daysToCheck = \App\DaysSecondPay::find(1)->days;
         /* Esta funcion tiene una cron asosciada que se ejecuta los dia 1 y 15 de cada mes, es decir cad 2 semanas */
         $date = Carbon::now();
-        $books = \App\Book::where('start','>',$date->copy())
-                            ->where('finish','<',$date->copy()->addDays(15))
-                            ->whereIn('type_book',[2])
+        $books = \App\Book::where('start','>=',$date->copy())
+                            ->where('finish','<=',$date->copy()->addDays($daysToCheck))
+                            ->where('type_book',2)
+                            ->where('send',0)
                             ->orderBy('created_at','DESC')
                             ->get();
 
+
         foreach ($books as $key => $book) {
             if ($book->send == 0) {
-                if (!empty($book->customer->email)) {
+                if (!empty($book->customer->email) && $book->id == 3908) {
                     $book->send = 1;
                     $book->save();
 
@@ -1552,12 +1556,15 @@ class BookController extends Controller
                         });
 
                     if ($sended = 1) {
-                        echo json_encode( ['status' => 'success','title' => 'OK', 'response' => "Recordatorio enviado correctamente"]);
+                        echo json_encode( ['status' => 'success','title' => 'OK', 'response' => "Recordatorios enviados correctamente"]);
                         echo "<br><br>";
                     } else {
                         echo json_encode( ['status' => 'danger','title' => 'Error', 'response' => "El email no se ha enviado, por favor intentalo de nuevo"]);
                         echo "<br><br>";
                     }
+                }else{
+                    $book->send = 1;
+                    $book->save();
                 }
             }
             

@@ -25,11 +25,11 @@ Hola "<?php echo $book->customer->name ?>" hemos bloqueado parcialmente un apart
 
 
 
-<b style="color: red"><?php echo $percent*100; ?>% del total =  <?php echo number_format(($book->total_price*$percent),2,',','.') ?> €</b> 
+<b style="color: red"><?php echo $percent*100; ?>% del total =  <?php echo number_format(($book->total_price*$percent),2,',','.') ?> €</b>
 a través de nuestra pasarela de pago para tarjetas.<br><br>
 
-	<a href="<?php echo $_SERVER['SERVER_NAME']; ?>/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>">
-		<?php echo $_SERVER['SERVER_NAME']; ?>/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>		
+	<a href="https://miramarski.com/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>/<?php echo base64_encode(number_format(($book->total_price*$percent),2,',','.')) ?>">
+		https://miramarski.com/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>/<?php echo base64_encode(number_format(($book->total_price*$percent),2,',','.')) ?>
 	</a><br><br>
 
 <b><strong>Una vez recibamos el pago de la señal, el apartamento quedará bloquedo y tu recibiras un email con la confirmación.</strong><br>

@@ -3,7 +3,19 @@
 	setlocale(LC_TIME, "ES"); 
     setlocale(LC_TIME, "es_ES"); 
 ?>
-	Hola , te enviamos este email para recordate que tienes que realizarnos una transferencia por las cantidades pendientes :<br><br>
+<?php
+	$totalPayment = 0;
+	$payments = \App\Payments::where('book_id', $book->id)->get();
+	if ( count($payments) > 0) {
+
+		foreach ($payments as $key => $pay) {
+			$totalPayment += $pay->import;
+		}
+
+	}
+	$percent = round(($totalPayment/$book->total_price) * 100);
+?>
+	Hola , te enviamos este email para recordate que tienes que realizarnos el pago del <?php echo 100 - $percent ?>% restante de tu reserva :<br><br>
 
 	<b>Nombre:</b> <?php echo strtoupper($book->customer->name) ?><br><br>
 
@@ -19,29 +31,20 @@
 
 	<b>Total reserva:</b> <?php echo number_format($book->total_price,2,',','.') ?>€<br><br>
 	
-	<?php 
-		$totalPayment = 0;
-		$payments = \App\Payments::where('book_id', $book->id)->get();
-		if ( count($payments) > 0) {
-		    
-		    foreach ($payments as $key => $pay) {
-		        $totalPayment += $pay->import;
-		    }
 
-		}
-	?>
 	<b>-------------------------</b><br>
 	<b>Cobrado: </b><?php echo number_format($totalPayment,2,',','.') ?>€<br>
 	<b>-------------------------</b><br>
 	<h2 style="color:red"><b>Pendiente: </b><?php echo number_format(($book->total_price - $totalPayment),2,',','.') ?>€</h2><br>
 	<b>-------------------------</b><br>
-	Por favor realiza un pago por otro 25% en este link, el restante 50% se abonará en metálico el día del check in: <br><br>
+	Para realizar el pago del restante <?php echo 100 - $percent ?>% haz clic en el siguiente link <br><br>
 
-	<a target="_blank" href="https://www.apartamentosierranevada.net/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>">
-        https://www.apartamentosierranevada.net/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>     
+	<a target="_blank" href="https://miramarski.com/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>/<?php echo base64_encode(number_format(($totalPayment),2,',','.')) ?>">
+        https://miramarski.com/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>/<?php echo base64_encode(number_format(($totalPayment),2,',','.')) ?>
     </a>
 
 	<br><br>
+	Si no se recibe el pago 15 días antes de tu entrada, se podrá porcedera cancelar la misma<br><br>
 	Consulta nuestras condiciones de contratación <a href="https://www.apartamentosierranevada.net/condiciones-generales">aquí</a><br><br>
 
 	Muchas Gracias !!!.<br><br>

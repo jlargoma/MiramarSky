@@ -101,7 +101,7 @@
             <div class="clearfix"></div>
             <div class="tab-content">
                 <div class="col-md-12">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <table class="table table-hover  table-responsive-block" >
                             <thead>
                                 <tr>
@@ -182,7 +182,7 @@
                             </div>
                         </div>
                     </div>
-                     <div class="col-md-4">
+                     <div class="col-md-3">
                          
                         
                         <table class="table table-hover  table-responsive" >
@@ -214,6 +214,34 @@
 
 
                      </div>
+                    <div class="col-md-3">
+
+
+                        <table class="table table-hover  table-responsive" >
+                            <thead>
+                            <tr>
+                                <th class ="text-center bg-complete text-white" style="width: 1%" colspan="2"> Dias del segundo pago
+                                </th>
+                            </tr>
+                            <tr>
+
+                                <th class ="text-center bg-complete text-white" style="width: 1%" rowspan="2"> DIAS  </th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach (\App\DaysSecondPay::all() as $key => $day): ?>
+                            <tr>
+                                <td class="text-center" style="border-left: 1px solid #48b0f7">
+                                    <input class="daysSecondPayment" type="number" name="days" data-id="<?php echo $day->id ?>" value="<?php echo $day->days ?>" style="width: 100%;text-align: center;">
+                                </td>
+                            </tr>
+                            <?php endforeach ?>
+                            </tbody>
+                        </table>
+
+
+                    </div>
                 </div>
 
             </div>
@@ -448,6 +476,17 @@
                 var numDays  = $('.days-'+id).val();
 
                 $.get('/admin/rules/stripe/update', {  id: id, percent: percent,numDays: numDays}, function(data) {
+                    // alert(data);
+                    window.location.reload();
+                });
+
+            });
+
+            $('.daysSecondPayment').change(function(event) {
+                var id = $(this).attr('data-id');
+                var numDays  = $(this).val();
+
+                $.get('/admin/days/secondPay/update/'+id+'/'+numDays, function(data) {
                     // alert(data);
                     window.location.reload();
                 });

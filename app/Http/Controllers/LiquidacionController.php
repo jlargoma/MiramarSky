@@ -259,7 +259,7 @@ class LiquidacionController extends Controller
 
         $priceBookRoom = array();
         foreach ($rooms as $key => $room) {
-            for ($i=2015; $i <= intval(date('Y')) + 1; $i++) { 
+            for ($i=intval($inicio->copy()->format('Y')); $i <= intval(date('Y')) + 1; $i++) {
                 
                 for ($j=1; $j <= 12 ; $j++) { 
                     $priceBookRoom[$room->id][$i][$j] = 0;
@@ -276,9 +276,7 @@ class LiquidacionController extends Controller
             }
             
         }
-        // echo "<pre>";
-        // print_r($priceBookRoom);
-        // die();
+
 
         return view ('backend/sales/contabilidad',  [   
                                                         'date'         => $date,
