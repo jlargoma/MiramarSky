@@ -41,6 +41,7 @@ Route::post('/contacto-form','HomeController@formContacto');
 Route::post('/contacto-ayuda','HomeController@formAyuda');
 Route::post('/contacto-propietario','HomeController@formPropietario');
 Route::post('/contacto-grupos','HomeController@formGrupos');
+
 /* Correos Frontend */
 Route::get('/terminos-condiciones','HomeController@terminos');
 Route::get('/politica-cookies','HomeController@politicaCookies');
@@ -62,8 +63,6 @@ Route::get('/restaurantes', function ()
 	return view('frontend.restaurantes', ['mobile' => $mobile]);
 });
 Route::post('/getDiffIndays', 'HomeController@getDiffIndays');
-
-
 
 Route::post('/solicitudForfait','HomeController@solicitudForfait');
 
@@ -110,14 +109,6 @@ Route::get('/admin/reservas/changeStatusBook/{id}' ,['middleware' => 'auth', 'us
 Route::get('admin/reservas/ansbyemail/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@ansbyemail']);
 Route::post('admin/reservas/sendEmail' ,['middleware' => 'auth', 'uses' =>  'BookController@sendEmail']);
 Route::get('admin/reservas/sendJaime' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@sendJaime']);
-// Route::get('admin/reservas/getPriceBook' , 'BookController@getPriceBook');
-// Route::get('admin/reservas/getCostBook' , 'BookController@getCostBook');
-// Route::get('admin/reservas/getPricePark' , 'BookController@getPricePark');
-// Route::get('admin/reservas/getCostPark' , 'BookController@getCostPark');
-// Route::get('admin/reservas/getPriceLujo' , 'BookController@getPriceLujo');
-// Route::get('admin/reservas/getCostLujo' , 'BookController@getCostLujo');
-// Route::get('admin/reservas/getPriceLujoAdmin' , 'BookController@getPriceLujoAdmin');
-// Route::get('admin/reservas/getCostLujoAdmin' , 'BookController@getCostLujoAdmin');
 Route::get('admin/reservas/saveCobro' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@saveCobro']);
 Route::get('admin/reservas/deleteCobro/{id}' ,['middleware' => 'authSubAdmin', 'uses' =>  'BookController@deleteCobro']);
 Route::get('admin/reservas/saveFianza' ,['middleware' => 'auth', 'uses' =>  'BookController@saveFianza']);
@@ -299,6 +290,9 @@ Route::get('admin/perdidas-ganancias/{year?}' ,['middleware' => 'authAdmin', 'us
 
 
 //Facturas
+
+
+
 Route::get('admin/facturas/' ,['middleware' => 'authAdmin', 'uses' => 'InvoicesController@index']);
 Route::get('admin/facturas/ver/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@view']);
 Route::get('admin/facturas/descargar/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@download']);
@@ -306,6 +300,7 @@ Route::get('admin/facturas/descargar/{id}' ,['middleware' => 'auth', 'uses' => '
 Route::get('admin/facturas/isde/{year?}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@isde']);
 Route::get('admin/facturas/isde/ver/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@viewIsde']);
 Route::get('admin/facturas/isde/descargar/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@downloadIsde']);
+Route::get('admin/facturas/isde/editar/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@updateIsde']);
 
 //Facturas
 Route::get('admin/encuestas/{year?}/{apto?}' ,['middleware' => 'authAdmin', 'uses' => 'QuestionsController@admin']);

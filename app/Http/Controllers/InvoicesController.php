@@ -41,6 +41,8 @@ class InvoicesController extends Controller
     }
 
 
+
+
     public function view($data)
     {
         $data = base64_decode($data);
@@ -100,7 +102,6 @@ class InvoicesController extends Controller
     public function downloadIsde($id)
     {
         $invoice = \App\Invoices::find(base64_decode($id));
-        $book = \App\Book::find($invoice->book_id);
 
         $data['name'] = $invoice->name;
         $data['email'] = $invoice->email;
@@ -114,4 +115,15 @@ class InvoicesController extends Controller
         return $pdf->stream('#SN'.Carbon::CreateFromFormat('Y-m-d',$book->start)->format('y').$book->id.' - '.str_replace(' ', '-', strtolower($book->customer->name)).'.pdf');
        
     }
+
+    public function updateIsde($id)
+    {
+        $invoice = \App\Invoices::find(base64_decode($id));
+        
+        echo "<pre>":
+        print_r($invoice);
+        die();
+    }
+
+
 }
