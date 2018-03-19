@@ -119,10 +119,10 @@ class InvoicesController extends Controller
     public function updateIsde($id)
     {
         $invoice = \App\Invoices::find(base64_decode($id));
-        
-        echo "<pre>":
-        print_r($invoice);
-        die();
+
+        //        echo "<pre>";
+        //        print_r($invoice);
+        //        die("df");
     }
 
 
