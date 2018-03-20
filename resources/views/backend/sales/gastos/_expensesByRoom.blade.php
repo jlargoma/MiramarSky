@@ -1,6 +1,6 @@
-<?php   use \Carbon\Carbon;  
-setlocale(LC_TIME, "ES"); 
-setlocale(LC_TIME, "es_ES"); 
+<?php   use \Carbon\Carbon;
+setlocale(LC_TIME, "ES");
+setlocale(LC_TIME, "es_ES");
 ?>
 <div class="row bg-white">
 	<div class="container">
@@ -27,17 +27,17 @@ setlocale(LC_TIME, "es_ES");
 	                <?php endforeach ?>
 	            </select>
 			<?php endif ?>
-			
-			
+
+
 		</div>
 	</div>
-	
+
 </div>
 <div class="col-md-12 col-xs-12 bg-white">
     <div class="col-md-8 col-xs-12 not-padding">
-        
+
         <h3 class="tex-center">listado de gastos</h3>
-            
+
         <div class="row table-responsive push-20" style="overflow-y: auto; max-height: 450px; border: 0px;">
             <table class="table table-striped">
                 <thead >
@@ -45,7 +45,7 @@ setlocale(LC_TIME, "es_ES");
                     <th class ="text-center bg-complete text-white">Concepto</th>
                     <th class ="text-center bg-complete text-white">Importe</th>
                     <th class ="text-center bg-complete text-white">Piso</th>
-                    <th class ="text-center bg-complete text-white">Comentario</th>                                        
+                    <th class ="text-center bg-complete text-white">Comentario</th>
                 </thead>
                 <tbody>
             	<?php $array = [0 =>"Metalico Jorge", 1 =>"Metalico Jaime",2 =>"Banco Jorge",3=>"Banco Jaime"] ?>
@@ -59,7 +59,7 @@ setlocale(LC_TIME, "es_ES");
                             <td class="text-center" style="padding: 5px 8px !important">
                                 <?php echo $gasto->concept ?>
                             </td>
-                            
+
                             <td class="text-center" style="padding: 5px 8px !important">
                                 <b><?php echo $gasto->import ?>€</b>
                             </td>
@@ -70,7 +70,7 @@ setlocale(LC_TIME, "es_ES");
                             	<?php else: ?>
                             		TODOS
                             	<?php endif ?>
-                            	
+
                             </td>
                             <td class="text-center" style="padding: 5px 8px !important">
                                 <?php echo $gasto->comment ?>
@@ -82,7 +82,7 @@ setlocale(LC_TIME, "es_ES");
                         <td class="text-center" colspan="3">No hay Gastos</td>
                     </tr>
                 <?php endif ?>
-                    
+
                 </tbody>
             </table>
         </div>
@@ -92,7 +92,7 @@ setlocale(LC_TIME, "es_ES");
     <?php else: ?>
     	<?php $data = \App\Http\Controllers\LiquidacionController::getSalesByYearByRoom("", $room->id) ?>
     <?php endif ?>
-	
+
     <div class="col-md-4 col-xs-12">
         <div class="row">
             <h3 class="tex-center">Grafica de pagos</h3>
@@ -111,10 +111,10 @@ setlocale(LC_TIME, "es_ES");
                     <th class ="text-center bg-complete text-white"><?php echo number_format($data['total'],2,',','.') ?>€</th>
 
                     <th class ="text-center bg-success text-white" ><?php echo number_format($data['pagado'],2,',','.') ?>€</th>
-            
+
                     <th class ="text-center bg-danger text-white" style=""><?php echo number_format($data['total'] - $data['pagado'],2,',','.') ?>€</th>
-                   
-                    
+
+
                 </thead>
             </table>
         </div>
@@ -134,7 +134,7 @@ setlocale(LC_TIME, "es_ES");
                 </table>
             </div>
         </div>
-       
+
     </div>
 </div>
 <script type="text/javascript">
