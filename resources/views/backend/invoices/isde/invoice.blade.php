@@ -58,7 +58,7 @@ setlocale(LC_TIME, "es_ES");
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-12 pull-right" style="padding-top: 40px; padding-bottom: 10px;">
-                           
+
                             <b><?php echo $invoice->name_business ?></b><br>
                             <b><?php echo $invoice->nif_business ?></b><br>
                             <b><?php echo $invoice->address_business ?></b><br>
