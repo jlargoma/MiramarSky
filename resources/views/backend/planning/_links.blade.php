@@ -1,7 +1,7 @@
-<?php 
-    use \Carbon\Carbon; 
+<?php
+    use \Carbon\Carbon;
 ?>
-<?php 
+<?php
     if ($import == 0) {
         $multipler = 0.25;
         if (count($payments) > 0 ){
@@ -26,7 +26,7 @@
         $price = $import;
         $multipler =  $import / $book->total_price;
     }
-    
+    $multipler = round($multipler * 100)
 
 ?>
 
@@ -42,33 +42,31 @@
     </div>
 </div>
 <div class="col-md-8 col-xs-12" style="padding: 0 15px;">
-    <h2 class="text-left" style="font-size: 20px; line-height: 15px;">
-        <span style="font-size: 18px; line-height: 15px;">En este link podrás realizar el pago de la señal por el <?php echo $multipler * 100; ?>% del total.<br> En el momento en que efectúes el pago, te legará un email confirmando tu reserva</span><br>
+    <h2 class="text-left" id="stripe-text" style="font-size: 20px; line-height: 15px;">
+        <span style="font-size: 18px; line-height: 15px;">En este link podrás realizar el pago de la señal por el {{ $multipler }}% del total.<br> En el momento en que efectúes el pago, te llegará un email confirmando tu reserva.</span><br>
         <a target="_blank" href="https://www.miramarski.com/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>/<?php echo base64_encode($price) ?>">
-            https://www.miramarski.com/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>/<?php echo base64_encode($price) ?>   
+            https://www.miramarski.com/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>/<?php echo base64_encode($price) ?>
         </a>
     </h2>
     <button class="btn btn-cons" type="button" id="copy-link-stripe" data-link="https://www.miramarski.com/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>/<?php echo base64_encode($price) ?>">
         <span class="bold">Copiar Link</span>
-    </button>       
+    </button>
 </div>
 <script type="text/javascript">
     $('button#btnGenerate').click(function(event) {
         var importe = $('#importe_stripe').val();
         var book = $('#importe_stripe').attr('data-idBook');
-
-
         $('.content-link-stripe').empty().load('/admin/books/getStripeLink/'+book+'/'+importe);
-
-
     });
 
     $(document).on("click","#copy-link-stripe", function(){
-            var link = $(this).data("link");
-            var $temp = $("<input>");
-            $("body").append($temp);
-            $temp.val(link).select();
-            document.execCommand("copy");
-            $temp.remove();
-        });
+        var text = $('#stripe-text').text().replace(/\s\s+/g, '');
+        var text = text.replace('http', "\n http");
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val(text).select();
+        document.execCommand("copy");
+        $temp.remove();
+    });
+
 </script>
