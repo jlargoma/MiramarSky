@@ -3,8 +3,8 @@
 
 @section('title') Liquidacion @endsection
 
-@section('externalScripts') 
-	
+@section('externalScripts')
+
 	<link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
 	<link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
 	<link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
@@ -27,7 +27,7 @@
 	}
 	td[class$="bi"] {border-left: 1px solid black;}
 	td[class$="bf"] {border-right: 1px solid black;}
-	
+
 	.coste{
 		background-color: rgba(200,200,200,0.5)!important;
 	}
@@ -37,7 +37,7 @@
 		font-size: 12px!important;
 		text-transform: capitalize!important;
 	}
-	
+
 	.red{
 		color: red;
 	}
@@ -58,7 +58,7 @@
 	.alert-limp{
 		background-color: #f8d053!important;
 	}
-	
+
 </style>
 @endsection
 
@@ -94,19 +94,19 @@
 				<?php if ($fecha->copy()->format('Y') < 2015): ?>
 					<?php $fecha = new Carbon('first day of September 2015'); ?>
 				<?php else: ?>
-					
+
 				<?php endif ?>
-			
-                <?php for ($i=1; $i <= 4; $i++): ?>                           
+
+                <?php for ($i=1; $i <= 4; $i++): ?>
                     <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $temporada->copy()->format('Y') == $fecha->copy()->format('Y') ? 'selected' : '' }}>
-                        <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
+                        <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?>
                     </option>
                     <?php $fecha->addYear(); ?>
                 <?php endfor; ?>
             </select>
     	</div>
-		
-		
+
+
     	<div class="col-md-1 pull-right">
             <button class="btn btn-md btn-primary exportExcel">
                 Exportar Excel
@@ -123,7 +123,7 @@
 		<div class="liquidationSummary">
     		@include('backend.sales._tableSummary', ['totales' => $totales, 'books' => $books, 'temporada' => $temporada])
     	</div>
-    </div>   
+    </div>
 </div>
 @endsection
 
@@ -158,7 +158,7 @@
 
 
 			for(ind in pendientes){
-	  			
+
 	  			var pendCobro = pendientes[ind];
 
 	  			if ($(pendCobro).text() == '0,00 €') {
@@ -170,8 +170,8 @@
 		}
 
 	$(document).ready(function() {
-		
-			
+
+
 		colorPendienteCobro();
 
 		$('.dataTables_paginate').click(function(event) {
@@ -224,7 +224,7 @@
                 location.reload();
             });
 		});
-		
+
 		$('.orderPercentBenef').click(function(){
 			var searchRoom = $('.searchSelect').val();
 			var searchString = $('.searchabled').val();
@@ -244,7 +244,7 @@
 			var year = '<?php echo $temporada->copy()->format('Y')?>';
 
 			window.open('/admin/liquidacion/export/excel?searchString='+searchString+'&year='+year+'&searchRoom='+searchRoom, '_blank' );
-			
+
 
         });
 
@@ -252,10 +252,10 @@
 			var id = $(this).attr('data-idBook');
 			var limp = $(this).val();
 			$.get( "/admin/sales/updateLimpBook/"+id+"/"+limp).done(function( data ) {
-				
+
 			});
 		});
-        
+
 
 	});
 </script>
