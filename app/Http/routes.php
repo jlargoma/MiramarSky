@@ -297,10 +297,13 @@ Route::get('admin/facturas/' ,['middleware' => 'authAdmin', 'uses' => 'InvoicesC
 Route::get('admin/facturas/ver/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@view']);
 Route::get('admin/facturas/descargar/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@download']);
 
+Route::get('admin/facturas/solicitudes/{year?}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@solicitudes']);
 Route::get('admin/facturas/isde/{year?}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@isde']);
 Route::get('admin/facturas/isde/ver/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@viewIsde']);
 Route::get('admin/facturas/isde/descargar/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@downloadIsde']);
+Route::get('admin/facturas/isde/delete/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@deleteIsde']);
 Route::get('admin/facturas/isde/editar/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@updateIsde']);
+Route::post('admin/facturas/isde/saveUpdate' ,['middleware' => 'auth', 'uses' => 'InvoicesController@saveUpdate']);
 
 //Facturas
 Route::get('admin/encuestas/{year?}/{apto?}' ,['middleware' => 'authAdmin', 'uses' => 'QuestionsController@admin']);
