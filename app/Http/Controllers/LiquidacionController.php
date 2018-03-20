@@ -60,7 +60,10 @@ class LiquidacionController extends Controller
 
         $date = new Carbon('first day of September '.$date->copy()->format('Y'));
         
-        $books = \App\Book::where('start' , '>=' , $date)->where('start', '<=', $date->copy()->addYear()->subMonth())->where('type_book',2)->orderBy('start', 'ASC')->get();
+        $books = \App\Book::with(['payments', 'room.type'])
+            ->where('start' , '>=' , $date)
+            ->where('start', '<=', $date->copy()->addYear()->subMonth())
+            ->where('type_book',2)->orderBy('start', 'ASC')->get();
 
         foreach ($books as $key => $book) {
             $totales["total"]        += $book->total_price;
@@ -74,9 +77,9 @@ class LiquidacionController extends Controller
             $totales["bancoJaime"]   += $book->getPayment(3);
             $totales["jorge"]        += $book->getPayment(0);
             $totales["jaime"]        += $book->getPayment(1);
-            $totales["benJorge"]     += $book->ben_jorge;
-            $totales["benJaime"]     += $book->ben_jaime;
-            $totales["pendiente"]    += $book->getPayment(4);
+            $totales["benJorge"]     += $book->getJorgeProfit();
+            $totales["benJaime"]     += $book->getJaimeProfit();
+//            $totales["pendiente"]    += $book->getPayment(4);
             $totales["limpieza"]     += $book->sup_limp;
             $totales["beneficio"]    += ($book->total_price - ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp));
 
@@ -92,6 +95,10 @@ class LiquidacionController extends Controller
             $totales['obs'] += $book->extraCost;
 
         }
+        $totales['pendiente'] = $books->map(function ($book) {
+            return $book->total_price - $book->payments->pluck('import')->sum();
+        })->sum();
+        
 
 
         $totBooks    = (count($books) > 0)?count($books):1;
@@ -148,7 +155,6 @@ class LiquidacionController extends Controller
 
         /* Inquilinos media */
         $data['pax-media'] = ($data['num-pax'] / $totBooks);
-
 
 
         $mobile = new Mobile();

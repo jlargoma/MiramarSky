@@ -563,5 +563,23 @@ class Book extends Model
         return $this->hasMany(Payments::class);
     }
 
+    /**
+     * Do not use this function without eager load
+     *
+     * @return int
+     */
+    public function getJorgeProfit()
+    {
+        return $this->total_ben > 0 ? $this->total_ben * ($this->room->type->PercentJorge / 100) : 0;
+    }
 
+    /**
+     * Do not use this function without eager load
+     *
+     * @return int
+     */
+    public function getJaimeProfit()
+    {
+        return $this->total_ben > 0 ? $this->total_ben * ($this->room->type->PercentJaime / 100) : 0;
+    }
 }

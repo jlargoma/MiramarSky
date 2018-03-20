@@ -19,6 +19,11 @@ class Rooms extends Model
 
     public function typeAptos()
     {
+        return $this->type();
+    }
+
+    public function type()
+    {
         return $this->hasOne('\App\TypeApto', 'id', 'typeApto');
     }
 
