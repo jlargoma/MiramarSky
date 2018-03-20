@@ -421,24 +421,22 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $book = \App\Book::find($id);
-        $payments = \App\Payments::where('book_id',$book->id)->get();
-        $totalpayment = 0;
-        foreach ($payments as $payment) {
-            $totalpayment = $totalpayment + $payment->import;
-        }
+        $book = \App\Book::with('payments')->find($id);
+
+        $totalpayment = $book->payments->sum(function ($payment) {
+            return $payment->import;
+        });
 
 
-        $mobile = new Mobile();
         return view('backend/planning/update',  [
             'book'         => $book ,
             'rooms'        => \App\Rooms::where('state','=',1)->orderBy('order')->get(),
             'extras'       => \App\Extras::all(),
             'start'        => Carbon::createFromFormat('Y-m-d',$book->start)->format('d M,y'),
-            'payments'     => $payments,
+            'payments'     => $book->payments,
             'typecobro'    => new \App\Book(),
             'totalpayment' => $totalpayment,
-            'mobile'       => $mobile,
+            'mobile'       => new Mobile(),
             'stripe'        => StripeController::$stripe,
         ]);
     }

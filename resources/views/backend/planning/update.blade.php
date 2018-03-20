@@ -451,7 +451,7 @@
                 <div class="row">
                     <div class="col-xs-12 bg-black push-0">
                         <h4 class="text-center white">
-                            COBROS
+                            {{ $totalpayment }}€ COBRADO
                         </h4>
                     </div>
                     <table class="table table-hover demo-table-search table-responsive-block" style="margin-top: 0;">
@@ -944,7 +944,7 @@
                 <div class="row">
                     <div class="col-xs-12 bg-black push-0">
                         <h4 class="text-center white">
-                           COBROS
+                            {{ $totalpayment }}€ COBRADO
                         </h4>
                     </div>
                     <div class="col-xs-12 not-padding">
