@@ -60,7 +60,7 @@
                     <div class="col-md-7 col-xs-12">
                         
                         <h3 class="tex-center">Resumen de pagos</h3>
-                        <?php $array = [0 =>"Metalico Jorge", 1 =>"Metalico Jaime",2 =>"Banco Jorge",3=>"Banco Jaime"] ?>
+                        <?php $array = [0 =>"Tarjeta visa", 1 =>"Cash Jaime", 2 =>"Cash Jorge", 3=>"Banco Jorge"] ?>
                             
                         <div class="row">
                             <table class="table table-hover " >
@@ -79,8 +79,22 @@
                                                 <?php $fecha = Carbon::createFromFormat('Y-m-d',$payment->date) ?>
                                                 <?php echo $fecha->format('d-m-Y') ?>
                                             </td>
+                                            <?php
+                                                $divisor = 0;
+                                                if(preg_match('/,/', $payment->PayFor)){
+                                                    $aux = explode(',', $payment->PayFor);
+                                                    for ($i = 0; $i < count($aux); $i++){
+                                                        if ( !empty($aux[$i]) ){
+                                                            $divisor ++;
+                                                        }
+                                                    }
+
+                                                }else{
+                                                    $divisor = 1;
+                                                }
+                                            ?>
                                             <td class="text-center">
-                                                <?php echo $payment->import ?>
+                                                <?php echo number_format(($payment->import / $divisor),2,',','.') ?>€
                                             </td>
                                             
                                             <td class="text-center">
