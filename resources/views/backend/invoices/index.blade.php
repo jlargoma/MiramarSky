@@ -36,6 +36,12 @@
                 </a>
                     
             </div>
+            <div class="col-md-2 col-xs-4 push-10">
+                <a class="btn btn-md btn-default {{ Request::path() == 'admin/facturas/solicitudes' ? 'active' : '' }}" href="{{ url('admin/facturas/solicitudes') }}">
+                    SOLICITUDES FACTURAS ISDE
+                </a>
+
+            </div>
         </div>
 
         <div class="col-md-6 col-xs-12 text-left push-30">

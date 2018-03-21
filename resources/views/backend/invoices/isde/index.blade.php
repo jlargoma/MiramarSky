@@ -36,6 +36,12 @@
                 </a>
                     
             </div>
+            <div class="col-md-2 col-xs-4 push-10">
+                <a class="btn btn-md btn-default {{ Request::path() == 'admin/facturas/solicitudes' ? 'active' : '' }}" href="{{ url('admin/facturas/solicitudes') }}">
+                    SOLICITUDES FACTURAS ISDE
+                </a>
+
+            </div>
         </div>
 
         <div class="col-md-6 col-xs-12 text-left push-30">
@@ -58,9 +64,6 @@
                                 # Fact
                             </th>
                             <th class ="text-center bg-complete text-white" >
-                                Apto
-                            </th>
-                            <th class ="text-center bg-complete text-white" >
                                 Propietario
                             </th>
                             <th class ="text-center bg-complete text-white" >
@@ -77,7 +80,6 @@
                     <tbody>
                         <?php foreach ($invoices as $key => $invoice): ?>
                             <?php $num = $key + 1; ?>
-                            <?php $book = \App\Book::find($invoice->book_id); ?>
                             <tr>
                                 <td class="text-left font-s16" >
                                     <span class="hidden"><?php echo Carbon::CreateFromFormat('Y-m-d',$invoice->date)->format('U'); ?></span>
@@ -87,22 +89,25 @@
                                     <b>#SN<?php echo Carbon::CreateFromFormat('Y-m-d',$invoice->date)->format('Y'); ?>/<?php echo str_pad($invoice->id, 5, "0", STR_PAD_LEFT);  ?></b>
                                 </td>
                                 <td class="text-center font-s16">
-                                    <b><?php echo $book->room->nameRoom ?></b>
+                                    <?php if( $invoice->name_business != "" ): ?>
+                                        <b><?php echo ucfirst($invoice->name_business) ?></b>
+                                    <?php else: ?>
+                                        ---------
+                                    <?php endif;?>
                                 </td>
                                 <td class="text-center font-s16">
-                                    <?php echo ucfirst($book->room->user->name) ?>
+                                    <?php echo ucfirst($invoice->name) ?>
                                 </td>
                                 <td class="text-center font-s16">
-                                    <b><?php echo ucfirst($book->customer->name) ?></b>
-                                </td>
-                                <td class="text-center font-s16">
-                                    <b><?php echo number_format($book->total_price, 2, ',','.') ?>€</b>
+                                    <b><?php echo number_format($invoice->total_price, 2, ',','.') ?>€</b>
                                 </td>
                                 <td class="text-center font-s16">
                                     <div class="btn-group">
-                                        <a href="{{ url ('/admin/facturas/isde/ver') }}/<?php echo base64_encode($invoice->id) ?>" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>
+                                        <a href="{{ url ('/admin/facturas/isde/editar') }}/<?php echo base64_encode($invoice->id) ?>" class="btn btn-xs btn-complete"><i class="fa fa-pencil"></i>
                                         </a>
-                                        <a href="{{ url ('/admin/facturas/isde/descargar') }}/<?php echo base64_encode($invoice->id) ?>" class="btn btn-sm btn-success">    <i class="fa fa-download"></i>
+                                        <a href="{{ url ('/admin/facturas/isde/ver') }}/<?php echo base64_encode($invoice->id) ?>" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i>
+                                        </a>
+                                        <a href="{{ url ('/admin/facturas/isde/descargar') }}/<?php echo base64_encode($invoice->id) ?>" class="btn btn-xs btn-success">    <i class="fa fa-download"></i>
                                         </a>
                                     </div>
                                 </td>

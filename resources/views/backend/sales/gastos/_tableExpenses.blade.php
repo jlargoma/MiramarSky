@@ -107,7 +107,7 @@ setlocale(LC_TIME, "es_ES");
 						<?php for ($i=0; $i < count($roomsIds); $i++): ?>
 							<?php if ($roomsIds[$i] != ""): ?>
 								<?php $room = \App\Rooms::find($roomsIds[$i]) ?>
-								<?php echo $room->nameRoom; ?>,  
+								<?php echo $room->nameRoom; ?>,
 							<?php endif ?>
 						<?php endfor; ?>
 					<?php else: ?>

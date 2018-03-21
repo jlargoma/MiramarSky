@@ -78,52 +78,82 @@ class InvoicesController extends Controller
 
     public function isde($value='')
     {
-        $invoices = \App\Invoices::all();
-        return view('backend/invoices/isde/index', compact('invoices','mobile'));
+        $invoices = \App\Invoices::where('status' , 1)->get();
+        return view('backend/invoices/isde/index', compact('invoices'));
 
     }
+
+    public function solicitudes($value='')
+    {
+        $invoices = \App\Invoices::where('status' , 0)->get();
+        return view('backend/invoices/isde/solicitudes', compact('invoices'));
+
+    }
+
 
     public function viewIsde($id)
     {
         $invoice = \App\Invoices::find(base64_decode($id));
-        $book = \App\Book::find($invoice->book_id);
-
-        $data['name'] = $invoice->name;
-        $data['email'] = $invoice->email;
-        $data['date'] = $invoice->date;
-        $data['phone'] = $invoice->phone;
-        $data['address'] = $invoice->address;
-        $data['postalcode'] = $invoice->postalcode;
-        $data['nif'] = $invoice->nif;
-
-        return view('backend.invoices.isde.invoice',[ 'book' => $book, 'data' => $data ]);
+        return view('backend.invoices.isde.invoice',[ 'invoice' => $invoice]);
     }
 
     public function downloadIsde($id)
     {
         $invoice = \App\Invoices::find(base64_decode($id));
 
-        $data['name'] = $invoice->name;
-        $data['email'] = $invoice->email;
-        $data['date'] = $invoice->date;
-        $data['phone'] = $invoice->phone;
-        $data['address'] = $invoice->address;
-        $data['postalcode'] = $invoice->postalcode;
-        $data['nif'] = $invoice->nif;
-
-        $pdf = PDF::loadView('backend.invoices.isde.invoice', [ 'book' => $book, 'data' => $data]);
-        return $pdf->stream('#SN'.Carbon::CreateFromFormat('Y-m-d',$book->start)->format('y').$book->id.' - '.str_replace(' ', '-', strtolower($book->customer->name)).'.pdf');
+        $pdf = PDF::loadView('backend.invoices.isde.invoice', [ 'invoice' => $invoice]);
+        return $pdf->stream('#SN'.Carbon::CreateFromFormat('Y-m-d',$invoice->start)->format('y').$invoice->id.' - '.str_replace(' ', '-', strtolower($invoice->name)).'.pdf');
        
     }
 
     public function updateIsde($id)
     {
         $invoice = \App\Invoices::find(base64_decode($id));
-
-        //        echo "<pre>";
-        //        print_r($invoice);
-        //        die("df");
+        return view('backend.invoices.isde._formUpdateInvoice',[ 'invoice' => $invoice]);
     }
 
+    public function saveUpdate(Request $request)
+    {
+        $invoice = \App\Invoices::find($request->input('id'));
+        $invoice->name = $request->input('name');
+        $invoice->nif = $request->input('nif');
+        $invoice->address = $request->input('address');
+        $invoice->phone = $request->input('phone');
+        $invoice->postalcode = $request->input('postalcode');
+        $invoice->name_business = $request->input('name_business');
+        $invoice->nif_business = $request->input('nif_business');
+        $invoice->address_business = $request->input('address_business');
+        $invoice->phone_business = $request->input('phone_business');
+        $invoice->zip_code_business = $request->input('zip_code_business');
+        $invoice->total_price = $request->input('total_price');
 
+        $aux = str_replace('Abr', 'Apr', $request->input('fechas'));
+
+        $date = explode('-', $aux);
+
+        $start = Carbon::createFromFormat('d M, y' , trim($date[0]))->format('Y-m-d');
+        $finish = Carbon::createFromFormat('d M, y' , trim($date[1]))->format('Y-m-d');
+
+        $invoice->start = $start;
+        $invoice->finish = $finish;
+        $invoice->status = $request->input('status');
+
+        if ($invoice->save()){
+            if ($invoice->status == 1){
+                return redirect()->action('InvoicesController@isde');
+            }else{
+                return redirect()->action('InvoicesController@solicitudes');
+            }
+
+        }
+
+    }
+
+    public function deleteIsde($id)
+    {
+        if (\App\Invoices::find(base64_decode($id))->delete()){
+            return redirect()->action('InvoicesController@solicitudes');
+        };
+
+    }
 }
