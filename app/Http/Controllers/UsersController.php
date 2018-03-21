@@ -107,6 +107,12 @@ class UsersController extends Controller
         $userUpadate->remember_token = str_random(60);
         $userUpadate->password = bcrypt($request->input('password'));
 
+        $userUpadate->name_business = $request->input('name_business');
+        $userUpadate->nif_business = $request->input('nif_business');
+        $userUpadate->address_business = $request->input('address_business');
+        $userUpadate->zip_code_business = $request->input('zip_code_business');
+
+
         if ($userUpadate->save()) {
             return redirect()->action('UsersController@index');
         }

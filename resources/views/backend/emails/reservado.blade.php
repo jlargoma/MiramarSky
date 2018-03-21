@@ -8,18 +8,14 @@ Hola "<?php echo $book->customer->name ?>" hemos bloqueado parcialmente un apart
 	$percent = 0.25;
 	$date = Carbon::createFromFormat('Y-m-d', $book->start);
 	$now = Carbon::now();
-	$rules = \App\RulesStripe::all();
+	$rule = \App\RulesStripe::find(1);
 	$diff = $now->diffInDays($date);
 
-	if ( $diff <= $rules[0]->numDays ) {
-
-		$percent = ($rules[0]->percent/100);
-
-	}elseif($diff > $rules[0]->numDays && $diff <= $rules[1]->percent){
-
-		$percent = ($rules[1]->percent/100);
-
-	}
+	if ( $diff <= $rule->numDays ) {
+		$percent = ($rule->percent/100);
+	}else{
+        $percent = 0.50;
+    }
 ?>
 
 

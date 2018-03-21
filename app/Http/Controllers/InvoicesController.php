@@ -29,8 +29,8 @@ class InvoicesController extends Controller
         }
 
 
-        $books = \App\Book::where('start','>',$date->copy()->subMonth())
-                            ->where('finish','<',$date->copy()->addYear())
+        $books = \App\Book::where('start','>',$start->copy()->subMonth())
+                            ->where('finish','<',$start->copy()->addYear())
                             ->where('type_book',2)
                             ->orderBy('created_at','DESC')
                             ->get();
@@ -48,14 +48,12 @@ class InvoicesController extends Controller
         $data = base64_decode($data);
         $data = explode('-', $data);
 
-
-
         $id = $data[0];
         $book = \App\Book::find($id);
 
         $num = $data[1];
 
-        return view('invoices/invoice', compact('book', 'num'));
+        return view('backend/invoices/propietarios/invoice', compact('book', 'num'));
 
     }
 
@@ -72,7 +70,7 @@ class InvoicesController extends Controller
         $num = $data[1];
 
         $numFact = substr($book->room->nameRoom , 0,2).Carbon::CreateFromFormat('Y-m-d',$book->start)->format('Y').str_pad($num, 5, "0", STR_PAD_LEFT);
-        $pdf = PDF::loadView('invoices/invoice', [ 'book' => $book, 'num' => $num]);
+        $pdf = PDF::loadView('backend/invoices/propietarios/invoice', [ 'book' => $book, 'num' => $num]);
         return $pdf->stream('factura-'.$numFact.'-'.str_replace(' ', '-', strtolower($book->customer->name)).'.pdf');
     }
 

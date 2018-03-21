@@ -56,6 +56,29 @@
                         </div>
                             <br>
                         <div class="input-group">
+                            <label>Razon social</label>
+                            <input type="text" class="form-control" name="name_business" placeholder="Razon social" value="<?php echo $user->name_business?>">
+
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <label>NIF/CIF/DNI/NIE</label>
+                            <input type="text" class="form-control" name="nif_business" placeholder="NIF/CIF/DNI/NIE" value="<?php echo $user->nif_business?>">
+
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <label>Dirección</label>
+                            <input type="text" class="form-control" name="address_business" placeholder="Dirección"value="<?php echo $user->address_business?>">
+                        </div>
+                        <br>
+                        <div class="input-group">
+                            <label>Codigo postal</label>
+                            <input type="text" class="form-control" name="zip_code_business" placeholder="Dirección"value="<?php echo $user->zip_code_business?>">
+                        </div>
+                        <br>
+
+                        <div class="input-group">
                             <button class="btn btn-complete" type="submit">Guardar</button>
                         </div>
                     </form>
