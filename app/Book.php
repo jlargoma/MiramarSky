@@ -570,7 +570,7 @@ class Book extends Model
      */
     public function getJorgeProfit()
     {
-        return $this->total_ben > 0 ? $this->total_ben * ($this->room->type->PercentJorge / 100) : 0;
+        return $this->profit * ($this->room->type->PercentJorge / 100);
     }
 
     /**
@@ -580,6 +580,43 @@ class Book extends Model
      */
     public function getJaimeProfit()
     {
-        return $this->total_ben > 0 ? $this->total_ben * ($this->room->type->PercentJaime / 100) : 0;
+        return $this->profit * ($this->room->type->PercentJaime / 100);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProfitAttribute()
+    {
+        return $this->total_price - $this->costs;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCostsAttribute()
+    {
+        return $this->cost_apto + $this->cost_park + $this->cost_lujo + $this->PVPAgencia + $this->cost_limp
+            + $this->stripeCost;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStripeCostAttribute()
+    {
+        $totalStripe = $this->payments->filter(function ($payment) {
+            return str_contains(strtolower($payment->comment), 'stripe');
+        })->sum('import');
+        
+        return $totalStripe > 0 ? ((1.4 * $totalStripe) / 100) + 0.25 : 0;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPendingAttribute()
+    {
+        return $this->total_price - $this->payments->sum('import');
     }
 }

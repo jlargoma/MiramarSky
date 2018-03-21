@@ -59,7 +59,7 @@ class LiquidacionController extends Controller
         }
 
         $date = new Carbon('first day of September '.$date->copy()->format('Y'));
-        
+
         $books = \App\Book::with(['payments', 'room.type'])
             ->where('start' , '>=' , $date)
             ->where('start', '<=', $date->copy()->addYear()->subMonth())
@@ -79,26 +79,12 @@ class LiquidacionController extends Controller
             $totales["jaime"]        += $book->getPayment(1);
             $totales["benJorge"]     += $book->getJorgeProfit();
             $totales["benJaime"]     += $book->getJaimeProfit();
-//            $totales["pendiente"]    += $book->getPayment(4);
             $totales["limpieza"]     += $book->sup_limp;
-            $totales["beneficio"]    += ($book->total_price - ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp));
-
-            $totalStripep = 0;
-            $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get(); 
-            foreach ($stripePayment as $key => $stripe):
-                $totalStripep +=  $stripe->import;
-            endforeach;
-            if ($totalStripep > 0):
-                $totales["stripe"] += ((1.4 * $totalStripep)/100)+0.25;
-            endif;
-
-            $totales['obs'] += $book->extraCost;
-
+            $totales["beneficio"]    += $book->profit;
+            $totales["stripe"]       += $book->stripeCost;
+            $totales["obs"]          += $book->extraCost;
+            $totales["pendiente"]    += $book->pending;
         }
-        $totales['pendiente'] = $books->map(function ($book) {
-            return $book->total_price - $book->payments->pluck('import')->sum();
-        })->sum();
-        
 
 
         $totBooks    = (count($books) > 0)?count($books):1;
