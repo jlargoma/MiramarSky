@@ -501,14 +501,9 @@ class Book extends Model
     //Funcion para guardar los metodos de Pago
     public  function getPayment($tipo)
     {
-       
-        $paymentImport = 0;
-        foreach (\App\Payments::where('book_id',$this->id)->where('type', $tipo)->get() as $pago) {
-            $paymentImport += $pago->import;
-
-        }
-        return $paymentImport;
-
+       return $this->payments->filter(function ($payment) use ($tipo) {
+           return $payment->type == $tipo;
+       })->sum('import');
     }
 
     // Funcion para Sacar Ventas por temporada

@@ -293,15 +293,7 @@
 
                             </td>
                             <td class="text-center coste bi " style="border-left: 1px solid black;">
-                                <?php
-                                    $totalStripep = 0;
-                                    $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get()
-                                ?>
-                                <?php foreach ($stripePayment as $key => $stripe): ?>
-                                    <?php $totalStripep +=  $stripe->import; ?>
-                                <?php endforeach ?>
-                                <?php $totalStripep = (((1.4 * $totalStripep)/100)+0.25) ?>
-                                <?php $book->cost_total += $totalStripep?>
+                                <?php $book->cost_total += $book->stripeCost ?>
                                 <?php if ( $book->cost_total > 0): ?>
                                     <b><?php echo number_format( $book->cost_total,0,',','.')?> €</b>
                                 <?php else: ?>
@@ -352,29 +344,11 @@
                                 <?php endif ?>
                             </td>
                             <td class="text-center coste bf" style="border-left: 1px solid black;">
-                                <?php
-                                    $totalStripep = 0;
-                                    $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get()
-                                ?>
-                                <?php if (count($stripePayment) > 0): ?>
-
-                                    <?php foreach ($stripePayment as $key => $stripe): ?>
-                                        <?php $totalStripep +=  $stripe->import; ?>
-                                    <?php endforeach ?>
-
-                                    <?php if ($totalStripep > 0): ?>
-
-                                        <?php echo number_format((((1.4 * $totalStripep)/100)+0.25), 2,',','.') ?>€
-
-                                    <?php else: ?>
-                                        ----
-                                    <?php endif ?>
-
-
+                                <?php if ($book->stripeCost > 0): ?>
+                                    <?php echo number_format($book->stripeCost, 2,',','.') ?>€
                                 <?php else: ?>
                                     ----
                                 <?php endif ?>
-
                             </td>
                             <td class="text-center coste" style="border-left: 1px solid black;">
                                 {{ $book->total_ben > 0 ? $book->total_ben * ($book->room->type->PercentJorge / 100) : 0 }} €
@@ -612,15 +586,7 @@
 
                                     </td>
                                     <td class="text-center coste bi ">
-                                        <?php
-                                            $totalStripep = 0;
-                                            $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get()
-                                        ?>
-                                        <?php $totalStripep = (((1.4 * $totalStripep)/100)+0.25) ?>
-                                        <?php foreach ($stripePayment as $key => $stripe): ?>
-                                            <?php $totalStripep +=  $stripe->import; ?>
-                                        <?php endforeach ?>
-                                        <b><?php echo number_format( ($book->cost_total + $totalStripep),0,',','.')?> €</b>
+                                        <b><?php echo number_format( ($book->cost_total + $book->stripeCost),0,',','.')?> €</b>
                                     </td>
                                     <td class="text-center coste">
                                         <?php echo number_format($book->cost_apto,0,',','.')?> €

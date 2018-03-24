@@ -60,10 +60,11 @@ class LiquidacionController extends Controller
 
         $date = new Carbon('first day of September '.$date->copy()->format('Y'));
 
-        $books = \App\Book::with(['payments', 'room.type'])
+        $books = \App\Book::with(['customer', 'payments', 'room.type'])
             ->where('start' , '>=' , $date)
             ->where('start', '<=', $date->copy()->addYear()->subMonth())
-            ->where('type_book',2)->orderBy('start', 'ASC')->get();
+            ->where('type_book',2)->orderBy('start', 'ASC')
+            ->get();
 
         foreach ($books as $key => $book) {
             $totales["total"]        += $book->total_price;
@@ -141,7 +142,6 @@ class LiquidacionController extends Controller
 
         /* Inquilinos media */
         $data['pax-media'] = ($data['num-pax'] / $totBooks);
-
 
         $mobile = new Mobile();
         if (!$mobile->isMobile()){
@@ -886,7 +886,7 @@ class LiquidacionController extends Controller
         $start = new Carbon('first day of September '.$year);
         $end  = $start->copy()->addYear();
 
-        $books = \App\Book::whereIn('type_book', [2])
+        $books = \App\Book::with('payments')->whereIn('type_book', [2])
                             ->where('start', '>', $start->copy()->format('Y-m-d'))
                             ->where('start', '<=', $end->copy()->format('Y-m-d'))
                             ->orderBy('start', 'ASC')
@@ -896,7 +896,7 @@ class LiquidacionController extends Controller
         foreach ($books as $key => $book) {
             $result['ventas'] += $book->total_price;
 
-            foreach ($book->pago as $key => $pay) {
+            foreach ($book->payments as $key => $pay) {
                 $result['cobrado'] += $pay->import;
 
                 if ($pay->type == 0 || $pay->type == 1) {
