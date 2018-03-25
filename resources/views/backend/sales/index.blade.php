@@ -189,10 +189,8 @@
 			var year = '<?php echo $temporada->copy()->format('Y')?>';
 
 			$.get('/admin/liquidation/searchByName', { searchString: searchString,  year: year, searchRoom: searchRoom, }, function(data) {
-
 				$('.liquidationSummary').empty();
 				$('.liquidationSummary').append(data);
-
 			});
 		});
 

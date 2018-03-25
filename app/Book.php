@@ -7,6 +7,50 @@ use \Carbon\Carbon;
 use DB;
 use Mail;
 
+/**
+ * Class Book
+ * @property integer id
+ * @property integer user_id
+ * @property integer customer_id
+ * @property integer room_id
+ * @property Carbon start
+ * @property Carbon finish
+ * @property string comment
+ * @property string book_comments
+ * @property integer type_book
+ * @property integer pax
+ * @property integer nigths
+ * @property integer agency
+ * @property float PVPAgencia
+ * @property float sup_limp
+ * @property float cost_limp
+ * @property float sup_park
+ * @property integer type_park
+ * @property float cost_park
+ * @property integer type_luxury
+ * @property float sup_lujo
+ * @property float cost_lujo
+ * @property float cost_apto
+ * @property float cost_total
+ * @property float total_price
+ * @property float total_ben
+ * @property float extraPrice
+ * @property float extraCost
+ * @property float extra
+ * @property float inc_percent
+ * @property float ben_jorge
+ * @property float ben_jaime
+ * @property mixed send
+ * @property integer statusCobro
+ * @property float real_price
+ * @property Carbon created_at
+ * @property Carbon updated_at
+ * @property integer schedule
+ * @property integer scheduleOut
+ * @property integer real_pax
+ * @property string book_owned_comments
+ * @property float promociones
+ */
 class Book extends Model
 {
 	protected $table = 'book';
@@ -501,14 +545,9 @@ class Book extends Model
     //Funcion para guardar los metodos de Pago
     public  function getPayment($tipo)
     {
-       
-        $paymentImport = 0;
-        foreach (\App\Payments::where('book_id',$this->id)->where('type', $tipo)->get() as $pago) {
-            $paymentImport += $pago->import;
-
-        }
-        return $paymentImport;
-
+       return $this->payments->filter(function ($payment) use ($tipo) {
+           return $payment->type == $tipo;
+       })->sum('import');
     }
 
     // Funcion para Sacar Ventas por temporada
@@ -608,15 +647,45 @@ class Book extends Model
         $totalStripe = $this->payments->filter(function ($payment) {
             return str_contains(strtolower($payment->comment), 'stripe');
         })->sum('import');
+
         
-        return $totalStripe > 0 ? ((1.4 * $totalStripe) / 100) + 0.25 : 0;
+        return $totalStripe > 0 ? round(((1.4 * $totalStripe) / 100) + 0.25) : 0;
     }
 
+    /**
+     * @return float|int
+     */
+    public function getStripeCostRawAttribute()
+    {
+        $totalStripe = $this->payments->filter(function ($payment) {
+            return str_contains(strtolower($payment->comment), 'stripe');
+        })->sum('import');
+
+
+        return $totalStripe > 0 ? ((1.4 * $totalStripe) / 100) + 0.25 : 0;
+    }
+    
     /**
      * @return int
      */
     public function getPendingAttribute()
     {
         return $this->total_price - $this->payments->sum('import');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProfitPercentageRawAttribute()
+    {
+        return ($this->profit * 100) / $this->total_price;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProfitPercentageAttribute()
+    {
+        return round(($this->profit * 100) / $this->total_price);
     }
 }

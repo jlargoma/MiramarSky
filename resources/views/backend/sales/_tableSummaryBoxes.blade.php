@@ -9,7 +9,6 @@
 		background: white;
 	}
 </style>
-<?php $dataSales = \App\Http\Controllers\LiquidacionController::getSalesByYear($temporada->copy()->format('Y')); ?>
 <?php if ( !$mobile->isMobile() ): ?>
 <div class="row">
 	<div class="col-md-3">
@@ -71,7 +70,7 @@
 				Total vnts temp
 			</div>
 			<div class="p-l-20">
-				<h4 class="text-black font-w400 text-center"><?php echo number_format($dataSales['ventas'],0,',','.')?>€</h4>
+				<h4 class="text-black font-w400 text-center"><?php echo number_format($totales['total'],0,',','.')?>€</h4>
 			</div>
 		</div>
 		<div class="col-md-3 bordered">
@@ -79,11 +78,7 @@
 				Ing neto reservas
 			</div>
 			<div class="p-l-20">
-				<?php $sumTotalBenef = 0; ?>
-				<?php foreach($books as $book): ?>
-					<?php $sumTotalBenef += $book->total_ben; ?>
-				<?php endforeach; ?>
-				<h3 class="text-black font-w400 text-center"><?php echo number_format($sumTotalBenef,0,',','.')?>€</h3>
+				<h3 class="text-black font-w400 text-center"><?php echo number_format($totales['beneficio'],0,',','.')?>€</h3>
 			</div>
 		</div>
 		<div class="col-md-3 bordered">

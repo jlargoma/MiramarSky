@@ -1,12 +1,12 @@
-<?php   use \Carbon\Carbon;  
-setlocale(LC_TIME, "ES"); 
-setlocale(LC_TIME, "es_ES"); 
+<?php   use \Carbon\Carbon;
+setlocale(LC_TIME, "ES");
+setlocale(LC_TIME, "es_ES");
 ?>
 <script src="/assets/js/notifications.js" type="text/javascript"></script>
 <table class="table table-bordered table-striped table-header-bg no-footer">
 	<thead>
 		<tr>
-			
+
 			<th class="text-center bg-complete text-white">Fecha</th>
 			<th class="text-center bg-complete text-white">Concepto</th>
 			<th class="text-center bg-complete text-white type" style="width: 250px;">Tipo</th>
@@ -16,11 +16,11 @@ setlocale(LC_TIME, "es_ES");
 			<th class="text-center bg-complete text-white">Comentario</th>
 			<th class="text-center bg-complete text-white">#</th>
 		</tr>
-	</thead>	
+	</thead>
 	<tbody>
 		<?php $array = [0 =>"Metalico Jorge", 1 =>"Metalico Jaime",2 =>"Banco Jorge",3=>"Banco Jaime"] ?>
 				<tr>
-					
+
 					<td class="text-center" style="padding: 8px 5px!important">
 						Acutalizado a <?php echo Carbon::now()->formatLocalized('%d %b %Y') ?>
 					</td>
@@ -33,7 +33,7 @@ setlocale(LC_TIME, "es_ES");
 
 					<td class="text-center" style="padding: 8px 5px!important">
 						BANCO JORGE
-						
+
 					</td>
 					<td class="text-center" style="padding: 8px 5px!important">
 						<b><?php echo number_format($totalStripep, 0, ',', '.'); ?> €</b>
@@ -46,14 +46,14 @@ setlocale(LC_TIME, "es_ES");
 						PAGOS A STRIPE
 					</td>
 					<td class="text-center" style="padding: 8px 5px!important">
-						
+
 					</td>
 				</tr>
 		<?php foreach ($gastos as $key => $gasto): ?>
-			
-		
+
+
 			<tr>
-				
+
 				<td class="text-center">
 					<b><?php echo Carbon::createFromFormat('Y-m-d', $gasto->date)->formatLocalized('%d %b %Y') ?></b>
 					<input type="hidden" id="date-<?php echo $gasto->id ?>" value="<?php echo $gasto->date ?>">
@@ -63,7 +63,7 @@ setlocale(LC_TIME, "es_ES");
 				</td>
 
 				<td class="text-center">
-					
+
 					<select class="js-select2 form-control editedExpensed" id="type-<?php echo $gasto->id ?>" name="type" style="width: 100%;" data-placeholder="Seleccione un tipo" required data-id="<?php echo $gasto->id ?>">
 		                <option></option>
 		                <option <?php if($gasto->type == 'PAGO PROPIETARIO'){ echo "selected"; } ?> value="PAGO PROPIETARIO">
@@ -125,7 +125,7 @@ setlocale(LC_TIME, "es_ES");
 				</td>
 			</tr>
 		<?php endforeach ?>
-	</tbody>			
+	</tbody>
 </table>
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -164,9 +164,9 @@ setlocale(LC_TIME, "es_ES");
 	                    z_index: 1031,
 	                    delay: 1000,
 	                    timer: 1500,
-	                }); 
+	                });
 				}
-				
+
 
 			});
 		});
