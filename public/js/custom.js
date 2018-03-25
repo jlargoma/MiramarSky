@@ -1,3 +1,3 @@
-$(function () {
-    $('[data-toggle="tooltip"]').tooltip();
+$(document).on('mouseover','[data-toggle="tooltip"]',function(){
+    $(this).tooltip();
 });

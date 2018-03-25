@@ -4,6 +4,25 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use \Carbon\Carbon;
+
+/**
+ * @property mixed id
+ * @property mixed name
+ * @property mixed nameRoom
+ * @property mixed owned
+ * @property mixed sizeApto
+ * @property mixed typeApto
+ * @property mixed minOcu
+ * @property mixed maxOcu
+ * @property mixed luxury
+ * @property mixed created_at
+ * @property mixed updated_at
+ * @property mixed order
+ * @property mixed state
+ * @property mixed parking
+ * @property mixed locker
+ * @property mixed profit_percent
+ */
 class Rooms extends Model
 {
 
