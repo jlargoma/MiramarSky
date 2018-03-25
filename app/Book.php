@@ -636,7 +636,7 @@ class Book extends Model
     public function getCostsAttribute()
     {
         return $this->cost_apto + $this->cost_park + $this->cost_lujo + $this->PVPAgencia + $this->cost_limp
-            + $this->stripeCost;
+            + $this->stripeCost + $this->extraCost;
     }
 
     /**
