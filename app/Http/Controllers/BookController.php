@@ -1571,13 +1571,16 @@ class BookController extends Controller
         $data['costes']['parking']  = $this->getCostPark($request->park, $request->noches, $room->id);
         $data['costes']['lujo'] = $this->getCostLujo($request->lujo);
         $data['costes']['limp']  = (int) $room->cost_cleaning;
-        $data['costes']['book'] = $this->getCostBook($request->start ,$request->finish, $request->pax, $request->room) + Rooms::GIFT_COST;
+        $data['costes']['book'] = $this->getCostBook($request->start ,$request->finish, $request->pax, $request->room);
+        $data['costes']['obsequio'] = Rooms::GIFT_COST;
         $data['costes']['agencia'] = (float)$request->agencyCost;
 
         $data['totales']['parking'] = $this->getPricePark($request->park, $request->noches, $room->id);
         $data['totales']['lujo'] = $this->getPriceLujo($request->lujo);
         $data['totales']['limp'] = (int) $room->price_cleaning;
-        $data['totales']['book'] = $this->getPriceBook($request->start, $request->finish, $request->pax, $request->room) - $promotion;
+        $data['totales']['book'] = $this->getPriceBook($request->start, $request->finish, $request->pax, $request->room);
+        $data['totales']['obsequio'] = Rooms::GIFT_PRICE;
+        $data['totales']['promotion'] = -$promotion;
 
         $totalPrice = array_sum($data['totales']);
         $totalCost = array_sum($data['costes']);
@@ -1587,8 +1590,6 @@ class BookController extends Controller
         $data['calculated']['total_cost'] = $totalCost;
         $data['calculated']['profit'] = $profit;
         $data['calculated']['profit_percentage'] = round(($profit / $totalPrice) * 100);
-
-        $data['promotion'] = $promotion;
 
         return $data;
     }
