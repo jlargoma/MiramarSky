@@ -11,6 +11,7 @@ use Auth;
 use Mail;
 use Illuminate\Routing\Controller;
 use App\Classes\Mobile;
+use App\Rooms;
 
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
@@ -413,20 +414,14 @@ class BookController extends Controller
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request->input('    ')* @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $book = \App\Book::with('payments')->find($id);
 
-        $totalpayment = $book->payments->sum(function ($payment) {
-            return $payment->import;
-        });
+        $totalpayment = $book->sum_payments;
 
+        // We are passing wrong data from this to view by using $book data, in order to correct data
+        // an AJAX call has been made after rendering the page.        
 
         return view('backend/planning/update',  [
             'book'         => $book ,
@@ -522,9 +517,9 @@ class BookController extends Controller
 
             $book->total_ben     = $request->input('beneficio');
             $book->extra         = $request->input('extra');
-            $book->inc_percent   = round(($book->total_ben / $book->total_price) * 100, 2 );
-            $book->ben_jorge     = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
-            $book->ben_jaime     = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
+            $book->inc_percent   = round(($book->profit / $book->total_price) * 100, 2 );
+            $book->ben_jorge     = $book->getJorgeProfit();
+            $book->ben_jaime     = $book->getJaimeProfit();
 
             $book->extraPrice    = $extraPrice;
             $book->extraCost     = $extraCost;
@@ -609,22 +604,25 @@ class BookController extends Controller
     }
 
 
-
-    public function getPricePark($park, $noches, $room="", $multipler=""){
+    /**
+     * @param $park             Parking Option (Yes, No, Free, 50%)
+     * @param $noches           Book Nights
+     * @param string $room      Room ID
+     * @return float|int
+     */
+    public function getPricePark($park, $noches, $room=""){
 
         $priceParking = 0;
         switch ($park) {
-            case 1:
-            $priceParking = 18 * $noches;
+            case 1: // Yes
+            $priceParking = Rooms::PARKING_PRICE * $noches;
             break;
-            case 2:
+            case 2: // No
+            case 3: // Free
             $priceParking = 0;
             break;
-            case 3:
-            $priceParking = 0;
-            break;
-            case 4:
-            $priceParking = (18 * $noches) / 2;
+            case 4: // 50%
+            $priceParking = (Rooms::PARKING_PRICE * $noches) / 2;
             break;
         }
         if ( $room != "") {
@@ -639,31 +637,24 @@ class BookController extends Controller
 
     }
 
-    public function getCostPark($park, $noches, $room="", $multipler=""){
+    public function getCostPark($park, $noches, $room=""){
 
         $costParking = 0;
         switch ($park) {
-            case 1:
-            $costParking = 13.5 * $noches;
-            break;
-            case 2:
+            case 1: // Yes
+            $costParking = Rooms::PARKING_COST * $noches;
+                break;
+            case 2: // No
+            case 3: // Free
             $costParking = 0;
             break;
-            case 3:
-            $costParking = 0;
-            break;
-            case 4:
-            $costParking = (13.5 * $noches) / 2;
+            case 4: // 50%
+            $costParking = (Rooms::PARKING_COST * $noches) / 2;
             break;
         }
 
-        if ( $room != "") {
-            if ($room == 150) {
-                $costParking =  $costParking * 3;
-            }
-            if ($room == 149) {
-                $costParking =  $costParking * 2;
-            }
+        if ($room != "" && ($room == 150 || $room == 149)) {
+            $costParking =  $costParking * 2;
         }
 
         
@@ -676,42 +667,43 @@ class BookController extends Controller
         if ($typeLuxury > 4) {
             $priceLuxury = $typeLuxury;
         }else{
-
             switch ($typeLuxury) {
-                case 1:
-                $priceLuxury = 50;
+                case 1: // Yes
+                $priceLuxury = Rooms::LUXURY_PRICE;
                 break;
-                case 2:
+                case 2: // No
+                case 3: // Free
                 $priceLuxury = 0;
                 break;
-                case 3:
-                $priceLuxury = 0;
-                break;
-                case 4:
-                $priceLuxury = 50/2;
+                case 4: // 50%
+                $priceLuxury = Rooms::LUXURY_PRICE/2;
                 break;
             }
         }
         return $priceLuxury;
     }
 
+    /**
+     * @param $typeLuxury
+     * @return float|int
+     */
     public function getCostLujo($typeLuxury){
         $costLuxury = 0;
         if ($typeLuxury > 4) {
             $costLuxury = $typeLuxury - 10;
         } else {
             switch ($typeLuxury) {
-                case 1:
-                $costLuxury = 40;
+                case 1: // Yes
+                $costLuxury = Rooms::LUXURY_COST;
                 break;
-                case 2:
+                case 2: // No
                 $costLuxury = 0;
                 break;
-                case 3:
+                case 3: // Free
                 $costLuxury = 0;
                 break;
-                case 4:
-                $costLuxury = 40/2;
+                case 4: // 50%
+                $costLuxury = Rooms::LUXURY_COST/2;
                 break;
             }
         }
@@ -725,9 +717,9 @@ class BookController extends Controller
         $countDays = $finish->diffInDays($start);
 
 
-        $paxPerRoom = \App\Rooms::getPaxRooms($pax,$room);
+        $paxPerRoom = Rooms::getPaxRooms($pax,$room);
 
-        $room = \App\Rooms::find($room);
+        $room = Rooms::find($room);
 
         $pax = $pax;
         if ($paxPerRoom > $pax) {
@@ -736,17 +728,17 @@ class BookController extends Controller
         $costBook = 0;
         $counter = $start->copy();
         for ($i=1; $i <= $countDays; $i++) {
-
             $seasonActive = \App\Seasons::getSeason($counter->copy()->format('Y-m-d'));
-            $costs = \App\Prices::where('season' ,  $seasonActive)
-            ->where('occupation', $pax)->get();
+
+            $costs = \App\Prices::select('cost')->where('season' ,  $seasonActive)
+                ->where('occupation', $pax)->get();
 
             foreach ($costs as $precio) {
                 $costBook = $costBook + $precio->cost ;
             }
+
             $counter->addDay();
         }
-
         return $costBook;
     }
 
@@ -1573,57 +1565,32 @@ class BookController extends Controller
 
     public function getAllDataToBook(Request $request)
     {
-        $extra      = (int) \App\Extras::find(4)->price;
-        $extraCost     = (int) \App\Extras::find(4)->cost;
-        $room  = \App\Rooms::find($request->input('room'));
-        if ($room->sizeApto == 1) {
+        $room  = \App\Rooms::with('extra')->find($request->room);
+        $promotion = $request->promotion ? floatval($request->promotion) : 0;
 
-            $data['costes']['parking']  = $this->getCostPark($request->input('park'),$request->input('noches') );
-            $data['totales']['parking'] = $this->getPricePark($request->input('park'), $request->input('noches') );
+        $data['costes']['parking']  = $this->getCostPark($request->park, $request->noches, $room->id);
+        $data['costes']['lujo'] = $this->getCostLujo($request->lujo);
+        $data['costes']['limp']  = (int) $room->cost_cleaning;
+        $data['costes']['book'] = $this->getCostBook($request->start ,$request->finish, $request->pax, $request->room) + Rooms::GIFT_COST;
+        $data['costes']['agencia'] = (float)$request->agencyCost;
 
-            $sup_limp      = (int) \App\Extras::find(2)->price;
-            $cost_limp     = (int) \App\Extras::find(2)->cost;
+        $data['totales']['parking'] = $this->getPricePark($request->park, $request->noches, $room->id);
+        $data['totales']['lujo'] = $this->getPriceLujo($request->lujo);
+        $data['totales']['limp'] = (int) $room->price_cleaning;
+        $data['totales']['book'] = $this->getPriceBook($request->start, $request->finish, $request->pax, $request->room) - $promotion;
 
-        } elseif($room->sizeApto == 2) {
-            /* PARKING */
-            $data['costes']['parking']  = $this->getCostPark($request->input('park'),$request->input('noches') );
-            $data['totales']['parking'] = $this->getPricePark($request->input('park'), $request->input('noches') );
-
-            $sup_limp      = (int) \App\Extras::find(1)->price;
-            $cost_limp     = (int) \App\Extras::find(1)->cost;
-
-        }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
-            /* PARKING */
-            $data['costes']['parking']  = $this->getCostPark($request->input('park'),$request->input('noches'),$room->id , 3);
-            $data['totales']['parking'] = $this->getPricePark($request->input('park'), $request->input('noches'),$room->id, 3);
-
-            $sup_limp      =  (int) \App\Extras::find(3)->price;
-            $cost_limp     = (int) \App\Extras::find(3)->cost;
+        $totalPrice = array_sum($data['totales']);
+        $totalCost = array_sum($data['costes']);
+        $profit = $totalPrice - $totalCost;
         
-        }
-       
-        /* LUJO */
-        $data['costes']['lujo'] = $this->getCostLujo($request->input('lujo'));
-        $data['totales']['lujo'] = $this->getPriceLujo($request->input('lujo'));
+        $data['calculated']['total_price'] = $totalPrice;
+        $data['calculated']['total_cost'] = $totalCost;
+        $data['calculated']['profit'] = $profit;
+        $data['calculated']['profit_percentage'] = round(($profit / $totalPrice) * 100);
 
-
-        /* LIMPIEZA */
-
-        $data['costes']['limp']  = $cost_limp;
-        $data['totales']['limp'] = $sup_limp;
-
-        /* RESERVA */
-       
-        $data['costes']['book'] = $this->getCostBook($request->input('start'),$request->input('finish'),$request->input('pax'),$request->input('room')) + $extraCost;
-
-        $data['totales']['book'] = $this->getPriceBook($request->input('start'),$request->input('finish'),$request->input('pax'),$request->input('room'));
-
+        $data['promotion'] = $promotion;
 
         return $data;
-
-
-
-
     }
 
     public function updateBooksCosts(){

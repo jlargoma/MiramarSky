@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use \Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property mixed id
@@ -21,10 +22,27 @@ use \Carbon\Carbon;
  * @property mixed state
  * @property mixed parking
  * @property mixed locker
- * @property mixed profit_percent
+ * @property mixed cost_cleaning
+ * @property mixed price_cleaning
+ * @property mixed cost_gift
+ * @property mixed price_gift
+ *
+ * @property HasOne extra
  */
 class Rooms extends Model
 {
+    const GIFT_COST = 5;
+    const GIFT_PRICE = 0;
+    
+    const LUXURY_PRICE = 50;
+    const LUXURY_COST = 40;
+
+    const PARKING_PRICE = 18;
+    const PARKING_COST = 13.5;
+
+    const CLEANING_MAX_PRICE = 100;
+    const CLEANING_MAX_COST = 70;
+
 
 	public function book()
     {
@@ -49,6 +67,11 @@ class Rooms extends Model
     public function user()
     {
         return $this->hasOne('\App\User', 'id', 'owned');
+    }
+
+    public function extra()
+    {
+        return $this->hasOne(Extras::class, 'apartment_size', 'sizeApto');
     }
 
     public function paymentPro()
@@ -172,5 +195,44 @@ class Rooms extends Model
 
     }
 
+    /**
+     * This little trick because 4 in Extras is obsequio
+     *
+     * @return float
+     */
+    public function getCostCleaningAttribute()
+    {
+        return $this->sizeApto > 3
+            ? self::CLEANING_MAX_COST
+            : $this->extra->cost;
+    }
 
+    /**
+     * This little trick because 4 in Extras is obsequio
+     *
+     * @return float
+     */
+    public function getPriceCleaningAttribute()
+    {
+        return $this->sizeApto > 3
+            ? self::CLEANING_MAX_PRICE
+            : $this->extra->price;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCostGiftAttribute()
+    {
+        return self::GIFT_COST;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPriceGiftAttribute()
+    {
+        return self::GIFT_PRICE;
+    }
+    
 }
