@@ -1842,7 +1842,7 @@ class LiquidacionController extends Controller
                 foreach ($books as $key => $book) {
 
                     $totales["total"]        += $book->total_price;
-                    $totales["coste"]        += ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp);
+                    $totales["coste"]        += $book->costs;
                     $totales["costeApto"]    += $book->cost_apto;
                     $totales["costePark"]    += $book->cost_park;
                     $totales["costeLujo"]    += $book->cost_lujo;
@@ -1856,7 +1856,7 @@ class LiquidacionController extends Controller
                     $totales["benJaime"]     += $book->ben_jaime;
                     $totales["pendiente"]    += $book->getPayment(4);
                     $totales["limpieza"]     += $book->sup_limp;
-                    $totales["beneficio"]    += ($book->total_price - ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp));
+                    $totales["beneficio"]    += $book->profit;
                     $totalStripep = 0;
                     $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get(); 
                     foreach ($stripePayment as $key => $stripe):
@@ -2153,7 +2153,9 @@ class LiquidacionController extends Controller
 
             $excel->sheet('Liquidacion', function($sheet) use ($books){
 
-                $sheet->loadView('backend.sales._tableExcelExport', ['books' => $books]);
+                $sheet->setColumnFormat(['E' => '[$EUR ]#,##0.00_-'])
+                    ->loadView('backend.sales._tableExcelExport', ['books' => $books])
+                    ->setColumnFormat(['E' => '[$EUR ]#,##0.00_-']);
 
             });
 

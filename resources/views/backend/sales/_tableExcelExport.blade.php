@@ -55,50 +55,50 @@
                 </td>
                 <td style="text-align: center;">
                     <?php if ($book->total_price > 0): ?>
-                        <b><?php echo round($book->total_price) ?></b>
+                        <?php echo round($book->total_price) ?>
                     <?php else: ?>
-                        <b>0</b>
+                        0
                     <?php endif ?>
-                    €
+
                 </td>
 
                 <td style="text-align: center;">
                     <?php if ( $book->getPayment(2) > 0): ?>
                         <?php echo round($book->getPayment(2)); ?>
                     <?php else: ?>
-                        <b>0</b>
+                        0
                     <?php endif ?>
-                    €
+
                 </td>
                 <td class="text-center coste"  style="border-left: 1px solid black;">
                     <?php if ( $book->getPayment(3) > 0): ?>
                         <?php echo round($book->getPayment(3)); ?>
                     <?php else: ?>
-                        <b>0</b>
+                        0
                     <?php endif ?>
-                    €
+
                 </td>
                 <td style="text-align: center;">
                     <?php if ( $book->getPayment(0) > 0): ?>
                         <?php echo round($book->getPayment(0)); ?>
                     <?php else: ?>
-                        <b>0</b>
+                        0
                     <?php endif ?>
-                    €
+
                 </td>
                 <td class="text-center coste pagos" style="border-left: 1px solid black;">
                     <?php if ( $book->getPayment(1) > 0): ?>
                         <?php echo round($book->getPayment(1)); ?>
                     <?php else: ?>
-                        <b>0</b>
+                        0
                     <?php endif ?>
-                    €
+
                 </td>
                 <td style="text-align: center;" >
-                   <b>{{ $book->pending == 0 ? 0 : round($book->pending) }}€</b>
+                   {{ $book->pending == 0 ? 0 : round($book->pending) }}
                 </td>
                 <td class="text-center beneficio bi" style="border-left: 1px solid black;">
-                    <b>{{ $book->profit == 0 ? 0 : round($book->profit) }}€</b>
+                    {{ $book->profit == 0 ? 0 : round($book->profit) }}
                 </td>
                 <td style="text-align: center;">
                     <?php if ( $book->inc_percent > 0): ?>
@@ -109,7 +109,7 @@
 
                 </td>
                 <td class="text-center coste bi " style="border-left: 1px solid black;">
-                        {{ $book->costs == 0 ? 0 : round($book->costs) }}€
+                        {{ $book->costs == 0 ? 0 : round($book->costs) }}
                 </td>
                 <td style="text-align: center;">
                     <?php if ( $book->cost_apto > 0): ?>
@@ -117,7 +117,7 @@
                     <?php else: ?>
                         0
                     <?php endif ?>
-                    €
+
                 </td>
                 <td style="text-align: center;">
                     <?php if ( $book->cost_park > 0): ?>
@@ -125,7 +125,7 @@
                     <?php else: ?>
                         0
                     <?php endif ?>
-                    €
+
                 </td>
                 <td class="text-center coste"  style="border-left: 1px solid black;">
                     <?php if ( $book->cost_lujo > 0): ?>
@@ -133,7 +133,7 @@
                     <?php else: ?>
                         0
                     <?php endif ?>
-                    €
+
                 </td>
                 <td style="text-align: center;">
                     <?php if ( $book->cost_limp > 0): ?>
@@ -141,7 +141,7 @@
                     <?php else: ?>
                         0
                     <?php endif ?>
-                    €
+
                 </td>
                 <td class="text-center coste " style="border-left: 1px solid black;">
                     <?php if ( $book->PVPAgencia > 0): ?>
@@ -149,23 +149,23 @@
                     <?php else: ?>
                         0
                     <?php endif ?>
-                    €
+
                 </td>
                 <td style="text-align: center;">
                     <?php if ( $book->extraCost > 0): ?>
-                        <?php echo round($book->extraCost) ?>€
+                        <?php echo round($book->extraCost) ?>
                     <?php else: ?>
                         --
                     <?php endif ?>
                 </td>
                 <td class="text-center coste bf" style="border-left: 1px solid black;">
-                    {{ $book->stripeCost == 0 ? 0 : round($book->stripeCost) }}€
+                    {{ $book->stripeCost == 0 ? 0 : round($book->stripeCost) }}
                 <td style="text-align: center;">
-                    <?php echo round($book->getJorgeProfit()) ?>€
+                    <?php echo round($book->getJorgeProfit()) ?>
                 </td>
 
                 <td style="text-align: center;">
-                    <?php echo round($book->getJaimeProfit()) ?>€
+                    <?php echo round($book->getJaimeProfit()) ?>
                 </td>
             </tr>
         <?php endforeach ?>
