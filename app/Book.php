@@ -602,6 +602,11 @@ class Book extends Model
         return $this->hasMany(Payments::class);
     }
 
+    public function getSumPaymentsAttribute()
+    {
+        return $this->payments->sum('import');
+    }
+
     /**
      * Do not use this function without eager load
      *

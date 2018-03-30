@@ -5,7 +5,7 @@
             $(".daterange1").daterangepicker({
                 "buttonClasses": "button button-rounded button-mini nomargin",
                 "applyClass": "button-color",
-                "cancelClass": "button-light",            
+                "cancelClass": "button-light",
                 "startDate": '01 Dec, 17',
                 locale: {
                     format: 'DD MMM, YY',
@@ -80,7 +80,7 @@
                   ],
                   "firstDay": 1,
               },
-              
+
           });
         });
     <?php endif ?>
@@ -103,7 +103,7 @@
         var res2       = arrayDates[1].replace("Abr", "Apr");
         var date2      = new Date(res2);
         var timeDiff   = Math.abs(date2.getTime() - date1.getTime());
-        var diffDays   = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+        var diffDays   = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
         var start      = date1.toLocaleDateString();
         var finish     = date2.toLocaleDateString();
@@ -146,78 +146,77 @@
                 var auxTotal = $('.total').val();
                 var auxCosteApto = parseInt($('.costApto').val());
                 var auxCoste = parseInt($('.cost').val());
+                var agencyCost = $('.agencia').val();
+                var promotion = $('.promociones').val();
+                var agencyType = $('.agency').val();
 
-                $.get('/admin/api/reservas/getDataBook', {start: start, finish: finish, noches: diffDays, pax: pax, room: room, park: park, lujo: lujo,}).done(function( data ) {
-
-
+                $.get('/admin/api/reservas/getDataBook', {
+                    start: start,
+                    finish: finish,
+                    noches: diffDays,
+                    pax: pax,
+                    room: room,
+                    park: park,
+                    lujo: lujo,
+                    agencyCost: agencyCost,
+                    promotion: promotion,
+                    agencyType: agencyType,
+                }).done(function( data ) {
                     console.log(data);
 
-                    var promo = $('.promociones').val();
-                    if (promo == "") {
-                        promo = 0;
-                    }
+//                    var promo = $('.promociones').val();
+//                    if (promo == "") {
+//                        promo = 0;
+//                    }
+//
+//                    var agencia = $('.agencia').val();
+//                    if (agencia == "") {
+//                        agencia = 0;
+//                    }
 
-                    var agencia = $('.agencia').val();
-                    if (agencia == "") {
-                        agencia = 0;
-                    }
-
-                    var costeApto  = data.costes.book - parseFloat(promo); // + data.costes.limp;
-                    var costeTotal = costeApto + data.costes.parking + data.costes.lujo + data.costes.limp + parseFloat(agencia);
-
-                    var total      = data.totales.book + data.totales.parking + data.totales.lujo +  data.totales.limp;
+//                    var costeApto  = data.costes.book;
+//                    var costeTotal = costeApto + data.costes.parking + data.costes.lujo + data.costes.limp + data.costes.agencia;
+//
+//                    var total      = data.totales.book + data.totales.parking + data.totales.lujo +  data.totales.limp;
 
 
                     var isEdited = $('.total').attr('data-edited');
 
-                    if (isEdited == 1) {
-                        total = auxTotal;
-                    }
-
-                    if (total ==  auxTotal) {
-                        $('.alert-edited').hide();
-                    }
-
-
+//                    if (isEdited == 1) {
+//                        total = auxTotal;
+//                    }
+//
+//                    if (total ==  auxTotal) {
+//                        $('.alert-edited').hide();
+//                    }
 
 
-                    var parking    = data.costes.parking;
-
-
-                    if (promo == 0) {
+                    if (data.promotion == 0) {
                         $('.book_owned_comments').empty();
                     }else{
-                        $('.book_owned_comments').empty().append('(PROMOCIÓN 3x2 DESCUENTO : -'+ promo +' €)');
+                        $('.book_owned_comments').empty().append('(PROMOCIÓN 3x2 DESCUENTO : '+ data.promotion +' €)');
                     }
 
-                    
-                    $('.total').val( parseFloat(total) );
-                    $('.cost').val( parseFloat(costeTotal) );
-                    total = $('.total').val();
-                    
-                    $('.costApto').val( parseFloat(costeApto) );
-                    $('.costParking').val( parseFloat(parking) );
 
-
-                    var beneficio = total - costeTotal;
-                    $('.beneficio').empty;
-                    $('.beneficio').val(beneficio);
-                    beneficio_ = (beneficio / total)*100
-                    $('.beneficio-text').empty();
-                    $('.beneficio-text').html(beneficio_.toFixed(0)+"%");
+                    $('.total').val(data.calculated.total_price);
+                    $('.cost').val(data.calculated.total_cost);
+                    $('.costApto').val(data.costes.book);
+                    $('.costParking').val(data.costes.parking);
+                    $('.beneficio').val(data.calculated.profit);
+                    $('.beneficio-text').html(data.calculated.profit_percentage + '%');
 
                     <?php if ($update == 1): ?>
                         // saveAllChanges();
                     <?php endif; ?>
-                    
+
                 });
-                
+
                 $('.loading-div').hide();
-                                
+
             }
         }
 
-        
+
 
     };
 
@@ -234,7 +233,7 @@
             var res2 = arrayDates[1].replace("Abr", "Apr");
             var date2 = new Date(res2);
             var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
             $('.nigths').val(diffDays);
 
             calculate();
@@ -242,7 +241,7 @@
         });
 
 
-        $('#newroom').change(function(event){ 
+        $('#newroom').change(function(event){
 
             var room = $('#newroom').val();
             var pax  = parseFloat($('.pax').val());
@@ -256,7 +255,7 @@
                         $('.personas-antiguo').empty();
                     }
                 });
-            }       
+            }
 
 
             var dataLuxury = $('option:selected', this).attr('data-luxury');;
@@ -274,7 +273,7 @@
             calculate();
         });
 
-        $('.pax').change(function(event){ 
+        $('.pax').change(function(event){
 
             var room     = $('#newroom').val();
             var real_pax = $('.real_pax').val();
@@ -284,7 +283,7 @@
                 $(this).attr('selected',false);
             });
             $('.real_pax option[value='+pax+']').attr('selected','selected');
-            
+
 
             if (room != "") {
                 $.get('/admin/apartamentos/getPaxPerRooms/'+room).done(function( data ){
@@ -301,18 +300,23 @@
             calculate();
         });
 
-        $('.parking').change(function(event){ 
+        $('.parking').change(function(event){
             calculate();
         });
 
-        $('.type_luxury').change(function(event){ 
+        $('.type_luxury').change(function(event){
             calculate();
         });
 
-        $('.agencia').change(function(event){ 
+        $('.agencia').change(function(event){
             calculate(1);
         });
-        $('.promociones').change(function(event){ 
+
+        $('.agency').change(function(event){
+            calculate();
+        });
+
+        $('.promociones').change(function(event){
             calculate(2);
             $('.content_book_owned_comments').show();
             $('.content_image_offert').toggle();
@@ -358,7 +362,7 @@
 
             $('.cost').val(cost);
             // $('.content_book_owned_comments').show();
-            
+
         });
 
 
@@ -383,7 +387,7 @@
         });
 
         <?php if ($update == 1): // Datepicker and more for update book?>
-            
+
             $('#fianza').click(function(event) {
                 $('.content-fianza').toggle(function() {
                     $('#fianza').css('background-color', '#f55753');
@@ -393,7 +397,7 @@
 
             });
 
-            $('.cobrar').click(function(event){ 
+            $('.cobrar').click(function(event){
                 var id = $(this).attr('data-id');
                 var date = $('.fecha-cobro').val();
                 var importe = $('.importe').val();
@@ -406,12 +410,12 @@
                         window.location.reload();
                     });
                 }
-                
+
             });
 
-                
+
             $('.editable').change(function(event) {
-                var id = $(this).attr('data-id');               
+                var id = $(this).attr('data-id');
                 var importe = $(this).val();
                 console.log(id);
                 $.get('/admin/pagos/update', {  id: id, importe: importe}, function(data) {
@@ -428,7 +432,7 @@
                 $.get('/admin/clientes/save', { id: id,  name: name, email: email,phone: phone}, function(data) {
                         $('.notification-message').val(data);
                         document.getElementById("boton").click();
-                        setTimeout(function(){ 
+                        setTimeout(function(){
                             $('.pgn-wrapper .pgn .alert .close').trigger('click');
                              }, 1000);
                 });
@@ -438,7 +442,7 @@
                 $('.guardar').show();
             }, function() {
                 $('.guardar').hide();
-            });  
+            });
 
             $('.status').change(function(event) {
                 $('.content-alert-success').hide();
@@ -457,13 +461,13 @@
                 }
 
                 if (status == 5) {
-                    
-                    
 
-                    $('#contentEmailing').empty().load('/admin/reservas/ansbyemail/'+id);  
+
+
+                    $('#contentEmailing').empty().load('/admin/reservas/ansbyemail/'+id);
                     $('#btnEmailing').trigger('click');
 
-                       
+
                 }else{
                     $.get('/admin/reservas/changeStatusBook/'+id, { status:status }, function(data) {
                         if (data.status == 'danger') {
@@ -487,7 +491,7 @@
                                 allow_dismiss: true,
                                 delay: 60000,
                                 timer: 60000,
-                            }); 
+                            });
                         } else {
                             $.notify({
                                 title: '<strong>'+data.title+'</strong>, ',
@@ -509,9 +513,9 @@
                                 z_index: 1031,
                                 delay: 5000,
                                 timer: 1500,
-                            }); 
+                            });
                         }
-                    }); 
+                    });
                }
 
             });
@@ -551,7 +555,7 @@
 
                 var url        = $('#updateForm').attr('action');
 
-                
+
 
 
                 $.post( url , { _token: _token,
@@ -582,7 +586,7 @@
                                 comments: comments,
                                 promociones: promociones,
                                 book_comments: book_comments,
-                                book_owned_comments: book_owned_comments }, 
+                                book_owned_comments: book_owned_comments },
                 function(data) {
 
                     if (data.status == 'danger') {
@@ -606,7 +610,7 @@
                             allow_dismiss: true,
                             delay: 60000,
                             timer: 60000,
-                        }); 
+                        });
                     } else {
                         $.notify({
                             title: '<strong>'+data.title+'</strong>, ',
@@ -629,7 +633,7 @@
                             allow_dismiss: true,
                             delay: 1000,
                             timer: 1500,
-                        }); 
+                        });
                     }
 
 
@@ -638,12 +642,12 @@
                     }
 
                 });
-                
 
-            }); 
+
+            });
 
             $('textarea[name="comments"],textarea[name="book_comments"], textarea[name="book_owned_comments"]').change(function(event) {
-                
+
                 var value = $(this).val();
                 var type = $(this).attr('data-type');
                 var book = $(this).attr('data-idBook');
@@ -677,7 +681,7 @@
 
             });
 
-           
+
 
         <?php endif ?>
 
