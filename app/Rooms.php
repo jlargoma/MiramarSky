@@ -43,7 +43,6 @@ class Rooms extends Model
     const CLEANING_MAX_PRICE = 100;
     const CLEANING_MAX_COST = 70;
 
-
 	public function book()
     {
         return $this->hasMany('\App\Book', 'id', 'room_id');

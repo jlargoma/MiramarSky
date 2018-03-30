@@ -194,9 +194,9 @@
                     if (data.promotion == 0) {
                         $('.book_owned_comments').empty();
                     }else{
-                        $('.book_owned_comments').empty().append('(PROMOCIÓN 3x2 DESCUENTO : '+ data.promotion +' €)');
-                    }
 
+                        $('.book_owned_comments').empty().append('(PROMOCIÓN 3x2 DESCUENTO : '+ parseInt(data.totales.promotion) +' €)');
+                    }
 
                     $('.total').val(data.calculated.total_price);
                     $('.cost').val(data.calculated.total_cost);
