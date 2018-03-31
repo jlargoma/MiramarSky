@@ -44,10 +44,10 @@
 	                        Apto
 	                    </th>
 	                    <th class ="text-center bg-complete text-white" >
-	                        Propietario
+							Cliente
 	                    </th>
-	                    <th class ="text-center bg-complete text-white" >
-	                        Cliente
+	                    <th class ="text-center bg-complete text-white" style="width: 150px;">
+	                        DNI
 	                    </th>
 	                    <th class ="text-center bg-complete text-white" >
 	                        Importe
@@ -72,11 +72,12 @@
 	                            <b><?php echo $book->room->nameRoom ?></b>
 	                        </td>
 	                        <td class="text-center font-s16">
-	                            <?php echo ucfirst($book->room->user->name) ?>
-	                        </td>
-	                        <td class="text-center font-s16">
 	                            <b><?php echo ucfirst($book->customer->name) ?></b>
 	                        </td>
+
+							<td class="text-center font-s16">
+                                <?php echo ucfirst($book->customer->DNI) ?>
+							</td>
 	                        <td class="text-center font-s16">
 								<?php $costeProp = $book->cost_apto + $book->cost_park + $book->cost_lujo?>
 	                            <b><?php echo number_format(($costeProp/2), 2, ',','.') ?>€</b>
