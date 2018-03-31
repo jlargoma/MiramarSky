@@ -440,27 +440,22 @@ class BookController extends Controller
     //Funcion para actualizar la reserva
     public function saveUpdate(Request $request, $id)
     {
+        $computedData = json_decode($request->input('computed_data'));
         $aux = str_replace('Abr', 'Apr', $request->input('fechas'));
 
         $date = explode('-', $aux);
 
         $start = Carbon::createFromFormat('d M, y' , trim($date[0]))->format('d/m/Y');
         $finish = Carbon::createFromFormat('d M, y' , trim($date[1]))->format('d/m/Y');
-        $book = new \App\Book();
-        // 4 es el extra correspondiente a el obsequio
-        $extraPrice = (int) \App\Extras::find(4)->price;
-        $extraCost  = (int) \App\Extras::find(4)->cost;
-
 
         $customer          = \App\Customers::find($request->input('customer_id'));
         $customer->DNI     = ($request->input('dni'))?$request->input('dni'):"";
         $customer->address = ($request->input('address'))?$request->input('address'):"";
         $customer->country = ($request->input('country'))?$request->input('country'):"";
         $customer->city    = ($request->input('city'))?$request->input('city'):"";
-
         $customer->save();
-        $book = \App\Book::find($id);
 
+        $book = \App\Book::find($id);
         if ( $book->existDateOverrride($start,$finish,$request->input('newroom'), $id) ) {
             
             $room = \App\Rooms::find($request->input('newroom'));
@@ -468,6 +463,7 @@ class BookController extends Controller
             $book->user_id             = Auth::user()->id;
             $book->customer_id         = $request->input('customer_id');
             $book->room_id             = $request->input('newroom');
+
             $book->start               = Carbon::createFromFormat('d/m/Y',$start);
             $book->finish              = Carbon::createFromFormat('d/m/Y',$finish);
             $book->comment             = ltrim($request->input('comments'));
@@ -476,56 +472,38 @@ class BookController extends Controller
             $book->pax                 = $request->input('pax');
             $book->real_pax            = $request->input('real_pax');
             $book->nigths              = $request->input('nigths');
-            if ($room->sizeApto == 1) {
 
-                $book->sup_limp      = (int) \App\Extras::find(2)->price;
-                $book->cost_limp     = (int) \App\Extras::find(2)->cost;
+            $book->sup_park = $computedData->totales->parking;
+            $book->sup_limp = $computedData->totales->limp;
+            $book->cost_limp = $computedData->costes->limp;
+            $book->cost_park = $computedData->costes->parking;
 
-                $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths'));
-                $book->cost_park   = $request->input('costParking');//$this->getCostParkController($request->input('parking'),$request->input('nigths'));
-            } elseif($room->sizeApto == 2) {
-
-                $book->sup_limp      = (int) \App\Extras::find(1)->price;
-                $book->cost_limp     = (int) \App\Extras::find(1)->cost;
-
-                $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths'));
-                $book->cost_park   = $request->input('costParking');//$this->getCostParkController($request->input('parking'),$request->input('nigths'));
-            }elseif($room->sizeApto == 3 || $room->sizeApto == 4){
-
-                $book->sup_limp      =  (int) \App\Extras::find(3)->price;
-                $book->cost_limp     = (int) \App\Extras::find(3)->cost;
-
-                $book->sup_park    = $this->getPricePark($request->input('parking'), $request->input('nigths'),$room->id , 3);
-                $book->cost_park   = $request->input('costParking');//$this->getCostParkController($request->input('parking'),$request->input('nigths'), 3);
-
-            }
             $book->type_park     = $request->input('parking');
             $book->agency        = $request->input('agency');
-            $book->PVPAgencia    = $request->input('agencia');
+            $book->PVPAgencia    = $request->input('agencia') ?: 0;
 
-            // $book->cost_park     = $request->input('costParking');
-
-            $book->type_luxury     = $request->input('type_luxury');                
-            $book->sup_lujo      = $this->getPriceLujo($request->input('type_luxury'));
-            $book->cost_lujo     = $this->getCostLujo($request->input('type_luxury'));
+            $book->type_luxury   = $request->input('type_luxury');
+            $book->sup_lujo      = $computedData->totales->lujo;
+            $book->cost_lujo     = $computedData->costes->lujo;
 
             $book->cost_apto     = $request->input('costApto');
             $book->cost_total    = $request->input('cost');
 
-            $book->total_price   = $request->input('total');
-            $book->real_price    = $this->getPriceBook($start,$finish,$request->input('pax'),$request->input('newroom')) + $book->sup_park + $book->sup_lujo+ $book->sup_limp;
-
             $book->total_ben     = $request->input('beneficio');
             $book->extra         = $request->input('extra');
-            $book->inc_percent   = round(($book->profit / $book->total_price) * 100, 2 );
-            $book->ben_jorge     = $book->getJorgeProfit();
-            $book->ben_jaime     = $book->getJaimeProfit();
 
-            $book->extraPrice    = $extraPrice;
-            $book->extraCost     = $extraCost;
+            $book->extraPrice    = Rooms::GIFT_PRICE;
+            $book->extraCost     = Rooms::GIFT_COST;
             $book->schedule      = $request->input('schedule');
             $book->scheduleOut   = $request->input('scheduleOut');
             $book->promociones   = ($request->input('promociones'))?$request->input('promociones'):0;
+
+            $book->total_price   = $request->input('total'); // This can be modified in frontend
+            $book->real_price    = $computedData->calculated->real_price; // This cannot be modified in frontend
+            $book->inc_percent   = $book->profit_percentage;
+            $book->ben_jorge     = $book->getJorgeProfit();
+            $book->ben_jaime     = $book->getJaimeProfit();
+
             if ($book->save()) {
 
                 if ( $book->room->isAssingToBooking() ) {
@@ -1566,12 +1544,13 @@ class BookController extends Controller
     public function getAllDataToBook(Request $request)
     {
         $room  = \App\Rooms::with('extra')->find($request->room);
+
         $promotion = $request->promotion ? floatval($request->promotion) : 0;
 
-        $data['costes']['parking']  = $this->getCostPark($request->park, $request->noches, $room->id);
+        $data['costes']['parking'] = $this->getCostPark($request->park, $request->noches, $room->id);
+        $data['costes']['book'] = $this->getCostBook($request->start ,$request->finish, $request->pax, $request->room);
         $data['costes']['lujo'] = $this->getCostLujo($request->lujo);
         $data['costes']['limp']  = (int) $room->cost_cleaning;
-        $data['costes']['book'] = $this->getCostBook($request->start ,$request->finish, $request->pax, $request->room);
         $data['costes']['obsequio'] = Rooms::GIFT_COST;
         $data['costes']['agencia'] = (float)$request->agencyCost;
 
@@ -1582,14 +1561,15 @@ class BookController extends Controller
         $data['totales']['obsequio'] = Rooms::GIFT_PRICE;
         $data['totales']['promotion'] = -$promotion;
 
-        $totalPrice = array_sum($data['totales']);
+        $totalPrice = $request->total_price != '' ? floatval($request->total_price) : array_sum($data['totales']);
         $totalCost = array_sum($data['costes']);
         $profit = $totalPrice - $totalCost;
-        
+
         $data['calculated']['total_price'] = $totalPrice;
         $data['calculated']['total_cost'] = $totalCost;
         $data['calculated']['profit'] = $profit;
         $data['calculated']['profit_percentage'] = round(($profit / $totalPrice) * 100);
+        $data['calculated']['real_price'] = array_sum($data['totales']);
 
         return $data;
     }

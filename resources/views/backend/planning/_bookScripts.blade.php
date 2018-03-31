@@ -85,7 +85,7 @@
         });
     <?php endif ?>
 
-    function calculate( notModifyPrice = 0){
+    function calculate(data) {
         var room       = $('#newroom').val();
         var pax        = $('.pax').val();
         var park       = $('.parking').val();
@@ -149,6 +149,10 @@
                 var agencyCost = $('.agencia').val();
                 var promotion = $('.promociones').val();
                 var agencyType = $('.agency').val();
+                var totalPrice = $('.total').val();
+                var totalCost = $('.cost').val();
+                var apartmentCost = $('.costApto').val();
+                var parkingCost = $('.costParking').val();
 
                 $.get('/admin/api/reservas/getDataBook', {
                     start: start,
@@ -161,43 +165,19 @@
                     agencyCost: agencyCost,
                     promotion: promotion,
                     agencyType: agencyType,
+                    total_price: data && data.hasOwnProperty('pvp') ? data.pvp : ''
                 }).done(function( data ) {
                     console.log(data);
 
-//                    var promo = $('.promociones').val();
-//                    if (promo == "") {
-//                        promo = 0;
-//                    }
-//
-//                    var agencia = $('.agencia').val();
-//                    if (agencia == "") {
-//                        agencia = 0;
-//                    }
-
-//                    var costeApto  = data.costes.book;
-//                    var costeTotal = costeApto + data.costes.parking + data.costes.lujo + data.costes.limp + data.costes.agencia;
-//
-//                    var total      = data.totales.book + data.totales.parking + data.totales.lujo +  data.totales.limp;
-
+                    $('#computed-data').html(JSON.stringify(data));
 
                     var isEdited = $('.total').attr('data-edited');
 
-//                    if (isEdited == 1) {
-//                        total = auxTotal;
-//                    }
-//
-//                    if (total ==  auxTotal) {
-//                        $('.alert-edited').hide();
-//                    }
-
-
-                    if (data.promotion == 0) {
+                    if (data.totales.promotion == 0) {
                         $('.book_owned_comments').empty();
-                    }else{
-
-                        $('.book_owned_comments').empty().append('(PROMOCIÓN 3x2 DESCUENTO : '+ parseInt(data.totales.promotion) +' €)');
+                    } else {
+                        $('.book_owned_comments').html('(PROMOCIÓN 3x2 DESCUENTO : '+ Math.abs(data.totales.promotion) +' €)');
                     }
-
                     $('.total').val(data.calculated.total_price);
                     $('.cost').val(data.calculated.total_cost);
                     $('.costApto').val(data.costes.book);
@@ -205,19 +185,10 @@
                     $('.beneficio').val(data.calculated.profit);
                     $('.beneficio-text').html(data.calculated.profit_percentage + '%');
 
-                    <?php if ($update == 1): ?>
-                        // saveAllChanges();
-                    <?php endif; ?>
-
                 });
-
                 $('.loading-div').hide();
-
             }
         }
-
-
-
     };
 
     $(document).ready(function() {
@@ -323,15 +294,30 @@
 
         });
 
+        $('.total').focus(function(event) {
+            // If this doesn't have main data attached
+            if ($(this).attr('old-data') === undefined) {
+                // We attach it to know that has been modified
+                $(this).attr('old-data', $(this).val());
+            }
+        });
+
+        function appendChangedPvp() {
+            // Show modified PVP in case of this existing
+            oldPrice = $('.total').attr('old-data');
+            newPrice = $('.total').val();
+            calculate({"pvp": newPrice});
+            if (oldPrice == newPrice) {
+                $('#modified-price-block').empty();
+            } else {
+                $('#modified-price-block').empty().append(
+                        'PVP real: <span id="real-price">' + $('.total').attr('old-data') + '</span><br/>' +
+                        'PVP modificado: <span id="modified-price">' + $('.total').val() + '</span>'
+                );
+            }
+        }
         $('.total').change(function(event) {
-            var price = $(this).val();
-            var cost = $('.cost').val();
-            var beneficio = (parseFloat(price) - parseFloat(cost));
-            // console.log(beneficio);
-            $('.alert-edited').show();
-            $('.total').attr('data-edited', '1');
-            $('.beneficio').empty;
-            $('.beneficio').val(beneficio);
+            appendChangedPvp()
         });
 
         $('.country').change(function(event) {
@@ -343,28 +329,6 @@
 
             }
         });
-
-        $('.costApto').change(function(event) {
-
-            var cost     = 0;
-            var costLujo = 0;
-            var lujo     = $('select[name=type_luxury]').val();
-
-            if (lujo == 1) {
-                costLujo = 40;
-            } else if(lujo == 2 && lujo == 3) {
-                costLujo = 0;
-            }else{
-                costLujo == 20;
-            }
-
-            cost = parseFloat( $(this).val() ) + parseFloat( $('.costParking').val() ) + costLujo;
-
-            $('.cost').val(cost);
-            // $('.content_book_owned_comments').show();
-
-        });
-
 
         $('.only-numbers').keydown(function (e) {
             // Allow: backspace, delete, tab, escape, enter and .
@@ -551,6 +515,7 @@
                 var comments            = $('textarea[name="comments"]').val();
                 var book_comments       = $('textarea[name="book_comments"]').val();
                 var book_owned_comments = $('textarea[name="book_owned_comments"]').val();
+                var computed_data     = $('#computed-data').html();
 
 
                 var url        = $('#updateForm').attr('action');
@@ -586,7 +551,9 @@
                                 comments: comments,
                                 promociones: promociones,
                                 book_comments: book_comments,
-                                book_owned_comments: book_owned_comments },
+                                book_owned_comments: book_owned_comments,
+                                computed_data: computed_data
+                },
                 function(data) {
 
                     if (data.status == 'danger') {

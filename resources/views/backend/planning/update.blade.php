@@ -1,8 +1,8 @@
-@extends('layouts.admin-master') 
- 
+@extends('layouts.admin-master')
+
 @section('title') Administrador de reservas MiramarSKI @endsection
 
-@section('externalScripts') 
+@section('externalScripts')
     <link href="/assets/css/font-icons.css" rel="stylesheet" type="text/css" />
 
     <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
@@ -29,9 +29,9 @@
 
         }
         #overlay{
-            position: absolute;       
+            position: absolute;
             left: 0;
-            
+
             opacity: .1;
             background-color: blue;
             height: 35px;
@@ -72,12 +72,12 @@
 @endsection
 
 @section('content')
-<?php 
-    use \Carbon\Carbon; 
+<?php
+    use \Carbon\Carbon;
 ?>
-<?php   
-    use App\Classes\Mobile; 
-    $mobile = new Mobile(); 
+<?php
+    use App\Classes\Mobile;
+    $mobile = new Mobile();
 ?>
 <div class="container-fluid padding-10 sm-padding-10">
     <div class="row">
@@ -90,14 +90,14 @@
                         @else
                             <a href="{{ url()->previous() }}" class=" m-b-10" style="min-width: 10px!important">
                         @endif
-                        
+
                     @else
                         <a href="{{ url('/admin/reservas') }}" class=" m-b-10" style="min-width: 10px!important">
                     @endif
                         <img src="{{ asset('/img/miramarski/iconos/close.png') }}" style="width: 20px" />
                     </a>
                     <h4 class="" style="line-height: 1; letter-spacing: -1px">
-                        <?php echo "<b>".strtoupper($book->customer->name)."</b>" ?> creada el 
+                        <?php echo "<b>".strtoupper($book->customer->name)."</b>" ?> creada el
                         <?php $fecha = Carbon::createFromFormat('Y-m-d H:i:s' ,$book->created_at);?><br>
                         <span class="font-s18"><?php echo $fecha->copy()->formatLocalized('%d %B %Y')." Hora: ".$fecha->copy()->format('H:m')?></span>
                     </h4>
@@ -111,7 +111,7 @@
                         <div class="col-md-2 col-xs-3 text-center push-10">
                             <?php $text = "Hola, esperamos que hayas disfrutado de tu estancia con nosotros."."\n"."Nos gustaria que valorarás, para ello te dejamos este link : https://www.apartamentosierranevada.net/encuesta-satisfaccion/".base64_encode($book->id);
                                 ?>
-                                    
+
                             <a href="whatsapp://send?text=<?php echo $text; ?>" data-action="share/whatsapp/share" data-original-title="Enviar encuesta de satisfacción" data-toggle="tooltip">
                                 <i class="fa fa-share-square fa-3x" aria-hidden="true"></i><br>Encuesta
                             </a>
@@ -126,7 +126,7 @@
                         <h2 class="text-center" style="font-size: 18px; line-height: 18px; margin: 0;">
                             <?php $text = "En este link podrás realizar el pago de la señal por el 25% del total."."\n"." En el momento en que efectúes el pago, te legará un email confirmando tu reserva - https://www.apartamentosierranevada.net/reservas/stripe/pagos/".base64_encode($book->id);
                             ?>
-                                
+
                             <a href="whatsapp://send?text=<?php echo $text; ?>" data-action="share/whatsapp/share" >
                                 <i class="fa fa-eye fa-3x" aria-hidden="true"></i>
                             </a>
@@ -134,17 +134,17 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-xs-12 content-guardar" style="padding: 20px 0;">
-                    <div id="overlay" style="display: none;"></div>  
+                    <div id="overlay" style="display: none;"></div>
                     <select class="status form-control minimal" data-id="<?php echo $book->id ?>" name="status" >
-                        <?php for ($i=1; $i <= 12; $i++): ?> 
+                        <?php for ($i=1; $i <= 12; $i++): ?>
                             <?php if ($i == 5 && $book->customer->email == ""): ?>
                             <?php else: ?>
-                                <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
+                                <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?>
                                 <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
                                 value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
                                     <?php echo $book->getStatus($i) ?>
-                                    
-                                </option>   
+
+                                </option>
                             <?php endif ?>
                         <?php endfor; ?>
                     </select>
@@ -161,7 +161,7 @@
                     </div>
                 @endif
             </div>
-            
+
         </div>
     </div>
     <?php if (!$mobile->isMobile()): ?>
@@ -175,6 +175,7 @@
                     </div>
                 </div>
                 <form role="form" id="updateForm"  action="{{ url('/admin/reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post" >
+                    <textarea id="computed-data" style="display: none"></textarea>
                     <!-- DATOS DEL CLIENTE -->
                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                     <input type="hidden" name="customer_id" value="<?php echo $book->customer->id ?>">
@@ -186,32 +187,32 @@
                         </div>
 
                         <div class="col-md-4 push-10">
-                            <label for="name">Nombre</label> 
+                            <label for="name">Nombre</label>
                             <input class="form-control cliente" type="text" name="nombre" value="<?php echo $book->customer->name ?>" data-id="<?php echo $book->customer->id ?>">
                         </div>
                         <div class="col-md-4 push-10">
-                            <label for="email">Email</label> 
-                            <input class="form-control cliente" type="email" name="email" value="<?php echo $book->customer->email ?>" data-id="<?php echo $book->customer->id ?>">  
+                            <label for="email">Email</label>
+                            <input class="form-control cliente" type="email" name="email" value="<?php echo $book->customer->email ?>" data-id="<?php echo $book->customer->id ?>">
                         </div>
                         <div class="col-md-4 push-10">
                             <label for="phone">Telefono</label>
                             <?php if ( $book->customer->phone == 0): ?>
                                  <?php  $book->customer->phone = "" ?>
-                             <?php endif ?> 
-                            <input class="form-control only-numbers cliente" type="text" name="phone" value="<?php echo $book->customer->phone ?>" data-id="<?php echo $book->customer->id ?>"> 
-                        </div> 
+                             <?php endif ?>
+                            <input class="form-control only-numbers cliente" type="text" name="phone" value="<?php echo $book->customer->phone ?>" data-id="<?php echo $book->customer->id ?>">
+                        </div>
                     </div>
                     <div class="col-xs-12 bg-white">
                         <div class="col-md-3 col-xs-12 push-10">
-                            <label for="dni">DNI</label> 
+                            <label for="dni">DNI</label>
                             <input class="form-control cliente" type="text" name="dni" value="<?php echo $book->customer->DNI ?>">
                         </div>
                         <div class="col-md-3 col-xs-12 push-10">
-                            <label for="address">DIRECCION</label> 
+                            <label for="address">DIRECCION</label>
                             <input class="form-control cliente" type="text" name="address"  value="<?php echo $book->customer->address ?>">
                         </div>
                         <div class="col-md-3 col-xs-12 push-10">
-                            <label for="country">PAÍS</label> 
+                            <label for="country">PAÍS</label>
                             <select class="form-control country minimal"  name="country">
                                 <option>--Seleccione país --</option>
                                 <?php foreach (\App\Countries::orderBy('code', 'ASC')->get() as $country): ?>
@@ -220,7 +221,7 @@
                                     </option>
                                 <?php endforeach;?>
                             </select>
-                        </div>  
+                        </div>
                         <div class="col-md-3 col-xs-12 push-10 content-cities">
                             <label for="city">CIUDAD</label>
                             <select class="form-control city minimal"  name="city">
@@ -231,7 +232,7 @@
                                     </option>
                                 <?php endforeach;?>
                             </select>
-                        </div>  
+                        </div>
                     </div>
                     <!-- DATOS DE LA RESERVA -->
                     <div class="col-md-12 col-xs-12 bg-white padding-block" style="padding-bottom:0">
@@ -243,11 +244,11 @@
                         <div class="col-md-4 push-10">
                             <label>Entrada</label>
                             <div class="input-prepend input-group">
-                                <?php   
+                                <?php
                                     $start1 = Carbon::createFromFormat('Y-m-d', $book->start)->format('d M, y');
-                                    // $start1 = str_replace('Apr','Abr',$start->format('d M, y')); 
-                                    $finish1 = Carbon::createFromFormat('Y-m-d', $book->finish)->format('d M, y'); 
-                                    // $finish1 = str_replace('Apr','Abr',$finish->format('d M, y')); 
+                                    // $start1 = str_replace('Apr','Abr',$start->format('d M, y'));
+                                    $finish1 = Carbon::createFromFormat('Y-m-d', $book->finish)->format('d M, y');
+                                    // $finish1 = str_replace('Apr','Abr',$finish->format('d M, y'));
                                 ?>
 
                                 <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;" value="<?php echo $start1 ;?> - <?php echo $finish1 ?>" readonly="">
@@ -258,7 +259,7 @@
                             <label>Noches</label>
                             <input type="number" class="form-control nigths" name="nigths" style="width: 100%" disabled value="<?php echo $book->nigths ?>">
                             <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%" value="<?php echo $book->nigths ?>">
-                        </div> 
+                        </div>
                         <div class="col-md-2 col-xs-3" >
                             <label>Pax</label>
                             <select class=" form-control pax minimal"  name="pax">
@@ -270,7 +271,7 @@
                                     <?php endif; ?>
                                 <?php endfor;?>
                             </select>
-                            
+
                         </div>
                         <div class="col-md-2 col-xs-3 " >
                             <label style="color: red">Pax-Real</label>
@@ -302,7 +303,7 @@
                                 <?php for ($i=1; $i <= 4 ; $i++): ?>
                                     <option value="<?php echo $i ?>" {{ $book->type_park == $i ? 'selected' : '' }}><?php echo $book->getParking($i) ?></option>
                                 <?php endfor;?>
-                            </select>    
+                            </select>
                         </div>
                         <div class="col-md-2 col-xs-6 push-20">
                             <label>Sup. Lujo</label>
@@ -324,7 +325,7 @@
                                             <?php else: ?>
                                                 0<?php echo $i ?>
                                             <?php endif ?>
-                                            
+
                                         <?php else: ?>
                                             <?php echo $i ?>
                                         <?php endif ?>
@@ -344,7 +345,7 @@
                                             <?php else: ?>
                                                 0<?php echo $i ?>
                                             <?php endif ?>
-                                            
+
                                         <?php else: ?>
                                             <?php echo $i ?>
                                         <?php endif ?>
@@ -363,7 +364,7 @@
                                     <?php endfor;?>
                                 </select>
                             </div>
-                            <div class="col-md-7 col-xs-12 push-10">                                                        
+                            <div class="col-md-7 col-xs-12 push-10">
                                 <label>Cost Agencia</label>
                                 <?php if ($book->PVPAgencia == 0.00): ?>
                                     <input type="number" step='0.01' class="agencia form-control" name="agencia" value="">
@@ -371,7 +372,7 @@
                                     <input type="number" step='0.01' class="agencia form-control" name="agencia" value="<?php echo $book->PVPAgencia ?>">
                                 <?php endif ?>
                             </div>
-                        
+
                         </div>
                         <div class="col-md-2 col-xs-4 not-padding">
                             <label>promoción 3x2</label>
@@ -382,14 +383,10 @@
                                 <img src="/pages/oferta.png" style="width: 90px;">
                             </div>
                         <?php endif ?>
-                        
+
                         <div class="col-md-12 col-xs-12 push-20 not-padding">
                             <div class="col-md-3 col-xs-12 text-center boxtotales" style="background-color: #0c685f;">
-                               
-                                <span class="alert-edited text-white" style="position: absolute; top: 5px; right:5px; z-index: 500; <?php if ($book->real_price == $book->total_price):  echo "display: none; "; endif ?>">
-                                    <i class="fa  fa-hand-o-down fa-2x"></i>
-                                </span>
-                                <label class="font-w800 text-white" for="">TOTAL</label>
+                                <label class="font-w800 text-white" for="">PVP</label>
                                 <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" name="total" {{--value="<?php echo $book->total_price ?>"--}} data-edited="<?php if ($book->real_price != $book->total_price):  echo '1'; else: echo '0'; endif ?>">
                             </div>
                             <?php if (Auth::user()->role == "admin"): ?>
@@ -411,7 +408,7 @@
                                     <div class="beneficio-text font-w400 font-s18 white"><?php /*echo number_format($book->inc_percent,0)."%" */?></div>
                                 </div>
                             <?php endif ?>
-                                                 
+
                         </div>
                         <div class="col-md-12 col-xs-12 push-20 not-padding">
                             <p class="personas-antiguo" style="color: red">
@@ -419,12 +416,18 @@
                                     Van menos personas que la ocupacion minima del apartamento.
                                 <?php endif ?>
                             </p>
+                            <p id="modified-price-block">
+                                @if ($book->real_price != $book->total_price)
+                                    PVP real:  <span id="real-price">{{ $book->real_price }} </span><br/>
+                                    PVP modificado: <span id="modified-price">{{ $book->total_price }} </span>
+                                @endif
+                            </p>
                         </div>
                         <div class="col-md-12 col-xs-12 not-padding text-left">
                             <p class="precio-antiguo font-s18">
                                 <!--El precio asignado-<b>El precio asignado <?php echo $book->total_price ?> y el precio de tarifa es <?php echo $book->real_price ?></b> -->
                             </p>
-                        </div> 
+                        </div>
                         <div class="col-xs-12 bg-white padding-block">
                             <div class="col-md-4 col-xs-12">
                                 <label>Comentarios Cliente </label>
@@ -442,7 +445,7 @@
                         <div class="row push-40 bg-white padding-block">
                             <div class="col-md-4 col-md-offset-4 text-center">
                                 <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;">Guardar</button>
-                            </div>  
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -459,7 +462,7 @@
                             <tr>
                                 <th class ="text-center bg-success text-white" style="width:25%">fecha</th>
                                 <th class ="text-center bg-success text-white" style="width:25%">importe</th>
-                                <th class ="text-center bg-success text-white" style="width:30%">Tipo</th>                           
+                                <th class ="text-center bg-success text-white" style="width:30%">Tipo</th>
                                 <th class ="text-center bg-success text-white" style="width:20%">comentario</th>
                                 <th class ="text-center bg-success text-white" style="width:20%">Eliminar</th>
 
@@ -471,9 +474,9 @@
                                 <?php foreach ($payments as $payment): ?>
                                     <tr>
                                         <td class ="text-center p-t-25">
-                                            <?php 
+                                            <?php
                                             $fecha = new Carbon($payment->datePayment);
-                                            echo $fecha->format('d-m-Y') 
+                                            echo $fecha->format('d-m-Y')
                                             ?>
                                         </td>
                                         <td class ="text-center">
@@ -513,12 +516,12 @@
                                             <?php endfor ;?>
                                         </select>
                                     </td>
-                                    <td class ="text-center"> 
+                                    <td class ="text-center">
                                         <input class="comment" type="text" name="comment"  style="width: 100%;text-align: center;border-style: none">
                                     </td>
                                     <td>
                                     </td>
-                                    
+
                                 </tr>
                             <?php else: ?>
                                 <tr>
@@ -544,10 +547,10 @@
                                             <?php endfor ;?>
                                      </select>
                                  </td>
-                                 <td class ="text-center"> 
+                                 <td class ="text-center">
                                     <input class="comment m-t-5" type="text" name="comment"  style="width: 100%;text-align: center;border-style: none">
                                 </td>
-                                
+
                                 </tr>
                             <?php endif ?>
                             <tr>
@@ -562,17 +565,17 @@
                                     <td class="text-center" ><p style="color:black;font-weight: bold;font-size:15px">0€</p></td>
                                     <td class="text-left" colspan="2">Al corriente de pago</td>
                                 <?php endif ?>
-                                
+
                             </tr>
                         </tbody>
                     </table>
-                    <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="GUARGAR" data-id="<?php echo $book->id ?>" style="width: 30%;min-height: 50px">                            
+                    <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="GUARGAR" data-id="<?php echo $book->id ?>" style="width: 30%;min-height: 50px">
                 </div>
 
                 <div class="row push-20 content-link-stripe" style="margin-top: 20px; border-top: 2px dashed #000; border-bottom: 2px dashed #000; padding: 20px 15px;">
 
                     @include('backend.planning._links', ['import' => 0])
-                    
+
                 </div>
 
                 <div class="row">
@@ -590,7 +593,7 @@
                                     <a class="btn btn-primary btn-lg" href="{{ url('/admin/reservas/fianzas/cobrar/'.$book->id) }}"> RECOGER FIANZA</a>
                                 </div>
                             <?php endif ?>
-                            
+
                         <?php endif ?>
                     </div>
                     <?php if ($book->type_book == 2): ?>
@@ -611,7 +614,7 @@
                                     </div>
                                 </div>
                             <?php endif ?>
-                            
+
                         </div>
                     <?php endif; ?>
                 </div>
@@ -639,6 +642,7 @@
                 </div>
                 <!-- DATOS DE LA RESERVA -->
                 <form role="form" id='updateForm' action="{{ url('/admin/reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post" >
+                    <textarea id="computed-data" style="display:none"></textarea>
                     <!-- DATOS DEL CLIENTE -->
                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                     <input type="hidden" name="customer_id" value="<?php echo $book->customer->id ?>">
@@ -650,30 +654,30 @@
                         </div>
 
                         <div class="col-xs-12 push-10">
-                            <label for="name">Nombre</label> 
+                            <label for="name">Nombre</label>
                             <input class="form-control cliente" type="text" name="nombre" value="<?php echo $book->customer->name ?>" data-id="<?php echo $book->customer->id ?>">
                         </div>
                         <div class="col-xs-12 push-10">
-                            <label for="email">Email</label> 
-                            <input class="form-control cliente" type="email" name="email" value="<?php echo $book->customer->email ?>" data-id="<?php echo $book->customer->id ?>">  
+                            <label for="email">Email</label>
+                            <input class="form-control cliente" type="email" name="email" value="<?php echo $book->customer->email ?>" data-id="<?php echo $book->customer->id ?>">
                         </div>
                         <?php if ( $book->customer->phone == 0): ?>
                              <?php  $book->customer->phone = "" ?>
-                         <?php endif ?> 
+                         <?php endif ?>
                         <div class="col-xs-12 push-10">
-                            <label for="phone">Telefono</label> 
-                            <input class="form-control only-numbers cliente" type="text" name="phone" value="<?php echo $book->customer->phone ?>" data-id="<?php echo $book->customer->id ?>"> 
-                        </div>  
+                            <label for="phone">Telefono</label>
+                            <input class="form-control only-numbers cliente" type="text" name="phone" value="<?php echo $book->customer->phone ?>" data-id="<?php echo $book->customer->id ?>">
+                        </div>
                         <div class="col-xs-12 push-10">
-                            <label for="dni">DNI</label> 
+                            <label for="dni">DNI</label>
                             <input class="form-control cliente" type="text" name="dni" value="<?php echo $book->customer->DNI ?>">
                         </div>
                         <div class="col-xs-12 push-10">
-                            <label for="address">DIRECCION</label> 
+                            <label for="address">DIRECCION</label>
                             <input class="form-control cliente" type="text" name="address"  value="<?php echo $book->customer->address ?>">
                         </div>
                         <div class="col-xs-12 push-10">
-                            <label for="country">PAÍS</label> 
+                            <label for="country">PAÍS</label>
                             <select class="form-control country minimal"  name="country">
                                 <option>--Seleccione país --</option>
                                 <?php foreach (\App\Countries::orderBy('code', 'ASC')->get() as $country): ?>
@@ -682,7 +686,7 @@
                                     </option>
                                 <?php endforeach;?>
                             </select>
-                        </div>  
+                        </div>
                         <div class="col-xs-12 push-10 content-cities">
                             <label for="city">CIUDAD</label>
                             <select class="form-control city minimal"  name="city">
@@ -693,7 +697,7 @@
                                     </option>
                                 <?php endforeach;?>
                             </select>
-                        </div>  
+                        </div>
                     </div>
 
                     <!-- DATOS DE LA RESERVA -->
@@ -707,7 +711,7 @@
                             <label>Entrada</label>
                             <?php $start1 = Carbon::createFromFormat('Y-m-d', $book->start)->format('d M, y');
                                     // $start1 = str_replace('Apr','Abr',$start->format('d M, y')); ?>
-                            <?php $finish1 = Carbon::createFromFormat('Y-m-d', $book->finish)->format('d M, y'); 
+                            <?php $finish1 = Carbon::createFromFormat('Y-m-d', $book->finish)->format('d M, y');
                                     // $finish1 = str_replace('Apr','Abr',$finish->format('d M, y')); ?>
 
                             <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;" value="<?php echo $start1 ;?> - <?php echo $finish1 ?>" readonly="">
@@ -716,7 +720,7 @@
                             <label>Noches</label>
                             <input type="number" class="form-control nigths" name="nigths" style="width: 100%" disabled value="<?php echo $book->nigths ?>">
                              <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%" value="<?php echo $book->nigths ?>">
-                        </div> 
+                        </div>
                         <div class="col-md-1 col-xs-4 push-20 ">
                             <label>Pax</label>
                             <select class=" form-control pax minimal"  name="pax">
@@ -725,7 +729,7 @@
                                         <?php echo $i ?>
                                     </option>
                                 <?php endfor;?>
-                            </select> 
+                            </select>
                             <label class="m-t-20" style="color: red">Pax-Real</label>
                             <select class=" form-control real_pax minimal"  name="real_pax">
                                 <?php for ($i=1; $i <= 14 ; $i++): ?>
@@ -774,7 +778,7 @@
                                             <?php else: ?>
                                                 0<?php echo $i ?>
                                             <?php endif ?>
-                                            
+
                                         <?php else: ?>
                                             <?php echo $i ?>
                                         <?php endif ?>
@@ -794,7 +798,7 @@
                                             <?php else: ?>
                                                 0<?php echo $i ?>
                                             <?php endif ?>
-                                            
+
                                         <?php else: ?>
                                             <?php echo $i ?>
                                         <?php endif ?>
@@ -814,7 +818,7 @@
                                     <?php endfor;?>
                                 </select>
                             </div>
-                            <div class="col-md-6 col-xs-6 push-10">                                                        
+                            <div class="col-md-6 col-xs-6 push-10">
                                 <label>Cost Agencia</label>
                                 <?php if ($book->PVPAgencia == 0.00): ?>
                                     <input type="number" step='0.01' class="agencia form-control" name="agencia" value="">
@@ -832,17 +836,14 @@
                                 <img src="/pages/oferta.png" style="width: 90px;">
                             </div>
                         <?php endif ?>
-                       
+
                         <div class="col-md-8 col-xs-12 push-20 not-padding">
                             <div class="col-md-3 col-xs-12 text-center" style="background-color: #0c685f;">
-                               <span class="alert-edited text-white" style="position: absolute; top: 5px; right:5px; z-index: 500; <?php if ($book->real_price == $book->total_price):  echo "display: none; "; endif ?>">
-                                    <i class="fa  fa-hand-o-down fa-2x"></i>
-                                </span>
-                                <label class="font-w800 text-white" for="">TOTAL</label>
+                                <label class="font-w800 text-white" for="">PVP</label>
                                 <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" name="total" {{-- value="<?php echo $book->total_price ?>" --}}data-edited="<?php if ($book->real_price != $book->total_price):  echo '1'; else: echo '0'; endif ?>">
                             </div>
                             <?php if (Auth::user()->role == "admin"): ?>
-                                
+
                                 <div class="col-md-3 col-xs-6 text-center" style="background: #91cf81;">
                                     <label class="font-w800 text-white" for="">COSTE APTO</label>
                                     <input type="number" step='0.01' class="form-control costApto m-t-10 m-b-10 white" name="costApto" {{-- value="<?php echo $book->cost_apto ?>"--}}>
@@ -862,8 +863,8 @@
                                         <?php echo number_format($book->inc_percent,0)."%" ?>
                                    </div>
                                 </div>
-                            <?php endif ?>  
-                                                 
+                            <?php endif ?>
+
                         </div>
 
                     <div class="col-md-8 col-xs-12 push-20 not-padding">
@@ -877,7 +878,7 @@
                         <p class="precio-antiguo font-s18">
                             <!-- <b>El precio asignado <?php echo $book->total_price ?> y el precio de tarifa es <?php echo $book->real_price ?></b> -->
                         </p>
-                    </div> 
+                    </div>
                     <div class="col-xs-12 bg-white padding-block">
                         <div class="col-md-4 col-xs-12">
                             <label>Comentarios Cliente </label>
@@ -895,7 +896,7 @@
                     <div class="row push-40 bg-white padding-block">
                         <div class="col-md-4 col-md-offset-4 col-xs-12 text-center">
                             <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;">Guardar reserva</button>
-                        </div>  
+                        </div>
                     </div>
                 </form>
             </div>
@@ -916,7 +917,7 @@
                                     <a class="btn btn-primary btn-lg" href="{{ url('/admin/reservas/fianzas/cobrar/'.$book->id) }}" style="color: #fff;background-color: #337ab7;border-color: #2e6da4;"> RECOGER FIANZA</a>
                                 </div>
                             <?php endif ?>
-                            
+
                         <?php endif ?>
                     </div>
                     <?php if ($book->type_book == 2): ?>
@@ -937,7 +938,7 @@
                                     </div>
                                 </div>
                             <?php endif ?>
-                            
+
                         </div>
                     <?php endif; ?>
                 </div>
@@ -975,13 +976,13 @@
                            </thead>
                            <tbody>
                                <?php $total = 0; ?>
-                                  
+
                                    <?php foreach ($payments as $payment): ?>
                                        <tr>
                                            <td class ="text-center">
-                                               <?php 
+                                               <?php
                                                    $fecha = new Carbon($payment->datePayment);
-                                                   echo $fecha->format('d-m-Y') 
+                                                   echo $fecha->format('d-m-Y')
                                                ?>
                                            </td>
                                            <td class ="text-center">
@@ -989,7 +990,7 @@
                                            </td>
                                            <td class ="text-center"><?php echo $typecobro->getTypeCobro($payment->type) ?> </td>
                                            <td class ="text-center"><?php echo $payment->comment ?></td>
-                                           
+
                                            <td>
                                                <a href="{{ url('/admin/reservas/deleteCobro/')}}/<?php echo $payment->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Cobro" onclick="return confirm('¿Quieres Eliminar el obro?');">
                                                    <i class="fa fa-trash"></i>
@@ -1008,7 +1009,7 @@
                                        <td class ="text-center">
                                        <input class="importe form-control" type="number" name="importe"  style="width: 100%;text-align: center;">
                                        </td>
-                                       
+
                                        <td class="text-center">
                                            <select class="form-control type_payment minimal" name="type_payment"  tabindex="-1" aria-hidden="true">
                                                <?php for ($i=0; $i < 4 ; $i++): ?>
@@ -1023,24 +1024,24 @@
                                                <?php endfor ;?>
                                            </select>
                                        </td>
-                                       <td class ="text-center"> 
+                                       <td class ="text-center">
                                        <input class="comment form-control" type="text" name="comment"  style="width: 100%;text-align: center;min-height: 35px">
                                        </td>
-                                       
+
                                    </tr>
                            </tbody>
                        </table>
-                    </div>  
+                    </div>
                     <div class="col-xs-12 text-center push-40">
-                        <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="Cobrar" data-id="<?php echo $book->id ?>" style="width: 50%;min-height: 50px"> 
+                        <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="Cobrar" data-id="<?php echo $book->id ?>" style="width: 50%;min-height: 50px">
                     </div>
             </div>
             <div class="row push-20 content-link-stripe" style="margin-top: 20px; border-top: 2px dashed #000; border-bottom: 2px dashed #000; padding: 20px 15px;">
 
                 @include('backend.planning._links', ['import' => 0])
-                
+
             </div>
-            
+
             <div class="row">
                 @include('backend.stripe.stripe', ['bookTocharge' => $book])
             </div>
