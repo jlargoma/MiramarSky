@@ -121,12 +121,7 @@ Route::get('admin/reservas/api/getTableData' ,['middleware' => 'auth', 'uses' =>
 Route::get('admin/reservas/api/lastsBooks' ,['middleware' => 'auth', 'uses' =>  'BookController@getLastBooks']);
 Route::get('admin/reservas/api/calendarBooking' ,['middleware' => 'auth', 'uses' =>  'BookController@getCalendarBooking']);
 Route::get('admin/reservas/api/alertsBooking' ,['middleware' => 'auth', 'uses' =>  'BookController@getAlertsBooking']);
-
-
 Route::get('admin/api/reservas/getDataBook' ,['middleware' => 'auth', 'uses' =>  'BookController@getAllDataToBook']);
-
-
-
 Route::get('admin/reservas/api/sendSencondEmail' ,['middleware' => 'auth', 'uses' =>  'BookController@sendSencondEmail']);
 Route::get('/admin/reservas/fianzas/cobrar/{id}' ,['middleware' => 'auth', 'uses' =>  'BookController@cobrarFianzas']);
 Route::get('admin/cambiarCostes', 'BookController@changeCostes');
@@ -146,11 +141,20 @@ Route::get('admin/clientes/save',['middleware' => 'auth', 'uses' => 'CustomersCo
 Route::post('admin/clientes/create',['middleware' => 'auth', 'uses' => 'CustomersController@create']);
 Route::get('admin/clientes/export-excel' , ['middleware' => 'auth', 'uses' => 'CustomersController@createExcel']);
 Route::get('admin/customers/importExcelData' , ['middleware' => 'auth', 'uses' => 'CustomersController@createExcel']);
-Route::get('admin/clientes/delete/{id}',['middleware' => 'auth', 'uses' => 'CustomersController@delete']); 
+Route::get('admin/clientes/delete/{id}',['middleware' => 'auth', 'uses' => 'CustomersController@delete']);
 
+Route::get('admin/cliente/dni/{idCustomer}/update/{dni}' ,function ($idCustomer,  $dni){
+
+    $customer = \App\Customers::find($idCustomer);
+    $customer->DNI = $dni;
+
+    if ($customer->save()){
+        return "OK";
+    }
+
+});
 
 // Rooms
-
 Route::get('admin/apartamentos' , ['middleware' => 'auth', 'uses' => 'RoomsController@index']);
 Route::get('admin/apartamentos/new', ['middleware' => 'auth', 'uses' => 'RoomsController@newRoom']);
 Route::get('admin/apartamentos/new-type', ['middleware' => 'auth', 'uses' => 'RoomsController@newTypeRoom']);
@@ -296,8 +300,13 @@ Route::get('admin/perdidas-ganancias/{year?}' ,['middleware' => 'authAdmin', 'us
 Route::get('admin/facturas/' ,['middleware' => 'authAdmin', 'uses' => 'InvoicesController@index']);
 Route::get('admin/facturas/ver/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@view']);
 Route::get('admin/facturas/descargar/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@download']);
+Route::get('admin/facturas/descargar-todas' ,['middleware' => 'auth', 'uses' => 'InvoicesController@downloadAll']);
+Route::get('admin/facturas/descargar-todas/{year}/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@downloadAllProp']);
 
 Route::get('admin/facturas/solicitudes/{year?}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@solicitudes']);
+Route::get('admin/facturas/isde/create' ,['middleware' => 'auth', 'uses' => 'InvoicesController@createIsde']);
+Route::post('admin/facturas/isde/create' ,['middleware' => 'auth', 'uses' => 'InvoicesController@createIsde']);
+
 Route::get('admin/facturas/isde/{year?}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@isde']);
 Route::get('admin/facturas/isde/ver/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@viewIsde']);
 Route::get('admin/facturas/isde/descargar/{id}' ,['middleware' => 'auth', 'uses' => 'InvoicesController@downloadIsde']);
@@ -479,6 +488,17 @@ Route::group(['middleware' => 'auth'], function () {
 		
 		
 	});
+
+    Route::get('/admin/sales/updateExtraCost/{id}/{importe}', function ($id, $importe)
+    {
+        $book = \App\Book::find($id);
+        $book->extraCost = $importe;
+        if ($book->save()) {
+            return "OK";
+        }
+
+
+    });
 
 	
 

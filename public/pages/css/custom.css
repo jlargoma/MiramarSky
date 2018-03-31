@@ -490,3 +490,8 @@ input.beneficio,
       font-size: 50px!important;
     font-weight: 800;
 }
+.selectCash.selected{
+  border: 2px solid #48b0f7;
+  line-height: 1;
+  padding: 10px 15px;
+}

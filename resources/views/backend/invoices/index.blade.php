@@ -44,12 +44,22 @@
             </div>
         </div>
 
-        <div class="col-md-6 col-xs-12 text-left push-30">
-            <h2 class="font-w300" style="margin: 0">LISTADO DE <span class="font-w800">FACTURA</span></h2>
+        <div class="col-md-6 col-xs-12 text-left">
+            <?php $sum = 0;?>
+            <?php foreach ($books as $key => $book): ?>
+                <?php $sum += ($book->total_price/2); ?>
+            <?php endforeach ?>
+            <h2 class="font-w300" style="margin: 0">LISTADO DE <span class="font-w800">FACTURA (<?php echo number_format($sum, 0, ',','.')?> €) </span></h2>
+        </div>
+        <div class="col-md-3 pull-right col-xs-12 text-left">
+            <a href="{{ url('admin/facturas/descargar-todas') }}" class="text-white btn btn-md btn-primary">
+                Descargar Todas
+            </a>
         </div>
         <div class="col-xs-12 bg-white">
             <div class="row">
-                <div class="pull-right push-20">
+
+                <div class="col-md-3 pull-right push-20">
                     <div class="col-xs-12">
                         <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar...">
                     </div>
@@ -66,15 +76,16 @@
                             <th class ="text-center bg-complete text-white" >
                                 Apto
                             </th>
-                            <th class ="text-center bg-complete text-white" >
-                                Propietario
-                            </th>
+
                             <th class ="text-center bg-complete text-white" >
                                 Cliente
                             </th>
                             <th class ="text-center bg-complete text-white" >
+                                DNI
+                            </th>
+                            <th class ="text-center bg-complete text-white" >
                                 Importe
-                            </th> 
+                            </th>
                             <th class ="text-center bg-complete text-white" >
                                 Acciones
                             </th>
@@ -94,11 +105,12 @@
                                 <td class="text-center font-s16">
                                     <b><?php echo $book->room->nameRoom ?></b>
                                 </td>
-                                <td class="text-center font-s16">
-                                    <?php echo ucfirst($book->room->user->name) ?>
-                                </td>
+
                                 <td class="text-center font-s16">
                                     <b><?php echo ucfirst($book->customer->name) ?></b>
+                                </td>
+                                <td class="text-center font-s16">
+                                    <input type="text" class="form-control dni-customer" idCustomer="<?php echo $book->customer->id; ?>" value="<?php echo $book->customer->DNI ?>">
                                 </td>
                                 <td class="text-center font-s16">
                                     <b><?php echo number_format($book->total_price/2, 2, ',','.') ?>€</b>
@@ -126,10 +138,21 @@
 @endsection
 
 @section('scripts')
-<script src="/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
-<script src="/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
-<script src="/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
-<script src="/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
-<script type="text/javascript" src="assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
- <script src="/assets/js/datatables.js" type="text/javascript"></script>
+    <script src="/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
+    <script src="/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script src="/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
+    <script src="/assets/js/datatables.js" type="text/javascript"></script>
+    <script>
+        $('.dni-customer').change(function () {
+
+            var idCustomer = $(this).attr('idCustomer');
+            var dni = $(this).val();
+            $.get( "/admin/cliente/dni/"+ idCustomer +"/update/"+dni, function( data ) {
+                console.log(data);
+            });
+
+        });
+    </script>
 @endsection

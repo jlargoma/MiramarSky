@@ -318,12 +318,8 @@
                                 <?php endif ?>
 
                             </td>
-                            <td class="text-center coste" style="border-left: 1px solid black;">
-                                <?php if ( $book->extraCost > 0): ?>
-                                    <?php echo number_format($book->extraCost,0,',','.') ?>€
-                                <?php else: ?>
-                                    --
-                                <?php endif ?>
+                            <td class="text-center coste <?php if($book->extraCost == 0){ echo 'alert-limp'; }?>" style="border-left: 1px solid black;">
+                                <input class="updateExtraCost <?php if($book->extraCost == 0){ echo 'alert-limp'; }?>" type="number" value="<?php echo round($book->extraCost); ?>" data-idBook="<?php echo $book->id; ?>"/>
                             </td>
                             <td class="text-center coste bf" style="border-left: 1px solid black;">
                                 <span data-toggle="tooltip" data-placement="top" data-original-title="{{ number_format($book->stripeCostRaw, 2,',','.') }} €">
@@ -598,12 +594,8 @@
                                     <td class="text-center coste bf">
                                         <?php echo number_format($book->PVPAgencia,0,',','.') ?>€
                                     </td>
-                                    <td class="text-center coste" style="border-left: 1px solid black;">
-                                        <?php if ( $book->extraCost > 0): ?>
-                                            <?php echo number_format($book->extraCost,0,',','.') ?>€
-                                        <?php else: ?>
-                                            --
-                                        <?php endif ?>
+                                    <td class="text-center coste <?php if($book->extraCost == 0){ echo 'alert-limp'; }?>" style="border-left: 1px solid black;">
+                                        <input class="updateExtraCost <?php if($book->extraCost == 0){ echo 'alert-limp'; }?>" type="number" value="<?php echo round($book->extraCost); ?>" data-idBook="<?php echo $book->id; ?>"/>
                                     </td>
                                     <td class="text-center coste bf" style="border-left: 1px solid black;">
                                        <span data-toggle="tooltip" data-placement="top" data-original-title="{{ number_format($book->stripeCostRaw, 2,',','.') }} €">

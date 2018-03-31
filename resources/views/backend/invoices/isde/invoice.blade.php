@@ -123,12 +123,6 @@ setlocale(LC_TIME, "es_ES");
 
                                             <table class="table table bordered">
                                                 <tbody>
-                                                    <tr>
-                                                        <td><label>B.imponible:</label><span class="pull-right"> <b><?php echo number_format(($invoice->total_price - ($invoice->total_price * 0.10)), 2, ',','.') ?>€</b></span></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><label>Impuestos:</label><span class="pull-right"> <b><?php echo number_format( ($invoice->total_price * 0.10), 2, ',','.') ?>€</b></span></td>
-                                                    </tr>
                                                     <tr style="background-color:#eee;">
                                                         <td><label>TOTAL:</label><span class="pull-right"> <b><?php echo number_format($invoice->total_price, 2, ',','.') ?>€</b></span></td>
                                                     </tr>

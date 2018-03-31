@@ -18,8 +18,14 @@
 	    	<span class="font-w800"><?php echo $date->copy()->format('Y') ?></span> - <span class="font-w800"><?php echo $date->copy()->addYear()->format('Y') ?></span>
 	    </h2>
 	</div>
+
 	<div class="col-xs-12 bg-white">
 	    <div class="row">
+			<div class="col-md-3 col-xs-12 text-left">
+				<a href="{{ url('admin/facturas/descargar-todas/'.$date->copy()->format('Y').'/'.$room->id) }}" class="text-white btn btn-md btn-primary">
+					Descargar Todas
+				</a>
+			</div>
 	        <div class="pull-right push-20">
 	            <div class="col-xs-12">
 	                <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar...">

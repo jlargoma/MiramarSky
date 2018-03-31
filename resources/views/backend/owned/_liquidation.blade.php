@@ -35,17 +35,18 @@
 						</h5>
 					</div>
 				</div>
-				<div class="col-md-3 not-padding" >
-					<div class="col-xs-12  bg-complete push-0">
-						<h5 class="text-left white">
-							Importe
-						</h5>
-					</div>
-				</div>
+
 				<div class="col-md-3 not-padding" >
 					<div class="col-xs-12   bg-complete push-0">
 						<h5 class="text-left white">
 							Concepto
+						</h5>
+					</div>
+				</div>
+				<div class="col-md-3 not-padding" >
+					<div class="col-xs-12  bg-complete push-0">
+						<h5 class="text-left white">
+							Importe
 						</h5>
 					</div>
 				</div>
@@ -66,8 +67,13 @@
 							<h5 class="text-left"><?php echo Carbon::createFromFormat('Y-m-d',$pago->date)->format('d-m-Y')?></h5>
 						</div>
 					</div>
-					<div class="col-md-2 not-padding" >
-						<div class="col-xs-12push-0">
+					<div class="col-md-3 not-padding" >
+						<div class="col-xs-12 push-0">
+							<h5 class="text-left"><?php echo $pago->concept ?></h5>
+						</div>
+					</div>
+					<div class="col-md-3 not-padding" >
+						<div class="col-xs-12 push-0">
 							<?php
                             	$divisor = 0;
 								if(preg_match('/,/', $pago->PayFor)){
@@ -82,15 +88,11 @@
                                     $divisor = 1;
 								}
 							?>
-							<h5 class="text-left"><?php echo number_format(($pago->import / $divisor),2,',','.') ?>€</h5>
+							<h5 class="text-center"><?php echo number_format(($pago->import / $divisor),2,',','.') ?>€</h5>
 						</div>
 					</div>
-					<div class="col-md-5 not-padding" >
-						<div class="col-xs-12 push-0">
-							<h5 class="text-left"><?php echo $pago->concept ?></h5>
-						</div>
-					</div>
-					<div class="col-md-2 not-padding">
+
+					<div class="col-md-3 not-padding">
 						<div class="col-xs-12 push-0" style="">
 							<h5 class="text-left text-danger"><?php echo number_format($total - $sumPagos,2,',','.'); ?>€</h5>
 						</div>
@@ -138,8 +140,8 @@
 					<thead>
 						
 						<th class="bg-complete text-white text-center"><i class="fa fa-calendar" aria-hidden="true"></i></th>
-						<th class="bg-complete text-white text-center"><i class="fa fa-money" aria-hidden="true"></i></th>
 						<th class="bg-complete text-white text-center">Tipo</th>
+						<th class="bg-complete text-white text-center"><i class="fa fa-money" aria-hidden="true"></i></th>
 						<th class="bg-complete text-white text-center">Pend</th>
 					</thead>
 					<tbody>
@@ -150,6 +152,9 @@
 							<td class="text-center"  style="padding: 8px!important">
 								<?php $date = Carbon::createFromFormat('Y-m-d',$pago->date) ?>
 								<?php echo $date->format('d')?>-<?php echo $date->format('M')?>-<?php echo $date->format('y')?>
+							</td>
+							<td class="text-center" style="padding: 8px!important">
+                                <?php echo $pago->concept ?>
 							</td>
 							<td class="text-center" style="padding: 8px!important">
                                 <?php
@@ -168,9 +173,7 @@
                                 ?>
 								<h5 class="text-left"><?php echo number_format(($pago->import / $divisor),2,',','.') ?>€</h5>
 							</td>
-							<td class="text-center" style="padding: 8px!important">
-								<?php echo $pago->concept ?>
-							</td>
+
 
 							<td class="text-center" style="padding: 8px!important">
 								<?php echo number_format($total-$pagototal,2,',','.'); ?>€

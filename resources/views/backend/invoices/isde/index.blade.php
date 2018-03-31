@@ -49,7 +49,12 @@
         </div>
         <div class="col-xs-12 bg-white">
             <div class="row">
-                <div class="pull-right push-20">
+                <div class="col-md-3  col-xs-12  push-20">
+                    <div class="col-xs-12">
+                        <a class="text-white btn btn-md btn-success" href="{{ url('/admin/facturas/isde/create') }}"><i class="fa fa-plus"></i> Factura en blanco</a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-12 pull-right push-20">
                     <div class="col-xs-12">
                         <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar...">
                     </div>
@@ -64,16 +69,16 @@
                                 # Fact
                             </th>
                             <th class ="text-center bg-complete text-white" >
-                                Propietario
+                                Cliente
                             </th>
                             <th class ="text-center bg-complete text-white" >
-                                Cliente
+                                DNI
                             </th>
                             <th class ="text-center bg-complete text-white" >
                                 Importe
                             </th> 
                             <th class ="text-center bg-complete text-white" >
-                                Acciones
+                                Acciones&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             </th>
                         </tr>
                     </thead>
@@ -86,17 +91,21 @@
                                     <?php echo Carbon::CreateFromFormat('Y-m-d',$invoice->date)->formatLocalized('%d %B %Y'); ?>
                                 </td>
                                 <td class="text-center font-s16">
-                                    <b>#SN<?php echo Carbon::CreateFromFormat('Y-m-d',$invoice->date)->format('Y'); ?>/<?php echo str_pad($invoice->id, 5, "0", STR_PAD_LEFT);  ?></b>
-                                </td>
-                                <td class="text-center font-s16">
-                                    <?php if( $invoice->name_business != "" ): ?>
-                                        <b><?php echo ucfirst($invoice->name_business) ?></b>
-                                    <?php else: ?>
-                                        ---------
-                                    <?php endif;?>
+                                    <?php
+                                        $date = Carbon::CreateFromFormat('Y-m-d',$invoice->date);
+                                        if ($date->copy()->format('n') >= 9) {
+                                            $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+                                        }else{
+                                            $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+                                        }
+                                    ?>
+                                    <b>#SN<?php echo $date->copy()->format('y'); ?>-<?php echo $date->copy()->addYear()->format('y'); ?>/<?php echo str_pad($invoice->id, 5, "0", STR_PAD_LEFT);  ?></b>
                                 </td>
                                 <td class="text-center font-s16">
                                     <?php echo ucfirst($invoice->name) ?>
+                                </td>
+                                <td class="text-center font-s16">
+                                    <?php echo ucfirst($invoice->nif) ?>
                                 </td>
                                 <td class="text-center font-s16">
                                     <b><?php echo number_format($invoice->total_price, 2, ',','.') ?>€</b>
@@ -108,6 +117,8 @@
                                         <a href="{{ url ('/admin/facturas/isde/ver') }}/<?php echo base64_encode($invoice->id) ?>" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i>
                                         </a>
                                         <a href="{{ url ('/admin/facturas/isde/descargar') }}/<?php echo base64_encode($invoice->id) ?>" class="btn btn-xs btn-success">    <i class="fa fa-download"></i>
+                                        </a>
+                                        <a href="{{ url ('/admin/facturas/isde/delete') }}/<?php echo base64_encode($invoice->id) ?>" class="btn btn-xs btn-danger">    <i class="fa fa-times"></i>
                                         </a>
                                     </div>
                                 </td>

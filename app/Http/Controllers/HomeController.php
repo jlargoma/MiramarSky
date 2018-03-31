@@ -336,7 +336,7 @@ class HomeController extends Controller
         $finish = Carbon::createFromFormat('d M, y' , trim($date[1]));
         $countDays = $finish->diffInDays($start);
 
-        
+
         if ($request->input('apto') == '2dorm' && $request->input('luxury') == 'si') {
            $roomAssigned = 115;
            $typeApto  = "2 DORM Lujo";
@@ -358,7 +358,7 @@ class HomeController extends Controller
            $roomAssigned = 144;
            $typeApto  = "CHALET los pinos";
            $limp = (int) \App\Extras::find(1)->price;
-        }elseif($request->input('apto') == '3dorm' && $request->input('luxury') == 'si'){
+        }elseif(($request->input('apto') == '3dorm' && $request->input('luxury') == 'si') || $request->input('apto') == '3dorm' && $request->input('luxury') == 'no'){
             /* Rooms para grandes capacidades */
            $roomAssigned = 149;
            $typeApto  = "3 DORM Lujo";
