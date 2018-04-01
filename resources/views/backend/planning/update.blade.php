@@ -867,11 +867,17 @@
 
                         </div>
 
-                    <div class="col-md-8 col-xs-12 push-20 not-padding">
+                    <div class="col-md-8 col-xs-12 push-20 not-padding text-center">
                         <p class="personas-antiguo" style="color: red">
                             <?php if ($book->pax < $book->room->minOcu): ?>
                                 Van menos personas que la ocupacion minima del apartamento.
                             <?php endif ?>
+                        </p>
+                        <p id="modified-price-block">
+                            @if ($book->real_price != $book->total_price)
+                                PVP real:  <span id="real-price">{{ $book->real_price }} </span><br/>
+                                PVP modificado: <span id="modified-price">{{ $book->total_price }} </span>
+                            @endif
                         </p>
                     </div>
                     <div class="col-md-8 col-xs-12 not-padding text-left">
