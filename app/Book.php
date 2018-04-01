@@ -678,18 +678,31 @@ class Book extends Model
     }
 
     /**
+     * Trick applied here avoiding null results on DB
+     *
      * @return mixed
      */
     public function getProfitPercentageRawAttribute()
     {
+        if ($this->total_price == '0.00') {
+            return 0;
+        }
+
         return ($this->profit * 100) / $this->total_price;
     }
 
     /**
+     * Trick applied here avoiding null results on DB
+     *
+     *
      * @return mixed
      */
     public function getProfitPercentageAttribute()
     {
+        if ($this->total_price == '0.00') {
+            return 0;
+        }
+
         return round(($this->profit * 100) / $this->total_price);
     }
 }
