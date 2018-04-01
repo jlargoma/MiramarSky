@@ -153,6 +153,7 @@
                 var totalCost = $('.cost').val();
                 var apartmentCost = $('.costApto').val();
                 var parkingCost = $('.costParking').val();
+                var book_id = $('#book-id').val();
 
                 $.get('/admin/api/reservas/getDataBook', {
                     start: start,
@@ -165,7 +166,8 @@
                     agencyCost: agencyCost,
                     promotion: promotion,
                     agencyType: agencyType,
-                    total_price: data && data.hasOwnProperty('pvp') ? data.pvp : ''
+                    total_price: data && data.hasOwnProperty('pvp') ? data.pvp : '',
+                    book_id: book_id
                 }).done(function( data ) {
                     console.log(data);
 
@@ -184,7 +186,16 @@
                     $('.costParking').val(data.costes.parking);
                     $('.beneficio').val(data.calculated.profit);
                     $('.beneficio-text').html(data.calculated.profit_percentage + '%');
+                    $('#real-price').html(data.calculated.real_price);
+                    $('#modified-price').html(data.aux.price_modified);
 
+                    if (data.calculated.real_price < data.aux.price_modified) {
+                        $('#arrow-price-modification').fadeIn().removeClass().addClass('fa fa-arrow-up');
+                    } else if (data.calculated.real_price == data.aux.price_modified) {
+                        $('#arrow-price-modification').fadeOut();
+                    } else {
+                        $('#arrow-price-modification').fadeIn().removeClass().addClass('fa fa-arrow-down');
+                    }
                 });
                 $('.loading-div').hide();
             }
@@ -302,19 +313,24 @@
             }
         });
 
+        $('td[class="price-references"]').click(function() {
+            $('.total').val($(this).html());
+            $('.total').trigger("change");
+        });
+
         function appendChangedPvp() {
             // Show modified PVP in case of this existing
-            oldPrice = $('.total').attr('old-data');
+//            oldPrice = $('.total').attr('old-data');
             newPrice = $('.total').val();
             calculate({"pvp": newPrice});
-            if (oldPrice == newPrice) {
-                $('#modified-price-block').empty();
-            } else {
-                $('#modified-price-block').empty().append(
-                        'PVP real: <span id="real-price">' + $('.total').attr('old-data') + '</span><br/>' +
-                        'PVP modificado: <span id="modified-price">' + $('.total').val() + '</span>'
-                );
-            }
+//            if (oldPrice == newPrice) {
+//                $('#modified-price-block').empty();
+//            } else {
+//                $('#modified-price-block').empty().append(
+//                        'PVP real: <span id="real-price">' + $('.total').attr('old-data') + '</span><br/>' +
+//                        'PVP modificado: <span id="modified-price">' + $('.total').val() + '</span>'
+//                );
+//            }
         }
         $('.total').change(function(event) {
             appendChangedPvp()
