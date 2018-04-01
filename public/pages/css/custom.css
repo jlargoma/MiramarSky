@@ -490,8 +490,35 @@ input.beneficio,
       font-size: 50px!important;
     font-weight: 800;
 }
+
+.price-references {
+  font-weight: bold;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.price-references-table {
+  width:100%;
+  text-align: left;
+}
+
+.price-references-table td {
+  padding: 1rem !important;
+}
+
+.fa-arrow-up {
+  font-size: 8rem;
+  color: limegreen;
+}
+
+.fa-arrow-down {
+  font-size: 8rem;
+  color: red;
+}
+
 .selectCash.selected{
   border: 2px solid #48b0f7;
   line-height: 1;
   padding: 10px 15px;
 }
+

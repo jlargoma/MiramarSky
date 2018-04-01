@@ -12,6 +12,7 @@ use Mail;
 use Illuminate\Routing\Controller;
 use App\Classes\Mobile;
 use App\Rooms;
+use App\Book;
 
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
@@ -1545,6 +1546,10 @@ class BookController extends Controller
     {
         $room  = \App\Rooms::with('extra')->find($request->room);
 
+        if ($request->book_id) {
+            $book = Book::find($request->book_id);
+        }
+
         $promotion = $request->promotion ? floatval($request->promotion) : 0;
 
         $data['costes']['parking'] = $this->getCostPark($request->park, $request->noches, $room->id);
@@ -1559,9 +1564,27 @@ class BookController extends Controller
         $data['totales']['limp'] = (int) $room->price_cleaning;
         $data['totales']['book'] = $this->getPriceBook($request->start, $request->finish, $request->pax, $request->room);
         $data['totales']['obsequio'] = Rooms::GIFT_PRICE;
-        $data['totales']['promotion'] = -$promotion;
+        $data['totales']['promotion'] = -$promotion; // Promotion is not a cost, is a discount on customer final price
 
-        $totalPrice = $request->total_price != '' ? floatval($request->total_price) : array_sum($data['totales']);
+        // If the request comes with a price to show use it
+        if (!empty($request->total_price)) {
+            $totalPrice = $request->total_price;
+            $data['aux']['price_modified'] = $totalPrice;
+        } else {
+            // Otherwise if the request has a book and book exists
+            if (isset($book)) {
+                // If the price has been modified in DB already
+                if ($book->total_price != $book->real_price) {
+                    $totalPrice = $book->total_price - $promotion;
+                    $data['aux']['price_modified'] = $totalPrice;
+                } else {
+                    $totalPrice = array_sum($data['totales']);
+                }
+            } else {
+                $totalPrice = array_sum($data['totales']);
+            }
+        }
+
         $totalCost = array_sum($data['costes']);
         $profit = $totalPrice - $totalCost;
 

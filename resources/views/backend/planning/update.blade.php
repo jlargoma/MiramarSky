@@ -176,6 +176,7 @@
                 </div>
                 <form role="form" id="updateForm"  action="{{ url('/admin/reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post" >
                     <textarea id="computed-data" style="display: none"></textarea>
+                    <input id="book-id" type="hidden" name="book_id" value="{{ $book->id }}">
                     <!-- DATOS DEL CLIENTE -->
                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                     <input type="hidden" name="customer_id" value="<?php echo $book->customer->id ?>">
@@ -416,12 +417,29 @@
                                     Van menos personas que la ocupacion minima del apartamento.
                                 <?php endif ?>
                             </p>
-                            <p id="modified-price-block">
-                                @if ($book->real_price != $book->total_price)
-                                    PVP real:  <span id="real-price">{{ $book->real_price }} </span><br/>
-                                    PVP modificado: <span id="modified-price">{{ $book->total_price }} </span>
-                                @endif
-                            </p>
+                            @if ($book->real_price != $book->total_price)
+                                <div class="col-xs-9">
+                                    <table class="table-striped price-references-table">
+                                        <tbody>
+                                            <tr>
+                                                <td>PVP REAL GUARDADO EN BD</td>
+                                                <td class="price-references" id="saved-real-price">{{ $book->real_price }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>PVP MODIFICADO MANUALMENTE</td>
+                                                <td class="price-references" id="modified-price">{{ $book->total_price }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>PVP REAL GENERADO DINÁMICAMENTE</td>
+                                                <td class="price-references" id="real-price">{{ $book->real_price }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-xs-3">
+                                    <i id="arrow-price-modification"></i>
+                                </div>
+                            @endif
                         </div>
                         <div class="col-md-12 col-xs-12 not-padding text-left">
                             <p class="precio-antiguo font-s18">
@@ -643,6 +661,7 @@
                 <!-- DATOS DE LA RESERVA -->
                 <form role="form" id='updateForm' action="{{ url('/admin/reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post" >
                     <textarea id="computed-data" style="display:none"></textarea>
+                    <input id="book-id" type="hidden" name="book_id" value="{{ $book->id }}">
                     <!-- DATOS DEL CLIENTE -->
                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                     <input type="hidden" name="customer_id" value="<?php echo $book->customer->id ?>">
@@ -873,12 +892,29 @@
                                 Van menos personas que la ocupacion minima del apartamento.
                             <?php endif ?>
                         </p>
-                        <p id="modified-price-block">
-                            @if ($book->real_price != $book->total_price)
-                                PVP real:  <span id="real-price">{{ $book->real_price }} </span><br/>
-                                PVP modificado: <span id="modified-price">{{ $book->total_price }} </span>
-                            @endif
-                        </p>
+                        @if ($book->real_price != $book->total_price)
+                            <div class="col-xs-9">
+                                <table class="table-striped price-references-table">
+                                    <tbody>
+                                    <tr>
+                                        <td>PVP REAL GUARDADO EN BD</td>
+                                        <td class="price-references" id="saved-real-price">{{ $book->real_price }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>PVP MODIFICADO MANUALMENTE</td>
+                                        <td class="price-references" id="modified-price">{{ $book->total_price }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>PVP REAL GENERADO DINÁMICAMENTE</td>
+                                        <td class="price-references" id="real-price">{{ $book->real_price }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-xs-3">
+                                <i id="arrow-price-modification"></i>
+                            </div>
+                        @endif
                     </div>
                     <div class="col-md-8 col-xs-12 not-padding text-left">
                         <p class="precio-antiguo font-s18">
