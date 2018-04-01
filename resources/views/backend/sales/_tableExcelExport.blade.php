@@ -101,12 +101,7 @@
                     {{ $book->profit == 0 ? 0 : round($book->profit) }}
                 </td>
                 <td style="text-align: center;">
-                    <?php if ( $book->profit_percentage > 0): ?>
-                        <?php echo $book->profit_percentage,0 . " %"; ?>
-                    <?php else: ?>
-                        0
-                    <?php endif ?>
-
+                    <?php echo (int)$book->profit_percentage . ' %'; ?>
                 </td>
                 <td class="text-center coste bi " style="border-left: 1px solid black;">
                         {{ $book->costs == 0 ? 0 : $book->costs }}

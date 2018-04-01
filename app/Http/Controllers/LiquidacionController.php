@@ -2153,6 +2153,7 @@ class LiquidacionController extends Controller
             $excel->sheet('Liquidacion', function($sheet) use ($books){
                 $sheet
                     ->setColumnFormat(['F:L' => \PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00])
+                    ->setColumnFormat(['M' => \PHPExcel_Style_NumberFormat::FORMAT_NUMBER])
                     ->setColumnFormat(['N:W' => \PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00])
                     ->loadView('backend.sales._tableExcelExport', ['books' => $books]);
             });
