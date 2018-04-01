@@ -2150,13 +2150,11 @@ class LiquidacionController extends Controller
             
         }  
         Excel::create('Liquidacion '.$date->copy()->format('Y'), function($excel) use ($books) {
-
             $excel->sheet('Liquidacion', function($sheet) use ($books){
-
-                $sheet->setColumnFormat(['E' => '[$EUR ]#,##0.00_-'])
-                    ->loadView('backend.sales._tableExcelExport', ['books' => $books])
-                    ->setColumnFormat(['E' => '[$EUR ]#,##0.00_-']);
-
+                $sheet
+                    ->setColumnFormat(['F:L' => \PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00])
+                    ->setColumnFormat(['N:W' => \PHPExcel_Style_NumberFormat::FORMAT_NUMBER_00])
+                    ->loadView('backend.sales._tableExcelExport', ['books' => $books]);
             });
 
         })->download('xls');
