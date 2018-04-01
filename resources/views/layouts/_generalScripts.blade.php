@@ -199,6 +199,16 @@
 			}
 
 	    });
+	    $(".apto-3dorm").click(function(event) {
+
+            $("#luxury-yes").trigger('click');
+
+
+            $("#luxury-no").prop("disabled",true);
+            $("#luxury-no").hide();
+
+
+        });
 	    $(".apto-chlt").click(function(event) {
 
 	    	$("#luxury-no").trigger('click');

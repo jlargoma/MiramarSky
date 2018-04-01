@@ -516,3 +516,9 @@ input.beneficio,
   color: red;
 }
 
+.selectCash.selected{
+  border: 2px solid #48b0f7;
+  line-height: 1;
+  padding: 10px 15px;
+}
+

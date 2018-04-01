@@ -52,7 +52,15 @@
 		text-align: center;
 		border: 0px;
 	}
-	.updateLimp.alert-limp{
+	.updateExtraCost{
+		background-color: rgba(200,200,200,0.5)!important;
+		color: black;
+		width: 90%;
+		height: 25px;
+		text-align: center;
+		border: 0px;
+	}
+	.updateLimp.alert-limp, .updateExtraCost.alert-limp{
 		background-color: #f8d053!important;
 	}
 	.alert-limp{
@@ -253,6 +261,14 @@
 
 			});
 		});
+
+		$('.updateExtraCost').change(function(){
+            var id = $(this).attr('data-idBook');
+            var extraCost = $(this).val();
+            $.get( "/admin/sales/updateExtraCost/"+id+"/"+extraCost).done(function( data ) {
+
+            });
+        });
 
 
 	});

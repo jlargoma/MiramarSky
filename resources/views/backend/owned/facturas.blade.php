@@ -18,8 +18,14 @@
 	    	<span class="font-w800"><?php echo $date->copy()->format('Y') ?></span> - <span class="font-w800"><?php echo $date->copy()->addYear()->format('Y') ?></span>
 	    </h2>
 	</div>
+
 	<div class="col-xs-12 bg-white">
 	    <div class="row">
+			<div class="col-md-3 col-xs-12 text-left">
+				<a href="{{ url('admin/facturas/descargar-todas/'.$date->copy()->format('Y').'/'.$room->id) }}" class="text-white btn btn-md btn-primary">
+					Descargar Todas
+				</a>
+			</div>
 	        <div class="pull-right push-20">
 	            <div class="col-xs-12">
 	                <input type="text" id="search-table" class="form-control pull-right" placeholder="Buscar...">
@@ -38,10 +44,10 @@
 	                        Apto
 	                    </th>
 	                    <th class ="text-center bg-complete text-white" >
-	                        Propietario
+							Cliente
 	                    </th>
-	                    <th class ="text-center bg-complete text-white" >
-	                        Cliente
+	                    <th class ="text-center bg-complete text-white" style="width: 150px;">
+	                        DNI
 	                    </th>
 	                    <th class ="text-center bg-complete text-white" >
 	                        Importe
@@ -66,11 +72,12 @@
 	                            <b><?php echo $book->room->nameRoom ?></b>
 	                        </td>
 	                        <td class="text-center font-s16">
-	                            <?php echo ucfirst($book->room->user->name) ?>
-	                        </td>
-	                        <td class="text-center font-s16">
 	                            <b><?php echo ucfirst($book->customer->name) ?></b>
 	                        </td>
+
+							<td class="text-center font-s16">
+                                <?php echo ucfirst($book->customer->DNI) ?>
+							</td>
 	                        <td class="text-center font-s16">
 								<?php $costeProp = $book->cost_apto + $book->cost_park + $book->cost_lujo?>
 	                            <b><?php echo number_format(($costeProp/2), 2, ',','.') ?>€</b>
