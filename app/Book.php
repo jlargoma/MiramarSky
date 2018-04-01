@@ -542,7 +542,6 @@ class Book extends Model
         return $beneficio;
     }
 
-    //Funcion para guardar los metodos de Pago
     public  function getPayment($tipo)
     {
        return $this->payments->filter(function ($payment) use ($tipo) {
