@@ -60,13 +60,43 @@ setlocale(LC_TIME, "es_ES");
                                 <?php echo $gasto->concept ?>
                             </td>
 
-                            <td class="text-center" style="padding: 5px 8px !important">
-                                <b><?php echo $gasto->import ?>€</b>
+                            <?php
+                                $divisor = 0;
+                                if($room != "all"){
+                                    if(preg_match('/,/', $gasto->PayFor)){
+                                        $aux = explode(',', $gasto->PayFor);
+                                        for ($i = 0; $i < count($aux); $i++){
+                                            if ( !empty($aux[$i]) ){
+                                                $divisor ++;
+                                            }
+                                        }
+
+                                    }
+                                }else{
+                                    $divisor == 1;
+                                }
+
+                                if($divisor == 0){$divisor = 1;}
+                            ?>
+                            <td class="text-center">
+                                <?php echo number_format(($gasto->import / $divisor),2,',','.') ?>€
                             </td>
                             <td class="text-center" style="padding: 5px 8px !important">
                             	<?php if ($gasto->PayFor != NULL ): ?>
                         			<?php $aux = explode(',', $gasto->PayFor) ?>
-                    				<?php echo \App\Rooms::find($aux[0])->nameRoom ?>
+                        			<?php if(count($aux) > 1): ?>
+                        			    <?php
+                                            for ($i = 0; $i < count($aux); $i++){
+                                                if (!empty($aux[$i])){
+                                                    echo \App\Rooms::find($aux[$i])->nameRoom." ";
+                                                }
+                                            }
+                                        ?>
+                        			<?php else: ?>
+                        			    <?php echo \App\Rooms::find($aux[0])->nameRoom ?>
+                        			<?php endif ?>
+
+
                             	<?php else: ?>
                             		TODOS
                             	<?php endif ?>
@@ -88,19 +118,14 @@ setlocale(LC_TIME, "es_ES");
         </div>
     </div>
     <?php if ($room == "all"): ?>
-    	<?php $data = \App\Http\Controllers\LiquidacionController::getSalesByYearByRoom("","all") ?>
+    	<?php $data = \App\Http\Controllers\LiquidacionController::getSalesByYearByRoomGeneral("","all") ?>
     <?php else: ?>
-    	<?php $data = \App\Http\Controllers\LiquidacionController::getSalesByYearByRoom("", $room->id) ?>
+    	<?php $data = \App\Http\Controllers\LiquidacionController::getSalesByYearByRoomGeneral("", $room->id) ?>
     <?php endif ?>
 
     <div class="col-md-4 col-xs-12">
         <div class="row">
             <h3 class="tex-center">Grafica de pagos</h3>
-            <!-- <div class="row">
-                <pre>
-                    <?php print_r($data); ?>
-                </pre>
-            </div> -->
             <table class="table table-hover">
                 <thead>
                     <th class="text-center bg-complete text-white">Generado</th>

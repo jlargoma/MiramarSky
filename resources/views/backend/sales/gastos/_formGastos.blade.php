@@ -73,7 +73,8 @@
 			                <option value="0"> Tarjeta visa </option>
 			                <option value="1"> Cash Jaime </option>
 			                <option value="2"> Cash Jorge </option>
-			                <option value="3"> Banco Jorge</option>
+							<option value="3"> Banco Jorge</option>
+							<option value="4"> Banco Jaime</option>
 			            </select>
 
 					</div>

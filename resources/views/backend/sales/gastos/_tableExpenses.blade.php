@@ -19,36 +19,96 @@ setlocale(LC_TIME, "es_ES");
 	</thead>
 	<tbody>
 		<?php $array = [0 =>"Metalico Jorge", 1 =>"Metalico Jaime",2 =>"Banco Jorge",3=>"Banco Jaime"] ?>
-				<tr>
+		<tr>
 
-					<td class="text-center" style="padding: 8px 5px!important">
-						Acutalizado a <?php echo Carbon::now()->formatLocalized('%d %b %Y') ?>
-					</td>
-					<td class="text-center" style="padding: 8px 5px!important">
-						COMISION STRIPE
-					</td>
-					<td class="text-center" style="padding: 8px 5px!important">
-						COMISION
-					</td>
+			<td class="text-center" style="padding: 8px 5px!important">
+				Acutalizado a <?php echo Carbon::now()->formatLocalized('%d %b %Y') ?>
+			</td>
+			<td class="text-center" style="padding: 8px 5px!important">
+				COMISION STRIPE
+			</td>
+			<td class="text-center" style="padding: 8px 5px!important">
+				COMISION
+			</td>
 
-					<td class="text-center" style="padding: 8px 5px!important">
-						BANCO JORGE
+			<td class="text-center" style="padding: 8px 5px!important">
+				BANCO JORGE
 
-					</td>
-					<td class="text-center" style="padding: 8px 5px!important">
-						<b><?php echo number_format($totalStripep, 0, ',', '.'); ?> €</b>
-					</td>
-					<td class="text-center" style="padding: 8px 5px!important">
-						GENERICO
-					</td>
+			</td>
+			<td class="text-center" style="padding: 8px 5px!important">
+				<b><?php echo number_format($totalStripep, 0, ',', '.'); ?> €</b>
+			</td>
+			<td class="text-center" style="padding: 8px 5px!important">
+				GENERICO
+			</td>
 
-					<td class="text-center" style="padding: 8px 5px!important">
-						PAGOS A STRIPE
-					</td>
-					<td class="text-center" style="padding: 8px 5px!important">
+			<td class="text-center" style="padding: 8px 5px!important">
+				PAGOS A STRIPE
+			</td>
+			<td class="text-center" style="padding: 8px 5px!important">
 
-					</td>
-				</tr>
+			</td>
+		</tr>
+		<tr>
+
+			<td class="text-center" style="padding: 8px 5px!important">
+				Acutalizado a <?php echo Carbon::now()->formatLocalized('%d %b %Y') ?>
+			</td>
+			<td class="text-center" style="padding: 8px 5px!important">
+				COMISION AGENCIAS
+			</td>
+			<td class="text-center" style="padding: 8px 5px!important">
+				COMISION
+			</td>
+
+			<td class="text-center" style="padding: 8px 5px!important">
+				BANCO JORGE
+
+			</td>
+			<td class="text-center" style="padding: 8px 5px!important">
+				<b><?php echo number_format($comisionBooking, 0, ',', '.'); ?> €</b>
+			</td>
+			<td class="text-center" style="padding: 8px 5px!important">
+				GENERICO
+			</td>
+
+			<td class="text-center" style="padding: 8px 5px!important">
+				PAGO A LAS DISTINTAS AGENCIAS DE RESERVAS
+			</td>
+			<td class="text-center" style="padding: 8px 5px!important">
+
+			</td>
+		</tr>
+		<tr>
+
+			<td class="text-center" style="padding: 8px 5px!important">
+				Acutalizado a <?php echo Carbon::now()->formatLocalized('%d %b %Y') ?>
+			</td>
+			<td class="text-center" style="padding: 8px 5px!important">
+				OBSEQUIOS DE BIENVENIDA
+			</td>
+			<td class="text-center" style="padding: 8px 5px!important">
+				VARIOS
+			</td>
+
+			<td class="text-center" style="padding: 8px 5px!important">
+				BANCO JORGE
+
+			</td>
+			<td class="text-center" style="padding: 8px 5px!important">
+				<b><?php echo number_format($obsequios, 0, ',', '.'); ?> €</b>
+			</td>
+			<td class="text-center" style="padding: 8px 5px!important">
+				GENERICO
+			</td>
+
+			<td class="text-center" style="padding: 8px 5px!important">
+				PAGO DE LOS OBSEQUIOS DE LA TEMPORADA
+			</td>
+			<td class="text-center" style="padding: 8px 5px!important">
+
+			</td>
+		</tr>
 		<?php foreach ($gastos as $key => $gasto): ?>
 
 
@@ -95,7 +155,8 @@ setlocale(LC_TIME, "es_ES");
 			                <option value="0" <?php if($gasto->typePayment == '0'){ echo "selected"; } ?>> Tarjeta visa </option>
 			                <option value="1" <?php if($gasto->typePayment == '1'){ echo "selected"; } ?>> Cash Jaime </option>
 			                <option value="2" <?php if($gasto->typePayment == '2'){ echo "selected"; } ?>> Cash Jorge </option>
-			                <option value="3" <?php if($gasto->typePayment == '3'){ echo "selected"; } ?>> Banco Jorge</option>
+							<option value="3" <?php if($gasto->typePayment == '3'){ echo "selected"; } ?>> Banco Jorge</option>
+							<option value="4" <?php if($gasto->typePayment == '4'){ echo "selected"; } ?>> Banco Jaime</option>
 			            </select>
 				</td>
 				<td class="text-center">
