@@ -341,9 +341,10 @@
                     <?php endforeach ?>
 
                 </tbody>
-        </table>
-
+            </table>
+        </div>
     </div>
+
 <?php else: ?>
     <div class="row">
         <div class="col-xs-12 push-20">
@@ -623,3 +624,22 @@
         </div>
     </div>
 <?php endif ?>
+
+
+<script>
+    $('.updateLimp').change(function(){
+        var id = $(this).attr('data-idBook');
+        var limp = $(this).val();
+        $.get( "/admin/sales/updateLimpBook/"+id+"/"+limp).done(function( data ) {
+
+        });
+    });
+
+    $('.updateExtraCost').change(function(){
+        var id = $(this).attr('data-idBook');
+        var extraCost = $(this).val();
+        $.get( "/admin/sales/updateExtraCost/"+id+"/"+extraCost).done(function( data ) {
+
+        });
+    });
+</script>

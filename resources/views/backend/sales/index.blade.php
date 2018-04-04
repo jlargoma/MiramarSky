@@ -254,15 +254,15 @@
 
         });
 
-		$('.updateLimp').change(function(){
-			var id = $(this).attr('data-idBook');
-			var limp = $(this).val();
-			$.get( "/admin/sales/updateLimpBook/"+id+"/"+limp).done(function( data ) {
+        $('.updateLimp').change(function(){
+            var id = $(this).attr('data-idBook');
+            var limp = $(this).val();
+            $.get( "/admin/sales/updateLimpBook/"+id+"/"+limp).done(function( data ) {
 
-			});
-		});
+            });
+        });
 
-		$('.updateExtraCost').change(function(){
+        $('.updateExtraCost').change(function(){
             var id = $(this).attr('data-idBook');
             var extraCost = $(this).val();
             $.get( "/admin/sales/updateExtraCost/"+id+"/"+extraCost).done(function( data ) {
