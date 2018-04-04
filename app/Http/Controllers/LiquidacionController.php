@@ -348,13 +348,15 @@ class LiquidacionController extends Controller
         $gasto->typePayment = $request->input('type_payment');
         $gasto->type = $request->input('type');
         $gasto->comment = $request->input('comment');
+
         if ($request->input('type_payFor') == 1) {
             $gasto->PayFor = $request->input('stringRooms');
         }
+
         if ($request->input('type_payment') == 1 || $request->input('type_payment') == 2) {
 
-            $data['concept'] = ( $request->input('type_payment') == 1 )? 'GASTO METALICO JAIME':'GASTO METALICO JORGE';
-            $data['concept'].= " - ".$request->input('concept');
+
+            $data['concept']= $request->input('concept');
             $data['date'] = Carbon::createFromFormat('d/m/Y', $request->input('fecha'))->format('Y-m-d');
             $data['import'] = $request->input('importe');
             $data['comment'] = $request->input('comment');
@@ -365,15 +367,15 @@ class LiquidacionController extends Controller
         }elseif($request->input('type_payment') == 0 || $request->input('type_payment') == 3 || $request->input('type_payment') == 4){
             switch ($request->input('type_payment')){
                 case 0:
-                    $data['concept'] = 'GASTO TARJETA VISA'." - ".$request->input('concept');
+                    $data['concept'] = $request->input('concept');
                     $data['typePayment'] = 2;
                     break;
                 case 3:
-                    $data['concept'] = 'GASTO BANCO JORGE'." - ".$request->input('concept');
+                    $data['concept'] = $request->input('concept');
                     $data['typePayment'] = 2;
                     break;
                 case 4:
-                    $data['concept'] = 'GASTO BANCO JAIME'." - ".$request->input('concept');
+                    $data['concept'] = $request->input('concept');
                     $data['typePayment'] = 3;
                     break;
             }
@@ -677,7 +679,7 @@ class LiquidacionController extends Controller
             ->get();
         $saldoInicial = \App\Bank::where('concept', 'SALDO INICIAL')->where('typePayment', 3)->first();
 
-        $bankJorge = \App\Bank::where('typePayment', 2)
+        $bankJorge = \App\Bank::whereIn('typePayment', [2,0])
             ->where('date', '>', $inicio->copy()->format('Y-m-d'))
             ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
             ->orderBy('date', 'ASC')
