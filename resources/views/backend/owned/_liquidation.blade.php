@@ -1,30 +1,8 @@
 <?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
+<?php $pagototalProp = 0;?>
 <?php if (!$mobile->isMobile()): ?>
 
-	<div class="col-md-4 bg-complete push-20">
-		<div class="col-md-6">
-			<h5 class="text-center white">GENERADO</h5>
-		</div>
-		<div class="col-md-6 text-center text-white">
-			<h5 class="text-center white"><strong><?php echo number_format($total,2,',','.'); ?>€</strong></h5>
-		</div>
-	</div>
-	<div class="col-md-4 bg-success push-20">
-		<div class="col-md-6">
-			<h5 class="text-center white">PAGADO</h5>
-		</div>
-		<div class="col-md-6 text-center text-white">
-			<h5 class="text-center white"><strong><?php echo number_format($pagototal,2,',','.'); ?>€</strong></h5>
-		</div>
-	</div>
-	<div class="col-md-4 bg-danger push-20">
-		<div class="col-md-6">
-			<h5 class="text-center white">PENDIENTE</h5>
-		</div>
-		<div class="col-md-6text-center text-white">
-			<h5 class="text-center white"><strong><?php echo number_format(($total - $pagototal),2,',','.'); ?>€</strong></h5>
-		</div>
-	</div>
+
 	<div class="row push-20">
 		<?php if (count($pagos)> 0): ?>
 			<div class="col-md-12 ">
@@ -89,6 +67,7 @@
 								}
 							?>
 							<h5 class="text-center"><?php echo number_format(($pago->import / $divisor),2,',','.') ?>€</h5>
+							<?php $pagototalProp += ($pago->import / $divisor);?>
 						</div>
 					</div>
 
@@ -107,32 +86,33 @@
 		<?php endif ?>
 				
 	</div>
+	<div class="col-md-4 bg-complete push-20">
+		<div class="col-md-6">
+			<h5 class="text-center white">GENERADO</h5>
+		</div>
+		<div class="col-md-6 text-center text-white">
+			<h5 class="text-center white"><strong><?php echo number_format($total,2,',','.'); ?>€</strong></h5>
+		</div>
+	</div>
+	<div class="col-md-4 bg-success push-20">
+		<div class="col-md-6">
+			<h5 class="text-center white">PAGADO</h5>
+		</div>
+		<div class="col-md-6 text-center text-white">
+			<h5 class="text-center white"><strong><?php echo number_format($pagototalProp,2,',','.'); ?>€</strong></h5>
+		</div>
+	</div>
+	<div class="col-md-4 bg-danger push-20">
+		<div class="col-md-6">
+			<h5 class="text-center white">PENDIENTE</h5>
+		</div>
+		<div class="col-md-6text-center text-white">
+			<h5 class="text-center white"><strong><?php echo number_format(($total - $pagototalProp),2,',','.'); ?>€</strong></h5>
+		</div>
+	</div>
 <?php else: ?>
 	<div class="col-xs-12">
-		<div class="col-xs-12 bg-complete">
-			<div class="col-xs-6">
-				<h5 class="text-center white">GENERADO</h5>
-			</div>
-			<div class="col-xs-6 text-center text-white">
-				<h5 class="text-center white"><strong><?php echo number_format($total,2,',','.'); ?>€</strong></h5>
-			</div>
-		</div>
-		<div class="col-xs-12 bg-success">
-			<div class="col-xs-6">
-				<h5 class="text-center white">PAGADO</h5>
-			</div>
-			<div class="col-xs-6 text-center text-white">
-				<h5 class="text-center white"><strong><?php echo number_format($pagototal,2,',','.'); ?>€</strong></h5>
-			</div>
-		</div>
-		<div class="col-xs-12 bg-danger">
-			<div class="col-xs-6">
-				<h5 class="text-center white">PENDIENTE</h5>
-			</div>
-			<div class="col-xs-6 text-center text-white">
-				<h5 class="text-center white"><strong><?php echo number_format(($total - $pagototal),2,',','.'); ?>€</strong></h5>
-			</div>
-		</div>
+
 		<div class="row">
 
 			<?php if (count($pagos)> 0): ?>
@@ -172,6 +152,7 @@
 									}
                                 ?>
 								<h5 class="text-left"><?php echo number_format(($pago->import / $divisor),2,',','.') ?>€</h5>
+                                <?php $pagototalProp += ($pago->import / $divisor);?>
 							</td>
 
 
@@ -189,5 +170,29 @@
 				</div>
 			<?php endif ?>
 		</div>
-	</div>
+        <div class="col-xs-12 bg-complete">
+            <div class="col-xs-6">
+                <h5 class="text-center white">GENERADO</h5>
+            </div>
+            <div class="col-xs-6 text-center text-white">
+                <h5 class="text-center white"><strong><?php echo number_format($total,2,',','.'); ?>€</strong></h5>
+            </div>
+        </div>
+        <div class="col-xs-12 bg-success">
+            <div class="col-xs-6">
+                <h5 class="text-center white">PAGADO</h5>
+            </div>
+            <div class="col-xs-6 text-center text-white">
+                <h5 class="text-center white"><strong><?php echo number_format($pagototalProp,2,',','.'); ?>€</strong></h5>
+            </div>
+        </div>
+        <div class="col-xs-12 bg-danger">
+            <div class="col-xs-6">
+                <h5 class="text-center white">PENDIENTE</h5>
+            </div>
+            <div class="col-xs-6 text-center text-white">
+                <h5 class="text-center white"><strong><?php echo number_format(($total - $pagototalProp),2,',','.'); ?>€</strong></h5>
+            </div>
+        </div>
+    </div>
 <?php endif; ?>

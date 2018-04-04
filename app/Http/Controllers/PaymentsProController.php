@@ -238,16 +238,51 @@ class PaymentsProController extends Controller
         $banco = 0;
         foreach ($gastos as $payment) {
             if ($payment->typePayment == 0 || $payment->typePayment == 1) {
+                $divisor = 0;
+                if(preg_match('/,/', $payment->PayFor)){
+                    $aux = explode(',', $payment->PayFor);
+                    for ($i = 0; $i < count($aux); $i++){
+                        if ( !empty($aux[$i]) ){
+                            $divisor ++;
+                        }
+                    }
 
-                $metalico += $payment->import;
+                }else{
+                    $divisor = 1;
+                }
+                $metalico += ($payment->import / $divisor);
 
             }elseif($payment->typePayment == 2 || $payment->typePayment == 3){
-             
-                $banco += $payment->import;
+                $divisor = 0;
+                if(preg_match('/,/', $payment->PayFor)){
+                    $aux = explode(',', $payment->PayFor);
+                    for ($i = 0; $i < count($aux); $i++){
+                        if ( !empty($aux[$i]) ){
+                            $divisor ++;
+                        }
+                    }
+
+                }else{
+                    $divisor = 1;
+                }
+                $banco += ($payment->import / $divisor);
 
             }
 
-            $pagado += $payment->import;
+            $divisor = 0;
+            if(preg_match('/,/', $payment->PayFor)){
+                $aux = explode(',', $payment->PayFor);
+                for ($i = 0; $i < count($aux); $i++){
+                    if ( !empty($aux[$i]) ){
+                        $divisor ++;
+                    }
+                }
+
+            }else{
+                $divisor = 1;
+            }
+
+            $pagado +=  ($payment->import / $divisor);
         }
         $total = 0;
         $apto = 0;
