@@ -10,21 +10,21 @@
 | and give it the controller to call when that URI is requested.
 | 
 */
- Route::get('/test', function (){
-
-     $date = \Carbon\Carbon::createFromFormat('Y-m-d', '2017-09-01');
-     $books = \App\Book::where('start','>=',$date->copy())
-                 ->where('start','<=',$date->copy()->addYear())
-                 ->whereIn('type_book',[7])
-                 ->orderBy('created_at','DESC')
-                 ->get();
-     foreach ($books as $index => $book) {
-         $dateX = \Carbon\Carbon::createFromFormat('Y-m-d', $book->start);
-         \App\Http\Controllers\LiquidacionController::setExpenseLimpieza(1, $book->room->id, $dateX->copy()->format('d/m/Y'));
-     }
-
-
- });
+// Route::get('/test', function (){
+//
+//     $date = \Carbon\Carbon::createFromFormat('Y-m-d', '2017-09-01');
+//     $books = \App\Book::where('start','>=',$date->copy())
+//                 ->where('start','<=',$date->copy()->addYear())
+//                 ->whereIn('type_book',[7])
+//                 ->orderBy('created_at','DESC')
+//                 ->get();
+//     foreach ($books as $index => $book) {
+//         $dateX = \Carbon\Carbon::createFromFormat('Y-m-d', $book->start);
+//         \App\Http\Controllers\LiquidacionController::setExpenseLimpieza(1, $book->room->id, $dateX->copy()->format('d/m/Y'));
+//     }
+//
+//
+// });
 
 
 
