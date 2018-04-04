@@ -1,3 +1,5 @@
+
+
 <style type="text/css">
     .input-group{
         width: 100%;
@@ -31,9 +33,9 @@
                                     <thead >
                                         <th class ="text-center bg-complete text-white"><?php echo number_format($total,2,',','.') ?>€</th>
 
-                                        <th class ="text-center bg-success text-white" ><?php echo number_format($pagoProp,2,',','.') ?>€</th>
+                                        <th class ="text-center bg-success text-white" ><?php echo number_format($pagado,2,',','.') ?>€</th>
                              
-                                        <th class ="text-center bg-danger text-white" style=""><?php echo number_format($total - $pagoProp,2,',','.') ?>€</th>
+                                        <th class ="text-center bg-danger text-white" style=""><?php echo number_format($total - $pagado,2,',','.') ?>€</th>
                                        
                                         
                                     </thead>
