@@ -10,7 +10,21 @@
 | and give it the controller to call when that URI is requested.
 | 
 */
- Route::get('/test', 'BookController@updateBooksCosts');
+ Route::get('/test', function (){
+
+     $date = \Carbon\Carbon::createFromFormat('Y-m-d', '2017-09-01');
+     $books = \App\Book::where('start','>=',$date->copy())
+         ->where('start','<=',$date->copy()->addYear())
+         ->whereIn('type_book',[7])
+         ->orderBy('created_at','DESC')
+         ->get();
+
+     foreach ($books as $index => $book) {
+         LiquidacionController::setExpenseLimpieza(1, $book->room->id, $date->copy()->format('d/m/Y'));
+     }
+
+
+ });
 
 
 

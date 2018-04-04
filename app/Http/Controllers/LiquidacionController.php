@@ -63,7 +63,8 @@ class LiquidacionController extends Controller
         $books = \App\Book::with(['customer', 'payments', 'room.type'])
             ->where('start' , '>=' , $date)
             ->where('start', '<=', $date->copy()->addYear()->subMonth())
-            ->where('type_book',2)->orderBy('start', 'ASC')
+            ->whereIn('type_book',[2, 7])
+            ->orderBy('start', 'ASC')
             ->get();
 
         foreach ($books as $key => $book) {
@@ -1052,7 +1053,14 @@ class LiquidacionController extends Controller
         }
 
         $end  = $start->copy()->addYear();
-
+        $total = 0;
+        $metalico = 0;
+        $banco = 0;
+        $pagado = 0;
+        $metalico_jaime = 0;
+        $metalico_jorge = 0;
+        $banco_jorge = 0;
+        $banco_jaime = 0;
         if ($room == "all") {
             $rooms = \App\Rooms::where('state', 1)->get(['id']);
             $books = \App\Book::whereIn('type_book', [2])
@@ -1062,13 +1070,32 @@ class LiquidacionController extends Controller
                 ->orderBy('start', 'ASC')
                 ->get();
 
-            $total = 0;
-            $metalico = 0;
-            $banco = 0;
-            $pagado = 0;
 
             foreach ($books as $key => $book) {
                 $total += ($book->cost_apto + $book->cost_park + $book->cost_lujo); //$book->total_price;
+                if( count($book->pago) > 0 ){
+                    foreach ($book->pago as $index => $pay) {
+                        switch ($pay->type)
+                        {
+                            case 0:
+                                $metalico_jaime += $pay->import;
+                                $metalico += $pay->import;
+                                break;
+                            case 1:
+                                $metalico_jorge += $pay->import;
+                                $metalico += $pay->import;
+                                break;
+                            case 2:
+                                $banco_jorge += $pay->import;
+                                $banco += $pay->import;
+                                break;
+                            case 3:
+                                $banco_jaime += $pay->import;
+                                $banco += $pay->import;
+                                break;
+                        }
+                    }
+                }
             }
 
             $gastos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
@@ -1131,13 +1158,32 @@ class LiquidacionController extends Controller
                 ->where('start', '<=', $end->copy()->format('Y-m-d'))
                 ->orderBy('start', 'ASC')
                 ->get();
-            $total = 0;
-            $metalico = 0;
-            $banco = 0;
-            $pagado = 0;
 
             foreach ($books as $key => $book) {
                 $total += ($book->cost_apto + $book->cost_park + $book->cost_lujo); //$book->total_price;
+                if( count($book->pago) > 0 ){
+                    foreach ($book->pago as $index => $pay) {
+                        switch ($pay->type)
+                        {
+                            case 0:
+                                $metalico_jaime += $pay->import;
+                                $metalico += $pay->import;
+                                break;
+                            case 1:
+                                $metalico_jorge += $pay->import;
+                                $metalico += $pay->import;
+                                break;
+                            case 2:
+                                $banco_jorge += $pay->import;
+                                $banco += $pay->import;
+                                break;
+                            case 3:
+                                $banco_jaime += $pay->import;
+                                $banco += $pay->import;
+                                break;
+                        }
+                    }
+                }
             }
 
             $gastos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
@@ -1202,7 +1248,12 @@ class LiquidacionController extends Controller
             'total' => $total,
             'banco' => $banco,
             'metalico' => $metalico,
-            'pagado' => $pagado
+            'pagado' => $pagado,
+            'metalico_jaime' => $metalico_jaime,
+            'metalico_jorge' => $metalico_jorge,
+            'banco_jorge' => $banco_jorge,
+            'banco_jaime' => $banco_jaime,
+
         ];
 
 
@@ -1330,7 +1381,7 @@ class LiquidacionController extends Controller
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
                         ->where('start' , '>=' , $date->format('Y-m-d'))
                         ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
-                        ->where('type_book',2)
+                        ->whereIn('type_book',[2, 7])
                         ->where('room_id', $request->searchRoom)
                         ->orderBy('start', 'ASC')
                         ->get();
@@ -1347,7 +1398,7 @@ class LiquidacionController extends Controller
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
                         ->where('start' , '>=' , $date->format('Y-m-d'))
                         ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
-                        ->where('type_book',2)
+                        ->whereIn('type_book',[2, 7])
                         ->orderBy('start', 'ASC')
                         ->get();
 
@@ -1632,7 +1683,7 @@ class LiquidacionController extends Controller
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
                         ->where('start' , '>=' , $date->format('Y-m-d'))
                         ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
-                        ->where('type_book',2)
+                        ->whereIn('type_book',[2, 7])
                         ->where('room_id',$request->searchRoom)
                         ->orderBy('start', 'ASC')
                         ->get();
@@ -1649,7 +1700,7 @@ class LiquidacionController extends Controller
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
                         ->where('start' , '>=' , $date->format('Y-m-d'))
                         ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
-                        ->where('type_book',2)
+                        ->whereIn('type_book',[2, 7])
                         ->orderBy('start', 'ASC')
                         ->get();
 
@@ -1756,7 +1807,7 @@ class LiquidacionController extends Controller
 
                 $books = \App\Book::where('start' , '>=' , $date)
                     ->where('start', '<=', $date->copy()->addYear()->subMonth())
-                    ->where('type_book',2)
+                    ->whereIn('type_book',[2, 7])
                     ->where('room_id',$request->searchRoom)
                     ->orderBy('start', 'ASC')
                     ->get();
@@ -1773,7 +1824,7 @@ class LiquidacionController extends Controller
             }else{
                 $books = \App\Book::where('start' , '>=' , $date)
                     ->where('start', '<=', $date->copy()->addYear()->subMonth())
-                    ->where('type_book',2)
+                    ->whereIn('type_book',[2, 7])
                     ->orderBy('start', 'ASC')
                     ->get();
 
@@ -1931,7 +1982,7 @@ class LiquidacionController extends Controller
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
                         ->where('start' , '>=' , $date->format('Y-m-d'))
                         ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
-                        ->where('type_book',2)
+                        ->whereIn('type_book',[2, 7])
                         ->where('room_id',$request->searchRoom)
                         ->orderBy('inc_percent', 'ASC')
                         ->get();
@@ -1948,7 +1999,7 @@ class LiquidacionController extends Controller
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
                         ->where('start' , '>=' , $date->format('Y-m-d'))
                         ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
-                        ->where('type_book',2)
+                        ->whereIn('type_book',[2, 7])
                         ->orderBy('inc_percent', 'ASC')
                         ->get();
 
@@ -2064,7 +2115,7 @@ class LiquidacionController extends Controller
 
                 $books = \App\Book::where('start' , '>=' , $date)
                     ->where('start', '<=', $date->copy()->addYear()->subMonth())
-                    ->where('type_book',2)
+                    ->whereIn('type_book',[2, 7])
                     ->where('room_id',$request->searchRoom)
                     ->orderBy('inc_percent', 'ASC')
                     ->get();
@@ -2081,7 +2132,7 @@ class LiquidacionController extends Controller
             }else{
                 $books = \App\Book::where('start' , '>=' , $date)
                     ->where('start', '<=', $date->copy()->addYear()->subMonth())
-                    ->where('type_book',2)
+                    ->whereIn('type_book',[2, 7])
                     ->orderBy('inc_percent', 'ASC')
                     ->get();
 
@@ -2233,7 +2284,7 @@ class LiquidacionController extends Controller
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
                         ->where('start' , '>=' , $date->format('Y-m-d'))
                         ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
-                        ->where('type_book',2)
+                        ->whereIn('type_book',[2, 7])
                         ->where('room_id', $request->searchRoom)
                         ->orderBy('start', 'ASC')
                         ->get();
@@ -2244,7 +2295,7 @@ class LiquidacionController extends Controller
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
                         ->where('start' , '>=' , $date->format('Y-m-d'))
                         ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
-                        ->where('type_book',2)
+                        ->whereIn('type_book',[2, 7])
                         ->orderBy('start', 'ASC')
                         ->get();
 
