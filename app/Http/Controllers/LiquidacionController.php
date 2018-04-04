@@ -1061,6 +1061,69 @@ class LiquidacionController extends Controller
                 ->where('start', '<=', $end->copy()->format('Y-m-d'))
                 ->orderBy('start', 'ASC')
                 ->get();
+
+            $total = 0;
+            $metalico = 0;
+            $banco = 0;
+            $pagado = 0;
+
+            foreach ($books as $key => $book) {
+                $total += ($book->cost_apto + $book->cost_park + $book->cost_lujo); //$book->total_price;
+            }
+
+            $gastos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
+                ->Where('date', '<=', $start->copy()->addYear()->format('Y-m-d'))
+                ->Where('PayFor', 'LIKE', '%'.$room->id.'%')
+                ->orderBy('date', 'DESC')
+                ->get();
+            foreach ($gastos as $payment) {
+                if ($payment->typePayment == 0 || $payment->typePayment == 1) {
+                    $divisor = 0;
+                    if(preg_match('/,/', $payment->PayFor)){
+                        $aux = explode(',', $payment->PayFor);
+                        for ($i = 0; $i < count($aux); $i++){
+                            if ( !empty($aux[$i]) ){
+                                $divisor ++;
+                            }
+                        }
+
+                    }else{
+                        $divisor = 1;
+                    }
+                    $metalico += ($payment->import / $divisor);
+
+                }elseif($payment->typePayment == 2 || $payment->typePayment == 3){
+                    $divisor = 0;
+                    if(preg_match('/,/', $payment->PayFor)){
+                        $aux = explode(',', $payment->PayFor);
+                        for ($i = 0; $i < count($aux); $i++){
+                            if ( !empty($aux[$i]) ){
+                                $divisor ++;
+                            }
+                        }
+
+                    }else{
+                        $divisor = 1;
+                    }
+                    $banco += ($payment->import / $divisor);
+
+                }
+
+                $divisor = 0;
+                if(preg_match('/,/', $payment->PayFor)){
+                    $aux = explode(',', $payment->PayFor);
+                    for ($i = 0; $i < count($aux); $i++){
+                        if ( !empty($aux[$i]) ){
+                            $divisor ++;
+                        }
+                    }
+
+                }else{
+                    $divisor = 1;
+                }
+
+                $pagado +=  ($payment->import / $divisor);
+            }
         }else{
 
             $books = \App\Book::whereIn('type_book', [2])
@@ -1069,53 +1132,76 @@ class LiquidacionController extends Controller
                 ->where('start', '<=', $end->copy()->format('Y-m-d'))
                 ->orderBy('start', 'ASC')
                 ->get();
+            $total = 0;
+            $metalico = 0;
+            $banco = 0;
+            $pagado = 0;
 
-        }
+            foreach ($books as $key => $book) {
+                $total += ($book->cost_apto + $book->cost_park + $book->cost_lujo); //$book->total_price;
+            }
 
-        $total = 0;
-        $metalico = 0;
-        $metalico_jaime = 0;
-        $metalico_jorge = 0;
-        $banco = 0;
-        $banco_jorge = 0;
-        $banco_jaime = 0;
-        $pagado = 0;
+            $gastos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
+                ->Where('date', '<=', $start->copy()->addYear()->format('Y-m-d'))
+                ->Where('PayFor', 'LIKE', '%'.$room->id.'%')
+                ->orderBy('date', 'DESC')
+                ->get();
 
-        foreach ($books as $key => $book) {
-            $total += $book->total_price;
-            if (count($book->pago) > 0) {
-                foreach ($book->pago as $key => $pay) {
-                    $pagado += $pay->import;
+            foreach ($gastos as $payment) {
+                if ($payment->typePayment == 0 || $payment->typePayment == 1) {
+                    $divisor = 0;
+                    if(preg_match('/,/', $payment->PayFor)){
+                        $aux = explode(',', $payment->PayFor);
+                        for ($i = 0; $i < count($aux); $i++){
+                            if ( !empty($aux[$i]) ){
+                                $divisor ++;
+                            }
+                        }
 
-                    switch ($pay->type) {
-                        case 0:
-                            $metalico_jaime += $pay->import;
-                            $metalico += $pay->import;
-                            break;
-                        case 1:
-                            $metalico_jorge += $pay->import;
-                            $metalico += $pay->import;
-                            break;
-                        case 2:
-                            $banco_jorge += $pay->import;
-                            $banco += $pay->import;
-                            break;
-                        case 3:
-                            $banco_jaime += $pay->import;
-                            $banco += $pay->import;
-                            break;
+                    }else{
+                        $divisor = 1;
                     }
+                    $metalico += ($payment->import / $divisor);
+
+                }elseif($payment->typePayment == 2 || $payment->typePayment == 3){
+                    $divisor = 0;
+                    if(preg_match('/,/', $payment->PayFor)){
+                        $aux = explode(',', $payment->PayFor);
+                        for ($i = 0; $i < count($aux); $i++){
+                            if ( !empty($aux[$i]) ){
+                                $divisor ++;
+                            }
+                        }
+
+                    }else{
+                        $divisor = 1;
+                    }
+                    $banco += ($payment->import / $divisor);
+
                 }
+
+                $divisor = 0;
+                if(preg_match('/,/', $payment->PayFor)){
+                    $aux = explode(',', $payment->PayFor);
+                    for ($i = 0; $i < count($aux); $i++){
+                        if ( !empty($aux[$i]) ){
+                            $divisor ++;
+                        }
+                    }
+
+                }else{
+                    $divisor = 1;
+                }
+
+                $pagado +=  ($payment->import / $divisor);
             }
         }
+
+
 
         return [
             'total' => $total,
             'banco' => $banco,
-            'metalico_jaime' => $metalico_jaime,
-            'metalico_jorge' => $metalico_jorge,
-            'banco_jorge' => $banco_jorge,
-            'banco_jaime' => $banco_jaime,
             'metalico' => $metalico,
             'pagado' => $pagado
         ];
