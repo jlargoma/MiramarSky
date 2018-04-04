@@ -1314,7 +1314,7 @@ class LiquidacionController extends Controller
         $gasto->import = $expenseLimp;
         $gasto->typePayment = 3;
         $gasto->type = 'LIMPIEZA';
-        $gasto->comment = "LIMPIEZA RESERVA PROPIETARIO. ".$room->nameRoom;
+        $gasto->comment = " LIMPIEZA RESERVA PROPIETARIO. ".$room->nameRoom;
         $gasto->PayFor = $room->id;
         if ($gasto->save()) {
             return true;
