@@ -1142,7 +1142,7 @@ class LiquidacionController extends Controller
 
             $gastos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
                 ->Where('date', '<=', $start->copy()->addYear()->format('Y-m-d'))
-                ->Where('PayFor', 'LIKE', '%'.$room->id.'%')
+                ->Where('PayFor', 'LIKE', '%'.$room.'%')
                 ->orderBy('date', 'DESC')
                 ->get();
 
