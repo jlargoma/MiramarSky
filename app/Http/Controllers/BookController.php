@@ -926,6 +926,28 @@ class BookController extends Controller
 
             //     }
             // }
+            // book payments, cashBox, bank
+           
+           if( count($book->pago) > 0 ){
+               foreach ($book->pago as $index => $pago) {
+                   $book->comment .= "Antiguos cobros: \n Fecha: ".$pago->datePayment.", Importe: ".  $pago->import."\n Tipo de pago: ".$pago->type;
+
+                        if($pago->type == 0 || $pago->type == 1){
+                            $move = \App\Cashbox::where('date', $pago->datePayment)->where('import', $pago->import)->first();
+                            if( count($move) > 0 ){
+                                $move->delete();
+                            }
+                            
+                        }elseif($pago->type == 2 || $pago->type == 3){
+                            $move = \App\Bank::where('date', $pago->datePayment)->where('import', $pago->import)->first();
+                            if( count($move) > 0 ){
+                                $move->delete();
+                            }
+                        }
+
+                        $pago->delete();
+                }
+           }
 
             $book->type_book = 0;
 
