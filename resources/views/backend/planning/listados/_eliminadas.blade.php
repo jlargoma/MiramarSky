@@ -44,9 +44,17 @@
                                         $textComment .= "<b>COMENTARIOS DE LA RESERVA</b>:"."<br>"." ".$book->book_comments;
                                     }
                                 ?>
-                                <span class="icons-comment" data-class-content="content-comment-<?php echo $book->id?>">
-                                    <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
-                                </span>
+                                <?php if( preg_match( '/Antiguos cobros/i', $book->comment ) ): ?>
+                                    <span>
+                                        <i class="fa fa-dollar-sign" style="color: #000;" aria-hidden="true"></i>
+                                    </span>
+                                <?php else: ?>
+                                    <span class="icons-comment" data-class-content="content-comment-<?php echo $book->id?>">
+                                        <i class="fa fa-comments" style="color: #000;" aria-hidden="true"></i>
+                                    </span>
+                                <?php endif;?>
+
+
                                 <div class="comment-floating content-comment-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $textComment ?></p></div>
                             <?php endif ?>                                                   
                         </td>
@@ -176,7 +184,11 @@
                                     </a>
                                 <?php endif ?>
                                 <?php if (!empty($book->comment)): ?>
-                                   <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
+                                    <?php if( preg_match( '/Antiguos cobros/i', $book->comment ) ): ?>
+                                        <i class="fa fa-dollar-sign" style="color: #000;" aria-hidden="true"></i>
+                                    <?php else: ?>
+                                        <i class="fa fa-comments" style="color: #000;" aria-hidden="true"></i>
+                                    <?php endif;?>
                                 <?php endif ?>   
                             </td>
                             <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b') ?></td>
