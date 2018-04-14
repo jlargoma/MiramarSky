@@ -281,7 +281,7 @@
 
                             </td>
                             <td class="text-center coste bi " style="border-left: 1px solid black;">
-                                {{ $book->costs > 0 ? number_format( $book->costs,0,',','.') . ' €' : '----' }}
+                                {{ $book->cost_total > 0 ? number_format( $book->cost_total,0,',','.') . ' €' : '----' }}
                             </td>
                             <td class="text-center coste" style="border-left: 1px solid black;">
                                 <?php if ( $book->cost_apto > 0): ?>

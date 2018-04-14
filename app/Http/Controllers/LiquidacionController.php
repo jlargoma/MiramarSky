@@ -68,24 +68,35 @@ class LiquidacionController extends Controller
             ->get();
 
         foreach ($books as $key => $book) {
-            $totales["total"]        += $book->total_price;
-            $totales["coste"]        += $book->costs;
-            $totales["costeApto"]    += $book->cost_apto;
-            $totales["costePark"]    += $book->cost_park;
-            $totales["costeLujo"]    += $book->cost_lujo;
-            $totales["costeLimp"]    += $book->cost_limp;
-            $totales["costeAgencia"] += $book->PVPAgencia;
-            $totales["bancoJorge"]   += $book->getPayment(2);
-            $totales["bancoJaime"]   += $book->getPayment(3);
-            $totales["jorge"]        += $book->getPayment(0);
-            $totales["jaime"]        += $book->getPayment(1);
-            $totales["benJorge"]     += $book->getJorgeProfit();
-            $totales["benJaime"]     += $book->getJaimeProfit();
-            $totales["limpieza"]     += $book->sup_limp;
-            $totales["beneficio"]    += $book->profit;
-            $totales["stripe"]       += $book->stripeCost;
-            $totales["obs"]          += $book->extraCost;
-            $totales["pendiente"]    += $book->pending;
+
+            if($book->type_book != 7){
+                $totales["total"]        += $book->total_price;
+                $totales["costeApto"]    += $book->cost_apto;
+                $totales["costePark"]    += $book->cost_park;
+                if ($book->room->luxury == 1){
+                    $costTotal = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->cost_limp + $book->PVPAgencia;
+                    $totales["costeLujo"]    += $book->cost_lujo;
+                    $totales["coste"]        += $costTotal;
+                }else{
+                    $costTotal = $book->cost_apto + $book->cost_park + 0 + $book->cost_limp + $book->PVPAgencia;
+                    $totales["costeLujo"]    += 0;
+                    $totales["coste"]        += $costTotal;
+                }
+
+                $totales["costeLimp"]    += $book->cost_limp;
+                $totales["costeAgencia"] += $book->PVPAgencia;
+                $totales["bancoJorge"]   += $book->getPayment(2);
+                $totales["bancoJaime"]   += $book->getPayment(3);
+                $totales["jorge"]        += $book->getPayment(0);
+                $totales["jaime"]        += $book->getPayment(1);
+                $totales["benJorge"]     += $book->getJorgeProfit();
+                $totales["benJaime"]     += $book->getJaimeProfit();
+                $totales["limpieza"]     += $book->sup_limp;
+                $totales["beneficio"]    += $book->profit;
+                $totales["stripe"]       += $book->stripeCost;
+                $totales["obs"]          += $book->extraCost;
+                $totales["pendiente"]    += $book->pending;
+            }
         }
 
 
@@ -1717,25 +1728,34 @@ class LiquidacionController extends Controller
                 $books->load(['customer', 'payments', 'room.type']);
 
                 foreach ($books as $key => $book) {
+                    if($book->type_book != 7) {
+                        $totales["total"]        += $book->total_price;
+                        $totales["costeApto"]    += $book->cost_apto;
+                        $totales["costePark"]    += $book->cost_park;
+                        if ($book->room->luxury == 1){
+                            $costTotal = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->cost_limp + $book->PVPAgencia;
+                            $totales["costeLujo"]    += $book->cost_lujo;
+                            $totales["coste"]        += $costTotal;
+                        }else{
+                            $costTotal = $book->cost_apto + $book->cost_park + 0 + $book->cost_limp + $book->PVPAgencia;
+                            $totales["costeLujo"]    += 0;
+                            $totales["coste"]        += $costTotal;
+                        }
 
-                    $totales["total"]        += $book->total_price;
-                    $totales["coste"]        += $book->costs;
-                    $totales["costeApto"]    += $book->cost_apto;
-                    $totales["costePark"]    += $book->cost_park;
-                    $totales["costeLujo"]    += $book->cost_lujo;
-                    $totales["costeLimp"]    += $book->cost_limp;
-                    $totales["costeAgencia"] += $book->PVPAgencia;
-                    $totales["bancoJorge"]   += $book->getPayment(2);
-                    $totales["bancoJaime"]   += $book->getPayment(3);
-                    $totales["jorge"]        += $book->getPayment(0);
-                    $totales["jaime"]        += $book->getPayment(1);
-                    $totales["benJorge"]     += $book->getJorgeProfit();
-                    $totales["benJaime"]     += $book->getJaimeProfit();
-                    $totales["limpieza"]     += $book->sup_limp;
-                    $totales["beneficio"]    += $book->profit;
-                    $totales["stripe"]       += $book->stripeCost;
-                    $totales['obs']          += $book->extraCost;
-                    $totales["pendiente"]    += $book->pending;
+                        $totales["costeLimp"] += $book->cost_limp;
+                        $totales["costeAgencia"] += $book->PVPAgencia;
+                        $totales["bancoJorge"] += $book->getPayment(2);
+                        $totales["bancoJaime"] += $book->getPayment(3);
+                        $totales["jorge"] += $book->getPayment(0);
+                        $totales["jaime"] += $book->getPayment(1);
+                        $totales["benJorge"] += $book->getJorgeProfit();
+                        $totales["benJaime"] += $book->getJaimeProfit();
+                        $totales["limpieza"] += $book->sup_limp;
+                        $totales["beneficio"] += $book->profit;
+                        $totales["stripe"] += $book->stripeCost;
+                        $totales['obs'] += $book->extraCost;
+                        $totales["pendiente"] += $book->pending;
+                    }
                 }
 
                 $totBooks    = (count($books) > 0)?count($books):1;
@@ -1796,7 +1816,7 @@ class LiquidacionController extends Controller
                     'temporada' => $date,
                     'books'   => $books,
                     'totales' => $totales,
-                    'data' => $data,
+                    'data'    => $data,
                     'percentBenef' => DB::table('percent')->find(1)->percent,
                 ]);
             }else{
@@ -1841,24 +1861,34 @@ class LiquidacionController extends Controller
             $books->load(['customer', 'payments', 'room.type']);
 
             foreach ($books as $key => $book) {
-                $totales["total"]        += $book->total_price;
-                $totales["coste"]        += $book->costs;
-                $totales["costeApto"]    += $book->cost_apto;
-                $totales["costePark"]    += $book->cost_park;
-                $totales["costeLujo"]    += $book->cost_lujo;
-                $totales["costeLimp"]    += $book->cost_limp;
-                $totales["costeAgencia"] += $book->PVPAgencia;
-                $totales["bancoJorge"]   += $book->getPayment(2);
-                $totales["bancoJaime"]   += $book->getPayment(3);
-                $totales["jorge"]        += $book->getPayment(0);
-                $totales["jaime"]        += $book->getPayment(1);
-                $totales["benJorge"]     += $book->getJorgeProfit();
-                $totales["benJaime"]     += $book->getJaimeProfit();
-                $totales["limpieza"]     += $book->sup_limp;
-                $totales["beneficio"]    += $book->profit;
-                $totales["stripe"]       += $book->stripeCost;
-                $totales['obs']          += $book->extraCost;
-                $totales["pendiente"]    += $book->pending;
+                if($book->type_book != 7){
+                    $totales["total"]        += $book->total_price;
+                    $totales["costeApto"]    += $book->cost_apto;
+                    $totales["costePark"]    += $book->cost_park;
+                    if ($book->room->luxury == 1){
+                        $costTotal = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->cost_limp + $book->PVPAgencia;
+                        $totales["costeLujo"]    += $book->cost_lujo;
+                        $totales["coste"]        += $costTotal;
+                    }else{
+                        $costTotal = $book->cost_apto + $book->cost_park + 0 + $book->cost_limp + $book->PVPAgencia;
+                        $totales["costeLujo"]    += 0;
+                        $totales["coste"]        += $costTotal;
+                    }
+
+                    $totales["costeLimp"]    += $book->cost_limp;
+                    $totales["costeAgencia"] += $book->PVPAgencia;
+                    $totales["bancoJorge"]   += $book->getPayment(2);
+                    $totales["bancoJaime"]   += $book->getPayment(3);
+                    $totales["jorge"]        += $book->getPayment(0);
+                    $totales["jaime"]        += $book->getPayment(1);
+                    $totales["benJorge"]     += $book->getJorgeProfit();
+                    $totales["benJaime"]     += $book->getJaimeProfit();
+                    $totales["limpieza"]     += $book->sup_limp;
+                    $totales["beneficio"]    += $book->profit;
+                    $totales["stripe"]       += $book->stripeCost;
+                    $totales['obs']          += $book->extraCost;
+                    $totales["pendiente"]    += $book->pending;
+                }
             }
             $totBooks    = (count($books) > 0)?count($books):1;
             $countDiasPropios = 0;

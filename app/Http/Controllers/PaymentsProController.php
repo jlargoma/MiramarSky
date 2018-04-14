@@ -33,24 +33,11 @@ class PaymentsProController extends Controller
         }
 
         $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
-        
-       
-        
-        // echo "<pre>";
-        // print_r($inicio);
-        // die();
 
-        $arrayIdRooms = array();
         $rooms = \App\Rooms::orderBy('order', 'ASC')->get();
 
         /*Calculamos los ingresos por reserva y room */
-        $books = \App\Book::whereIn('type_book',[2])
-                            ->where('start','>=',$inicio->copy())
-                            ->where('start','<=',$inicio->copy()->addYear())
-                            ->orderBy('start', 'ASC')
-                            ->get();
-
-
+        $start = $inicio->copy();
 
         $data    = array();
         $summary = [
@@ -63,44 +50,10 @@ class PaymentsProController extends Controller
                     'totalPVP'     => 0,
                     'pagos'        => 0,
                     ];
-        foreach (\App\Rooms::orderBy('order', 'ASC')->get() as $room) {
-            $data[$room->id] = [];
-        }
-        // echo "<pre>";
-        // print_r($data);
-        // die();
-        /* Calculamos los pagos por room */
-        
+
         foreach ($rooms as $room) {
-            $gastos = \App\Expenses::where('date', '>=', $inicio->copy()->format('Y-m-d'))
-                                ->Where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
-                                ->Where('PayFor', 'LIKE', '%'.$room->id.'%')
-                                ->orderBy('date', 'DESC')
-                                ->get();
 
-            if ( count($gastos) > 0) {
-
-                foreach ($gastos as $gasto) {
-
-                    if ( isset($data[$room->id]['pagos']) ) {
-
-                        $data[$room->id]['pagos'] += $gasto->import;
-
-                    }else{
-
-                        $data[$room->id]['pagos'] = $gasto->import;
-
-                    }
-
-                    $summary['pagos'] += $gasto->import;
-                }
-
-
-
-            }else{
-                $data[$room->id]['pagos'] = 0;
-            }
-
+            $data[$room->id] = array();
             $data[$room->id]['totales']['totalLimp']    = 0;
             $data[$room->id]['totales']['totalAgencia'] = 0;
             $data[$room->id]['totales']['totalParking'] = 0;
@@ -108,38 +61,90 @@ class PaymentsProController extends Controller
             $data[$room->id]['totales']['totalCost']    = 0;
             $data[$room->id]['totales']['totalApto']    = 0;
             $data[$room->id]['totales']['totalPVP']     = 0;
+            $data[$room->id]['pagos'] = 0;
+
+            $booksByRoom = \App\Book::where('room_id', $room->id)
+                                    ->where('type_book', 2)
+                                    ->where('start', '>=', $start->copy())
+                                    ->where('finish', '<=', $start->copy()->addYear())
+                                    ->get();
 
 
+            foreach ($booksByRoom as $book) {
+
+                if ($room->luxury == 1){
+                    $data[$book->room_id]['totales']['totalLujo']    += $book->cost_lujo;
+                    $costTotal = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->cost_limp + $book->PVPAgencia;
+                    $summary['totalLujo']    += $book->cost_lujo;
+                }else{
+                    $data[$book->room_id]['totales']['totalLujo']    += 0;
+                    $costTotal = $book->cost_apto + $book->cost_park + 0 + $book->cost_limp + $book->PVPAgencia;
+                    $summary['totalLujo']    += 0;
+                }
+                $data[$book->room_id]['totales']['totalLimp']    += $book->cost_limp;
+                $data[$book->room_id]['totales']['totalAgencia'] += $book->PVPAgencia;
+                $data[$book->room_id]['totales']['totalParking'] += $book->cost_park;
+
+
+
+                $data[$book->room_id]['totales']['totalCost']    += $costTotal;
+                $data[$book->room_id]['totales']['totalApto']    += $book->cost_apto;
+                $data[$book->room_id]['totales']['totalPVP']     += $book->total_price;
+
+                $summary['totalLimp']    += $book->cost_limp;
+                $summary['totalAgencia'] += $book->PVPAgencia;
+                $summary['totalParking'] += $book->cost_park;
+
+                $summary['totalCost']    += $costTotal;
+                $summary['totalApto']    += $book->cost_apto;
+                $summary['totalPVP']     += $book->total_price;
+
+            }
+
+
+            $gastos = \App\Expenses::where('date', '>=', $start->copy())
+                                    ->Where('date', '<=', $start->copy()->addYear())
+                                    ->Where('PayFor', 'LIKE', '%'.$room->id.'%')
+                                    ->orderBy('date', 'DESC')
+                                    ->get();
+
+            if ( count($gastos) > 0) {
+
+                foreach ($gastos as $gasto) {
+                    $divisor = 0;
+
+                    if(preg_match('/,/', $gasto->PayFor)){
+                        $aux = explode(',', $gasto->PayFor);
+                        for ($i = 0; $i < count($aux); $i++){
+                            if ( !empty($aux[$i]) ){
+                                $divisor ++;
+                            }
+                        }
+
+                    }else{
+                        $divisor = 1;
+                    }
+
+                    $data[$room->id]['pagos'] += ($gasto->import / $divisor);
+                    $summary['pagos'] += ($gasto->import / $divisor);
+                }
+            }
 
         }
-        foreach ($books as $book) {
-            $costTotal = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->cost_limp + $book->PVPAgencia;
 
-            $data[$book->room_id]['totales']['totalLimp']    += $book->cost_limp;
-            $data[$book->room_id]['totales']['totalAgencia'] += $book->PVPAgencia;
-            $data[$book->room_id]['totales']['totalParking'] += $book->cost_park;
-            $data[$book->room_id]['totales']['totalLujo']    += $book->cost_lujo;
-            $data[$book->room_id]['totales']['totalCost']    += $costTotal;
-            $data[$book->room_id]['totales']['totalApto']    += $book->cost_apto;
-            $data[$book->room_id]['totales']['totalPVP']     += $book->total_price;
- 
 
-            $summary['totalLimp']    += $book->cost_limp;
-            $summary['totalAgencia'] += $book->PVPAgencia;
-            $summary['totalParking'] += $book->cost_park;
-            $summary['totalLujo']    += $book->cost_lujo;
-            $summary['totalCost']    += $costTotal;
-            $summary['totalApto']    += $book->cost_apto;
-            $summary['totalPVP']     += $book->total_price;
-        }
+//        echo "<pre>";
+//        print_r($summary);
+//        print_r($data);
 
 
         return view('backend/paymentspro/index',[
-                                                    'date'    => $inicio,
-                                                    'data'    => $data,
-                                                    'summary' => $summary,
-                                                    'rooms'   => $rooms
-                                                ]);
+            'date'    => $inicio,
+            'data'    => $data,
+            'summary' => $summary,
+            'rooms'   => $rooms
+        ]);
+
             
     }
 
