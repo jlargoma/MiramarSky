@@ -33,7 +33,7 @@ class InvoicesController extends Controller
                             ->where('finish','<',$start->copy()->addYear())
                             ->where('type_book',2)
                             ->orderBy('created_at','DESC')
-                            ->get();
+                            ->paginate(25);
 
 
         return view('backend/invoices/index', compact('books','mobile'));

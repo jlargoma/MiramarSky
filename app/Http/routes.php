@@ -506,12 +506,12 @@ Route::group(['middleware' => 'auth'], function () {
 
 		if ($searchString == "") {
 			$arraycorreos = array();
-        $correosUsuarios = \App\User::all();
+            $correosUsuarios = \App\User::all();
 
-        foreach ($correosUsuarios as $correos) {
-            $arraycorreos[] = $correos->email;
+            foreach ($correosUsuarios as $correos) {
+                $arraycorreos[] = $correos->email;
 
-        }
+            }
 
 
             $arraycorreos[] = "iankurosaki@gmail.com";
@@ -532,10 +532,48 @@ Route::group(['middleware' => 'auth'], function () {
 						                    'customers'     => $customers,
 										]);
 	});
+    Route::get('/admin/invoices/searchByName/{searchString?}', function($searchString=""){
+        if ($searchString == "") {
+            $arraycorreos = array();
+            $correosUsuarios = \App\User::all();
+
+            foreach ($correosUsuarios as $correos) {
+                $arraycorreos[] = $correos->email;
+
+            }
+
+
+            $arraycorreos[] = "iankurosaki@gmail.com";
+            $arraycorreos[] = "jlargoma@gmail.com";
+            $arraycorreos[] = "victorgerocuba@gmail.com";
+            $customers = \App\Customers::whereNotIn('email',$arraycorreos)
+                ->where('email', '!=', ' ')
+                ->distinct('email')
+                ->orderBy('created_at', 'DESC')
+                ->get();
+        }else{
+            $customers = \App\Customers::where('name','LIKE', '%'.$searchString.'%')
+                ->orWhere('email', 'LIKE' ,'%'.$searchString.'%')
+                ->get();
+            echo "asdfasdf";
+        }
+        $arrayIdCustomers = array();
+        foreach ($customers as $customer) {
+            $arrayIdCustomers[] = $customer->id;
+        }
+
+        $books = \App\Book::where('type_book', 2)->whereIn('customer_id', $arrayIdCustomers)->orderBy('start', 'DESC')->paginate(25);
+
+        return view('backend.invoices._table',[
+            'books'     => $books,
+        ]);
+    });
+
 });
+
 Route::get('/importPaymenCashBank', 'Admin\BackendController@migrationCashBank');
 Route::get('/insertDNIS', 'Admin\BackendController@insertDNIS');
-Route::get('/refreshBloqueos', 'Admin\BackendController@refreshBloqueos');
+Route::get('/refreshBloqueos', 'Admin\BackendController@insertDNIS');
 
 // Route::get('/test', function (){
 //
