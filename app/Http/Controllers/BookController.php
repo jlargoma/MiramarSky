@@ -49,14 +49,14 @@ class BookController extends Controller
             ->where('finish', '<', $start->copy()->addYear())
             ->get();
 
-        $books = $booksCollection->whereIn('type_book', [0,1,3,4,5,6,10,11])
+        $books = $booksCollection->whereIn('type_book', [1,3,4,5,6,10,11])
             ->sortByDesc('created_at');
 
         $booksCount['pending'] = $booksCollection->where('type_book', 3)->count();
         $booksCount['special'] = $booksCollection->whereIn('type_book', [7,8])->count();
         $booksCount['confirmed'] = $booksCollection->where('type_book', 2)->count();
         $booksCount['blocked-ical'] = $booksCollection->whereIn('type_book',[11,12])->count();
-        $booksCount['deletes'] = \App\Book::with('customer')->where('start', '>', $start->copy())->where('finish', '<', $start->copy()->addYear())->where('type_book',0)->where('comment', 'LIKE', '%Antiguos cobros%')->count();
+//        $booksCount['deletes'] = \App\Book::with('customer')->where('start', '>', $start->copy())->where('finish', '<', $start->copy()->addYear())->where('type_book',0)->where('comment', 'LIKE', '%Antiguos cobros%')->count();
         $booksCount['checkin'] = $this->getCounters($start,'checkin');
         $booksCount['checkout'] = $booksCount['confirmed'] - $booksCount['checkin'];
 
