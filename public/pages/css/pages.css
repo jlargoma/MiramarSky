@@ -14259,6 +14259,30 @@ Main components
     color: black;
 }
 
+.atipicas.start{
+  background-color: #6d5cae;
+  color: black;
+}
+.atipicas{
+  background-color: #6d5cae  !important;
+  color: black;
+}
+.atipicas{
+  background-color: #6d5cae  !important;
+  color: black;
+}
+.atipicas.end{
+  background-color: #6d5cae;
+  color: black;
+}
+.atipicas, .table.table-striped tbody tr.atipicas td {
+  background-color: rgba(113,98,173,0.4) !important;
+  color: black;
+}
+.table.table-striped tbody tr.atipicas td select.minimal {
+  background-color: rgba(113,98,173,0.4) !important;
+  font-weight: bold!important;
+}
 .pgn-circle .alert .close{
   /*display: none;*/
 }

@@ -25,7 +25,13 @@
                 </thead>
                 <tbody>
                     <?php foreach ($books as $book): ?>
-                            <tr>
+                    <?php $class = ucwords($book->getStatus($book->type_book)) ?>
+                            <?php if ($class == "Contestado(EMAIL)"): ?>
+                        <?php $class = "contestado-email" ?>
+                    <?php endif ?>
+
+                    <tr class="<?php echo strtolower( $class) ;?>">
+
                                 <td class ="text-center" style="padding: 10px 15px!important">                                                            
                                     <?php if (isset($payment[$book->id])): ?>
                                         <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>
@@ -77,11 +83,11 @@
                                     ?>
                                 </td>
                                 <td class ="text-center"><?php echo $book->nigths ?></td>
-                                <td class ="text-center"><?php echo round($book->total_price)."€" ?><br>
-                                        <?php if (isset($payment[$book->id])): ?>
-                                            <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
-                                        <?php else: ?>
-                                        <?php endif ?>
+                                <td class ="text-center">
+                                    <?php echo round($book->total_price)."€" ?><br>
+                                    <?php if (isset($payment[$book->id])): ?>
+                                        <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
+                                    <?php endif ?>
                                 </td>
                                 <td class ="text-center">
                                     <select class="status form-control minimal" data-id="<?php echo $book->id ?>" >
@@ -129,7 +135,12 @@
         </thead>
         <tbody>
             <?php foreach ($books as $book): ?>
-                <tr class="<?php echo ucwords($book->getStatus($book->type_book)) ;?>">
+                <?php $class = ucwords($book->getStatus($book->type_book)) ?>
+                <?php if ($class == "Contestado(EMAIL)"): ?>
+                            <?php $class = "contestado-email" ?>
+                        <?php endif ?>
+
+                <tr class="<?php echo strtolower( $class) ;?>">
                     <td class="text-center sm-p-t-10 sm-p-b-10" title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>">
                         <?php if (isset($payment[$book->id])): ?>
                             <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>

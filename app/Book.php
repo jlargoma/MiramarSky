@@ -120,7 +120,7 @@ class Book extends Model
             5  => 'Contestado(EMAIL)',
             6  => 'Denegada', 
             7  => 'Reserva Propietario',
-            8  => 'SubComunidad',
+            8  => 'ATIPICAS',//'SubComunidad',
             9  => 'Booking', 
             10 => 'Overbooking',
             11 => 'blocked-ical',
