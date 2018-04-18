@@ -291,7 +291,7 @@
 
                             <select class="form-control full-width minimal newroom" name="newroom" id="newroom" <?php if ( isset($_GET['saveStatus']) && !empty($_GET['saveStatus']) ): echo "style='border: 1px solid red'"; endif ?>>
                                 <?php foreach ($rooms as $room): ?>
-                                    <option data-luxury="<?php echo $room->luxury ?>" value="<?php echo $room->id ?>" {{ $room->id == $book->room_id ? 'selected' : '' }} >
+                                    <option data-size="<?php echo $room->sizeApto ?>" data-luxury="<?php echo $room->luxury ?>" value="<?php echo $room->id ?>" {{ $room->id == $book->room_id ? 'selected' : '' }} >
                                         <?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?>
                                     </option>
                                 <?php endforeach ?>
@@ -397,7 +397,7 @@
                                 </div>
                                 <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #91cf81;">
                                     <label class="font-w800 text-white" for="">COSTE APTO</label>
-                                    <input type="number" step='0.01' class="form-control costApto m-t-10 m-b-10 white" name="costApto"  {{--value="<?php echo $book->cost_apto ?>--}}">
+                                    <input type="number" step='0.01' class="form-control costApto m-t-10 m-b-10 white" name="costApto"  {{--value="<?php echo $book->cost_apto ?>"--}}>
                                 </div>
                                 <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #337ab7;">
                                     <label class="font-w800 text-white" for="">COSTE PARKING</label>
@@ -405,7 +405,7 @@
                                 </div>
                                 <div class="col-md-3 col-xs-12 text-center boxtotales not-padding" style="background: #ff7f27;">
                                     <label class="font-w800 text-white" for="">BENEFICIO</label>
-                                    <input type="number" step='0.01' class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio" {{--value="<?php echo $book->total_ben ?>--}}">
+                                    <input type="number" step='0.01' class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio" {{--value="<?php echo $book->total_ben ?>"--}}>
                                     <div class="beneficio-text font-w400 font-s18 white"><?php /*echo number_format($book->inc_percent,0)."%" */?></div>
                                 </div>
                             <?php endif ?>
@@ -763,7 +763,7 @@
 
                             <select class="form-control full-width minimal newroom" name="newroom" id="newroom" <?php if ( isset($_GET['saveStatus']) && !empty($_GET['saveStatus']) ): echo "style='border: 1px solid red'"; endif ?>>
                                 <?php foreach ($rooms as $room): ?>
-                                    <option data-luxury="<?php echo $room->luxury ?>" value="<?php echo $room->id ?>" {{ $room->id == $book->room_id ? 'selected' : '' }} >
+                                    <option data-size="<?php echo $room->sizeApto ?>""  data-luxury="<?php echo $room->luxury ?>" value="<?php echo $room->id ?>" {{ $room->id == $book->room_id ? 'selected' : '' }} >
                                         <?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?>
                                     </option>
                                 <?php endforeach ?>

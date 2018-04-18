@@ -259,8 +259,11 @@
                                 <?php endif ?>
 
                             </td>
-                            <td class="text-center coste pagos pendiente" style="border-left: 1px solid black;" >
-                                {{ $book->pending }}
+                            <td class="text-center coste pagos pendiente red <?php if($book->pending > 0){ echo
+                            'alert-limp'; }?>" style="border-left: 1px solid black;" >
+
+                                {{ $book->pending > 0 ? number_format( $book->pending,0,',','.') . ' €' : '----' }}
+
                             </td>
                             <td class="text-center beneficio bi" style="border-left: 1px solid black;">
                                 <?php echo number_format($book->profit,0,',','.') ?> €</b>

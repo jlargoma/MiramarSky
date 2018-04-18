@@ -104,7 +104,7 @@
                     <?php echo (int)$book->profit_percentage . ' %'; ?>
                 </td>
                 <td class="text-center coste bi " style="border-left: 1px solid black;">
-                        {{ $book->costs == 0 ? 0 : $book->costs }}
+                        {{ $book->cost_total == 0 ? 0 : $book->cost_total }}
                 </td>
                 <td style="text-align: center;">
                     <?php if ( $book->cost_apto > 0): ?>

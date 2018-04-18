@@ -51,13 +51,14 @@
             
             <div class="form-group col-sm-12 col-xs-6 col-md-5" style="padding: 0">
                 <label for="parking" style="display: inline!important;" class="col-md-12 text-left parking white">* Tipo Apto</label>
-                <div class="col-md-3 col-xs-6">
-					<input id="apto-2dorm" class="radio-style apto-2dorm form-control" name="apto" type="radio" value="2dorm">
-					<label for="apto-2dorm" class="radio-style-3-label">2Dor</label>
-				</div>
+
                 <div class="col-md-3 col-xs-6">
                     <input id="apto-3dorm" class="radio-style apto-3dorm form-control" name="apto" type="radio" value="3dorm">
                     <label for="apto-3dorm" class="radio-style-3-label">3Dor</label>
+                </div>
+                <div class="col-md-3 col-xs-6">
+                    <input id="apto-2dorm" class="radio-style apto-2dorm form-control" name="apto" type="radio" value="2dorm">
+                    <label for="apto-2dorm" class="radio-style-3-label">2Dor</label>
                 </div>
                 <div class="col-md-3 col-xs-6">
                     <input id="apto-chlt" class="radio-style apto-chlt form-control" name="apto" type="radio" value="chlt">
@@ -145,13 +146,14 @@
                 <div class="form-group col-sm-12 col-xs-7 col-md-5" style="padding: 0">
                     <label for="parking" style="display: inline!important;" class="col-xs-12 col-md-12 text-left parking white">* Tipo Apto</label>
                     <div style="clear: both;"></div>
-                    <div class="col-md-3 col-xs-3">
-                        <input id="apto-2dorm" class="radio-style apto-2dorm form-control" name="apto" type="radio" value="2dorm">
-                        <label for="apto-2dorm" class="radio-style-3-label">2Dor</label>
-                    </div>
+
                     <div class="col-md-3 col-xs-3">
                         <input id="apto-3dorm" class="radio-style apto-3dorm form-control" name="apto" type="radio" value="3dorm">
                         <label for="apto-3dorm" class="radio-style-3-label">3Dor</label>
+                    </div>
+                    <div class="col-md-3 col-xs-3">
+                        <input id="apto-2dorm" class="radio-style apto-2dorm form-control" name="apto" type="radio" value="2dorm">
+                        <label for="apto-2dorm" class="radio-style-3-label">2Dor</label>
                     </div>
                     <div class="col-md-3 col-xs-3">
                         <input id="apto-chlt" class="radio-style apto-chlt form-control" name="apto" type="radio" value="chlt">

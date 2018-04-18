@@ -4,6 +4,7 @@
     }
 </style>
 <?php use \Carbon\Carbon; ?>
+<?php $pagoProp = 0; ?>
 <div class="col-xs-12">
     <h2> <?php echo $room->nameRoom." de (".$room->user->name ?>)</h2>
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 15px; right: 15px; z-index: 9999"><i class="fa fa-close fa-2x"></i></button>
@@ -18,43 +19,7 @@
             
             <div class="col-md-12 col-xs-12">
                 <div class="col-md-12 col-xs-12">
-                    <div class="col-md-5 col-xs-12">
-                        <h3 class="tex-center">Grafica de pagos</h3>
-                        <div class="row">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <th class="text-center bg-complete text-white">Generado</th>
-                                        <th class="text-center bg-success text-white">Pagado</th>
-                                        <th class="text-center bg-danger text-white">Pendiente</th>
-                                    </thead>
-                                    <thead >
-                                        <th class ="text-center bg-complete text-white"><?php echo number_format($total,2,',','.') ?>€</th>
 
-                                        <th class ="text-center bg-success text-white" ><?php echo number_format($pagado,2,',','.') ?>€</th>
-                             
-                                        <th class ="text-center bg-danger text-white" style=""><?php echo number_format($total - $pagado,2,',','.') ?>€</th>
-                                       
-                                        
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <table class="table table-striped" >
-                                <thead >
-                                    <tr>
-                                        <th class ="text-center bg-complete text-white">Metalico</th>
-                                        <th class="text-center "><?php echo number_format($metalico,2,',','.') ?></th>
-                                    </tr>
-                                    <tr>
-                                        <th class ="text-center bg-complete text-white">Banco</th>
-                                        <th class="text-center "><?php echo number_format($banco,2,',','.') ?></th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                    </div>
                     <div class="col-md-7 col-xs-12">
                         
                         <h3 class="tex-center">Resumen de pagos</h3>
@@ -90,9 +55,10 @@
                                                 }else{
                                                     $divisor = 1;
                                                 }
+                                                $expense = $payment->import / $divisor;
                                             ?>
                                             <td class="text-center">
-                                                <?php echo number_format(($payment->import / $divisor),2,',','.') ?>€
+                                                <?php echo number_format($expense,2,',','.') ?>€
                                             </td>
                                             
                                             <td class="text-center">
@@ -105,6 +71,7 @@
                                                 @endif
                                             </td>
                                         </tr>
+                                        <?php $pagoProp += $expense; ?>
                                     <?php endforeach ?>
                                 <?php else: ?>
                                     <tr>
@@ -113,6 +80,44 @@
                                 <?php endif ?>
                                     
                                 </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-5 col-xs-12">
+                        <h3 class="tex-center">Grafica de pagos</h3>
+                        <div class="row">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <th class="text-center bg-complete text-white">Generado</th>
+                                    <th class="text-center bg-success text-white">Pagado</th>
+                                    <th class="text-center bg-danger text-white">Pendiente</th>
+                                    </thead>
+                                    <thead >
+                                    <th class ="text-center bg-complete text-white"><?php echo number_format($total,2,',','.') ?>€</th>
+
+                                    <th class ="text-center bg-success text-white" ><?php echo number_format($pagoProp,2,',','.') ?>€</th>
+
+                                    <th class ="text-center bg-danger text-white" style=""><?php echo number_format
+                                        ($total - $pagoProp,2,',','.') ?>€</th>
+
+
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <table class="table table-striped" >
+                                <thead >
+                                <tr>
+                                    <th class ="text-center bg-complete text-white">Metalico</th>
+                                    <th class="text-center "><?php echo number_format($metalico,2,',','.') ?></th>
+                                </tr>
+                                <tr>
+                                    <th class ="text-center bg-complete text-white">Banco</th>
+                                    <th class="text-center "><?php echo number_format($banco,2,',','.') ?></th>
+                                </tr>
+                                </thead>
                             </table>
                         </div>
                     </div>

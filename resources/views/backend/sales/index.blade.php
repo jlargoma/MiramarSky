@@ -161,26 +161,8 @@
 <script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
 
 <script type="text/javascript">
-		var colorPendienteCobro = function(){
-			var pendientes  = $('.pendiente');
-
-
-			for(ind in pendientes){
-
-	  			var pendCobro = pendientes[ind];
-
-	  			if ($(pendCobro).text() == '0,00 €') {
-	  				$(pendCobro).addClass("blue");
-	  			}else{
-	  				$(pendCobro).addClass("red");
-	  			};
-			}
-		}
 
 	$(document).ready(function() {
-
-
-		colorPendienteCobro();
 
 		$('.dataTables_paginate').click(function(event) {
 			colorPendienteCobro();

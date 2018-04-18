@@ -204,17 +204,40 @@ class BackendController extends Controller
                             ->get();
 
         foreach ($books as $book) {
+
+	        switch ($book->room->sizeApto ){
+		        case 1:
+			        $book->sup_limp      = 30;
+			        $book->cost_limp     = 30;
+			        $book->cost_total    = 30;
+			        $book->total_price   = 30;
+			        $book->real_price    = 30;
+			        break;
+		        case 2:
+			        $book->sup_limp      = 50;
+			        $book->cost_limp     = 40;
+			        $book->cost_total    = 40;
+			        $book->total_price   = 50;
+			        $book->real_price    = 50;
+			        break;
+		        case 3:
+		        case 4:
+			        $book->sup_limp      = 100;
+			        $book->cost_limp     = 70;
+			        $book->cost_total    = 70;
+			        $book->total_price   = 100;
+			        $book->real_price    = 100;
+			        break;
+
+	        }
             $book->PVPAgencia    = ( $book->PVPAgencia )? $book->PVPAgencia:0;
-            $book->sup_limp      = ($book->room->sizeApto == 1) ? 30 : 50;
-            $book->cost_limp     = ($book->room->sizeApto == 1) ? 30 : 40;
+
             $book->sup_park      = 0 ;
             $book->cost_park     = 0 ;
             $book->sup_lujo      = 0 ;
             $book->cost_lujo     = 0 ;
             $book->cost_apto     = 0 ;
-            $book->cost_total    = ($book->room->sizeApto == 1) ? 30 : 40 ;
-            $book->total_price   = ($book->room->sizeApto == 1) ? 30 : 50 ;
-            $book->real_price    = ($book->room->sizeApto == 1) ? 30 : 50 ;
+
             $book->total_ben     = $book->total_price - $book->cost_total ;
 
             $book->inc_percent   = round(($book->total_ben / $book->total_price) * 100, 2 );

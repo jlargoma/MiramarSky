@@ -65,15 +65,16 @@
 								}else{
                                     $divisor = 1;
 								}
+								$expense = $pago->import / $divisor;
 							?>
-							<h5 class="text-center"><?php echo number_format(($pago->import / $divisor),2,',','.') ?>€</h5>
-							<?php $pagototalProp += ($pago->import / $divisor);?>
+							<h5 class="text-center"><?php echo number_format($expense,2,',','.') ?>€</h5>
+							<?php $pagototalProp += $expense;?>
 						</div>
 					</div>
 
 					<div class="col-md-3 not-padding">
 						<div class="col-xs-12 push-0" style="">
-							<h5 class="text-left text-danger"><?php echo number_format($total - $sumPagos,2,',','.'); ?>€</h5>
+							<h5 class="text-left text-danger"><?php echo number_format($total - $pagototalProp,2,',','.'); ?>€</h5>
 						</div>
 					</div>
 				</div>

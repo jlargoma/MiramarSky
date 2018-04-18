@@ -158,7 +158,9 @@
                             <h2 class="text-center">CARGANDO CALENDARIO</h2>
                         </div>
                     </div>
-
+                    <div class="col-xs-12">
+                        <iframe src="https://www.meteoblue.com/en/weather/widget/three/sierra-nevada_spain_2513236?geoloc=fixed&nocurrent=0&noforecast=0&days=4&tempunit=CELSIUS&windunit=KILOMETER_PER_HOUR&layout=image"  frameborder="0" scrolling="NO" allowtransparency="true" sandbox="allow-same-origin allow-scripts allow-popups" style="width: 100%;height: 595px"></iframe><div><!-- DO NOT REMOVE THIS LINK --><a href="https://www.meteoblue.com/en/weather/forecast/week/sierra-nevada_spain_2513236?utm_source=weather_widget&utm_medium=linkus&utm_content=three&utm_campaign=Weather%2BWidget" target="_blank">meteoblue</a></div>
+                    </div>
                     <div class="col-md-12" id="stripe-conten-index" style="display: none;">
                         @include('backend.stripe.link')
                         @include('backend.stripe.stripe', ['bookTocharge' => null])
@@ -323,12 +325,12 @@
                         </div>
                         <div class="col-xs-2 push-10 text-center">
                             <button class="btn btn-success btn-sm" type="button" id="stripePayment">
-                                <i class="fa fa-money" aria-hidden="true"></i>
+                                <i class="fa fa-money-bill-alt" aria-hidden="true"></i>
                             </button>
                         </div>
                         <div class="col-xs-2 push-10 text-center">
                             <button class="btn btn-success btn-calcuteBook btn-sm" type="button" data-toggle="modal" data-target="#modalCalculateBook"> 
-                                <span class="bold"><i class="fa fa-calendar-check-o" aria-hidden="true"></i></span>
+                                <span class="bold"><i class="fa fa-calendar-alt" aria-hidden="true"></i></span>
                             </button>
                         </div>
                         <div class="col-xs-2 push-10 text-center">
@@ -430,6 +432,10 @@
                     <div class="col-md-12" id="stripe-conten-index" style="display: none;">
                        
                         @include('backend.stripe.stripe', ['bookTocharge' => null])
+                    </div>
+
+                    <div class="col-xs-12">
+                        <iframe src="https://www.meteoblue.com/en/weather/widget/three/sierra-nevada_spain_2513236?geoloc=fixed&nocurrent=0&noforecast=0&days=4&tempunit=CELSIUS&windunit=KILOMETER_PER_HOUR&layout=image"  frameborder="0" scrolling="NO" allowtransparency="true" sandbox="allow-same-origin allow-scripts allow-popups" style="width: 100%;height: 595px"></iframe><div><!-- DO NOT REMOVE THIS LINK --><a href="https://www.meteoblue.com/en/weather/forecast/week/sierra-nevada_spain_2513236?utm_source=weather_widget&utm_medium=linkus&utm_content=three&utm_campaign=Weather%2BWidget" target="_blank">meteoblue</a></div>
                     </div>
                 </div>
             </div>

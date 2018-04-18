@@ -91,7 +91,7 @@
         var park       = $('.parking').val();
         var lujo       = $('select[name=type_luxury]').val();
         var status     = $('select[name=status]').val();
-        var sizeApto   = $('option:selected', 'select[name=newroom]').attr('data-size');
+        var sizeApto   = $('select[name=newroom] option:selected').attr('data-size');
         var comentario = $('.book_comments').val();
 
         var date       = $('.daterange1').val();
@@ -108,7 +108,7 @@
         var start      = date1.toLocaleDateString();
         var finish     = date2.toLocaleDateString();
 
-
+        alert(sizeApto);
 
         if ( status == 8) {
             $('.total').empty();
@@ -128,7 +128,19 @@
 
                 $('.beneficio').empty();
                 $('.beneficio').val(0);
+
+            }else if (sizeApto == 3 || sizeApto == 4){
+                  $('.total').empty();
+                  $('.total').val(100);
+
+                  $('.cost').empty();
+                  $('.cost').val(70);
+
+                  $('.beneficio').empty();
+                  $('.beneficio').val(30);
+
             }else{
+
                 $('.total').empty();
                 $('.total').val(50);
 
@@ -137,6 +149,7 @@
 
                 $('.beneficio').empty();
                 $('.beneficio').val(10);
+
             }
         }else{
 

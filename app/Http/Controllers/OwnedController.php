@@ -129,7 +129,11 @@ class OwnedController extends Controller
                 if ($book->type_book != 7 && $book->type_book != 8 && $book->type_book != 9) {
                     $apto  +=  $book->cost_apto;
                     $park  +=  $book->cost_park;
-                    $lujo  +=  $book->cost_lujo;
+	                if ($book->room->luxury == 1){
+		                $lujo  +=  $book->cost_lujo;
+	                }else{
+		                $lujo  +=  0;
+	                }
                     
                 }
 
