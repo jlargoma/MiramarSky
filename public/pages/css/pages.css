@@ -10984,6 +10984,7 @@ Main components
   opacity: .5;
   background: none;
 }
+
 .mapplic-tooltip-close:after {
   content: "\e60a";
   font-family: 'pages-icon';

@@ -526,3 +526,7 @@ input.beneficio,
 .alert-limp{
   background-color: #f8d053!important;
 }
+
+.fa-close:before {
+  content: "\f00d"!important;
+}
