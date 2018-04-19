@@ -266,8 +266,20 @@
 
                             </td>
                             <td class="text-center beneficio bi" style="border-left: 1px solid black;">
-	                            <?php if($book->room->lulury == 0 && $book->cost_limp > 0) {$book->profi -= $book->cost_limp; } ?>
-                                <?php echo number_format($book->profit,0,',','.') ?> €</b>
+                                <?php $profit = $book->profit?>
+	                            <?php $cost_total = $book->cost_total?>
+	                            <?php $total_price = $book->total_price?>
+	                            <?php $inc_percent = 0?>
+	                            <?php
+                                    if($book->room->luxury == 0 && $book->cost_lujo > 0) {
+	                            	    $profit     = $book->profit - $book->cost_lujo;
+	                                    $cost_total = $book->cost_total - $book->cost_lujo;
+	                                    $total_price = ( $book->total_price - $book->sup_lujo );
+                                    }
+                                    if ($total_price != 0)
+                                        $inc_percent = ($profit/ $total_price )*100;
+                                ?>
+                                <?php echo number_format($profit,0,',','.') ?> €</b>
                             </td>
                             <?php if(round($book->inc_percent) < $percentBenef): ?>
                                 <?php $classDanger = "background-color: #f8d053!important; color:black!important;" ?>
@@ -278,15 +290,17 @@
                             <?php endif; ?>
                             <td class="text-center beneficio bf " style="border-left: 1px solid black; <?php echo $classDanger ?>">
 
-                                <?php if ( $book->inc_percent > 0): ?>
-                                    <?php echo number_format($book->inc_percent,0)." %" ?>
+                                <?php if ( $inc_percent > 0): ?>
+                                    <?php echo number_format($inc_percent,0)." %" ?>
                                 <?php else: ?>
                                     ----
                                 <?php endif ?>
 
                             </td>
                             <td class="text-center coste bi " style="border-left: 1px solid black;">
-                                {{ $book->cost_total > 0 ? number_format( $book->cost_total,0,',','.') . ' €' : '----' }}
+
+                                {{ $cost_total > 0 ? number_format(( $cost_total + $book->stripeCost),0,',','.') . ' €' :
+                                '----' }}
                             </td>
                             <td class="text-center coste" style="border-left: 1px solid black;">
                                 <?php if ( $book->cost_apto > 0): ?>
@@ -572,6 +586,8 @@
 
                                     </td>
                                     <td class="text-center beneficio bi" style="border-left: 1px solid black;"><b>
+                                        <?php if($book->room->luxury == 0 && $book->cost_limp > 0) {$book->profit -=
+			                                    $book->cost_limp; } ?>
                                         <?php echo number_format($book->profit,0,',','.') ?> €</b>
                                     </td>
                                     <?php if(round($book->inc_percent) < $percentBenef): ?>
@@ -590,7 +606,8 @@
 
                                     </td>
                                     <td class="text-center coste bi ">
-                                        <b><?php echo number_format($book->cost_total,0,',','.')?> €</b>
+                                        <b>{{ $book->cost_total > 0 ? number_format(( $book->cost_total + $book->stripeCost),0,',','.') . ' €' :
+                                '----' }}</b>
                                     </td>
                                     <td class="text-center coste">
                                         <?php echo number_format($book->cost_apto,0,',','.')?> €
@@ -603,7 +620,6 @@
                                     </td>
                                     <td class="text-center coste">
                                         <input class="form-control updateLimp" type="number" step="0.01" value="<?php echo $book->cost_limp; ?>" data-idBook="<?php echo $book->id; ?>"/>
-                                        <?php //echo number_format($book->cost_limp,0,',','.') ?>
                                     </td>
                                     <td class="text-center coste bf">
                                         <?php echo number_format($book->PVPAgencia,0,',','.') ?>€

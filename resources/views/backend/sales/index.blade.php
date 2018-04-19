@@ -164,9 +164,6 @@
 
 	$(document).ready(function() {
 
-		$('.dataTables_paginate').click(function(event) {
-			colorPendienteCobro();
-		});
 		$('#date').change(function(event) {
 			var year = $(this).val();
 			window.location = '/admin/liquidacion/'+year;

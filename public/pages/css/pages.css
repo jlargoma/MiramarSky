@@ -14283,6 +14283,31 @@ Main components
   background-color: rgba(113,98,173,0.4) !important;
   font-weight: bold!important;
 }
+
+.ATIPICAS.start{
+  background-color: #6d5cae;
+  color: black;
+}
+.ATIPICAS{
+  background-color: #6d5cae  !important;
+  color: black;
+}
+.ATIPICAS{
+  background-color: #6d5cae  !important;
+  color: black;
+}
+.ATIPICAS.end{
+  background-color: #6d5cae;
+  color: black;
+}
+.ATIPICAS, .table.table-striped tbody tr.ATIPICAS td {
+  background-color: rgba(113,98,173,0.4) !important;
+  color: black;
+}
+.table.table-striped tbody tr.ATIPICAS td select.minimal {
+  background-color: rgba(113,98,173,0.4) !important;
+  font-weight: bold!important;
+}
 .pgn-circle .alert .close{
   /*display: none;*/
 }

@@ -10,6 +10,11 @@
     <link href="/assets/css/font-icons.css" rel="stylesheet" type="text/css" />
     <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
     <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
+    <style>
+        #TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G{
+            margin: 10px auto;
+        }
+    </style>
 @endsection
     
 @section('content')
@@ -152,15 +157,18 @@
 
                 </div>
                 <div class="col-md-5">
+                    <div class="col-xs-12">
+                        <!-- www.tutiempo.net - Ancho:446px - Alto:89px -->
+                        <div id="TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G"> </div>
+                        <script type="text/javascript" src="https://www.tutiempo.net/s-widget/l_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G"></script>
+                    </div>
                     <div class="row content-calendar push-20" style="min-height: 515px;">
                         <div class="col-xs-12 text-center sending" style="padding: 120px 15px;">
                             <i class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></i><br>
                             <h2 class="text-center">CARGANDO CALENDARIO</h2>
                         </div>
                     </div>
-                    <div class="col-xs-12">
-                        <iframe src="https://www.meteoblue.com/en/weather/widget/three/sierra-nevada_spain_2513236?geoloc=fixed&nocurrent=0&noforecast=0&days=4&tempunit=CELSIUS&windunit=KILOMETER_PER_HOUR&layout=image"  frameborder="0" scrolling="NO" allowtransparency="true" sandbox="allow-same-origin allow-scripts allow-popups" style="width: 100%;height: 595px"></iframe><div><!-- DO NOT REMOVE THIS LINK --><a href="https://www.meteoblue.com/en/weather/forecast/week/sierra-nevada_spain_2513236?utm_source=weather_widget&utm_medium=linkus&utm_content=three&utm_campaign=Weather%2BWidget" target="_blank">meteoblue</a></div>
-                    </div>
+
                     <div class="col-md-12" id="stripe-conten-index" style="display: none;">
                         @include('backend.stripe.link')
                         @include('backend.stripe.stripe', ['bookTocharge' => null])
@@ -435,7 +443,9 @@
                     </div>
 
                     <div class="col-xs-12">
-                        <iframe src="https://www.meteoblue.com/en/weather/widget/three/sierra-nevada_spain_2513236?geoloc=fixed&nocurrent=0&noforecast=0&days=4&tempunit=CELSIUS&windunit=KILOMETER_PER_HOUR&layout=image"  frameborder="0" scrolling="NO" allowtransparency="true" sandbox="allow-same-origin allow-scripts allow-popups" style="width: 100%;height: 595px"></iframe><div><!-- DO NOT REMOVE THIS LINK --><a href="https://www.meteoblue.com/en/weather/forecast/week/sierra-nevada_spain_2513236?utm_source=weather_widget&utm_medium=linkus&utm_content=three&utm_campaign=Weather%2BWidget" target="_blank">meteoblue</a></div>
+                        <!-- www.tutiempo.net - Ancho:446px - Alto:89px -->
+                        <div id="TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G">El tiempo - Tutiempo.net</div>
+                        <script type="text/javascript" src="https://www.tutiempo.net/s-widget/l_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G"></script>
                     </div>
                 </div>
             </div>

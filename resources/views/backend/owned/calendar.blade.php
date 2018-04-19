@@ -136,7 +136,11 @@
                                                                             <?php if ($class == "Contestado(EMAIL)"): ?>
                                                                                  <?php $class = "contestado-email" ?>
                                                                             <?php endif ?>
-                                                                                
+	                                                                        <?php
+                                                                                if( $userRole != "admin" && $class == 'ATIPICAS'){
+                                                                                	$class = "";
+                                                                                }
+                                                                            ?>
                                                                             <div class="<?php echo $class ;?> end" style="width: 45%;float: left;">
                                                                             &nbsp;
                                                                         </div>
@@ -157,7 +161,11 @@
                                                                             <?php if ($class == "Contestado(EMAIL)"): ?>
                                                                                  <?php $class = "contestado-email" ?>
                                                                             <?php endif ?>
-                                                                            
+                                                                            <?php
+                                                                                if( $userRole != "admin" && $class == 'ATIPICAS'){
+                                                                                    $class = "";
+                                                                                }
+                                                                            ?>
                                                                             <div class="<?php echo $class ;?> start" style="width: 45%;float: right;">
                                                                                 &nbsp;
                                                                             </div>
@@ -181,7 +189,11 @@
                                                                             <?php if ($class == "Contestado(EMAIL)"): ?>
                                                                                  <?php $class = "contestado-email" ?>
                                                                             <?php endif ?>
-                                                                                
+	                                                                        <?php
+                                                                                if( $userRole != "admin" && $class == 'ATIPICAS'){
+                                                                                    $class = "";
+                                                                                }
+	                                                                        ?>
                                                                             <div class="<?php echo $class ;?>" style="width: 100%;float: left;">
                                                                                 &nbsp;
                                                                             </div>
@@ -214,7 +226,12 @@
                                                                     <?php else: ?>
                                                                         href="#" 
                                                                     <?php endif; ?>
-                                                                > 
+                                                                >
+	                                                                <?php
+                                                                        if( $userRole != "admin" && $class == 'ATIPICAS'){
+                                                                            $class = "";
+                                                                        }
+	                                                                ?>
                                                                     <div class="<?php echo $class ;?> start" style="width: 45%;float: right;">
                                                                         &nbsp;
                                                                     </div>
@@ -238,7 +255,12 @@
                                                                     <?php else: ?>
                                                                         href="#" 
                                                                     <?php endif; ?>
-                                                                > 
+                                                                >
+	                                                                <?php
+                                                                        if( $userRole != "admin" && $class == 'ATIPICAS'){
+                                                                            $class = "";
+                                                                        }
+	                                                                ?>
                                                                     <div class="<?php echo $class ;?> end" style="width: 45%;float: left;">
                                                                         &nbsp;
                                                                     </div>
@@ -255,7 +277,11 @@
                                                                 <?php if ($class == "Contestado(EMAIL)"): ?>
                                                                      <?php $class = "contestado-email" ?>
                                                                 <?php endif ?>
-                                                                    
+                                                                <?php
+                                                                    if( $userRole != "admin" && $class == 'ATIPICAS'){
+                                                                        $class = "";
+                                                                    }
+                                                                ?>
                                                                 class="<?php echo $class ;?>"
                                                             >
                                                                 <a 
@@ -283,7 +309,7 @@
                                                     <!-- Si no existe nada para ese dia -->
                                                 <?php else: ?>
                                                     
-                                                    <td class="asdas<?php echo $days[$key][$i]?>" style='border:1px solid grey;width: 24px; height: 20px;'>
+                                                    <td class="<?php echo $days[$key][$i]?>" style='border:1px solid grey;width: 24px; height: 20px;'>
 
                                                     </td>
 

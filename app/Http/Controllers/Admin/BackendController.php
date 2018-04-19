@@ -245,6 +245,19 @@ class BackendController extends Controller
             $book->ben_jaime = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
 
             $book->save();
+
+            if ( count( $book->pago ) > 0){
+
+
+	            foreach ( $book->pago as $pago ) {
+
+		            $pago->import = $book->total_price;
+		            $pago->save();
+
+            	}
+
+
+            }
         }
 
     }

@@ -573,7 +573,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::get('/importPaymenCashBank', 'Admin\BackendController@migrationCashBank');
 Route::get('/insertDNIS', 'Admin\BackendController@insertDNIS');
-Route::get('/refreshBloqueos', 'Admin\BackendController@insertDNIS');
+Route::get('/refreshBloqueos', 'Admin\BackendController@refreshBloqueos');
 
 // Route::get('/test', function (){
 //
