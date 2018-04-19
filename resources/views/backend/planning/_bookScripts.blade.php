@@ -108,7 +108,6 @@
         var start      = date1.toLocaleDateString();
         var finish     = date2.toLocaleDateString();
 
-        alert(sizeApto);
 
         if ( status == 8) {
             $('.total').empty();

@@ -266,6 +266,7 @@
 
                             </td>
                             <td class="text-center beneficio bi" style="border-left: 1px solid black;">
+	                            <?php if($book->room->lulury == 0 && $book->cost_limp > 0) {$book->profi -= $book->cost_limp; } ?>
                                 <?php echo number_format($book->profit,0,',','.') ?> €</b>
                             </td>
                             <?php if(round($book->inc_percent) < $percentBenef): ?>
@@ -276,6 +277,7 @@
                                 <?php $classDanger = "" ?>
                             <?php endif; ?>
                             <td class="text-center beneficio bf " style="border-left: 1px solid black; <?php echo $classDanger ?>">
+
                                 <?php if ( $book->inc_percent > 0): ?>
                                     <?php echo number_format($book->inc_percent,0)." %" ?>
                                 <?php else: ?>
@@ -303,11 +305,16 @@
 
                             </td>
                             <td class="text-center coste"  style="border-left: 1px solid black;">
-                                <?php if ( $book->cost_lujo > 0): ?>
-                                    <?php echo number_format($book->cost_lujo,0,',','.')?> €
+                                <?php if ($book->room->luxury == 1): ?>
+
+                                    <?php if ( $book->cost_lujo > 0): ?>
+                                        <?php echo number_format($book->cost_lujo,0,',','.')?> €
+                                    <?php else: ?>
+                                        ----
+                                    <?php endif ?>
                                 <?php else: ?>
                                     ----
-                                <?php endif ?>
+                                <?php endif;?>
 
                             </td>
                             <td class="text-center coste <?php if($book->cost_limp == 0){ echo 'alert-limp'; }?>" style="border-left: 1px solid black;">
