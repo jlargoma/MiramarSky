@@ -240,6 +240,7 @@
                         <div class="col-xs-12 bg-black push-20">
                             <h4 class="text-center white">
                                 DATOS DE LA RESERVA
+                                <i class="fas fa-sync-alt" id="reset" style="cursor:pointer; position:absolute; right:2rem"></i>
                             </h4>
                         </div>
                         <div class="col-md-4 push-10">
@@ -724,6 +725,7 @@
                         <div class="col-xs-12 bg-black push-20">
                             <h4 class="text-center white">
                                 DATOS DE LA RESERVA
+                                <i class="fas fa-sync-alt" id="reset" style="cursor:pointer; position:absolute; right:2rem"></i>
                             </h4>
                         </div>
                         <div class="col-md-4  col-xs-8 push-20">
