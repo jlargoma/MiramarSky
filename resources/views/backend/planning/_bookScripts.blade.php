@@ -178,7 +178,7 @@
                     agencyCost: agencyCost,
                     promotion: promotion,
                     agencyType: agencyType,
-                    total_price: data && data.hasOwnProperty('pvp') ? data.pvp : '',
+//                    total_price: data && data.hasOwnProperty('pvp') ? data.pvp : '',
                     book_id: book_id
                 }).done(function( data ) {
                     console.log(data);
@@ -190,7 +190,7 @@
                     if (data.totales.promotion == 0) {
                         $('.book_owned_comments').empty();
                     } else {
-                        $('.book_owned_comments').html('(PROMOCIÓN 3x2 DESCUENTO : '+ Math.abs(data.totales.promotion) +' €)');
+                        $('.book_owned_comments').html('(PROMOCIÓN 3x2 DESCUENTO : '+ Math.abs(data.costes.promotion) +' €)');
                     }
                     $('.total').val(data.calculated.total_price);
                     $('.cost').val(data.calculated.total_cost);
@@ -330,23 +330,70 @@
             $('.total').trigger("change");
         });
 
-        function appendChangedPvp() {
-            // Show modified PVP in case of this existing
-//            oldPrice = $('.total').attr('old-data');
-            newPrice = $('.total').val();
-            calculate({"pvp": newPrice});
-//            if (oldPrice == newPrice) {
-//                $('#modified-price-block').empty();
-//            } else {
-//                $('#modified-price-block').empty().append(
-//                        'PVP real: <span id="real-price">' + $('.total').attr('old-data') + '</span><br/>' +
-//                        'PVP modificado: <span id="modified-price">' + $('.total').val() + '</span>'
-//                );
-//            }
-        }
-        $('.total').change(function(event) {
-            appendChangedPvp()
+        // Total Cost Calc
+        $('.total, .cost').change(function(event) {
+            calculateProfit();
         });
+        $('.total').change(function(event) {
+            calculateProfit();
+        });
+
+        // Coste Apto
+        $('.costApto').focus(function(event) {
+            $(this).attr('data-cost-on-focus', $(this).val());
+        });
+        $('.costApto').change(function(event) {
+            var oldValue = ($(this).attr('data-cost-on-focus'));
+            var diff = oldValue - $(this).val();
+
+            var totalCost = $('.cost').val();
+            $('.cost').val(totalCost - diff);
+
+            $(this).attr('data-cost-on-focus', $(this).val());
+            calculateProfit();
+        });
+
+        // Coste Parking
+        $('.costParking').focus(function(event) {
+            $(this).attr('data-cost-on-focus', $(this).val());
+        });
+        $('.costParking').change(function(event) {
+            var oldValue = ($(this).attr('data-cost-on-focus'));
+            var diff = oldValue - $(this).val();
+
+            var totalCost = $('.cost').val();
+            $('.cost').val(totalCost - diff);
+
+            $(this).attr('data-cost-on-focus', $(this).val());
+            calculateProfit();
+        });
+
+        function calculateProfit() {
+            var pvp = $('.total').val();
+            var totalCost = $('.cost').val();
+
+            var profit = pvp - totalCost;
+            var profitPercentage = Math.round((profit / pvp) * 100);
+
+            $('.beneficio').val(profit);
+            $('.beneficio-text').html(profitPercentage + ' %');
+        }
+
+        // Reset Changes
+        $('#reset').click(function() {
+            calculate();
+
+            var $el = $(this);
+            $el.addClass('fa-spin');
+
+            $('.loading-div').show();
+
+            setTimeout(function() {
+                $el.removeClass('fa-spin');
+                $('.loading-div').hide();
+            }, 1000);
+        });
+
 
         $('.country').change(function(event) {
             var value = $(this).val();

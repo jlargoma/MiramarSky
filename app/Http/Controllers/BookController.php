@@ -478,7 +478,7 @@ class BookController extends Controller
             $book->sup_park = $computedData->totales->parking;
             $book->sup_limp = $computedData->totales->limp;
             $book->cost_limp = $computedData->costes->limp;
-            $book->cost_park = $computedData->costes->parking;
+            $book->cost_park = $request->input('costParking');
 
             $book->type_park     = $request->input('parking');
             $book->agency        = $request->input('agency');
@@ -1559,18 +1559,18 @@ class BookController extends Controller
         $promotion = $request->promotion ? floatval($request->promotion) : 0;
 
         $data['costes']['parking'] = $this->getCostPark($request->park, $request->noches, $room->id);
-        $data['costes']['book'] = $this->getCostBook($request->start ,$request->finish, $request->pax, $request->room);
+        $data['costes']['book'] = $this->getCostBook($request->start ,$request->finish, $request->pax, $request->room) - $promotion;
         $data['costes']['lujo'] = $this->getCostLujo($request->lujo);
         $data['costes']['limp']  = (int) $room->cost_cleaning;
         $data['costes']['obsequio'] = Rooms::GIFT_COST;
         $data['costes']['agencia'] = (float)$request->agencyCost;
+        $data['costes']['promotion'] = $promotion;
 
         $data['totales']['parking'] = $this->getPricePark($request->park, $request->noches, $room->id);
         $data['totales']['lujo'] = $this->getPriceLujo($request->lujo);
         $data['totales']['limp'] = (int) $room->price_cleaning;
         $data['totales']['book'] = $this->getPriceBook($request->start, $request->finish, $request->pax, $request->room);
         $data['totales']['obsequio'] = Rooms::GIFT_PRICE;
-        $data['totales']['promotion'] = -$promotion; // Promotion is not a cost, is a discount on customer final price
 
         // If the request comes with a price to show use it
         if (!empty($request->total_price)) {
@@ -1581,7 +1581,7 @@ class BookController extends Controller
             if (isset($book)) {
                 // If the price has been modified in DB already
                 if ($book->total_price != $book->real_price) {
-                    $totalPrice = $book->total_price - $promotion;
+                    $totalPrice = $book->total_price;
                     $data['aux']['price_modified'] = $totalPrice;
                 } else {
                     $totalPrice = array_sum($data['totales']);
@@ -1591,7 +1591,7 @@ class BookController extends Controller
             }
         }
 
-        $totalCost = array_sum($data['costes']);
+        $totalCost = array_sum($data['costes']) - $promotion;
         $profit = $totalPrice - $totalCost;
 
         $data['calculated']['total_price'] = $totalPrice;
