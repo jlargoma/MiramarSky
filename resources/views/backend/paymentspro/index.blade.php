@@ -202,7 +202,11 @@
 	    							<?php  echo number_format($summary['pagos'],0,',','.') ?> €
 	    						</td>
 	    						<td class="text-center pendiente bordes" style="padding: 8px;">
-	    							<?php $pendiente = $summary['totalCost'] - $summary['pagos'];?>
+								    <?php
+										$summaryCostPropTot =  $summary['totalApto'] +
+										$summary['totalParking'] +
+										$summary['totalLujo'];
+	    							 	$pendiente = $summaryCostPropTot - $summary['pagos'];?>
 	    							<span class="text-danger font-w800"><b><?php echo number_format($pendiente,0,',','.') ?>€</b></span>
 	    						</td>
 	    					</tr>
