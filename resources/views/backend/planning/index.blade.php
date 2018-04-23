@@ -147,6 +147,9 @@
 
                         <button class="btn btn-danger btn-tables btn-cons" type="button" data-type="eliminadas"> 
                             <span class="bold">Eliminadas</span>
+                            <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
+                                {{ $booksCount['deletes'] }}
+                            </span>
                         </button>
                        
                     </div>

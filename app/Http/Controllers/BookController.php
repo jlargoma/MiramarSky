@@ -56,7 +56,7 @@ class BookController extends Controller
         $booksCount['special'] = $booksCollection->whereIn('type_book', [7,8])->count();
         $booksCount['confirmed'] = $booksCollection->where('type_book', 2)->count();
         $booksCount['blocked-ical'] = $booksCollection->whereIn('type_book',[11,12])->count();
-//        $booksCount['deletes'] = \App\Book::with('customer')->where('start', '>', $start->copy())->where('finish', '<', $start->copy()->addYear())->where('type_book',0)->where('comment', 'LIKE', '%Antiguos cobros%')->count();
+        $booksCount['deletes'] = \App\Book::where('start', '>', $start->copy())->where('finish', '<', $start->copy()->addYear())->where('type_book',0)->where('comment', 'LIKE', '%Antiguos cobros%')->count();
         $booksCount['checkin'] = $this->getCounters($start,'checkin');
         $booksCount['checkout'] = $booksCount['confirmed'] - $booksCount['checkin'];
 
@@ -929,9 +929,21 @@ class BookController extends Controller
                              }
                          }
 
+
+
                          $pago->delete();
                  }
             }
+
+	       if ($book->type_book == 7){
+		       $expenseLimp = \App\Expenses::where('date', $book->finish)->where('import', $book->total_price)
+			       ->where('concept', "LIMPIEZA RESERVA PROPIETARIO. ".$book->room->nameRoom)->first();
+
+		       if ( count( $expenseLimp) > 0)
+			       $expenseLimp->delete();
+	       }
+
+
 
             $book->type_book = 0;
 

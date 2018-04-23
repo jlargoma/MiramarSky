@@ -697,11 +697,10 @@
 <script type="text/javascript" src="/assets/js/datatables.js"></script>
 <script src="/assets/js/scripts.js" type="text/javascript"></script>
 <script>
-      $.extend( true, $.fn.dataTable.defaults, {
-        "searching": false,
-      } );
 
       $('#tableOrderable').dataTable({
+        "searching": false,
+        "ordering": true,
         "paging":         false,
         "columnDefs": [
                         {
