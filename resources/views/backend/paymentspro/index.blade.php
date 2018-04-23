@@ -390,7 +390,7 @@
 					        			</td>
 
 					        			<td class="text-center pendiente bordes"  style="padding: 10px 5px ;">
-					        				
+
 					        				<?php if ($pendiente <= 0): ?>
 					        					<span class="text-success font-w800"><?php echo number_format($pendiente,0,',','.') ?>€</span>
 					        				<?php else: ?>
@@ -544,7 +544,12 @@
     							<?php  echo number_format($summary['pagos'],0,',','.') ?> €
     						</td>
     						<td class="text-center pendiente bordes" style="padding: 8px;">
-    							<?php $pendiente = $summary['totalCost'] - $summary['pagos'];?>
+							    <?php
+							    $summaryCostPropTot =  $summary['totalApto'] +
+								    $summary['totalParking'] +
+								    $summary['totalLujo'];
+							    $pendiente = $summaryCostPropTot - $summary['pagos'];?>
+								<span class="text-danger font-w800"><b><?php echo number_format($pendiente,0,',','.') ?>€</b></span>
     							<span class="text-danger font-w800"><b><?php echo number_format($pendiente,0,',','.') ?>€</b></span>
     						</td>
     					</tr>
@@ -602,8 +607,12 @@
 			        </thead>
 				        <tbody>
 				        	<?php foreach ($rooms as $room): ?>
-				        		<?php $pendiente = $data[$room->id]['totales']['totalCost'] - $data[$room->id]['pagos'] ?>
-				        		<?php $costPropTot =  $data[$room->id]['totales']['totalApto']+$data[$room->id]['totales']['totalParking']+$data[$room->id]['totales']['totalLujo']?>
+								<?php
+								$costPropTot =  $data[$room->id]['totales']['totalApto'] +
+									$data[$room->id]['totales']['totalParking'] +
+									$data[$room->id]['totales']['totalLujo']
+								?>
+								<?php $pendiente   = $costPropTot - $data[$room->id]['pagos'] ?>
 				        		<tr>
 				        			<td class="text-left"  style="padding: 10px 5px ;">
 				        				<a class="update-payments" data-debt="<?php echo $pendiente ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments" title="Añadir pago" style="cursor: pointer">
@@ -722,7 +731,6 @@
 				        			</td>
 
 				        			<td class="text-center pendiente bordes"  style="padding: 10px 5px ;">
-				        				
 				        				<?php if ($pendiente <= 0): ?>
 				        					<span class="text-success font-w800"><?php echo number_format($pendiente,0,',','.') ?>€</span>
 				        				<?php else: ?>
