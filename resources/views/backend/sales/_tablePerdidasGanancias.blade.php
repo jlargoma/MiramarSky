@@ -182,7 +182,7 @@
 			<!-- GASTOS PENDIENTES  -->
 			<td class="text-center" style="color: #fff; background-color: #f55753!important; border-bottom-color:#46c37b; padding: 8px 5px!important;">
 				<?php 
-					$totalExpensesPending =  array_sum($arrayExpensesPending['PAGO PROPIETARIO']) +  
+					$totalExpensesPending = array_sum($arrayExpensesPending['PAGO PROPIETARIO']) +
 											array_sum($arrayExpensesPending['AGENCIAS']) + 
 											array_sum($arrayExpensesPending['STRIPE']) + 
 											array_sum($arrayExpensesPending['LIMPIEZA']) + 

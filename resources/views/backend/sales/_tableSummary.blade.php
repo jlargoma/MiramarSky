@@ -25,68 +25,67 @@
         @include('backend.sales._tableSummaryBoxes', ['totales' => $totales, 'books' => $books, 'data' => $data, 'temporada' => $temporada])
     </div>
     <div class="col-xs-12">
-
-        <div class="col-md-12 col-xs-12" style="padding-right: 0;">
+        <div class="row push-10">
             <table>
                 <thead>
-                    <th class ="text-center text-white" rowspan="2" colspan="5" style="width: 24%; padding: 5px 5px 0">
-                        <h2 class="text-center font-w800">
-                            Resumen liquidación
-                        </h2>
-                    </th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">PVP</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Banc.<br> Jorg</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Banc.<br> Jaime</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Cash <br>Jorge</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Cash<br>Jaime</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Pend</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Ing<br> Neto</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">%Benef</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Cost.<br> Total</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Cost.<br> Apto</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Park</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Sup.<br> Lujo</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Limp</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Agencia</th>
-                    <th class ="text-center bg-complete text-white" style="width: 3%; padding: 5px 5px 0">Extras</th>
-                    <th class ="text-center bg-complete text-white" style="width: 3%; padding: 5px 5px 0">Stripe</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Benef<br>Jorg</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Benef<br>Jaim</th>
+                <th class ="text-center text-white" rowspan="2" colspan="6" style="width: 35.5%; padding: 5px 5px 0">
+                    <h2 class="text-center font-w800">
+                        Resumen liquidación
+                    </h2>
+                </th>
+                <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">PVP</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Banc.<br> Jorg</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Banc.<br> Jaime</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Cash <br>Jorge</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Cash<br>Jaime</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Pend</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Ing<br> Neto</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">%Benef</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Cost.<br> Total</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Cost.<br> Apto</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Park</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Sup.<br> Lujo</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Limp</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Agencia</th>
+                <th class ="text-center bg-complete text-white" style="width: 3%; padding: 5px 5px 0">Extras</th>
+                <th class ="text-center bg-complete text-white" style="width: 3%; padding: 5px 5px 0">Stripe</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Benef<br>Jorg</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Benef<br>Jaim</th>
                 </thead>
                 <tr>
-                    <td class="text-center" colspan="5" >
+                    <td class="text-center" colspan="6" >
                     </td>
                     <td class="text-center coste" style="border-left:1px solid black;">
                         <b><?php echo number_format($totales["total"],0,',','.') ?> €</b>
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <?php if ($totales["bancoJorge"] == 0): ?>
-                            ----
-                        <?php else: ?>
-                            <?php echo number_format($totales["bancoJorge"],0,',','.') ?> €
-                        <?php endif ?>
+				        <?php if ($totales["bancoJorge"] == 0): ?>
+                        ----
+				        <?php else: ?>
+				        <?php echo number_format($totales["bancoJorge"],0,',','.') ?> €
+				        <?php endif ?>
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <?php if ($totales["bancoJaime"] == 0): ?>
-                            ----
-                         <?php else: ?>
-                            <?php echo number_format($totales["bancoJaime"],0,',','.') ?> €
-                         <?php endif ?>
+				        <?php if ($totales["bancoJaime"] == 0): ?>
+                        ----
+				        <?php else: ?>
+				        <?php echo number_format($totales["bancoJaime"],0,',','.') ?> €
+				        <?php endif ?>
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <?php if ($totales["jorge"] == 0): ?>
-                           ----
-                        <?php else: ?>
-                            <?php echo number_format($totales["jorge"],0,',','.') ?> €
-                        <?php endif ?>
+				        <?php if ($totales["jorge"] == 0): ?>
+                        ----
+				        <?php else: ?>
+				        <?php echo number_format($totales["jorge"],0,',','.') ?> €
+				        <?php endif ?>
 
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <?php if ($totales["jaime"] == 0): ?>
-                            ----
-                        <?php else: ?>
-                            <?php echo number_format($totales["jaime"],0,',','.') ?> €
-                        <?php endif ?>
+				        <?php if ($totales["jaime"] == 0): ?>
+                        ----
+				        <?php else: ?>
+				        <?php echo number_format($totales["jaime"],0,',','.') ?> €
+				        <?php endif ?>
 
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
@@ -100,74 +99,100 @@
                         <b><?php echo number_format($totales["beneficio"],0,',','.') ?>€</b>
                     </td>
                     <td class ="text-center beneficio" style="border-left:1px solid black;">
-                        <?php $totoalDiv = ($totales["total"] == 0)?1:$totales["total"]; ?>
-                        <?php echo number_format( ( $totales["beneficio"] / $totoalDiv )* 100 ,2 ,',','.') ?>%
+				        <?php $totoalDiv = ($totales["total"] == 0)?1:$totales["total"]; ?>
+				        <?php echo number_format( ( $totales["beneficio"] / $totoalDiv )* 100 ,2 ,',','.') ?>%
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
                         <b><?php echo number_format($totales['coste'],0,',','.') ?>€</b>
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <?php echo number_format($totales["costeApto"],0,',','.') ?>€
+				        <?php echo number_format($totales["costeApto"],0,',','.') ?>€
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <?php echo number_format($totales["costePark"],0,',','.') ?>€
+				        <?php echo number_format($totales["costePark"],0,',','.') ?>€
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <?php echo number_format($totales["costeLujo"],0,',','.') ?>€
+				        <?php echo number_format($totales["costeLujo"],0,',','.') ?>€
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <?php echo number_format($totales["costeLimp"],0,',','.') ?>€
+				        <?php echo number_format($totales["costeLimp"],0,',','.') ?>€
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <?php echo number_format($totales["costeAgencia"],0,',','.') ?>€
+				        <?php echo number_format($totales["costeAgencia"],0,',','.') ?>€
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <?php if ($totales["obs"] > 0): ?>
-                            <?php echo number_format($totales["obs"],0,',','.') ?>€
-                        <?php else: ?>
-                            --
-                        <?php endif ?>
+				        <?php if ($totales["obs"] > 0): ?>
+				        <?php echo number_format($totales["obs"],0,',','.') ?>€
+				        <?php else: ?>
+                        --
+				        <?php endif ?>
 
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <?php echo number_format($totales["stripe"],0,',','.') ?>€
+				        <?php echo number_format($totales["stripe"],0,',','.') ?>€
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <?php echo number_format($totales["benJorge"],0,',','.') ?>€
+				        <?php echo number_format($totales["benJorge"],0,',','.') ?>€
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <?php echo number_format($totales["benJaime"],0,',','.') ?>€
+				        <?php echo number_format($totales["benJaime"],0,',','.') ?>€
                     </td>
                 </tr>
-                <tr>
-                    <td class="text-center" colspan="23" style="height: 35px;">
-
-                    </td>
-                </tr>
+            </table>
+        </div>
+        <div class="col-md-12 col-xs-12" style="padding-right: 0;">
+            <table class="table table-striped" id="tableOrderable">
                 <thead >
-                    <th class ="text-center bg-complete text-white" style="width: 7% !important">Nombre</th>
-                    <th class ="text-center bg-complete text-white" style="width: 3% !important">Pax</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important">Apto</th>
-                    <th class ="text-center bg-complete text-white" style="width: 7% !important">IN - OUT</th>
-                    <th class ="text-center bg-complete text-white" style="width: 2% !important"><i class="fa fa-moon-o"></i></th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important">PVP</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important">Banco <br> Jorg</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important">Banco <br> Jaime</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important">Cash <br> Jorge</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important">Cash <br> Jaime</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important">Pend</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important">Ingreso <br> Neto</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important">%Benef</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important">Coste <br> Total</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important">Coste <br> Apto</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important">Park</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important">Sup. Lujo</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important">Limp</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important">Agencia</th>
-                    <th class ="text-center bg-complete text-white" style="width: 3% !important">Extras</th>
-                    <th class ="text-center bg-complete text-white" style="width: 3% !important">Stripe</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important">Benef Jorge</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important">Benef Jaime</th>
+                    <th class ="text-center bg-complete text-white" style="width: 7% !important; font-size:
+                    10px!important">Nombre</th>
+                    <th class ="text-center bg-complete text-white" style="width: 1% !important; font-size:
+                    10px!important">Tipo</th>
+                    <th class ="text-center bg-complete text-white" style="width: 3% !important; font-size:
+                    10px!important">Pax</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    10px!important">Apto</th>
+                    <th class ="text-center bg-complete text-white" style="width: 7% !important; font-size:
+                    10px!important">IN - OUT</th>
+                    <th class ="text-center bg-complete text-white" style="width: 2% !important; font-size:
+                    10px!important"><i class="fa
+                    fa-moon-o"></i></th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    10px!important">PVP</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    10px!important">Banco <br> Jorg</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    10px!important">Banco <br> Jaime</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    10px!important">Cash <br> Jorge</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    10px!important">Cash <br> Jaime</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    10px!important">Pend</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    10px!important">Ingreso <br>
+                        Neto</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    10px!important">%Benef</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    10px!important">Coste <br> Total</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    10px!important">Coste <br> Apto</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    10px!important">Park</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    10px!important">Sup. Lujo</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    10px!important">Limp</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    10px!important">Agencia</th>
+                    <th class ="text-center bg-complete text-white" style="width: 3% !important; font-size:
+                    10px!important">Extras</th>
+                    <th class ="text-center bg-complete text-white" style="width: 3% !important; font-size:
+                    10px!important">Stripe</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    10px!important">Benef Jorge</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    10px!important">Benef Jaime</th>
                 </thead>
                 <tbody >
                     <!-- Totales -->
@@ -185,15 +210,24 @@
                                         <?php  echo $book->customer['name'] ?>
                                     </a>
                                 </div>
-                                <div class="col-xs-2 not-padding">
-                                    <?php if (!empty($book->book_owned_comments)): ?>
-                                        <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
-                                            <img src="/pages/oferta.png" style="width: 40px;">
-                                        </span>
-                                        <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
-
-                                    <?php endif ?>
-                                </div>
+                            </td>
+                            <td class="text-center">
+                                <!-- type -->
+                                <b>
+                                <?php
+                                    switch ($book->type_book){
+                                        case 2:
+                                        	echo "C";
+                                        	break;
+	                                    case 7:
+                                            echo "P";
+                                            break;
+	                                    case 8:
+		                                    echo "A";
+		                                    break;
+                                    }
+                                ?>
+                                </b>
                             </td>
                             <td class="text-center">
                                 <!-- pax -->
@@ -654,21 +688,44 @@
     </div>
 <?php endif ?>
 
-
+<script src="/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
+<script src="/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
+<script src="/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
+<script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
+<script type="text/javascript" src="/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
+<script type="text/javascript" src="/assets/js/datatables.js"></script>
+<script src="/assets/js/scripts.js" type="text/javascript"></script>
 <script>
-    $('.updateLimp').change(function(){
+      $.extend( true, $.fn.dataTable.defaults, {
+        "searching": false,
+      } );
+
+      $('#tableOrderable').dataTable({
+        "paging":         false,
+        "columnDefs": [
+                        {
+                            "targets": [0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23], // column or
+                          // columns numbers
+                            "orderable": false,  // set orderable for selected columns
+                        }
+                    ],
+
+      });
+
+      $('.updateLimp').change(function(){
         var id = $(this).attr('data-idBook');
         var limp = $(this).val();
         $.get( "/admin/sales/updateLimpBook/"+id+"/"+limp).done(function( data ) {
 
         });
-    });
+      });
 
-    $('.updateExtraCost').change(function(){
+      $('.updateExtraCost').change(function(){
         var id = $(this).attr('data-idBook');
         var extraCost = $(this).val();
         $.get( "/admin/sales/updateExtraCost/"+id+"/"+extraCost).done(function( data ) {
 
         });
-    });
+      });
 </script>

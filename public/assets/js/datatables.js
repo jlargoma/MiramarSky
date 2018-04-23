@@ -223,7 +223,7 @@
                 "sLengthMenu": "_MENU_ ",
                 "sInfo": "Mostrando <b>_START_ de _END_</b> de _TOTAL_"
             },
-            "iDisplayLength": 5,
+            "iDisplayLength": 10000,
             "oTableTools": {
                 "sSwfPath": "assets/plugins/jquery-datatable/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
                 "aButtons": [{
@@ -270,6 +270,28 @@
 
     }
 
+  // Initialize datatable showing export options
+  var initTableWithOrderingOptions = function() {
+    var table = $('#tableWithOrderingOptions');
+    var settings = {
+      "columnDefs": [ {
+        "targets": 0,
+        "orderable": false
+      } ],
+      "destroy": true,
+      "scrollCollapse": true,
+      "oLanguage": {
+        "sLengthMenu": "_MENU_ ",
+        "sInfo": "Mostrando <b>_START_ de _END_</b> de _TOTAL_"
+      },
+      "iDisplayLength": 1000
+    };
+
+
+    table.dataTable(settings);
+
+  }
+
     initTableWithSearch();
     initTableWithSearch2();
     initTableWithSearch3();
@@ -279,5 +301,6 @@
     initTableWithSearchLiquidacion();
     initTableWithDynamicRows();
     initTableWithExportOptions();
+    initTableWithOrderingOptions();
 
 })(window.jQuery);

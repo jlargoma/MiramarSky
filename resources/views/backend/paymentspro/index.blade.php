@@ -264,12 +264,12 @@
 				        <tbody>
 				        	<?php foreach ($rooms as $room): ?>
 				        		<?php if ($room->state == 1): ?>
-					        		<?php $pendiente   = $data[$room->id]['totales']['totalCost'] - $data[$room->id]['pagos'] ?>
 					        		<?php
 										$costPropTot =  $data[$room->id]['totales']['totalApto'] +
 														$data[$room->id]['totales']['totalParking'] +
 														$data[$room->id]['totales']['totalLujo']
 									?>
+					        		<?php $pendiente   = $costPropTot - $data[$room->id]['pagos'] ?>
 					        		<tr>
 					        			<td class="text-left"  style="padding: 10px 5px ;">
 					        				<a class="update-payments" data-debt="<?php echo $pendiente ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments" title="Añadir pago" style="cursor: pointer">

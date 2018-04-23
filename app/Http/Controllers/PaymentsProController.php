@@ -131,12 +131,12 @@ class PaymentsProController extends Controller
             }
 
         }
-
-
+//
+//
 //        echo "<pre>";
 //        print_r($summary);
 //        print_r($data);
-
+//		die();
 
         return view('backend/paymentspro/index',[
             'date'    => $inicio,

@@ -309,6 +309,7 @@ class LiquidacionController extends Controller
 
         $gastos = \App\Expenses::where('date', '>=', $inicio->copy()->format('Y-m-d'))
             ->Where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+	        ->where('concept', 'NOT LIKE', '%LIMPIEZA RESERVA PROPIETARIO.%')
             ->orderBy('date', 'DESC')
             ->get();
 
@@ -339,12 +340,12 @@ class LiquidacionController extends Controller
 
 
         return view ('backend/sales/gastos/gastos',  [
-            'date'         => $date,
-            'inicio'         => $inicio,
-            'gastos'         => $gastos,
-            'totalStripep'         => $totalStripep,
-            'comisionBooking'         => $comisionBooking,
-            'obsequios'         => $obsequios,
+            'date'            => $date,
+            'inicio'          => $inicio,
+            'gastos'          => $gastos,
+            'totalStripep'    => $totalStripep,
+            'comisionBooking' => $comisionBooking,
+            'obsequios'       => $obsequios,
         ]);
     }
 
@@ -894,6 +895,7 @@ class LiquidacionController extends Controller
 
         $gastos = \App\Expenses::where('date', '>', $inicio->copy()->format('Y-m-d'))
             ->Where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+	        ->where('concept', 'NOT LIKE', '%LIMPIEZA RESERVA PROPIETARIO.%')
             ->orderBy('date', 'DESC')
             ->get();
 
