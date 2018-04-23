@@ -549,7 +549,6 @@
 								    $summary['totalParking'] +
 								    $summary['totalLujo'];
 							    $pendiente = $summaryCostPropTot - $summary['pagos'];?>
-								<span class="text-danger font-w800"><b><?php echo number_format($pendiente,0,',','.') ?>€</b></span>
     							<span class="text-danger font-w800"><b><?php echo number_format($pendiente,0,',','.') ?>€</b></span>
     						</td>
     					</tr>
