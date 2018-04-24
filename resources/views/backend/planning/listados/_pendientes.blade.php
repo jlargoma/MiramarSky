@@ -130,7 +130,7 @@
                 </td>
 
                 <td class="text-center">
-                    <?php if (!empty($book->book_owned_comments)): ?>
+                    <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
                         <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
                             <img src="/pages/oferta.png" style="width: 40px;">
                         </span>
@@ -243,7 +243,7 @@
                         </select>
                     </td>
                     <td class="text-center">
-                        <?php if (!empty($book->book_owned_comments)): ?>
+	                    <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
                             <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
                                 <img src="/pages/oferta.png" style="width: 40px;">
                             </span>

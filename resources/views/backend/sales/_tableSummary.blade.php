@@ -28,7 +28,7 @@
         <div class="row push-10">
             <table>
                 <thead>
-                <th class ="text-center text-white" rowspan="2" colspan="6" style="width: 35.5%; padding: 5px 5px 0">
+                <th class ="text-center text-white" rowspan="2" colspan="6" style="width: 33%; padding: 5px 5px 0">
                     <h2 class="text-center font-w800">
                         Resumen liquidación
                     </h2>
@@ -143,55 +143,55 @@
         <div class="col-md-12 col-xs-12" style="padding-right: 0;">
             <table class="table table-striped" id="tableOrderable">
                 <thead >
-                    <th class ="text-center bg-complete text-white" style="width: 7% !important; font-size:
+                    <th class ="text-center bg-complete text-white sorting_disabled" style="width: 7% !important; font-size:
                     10px!important">Nombre</th>
-                    <th class ="text-center bg-complete text-white" style="width: 1% !important; font-size:
-                    10px!important">Tipo</th>
-                    <th class ="text-center bg-complete text-white" style="width: 3% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
+                    10px!important">&nbsp;&nbsp;&nbsp;Tipo&nbsp;&nbsp;&nbsp;</th>
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">Pax</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">Apto</th>
-                    <th class ="text-center bg-complete text-white" style="width: 7% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">IN - OUT</th>
-                    <th class ="text-center bg-complete text-white" style="width: 2% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important"><i class="fa
                     fa-moon-o"></i></th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">PVP</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">Banco <br> Jorg</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">Banco <br> Jaime</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">Cash <br> Jorge</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">Cash <br> Jaime</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">Pend</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">Ingreso <br>
                         Neto</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">%Benef</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">Coste <br> Total</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">Coste <br> Apto</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">Park</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">Sup. Lujo</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">Limp</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">Agencia</th>
-                    <th class ="text-center bg-complete text-white" style="width: 3% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">Extras</th>
-                    <th class ="text-center bg-complete text-white" style="width: 3% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">Stripe</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">Benef Jorge</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important; font-size:
+                    <th class ="text-center bg-complete text-white" style="font-size:
                     10px!important">Benef Jaime</th>
                 </thead>
                 <tbody >
@@ -200,16 +200,15 @@
                     <?php foreach ($books as $book): ?>
                         <tr >
                             <td class="text-center">
-                                <div class="col-xs-2 not-padding">
-                                    <?php if ($book->agency != 0): ?>
-                                        <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
-                                    <?php endif ?>
-                                </div>
-                                <div class="col-xs-8">
-                                    <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
-                                        <?php  echo $book->customer['name'] ?>
-                                    </a>
-                                </div>
+                                <span style="display: none;"><?php echo strtotime($book->start);?></span>
+                                <?php if ($book->agency != 0): ?>
+                                    <img style="width: 20px;margin: 0 auto;position: absolute; left: 15px;"
+                                         src="/pages/<?php  echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
+                                <?php endif ?>
+
+                                <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
+                                    <?php  echo $book->customer->name ?>
+                                </a>
                             </td>
                             <td class="text-center">
                                 <!-- type -->
@@ -701,7 +700,7 @@
       $('#tableOrderable').dataTable({
         "searching": false,
         "ordering": true,
-        "paging":         false,
+        "paging":   false,
         "columnDefs": [
                         {
                             "targets": [0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23], // column or
