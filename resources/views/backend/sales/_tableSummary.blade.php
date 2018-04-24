@@ -28,7 +28,7 @@
         <div class="row push-10">
             <table>
                 <thead>
-                <th class ="text-center text-white" rowspan="2" colspan="6" style="width: 28%; padding: 5px 5px 0">
+                <th class ="text-center text-white" rowspan="2" colspan="6" style="width: 30%; padding: 5px 5px 0">
                     <h2 class="text-center font-w800">
                         Resumen liquidación
                     </h2>
@@ -176,14 +176,17 @@
                         <tr >
                             <td class="text-center">
                                 <span style="display: none;"><?php echo strtotime($book->start);?></span>
-                                <?php if ($book->agency != 0): ?>
-                                    <img style="width: 20px;margin: 0 auto;position: absolute; left: 0px;"
-                                         src="/pages/<?php  echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
-                                <?php endif ?>
+                                <div class="col-xs-2">
+                                    <?php if ($book->agency != 0): ?>
+                                        <img style="width: 20px;margin: 0 auto;position: absolute; left: 0px;" src="/pages/<?php  echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
+	                               <?php endif ?>
 
-                                <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
-                                    <?php  echo $book->customer->name ?>
-                                </a>
+                                </div>
+                                <div class="col-xs-10">
+                                    <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
+                                        <?php  echo $book->customer->name ?>
+                                    </a>
+                                </div>
                             </td>
                             <td class="text-center">
                                 <!-- type -->
