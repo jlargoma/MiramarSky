@@ -380,7 +380,7 @@
                             <label>promoción 3x2</label>
                             <input type="number" step='0.01' class="promociones only-numbers form-control" name="promociones" value="<?php echo $book->promociones ?>">
                         </div>
-                        <?php if ($book->book_owned_comments != "" ): ?>
+                        <?php if ($book->book_owned_comments != "" && $book->promociones != 0): ?>
                             <div class="col-md-2 col-xs-6 push-10 content_image_offert">
                                 <img src="/pages/oferta.png" style="width: 90px;">
                             </div>
@@ -852,7 +852,7 @@
                            <label>promoción 3x2</label>
                            <input type="number" step='0.01' class="promociones only-numbers form-control" name="promociones" value="<?php echo $book->promociones ?>">
                        </div>
-                       <?php if ($book->book_owned_comments != "" ): ?>
+                       <?php if ($book->book_owned_comments != "" && $book->promociones != 0): ?>
                             <div class="col-md-2 col-xs-6 push-10 content_image_offert">
                                 <img src="/pages/oferta.png" style="width: 90px;">
                             </div>
