@@ -2338,7 +2338,7 @@ class LiquidacionController extends Controller
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
                         ->where('start' , '>=' , $date->format('Y-m-d'))
                         ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
-                        ->whereIn('type_book',[2, 7])
+                        ->whereIn('type_book',[2, 7, 8])
                         ->where('room_id', $request->searchRoom)
                         ->orderBy('start', 'ASC')
                         ->get();
@@ -2349,7 +2349,7 @@ class LiquidacionController extends Controller
                     $books = \App\Book::whereIn('customer_id', $arrayCustomersId)
                         ->where('start' , '>=' , $date->format('Y-m-d'))
                         ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
-                        ->whereIn('type_book',[2, 7])
+                        ->whereIn('type_book',[2, 7, 8])
                         ->orderBy('start', 'ASC')
                         ->get();
 
@@ -2364,7 +2364,7 @@ class LiquidacionController extends Controller
 
                 $books = \App\Book::where('start' , '>=' , $date)
                     ->where('start', '<=', $date->copy()->addYear()->subMonth())
-                    ->where('type_book', 2)
+	                ->whereIn('type_book',[2, 7, 8])
                     ->where('room_id', $request->searchRoom)
                     ->orderBy('start', 'ASC')
                     ->get();
@@ -2372,7 +2372,7 @@ class LiquidacionController extends Controller
 
                 $books = \App\Book::where('start' , '>=' , $date)
                     ->where('start', '<=', $date->copy()->addYear()->subMonth())
-                    ->where('type_book', 2)
+	                ->whereIn('type_book',[2, 7, 8])
                     ->orderBy('start', 'ASC')
                     ->get();
             }

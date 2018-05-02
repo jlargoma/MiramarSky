@@ -377,7 +377,7 @@
 														</td>
 													<?php endif ?>
 													<td class="text-center">
-						                                <?php if (!empty($book->book_owned_comments)): ?>
+						                                <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
 				                                        	<img src="/pages/oferta.png" style="width: 40px;" title="<?php echo $book->book_owned_comments ?>">
 						                                   
 						                                    

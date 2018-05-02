@@ -288,6 +288,14 @@
                 });
             }); 
         </script>
+        <style>
+            #TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G{
+                width: 100%!important;
+            }
+            .panel-mobile, .table-responsive.content-calendar{
+                margin-bottom: 0px;
+            }
+        </style>
 
         <div class="container-fluid  p-l-15 p-r-15 p-t-20 bg-white">
             <div class="row push-10">
@@ -319,8 +327,8 @@
 
             </div>
             <div class="row">
-                <div class="col-xs-3" style="position: fixed; bottom: 20px; right: 10px; z-index: 100">
-                    <button class="btn btn-success btn-cons btn-newBook" type="button" data-toggle="modal" data-target="#modalNewBook" style="min-width: 10px!important;width: 80px!important; padding: 25px; border-radius: 100%;">
+                <div class="col-xs-3" style="position: fixed; bottom: 20px; left: 10px; z-index: 100">
+                    <button class="btn btn-success btn-cons btn-newBook" type="button" data-toggle="modal" data-target="#modalNewBook" style="min-width: 10px!important;width: 80px!important; padding: 25px; border-radius: 100%;opacity: 0.4">
                         <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
                     </button>
                 </div>
@@ -435,7 +443,7 @@
 
                 </div>
                 <div class="col-md-5">
-                    <div class="row content-calendar calendar-mobile push-20" style="min-height: 485px;">
+                    <div class="row content-calendar calendar-mobile" style="min-height: 485px;">
                         <div class="col-xs-12 text-center sending" style="padding: 120px 15px;">
                             <i class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></i><br>
                             <h2 class="text-center">CARGANDO CALENDARIO</h2>

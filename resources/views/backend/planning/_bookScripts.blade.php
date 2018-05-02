@@ -117,7 +117,9 @@
 
             $('.beneficio').empty();
             $('.beneficio').val(0);
+
         }else if ( status == 7 ){
+
             if (sizeApto == 1) {
                 $('.total').empty();
                 $('.total').val(30);
@@ -590,7 +592,7 @@
                 var comments            = $('textarea[name="comments"]').val();
                 var book_comments       = $('textarea[name="book_comments"]').val();
                 var book_owned_comments = $('textarea[name="book_owned_comments"]').val();
-                var computed_data     = $('#computed-data').html();
+                var computed_data       = $('#computed-data').html();
 
 
                 var url        = $('#updateForm').attr('action');

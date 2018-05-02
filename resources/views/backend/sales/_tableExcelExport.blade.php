@@ -3,6 +3,7 @@
     <tbody >
         <tr>
             <td style="text-align: center; font-weight: 800;">Nombre</td>
+            <th class ="text-center bg-complete text-white" style="width: 3% !important;font-size:10px!important">&nbsp;&nbsp;&nbsp;Tipo&nbsp;&nbsp;&nbsp;</th>
             <td style="text-align: center; font-weight: 800;">Pax</td>
             <td style="text-align: center; font-weight: 800;">Apto</td>
             <td style="text-align: center; font-weight: 800;">IN - OUT</td>
@@ -29,8 +30,26 @@
         <?php foreach ($books as $book): ?>
             <tr >
                 <td  style="text-align: center;">
-                    <?php  echo $book->customer['name'] ?>
+                    <?php  echo $book->customer->name ?>
 
+                </td>
+                <td class="text-center">
+                                <!-- type -->
+                    <b>
+                    <?php
+                        switch ($book->type_book){
+                            case 2:
+                                echo "C";
+                                break;
+                            case 7:
+                                echo "P";
+                                break;
+                            case 8:
+                                echo "A";
+                                break;
+                        }
+                        ?>
+                    </b>
                 </td>
                 <td  style="text-align: center;">
 

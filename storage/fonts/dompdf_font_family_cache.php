@@ -80,4 +80,7 @@
   'glyphicons halflings' => array(
     'normal' => $fontDir . '/6ed5261475a72ba92983868bca0014c4',
   ),
+  'pages-icon' => array(
+    'normal' => $fontDir . '\8f276a2a5e62691dd366ab3533f34f85',
+  ),
 ) ?>

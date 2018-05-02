@@ -475,10 +475,10 @@ class BookController extends Controller
             $book->real_pax            = $request->input('real_pax');
             $book->nigths              = $request->input('nigths');
 
-            $book->sup_park = $computedData->totales->parking;
-            $book->sup_limp = $computedData->totales->limp;
-            $book->cost_limp = $computedData->costes->limp;
-            $book->cost_park = $request->input('costParking');
+            $book->sup_park      = $computedData->totales->parking;
+            $book->sup_limp      = $computedData->totales->limp;
+            $book->cost_limp     = $computedData->costes->limp;
+            $book->cost_park     = $request->input('costParking');
 
             $book->type_park     = $request->input('parking');
             $book->agency        = $request->input('agency');

@@ -182,10 +182,15 @@
 	                               <?php endif ?>
 
                                 </div>
-                                <div class="col-xs-10">
+                                <div class="col-xs-8">
                                     <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                                         <?php  echo $book->customer->name ?>
                                     </a>
+                                </div>
+                                <div class="col-xs-2">
+                                    <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
+                                        <img src="/pages/oferta.png" style="width: 40px;" title="<?php echo $book->book_owned_comments ?>">
+                                    <?php endif ?>
                                 </div>
                             </td>
                             <td class="text-center">

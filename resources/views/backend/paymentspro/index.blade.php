@@ -263,7 +263,11 @@
 			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
 			    					Pendiente   
 			    				</th>
-		    				</tr>
+
+								<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+			    					Acciones
+			    				</th>
+					        </tr>
 				        </thead>
 				        <tbody>
 				        	<?php foreach ($rooms as $room): ?>
@@ -396,6 +400,12 @@
 					        				<?php else: ?>
 					        					<span class="text-danger font-w800"><?php echo number_format($pendiente,0,',','.') ?>€</span>
 					        				<?php endif ?>
+					        			</td>
+								        <td class="text-center pendiente bordes"  style="padding: 10px 5px ;">
+
+					        				<a class="btn btn-xs btn-success" href="{{ url('admin/pdf/descarga-excel-propietario/'.$room->id) }}">
+										        <i class="fa fa-file-pdf"></i>
+									        </a>
 					        			</td>
 					            	</tr>
 					            <?php endif ?>

@@ -4,7 +4,7 @@
     setlocale(LC_TIME, "es_ES"); 
 ?>
 <div class="col-md-12 col-xs-12">
-    <div class="panel">
+    <div class="panel panel-mobile">
         <div class="row">
           <?php $dateAux = $inicio->copy(); ?>
           <?php for ($i=1; $i <= 9 ; $i++) :?>

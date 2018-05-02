@@ -336,6 +336,7 @@ Route::get('admin/propietarios/dashboard/{name?}/{year?}' , ['middleware' => 'au
 //PDF´s
 
 Route::get('admin/pdf/pdf-reserva/{id}','PdfController@invoice');
+Route::get('admin/pdf/descarga-excel-propietario/{id}','PdfController@pdfPropietario');
 
 Route::group(['middleware' => 'auth'], function () {
 	Route::get('/admin/rooms/api/getImagesRoom/{id?}', 'RoomsController@getImagesRoom');
