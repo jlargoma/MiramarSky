@@ -162,7 +162,7 @@
 	    					<tr> 
 	    						<td class="text-center costeApto bordes" style="background: #89cfff;">
 	    							<?php $costeProp =  $summary['totalApto'] + $summary['totalParking'] + $summary['totalLujo']?>
-	    							<b><?php  echo number_format( $costeProp ,0,',','.') ?>€</b>
+	    							<b><?php echo number_format( $costeProp ,0,',','.') ?>€</b>
 	    						</td>
 	    						<td class="text-center" style="padding: 8px;background: #89cfff;">
 	    							<b><?php echo number_format($summary['totalPVP'],0,',','.') ?>€</b>
@@ -207,7 +207,9 @@
 										$summary['totalParking'] +
 										$summary['totalLujo'];
 	    							 	$pendiente = $summaryCostPropTot - $summary['pagos'];?>
-	    							<span class="text-danger font-w800"><b><?php echo number_format($pendiente,0,',','.') ?>€</b></span>
+	    							<span class="text-danger font-w800">
+	    									<b><?php echo number_format($pendiente,0,',','.') ?>€</b>
+	    							</span>
 	    						</td>
 	    					</tr>
 	    				</tbody>
@@ -223,50 +225,48 @@
 
 		    			<thead>
 		    				<tr>
-			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 8%">
+		    					
+			    				<th colspan="2" class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 8%">
 			    					Prop.
 			    				</th>
-			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
 									C. Prop.   
 								</th>
-			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: " >
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px;" >
 			    					PVP  
 			    				</th>
-			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
 									C. Total.   
 								</th>
 								
-			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
 									C. Apto.   
 								</th>
-								<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+								<th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
 									C. Park   
 								</th>
-								<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+								<th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
 									C. Lujo   
 								</th>
-								<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+								<th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
 									C. Agen   
 								</th>
-								<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+								<th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
 									C. Limp.   
 								</th>
-			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
 			    					Benef
 			    				</th>
-			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
 			    					% Ben 
 			    				</th>
-			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
 			    					Pagado  
 			    				</th>
-			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
 			    					Pendiente   
 			    				</th>
 
-								<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: ">
-			    					Acciones
-			    				</th>
 					        </tr>
 				        </thead>
 				        <tbody>
@@ -279,10 +279,16 @@
 									?>
 					        		<?php $pendiente   = $costPropTot - $data[$room->id]['pagos'] ?>
 					        		<tr>
-					        			<td class="text-left"  style="padding: 10px 5px ;">
-					        				<a class="update-payments" data-debt="<?php echo $pendiente ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments" title="Añadir pago" style="cursor: pointer">
-					        					<?php echo ucfirst($room->user->name) ?> (<?php echo $room->nameRoom ?>)
-					        				</a>
+					        			<td class="text-left"  style="padding: 10px 5px !important;">
+					        				<a class="btn btn-xs btn-success" href="{{ url('admin/pdf/descarga-excel-propietario/'.$room->id) }}">
+										        <i class="fa fa-file-pdf"></i>
+									        </a>
+					        			</td>
+					        			<td class="text-left"  style="padding: 10px 5px !important;">
+				        					<a class="update-payments" data-debt="<?php echo $pendiente ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" >
+				        						<?php echo ucfirst($room->user->name) ?> (<?php echo $room->nameRoom ?>)
+				        					</a>
+					        				
 					        			</td>
 					        			<td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
 
@@ -298,7 +304,7 @@
 					        			</td>
 					        			<td class="text-center"  style="padding: 10px 5px ; background: #89cfff;">
 					        				
-					        				<button class="btn-transparent bookByRoom" data-id="<?php echo $room->id ?>"  data-toggle="modal" data-target="#bookByRoom" style="cursor: pointer; font-weight: 800" title="Reservas de <?php echo $room->nameRoom?>">
+					        				<button class="btn-transparent bookByRoom" data-id="<?php echo $room->id ?>"  data-toggle="modal" data-target="">
 					        					<?php if (isset($data[$room->id]['totales']['totalPVP'])): ?>
 					        						<?php echo number_format($data[$room->id]['totales']['totalPVP'],0,',','.'); ?>€
 					        					<?php else: ?>
@@ -400,12 +406,6 @@
 					        				<?php else: ?>
 					        					<span class="text-danger font-w800"><?php echo number_format($pendiente,0,',','.') ?>€</span>
 					        				<?php endif ?>
-					        			</td>
-								        <td class="text-center pendiente bordes"  style="padding: 10px 5px ;">
-
-					        				<a class="btn btn-xs btn-success" href="{{ url('admin/pdf/descarga-excel-propietario/'.$room->id) }}">
-										        <i class="fa fa-file-pdf"></i>
-									        </a>
 					        			</td>
 					            	</tr>
 					            <?php endif ?>

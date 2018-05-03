@@ -115,33 +115,19 @@ class PdfController extends Controller
 			$pagototal += $pago->import;
 
 		}
-//
-//		return view('backend.paymentspro.pdf.resumen', [
-//			'books' => $books,
-//			'room'  => $room,
-//			'pagos'  => $pagos,
-//			'pagototal'   => $pagototal,
-//			'pagototalProp' => 0,
-//			'total' => $totales["total"],
-//			'apto'  => $totales["costeApto"],
-//			'park'  => $totales["costePark"],
-//			'lujo'  => $totales["costeLujo"],
-//		]);
-		$pdf = PDF::loadView('backend.paymentspro.pdf.resumen', [
-																	'books' => $books,
-																	'room'  => $room,
-																	'pagos'  => $pagos,
-																	'pagototal'   => $pagototal,
-																	'pagototalProp' => 0,
-																	'total' => $totales["total"],
-																	'apto'  => $totales["costeApto"],
-																	'park'  => $totales["costePark"],
-																	'lujo'  => $totales["costeLujo"],
-																]);
-		$pdf->setPaper('a4', 'portrait')->setWarnings(false);
-		return $pdf->stream('Resumen ecónomico temporada '.$room->nameRoom.' '. $date->copy()->format('y').'- '
-			.$date->copy()->addYear()
-				->format('y').'.pdf');
+		
+		return view('backend.paymentspro.pdf.resumen', [
+			'books' => $books,
+			'room'  => $room,
+			'pagos'  => $pagos,
+			'pagototal'   => $pagototal,
+			'pagototalProp' => 0,
+			'total' => $totales["total"],
+			'apto'  => $totales["costeApto"],
+			'park'  => $totales["costePark"],
+			'lujo'  => $totales["costeLujo"],
+		]);
+		
 	}
 
 }

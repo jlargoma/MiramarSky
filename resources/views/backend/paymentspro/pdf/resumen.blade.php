@@ -3,19 +3,59 @@
 	setlocale(LC_TIME, "ES");
 	setlocale(LC_TIME, "es_ES");
 ?>
-	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no" />
-	<link href="{{ public_path('/assets/plugins/bootstrapv3/css/bootstrap.css') }}" rel="stylesheet" type="text/css" media="all"/>
-	<link href="{{ public_path('/pages/css/pages-icons.css') }}" rel="stylesheet" type="text/css" media="all">
-	<link href="{{ public_path('/pages/css/pages.css') }}" rel="stylesheet" type="text/css" media="all"/>
-	<link rel="stylesheet" type="text/css" href="{{ public_path('/pages/css/custom.css')}}" media="all">
+@extends('layouts.admin-master')
 
-  <div class="row" >
-	  <h2>Resumen</h2>
-	  <table class="table table-bordered table-hover  no-footer" >
-  </div>
-  <div class="row" >
+@section('title') Administrador de reservas MiramarSKI @endsection
+@section('content')
+
+<div class="container container-fluid">
+	<div class="row" >
+	  	<h2>Resumen</h2>
+  		<table class="table table-bordered table-hover  no-footer" id="basicTable" role="grid" >
+			<tr>
+				<th class ="text-center bg-complete text-white">ING. PROP</th>
+				<th class ="text-center bg-complete text-white">Apto</th>
+				<th class ="text-center bg-complete text-white">Park</th>
+				<?php if ($room->luxury == 1): ?>
+					<th class ="text-center bg-complete text-white">Sup.Lujo</th>
+				<?php endif ?>
+			</tr>
+			<tr>
+				<td class="text-center total">
+					<?php if ($total > 0): ?>
+						<?php echo number_format($total,0,',','.'); ?>€
+					<?php else: ?>
+						--- €
+					<?php endif ?>												
+				</td>
+				<td class="text-center">
+					<?php if ($apto > 0): ?>
+						<?php echo number_format($apto,0,',','.'); ?>€
+					<?php else: ?>
+						--- €
+					<?php endif ?>
+				</td>
+				<td class="text-center">
+					<?php if ($park > 0): ?>
+						<?php echo number_format($park,0,',','.'); ?>€
+					<?php else: ?>
+						--- €
+					<?php endif ?>
+				</td>
+				<?php if ($room->luxury == 1): ?>
+					<td class="text-center">
+						<?php if ($lujo > 0): ?>
+							<?php echo number_format($lujo,0,',','.'); ?>€
+						<?php else: ?>
+							--- €
+						<?php endif ?>
+					</td>
+				<?php else: ?>
+				<?php endif ?>
+			</tr>
+		</table>
+	</div>
+	<div class="row" >
 	  <h2 class="text-center font-w800">Listado de reservas</h2>
 	  <table class="table table-bordered table-hover  no-footer">
 		  <thead>
@@ -108,8 +148,8 @@
 			  <?php endforeach ?>
 		  </tbody>
 	  </table>
-  </div>
-  <div class="row" >
+	</div>
+	<div class="row" >
 	  <?php $sumPagos = 0; ?>
 	  <?php if (count($pagos)> 0): ?>
 		<div class="col-xs-12 " style="width: 100%;">
@@ -192,8 +232,8 @@
 			  Aun no hay pagos realizados
 	    </div>
 	  <?php endif ?>
-  </div>
-  <div class="row" style="width: 100%;">
+	</div>
+	<div class="row" style="width: 100%;">
 	  <div class="col-md-4 bg-complete push-20" style="width: 33.33%; float: left;" >
 		  <div class="col-md-6">
 			  <h5 class="text-center white">GENERADO</h5>
@@ -218,4 +258,6 @@
 			  <h5 class="text-center white"><strong><?php echo number_format(($total - $pagototalProp),2,',','.'); ?>€</strong></h5>
 		  </div>
 	  </div>
-  </div>
+	</div>
+</div>
+@endsection
