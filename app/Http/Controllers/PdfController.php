@@ -64,12 +64,12 @@ class PdfController extends Controller
 		}
 
 		$books = \App\Book::with(['customer', 'payments', 'room.type'])
-			->where('room_id' , $room->id)
-			->where('start' , '>=' , $date)
-			->where('start', '<=', $date->copy()->addYear()->subMonth())
-			->whereIn('type_book',[2, 7, 8])
-			->orderBy('start', 'ASC')
-			->get();
+							->where('room_id' , $room->id)
+							->where('start' , '>=' , $date)
+							->where('start', '<=', $date->copy()->addYear()->subMonth())
+							->whereIn('type_book',[2, 7, 8])
+							->orderBy('start', 'ASC')
+							->get();
 
 		foreach ($books as $key => $book) {
 
@@ -122,7 +122,7 @@ class PdfController extends Controller
 			'pagos'  => $pagos,
 			'pagototal'   => $pagototal,
 			'pagototalProp' => 0,
-			'total' => $totales["total"],
+			'total' => $totales["costeApto"] + $totales["costePark"] + $totales["costeLujo"],//$totales["total"],
 			'apto'  => $totales["costeApto"],
 			'park'  => $totales["costePark"],
 			'lujo'  => $totales["costeLujo"],
