@@ -150,34 +150,37 @@
 	  </table>
 	</div>
 	<div class="row" >
+		<div class="col-xs-12">
+			<h2 class="text-center font-w800">Pagos</h2>
+		</div>
 	  <?php $sumPagos = 0; ?>
 	  <?php if (count($pagos)> 0): ?>
 		<div class="col-xs-12 " style="width: 100%;">
-		  <div class="col-md-3 not-padding" style="width: 25%; float: left;">
+		  <div class="col-md-2 not-padding">
 			  <div class="col-xs-12  bg-complete push-0">
-				  <h5 class="text-left white">
+				  <h5 class="text-center white">
 					  Fecha de pago
 				  </h5>
 			  </div>
 		  </div>
 
-		  <div class="col-md-3 not-padding" style="width: 25%; float: left;">
+		  <div class="col-md-5 not-padding">
 			  <div class="col-xs-12   bg-complete push-0">
-				  <h5 class="text-left white">
+				  <h5 class="text-center white">
 					  Concepto
 				  </h5>
 			  </div>
 		  </div>
-		  <div class="col-md-3 not-padding" style="width: 25%; float: left;">
+		  <div class="col-md-2 not-padding">
 			  <div class="col-xs-12  bg-complete push-0">
 				  <h5 class="text-left white">
 					  Importe
 				  </h5>
 			  </div>
 		  </div>
-		  <div class="col-md-3 not-padding" style="width: 25%; float: left;">
+		  <div class="col-md-3 not-padding">
 			  <div class="col-xs-12   bg-complete push-0">
-				  <h5 class="text-left white">
+				  <h5 class="text-center white">
 					  Pendiente
 				  </h5>
 			  </div>
@@ -187,17 +190,15 @@
 		<?php foreach ($pagos as $pago): ?>
 		  <?php $sumPagos += $pago->import ?>
 		  <div class="col-xs-12 push-0" style="width: 100%;">
-			  <div class="col-md-3 not-padding" style="width: 25%; float: left;" >
+			  <div class="col-md-2 not-padding" >
 				  <div class="col-xs-12 push-0">
 					  <h5 class="text-left"><?php echo Carbon::createFromFormat('Y-m-d',$pago->date)->format('d-m-Y')?></h5>
 				  </div>
 			  </div>
-			  <div class="col-md-3 not-padding" style="width: 25%; float: left;" >
-				  <div class="col-xs-12 push-0">
-					  <h5 class="text-left"><?php echo $pago->concept ?></h5>
-				  </div>
+			  <div class="col-md-5 not-padding" >
+					<h5 class="text-left"><?php echo $pago->concept ?></h5>
 			  </div>
-			  <div class="col-md-3 not-padding" style="width: 25%; float: left;" >
+			  <div class="col-md-2 not-padding" >
 				  <div class="col-xs-12 push-0">
 					  <?php
 						  $divisor = 0;
@@ -214,14 +215,14 @@
 						  }
 						  $expense = $pago->import / $divisor;
 					  ?>
-					<h5 class="text-center"><?php echo number_format($expense,2,',','.') ?>€</h5>
+					<h5 class="text-left"><?php echo number_format($expense,2,',','.') ?>€</h5>
 					  <?php $pagototalProp += $expense;?>
 				  </div>
 			  </div>
 
-			  <div class="col-md-3 not-padding" style="width: 25%; float: left;" >
+			  <div class="col-md-3 not-padding" >
 				  <div class="col-xs-12 push-0" style="">
-					  <h5 class="text-left text-danger"><?php echo number_format($total - $pagototalProp,2,',','.'); ?>€</h5>
+					  <h5 class="text-center text-danger"><?php echo number_format($total - $pagototalProp,2,',','.'); ?>€</h5>
 				  </div>
 			  </div>
 		  </div>
@@ -254,7 +255,7 @@
 		  <div class="col-md-6">
 			  <h5 class="text-center white">PENDIENTE</h5>
 		  </div>
-		  <div class="col-md-6text-center text-white">
+		  <div class="col-md-6 text-center text-white">
 			  <h5 class="text-center white"><strong><?php echo number_format(($total - $pagototalProp),2,',','.'); ?>€</strong></h5>
 		  </div>
 	  </div>
