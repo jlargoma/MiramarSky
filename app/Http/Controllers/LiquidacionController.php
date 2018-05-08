@@ -69,7 +69,7 @@ class LiquidacionController extends Controller
 
         foreach ($books as $key => $book) {
 
-            if($book->type_book != 7 && $book->type_book != 8){
+            // if($book->type_book != 7 && $book->type_book != 8){
                 $totales["total"]        += $book->total_price;
                 $totales["costeApto"]    += $book->cost_apto;
                 $totales["costePark"]    += $book->cost_park;
@@ -96,7 +96,7 @@ class LiquidacionController extends Controller
                 $totales["stripe"]       += $book->stripeCost;
                 $totales["obs"]          += $book->extraCost;
                 $totales["pendiente"]    += $book->pending;
-            }
+            // }
         }
 
 
@@ -1431,7 +1431,7 @@ class LiquidacionController extends Controller
 
                 foreach ($books as $key => $book) {
 
-	                if($book->type_book != 7 && $book->type_book != 8){
+	                // if($book->type_book != 7 && $book->type_book != 8){
 		                $totales["total"]        += $book->total_price;
 		                $totales["costeApto"]    += $book->cost_apto;
 		                $totales["costePark"]    += $book->cost_park;
@@ -1458,7 +1458,7 @@ class LiquidacionController extends Controller
 		                $totales["stripe"]       += $book->stripeCost;
 		                $totales["obs"]          += $book->extraCost;
 		                $totales["pendiente"]    += $book->pending;
-	                }
+	                // }
 
                 }
 
@@ -1562,7 +1562,7 @@ class LiquidacionController extends Controller
 
 
             foreach ($books as $key => $book) {
-	            if($book->type_book != 7 && $book->type_book != 8){
+	            // if($book->type_book != 7 && $book->type_book != 8){
 		            $totales["total"]        += $book->total_price;
 		            $totales["costeApto"]    += $book->cost_apto;
 		            $totales["costePark"]    += $book->cost_park;
@@ -1589,7 +1589,7 @@ class LiquidacionController extends Controller
 		            $totales["stripe"]       += $book->stripeCost;
 		            $totales["obs"]          += $book->extraCost;
 		            $totales["pendiente"]    += $book->pending;
-	            }
+	            // }
             }
             $totBooks    = (count($books) > 0)?count($books):1;
             $countDiasPropios = 0;

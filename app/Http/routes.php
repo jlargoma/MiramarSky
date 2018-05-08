@@ -501,6 +501,29 @@ Route::group(['middleware' => 'auth'], function () {
 
     });
 
+    Route::get('/admin/sales/updateCostApto/{id}/{importe}', function ($id, $importe)
+    {
+        $book = \App\Book::find($id);
+        $book->cost_apto = $importe;
+        if ($book->save()) {
+            return "OK";
+        }
+
+
+    });
+    
+    Route::get('/admin/sales/updateCostPark/{id}/{importe}', function ($id, $importe)
+    {
+        $book = \App\Book::find($id);
+        $book->cost_park = $importe;
+        if ($book->save()) {
+            return "OK";
+        }
+
+
+    });
+
+
 	
 
 	Route::get('/admin/customers/searchByName/{searchString?}', function($searchString=""){

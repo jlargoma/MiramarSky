@@ -52,7 +52,9 @@
 		text-align: center;
 		border: 0px;
 	}
-	.updateExtraCost{
+	.updateExtraCost,
+	.updateCostApto,
+	.updateCostPark{
 		background-color: rgba(200,200,200,0.5)!important;
 		color: black;
 		width: 90%;

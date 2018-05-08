@@ -12,6 +12,7 @@
 	}
 
 </style>
+<button style="z-index: 20;" type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close fa-2x"></i></button>
 <div class="row">
 	<?php if ($room != 'all'): ?>
 		<h2 class="text-center font-w800" style="margin-top: 0;">
@@ -24,7 +25,7 @@
 	<?php endif ?>
 	
 </div>
-<div class="row">
+<div class="row push-20">
 	<div class="col-md-12 col-xs-12 resumen blocks">
 		<div class="col-md-5 col-xs-12">
 			<h3 class="text-center font-w300 hidden-sm hidden-xs" style="line-height: 1; letter-spacing: -1px;">
@@ -101,7 +102,7 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-xs-12 reservas resumen blocks">
+	<div class="col-md-6 col-xs-12 reservas resumen blocks">
 		<div class="row">
 			<div class="col-md-12">
 				<h2 class="text-center font-w800">Listado de reservas</h2>
@@ -303,6 +304,90 @@
 					</table>
 				</div>
 			<?php endif ?>
+		</div>
+	</div>
+	<div class="col-md-6 col-xs-12 reservas resumen blocks">
+		<div class="col-md-12 push-30">
+			<h2 class="text-center font-w800">Gastos</h2>
+		</div>
+		<div class="row">
+			<div class="col-xs-12" style="overflow-y: auto; max-height: 550px;">
+			<?php $sumPagos = 0; ?>
+			<?php if( count($pagos) > 0): ?>
+				<?php foreach ($pagos as $pago): ?>
+				  <?php $sumPagos += $pago->import ?>
+				  <div class="col-xs-12 push-0" style="width: 100%;">
+					  <div class="col-md-2 not-padding" >
+						  <div class="col-xs-12 push-0">
+							  <h5 class="text-left"><?php echo Carbon::createFromFormat('Y-m-d',$pago->date)->format('d-m-Y')?></h5>
+						  </div>
+					  </div>
+					  <div class="col-md-5 not-padding" >
+							<h5 class="text-left"><?php echo $pago->concept ?></h5>
+					  </div>
+					  <div class="col-md-2 not-padding" >
+						  <div class="col-xs-12 push-0">
+							  <?php
+								  $divisor = 0;
+								  if(preg_match('/,/', $pago->PayFor)){
+									  $aux = explode(',', $pago->PayFor);
+									  for ($i = 0; $i < count($aux); $i++){
+										  if ( !empty($aux[$i]) ){
+											  $divisor ++;
+										  }
+									  }
+
+								  }else{
+									  $divisor = 1;
+								  }
+								  $expense = $pago->import / $divisor;
+							  ?>
+							<h5 class="text-left"><?php echo number_format($expense,2,',','.') ?>€</h5>
+							  <?php $pagototalProp += $expense;?>
+						  </div>
+					  </div>
+
+					  <div class="col-md-3 not-padding" >
+						  <div class="col-xs-12 push-0" style="">
+							  <h5 class="text-center text-danger"><?php echo number_format($total - $pagototalProp,2,',','.'); ?>€</h5>
+						  </div>
+					  </div>
+				  </div>
+			    <?php endforeach ?>
+
+			  <?php else: ?>
+				<div class="col-xs-12 text-center">
+					  Aun no hay pagos realizados
+			    </div>
+			  <?php endif ?>
+			</div>
+		</div>
+		</div>
+		<div class="row">
+		  <div class="col-md-2 bg-complete push-20" >
+			  <div class="col-md-6">
+				  <h5 class="text-center white">GENERADO</h5>
+			  </div>
+			  <div class="col-md-6 text-center text-white">
+				  <h5 class="text-center white"><strong><?php echo number_format($total,2,',','.'); ?>€</strong></h5>
+			  </div>
+		  </div>
+		  <div class="col-md-2 bg-success push-20" >
+			  <div class="col-md-6">
+				  <h5 class="text-center white">PAGADO</h5>
+			  </div>
+			  <div class="col-md-6 text-center text-white">
+				  <h5 class="text-center white"><strong><?php echo number_format($pagototalProp,2,',','.'); ?>€</strong></h5>
+			  </div>
+		  </div>
+		  <div class="col-md-2 bg-danger push-20" >
+			  <div class="col-md-6">
+				  <h5 class="text-center white">PENDIENTE</h5>
+			  </div>
+			  <div class="col-md-6 text-center text-white">
+				  <h5 class="text-center white"><strong><?php echo number_format(($total - $pagototalProp),2,',','.'); ?>€</strong></h5>
+			  </div>
+		  </div>
 		</div>
 	</div>
 </div>

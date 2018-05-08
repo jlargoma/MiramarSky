@@ -33,7 +33,7 @@
                         Resumen liquidación
                     </h2>
                 </th>
-                <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">PVP</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">ING.</th>
                 <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Banc.<br> Jorg</th>
                 <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Banc.<br> Jaime</th>
                 <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Cash <br>Jorge</th>
@@ -150,7 +150,7 @@
                     <th class ="text-center bg-complete text-white" style="width: 1% !important;font-size:10px!important">Apto</th>
                     <th class ="text-center bg-complete text-white" style="width: 10% !important;font-size:10px!important">IN - OUT</th>
                     <th class ="text-center bg-complete text-white" style="width: 2% !important;font-size:10px!important"><i class="fa fa-moon"></i></th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">PVP</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">ING.</th>
                     <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">Banco <br> Jorg</th>
                     <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">Banco <br> Jaime</th>
                     <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">Cash <br> Jorge</th>
@@ -320,7 +320,8 @@
                             </td>
                             <td class="text-center coste" style="border-left: 1px solid black;">
                                 <?php if ( $book->cost_apto > 0): ?>
-                                    <?php echo number_format($book->cost_apto,0,',','.')?> €
+                                    <?php //echo number_format($book->cost_apto,0,',','.')?> 
+                                    <input class="updateCostApto " type="number" value="<?php echo round($book->cost_apto); ?>" data-idBook="<?php echo $book->id; ?>"/>
                                 <?php else: ?>
                                     ----
                                 <?php endif ?>
@@ -328,7 +329,8 @@
                             </td>
                             <td class="text-center coste" style="border-left: 1px solid black;">
                                 <?php if ( $book->cost_park > 0): ?>
-                                    <?php echo number_format($book->cost_park,0,',','.')?> €
+                                    <?php //echo number_format($book->cost_park,0,',','.')?>
+                                    <input class="updateCostPark " type="number" value="<?php echo round($book->cost_park); ?>" data-idBook="<?php echo $book->id; ?>"/>
                                 <?php else: ?>
                                     ----
                                 <?php endif ?>
@@ -403,7 +405,7 @@
 		                            Resumen liquidación
 		                        </h2>
 		                    </th>
-                            <th class ="text-center bg-complete text-white" style="width: 5%">PVP</th>
+                            <th class ="text-center bg-complete text-white" style="width: 5%">ING.</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Banc. Jorg</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Banc. Jaime</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Cash Jorge</th>
@@ -514,7 +516,7 @@
                             <th class ="text-center bg-complete text-white" style="width: 5%">Apto</th>
                             <th class ="text-center bg-complete text-white" style="width: 7%">IN - OUT</th>
                             <th class ="text-center bg-complete text-white" style="width: 2%"><i class="fa fa-moon-o"></i></th>
-                            <th class ="text-center bg-complete text-white" style="width: 5%">PVP</th>
+                            <th class ="text-center bg-complete text-white" style="width: 5%">ING.</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Banco <br> Jorg</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Banco <br> Jaime</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Cash <br> Jorge</th>
@@ -626,10 +628,10 @@
                                 '----' }}</b>
                                     </td>
                                     <td class="text-center coste">
-                                        <?php echo number_format($book->cost_apto,0,',','.')?> €
+                                         <input class="updateCostApto " type="number" value="<?php echo round($book->cost_apto); ?>" data-idBook="<?php echo $book->id; ?>"/>
                                     </td>
                                     <td class="text-center coste">
-                                        <?php echo number_format($book->cost_park,0,',','.')?> €
+                                        <input class="updateCostPark " type="number" value="<?php echo round($book->cost_park); ?>" data-idBook="<?php echo $book->id; ?>"/>
                                     </td>
                                     <td class="text-center coste" >
                                         <?php echo number_format($book->cost_lujo,0,',','.')?> €
@@ -680,33 +682,47 @@
 <script src="/assets/js/scripts.js" type="text/javascript"></script>
 <script>
 
-      $('#tableOrderable').dataTable({
-        "searching": false,
-        "ordering": true,
-        "paging":   false,
-        "columnDefs": [
-                        {
-                            "targets": [0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23], // column or
-                          // columns numbers
-                            "orderable": false,  // set orderable for selected columns
-                        }
-                    ],
+	$('#tableOrderable').dataTable({
+	"searching": false,
+	"ordering": true,
+	"paging":   false,
+	"columnDefs": [
+	                {
+	                    "targets": [0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23], // column or
+	                  // columns numbers
+	                    "orderable": false,  // set orderable for selected columns
+	                }
+	            ],
 
-      });
+	});
 
-      $('.updateLimp').change(function(){
-        var id = $(this).attr('data-idBook');
-        var limp = $(this).val();
-        $.get( "/admin/sales/updateLimpBook/"+id+"/"+limp).done(function( data ) {
+  	$('.updateLimp').change(function(){
+		var id = $(this).attr('data-idBook');
+		var limp = $(this).val();
+		$.get( "/admin/sales/updateLimpBook/"+id+"/"+limp).done(function( data ) {
 
-        });
-      });
+		});
+ 	});
 
-      $('.updateExtraCost').change(function(){
-        var id = $(this).attr('data-idBook');
-        var extraCost = $(this).val();
-        $.get( "/admin/sales/updateExtraCost/"+id+"/"+extraCost).done(function( data ) {
+  	$('.updateExtraCost').change(function(){
+    	var id = $(this).attr('data-idBook');
+    	var extraCost = $(this).val();
+    	$.get( "/admin/sales/updateExtraCost/"+id+"/"+extraCost).done(function( data ) {console.log(data)});
+    });
 
-        });
-      });
+
+	$('.updateCostApto').change(function(){
+    	var id = $(this).attr('data-idBook');
+    	var costApto = $(this).val();
+    	$.get( "/admin/sales/updateCostApto/"+id+"/"+costApto).done(function( data ) {console.log(data)});
+
+    });
+
+	$('.updateCostPark').change(function(){
+    	var id = $(this).attr('data-idBook');
+    	var costPark = $(this).val();
+    	$.get( "/admin/sales/updateCostPark/"+id+"/"+costPark).done(function( data ) {console.log(data)});
+
+    });
+        
 </script>

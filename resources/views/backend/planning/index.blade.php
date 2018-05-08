@@ -327,7 +327,7 @@
 
             </div>
             <div class="row">
-                <div class="col-xs-3" style="position: fixed; bottom: 20px; left: 10px; z-index: 100">
+                <div class="col-xs-3" style="position: fixed; bottom: 20px; right: 10px; z-index: 100">
                     <button class="btn btn-success btn-cons btn-newBook" type="button" data-toggle="modal" data-target="#modalNewBook" style="min-width: 10px!important;width: 80px!important; padding: 25px; border-radius: 100%;opacity: 0.4">
                         <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
                     </button>

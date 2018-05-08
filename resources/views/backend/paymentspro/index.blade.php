@@ -226,7 +226,7 @@
 		    			<thead>
 		    				<tr>
 		    					
-			    				<th colspan="2" class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 8%">
+			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 8%">
 			    					Prop.
 			    				</th>
 			    				<th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
@@ -280,12 +280,7 @@
 					        		<?php $pendiente   = $costPropTot - $data[$room->id]['pagos'] ?>
 					        		<tr>
 					        			<td class="text-left"  style="padding: 10px 5px !important;">
-					        				<a class="btn btn-xs btn-success" href="{{ url('admin/pdf/descarga-excel-propietario/'.$room->id) }}">
-										        <i class="fa fa-file-pdf"></i>
-									        </a>
-					        			</td>
-					        			<td class="text-left"  style="padding: 10px 5px !important;">
-				        					<a class="update-payments" data-debt="<?php echo $pendiente ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" >
+				        					<a class="update-payments" data-debt="<?php echo $pendiente ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments">
 				        						<?php echo ucfirst($room->user->name) ?> (<?php echo $room->nameRoom ?>)
 				        					</a>
 					        				
@@ -304,7 +299,7 @@
 					        			</td>
 					        			<td class="text-center"  style="padding: 10px 5px ; background: #89cfff;">
 					        				
-					        				<button class="btn-transparent bookByRoom" data-id="<?php echo $room->id ?>"  data-toggle="modal" data-target="">
+					        				<button class="btn-transparent bookByRoom" data-id="<?php echo $room->id ?>"  data-toggle="modal" data-target="#bookByRoom">
 					        					<?php if (isset($data[$room->id]['totales']['totalPVP'])): ?>
 					        						<?php echo number_format($data[$room->id]['totales']['totalPVP'],0,',','.'); ?>€
 					        					<?php else: ?>
@@ -841,17 +836,11 @@
 	<!-- /.modal-dialog -->
 </div>
 <div class="modal fade slide-up disable-scroll in" id="liquidationByRoom" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content-wrapper">
-			<div class="modal-content">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close fa-2x"></i></button>
-				<div class="container-xs-height full-height">
-					<div class="row-xs-height">
-						<div class="modal-body contentLiquidationByRoom">
-
-						</div>
-					</div>
-				</div>
+	<div class="modal-dialog modal-lg" style="width: 95%;">
+		<div class="modal-content-wrapper" >
+			<div class="modal-content" style="padding: 15px 5px;">
+				
+				<div class="modal-body contentLiquidationByRoom"></div>
 			</div>
 		</div>
 		<!-- /.modal-content -->

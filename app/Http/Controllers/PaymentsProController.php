@@ -540,6 +540,18 @@ class PaymentsProController extends Controller
        }
        $total += ( $apto + $park + $lujo);
 
+       $pagos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
+            ->where('date', '<=', $start->copy()->addYear()->format('Y-m-d'))
+            ->where('PayFor', 'LIKE', '%'.$room->id.'%')
+            ->orderBy('date', 'ASC')
+            ->get();
+
+        $pagototal = 0;
+        foreach ($pagos as $pago) {
+
+            $pagototal += $pago->import;
+
+        }
 
        return view('backend/paymentspro/_liquidationByRoom', [
                                                                 'books' => $books, 
@@ -554,6 +566,9 @@ class PaymentsProController extends Controller
                                                                             'finish' => $finish,
                                                                             ], 
                                                                 'mobile' => new Mobile(), 
+                                                                'pagos'  => $pagos,
+                                                                'pagototal'   => $pagototal,
+                                                                'pagototalProp' => 0,
                                                             ]);
 
     }
