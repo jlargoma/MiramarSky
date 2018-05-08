@@ -839,7 +839,6 @@
 	<div class="modal-dialog modal-lg" style="width: 95%;">
 		<div class="modal-content-wrapper" >
 			<div class="modal-content" style="padding: 15px 5px;">
-				
 				<div class="modal-body contentLiquidationByRoom"></div>
 			</div>
 		</div>
