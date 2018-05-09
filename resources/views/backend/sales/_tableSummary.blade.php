@@ -33,7 +33,7 @@
                         Resumen liquidación
                     </h2>
                 </th>
-                <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">ING.</th>
+                <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Ventas</th>
                 <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Banc.<br> Jorg</th>
                 <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Banc.<br> Jaime</th>
                 <th class ="text-center bg-complete text-white" style="width: 5%; padding: 5px 5px 0">Cash <br>Jorge</th>
@@ -82,9 +82,9 @@
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
 				        <?php if ($totales["jaime"] == 0): ?>
-                        ----
+                       	 ----
 				        <?php else: ?>
-				        <?php echo number_format($totales["jaime"],0,',','.') ?> €
+				        	<?php echo number_format($totales["jaime"],0,',','.') ?> €
 				        <?php endif ?>
 
                     </td>
@@ -103,7 +103,8 @@
 				        <?php echo number_format( ( $totales["beneficio"] / $totoalDiv )* 100 ,2 ,',','.') ?>%
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
-                        <b><?php echo number_format($totales['coste'],0,',','.') ?>€</b>
+                    	<?php $total_cost = 	$totales["costeApto"]+$totales["costePark"]+ $totales["costeLujo"]+ $totales["costeLimp"]+ $totales["costeAgencia"]+ $totales["obs"]+ $totales["stripe"]; ?>
+                        <b><?php echo number_format($total_cost,0,',','.') ?>€</b>
                     </td>
                     <td class ="text-center coste" style="border-left:1px solid black;">
 				        <?php echo number_format($totales["costeApto"],0,',','.') ?>€
@@ -150,7 +151,7 @@
                     <th class ="text-center bg-complete text-white" style="width: 1% !important;font-size:10px!important">Apto</th>
                     <th class ="text-center bg-complete text-white" style="width: 10% !important;font-size:10px!important">IN - OUT</th>
                     <th class ="text-center bg-complete text-white" style="width: 2% !important;font-size:10px!important"><i class="fa fa-moon"></i></th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">ING.</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">Ventas</th>
                     <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">Banco <br> Jorg</th>
                     <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">Banco <br> Jaime</th>
                     <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">Cash <br> Jorge</th>
@@ -283,7 +284,7 @@
                             </td>
                             <td class="text-center beneficio bi" style="border-left: 1px solid black;">
                                 <?php $profit = $book->profit?>
-	                            <?php $cost_total = $book->cost_total?>
+	                            <?php $cost_total = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->cost_limp + $book->PVPAgencia + $book->stripeCost + $book->extraCost;?>
 	                            <?php $total_price = $book->total_price?>
 	                            <?php $inc_percent = 0?>
 	                            <?php
@@ -314,7 +315,7 @@
 
                             </td>
                             <td class="text-center coste bi " style="border-left: 1px solid black;">
-
+								
                                 {{ $cost_total > 0 ? number_format(( $cost_total + $book->stripeCost),0,',','.') . ' €' :
                                 '----' }}
                             </td>
@@ -405,7 +406,7 @@
 		                            Resumen liquidación
 		                        </h2>
 		                    </th>
-                            <th class ="text-center bg-complete text-white" style="width: 5%">ING.</th>
+                            <th class ="text-center bg-complete text-white" style="width: 5%">Ventas</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Banc. Jorg</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Banc. Jaime</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Cash Jorge</th>
@@ -516,7 +517,7 @@
                             <th class ="text-center bg-complete text-white" style="width: 5%">Apto</th>
                             <th class ="text-center bg-complete text-white" style="width: 7%">IN - OUT</th>
                             <th class ="text-center bg-complete text-white" style="width: 2%"><i class="fa fa-moon-o"></i></th>
-                            <th class ="text-center bg-complete text-white" style="width: 5%">ING.</th>
+                            <th class ="text-center bg-complete text-white" style="width: 5%">Ventas</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Banco <br> Jorg</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Banco <br> Jaime</th>
                             <th class ="text-center bg-complete text-white" style="width: 5%">Cash <br> Jorge</th>

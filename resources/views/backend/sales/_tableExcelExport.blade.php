@@ -29,13 +29,13 @@
         </tr>
         <?php foreach ($books as $book): ?>
             <tr >
-                <td  style="text-align: center;">
+                <td>
                     <?php  echo $book->customer->name ?>
 
                 </td>
                 <td class="text-center">
-                                <!-- type -->
-                    <b>
+                    <!-- type -->
+                    
                     <?php
                         switch ($book->type_book){
                             case 2:
@@ -48,18 +48,19 @@
                                 echo "A";
                                 break;
                         }
-                        ?>
-                    </b>
+                    ?>
+                    
                 </td>
-                <td  style="text-align: center;">
-
+                <td class="text-center">
+                    <!-- pax -->
                     <?php echo $book->pax ?>
                 </td>
-                <td  style="text-align: center;">
+                <td class="text-center">
+                    <!-- apto -->
 
                     <?php echo $book->room->nameRoom ?>
                 </td>
-                <td  style="text-align: center;">
+                <td class="text-center">
                     <?php
                         $start = Carbon::createFromFormat('Y-m-d',$book->start);
                         echo $start->formatLocalized('%d %b');
@@ -69,117 +70,99 @@
                         echo $finish->formatLocalized('%d %b');
                     ?>
                 </td>
-                <td  style="text-align: center;">
+                <td class="text-center">
                     <?php echo $book->nigths ?>
                 </td>
-                <td style="text-align: center;">
-                    <?php if ($book->total_price > 0): ?>
-                        <?php echo ($book->total_price) ?>
+                <td class="text-center coste">
+                    {{$book->total_price}}
+
+                </td>
+
+                <td class="text-center coste">
+                     {{$book->getPayment(2)}}
+                </td>
+                <td class="text-center coste" >
+                    {{$book->getPayment(3)}}
+                </td>
+                <td class="text-center coste">
+                    {{$book->getPayment(0)}}
+
+                </td>
+                <td class="text-center coste pagos">
+                    {{$book->getPayment(1)}}
+
+                </td>
+                <td class="text-center coste pagos pendiente red " >
+
+                    {{ $book->pending }}
+
+                </td>
+                <td class="text-center beneficio bi">
+                    {{$book->profit}}
+                    <?php $profit = $book->profit?>
+                    <?php $cost_total = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->cost_limp + $book->PVPAgencia + $book->stripeCost + $book->extraCost;?>
+                    <?php $total_price = $book->total_price?>
+                    <?php $inc_percent = 0?>
+                    <?php
+                        if($book->room->luxury == 0 && $book->cost_lujo > 0) {
+                            $profit     = $book->profit - $book->cost_lujo;
+                            $cost_total = $book->cost_apto + $book->cost_park + $book->cost_limp + $book->PVPAgencia + $book->stripeCost + $book->extraCost;
+                            $total_price = ( $book->total_price - $book->sup_lujo );
+                        }
+                        if ($total_price != 0)
+                            $inc_percent = ($profit/ $total_price )*100;
+                    ?>
+
+                    
+                </td>
+
+                <td class="text-center beneficio bf ">
+                    {{$inc_percent}}
+                   
+                </td>
+                <td class="text-center coste bi ">
+                    {{$cost_total}}
+                </td>
+                <td class="text-center coste">
+                    {{$book->cost_apto}}
+                </td>
+                <td class="text-center coste">
+                   {{$book->cost_park}}
+
+                </td>
+                <td class="text-center coste" >
+                    <?php if ($book->room->luxury == 1): ?>
+
+                        <?php if ( $book->cost_lujo > 0): ?>
+                            {{$book->cost_lujo}}
+                        <?php else: ?>
+                            0
+                        <?php endif ?>
                     <?php else: ?>
                         0
-                    <?php endif ?>
+                    <?php endif;?>
 
                 </td>
-
-                <td style="text-align: center;">
-                    <?php if ( $book->getPayment(2) > 0): ?>
-                        <?php echo ($book->getPayment(2)); ?>
-                    <?php else: ?>
-                        0
-                    <?php endif ?>
+                <td class="text-center coste">
+                    {{$book->cost_limp}}
+                </td>
+                <td class="text-center coste ">
+                    {{$book->PVPAgencia}}
 
                 </td>
-                <td class="text-center coste"  style="border-left: 1px solid black;">
-                    <?php if ( $book->getPayment(3) > 0): ?>
-                        <?php echo ($book->getPayment(3)); ?>
-                    <?php else: ?>
-                        0
-                    <?php endif ?>
-
+                <td class="text-center coste">
+                    {{$book->extraCost}}
                 </td>
-                <td style="text-align: center;">
-                    <?php if ( $book->getPayment(0) > 0): ?>
-                        <?php echo ($book->getPayment(0)); ?>
-                    <?php else: ?>
-                        0
-                    <?php endif ?>
-
+                <td class="text-center coste bf">
+                    {{$book->stripeCost}}
+                    
                 </td>
-                <td class="text-center coste pagos" style="border-left: 1px solid black;">
-                    <?php if ( $book->getPayment(1) > 0): ?>
-                        <?php echo ($book->getPayment(1)); ?>
-                    <?php else: ?>
-                        0
-                    <?php endif ?>
-
-                </td>
-                <td style="text-align: center;" >
-                   {{ $book->pending == 0 ? 0 : round($book->pending) }}
-                </td>
-                <td class="text-center beneficio bi" style="border-left: 1px solid black;">
-                    {{ $book->profit == 0 ? 0 : round($book->profit) }}
-                </td>
-                <td style="text-align: center;">
-                    <?php echo (int)$book->profit_percentage . ' %'; ?>
-                </td>
-                <td class="text-center coste bi " style="border-left: 1px solid black;">
-                        {{ $book->cost_total == 0 ? 0 : $book->cost_total }}
-                </td>
-                <td style="text-align: center;">
-                    <?php if ( $book->cost_apto > 0): ?>
-                        <?php echo ($book->cost_apto)?>
-                    <?php else: ?>
-                        0
-                    <?php endif ?>
-
-                </td>
-                <td style="text-align: center;">
-                    <?php if ( $book->cost_park > 0): ?>
-                        <?php echo ($book->cost_park)?>
-                    <?php else: ?>
-                        0
-                    <?php endif ?>
-
-                </td>
-                <td class="text-center coste"  style="border-left: 1px solid black;">
-                    <?php if ( $book->cost_lujo > 0): ?>
-                        <?php echo ($book->cost_lujo)?>
-                    <?php else: ?>
-                        0
-                    <?php endif ?>
-
-                </td>
-                <td style="text-align: center;">
-                    <?php if ( $book->cost_limp > 0): ?>
-                        <?php echo ($book->cost_limp) ?>
-                    <?php else: ?>
-                        0
-                    <?php endif ?>
-
-                </td>
-                <td class="text-center coste " style="border-left: 1px solid black;">
-                    <?php if ( $book->PVPAgencia > 0): ?>
-                        <?php echo $book->PVPAgencia ?>
-                    <?php else: ?>
-                        0
-                    <?php endif ?>
-
-                </td>
-                <td style="text-align: center;">
-                    <?php if ( $book->extraCost > 0): ?>
-                        <?php echo $book->extraCost ?>
-                    <?php else: ?>
-                        --
-                    <?php endif ?>
-                </td>
-                <td class="text-center coste bf" style="border-left: 1px solid black;">
-                    {{ $book->stripeCost == 0 ? 0 : round($book->stripeCost) }}
-                <td style="text-align: center;">
-                    <?php echo $book->getJorgeProfit() ?>
+                <td class="text-center coste">
+                    {{ $book->getJorgeProfit() }} 
                 </td>
 
-                <td style="text-align: center;">
-                    <?php echo $book->getJaimeProfit() ?>
+                <td class="text-center coste">
+                    {{ $book->getJaimeProfit() }} 
                 </td>
             </tr>
         <?php endforeach ?>
