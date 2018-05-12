@@ -315,27 +315,13 @@
 
                             </td>
                             <td class="text-center coste bi " style="border-left: 1px solid black;">
-								
-                                {{ $cost_total > 0 ? number_format(( $cost_total + $book->stripeCost),0,',','.') . ' €' :
-                                '----' }}
+                                {{$cost_total}}
                             </td>
                             <td class="text-center coste" style="border-left: 1px solid black;">
-                                <?php if ( $book->cost_apto > 0): ?>
-                                    <?php //echo number_format($book->cost_apto,0,',','.')?> 
-                                    <input class="updateCostApto " type="number" value="<?php echo round($book->cost_apto); ?>" data-idBook="<?php echo $book->id; ?>"/>
-                                <?php else: ?>
-                                    ----
-                                <?php endif ?>
-
+                                <input class="updateCostApto" type="number" value="<?php echo round($book->cost_apto); ?>" data-idBook="<?php echo $book->id; ?>"/>
                             </td>
                             <td class="text-center coste" style="border-left: 1px solid black;">
-                                <?php if ( $book->cost_park > 0): ?>
-                                    <?php //echo number_format($book->cost_park,0,',','.')?>
-                                    <input class="updateCostPark " type="number" value="<?php echo round($book->cost_park); ?>" data-idBook="<?php echo $book->id; ?>"/>
-                                <?php else: ?>
-                                    ----
-                                <?php endif ?>
-
+                                <input class="updateCostPark" type="number" value="<?php echo round($book->cost_park); ?>" data-idBook="<?php echo $book->id; ?>"/>
                             </td>
                             <td class="text-center coste"  style="border-left: 1px solid black;">
                                 <?php if ($book->room->luxury == 1): ?>
@@ -725,5 +711,12 @@
     	$.get( "/admin/sales/updateCostPark/"+id+"/"+costPark).done(function( data ) {console.log(data)});
 
     });
-        
+
+    $('.updateCostTotal').change(function(){
+    	var id = $(this).attr('data-idBook');
+    	var costTotal = $(this).val();
+    	$.get( "/admin/sales/updateCostTotal/"+id+"/"+costTotal).done(function( data ) {console.log(data)});
+
+    });
+    
 </script>

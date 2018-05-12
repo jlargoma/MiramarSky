@@ -136,7 +136,7 @@ class Rooms extends Model
         $start = $start->format('n') >= 9 ? $start : $start->subYear();
         $inicio = $start->copy();
 
-        $books = \App\Book::whereIn('type_book', [2])
+        $books = \App\Book::whereIn('type_book', [2,7,8])
                             ->where('start', '>', $inicio->copy()->format('Y-m-d'))
                             ->where('start', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
                             ->orderBy('start', 'ASC')

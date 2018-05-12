@@ -64,7 +64,7 @@ class PaymentsProController extends Controller
             $data[$room->id]['pagos'] = 0;
 
             $booksByRoom = \App\Book::where('room_id', $room->id)
-                                    ->where('type_book', 2)
+                                    ->whereIn('type_book', [2,7,8])
                                     ->where('start', '>=', $start->copy())
                                     ->where('finish', '<=', $start->copy()->addYear())
                                     ->get();
@@ -131,13 +131,6 @@ class PaymentsProController extends Controller
             }
 
         }
-//
-//
-//        echo "<pre>";
-//        print_r($summary);
-//        print_r($data);
-//		die();
-
         return view('backend/paymentspro/index',[
             'date'    => $inicio,
             'data'    => $data,

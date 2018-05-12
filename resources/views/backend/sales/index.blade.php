@@ -54,7 +54,8 @@
 	}
 	.updateExtraCost,
 	.updateCostApto,
-	.updateCostPark{
+	.updateCostPark,
+	.updateCostTotal{
 		background-color: rgba(200,200,200,0.5)!important;
 		color: black;
 		width: 90%;

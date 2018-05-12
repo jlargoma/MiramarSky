@@ -283,11 +283,11 @@ class LiquidacionController extends Controller
 
 
         return view ('backend/sales/contabilidad',  [
-            'date'         => $date,
+            'date'           => $date,
             'inicio'         => $inicio,
-            'arrayTotales' => $arrayTotales,
-            'rooms'        => $rooms,
-            'priceBookRoom' => $priceBookRoom,
+            'arrayTotales'   => $arrayTotales,
+            'rooms'          => $rooms,
+            'priceBookRoom'  => $priceBookRoom,
         ]);
     }
 
@@ -785,10 +785,10 @@ class LiquidacionController extends Controller
 
         $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
 
-        $books = \App\Book::whereIn('type_book', [2])
-            ->where('start', '>', $inicio->copy()->format('Y-m-d'))
-            ->where('start', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
-            ->get();
+        $books = \App\Book::whereIn('type_book', [2,7,8])
+                            ->where('start', '>', $inicio->copy()->format('Y-m-d'))
+                            ->where('start', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                            ->get();
         /* INGRESOS */
         $arrayTotales = ['totales' => 0, 'meses' => []];
 
@@ -804,8 +804,6 @@ class LiquidacionController extends Controller
             $arrayExpensesPending['LIMPIEZA'][$i] = 0;
             $arrayExpensesPending['LAVANDERIA'][$i] = 0;
         }
-
-
 
         foreach ($books as $book) {
             $fecha = Carbon::createFromFormat('Y-m-d',$book->start);
@@ -941,7 +939,7 @@ class LiquidacionController extends Controller
         $start = new Carbon('first day of September '.$year);
         $end  = $start->copy()->addYear();
 
-        $books = \App\Book::with('payments')->whereIn('type_book', [2])
+        $books = \App\Book::with('payments')->whereIn('type_book', [2, 7, 8])
             ->where('start', '>', $start->copy()->format('Y-m-d'))
             ->where('start', '<=', $end->copy()->format('Y-m-d'))
             ->orderBy('start', 'ASC')
@@ -1078,12 +1076,12 @@ class LiquidacionController extends Controller
         $banco_jaime = 0;
         if ($room == "all") {
             $rooms = \App\Rooms::where('state', 1)->get(['id']);
-            $books = \App\Book::whereIn('type_book', [2])
-                ->whereIn('room_id', $rooms)
-                ->where('start', '>=', $start->copy()->format('Y-m-d'))
-                ->where('start', '<=', $end->copy()->format('Y-m-d'))
-                ->orderBy('start', 'ASC')
-                ->get();
+            $books = \App\Book::whereIn('type_book', [2,7,8])
+                                ->whereIn('room_id', $rooms)
+                                ->where('start', '>=', $start->copy()->format('Y-m-d'))
+                                ->where('start', '<=', $end->copy()->format('Y-m-d'))
+                                ->orderBy('start', 'ASC')
+                                ->get();
 
 
             foreach ($books as $key => $book) {
@@ -1114,9 +1112,9 @@ class LiquidacionController extends Controller
             }
 
             $gastos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
-                ->Where('date', '<=', $start->copy()->addYear()->format('Y-m-d'))
-                ->orderBy('date', 'DESC')
-                ->get();
+                                    ->Where('date', '<=', $start->copy()->addYear()->format('Y-m-d'))
+                                    ->orderBy('date', 'DESC')
+                                    ->get();
             foreach ($gastos as $payment) {
                 if ($payment->typePayment == 0 || $payment->typePayment == 1) {
                     $divisor = 0;
@@ -1167,12 +1165,12 @@ class LiquidacionController extends Controller
             }
         }else{
 
-            $books = \App\Book::whereIn('type_book', [2])
-                ->where('room_id', $room)
-                ->where('start', '>=', $start->copy()->format('Y-m-d'))
-                ->where('start', '<=', $end->copy()->format('Y-m-d'))
-                ->orderBy('start', 'ASC')
-                ->get();
+            $books = \App\Book::whereIn('type_book', [2,7,8])
+                                ->where('room_id', $room)
+                                ->where('start', '>=', $start->copy()->format('Y-m-d'))
+                                ->where('start', '<=', $end->copy()->format('Y-m-d'))
+                                ->orderBy('start', 'ASC')
+                                ->get();
 
             foreach ($books as $key => $book) {
                 $total += ($book->cost_apto + $book->cost_park + $book->cost_lujo); //$book->total_price;
@@ -1202,10 +1200,10 @@ class LiquidacionController extends Controller
             }
 
             $gastos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
-                ->Where('date', '<=', $start->copy()->addYear()->format('Y-m-d'))
-                ->Where('PayFor', 'LIKE', '%'.$room.'%')
-                ->orderBy('date', 'DESC')
-                ->get();
+                                    ->Where('date', '<=', $start->copy()->addYear()->format('Y-m-d'))
+                                    ->Where('PayFor', 'LIKE', '%'.$room.'%')
+                                    ->orderBy('date', 'DESC')
+                                    ->get();
 
             foreach ($gastos as $payment) {
                 if ($payment->typePayment == 0 || $payment->typePayment == 1) {
@@ -1514,7 +1512,7 @@ class LiquidacionController extends Controller
 
                 /* Inquilinos media */
                 $data['pax-media'] = ($data['num-pax'] / $totBooks);
-//                dd($books->first()->getJorgeProfit(), $totales['benJorge']);
+
 
 
                 return view('backend/sales/_tableSummary',  [

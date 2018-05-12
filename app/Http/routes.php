@@ -521,7 +521,20 @@ Route::group(['middleware' => 'auth'], function () {
         }
 
 
-    });
+	});
+
+	Route::get('/admin/sales/updateCostTotal/{id}/{importe}', function ($id, $importe)
+    {
+        $book = \App\Book::find($id);
+        $book->cost_total = $importe;
+        if ($book->save()) {
+            return "OK";
+        }
+
+
+	});
+	
+	
 
 
 	
