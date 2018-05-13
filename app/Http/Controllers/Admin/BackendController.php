@@ -13,7 +13,59 @@ class BackendController extends Controller
     {
         return view('backend.home');
     }
+    public function migrationCashBank(){
+        echo "<pre>";
+        foreach( file( public_path('Libro1.csv')) as $key => $line) {
 
+            $data = explode(';', $line);
+            $data = array_map("utf8_encode", $data );
+            /* Omitimos la cabecera */
+            
+            if ($key > 0) {
+                switch ($data[3]) {
+                    case "TARJETA VISA":
+                        $typePayment = 0;
+                        break;
+                    case "CASH JAIME":
+                        $typePayment = 1;
+                        break;
+                    case "CASH JORGE":
+                        $typePayment = 2;
+                        break;
+                    case "BANCO JORGE":
+                        $typePayment = 3;
+                        break;
+                    case "BANCO JAIME":
+                        $typePayment = 4;
+                        break;
+                    default:
+                }
+                if($data[5] == "GENERICO"){
+                    $payfor = null;
+                }else{
+                    $room =  \App\Rooms::where('nameRoom', 'LIKE', '%'.$data[5].'%')->first();
+                    echo $room->id;
+                    echo "<br>";
+                    $payfor = $room->id;
+                }
+                
+
+                $expense = new \App\Expenses();
+                $expense->concept = $data[1];
+                $expense->date = Carbon::createFromFormat('d/m/Y', $data[0]);
+                $expense->import = $data[4];
+                $expense->typePayment = $typePayment;
+                $expense->type =  $data[2];
+                $expense->comment = $data[6];
+                $expense->Payfor = $payfor; //($data[5] == "GENERICO")? null :$data[5].", ";
+                $expense->save();
+
+            }
+
+        }
+
+
+    }
 
 //    public function migrationCashBank()
 //    {

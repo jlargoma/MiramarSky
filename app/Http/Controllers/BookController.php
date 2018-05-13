@@ -936,9 +936,11 @@ class BookController extends Controller
                  }
             }
 
-	       if ($book->type_book == 7){
-		       $expenseLimp = \App\Expenses::where('date', $book->finish)->where('import', $book->total_price)
-			       ->where('concept', "LIMPIEZA RESERVA PROPIETARIO. ".$book->room->nameRoom)->first();
+	       if ($book->type_book == 7 || $book->type_book == 8){
+               $expenseLimp = \App\Expenses::where('date', $book->finish)
+                                            // ->where('import', $book->total_price)
+                                            ->where('concept', "LIMPIEZA RESERVA PROPIETARIO. ".$book->room->nameRoom)
+                                            ->first();
 
 		       if ( count( $expenseLimp) > 0)
 			       $expenseLimp->delete();
