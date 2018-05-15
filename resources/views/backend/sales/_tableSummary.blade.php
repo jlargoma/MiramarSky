@@ -236,12 +236,7 @@
                                 <?php echo $book->nigths ?>
                             </td>
                             <td class="text-center coste" style="border-left: 1px solid black;">
-                                <?php if ($book->total_price > 0): ?>
-                                    <b><?php echo number_format($book->total_price,0,',','.') ?> €</b>
-                                <?php else: ?>
-                                    <b>----</b>
-                                <?php endif ?>
-
+                                <input class="updatePVP" type="number" step="0.01" value="<?php echo round($book->total_price);?>" data-idBook="<?php echo $book->id; ?>"/>
                             </td>
 
                             <td class="text-center coste" style="border-left: 1px solid black;">
@@ -718,5 +713,11 @@
     	$.get( "/admin/sales/updateCostTotal/"+id+"/"+costTotal).done(function( data ) {console.log(data)});
 
     });
-    
+    $('.updatePVP').change(function(){
+      var id = $(this).attr('data-idBook');
+      var pvp = $(this).val();
+      $.get( "/admin/sales/updatePVP/"+id+"/"+pvp).done(function( data ) {console.log(data)});
+
+    });
+
 </script>

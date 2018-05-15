@@ -886,10 +886,11 @@ class LiquidacionController extends Controller
         /* GASTOS */
         for ($i=1; $i <= 12; $i++) {
             for ($j=0; $j < count($conceptExpenses); $j++) {
-                $arrayExpenses[$conceptExpenses[$j]][$i] = 0;
+                $arrayExpenses[ $conceptExpenses[$j] ][$i] = 0;
             }
 
         }
+
 
         $gastos = \App\Expenses::where('date', '>', $inicio->copy()->format('Y-m-d'))
             ->Where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
@@ -900,6 +901,12 @@ class LiquidacionController extends Controller
         foreach ($gastos as $key => $gasto) {
 
             $fecha = Carbon::createFromFormat('Y-m-d',$gasto->date);
+            if ( !isset($arrayExpenses[$gasto->type]) ){
+	            for ($i=1; $i <= 12; $i++) {
+		            $arrayExpenses[ $gasto->type ][ $i ] = 0;
+	            }
+            }
+
             $arrayExpenses[$gasto->type][$fecha->copy()->format('n')] += $gasto->import;
 
         }

@@ -389,25 +389,25 @@
                         <div class="col-md-12 col-xs-12 push-20 not-padding">
                             <div class="col-md-3 col-xs-12 text-center boxtotales" style="background-color: #0c685f;">
                                 <label class="font-w800 text-white" for="">PVP</label>
-                                <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" name="total" {{--value="<?php echo $book->total_price ?>"--}} data-edited="<?php if ($book->real_price != $book->total_price):  echo '1'; else: echo '0'; endif ?>">
+                                <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" name="total" value="<?php echo $book->total_price ?>" data-edited="<?php if ($book->real_price != $book->total_price):  echo '1'; else: echo '0'; endif ?>">
                             </div>
                             <?php if (Auth::user()->role == "admin"): ?>
                                 <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #99D9EA;">
                                     <label class="font-w800 text-white" for="">COSTE TOTAL</label>
-                                    <input type="number" step='0.01' class="form-control cost m-t-10 m-b-10 white" name="cost"  {{--value="<?php echo $book->cost_total ?>"--}}>
+                                    <input type="number" step='0.01' class="form-control cost m-t-10 m-b-10 white" name="cost"  value="<?php echo $book->cost_total ?>">
                                 </div>
                                 <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #91cf81;">
                                     <label class="font-w800 text-white" for="">COSTE APTO</label>
-                                    <input type="number" step='0.01' class="form-control costApto m-t-10 m-b-10 white" name="costApto"  {{--value="<?php echo $book->cost_apto ?>"--}}>
+                                    <input type="number" step='0.01' class="form-control costApto m-t-10 m-b-10 white" name="costApto"  value="<?php echo $book->cost_apto ?>">
                                 </div>
                                 <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #337ab7;">
                                     <label class="font-w800 text-white" for="">COSTE PARKING</label>
-                                    <input type="number" step='0.01' class="form-control costParking m-t-10 m-b-10 white" name="costParking"  {{--value="<?php echo $book->cost_park ?>"--}}>
+                                    <input type="number" step='0.01' class="form-control costParking m-t-10 m-b-10 white" name="costParking"  value="<?php echo $book->cost_park ?>">
                                 </div>
                                 <div class="col-md-3 col-xs-12 text-center boxtotales not-padding" style="background: #ff7f27;">
                                     <label class="font-w800 text-white" for="">BENEFICIO</label>
-                                    <input type="number" step='0.01' class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio" {{--value="<?php echo $book->total_ben ?>"--}}>
-                                    <div class="beneficio-text font-w400 font-s18 white"><?php /*echo number_format($book->inc_percent,0)."%" */?></div>
+                                    <input type="number" step='0.01' class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>">
+                                    <div class="beneficio-text font-w400 font-s18 white"><?php echo number_format($book->inc_percent,0)."%" ?></div>
                                 </div>
                             <?php endif ?>
 
@@ -861,25 +861,25 @@
                         <div class="col-md-8 col-xs-12 push-20 not-padding">
                             <div class="col-md-3 col-xs-12 text-center" style="background-color: #0c685f;">
                                 <label class="font-w800 text-white" for="">PVP</label>
-                                <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" name="total" {{-- value="<?php echo $book->total_price ?>" --}}data-edited="<?php if ($book->real_price != $book->total_price):  echo '1'; else: echo '0'; endif ?>">
+                                <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" name="total"  value="<?php echo $book->total_price ?>" data-edited="<?php if ($book->real_price != $book->total_price):  echo '1'; else: echo '0'; endif ?>">
                             </div>
                             <?php if (Auth::user()->role == "admin"): ?>
 
                                 <div class="col-md-3 col-xs-6 text-center" style="background: #91cf81;">
                                     <label class="font-w800 text-white" for="">COSTE APTO</label>
-                                    <input type="number" step='0.01' class="form-control costApto m-t-10 m-b-10 white" name="costApto" {{-- value="<?php echo $book->cost_apto ?>"--}}>
+                                    <input type="number" step='0.01' class="form-control costApto m-t-10 m-b-10 white" name="costApto"  value="<?php echo $book->cost_apto ?>">
                                 </div>
                                 <div class="col-md-3 col-xs-6 text-center" style="background: #337ab7;">
                                     <label class="font-w800 text-white" for="">COSTE PARKING</label>
-                                    <input type="number" step='0.01' class="form-control costParking m-t-10 m-b-10 white" name="costParking"  {{--value="<?php echo $book->cost_park ?>"--}}>
+                                    <input type="number" step='0.01' class="form-control costParking m-t-10 m-b-10 white" name="costParking"  value="<?php echo $book->cost_park ?>">
                                 </div>
                                 <div class="col-md-3 col-xs-6 text-center" style="background: #99D9EA;">
                                     <label class="font-w800 text-white" for="">COSTE TOTAL</label>
-                                    <input type="number" step='0.01' class="form-control cost m-t-10 m-b-10 white" name="cost"  {{--value="<?php echo $book->cost_total ?>"--}}>
+                                    <input type="number" step='0.01' class="form-control cost m-t-10 m-b-10 white" name="cost"  value="<?php echo $book->cost_total ?>">
                                 </div>
                                 <div class="col-md-3 col-xs-6 text-center not-padding" style="background: #ff7f27;">
                                     <label class="font-w800 text-white" style="width: 100%;" for="">BENEFICIO</label>
-                                    <input type="number" step='0.01' class="form-control text-center beneficio m-t-10 m-b-10 white" name="beneficio" {{--value="<?php echo $book->total_ben ?>"--}}>
+                                    <input type="number" step='0.01' class="form-control text-center beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $book->total_ben ?>">
                                     <div class="beneficio-text font-w400 font-s18 white">
                                         <?php echo number_format($book->inc_percent,0)."%" ?>
                                    </div>
@@ -1121,6 +1121,6 @@
 @include('backend.planning._bookScripts', ['update' => 1])
 <script>
     {{-- This little trick will override wrong rendered data --}}
-    calculate();
+    calculate(null,  false);
 </script>
 @endsection

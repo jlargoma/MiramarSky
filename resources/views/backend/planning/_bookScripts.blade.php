@@ -85,7 +85,7 @@
         });
     <?php endif ?>
 
-    function calculate(data) {
+    function calculate( data, override = true ) {
         var room       = $('#newroom').val();
         var pax        = $('.pax').val();
         var park       = $('.parking').val();
@@ -108,112 +108,145 @@
         var start      = date1.toLocaleDateString();
         var finish     = date2.toLocaleDateString();
 
+		if ( override ){
 
-        if ( status == 8) {
-            $('.total').empty();
-            $('.total').val(0);
-            $('.cost').empty();
-            $('.cost').val(0);
+	        if ( status == 8) {
+	            $('.total').empty();
+	            $('.total').val(0);
+	            $('.cost').empty();
+	            $('.cost').val(0);
 
-            $('.beneficio').empty();
-            $('.beneficio').val(0);
+	            $('.beneficio').empty();
+	            $('.beneficio').val(0);
 
-        }else if ( status == 7 ){
+	        }else if ( status == 7 ){
 
-            if (sizeApto == 1) {
-                $('.total').empty();
-                $('.total').val(30);
+	            if (sizeApto == 1) {
+	                $('.total').empty();
+	                $('.total').val(30);
 
-                $('.cost').empty();
-                $('.cost').val(30);
+	                $('.cost').empty();
+	                $('.cost').val(30);
 
-                $('.beneficio').empty();
-                $('.beneficio').val(0);
+	                $('.beneficio').empty();
+	                $('.beneficio').val(0);
 
-            }else if (sizeApto == 3 || sizeApto == 4){
-                  $('.total').empty();
-                  $('.total').val(100);
+	            }else if (sizeApto == 3 || sizeApto == 4){
+	                  $('.total').empty();
+	                  $('.total').val(100);
 
-                  $('.cost').empty();
-                  $('.cost').val(70);
+	                  $('.cost').empty();
+	                  $('.cost').val(70);
 
-                  $('.beneficio').empty();
-                  $('.beneficio').val(30);
+	                  $('.beneficio').empty();
+	                  $('.beneficio').val(30);
 
-            }else{
+	            }else{
 
-                $('.total').empty();
-                $('.total').val(50);
+	                $('.total').empty();
+	                $('.total').val(50);
 
-                $('.cost').empty();
-                $('.cost').val(40);
+	                $('.cost').empty();
+	                $('.cost').val(40);
 
-                $('.beneficio').empty();
-                $('.beneficio').val(10);
+	                $('.beneficio').empty();
+	                $('.beneficio').val(10);
 
-            }
-        }else{
+	            }
+	        }else{
 
-            if ( room != "" && pax != "") {
-                $('.loading-div').show();
+	            if ( room != "" && pax != "") {
+	                $('.loading-div').show();
 
-                var auxTotal = $('.total').val();
-                var auxCosteApto = parseInt($('.costApto').val());
-                var auxCoste = parseInt($('.cost').val());
-                var agencyCost = $('.agencia').val();
-                var promotion = $('.promociones').val();
-                var agencyType = $('.agency').val();
-                var totalPrice = $('.total').val();
-                var totalCost = $('.cost').val();
-                var apartmentCost = $('.costApto').val();
-                var parkingCost = $('.costParking').val();
-                var book_id = $('#book-id').val();
+	                var auxTotal = $('.total').val();
+	                var auxCosteApto = parseInt($('.costApto').val());
+	                var auxCoste = parseInt($('.cost').val());
+	                var agencyCost = $('.agencia').val();
+	                var promotion = $('.promociones').val();
+	                var agencyType = $('.agency').val();
+	                var totalPrice = $('.total').val();
+	                var totalCost = $('.cost').val();
+	                var apartmentCost = $('.costApto').val();
+	                var parkingCost = $('.costParking').val();
+	                var book_id = $('#book-id').val();
 
-                $.get('/admin/api/reservas/getDataBook', {
-                    start: start,
-                    finish: finish,
-                    noches: diffDays,
-                    pax: pax,
-                    room: room,
-                    park: park,
-                    lujo: lujo,
-                    agencyCost: agencyCost,
-                    promotion: promotion,
-                    agencyType: agencyType,
-//                    total_price: data && data.hasOwnProperty('pvp') ? data.pvp : '',
-                    book_id: book_id
-                }).done(function( data ) {
-                    console.log(data);
+	                $.get('/admin/api/reservas/getDataBook', {
+	                    start: start,
+	                    finish: finish,
+	                    noches: diffDays,
+	                    pax: pax,
+	                    room: room,
+	                    park: park,
+	                    lujo: lujo,
+	                    agencyCost: agencyCost,
+	                    promotion: promotion,
+	                    agencyType: agencyType,
+	//                    total_price: data && data.hasOwnProperty('pvp') ? data.pvp : '',
+	                    book_id: book_id
+	                }).done(function( data ) {
+	                    console.log(data);
 
-                    $('#computed-data').html(JSON.stringify(data));
+	                    $('#computed-data').html(JSON.stringify(data));
 
-                    var isEdited = $('.total').attr('data-edited');
+	                    var isEdited = $('.total').attr('data-edited');
 
-                    if (data.totales.promotion == 0) {
-                        $('.book_owned_comments').empty();
-                    } else {
-                        $('.book_owned_comments').html('(PROMOCIÓN 3x2 DESCUENTO : '+ Math.abs(data.costes.promotion) +' €)');
-                    }
-                    $('.total').val(data.calculated.total_price);
-                    $('.cost').val(data.calculated.total_cost);
-                    $('.costApto').val(data.costes.book);
-                    $('.costParking').val(data.costes.parking);
-                    $('.beneficio').val(data.calculated.profit);
-                    $('.beneficio-text').html(data.calculated.profit_percentage + '%');
-                    $('#real-price').html(data.calculated.real_price);
-                    $('#modified-price').html(data.aux.price_modified);
+	                    if (data.totales.promotion == 0) {
+	                        $('.book_owned_comments').empty();
+	                    } else {
+	                        $('.book_owned_comments').html('(PROMOCIÓN 3x2 DESCUENTO : '+ Math.abs(data.costes.promotion) +' €)');
+	                    }
+	                    $('.total').val(data.calculated.total_price);
+	                    $('.cost').val(data.calculated.total_cost);
+	                    $('.costApto').val(data.costes.book);
+	                    $('.costParking').val(data.costes.parking);
+	                    $('.beneficio').val(data.calculated.profit);
+	                    $('.beneficio-text').html(data.calculated.profit_percentage + '%');
+	                    $('#real-price').html(data.calculated.real_price);
+	                    $('#modified-price').html(data.aux.price_modified);
 
-                    if (data.calculated.real_price < data.aux.price_modified) {
-                        $('#arrow-price-modification').fadeIn().removeClass().addClass('fa fa-arrow-up');
-                    } else if (data.calculated.real_price == data.aux.price_modified) {
-                        $('#arrow-price-modification').fadeOut();
-                    } else {
-                        $('#arrow-price-modification').fadeIn().removeClass().addClass('fa fa-arrow-down');
-                    }
-                });
-                $('.loading-div').hide();
-            }
+	                    if (data.calculated.real_price < data.aux.price_modified) {
+	                        $('#arrow-price-modification').fadeIn().removeClass().addClass('fa fa-arrow-up');
+	                    } else if (data.calculated.real_price == data.aux.price_modified) {
+	                        $('#arrow-price-modification').fadeOut();
+	                    } else {
+	                        $('#arrow-price-modification').fadeIn().removeClass().addClass('fa fa-arrow-down');
+	                    }
+	                });
+	                $('.loading-div').hide();
+	            }
+	        }
+
+		}else{
+          var auxTotal = $('.total').val();
+          var auxCosteApto = parseInt($('.costApto').val());
+          var auxCoste = parseInt($('.cost').val());
+          var agencyCost = $('.agencia').val();
+          var promotion = $('.promociones').val();
+          var agencyType = $('.agency').val();
+          var totalPrice = $('.total').val();
+          var totalCost = $('.cost').val();
+          var apartmentCost = $('.costApto').val();
+          var parkingCost = $('.costParking').val();
+          var book_id = $('#book-id').val();
+          $.get('/admin/api/reservas/getDataBook', {
+            start: start,
+            finish: finish,
+            noches: diffDays,
+            pax: pax,
+            room: room,
+            park: park,
+            lujo: lujo,
+            agencyCost: agencyCost,
+            promotion: promotion,
+            agencyType: agencyType,
+            //                    total_price: data && data.hasOwnProperty('pvp') ? data.pvp : '',
+            book_id: book_id
+          }).done(function( data ) {
+            $('#computed-data').html(JSON.stringify(data));
+          });
         }
+
+
     };
 
     $(document).ready(function() {

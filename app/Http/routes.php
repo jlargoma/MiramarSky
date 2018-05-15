@@ -533,8 +533,18 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 	});
-	
-	
+
+	Route::get('/admin/sales/updatePVP/{id}/{importe}', function ($id, $importe)
+	{
+		$book = \App\Book::find($id);
+		$book->total_price = $importe;
+		if ($book->save()) {
+			return "OK";
+		}
+
+
+	});
+
 
 
 	
