@@ -81,7 +81,9 @@
 		<title>@yield('title')</title>
 
 		<style>
-
+			#primary-menu{
+				visibility: hidden;
+			}
 			.demos-filter {
 				margin: 0;
 				text-align: right;
@@ -304,6 +306,10 @@
 
             if(revapi27) revapi27.revSliderSlicey();
           });	/*ready*/
+
+          $(document).ready(function() {
+          		$('#primary-menu').css('visibility', 'visible');
+          });
 		</script>
 
 		<script>
