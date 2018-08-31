@@ -249,7 +249,7 @@
                 jsFileLocation:"include/rs-plugin/js/",
                 sliderLayout:"fullscreen",
                 dottedOverlay:"none",
-                delay:2000,
+                delay:4000,
                 navigation: {
                   keyboardNavigation:"off",
                   keyboard_direction: "horizontal",
