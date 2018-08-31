@@ -152,7 +152,7 @@
 				padding: 0 20px!important;
 			}
 			.tp-caption.rev-btn.tp-resizeme.btn.btn-lg.white.menu-booking.heart.font-w300 span.font-w800{
-				font-size: 20px!important;
+				font-size: 16px!important;
 			}
 		</style>
 
@@ -270,7 +270,7 @@
                 visibilityLevels:[1240,1024,778,480],
                 gridwidth:[1240,1024,778,480],
                 gridheight:[868,768,960,720],
-                lazyType:"none",
+                lazyType:"smart",
                 shadow:0,
                 spinner: 'spinner5',
                 stopLoop:"off",
