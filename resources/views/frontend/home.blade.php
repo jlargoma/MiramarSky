@@ -438,14 +438,15 @@
        					</h2>
 
 						<div class="col-xs-12 push-20">
-							<div class="col_full clearfix">
+							<div class="row clearfix push-0">
 
-								<div class="masonry-thumbs col-3" data-big="2" data-lightbox="gallery">
+								<div class="masonry-thumbs col-2"  data-lightbox="gallery">
 									<?php foreach ($slidesEdificio as $key => $slide): ?>
 									<?php $fotos = explode(",", $slide->getFilename()) ?>
 										<a href="/img/miramarski/edificio/<?php echo $slide->getFilename() ?>" data-lightbox="gallery-item">
 											<img class="image_fade" src="/img/miramarski/edificio/<?php echo
-											$slide->getFilename() ?>" alt="<?php echo $fotos[2] ?>" title="<?php echo $fotos[2] ?>" >
+											$slide->getFilename() ?>" alt="<?php echo $fotos[1] ?>" title="<?php echo
+											 $fotos[1] ?>" >
 										</a>
 									<?php endforeach ?>
 
@@ -568,7 +569,7 @@
 				<div class=" row animatable" data-aos="zoom-in">
 					<a href="{{url('/apartamentos/apartamento-lujo-gran-capacidad-sierra-nevada')}}" > 
 						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/small/apartamento-lujo-gran-capacidad-sierra-nevada.jpeg')}}); padding: 70px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
-							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 2px 1px #000;">APTO GRAN CAPACIDAD<br> DE LUJO</h3>
+							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 2px 1px #000;">APTO GRAN <br>CAPACIDAD DE LUJO</h3>
 						</div>
 					</a>
 				</div>
