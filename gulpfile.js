@@ -41,15 +41,18 @@ elixir(function(mix) {
 });
 elixir(function(mix) {
     mix.combine([
-       'resources/assets/css/include/rs-plugin/js/jquery.themepunch.tools.min.js',
+        'resources/assets/css/include/rs-plugin/js/jquery.themepunch.tools.min.js',
         'resources/assets/css/include/rs-plugin/js/jquery.themepunch.revolution.min.js',
-        'resources/assets/css/include/rs-plugin/js/extensions/revolution.extension.video.min.js',
-        'resources/assets/css/include/rs-plugin/js/extensions/revolution.extension.slideanims.min.js',
+        'resources/assets/css/include/rs-plugin/js/addons/revolution.addon.slicey.min.js',
         'resources/assets/css/include/rs-plugin/js/extensions/revolution.extension.actions.min.js',
+        'resources/assets/css/include/rs-plugin/js/extensions/revolution.extension.carousel.min.js',
+        'resources/assets/css/include/rs-plugin/js/extensions/revolution.extension.kenburn.min.js',
         'resources/assets/css/include/rs-plugin/js/extensions/revolution.extension.layeranimation.min.js',
+        'resources/assets/css/include/rs-plugin/js/extensions/revolution.extension.migration.min.js',
         'resources/assets/css/include/rs-plugin/js/extensions/revolution.extension.navigation.min.js',
-
+        'resources/assets/css/include/rs-plugin/js/extensions/revolution.extension.parallax.min.js',
+        'resources/assets/css/include/rs-plugin/js/extensions/revolution.extension.slideanims.min.js',
+        'resources/assets/css/include/rs-plugin/js/extensions/revolution.extension.video.min.js',
     ],  'public/js/scripts-slider.js');
 });
-
         

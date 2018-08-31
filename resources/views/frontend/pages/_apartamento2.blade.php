@@ -9,6 +9,10 @@
 	#primary-menu ul li  a div{
 		text-align: left!important;
 	}
+	#primary-menu-trigger i.fa.fa-bars{
+		margin-top: 15px;
+	}
+
 	label{
 		color: white!important
 	}
@@ -58,7 +62,6 @@
 @section('title') {{ $aptoHeading }} en Sierra Nevada @endsection
 
 @section('content')
-	
 	<section id="content">
 
 		<div class="container container-mobile clearfix push-0">

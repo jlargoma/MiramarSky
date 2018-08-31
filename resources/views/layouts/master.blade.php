@@ -28,7 +28,11 @@
 
  
 		<link rel="stylesheet" href="{{ asset ('/css/app.css')}}" type="text/css" />
-		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/font-icons.css')}}">
+		{{--<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/bootstrap.css')}}">
+		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/style.css')}}">
+		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/animate.css')}}">--}}
+		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/magnific-popup.css')}}">
+
 		<?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
 			<link rel="stylesheet" href="{{ asset ('/frontend/css/responsive-mobile.css')}}" type="text/css" />
 		<?php else: ?>
@@ -38,8 +42,13 @@
 		<link rel="stylesheet" href="{{ asset ('/frontend/colors.php?color=3F51B5')}}" type="text/css" />
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/> 
 
-		<link rel="stylesheet" href="{{ asset ('/css/slider.css')}}" type="text/css" />
-		
+		{{--<link rel="stylesheet" href="{{ asset ('/css/slider.css')}}" type="text/css" />--}}
+		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/settings.css')}}">
+		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/layers.css')}}">
+		<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/navigation.css')}}">
+
+		<link rel="stylesheet" href="{{ asset('/frontend/css/dark.css')}}" type="text/css" />
+		<link rel="stylesheet" href="{{ asset('/frontend/css/font-icons.css')}}" type="text/css" />
 		<link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
 		
 		<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
@@ -70,16 +79,89 @@
 
 
 		<title>@yield('title')</title>
-		
 
 		<style>
-			.full-screen.slider-mobile{
+
+			.demos-filter {
+				margin: 0;
+				text-align: right;
+			}
+
+			.demos-filter li {
+				list-style: none;
+				margin: 10px 0px;
+			}
+
+			.demos-filter li a {
+				display: block;
+				border: 0;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+				color: #444;
+			}
+
+			.demos-filter li a:hover,
+			.demos-filter li.activeFilter a { color: #1ABC9C; }
+
+			@media (max-width: 991px) {
+				.demos-filter { text-align: center; }
+
+				.demos-filter li {
+					float: left;
+					width: 33.3%;
+					padding: 0 20px;
+				}
+			}
+
+			@media (max-width: 767px) { .demos-filter li { width: 50%; } }
+
+			.tiny_bullet_slider .tp-bullet:before {
+				content:" ";
+				position:absolute;
+				width:100%;
+				height:25px;
+				top:-12px;
+				left:0px;
+				background:transparent;
+			}
+			.bullet-bar.tp-bullets:before {
+				content:" ";
+				position:absolute;
+				width:100%;
+				height:100%;
+				background:transparent;
+				padding:10px;
+				margin-left:-10px;
+				margin-top:-10px;
+				box-sizing:content-box;
+			}
+			.bullet-bar .tp-bullet {
+				width:60px;
+				height:3px;
+				position:absolute;
+				background:#aaa;
+				background:rgba(204,204,204,0.5);
+				cursor:pointer;
+				box-sizing:content-box;
+			}
+			.bullet-bar .tp-bullet:hover,
+			.bullet-bar .tp-bullet.selected { background:rgba(204,204,204,1); }
+			.tp-caption.rev-btn.tp-resizeme.btn.btn-lg.white.menu-booking.heart.font-w300{
+				padding: 0 20px!important;
+			}
+			.tp-caption.rev-btn.tp-resizeme.btn.btn-lg.white.menu-booking.heart.font-w300 span.font-w800{
+				font-size: 20px!important;
+			}
+		</style>
+
+		<style>
+			/*.full-screen.slider-mobile{
 				background-image: url('/img/miramarski/mobile-slide.jpg');
 				background-position: 50% 100%; 
 				background-size: cover; 
 				background-repeat: no-repeat; 
 				max-height: 520px;
-			}
+			}*/
 			@media screen and (max-width: 767px) {
 				#primary-menu.style-2{
 					position: absolute;
@@ -124,9 +206,27 @@
 			</div>
 		</div>
 		<div id="gotoTop" class="fa fa-chevron-up"></div>
-		<script type="text/javascript" src="{{ asset('/js/scripts.js')}}"></script>
+		{{--<script type="text/javascript" src="{{ asset('/js/scripts.js')}}"></script>--}}
+		<script type="text/javascript" src="{{ asset('/frontend/js/jquery.js')}}"></script>
+		<script type="text/javascript" src="{{ asset('/frontend/js/plugins.js')}}"></script>
+		<script type="text/javascript" src="{{ asset('/frontend/js/functions.js')}}"></script>
 
-		<script type="text/javascript" src="{{ asset('/js/scripts-slider.js')}}"></script>
+
+
+		{{--<script type="text/javascript" src="{{ asset('/js/scripts-slider.js')}}"></script>--}}
+		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/jquery.themepunch.tools.min.js')}}"></script>
+		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/jquery.themepunch.revolution.min.js')}}"></script>
+		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/addons/revolution.addon.slicey.min.js')}}"></script>
+		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.actions.min.js')}}"></script>
+		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.carousel.min.js')}}"></script>
+		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.kenburn.min.js')}}"></script>
+		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.layeranimation.min.js')}}"></script>
+		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.migration.min.js')}}"></script>
+		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.navigation.min.js')}}"></script>
+		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.parallax.min.js')}}"></script>
+		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.slideanims.min.js')}}"></script>
+		<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.video.min.js')}}"></script>
+
 		<script type="text/javascript" src="{{ asset('/js/flip.js')}}"></script>
 
 		<script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
@@ -135,114 +235,75 @@
 
 		<?php /* view para todos los scripts generales de la pagina*/ ?>
 		@include('layouts._generalScripts')
-		
-		<script type="text/javascript">
-			var tpj = jQuery;
 
-			var revapi202;
-			tpj(document).ready(function() {
-				if (tpj("#rev_slider_202_1").revolution == undefined) {
-					revslider_showDoubleJqueryError("#rev_slider_202_1");
-				} else {
-					revapi202 = tpj("#rev_slider_202_1").show().revolution({
-						sliderType: "standard",
-						jsFileLocation: "/forntend/include/rs-plugin/js/",
-						sliderLayout: "fullwidth",
-						dottedOverlay: "none",
-						delay: 9000,
-						navigation: {
-							keyboardNavigation: "off",
-							keyboard_direction: "horizontal",
-							mouseScrollNavigation: "off",
-							onHoverStop: "off",
-							touch: {
-								touchenabled: "on",
-								swipe_threshold: 75,
-								swipe_min_touches: 50,
-								swipe_direction: "horizontal",
-								drag_block_vertical: false
-							},
-							arrows: {
-								style:"uranus",
-								enable:true,
-								hide_onmobile:false,
-								hide_onleave:false,
-								tmp:'',
-								left: {
-									h_align:"left",
-									v_align:"center",
-									h_offset:-10,
-									v_offset:0
-								},
-								right: {
-									h_align:"right",
-									v_align:"center",
-									h_offset:-10,
-									v_offset:0
-								}
-							},
-							bullets: {
-								enable: true,
-								hide_onmobile: false,
-								style: "zeus",
-								hide_onleave: false,
-								direction: "horizontal",
-								h_align: "center",
-								v_align: "bottom",
-								h_offset: 0,
-								v_offset: 30,
-								space: 5,
-								tmp: '<span class="tp-bullet-inner"></span>'
-							}
-						},
-						responsiveLevels: [1240, 1024, 778, 480],
-						visibilityLevels: [1240, 1024, 778, 480],
-						gridwidth: [1240, 1024, 778, 480],
-						gridheight: [700, 768, 960, 600],
-						lazyType: "none",
-						shadow: 0,
-						spinner: "off",
-						stopLoop: "on",
-						stopAfterLoops: 0,
-						stopAtSlide: 1,
-						shuffle: "off",
-						autoHeight: "off",
-						fullScreenAutoWidth: "off",
-						fullScreenAlignForce: "off",
-						fullScreenOffsetContainer: "",
-						fullScreenOffset: "",
-						disableProgressBar: "on",
-						hideThumbsOnMobile: "off",
-						hideSliderAtLimit: 0,
-						hideCaptionAtLimit: 0,
-						hideAllCaptionAtLilmit: 0,
-						debugMode: false,
-						fallbacks: {
-							simplifyAll: "off",
-							nextSlideOnWindowFocus: "off",
-							disableFocusListener: false,
-						}
-					});
-					revapi202.bind("revolution.slide.onchange",function (e,data) {
-						if( $(window).width() > 992 ) {
-							if( $('#slider ul > li').eq(data.slideIndex-1).hasClass('dark') ){
-								$('#header.transparent-header:not(.sticky-header,.semi-transparent)').addClass('dark');
-								$('#header.transparent-header.sticky-header,#header.transparent-header.semi-transparent.sticky-header').removeClass('dark');
-								$('#header-wrap').removeClass('not-dark');
-							} else {
-								if( $('body').hasClass('dark') ) {
-									$('#header.transparent-header:not(.semi-transparent)').removeClass('dark');
-									$('#header.transparent-header:not(.sticky-header,.semi-transparent)').find('#header-wrap').addClass('not-dark');
-								} else {
-									$('#header.transparent-header:not(.semi-transparent)').removeClass('dark');
-									$('#header-wrap').removeClass('not-dark');
-								}
-							}
-							SEMICOLON.header.logo();
-						}
-					});
-				}
-			}); /*ready*/
+		<script type="text/javascript">
+          var tpj=jQuery;
+
+          var revapi27;
+          tpj(document).ready(function() {
+            if(tpj("#rev_slider_27_1").revolution == undefined){
+              revslider_showDoubleJqueryError("#rev_slider_27_1");
+            }else{
+              revapi27 = tpj("#rev_slider_27_1").show().revolution({
+                sliderType:"standard",
+                jsFileLocation:"include/rs-plugin/js/",
+                sliderLayout:"fullscreen",
+                dottedOverlay:"none",
+                delay:2000,
+                navigation: {
+                  keyboardNavigation:"off",
+                  keyboard_direction: "horizontal",
+                  mouseScrollNavigation:"off",
+                  mouseScrollReverse:"default",
+                  onHoverStop:"off",
+                  bullets: {
+                    enable:true,
+                    hide_onmobile:false,
+                    style:"bullet-bar",
+                    hide_onleave:false,
+                    direction:"horizontal",
+                    h_align:"center",
+                    v_align:"bottom",
+                    h_offset:0,
+                    v_offset:50,
+                    space:5,
+                    tmp:''
+                  }
+                },
+                responsiveLevels:[1240,1024,778,480],
+                visibilityLevels:[1240,1024,778,480],
+                gridwidth:[1240,1024,778,480],
+                gridheight:[868,768,960,720],
+                lazyType:"none",
+                shadow:0,
+                spinner:"off",
+                stopLoop:"off",
+                stopAfterLoops:-1,
+                stopAtSlide:-1,
+                shuffle:"off",
+                autoHeight:"off",
+                fullScreenAutoWidth:"off",
+                fullScreenAlignForce:"off",
+                fullScreenOffsetContainer: "",
+                fullScreenOffset: "0",
+                hideThumbsOnMobile:"off",
+                hideSliderAtLimit:0,
+                hideCaptionAtLimit:0,
+                hideAllCaptionAtLilmit:0,
+                debugMode:false,
+                fallbacks: {
+                  simplifyAll:"off",
+                  nextSlideOnWindowFocus:"off",
+                  disableFocusListener:false,
+                }
+              });
+              revapi27.bind("revolution.slide.onloaded",function (e) {
+                revapi27.addClass("tiny_bullet_slider");
+              });
+            }
+
+            if(revapi27) revapi27.revSliderSlicey();
+          });	/*ready*/
 		</script>
 
 		<script>

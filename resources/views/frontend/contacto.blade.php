@@ -227,7 +227,7 @@
 			}
 		}
 	</style>
-	<section id="content" style="background: url(/img/miramarski/contacto.jpg)">
+	<section id="content" style="background: url(/img/miramarski/contacto-2.jpg)">
 
 
 		<div class="container container-mobile center clearfix">

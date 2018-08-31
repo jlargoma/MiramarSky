@@ -3,12 +3,12 @@
 @section('title')Apartamentos de lujo en Sierra Nevada a pie de pista @endsection
 
 @section('content')
-<section id="content" style="margin-top: -100px;">
+<section id="content" style="">
 	
     <div class="content-wrap notoppadding" style="padding-bottom: 0;">
        
 		<?php if (!$mobile->isMobile()): ?>
-		<!-- DESKTOP -->
+			<!-- DESKTOP -->
 
 			<div class="row clearfix" style="background-color: #3F51B5; background-image: url({{asset('/img/miramarski/esquiadores.png')}}); background-position: left bottom; background-repeat: no-repeat; background-size: 50%;">
    				<div id="close-form-book" style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
@@ -380,10 +380,10 @@
 	       		</div>
 
 	       	</section>
-   		<!-- END DESKTOP -->
+   			<!-- END DESKTOP -->
 		
 		<?php else: ?>
-		<!-- MOBILE -->
+			<!-- MOBILE -->
 	       	<section class="page-section degradado-background1" style="letter-spacing: 0;line-height: 1;color: #fff!important;">
 	   		
 	   			<div class="row degradado-background1" style="">
@@ -417,85 +417,114 @@
 	       	</section>
 			
 			<section id="desc-section" class="page-section" style="letter-spacing: 0;line-height: 1; ">
-				<div class="col-xs-12 degradado-background2" style="padding: 30px 0 0;">
-					<div class="col-xs-12 white" style="margin-bottom: 20px">
-   						<h1 class="font-w800 white center " style="text-shadow: 1px 1px #000;letter-spacing: 0; margin-bottom: 10px; line-height: 1;font-size: 28px; letter-spacing: -2px;">
+				<div class="col-xs-12" style="padding: 30px 0 0;">
+					<div class="col-xs-12 black" style="margin-bottom: 20px">
+   						<h1 class="font-w800 black center " style="letter-spacing: 0;
+   						margin-bottom: 10px; line-height: 1;font-size: 28px; letter-spacing: -2px;">
    							APARTAMENTOS DE LUJO<br>A PIE DE PISTA
    						</h1>
-   						<h3 class="text-white white push-0" data-animate="fadeInUp" data-delay="400" style="text-align:center;text-shadow: 1px 1px #000;font-size: 24px;letter-spacing: -2px;line-height: 1;">SERVICIO EXCLUSIVO</h3>
+   						<h3 class="text-black black push-0" data-animate="fadeInUp" data-delay="400" style="text-align:center;font-size: 24px;letter-spacing: -2px;line-height: 1;
+   						">SERVICIO EXCLUSIVO</h3>
 
-   						<h4 class="text-white white font-w300 push-40" data-animate="fadeInUp" data-delay="600" style="text-align:center;text-shadow: 1px 1px #000;font-size: 22px;line-height: 1;letter-spacing: -1px;">Piscina, gimnasio, parking, guarda esquis, salida directa a las pistas</h4>
+   						<h4 class="text-black black font-w300 push-40" data-animate="fadeInUp" data-delay="600"
+   						style="text-align:center;font-size: 22px;line-height: 1;letter-spacing: -1px;">Piscina, gimnasio, parking, guarda esquis, salida directa a las pistas</h4>
 
-       					<p class="lead  text-justify white ls-15 font-s13 white">
+       					<p class="lead  text-justify black ls-15 font-s13 black">
        						Todos nuestros Apartamentos están en el Edificio Miramar Ski, situado <b>en la zona baja de Sierra Nevada</b>. <br>Tienen excelentes vistas y todos disponen del equipamiento completo.
        					</p>
-       					<h2 class="font-w300 text-center nobottommargin white push-20" style="line-height: 1;font-size: 16px!important; text-transform: uppercase; ">
-       						<span class="font-w800 white">Edificio con salida directa a las pistas</span><br>
-       						<span class="font-s14 white">solo tienes que salir de casa y esquiar!!</span>
+       					<h2 class="font-w300 text-center nobottommargin black push-20" style="line-height: 1;font-size: 16px!important; text-transform: uppercase; ">
+       						<span class="font-w800 black">Edificio con salida directa a las pistas</span><br>
+       						<span class="font-s14 black">solo tienes que salir de casa y esquiar!!</span>
        					</h2>
+
+						<div class="col-xs-12 push-20">
+							<div class="col_full clearfix">
+
+								<div class="masonry-thumbs col-3" data-big="2" data-lightbox="gallery">
+									<?php foreach ($slidesEdificio as $key => $slide): ?>
+									<?php $fotos = explode(",", $slide->getFilename()) ?>
+									<?php if (isset($fotos[1])): ?>
+
+										<a href="/img/miramarski/edificio/<?php echo $slide->getFilename() ?>" data-lightbox="gallery-item">
+											<img class="image_fade" src="/img/miramarski/edificio/<?php echo $slide->getFilename() ?>" alt="<?php echo $fotos[2] ?>" title="<?php echo $fotos[3] ?>" >
+										</a>
+									<?php else: ?>
+
+										<a href="/img/miramarski/edificio/<?php echo $slide->getFilename() ?>" data-lightbox="gallery-item">
+											<img class="image_fade" src="/img/miramarski/edificio/<?php echo $slide->getFilename() ?>" alt="<?php echo $fotos[2] ?>" title="<?php echo $fotos[3] ?>" >
+										</a>
+									<?php endif ?>
+									<?php endforeach ?>
+
+								</div>
+
+							</div>
+
+						</div>
+
 					</div>
        				<div class="col-xs-12 clearfix push-20">
 
 		       			<div id="oc-clients" class="owl-carousel image-carousel carousel-widget" data-margin="60" data-loop="true" data-nav="false" data-autoplay="3000" data-pagi="false" data-items-xxs="4" data-items-xs="4" data-items-sm="6" data-items-md="6" data-items-lg="8">
 
 		       				<div class="oc-item">
-		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-piepista.png') }}" alt="piepista" title="piepista" /> A pie de pista 
+		       					<a class="pc-characteristics black center font-s12">
+		       						<img src="{{ asset('/img/miramarski/iconos/small/teleesqui.png') }}" alt="piepista" title="piepista" /> A pie de pista
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
-		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-parking.png') }}" alt="parking" title="parking" /> Parking cubierto 
+		       					<a class="pc-characteristics black center font-s12">
+		       						<img src="{{ asset('/img/miramarski/iconos/small/parking.png') }}" alt="parking" title="parking" /> Parking cubierto
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
-		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-ascensor.png') }}" alt="ascensor" title="ascensor" /> Ascensor 
+		       					<a class="pc-characteristics black center font-s12">
+		       						<img src="{{ asset('/img/miramarski/iconos/small/ascensor.png') }}" alt="ascensor" title="ascensor" /> Ascensor
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
-		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-piscina.png') }}" alt="piscina" title="piscina" /> Piscina  
+		       					<a class="pc-characteristics black center font-s12">
+		       						<img src="{{ asset('/img/miramarski/iconos/small/piscina.png') }}" alt="piscina" title="piscina" /> Piscina
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
-		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-gimnasio.png') }}" alt="gimnasio" title="gimnasio" /> Gimnasio 
+		       					<a class="pc-characteristics black center font-s12">
+		       						<img src="{{ asset('/img/miramarski/iconos/small/gimnasio.png') }}" alt="gimnasio" title="gimnasio" /> Gimnasio
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
-		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-guardaesqui.png') }}" alt="guardaesqui" title="guardaesqui" /> Guarda Esqíes 
+		       					<a class="pc-characteristics black center font-s12">
+		       						<img src="{{ asset('/img/miramarski/iconos/small/guardaesqui.png') }}" alt="guardaesqui" title="guardaesqui" /> Guarda Esqíes
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
-		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-mascotas.png') }}" alt="mascotas" title="mascotas" /> No mascotas 
+		       					<a class="pc-characteristics black center font-s12">
+		       						<img src="{{ asset('/img/miramarski/iconos/small/mascotas.png') }}" alt="mascotas" title="mascotas" /> No mascotas
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
-		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-ropa-toallas.png') }}" alt="ropa-toallas" title="ropa-toallas" /> Ropa y toallas 
+		       					<a class="pc-characteristics black center font-s12">
+		       						<img src="{{ asset('/img/miramarski/iconos/small/ropa-toallas.png') }}" alt="ropa-toallas" title="ropa-toallas" /> Ropa y toallas
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
-		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-cocina.png') }}" alt="cocina" title="cocina" /> Cocina 
+		       					<a class="pc-characteristics black center font-s12">
+		       						<img src="{{ asset('/img/miramarski/iconos/small/cocina.png') }}" alt="cocina" title="cocina" /> Cocina
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
-		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-ducha.png') }}" alt="ducha" title="ducha" /> Baño 
+		       					<a class="pc-characteristics black center font-s12">
+		       						<img src="{{ asset('/img/miramarski/iconos/small/ducha.png') }}" alt="ducha" title="ducha" /> Baño
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
-		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-calefaccion.png') }}" alt="calefaccion" title="calefaccion" /> Calefaccion 
+		       					<a class="pc-characteristics black center font-s12">
+		       						<img src="{{ asset('/img/miramarski/iconos/small/calefaccion.png') }}" alt="calefaccion" title="calefaccion" /> Calefaccion
 		       					</a>
 		       				</div>
 		       				<div class="oc-item">
-		       					<a class="pc-characteristics white center font-s12">
-		       						<img src="{{ asset('/img/miramarski/iconos/small/white-shopping.png') }}" alt="shopping" title="shopping" /> Shopping 
+		       					<a class="pc-characteristics black center font-s12">
+		       						<img src="{{ asset('/img/miramarski/iconos/small/shopping.png') }}" alt="shopping" title="shopping" /> Shopping
 		       					</a>
 		       				</div>
 
@@ -505,7 +534,7 @@
    					</div>
 
    					<div class="col-xs-12">
-       					<p class="lead  text-justify font-s13 white ls-5">
+       					<p class="lead text-justify font-s13 black ls-5">
        						Se encuentran <b>a 5 minutos andando de la plaza de Andalucía</b>, en Pradollano centro neurálgico de la estación.<br><br>
 
 							<b>Piscina climatizada, gimnasio, parking cubierto, taquilla guardaesquis, acceso directo a las pistas.</b>
@@ -525,35 +554,9 @@
 							<b>Para tu comodidad, te llevamos los fortfaits a tu apartamento para evitarle las largas filas de la temporada alta</b>
        					</p>
    					</div>
-					<div class="col-xs-12 push-20">
-       					<div class="fslider" data-easing="easeInQuad">
-							<div class="flexslider">
-								<div class="slider-wrap">
 
-									<?php foreach ($slidesEdificio as $key => $slide): ?>
-										<?php $fotos = explode(",", $slide->getFilename()) ?>
-										<?php if (isset($fotos[1])): ?>
-											<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/piscina_climatizadalquiler_apartamento_sierra_nevada_miraramarski.jpg') }}">
-												<a href="#">
-													<img src="{{ asset('/img/miramarski/edificio/')}}/<?php echo $slide->getFilename() ?>" alt="<?php echo $fotos[2] ?>" title="<?php echo $fotos[3] ?>" style="height: 250px;">
-													<div class="flex-caption slider-caption-bg">Fotos del edificio</div>
-												</a>
-											</div>
-										<?php else: ?>
-											<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/piscina_climatizadalquiler_apartamento_sierra_nevada_miraramarski.jpg') }}">
-												<a href="#">
-													<img src="{{ asset('/img/miramarski/edificio/')}}/<?php echo $slide->getFilename() ?>" alt="<?php echo $fotos[2] ?>" title="<?php echo $fotos[3] ?>" style="height: 250px;">
-													<div class="flex-caption slider-caption-bg">Fotos del edificio</div>
-												</a>
-											</div>
-										<?php endif ?>
-									<?php endforeach ?>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xs-12 push-20">
-						<p class="lead  text-justify white ls-15 font-s13 white" >
+					<div class="col-xs-12 push-0">
+						<p class="lead  text-justify ls-15 font-s13" >
 							En el <span class="menu-booking"><b><u>botón de reserva</u></b></span>  podrás calcular el coste de tu petición y si lo consideras hacer tu solicitud de disponibilidad.
 						</p>
 					</div>
@@ -566,12 +569,12 @@
 
 			<section  class="page-section" style="letter-spacing: 0;line-height: 1; margin: 45px 0;">
 				<div class="heading-block center push-20">
-					<h3 class="green">GALERÍA DE APARTAMENTOS</h3>
+					<h3 class="green">NUESTROS APARTAMENTOS</h3>
 				</div>
 
 				<div class=" row animatable" data-aos="zoom-in">
 					<a href="{{url('/apartamentos/apartamento-lujo-gran-capacidad-sierra-nevada')}}" > 
-						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/small/apartamento-lujo-gran-capacidad-sierra-nevada.jpeg')}}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
+						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/small/apartamento-lujo-gran-capacidad-sierra-nevada.jpeg')}}); padding: 70px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 2px 1px #000;">APTO GRAN CAPACIDAD<br> DE LUJO</h3>
 						</div>
 					</a>
@@ -579,28 +582,30 @@
 
 				<div class=" row animatable" data-aos="zoom-in">
 					<a href="{{url('/apartamentos/apartamento-lujo-sierra-nevada')}}" > 
-						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apto-lujo.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
+						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apto-lujo.jpg') }}); padding: 70px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 2px 1px #000;">2 DORMITORIOS<br> DE LUJO</h3>
 						</div>
 					</a>
 				</div>
 				<div class=" row animatable" data-aos="zoom-in">
 					<a href="{{url('/apartamentos/apartamento-standard-sierra-nevada')}}" > 
-						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apto-standard.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
-							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 2px 1px #000;">2 DORMITORIOS STANDARD</h3>
+						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/apto-standard.jpg') }}); padding: 70px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
+							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 2px 1px
+							#000; line-height: 1;">2 DORMITORIOS
+							<br>STANDARD</h3>
 						</div>
 					</a>
 				</div>
 				<div class=" row animatable" data-aos="zoom-in">
 					<a href="{{url('/apartamentos/estudio-lujo-sierra-nevada')}}"> 
-						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/estudio-lujo.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
+						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/estudio-lujo.jpg') }}); padding: 70px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 2px 1px #000;">ESTUDIO DE LUJO</h3>
 						</div>
 					</a>
 				</div>
 				<div class=" row animatable" data-aos="zoom-in">
 					<a href="{{url('/apartamentos/estudio-standard-sierra-nevada')}}"> 
-						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/estudio-standard.jpg') }}); padding: 40px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
+						<div class="section parallax noborder center" style="background-image: url({{ asset('/img/miramarski/galerias/estudio-standard.jpg') }}); padding: 70px 0; margin: 20px 0;" data-stellar-background-ratio="0.4">
 							<h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 2px 1px #000;">ESTUDIO STANDARD</h3>
 						</div>
 					</a>
@@ -700,7 +705,7 @@
 			</section>
 
 
-		<!-- END MOBILE -->
+			<!-- END MOBILE -->
 		<?php endif; ?>
 
 			

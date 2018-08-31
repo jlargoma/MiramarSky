@@ -67,7 +67,7 @@
 
 	<!-- External JavaScripts
 	============================================= -->
-	<script type="text/javascript" src="{{ asset('/js/bootstrap-notify.js')}}"></script>
+	<script type="text/javascript" src="{{ asset('/pages/js/bootstrap-notify.js')}}"></script>
 	<script type="text/javascript" src="{{ asset('/frontend/js/plugins.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('/frontend/js/functions.js') }}"></script>
 	
