@@ -51,7 +51,7 @@
 			<ul>	<!-- SLIDE  -->
 				<li class="dark" data-index="rs-85" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off"  data-easein="default" data-easeout="default" data-masterspeed="600"  data-thumb="/img/miramarski/mobile-slide.jpg"  data-rotate="0"  data-saveperformance="off"  data-title="Slide" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="" data-slicey_shadow="0px 0px 0px 0px transparent">
 					<!-- MAIN IMAGE -->
-					<img src="/img/miramarski/mobile-full-slide-1.jpg"  alt=""  data-bgposition="center center" data-kenburns="on" data-duration="1500" data-ease="Power2.easeInOut" data-scalestart="80" data-scaleend="100" data-rotatestart="0" data-rotateend="0" data-blurstart="10" data-blurend="0" data-offsetstart="0 0" data-offsetend="0 0" class="rev-slidebg" data-no-retina>
+					<img src="/img/miramarski/mobile-full-slide-1.jpg"  alt=""  data-bgposition="center center" data-kenburns="on" data-duration="1500" data-ease="Power2.easeInOut" data-scalestart="80" data-scaleend="100" data-rotatestart="0" data-rotateend="0" data-blurstart="10" data-blurend="0" data-offsetstart="0 0" data-offsetend="0 0" class="rev-slidebg" data-no-retina >
 					<!-- LAYERS -->
 
 					<!-- LAYER NR. 1 -->

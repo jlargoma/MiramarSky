@@ -157,13 +157,7 @@
 		</style>
 
 		<style>
-			/*.full-screen.slider-mobile{
-				background-image: url('/img/miramarski/mobile-slide.jpg');
-				background-position: 50% 100%; 
-				background-size: cover; 
-				background-repeat: no-repeat; 
-				max-height: 520px;
-			}*/
+
 			@media screen and (max-width: 767px) {
 				#primary-menu.style-2{
 					position: absolute;
@@ -278,7 +272,7 @@
                 gridheight:[868,768,960,720],
                 lazyType:"none",
                 shadow:0,
-                spinner: 'spinner0',
+                spinner: 'spinner5',
                 stopLoop:"off",
                 stopAfterLoops:-1,
                 stopAtSlide:-1,
