@@ -23,6 +23,26 @@
 
 	</section>
 <?php else: ?>
+{{--<section id="slider" class="section nomargin noborder" style="padding: 0; max-height: 520px">--}}
+
+	{{--<div class="full-screen slider-mobile" >--}}
+		{{--<div class="overlay"></div>--}}
+		{{--<div class="row" style="z-index: 5">--}}
+			{{--<div class="col-xs-12 push-0" style="padding: 100px 20px 65px 20px; z-index: 10;">--}}
+				{{--<h2 class="text-white white font-w800" data-aos="fade-up" style="text-align:center;text-shadow: 1px 1px #000;font-size: 38px;letter-spacing: -2px;line-height: 1; margin: 60px 10px;">APARTAMENTOS DE LUJO EN SIERRA NEVADA</h2>--}}
+
+				{{----}}
+				{{--<p class="text-center push-30">--}}
+					{{--<button class="btn btn-lg white menu-booking heart font-w300" style="z-index: 8; background-color: #59BA41; border-radius: 0; padding: 20px; font-size: 21px;letter-spacing: -1px;text-shadow: 1px 1px #000;">SOLICITA TU <span class="font-w800">RESERVA</span>--}}
+					{{--</button>--}}
+				{{--</p>--}}
+			{{--</div>--}}
+		{{--</div>--}}
+
+	{{--</div>--}}
+
+{{--</section>--}}
+
 <section id="slider" class="revslider-wrap force-full-screen full-screen clearfix">
 
 	<div class="rev_slider_wrapper" style="background:#000;padding:0px;">
@@ -56,7 +76,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 5;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 5;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 2 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -80,7 +100,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 6;background-color:rgba(0, 0, 0, 0.5);"> </div>
+						 style="z-index: 6;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 3 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -104,7 +124,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 7;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 7;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 4 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -128,7 +148,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 8;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 8;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 5 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -152,7 +172,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 9;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 9;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 6 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -176,7 +196,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 10;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 10;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 7 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -200,7 +220,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 11;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 11;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 8 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -224,7 +244,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 12;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 12;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 9 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -248,7 +268,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 13;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 13;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 10 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -272,7 +292,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 14;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 14;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 11 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -296,7 +316,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 15;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 15;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 12 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -320,7 +340,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 16;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 16;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 13 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -344,7 +364,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 17;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 17;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 14 -->
 					<div class="tp-caption tp-shape tp-shapewrapper "
@@ -366,7 +386,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 18;background-color:rgba(0, 0, 0, 0.5);"> </div>
+						 style="z-index: 18;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 15 -->
 					<div class="tp-caption   tp-resizeme"
@@ -488,7 +508,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 5;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 5;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 19 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -512,7 +532,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 6;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 6;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 20 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -536,7 +556,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 7;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 7;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 21 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -560,7 +580,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 8;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 8;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 22 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -584,7 +604,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 9;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 9;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 23 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -608,7 +628,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 10;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 10;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 24 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -632,7 +652,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 11;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 11;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 25 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -656,7 +676,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 12;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 12;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 26 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -680,7 +700,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 13;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 13;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 27 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -704,7 +724,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 14;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 14;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 28 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -728,7 +748,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 15;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 15;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 29 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -752,7 +772,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 16;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 16;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 30 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -776,7 +796,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 17;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 17;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 31 -->
 					<div class="tp-caption tp-shape tp-shapewrapper "
@@ -798,7 +818,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 18;background-color:rgba(0, 0, 0, 0.5);"> </div>
+						 style="z-index: 18;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 32 -->
 					<div class="tp-caption   tp-resizeme"
@@ -899,7 +919,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 5;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 5;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 36 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -923,7 +943,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 6;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 6;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 37 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -947,7 +967,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 7;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 7;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 38 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -971,7 +991,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 8;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 8;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 39 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -995,7 +1015,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 9;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 9;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 40 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -1019,7 +1039,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 10;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 10;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 41 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -1043,7 +1063,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 11;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 11;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 42 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -1067,7 +1087,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 12;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 12;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 43 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -1091,7 +1111,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 13;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 13;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 44 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -1115,7 +1135,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 14;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 14;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 45 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -1139,7 +1159,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 15;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 15;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 46 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -1163,7 +1183,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 16;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 16;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 47 -->
 					<div class="tp-caption tp-shape tp-shapewrapper tp-slicey  tp-resizeme"
@@ -1187,7 +1207,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 17;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 17;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 48 -->
 					<div class="tp-caption tp-shape tp-shapewrapper "
@@ -1209,7 +1229,7 @@
 						 data-paddingbottom="[0,0,0,0]"
 						 data-paddingleft="[0,0,0,0]"
 
-						 style="z-index: 18;background-color:rgba(0, 0, 0, 0.25);"> </div>
+						 style="z-index: 18;background-color:rgba(0, 0, 0, 0);"> </div>
 
 					<!-- LAYER NR. 49 -->
 					<div class="tp-caption   tp-resizeme"
@@ -1242,7 +1262,7 @@
 						 data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
 						 data-y="['middle','middle','middle','middle']" data-voffset="['90','90','60','30']"
 						 data-fontsize="['25','25','25','20']"
-						 data-lineheight="['35','35','35','20']"
+						 data-lineheight="['35','35','35','30']"
 						 data-width="['480','480','480','360']"
 						 data-height="none"
 						 data-whitespace="normal"
