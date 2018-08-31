@@ -164,14 +164,14 @@
 											<?php if (isset($fotos[1])): ?>
 												<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/piscina_climatizadalquiler_apartamento_sierra_nevada_miraramarski.jpg') }}">
 													<a href="#">
-														<img src="{{ asset('/img/miramarski/edificio/')}}/<?php echo $slide->getFilename() ?>" alt="<?php echo $fotos[2] ?>" title="<?php echo $fotos[3] ?>" style="height: 450px;">
+														<img src="{{ asset('/img/miramarski/edificio/')}}/<?php echo $slide->getFilename() ?>" alt="<?php echo $fotos[1] ?>" title="<?php echo $fotos[1] ?>" style="height: 450px;">
 														<div class="flex-caption slider-caption-bg">Fotos del edificio</div>
 													</a>
 												</div>
 											<?php else: ?>
 												<div class="slide" data-thumb="{{ asset('/img/miramarski/edificio/piscina_climatizadalquiler_apartamento_sierra_nevada_miraramarski.jpg') }}">
 													<a href="#">
-														<img src="{{ asset('/img/miramarski/edificio/')}}/<?php echo $slide->getFilename() ?>" alt="<?php echo $fotos[2] ?>" title="<?php echo $fotos[3] ?>" style="height: 450px;">
+														<img src="{{ asset('/img/miramarski/edificio/')}}/<?php echo $slide->getFilename() ?>" alt="<?php echo $fotos[1] ?>" title="<?php echo $fotos[1] ?>" style="height: 450px;">
 														<div class="flex-caption slider-caption-bg">Fotos del edificio</div>
 													</a>
 												</div>
