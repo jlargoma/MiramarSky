@@ -249,7 +249,7 @@
                 jsFileLocation:"include/rs-plugin/js/",
                 sliderLayout:"fullscreen",
                 dottedOverlay:"none",
-                delay:4000,
+                delay: 4000,
                 navigation: {
                   keyboardNavigation:"off",
                   keyboard_direction: "horizontal",
@@ -276,7 +276,7 @@
                 gridheight:[868,768,960,720],
                 lazyType:"none",
                 shadow:0,
-                spinner:"off",
+                spinner: 'spinner0',
                 stopLoop:"off",
                 stopAfterLoops:-1,
                 stopAtSlide:-1,
