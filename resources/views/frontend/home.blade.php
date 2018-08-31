@@ -443,17 +443,10 @@
 								<div class="masonry-thumbs col-3" data-big="2" data-lightbox="gallery">
 									<?php foreach ($slidesEdificio as $key => $slide): ?>
 									<?php $fotos = explode(",", $slide->getFilename()) ?>
-									<?php if (isset($fotos[1])): ?>
-
 										<a href="/img/miramarski/edificio/<?php echo $slide->getFilename() ?>" data-lightbox="gallery-item">
-											<img class="image_fade" src="/img/miramarski/edificio/<?php echo $slide->getFilename() ?>" alt="<?php echo $fotos[2] ?>" title="<?php echo $fotos[3] ?>" >
+											<img class="image_fade" src="/img/miramarski/edificio/<?php echo
+											$slide->getFilename() ?>" alt="<?php echo $fotos[2] ?>" title="<?php echo $fotos[2] ?>" >
 										</a>
-									<?php else: ?>
-
-										<a href="/img/miramarski/edificio/<?php echo $slide->getFilename() ?>" data-lightbox="gallery-item">
-											<img class="image_fade" src="/img/miramarski/edificio/<?php echo $slide->getFilename() ?>" alt="<?php echo $fotos[2] ?>" title="<?php echo $fotos[3] ?>" >
-										</a>
-									<?php endif ?>
 									<?php endforeach ?>
 
 								</div>
