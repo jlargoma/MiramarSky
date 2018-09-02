@@ -202,10 +202,10 @@
 			</div>
 		</div>
 		<div id="gotoTop" class="fa fa-chevron-up"></div>
-		{{--<script type="text/javascript" src="{{ asset('/js/scripts.js')}}"></script>--}}
-		<script type="text/javascript" src="{{ asset('/frontend/js/jquery.js')}}"></script>
+		<script type="text/javascript" src="{{ asset('/js/scripts.js')}}"></script>
+		{{--<script type="text/javascript" src="{{ asset('/frontend/js/jquery.js')}}"></script>
 		<script type="text/javascript" src="{{ asset('/frontend/js/plugins.js')}}"></script>
-		<script type="text/javascript" src="{{ asset('/frontend/js/functions.js')}}"></script>
+		<script type="text/javascript" src="{{ asset('/frontend/js/functions.js')}}"></script>--}}
 
 
 
@@ -236,7 +236,7 @@
           var tpj=jQuery;
 
           var revapi27;
-          tpj(document).ready(function() {
+
             if(tpj("#rev_slider_27_1").revolution == undefined){
               revslider_showDoubleJqueryError("#rev_slider_27_1");
             }else{
@@ -299,7 +299,7 @@
             }
 
             if(revapi27) revapi27.revSliderSlicey();
-          });	/*ready*/
+          	/*ready*/
 
           $(document).ready(function() {
           		$('#primary-menu').css('visibility', 'visible');
