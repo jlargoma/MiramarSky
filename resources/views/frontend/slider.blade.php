@@ -376,7 +376,8 @@
                          data-paddingleft="[0,0,0,0]"
 
                          style="z-index: 19; text-shadow: 1px 1px #000; white-space: nowrap; font-size: 60px; line-height: 60px;
-						 font-weight:800; color: #ffffff;font-family:'miramar';">APARTAMENTOS DE LUJO<br>EN SIERRA NEVADA
+						 font-weight:800; color: #ffffff;font-family:'miramar';">APARTAMENTOS DE LUJO<br>EN SIERRA
+                        NEVADA
                     </div>
 
                     <!-- LAYER NR. 16 -->
@@ -1285,8 +1286,7 @@
                     </button>
                 </li>
             </ul>
-        </div>
-    </div>
+        </div></div>
     </div><!-- END REVOLUTION SLIDER -->
     </div>
 
@@ -2600,7 +2600,6 @@
         </div>
     </div>
     </div><!-- END REVOLUTION SLIDER -->
-    </div>
 
 </section>
 
