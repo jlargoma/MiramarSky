@@ -287,12 +287,8 @@
     revapi27 = tpj("#rev_slider_27_1").show().revolution({
       sliderType: "standard",
       jsFileLocation: "include/rs-plugin/js/",
-        <?php if ($mobile->isMobile()): ?>
-            sliderLayout: "fullscreen",
-        <?php else: ?>
-            sliderLayout: "fullwidth",
-		<?php endif; ?>
-        dottedOverlay: "none",
+      sliderLayout: "fullscreen",
+      dottedOverlay: "none",
       delay: 4000,
       navigation: {
         keyboardNavigation: "off",
@@ -317,13 +313,8 @@
       responsiveLevels: [1240, 1024, 778, 480],
       visibilityLevels: [1240, 1024, 778, 480],
       gridwidth: [1240, 1024, 778, 480],
-		<?php if ($mobile->isMobile()): ?>
-            gridheight: [868, 868, 960, 720],
-		<?php else: ?>
-            gridheight: [700, 700, 960, 720],
-		<?php endif; ?>
-
-        lazyType: "smart",
+      gridheight: [868, 868, 960, 720],
+      lazyType: "smart",
       shadow: 0,
       spinner: 'spinner5',
       stopLoop: "off",
