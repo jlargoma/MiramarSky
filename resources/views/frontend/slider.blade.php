@@ -1286,6 +1286,7 @@
                 </li>
             </ul>
         </div>
+    </div>
     </div><!-- END REVOLUTION SLIDER -->
     </div>
 
@@ -2597,6 +2598,7 @@
                 </li>
             </ul>
         </div>
+    </div>
     </div><!-- END REVOLUTION SLIDER -->
     </div>
 
