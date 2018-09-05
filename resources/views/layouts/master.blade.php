@@ -286,8 +286,8 @@
           mouseScrollReverse:"default",
           onHoverStop:"off",
           bullets: {
-            enable:true,
-            hide_onmobile:false,
+            enable:false,
+            hide_onmobile:true,
             style:"bullet-bar",
             hide_onleave:false,
             direction:"horizontal",
