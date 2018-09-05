@@ -247,30 +247,18 @@
 <script src="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.js"></script>
 
 {{--<script type="text/javascript" src="{{ asset('/js/scripts-slider.js')}}"></script>--}}
-<script type="text/javascript"
-        src="{{ asset('/frontend/include/rs-plugin/js/jquery.themepunch.tools.min.js')}}"></script>
-<script type="text/javascript"
-        src="{{ asset('/frontend/include/rs-plugin/js/jquery.themepunch.revolution.min.js')}}"></script>
-<script type="text/javascript"
-        src="{{ asset('/frontend/include/rs-plugin/js/addons/revolution.addon.slicey.min.js')}}"></script>
-<script type="text/javascript"
-        src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.actions.min.js')}}"></script>
-<script type="text/javascript"
-        src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.carousel.min.js')}}"></script>
-<script type="text/javascript"
-        src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.kenburn.min.js')}}"></script>
-<script type="text/javascript"
-        src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.layeranimation.min.js')}}"></script>
-<script type="text/javascript"
-        src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.migration.min.js')}}"></script>
-<script type="text/javascript"
-        src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.navigation.min.js')}}"></script>
-<script type="text/javascript"
-        src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.parallax.min.js')}}"></script>
-<script type="text/javascript"
-        src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.slideanims.min.js')}}"></script>
-<script type="text/javascript"
-        src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.video.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/jquery.themepunch.tools.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/jquery.themepunch.revolution.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/addons/revolution.addon.slicey.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.actions.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.carousel.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.kenburn.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.layeranimation.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.migration.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.navigation.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.parallax.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.slideanims.min.js')}}"></script>
+<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.video.min.js')}}"></script>
 
 <?php /* view para todos los scripts generales de la pagina*/ ?>
 @include('layouts._generalScripts')
@@ -280,71 +268,71 @@
 
   var revapi27;
 
-  if (tpj("#rev_slider_27_1").revolution == undefined) {
-    revslider_showDoubleJqueryError("#rev_slider_27_1");
-  }
-  else {
-    revapi27 = tpj("#rev_slider_27_1").show().revolution({
-      sliderType: "standard",
-      jsFileLocation: "include/rs-plugin/js/",
-      sliderLayout: "fullscreen",
-      dottedOverlay: "none",
-      delay: 4000,
-      navigation: {
-        keyboardNavigation: "off",
-        keyboard_direction: "horizontal",
-        mouseScrollNavigation: "off",
-        mouseScrollReverse: "default",
-        onHoverStop: "off",
-        bullets: {
-          enable: true,
-          hide_onmobile: false,
-          style: "bullet-bar",
-          hide_onleave: false,
-          direction: "horizontal",
-          h_align: "center",
-          v_align: "bottom",
-          h_offset: 0,
-          v_offset: 50,
-          space: 5,
-          tmp: ''
+
+    if (tpj("#rev_slider_27_1").revolution == undefined) {
+      revslider_showDoubleJqueryError("#rev_slider_27_1");
+    }
+    else {
+      revapi27 = tpj("#rev_slider_27_1").show().revolution({
+        sliderType: "standard",
+        jsFileLocation: "include/rs-plugin/js/",
+        sliderLayout: "fullscreen",
+        dottedOverlay: "none",
+        delay: 4000,
+        navigation: {
+          keyboardNavigation: "off",
+          keyboard_direction: "horizontal",
+          mouseScrollNavigation: "off",
+          mouseScrollReverse: "default",
+          onHoverStop: "off",
+          bullets: {
+            enable: true,
+            hide_onmobile: false,
+            style: "bullet-bar",
+            hide_onleave: false,
+            direction: "horizontal",
+            h_align: "center",
+            v_align: "bottom",
+            h_offset: 0,
+            v_offset: 50,
+            space: 5,
+            tmp: ''
+          }
+        },
+        responsiveLevels: [1240, 1024, 778, 480],
+        visibilityLevels: [1240, 1024, 778, 480],
+        gridwidth: [1240, 1024, 778, 480],
+        gridheight: [868, 868, 960, 720],
+        lazyType: "smart",
+        shadow: 0,
+        spinner: 'spinner5',
+        stopLoop: "off",
+        stopAfterLoops: -1,
+        stopAtSlide: -1,
+        shuffle: "off",
+        autoHeight: "off",
+        fullScreenAutoWidth: "off",
+        fullScreenAlignForce: "off",
+        fullScreenOffsetContainer: "",
+        fullScreenOffset: "0",
+        hideThumbsOnMobile: "off",
+        hideSliderAtLimit: 0,
+        hideCaptionAtLimit: 0,
+        hideAllCaptionAtLilmit: 0,
+        debugMode: false,
+        fallbacks: {
+          simplifyAll: "off",
+          nextSlideOnWindowFocus: "off",
+          disableFocusListener: false,
         }
-      },
-      responsiveLevels: [1240, 1024, 778, 480],
-      visibilityLevels: [1240, 1024, 778, 480],
-      gridwidth: [1240, 1024, 778, 480],
-      gridheight: [868, 868, 960, 720],
-      lazyType: "smart",
-      shadow: 0,
-      spinner: 'spinner5',
-      stopLoop: "off",
-      stopAfterLoops: -1,
-      stopAtSlide: -1,
-      shuffle: "off",
-      autoHeight: "off",
-      fullScreenAutoWidth: "off",
-      fullScreenAlignForce: "off",
-      fullScreenOffsetContainer: "",
-      fullScreenOffset: "0",
-      hideThumbsOnMobile: "off",
-      hideSliderAtLimit: 0,
-      hideCaptionAtLimit: 0,
-      hideAllCaptionAtLilmit: 0,
-      debugMode: false,
-      fallbacks: {
-        simplifyAll: "off",
-        nextSlideOnWindowFocus: "off",
-        disableFocusListener: false,
-      }
-    });
-    revapi27.bind("revolution.slide.onloaded", function (e) {
-      revapi27.addClass("tiny_bullet_slider");
-    });
-  }
+      });
+      revapi27.bind("revolution.slide.onloaded", function (e) {
+        revapi27.addClass("tiny_bullet_slider");
+      });
+    }
 
-  if (revapi27) revapi27.revSliderSlicey();
-  /*ready*/
-
+    if (revapi27) revapi27.revSliderSlicey();
+    /*ready*/
   $(document).ready(function () {
     $('#primary-menu').css('visibility', 'visible');
   });
