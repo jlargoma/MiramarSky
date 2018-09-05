@@ -263,12 +263,83 @@
 <?php /* view para todos los scripts generales de la pagina*/ ?>
 @include('layouts._generalScripts')
 
-<script type="text/javascript">
-  $(document).ready(function () {
-    $('#primary-menu').css('visibility', 'visible');
-  });
+<?php if (!$mobile->isMobile()): ?>
+    <script type="text/javascript">
+  var tpj=jQuery;
+
+  var revapi27;
+  tpj(document).ready(function() {
+    if(tpj("#rev_slider_27_1_home").revolution == undefined){
+      revslider_showDoubleJqueryError("#rev_slider_27_1");
+    }else{
+      revapi27 = tpj("#rev_slider_27_1_home").show().revolution({
+        sliderType:"standard",
+        jsFileLocation:"include/rs-plugin/js/",
+        sliderLayout:"fullscreen",
+        dottedOverlay:"none",
+        delay:9000,
+        navigation: {
+          keyboardNavigation:"off",
+          keyboard_direction: "horizontal",
+          mouseScrollNavigation:"off",
+          mouseScrollReverse:"default",
+          onHoverStop:"off",
+          bullets: {
+            enable:true,
+            hide_onmobile:false,
+            style:"bullet-bar",
+            hide_onleave:false,
+            direction:"horizontal",
+            h_align:"center",
+            v_align:"bottom",
+            h_offset:0,
+            v_offset:50,
+            space:5,
+            tmp:''
+          }
+        },
+        responsiveLevels:[1240,1024,778,480],
+        visibilityLevels:[1240,1024,778,480],
+        gridwidth:[1240,1024,778,480],
+        gridheight:[868,768,960,720],
+        lazyType:"none",
+        shadow:0,
+        spinner:"off",
+        stopLoop:"off",
+        stopAfterLoops:-1,
+        stopAtSlide:-1,
+        shuffle:"off",
+        autoHeight:"off",
+        fullScreenAutoWidth:"off",
+        fullScreenAlignForce:"off",
+        fullScreenOffsetContainer: "",
+        fullScreenOffset: "0",
+        hideThumbsOnMobile:"off",
+        hideSliderAtLimit:0,
+        hideCaptionAtLimit:0,
+        hideAllCaptionAtLilmit:0,
+        debugMode:false,
+        fallbacks: {
+          simplifyAll:"off",
+          nextSlideOnWindowFocus:"off",
+          disableFocusListener:false,
+        }
+      });
+      revapi27.bind("revolution.slide.onloaded",function (e) {
+        revapi27.addClass("tiny_bullet_slider");
+      });
+    }
+
+    if(revapi27) revapi27.revSliderSlicey();
+  });	/*ready*/
 </script>
-<script type="text/javascript">
+<?php else: ?>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#primary-menu').css('visibility', 'visible');
+      });
+    </script>
+    <script type="text/javascript">
   var tpj=jQuery;
 
   var revapi27;
@@ -337,6 +408,9 @@
     if(revapi27) revapi27.revSliderSlicey();
   });	/*ready*/
 </script>
+<?php endif; ?>
+
+
 <script>
   AOS.init();
 </script>
