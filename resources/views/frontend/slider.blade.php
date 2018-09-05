@@ -371,9 +371,7 @@
                     data-param10="" data-description="">
                     <!-- MAIN IMAGE -->
                     <img src="/img/miramarski/mobile-full-slide-1.jpg" alt="" data-bgposition="center center"
-                         data-kenburns="on" data-duration="1500" data-ease="Power2.easeInOut" data-scalestart="80"
-                         data-scaleend="100" data-rotatestart="0" data-rotateend="0" data-blurstart="10"
-                         data-blurend="0" data-offsetstart="0 0" data-offsetend="0 0" class="rev-slidebg"
+                         data-kenburns="on" data-duration="1500" data-ease="default"  class="rev-slidebg"
                          data-no-retina>
                     <!-- LAYERS -->
 
@@ -462,9 +460,7 @@
                     data-param10="" data-description="">
                     <!-- MAIN IMAGE -->
                     <img src="/img/miramarski/mobile-full-slide-2.jpg" alt="" data-bgposition="center center"
-                         data-kenburns="on" data-duration="1500" data-ease="Power2.easeInOut" data-scalestart="80"
-                         data-scaleend="100" data-rotatestart="0" data-rotateend="0" data-blurstart="20"
-                         data-blurend="0" data-offsetstart="0 0" data-offsetend="0 0" class="rev-slidebg"
+                         data-kenburns="on" data-bgposition="center center" data-duration="1500" data-ease="default"  class="rev-slidebg"
                          data-no-retina>
                     <!-- LAYERS -->
 
@@ -553,9 +549,7 @@
                     data-param10="" data-description="" >
                     <!-- MAIN IMAGE -->
                     <img src="/img/miramarski/mobile-full-slide-3.jpg" alt="" data-bgposition="center center"
-                         data-kenburns="on" data-duration="1500" data-ease="Power2.easeInOut" data-scalestart="80"
-                         data-scaleend="100" data-rotatestart="0" data-rotateend="0" data-blurstart="20"
-                         data-blurend="0" data-offsetstart="0 0" data-offsetend="0 0" class="rev-slidebg"
+                         data-kenburns="on" data-duration="1500" data-ease="default"  class="rev-slidebg"
                          data-no-retina>
                     <!-- LAYERS -->
 
