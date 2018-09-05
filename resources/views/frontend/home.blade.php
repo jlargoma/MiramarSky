@@ -440,14 +440,16 @@
 						<div class="col-xs-12 push-20">
 							<div class="row clearfix push-0">
 
-								<div class="masonry-thumbs col-2"  data-lightbox="gallery">
+								<div class="col-xs-12"  data-lightbox="gallery" style="padding: 0 5px;">
 									<?php foreach ($slidesEdificio as $key => $slide): ?>
 									<?php $fotos = explode(",", $slide->getFilename()) ?>
-										<a href="/img/miramarski/edificio/<?php echo $slide->getFilename() ?>" data-lightbox="gallery-item">
-											<img class="image_fade" src="/img/miramarski/edificio/<?php echo
-											$slide->getFilename() ?>" alt="<?php echo $fotos[1] ?>" title="<?php echo
-											 $fotos[1] ?>" >
-										</a>
+										<div class="col-xs-6 not-padding">
+											<a href="/img/miramarski/edificio/<?php echo $slide->getFilename() ?>" data-lightbox="gallery-item">
+												<img class="image_fade" src="/img/miramarski/edificio/<?php echo
+												$slide->getFilename() ?>" alt="<?php echo $fotos[1] ?>" title="<?php echo
+												$fotos[1] ?>" style="min-height: 150px;">
+											</a>
+										</div>
 									<?php endforeach ?>
 
 								</div>

@@ -1353,7 +1353,7 @@ class BookController extends Controller
             $date = new Carbon('first day of September '.$now->copy()->subYear()->format('Y'));
         }
         $apartamentos = \App\Rooms::where('state','=',1);
-        $reservas = \App\Book::whereIn('type_book',[1,2,4,5,7,8,9,10,11])->whereYear('start','>=', $date)->orderBy('start', 'ASC')->get();
+        $reservas = \App\Book::whereIn('type_book',[1,2,4,5,7,8,9])->whereYear('start','>=', $date)->orderBy('start', 'ASC')->get();
 
         foreach ($reservas as $reserva) {
             $dia = Carbon::createFromFormat('Y-m-d',$reserva->start);
