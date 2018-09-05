@@ -275,7 +275,7 @@
     else {
       revapi27 = tpj("#rev_slider_27_1").show().revolution({
         sliderType: "standard",
-        jsFileLocation: "include/rs-plugin/js/",
+        jsFileLocation: "/frontend/include/rs-plugin/js/",
         sliderLayout: "fullscreen",
         dottedOverlay: "none",
         delay: 4000,
