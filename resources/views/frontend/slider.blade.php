@@ -2,9 +2,9 @@
 
 <section id="slider" class="revslider-wrap force-full-screen full-screen clearfix">
 
-	<div class="rev_slider_wrapper" style="background:#000;padding:0px;">
+	<div class="rev_slider_wrapper" style="background:#FFF;padding:0px;">
 		<!-- START REVOLUTION SLIDER 5.4.1 fullscreen mode -->
-		<div id="rev_slider_27_1" class="rev_slider  fullscreenbanner" style="display:none;" data-version="5.4.1">
+		<div id="rev_slider_27_1" class="rev_slider " style="display:none;" data-version="5.4.1">
 			<ul>	<!-- SLIDE  -->
 				<li class="dark" data-index="rs-85" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off"  data-easein="default" data-easeout="default" data-masterspeed="600"  data-thumb="/img/miramarski/mobile-slide.jpg"  data-rotate="0"  data-saveperformance="off"  data-title="Slide" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="" data-slicey_shadow="0px 0px 0px 0px transparent">
 					<!-- MAIN IMAGE -->

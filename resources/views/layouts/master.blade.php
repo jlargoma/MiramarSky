@@ -264,21 +264,24 @@
 @include('layouts._generalScripts')
 
 <script type="text/javascript">
-  var tpj = jQuery;
+  $(document).ready(function () {
+    $('#primary-menu').css('visibility', 'visible');
+  });
+</script>
+<script type="text/javascript">
+  var tpj=jQuery;
 
   var revapi27;
-
-
-    if (tpj("#rev_slider_27_1").revolution == undefined) {
+  tpj(document).ready(function() {
+    if(tpj("#rev_slider_27_1").revolution == undefined){
       revslider_showDoubleJqueryError("#rev_slider_27_1");
-    }
-    else {
+    }else{
       revapi27 = tpj("#rev_slider_27_1").show().revolution({
-        sliderType: "standard",
-        jsFileLocation: "/frontend/include/rs-plugin/js/",
-        sliderLayout: "fullscreen",
-        dottedOverlay: "none",
-        delay: 4000,
+        sliderType:"standard",
+        jsFileLocation:"include/rs-plugin/js/",
+        sliderLayout:"fullscreen",
+        dottedOverlay:"none",
+        delay:9000,
         navigation: {
           keyboardNavigation:"off",
           keyboard_direction: "horizontal",
@@ -286,8 +289,8 @@
           mouseScrollReverse:"default",
           onHoverStop:"off",
           bullets: {
-            enable:false,
-            hide_onmobile:true,
+            enable:true,
+            hide_onmobile:false,
             style:"bullet-bar",
             hide_onleave:false,
             direction:"horizontal",
@@ -304,40 +307,36 @@
         gridwidth:[1240,1024,778,480],
         gridheight:[868,768,960,720],
         lazyType:"none",
-        shadow: 0,
-        spinner: 'spinner5',
-        stopLoop: "off",
-        stopAfterLoops: -1,
-        stopAtSlide: -1,
-        shuffle: "off",
-        autoHeight: "off",
-        fullScreenAutoWidth: "off",
-        fullScreenAlignForce: "off",
+        shadow:0,
+        spinner:"off",
+        stopLoop:"off",
+        stopAfterLoops:-1,
+        stopAtSlide:-1,
+        shuffle:"off",
+        autoHeight:"off",
+        fullScreenAutoWidth:"off",
+        fullScreenAlignForce:"off",
         fullScreenOffsetContainer: "",
         fullScreenOffset: "0",
-        hideThumbsOnMobile: "off",
-        hideSliderAtLimit: 0,
-        hideCaptionAtLimit: 0,
-        hideAllCaptionAtLilmit: 0,
-        debugMode: false,
+        hideThumbsOnMobile:"off",
+        hideSliderAtLimit:0,
+        hideCaptionAtLimit:0,
+        hideAllCaptionAtLilmit:0,
+        debugMode:false,
         fallbacks: {
-          simplifyAll: "off",
-          nextSlideOnWindowFocus: "off",
-          disableFocusListener: false,
+          simplifyAll:"off",
+          nextSlideOnWindowFocus:"off",
+          disableFocusListener:false,
         }
       });
-      revapi27.bind("revolution.slide.onloaded", function (e) {
+      revapi27.bind("revolution.slide.onloaded",function (e) {
         revapi27.addClass("tiny_bullet_slider");
       });
     }
 
-    if (revapi27) revapi27.revSliderSlicey();
-    /*ready*/
-  $(document).ready(function () {
-    $('#primary-menu').css('visibility', 'visible');
-  });
+    if(revapi27) revapi27.revSliderSlicey();
+  });	/*ready*/
 </script>
-
 <script>
   AOS.init();
 </script>
