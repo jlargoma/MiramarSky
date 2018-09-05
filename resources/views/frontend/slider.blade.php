@@ -350,7 +350,7 @@
                     </button>
                 </li>
             </ul>
-        </div></div>
+            <div class="tp-bannertimer tp-bottom" style="height: 5px; background: #1ABC9C;"></div>	</div>
     </div><!-- END REVOLUTION SLIDER -->
     </div>
 
@@ -639,9 +639,9 @@
                     </button>
                 </li>
             </ul>
-        </div>
-    </div>
+            <div class="tp-bannertimer tp-bottom" style="height: 5px; background: #1ABC9C;"></div>	</div>
     </div><!-- END REVOLUTION SLIDER -->
+    </div>
 
 </section>
 
