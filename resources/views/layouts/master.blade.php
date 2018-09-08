@@ -31,9 +31,10 @@
     <meta name="theme-color" content="#ffffff">
 
 
-    <link rel="stylesheet" href="{{ asset ('/css/app.css')}}" type="text/css"/>
-    {{--<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/bootstrap.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/style.css')}}">--}}
+    {{--<link rel="stylesheet" href="{{ asset ('/css/app.css')}}" type="text/css"/>--}}
+    <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/bootstrap.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/custom.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/animate.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/magnific-popup.css')}}">
 
@@ -57,7 +58,6 @@
     <link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css"/>
-    <!-- <link rel="stylesheet" href="{{ asset('/frontend/custom.css')}}" type="text/css" /> -->
 
     <script type="text/javascript" src="{{ asset('/frontend/js/jquery.js')}}"></script>
     <link href="{{ asset('/frontend/hover.css')}}" rel="stylesheet" media="all">
