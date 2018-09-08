@@ -57,9 +57,9 @@
     <link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css"/>
-<!-- <link rel="stylesheet" href="{{ asset('/frontend/custom.css')}}" type="text/css" /> -->
+    <!-- <link rel="stylesheet" href="{{ asset('/frontend/custom.css')}}" type="text/css" /> -->
 
-
+    <script type="text/javascript" src="{{ asset('/frontend/js/jquery.js')}}"></script>
     <link href="{{ asset('/frontend/hover.css')}}" rel="stylesheet" media="all">
     <link rel="stylesheet" href="{{ asset('/frontend/css/components/radio-checkbox.css')}}" type="text/css"/>
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -233,7 +233,7 @@
 
 <div id="gotoTop" class="fa fa-chevron-up"></div>
 {{--<script type="text/javascript" src="{{ asset('/js/scripts.js')}}"></script>--}}
-<script type="text/javascript" src="{{ asset('/frontend/js/jquery.js')}}"></script>
+
 <script type="text/javascript" src="{{ asset('/frontend/js/plugins.js')}}"></script>
 <script type="text/javascript" src="{{ asset('/frontend/js/functions.js')}}"></script>
 

@@ -282,30 +282,6 @@
 					<img src="/img/miramarski/mobile-full-slide-1.jpg" style='background-color:#FFF' alt=""  data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
 					<!-- LAYERS -->
 
-					<!-- LAYER NR. 1 -->
-					<div class="tp-caption  "
-						 id="slide-29-layer-4"
-						 data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-						 data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']"
-						 data-width="full-proportional"
-						 data-height="full-proportional"
-						 data-whitespace="nowrap"
-
-						 data-type="image"
-						 data-basealign="slide"
-						 data-responsive_offset="off"
-						 data-wrapper_class="tp-nopointer"
-						 data-responsive="off"
-						 data-frames='[{"delay":600,"speed":1500,"frame":"0","from":"sX:1;sY:1;opacity:0;","to":"o:1;","ease":"Power4.easeOut"},{"delay":"wait","speed":1500,"frame":"999","to":"opacity:0;","ease":"Power4.easeOut"}]'
-						 data-textAlign="['inherit','inherit','inherit','inherit']"
-						 data-paddingtop="[0,0,0,0]"
-						 data-paddingright="[0,0,0,0]"
-						 data-paddingbottom="[0,0,0,0]"
-						 data-paddingleft="[0,0,0,0]"
-						 data-blendmode="screen"
-
-						 style="z-index: 5;"><img src="include/rs-plugin/demos/assets/images/art2.jpg" alt="" data-ww="['full-proportional','full-proportional','full-proportional','full-proportional']" data-hh="['full-proportional','full-proportional','full-proportional','full-proportional']" data-no-retina> </div>
-
 					<!-- LAYER NR. 2 -->
 					<div class="tp-caption   tp-resizeme"
 						 id="slide-29-layer-6"
@@ -381,30 +357,6 @@
 					<img src="/img/miramarski/mobile-full-slide-2.jpg" style='background-color:#FFF' alt=""  data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
 					<!-- LAYERS -->
 
-					<!-- LAYER NR. 5 -->
-					<div class="tp-caption  "
-						 id="slide-30-layer-4"
-						 data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-						 data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']"
-						 data-width="full-proportional"
-						 data-height="full-proportional"
-						 data-whitespace="nowrap"
-
-						 data-type="image"
-						 data-basealign="slide"
-						 data-responsive_offset="off"
-						 data-wrapper_class="tp-nopointer"
-						 data-responsive="off"
-						 data-frames='[{"delay":600,"speed":1500,"frame":"0","from":"sX:1;sY:1;opacity:0;","to":"o:1;","ease":"Power4.easeOut"},{"delay":"wait","speed":1500,"frame":"999","to":"opacity:0;","ease":"Power4.easeOut"}]'
-						 data-textAlign="['inherit','inherit','inherit','inherit']"
-						 data-paddingtop="[0,0,0,0]"
-						 data-paddingright="[0,0,0,0]"
-						 data-paddingbottom="[0,0,0,0]"
-						 data-paddingleft="[0,0,0,0]"
-						 data-blendmode="screen"
-
-						 style="z-index: 5;"><img src="include/rs-plugin/demos/assets/images/imagegallery7.jpg" alt="" data-ww="['full-proportional','full-proportional','full-proportional','full-proportional']" data-hh="['full-proportional','full-proportional','full-proportional','full-proportional']" data-no-retina> </div>
-
 					<!-- LAYER NR. 6 -->
 					<div class="tp-caption   tp-resizeme"
 						 id="slide-30-layer-6"
@@ -476,29 +428,6 @@
 					<!-- MAIN IMAGE -->
 					<img src="/img/miramarski/mobile-full-slide-3.jpg" style='background-color:#FFF' alt=""  data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
 					<!-- LAYERS -->
-
-					<!-- LAYER NR. 9 -->
-					<div class="tp-caption   fullscreenvideo  disabled_lc tp-videolayer"
-						 id="slide-31-layer-12"
-						 data-x="0"
-						 data-y="0"
-						 data-whitespace="nowrap"
-
-						 data-type="video"
-						 data-basealign="slide"
-						 data-responsive_offset="off"
-						 data-wrapper_class="tp-nopointer"
-						 data-responsive="off"
-						 data-frames='[{"delay":600,"speed":1500,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power4.easeOut"},{"delay":"wait","speed":1500,"frame":"999","to":"opacity:0;","ease":"Power4.easeOut"}]'
-						 data-videocontrols="none" data-videowidth="100%" data-videoheight="100%" data-videoposter="include/rs-plugin/demos/assets/images/tp_vid_clouds-1.jpg" data-videomp4="include/rs-plugin/demos/assets/images/tp_vid_clouds.mp4" data-noposteronmobile="off" data-videopreload="auto" data-videoloop="loop" data-forceCover="1" data-aspectratio="16:9"            data-textAlign="['inherit','inherit','inherit','inherit']"
-						 data-paddingtop="[0,0,0,0]"
-						 data-paddingright="[0,0,0,0]"
-						 data-paddingbottom="[0,0,0,0]"
-						 data-paddingleft="[0,0,0,0]"
-						 data-blendmode="screen"
-						 data-autoplay="on"
-
-						 style="z-index: 5;"> </div>
 
 					<!-- LAYER NR. 10 -->
 					<div class="tp-caption   tp-resizeme"
