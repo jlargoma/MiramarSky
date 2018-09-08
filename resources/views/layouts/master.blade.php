@@ -386,10 +386,10 @@
                 }
               }
             },
-            responsiveLevels:[1240,1024,778,480],
-            visibilityLevels:[1240,1024,778,480],
+            responsiveLevels:[1240,1024,767,360],
+            visibilityLevels:[1240,1024,767,360],
             gridwidth:[1240,1024,778,480],
-            gridheight:[868,768,960,720],
+            gridheight:[868,768,600,500],
             lazyType:"none",
             shadow:0,
             spinner:"off",
