@@ -48,9 +48,9 @@
           href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
 
     {{--<link rel="stylesheet" href="{{ asset ('/css/slider.css')}}" type="text/css" />--}}
-    <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/settings.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/layers.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/navigation.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/css/settings.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/css/layers.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/css/navigation.css')}}">
 
     <link rel="stylesheet" href="{{ asset('/frontend/css/dark.css')}}" type="text/css"/>
     <link rel="stylesheet" href="{{ asset('/frontend/css/font-icons.css')}}" type="text/css"/>
@@ -225,7 +225,7 @@
 <div id="gotoTop" class="fa fa-chevron-up"></div>
 {{--<script type="text/javascript" src="{{ asset('/js/scripts.js')}}"></script>--}}
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="{{ asset('/frontend/js/jquery.js')}}"></script>
 <script type="text/javascript" src="{{ asset('/frontend/js/plugins.js')}}"></script>
 <script type="text/javascript" src="{{ asset('/frontend/js/functions.js')}}"></script>
 
