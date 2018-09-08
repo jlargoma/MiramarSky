@@ -95,10 +95,7 @@
 
 	<?php if ($mobile->isMobile()): ?>
         <style>
-            #primary-menu {
-                visibility: hidden;
-                z-index: 20;
-            }
+
         </style>
         <style>
 
@@ -135,12 +132,6 @@
 
             @media (max-width: 767px) {
                 .demos-filter li { width: 50%; }
-            }
-
-            @media (max-width:800px){
-                .x-slider-container.above, .x-slider-container.below {
-                    display: none;
-                }
             }
         </style>
     <?php else: ?>
@@ -337,11 +328,7 @@
     </script>
 
 <?php else: ?>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $('#primary-menu').css('visibility', 'visible');
-      });
-    </script>
+
 
     <script type="text/javascript">
       var tpj=jQuery;
