@@ -92,13 +92,54 @@
       ga('send', 'pageview');
     </script>
 
-
     <title>@yield('title')</title>
 
+	<?php if ($mobile->isMobile()): ?>
+        <style>
+            #primary-menu {
+                visibility: hidden;
+            }
+        </style>
+        <style>
+
+            .demos-filter {
+                margin: 0;
+                text-align: right;
+            }
+
+            .demos-filter li {
+                list-style: none;
+                margin: 10px 0px;
+            }
+
+            .demos-filter li a {
+                display: block;
+                border: 0;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                color: #444;
+            }
+
+            .demos-filter li a:hover,
+            .demos-filter li.activeFilter a { color: #1ABC9C; }
+
+            @media (max-width: 991px) {
+                .demos-filter { text-align: center; }
+
+                .demos-filter li {
+                    float: left;
+                    width: 33.3%;
+                    padding: 0 20px;
+                }
+            }
+
+            @media (max-width: 767px) {
+                .demos-filter li { width: 50%; }
+            }
+        </style>
+    <?php else: ?>
+
     <style>
-        #primary-menu {
-            visibility: hidden;
-        }
 
         .demos-filter {
             margin: 0;
@@ -119,14 +160,10 @@
         }
 
         .demos-filter li a:hover,
-        .demos-filter li.activeFilter a {
-            color: #1ABC9C;
-        }
+        .demos-filter li.activeFilter a { color: #1ABC9C; }
 
         @media (max-width: 991px) {
-            .demos-filter {
-                text-align: center;
-            }
+            .demos-filter { text-align: center; }
 
             .demos-filter li {
                 float: left;
@@ -136,56 +173,9 @@
         }
 
         @media (max-width: 767px) {
-            .demos-filter li {
-                width: 50%;
-            }
+            .demos-filter li { width: 50%; }
         }
-
-        .tiny_bullet_slider .tp-bullet:before {
-            content: " ";
-            position: absolute;
-            width: 100%;
-            height: 25px;
-            top: -12px;
-            left: 0px;
-            background: transparent;
-        }
-
-        .bullet-bar.tp-bullets:before {
-            content: " ";
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: transparent;
-            padding: 10px;
-            margin-left: -10px;
-            margin-top: -10px;
-            box-sizing: content-box;
-        }
-
-        .bullet-bar .tp-bullet {
-            width: 60px;
-            height: 3px;
-            position: absolute;
-            background: #aaa;
-            background: rgba(204, 204, 204, 0.5);
-            cursor: pointer;
-            box-sizing: content-box;
-        }
-
-        .bullet-bar .tp-bullet:hover,
-        .bullet-bar .tp-bullet.selected {
-            background: rgba(204, 204, 204, 1);
-        }
-
-        .tp-caption.rev-btn.tp-resizeme.btn.btn-lg.white.menu-booking.heart.font-w300 {
-            padding: 0 20px !important;
-        }
-
-        .tp-caption.rev-btn.tp-resizeme.btn.btn-lg.white.menu-booking.heart.font-w300 span.font-w800 {
-            font-size: 16px !important;
-        }
-    </style>
+    <?php endif; ?>
 
     <style>
 
@@ -234,6 +224,7 @@
         </div>
     </div>
 </div>
+
 <div id="gotoTop" class="fa fa-chevron-up"></div>
 {{--<script type="text/javascript" src="{{ asset('/js/scripts.js')}}"></script>--}}
 <script type="text/javascript" src="{{ asset('/frontend/js/jquery.js')}}"></script>
@@ -249,7 +240,11 @@
 {{--<script type="text/javascript" src="{{ asset('/js/scripts-slider.js')}}"></script>--}}
 <script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/jquery.themepunch.tools.min.js')}}"></script>
 <script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/jquery.themepunch.revolution.min.js')}}"></script>
+<?php if (!$mobile->isMobile()): ?>
 <script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/addons/revolution.addon.slicey.min.js')}}"></script>
+<?php else: ?>
+<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/addons/revolution.addon.particles.min.js')}}"></script>
+<?php endif; ?>
 <script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.actions.min.js')}}"></script>
 <script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.carousel.min.js')}}"></script>
 <script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.kenburn.min.js')}}"></script>
@@ -265,149 +260,171 @@
 
 <?php if (!$mobile->isMobile()): ?>
     <script type="text/javascript">
-  var tpj=jQuery;
+      var tpj=jQuery;
 
-  var revapi27;
-  tpj(document).ready(function() {
-    if(tpj("#rev_slider_27_1_home").revolution == undefined){
-      revslider_showDoubleJqueryError("#rev_slider_27_1");
-    }else{
-      revapi27 = tpj("#rev_slider_27_1_home").show().revolution({
-        sliderType:"standard",
-        jsFileLocation:"include/rs-plugin/js/",
-        sliderLayout:"fullscreen",
-        dottedOverlay:"none",
-        delay:9000,
-        navigation: {
-          keyboardNavigation:"off",
-          keyboard_direction: "horizontal",
-          mouseScrollNavigation:"off",
-          mouseScrollReverse:"default",
-          onHoverStop:"off",
-          bullets: {
-            enable:true,
-            hide_onmobile:false,
-            style:"bullet-bar",
-            hide_onleave:false,
-            direction:"horizontal",
-            h_align:"center",
-            v_align:"bottom",
-            h_offset:0,
-            v_offset:50,
-            space:5,
-            tmp:''
-          }
-        },
-        responsiveLevels:[1240,1024,778,480],
-        visibilityLevels:[1240,1024,778,480],
-        gridwidth:[1240,1024,778,480],
-        gridheight:[868,768,960,720],
-        lazyType:"none",
-        shadow:0,
-        spinner:"off",
-        stopLoop:"off",
-        stopAfterLoops:-1,
-        stopAtSlide:-1,
-        shuffle:"off",
-        autoHeight:"off",
-        fullScreenAutoWidth:"off",
-        fullScreenAlignForce:"off",
-        fullScreenOffsetContainer: "",
-        fullScreenOffset: "0",
-        hideThumbsOnMobile:"off",
-        hideSliderAtLimit:0,
-        hideCaptionAtLimit:0,
-        hideAllCaptionAtLilmit:0,
-        debugMode:false,
-        fallbacks: {
-          simplifyAll:"off",
-          nextSlideOnWindowFocus:"off",
-          disableFocusListener:false,
+      var revapi27;
+      tpj(document).ready(function() {
+        if(tpj("#rev_slider_27_1_home").revolution == undefined){
+          revslider_showDoubleJqueryError("#rev_slider_27_1");
+        }else{
+          revapi27 = tpj("#rev_slider_27_1_home").show().revolution({
+            sliderType:"standard",
+            jsFileLocation:"include/rs-plugin/js/",
+            sliderLayout:"fullscreen",
+            dottedOverlay:"none",
+            delay:9000,
+            navigation: {
+              keyboardNavigation:"off",
+              keyboard_direction: "horizontal",
+              mouseScrollNavigation:"off",
+              mouseScrollReverse:"default",
+              onHoverStop:"off",
+              bullets: {
+                enable:true,
+                hide_onmobile:false,
+                style:"bullet-bar",
+                hide_onleave:false,
+                direction:"horizontal",
+                h_align:"center",
+                v_align:"bottom",
+                h_offset:0,
+                v_offset:50,
+                space:5,
+                tmp:''
+              }
+            },
+            responsiveLevels:[1240,1024,778,480],
+            visibilityLevels:[1240,1024,778,480],
+            gridwidth:[1240,1024,778,480],
+            gridheight:[868,768,960,720],
+            lazyType:"none",
+            shadow:0,
+            spinner:"off",
+            stopLoop:"off",
+            stopAfterLoops:-1,
+            stopAtSlide:-1,
+            shuffle:"off",
+            autoHeight:"off",
+            fullScreenAutoWidth:"off",
+            fullScreenAlignForce:"off",
+            fullScreenOffsetContainer: "",
+            fullScreenOffset: "0",
+            hideThumbsOnMobile:"off",
+            hideSliderAtLimit:0,
+            hideCaptionAtLimit:0,
+            hideAllCaptionAtLilmit:0,
+            debugMode:false,
+            fallbacks: {
+              simplifyAll:"off",
+              nextSlideOnWindowFocus:"off",
+              disableFocusListener:false,
+            }
+          });
+          revapi27.bind("revolution.slide.onloaded",function (e) {
+            revapi27.addClass("tiny_bullet_slider");
+          });
         }
-      });
-      revapi27.bind("revolution.slide.onloaded",function (e) {
-        revapi27.addClass("tiny_bullet_slider");
-      });
-    }
 
-    if(revapi27) revapi27.revSliderSlicey();
-  });	/*ready*/
-</script>
+        if(revapi27) revapi27.revSliderSlicey();
+      });	/*ready*/
+    </script>
+
 <?php else: ?>
     <script type="text/javascript">
       $(document).ready(function () {
         $('#primary-menu').css('visibility', 'visible');
       });
     </script>
+
     <script type="text/javascript">
-  var tpj=jQuery;
+      var tpj=jQuery;
 
-  var revapi27;
-  tpj(document).ready(function() {
-    if(tpj("#rev_slider_27_1").revolution == undefined){
-      revslider_showDoubleJqueryError("#rev_slider_27_1");
-    }else{
-      revapi27 = tpj("#rev_slider_27_1").show().revolution({
-        sliderType:"standard",
-        jsFileLocation:"include/rs-plugin/js/",
-        sliderLayout:"fullscreen",
-        dottedOverlay:"none",
-        delay:9000,
-        navigation: {
-          keyboardNavigation:"off",
-          keyboard_direction: "horizontal",
-          mouseScrollNavigation:"off",
-          mouseScrollReverse:"default",
-          onHoverStop:"off",
-          bullets: {
-            enable:true,
-            hide_onmobile:false,
-            style:"bullet-bar",
-            hide_onleave:false,
-            direction:"horizontal",
-            h_align:"center",
-            v_align:"bottom",
-            h_offset:0,
-            v_offset:50,
-            space:5,
-            tmp:''
-          }
-        },
-        responsiveLevels:[1240,1024,778,480],
-        visibilityLevels:[1240,1024,778,480],
-        gridwidth:[1240,1024,778,480],
-        gridheight:[868,768,960,720],
-        lazyType:"none",
-        shadow:0,
-        spinner:"off",
-        stopLoop:"off",
-        stopAfterLoops:-1,
-        stopAtSlide:-1,
-        shuffle:"off",
-        autoHeight:"off",
-        fullScreenAutoWidth:"off",
-        fullScreenAlignForce:"off",
-        fullScreenOffsetContainer: "",
-        fullScreenOffset: "0",
-        hideThumbsOnMobile:"off",
-        hideSliderAtLimit:0,
-        hideCaptionAtLimit:0,
-        hideAllCaptionAtLilmit:0,
-        debugMode:false,
-        fallbacks: {
-          simplifyAll:"off",
-          nextSlideOnWindowFocus:"off",
-          disableFocusListener:false,
+      var revapi13;
+      tpj(document).ready(function() {
+        if(tpj("#rev_slider_13_1").revolution == undefined){
+          revslider_showDoubleJqueryError("#rev_slider_13_1");
+        }else{
+          revapi13 = tpj("#rev_slider_13_1").show().revolution({
+            sliderType:"standard",
+            jsFileLocation:"include/rs-plugin/js/",
+            sliderLayout:"fullscreen",
+            dottedOverlay:"none",
+            delay:9000,
+            particles: {startSlide: "first", endSlide: "last", zIndex: "1",
+              particles: {
+                number: {value: 80}, color: {value: "#000000"},
+                shape: {
+                  type: "circle", stroke: {width: 0, color: "#FFF", opacity: 1},
+                  image: {src: ""}
+                },
+                opacity: {value: 0.3, random: false, min: 0.25, anim: {enable: false, speed: 3, opacity_min: 0, sync: false}},
+                size: {value: 10, random: true, min: 1, anim: {enable: false, speed: 40, size_min: 1, sync: false}},
+                line_linked: {enable: true, distance: 200, color: "#000000", opacity: 0.2, width: 1},
+                move: {enable: true, speed: 3, direction: "none", random: true, min_speed: 3, straight: false, out_mode: "out"}},
+              interactivity: {
+                events: {onhover: {enable: true, mode: "bubble"}, onclick: {enable: false, mode: "repulse"}},
+                modes: {grab: {distance: 400, line_linked: {opacity: 0.5}}, bubble: {distance: 400, size: 150, opacity: 1}, repulse: {distance: 200}}
+              }
+            },
+            navigation: {
+              keyboardNavigation:"off",
+              keyboard_direction: "horizontal",
+              mouseScrollNavigation:"off",
+              mouseScrollReverse:"default",
+              onHoverStop:"off",
+              arrows: {
+                style:"gyges",
+                enable:true,
+                hide_onmobile:false,
+                hide_onleave:false,
+                tmp:'',
+                left: {
+                  h_align:"center",
+                  v_align:"bottom",
+                  h_offset:-20,
+                  v_offset:0
+                },
+                right: {
+                  h_align:"center",
+                  v_align:"bottom",
+                  h_offset:20,
+                  v_offset:0
+                }
+              }
+            },
+            responsiveLevels:[1240,1024,778,480],
+            visibilityLevels:[1240,1024,778,480],
+            gridwidth:[1240,1024,778,480],
+            gridheight:[868,768,960,720],
+            lazyType:"none",
+            shadow:0,
+            spinner:"off",
+            stopLoop:"on",
+            stopAfterLoops:0,
+            stopAtSlide:1,
+            shuffle:"off",
+            autoHeight:"off",
+            fullScreenAutoWidth:"off",
+            fullScreenAlignForce:"off",
+            fullScreenOffsetContainer: "",
+            fullScreenOffset: "0",
+            disableProgressBar:"on",
+            hideThumbsOnMobile:"off",
+            hideSliderAtLimit:0,
+            hideCaptionAtLimit:0,
+            hideAllCaptionAtLilmit:0,
+            debugMode:false,
+            fallbacks: {
+              simplifyAll:"off",
+              nextSlideOnWindowFocus:"off",
+              disableFocusListener:false,
+            }
+          });
         }
-      });
-      revapi27.bind("revolution.slide.onloaded",function (e) {
-        revapi27.addClass("tiny_bullet_slider");
-      });
-    }
 
-    if(revapi27) revapi27.revSliderSlicey();
-  });	/*ready*/
-</script>
+        RsParticlesAddOn(revapi13);
+      });	/*ready*/
+    </script>
 <?php endif; ?>
 
 
