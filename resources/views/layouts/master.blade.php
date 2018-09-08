@@ -31,10 +31,9 @@
     <meta name="theme-color" content="#ffffff">
 
 
-    {{--<link rel="stylesheet" href="{{ asset ('/css/app.css')}}" type="text/css"/>--}}
-    <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/bootstrap.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/style.css')}}">
-    <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/custom.css')}}">
+    <link rel="stylesheet" href="{{ asset ('/css/app.css')}}" type="text/css"/>
+    {{--<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/bootstrap.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/style.css')}}">--}}
     <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/animate.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/magnific-popup.css')}}">
 
@@ -59,7 +58,7 @@
 
     <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css"/>
 
-    <script type="text/javascript" src="{{ asset('/frontend/js/jquery.js')}}"></script>
+
     <link href="{{ asset('/frontend/hover.css')}}" rel="stylesheet" media="all">
     <link rel="stylesheet" href="{{ asset('/frontend/css/components/radio-checkbox.css')}}" type="text/css"/>
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -98,6 +97,7 @@
         <style>
             #primary-menu {
                 visibility: hidden;
+                z-index: 20;
             }
         </style>
         <style>
@@ -234,6 +234,7 @@
 <div id="gotoTop" class="fa fa-chevron-up"></div>
 {{--<script type="text/javascript" src="{{ asset('/js/scripts.js')}}"></script>--}}
 
+<script type="text/javascript" src="{{ asset('/frontend/js/jquery.js')}}"></script>
 <script type="text/javascript" src="{{ asset('/frontend/js/plugins.js')}}"></script>
 <script type="text/javascript" src="{{ asset('/frontend/js/functions.js')}}"></script>
 

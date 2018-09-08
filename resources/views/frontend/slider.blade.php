@@ -271,7 +271,7 @@
 </section>
 <?php else: ?>
 
-<section id="slider" class="revslider-wrap clearfix">
+<section id="slider" class="revslider-wrap force-full-screen full-screen clearfix">
 
 	<div class="rev_slider_wrapper" style="background-color:#eef0f1;padding:0px;">
 		<!-- START REVOLUTION SLIDER 5.3.1.6 fullscreen mode -->
@@ -349,7 +349,7 @@
 					   data-paddingbottom="[0,0,0,0]"
 					   data-paddingleft="[35,35,35,35]"
 
-					   style="z-index: 8; white-space: nowrap; font-size: 20px; line-height: 50px; font-weight: 700; color: rgba(45, 48, 50, 1.00);font-family:'miramar';background-color:rgb(89, 186, 65);border-color:rgb(89, 186, 65);outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;text-decoration: none;">SOLICITA TU <b>RESERVA</b></button>
+					   style="z-index: 12; white-space: nowrap; font-size: 20px; line-height: 50px; font-weight: 700; color: rgba(45, 48, 50, 1.00);font-family:'miramar';background-color:rgb(89, 186, 65);border-color:rgb(89, 186, 65);outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;text-decoration: none;">SOLICITA TU <b>RESERVA</b></button>
 				</li>
 				<!-- SLIDE  -->
 				<li data-index="rs-30" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off"  data-easein="Power4.easeOut" data-easeout="Power4.easeOut" data-masterspeed="default"  data-thumb=""  data-rotate="0"  data-saveperformance="off"  data-title="Example Two" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
@@ -420,7 +420,7 @@
 							data-paddingbottom="[0,0,0,0]"
 							data-paddingleft="[35,35,35,35]"
 
-							style="z-index: 8; white-space: nowrap; font-size: 20px; line-height: 50px; font-weight: 700; color: rgba(45, 48, 50, 1.00);font-family:'miramar';background-color:rgb(89, 186, 65);border-color:rgb(89, 186, 65);outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;text-decoration: none;">SOLICITA TU <b>RESERVA</b></button>
+							style="z-index: 12; white-space: nowrap; font-size: 20px; line-height: 50px; font-weight: 700; color: rgba(45, 48, 50, 1.00);font-family:'miramar';background-color:rgb(89, 186, 65);border-color:rgb(89, 186, 65);outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;text-decoration: none;">SOLICITA TU <b>RESERVA</b></button>
 
 				</li>
 				<!-- SLIDE  -->
@@ -492,7 +492,8 @@
 							data-paddingbottom="[0,0,0,0]"
 							data-paddingleft="[35,35,35,35]"
 
-							style="z-index: 8; white-space: nowrap; font-size: 20px; line-height: 50px; font-weight: 700; color: rgba(45, 48, 50, 1.00);font-family:'miramar';background-color:rgb(89, 186, 65);border-color:rgb(89, 186, 65);outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;text-decoration: none;">SOLICITA TU <b>RESERVA</b></button>
+							style="z-index: 12; white-space: nowrap; font-size: 20px; line-height: 50px; font-weight:
+							700; color: rgba(45, 48, 50, 1.00);font-family:'miramar';background-color:rgb(89, 186, 65);border-color:rgb(89, 186, 65);outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;text-decoration: none;">SOLICITA TU <b>RESERVA</b></button>
 				</li>
 			</ul>
 			<div class="tp-bannertimer tp-bottom" style="visibility: hidden !important;"></div>	</div>
