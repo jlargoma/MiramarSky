@@ -225,7 +225,7 @@
 <div id="gotoTop" class="fa fa-chevron-up"></div>
 {{--<script type="text/javascript" src="{{ asset('/js/scripts.js')}}"></script>--}}
 
-<script type="text/javascript" src="{{ asset('/frontend/js/jquery.js')}}"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script type="text/javascript" src="{{ asset('/frontend/js/plugins.js')}}"></script>
 <script type="text/javascript" src="{{ asset('/frontend/js/functions.js')}}"></script>
 

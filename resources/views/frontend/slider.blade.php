@@ -277,9 +277,9 @@
 		<!-- START REVOLUTION SLIDER 5.3.1.6 fullscreen mode -->
 		<div id="rev_slider_13_1" class="rev_slider fullscreenbanner" style="display:none;" data-version="5.3.1.6">
 			<ul>	<!-- SLIDE  -->
-				<li data-index="rs-29" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off"  data-easein="Power4.easeOut" data-easeout="Power4.easeOut" data-masterspeed="default"  data-thumb=""  data-rotate="0"  data-saveperformance="off"  data-title="Example One" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
+				<li data-index="rs-29" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off"  data-easein="Power4.easeOut" data-easeout="Power4.easeOut" data-masterspeed="default"  data-thumb=""  data-rotate="0"  data-saveperformance="on"  data-title="Example One" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
 					<!-- MAIN IMAGE -->
-					<img src="/img/miramarski/mobile-full-slide-1.jpg" style='background-color:#FFF' alt=""  data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
+					<img src="/img/miramarski/mobile-full-slide-1.jpg" style='background-color:#FFF' alt=""  data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" >
 					<!-- LAYERS -->
 
 					<!-- LAYER NR. 2 -->
@@ -354,7 +354,7 @@
 				<!-- SLIDE  -->
 				<li data-index="rs-30" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off"  data-easein="Power4.easeOut" data-easeout="Power4.easeOut" data-masterspeed="default"  data-thumb=""  data-rotate="0"  data-saveperformance="off"  data-title="Example Two" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
 					<!-- MAIN IMAGE -->
-					<img src="/img/miramarski/mobile-full-slide-2.jpg" style='background-color:#FFF' alt=""  data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
+					<img src="/img/miramarski/mobile-full-slide-2.jpg" style='background-color:#FFF' alt=""  data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" >
 					<!-- LAYERS -->
 
 					<!-- LAYER NR. 6 -->
@@ -426,7 +426,7 @@
 				<!-- SLIDE  -->
 				<li data-index="rs-31" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off"  data-easein="Power4.easeOut" data-easeout="Power4.easeOut" data-masterspeed="default"  data-thumb=""  data-rotate="0"  data-saveperformance="off"  data-title="Example Three" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
 					<!-- MAIN IMAGE -->
-					<img src="/img/miramarski/mobile-full-slide-3.jpg" style='background-color:#FFF' alt=""  data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
+					<img src="/img/miramarski/mobile-full-slide-3.jpg" style='background-color:#FFF' alt=""  data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" >
 					<!-- LAYERS -->
 
 					<!-- LAYER NR. 10 -->
