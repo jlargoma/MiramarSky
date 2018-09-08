@@ -136,6 +136,12 @@
             @media (max-width: 767px) {
                 .demos-filter li { width: 50%; }
             }
+
+            @media (max-width:800px){
+                .x-slider-container.above, .x-slider-container.below {
+                    display: none;
+                }
+            }
         </style>
     <?php else: ?>
 
@@ -346,7 +352,7 @@
         }else{
           revapi13 = tpj("#rev_slider_13_1").show().revolution({
             sliderType:"standard",
-            jsFileLocation:"include/rs-plugin/js/",
+            jsFileLocation:"/frontend/include/rs-plugin/js/",
             sliderLayout:"fullscreen",
             dottedOverlay:"none",
             delay:9000,
