@@ -28,7 +28,7 @@ class HomeController extends Controller
         if (!$mobile->isMobile()){
             $slides = File::allFiles(public_path().'/img/miramarski/edificio/');             
         }else{
-            $slides = File::allFiles(public_path().'/img/miramarski/edificio-mobile'); 
+            $slides = File::allFiles(public_path().'/img/miramarski/edificio/');
         }
         $val = $request->cookie('showPopup');
         if ( !empty($val) ){
