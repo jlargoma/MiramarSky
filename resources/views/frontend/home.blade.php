@@ -514,16 +514,30 @@
                             <div class="row clearfix push-0">
 
                                 <div class="col-xs-12" data-lightbox="gallery" style="padding: 0 5px;">
-									<?php foreach ($slidesEdificio as $key => $slide): ?>
-									<?php $fotos = explode(",", $slide->getFilename()) ?>
                                     <div class="col-xs-6 not-padding">
-                                        <a href="/img/miramarski/edificio/<?php echo $slide->getFilename() ?>"
+                                        <a href="/img/miramarski/edificio/1.jpg ?>"
                                            data-lightbox="gallery-item">
-                                            <img class="image_fade" src="/img/miramarski/edificio/<?php echo $slide->getFilename() ?>" alt="Apartamento sierra nevada <?php echo $key + 1?>" title="Apartamento sierra nevada <?php echo $key + 1?>" style="min-height: 150px;">
+                                            <img class="image_fade" src="/img/miramarski/edificio/1.jpg" alt="Apartamento sierra nevada" title="Apartamento sierra nevada" style="min-height: 150px;">
                                         </a>
                                     </div>
-									<?php endforeach ?>
-
+                                    <div class="col-xs-6 not-padding">
+                                        <a href="/img/miramarski/edificio/2.jpg ?>"
+                                           data-lightbox="gallery-item">
+                                            <img class="image_fade" src="/img/miramarski/edificio/2.jpg" alt="Apartamento sierra nevada" title="Apartamento sierra nevada" style="min-height: 150px;">
+                                        </a>
+                                    </div>
+                                    <div class="col-xs-6 not-padding">
+                                        <a href="/img/miramarski/edificio/3.jpg ?>"
+                                           data-lightbox="gallery-item">
+                                            <img class="image_fade" src="/img/miramarski/edificio/3.jpg" alt="Apartamento sierra nevada" title="Apartamento sierra nevada" style="min-height: 150px;">
+                                        </a>
+                                    </div>
+                                    <div class="col-xs-6 not-padding">
+                                        <a href="/img/miramarski/edificio/4.jpg ?>"
+                                           data-lightbox="gallery-item">
+                                            <img class="image_fade" src="/img/miramarski/edificio/4.jpg" alt="Apartamento sierra nevada" title="Apartamento sierra nevada" style="min-height: 150px;">
+                                        </a>
+                                    </div>
                                 </div>
 
                             </div>
