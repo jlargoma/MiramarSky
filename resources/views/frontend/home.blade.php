@@ -517,7 +517,7 @@
                                     <div class="col-xs-6 not-padding">
                                         <a href="/img/miramarski/edificio/1.jpg ?>"
                                            data-lightbox="gallery-item">
-                                            <img class="image_fade" src="/img/miramarski/edificio/1.jpg" alt="Apartamento sierra nevada" title="Apartamento sierra nevada" style="min-height: 150px;">
+                                            <img class="image_fade" src="/img/miramarski/edificio/1.JPG" alt="Apartamento sierra nevada" title="Apartamento sierra nevada" style="min-height: 150px;">
                                         </a>
                                     </div>
                                     <div class="col-xs-6 not-padding">
