@@ -52,7 +52,6 @@
     <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/css/layers.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/include/rs-plugin/css/navigation.css')}}">
 
-    <link rel="stylesheet" href="{{ asset('/frontend/css/dark.css')}}" type="text/css"/>
     <link rel="stylesheet" href="{{ asset('/frontend/css/font-icons.css')}}" type="text/css"/>
     <link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
 
@@ -61,6 +60,8 @@
 
     <link href="{{ asset('/frontend/hover.css')}}" rel="stylesheet" media="all">
     <link rel="stylesheet" href="{{ asset('/frontend/css/components/radio-checkbox.css')}}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset('/frontend/custom.css')}}" type="text/css"/>
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-66225892-1"></script>
     <script>

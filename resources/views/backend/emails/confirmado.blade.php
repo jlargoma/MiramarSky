@@ -30,9 +30,12 @@ En todas nuestra reservas están incluidas las Sábanas y toallas. <br>
 <b>*Fianza:</b> Además del precio del alquiler <b>el día de llegada se pedirá una fianza por el importe de 300€ a la entrega de llaves</b> para garantizar el buen uso de la vivienda. <br>
 La fianza se devolverá a la entregada de llaves, una vez revisada la vivienda .<br>
 <br>
-<b>*2º Pago:</b> 15 días antes de la entrada se deberá <b>abonar otro 25%</b> .<br>
+<b>*2º Pago:</b> 15 días antes de la entrada se deberá <b>abonar otro 50%</b> .<br>
+
+{{--
 <br>
 <b>*El resto del pago (50%) se realizará en metálico a la entrega de llaves + la fianza de 300 €.</b> <br>
+--}}
 * Nº de personas: El apartamento no podrá ser habitado por más personas de las camas que dispone.<br>
 <br>
 <b>*No se admiten animales.</b><br>

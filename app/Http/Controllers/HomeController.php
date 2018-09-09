@@ -583,6 +583,11 @@ class HomeController extends Controller
         return ['diff' => $date1->diffInDays($date2), 'dates' => $date1->copy()->format('d M, y').' - '.$date2->copy()->format('d M, y')];
     }
 
+	public function condicionesContratacion(Request $request)
+	{
+		return view('frontend.condiciones-contratacion', [ 'mobile' => new Mobile() ]);
+    }
+
  
 }
 

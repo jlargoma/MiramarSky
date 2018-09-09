@@ -51,6 +51,8 @@
 	Route::get( '/aviso-legal' , 'HomeController@avisoLegal' );
 	Route::get( '/huesped' , 'HomeController@huesped' );
 	Route::get( '/el-tiempo' , 'HomeController@tiempo' );
+	Route::get( '/condiciones-contratacion' , 'HomeController@condicionesContratacion' );
+
 
 	Route::get( '/restaurantes' , function () {
 

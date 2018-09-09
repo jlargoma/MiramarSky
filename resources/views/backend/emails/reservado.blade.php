@@ -5,7 +5,7 @@ Hola "<?php echo $book->customer->name ?>" hemos bloqueado parcialmente un apart
 <br>
 <b>Dispones de un plazo de 4 horas para realizar el pago de la señal </b> 
 <?php 
-	$percent = 0.25;
+	$percent = 0.5;
 	$date = Carbon::createFromFormat('Y-m-d', $book->start);
 	$now = Carbon::now();
 	$rule = \App\RulesStripe::find(1);

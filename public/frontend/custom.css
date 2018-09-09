@@ -21,28 +21,28 @@
 		left: 0px;
 	    width: 35px;
 	    height: 35px;
-	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') 0 0;
+	    background: url('/img/miramarski/iconos/small/sprite-blue.png') 0 0;
 	}
 	#parking{
 		margin-left: 15px;
 		left: 35px;
 	    width: 35px;
 	    height: 35px;
-	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -35px 0;
+	    background: url('/img/miramarski/iconos/small/sprite-blue.png') -35px 0;
 	}
 	#ascensor{
 		margin-left: 15px;
 		left: 70px;
 	    width: 35px;
 	    height: 35px;
-	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -70px 0;
+	    background: url('/img/miramarski/iconos/small/sprite-blue.png') -70px 0;
 	}
 	#piscina{
 		margin-left: 15px;
 		left: 105px;
 	    width: 35px;
 	    height: 35px;
-	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -105px 0;
+	    background: url('/img/miramarski/iconos/small/sprite-blue.png') -105px 0;
 	}
 	#gimnasio{
 		margin-left: 15px;
@@ -50,7 +50,7 @@
 		top: 35px;
 	    width: 35px;
 	    height: 35px;
-	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') 0 -35px;
+	    background: url('/img/miramarski/iconos/small/sprite-blue.png') 0 -35px;
 	}
 
 	#guarda-esqui{
@@ -59,7 +59,7 @@
 		top: 35px;
 	    width: 35px;
 	    height: 35px;
-	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -35px -35px;
+	    background: url('/img/miramarski/iconos/small/sprite-blue.png') -35px -35px;
 	}
 	#mascota{
 		margin-left: 15px;
@@ -67,7 +67,7 @@
 		top: 35px;
 	    width: 35px;
 	    height: 35px;
-	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -70px -35px;
+	    background: url('/img/miramarski/iconos/small/sprite-blue.png') -70px -35px;
 	}
 	#toalla{
 		margin-left: 15px;
@@ -75,7 +75,7 @@
 		top: 35px;
 	    width: 35px;
 	    height: 35px;
-	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -105px -35px;
+	    background: url('/img/miramarski/iconos/small/sprite-blue.png') -105px -35px;
 	}
 	#cocina{
 		margin-left: 15px;
@@ -83,7 +83,7 @@
 		top: 70px;
 	    width: 35px;
 	    height: 35px;
-	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') 0 -70px;
+	    background: url('/img/miramarski/iconos/small/sprite-blue.png') 0 -70px;
 	}
 	#ducha{
 		margin-left: 15px;
@@ -91,7 +91,7 @@
 		top: 70px;
 	    width: 35px;
 	    height: 35px;
-	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -35px -70px;
+	    background: url('/img/miramarski/iconos/small/sprite-blue.png') -35px -70px;
 	}
 	#calefaccion{
 		margin-left: 15px;
@@ -99,7 +99,7 @@
 		top: 70px;
 	    width: 35px;
 	    height: 35px;
-	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -70px -70px;
+	    background: url('/img/miramarski/iconos/small/sprite-blue.png') -70px -70px;
 	}
 	#shopping{
 		margin-left: 15px;
@@ -107,7 +107,7 @@
 		top: 70px;
 	    width: 35px;
 	    height: 35px;
-	    background: url('{{ asset('/img/miramarski/iconos/small/sprite-blue.png') }}') -105px -70px;
+	    background: url('/img/miramarski/iconos/small/sprite-blue.png') -105px -70px;
 	}
 	
 	@media only screen and (min-width: 991px) and (max-width: 1222px){ 

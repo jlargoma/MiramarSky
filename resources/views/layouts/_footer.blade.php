@@ -81,6 +81,9 @@
 						<li><a href="{{ url('/politica-privacidad') }}" style="color: #666">Politica de privacidad</a></li>
 						<li><a href="{{ url('/aviso-legal') }}" style="color: #666">Aviso Legal</a></li>
 						<li><a href="{{ url('/politica-cookies') }}" style="color: #666">Politica de Cookies</a></li>
+						<li><a href="{{ url('/condiciones-contratacion') }}" style="color: #666">Condiciones de
+						contratación</a></li>
+
 					</ul>
 
 				</div>
