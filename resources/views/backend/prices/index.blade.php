@@ -23,6 +23,11 @@
         background-color: #91b85d;
 
     }
+
+    .Premium{
+        background-color: #ff00b1;
+
+    }
     .extras{
         background-color: rgb(150,150,150);
     }
@@ -45,14 +50,14 @@
                             <tr>
                                 <th class ="text-center bg-white text-complete" style="width: 1%" rowspan="2"> Ocupación  </th>
                                 <?php foreach ($seasons as $key => $season): ?>
-                                    <th class ="text-center bg-complete text-white <?php echo $season->name ?>" style="width: 20%" colspan="3"> <?php echo $season->name ?> </th>
+                                    <th class ="text-center bg-complete text-white <?php echo $season->name ?>" style="width: 25%" colspan="3"> <?php echo $season->name ?> </th>
                                 <?php endforeach ?>
                             </tr>
                             <tr>                          
                                 <?php foreach ($seasons as $key => $season): ?>
-                                    <th class ="text-center bg-complete text-white <?php echo $season->name ?>" style="width: 10%" >PVP</th>
-                                    <th class ="text-center bg-complete text-white <?php echo $season->name ?>" style="width: 10%">Cost</th>
-                                    <th class ="text-center bg-complete text-white <?php echo $season->name ?>" style="width: 10%">% Ben</th>
+                                    <th class ="text-center bg-complete text-white <?php echo $season->name ?>" style="width: 5%" >PVP</th>
+                                    <th class ="text-center bg-complete text-white <?php echo $season->name ?>" style="width: 5%">Cost</th>
+                                    <th class ="text-center bg-complete text-white <?php echo $season->name ?>" style="width: 5%">% Ben</th>
                                 <?php endforeach ?>
                             </tr>
                         </thead>
