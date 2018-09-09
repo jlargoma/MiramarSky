@@ -2,7 +2,7 @@
 <?php if (!$mobile->isMobile()): ?>
 <section id="slider" class="revslider-wrap force-full-screen full-screen clearfix">
 
-    <div class="rev_slider_wrapper" style="background:#000;padding:0px;">
+    <div class="rev_slider_wrapper" style="background:#FFF;padding:0px; ">
         <!-- START REVOLUTION SLIDER 5.4.1 fullscreen mode -->
         <div id="rev_slider_27_1_home" class="rev_slider  fullscreenbanner" style="display:none;" data-version="5.4.1">
             <ul>	<!-- SLIDE  -->

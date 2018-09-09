@@ -268,7 +268,7 @@
         }else{
           revapi27 = tpj("#rev_slider_27_1_home").show().revolution({
             sliderType:"standard",
-            jsFileLocation:"include/rs-plugin/js/",
+            jsFileLocation:"/frontend/include/rs-plugin/js/",
             sliderLayout:"fullscreen",
             dottedOverlay:"none",
             delay:9000,
@@ -281,7 +281,7 @@
               bullets: {
                 enable:true,
                 hide_onmobile:false,
-                style:"bullet-bar",
+                style:"uranus",
                 hide_onleave:false,
                 direction:"horizontal",
                 h_align:"center",
@@ -390,7 +390,7 @@
             responsiveLevels:[1240,1024,767,480],
             visibilityLevels:[1240,1024,767,480],
             gridwidth:[1240,1024,778,480],
-            gridheight:[868,768,960,720],
+            gridheight:[868,768,960,767],
             lazyType:"none",
             shadow:0,
             spinner:"off",
@@ -399,8 +399,8 @@
             stopAtSlide:1,
             shuffle:"off",
             autoHeight:"off",
-            fullScreenAutoWidth:"on",
-            fullScreenAlignForce:"on",
+            fullScreenAutoWidth:"off",
+            fullScreenAlignForce:"off",
             fullScreenOffsetContainer: "",
             fullScreenOffset: "0",
             disableProgressBar:"on",

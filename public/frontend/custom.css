@@ -2,7 +2,7 @@
 		border-color: white!important;
 	}
 	#content{
-		margin-top: -100px!important;
+		margin-top: 0px!important;
 	}
 	@media (max-width: 768px){ 
 		#primary-menu.style-2 {
@@ -14,6 +14,10 @@
 		#primary-menu-trigger {
 		    top: 5px!important;
 		    left: 5px!important;
+		}
+
+		#content{
+			margin-top: 0px!important;
 		}
 	}
 	#tele-esqui{
