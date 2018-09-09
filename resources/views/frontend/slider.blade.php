@@ -97,9 +97,9 @@
                             data-frames='[{"delay":1000,"speed":2000,"frame":"0","from":"sX:0.9;sY:0.9;opacity:0;fb:20px;","to":"o:1;fb:0;","ease":"Power3.easeInOut"},{"delay":"wait","speed":500,"frame":"999","to":"sX:0.9;sY:0.9;opacity:0;fb:20px;","ease":"Power3.easeInOut"},{"frame":"hover","speed":"0","ease":"Linear.easeNone","to":"o:1;rX:0;rY:0;rZ:0;z:0;fb:0;","style":"c:rgba(255,255,255,1);bs:solid;bw:0 0 0 0;"}]'
                             data-textAlign="['center','center','center','center']"
                             data-paddingtop="[0,0,0,0]"
-                            data-paddingright="[50,50,50,50]"
+                            data-paddingright="[20,20,20,20]"
                             data-paddingbottom="[0,0,0,0]"
-                            data-paddingleft="[50,50,50,50]"
+                            data-paddingleft="[20,20,20,20]"
 
                             style="z-index: 21; white-space: nowrap; background-color: #59BA41; border-radius: 0; padding: 0 20px!important; font-size: 21px; letter-spacing: -1px;text-shadow: 1px 1px #000;  line-height: 60px;">SOLICITA TU <span
                                 class="font-w800">RESERVA</span>
@@ -175,9 +175,9 @@
                             data-frames='[{"delay":1000,"speed":2000,"frame":"0","from":"sX:0.9;sY:0.9;opacity:0;fb:20px;","to":"o:1;fb:0;","ease":"Power3.easeInOut"},{"delay":"wait","speed":500,"frame":"999","to":"sX:0.9;sY:0.9;opacity:0;fb:20px;","ease":"Power3.easeInOut"},{"frame":"hover","speed":"0","ease":"Linear.easeNone","to":"o:1;rX:0;rY:0;rZ:0;z:0;fb:0;","style":"c:rgba(255,255,255,1);bs:solid;bw:0 0 0 0;"}]'
                             data-textAlign="['center','center','center','center']"
                             data-paddingtop="[0,0,0,0]"
-                            data-paddingright="[50,50,50,50]"
+                            data-paddingright="[20,20,20,20]"
                             data-paddingbottom="[0,0,0,0]"
-                            data-paddingleft="[50,50,50,50]"
+                            data-paddingleft="[20,20,20,20]"
 
                             style="z-index: 21; white-space: nowrap; background-color: #59BA41; border-radius: 0; padding: 20px; font-size: 21px;letter-spacing: -1px;text-shadow: 1px 1px #000;  line-height: 60px; outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;text-decoration: none;">SOLICITA TU <span
                                 class="font-w800">RESERVA</span>
@@ -255,9 +255,9 @@
                             data-frames='[{"delay":1000,"speed":2000,"frame":"0","from":"sX:0.9;sY:0.9;opacity:0;fb:20px;","to":"o:1;fb:0;","ease":"Power3.easeInOut"},{"delay":"wait","speed":500,"frame":"999","to":"sX:0.9;sY:0.9;opacity:0;fb:20px;","ease":"Power3.easeInOut"},{"frame":"hover","speed":"0","ease":"Linear.easeNone","to":"o:1;rX:0;rY:0;rZ:0;z:0;fb:0;","style":"c:rgba(255,255,255,1);bs:solid;bw:0 0 0 0;"}]'
                             data-textAlign="['center','center','center','center']"
                             data-paddingtop="[0,0,0,0]"
-                            data-paddingright="[50,50,50,50]"
+                            data-paddingright="[20,20,20,20]"
                             data-paddingbottom="[0,0,0,0]"
-                            data-paddingleft="[50,50,50,50]"
+                            data-paddingleft="[20,20,20,20]"
 
                             style="z-index: 21; white-space: nowrap; background-color: #59BA41; border-radius: 0; padding: 20px; font-size: 21px;letter-spacing: -1px;text-shadow: 1px 1px #000;  line-height: 60px; outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;text-decoration: none;">SOLICITA TU <span
                                 class="font-w800">RESERVA</span>
