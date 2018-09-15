@@ -19,7 +19,7 @@ class PricesController extends Controller
                     
         return view('backend/prices/index',[
 
-                    'seasons' => \App\TypeSeasons::all(),
+                    'seasons' => \App\TypeSeasons::orderBy('order', 'ASC')->get(),
                     'newseasons' => \App\TypeSeasons::all(),
                     'extras' => \App\Extras::all(),
 
