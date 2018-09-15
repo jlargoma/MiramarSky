@@ -37,7 +37,7 @@ class Rooms extends Model
     const LUXURY_PRICE = 50;
     const LUXURY_COST = 40;
 
-    const PARKING_PRICE = 18;
+    const PARKING_PRICE = 20;
     const PARKING_COST = 13.5;
 
     const CLEANING_MAX_PRICE = 100;

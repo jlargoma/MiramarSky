@@ -394,7 +394,7 @@ class HomeController extends Controller
         }
  
         if ($request->input('parking') == 'si') {
-            $priceParking = 18 * $countDays;
+            $priceParking = 20 * $countDays;
             $parking = 1;
         }else{
             $priceParking = 0;
