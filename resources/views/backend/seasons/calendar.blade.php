@@ -664,6 +664,7 @@
 	use \Carbon\Carbon; 
 ?>
 <div class="col-md-12 m-b-20">
+	<div class="Premium col-md-1 col-xs-2 text-white m-l-5">PREMIUM</div>
 	<div class="Alta col-md-1 col-xs-2 text-white m-l-5">ALTA</div>
 	<div class="Media col-md-1 col-xs-2 text-white m-l-5">MEDIA</div>
 	<div class="Baja col-md-1 col-xs-2 text-white m-l-5">BAJA</div>
@@ -728,6 +729,9 @@
 	                            								case 3:
 	                            									$status = "Baja";
 	                            									break;
+									                            case 4:
+										                            $status = "Premium";
+										                            break;
 	                            								default:
 	                            									$status = "";
 	                            									break;

@@ -26,6 +26,7 @@
 
     .Premium{
         background-color: #ff00b1;
+        color: white;
 
     }
     .extras{

@@ -994,7 +994,8 @@ class BookController extends Controller
 	{
 
 		$book = \App\Book::find($request->input('id'));
-		Mail::send('backend.emails.contestadoAdvanced', ['body' => $request->input('textEmail'),], function ($message) use ($book) {
+
+		Mail::send('backend.emails.contestadoAdvanced', ['body' => nl2br($request->input('textEmail')),], function ($message) use ($book) {
 			$message->from('reservas@apartamentosierranevada.net');
 
 			$message->to($book->customer->email);

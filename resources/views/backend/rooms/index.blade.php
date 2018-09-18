@@ -57,7 +57,7 @@
 			
 			<div class="clearfix"></div>
 			<div class="row">
-				<div class="col-md-5 col-xs-12 content-table-rooms" style="max-height: 680px; overflow-y: auto;">
+				<div class="col-md-5 col-xs-12 content-table-rooms" style="max-height: 800px; overflow-y: auto;">
 					@include('backend.rooms._tableRooms', ['rooms' => $rooms, 'roomsdesc' => $roomsdesc])
 				</div>
 				<div class="col-md-7 col-xs-12">
