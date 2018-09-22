@@ -1,18 +1,27 @@
 <div class="container-fluid padding-10 sm-padding-10">
     <div class="row">
-
-        
         <div class="row">
             <div  class="col-xs-12 text-center push-20"><h2 class="font-w800">Tarifas</h2></div>
             <div class="col-md-6">
                 <?php use \Carbon\Carbon; ?>
-                <?php $dateD = new Carbon('first day of September 2017');?>
+                <?php
+                    $dateD          = new Carbon('first day of September 2018');
+                    $seasonTemp    = \App\Seasons::where('start_date', '>=', $dateD->copy())
+                                                 ->where('finish_date', '<=', $dateD->copy()->addYear())
+                                                 ->orderBy('start_date', 'ASC')
+                                                 ->get();
+                    $auxSeasonType = \App\TypeSeasons::orderBy('order', 'ASC')->get();
+                ?>
                   
                 @include('backend.seasons.calendar', [
-                                                        'seasons'  => \App\Seasons::all(),
-                                                        'newtypeSeasons' => \App\TypeSeasons::all(),
-                                                        'typeSeasons' => \App\TypeSeasons::all(),
-                                                        'date'       => $dateD
+                                                        	'seasons'    => $auxSeasonType,
+                                                            'newseasons' => $auxSeasonType,
+                                                            'extras'     => \App\Extras::all(),
+
+                                                            'seasonsTemp'        => $seasonTemp,
+                                                            'newtypeSeasonsTemp' => $auxSeasonType,
+                                                            'typeSeasonsTemp'    => $auxSeasonType,
+                                                            'date'               => $dateD,
                                                         ])
 
             </div>
@@ -28,10 +37,13 @@
                         background-color: #91b85d;
 
                     }
+                    .Premium{
+                        background-color: #ff00b1;
+                        color: white;
+                    }
                     .extras{
                         background-color: rgb(150,150,150);
                     }
-                    
                 </style>
                 <?php $seasons = \App\TypeSeasons::all() ?>
                 <table class="table" >
@@ -50,8 +62,8 @@
                     </thead>
                     <tbody>
                         <?php for ($i=4; $i <= 14 ; $i++): ?>
+                            <?php if ($i >= $room->minOcu && $i <= $room->maxOcu):?>
                             <tr>
-                            
                                 <td class ="text-center font-s16 font-w600" style="padding: 10px 5px"> 
                                   <b><?php echo $i ?> Pers.</b>
                                 </td>
@@ -68,6 +80,7 @@
                                     
                                 <?php endforeach ?>
                             </tr>
+                            <?php endif?>
                         <?php endfor?>
                     </tbody>
                 </table>

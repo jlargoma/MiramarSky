@@ -7,44 +7,56 @@ use \Carbon\Carbon;
 
 class Seasons extends Model
 {
-    static function existDate($start,$finish)
-    {
-    	$fechas = \App\Seasons::all();
-        $existStart = False;
-        $existFinish = False;        
-        $requestStart = Carbon::createFromFormat('d/m/Y',$start);
-        $requestFinish = Carbon::createFromFormat('d/m/Y',$finish);
+	static function existDate($start, $finish)
+	{
+		$existStart  = false;
+		$existFinish = false;
 
-        foreach ($fechas as $fecha) {
-            if ($existStart == False && $existFinish == False) {
-                $start = Carbon::createFromFormat('Y-m-d', $fecha->start_date);
-                $finish = Carbon::createFromFormat('Y-m-d', $fecha->finish_date);                
-                $existStart = Carbon::create($requestStart->year,$requestStart->month,$requestStart->day)->between($start, $finish);
-                $existFinish = Carbon::create($requestFinish->year,$requestFinish->month,$requestFinish->day)->between($start, $finish);
-            }
-        }
-        if ($existStart == False && $existFinish == False) {
-        	return False;
-        }else{
-        	return True;
-        }
-    }
+		$date   = new Carbon('first day of September 2018');
+		$fechas = \App\Seasons::where('start_date', '>=', $date->copy())
+		                      ->where('finish_date', '<=', $date->copy()->addYear())
+		                      ->get();
 
-    
-    public function typeSeasons()
-    {
-        return $this->hasOne('\App\TypeSeasons', 'id', 'type');
-    }
+		$requestStart  = Carbon::createFromFormat('d/m/Y', $start);
+		$requestFinish = Carbon::createFromFormat('d/m/Y', $finish);
+
+		foreach ($fechas as $fecha)
+		{
+			if ($existStart == false && $existFinish == false)
+			{
+				$start  = Carbon::createFromFormat('Y-m-d', $fecha->start_date);
+				$finish = Carbon::createFromFormat('Y-m-d', $fecha->finish_date);
+
+				$existStart  = Carbon::create($requestStart->year, $requestStart->month, $requestStart->day)
+				                     ->between($start, $finish);
+				$existFinish = Carbon::create($requestFinish->year, $requestFinish->month, $requestFinish->day)
+				                     ->between($start, $finish);
+			}
+		}
+		if ($existStart == false && $existFinish == false)
+		{
+			return false;
+		} else
+		{
+			return True;
+		}
+	}
 
 
-    public static function getSeason($start)
-    {
+	public function typeSeasons()
+	{
+		return $this->hasOne('\App\TypeSeasons', 'id', 'type');
+	}
 
 
-        $season = \App\Seasons::where('start_date' , '<=' , $start )
-                                ->where('finish_date', '>=' , $start)
-                                ->first();
-                
-        return ($season) ? $season->type: 0 ;
-    }
+	public static function getSeason($start)
+	{
+
+
+		$season = \App\Seasons::where('start_date', '<=', $start)
+		                      ->where('finish_date', '>=', $start)
+		                      ->first();
+
+		return ($season) ? $season->type : 0;
+	}
 }

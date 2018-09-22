@@ -235,9 +235,24 @@ class OwnedController extends Controller
         
        return view('backend.owned.operativa' , ['mobile'      => new Mobile()]);   
     }
-    public function tarifasOwned()   {
-        
-       return view('backend.owned.tarifa'    , ['mobile'      => new Mobile()]);   
+    public function tarifasOwned($name)   {
+        $room = \App\Rooms::where('nameRoom', $name)->first();
+
+        if ($room->owned == Auth::user()->id) {
+
+
+            $room = \App\Rooms::where('nameRoom', $name)->first();
+
+        }elseif(Auth::user()->role == 'admin'){
+
+            $room = \App\Rooms::where('nameRoom', $name)->first();
+
+        }else{
+
+            return view('errors.owned-access');
+
+        }
+       return view('backend.owned.tarifa'    , ['mobile'      => new Mobile(), 'room' => $room]);
     }
     public function descuentosOwned(){
         

@@ -37,6 +37,7 @@
 	    <link href="assets/plugins/codrops-dialogFx/dialog.ie.css" rel="stylesheet" type="text/css" media="screen" />
 	    <![endif]-->
 	    <link rel="stylesheet" type="text/css" href="{{ asset('/pages/css/custom.css')}}">
+		
 	   	<style>
 	   		.phpdebugbar.phpdebugbar-minimized{
 	   			display: none!important
@@ -108,6 +109,9 @@
 
 							<li class="{{ Request::path() == 'admin/supermercado' ? 'active' : '' }}">
 								<a href="#" class="detailed">Super</a>
+							</li>
+							<li class="{{ Request::path() == 'admin/settings' ? 'active' : '' }}">
+								<a href="{{ url('admin/settings') }}" class="detailed">Settings</a>
 							</li>
 						<?php endif ?>
 

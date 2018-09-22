@@ -9,105 +9,117 @@ use \Carbon\Carbon;
 
 class SeasonsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return redirect()->action('PricesController@index');
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function index()
+	{
+		return redirect()->action('PricesController@index');
+	}
 
-        $date = new Carbon('first day of September 2017');
-        return view('backend/seasons/index',[
-                    'seasons'  => \App\Seasons::all(),
-                    'newtypeSeasons' => \App\TypeSeasons::all(),
-                    'typeSeasons' => \App\TypeSeasons::all(),
-                    'date'       => $date,                 
-                ]);
-    }
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function create(Request $request)
+	{
+		$date   = explode('-', str_replace('Abr', 'Apr', $request->input('fechas')));
+		$start  = Carbon::createFromFormat('d M, y', trim($date[0]));
+		$finish = Carbon::createFromFormat('d M, y', trim($date[1]));
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
-    {   
-        
-        
-        $exist = \App\Seasons::existDate($request->input('start'),$request->input('finish'));
-        if ($exist == false) {
-            $seasons = new \App\Seasons();
+		$exist = \App\Seasons::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'));
+		if ($exist == false)
+		{
+			$seasons              = new \App\Seasons();
+			$seasons->start_date  = $start;
+			$seasons->finish_date = $finish;
+			$seasons->type        = $request->input('type');
+			if ($seasons->save())
+			{
+				return redirect()->action('SeasonsController@index');
+			}
+		} else
+		{
+			echo "La fecha ya esta ocupada";
+		}
+	}
 
-            $start = $request->input('start');
-            $start = Carbon::createFromFormat('d/m/Y',$start);
-            $finish = $request->input('finish');
-            $finish = Carbon::createFromFormat('d/m/Y',$finish);
-            $start->format('Y-m-d');
-            $finish->format('Y-m-d');
+	public function createType(Request $request)
+	{
+		$existTypeSeason = \App\TypeSeasons::where('name', $request->input('name'))->count();
+		if ($existTypeSeason == 0)
+		{
+			$typeSeasons = new \App\TypeSeasons();
 
-            $seasons->start_date = $start;
-            $seasons->finish_date = $finish;
-            $seasons->type = $request->input('type');
-            if ($seasons->save()) {
-                return redirect()->action('SeasonsController@index');
-            }
-        }else{
-                echo "La fecha ya esta ocupada";            
-        }
-    }
+			$typeSeasons->name = $request->input('name');
 
-     public function createType(Request $request)
-    {
-        $existTypeSeason = \App\TypeSeasons::where('name',$request->input('name'))->count();
-        if ($existTypeSeason == 0) {
-            $typeSeasons = new \App\TypeSeasons();
+			if ($typeSeasons->save())
+			{
+				for ($i = 4; $i <= 8; $i++)
+				{
+					$price             = new \App\Prices();
+					$price->season     = $typeSeasons->id;
+					$price->occupation = $i;
+					$price->save();
+				}
 
-            $typeSeasons->name = $request->input('name');
 
-            if ($typeSeasons->save()) {
-                for ($i=4; $i <=8 ; $i++) { 
-                    $price= new \App\Prices();
-                    $price ->season = $typeSeasons->id;
-                    $price ->occupation = $i;
-                    $price ->save();
-                }
-                
+				return redirect()->action('SeasonsController@index');
+			}
+		} else
+		{
+			echo "Ya existe este tipo";
+		}
 
-                return redirect()->action('SeasonsController@index');
-            }
-        }else{
-            echo "Ya existe este tipo";
-        }
-        
-    }
+	}
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request $request
+	 * @param  int                      $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function update(Request $request, $id)
+	{
+		if ($request->isMethod('get'))
+		{
+			return view('backend.seasons.update', ['season' => \App\Seasons::find($id)]);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function delete($id)
-    {
-        $season = \App\Seasons::find($id);
+		} elseif ($request->isMethod('post'))
+		{
+			$date    = explode('-', str_replace('Abr', 'Apr', $request->input('fechas')));
+			$start   = Carbon::createFromFormat('d M, y', trim($date[0]));
+			$finish  = Carbon::createFromFormat('d M, y', trim($date[1]));
+			$type = $request->all()['type'];
 
-        if ($season->delete()) {
-                return redirect()->action('SeasonsController@index');
-            }
+			$segment              = \App\Seasons::find($id);
+			$segment->start_date  = $start;
+			$segment->finish_date = $finish;
+			$segment->type        = intval($type);
 
-    }
+			if ($segment->save())
+				return redirect()->back();
+		}
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function delete($id)
+	{
+		$season = \App\Seasons::find($id);
+
+		if ($season->delete())
+		{
+			return redirect()->action('SeasonsController@index');
+		}
+
+	}
 }

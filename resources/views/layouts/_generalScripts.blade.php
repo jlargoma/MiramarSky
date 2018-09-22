@@ -110,11 +110,10 @@
 			
 
 			$.post( '/getDiffIndays' , { date1: arrayDates[0], date2: arrayDates[1]}, function( data ) {
-				var diffDays =  data.diff;
-				
-				// alert(diffDays);
+                var diffDays = data.diff;
+                var minDays = data.minDays;
 
-		    	if(diffDays >= 2 ){
+		    	if(diffDays >= minDays ){
 		    		$.post( url , {_token : _token,  name : name,    email : email,   phone : phone,   fechas : data.dates,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
 		    			
 		    			$('#content-book-response .back').empty();
@@ -123,7 +122,7 @@
 
 		    		});
 		    	}else{
-		    		alert('Estancia minima 2 NOCHES')
+		    		alert('Estancia minima '+minDays+' NOCHES')
 		    	}
 			});	
 

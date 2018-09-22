@@ -33,14 +33,14 @@
                         </div>  
                         <div class="col-md-2">
                             <select id="fechas" class="form-control minimal">
-                                <?php $fecha = Carbon::now()->SubYear(3)->copy(); ?>            
-                                <?php for ($i=1; $i <= 4; $i++): ?>                           
-                                    <option value="<?php echo $fecha->copy()->format('Y'); ?>" <?php if ($fecha->copy()->format('Y') == $date->copy()->format('Y')): ?>selected<?php endif ?>> 
-                                        <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
+                                <?php $fecha = Carbon::now()->SubYear(3)->copy(); ?>
+                                <?php for ($i=1; $i <= 4; $i++): ?>
+                                    <option value="<?php echo $fecha->copy()->format('Y'); ?>" <?php if ($fecha->copy()->format('Y') == $date->copy()->format('Y')): ?>selected<?php endif ?>>
+                                        <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?>
                                     </option>
                                     <?php $fecha->addYear(); ?>
                                 <?php endfor; ?>
-                            </select>     
+                            </select>
                         </div>  
 
                     </div>
