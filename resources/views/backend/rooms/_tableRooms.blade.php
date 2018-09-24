@@ -84,6 +84,11 @@
 						</span>
 					</td>
 					<td class="text-center" >
+						<a class="btn btn-default btn-pdf btn-sm" href="{{ url
+							('/admin/apartamentos/download/contrato/'.$room->user->id) }}">
+							<i class="fa fa-file-pdf"></i>
+						</a>
+
 						<a type="button" class="btn btn-default btn-sm" href="{{ url ('/fotos') }}/<?php echo $room->nameRoom ?>" target="_blank" data-original-title="Enlace de Apartamento" data-toggle="tooltip">
 							<i class="fa fa-paperclip"></i>
 						</a>
@@ -140,6 +145,11 @@
 							</span>
 						</td>
 						<td class="text-center not-padding" >
+							<a class="btn btn-default btn-pdf btn-sm" href="{{ url
+							('/admin/apartamentos/download/contrato/'.$room->user->id) }}">
+								<i class="fa fa-file-pdf"></i>
+							</a>
+
 							<a type="button" class="btn btn-default btn-xs" href="{{ url ('/fotos') }}/<?php echo $room->nameRoom ?>" target="_blank" data-original-title="Enlace de Apartamento" data-toggle="tooltip">
 								<i class="fa fa-paperclip"></i>
 							</a>
@@ -154,58 +164,19 @@
 						</td>
 					</tr>
 				<?php endforeach ?>
-				<?php foreach ($roomsdesc as $room): ?>
-					<tr>
-						<td class="text-center not-padding" >
-							<?php echo $room->order?>
-						</td>
-						<td class="text-left not-padding" >
-							<a class="aptos" data-id="<?php echo $room->id?>" style="cursor: pointer;">
-								<?php echo $room->name?> (<?php echo $room->nameRoom?>)
-							</a>
-						</td>
-						<td class="text-center not-padding" >
-							<span class="input-group-addon bg-transparent">
-								<input type="checkbox" class="editable" data-id="<?php echo $room->id ?>" name="luxury" data-init-plugin="switchery" data-size="small" data-color="primary" <?php echo ($room->luxury == 0) ? "" : "checked" ?>/>
-							</span>
-						</td>
-						<td class="text-center not-padding" >
-							<span class="input-group-addon bg-transparent">
-								<input type="checkbox" class="estado" data-id="<?php echo $room->id ?>" name="state" data-init-plugin="switchery" data-size="small" data-color="success" <?php echo ($room->state == 0) ? "" : "checked" ?>> 
-							</span>
-						</td>
-						<td class="text-center not-padding" >
-							<span class="input-group-addon bg-transparent">
-								<input type="checkbox" class="assingToBooking" data-id="<?php echo $room->id ?>" name="assingToBooking" data-init-plugin="switchery" data-size="small" data-color="danger" <?php echo ( $room->isAssingToBooking() ) ? "checked" : "" ?>> 
-							</span>
-						</td>
-						<td class="text-center not-padding" >
-							<a type="button" class="btn btn-default btn-sm" href="{{ url ('/fotos') }}/<?php echo $room->nameRoom ?>" target="_blank" data-original-title="Enlace de Apartamento" data-toggle="tooltip">
-								<i class="fa fa-paperclip"></i>
-							</a>
-
-							<button class="btn btn-default btn-emiling btn-sm" type="button" data-toggle="modal" data-target="#modalEmailing" data-id="<?php echo $room->user->id ?>">
-								<i class=" pg-mail"></i>
-							</button>
-
-							<button type="button" class="btn btn-success btn-sm uploadFile" data-toggle="modal" data-target="#modalFiles" data-id="<?php echo $room->nameRoom ?>" title="Subir imagenes aptos">
-								<i class="fa fa-upload" aria-hidden="true"></i>
-							</button>                    
-						</td>
-					</tr>
-				<?php endforeach ?>
 			</tbody>
 		</table>
 	</div>
 
 <?php endif ?>
 <script type="text/javascript">
-	$('.uploadFile').click(function(event) {
-		var id = $(this).attr('data-id');
-		$.get('/admin/apartamentos/fotos/'+id, function(data) {
-			$('.upload-body').empty().append(data);
-		});
-	});
+
+    $('.uploadFile').click(function(event) {
+      var id = $(this).attr('data-id');
+      $.get('/admin/apartamentos/fotos/'+id, function(data) {
+        $('.upload-body').empty().append(data);
+      });
+    });
 
 	$('.editable').change(function(event) {
 		var id = $(this).attr('data-id');

@@ -91,11 +91,11 @@ class BookController extends Controller
 		                                 ->get();
 
 		// Notificaciones de alertas booking
-		$notifications = \App\BookNotification::whereHas('book', function ($q) {
+		/*$notifications = \App\BookNotification::whereHas('book', function ($q) {
 			return $q->where('type_book', '<>', 3)
 			         ->orWhere('type_book', '<>', 5)
 			         ->orWhere('type_book', '<>', 6);
-		})->count();
+		})->count();*/
 
 		$mobile = new Mobile();
 
@@ -1147,9 +1147,15 @@ class BookController extends Controller
 		{
 			/* Rooms para grandes capacidades */
 
-			$roomAssigned = 149;
-			$typeApto     = "3 DORM Lujo";
-			$limp         = (int) \App\Extras::find(2)->price;
+			if ($request->input('quantity') > 8 && $request->input('quantity') <= 10)
+			{
+				$roomAssigned = 153;
+			} else
+			{
+				$roomAssigned = 149;
+			}
+			$typeApto = "3 DORM Lujo";
+			$limp     = (int) \App\Extras::find(2)->price;
 
 
 		}

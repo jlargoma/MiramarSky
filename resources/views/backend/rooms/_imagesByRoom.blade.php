@@ -20,14 +20,22 @@
 				</h2>
 				
 			</div>
-			<div class="col-xs-8 col-md-10 push-20">
+			<div class="col-xs-8 col-md-9 push-20">
 				<input type="email" id="shareEmailImages" class="form-control minimal" placeholder="Email...">
 			</div>
-			<div class="col-xs-4 col-md-2 push-20">
+			<div class="col-xs-4 col-md-3 push-20">
 				<button class="btn btn-primary btn-md" id="sendShareImagesEmail">
 					<i class="fa fa-envelope"></i> Enviar
 				</button>
 			</div>
+		</div>
+		<div class="col-md-8 col-xs-12">
+			<h2 class="text-center">
+				<span class="font-w800"><?php echo $room->nameRoom?></span>
+				<?php echo $room->sizeRooms->name ?> // <?php echo ($room->luxury == 1)? "Lujo" : "Estandar" ?></h2>
+			<p class="text-justify">
+				<?php echo $room->description; ?>
+			</p>
 		</div>
 	</div>
 	<div class="col-xs-12">

@@ -388,8 +388,8 @@
 		padding: 2px!important;
 	}
 	.daterangepicker{
-		left: 12%!important;
-		top: 65%!important;
+		left: 17%!important;
+		top: 100%!important;
 	}
 	.daterangepicker.opensright:before, .daterangepicker.opensright:after{
 		display: none!important

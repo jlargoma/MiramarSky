@@ -76,9 +76,9 @@
                 </div>
                 <div class="col-md-5">
                     
-                    <button id="btnAlertsBookking" class="btn btn-success btn-cons " type="button" data-toggle="modal" data-target="#modalAlertsBooking">
+                    <button id="btnAlertsBookking" disabled class="btn btn-success btn-cons " type="button" data-toggle="modal" data-target="#modalAlertsBooking">
                         <span class="bold">Alertas booking</span>
-                        <span class="numPaymentLastBooks"><?php echo  $notifications ?></span>
+                        <!--<span class="numPaymentLastBooks"><?php //echo  $notifications ?></span> -->
                     </button>
 
                     <button class="btn btn-primary btn-calendarBooking btn-cons" type="button" data-toggle="modal" data-target="#modalCalendarBooking"> 

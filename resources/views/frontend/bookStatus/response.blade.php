@@ -79,6 +79,7 @@
 	        	<button onclick="unflip()" class="button button-rounded button-reveal button-large button-red tright center hvr-grow-shadow "><i class="icon-angle-right"></i><span>volver</span></button>
 	        </div>
     	</div>
+		<div class="row content-alert-min-special-days"></div>
     </div>
 </div>
 <script type="text/javascript">

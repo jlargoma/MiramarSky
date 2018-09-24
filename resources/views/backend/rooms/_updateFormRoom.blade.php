@@ -84,6 +84,12 @@
 							
 			</div>
 		</div>
+		<div class="col-md-12 push-20 ">
+			<div class="col-xs-12 col-md-12">
+				<h4 class="text-center">Descripción del apto</h4>
+				<textarea class="form-control" name="description"><?php echo $room->description; ?></textarea>
+			</div>
+		</div>
 		<div class="col-xs-12 text-center push-20">
 			<button class="btn btn-success btn-cons" type="submit">
                 <span class="bold">GUARDAR</span>

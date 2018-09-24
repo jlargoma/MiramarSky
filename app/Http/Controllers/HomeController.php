@@ -437,9 +437,16 @@ class HomeController extends Controller
 		} elseif (($request->input('apto') == '3dorm' && $request->input('luxury') == 'si') || $request->input('apto') == '3dorm' && $request->input('luxury') == 'no')
 		{
 			/* Rooms para grandes capacidades */
-			$roomAssigned = 149;
-			$typeApto     = "3 DORM Lujo";
-			$limp         = (int) \App\Extras::find(3)->price;
+			if ($request->input('quantity') > 8 && $request->input('quantity') <= 10)
+			{
+				$roomAssigned = 153;
+			} else
+			{
+				$roomAssigned = 149;
+			}
+
+			$typeApto = "3 DORM Lujo";
+			$limp     = (int) \App\Extras::find(3)->price;
 		}
 
 
@@ -691,14 +698,16 @@ class HomeController extends Controller
 		/* Check min Days by segment */
 		$checkSpecialSegment = SpecialSegmentController::checkDates($date1, $date2);
 
-		if ($checkSpecialSegment){
+		if ($checkSpecialSegment)
+		{
 			$minDays = $checkSpecialSegment->minDays;
 		}
 
 		return [
-			'minDays' => $minDays,
-			'diff'    => $date1->diffInDays($date2),
-			'dates'   => $date1->copy()->format('d M, y') . ' - ' . $date2->copy()->format('d M, y')
+			'minDays'        => $minDays,
+			'specialSegment' => $checkSpecialSegment,
+			'diff'           => $date1->diffInDays($date2),
+			'dates'          => $date1->copy()->format('d M, y') . ' - ' . $date2->copy()->format('d M, y')
 		];
 	}
 
