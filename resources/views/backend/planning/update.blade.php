@@ -378,7 +378,7 @@
                         </div>
                         <div class="col-md-2 col-xs-4 not-padding">
                             <label>promoción 3x2</label>
-                            <input type="number" step='0.01' class="promociones only-numbers form-control" name="promociones" value="<?php echo $book->promociones ?>">
+                            <input type="number" step='0.01' class="promociones only-numbers form-control" name="promociones" value="<?php echo ($book->promociones > 0) ? $book->promociones : "" ?>">
                         </div>
                         <?php if ($book->book_owned_comments != "" && $book->promociones != 0): ?>
                             <div class="col-md-2 col-xs-6 push-10 content_image_offert">
@@ -850,7 +850,7 @@
                         </div>
                        <div class="col-md-2 col-xs-6 push-20 ">
                            <label>promoción 3x2</label>
-                           <input type="number" step='0.01' class="promociones only-numbers form-control" name="promociones" value="<?php echo $book->promociones ?>">
+                           <input type="number" step='0.01' class="promociones only-numbers form-control" name="promociones" value="<?php echo ($book->promociones > 0) ? $book->promociones : "" ?>">
                        </div>
                        <?php if ($book->book_owned_comments != "" && $book->promociones != 0): ?>
                             <div class="col-md-2 col-xs-6 push-10 content_image_offert">

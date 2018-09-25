@@ -798,8 +798,10 @@
     D. <b>Jorge Largo Martínez</b> con DNI <b>7.493.492 T</b>, en nombre y representación de <b>Instituto Superior para
         el Desarrollo Empresarial (ISDE) s.l.</b> con <b>CIF: B-92549880</b> y domicilio en C/ Puerta Nueva nº4 29008
     Málaga.
-    Y de otra D/Dñª <?php echo $data['user']->name_business; ?> con dni/cif nº <?php echo $data['user']->nif_business;
-	// ?>, en calidad de propietario/a legal de la vivienda numero <?php echo $data['room']->nameRoom; ?> del edificio
+    Y de otra D/Dñª
+    <?php echo (!empty($data['user']->name_business) ? $data['user']->name_business: "__________________________")?> con dni/cif nº
+    <?php echo(!empty($data['user']->nif_business) ? $data['user']->nif_business: "__________________________") ?>,
+    en calidad de propietario/a legal de la vivienda numero <?php echo $data['room']->nameRoom; ?> del edificio
     MiramarsKi , con plaza Garaje <?php echo $data['room']->parking; ?> y taquilla <?php echo $data['room']->locker; ?>
     . En adelante denominado/a el propietario.
 

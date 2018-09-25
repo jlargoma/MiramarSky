@@ -437,7 +437,7 @@ class HomeController extends Controller
 		} elseif (($request->input('apto') == '3dorm' && $request->input('luxury') == 'si') || $request->input('apto') == '3dorm' && $request->input('luxury') == 'no')
 		{
 			/* Rooms para grandes capacidades */
-			if ($request->input('quantity') > 8 && $request->input('quantity') <= 10)
+			if ($request->input('quantity') >= 8 && $request->input('quantity') <= 10)
 			{
 				$roomAssigned = 153;
 			} else
@@ -492,12 +492,18 @@ class HomeController extends Controller
 
 		if ($typeApto == "3 DORM Lujo")
 		{
-			$priceParking = $priceParking * 3;
+			if ($roomAssigned == 153 || $roomAssigned = 149)
+				$priceParking = $priceParking * 2;
+			else
+				$priceParking = $priceParking * 3;
 		}
 
 		if ($request->input('luxury') == 'si')
 		{
-			$luxury = 50;
+			if ($roomAssigned == 153 || $roomAssigned = 149)
+				$luxury = 0;
+			else
+				$luxury = 50;
 		} else
 		{
 			$luxury = 0;

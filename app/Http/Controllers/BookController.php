@@ -700,7 +700,7 @@ class BookController extends Controller
 			{
 				$priceParking = $priceParking * 3;
 			}
-			if ($room == 149)
+			if ($room == 149 || $room == 153)
 			{
 				$priceParking = $priceParking * 2;
 			}
@@ -727,7 +727,7 @@ class BookController extends Controller
 				break;
 		}
 
-		if ($room != "" && ($room == 150 || $room == 149))
+		if ($room != "" && ($room == 150 || $room == 149 || $room == 153))
 		{
 			$costParking = $costParking * 2;
 		}
@@ -1119,45 +1119,45 @@ class BookController extends Controller
 		$finish    = Carbon::createFromFormat('d M, y', trim($date[1]));
 		$countDays = $finish->diffInDays($start);
 
-		if ($request->input('quantity') <= 8)
+		if ($request->input('apto') == '2dorm' && $request->input('luxury') == 'si')
 		{
-			if ($request->input('apto') == '2dorm' && $request->input('luxury') == 'si')
-			{
-				$roomAssigned = 115;
-				$typeApto     = "2 DORM Lujo";
-				$limp         = (int) \App\Extras::find(1)->price;
-			} elseif ($request->input('apto') == '2dorm' && $request->input('luxury') == 'no')
-			{
-				$roomAssigned = 122;
-				$typeApto     = "2 DORM estandar";
-				$limp         = (int) \App\Extras::find(1)->price;
-			} elseif ($request->input('apto') == 'estudio' && $request->input('luxury') == 'si')
-			{
-				$roomAssigned = 138;
-				$limp         = (int) \App\Extras::find(2)->price;
-				$typeApto     = "Estudio Lujo";
+			$roomAssigned = 115;
+			$typeApto     = "2 DORM Lujo";
+			$limp         = (int) \App\Extras::find(1)->price;
+		} elseif ($request->input('apto') == '2dorm' && $request->input('luxury') == 'no')
+		{
+			$roomAssigned = 122;
+			$typeApto     = "2 DORM estandar";
+			$limp         = (int) \App\Extras::find(1)->price;
+		} elseif ($request->input('apto') == 'estudio' && $request->input('luxury') == 'si')
+		{
+			$roomAssigned = 138;
+			$limp         = (int) \App\Extras::find(2)->price;
+			$typeApto     = "Estudio Lujo";
 
-			} elseif ($request->input('apto') == 'estudio' && $request->input('luxury') == 'no')
-			{
-				$roomAssigned = 110;
-				$typeApto     = "Estudio estandar";
-				$limp         = (int) \App\Extras::find(2)->price;
-			}
-		} else
+		} elseif ($request->input('apto') == 'estudio' && $request->input('luxury') == 'no')
+		{
+			$roomAssigned = 110;
+			$typeApto     = "Estudio estandar";
+			$limp         = (int) \App\Extras::find(2)->price;
+		} elseif ($request->input('apto') == 'chlt' && $request->input('luxury') == 'no')
+		{
+			$roomAssigned = 144;
+			$typeApto     = "CHALET los pinos";
+			$limp         = (int) \App\Extras::find(1)->price;
+		} elseif (($request->input('apto') == '3dorm' && $request->input('luxury') == 'si') || $request->input('apto') == '3dorm' && $request->input('luxury') == 'no')
 		{
 			/* Rooms para grandes capacidades */
-
-			if ($request->input('quantity') > 8 && $request->input('quantity') <= 10)
+			if ($request->input('quantity') >= 8 && $request->input('quantity') <= 10)
 			{
 				$roomAssigned = 153;
 			} else
 			{
 				$roomAssigned = 149;
 			}
+
 			$typeApto = "3 DORM Lujo";
-			$limp     = (int) \App\Extras::find(2)->price;
-
-
+			$limp     = (int) \App\Extras::find(3)->price;
 		}
 
 
@@ -1193,20 +1193,27 @@ class BookController extends Controller
 		if ($request->input('parking') == 'si')
 		{
 			$priceParking = 20 * $countDays;
-			if ($typeApto == "3 DORM Lujo")
-			{
-				$priceParking = $priceParking * 3;
-			}
-			$parking = 1;
+			$parking      = 1;
 		} else
 		{
 			$priceParking = 0;
-			$parking      = 4;
+			$parking      = 2;
+		}
+
+		if ($typeApto == "3 DORM Lujo")
+		{
+			if ($roomAssigned == 153 || $roomAssigned = 149)
+				$priceParking = $priceParking * 2;
+			else
+				$priceParking = $priceParking * 3;
 		}
 
 		if ($request->input('luxury') == 'si')
 		{
-			$luxury = 50;
+			if ($roomAssigned == 153 || $roomAssigned = 149)
+				$luxury = 0;
+			else
+				$luxury = 50;
 		} else
 		{
 			$luxury = 0;
