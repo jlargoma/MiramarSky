@@ -2,6 +2,7 @@
 /node_modules
 /public/storage
 /public/actividades
+/public/contratos
 Homestead.yaml
 Homestead.json
 .env
