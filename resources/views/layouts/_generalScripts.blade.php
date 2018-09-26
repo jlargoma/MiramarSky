@@ -115,7 +115,7 @@
         var diffDays = data.diff;
         var minDays = data.minDays;
 
-        if (data.specialSegment != false) {
+        
           if (diffDays >= 2) {
             $.post(url, {
               _token: _token,
@@ -133,16 +133,17 @@
               $('#content-book-response .back').empty();
               $('#content-book-response .back').append(data);
               $("#content-book-response").flip(true);
-
-              $('.content-alert-min-special-days').append('<h2 class="text-center text-white white" ' +
-               'style="line-height: 1; letter-spacing: -1px;">ESTANCIA MÍNIMA EN ' +
-               'ESTAS ' +
-                  'FECHAS: ' + minDays + ' DÍAS</h2>');
+              if (data.specialSegment != false) {
+                $('.content-alert-min-special-days').append('<h2 class="text-center text-white white" ' +
+                 'style="line-height: 1; letter-spacing: -1px;">ESTANCIA MÍNIMA EN ' +
+                 'ESTAS ' +
+                    'FECHAS: ' + minDays + ' DÍAS</h2>');
+              }
             });
           } else {
             alert('Estancia minima ' + minDays + ' NOCHES')
           }
-        }
+        
 
 
       });

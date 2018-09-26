@@ -500,10 +500,7 @@ class HomeController extends Controller
 
 		if ($request->input('luxury') == 'si')
 		{
-			if ($roomAssigned == 153 || $roomAssigned = 149)
-				$luxury = 0;
-			else
-				$luxury = 50;
+			$luxury = 50;
 		} else
 		{
 			$luxury = 0;
