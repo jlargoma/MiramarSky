@@ -256,21 +256,20 @@
             $("#apto-estudio").trigger('click');
             $("#apto-estudio").show();
 
-          } else if (pax > 4) {
-          
-            if (pax <= 8) {
-              $(".apto-2dorm").trigger('click');
-              $("#apto-estudio").prop("disabled", true);
-              $("#apto-estudio").hide();
-            } else {
-              $(".apto-3dorm").trigger('click');
+          }
+          if (pax == 8) {
+            $(".apto-2dorm").trigger('click');
+            $("#apto-estudio").prop("disabled", true);
+            $("#apto-estudio").hide();
 
-              $("#apto-2dorm").prop("disabled", true);
-              $("#apto-2dorm").hide();
+          } else if (pax > 8) {
+            $(".apto-3dorm").trigger('click');
 
-              $("#apto-estudio").prop("disabled", true);
-              $("#apto-estudio").hide();
-            }
+            $("#apto-2dorm").prop("disabled", true);
+            $("#apto-2dorm").hide();
+
+            $("#apto-estudio").prop("disabled", true);
+            $("#apto-estudio").hide();
           }
         });
 

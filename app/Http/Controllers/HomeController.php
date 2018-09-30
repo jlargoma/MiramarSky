@@ -434,7 +434,7 @@ class HomeController extends Controller
 			$roomAssigned = 144;
 			$typeApto     = "CHALET los pinos";
 			$limp         = (int) \App\Extras::find(1)->price;
-		} elseif (($request->input('apto') == '3dorm' && $request->input('luxury') == 'si') || $request->input('apto') == '3dorm' && $request->input('luxury') == 'no')
+		} elseif ($request->input('apto') == '3dorm')
 		{
 			/* Rooms para grandes capacidades */
 			if ($request->input('quantity') >= 8 && $request->input('quantity') <= 10)
