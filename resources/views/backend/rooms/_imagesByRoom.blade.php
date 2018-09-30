@@ -32,7 +32,9 @@
 		<div class="col-md-8 col-xs-12">
 			<h2 class="text-center">
 				<span class="font-w800"><?php echo $room->nameRoom?></span>
-				<?php echo $room->sizeRooms->name ?> // <?php echo ($room->luxury == 1)? "Lujo" : "Estandar" ?></h2>
+				<?php echo $room->sizeRooms->name ?> // <?php echo ($room->luxury == 1)? "Lujo" : "Estandar" ?>
+				<span class="font-w800">(<?php echo $room->minOcu?>/<?php echo $room->maxOcu?> Pers)</span>
+			</h2>
 			<p class="text-justify">
 				<?php echo $room->description; ?>
 			</p>
