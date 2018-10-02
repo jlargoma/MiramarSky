@@ -148,9 +148,6 @@ class PaymentsProController extends Controller
      */
     public function create(Request $request)
     {
-        //
-
-
         $fecha = Carbon::now();
         $paymentPro = new \App\Paymentspro();
 
@@ -163,39 +160,6 @@ class PaymentsProController extends Controller
         if ($paymentPro->save()) {
            return redirect()->action('PaymentsProController@index');
         }
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**

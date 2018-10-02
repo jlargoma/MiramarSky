@@ -113,6 +113,9 @@
 							<li class="{{ Request::path() == 'admin/settings' ? 'active' : '' }}">
 								<a href="{{ url('admin/settings') }}" class="detailed">Settings</a>
 							</li>
+							<li class="{{ Request::path() == 'admin/stripe-connect' ? 'active' : '' }}">
+								<a href="{{ url('admin/stripe-connect') }}" class="detailed">Stripe Connect</a>
+							</li>
 						<?php endif ?>
 
 			        </ul>

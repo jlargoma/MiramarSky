@@ -97,9 +97,6 @@
 	<?php if ($mobile->isMobile()): ?>
         <style>
 
-        </style>
-        <style>
-
             .demos-filter {
                 margin: 0;
                 text-align: right;
@@ -137,42 +134,44 @@
         </style>
     <?php else: ?>
 
-    <style>
+        <style>
 
-        .demos-filter {
-            margin: 0;
-            text-align: right;
-        }
-
-        .demos-filter li {
-            list-style: none;
-            margin: 10px 0px;
-        }
-
-        .demos-filter li a {
-            display: block;
-            border: 0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #444;
-        }
-
-        .demos-filter li a:hover,
-        .demos-filter li.activeFilter a { color: #1ABC9C; }
-
-        @media (max-width: 991px) {
-            .demos-filter { text-align: center; }
+            .demos-filter {
+                margin: 0;
+                text-align: right;
+            }
 
             .demos-filter li {
-                float: left;
-                width: 33.3%;
-                padding: 0 20px;
+                list-style: none;
+                margin: 10px 0px;
             }
-        }
 
-        @media (max-width: 767px) {
-            .demos-filter li { width: 50%; }
-        }
+            .demos-filter li a {
+                display: block;
+                border: 0;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                color: #444;
+            }
+
+            .demos-filter li a:hover,
+            .demos-filter li.activeFilter a { color: #1ABC9C; }
+
+            @media (max-width: 991px) {
+                .demos-filter { text-align: center; }
+
+                .demos-filter li {
+                    float: left;
+                    width: 33.3%;
+                    padding: 0 20px;
+                }
+            }
+
+            @media (max-width: 767px) {
+                .demos-filter li { width: 50%; }
+            }
+        </style>
+
     <?php endif; ?>
 
     <style>
@@ -188,7 +187,24 @@
 
     </style>
 
-
+    <!-- Google Code for conversiones_lead Conversion Page -->
+    <script type="text/javascript">
+      /* <![CDATA[ */
+      var google_conversion_id = 834109020;
+      var google_conversion_language = "en";
+      var google_conversion_format = "3";
+      var google_conversion_color = "ffffff";
+      var google_conversion_label = "DHhZCN3wy3UQ3PzdjQM";
+      var google_remarketing_only = false;
+      /* ]]> */
+    </script>
+    <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+    </script>
+    <noscript>
+        <div style="display:inline;">
+            <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/834109020/?label=DHhZCN3wy3UQ3PzdjQM&amp;guid=ON&amp;script=0"/>
+        </div>
+    </noscript>
 </head>
 
 <body class="stretched not-dark" data-loader="5">

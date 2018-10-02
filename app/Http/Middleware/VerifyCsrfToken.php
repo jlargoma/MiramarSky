@@ -16,5 +16,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/getDiffIndays',
         '/admin/reservas/stripe/paymentsBooking',
         '/solicitudForfait',
+        '/admin/stripe-connect/load-transfer-form',
+        '/admin/stripe-connect/create-account-stripe-connect'
     ];
 }
