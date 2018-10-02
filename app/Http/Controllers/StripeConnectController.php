@@ -81,10 +81,11 @@ class StripeConnectController extends Controller
 
 	public function loadQuery()
 	{
-		return DB::select("SELECT distinct u.id, u.name, u.iban, u.account_stripe_connect, r.id AS room_id
-								FROM users u 
-								INNER JOIN rooms r on r.owned = u.id AND r.state = 1 
-								Order by r.order ASC");
+		return  DB::select("SELECT u.id, u.name, u.iban, u.account_stripe_connect, r.id AS room_id
+							FROM users u 
+							INNER JOIN rooms r on r.owned = u.id AND r.state = 1 
+							GROUP BY u.id
+							ORDER BY r.order ASC");
 	}
 
 
