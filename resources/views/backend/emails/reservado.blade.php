@@ -2,7 +2,6 @@
 Hola "<?php echo $book->customer->name ?>" hemos bloqueado parcialmente un apartamento en respuesta a tu solicitud:<br/><br/>
 
 <h2><u>Pago de la reserva</u></h2>
-<br>
 <b>Dispones de un plazo de 4 horas para realizar el pago de la señal </b> 
 <?php 
 	$percent = 0.5;
@@ -17,10 +16,6 @@ Hola "<?php echo $book->customer->name ?>" hemos bloqueado parcialmente un apart
         $percent = 0.50;
     }
 ?>
-
-
-
-
 <b style="color: red"><?php echo $percent*100; ?>% del total =  <?php echo number_format(($book->total_price*$percent),2,',','.') ?> €</b>
 a través de nuestra pasarela de pago para tarjetas.<br><br>
 
@@ -32,8 +27,7 @@ a través de nuestra pasarela de pago para tarjetas.<br><br>
 
 Consulta nuestras condiciones de contratación <a href="{{ url('/condiciones-generales') }}">aquí</a></b><br><br>
 
-<hr>
-<br>
+<hr><br>
 
 <b>Nombre: <?php echo $book->customer->name ?> .<br><br>
 Teléfono: <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?></a>.<br><br>
@@ -48,54 +42,60 @@ Noches: <?php echo $book->nigths ?>  <br><br>
 Precio total: <?php echo number_format($book->total_price,2,',','.') ?> € <br><br></b>
 El precio te incluye todo, piscina climatizada, gimnasio, taquilla guarda esquíes <?php if ($book->type_park != 2): ?>y parking cubierto <?php endif ?>  . <br>
 <br>
-En todas nuestra reservas están incluidas las Sábanas y toallas. <br>
+En todas nuestras reservas están incluidas las Sábanas y toallas. <br>
 <br>
 
-<hr/>
+<hr style="width: 100%">
 
+<h2><b><u>Condiciones generales de Alquiler</u></b></h2>
+Para realizar una reserva se debe de abonar el 50% del importe total.<br>
+El segundo pago con el 50% restante, se realizará 15 días antes de la entrada.<br><br>
 
+<b>Hora de Entrada: La entrega de llaves la realizamos en el propio edifico entre las 17 a 19.30 Horas</b><br><br>
+La entrega de llaves fuera de horario puede llevar gastos por el tiempo de espera.<br><br>
 
+10€ Si llegas entre 20:00 h de las 22.00<br><br>
 
-<h2><b><u>Condiciones generales de Alquiler</u></b></h2><br>
+20€ Si llegas más tarde de de las 22 h<br><br>
 
-<b>*Hora de Entrada: Desde las 17,00h a 19,00h.<u> Si vas a llegar más tarde tienes que avisarnos y podrías tener un cargo adicional por las horas de espera. </u>Consulta nuestras condiciones de contratación <a href="{{ url('/condiciones-generales') }}">aquí</a></b><br><br>
+No se entregan llaves a partir de las 00.00 sin previo aviso (el día anterior a la entrada)<br><br>
 
-<b>*Hora de Salida: La vivienda debe estar desocupada antes de las 12,00 a.m.</b><br>
+El cargo se le abonan directamente en metálico a la persona que te entrega las llaves.<br><br>
 
-<b>*Fianza: </b>Además del precio del alquiler <b> el día de llegada se pedirá una fianza por el importe de 300€ a la entrega de llaves</b> para garantizar el buen uso de la vivienda. <br>
-La fianza se devolverá a la entregada de llaves, una vez revisada la vivienda <br><br><br>
+Nos sabe muy mal tener que cobrarte este recargo, Esperamos que entiendas que es solo para compensar el tiempo de espera de esta persona.<br><br>
 
-<b>*2º Pago:</b> 15 días antes de la entrada se deberá <b>abonar otro 25%</b> <br><br>
+<b>Hora de Salida: La vivienda deberá ser desocupada antes de las 11,59 a.m.</b> (de lo contrario se podrá cobrará una noche más de alquiler apartamento según tarifa apartamento y ocupación.<br><br>
 
-<b>*El resto del pago (50%) se realizará en metálico</b> a la entrega de llaves <b> + la fianza de 300 €.</b><br> <br>
+La plaza de garaje debe quedar libre a esta hora o bien pagar la estancia de un nuevo día. (según tarifa 20€ / día.)<br><br>
 
-* Nº de personas: El apartamento no podrá ser habitado por más personas de las camas que dispone.<br><br>
+<b>Fianza:</b> El día de llegada se pedirá una tarjeta para la fianza por importe de 300€, no se captura saldo, tan solo se hace una “foto” que desaparecerá a la entrega de llaves, una vez revisada la vivienda.<br><br>
 
-<b>*No se admiten animales.</b><br><br>
+<b>Nº de personas:</b> El apartamento no podrá ser habitado por más personas de las camas que dispone y/o de las que han sido contratadas.<br><br>
 
-<b>*Sabanas y Toallas están incluidas</b><br><br>
+<b>No se admiten animales.</b><br><br>
 
-En el caso de NO cumplir con lo establecido no se podrá ocupar la vivienda. Puedes consultar todas las condiciones generales de alquiler <a href="{{ url('/condiciones-generales') }}">aquí</a>aquí</a><br><br>
+<b>Sabanas y Toallas están incluidas</b><br><br>
 
-<hr>
-<h2><u><b>Servicios adicionales</b></u></h2><br>
+En el caso de NO cumplir con lo establecido no se podrá ocupar la vivienda.<br><br>
+
+<b>Consulta nuestras condiciones de contratación <a href="{{ url('/condiciones-generales') }}">aquí</a></b>
+
+<hr style="width: 100%">
+
+<h2><b><u>Servicios Adicionales</u></b></h2>
 
 Te ofrecemos sin coste añadido y con un descuento especial que hemos pactado con el proveedor para vosotros:<br><br>
 
-<b>*Descuentos en  forfait <br>
-*Descuentos en tus clases y cursillos de esquí<br>
-*Descuentos en Alquiler de material</b><br><br>
+*<b>Descuentos en forfait</b><br>
 
-Para solicitar alguno de estos servicios solo es necesario que rellenes un formulario <a href="{{ url('/forfait') }}">pinchando aquí</a><br><br>
+*<b>Descuentos en Clases de esquí</b><br>
 
-<hr>
+*<b>Descuentos en Alquiler de material</b><br>
 
-<h2><b><u>Otros servicios</u></b></h2><br>
+Para solicitar alguno de estos servicios solo es necesario que rellenes un formulario pinchando <a href="{{ url('/forfait') }}">aquí</a>
 
-Para tu comodidad <b>te llevamos el forfait a tu apartamento,</b> no tienes que esperar colas
-Te <b> facilitamos un supermercado</b> que te lo lleva a tu casa,  <a href="{{ url('/forfait') }}">pinchando aquí</a><br><br>
+Para tu comodidad <b>te llevamos el forfait a tu apartamento</b>, no tienes que esperar colas<br>
 
-<hr><br>
-
-Gracias por confiarnos tus vacaciones, haremos todo lo posible para que pases unos días agradables. <br>
-<a href="https://www.apartamentosierranevada.net">www.apartamentosierranevada.net</a>
+<hr style="width: 100%"><br>
+Gracias por confiarnos tus vacaciones, haremos todo lo posible para que pases unos días agradables.<br>
+<a href="www.apartamentosierranevada.net">www.apartamentosierranevada.net</a>
