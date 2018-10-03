@@ -12,11 +12,11 @@ use App\Http\Requests;
 class StripeConnectController extends Controller
 {
 	public static $stripe = [
-		"secret_key"      => "sk_test_o40xNAzPuB6sGDEY3rPQ2KUN",
-		"publishable_key" => "pk_test_YNbne14yyAOIrYJINoJHV3BQ"
+		//"secret_key"      => "sk_test_o40xNAzPuB6sGDEY3rPQ2KUN",
+		//"publishable_key" => "pk_test_YNbne14yyAOIrYJINoJHV3BQ"
 
-		//		"secret_key"      => "sk_live_JKRWYAtvJ31tqwZyqNErMEap",
-		//		"publishable_key" => "pk_live_wEAGo29RoqPrXWiw3iKQJtWk",
+		"secret_key"      => "sk_live_JKRWYAtvJ31tqwZyqNErMEap",
+		"publishable_key" => "pk_live_wEAGo29RoqPrXWiw3iKQJtWk",
 	];
 
 	public function index(Request $request)
