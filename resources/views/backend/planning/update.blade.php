@@ -183,6 +183,15 @@
                             </div>
                         </div>
                     @endif
+                    <div class="col-md-12 text-center col-xs-12 push-20">
+                        <input type="hidden" id="shareEmailImages"  value="<?php echo $book->customer->email; ?>">
+                        <input type="hidden"  value="<?php echo $book->id; ?>" id="registerData">
+                        <div class=" col-md-4 col-md-offset-4 col-xs-12 text-center">
+                            <button class="btn btn-complete btn-md" id="sendShareImagesEmail">
+                                <i class="fa fa-eye"></i> Enviar
+                            </button>
+                        </div>
+                    </div>
                     <div class=" col-md-8 col-md-offset-2 col-xs-12 text-left">
 						<?php $logSendImages = $book->getSendPicture(); ?>
 						<?php if ($logSendImages): ?>
@@ -193,7 +202,7 @@
                             $dateSended = Carbon::createFromFormat('Y-m-d H:i:s', $logSendImage->created_at)
                             ?>
                             <div class="col-xs-12 push-5">
-                                <p class="text-center" style="font-size: 18px; color: black;">
+                                <p class="text-center" style="font-size: 18px; ">
                                     <i class="fa fa-eye"></i>
                                     Fotos <b><?php echo strtoupper($roomSended->nameRoom)?></b> enviadas
                                     por <b><?php echo strtoupper($adminSended->name)?></b> el <b><?php echo $dateSended->formatLocalized('%d %B de %Y')?></b>
@@ -1311,5 +1320,21 @@
             <script>
                 {{-- This little trick will override wrong rendered data --}}
                 calculate(null, false);
+            </script>
+
+            <script type="text/javascript">
+              $(document).ready(function () {
+                $('#sendShareImagesEmail').click(function (event) {
+                  var email = $('#shareEmailImages').val();
+                  var register = $('#registerData').val();
+                  var roomId = $('#newroom').val();
+
+                  $.get('/sendImagesRoomEmail', {email: email, roomId: roomId, register: register, returned : '1'},
+                  function
+                  (data) {
+
+                  });
+                });
+              });
             </script>
 @endsection

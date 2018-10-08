@@ -574,6 +574,7 @@ class RoomsController extends Controller
 
 	public function getImagesRoom(Request $request, $id = "", $bookId = "")
 	{
+		ini_set('max_execution_time', 300);
 		if ($id != '')
 		{
 			$room = \App\Rooms::find($id);
@@ -614,6 +615,7 @@ class RoomsController extends Controller
 
 	public function sendImagesRoomEmail(Request $request)
 	{
+		ini_set('max_execution_time', 300);
 
 		$email = $request->email;
 		$room  = \App\Rooms::find($request->roomId);
@@ -645,6 +647,9 @@ class RoomsController extends Controller
 				$log->book_id = $request->register;
 			}
 			$log->save();
+
+			if (isset($request->returned))
+				return redirect()->back();
 		}
 
 	}
