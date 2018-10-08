@@ -185,20 +185,22 @@
                     @endif
                     <div class=" col-md-8 col-md-offset-2 col-xs-12 text-left">
 						<?php $logSendImages = $book->getSendPicture(); ?>
-						<?php foreach ($logSendImages as $index => $logSendImage): ?>
-						<?php
-						$roomSended = \App\Rooms::find($logSendImage->room_id);
-						$adminSended = \App\User::find($logSendImage->admin_id);
-						$dateSended = Carbon::createFromFormat('Y-m-d H:i:s', $logSendImage->created_at)
-						?>
-                        <div class="col-xs-12 push-5">
-                            <p class="text-center" style="font-size: 18px; color: black;">
-                                <i class="fa fa-eye"></i>
-                                Fotos <b><?php echo strtoupper($roomSended->nameRoom)?></b> enviadas
-                                por <b><?php echo strtoupper($adminSended->name)?></b> el <b><?php echo $dateSended->formatLocalized('%d %B de %Y')?></b>
-                            </p>
-                        </div>
-						<?php endforeach;?>
+						<?php if ($logSendImages): ?>
+                            <?php foreach ($logSendImages as $index => $logSendImage): ?>
+                            <?php
+                            $roomSended = \App\Rooms::find($logSendImage->room_id);
+                            $adminSended = \App\User::find($logSendImage->admin_id);
+                            $dateSended = Carbon::createFromFormat('Y-m-d H:i:s', $logSendImage->created_at)
+                            ?>
+                            <div class="col-xs-12 push-5">
+                                <p class="text-center" style="font-size: 18px; color: black;">
+                                    <i class="fa fa-eye"></i>
+                                    Fotos <b><?php echo strtoupper($roomSended->nameRoom)?></b> enviadas
+                                    por <b><?php echo strtoupper($adminSended->name)?></b> el <b><?php echo $dateSended->formatLocalized('%d %B de %Y')?></b>
+                                </p>
+                            </div>
+                            <?php endforeach;?>
+                        <?php endif;?>
                     </div>
                 </div>
 
