@@ -800,27 +800,25 @@ class BookController extends Controller
 		$finish    = Carbon::createFromFormat('d/m/Y', $finish);
 		$countDays = $finish->diffInDays($start);
 
-
 		$paxPerRoom = Rooms::getPaxRooms($pax, $room);
 
-		$room = Rooms::find($room);
-
-		$pax = $pax;
-		if ($paxPerRoom > $pax)
-		{
+		if ($paxPerRoom > $pax) {
 			$pax = $paxPerRoom;
 		}
 		$costBook = 0;
 		$counter  = $start->copy();
-		for ($i = 1; $i <= $countDays; $i++)
-		{
-			$seasonActive = \App\Seasons::getSeason($counter->copy()->format('Y-m-d'));
+		for ($i = 1; $i <= $countDays; $i++) {
+			$date = $counter->copy()->format('Y-m-d');
+			$seasonActive = \Cache::remember('season_for_' . str_slug($date, '_'), 24 * 60, function () use ($date) {
+			    return \App\Seasons::getSeason($date);
+			});
 
-			$costs = \App\Prices::select('cost')->where('season', $seasonActive)
-			                    ->where('occupation', $pax)->get();
+			$costs = \Cache::remember("prices_season_{$seasonActive}_pax_{$pax}", 24 * 60, function () use ($seasonActive, $pax) {
+				return \App\Prices::select('cost')->where('season', $seasonActive)
+					->where('occupation', $pax)->get();
+			});
 
-			foreach ($costs as $precio)
-			{
+			foreach ($costs as $precio) {
 				$costBook = $costBook + $precio->cost;
 			}
 
@@ -1831,10 +1829,10 @@ class BookController extends Controller
 
 	public function getAllDataToBook(Request $request)
 	{
+		return 'ok';
 		$room = \App\Rooms::with('extra')->find($request->room);
 
-		if ($request->book_id)
-		{
+		if ($request->book_id) {
 			$book = Book::find($request->book_id);
 		}
 
