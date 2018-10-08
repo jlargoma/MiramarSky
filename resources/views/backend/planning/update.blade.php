@@ -187,7 +187,7 @@
                         <input type="hidden" id="shareEmailImages"  value="<?php echo $book->customer->email; ?>">
                         <input type="hidden"  value="<?php echo $book->id; ?>" id="registerData">
                         <div class=" col-md-4 col-md-offset-4 col-xs-12 text-center">
-                            <button class="btn btn-complete btn-md" id="sendShareImagesEmail">
+                            <button class="btn btn-complete btn-md" id="sendShareImagesEmail" onclick="return confirm('¿Quieres reenviar las imagenes');">
                                 <i class="fa fa-eye"></i> Enviar
                             </button>
                         </div>
@@ -1332,7 +1332,7 @@
                   $.get('/sendImagesRoomEmail', {email: email, roomId: roomId, register: register, returned : '1'},
                   function
                   (data) {
-
+                        location.reload();
                   });
                 });
               });
