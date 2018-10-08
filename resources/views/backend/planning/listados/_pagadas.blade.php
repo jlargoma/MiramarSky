@@ -11,6 +11,7 @@
                         <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 11%!important">   Cliente     </th>
                         <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 10%!important">   Telefono     </th>
                         <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 7%!important">   Pax         </th>
+                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 5%!important"> </th>
                         <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 10%!important">   Apart       </th>
                         <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 5%!important">  <i class="fa fa-moon-o"></i> </th>
                         <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 6%!important">   IN     </th>
@@ -68,6 +69,23 @@
                                     <?php echo $book->pax ?>
                                 <?php endif ?>
                                     
+                            </td>
+                            <td class ="text-center" >
+		                        <?php if ($book->hasSendPicture()): ?>
+                                <button class="font-w800 btn btn-xs getImagesCustomer" type="button" data-toggle="modal" data-target="#modalRoomImages" style="z-index: 99; border: none; background-color:transparent!important; color: lightgray; padding: 0;"
+                                        data-id="<?php echo $book->room->id ?>"
+                                        data-idCustomer="<?php echo $book->id ?>"
+                                        onclick="return confirm('¿Quieres reenviar las imagenes');">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+		                        <?php else: ?>
+                                <button class="font-w800 btn btn-xs getImagesCustomer" type="button" data-toggle="modal" data-target="#modalRoomImages" style="z-index: 99; border: none; background-color: transparent!important; color:black; padding: 0;"
+                                        data-id="<?php echo $book->room->id ?>"
+                                        data-idCustomer="<?php echo $book->id ?>"
+                                >
+                                    <i class="fa fa-eye"></i>
+                                </button>
+		                        <?php endif ?>
                             </td>
                             <td class ="text-center">
                                 <select class="room form-control minimal" data-id="<?php echo $book->id ?>" >                                

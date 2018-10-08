@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use \Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Mail;
 use File;
 use PDF;
@@ -368,17 +369,16 @@ class RoomsController extends Controller
 		if ($request->input('attachment') == 1)
 		{
 			$room = \App\Rooms::where('owned', $user->id)->first();
-			$path = public_path('/contratos/contrato-comercializacion-'.$room->nameRoom.'-'.$user->name.'.pdf')  ;
-			$data  = [
+			$path = public_path('/contratos/contrato-comercializacion-' . $room->nameRoom . '-' . $user->name . '.pdf');
+			$data = [
 				'user' => $user,
-				'room'  => $room,
+				'room' => $room,
 			];
-			$pdf   = PDF::loadView('backend.ownedContract', compact('data'))->save($path);
+			$pdf  = PDF::loadView('backend.ownedContract', compact('data'))->save($path);
 
-			Mail::send('backend.emails.accesoPropietario', ['data' => $request->input()], function ($message) use
-			($user, $room) {
+			Mail::send('backend.emails.accesoPropietario', ['data' => $request->input()], function ($message) use ($user, $room) {
 				$message->from('reservas@apartamentosierranevada.net');
-				$message->attach(public_path('/contratos/contrato-comercializacion-'.$room->nameRoom.'-'.$user->name_business.'.pdf'));
+				$message->attach(public_path('/contratos/contrato-comercializacion-' . $room->nameRoom . '-' . $user->name_business . '.pdf'));
 				$message->to($user->email);
 				$message->subject('Datos de acceso para ApartamentoSierraNevada');
 			});
@@ -397,13 +397,13 @@ class RoomsController extends Controller
 	{
 		$user = \App\User::find($userId);
 		$room = \App\Rooms::where('owned', $user->id)->first();
-		$path = public_path('/contratos/contrato-comercializacion-'.$room->nameRoom.'-'.$user->name.'.pdf')  ;
-		$data  = [
+		$path = public_path('/contratos/contrato-comercializacion-' . $room->nameRoom . '-' . $user->name . '.pdf');
+		$data = [
 			'user' => $user,
-			'room'  => $room,
+			'room' => $room,
 		];
-		$pdf   = PDF::loadView('backend.ownedContract', compact('data'))->save($path);
-		return $pdf->download('contrato-comercializacion-'.$room->nameRoom.'-'.$user->name_business.'.pdf');
+		$pdf  = PDF::loadView('backend.ownedContract', compact('data'))->save($path);
+		return $pdf->download('contrato-comercializacion-' . $room->nameRoom . '-' . $user->name_business . '.pdf');
 
 		//return response()->file(public_path("contrato-comercializacion-17-18.pdf"));
 	}
@@ -572,7 +572,7 @@ class RoomsController extends Controller
 	}
 
 
-	public function getImagesRoom(Request $request, $id = "")
+	public function getImagesRoom(Request $request, $id = "", $bookId = "")
 	{
 		if ($id != '')
 		{
@@ -592,9 +592,12 @@ class RoomsController extends Controller
 				{
 					$slides[] = '/img/miramarski/apartamentos/' . $room->nameRoom . '/thumbnails/' . $sl;
 				}
+				$book = ($bookId != "") ? \App\Book::find($bookId) : null;
+
 				return view('backend/rooms/_imagesByRoom', [
 					'images' => $slides,
-					'room'   => $room
+					'room'   => $room,
+					'book'   => $book,
 				]);
 
 			} else
@@ -603,25 +606,6 @@ class RoomsController extends Controller
 			}
 		} else
 		{
-
-			// $rooms = \App\Rooms::where('state', 1)->get();
-			// foreach ($rooms as $key => $room) {
-			//     $counter = 0;
-			//     $path = public_path().'/img/miramarski/apartamentos/'.$room->nameRoom.'/thumbnails/';
-
-			//     if (File::exists($path)){
-
-			//         $images = File::allFiles($path);
-
-			//         foreach ($images as $key => $image) {
-			//             File::move($path.$image->getFilename(), $path.str_replace(' ', '_', $image->getFilename()));
-
-
-			//         }
-
-			//     }
-			// }
-
 
 		}
 
@@ -655,8 +639,12 @@ class RoomsController extends Controller
 			$log          = new \App\LogImages();
 			$log->email   = $email;
 			$log->room_id = $room->id;
+			$log->admin_id = Auth::user()->id;
+			if ($request->register != 0)
+			{
+				$log->book_id = $request->register;
+			}
 			$log->save();
-
 		}
 
 	}

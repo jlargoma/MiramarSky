@@ -40,8 +40,8 @@
             </div>
 
             <div style="clear: both;"></div>
-            <section class="row full-screen noborder"
-                     style="background-image: url('/img/miramarski/mountain.jpg'); background-color:white; background-size: cover; background-position:50%;">
+            <section class="row noborder"
+                     style="background-image: url('/img/miramarski/mountain.jpg'); background-color:white; background-size: cover; background-position:50% 25%">
 
 
                 <div class="col-xs-12">
@@ -50,20 +50,20 @@
 
                         <div class="col-lg-6 col-md-7 center fadeInUp animated" data-animation="fadeInUp"
                              style="padding: 40px 15px;">
-                            <div class="col-xs-12 push-20">
-                                <div class="heading-block  black" style="margin-bottom: 20px">
+                            <div class="col-xs-12 push-60">
+                                <div class="heading-block  black" style="margin-bottom: 15px">
                                     <h1 class="font-w800 black" style="letter-spacing: 0; font-size: 26px;">APARTAMENTOS
                                         DE LUJO <span class="font-w800 green">A PIE DE PISTA</span></h1>
                                 </div>
-                                <p class="lead  text-justify black font-s14 black" style="line-height: 1.2">
+                                <p class="lead  text-justify black font-s14 black push-10" style="line-height: 1.2">
                                     Todos nuestros Apartamentos están en el Edificio Miramar Ski, situado <b>en la zona
                                         baja de Sierra Nevada</b>. Tienen excelentes vistas y todos disponen del
                                     equipamiento completo.
 
                                 </p>
-                                <h2 class="font-w300 text-center black push-18"
+                                <h2 class="font-w300 text-center black push-10"
                                     style="line-height: 1;font-size: 16px!important; text-transform: uppercase;">
-                                    <span class="font-w800 black"> El edificio tiene salida directa a las pistas, solo tienes que salir de casa y esquiar!!</span>
+                                    <span class="font-w800 black"> El edificio tiene salida directa a las pistas, SALES DE CASA ESQUIANDO!!</span>
                                 </h2>
 
                                 <p class="lead  text-justify black font-s14 black" style="line-height: 1.2">
@@ -71,28 +71,41 @@
                                     centro neurálgico de la estación.<br><br>
 
                                     <b>Piscina climatizada, gimnasio, parking cubierto, taquilla guardaesquis, acceso
-                                        directo a las pistas.</b>
+                                        directo a las pistas.</b><br><br>
 
                                     A pocos metros, tienes varios supermercados, bares y restaurantes, lo que es muy
                                     importante para que disfrutes tus vacaciones sin tener que coger el coche ni
                                     remontes<br><br>
 
                                     Nuestro edificio Miramar Ski es <b>uno de los edificios más modernos de Sierra
-                                        Nevada</b> (2006).<br><br>
+                                        Nevada el de más reciente construcción (2010).</b><br><br>
 
-                                    Tenemos disponibles <b>apartamentos con dos habitaciones</b> ( ocupación 6 / 8 pers)
-                                    y también <b>estudios</b> (ocupación 4 / 5 pers).<br><br>
+                                    Tenemos disponibles los siguientes apartamentos:<br><br>
+                                    •	<b>Estudios</b> con capacidad <b>4 personas</b><br>
+                                    •	<b>Apartamentos</b> con una habitación, con capacidad <b>para 4/5 personas</b><br>
+                                    •	<b>Apartamentos</b> con dos habitación, con capacidad <b>para 6/8 personas</b><br>
+                                    •	<b>Apartamentos</b> con tres habitaciones, con capacidad <b>para 10/12
+                                        personas</b><br>
+                                    •	<b>Apartamentos</b> con cuatro habitaciones, con capacidad <b>para 12/14 </b>
+                                    personas<br><br>
+
 
                                     Dentro de estos dos modelos, podrás elegir entre los estándar y de lujo, que están
                                     recién reformados.<br><br>
+
+                                    <b>Equipamiento adicional en Apartamentos de Lujo:</b> <br><br>
+                                    • Cafetera Nespresso<br>
+                                    • Secador de pelo<br>
+                                    • Ducha accesible<br>
+                                    • Apartamentos recién reformados<br><br>
 
                                     <b>En todas las reservas las sabanas y toallas están incluidas</b><br><br>
 
                                     Queremos ofrecerte un servicio especial, por eso incluimos en todas nuestras
                                     reservas un obsequio de bienvenida. <br><br>
 
-                                    <b>Para tu comodidad, te llevamos los fortfaits a tu apartamento para evitarle las
-                                        largas filas de la temporada alta</b><br><br>
+                                    <b>Para tu comodidad, te llevamos los fortfaits a tu apartamento</b> para evitarle las
+                                        largas filas de la temporada alta<br><br>
 
 
                                     <b>En el botón de <span class="menu-booking">reserva</span> podrás calcular el coste
@@ -100,95 +113,11 @@
 
                                 </p>
                             </div>
-                            <div class="col-xs-12 clearfix">
-
-                                <div id="oc-clients" class="owl-carousel image-carousel carousel-widget"
-                                     data-margin="60" data-loop="true" data-nav="false" data-autoplay="1000"
-                                     data-pagi="false" data-items-xxs="2" data-items-xs="3" data-items-sm="6"
-                                     data-items-md="8" data-items-lg="8">
-
-                                    <div class="oc-item">
-                                        <a class="pc-characteristics">
-                                            <li id="tele-esqui"></li>
-                                            A pie de pista
-                                        </a>
-                                    </div>
-                                    <div class="oc-item">
-                                        <a class="pc-characteristics">
-                                            <li id="parking"></li>
-                                            Parking cubierto
-                                        </a>
-                                    </div>
-                                    <div class="oc-item">
-                                        <a class="pc-characteristics">
-                                            <li id="ascensor"></li>
-                                            Ascensor
-                                        </a>
-                                    </div>
-                                    <div class="oc-item">
-                                        <a class="pc-characteristics">
-                                            <li id="piscina"></li>
-                                            Piscina climatizada
-                                        </a>
-                                    </div>
-                                    <div class="oc-item">
-                                        <a class="pc-characteristics">
-                                            <li id="gimnasio"></li>
-                                            gimnasio
-                                        </a>
-                                    </div>
-                                    <div class="oc-item">
-                                        <a class="pc-characteristics">
-                                            <li id="guarda-esqui"></li>
-                                            Guarda Esqíes
-                                        </a>
-                                    </div>
-                                    <div class="oc-item">
-                                        <a class="pc-characteristics">
-                                            <li id="mascota"></li>
-                                            Prohibido mascotas
-                                        </a>
-                                    </div>
-                                    <div class="oc-item">
-                                        <a class="pc-characteristics">
-                                            <li id="toalla"></li>
-                                            Ropa y toallas
-                                        </a>
-                                    </div>
-                                    <div class="oc-item">
-                                        <a class="pc-characteristics">
-                                            <li id="cocina"></li>
-                                            Cocina
-                                        </a>
-                                    </div>
-                                    <div class="oc-item">
-                                        <a class="pc-characteristics">
-                                            <li id="ducha"></li>
-                                            Baño
-                                        </a>
-                                    </div>
-                                    <div class="oc-item">
-                                        <a class="pc-characteristics">
-                                            <li id="calefaccion"></li>
-                                            Calefaccion
-                                        </a>
-                                    </div>
-                                    <div class="oc-item">
-                                        <a class="pc-characteristics">
-                                            <li id="shopping"></li>
-                                            Shopping
-                                        </a>
-                                    </div>
-
-                                </div>
-
-
-                            </div>
                         </div>
 
                         <div class="col-lg-6 col-md-5 center  hidden-sm hidden-xs" style="padding: 40px 15px;">
 
-                            <div class="fslider" data-easing="easeInQuad">
+                            <div class="fslider push-20" data-easing="easeInQuad">
                                 <div class="flexslider">
                                     <div class="slider-wrap">
 
@@ -207,6 +136,86 @@
 										<?php endforeach ?>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div id="oc-clients" class="owl-carousel image-carousel carousel-widget"
+                                 data-margin="60" data-loop="true" data-nav="false" data-autoplay="1000"
+                                 data-pagi="false" data-items-xxs="2" data-items-xs="3" data-items-sm="6"
+                                 data-items-md="8" data-items-lg="8">
+
+                                <div class="oc-item">
+                                    <a class="pc-characteristics">
+                                        <li id="tele-esqui"></li>
+                                        A pie de pista
+                                    </a>
+                                </div>
+                                <div class="oc-item">
+                                    <a class="pc-characteristics">
+                                        <li id="parking"></li>
+                                        Parking cubierto
+                                    </a>
+                                </div>
+                                <div class="oc-item">
+                                    <a class="pc-characteristics">
+                                        <li id="ascensor"></li>
+                                        Ascensor
+                                    </a>
+                                </div>
+                                <div class="oc-item">
+                                    <a class="pc-characteristics">
+                                        <li id="piscina"></li>
+                                        Piscina climatizada
+                                    </a>
+                                </div>
+                                <div class="oc-item">
+                                    <a class="pc-characteristics">
+                                        <li id="gimnasio"></li>
+                                        gimnasio
+                                    </a>
+                                </div>
+                                <div class="oc-item">
+                                    <a class="pc-characteristics">
+                                        <li id="guarda-esqui"></li>
+                                        Guarda Esqíes
+                                    </a>
+                                </div>
+                                <div class="oc-item">
+                                    <a class="pc-characteristics">
+                                        <li id="mascota"></li>
+                                        Prohibido mascotas
+                                    </a>
+                                </div>
+                                <div class="oc-item">
+                                    <a class="pc-characteristics">
+                                        <li id="toalla"></li>
+                                        Ropa y toallas
+                                    </a>
+                                </div>
+                                <div class="oc-item">
+                                    <a class="pc-characteristics">
+                                        <li id="cocina"></li>
+                                        Cocina
+                                    </a>
+                                </div>
+                                <div class="oc-item">
+                                    <a class="pc-characteristics">
+                                        <li id="ducha"></li>
+                                        Baño
+                                    </a>
+                                </div>
+                                <div class="oc-item">
+                                    <a class="pc-characteristics">
+                                        <li id="calefaccion"></li>
+                                        Calefaccion
+                                    </a>
+                                </div>
+                                <div class="oc-item">
+                                    <a class="pc-characteristics">
+                                        <li id="shopping"></li>
+                                        Shopping
+                                    </a>
+                                </div>
+
                             </div>
                         </div>
 

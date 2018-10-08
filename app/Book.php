@@ -705,4 +705,18 @@ class Book extends Model
 
         return round(($this->profit * 100) / $this->total_price);
     }
+
+	public function hasSendPicture()
+	{
+		$sendPictures = DB::select("SELECT * FROM log_images 
+									WHERE book_id = '" . $this->id . "'");
+
+		return ( count($sendPictures) == 0) ? false : true;
+    }
+
+	public function getSendPicture()
+	{
+		$sendPictures = \App\LogImages::where('book_id', $this->id)->get();
+		return ( count($sendPictures) > 0) ? $sendPictures : false;
+	}
 }

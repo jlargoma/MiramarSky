@@ -322,7 +322,6 @@
 
     $('.getImages').click(function(event) {
         var idRoom = $(this).attr('data-id');
-
         $.get('/admin/rooms/api/getImagesRoom/'+idRoom, function(data) {
             $('#modalRoomImages .modal-content').empty().append(data);
         });

@@ -333,7 +333,7 @@
 	Route::get( 'admin/pdf/descarga-excel-propietario/{id}' , 'PdfController@pdfPropietario' );
 
 	Route::group( ['middleware' => 'auth'] , function () {
-		Route::get( '/admin/rooms/api/getImagesRoom/{id?}' , 'RoomsController@getImagesRoom' );
+		Route::get( '/admin/rooms/api/getImagesRoom/{id?}/{bookId?}' , 'RoomsController@getImagesRoom' );
 
 		Route::get( '/admin' , function () {
 			$user = \Auth::user();

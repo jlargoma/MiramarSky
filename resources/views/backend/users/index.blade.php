@@ -2,8 +2,8 @@
 
 @section('title') Administrador de reservas MiramarSKI @endsection
 
-@section('externalScripts') 
-
+@section('externalScripts')
+    <link href="/assets/css/font-icons.css" rel="stylesheet" type="text/css" />
     <link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
     <link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
@@ -58,10 +58,12 @@
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <!--  -->
-                                        <a class="btn btn-tag btn-complete update-user" type="button"  data-id="<?php echo $user->id ?>" data-toggle="modal" data-target="#myModal" title="Editar Usuario" >
-                                        <!-- <a href="{{ url('/admin/usuarios/delete/')}}/<?php echo $user->id ?>" class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Usuario" onclick="return confirm('¿Quieres eliminar el usuario?');"> -->
-                                            <i class="fa fa-pencil"></i>
-                                        </a>
+                                        <button class="btn btn-tag btn-complete update-user" type="button"
+                                        data-id="<?php
+                                         echo $user->id ?>" data-toggle="modal" data-target="#myModal" title="Editar
+                                         Usuario" style="background-color: #48b0f7;!important; color:white!important;">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>

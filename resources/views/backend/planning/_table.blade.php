@@ -59,6 +59,14 @@
         });
     });
 
+    $('.getImagesCustomer').click(function(event) {
+      var idRoom = $(this).attr('data-id');
+      var idCustomer = $(this).attr('data-idCustomer');
+      $.get('/admin/rooms/api/getImagesRoom/'+idRoom+'/'+idCustomer, function(data) {
+        $('#modalRoomImages .modal-content').empty().append(data);
+      });
+    });
+
     $('.deleteBook').click(function(event) {
     	var id = $(this).attr('data-id');
     	$.get('/admin/reservas/delete/'+id, function(data) {
