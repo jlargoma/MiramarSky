@@ -1144,17 +1144,42 @@
 
 					}
 
-
 					if ( $request->searchRoom && $request->searchRoom != "all" ) {
 
-						$books = \App\Book::whereIn( 'customer_id' , $arrayCustomersId )->where( 'start' , '>=' , $date->format( 'Y-m-d' ) )->where( 'start' , '<=' , $date->copy()->addYear()->subMonth()->format( 'Y-m-d' ) )->whereIn( 'type_book' , [2 , 7 , 8] )->where( 'room_id' , $request->searchRoom )->orderBy( 'start' , 'ASC' )->get();
+						$books = \App\Book::whereIn( 'customer_id' , $arrayCustomersId )
+											->where( 'start' , '>=' , $date->format( 'Y-m-d' ) )
+											->where( 'start' , '<=' , $date->copy()->addYear()->subMonth()->format( 'Y-m-d' ) )
+											->whereIn( 'type_book' , [2 , 7 , 8] )
+											->where( 'room_id' , $request->searchRoom )
+											->where( 'agency' , $request->searchAgency )
+											->orderBy( 'start' , 'ASC' )
+											->get();
 
-						$diasPropios = \App\Book::whereIn( 'customer_id' , $arrayCustomersId )->where( 'start' , '>' , $date->copy()->subMonth() )->where( 'finish' , '<' , $date->copy()->addYear() )->whereIn( 'type_book' , [7 , 8] )->where( 'room_id' , $request->searchRoom )->orderBy( 'created_at' , 'DESC' )->get();
+						$diasPropios = \App\Book::whereIn( 'customer_id' , $arrayCustomersId )
+												->where( 'start' , '>' , $date->copy()->subMonth() )
+												->where( 'finish' , '<' , $date->copy()->addYear() )
+												->whereIn( 'type_book' , [7 , 8] )
+												->where( 'room_id' , $request->searchRoom )
+												->where( 'agency' , $request->searchAgency )
+												->orderBy( 'created_at' , 'DESC' )
+												->get();
 
 					} else {
-						$books = \App\Book::whereIn( 'customer_id' , $arrayCustomersId )->where( 'start' , '>=' , $date->format( 'Y-m-d' ) )->where( 'start' , '<=' , $date->copy()->addYear()->subMonth()->format( 'Y-m-d' ) )->whereIn( 'type_book' , [2 , 7 , 8] )->orderBy( 'start' , 'ASC' )->get();
+						$books = \App\Book::whereIn( 'customer_id' , $arrayCustomersId )
+											->where( 'start' , '>=' , $date->format( 'Y-m-d' ) )
+											->where( 'start' , '<=' , $date->copy()->addYear()->subMonth()->format( 'Y-m-d' ) )
+											->whereIn( 'type_book' , [2 , 7 , 8] )
+											->where( 'agency' , $request->searchAgency )
+											->orderBy( 'start' , 'ASC' )
+											->get();
 
-						$diasPropios = \App\Book::whereIn( 'customer_id' , $arrayCustomersId )->where( 'start' , '>' , $date->copy()->subMonth() )->where( 'finish' , '<' , $date->copy()->addYear() )->whereIn( 'type_book' , [7 , 8] )->orderBy( 'created_at' , 'DESC' )->get();
+						$diasPropios = \App\Book::whereIn( 'customer_id' , $arrayCustomersId )
+												->where( 'start' , '>' , $date->copy()->subMonth() )
+												->where( 'finish' , '<' , $date->copy()->addYear() )
+												->whereIn( 'type_book' , [7 , 8] )
+												->where( 'agency' , $request->searchAgency )
+												->orderBy( 'created_at' , 'DESC' )
+												->get();
 
 					}
 
@@ -1246,13 +1271,35 @@
 
 				if ( $request->searchRoom && $request->searchRoom != "all" ) {
 
-					$books = \App\Book::where( 'start' , '>=' , $date )->where( 'start' , '<=' , $date->copy()->addYear()->subMonth() )->whereIn( 'type_book' , [2 , 7 , 8] )->where( 'room_id' , $request->searchRoom )->orderBy( 'start' , 'ASC' )->get();
+					$books = \App\Book::where( 'start' , '>=' , $date )
+										->where( 'start' , '<=' , $date->copy()->addYear()->subMonth() )
+										->whereIn( 'type_book' , [2 , 7 , 8] )
+										->where( 'room_id' , $request->searchRoom )
+										->where( 'agency' , $request->searchAgency )
+										->orderBy( 'start' , 'ASC' )
+										->get();
 
-					$diasPropios = \App\Book::where( 'start' , '>' , $date->copy()->subMonth() )->where( 'room_id' , $request->searchRoom )->where( 'finish' , '<' , $date->copy()->addYear() )->whereIn( 'type_book' , [7 , 8] )->orderBy( 'created_at' , 'DESC' )->get();
+					$diasPropios = \App\Book::where( 'start' , '>' , $date->copy()->subMonth() )
+											->where( 'room_id' , $request->searchRoom )
+											->where( 'finish' , '<' , $date->copy()->addYear() )
+											->whereIn( 'type_book' , [7 , 8] )
+											->where( 'agency' , $request->searchAgency )
+											->orderBy( 'created_at' , 'DESC' )
+											->get();
 				} else {
-					$books = \App\Book::where( 'start' , '>=' , $date )->where( 'start' , '<=' , $date->copy()->addYear()->subMonth() )->whereIn( 'type_book' , [2 , 7 , 8] )->orderBy( 'start' , 'ASC' )->get();
+					$books = \App\Book::where( 'start' , '>=' , $date )
+										->where( 'start' , '<=' , $date->copy()->addYear()->subMonth() )
+										->whereIn( 'type_book' , [2 , 7 , 8] )
+										->where( 'agency' , $request->searchAgency )
+										->orderBy( 'start' , 'ASC' )
+										->get();
 
-					$diasPropios = \App\Book::where( 'start' , '>' , $date->copy()->subMonth() )->where( 'finish' , '<' , $date->copy()->addYear() )->whereIn( 'type_book' , [7 , 8] )->orderBy( 'created_at' , 'DESC' )->get();
+					$diasPropios = \App\Book::where( 'start' , '>' , $date->copy()->subMonth() )
+											->where( 'finish' , '<' , $date->copy()->addYear() )
+											->whereIn( 'type_book' , [7 , 8] )
+											->where( 'agency' , $request->searchAgency )
+											->orderBy( 'created_at' , 'DESC' )
+											->get();
 				}
 
 
@@ -1371,14 +1418,39 @@
 
 					if ( $request->searchRoom && $request->searchRoom != "all" ) {
 
-						$books = \App\Book::whereIn( 'customer_id' , $arrayCustomersId )->where( 'start' , '>=' , $date->format( 'Y-m-d' ) )->where( 'start' , '<=' , $date->copy()->addYear()->subMonth()->format( 'Y-m-d' ) )->whereIn( 'type_book' , [2 , 7] , 8 )->where( 'room_id' , $request->searchRoom )->orderBy( 'start' , 'ASC' )->get();
+						$books = \App\Book::whereIn( 'customer_id' , $arrayCustomersId )
+											->where( 'start' , '>=' , $date->format( 'Y-m-d' ) )
+											->where( 'start' , '<=' , $date->copy()->addYear()->subMonth()->format( 'Y-m-d' ) )
+											->whereIn( 'type_book' , [2 , 7] , 8 )
+											->where( 'agency' , $request->searchAgency )
+											->where( 'room_id' , $request->searchRoom )
+											->orderBy( 'start' , 'ASC' )
+											->get();
 
-						$diasPropios = \App\Book::whereIn( 'customer_id' , $arrayCustomersId )->where( 'start' , '>' , $date->copy()->subMonth() )->where( 'finish' , '<' , $date->copy()->addYear() )->whereIn( 'type_book' , [7 , 8] )->where( 'room_id' , $request->searchRoom )->orderBy( 'created_at' , 'DESC' )->get();
+						$diasPropios = \App\Book::whereIn( 'customer_id' , $arrayCustomersId )
+												->where( 'start' , '>' , $date->copy()->subMonth() )
+												->where( 'finish' , '<' , $date->copy()->addYear() )
+												->whereIn( 'type_book' , [7 , 8] )->where( 'room_id' , $request->searchRoom )
+												->where( 'agency' , $request->searchAgency )
+												->orderBy( 'created_at' , 'DESC' )
+												->get();
 
 					} else {
-						$books = \App\Book::whereIn( 'customer_id' , $arrayCustomersId )->where( 'start' , '>=' , $date->format( 'Y-m-d' ) )->where( 'start' , '<=' , $date->copy()->addYear()->subMonth()->format( 'Y-m-d' ) )->whereIn( 'type_book' , [2 , 7 , 8] )->orderBy( 'start' , 'ASC' )->get();
+						$books = \App\Book::whereIn( 'customer_id' , $arrayCustomersId )
+											->where( 'start' , '>=' , $date->format( 'Y-m-d' ) )
+											->where( 'start' , '<=' , $date->copy()->addYear()->subMonth()->format( 'Y-m-d' ) )
+											->whereIn( 'type_book' , [2 , 7 , 8] )
+											->where( 'agency' , $request->searchAgency )
+											->orderBy( 'start' , 'ASC' )
+											->get();
 
-						$diasPropios = \App\Book::whereIn( 'customer_id' , $arrayCustomersId )->where( 'start' , '>' , $date->copy()->subMonth() )->where( 'finish' , '<' , $date->copy()->addYear() )->whereIn( 'type_book' , [7 , 8] )->orderBy( 'created_at' , 'DESC' )->get();
+						$diasPropios = \App\Book::whereIn( 'customer_id' , $arrayCustomersId )
+												->where( 'start' , '>' , $date->copy()->subMonth() )
+												->where( 'finish' , '<' , $date->copy()->addYear() )
+												->whereIn( 'type_book' , [7 , 8] )
+												->where( 'agency' , $request->searchAgency )
+												->orderBy( 'created_at' , 'DESC' )
+												->get();
 					}
 
 					$books->load( ['customer' , 'payments' , 'room.type'] );
@@ -1462,7 +1534,8 @@
 				} else {
 					return "<h2>No hay reservas para este término '" . $request->searchString . "'</h2>";
 				}
-			} else {
+			}
+			else {
 
 
 				if ( $request->searchRoom && $request->searchRoom != "all" ) {
@@ -1473,9 +1546,19 @@
 
 
 				} else {
-					$books = \App\Book::where( 'start' , '>=' , $date )->where( 'start' , '<=' , $date->copy()->addYear()->subMonth() )->whereIn( 'type_book' , [2 , 7] )->orderBy( 'start' , 'ASC' )->get();
+					$books = \App\Book::where( 'start' , '>=' , $date )
+										->where( 'start' , '<=' , $date->copy()->addYear()->subMonth() )
+										->whereIn( 'type_book' , [2 , 7] )
+										->where( 'agency' , $request->searchAgency )
+										->orderBy( 'start' , 'ASC' )
+										->get();
 
-					$diasPropios = \App\Book::where( 'start' , '>' , $date->copy()->subMonth() )->where( 'finish' , '<' , $date->copy()->addYear() )->whereIn( 'type_book' , [7 , 8] )->orderBy( 'created_at' , 'DESC' )->get();
+					$diasPropios = \App\Book::where( 'start' , '>' , $date->copy()->subMonth() )
+											->where( 'finish' , '<' , $date->copy()->addYear() )
+											->whereIn( 'type_book' , [7 , 8] )
+											->where( 'agency' , $request->searchAgency )
+											->orderBy( 'created_at' , 'DESC' )
+											->get();
 
 
 				}

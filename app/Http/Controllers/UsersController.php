@@ -16,7 +16,7 @@ class UsersController extends Controller
     public function index()
     {
         return view('backend/users/index',  [
-                                                'users' => \App\User::all(),
+                                                'users' => \App\User::whereIn('role', ['admin', 'propietario', 'subadmin'])->get(),
                                             ]);
     }
 
@@ -41,40 +41,6 @@ class UsersController extends Controller
         if ($user->save()) {
             return redirect()->action('UsersController@index');
         }
-    }
-    
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -203,6 +169,20 @@ class UsersController extends Controller
         }
 
         
+    }
+
+	public function searchUserByName(Request $request)
+	{
+		if (empty($request->input('search')))
+		{
+			$users =  \App\User::whereIn('role', ['admin', 'propietario', 'subadmin'])->get();
+		}
+		else{
+			$users = \App\User::where('name', 'LIKE', "%".$request->input('search')."%")->get();
+		}
+		return view('backend/users/_tableUser',  [
+			'users' => $users
+		]);
     }
 
 }

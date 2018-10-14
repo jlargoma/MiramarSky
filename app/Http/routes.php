@@ -130,6 +130,8 @@
 	Route::post( 'admin/usuarios/saveupdate' , ['middleware' => 'authAdmin' , 'uses' => 'UsersController@saveUpdate'] );
 	Route::post( 'admin/usuarios/create' , ['middleware' => 'authAdmin' , 'uses' => 'UsersController@create'] );
 	Route::get( 'admin/usuarios/delete/{id}' , ['middleware' => 'authAdmin' , 'uses' => 'UsersController@delete'] );
+	Route::post( 'admin/usuarios/search' , ['middleware' => 'authAdmin' , 'uses' => 'UsersController@searchUserByName'] );
+
 
 // Clientes
 	Route::get( 'admin/clientes' , ['middleware' => 'authAdmin' , 'uses' => 'CustomersController@index'] );
@@ -404,7 +406,6 @@
 
 
 		Route::get( 'admin/liquidation/searchByName' , 'LiquidacionController@searchByName' );
-
 		Route::get( 'admin/liquidation/searchByRoom' , 'LiquidacionController@searchByRoom' );
 		Route::get( 'admin/liquidation/orderByBenefCritico' , 'LiquidacionController@orderByBenefCritico' );
 

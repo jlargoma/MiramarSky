@@ -112,7 +112,7 @@
                     <b>El segundo pago se hará 15 días antes de la entrada</b>, si este último pago no se realizase la reserva quedaría anulada.<br><br>
 
 
-                    <b>5. Periodo del alquiler:</b> Por el motivo que sea si la persona que alquila decide marcharse antes del periodo contratado no tiene derecho a devolución del importe de los días no disfrutados.
+                    <b>5. Periodo del alquiler:</b> Por el motivo que sea si la persona que alquila decide marcharse antes del periodo contratado no tiene derecho a devolución del importe de los días no disfrutados.<br><br>
 
 
                     <b>6. Meteorología y estado de pistas:</b> Las condiciones del alquiler de la vivienda son

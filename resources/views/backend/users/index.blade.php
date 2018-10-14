@@ -3,119 +3,90 @@
 @section('title') Administrador de reservas MiramarSKI @endsection
 
 @section('externalScripts')
-    <link href="/assets/css/font-icons.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="/assets/css/font-icons.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css"
+          rel="stylesheet" type="text/css"/>
+    <link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css"
+          media="screen"/>
 
 @endsection
-    
-@section('content') 
-<div class="container-fluid padding-25 sm-padding-10">
-    <div class="row">
-        <div class="col-md-12 col-xs-12 text-center">
-            <h2>Usuarios</h2>
-        </div>
-        <div class="col-md-8 table-responsive">
-            <div class="pull-left">
-                <div class="col-xs-12 " >
-                    <input type="text" id="searchUser" class="form-control pull-right" placeholder="Buscar">
+
+@section('content')
+    <div class="container padding-25 sm-padding-10">
+        <div class="row">
+            <div class="col-md-12 col-xs-12 text-center">
+                <h2 class="text-center font-w300" style="font-weight: 300; letter-spacing: -2px;">Administracion de
+                    <span
+                            class="font-w800" style="font-weight: 800;">Usuarios</span></h2>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-9 col-xs-12">
+                    <div class="col-md-3 col-xs-12">
+                        <input type="text" class="form-control" placeholder="Bucar..." id="searchUser"/>
+                        <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-12">
+                    <button class="btn btn-primary" style="float:right; margin: 0 5px" type="button" data-toggle="modal"
+                            data-target="#newUser">
+                        <i class="fa fa-plus"></i> Usuario
+                    </button>
                 </div>
             </div>
-            <div class="clearfix"></div>
-            <?php if (count($users) > 0): ?>
-                
-               
-                <table class="table table-hover demo-table-search table-responsive " id="tableUser">
-                    <thead>
-                        <tr>
-                            <th class ="text-center hidden" style="width: 25%">id</th>
-                            <th class ="text-center bg-complete text-white" style="width: 25%">Nombre</th>
-                            <th class ="text-center bg-complete text-white" style="width: 25%">Telefono</th>
-                            <th class ="text-center bg-complete text-white" style="width: 15%"> Tipo</th>
-                            <th class ="text-center bg-complete text-white" style="width: 35%">Email</th>
-                            <th class ="text-center bg-complete text-white" style="width: 25%">Modificar</th>
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($users as $user): ?>
-                            <tr>
-                                <td class="text-center hidden">
-                                    <input type="text" name="<?php echo $user->id?>" value="<?php echo $user->id?>">
-                                </td>
-                                <td class="text-center "><?php echo $user->name?>
-                                </td>
-                                <td class="text-center "><?php echo $user->phone?>
-                                </td>
-                                <td class="text-center ">
-                                    <?php echo $user->role?>
-                                </td>
-                                <td class="text-center ">
-                                    <?php echo $user->email?>
-                                </td>
+            <div class="col-md-12 table-responsive" id="content-table-user">
 
-                                <td class="text-center">
-                                    <div class="btn-group">
-                                        <!--  -->
-                                        <button class="btn btn-tag btn-complete update-user" type="button"
-                                        data-id="<?php
-                                         echo $user->id ?>" data-toggle="modal" data-target="#myModal" title="Editar
-                                         Usuario" style="background-color: #48b0f7;!important; color:white!important;">
-                                            <i class="fa fa-edit"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach ?>
-                    </tbody>
-                </table>
+                @include('backend.users._tableUser')
 
-            <?php else: ?>
-                
-            <?php endif ?>
+            </div>
+
         </div>
-        <div class="col-md-4">
-            <div class="sm-m-l-5 sm-m-r-5">
-                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingOne">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
-                                    Agregar usuario
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">
-                            <div class="panel-body">
-                                <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <div class="panel-title col-md-12">Agregar Usuario
-                                </div>
-                            </div>
-                            <div class="panel-body">
-                                <div class="col-md-12">
-                                    <form role="form"  action="{{ url('/admin/usuarios/create') }}" method="post">
-                                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+    </div>
+
+    <div class="modal fade slide-up disable-scroll in" id="newUser" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content-wrapper">
+                <div class="modal-content">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                                class="pg-close fs-50"></i>
+                    </button>
+                    <div class="container-xs-height full-height">
+                        <div class="row-xs-height">
+                            <div class="modal-body col-xs-height col-middle text-center   ">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                                       aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                                        Agregar usuario
+                                    </a>
+                                </h4>
+                                <div class="col-xs-12">
+                                    <form role="form" action="{{ url('/admin/usuarios/create') }}" method="post">
+                                        <input type="hidden" name="_token"value="<?php echo csrf_token(); ?>">
                                         <div class="input-group transparent">
                                             <span class="input-group-addon">
                                                 <i class="fa fa-user"></i>
                                             </span>
-                                            <input type="text" class="form-control" name="name" placeholder="Nombre" required="" aria-required="true" aria-invalid="false">
+                                            <input type="text" class="form-control" name="name"
+                                                   placeholder="Nombre" required="" aria-required="true"
+                                                   aria-invalid="false">
                                         </div>
-                                            <br>
+                                        <br>
                                         <div class="input-group">
                                             <span class="input-group-addon">
                                                 <i class="pg-phone"></i>
                                             </span>
-                                            <input type="number" class="form-control" name="phone" placeholder="Telefono" required="" aria-required="true" aria-invalid="false">
+                                            <input type="number" class="form-control" name="phone"
+                                                   placeholder="Telefono" required="" aria-required="true"
+                                                   aria-invalid="false">
                                         </div>
-                                            <br>
+                                        <br>
                                         <div class="input-group">
                                             <span class="input-group-addon">
                                                 <i class="pg-plus_circle"></i>
                                             </span>
-                                            <select class="full-width" data-init-plugin="select2" name="role">
+                                            <select class="full-width form-control"  name="role" required placeholder="Seleccione role">
                                                 <option></option>
                                                 <option value="admin">Admin</option>
                                                 <option value="jaime">Jaime</option>
@@ -125,21 +96,24 @@
                                                 <option value="recepcionista">Recepcionista</option>
                                             </select>
                                         </div>
-                                            <br>
+                                        <br>
                                         <div class="input-group">
                                             <span class="input-group-addon">
                                                 <i class="fa fa-key"></i>
                                             </span>
-                                                <input type="password" class="form-control" name="password"  required="" aria-required="true" aria-invalid="false">
+                                            <input type="password" class="form-control" name="password"
+                                                   required="" aria-required="true" aria-invalid="false">
                                         </div>
-                                            <br>
+                                        <br>
                                         <div class="input-group">
                                             <span class="input-group-addon">
                                                 <i class="pg-mail"></i>
                                             </span>
-                                                <input type="email" class="form-control" name="email" placeholder="Email" required="" aria-required="true" aria-invalid="false">
+                                            <input type="email" class="form-control" name="email"
+                                                   placeholder="Email" required="" aria-required="true"
+                                                   aria-invalid="false">
                                         </div>
-                                            <br>
+                                        <br>
                                         <div class="input-group">
                                             <button class="btn btn-complete" type="submit">Guardar</button>
                                         </div>
@@ -147,73 +121,48 @@
                                 </div>
                             </div>
                         </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
+            <!-- /.modal-content -->
         </div>
+        <!-- /.modal-dialog -->
     </div>
-</div>
-
-<form role="form">
-  <div class="form-group form-group-default required" style="display: none">
-    <label class="highlight">Message</label>
-    <input type="text" hidden="" class="form-control notification-message" placeholder="Type your message here" value="This notification looks so perfect!" required>
-  </div>
-  <button class="btn btn-success show-notification hidden" id="boton">Show</button>
-</form>
-
-
-<div class="modal fade slide-up disable-scroll in" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-md">
-    <div class="modal-content-wrapper">
-      <div class="modal-content">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-50"></i>
-        </button>
-        <div class="container-xs-height full-height">
-          <div class="row-xs-height">
-            <div class="modal-body col-xs-height col-middle text-center   ">
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
 
 @endsection
 
 @section('scripts')
-    <script src="/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
-    <script src="/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
-    <script src="/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
-    <script src="/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
-    <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
-    <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
-  
+
     <script type="text/javascript">
-        $(document).ready(function() {
-            $('.update-user').click(function(event) {
-                var id = $(this).attr('data-id');
-                $.get('/admin/usuarios/update/'+id, function(data) {
-                    $('.modal-body').empty().append(data);
-                });
-            });
-
-            $('.editables').change(function(event) {
-                var id = $(this).attr('data-id');
-
-                var name = $('.name-user-'+id).val();
-                var email = $('.email-user-'+id).val();
-
-                $.get('/admin/usuarios/ajax', {  id: id, name: name, email: email}, function(data) {
-                    alert(data);
-                });
-            });
+      $(document).ready(function () {
+        $('.update-user').click(function (event) {
+          var id = $(this).attr('data-id');
+          $.get('/admin/usuarios/update/' + id, function (data) {
+            $('.modal-body').empty().append(data);
+          });
         });
+
+        $('.editables').change(function (event) {
+          var id = $(this).attr('data-id');
+
+          var name = $('.name-user-' + id).val();
+          var email = $('.email-user-' + id).val();
+
+          $.get('/admin/usuarios/ajax', {id: id, name: name, email: email}, function (data) {
+            alert(data);
+          });
+        });
+
+        $('#searchUser').keydown(function (e) {
+          var search = $(this).val();
+          var token = $('#_token').val();
+
+          $.post('/admin/usuarios/search', {search: search, _token: token}).done(function
+              (data) {
+            $('#content-table-user').empty().append(data);
+          });
+
+        });
+      });
     </script>
 @endsection
