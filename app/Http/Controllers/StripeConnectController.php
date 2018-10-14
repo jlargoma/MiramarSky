@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use \Stripe\Stripe as Stripe;
 use Mail;
@@ -12,11 +13,11 @@ use App\Http\Requests;
 class StripeConnectController extends Controller
 {
 	public static $stripe = [
-		//"secret_key"      => "sk_test_o40xNAzPuB6sGDEY3rPQ2KUN",
-		//"publishable_key" => "pk_test_YNbne14yyAOIrYJINoJHV3BQ"
+		"secret_key"      => "sk_test_o40xNAzPuB6sGDEY3rPQ2KUN",
+		"publishable_key" => "pk_test_YNbne14yyAOIrYJINoJHV3BQ"
 
-		"secret_key"      => "sk_live_JKRWYAtvJ31tqwZyqNErMEap",
-		"publishable_key" => "pk_live_wEAGo29RoqPrXWiw3iKQJtWk",
+		//"secret_key"      => "sk_live_JKRWYAtvJ31tqwZyqNErMEap",
+		//"publishable_key" => "pk_live_wEAGo29RoqPrXWiw3iKQJtWk",
 	];
 
 	public function index(Request $request)
@@ -81,25 +82,13 @@ class StripeConnectController extends Controller
 
 	public function loadQuery()
 	{
-		return  DB::select("SELECT u.id, u.name, u.iban, u.account_stripe_connect, r.id AS room_id
+		return  DB::select("SELECT u.id, u.name, u.iban, u.account_stripe_connect, r.id AS room_id, u.accept_stripe
 							FROM users u 
 							INNER JOIN rooms r on r.owned = u.id AND r.state = 1 
 							GROUP BY u.id
 							ORDER BY r.order ASC");
 	}
 
-
-	/*
-		'_token'       => string 'bXGgVhcD6qYXVfKPTs5KcSghNzf1MDCIrKw5im6a' (length=40)
-		'fecha'        => string '01/10/2018' (length=10)
-		'concept'      => string 'DEMO' (length=4)
-		'type'         => string 'PAGO PROPIETARIO' (length=16)
-		'type_payFor'  => string '1' (length=1)
-		'importe'      => string '2500' (length=4)
-		'type_payment' => string '3' (length=1)
-		'comment'      => string 'sdfsdafasdfadsf' (length=15)
-		'stringRooms'  => string '115,' (length=4)
-		*/
 	public function sendTransfers(Request $request)
 	{
 		\Stripe\Stripe::setApiKey(self::$stripe['secret_key']);
@@ -141,6 +130,25 @@ class StripeConnectController extends Controller
 					return redirect('admin/stripe-connect');
 			}
 		}
+
+	}
+
+	public function acceptStripe(Request $request, $id)
+	{
+		$owned = \App\User::find($id);
+		\Stripe\Stripe::setApiKey(self::$stripe['secret_key']);
+
+		$acct = \Stripe\Account::retrieve($owned->account_stripe_connect);
+		$acct->tos_acceptance->date = time();
+
+		// Assumes you're not using a proxy
+		$acct->tos_acceptance->ip = $_SERVER['REMOTE_ADDR'];
+		$acct->save();
+
+		$owned->accept_stripe = 1;
+
+		if ($owned->save())
+			return redirect('/admin/stripe-connect');
 
 	}
 }

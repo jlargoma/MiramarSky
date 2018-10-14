@@ -584,6 +584,7 @@
 		Route::post( '/admin/stripe-connect/load-transfer-form' , 'StripeConnectController@loadTransferForm' );
 		Route::get( '/admin/stripe-connect/load-table-owneds' , 'StripeConnectController@loadTableOwneds' );
 		Route::post( '/admin/stripe-connect/send-transfers' , 'StripeConnectController@sendTransfers' );
+		Route::get( '/admin/stripe-connect/{id}/acceptStripeConnect' , 'StripeConnectController@acceptStripe' );
 
 
 
