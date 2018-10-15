@@ -29,7 +29,7 @@ class BookRepository
     {
         return Cache::remember("prices_season_{$season}_pax_{$pax}", self::TTL_IN_MINUTES, function () use ($season, $pax) {
             return Prices::select('cost')->where('season', $season)
-                ->where('occupation', $pax)->get();
+                ->where('occupation', $pax)->get()->cost;
         });
     }
 }
