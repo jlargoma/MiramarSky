@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\BookRepository;
+use App\Repositories\CachedRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,11 +21,11 @@ setlocale(LC_TIME, "es_ES");
 
 class BookController extends Controller
 {
-	private $bookRepository;
+	private $cachedRepository;
 
-	public function __construct(BookRepository $bookRepository)
+	public function __construct(CachedRepository $cachedRepository)
 	{
-		$this->bookRepository = $bookRepository;
+		$this->cachedRepository = $cachedRepository;
 	}
 	/**
 	 * Display a listing of the resource.

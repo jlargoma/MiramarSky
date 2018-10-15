@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
 use Mail;
 use File;
 use PDF;
-use Intervention\Image\ImageManagerStatic as Image;
 
 class RoomsController extends Controller
 {
