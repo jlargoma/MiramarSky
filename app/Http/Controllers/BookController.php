@@ -817,7 +817,7 @@ class BookController extends Controller
 			$date = $counter->copy()->format('Y-m-d');
 
 			$seasonActive = $this->bookRepository->getSeasonType($date);
-			$costs = $this->bookRepository->getCostsFromSeason($seasonActive, $date);
+			$costs = $this->bookRepository->getCostsFromSeason($seasonActive, $pax);
 
 			foreach ($costs as $precio) {
 				$costBook = $costBook + $precio->cost;
@@ -850,7 +850,7 @@ class BookController extends Controller
 		{
 			$date = $counter->format('Y-m-d');
 			$seasonActive = $this->bookRepository->getSeasonType($date);
-			$costs = $this->bookRepository->getCostsFromSeason($seasonActive, $date);
+			$costs = $this->bookRepository->getCostsFromSeason($seasonActive, $pax);
 
 			foreach ($costs as $precio)
 			{

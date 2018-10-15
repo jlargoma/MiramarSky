@@ -54,6 +54,7 @@ class Seasons extends Model
 		return \App\Seasons::select('type')
 			->where('start_date', '<=', $start)
 			->where('finish_date', '>=', $start)
-			->first() ?? 0;
+			->first()
+			->type ?? 0;
 	}
 }
