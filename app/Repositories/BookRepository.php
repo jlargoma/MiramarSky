@@ -17,7 +17,7 @@ class BookRepository
     public function getSeasonType($date)
     {
         return Cache::remember('season_for_' . str_slug($date, '_'), self::TTL_IN_MINUTES, function () use ($date) {
-            return Seasons::getSeason($date);
+            return Seasons::getSeasonType($date);
         });
     }
 
