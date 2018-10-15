@@ -14,7 +14,8 @@
         "johngrogg/ics-parser": "^2",
         "barryvdh/laravel-debugbar": "~2.4",
         "doctrine/dbal": "^2.6",
-        "barryvdh/laravel-dompdf": "0.8.*"
+        "barryvdh/laravel-dompdf": "0.8.*",
+        "predis/predis": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

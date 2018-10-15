@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\BookRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +20,12 @@ setlocale(LC_TIME, "es_ES");
 
 class BookController extends Controller
 {
+	private $bookRepository;
 
+	public function __construct(BookRepository $bookRepository)
+	{
+		$this->bookRepository = $bookRepository;
+	}
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -809,14 +815,9 @@ class BookController extends Controller
 		$counter  = $start->copy();
 		for ($i = 1; $i <= $countDays; $i++) {
 			$date = $counter->copy()->format('Y-m-d');
-			$seasonActive = \Cache::remember('season_for_' . str_slug($date, '_'), 24 * 60, function () use ($date) {
-			    return \App\Seasons::getSeason($date);
-			});
 
-			$costs = \Cache::remember("prices_season_{$seasonActive}_pax_{$pax}", 24 * 60, function () use ($seasonActive, $pax) {
-				return \App\Prices::select('cost')->where('season', $seasonActive)
-					->where('occupation', $pax)->get();
-			});
+			$seasonActive = $this->bookRepository->getSeasonType($date);
+			$costs = $this->bookRepository->getCostsFromSeason($seasonActive, $date);
 
 			foreach ($costs as $precio) {
 				$costBook = $costBook + $precio->cost;
@@ -847,10 +848,9 @@ class BookController extends Controller
 		$priceBook = 0;
 		for ($i = 1; $i <= $countDays; $i++)
 		{
-
-			$seasonActive = \App\Seasons::getSeason($counter->copy()->format('Y-m-d'));
-			$costs        = \App\Prices::where('season', $seasonActive)
-			                           ->where('occupation', $pax)->get();
+			$date = $counter->format('Y-m-d');
+			$seasonActive = $this->bookRepository->getSeasonType($date);
+			$costs = $this->bookRepository->getCostsFromSeason($seasonActive, $date);
 
 			foreach ($costs as $precio)
 			{
@@ -1829,7 +1829,6 @@ class BookController extends Controller
 
 	public function getAllDataToBook(Request $request)
 	{
-		return 'ok';
 		$room = \App\Rooms::with('extra')->find($request->room);
 
 		if ($request->book_id) {
