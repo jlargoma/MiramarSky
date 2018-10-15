@@ -6,7 +6,7 @@ use App\Prices;
 use App\Seasons;
 use Illuminate\Support\Facades\Cache;
 
-class BookRepository
+class CachedRepository
 {
     const TTL_IN_MINUTES = 5 * 24 * 60;
 
