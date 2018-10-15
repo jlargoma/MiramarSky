@@ -820,7 +820,7 @@ class BookController extends Controller
 			$costs = $this->bookRepository->getCostsFromSeason($seasonActive, $pax);
 
 			foreach ($costs as $precio) {
-				$costBook = $costBook + $precio->cost;
+				$costBook = $costBook + $precio['cost'];
 			}
 
 			$counter->addDay();
@@ -854,7 +854,7 @@ class BookController extends Controller
 
 			foreach ($costs as $precio)
 			{
-				$priceBook = $priceBook + $precio->price;
+				$priceBook = $priceBook + $precio['price'];
 			}
 			$counter->addDay();
 		}

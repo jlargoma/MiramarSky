@@ -27,9 +27,9 @@ class BookRepository
      */
     public function getCostsFromSeason($season, $pax)
     {
-        return Cache::remember("prices_season_{$season}_pax_{$pax}", self::TTL_IN_MINUTES, function () use ($season, $pax) {
-            return Prices::select('cost')->where('season', $season)
-                ->where('occupation', $pax)->get()->cost;
+        return Cache::remember("costs_from_season_{$season}_with_pax_{$pax}", self::TTL_IN_MINUTES, function () use ($season, $pax) {
+            return Prices::select(['cost', 'price'])->where('season', $season)
+                ->where('occupation', $pax)->get()->toArray();
         });
     }
 }
