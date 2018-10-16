@@ -25,6 +25,8 @@
 
 	Route::auth();
 	Route::get( '/' , 'HomeController@index' )->middleware( 'web' );
+   Route::get( '/homeTest' , 'HomeTestController@index' )->middleware( 'web' );
+   Route::get( '/homeTest' , 'HomeTestController@index' )->middleware( 'web' );
 	Route::get( '/sitemap' , 'HomeController@siteMap' )->middleware( 'web' );
 	Route::get( '/apartamentos/galeria/{apto}' , 'HomeController@galeriaApartamento' )->middleware( 'web' );
 	Route::get( '/apartamentos/{apto}' , 'HomeController@apartamento' )->middleware( 'web' );
@@ -584,7 +586,6 @@
 		Route::post( '/admin/stripe-connect/load-transfer-form' , 'StripeConnectController@loadTransferForm' );
 		Route::get( '/admin/stripe-connect/load-table-owneds' , 'StripeConnectController@loadTableOwneds' );
 		Route::post( '/admin/stripe-connect/send-transfers' , 'StripeConnectController@sendTransfers' );
-		Route::get( '/admin/stripe-connect/{id}/acceptStripeConnect' , 'StripeConnectController@acceptStripe' );
 
 
 
