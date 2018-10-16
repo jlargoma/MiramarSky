@@ -578,13 +578,14 @@
 		Route::post( '/admin/specialSegments/update/{id?}' , 'SpecialSegmentController@update' );
 		Route::get( '/admin/specialSegments/delete/{id?}' , 'SpecialSegmentController@delete' );
 
+		Route::get( '/admin/stripe-connect/{id}/acceptStripeConnect' , 'StripeConnectController@acceptStripe' );
 
 		Route::get( '/admin/stripe-connect' , 'StripeConnectController@index' );
 		Route::post( '/admin/stripe-connect/create-account-stripe-connect' , 'StripeConnectController@createAccountStripeConnect' );
 		Route::post( '/admin/stripe-connect/load-transfer-form' , 'StripeConnectController@loadTransferForm' );
 		Route::get( '/admin/stripe-connect/load-table-owneds' , 'StripeConnectController@loadTableOwneds' );
 		Route::post( '/admin/stripe-connect/send-transfers' , 'StripeConnectController@sendTransfers' );
-		Route::get( '/admin/stripe-connect/{id}/acceptStripeConnect' , 'StripeConnectController@acceptStripe' );
+
 
 
 

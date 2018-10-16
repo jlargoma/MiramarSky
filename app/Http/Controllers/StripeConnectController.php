@@ -135,6 +135,7 @@ class StripeConnectController extends Controller
 
 	public function acceptStripe(Request $request, $id)
 	{
+		
 		$owned = \App\User::find($id);
 		\Stripe\Stripe::setApiKey(self::$stripe['secret_key']);
 
