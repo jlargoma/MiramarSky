@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\Cache;
         float: left;
         text-align: center;
     }
+    .minimal span{
+        color: red;
+    }
+    .critical {
+        background: red;
+    }
+    .critical span{
+        color: white;
+    }
 </style>
 <div class="row">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
@@ -86,9 +95,16 @@ use Illuminate\Support\Facades\Cache;
                                     </b>
                                 </td>
 								<?php for ($i = 1; $i <= $arrayMonths[$dateAux->copy()->format('n')] ; $i++): ?>
-                                    <td class="" style='border:1px solid grey;width: 3%;text-align: center'>
+								    <?php $minimal = ($room['months'][$dateAux->copy()->format('n')][$i] == 1) ?
+								    "minimal": ""?>
+	                                <?php $critical = ($room['months'][$dateAux->copy()->format('n')][$i] == 0) ?
+		                            "critical": ""?>
+                                    <td class="<?php echo  $minimal." ".$critical ?>" style='border:1px solid grey;
+                                    width:
+                                    3%;text-align:
+                                    center'>
                                         <!--<b><?php echo $dateAux->copy()->format('n')?></b>-->
-                                        <?php echo $room['months'][$dateAux->copy()->format('n')][$i]?>
+                                        <span><?php echo $room['months'][$dateAux->copy()->format('n')][$i]?></span>
                                     </td>
 								<?php endfor; ?>
 
