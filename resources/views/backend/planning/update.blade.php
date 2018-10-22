@@ -555,7 +555,7 @@
                                 <label>Comentarios Propietario</label>
                                 <textarea class="form-control book_owned_comments" name="book_owned_comments" rows="5"
                                           data-idBook="<?php echo $book->id ?>"
-                                          data-type="3"><?php echo $book->book_owned_comments ?></textarea>
+                                          data-type="3"><?php if ($book->book_owned_comments != "" && $book->promociones != 0): ?><?php echo $book->book_owned_comments ?><?php endif; ?></textarea>
                             </div>
                         </div>
                         <div class="row push-40 bg-white padding-block">
@@ -1107,7 +1107,7 @@
                                 <label>Comentarios Propietario</label>
                                 <textarea class="form-control book_owned_comments" name="book_owned_comments" rows="5"
                                           data-idBook="<?php echo $book->id ?>"
-                                          data-type="3"><?php echo $book->book_owned_comments ?></textarea>
+                                          data-type="3"><?php if ($book->book_owned_comments != "" && $book->promociones != 0): ?><?php echo $book->book_owned_comments ?><?php endif; ?></textarea>
                             </div>
                         </div>
                         <div class="row push-40 bg-white padding-block">

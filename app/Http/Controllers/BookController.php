@@ -1481,8 +1481,7 @@ class BookController extends Controller
 
 	public function getCalendarBooking(Request $request)
 	{
-		$mobile = new Mobile();
-
+		$mobile      = new Mobile();
 		$arrayMonths = array();
 		$arrayDays   = array();
 		if (empty($year))
@@ -1495,38 +1494,180 @@ class BookController extends Controller
 
 		}
 		$firstDayOfTheYear = new Carbon('first day of September ' . $date->copy()->format('Y'));
+		$rooms             = \App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get();
+		$typesRoom         = [
+			'2dorm-lujo'   => [
+				'total'  => 0,
+				'name'   => '2DL',
+				'months' => []
+			],
+			'estudio'      => [
+				'total'  => 0,
+				'name'   => 'EST',
+				'months' => []
+			],
+			'2dorm-stand'  => [
+				'total'  => 0,
+				'name'   => '2DS',
+				'months' => []
+			],
+			'chalet'       => [
+				'total'  => 0,
+				'name'   => 'CHL',
+				'months' => []
+			],
+			'10pers-lujo'  => [
+				'total'  => 0,
+				'name'   => '3DL',
+				'months' => []
+			],
+			'10pers-stand' => [
+				'total'  => 0,
+				'name'   => '3DS',
+				'months' => []
+			],
+			'12pers-lujo'  => [
+				'total'  => 0,
+				'name'   => '4DL',
+				'months' => []
+			],
+			'12pers-stand' => [
+				'total'  => 0,
+				'name'   => '4DS',
+				'months' => []
+			]
+		];
 		$book              = new \App\Book();
-
-		for ($i = 1; $i <= 12; $i++)
+		$auxDate           = $firstDayOfTheYear->copy();
+		foreach ($rooms as $key => $room)
 		{
-			$mes[$firstDayOfTheYear->copy()->format('n')] = $firstDayOfTheYear->copy()->format('M Y');
 
-			$startMonth = $firstDayOfTheYear->copy()->startOfMonth();
-			$endMonth   = $firstDayOfTheYear->copy()->endOfMonth();
-			$countDays  = $endMonth->diffInDays($startMonth);
-			$day        = $startMonth;
-
-
-			$arrayMonths[$firstDayOfTheYear->copy()->format('n')] = $day->copy()->format('t');
-
-
-			for ($j = 1; $j <= $day->copy()->format('t'); $j++)
+			if ($room->luxury == 1 && $room->sizeApto == 2)
 			{
-
-				$arrayDays[$firstDayOfTheYear->copy()->format('n')][$j] = $book->getDayWeek($day->copy()->format('w'));
-				$day                                                    = $day->copy()->addDay();
-
+				$typesRoom['2dorm-lujo']['total'] += 1;
 			}
 
-			$firstDayOfTheYear->addMonth();
+			if ($room->luxury == 1 && $room->sizeApto == 1)
+			{
+				$typesRoom['estudio']['total'] += 1;
+			}
 
+			if ($room->luxury == 0 && $room->sizeApto == 2)
+			{
+
+				if ($room->id == 144)
+				{
+					$typesRoom['chalet']['total'] += 1;
+				} else
+				{
+					$typesRoom['2dorm-stand']['total'] += 1;
+				}
+			}
+
+			if ($room->luxury == 0 && $room->sizeApto == 1)
+			{
+				$typesRoom['estudio']['total'] += 1;
+			}
+
+			if ($room->luxury == 1 && $room->sizeApto == 3)
+			{
+				$typesRoom['10pers-lujo']['total'] += 1;
+			}
+
+			if ($room->luxury == 0 && $room->sizeApto == 3)
+			{
+				$typesRoom['10pers-stand']['total'] += 1;
+			}
+
+			if ($room->luxury == 1 && $room->sizeApto == 4)
+			{
+				$typesRoom['12pers-lujo']['total'] += 1;
+			}
+			if ($room->luxury == 0 && $room->sizeApto == 4)
+			{
+				$typesRoom['12pers-stand']['total'] += 1;
+			}
+		}
+		for ($i = 1; $i <= 12; $i++)
+		{
+			$startMonth = $auxDate->copy()->startOfMonth();
+			$day        = $startMonth;
+
+			$arrayMonths[$auxDate->copy()->format('n')] = $day->copy()->format('t');
+			for ($j = 1; $j <= $day->copy()->format('t'); $j++)
+			{
+				$arrayDays[$auxDate->copy()->format('n')][$j] = $book->getDayWeek($day->copy()->format('w'));
+				foreach ($typesRoom as $key => $room)
+				{
+					$typesRoom[$key]['months'][$day->copy()->format('n')][$day->copy()->format('j')] = $typesRoom[$key]['total'];
+				}
+
+				$day = $day->copy()->addDay();
+			}
+			$auxDate->addMonth();
 		}
 
+		$dateX    = $date->copy();
+		$reservas = \App\Book::whereIn('type_book', [
+			1,
+			2,
+			4,
+			7
+		])
+		 ->where('start', '>', $dateX->copy())
+		 ->where('finish', '<', $dateX->copy()->addYear())
+         ->orderBy('start', 'ASC')
+         ->get();
 
-		$dateX = $date->copy();
-		$days  = $arrayDays;
+		foreach ($reservas as $reserva)
+		{
+			$room = \App\Rooms::find($reserva->room_id);
 
-		return view('backend.planning._calendarToBooking', compact('days', 'dateX', 'arrayMonths', 'mobile'));
+			$start  = Carbon::createFromFormat('Y-m-d', $reserva->start);
+			$finish = Carbon::createFromFormat('Y-m-d', $reserva->finish);
+			$diff   = $start->diffInDays($finish);
+			$dia    = Carbon::createFromFormat('Y-m-d', $reserva->start);
+			for ($i = 1; $i <= $diff; $i++)
+			{
+				if ($room->luxury == 1 && $room->sizeApto == 2)
+				{
+					$typesRoom['2dorm-lujo']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
+				} elseif ($room->luxury == 1 && $room->sizeApto == 1)
+				{
+					$typesRoom['estudio']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
+				} elseif ($room->luxury == 0 && $room->sizeApto == 2)
+				{
+					if ($room->id == 144)
+					{
+						$typesRoom['chalet']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
+					} else
+					{
+						$typesRoom['2dorm-stand']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
+					}
+
+				} elseif ($room->luxury == 0 && $room->sizeApto == 1)
+				{
+					$typesRoom['estudio']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
+				} elseif ($room->luxury == 1 && $room->sizeApto == 3)
+				{
+					$typesRoom['10pers-lujo']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
+				} elseif ($room->luxury == 0 && $room->sizeApto == 3)
+				{
+					$typesRoom['10pers-stand']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
+				} elseif ($room->luxury == 1 && $room->sizeApto == 4)
+				{
+					$typesRoom['12pers-lujo']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
+				} elseif ($room->luxury == 0 && $room->sizeApto == 4)
+				{
+					$typesRoom['12pers-stand']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
+				}
+
+				$dia->addDay();
+			}
+		}
+		$days = $arrayDays;
+
+		return view('backend.planning._calendarToBooking', compact('days', 'dateX', 'arrayMonths', 'mobile', 'typesRoom'));
 	}
 
 

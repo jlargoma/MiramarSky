@@ -296,11 +296,16 @@ class RoomsController extends Controller
 		$room = \App\Rooms::where('nameRoom', $id)->first();
 
 		$directory = public_path() . "/img/miramarski/apartamentos/" . $room->nameRoom;
-
+		$directoryThumbnail = public_path() . "/img/miramarski/apartamentos/" . $room->nameRoom. "/thumbnails";
 
 		if (!file_exists($directory))
 		{
 			mkdir($directory, 0777, true);
+		}
+
+		if (!file_exists($directoryThumbnail))
+		{
+			mkdir($directoryThumbnail, 0777, true);
 		}
 		// RECORREMOS LOS FICHEROS
 		for ($i = 0; $i < count($_FILES['uploadedfile']['name']); $i++)
@@ -324,8 +329,22 @@ class RoomsController extends Controller
 				{
 					$statu = false;
 				}
+
+				$destino = $directoryThumbnail . "/" . $_FILES['uploadedfile']['name'][$i];
+
+				//Movemos a la ruta final
+				if (move_uploaded_file($fichTemporal, $destino))
+				{
+					//imprimimos el nombre del archivo subido
+					printf("Se ha subido el fichero %s.", $_FILES['uploadedfile']['name'][$i]);
+					$status = true;
+				} else
+				{
+					$statu = false;
+				}
 			}
 		}
+
 		if ($status)
 		{
 			return redirect()->action('RoomsController@index');
@@ -578,7 +597,7 @@ class RoomsController extends Controller
 		if ($id != '')
 		{
 			$room = \App\Rooms::find($id);
-			$path = public_path() . '/img/miramarski/apartamentos/' . $room->nameRoom . '/thumbnails/';
+			$path = public_path() . '/img/miramarski/apartamentos/' . $room->nameRoom . '/';
 
 			if (File::exists($path))
 			{
@@ -591,7 +610,7 @@ class RoomsController extends Controller
 				$slides = array();
 				foreach ($arraySlides as $key => $sl)
 				{
-					$slides[] = '/img/miramarski/apartamentos/' . $room->nameRoom . '/thumbnails/' . $sl;
+					$slides[] = '/img/miramarski/apartamentos/' . $room->nameRoom . '/' . $sl;
 				}
 				$book = ($bookId != "") ? \App\Book::find($bookId) : null;
 
