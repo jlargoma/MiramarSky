@@ -1541,7 +1541,6 @@ class BookController extends Controller
 		$auxDate           = $firstDayOfTheYear->copy();
 		foreach ($rooms as $key => $room)
 		{
-
 			if ($room->luxury == 1 && $room->sizeApto == 2)
 			{
 				$typesRoom['2dorm-lujo']['total'] += 1;
@@ -1588,6 +1587,7 @@ class BookController extends Controller
 				$typesRoom['12pers-stand']['total'] += 1;
 			}
 		}
+
 		for ($i = 1; $i <= 12; $i++)
 		{
 			$startMonth = $auxDate->copy()->startOfMonth();
@@ -1608,15 +1608,15 @@ class BookController extends Controller
 		}
 
 		$dateX    = $date->copy();
+
 		$reservas = \App\Book::whereIn('type_book', [
 			1,
 			2,
 			4,
 			7
 		])
-		 ->where('start', '>', $dateX->copy())
-		 ->where('finish', '<', $dateX->copy()->addYear())
-         ->orderBy('start', 'ASC')
+		 ->where('start', '>=', $firstDayOfTheYear->copy())
+		 ->where('finish', '<=', $firstDayOfTheYear->copy()->addYear())
          ->get();
 
 		foreach ($reservas as $reserva)
@@ -1632,10 +1632,12 @@ class BookController extends Controller
 				if ($room->luxury == 1 && $room->sizeApto == 2)
 				{
 					$typesRoom['2dorm-lujo']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
-				} elseif ($room->luxury == 1 && $room->sizeApto == 1)
+				}
+				if ($room->luxury == 1 && $room->sizeApto == 1)
 				{
 					$typesRoom['estudio']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
-				} elseif ($room->luxury == 0 && $room->sizeApto == 2)
+				}
+				if ($room->luxury == 0 && $room->sizeApto == 2)
 				{
 					if ($room->id == 144)
 					{
@@ -1645,19 +1647,24 @@ class BookController extends Controller
 						$typesRoom['2dorm-stand']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
 					}
 
-				} elseif ($room->luxury == 0 && $room->sizeApto == 1)
+				}
+				if ($room->luxury == 0 && $room->sizeApto == 1)
 				{
 					$typesRoom['estudio']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
-				} elseif ($room->luxury == 1 && $room->sizeApto == 3)
+				}
+				if ($room->luxury == 1 && $room->sizeApto == 3)
 				{
 					$typesRoom['10pers-lujo']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
-				} elseif ($room->luxury == 0 && $room->sizeApto == 3)
+				}
+				if ($room->luxury == 0 && $room->sizeApto == 3)
 				{
 					$typesRoom['10pers-stand']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
-				} elseif ($room->luxury == 1 && $room->sizeApto == 4)
+				}
+				if ($room->luxury == 1 && $room->sizeApto == 4)
 				{
 					$typesRoom['12pers-lujo']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
-				} elseif ($room->luxury == 0 && $room->sizeApto == 4)
+				}
+				if ($room->luxury == 0 && $room->sizeApto == 4)
 				{
 					$typesRoom['12pers-stand']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
 				}
