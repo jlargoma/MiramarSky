@@ -1,8 +1,10 @@
 
-<link rel="stylesheet" href="{{ asset('admin-css/assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker3.min.css') }}">
-<link rel="stylesheet" href="{{ asset('admin-css/assets/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css') }}">
-<link rel="stylesheet" href="{{ asset('admin-css/assets/js/plugins/select2/select2.min.css') }}">
-<link rel="stylesheet" href="{{ asset('admin-css/assets/js/plugins/select2/select2-bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ asset('/admin-css/assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker3.min
+.css') }}">
+<link rel="stylesheet" href="{{ asset('/admin-css/assets/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker
+.min.css') }}">
+<link rel="stylesheet" href="{{ asset('/admin-css/assets/js/plugins/select2/select2.min.css') }}">
+<link rel="stylesheet" href="{{ asset('/admin-css/assets/js/plugins/select2/select2-bootstrap.min.css') }}">
 <style type="text/css">
 	.input-group{
 		width: 100%;
