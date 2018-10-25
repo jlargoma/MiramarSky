@@ -213,6 +213,11 @@
                 section#content{
                     top:40px;
                 }
+                
+                html, body, .container{
+                    background-color:none !important;
+                    background:none !important;
+                }
 
             </style>
 
