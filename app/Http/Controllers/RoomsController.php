@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\CachedRepository;
+use App\Rooms;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -10,10 +12,23 @@ use Illuminate\Support\Facades\Auth;
 use Mail;
 use File;
 use PDF;
-use Intervention\Image\ImageManagerStatic as Image;
 
 class RoomsController extends Controller
 {
+	/**
+	 * @var CachedRepository
+	 */
+	private $repository;
+
+	/**
+	 * RoomsController constructor.
+	 * @param CachedRepository $repository
+	 */
+	public function __construct(CachedRepository $repository)
+	{
+		$this->repository = $repository;	
+	}
+	
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -256,11 +271,11 @@ class RoomsController extends Controller
 		}
 	}
 
-	public static function getPaxPerRooms($room)
+	public static function getPaxPerRooms($roomId)
 	{
-		$room = \App\Rooms::where('id', $room)->first();
-
-		return $room->minOcu;
+		return \Cache::remember("pax_from_room_{$roomId}", 5 * 24 * 60, function () use ($roomId) {
+			return Rooms::select('minOcu')->where('id', $roomId)->first()->minOcu ?? null;
+		});
 	}
 
 	public static function getLuxuryPerRooms($room)

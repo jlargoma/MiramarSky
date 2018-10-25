@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\BookRepository;
+use App\Repositories\CachedRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +21,12 @@ setlocale(LC_TIME, "es_ES");
 
 class BookController extends Controller
 {
+	private $cachedRepository;
 
+	public function __construct(CachedRepository $cachedRepository)
+	{
+		$this->cachedRepository = $cachedRepository;
+	}
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -800,28 +807,21 @@ class BookController extends Controller
 		$finish    = Carbon::createFromFormat('d/m/Y', $finish);
 		$countDays = $finish->diffInDays($start);
 
-
 		$paxPerRoom = Rooms::getPaxRooms($pax, $room);
 
-		$room = Rooms::find($room);
-
-		$pax = $pax;
-		if ($paxPerRoom > $pax)
-		{
+		if ($paxPerRoom > $pax) {
 			$pax = $paxPerRoom;
 		}
 		$costBook = 0;
 		$counter  = $start->copy();
-		for ($i = 1; $i <= $countDays; $i++)
-		{
-			$seasonActive = \App\Seasons::getSeason($counter->copy()->format('Y-m-d'));
+		for ($i = 1; $i <= $countDays; $i++) {
+			$date = $counter->copy()->format('Y-m-d');
 
-			$costs = \App\Prices::select('cost')->where('season', $seasonActive)
-			                    ->where('occupation', $pax)->get();
+			$seasonActive = $this->cachedRepository->getSeasonType($date);
+			$costs = $this->cachedRepository->getCostsFromSeason($seasonActive, $pax);
 
-			foreach ($costs as $precio)
-			{
-				$costBook = $costBook + $precio->cost;
+			foreach ($costs as $precio) {
+				$costBook = $costBook + $precio['cost'];
 			}
 
 			$counter->addDay();
@@ -849,14 +849,13 @@ class BookController extends Controller
 		$priceBook = 0;
 		for ($i = 1; $i <= $countDays; $i++)
 		{
-
-			$seasonActive = \App\Seasons::getSeason($counter->copy()->format('Y-m-d'));
-			$costs        = \App\Prices::where('season', $seasonActive)
-			                           ->where('occupation', $pax)->get();
+			$date = $counter->format('Y-m-d');
+			$seasonActive = $this->cachedRepository->getSeasonType($date);
+			$costs = $this->cachedRepository->getCostsFromSeason($seasonActive, $pax);
 
 			foreach ($costs as $precio)
 			{
-				$priceBook = $priceBook + $precio->price;
+				$priceBook = $priceBook + $precio['price'];
 			}
 			$counter->addDay();
 		}
@@ -1175,7 +1174,7 @@ class BookController extends Controller
 		for ($i = 1; $i <= $countDays; $i++)
 		{
 
-			$seasonActive = \App\Seasons::getSeason($auxDate->copy()->format('Y-m-d'));
+			$seasonActive = \App\Seasons::getSeasonType($auxDate->copy()->format('Y-m-d'));
 			if ($seasonActive == null)
 			{
 				$seasonActive = 0;
@@ -1981,8 +1980,7 @@ class BookController extends Controller
 	{
 		$room = \App\Rooms::with('extra')->find($request->room);
 
-		if ($request->book_id)
-		{
+		if ($request->book_id) {
 			$book = Book::find($request->book_id);
 		}
 

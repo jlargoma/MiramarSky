@@ -78,11 +78,9 @@ class Rooms extends Model
         return $this->hasMany('\App\Paymentspro', 'id', 'room_id');
     }
 
-    public static function getPaxRooms($pax,$room)
+    public static function getPaxRooms($pax, $room)
     {
-        $room = \App\Rooms::where('id', $room)->first();
-        
-        return $room->minOcu;    
+        return self::select('minOcu')->where('id', $room)->first()->minOcu;
     }
 
     public function isAssingToBooking()
