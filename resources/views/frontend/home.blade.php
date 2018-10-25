@@ -7,7 +7,7 @@
 
         <div class="content-wrap notoppadding" style="padding-bottom: 0;">
 
-		<?php if (!$mobile->isMobile()): ?>
+      <?php if (!$mobile->isMobile()): ?>
         <!-- DESKTOP -->
 
             <div class="row clearfix"
@@ -81,12 +81,12 @@
                                         Nevada el de más reciente construcción (2010).</b><br><br>
 
                                     Tenemos disponibles los siguientes apartamentos:<br><br>
-                                    •	<b>Estudios</b> con capacidad <b>4 personas</b><br>
-                                    •	<b>Apartamentos</b> con una habitación, con capacidad <b>para 4/5 personas</b><br>
-                                    •	<b>Apartamentos</b> con dos habitación, con capacidad <b>para 6/8 personas</b><br>
-                                    •	<b>Apartamentos</b> con tres habitaciones, con capacidad <b>para 10/12
+                                    •  <b>Estudios</b> con capacidad <b>4 personas</b><br>
+                                    •  <b>Apartamentos</b> con una habitación, con capacidad <b>para 4/5 personas</b><br>
+                                    •  <b>Apartamentos</b> con dos habitación, con capacidad <b>para 6/8 personas</b><br>
+                                    •  <b>Apartamentos</b> con tres habitaciones, con capacidad <b>para 10/12
                                         personas</b><br>
-                                    •	<b>Apartamentos</b> con cuatro habitaciones, con capacidad <b>para 12/14 </b>
+                                    •  <b>Apartamentos</b> con cuatro habitaciones, con capacidad <b>para 12/14 </b>
                                     personas<br><br>
 
 
@@ -121,8 +121,8 @@
                                 <div class="flexslider">
                                     <div class="slider-wrap">
 
-										<?php foreach ($slidesEdificio as $key => $slide): ?>
-										<?php $fotos = explode(",", $slide->getFilename()) ?>
+                              <?php foreach ($slidesEdificio as $key => $slide): ?>
+                              <?php $fotos = explode(",", $slide->getFilename()) ?>
                                         <div class="slide"
                                              data-thumb="{{ asset('/img/miramarski/edificio/piscina_climatizadalquiler_apartamento_sierra_nevada_miraramarski.jpg') }}">
                                             <a href="#">
@@ -133,7 +133,7 @@
                                                 <div class="flex-caption slider-caption-bg">Fotos del edificio</div>
                                             </a>
                                         </div>
-										<?php endforeach ?>
+                              <?php endforeach ?>
                                     </div>
                                 </div>
                             </div>
@@ -446,7 +446,7 @@
                                             href="http://miramarski.com/forfait" target="_blank">Pincha aquí. </a></b>
                                 <br><br>
                                 Si quieres saber más información sobre la estación de Sierra Nevada <b><a
-                                            href="{{url('/actividades')}}">consulta nuestro blog</a></b>, encontraras
+                                            class="blog_link" href="{{url('/actividades')}}">consulta nuestro blog</a></b>, encontraras
                                 información sobre la estación, cosas que hacer,actividades de esqui y de a preski, que
                                 visitar, como divertirte con los niños, bares y restaurantes de la estación y de
                                 Padrollano….etc
@@ -458,7 +458,7 @@
             </section>
             <!-- END DESKTOP -->
 
-		<?php else: ?>
+      <?php else: ?>
         <!-- MOBILE -->
             <section class="page-section degradado-background1"
                      style="letter-spacing: 0;line-height: 1;color: #fff!important;">
@@ -498,11 +498,11 @@
                 <div class="col-xs-12" style="padding: 30px 0 0;">
                     <div class="col-xs-12 black" style="margin-bottom: 20px">
                         <h1 class="font-w800 black center " style="letter-spacing: 0;
-   						margin-bottom: 10px; line-height: 1;font-size: 28px; letter-spacing: -2px;">
+                     margin-bottom: 10px; line-height: 1;font-size: 28px; letter-spacing: -2px;">
                             APARTAMENTOS DE LUJO<br>A PIE DE PISTA
                         </h1>
                         <h3 class="text-black black push-0" data-animate="fadeInUp" data-delay="400" style="text-align:center;font-size: 24px;letter-spacing: -2px;line-height: 1;
-   						">SERVICIO EXCLUSIVO</h3>
+                     ">SERVICIO EXCLUSIVO</h3>
 
                         <h4 class="text-black black font-w300 push-40" data-animate="fadeInUp" data-delay="600"
                             style="text-align:center;font-size: 22px;line-height: 1;letter-spacing: -1px;">Piscina,
@@ -713,7 +713,7 @@
                              style="background-image: url({{ asset('/img/miramarski/galerias/apto-standard.jpg') }}); padding: 70px 0; margin: 20px 0;"
                              data-stellar-background-ratio="0.4">
                             <h3 class="h2 text-center white text-white font-w800 wst" style="text-shadow: 2px 1px
-							#000; line-height: 1;">2 DORMITORIOS
+                     #000; line-height: 1;">2 DORMITORIOS
                                 <br>STANDARD</h3>
                         </div>
                     </a>
@@ -843,7 +843,7 @@
                                                                                  target="_blank">Pincha aquí. </a></b>
                         <br><br>
                         Si quieres saber más información sobre la estación de Sierra Nevada <b><a
-                                    href="{{url('/actividades')}}">consulta nuestro blog</a></b>, encontraras
+                                    class="blog_link" href="{{url('/actividades')}}">consulta nuestro blog</a></b>, encontraras
                         información sobre la estación, cosas que hacer,actividades de esqui y de a preski, que visitar,
                         como divertirte con los niños, bares y restaurantes de la estación y de Padrollano….etc
                     </p>
@@ -853,11 +853,10 @@
 
 
             <!-- END MOBILE -->
-			<?php endif; ?>
+         <?php endif; ?>
 
 
         </div>
 
     </section>
 @endsection
-
