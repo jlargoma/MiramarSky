@@ -1515,21 +1515,12 @@ class BookController extends Controller
 				'name'   => 'CHL',
 				'months' => []
 			],
-			'10pers-lujo'  => [
-				'total'  => 0,
-				'name'   => '3DL',
-				'months' => []
-			],
 			'10pers-stand' => [
 				'total'  => 0,
 				'name'   => '3DS',
 				'months' => []
 			],
-			'12pers-lujo'  => [
-				'total'  => 0,
-				'name'   => '4DL',
-				'months' => []
-			],
+
 			'12pers-stand' => [
 				'total'  => 0,
 				'name'   => '4DS',
@@ -1566,21 +1557,13 @@ class BookController extends Controller
 			{
 				$typesRoom['estudio']['total'] += 1;
 			}
-
-			if ($room->luxury == 1 && $room->sizeApto == 3)
-			{
-				$typesRoom['10pers-lujo']['total'] += 1;
-			}
+			
 
 			if ($room->luxury == 0 && $room->sizeApto == 3)
 			{
 				$typesRoom['10pers-stand']['total'] += 1;
 			}
 
-			if ($room->luxury == 1 && $room->sizeApto == 4)
-			{
-				$typesRoom['12pers-lujo']['total'] += 1;
-			}
 			if ($room->luxury == 0 && $room->sizeApto == 4)
 			{
 				$typesRoom['12pers-stand']['total'] += 1;
