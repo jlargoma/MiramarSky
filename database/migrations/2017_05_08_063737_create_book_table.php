@@ -14,9 +14,9 @@ class CreateBookTable extends Migration
     {
         Schema::create('book', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned();
-            $table->integer('customer_id')->unsigned();
-            $table->integer('room_id')->unsigned();
+	        $table->integer('user_id')->unsigned();
+	        $table->integer('customer_id')->unsigned();
+	        $table->integer('room_id')->unsigned();
             $table->date('start');
             $table->date('finish');
             $table->string('comment');

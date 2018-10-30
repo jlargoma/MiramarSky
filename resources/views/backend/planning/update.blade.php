@@ -76,13 +76,11 @@
 @endsection
 
 @section('content')
-	<?php
-	use \Carbon\Carbon;
-	?>
-	<?php
-	use App\Classes\Mobile;
-	$mobile = new Mobile();
-	?>
+    <?php
+        use \Carbon\Carbon;
+        use App\Classes\Mobile;
+        $mobile = new Mobile();
+    ?>
     <div class="container-fluid padding-10 sm-padding-10">
         <div class="row">
             <div class="col-md-12 col-xs-12 center text-left0">
@@ -90,84 +88,99 @@
                     <div class="col-md-9 col-xs-12">
                         @if( url()->previous() != "" )
                             @if( url()->previous() == url()->current() )
-                                <a href="{{ url('/admin/reservas') }}" class=" m-b-10"
-                                   style="min-width: 10px!important">
-                                    @else
-                                        <a href="{{ url()->previous() }}" class=" m-b-10"
-                                           style="min-width: 10px!important">
-                                            @endif
+                                <a href="{{ url('/admin/reservas') }}" class=" m-b-10" style="min-width: 10px!important">
+                                    <img src="{{ asset('/img/miramarski/iconos/close.png') }}" style="width: 20px"/>
+                                </a>
+                            @else
+                                <a href="{{ url()->previous() }}" class=" m-b-10" style="min-width: 10px!important">
+                                    <img src="{{ asset('/img/miramarski/iconos/close.png') }}" style="width: 20px"/>
+                                </a>
+                            @endif
+                        @else
+                            <a href="{{ url('/admin/reservas') }}" class=" m-b-10" style="min-width: 10px!important">
+                                <img src="{{ asset('/img/miramarski/iconos/close.png') }}" style="width: 20px"/>
+                            </a>
+                        @endif
 
-                                            @else
-                                                <a href="{{ url('/admin/reservas') }}" class=" m-b-10"
-                                                   style="min-width: 10px!important">
-                                                    @endif
-                                                    <img src="{{ asset('/img/miramarski/iconos/close.png') }}"
-                                                         style="width: 20px"/>
-                                                </a>
-                                                <h4 class="" style="line-height: 1; letter-spacing: -1px">
-													<?php echo "<b>" . strtoupper($book->customer->name) . "</b>" ?>
-                                                    creada el
-													<?php $fecha = Carbon::createFromFormat('Y-m-d H:i:s', $book->created_at);?>
-                                                    <br>
-                                                    <span class="font-s18"><?php echo $fecha->copy()
-													                                        ->formatLocalized('%d %B %Y') . " Hora: " . $fecha->copy()
-													                                                                                          ->format('H:m')?></span>
-                                                </h4>
-                                                <h5>Creado
-                                                    por <?php echo "<b>" . strtoupper($book->user->name) . "</b>" ?></h5>
-												<?php if ($book->type_book == 2): ?>
-                                                <div class="col-md-2 col-xs-3 text-center push-10">
-                                                    <a href="{{ url('/admin/pdf/pdf-reserva/'.$book->id) }}">
-                                                        <img src="/img/pdf.png"
-                                                             style="width: 50px; float:left; margin: 0 auto;">
-                                                    </a>
-                                                </div>
-                                                <div class="col-md-2 col-xs-3 text-center push-10">
-													<?php $text = "Hola, esperamos que hayas disfrutado de tu estancia con nosotros." . "\n" . "Nos gustaria que valorarás, para ello te dejamos este link : https://www.apartamentosierranevada.net/encuesta-satisfaccion/" . base64_encode($book->id);
-													?>
+                        <h4 class="" style="line-height: 1; letter-spacing: -1px">
+                            <?php echo "<b>" . strtoupper($book->customer->name) . "</b>" ?>
+                            creada el <?php $fecha = Carbon::createFromFormat('Y-m-d H:i:s', $book->created_at);?>
+                            <br>
+                            <span class="font-s18"><?php echo $fecha->copy()->formatLocalized('%d %B %Y') . " Hora: " . $fecha->copy()->format('H:m')?></span>
+                        </h4>
+                        <h5>Creado por <?php echo "<b>" . strtoupper($book->user->name) . "</b>" ?></h5>
+                        <?php if ($book->type_book == 2): ?>
+                            <div class="col-md-2 col-xs-3 text-center push-10">
+                                <a href="{{ url('/admin/pdf/pdf-reserva/'.$book->id) }}">
+                                    <img src="/img/pdf.png"
+                                         style="width: 50px; float:left; margin: 0 auto;">
+                                </a>
+                            </div>
+                            <div class="col-md-2 col-xs-3 text-center push-10">
+                                <?php $text = "Hola, esperamos que hayas disfrutado de tu estancia con nosotros." . "\n" . "Nos gustaria que valorarás, para ello te dejamos este link : https://www.apartamentosierranevada.net/encuesta-satisfaccion/" . base64_encode($book->id);
+                                ?>
 
-                                                    <a href="whatsapp://send?text=<?php echo $text; ?>"
-                                                       data-action="share/whatsapp/share"
-                                                       data-original-title="Enviar encuesta de satisfacción"
-                                                       data-toggle="tooltip">
-                                                        <i class="fa fa-share-square fa-3x" aria-hidden="true"></i><br>Encuesta
-                                                    </a>
-                                                </div>
-												<?php endif ?>
-                                                <div class="col-md-2 col-xs-3 text-center push-10">
-                                                    <a href="tel:<?php echo $book->customer->phone ?>"
-                                                       style="width: 50px; float:left;">
-                                                        <i class="fa fa-phone  text-success"
-                                                           style="font-size: 48px;"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="col-md-2 col-xs-3 text-center push-10 hidden-lg hidden-md">
-                                                    <h2 class="text-center"
-                                                        style="font-size: 18px; line-height: 18px; margin: 0;">
-														<?php $text = "En este link podrás realizar el pago de la señal por el 25% del total." . "\n" . " En el momento en que efectúes el pago, te legará un email confirmando tu reserva - https://www.apartamentosierranevada.net/reservas/stripe/pagos/" . base64_encode($book->id);
-														?>
+                                <a href="whatsapp://send?text=<?php echo $text; ?>"
+                                   data-action="share/whatsapp/share"
+                                   data-original-title="Enviar encuesta de satisfacción"
+                                   data-toggle="tooltip">
+                                    <i class="fa fa-share-square fa-3x" aria-hidden="true"></i><br>Encuesta
+                                </a>
+                            </div>
+                        <?php endif ?>
+                        <div class="col-md-2 col-xs-3 text-center push-10">
+                            <a href="tel:<?php echo $book->customer->phone ?>"
+                               style="width: 50px; float:left;">
+                                <i class="fa fa-phone  text-success"
+                                   style="font-size: 48px;"></i>
+                            </a>
+                        </div>
+                        <div class="col-md-2 col-xs-3 text-center push-10 hidden-lg hidden-md">
+                            <h2 class="text-center"
+                                style="font-size: 18px; line-height: 18px; margin: 0;">
+                                <?php $text = "En este link podrás realizar el pago de la señal por el 25% del total." . "\n" . " En el momento en que efectúes el pago, te legará un email confirmando tu reserva - https://www.apartamentosierranevada.net/reservas/stripe/pagos/" . base64_encode($book->id);
+                                ?>
 
-                                                        <a href="whatsapp://send?text=<?php echo $text; ?>"
-                                                           data-action="share/whatsapp/share">
-                                                            <i class="fa fa-eye fa-3x" aria-hidden="true"></i>
-                                                        </a>
-                                                    </h2>
-                                                </div>
+                                <a href="whatsapp://send?text=<?php echo $text; ?>"
+                                   data-action="share/whatsapp/share">
+                                    <i class="fa fa-eye fa-3x" aria-hidden="true"></i>
+                                </a>
+                            </h2>
+                        </div>
                     </div>
                     <div class="col-md-3 col-xs-12 content-guardar" style="padding: 20px 0;">
                         <div id="overlay" style="display: none;"></div>
                         <select class="status form-control minimal" data-id="<?php echo $book->id ?>" name="status">
-							<?php for ($i = 1; $i <= 12; $i++): ?>
-							<?php if ($i == 5 && $book->customer->email == ""): ?>
-                            <?php else: ?>
-                            <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?>
-							        <?php echo ($i == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
-                                    value="<?php echo $i ?>" data-id="<?php echo $book->id ?>">
-								<?php echo $book->getStatus($i) ?>
+	                        <?php
 
-                            </option>
-							<?php endif ?>
-							<?php endfor; ?>
+                                $status = [ 1 => 1, 2 => 2 ];
+                                if (!in_array($book->type_book, $status))
+                                    $status[] = $book->type_book;
+
+	                        ?>
+	                        <?php if ( Auth::user()->role != "agente" && in_array($i, $status)): ?>
+                                <?php for ($i = 1; $i <= 12; $i++): ?>
+                                    <?php if ($i == 5 && $book->customer->email == ""): ?><?php else: ?>
+                                        <option
+                                            <?php echo $i == ($book->type_book) ? "selected" : ""; ?> <?php echo ($i == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?> value="<?php echo $i ?>"
+                                            data-id="<?php echo
+                                            $book->id ?>">
+                                            <?php echo $book->getStatus($i) ?>
+                                        </option>
+                                    <?php endif ?>
+                                <?php endfor; ?>
+	                        <?php else: ?>
+                                <?php for ($i = 1; $i <= count($status); $i++): ?>
+                                    <?php if ($i == 5 && $book->customer->email == ""): ?> <?php else: ?>
+                                    <option <?php echo $status[$i] == ($book->type_book) ? "selected" : ""; ?> <?php
+                                            echo ($status[$i] == 1 || $status[$i] == 5) ? "style='font-weight:bold'" : "" ?> value="<?php echo $status[$i] ?>"
+                                            data-id="<?php echo
+                                            $book->id ?>">
+                                        <?php echo $book->getStatus($status[$i]) ?>
+                                    </option>
+                                    <?php endif ?>
+                                <?php endfor; ?>
+	                        <?php endif ?>
                         </select>
                         <h5 class="guardar" style="font-weight: bold; display: none; font-size: 15px;"></h5>
                     </div>
@@ -212,7 +225,6 @@
                         <?php endif;?>
                     </div>
                 </div>
-
             </div>
         </div>
 		<?php if (!$mobile->isMobile()): ?>
@@ -344,6 +356,7 @@
                             </select>
 
                         </div>
+                        <?php if ( Auth::user()->role != "agente" ): ?>
                         <div class="col-md-2 col-xs-3 ">
                             <label style="color: red">Pax-Real</label>
                             <select class=" form-control real_pax minimal" name="real_pax">
@@ -357,6 +370,7 @@
 								<?php endfor;?>
                             </select>
                         </div>
+                        <?php endif ?>
                         <div class="col-md-3 col-xs-6 push-10">
                             <label>Apartamento</label>
 
@@ -371,7 +385,10 @@
 								<?php endforeach ?>
                             </select>
                         </div>
-
+	                    <?php if ( Auth::user()->role == "agente" ): ?>
+                        <div style="clear: both;"></div>
+	                    <?php endif ?>
+                        <?php if ( Auth::user()->role != "agente" ): ?>
                         <div class="col-md-2 col-xs-6 push-20 ">
                             <label>Parking</label>
                             <select class=" form-control parking minimal" name="parking">
@@ -388,6 +405,10 @@
 								<?php endfor;?>
                             </select>
                         </div>
+                        <?php else: ?>
+                            <input type="hidden" step='0.01' class="parking white" name="parking" value="1">
+                            <input type="hidden" step='0.01' class="type_luxury white" name="type_luxury" value="1">
+                        <?php endif ?>
                         <div class="col-md-2 col-xs-6 push-20">
                             <label>IN</label>
                             <select id="schedule" class="form-control minimal" style="width: 100%;" name="schedule">
@@ -455,12 +476,14 @@
                             </div>
 
                         </div>
+                        <?php if ( Auth::user()->role != "agente" ): ?>
                         <div class="col-md-2 col-xs-4 not-padding">
                             <label>promoción 3x2</label>
                             <input type="number" step='0.01' class="promociones only-numbers form-control"
                                    name="promociones"
                                    value="<?php echo ($book->promociones > 0) ? $book->promociones : "" ?>">
                         </div>
+                        <?php endif ?>
 						<?php if ($book->book_owned_comments != "" && $book->promociones != 0): ?>
                         <div class="col-md-2 col-xs-6 push-10 content_image_offert">
                             <img src="/pages/oferta.png" style="width: 90px;">
@@ -898,6 +921,7 @@
                                 </option>
 								<?php endfor;?>
                             </select>
+                            <?php if ( Auth::user()->role != "agente" ): ?>
                             <label class="m-t-20" style="color: red">Pax-Real</label>
                             <select class=" form-control real_pax minimal" name="real_pax">
 								<?php for ($i = 1; $i <= 14 ; $i++): ?>
@@ -907,6 +931,7 @@
                                 </option>
 								<?php endfor;?>
                             </select>
+                            <?php endif ?>
                         </div>
                         <div class="col-md-3 col-xs-8 push-20">
                             <label>Apartamento</label>
@@ -922,6 +947,8 @@
 								<?php endforeach ?>
                             </select>
                         </div>
+                        <?php if ( Auth::user()->role != "agente" ): ?>
+
                         <div class="col-md-1 col-xs-6 push-20">
                             <label>Parking</label>
                             <select class=" form-control parking minimal" name="parking">
@@ -938,6 +965,11 @@
 								<?php endfor;?>
                             </select>
                         </div>
+                        <?php else: ?>
+                            <input type="hidden" step='0.01' class="parking white" name="parking" value="1">
+                            <input type="hidden" step='0.01' class="type_luxury white" name="type_luxury" value="1">
+                        <?php endif ?>
+
                         <div class="col-md-2 col-xs-3 push-0" style="padding: 0 5px;">
                             <label>IN</label>
                             <select id="schedule" class="form-control " style="width: 100%;" name="schedule">
@@ -1004,12 +1036,14 @@
 								<?php endif ?>
                             </div>
                         </div>
+                        <?php if ( Auth::user()->role != "agente" ): ?>
                         <div class="col-md-2 col-xs-6 push-20 ">
                             <label>promoción 3x2</label>
                             <input type="number" step='0.01' class="promociones only-numbers form-control"
                                    name="promociones"
                                    value="<?php echo ($book->promociones > 0) ? $book->promociones : "" ?>">
                         </div>
+                        <?php endif ?>
 						<?php if ($book->book_owned_comments != "" && $book->promociones != 0): ?>
                         <div class="col-md-2 col-xs-6 push-10 content_image_offert">
                             <img src="/pages/oferta.png" style="width: 90px;">

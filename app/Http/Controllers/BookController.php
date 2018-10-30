@@ -27,6 +27,7 @@ class BookController extends Controller
 	{
 		$this->cachedRepository = $cachedRepository;
 	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -55,21 +56,38 @@ class BookController extends Controller
 		$inicio = new Carbon('first day of September ' . $date->copy()->format('Y'));
 		$start  = $inicio->copy();
 
-		$booksCollection = \App\Book::with('customer')
-		                            ->where('start', '>', $start->copy())
-		                            ->where('finish', '<', $start->copy()->addYear())
-		                            ->get();
+		if (Auth::user()->role != "agente")
+		{
+			$rooms         = \App\Rooms::where('state', '=', 1)->orderBy('order')->get();
+			$roomscalendar = $rooms->filter(function ($room) {
+				return $room->id >= 5;
+			})->sortBy('order');
 
-		$books = $booksCollection->whereIn('type_book', [
-			1,
-			3,
-			4,
-			5,
-			6,
-			10,
-			11
-		])
-		                         ->sortByDesc('created_at');
+			$booksCollection = \App\Book::with('customer')
+			                            ->where('start', '>', $start->copy())
+			                            ->where('finish', '<', $start->copy()->addYear())
+			                            ->get();
+			$types = [1, 3, 4, 5, 6, 10, 11	];
+		} else
+		{
+			$roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
+			$rooms       = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order')->get();
+
+			$roomscalendar = $rooms->filter(function ($room) {
+				return $room->id >= 5;
+			})->sortBy('order');
+
+			$booksCollection = \App\Book::with('customer')
+			                            ->where('start', '>', $start->copy())
+										->where('finish', '<', $start->copy()->addYear())
+										->whereIn('room_id', $roomsAgents)
+			                            ->get();
+			$types = [1];
+
+		}
+
+
+		$books = $booksCollection->whereIn('type_book', $types)->sortByDesc('created_at');
 
 		$booksCount['pending']      = $booksCollection->where('type_book', 3)->count();
 		$booksCount['special']      = $booksCollection->whereIn('type_book', [
@@ -87,10 +105,8 @@ class BookController extends Controller
 		$booksCount['checkin']      = $this->getCounters($start, 'checkin');
 		$booksCount['checkout']     = $booksCount['confirmed'] - $booksCount['checkin'];
 
-		$rooms         = \App\Rooms::where('state', '=', 1)->orderBy('order')->get();
-		$roomscalendar = $rooms->filter(function ($room) {
-			return $room->id >= 5;
-		})->sortBy('order');
+
+
 
 		$stripe           = StripeController::$stripe;
 		$stripedsPayments = \App\Payments::where('comment', 'LIKE', '%stripe%')
@@ -151,7 +167,14 @@ class BookController extends Controller
 
 	public function newBook(Request $request)
 	{
-		$rooms  = \App\Rooms::where('state', '=', 1)->get();
+		if (Auth::user()->role != "agente")
+		{
+			$rooms         = \App\Rooms::where('state', '=', 1)->orderBy('order')->get();
+		} else
+		{
+			$roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
+			$rooms       = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order')->get();
+		}
 		$extras = \App\Extras::all();
 		return view('backend/planning/_nueva', compact('rooms', 'extras'));
 	}
@@ -809,18 +832,21 @@ class BookController extends Controller
 
 		$paxPerRoom = Rooms::getPaxRooms($pax, $room);
 
-		if ($paxPerRoom > $pax) {
+		if ($paxPerRoom > $pax)
+		{
 			$pax = $paxPerRoom;
 		}
 		$costBook = 0;
 		$counter  = $start->copy();
-		for ($i = 1; $i <= $countDays; $i++) {
+		for ($i = 1; $i <= $countDays; $i++)
+		{
 			$date = $counter->copy()->format('Y-m-d');
 
 			$seasonActive = $this->cachedRepository->getSeasonType($date);
-			$costs = $this->cachedRepository->getCostsFromSeason($seasonActive, $pax);
+			$costs        = $this->cachedRepository->getCostsFromSeason($seasonActive, $pax);
 
-			foreach ($costs as $precio) {
+			foreach ($costs as $precio)
+			{
 				$costBook = $costBook + $precio['cost'];
 			}
 
@@ -849,9 +875,9 @@ class BookController extends Controller
 		$priceBook = 0;
 		for ($i = 1; $i <= $countDays; $i++)
 		{
-			$date = $counter->format('Y-m-d');
+			$date         = $counter->format('Y-m-d');
 			$seasonActive = $this->cachedRepository->getSeasonType($date);
-			$costs = $this->cachedRepository->getCostsFromSeason($seasonActive, $pax);
+			$costs        = $this->cachedRepository->getCostsFromSeason($seasonActive, $pax);
 
 			foreach ($costs as $precio)
 			{
@@ -1335,24 +1361,25 @@ class BookController extends Controller
 
 		$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
 
-		// echo "<pre>";
-		// print_r($date);
-		// die();
+		if (Auth::user()->role != "agente")
+		{
+			$roomsAgents = \App\Rooms::all(['room_id'])->toArray();
+			$rooms       = \App\Rooms::where('state', '=', 1)->get();
+			$types = [1, 3, 4, 5, 6, 10, 11 ];
+		} else
+		{
+			$roomsAgents   = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
+			$rooms         = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order')->get();
+			$types = [1];
+		}
 
 		switch ($request->type)
 		{
 			case 'pendientes':
 				$books = \App\Book::where('start', '>', $date->copy())
 				                  ->where('start', '<', $date->copy()->addYear())
-				                  ->whereIn('type_book', [
-					                  1,
-					                  3,
-					                  4,
-					                  5,
-					                  6,
-					                  10,
-					                  11
-				                  ])
+				                  ->whereIn('type_book', $types)
+				                  ->whereIn('room_id', $roomsAgents)
 				                  ->orderBy('created_at', 'DESC')
 				                  ->get();
 				break;
@@ -1370,6 +1397,7 @@ class BookController extends Controller
 				$books = \App\Book::where('start', '>', $date->copy()->subMonth())
 				                  ->where('start', '<', $date->copy()->addYear())
 				                  ->whereIn('type_book', [2])
+				                  ->whereIn('room_id', $roomsAgents)
 				                  ->orderBy('created_at', 'DESC')
 				                  ->get();
 				break;
@@ -1408,7 +1436,7 @@ class BookController extends Controller
 				break;
 		}
 
-		$rooms = \App\Rooms::where('state', '=', 1)->orderBy('order')->get();
+
 		$type  = $request->type;
 
 		if ($request->type == 'confirmadas' || $request->type == 'checkin')
@@ -1557,7 +1585,7 @@ class BookController extends Controller
 			{
 				$typesRoom['estudio']['total'] += 1;
 			}
-			
+
 
 			if ($room->luxury == 0 && $room->sizeApto == 3)
 			{
@@ -1581,7 +1609,8 @@ class BookController extends Controller
 				$arrayDays[$auxDate->copy()->format('n')][$j] = $book->getDayWeek($day->copy()->format('w'));
 				foreach ($typesRoom as $key => $room)
 				{
-					$typesRoom[$key]['months'][$day->copy()->format('n')][$day->copy()->format('j')] = $typesRoom[$key]['total'];
+					$typesRoom[$key]['months'][$day->copy()->format('n')][$day->copy()
+					                                                          ->format('j')] = $typesRoom[$key]['total'];
 				}
 
 				$day = $day->copy()->addDay();
@@ -1589,7 +1618,7 @@ class BookController extends Controller
 			$auxDate->addMonth();
 		}
 
-		$dateX    = $date->copy();
+		$dateX = $date->copy();
 
 		$reservas = \App\Book::whereIn('type_book', [
 			1,
@@ -1597,9 +1626,9 @@ class BookController extends Controller
 			4,
 			7
 		])
-		 ->where('start', '>=', $firstDayOfTheYear->copy())
-		 ->where('finish', '<=', $firstDayOfTheYear->copy()->addYear())
-         ->get();
+		                     ->where('start', '>=', $firstDayOfTheYear->copy())
+		                     ->where('finish', '<=', $firstDayOfTheYear->copy()->addYear())
+		                     ->get();
 
 		foreach ($reservas as $reserva)
 		{
@@ -1758,11 +1787,20 @@ class BookController extends Controller
 			$start = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
 		}
 
-		$rooms         = \App\Rooms::where('state', '=', 1)->get();
-		$roomscalendar = \App\Rooms::where('id', '>=', 5)->where('state', '=', 1)->orderBy('order', 'ASC')->get();
-		$book          = new \App\Book();
-		$inicio        = $start->copy();
-		$days          = $arrayDays;
+
+		if (Auth::user()->role != "agente")
+		{
+			$rooms         = \App\Rooms::where('state', '=', 1)->get();
+			$roomscalendar = \App\Rooms::where('id', '>=', 5)->where('state', '=', 1)->orderBy('order', 'ASC')->get();
+		} else
+		{
+			$roomsAgents   = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
+			$rooms         = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order')->get();
+			$roomscalendar = \App\Rooms::where('id', '>=', 5)->where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order', 'ASC')->get();
+		}
+		$book   = new \App\Book();
+		$inicio = $start->copy();
+		$days   = $arrayDays;
 
 		return view('backend/planning/calendar', compact('arrayBooks', 'arrayMonths', 'arrayTotales', 'rooms', 'roomscalendar', 'arrayReservas', 'mes', 'date', 'book', 'extras', 'days', 'inicio'));
 	}
@@ -1963,7 +2001,8 @@ class BookController extends Controller
 	{
 		$room = \App\Rooms::with('extra')->find($request->room);
 
-		if ($request->book_id) {
+		if ($request->book_id)
+		{
 			$book = Book::find($request->book_id);
 		}
 

@@ -163,7 +163,6 @@
                         </table>
                     </div>
                 </div>
-
             </div>
             <div class="col-md-12">
                 <div class="col-md-6 col-xs-12">
@@ -228,6 +227,59 @@
 						<?php endif?>
                     </div>
                 </div>
+                <div class="col-md-4 col-xs-12">
+                    <div class="col-md-12 text-center">
+                        <h2>Agentes - Rooms</h2>
+                    </div>
+                    <div class="col-xs-12 push-10">
+                        <button class="btn btn-primary" style="float:right;" type="button" data-toggle="modal"
+                                data-target="#agentRoom">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                    <div class="col-xs-12 push-10" style="overflow: auto; max-height: 335px;">
+                        <?php if ( count($agentsRooms) > 0): ?>
+                        <table class="table table-condensed table-responsive-block">
+                            <thead>
+                            <tr>
+                                <th class="text-center bg-complete text-white">ID</th>
+                                <th class="text-center bg-complete text-white">Agente</th>
+                                <th class="text-center bg-complete text-white">Apart</th>
+                                <th class="text-center bg-complete text-white">Accion</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php foreach ($agentsRooms as $agent): ?>
+                            <tr>
+                                <td class="text-center" style="padding: 12px 20px!important">
+                                    <?php echo $agent->id ?>
+                                </td>
+                                <td class="text-center" style="padding: 12px 20px!important">
+                                    <?php echo $agent->user->name ?>
+                                </td>
+                                <td class="text-center" style="padding: 12px 20px!important">
+                                    <?php echo $agent->room->nameRoom; ?>
+                                </td>
+                                <td class="text-center" style="padding: 12px 20px!important">
+
+                                    <a class="btn btn-danger btn-sm"
+                                       href="{{ url('/admin/agentRoom/delete/'.$agent->id )}}"
+                                       title="Eliminar">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php endforeach ?>
+                            </tbody>
+                        </table>
+                        <?php else: ?>
+                        <h3 class="font-w300 text-center">
+                            No has establecido ningún Agente para habitaciones
+                        </h3>
+                        <?php endif?>
+                    </div>
+                </div>
+                </div>
             </div>
         </div>
     </div>
@@ -248,6 +300,61 @@
                         </div>
                         <div class="block block-content" id="contentSegments" style="padding:20px">
                             @include('backend.segments.create')
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade slide-up in" id="agentRoom" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content-wrapper">
+                <div class="modal-content">
+                    <div class="block">
+                        <div class="block-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                                        class="pg-close fs-14"
+                                        style="font-size: 40px!important;color: black!important"></i>
+                            </button>
+                            <h2 class="text-center">
+                                Agentes - Aparts
+                            </h2>
+                        </div>
+                        <div class="block block-content" id="contentAgentRoom" style="padding:20px">
+                            <div class="row">
+                                <form action="{{ url('/admin/agentRoom/create') }}" method="post">
+                                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                    <?php $roomsToAgents = \App\Rooms::where('state', '=', 1)->orderBy('order')->get();?>
+                                    <?php $agents = \App\User::where('role', 'agente')->get();?>
+                                    <div class="col-md-4 col-xs-12 push-10">
+                                        <label>Agente</label>
+                                        <select class="form-control full-width minimal" name="user_id" required>
+                                            <option ></option>
+                                            <?php foreach ($agents as $agent): ?>
+                                                <option value="<?php echo $agent->id ?>">
+                                                    <?php echo $agent->name  ?>
+                                                </option>
+                                            <?php endforeach ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 col-xs-12 push-10">
+                                        <label>Apartamento</label>
+                                        <select class="form-control full-width minimal" name="room_id" required>
+                                            <option ></option>
+                                            <?php foreach ($roomsToAgents as $room): ?>
+                                            <option value="<?php echo $room->id ?>">
+                                                <?php echo substr($room->nameRoom." - ".$room->name, 0,12)  ?>
+                                            </option>
+                                            <?php endforeach ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 col-xs-12 push-10">
+                                        <br>
+                                        <button class="btn btn-complete font-w400" type="submit">Guardar</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
 

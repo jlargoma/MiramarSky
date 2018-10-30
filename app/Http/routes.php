@@ -574,6 +574,9 @@
 		} );
 
 		Route::get( '/admin/settings' , 'SettingsController@index' );
+		Route::post( '/admin/agentRoom/create' , 'SettingsController@createAgentRoom' );
+		Route::get( '/admin/agentRoom/delete/{id}' , 'SettingsController@deleteAgentRoom' );
+
 
 		Route::post( '/admin/specialSegments/create' , 'SpecialSegmentController@create' );
 		Route::get( '/admin/specialSegments/update/{id?}' , 'SpecialSegmentController@update' );
