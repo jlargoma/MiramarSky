@@ -262,7 +262,7 @@
                                                                         &nbsp;
                                                                     </div>
                                                                 <?php else: ?>
-                                                                    <a href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[0]->id ?>">
+                                                                    <a <?php if ( Auth::user()->role != "agente"): ?>href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[0]->id ?>"<?php endif ?>>
                                                                         <div style="width: 100%;height: 100%">
                                                                             &nbsp;
                                                                         </div>
