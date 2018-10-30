@@ -100,8 +100,11 @@
                                                             <?php for ($x = 0; $x < count($calendars); $x++): ?>
 
                                                                 <?php if($calendars[$x]->finish == $inicio->copy()->format('Y-m-d') && $calendars[$x]->type_book != 5): ?>
-                                                                    <a 
-                                                                        href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
+                                                                    <a
+	                                                                    <?php if ( Auth::user()->role != "agente"): ?>
+                                                                        href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>"
+	                                                                    <?php endif ?>
+
                                                                         <?php //getAgency
                                                                             $agency = ($calendars[$x]->agency != 0)?"Agencia: ".$calendars[$x]->getAgency($calendars[$x]->agency):"";
                                                                             $titulo = 
@@ -124,7 +127,7 @@
                                                                 <?php elseif ($calendars[$x]->start == $inicio->copy()->format('Y-m-d') && $calendars[$x]->type_book != 5 ): ?>
 
                                                                     <a 
-                                                                        href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
+                                                                        <?php if ( Auth::user()->role != "agente"): ?>href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>"  <?php endif ?>
 
                                                                         <?php 
                                                                             $agency = ($calendars[$x]->agency != 0)?"Agencia: ".$calendars[$x]->getAgency($calendars[$x]->agency):"";
@@ -154,7 +157,7 @@
                                                                 <?php else: ?>
                                                                     <?php if ($calendars[$x]->type_book != 9 && $calendars[$x]->type_book != 5): ?>
                                                                         <a 
-                                                                            href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
+                                                                            <?php if ( Auth::user()->role != "agente"): ?>href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" <?php endif ?>
                                                                             <?php 
                                                                                 $agency = ($calendars[$x]->agency != 0)?"Agencia: ".$calendars[$x]->getAgency($calendars[$x]->agency):"";
                                                                                 $titulo = 
