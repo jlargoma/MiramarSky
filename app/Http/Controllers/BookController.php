@@ -1363,7 +1363,7 @@ class BookController extends Controller
 
 		if (Auth::user()->role != "agente")
 		{
-			$roomsAgents = \App\Rooms::all(['room_id'])->toArray();
+			$roomsAgents = \App\Rooms::all(['id'])->toArray();
 			$rooms       = \App\Rooms::where('state', '=', 1)->get();
 			$types = [1, 3, 4, 5, 6, 10, 11 ];
 		} else
