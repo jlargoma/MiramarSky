@@ -46,7 +46,7 @@
                 </div> 
                 <div class="col-md-8">
                     <select name="status" class="form-control minimal" >
-	                    <?php  $status = [ 1 => 1, 2 => 2 ]; ?>
+	                    <?php  $status = [ 1 => 1]; ?>
 	                    <?php if ( Auth::user()->role != "agente"): ?>
                             <?php for ($i=1; $i <= 10; $i++): ?>
                             <option <?php echo $i == 3 ? "selected" : ""; ?>
@@ -246,7 +246,7 @@
                         <label>Agencia</label>
                         <select class="form-control full-width agency minimal" name="agency">
                             <?php for ($i=0; $i <= 6 ; $i++): ?>
-                                <option value="<?php echo $i ?>">
+                                <option value="<?php echo $i ?>" <?php if ( Auth::user()->role == "agente" &&  $i == 6): ?>selected <?php endif ?>>
                                     <?php echo \App\Book::getAgency($i) ?>
                                 </option>
                             <?php endfor;?>

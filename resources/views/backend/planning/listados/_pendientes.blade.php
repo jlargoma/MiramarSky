@@ -165,7 +165,7 @@
             <select class="status form-control minimal" data-id="<?php echo $book->id ?>">
 				<?php
 
-                    $status = [ 1 => 1, 2 => 2 ];
+                    $status = [ 1 => 1];
                     if (!in_array($book->type_book, $status))
                         $status[] = $book->type_book;
 
@@ -314,7 +314,7 @@
                 <select class="status form-control minimal" data-id="<?php echo $book->id ?>">
 	                <?php
 
-                        $status = [ 1 => 1, 2 => 2 ];
+                        $status = [ 1 => 1];
                         if (!in_array($book->type_book, $status))
                             $status[] = $book->type_book;
 

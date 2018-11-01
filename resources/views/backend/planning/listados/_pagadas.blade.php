@@ -204,7 +204,7 @@
                     <select class="status form-control minimal" data-id="<?php echo $book->id ?>" style="width: 95%">
 	                    <?php
 
-                            $status = [ 1 => 1, 2 => 2 ];
+                            $status = [1 => 2 ];
                             if (!in_array($book->type_book, $status))
                                 $status[] = $book->type_book;
 
@@ -223,7 +223,7 @@
 						<?php else: ?>
                             <?php for ($i = 1; $i <= count($status); $i++): ?>
                                 <?php if ($i == 5 && $book->customer->email == ""): ?> <?php else: ?>
-                                <option <?php echo $status[$i] == ($book->type_book) ? "selected" : ""; ?> <?php
+                                <option <?php echo ($status[$i] == ($book->type_book)) ? "selected" : ""; ?> <?php
                                         echo ($status[$i] == 1 || $status[$i] == 5) ? "style='font-weight:bold'" : "" ?> value="<?php echo $status[$i] ?>"
                                         data-id="<?php echo
                                         $book->id ?>">
@@ -359,7 +359,7 @@
             <td class="text-center">
                 <select class="status form-control minimal" data-id="<?php echo $book->id ?>">
 	                <?php
-                        $status = [ 1 => 1, 2 => 2 ];
+                        $status = [1 => 2 ];
                         if (!in_array($book->type_book, $status))
                             $status[] = $book->type_book;
 	                ?>

@@ -67,7 +67,15 @@ class BookController extends Controller
 			                            ->where('start', '>', $start->copy())
 			                            ->where('finish', '<', $start->copy()->addYear())
 			                            ->get();
-			$types = [1, 3, 4, 5, 6, 10, 11	];
+			$types           = [
+				1,
+				3,
+				4,
+				5,
+				6,
+				10,
+				11
+			];
 		} else
 		{
 			$roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
@@ -78,12 +86,12 @@ class BookController extends Controller
 			})->sortBy('order');
 
 			$booksCollection = \App\Book::with('customer')
-										->where('user_id', Auth::user()->id)
-										->where('start', '>', $start->copy())
-										->where('finish', '<', $start->copy()->addYear())
-										->whereIn('room_id', $roomsAgents)
+			                            ->where('user_id', Auth::user()->id)
+			                            ->where('start', '>', $start->copy())
+			                            ->where('finish', '<', $start->copy()->addYear())
+			                            ->whereIn('room_id', $roomsAgents)
 			                            ->get();
-			$types = [1];
+			$types           = [1];
 
 		}
 
@@ -105,8 +113,6 @@ class BookController extends Controller
 		                                       ->where('comment', 'LIKE', '%Antiguos cobros%')->count();
 		$booksCount['checkin']      = $this->getCounters($start, 'checkin');
 		$booksCount['checkout']     = $booksCount['confirmed'] - $booksCount['checkin'];
-
-
 
 
 		$stripe           = StripeController::$stripe;
@@ -170,7 +176,7 @@ class BookController extends Controller
 	{
 		if (Auth::user()->role != "agente")
 		{
-			$rooms         = \App\Rooms::where('state', '=', 1)->orderBy('order')->get();
+			$rooms = \App\Rooms::where('state', '=', 1)->orderBy('order')->get();
 		} else
 		{
 			$roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
@@ -1366,23 +1372,45 @@ class BookController extends Controller
 		{
 			$roomsAgents = \App\Rooms::all(['id'])->toArray();
 			$rooms       = \App\Rooms::where('state', '=', 1)->get();
-			$types = [1, 3, 4, 5, 6, 10, 11 ];
+			$types       = [
+				1,
+				3,
+				4,
+				5,
+				6,
+				10,
+				11
+			];
 		} else
 		{
-			$roomsAgents   = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
-			$rooms         = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order')->get();
-			$types = [1];
+			$roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
+			$rooms       = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order')->get();
+			$types       = [1];
 		}
 
 		switch ($request->type)
 		{
 			case 'pendientes':
-				$books = \App\Book::where('start', '>', $date->copy())
-				                  ->where('start', '<', $date->copy()->addYear())
-				                  ->whereIn('type_book', $types)
-				                  ->whereIn('room_id', $roomsAgents)
-				                  ->orderBy('created_at', 'DESC')
-				                  ->get();
+
+
+				if (Auth::user()->role != "agente")
+				{
+					$books = \App\Book::where('start', '>', $date->copy())
+					                  ->where('start', '<', $date->copy()->addYear())
+					                  ->whereIn('type_book', $types)
+					                  ->whereIn('room_id', $roomsAgents)
+					                  ->orderBy('created_at', 'DESC')
+					                  ->get();
+				} else
+				{
+					$books = \App\Book::where('start', '>', $date->copy())
+					                  ->where('start', '<', $date->copy()->addYear())
+					                  ->whereIn('type_book', $types)
+					                  ->where('user_id', Auth::user()->id)
+					                  ->whereIn('room_id', $roomsAgents)
+					                  ->orderBy('created_at', 'DESC')
+					                  ->get();
+				}
 				break;
 			case 'especiales':
 				$books = \App\Book::where('start', '>', $date->copy()->subMonth())
@@ -1395,12 +1423,25 @@ class BookController extends Controller
 				                  ->get();
 				break;
 			case 'confirmadas':
-				$books = \App\Book::where('start', '>', $date->copy()->subMonth())
-				                  ->where('start', '<', $date->copy()->addYear())
-				                  ->whereIn('type_book', [2])
-				                  ->whereIn('room_id', $roomsAgents)
-				                  ->orderBy('created_at', 'DESC')
-				                  ->get();
+
+				if (Auth::user()->role != "agente")
+				{
+					$books = \App\Book::where('start', '>', $date->copy()->subMonth())
+					                  ->where('start', '<', $date->copy()->addYear())
+					                  ->whereIn('type_book', [2])
+					                  ->whereIn('room_id', $roomsAgents)
+					                  ->orderBy('created_at', 'DESC')
+					                  ->get();
+				} else
+				{
+					$books = \App\Book::where('start', '>', $date->copy()->subMonth())
+					                  ->where('start', '<', $date->copy()->addYear())
+					                  ->whereIn('type_book', [2])
+					                  ->whereIn('room_id', $roomsAgents)
+					                  ->where('user_id', Auth::user()->id)
+					                  ->orderBy('created_at', 'DESC')
+					                  ->get();
+				}
 				break;
 			case 'checkin':
 				$dateX = Carbon::now();
@@ -1438,7 +1479,7 @@ class BookController extends Controller
 		}
 
 
-		$type  = $request->type;
+		$type = $request->type;
 
 		if ($request->type == 'confirmadas' || $request->type == 'checkin')
 		{
@@ -1797,7 +1838,8 @@ class BookController extends Controller
 		{
 			$roomsAgents   = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
 			$rooms         = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order')->get();
-			$roomscalendar = \App\Rooms::where('id', '>=', 5)->where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order', 'ASC')->get();
+			$roomscalendar = \App\Rooms::where('id', '>=', 5)->where('state', '=', 1)->whereIn('id', $roomsAgents)
+			                           ->orderBy('order', 'ASC')->get();
 		}
 		$book   = new \App\Book();
 		$inicio = $start->copy();

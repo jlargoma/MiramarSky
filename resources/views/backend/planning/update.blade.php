@@ -153,7 +153,7 @@
                         <select class="status form-control minimal" data-id="<?php echo $book->id ?>" name="status">
 	                        <?php
 
-                                $status = [ 1 => 1, 2 => 2 ];
+                                $status = [ 1 => 1];
                                 if (!in_array($book->type_book, $status))
                                     $status[3] = $book->type_book;
 	                        ?>
@@ -460,7 +460,9 @@
                                 <label>Agencia</label>
                                 <select class="form-control full-width agency minimal" name="agency">
 									<?php for ($i = 0; $i <= 6 ; $i++): ?>
-                                    <option value="<?php echo $i ?>" {{ $book->agency == $i ? 'selected' : '' }}><?php echo $book->getAgency($i) ?></option>
+                                    <option value="<?php echo $i ?>" {{ $book->agency == $i ? 'selected' : '' }} <?php if ( Auth::user()->role == "agente" &&  $book->getAgency($i) == "S.essence"): ?>
+                                    selected<?php endif ?>>
+                                        <?php echo $book->getAgency($i) ?></option>
 									<?php endfor;?>
                                 </select>
                             </div>
@@ -1021,7 +1023,10 @@
                                 <label>Agencia</label>
                                 <select class="form-control full-width agency minimal" name="agency">
 									<?php for ($i = 0; $i <= 6 ; $i++): ?>
-                                    <option value="<?php echo $i ?>" {{ $book->agency == $i ? 'selected' : '' }}><?php echo $book->getAgency($i) ?></option>
+                                    <option value="<?php echo $i ?>" {{ $book->agency == $i ? 'selected' : '' }} <?php if ( Auth::user()->role == "agente" &&  $book->getAgency($i) == "S.essence"): ?>
+                                    selected<?php endif ?>>
+                                        <?php echo $book->getAgency($i) ?>
+                                    </option>
 									<?php endfor;?>
                                 </select>
                             </div>
