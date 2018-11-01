@@ -104,11 +104,20 @@
                                                                         href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
                                                                         <?php //getAgency
                                                                             $agency = ($calendars[$x]->agency != 0)?"Agencia: ".$calendars[$x]->getAgency($calendars[$x]->agency):"";
-                                                                            $titulo = 
-                                                                                        $calendars[$x]->customer['name'].'&#10'.
-                                                                                        'Pax-real '.$calendars[$x]->real_pax.'&#10;'.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;'.
-                                                                                        'PVP:'.$calendars[$x]->total_price.'&#10'.
-                                                                                        $agency;
+                                                                            if (Auth::user()->role != "agente")
+                                                                            {
+	                                                                            $titulo =
+		                                                                            $calendars[$x]->customer['name'].'&#10'.
+		                                                                            'Pax-real '.$calendars[$x]->real_pax.'&#10;'.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;'.
+		                                                                            'PVP:'.$calendars[$x]->total_price.'&#10'.
+		                                                                            $agency;
+                                                                            } else
+                                                                            {
+	                                                                            $titulo =
+		                                                                            $calendars[$x]->customer['name'].'&#10'.
+		                                                                            'Pax-real '.$calendars[$x]->real_pax.'&#10;'.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;'.$agency;
+                                                                            }
+
                                                                         ?>
                                                                         title="<?php echo $titulo ?>"
                                                                     >
@@ -128,12 +137,19 @@
 
                                                                         <?php 
                                                                             $agency = ($calendars[$x]->agency != 0)?"Agencia: ".$calendars[$x]->getAgency($calendars[$x]->agency):"";
-                                                                            $titulo = 
-                                                                                        $calendars[$x]->customer['name'].'&#10'.
-                                                                                        'Pax-real '.$calendars[$x]->real_pax.'&#10;'.
-                                                                                        ''.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;'.
-                                                                                        'PVP:'.$calendars[$x]->total_price.'&#10'.
-                                                                                        $agency;
+                                                                        if (Auth::user()->role != "agente")
+                                                                        {
+	                                                                        $titulo =
+		                                                                        $calendars[$x]->customer['name'].'&#10'.
+		                                                                        'Pax-real '.$calendars[$x]->real_pax.'&#10;'.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;'.
+		                                                                        'PVP:'.$calendars[$x]->total_price.'&#10'.
+		                                                                        $agency;
+                                                                        } else
+                                                                        {
+	                                                                        $titulo =
+		                                                                        $calendars[$x]->customer['name'].'&#10'.
+		                                                                        'Pax-real '.$calendars[$x]->real_pax.'&#10;'.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;'.$agency;
+                                                                        }
                                                                         ?>
                                                                         title="<?php echo $titulo ?>"
                                                                     >
@@ -157,12 +173,19 @@
                                                                             href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" 
                                                                             <?php 
                                                                                 $agency = ($calendars[$x]->agency != 0)?"Agencia: ".$calendars[$x]->getAgency($calendars[$x]->agency):"";
-                                                                                $titulo = 
-                                                                                            $calendars[$x]->customer['name'].'&#10'.
-                                                                                            'Pax-real '.$calendars[$x]->real_pax.'&#10;'.
-                                                                                            ''.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;'.
-                                                                                            'PVP:'.$calendars[$x]->total_price.'&#10'.
-                                                                                            $agency;
+                                                                            if (Auth::user()->role != "agente")
+                                                                            {
+	                                                                            $titulo =
+		                                                                            $calendars[$x]->customer['name'].'&#10'.
+		                                                                            'Pax-real '.$calendars[$x]->real_pax.'&#10;'.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;'.
+		                                                                            'PVP:'.$calendars[$x]->total_price.'&#10'.
+		                                                                            $agency;
+                                                                            } else
+                                                                            {
+	                                                                            $titulo =
+		                                                                            $calendars[$x]->customer['name'].'&#10'.
+		                                                                            'Pax-real '.$calendars[$x]->real_pax.'&#10;'.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;'.$agency;
+                                                                            }
                                                                             ?>
                                                                             title="<?php echo $titulo ?>"
                                                                         >
@@ -189,11 +212,22 @@
                                                             <td 
                                                                 <?php 
                                                                     $agency = ($calendars[0]->agency != 0)?"Agencia: ".$calendars[0]->getAgency($calendars[0]->agency):"";
-                                                                    $titulo = 
-                                                                                $calendars[0]->customer['name'].'&#10'.
-                                                                                'Pax-real '.$calendars[0]->real_pax.'&#10;'.
-                                                                                ''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;'.
-                                                                                'PVP:'.$calendars[0]->total_price.'&#10'.$agency;
+
+                                                                if (Auth::user()->role != "agente")
+                                                                {
+	                                                                $titulo =
+		                                                                $calendars[0]->customer['name'].'&#10'.
+		                                                                'Pax-real '.$calendars[0]->real_pax.'&#10;'.
+		                                                                ''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;'.
+		                                                                'PVP:'.$calendars[0]->total_price.'&#10'.$agency;
+                                                                } else
+                                                                {
+	                                                                $titulo =
+		                                                                $calendars[0]->customer['name'].'&#10'.
+		                                                                'Pax-real '.$calendars[0]->real_pax.'&#10;'.
+		                                                                ''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;'.$agency;
+                                                                }
+
                                                                 ?>
 
                                                                 title="<?php echo $titulo ?>"
@@ -213,11 +247,21 @@
                                                             <td 
                                                                 <?php 
                                                                     $agency = ($calendars[0]->agency != 0)?"Agencia: ".$calendars[0]->getAgency($calendars[0]->agency):"";
-                                                                    $titulo = 
-                                                                                $calendars[0]->customer['name'].'&#10'.
-                                                                                'Pax-real '.$calendars[0]->real_pax.'&#10;'.
-                                                                                ''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;'.
-                                                                                'PVP:'.$calendars[0]->total_price.'&#10'.$agency;
+
+                                                                if (Auth::user()->role != "agente")
+                                                                {
+	                                                                $titulo =
+		                                                                $calendars[0]->customer['name'].'&#10'.
+		                                                                'Pax-real '.$calendars[0]->real_pax.'&#10;'.
+		                                                                ''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;'.
+		                                                                'PVP:'.$calendars[0]->total_price.'&#10'.$agency;
+                                                                } else
+                                                                {
+	                                                                $titulo =
+		                                                                $calendars[0]->customer['name'].'&#10'.
+		                                                                'Pax-real '.$calendars[0]->real_pax.'&#10;'.
+		                                                                ''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;'.$agency;
+                                                                }
                                                                 ?>
 
                                                                 title="<?php echo $titulo ?>"
@@ -240,11 +284,20 @@
                                                             style='border:1px solid grey;width: 24px; height: 20px;' 
                                                             <?php 
                                                                 $agency = ($calendars[0]->agency != 0)?"Agencia: ".$calendars[0]->getAgency($calendars[0]->agency):"";
-                                                                $titulo = 
-                                                                            $calendars[0]->customer['name'].'&#10'.
-                                                                            'Pax-real '.$calendars[0]->real_pax.'&#10;'.
-                                                                            ''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;'.
-                                                                            'PVP:'.$calendars[0]->total_price.'&#10'.$agency;
+                                                            if (Auth::user()->role != "agente")
+                                                            {
+	                                                            $titulo =
+		                                                            $calendars[0]->customer['name'].'&#10'.
+		                                                            'Pax-real '.$calendars[0]->real_pax.'&#10;'.
+		                                                            ''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;'.
+		                                                            'PVP:'.$calendars[0]->total_price.'&#10'.$agency;
+                                                            } else
+                                                            {
+	                                                            $titulo =
+		                                                            $calendars[0]->customer['name'].'&#10'.
+		                                                            'Pax-real '.$calendars[0]->real_pax.'&#10;'.
+		                                                            ''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;'.$agency;
+                                                            }
                                                             ?>
                                                                 title="<?php echo $titulo ?> " 
                                                                 <?php $class = $calendars[0]->getStatus($calendars[0]->type_book) ?>

@@ -653,15 +653,16 @@ class RoomsController extends Controller
 
 		$email = $request->email;
 		$room  = \App\Rooms::find($request->roomId);
-		$path  = public_path() . '/img/miramarski/apartamentos/' . $room->nameRoom . '/thumbnails/';
+		$path  = public_path() . '/img/miramarski/apartamentos/' . $room->nameRoom . '/';
 
 		if (File::exists($path))
 		{
 			$images = File::allFiles($path);
 
-			Mail::send('backend.emails._imagesRoomEmail', ['room' => $room], function ($message) use ($email, $images, $room, $path) {
+			$send = Mail::send('backend.emails._imagesRoomEmail', ['room' => $room], function ($message) use ($email, $images, $room, $path) {
+				$message->from('info@apartamentosierranevada.net');
 				$luxury = ($room->luxury == 1) ? "Lujo" : "Estandar";
-				$message->from('reservas@apartamentosierranevada.net');
+
 
 				foreach ($images as $key => $image):
 					$message->attach($path . $image->getFilename());
@@ -671,6 +672,9 @@ class RoomsController extends Controller
 				$message->to($email);
 				$message->subject('Imagenes del apartamento ' . $room->sizeRooms->name . ' // ' . $luxury);
 			});
+
+			if ($send )
+				echo "EMAIL SALIENDO";
 
 			$log          = new \App\LogImages();
 			$log->email   = $email;
@@ -684,6 +688,8 @@ class RoomsController extends Controller
 
 			if (isset($request->returned))
 				return redirect()->back();
+		}else{
+			echo "No exite el directorio";
 		}
 
 	}

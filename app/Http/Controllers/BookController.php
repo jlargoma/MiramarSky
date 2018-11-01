@@ -78,7 +78,8 @@ class BookController extends Controller
 			})->sortBy('order');
 
 			$booksCollection = \App\Book::with('customer')
-			                            ->where('start', '>', $start->copy())
+										->where('user_id', Auth::user()->id)
+										->where('start', '>', $start->copy())
 										->where('finish', '<', $start->copy()->addYear())
 										->whereIn('room_id', $roomsAgents)
 			                            ->get();

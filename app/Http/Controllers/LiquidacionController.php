@@ -394,7 +394,7 @@
 			}
 
 			$inicio = new Carbon( 'first day of September ' . $date->copy()->format( 'Y' ) );
-
+			
 
 			$books = \App\Book::whereIn( 'type_book' , [2] )->where( 'start' , '>' , $inicio->copy()->format( 'Y-m-d' ) )->where( 'start' , '<=' , $inicio->copy()->addYear()->format( 'Y-m-d' ) )->get();
 

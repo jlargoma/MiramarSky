@@ -19,23 +19,15 @@ class OwnedController extends Controller
     {
             
         // Rooms
-        
-
             $room = \App\Rooms::where('nameRoom', $name)->first();
             
             if ($room->owned == Auth::user()->id) {
-
-
                 $room = \App\Rooms::where('nameRoom', $name)->first();
 
             }elseif(Auth::user()->role == 'admin'){
-
-                $room = \App\Rooms::where('nameRoom', $name)->first();  
-
-            }else{ 
-                
+                $room = \App\Rooms::where('nameRoom', $name)->first();
+            }else{
                 return view('errors.owned-access');
-
             }
             // Año
             if ( empty($year) ) {
@@ -88,12 +80,7 @@ class OwnedController extends Controller
                 $mes[$ax->copy()->format('n')] = $ax->copy()->format('M Y');
                 $ax = $ax->addMonth();
             }
-
             $book = new \App\Book();
-
-     
-
-
             for ($i=1; $i <= 12; $i++) {
 
                 $startMonth = $firstDayOfTheYear->copy()->startOfMonth();
@@ -121,9 +108,7 @@ class OwnedController extends Controller
             unset($arrayMonths[6]);
             unset($arrayMonths[7]);
             unset($arrayMonths[8]);
-            
 
-            
             foreach ($books as $book) {
 
                 if ($book->type_book != 7 && $book->type_book != 8 && $book->type_book != 9) {
@@ -144,26 +129,17 @@ class OwnedController extends Controller
 
             // $paymentspro = \App\Paymentspro::where('room_id',$room->id)->where('datePayment','>=',$date->copy()->format('Y-m-d'))->where('datePayment','<=',$date->copy()->addYear()->format('Y-m-d'))->get();
 
-
-
             $gastos = \App\Expenses::where('date', '>=', $date->copy()->format('Y-m-d'))
                                     ->where('date', '<=', $date->copy()->addYear()->format('Y-m-d'))
                                     ->where('PayFor', 'LIKE', '%'.$room->id.'%')
                                     ->orderBy('date', 'ASC')
                                     ->get();
-
-            // echo "<pre>";
-            // print_r($gastos);
-            // die();
-
             $pagototal = 0;
             foreach ($gastos as $pago) {
 
                 $pagototal += $pago->import;
 
             }
-
-        
         $estadisticas['ingresos'] = array(); 
         $estadisticas['clientes'] = array(); 
         $dateStadistic            = $date->copy()->startOfMonth();
