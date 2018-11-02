@@ -100,8 +100,8 @@
 					<?php if ($book->real_pax > 6): ?>
 					<?php echo $book->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
 					<?php else: ?>
-                                    <?php echo $book->pax ?>
-                                <?php endif ?>
+                        <?php echo $book->pax ?>
+                    <?php endif ?>
 
                 </td>
                 <td class="text-center">
@@ -163,9 +163,9 @@
                     <div class="col-md-6">
 						<?php echo round($book->total_price) . "€" ?><br>
 						<?php if (isset($payment[$book->id])): ?>
-                                <?php echo "<p style='color:red'>" . $payment[$book->id] . "</p>" ?>
-                            <?php else: ?>
-                            <?php endif ?>
+                            <?php echo "<p style='color:red'>" . $payment[$book->id] . "</p>" ?>
+                        <?php else: ?>
+                        <?php endif ?>
                     </div>
 
 					<?php if (isset($payment[$book->id])): ?>
@@ -363,7 +363,7 @@
                         if (!in_array($book->type_book, $status))
                             $status[] = $book->type_book;
 	                ?>
-	                <?php if ( Auth::user()->role != "agente" && in_array($i, $status)): ?>
+	                <?php if ( Auth::user()->role != "agente" ): ?>
                         <?php for ($i=1; $i <= 12; $i++): ?>
                             <?php if ($i == 5 && $book->customer->email == ""): ?><?php else: ?>
                             <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?> value="<?php echo $i ?>"  data-id="<?php echo

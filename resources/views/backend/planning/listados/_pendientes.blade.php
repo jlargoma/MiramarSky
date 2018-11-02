@@ -314,34 +314,34 @@
                 <select class="status form-control minimal" data-id="<?php echo $book->id ?>">
 	                <?php
 
-                        $status = [ 1 => 1];
-                        if (!in_array($book->type_book, $status))
-                            $status[] = $book->type_book;
+	                $status = [ 1 => 1];
+	                if (!in_array($book->type_book, $status))
+		                $status[] = $book->type_book;
 
 	                ?>
-					<?php if ( Auth::user()->role != "agente" && in_array($i, $status)): ?>
-                        <?php for ($i = 1; $i <= 12; $i++): ?>
-                            <?php if ($i == 5 && $book->customer->email == ""): ?><?php else: ?>
-                            <option
-                                <?php echo $i == ($book->type_book) ? "selected" : ""; ?> <?php echo ($i == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?> value="<?php echo $i ?>"
-                                data-id="<?php echo
-                                $book->id ?>">
-                                <?php echo $book->getStatus($i) ?>
-                            </option>
-                            <?php endif ?>
-                        <?php endfor; ?>
-					<?php else: ?>
-                        <?php for ($i = 1; $i <= count($status); $i++): ?>
-                            <?php if ($i == 5 && $book->customer->email == ""): ?> <?php else: ?>
-                            <option <?php echo $status[$i] == ($book->type_book) ? "selected" : ""; ?> <?php
-                                    echo ($status[$i] == 1 || $status[$i] == 5) ? "style='font-weight:bold'" : "" ?> value="<?php echo $status[$i] ?>"
-                                    data-id="<?php echo
-                                    $book->id ?>">
-                                <?php echo $book->getStatus($status[$i]) ?>
-                            </option>
-                            <?php endif ?>
-                        <?php endfor; ?>
-					<?php endif ?>
+	                <?php if ( Auth::user()->role != "agente"): ?>
+	                <?php for ($i = 1; $i <= 12; $i++): ?>
+	                <?php if ($i == 5 && $book->customer->email == ""): ?><?php else: ?>
+                    <option
+		                <?php echo $i == ($book->type_book) ? "selected" : ""; ?> <?php echo ($i == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?> value="<?php echo $i ?>"
+                        data-id="<?php echo
+		                $book->id ?>">
+		                <?php echo $book->getStatus($i) ?>
+                    </option>
+	                <?php endif ?>
+	                <?php endfor; ?>
+	                <?php else: ?>
+	                <?php for ($i = 1; $i <= count($status); $i++): ?>
+	                <?php if ($i == 5 && $book->customer->email == ""): ?> <?php else: ?>
+                    <option <?php echo $status[$i] == ($book->type_book) ? "selected" : ""; ?> <?php
+	                        echo ($status[$i] == 1 || $status[$i] == 5) ? "style='font-weight:bold'" : "" ?> value="<?php echo $status[$i] ?>"
+                            data-id="<?php echo
+	                        $book->id ?>">
+		                <?php echo $book->getStatus($status[$i]) ?>
+                    </option>
+	                <?php endif ?>
+	                <?php endfor; ?>
+	                <?php endif ?>
                 </select>
             </td>
             <td class="text-center">
