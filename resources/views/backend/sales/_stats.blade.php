@@ -30,6 +30,10 @@
 		border:1px solid #e8e8e8;
 		background: white;
 		}
+
+		h4.no-margin.p-b-5.text-white span i{
+			font-size: 22px;
+		}
 </style>
 
 <?php $dataStats = \App\http\Controllers\LiquidacionController::getSalesByYear($inicio->copy()->format('Y')); ?>
@@ -118,8 +122,8 @@
 							</h4>
 							<?php $totalPVP = \App\Rooms::getPvpByYear($lastThreeSeason->copy()->format('Y')); ?>
 							<h4 class="no-margin p-b-5 text-white">
-								<?php echo number_format( $totalPVP, 0, ',', '.'); ?>€ 
-								<span style="font-size: 14px;">
+								<?php echo number_format( $totalPVP, 0, ',', '.'); ?>€
+								<span>
 									<?php if ($i > 1): ?>
 										<?php if ($totalPVP > $oldTotalPVP): ?>
 											<i class="fa fa-arrow-up text-success"></i>
@@ -143,24 +147,7 @@
     <div class="row">
     	<?php $dataX = \App\Http\Controllers\LiquidacionController::getSalesByYearByRoomGeneral("","all") ?>
     	<div class="row bg-white push-30">
-    		<div class="col-md-12">
-    			<div class="col-md-6 bordered">
-    				<div class="card-title text-black hint-text">
-    					COBRADO
-    				</div>
-    				<div class="p-l-20">
-    					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['pagado'],0,',','.') ?>€</h3>
-    				</div>
-    			</div>
-    			<div class="col-md-6 bordered">
-    				<div class="card-title text-black hint-text">
-    					PENDIENTE
-    				</div>
-    				<div class="p-l-20">
-    					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['total'] - $dataX['pagado'],0,',','.') ?>€</h3>
-    				</div>
-    			</div>
-    		</div>
+
     		<div class="col-md-12">
     			<div class="col-md-3 bordered">
     				<div class="card-title text-black hint-text">
@@ -222,8 +209,7 @@
         },
         options: {
           title: {
-            display: true,
-            text: 'Ingresos de la temporada <?php echo $fecha->copy()->subYear()->format('Y');?> - <?php echo $fecha->copy()->format('Y');?>'
+            display: true
           }
         }
     });
@@ -243,8 +229,7 @@
         },
         options: {
           title: {
-            display: true,
-            text: 'Cobros de la temporada <?php echo $fecha->copy()->subYear()->format('Y');?> - <?php echo $fecha->copy()->format('Y');?>'
+            display: true
           }
         }
     });

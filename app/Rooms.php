@@ -135,7 +135,7 @@ class Rooms extends Model
         $inicio = $start->copy();
 
         $books = \App\Book::whereIn('type_book', [2,7,8])
-                            ->where('start', '>', $inicio->copy()->format('Y-m-d'))
+                            ->where('start', '>=', $inicio->copy()->format('Y-m-d'))
                             ->where('start', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
                             ->orderBy('start', 'ASC')
                             ->get();

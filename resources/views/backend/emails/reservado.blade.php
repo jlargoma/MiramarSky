@@ -2,8 +2,8 @@
 Hola "<?php echo $book->customer->name ?>" hemos bloqueado parcialmente un apartamento en respuesta a tu solicitud:<br/><br/>
 
 <h2><u>Pago de la reserva</u></h2>
-<b>Dispones de un plazo de 4 horas para realizar el pago de la señal </b> 
-<?php 
+<b>Dispones de un plazo de 4 horas para realizar el pago de la señal </b>
+<?php
 	$percent = 0.5;
 	$date = Carbon::createFromFormat('Y-m-d', $book->start);
 	$now = Carbon::now();
@@ -23,7 +23,7 @@ a través de nuestra pasarela de pago para tarjetas.<br><br>
 		https://miramarski.com/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>/<?php echo base64_encode(number_format(($book->total_price*$percent),2,',','.')) ?>
 	</a><br><br>
 
-<b><strong>Una vez recibamos el pago de la señal, el apartamento quedará bloquedo y tu recibiras un email con la confirmación.</strong><br>
+<b><strong>Una vez recibamos el pago de la señal, el apartamento quedará bloqueado y tu recibirás un email con la confirmación.</strong><br>
 
 Consulta nuestras condiciones de contratación <a href="{{ url('/condiciones-generales') }}">aquí</a></b><br><br>
 
@@ -42,7 +42,7 @@ Noches: <?php echo $book->nigths ?>  <br><br>
 Precio total: <?php echo number_format($book->total_price,2,',','.') ?> € <br><br></b>
 El precio te incluye todo, piscina climatizada, gimnasio, taquilla guarda esquíes <?php if ($book->type_park != 2): ?>y parking cubierto <?php endif ?>  . <br>
 <br>
-En todas nuestras reservas están incluidas las Sábanas y toallas. <br>
+En todas nuestras reservas están incluidas las sábanas y toallas. <br>
 <br>
 
 <hr style="width: 100%">
@@ -51,12 +51,12 @@ En todas nuestras reservas están incluidas las Sábanas y toallas. <br>
 Para realizar una reserva se debe de abonar el 50% del importe total.<br>
 El segundo pago con el 50% restante, se realizará 15 días antes de la entrada.<br><br>
 
-<b>Hora de Entrada: La entrega de llaves la realizamos en el propio edifico entre las 17 a 19.30 Horas</b><br><br>
+<b>Hora de Entrada: La entrega de llaves la realizamos en el propio edifico entre las 17.30 a 19.30 Horas</b><br><br>
 La entrega de llaves fuera de horario puede llevar gastos por el tiempo de espera.<br><br>
 
 10€ Si llegas entre 20:00 h de las 22.00<br><br>
 
-20€ Si llegas más tarde de de las 22 h<br><br>
+20€ Si llegas más tarde de de las 22.00 h<br><br>
 
 No se entregan llaves a partir de las 00.00 sin previo aviso (el día anterior a la entrada)<br><br>
 
