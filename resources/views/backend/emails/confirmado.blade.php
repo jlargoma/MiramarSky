@@ -1,6 +1,6 @@
 <?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
 
-Hola <b><?php echo $book->customer->name ?>, </b>hemos recibido tu pago en concepto de señal, <b><u>tu reserva está confirmada</u></b>.
+Hola <b><?php echo $book->customer->name ?>, </b>hemos recibido tu pago de <b><?php echo  number_format(($book->total_price/2),2,',','.')?> €</b> en concepto de señal, <b><u>tu reserva está confirmada</u></b>.
 <br>
 <br>
 Nombre: <b><?php echo $book->customer->name ?></b> .<br>
