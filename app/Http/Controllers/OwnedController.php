@@ -322,6 +322,23 @@ class OwnedController extends Controller
 			$book->finish      = Carbon::CreateFromFormat('d/m/Y', $finish)->format('Y-m-d');
 			$book->type_book   = 7;
 
+			$book->sup_limp    = ($room->sizeApto == 1) ? 30 : 50;
+			$book->cost_limp   = ($room->sizeApto == 1) ? 30 : 40;
+			$book->sup_park    = 0;
+			$book->cost_park   = 0;
+			$book->sup_lujo    = 0;
+			$book->cost_lujo   = 0;
+			$book->cost_apto   = 0;
+			$book->cost_total  = ($room->sizeApto == 1) ? 30 : 40;
+			$book->total_price = ($room->sizeApto == 1) ? 30 : 50;
+			$book->real_price  = ($room->sizeApto == 1) ? 30 : 50;
+			$book->total_ben   = $book->total_price - $book->cost_total;
+
+			$book->inc_percent = round(($book->total_ben / $book->total_price) * 100, 2);
+			$book->ben_jorge   = $book->total_ben * $room->typeAptos->PercentJorge / 100;
+			$book->ben_jaime   = $book->total_ben * $room->typeAptos->PercentJaime / 100;
+
+			LiquidacionController::setExpenseLimpieza(7, $room->id, $finish);
 
 			if ($book->save())
 			{

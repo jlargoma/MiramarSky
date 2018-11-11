@@ -30,9 +30,9 @@
                             <?php endif ?>
                         </td>
                         <td class ="text-center"  style="padding: 10px 15px!important">
-                                <a class="update-book" data-id="<?php echo $book->id ?>" title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red">
-                                    <?php echo substr( $book->customer->name , 0, 8)  ?>
-                                </a>
+                            <a class="update-book" data-id="<?php echo $book->id ?>" title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red">
+                                <?php echo substr( $book->customer->name , 0, 8)  ?>
+                            </a>
 
                             <?php if (!empty($book->comment) || !empty($book->book_comments)): ?>
                                 <?php 

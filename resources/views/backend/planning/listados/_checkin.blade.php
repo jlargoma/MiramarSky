@@ -96,16 +96,17 @@
                                     <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
                                 <?php endif ?>
                             </td>
-                            <td class ="text-center" style="padding: 10px 15px!important">
-                               
+                            <td class="text-center" style="padding: 10px 15px!important">
+                                <a class="update-book" data-id="<?php echo $book->id ?>"
+                                   title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"
+                                   <?php if ( Auth::user()->role != "agente"): ?> href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" <?php endif ?>
+                                   <?php if (isset($payment[$book->id])): ?>  style="color: red" <?php endif ?>
 
-                                <?php if (isset($payment[$book->id])): ?>
-                                    <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>
-                                <?php else: ?>
-                                    <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" ><?php echo $book->customer['name']  ?></a>
-                                <?php endif ?>   
+                                >
+                                    <?php echo $book->customer['name']  ?>
+                                </a>
                                 <?php if (!empty($book->comment) || !empty($book->book_comments)): ?>
-                                    <?php 
+                                    <?php
                                         $textComment = "";
                                         if (!empty($book->comment)) {
                                             $textComment .= "<b>COMENTARIOS DEL CLIENTE</b>:"."<br>"." ".$book->comment."<br>";
@@ -114,11 +115,14 @@
                                             $textComment .= "<b>COMENTARIOS DE LA RESERVA</b>:"."<br>"." ".$book->book_comments;
                                         }
                                     ?>
+
                                     <span class="icons-comment" data-class-content="content-comment-<?php echo $book->id?>">
-                                        <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
+                                        <i class="fa fa-comments" style="color: #000;" aria-hidden="true"></i>
                                     </span>
-                                    <div class="comment-floating content-comment-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $textComment ?></p></div>
-                                <?php endif ?>                                                                
+                                    <div class="comment-floating content-comment-<?php echo $book->id?>" style="display: none;">
+                                        <p class="text-left"><?php echo $textComment ?></p>
+                                    </div>
+                                <?php endif ?>
                             </td>
 
                             <td class ="text-center">
@@ -326,9 +330,30 @@
                         <?php if ($book->agency != 0): ?>
                             <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
                         <?php endif ?>
+
+
+	                    <?php if (!empty($book->comment) || !empty($book->book_comments)): ?>
+                            <?php
+                                $textComment = "";
+                                if (!empty($book->comment)) {
+                                    $textComment .= "<b>COMENTARIOS DEL CLIENTE</b>:"."<br>"." ".$book->comment."<br>";
+                                }
+                                if (!empty($book->book_comments)) {
+                                    $textComment .= "<b>COMENTARIOS DE LA RESERVA</b>:"."<br>"." ".$book->book_comments;
+                                }
+                            ?>
+
+                            <span class="icons-comment" data-class-content="content-comment-<?php echo $book->id?>">
+                                    <i class="fa fa-comments" style="color: #000;" aria-hidden="true"></i>
+                                </span>
+                            <div class="comment-floating content-comment-<?php echo $book->id?>" style="display: none;">
+                                <p class="text-left"><?php echo $textComment ?></p>
+                            </div>
+	                    <?php endif ?>
                     </td>
                     <td class="text-center">
                         <b><?php echo substr($book->room->nameRoom, 0, 4)  ?></b>
+
                     </td>
                     <td class="text-center">
                         <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
@@ -336,7 +361,6 @@
                         <?php else: ?>
                             <input type="text" class="only-numbers customer-phone" data-id="<?php echo $book->customer->id ?>"/>
                         <?php endif ?>
-                       
                     </td>
                     <td class="text-center">
                        <div class="col-md-6">

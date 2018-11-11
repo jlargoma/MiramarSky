@@ -21,15 +21,25 @@ class CustomersController extends Controller
 
         foreach ($correosUsuarios as $correos) {
             $arraycorreos[] = $correos->email;
-
         }
 
+        $arraycorreos[] = "iankurosaki17@gmail.com";
+        $arraycorreos[] = "jlargoma@gmail.com";
+        $arraycorreos[] = "victorgerocuba@gmail.com";
 
-            $arraycorreos[] = "iankurosaki@gmail.com";
-            $arraycorreos[] = "jlargoma@gmail.com";
-            $arraycorreos[] = "victorgerocuba@gmail.com";
+        $emails = \App\Customers::select('email')
+	                            ->distinct()
+						        ->where('email', '!=', " ")
+						        ->where('email', '!=', "-")
+                                ->get();
 
-        return view('backend/customers/index',['customers' => \App\Customers::whereNotIn('email',$arraycorreos)->where('email', '!=', ' ')->distinct('email')->orderBy('created_at', 'DESC')->get()]);
+		$customers = \App\Customers::whereNotIn('email',$arraycorreos)
+									->whereIn('email', $emails->toArray())
+
+									->orderBy('created_at', 'DESC')
+									->get();
+
+        return view('backend/customers/index',['customers' => $customers]);
     }
 
     /**

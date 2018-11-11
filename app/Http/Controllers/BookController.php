@@ -384,7 +384,8 @@ class BookController extends Controller
 						LiquidacionController::setExpenseLimpieza($request->input('status'), $room->id, $finish);
 						/* Asiento automatico */
 
-					} elseif ($request->input('status') == 7)
+					}
+					elseif ($request->input('status') == 7)
 					{
 						$book->PVPAgencia  = ($request->input('agencia')) ? $request->input('agencia') : 0;
 						$book->sup_limp    = ($room->sizeApto == 1) ? 30 : 50;
