@@ -128,26 +128,7 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-    <div class="modal fade slide-up disable-scroll in" id="updateUser" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-md">
-            <div class="modal-content-wrapper">
-                <div class="modal-content">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
-                                class="pg-close fs-50"></i>
-                    </button>
-                    <div class="container-xs-height full-height">
-                        <div class="row-xs-height">
-                            <div class="modal-body col-xs-height col-middle text-center   ">
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
 @endsection
 
 @section('scripts')
@@ -157,7 +138,7 @@
         $('.update-user').click(function (event) {
           var id = $(this).attr('data-id');
           $.get('/admin/usuarios/update/' + id, function (data) {
-            $('#updateUser .modal-body').empty().append(data);
+            $('.modal-body').empty().append(data);
           });
         });
 

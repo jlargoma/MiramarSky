@@ -123,7 +123,7 @@
     	    							<?php if ($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')] == 0): ?>
     	    								---
     	    							<?php else: ?>
-    	    								<b><?php echo number_format($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')],0,',','.') ?>€</b>
+    	    								<b><?php echo number_format($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')],0,',','.') ?> €</b>
     	    							<?php endif ?>
     	    							
     	    						</td>
@@ -145,13 +145,6 @@
                    <canvas id="barChartMonth" style="width: 100%; height: 250px;"></canvas>
                </div>
             </div>
-            <div class="col-md-12 col-xs-12">
-                <div>
-	                <?php $dataChartYear = \App\Rooms::getPvpByMonth($inicio->copy()->subYear()->format('Y')) ?>
-
-                    <canvas id="barChartTemp" style="width: 100%; height: 250px;"></canvas>
-                </div>
-            </div>
         </div>
 	</div>
 </div>
@@ -171,13 +164,13 @@
 
     var data = {
         labels: [
-                <?php foreach ($arrayTotales as $key => $value): ?>
-                    <?php echo "'".$key."'," ?>
-                <?php endforeach ?>
+                    <?php foreach ($arrayTotales as $key => $value): ?>
+                        <?php echo "'".$key."'," ?>
+                    <?php endforeach ?>
                 ],
         datasets: [
             {
-                label: "Ingresos por Temp",
+                label: "Ingresos por Año",
                 backgroundColor: [
                     'rgba(54, 162, 235, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -274,46 +267,6 @@
                             }
                         ]
             },
-    });
-
-
-    new Chart(document.getElementById("barChartTemp"), {
-      type: 'line',
-      data: {
-        labels: [
-	        <?php foreach ($dataChartMonths as $key => $value): ?>
-                <?php echo "'".$key."'," ?>
-            <?php endforeach ?>
-        ],
-        datasets: [{
-          data: [
-	          <?php foreach ($dataChartMonths as $key => $value): ?>
-                <?php echo "'".round($value)."'," ?>
-            <?php endforeach ?>
-          ],
-          label: '<?php echo $inicio->copy()->format('Y')?>-<?php echo $inicio->copy()->addYear()->format("Y")?>',
-          borderColor: "rgba(54, 162, 235, 1)",
-          fill: false
-        },
-        {
-          data: [
-	          <?php foreach ($dataChartYear as $key => $value): ?>
-                <?php echo "'".round($value)."'," ?>
-              <?php endforeach ?>
-            ],
-            <?php $aux = $inicio->copy()->subYears(1) ?>
-            label: '<?php echo $aux->copy()->format('Y')?>-<?php echo $aux->copy()->addYear()->format("Y")?>',
-            borderColor: "rgba(104, 255, 0, 1)",
-            fill: false
-         }
-        ]
-      },
-      options: {
-        title: {
-          display: true,
-          text: 'World population per region (in millions)'
-        }
-      }
     });
     
 </script>

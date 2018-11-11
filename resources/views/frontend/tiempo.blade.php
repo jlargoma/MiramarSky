@@ -108,7 +108,7 @@
 					<button id="showFormBook" class="button button-desc button-3d button-rounded bg-bluesky center white" >¡Reserva YA!</button>
 
 				<?php endif; ?>
-			</div>¡
+			</div>
 		</div>
 		<?php if (!$mobile->isMobile()): ?>
 		<div id="content-form-book" class="row bg-bluesky push-30" style="display: none; background-image: url({{asset('/img/miramarski/esquiadores.png')}}); background-position: left bottom; background-repeat: no-repeat; background-size: 45%;">

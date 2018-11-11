@@ -36,7 +36,7 @@
 <?php endif; ?>
 <!-- Header
 ============================================= -->	
-<header id="header" class="static-sticky transparent-header  not-dark ">
+<header id="header" class="static-sticky transparent-header  not-dark " style="z-index: 100000 !important;">
 
 	<div id="header-wrap">
 

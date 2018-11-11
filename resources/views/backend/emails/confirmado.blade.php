@@ -1,6 +1,6 @@
 <?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
 
-Hola <b><?php echo $book->customer->name ?>, </b>hemos recibido tu pago de <b><?php echo  number_format(($book->total_price/2),2,',','.')?> €</b> en concepto de señal, <b><u>tu reserva está confirmada</u></b>.
+Hola <b><?php echo $book->customer->name ?>, </b>hemos recibido tu pago en concepto de señal, <b><u>tu reserva está confirmada</u></b>.
 <br>
 <br>
 Nombre: <b><?php echo $book->customer->name ?></b> .<br>
@@ -26,16 +26,16 @@ En todas nuestras reservas están incluidas las Sábanas y toallas. <br><br>
 Para realizar una reserva se debe de abonar el 50% del importe total.<br>
 El segundo pago con el 50% restante, se realizará 15 días antes de la entrada.<br><br>
 
-<b>Hora de Entrada: La entrega de llaves la realizamos en el propio edifico entre las 17.30 a 19.30 Horas </b><br><br>
+<b>Hora de Entrada: La entrega de llaves la realizamos en el propio edifico entre las 17 a 19.30 Horas</b><br><br>
+La entrega de llaves fuera de horario puede llevar gastos por el tiempo de espera.<br><br>
 
-Si llegas entre las 20:00 h y las 22.00 h = 10€<br><br>
+10€ Si llegas entre 20:00 h de las 22.00<br><br>
 
-Si llegas entre las 22:00 h y las 00:00 h = 20€<br><br>
+20€ Si llegas más tarde de de las 22 h<br><br>
 
 No se entregan llaves a partir de las 00.00 sin previo aviso (el día anterior a la entrada)<br><br>
 
 El cargo se le abonan directamente en metálico a la persona que te entrega las llaves.<br><br>
-
 
 Nos sabe muy mal tener que cobrarte este recargo, Esperamos que entiendas que es solo para compensar el tiempo de espera de esta persona.<br><br>
 
@@ -43,18 +43,15 @@ Nos sabe muy mal tener que cobrarte este recargo, Esperamos que entiendas que es
 
 La plaza de garaje debe quedar libre a esta hora o bien pagar la estancia de un nuevo día. (según tarifa 20€ / día.)<br><br>
 
-<b>Fianza:</b> El día de llegada se pedirá una tarjeta para la fianza por importe de 300€, no se captura saldo, tan solo se hace  a la entrega de llaves, una vez revisada la vivienda.<br><br>
+<b>Fianza:</b> El día de llegada se pedirá una tarjeta para la fianza por importe de 300€, no se captura saldo, tan solo se hace una “foto” que desaparecerá a la entrega de llaves, una vez revisada la vivienda.<br><br>
 
-<b>Piscina:</b> El horario de la piscina es de 16:30 a 20 h (salvo los martes cerrado por descanso del conserje). La piscina solo está abierta desde el 15 de diciembre hasta el 1 de mayo<br><br>
+<b>Nº de personas:</b> El apartamento no podrá ser habitado por más personas de las camas que dispone y/o de las que han sido contratadas.<br><br>
 
-Nº de personas: El apartamento no podrá ser habitado por más personas de las camas que dispone y/o de las que han sido contratadas.
-<br><br>
-No se admiten animales.<br><br>
+<b>No se admiten animales.</b><br><br>
 
-Sabanas y Toallas están incluidas<br><br>
+<b>Sabanas y Toallas están incluidas</b><br><br>
 
-En el caso de NO cumplir con lo establecido no se podrá ocupar la vivienda.
-<br><br>
+En el caso de NO cumplir con lo establecido no se podrá ocupar la vivienda.<br><br>
 
 <b>Consulta nuestras condiciones de contratación <a href="{{ url('/condiciones-generales') }}">aquí</a></b>
 
