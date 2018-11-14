@@ -16,7 +16,7 @@
                      style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
                     <span class="white text-white"><i class="fa fa-times fa-2x"></i></span>
                 </div>
-                <div id="content-book" class="container clearfix push-10" style="display: none; min-height: 615px;">
+                <div id="content-book" class="container clearfix push-10" style="display: none; min-height: 675px;">
                     <div class="container clearfix" style="padding: 20px 0;">
                         <div class="row">
                             <div class="col-md-6 col-md-offset-3">
@@ -465,7 +465,7 @@
 
                 <div class="row degradado-background1" style="">
 
-                    <div id="content-book" class="container-mobile clearfix push-10" style="display: none; ">
+                    <div id="content-book" class="container-mobile clearfix push-10" style="display: none; height: 125vh;">
                         <div id="close-form-book"
                              style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
                             <span class="white text-white"><i class="fa fa-times fa-2x"></i></span>

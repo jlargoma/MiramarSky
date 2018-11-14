@@ -56,7 +56,8 @@
         <link rel="stylesheet" href="{{ asset('/frontend/custom.css')}}" type="text/css"/>
 
         <link rel="stylesheet" type="text/css" href="{{ asset('/frontend/css/normalize.css')}}" />
-        <link rel="stylesheet" type="text/css" href="{{ asset('/frontend/css/demo.css')}}" />
+        {{--<link rel="stylesheet" type="text/css" href="{{ asset('/frontend/css/fourBoxSlider.css')}}" />--}}
+        <link rel="stylesheet" type="text/css" href="{{ asset('/frontend/css/fourBoxSlider.min.css')}}" />
         <link rel="stylesheet" type="text/css" href="{{ asset('/frontend/css/component.css')}}" />    
         <script src="{{asset('/frontend/js/modernizr.custom.js')}}"></script>
 
@@ -245,6 +246,18 @@
 
             #logo a, body {
                 color: #000;
+            }
+            
+            @media screen and (max-width: 990px){
+                  div#content-book{
+                      min-height: 980px !important;
+                  }
+            }
+               
+            @media screen and (max-width: 767px){
+                     div#content-book{
+                         min-height: 750px !important;
+                     }
             }
 
         </style>

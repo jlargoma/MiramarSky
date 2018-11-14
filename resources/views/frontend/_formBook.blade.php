@@ -28,10 +28,10 @@
             <div class="hidden-xs hidden-sm" style="clear: both;"></div>
 
             <div class="form-group col-sm-12 col-xs-6 col-md-3 white">
-           		<label for="quantity" style="display: inherit!important;">*Personas</label>
-            	<div class="quantity center clearfix divcenter">
-					<!-- <input type="button" value="-" class="minus black" style=" color: black;">
-					<input id="quantity" type="text" name="quantity" value="4" class="qty" style="background: white; color: black;"> -->
+               <label for="quantity" style="display: inherit!important;">*Personas</label>
+               <div class="quantity center clearfix divcenter">
+               <!-- <input type="button" value="-" class="minus black" style=" color: black;">
+               <input id="quantity" type="text" name="quantity" value="4" class="qty" style="background: white; color: black;"> -->
                     <select id="quantity" class="sm-form-control" name="quantity">
                         <?php for ($i = 1;  $i <= 14 ; $i++): ?>
                             <?php if ($i != 9 && $i != 11 && $i != 13): ?>
@@ -40,8 +40,8 @@
                             
                         <?php endfor ?>
                     </select>
-					<!-- <input type="button" value="+" class="plus black" style=" color: black;"> -->
-				</div>
+               <!-- <input type="button" value="+" class="plus black" style=" color: black;"> -->
+            </div>
                 
                 <p class="help-block white hidden-sm hidden-xs" style="line-height:1.2">Máx 14 pers</p>
                <!--  <p class="help-block white hidden-sm hidden-xs" style="color: white; line-height:1.2;">    
@@ -64,41 +64,55 @@
                     <input id="apto-chlt" class="radio-style apto-chlt form-control" name="apto" type="radio" value="chlt">
                     <label for="apto-chlt" class="radio-style-3-label">Chlt</label>
                 </div>
-				<div class="col-md-3 col-xs-6">
-					<input id="apto-estudio" class="radio-style apto-estudio form-control" name="apto" type="radio" value="estudio">
-					<label for="apto-estudio" class="radio-style-3-label">Est.</label>
-				</div>
+            <div class="col-md-3 col-xs-6">
+               <input id="apto-estudio" class="radio-style apto-estudio form-control" name="apto" type="radio" value="estudio">
+               <label for="apto-estudio" class="radio-style-3-label">Est.</label>
+            </div>
             </div>
             <div class="form-group col-sm-12 col-xs-4 col-md-3">
                 <label style="display: inline!important;" class="col-md-12 luxury white">*lujo</label>
                 <div class="col-md-6"> 
-					<input id="luxury-yes" class="radio-style" name="luxury" type="radio"  value="si">
-					<label for="luxury-yes" class="radio-style-3-label">Si</label>
-				</div>
-				<div class="col-md-6">
-					<input id="luxury-no" class="radio-style" name="luxury" type="radio" value="no" checked="">
-					<label for="luxury-no" class="radio-style-3-label">No</label>
-				</div>
+               <input id="luxury-yes" class="radio-style" name="luxury" type="radio"  value="si">
+               <label for="luxury-yes" class="radio-style-3-label">Si</label>
+            </div>
+            <div class="col-md-6">
+               <input id="luxury-no" class="radio-style" name="luxury" type="radio" value="no" checked="">
+               <label for="luxury-no" class="radio-style-3-label">No</label>
+            </div>
             </div>
             <!-- <div class="form-group col-sm-12 col-xs-4 col-md-3">
                 <label style="display: inline!important;" class="col-md-12 parking white">*Parking</label>
                 <div class="col-md-6">
-					<input id="parking-yes" class="radio-style" name="parking" type="radio" checked="" value="si">
-					<label for="parking-yes" class="radio-style-3-label">Si</label>
-				</div>
-				<div class="col-md-6">
-					<input id="parking-no" class="radio-style" name="parking" type="radio" value="no">
-					<label for="parking-no" class="radio-style-3-label">No</label>
-				</div>
+               <input id="parking-yes" class="radio-style" name="parking" type="radio" checked="" value="si">
+               <label for="parking-yes" class="radio-style-3-label">Si</label>
+            </div>
+            <div class="col-md-6">
+               <input id="parking-no" class="radio-style" name="parking" type="radio" value="no">
+               <label for="parking-no" class="radio-style-3-label">No</label>
+            </div>
             </div> -->
             <div style="clear: both;"></div>
             <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12">
                 <div class="input-group col-sm-12 col-xs-12 col-md-12 col-lg-12">
-                    <textarea class="sm-form-control" name="comment" rows="3" placeholder="Comentanos aqui tus dudas o inquietudes." id="coment" maxlength="200" aria-label="Comentanos aqui tus dudas o inquietudes."></textarea>
+                    <textarea class="sm-form-control" name="comment" rows="3" placeholder="Comentanos aqui tus dudas o inquietudes." id="coment" maxlength="200" aria-label="Comentanos aqui tus dudas o inquietudes.">Descuento no aplicado en esta pantalla de solicitud. Te lo mandamos por email en 10 minutos.</textarea>
                 </div>
             </div>
             <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12 text-center">
                 <button type="submit" class="button button-3d button-xlarge button-rounded button-white button-light" id="confirm-reserva">Calcular reserva</button>
+            </div>
+            
+            <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12 text-center">
+               <span style="font-size:16px; color: #FFFFFF; font-weight: bold;">
+                     OFERTA 7 x 6 NOCHES<br/>
+                     OFERTA 5 x 4 NOCHES
+                </span>
+            </div>
+            <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12 text-left">
+                <span style="font-size:13px; color: #FFFFFF; font-weight: bold;">
+                    *La oferta 5x4 es para días Laborables.<br/>
+                    *Ofertas validas toda la temporada excepto del:<br/>
+                    5-9 dic / 21dic-6 ene / 25 feb-3 Marz / 15 -18 Marz / 15-20 Abril
+                </span>
             </div>
     </div>
 </form>
@@ -177,12 +191,25 @@
                 </div>
                 <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12">
                     <div class="input-group col-sm-12 col-xs-12 col-md-12 col-lg-12">
-                        <textarea class="sm-form-control" name="comment" rows="3" placeholder="Comentanos aqui tus dudas o inquietudes." id="coment" maxlength="200"></textarea>
+                        <textarea class="sm-form-control" name="comment" rows="3" placeholder="Comentanos aqui tus dudas o inquietudes." id="coment" maxlength="200">Descuento no aplicado en esta pantalla de solicitud. Te lo mandamos por email en 10 minutos.</textarea>
                     </div>
                 </div>
                 <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12 text-center">
                     <button type="submit" class="button button-3d button-xlarge button-rounded button-white button-light" id="confirm-reserva">Calcular reserva</button>
                 </div>
+                <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12 text-center">
+               <span style="font-size:16px; color: #FFFFFF; font-weight: bold;">
+                     OFERTA 7 x 6 NOCHES<br/>
+                     OFERTA 5 x 4 NOCHES
+                </span>
+            </div>
+            <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12 text-left" style="padding: 0 5px 0 5px;">
+                <span style="font-size:13px; color: #FFFFFF; font-weight: bold;">
+                    *La oferta 5x4 es para días Laborables.<br/>
+                    *Ofertas validas toda la temporada excepto del:<br/>
+                    5-9 dic / 21dic-6 ene / 25 feb-3 Marz / 15 -18 Marz / 15-20 Abril
+                </span>
+            </div>
         </div>
     </form>
 <?php endif; ?>
