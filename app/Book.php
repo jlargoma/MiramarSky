@@ -188,7 +188,8 @@ class Book extends Model
 			3 => "Bed&Snow",
 			4 => "AirBnb",
 			5 => "Jaime Diaz",
-			6 => "S.essence"
+			6 => "S.essence",
+			7 => "Cerogrados"
 		];
 
 		return $agency = $array[$agency];
