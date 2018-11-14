@@ -245,7 +245,7 @@
                     <div class="col-md-6 col-xs-6 push-10">
                         <label>Agencia</label>
                         <select class="form-control full-width agency minimal" name="agency">
-                            <?php for ($i=0; $i <= 6 ; $i++): ?>
+                            <?php for ($i=0; $i <= 7 ; $i++): ?>
                                 <option value="<?php echo $i ?>" <?php if ( Auth::user()->role == "agente" &&  $i == 6): ?>selected <?php endif ?>>
                                     <?php echo \App\Book::getAgency($i) ?>
                                 </option>
