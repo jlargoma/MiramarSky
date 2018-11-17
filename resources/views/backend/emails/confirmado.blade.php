@@ -1,6 +1,6 @@
 <?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
 
-Hola <b><?php echo $book->customer->name ?>, </b>hemos recibido tu pago de <b><?php echo  number_format(($book->total_price/2),2,',','.')?> €</b> en concepto de señal, <b><u>tu reserva está confirmada</u></b>.
+Hola <b><?php echo $book->customer->name ?>, </b>hemos recibido tu pago de <b><?php echo number_format($book->getLastPayment(),2,',','.')?> €</b> en concepto de señal, <b><u>tu reserva está confirmada</u></b>.
 <br>
 <br>
 Nombre: <b><?php echo $book->customer->name ?></b> .<br>
@@ -62,13 +62,13 @@ En el caso de NO cumplir con lo establecido no se podrá ocupar la vivienda.
 
 <h2><b><u>Servicios Adicionales</u></b></h2>
 
-Te ofrecemos sin coste añadido y con un descuento especial que hemos pactado con el proveedor para vosotros:<br><br>
+Te ofrecemos sin coste añadido precios especiales que hemos pactado con el proveedor para vosotros:<br><br>
 
-*<b>Descuentos en forfait</b><br>
+*<b>Forfaits: te los llevamos a tu apartamento, evitando colas</b><br>
 
-*<b>Descuentos en Clases de esquí</b><br>
+*<b>Clases de esquí</b><br>
 
-*<b>Descuentos en Alquiler de material</b><br>
+*<b>Alquiler de material</b><br>
 
 Para solicitar alguno de estos servicios solo es necesario que rellenes un formulario pinchando <a href="{{ url('/forfait') }}">aquí</a>
 

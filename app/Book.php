@@ -749,6 +749,20 @@ class Book extends Model
 		})->sum('import');
 	}
 
+	public function getLastPayment()
+	{
+		$lastPayment = 0;
+		if (count($this->payments) > 0)
+		{
+			foreach ($this->payments as $index => $payment)
+			{
+				$lastPayment = $payment->import;
+			}
+		}
+
+		return $lastPayment;
+	}
+
 	// Funcion para Sacar Ventas por temporada
 	public function getVentas($year)
 	{
