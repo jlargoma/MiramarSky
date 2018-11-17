@@ -16,6 +16,7 @@ class CustomersController extends Controller
      */
     public function index()
     {
+
         $arraycorreos = array();
         $correosUsuarios = \App\User::all();
 
@@ -35,7 +36,6 @@ class CustomersController extends Controller
 
 		$customers = \App\Customers::whereNotIn('email',$arraycorreos)
 									->whereIn('email', $emails->toArray())
-
 									->orderBy('created_at', 'DESC')
 									->get();
 

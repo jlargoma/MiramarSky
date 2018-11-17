@@ -584,8 +584,8 @@ class BookController extends Controller
 				$book->real_price  = $computedData->calculated->real_price;
 			}
 
-			$book->cost_park = $request->input('costParking');
 
+			$book->cost_park = $request->input('costParking');
 			$book->type_park  = $request->input('parking');
 			$book->agency     = $request->input('agency');
 			$book->PVPAgencia = $request->input('agencia') ? : 0;
