@@ -70,7 +70,7 @@
       //this.panelsCount = this.panels.length;
       this.panelsCount = 4;
       this.slidesCount = 3;
-      // current panel´s index
+      // current panelB4s index
       this.current = 0;
       classie.add( this.panels[0], 'current' );
       // replace image with 4 divs, each including the image
@@ -171,7 +171,7 @@
       // apply the transforms to the current panel
       this._applyTransforms( currentPanel, dir );
 
-      // let´s track the number of transitions ended per panel
+      // letB4s track the number of transitions ended per panel
       var cntTransTotal = 0,
          
          // transition end event function
@@ -241,3 +241,8 @@
    window.BoxesFx = BoxesFx;
 
 } )( window );
+
+$('div.range_inputs button.applyBtn').click(function(){
+   console.log($('input[name="daterangepicker_start"]').val()):
+   console.log($('input[name="daterangepicker_end"]').val()):
+});

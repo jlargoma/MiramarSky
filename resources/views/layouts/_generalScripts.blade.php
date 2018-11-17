@@ -12,6 +12,8 @@
 
 <script type="text/javascript" src="{{asset('/frontend/js/jquery.flip/1.1.2/jquery.flip.min.js')}}"></script>
 
+<script type="text/javascript" src="{{asset('/frontend/js/moment.min.js')}}"></script>
+
 <?php /* view para todos los scripts generales de la pagina */ ?>
 
 <!-- general scripts -->
