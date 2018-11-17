@@ -1,7 +1,7 @@
 <?php $mobile = new \App\Classes\Mobile(); ?>
 <?php if (!$mobile->isMobile()): ?>
 
-    <div style="height:80vh !important; width:100vw !important;">
+    <div style="height:80vh !important; width:100vw !important; display:none;">
         <!-- Top Navigation -->
         <!--<div class="codrops-top clearfix">
            <a class="codrops-icon codrops-icon-prev" href="http://tympanus.net/Development/InlineAnchorStyles/"><span>Previous Demo</span></a>
@@ -25,7 +25,7 @@
                 </button>
             </p>
             <nav class="codrops-demos sp-layer sp-layer-1" style="text-align:left; display:none;">
-                <a href="#" class="menu-booking" style="width:100%; border:none;/*background:rgba(0,0,0,0.5); padding:0.8em 1.1em; text-align:center; font-size:0.8vw;*/"><img class="image_shine effect_shine" src="{{url('/img/miramarski/offer_tag_300.png')}}"/></a>
+                <a href="#" class="menu-booking" style="background:rgba(0,0,0,0.5); padding:0.8em 1.1em; text-align:center; font-size:0.8vw;">OFERTA NOCHE GRATIS</a>
             </nav>
             <p class="sp-layer sp-padding sp-layer-2" data-position="centerCenter" data-vertical="-50" data-show-transition="right" data-hide-transition="left" data-show-delay="500" data-layer-init="true" style="z-index:9999; width: 1200px; margin: auto; right: 0px; white-space: nowrap; bottom: 0px; transform-origin: center center 0px; left: 0px; top: -250px; visibility: visible; opacity: 1; transform: scale(1) translate3d(0px, 0px, 0px); font-family: 'miramar'; font-size:80px; color:#FFFFFF; text-shadow: rgb(0, 0, 0) 1px 1px; white-space: nowrap; line-height: 80px; font-weight:bold; text-align: center; display:none;">
                 A PIE DE PISTA <br> SIN COGER REMONTES
@@ -39,7 +39,7 @@
                 </button>
             </p>
             <nav class="codrops-demos sp-layer sp-layer-2" style="text-align:left; display:none;">
-                <a href="#" class="menu-booking" style="width:100%; border:none;/*background:rgba(0,0,0,0.5); padding:0.8em 1.1em; text-align:center; font-size:0.8vw;*/"><img class="image_shine effect_shine" src="{{url('/img/miramarski/offer_tag_300.png')}}"/></a>
+                <a href="#" class="menu-booking" style="background:rgba(0,0,0,0.5); padding:0.8em 1.1em; text-align:center; font-size:0.8vw;">OFERTA NOCHE GRATIS</a>
             </nav>
             <p class="sp-layer sp-padding sp-layer-3" data-position="centerCenter" data-vertical="-50" data-show-transition="right" data-hide-transition="left" data-show-delay="500" data-layer-init="true" style="z-index:9999; width: 1200px; margin: auto; right: 0px; white-space: nowrap; bottom: 0px; transform-origin: center center 0px; left: 0px; top: -250px; visibility: visible; opacity: 1; transform: scale(1) translate3d(0px, 0px, 0px); font-family: 'miramar'; font-size:80px; color:#FFFFFF; text-shadow: rgb(0, 0, 0) 1px 1px; white-space: nowrap; line-height: 80px; font-weight:bold; text-align: center; display:none;">
                 UNA EXPERIENCIA INOLVIDABLE
@@ -53,14 +53,14 @@
                 </button>
             </p>
             <nav class="codrops-demos sp-layer sp-layer-3" style="text-align:left; display:none;">
-                <a href="#" class="menu-booking" style="width:100%; border:none;/*background:rgba(0,0,0,0.5); padding:0.8em 1.1em; text-align:center; font-size:0.8vw;*/"><img class="image_shine effect_shine" src="{{url('/img/miramarski/offer_tag_300.png')}}"/></a>
+                <a href="#" class="menu-booking" style="background:rgba(0,0,0,0.5); padding:0.8em 1.1em; text-align:center; font-size:0.8vw;">OFERTA NOCHE GRATIS</a>
             </nav>
         </header>
     </div>
 
 <?php else: ?>
 
-    <div style="height:70vh !important; width:100vw !important;">
+    <div style="height:70vh !important; width:100vw !important;  display:none;">
         <!-- Top Navigation -->
         <!--<div class="codrops-top clearfix">
            <a class="codrops-icon codrops-icon-prev" href="http://tympanus.net/Development/InlineAnchorStyles/"><span>Previous Demo</span></a>
@@ -83,7 +83,7 @@
                 <button class="tp-caption rev-btn  tp-resizeme btn btn-xs white menu-booking heart font-w300" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['70','40','100','100']" data-width="none" data-height="none" data-whitespace="nowrap" data-type="button" data-actions=''data-responsive_offset="on" data-frames='[{"delay":1000,"speed":1000,"frame":"0","from":"y:-20px;opacity:0;fb:10px;","to":"o:1;fb:0;","ease":"Power4.easeOut"},{"delay":"wait","speed":600,"frame":"999","to":"auto:auto;fb:0;","ease":"Power3.easeInOut"},{"frame":"hover","speed":"200","ease":"Linear.easeNone","to":"o:1;rX:0;rY:0;rZ:0;z:0;fb:0;","style":"c:rgba(255, 255, 255, 1.00);bg:rgba(45, 48, 50, 1.00);bs:solid;bw:0 0 0 0;"}]' data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[35,35,35,35]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[35,35,35,35]" style="z-index: 12; white-space: nowrap; font-size: 20px; /*line-height: 50px;*/ font-weight:700; color: rgba(45, 48, 50, 1.00);font-family:'miramar';background-color:rgb(89, 186, 65);border-color:rgb(89, 186, 65);outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;text-decoration: none; font-size:14px !important; padding: 0px 35px; !important;">SOLICITA TU <b>RESERVA</b></button>
             </p>
             <nav class="codrops-demos sp-layer sp-layer-1" style="text-align:center; display:none;">
-                <a href="#" class="menu-booking" style="width:100%; border:none;/*background:rgba(0,0,0,0.5); padding:0.8em 1.1em; text-align:center; font-size:0.8vw;*/"><img class="image_shine effect_shine" src="{{url('/img/miramarski/offer_tag_200.png')}}" style="right:1%; position: relative;"/></a>
+                <a href="#" class="menu-booking" style="background:rgba(0,0,0,0.5); padding:0.8em 1.1em; text-align:center; font-size: 2.9vw;">OFERTA NOCHE GRATIS</a>
             </nav>
             <p class="sp-layer sp-padding sp-layer-2" data-position="centerCenter" data-vertical="-50" data-show-transition="right" data-hide-transition="left" data-show-delay="500" data-layer-init="true" style="z-index:9999; margin: auto; right: 0px; white-space: nowrap; bottom: 0px; transform-origin: center center 0px; left: 0px; top: -250px; visibility: visible; opacity: 1; transform: scale(1) translate3d(0px, 0px, 0px); font-family: 'miramar'; font-size:7.5vw; color:#FFFFFF; text-shadow: rgb(0, 0, 0) 1px 1px; white-space: nowrap; line-height: 40px; font-weight:bold; text-align: center; margin-bottom: 10px; display:none;">
                 A PIE DE PISTA <br> SIN COGER REMONTES
@@ -95,7 +95,7 @@
                 <button class="tp-caption rev-btn  tp-resizeme btn btn-xs white menu-booking heart font-w300" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['70','40','100','100']" data-width="none" data-height="none" data-whitespace="nowrap" data-type="button" data-actions=''data-responsive_offset="on" data-frames='[{"delay":1000,"speed":1000,"frame":"0","from":"y:-20px;opacity:0;fb:10px;","to":"o:1;fb:0;","ease":"Power4.easeOut"},{"delay":"wait","speed":600,"frame":"999","to":"auto:auto;fb:0;","ease":"Power3.easeInOut"},{"frame":"hover","speed":"200","ease":"Linear.easeNone","to":"o:1;rX:0;rY:0;rZ:0;z:0;fb:0;","style":"c:rgba(255, 255, 255, 1.00);bg:rgba(45, 48, 50, 1.00);bs:solid;bw:0 0 0 0;"}]' data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[35,35,35,35]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[35,35,35,35]" style="z-index: 12; white-space: nowrap; font-size: 20px; /*line-height: 50px;*/ line-height: 50px; font-weight:700; color: rgba(45, 48, 50, 1.00);font-family:'miramar';background-color:rgb(89, 186, 65);border-color:rgb(89, 186, 65);outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;text-decoration: none; font-size:14px !important; padding: 0px 35px; !important;">SOLICITA TU <b>RESERVA</b></button>
             </p>
             <nav class="codrops-demos sp-layer sp-layer-2" style="text-align:center; display:none;">
-                <a href="#" class="menu-booking" style="width:100%; border:none;/*background:rgba(0,0,0,0.5); padding:0.8em 1.1em; text-align:center; font-size:0.8vw;*/"><img class="image_shine effect_shine" src="{{url('/img/miramarski/offer_tag_200.png')}}" style="right:1%; position: relative;"/></a>
+                <a href="#" class="menu-booking" style="background:rgba(0,0,0,0.5); padding:0.8em 1.1em; text-align:center; font-size: 2.9vw;">OFERTA NOCHE GRATIS</a>
             </nav>
             <p class="sp-layer sp-padding sp-layer-3" data-position="centerCenter" data-vertical="-50" data-show-transition="right" data-hide-transition="left" data-show-delay="500" data-layer-init="true" style="z-index:9999; margin: auto; right: 0px; white-space: nowrap; bottom: 0px; transform-origin: center center 0px; left: 0px; top: -250px; visibility: visible; opacity: 1; transform: scale(1) translate3d(0px, 0px, 0px); font-family: 'miramar'; font-size:10.8vw; color:#FFFFFF; text-shadow: rgb(0, 0, 0) 1px 1px; white-space: nowrap; line-height: 40px; font-weight:bold; text-align: center; margin-bottom: 10px; display:none;">
                 UNA<br/> EXPERIENCIA<br/> INOLVIDABLE
@@ -107,7 +107,7 @@
                 <button class="tp-caption rev-btn  tp-resizeme btn btn-xs white menu-booking heart font-w300" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['70','40','100','100']" data-width="none" data-height="none" data-whitespace="nowrap" data-type="button" data-actions=''data-responsive_offset="on" data-frames='[{"delay":1000,"speed":1000,"frame":"0","from":"y:-20px;opacity:0;fb:10px;","to":"o:1;fb:0;","ease":"Power4.easeOut"},{"delay":"wait","speed":600,"frame":"999","to":"auto:auto;fb:0;","ease":"Power3.easeInOut"},{"frame":"hover","speed":"200","ease":"Linear.easeNone","to":"o:1;rX:0;rY:0;rZ:0;z:0;fb:0;","style":"c:rgba(255, 255, 255, 1.00);bg:rgba(45, 48, 50, 1.00);bs:solid;bw:0 0 0 0;"}]' data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[35,35,35,35]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[35,35,35,35]" style="z-index: 12; white-space: nowrap; font-size: 20px; /*line-height: 50px;*/ line-height: 50px; font-weight:700; color: rgba(45, 48, 50, 1.00);font-family:'miramar';background-color:rgb(89, 186, 65);border-color:rgb(89, 186, 65);outline:none;box-shadow:none;box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;cursor:pointer;text-decoration: none; font-size:14px !important; padding: 0px 35px; !important;">SOLICITA TU <b>RESERVA</b></button>
             </p>
             <nav class="codrops-demos sp-layer sp-layer-3" style="text-align:center; display:none;">
-                <a href="#" class="menu-booking" style="width:100%; border:none;/*background:rgba(0,0,0,0.5); padding:0.8em 1.1em; text-align:center; font-size:0.8vw;*/"><img class="image_shine effect_shine" src="{{url('/img/miramarski/offer_tag_300.png')}}" style="max-width:200px; right:1%; position: relative;"/></a>
+                <a href="#" class="menu-booking" style="background:rgba(0,0,0,0.5); padding:0.8em 1.1em; text-align:center; font-size: 2.9vw;">OFERTA NOCHE GRATIS</a>
             </nav>
         </header>
     </div>
