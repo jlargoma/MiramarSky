@@ -94,7 +94,7 @@
             <div style="clear: both;"></div>
             <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12">
                 <div class="input-group col-sm-12 col-xs-12 col-md-12 col-lg-12">
-                    <textarea class="sm-form-control" name="comment" rows="3" placeholder="Comentanos aqui tus dudas o inquietudes." id="coment" maxlength="200" aria-label="Comentanos aqui tus dudas o inquietudes.">Descuento no aplicado en esta pantalla de solicitud. Te lo mandamos por email en 10 minutos.</textarea>
+                    <textarea class="sm-form-control" name="comment" rows="3" placeholder="Comentanos aqui tus dudas o inquietudes." id="coment" maxlength="200" aria-label="Comentanos aqui tus dudas o inquietudes."></textarea>
                 </div>
             </div>
             <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12 text-center">
@@ -191,7 +191,7 @@
                 </div>
                 <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12">
                     <div class="input-group col-sm-12 col-xs-12 col-md-12 col-lg-12">
-                        <textarea class="sm-form-control" name="comment" rows="3" placeholder="Comentanos aqui tus dudas o inquietudes." id="coment" maxlength="200">Descuento no aplicado en esta pantalla de solicitud. Te lo mandamos por email en 10 minutos.</textarea>
+                        <textarea class="sm-form-control" name="comment" rows="3" placeholder="Comentanos aqui tus dudas o inquietudes." id="coment" maxlength="200"></textarea>
                     </div>
                 </div>
                 <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12 text-center">
