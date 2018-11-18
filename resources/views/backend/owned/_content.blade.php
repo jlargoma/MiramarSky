@@ -131,45 +131,42 @@
 			
 				<div class="container">
 					<?php $roomsForUser = \App\Rooms::where('owned', $room->user->id)->get(); ?>
-					<?php if (Auth::user()->role == 'propietario'): ?>
-						<?php $roomsToSelect = \App\Rooms::where('state', 1)->where('owned', Auth::user()->id)->orderBy('order', 'ASC')->get()?>
-					<?php else: ?>
-						<?php $roomsToSelect = \App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get()?>
-					<?php endif ?>
+					
 						
-					<?php if ( count($roomsForUser)  == 1): ?>
-						<?php if (Auth::user()->role == 'propietario'): ?>
-							<div class="col-md-12 text-center">
-								<h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1>
-							</div>
+						<?php if ( count($roomsForUser)  == 1): ?>
+							<?php if (Auth::user()->role == 'propietario'): ?>
+								<div class="col-md-12 text-center">
+									<h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1>
+								</div>
+							<?php else: ?>
+								<div class="col-md-2 col-md-offset-4 text-center push-20">
+									<!-- <h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1> -->
+									<select class="form-control full-width minimal selectorRoom">
+		                                <?php foreach (\App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get() as $roomX): ?>
+		                                    <option value="<?php echo $roomX->nameRoom ?>" {{ $roomX->id == $room->id ? 'selected' : '' }} >
+		                                        <?php echo substr($roomX->nameRoom." - ".$roomX->name, 0, 15)  ?>
+		                                    </option>
+		                                <?php endforeach ?>
+		                            </select>
+								</div>
+							<?php endif ?>
+							
 						<?php else: ?>
-
 							<div class="col-md-2 col-md-offset-4 text-center push-20">
-								<?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?>
-
+								<!-- <h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1> -->
 								<select class="form-control full-width minimal selectorRoom">
-									<?php foreach ($roomsToSelect as $roomX): ?>
-										<option value="<?php echo $roomX->nameRoom ?>" {{ $roomX->id == $room->id ? 'selected' : '' }} >
-											<?php echo substr($roomX->nameRoom." - ".$roomX->name, 0, 15)  ?>
-										</option>
-									<?php endforeach ?>
-								</select>
+	                                <?php foreach (\App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get() as $roomX): ?>
+	                                    <option value="<?php echo $roomX->nameRoom ?>" {{ $roomX->id == $room->id ? 'selected' : '' }} >
+	                                        <?php echo substr($roomX->nameRoom." - ".$roomX->name, 0, 15)  ?>
+	                                    </option>
+	                                <?php endforeach ?>
+	                            </select>
 							</div>
+							
 						<?php endif ?>
+						
+					
 
-					<?php else: ?>
-						<div class="col-md-2 col-md-offset-4 text-center push-20">
-							<!-- <h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1> -->
-							<select class="form-control full-width minimal selectorRoom">
-								<?php foreach ($roomsToSelect as $roomX): ?>
-									<option value="<?php echo $roomX->nameRoom ?>" {{ $roomX->id == $room->id ? 'selected' : '' }} >
-										<?php echo substr($roomX->nameRoom." - ".$roomX->name, 0, 15)  ?>
-									</option>
-								<?php endforeach ?>
-							</select>
-						</div>
-
-					<?php endif ?>
 				</div>
 				<div style="clear: both;"></div>
 				<div class="row buttons push-40">

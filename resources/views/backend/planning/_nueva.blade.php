@@ -12,9 +12,6 @@
         font-size: 45px!important;
         color: white!important;
     }
-    .push-xs-10{
-        margin-bottom: 10px;
-    }
     @media only screen and (max-width: 767px){
        .daterangepicker {
             left: 12%!important;
@@ -46,23 +43,15 @@
                 </div> 
                 <div class="col-md-8">
                     <select name="status" class="form-control minimal" >
-	                    <?php  $status = [ 1 => 1]; ?>
-	                    <?php if ( Auth::user()->role != "agente"): ?>
-                            <?php for ($i=1; $i <= 10; $i++): ?>
-                            <option <?php echo $i == 3 ? "selected" : ""; ?>
-                                    <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?> value="<?php echo $i ?>">
+                        <?php for ($i=1; $i <= 10; $i++): ?> 
+                            <option <?php echo $i == 3 ? "selected" : ""; ?> 
+                            <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
+                            value="<?php echo $i ?>">
                                 <?php echo \App\Book::getStatus($i) ?>
-                            </option>
-                            <?php endfor; ?>
-                        <?php else: ?>
-		                    <?php for ($i=1; $i <= count($status); $i++): ?>
-                            <option <?php echo $status[$i] == 3 ? "selected" : ""; ?>
-		                            <?php echo ($status[$i]  == 1 || $status[$i] == 5) ? "style='font-weight:bold'" : "" ?> value="<?php echo $status[$i] ?>">
-			                    <?php echo \App\Book::getStatus($status[$i]) ?>
-                            </option>
-		                    <?php endfor; ?>
-                        <?php endif ?>
+                                
+                            </option>                                    
 
+                        <?php endfor; ?>
                     </select>
                 </div>
             </div>
@@ -144,8 +133,8 @@
                             <?php endif; ?>
                         <?php endfor;?>
                     </select>
+                   
                 </div>
-                <?php if ( Auth::user()->role != "agente" ): ?>
                 <div class="col-md-2 col-xs-5 push-xs-10">
                      <label style="color: red">Pax-reales</label>
                      <select class="form-control real_pax "  name="real_pax" style="color:red">
@@ -159,7 +148,7 @@
                      </select>
                    
                 </div>
-                <?php endif ?>
+                 
                 <div class="col-md-3 col-xs-7 push-xs-10">
                     <label>Apartamento</label>
                     <select class="form-control full-width newroom minimal" name="newroom" id="newroom" required>
@@ -171,10 +160,6 @@
                         <?php endforeach ?>
                     </select>
                 </div>
-	            <?php if ( Auth::user()->role == "agente" ): ?>
-                    <div style="clear: both;"></div>
-	            <?php endif ?>
-	            <?php if ( Auth::user()->role != "agente" ): ?>
                 <div class="col-md-4 col-xs-6 push-xs-10">
                     <label>Parking</label>
                     <select class=" form-control parking minimal"  name="parking">
@@ -195,11 +180,8 @@
                         <?php endfor;?>
                     </select>
                 </div>
-                <?php else: ?>
-                    <input type="hidden" step='0.01' class="parking white" name="parking" value="1">
-                    <input type="hidden" step='0.01' class="type_luxury white" name="type_luxury" value="1">
-                <?php endif ?>
                 <div class="col-md-2 col-xs-6 push-xs-10">
+
                     <label >IN</label>
                     <select id="schedule" class="form-control " style="width: 100%;" name="schedule">
                         <option>-- Sin asignar --</option>
@@ -258,7 +240,6 @@
                     </div>
                    
                 </div>
-                <?php if ( Auth::user()->role != "agente" ): ?>
                 <div class="col-xs-12 col-md-6 not-padding">
                     <div class="col-md-6 col-xs-6 push-10">
                         <label>promoción 3x2</label>
@@ -268,7 +249,6 @@
                         <img src="/pages/oferta.png" style="width: 90px;">
                     </div>
                 </div>
-                <?php endif ?>
             </div>
             <div class="col-xs-12">
                 <div class="col-xs-12 not-padding">
@@ -277,17 +257,15 @@
                 </div>
             </div>
             <div class="col-xs-12 bg-white">
-                <div class="col-xs-12 not-padding">
-                    <div class="col-md-3 col-xs-12 text-center  first" style="background-color: #0c685f;">
-                        <label class="font-w800 text-white" for="">TOTAL</label>
-                        <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" name="total" >
-                    </div>
-                    <?php if ( Auth::user()->role != "agente" ): ?>
+                    <div class="col-xs-12 not-padding">
+                        <div class="col-md-3 col-xs-12 text-center  first" style="background-color: #0c685f;">
+                            <label class="font-w800 text-white" for="">TOTAL</label>
+                            <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" name="total" >
+                        </div>
                         <div class="col-md-3 col-xs-6 text-center " style="background: #99D9EA;">
                             <label class="font-w800 text-white" for="">COSTE TOTAL</label>
                             <input type="number" step='0.01' class="form-control  cost m-t-10 m-b-10 white" name="cost" >
                         </div>
-
                         <div class="col-md-2 col-xs-6 text-center " style="background: #91cf81;">
                             <label class="font-w800 text-white" for="">APTO</label>
                             <input type="number" step='0.01' class="form-control costApto m-t-10 m-b-10 white" name="costApto" >
@@ -296,21 +274,16 @@
                             <label class="font-w800 text-white" for="">PARKING</label>
                             <input type="number" step='0.01' class="form-control costParking m-t-10 m-b-10 white" name="costParking" >
                         </div>
-                    <?else: ?>
-                        <input type="hidden" step='0.01' class="cost white" name="cost" >
-                        <input type="hidden" step='0.01' class="costApto white" name="costApto" >
-                        <input type="hidden" step='0.01' class="costParking white" name="costParking" >
-	                <?php endif ?>
-                    <?php if (Auth::user()->role == "admin"): ?>
-                        <div class="col-md-2 col-xs-6 text-center  not-padding" style="background: #ff7f27;">
-                            <label class="font-w800 text-white" style="width: 100%;" for="">BENEFICIO</label>
-                            <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio"  style="width: 80%; float: left;">
-                            <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;">
+                        <?php if (Auth::user()->role == "admin"): ?>
+                            <div class="col-md-2 col-xs-6 text-center  not-padding" style="background: #ff7f27;">
+                                <label class="font-w800 text-white" style="width: 100%;" for="">BENEFICIO</label>
+                                <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio"  style="width: 80%; float: left;">
+                                <div class="beneficio-text font-w400 font-s18 white" style="width: 20%; float: left;padding: 25px 0; padding-right: 5px;">
 
+                                </div>
                             </div>
-                        </div>
-                    <?php endif ?>
-                </div>
+                        <?php endif ?>
+                    </div>
             </div>
             <div class="col-xs-12 bg-white padding-block">
                 <div class="col-md-4 col-xs-12">

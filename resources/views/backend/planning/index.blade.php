@@ -32,9 +32,7 @@
                             </h2>
                         </div>  
                         <div class="col-md-2">
-                            <select id="fechas" class="form-control minimal" <?php if ( Auth::user()->role == "agente"
-                             ): ?>disabled<?php endif ?>>
-
+                            <select id="fechas" class="form-control minimal">
                                 <?php $fecha = Carbon::now()->SubYear(3)->copy(); ?>
                                 <?php for ($i=1; $i <= 4; $i++): ?>
                                     <option value="<?php echo $fecha->copy()->format('Y'); ?>" <?php if ($fecha->copy()->format('Y') == $date->copy()->format('Y')): ?>selected<?php endif ?>>
@@ -56,7 +54,7 @@
                         <button class="btn btn-success btn-cons btn-newBook" type="button" data-toggle="modal" data-target="#modalNewBook">
                             <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Nueva Reserva</span>
                         </button>
-                        <?php if ( Auth::user()->role != "agente" ): ?>
+
                         <button id="lastBooks" class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalLastBooks">
                             <span class="bold">Últimas Confirmadas</span>
                             <span class="numPaymentLastBooks"><?php echo  $stripedsPayments->count(); ?></span>
@@ -74,11 +72,10 @@
                             <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">ALARMAS</span>
                             <span class="numPaymentLastBooks"><?php echo  count($alarms); ?></span>
                         </button>
-                        <?php endif ?>
                     </div>
                 </div>
                 <div class="col-md-5">
-                    <?php if ( Auth::user()->role != "agente" ): ?>
+                    
                     <button id="btnAlertsBookking" disabled class="btn btn-success btn-cons " type="button" data-toggle="modal" data-target="#modalAlertsBooking">
                         <span class="bold">Alertas booking</span>
                         <!--<span class="numPaymentLastBooks"><?php //echo  $notifications ?></span> -->
@@ -91,7 +88,7 @@
                     <a href="{{ url('ical/importFromUrl') }}" class="btn btn-primary btn-cons" <?php if ( count( \App\IcalImport::all() ) == 0): ?> disabled="" <?php endif ?> style="background-color: #337ab7; border-color: #2e6da4;">
                         <span class="bold">IMPORTACIÓN</span>
                     </a>
-                    <?php endif ?>
+
                 </div>
             </div>
 
@@ -99,38 +96,34 @@
             <div class="row push-20">
 
                 <div class="col-md-7">
-                    <?php if ( Auth::user()->role != "agente" ): ?>
                     <div class="row push-10">
                         <div class="col-md-5 col-xs-12">
                             <input id="nameCustomer" type="text" name="searchName" class="searchabled form-control" placeholder="nombre del cliente" />
                         </div>
                     </div>
-                    <?php endif ?>
                     <div class="col-xs-12 text-left push-0" style="padding-left: 0;">
-
+                        
                         <button class="btn btn-primary  btn-blue btn-tables btn-cons" type="button" data-type="pendientes"> 
-                            <span class="bold">Pendientes</span>
-                            <?php if ( Auth::user()->role != "agente" ): ?>
+                            <span class="bold">Pendientes</span> 
                             <span class="numPaymentLastBooks">
                                 {{ $booksCount['pending'] }}
                             </span>
-                            <?php endif ?>
                         </button>
-                         <?php if ( Auth::user()->role != "agente" ): ?>
+                    
                         <button class="btn btn-primary  btn-orange btn-tables btn-cons" type="button" data-type="especiales"> 
                             <span class="bold">Especiales</span> 
                             <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
                                 {{ $booksCount['special'] }}
                             </span>
                         </button>
-                        <?php endif ?>
+                    
                         <button class="btn  btn-primary btn-green btn-tables btn-cons" type="button" data-type="confirmadas"> 
                             <span class="bold">Confirmadas</span> 
                             <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
                                 {{ $booksCount['confirmed'] }}
                             </span>
                         </button>
-                         <?php if ( Auth::user()->role != "agente" ): ?>
+                    
                         <button class="btn btn-success btn-tables btn-cons" type="button" data-type="checkin"> 
                             <span class="bold">Check IN</span> 
                             <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
@@ -157,7 +150,6 @@
                             <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
                                 {{ $booksCount['deletes'] }}
                             </span>
-                            <?php endif ?>
                         </button>
                        
                     </div>
@@ -179,12 +171,11 @@
                             <h2 class="text-center">CARGANDO CALENDARIO</h2>
                         </div>
                     </div>
-                    <?php if ( Auth::user()->role != "agente" ): ?>
+
                     <div class="col-md-12" id="stripe-conten-index" style="display: none;">
                         @include('backend.stripe.link')
                         @include('backend.stripe.stripe', ['bookTocharge' => null])
                     </div>
-                    <?php endif ?>
                 </div>
             </div>
 
@@ -279,6 +270,9 @@
             </div>
         </div>
 
+
+    
+    
     <?php else: ?>
         <script type="text/javascript">
             $(document).ready(function() {
@@ -313,7 +307,7 @@
                             </h2>
                         </div>  
                         <div class="col-md-2 col-xs-7">
-                            <select id="fechas" class="form-control minimal" <?php if ( Auth::user()->role == "agente"): ?> disabled<?php endif ?>>
+                            <select id="fechas" class="form-control minimal">
                                 <?php $fecha = $inicio->copy()->SubYear(2); ?>
                                 <?php if ($fecha->copy()->format('Y') < 2015): ?>
                                     <?php $fecha = new Carbon('first day of September 2015'); ?>
@@ -342,7 +336,6 @@
             <div class="row push-10">
                 <div class="col-xs-12">
                     <div class="row">
-                        <?php if ( Auth::user()->role != "agente" ): ?>
                         <div class="col-xs-4 push-10 text-center">
                             <button id="lastBooks" class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#modalLastBooks">
                                 <span class="bold">Últ. reser</span>
@@ -365,7 +358,7 @@
                                 <span class="numPaymentLastBooks">&nbsp;<?php echo  count($alarms); ?>&nbsp;</span>
                             </button>
                         </div>
-                        <?php endif ?>
+
                         <div class="col-xs-2 push-10 text-center">
                             <button class="btn btn-primary btn-sm calend" type="button" > 
                                 <span class="bold"><i class="fa fa-calendar"></i></span>
@@ -376,10 +369,8 @@
                 </div>
             </div>
             <div class="col-md-12" id="stripe-conten-index" style="display: none;">
-                <?php if ( Auth::user()->role != "agente" ): ?>
-                    @include('backend.stripe.link')
-                    @include('backend.stripe.stripe', ['bookTocharge' => null])
-                <?php endif ?>
+                @include('backend.stripe.link')
+                @include('backend.stripe.stripe', ['bookTocharge' => null])
             </div>
 
             <div class="row push-20">
@@ -394,38 +385,38 @@
                         <div style=" width: 515px;">
                             <button class="btn btn-primary  btn-blue btn-tables" type="button" data-type="pendientes"> 
                                 <span class="bold">Pend</span>
-                                <?php if ( Auth::user()->role != "agente" ): ?>
                                 <span class="numPaymentLastBooks" style="top: 0px;right: 0;padding: 0px 7px;">
-                                    {{ $booksCount['pending'] }}
+                                    <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'pendientes'); ?>
                                 </span>
-                                <?php endif ?>
                             </button>
-                            <?php if ( Auth::user()->role != "agente" ): ?>
+
                             <button class="btn btn-primary  btn-orange btn-tables" type="button" data-type="especiales"> 
                                 <span class="bold">Esp</span>
                                 <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
-                                    {{ $booksCount['special'] }}
+                                    <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'especiales'); ?>
                                 </span>
                             </button>
-                            <?php endif ?>
+
                             <button class="btn  btn-primary btn-green btn-tables" type="button" data-type="confirmadas"> 
                                 <span class="bold">Conf</span>
                                <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
-                                   {{ $booksCount['confirmed'] }}
+                                    <?php $counterConfir = \App\Http\Controllers\BookController::getCounters(date('Y'), 'confirmadas') ?>
+                                    <?php echo $counterConfir; ?>
                                </span>
                             </button>
-                            <?php if ( Auth::user()->role != "agente" ): ?>
+
                             <button class="btn btn-success btn-tables" type="button" data-type="checkin"> 
                                 <span class="bold">IN</span>
                                 <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
-                                     {{ $booksCount['checkin'] }}
+                                    <?php  $counterCheckIn = \App\Http\Controllers\BookController::getCounters(date('Y'), 'checkin'); ?>
+                                    <?php echo $counterCheckIn ; ?>
                                 </span>
                             </button>
 
                             <button class="btn btn-primary btn-tables" type="button" data-type="checkout"> 
                                 <span class="bold">OUT</span>
                                 <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
-                                      {{ $booksCount['checkout'] }}
+                                      <?php echo $counterConfir - $counterCheckIn ?>
                                 </span>
                             </button>
 
@@ -433,7 +424,7 @@
                             <button class="btn btn-primary  btn-grey btn-tables" type="button" data-type="blocked-ical"> 
                                 <span class="bold">ICal</span>
                                 <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
-                                    {{ $booksCount['blocked-ical'] }}
+                                    <?php echo \App\Http\Controllers\BookController::getCounters(date('Y'), 'blocked-ical'); ?>
                                 </span>
                             </button>
 
@@ -443,7 +434,6 @@
                                     {{ $booksCount['deletes'] }}
                                 </span>
                             </button>
-                            <?php endif ?>
                         </div>
                     </div>
                     <div class="row" id="resultSearchBook" style="display: none;"></div>

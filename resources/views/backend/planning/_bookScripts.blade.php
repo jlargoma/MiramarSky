@@ -190,6 +190,7 @@
 
 	                    var isEdited = $('.total').attr('data-edited');
 	                    if (data.costes.promotion == 0) {
+
 	                        $('.book_owned_comments').empty();
 	                    } else {
 	                        $('.book_owned_comments').html('(PROMOCIÓN 3x2 DESCUENTO : '+ Math.abs(data.costes.promotion) +' €)');

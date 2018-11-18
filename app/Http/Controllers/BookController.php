@@ -563,7 +563,6 @@ class BookController extends Controller
 			$book->pax                 = $request->input('pax');
 			$book->real_pax            = $request->input('real_pax');
 			$book->nigths              = $request->input('nigths');
-
 			if ($book->type_book == 7){
 				$book->sup_park  = 0;
 				$book->sup_limp  = ($room->sizeApto == 1) ? 30 : 50;
@@ -584,13 +583,14 @@ class BookController extends Controller
 				$book->real_price  = $computedData->calculated->real_price;
 			}
 
-
 			$book->cost_park = $request->input('costParking');
 			$book->type_park  = $request->input('parking');
 			$book->agency     = $request->input('agency');
 			$book->PVPAgencia = $request->input('agencia') ? : 0;
 
 			$book->type_luxury = $request->input('type_luxury');
+			$book->sup_lujo    = $computedData->totales->lujo;
+			$book->cost_lujo   = $computedData->costes->lujo;
 
 			$book->cost_apto  = $request->input('costApto');
 			$book->cost_total = $request->input('cost');
@@ -605,7 +605,7 @@ class BookController extends Controller
 			$book->promociones = ($request->input('promociones')) ? $request->input('promociones') : 0;
 
 			$book->total_price = $request->input('total'); // This can be modified in frontend
-			 // This cannot be modified in frontend
+			$book->real_price  = $computedData->calculated->real_price; // This cannot be modified in frontend
 			$book->inc_percent = $book->profit_percentage;
 			$book->ben_jorge   = $book->getJorgeProfit();
 			$book->ben_jaime   = $book->getJaimeProfit();
@@ -2112,7 +2112,7 @@ class BookController extends Controller
 		$data['calculated']['total_price']       = $totalPrice;
 		$data['calculated']['total_cost']        = $totalCost;
 		$data['calculated']['profit']            = $profit;
-		$data['calculated']['profit_percentage'] = round(($profit / (($totalPrice == 0) ? 1: $totalPrice)) * 100);
+		$data['calculated']['profit_percentage'] = round(($profit / $totalPrice) * 100);
 		$data['calculated']['real_price']        = array_sum($data['totales']);
 
 		return $data;

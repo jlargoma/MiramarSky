@@ -116,7 +116,6 @@ setlocale(LC_TIME, "es_ES");
 							                                                                                             ->format('n')] ?>
                                     <?php $monthsRooms->addMonth() ?>
                                 <?php endfor; ?>
-
                             <td class="text-center">
                                 <b><?php echo number_format($totalRoom, 0, ',', '.') ?>€</b>
                             </td>
@@ -148,6 +147,7 @@ setlocale(LC_TIME, "es_ES");
 
                         </tr>
 						<?php endforeach ?>
+
 
                         </tbody>
                     </table>

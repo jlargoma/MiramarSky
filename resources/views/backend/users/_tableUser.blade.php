@@ -38,7 +38,7 @@
                 <!--  -->
                 <button class="btn btn-tag btn-complete update-user" type="button"
                         data-id="<?php
-				        echo $user->id ?>" data-toggle="modal" data-target="#updateUser" title="Editar
+				        echo $user->id ?>" data-toggle="modal" data-target="#myModal" title="Editar
                                          Usuario" style="background-color: #48b0f7;!important; color:white!important;">
                     <i class="fa fa-edit"></i>
                 </button>

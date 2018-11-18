@@ -2,6 +2,6 @@
 
 El propietario <?php echo $book->user->name ?> ha bloqueado su apartamento .<br><br>
 
-Fechas: <b><?php echo Carbon::createFromFormat('Y-m-d',$book->start)->formatLocalized('%d %B') ?> - <?php echo Carbon::createFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %B') ?></b> <br><br>
+Fechas: <b><?php echo Carbon::createFromFormat('Y-m-d h:i:s',$book->start)->formatLocalized('%d %B') ?> - <?php echo Carbon::createFromFormat('Y-m-d h:i:s',$book->finish)->formatLocalized('%d %B') ?></b> <br><br>
 
 Gestiona la reserva desde : <a href="www.apartamentosierranevada.net/admin">www.apartamentosierranevada.net/admin</a>
