@@ -166,7 +166,11 @@
 							</div>
 						<?php else: ?>
 							<?php if ($contacted == 1): ?>
-								<div class="col-padding black-cover">
+							<script>
+                              gtag('event', 'conversion', {'send_to': 'AW-834109020/hwS6CLbx94wBENz83Y0D'});
+							</script>
+
+							<div class="col-padding black-cover">
 
 									<div class="heading-block center nobottomborder nobottommargin">
 										<div class="col-xs-12 center white">

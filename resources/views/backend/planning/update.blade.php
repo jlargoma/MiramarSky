@@ -439,8 +439,10 @@
                             <div class="col-md-5 col-xs-12 push-10">
                                 <label>Agencia</label>
                                 <select class="form-control full-width agency minimal" name="agency">
-									<?php for ($i = 0; $i <= 4 ; $i++): ?>
-                                    <option value="<?php echo $i ?>" {{ $book->agency == $i ? 'selected' : '' }}><?php echo $book->getAgency($i) ?></option>
+									<?php for ($i = 0; $i <= 7 ; $i++): ?>
+                                    <option value="<?php echo $i ?>" {{ $book->agency == $i ? 'selected' : '' }} <?php if ( Auth::user()->role == "agente" &&  $book->getAgency($i) == "S.essence"): ?>
+                                    selected<?php endif ?>>
+                                        <?php echo $book->getAgency($i) ?></option>
 									<?php endfor;?>
                                 </select>
                             </div>
@@ -989,8 +991,11 @@
                             <div class="col-md-6 col-xs-6 push-10">
                                 <label>Agencia</label>
                                 <select class="form-control full-width agency minimal" name="agency">
-									<?php for ($i = 0; $i <= 4 ; $i++): ?>
-                                    <option value="<?php echo $i ?>" {{ $book->agency == $i ? 'selected' : '' }}><?php echo $book->getAgency($i) ?></option>
+									<?php for ($i = 0; $i <= 7 ; $i++): ?>
+                                    <option value="<?php echo $i ?>" {{ $book->agency == $i ? 'selected' : '' }} <?php if ( Auth::user()->role == "agente" &&  $book->getAgency($i) == "S.essence"): ?>
+                                    selected<?php endif ?>>
+                                        <?php echo $book->getAgency($i) ?>
+                                    </option>
 									<?php endfor;?>
                                 </select>
                             </div>

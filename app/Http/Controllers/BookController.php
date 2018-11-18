@@ -563,12 +563,27 @@ class BookController extends Controller
 			$book->pax                 = $request->input('pax');
 			$book->real_pax            = $request->input('real_pax');
 			$book->nigths              = $request->input('nigths');
+			if ($book->type_book == 7){
+				$book->sup_park  = 0;
+				$book->sup_limp  = ($room->sizeApto == 1) ? 30 : 50;
+				$book->cost_limp = ($room->sizeApto == 1) ? 30 : 40;
 
-			$book->sup_park  = $computedData->totales->parking;
-			$book->sup_limp  = $computedData->totales->limp;
-			$book->cost_limp = $computedData->costes->limp;
+				$book->sup_lujo    = 0;
+				$book->cost_lujo   = 0;
+
+				$book->real_price  = ($room->sizeApto == 1) ? 30 : 50;
+			}
+			else{
+				$book->sup_park  = $computedData->totales->parking;
+				$book->sup_limp  = $computedData->totales->limp;
+				$book->cost_limp = $computedData->costes->limp;
+
+				$book->sup_lujo    = $computedData->totales->lujo;
+				$book->cost_lujo   = $computedData->costes->lujo;
+				$book->real_price  = $computedData->calculated->real_price;
+			}
+
 			$book->cost_park = $request->input('costParking');
-
 			$book->type_park  = $request->input('parking');
 			$book->agency     = $request->input('agency');
 			$book->PVPAgencia = $request->input('agencia') ? : 0;

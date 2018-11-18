@@ -181,7 +181,7 @@
 	                    agencyCost: agencyCost,
 	                    promotion: promotion,
 	                    agencyType: agencyType,
-	//                    total_price: data && data.hasOwnProperty('pvp') ? data.pvp : '',
+	                    //total_price: data && data.hasOwnProperty('pvp') ? data.pvp : '',
 	                    book_id: book_id
 	                }).done(function( data ) {
 	                    console.log(data);
@@ -189,8 +189,8 @@
 	                    $('#computed-data').html(JSON.stringify(data));
 
 	                    var isEdited = $('.total').attr('data-edited');
+	                    if (data.costes.promotion == 0) {
 
-	                    if (data.totales.promotion == 0) {
 	                        $('.book_owned_comments').empty();
 	                    } else {
 	                        $('.book_owned_comments').html('(PROMOCIÓN 3x2 DESCUENTO : '+ Math.abs(data.costes.promotion) +' €)');

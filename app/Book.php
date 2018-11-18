@@ -188,7 +188,8 @@ class Book extends Model
 			3 => "Bed&Snow",
 			4 => "AirBnb",
 			5 => "Jaime Diaz",
-			6 => "S.essence"
+			6 => "S.essence",
+			7 => "Cerogrados"
 		];
 
 		return $agency = $array[$agency];
@@ -746,6 +747,20 @@ class Book extends Model
 		return $this->payments->filter(function ($payment) use ($tipo) {
 			return $payment->type == $tipo;
 		})->sum('import');
+	}
+
+	public function getLastPayment()
+	{
+		$lastPayment = 0;
+		if (count($this->payments) > 0)
+		{
+			foreach ($this->payments as $index => $payment)
+			{
+				$lastPayment = $payment->import;
+			}
+		}
+
+		return $lastPayment;
 	}
 
 	// Funcion para Sacar Ventas por temporada

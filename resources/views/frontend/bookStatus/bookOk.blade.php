@@ -14,8 +14,6 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript">
-	// setTimeout(function() {
-	// 	$('#close-form-book, span.close').trigger('click');
-	// }, 3000);
+<script>
+  gtag('event', 'conversion', {'send_to': 'AW-834109020/hwS6CLbx94wBENz83Y0D'});
 </script>

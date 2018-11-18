@@ -3,7 +3,7 @@
 ?>
 <?php
     if ($import == 0) {
-        $multipler = 0.25;
+        $multipler = 0.50;
         if (count($payments) > 0 ){
             $dateStart = Carbon::createFromFormat('Y-m-d', $book->start);
             $now = Carbon::now();
@@ -15,7 +15,7 @@
             }
         }else{
             if( count($payments) == 1){
-                $multipler = 0.25;
+                $multipler = 0.50;
             }elseif( count($payments) > 1 ){
                 $multipler = 0.50;
             }

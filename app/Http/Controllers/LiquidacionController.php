@@ -296,6 +296,7 @@ class LiquidacionController extends Controller
 		$books        = \App\Book::whereIn('type_book', [2, 7, 8])->get();
 
 		$arrayTotales = array();
+
 		for ($i = 2015; $i <= intval(date('Y')) + 1; $i++)
 		{
 			$j = $i + 1;
@@ -304,6 +305,7 @@ class LiquidacionController extends Controller
 		}
 
 		$priceBookRoom = array();
+
 		foreach ($rooms as $key => $room)
 		{
 			for ($i = intval($inicio->copy()->format('Y')); $i <= intval(date('Y')) + 1; $i++)
@@ -1540,6 +1542,7 @@ class LiquidacionController extends Controller
 	{
 		$room        = \App\Rooms::find($room_id);
 		$expenseLimp = 0;
+
 		if ($room->sizeApto == 1)
 		{
 			$expenseLimp = 30;

@@ -219,6 +219,10 @@
                     background-color:none !important;
                     background:none !important;
                 }
+                
+                #header.transparent-header {
+                    z-index: 2000 !important;
+                }
 
             </style>
 

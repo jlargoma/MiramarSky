@@ -298,6 +298,7 @@ class OwnedController extends Controller
 		$start  = Carbon::createFromFormat('d M, y', trim($date[0]))->format('d/m/Y');
 		$finish = Carbon::createFromFormat('d M, y', trim($date[1]))->format('d/m/Y');
 
+		$diff = Carbon::createFromFormat('d M, y', trim($date[1]))->diffInDays(Carbon::createFromFormat('d M, y', trim($date[0])));
 
 		$room = \App\Rooms::find($request->input('room'));
 
@@ -320,8 +321,8 @@ class OwnedController extends Controller
 			$book->room_id     = $room->id;
 			$book->start       = Carbon::CreateFromFormat('d/m/Y', $start)->format('Y-m-d');
 			$book->finish      = Carbon::CreateFromFormat('d/m/Y', $finish)->format('Y-m-d');
+			$book->nigths      = $diff;
 			$book->type_book   = 7;
-
 			$book->sup_limp    = ($room->sizeApto == 1) ? 30 : 50;
 			$book->cost_limp   = ($room->sizeApto == 1) ? 30 : 40;
 			$book->sup_park    = 0;
@@ -347,7 +348,7 @@ class OwnedController extends Controller
 					$message->from('bloqueos@apartamentosierranevada.net');
 					$message->to('reservas@apartamentosierranevada.net');
 					//$message->to('iavila@daimonconsulting.com');
-					$message->subject('BLOQUEO '.strtolower($book->user->name));
+					$message->subject('BLOQUEO ' . strtolower($book->user->name));
 				});
 			}
 
