@@ -42,21 +42,6 @@
                         <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" ><?php echo $book->customer['name']  ?></a>
                     <?php endif ?>     
 
-                    <?php if (!empty($book->comment) || !empty($book->book_comments)): ?>
-                        <?php 
-                            $textComment = "";
-                            if (!empty($book->comment)) {
-                                $textComment .= "<b>COMENTARIOS DEL CLIENTE</b>:"."<br>"." ".$book->comment."<br>";
-                            }
-                            if (!empty($book->book_comments)) {
-                                $textComment .= "<b>COMENTARIOS DE LA RESERVA</b>:"."<br>"." ".$book->book_comments;
-                            }
-                        ?>
-                        <span class="icons-comment" data-class-content="content-comment-<?php echo $book->id?>">
-                            <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
-                        </span>
-                        <div class="comment-floating content-comment-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $textComment ?></p></div>
-                    <?php endif ?>                                                   
                 </td>
 
                 <td class ="text-center"  > 
@@ -92,6 +77,21 @@
                         >
                             <i class="fa fa-eye"></i>
                         </button>
+                    <?php endif ?>
+                    <?php if (!empty($book->comment) || !empty($book->book_comments)): ?>
+                    <?php
+                    $textComment = "";
+                    if (!empty($book->comment)) {
+                        $textComment .= "<b>COMENTARIOS DEL CLIENTE</b>:"."<br>"." ".$book->comment."<br>";
+                    }
+                    if (!empty($book->book_comments)) {
+                        $textComment .= "<b>COMENTARIOS DE LA RESERVA</b>:"."<br>"." ".$book->book_comments;
+                    }
+                    ?>
+                    <span class="icons-comment" data-class-content="content-comment-<?php echo $book->id?>">
+                                    <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
+                                </span>
+                    <div class="comment-floating content-comment-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $textComment ?></p></div>
                     <?php endif ?>
                 </td>
 
@@ -203,9 +203,6 @@
                                 <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " ")  ?> 
                             </a>
                         <?php endif ?>
-                        <?php if (!empty($book->comment)): ?>
-                           <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
-                        <?php endif ?>   
                     </td>
                     <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b') ?></td>
                     <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b') ?></td>
@@ -265,9 +262,23 @@
                             <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
                                 <img src="/pages/oferta.png" style="width: 40px;">
                             </span>
-                            <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
-                            
-                        <?php endif ?>
+		                    <?php if (!empty($book->comment) || !empty($book->book_comments)): ?>
+		                    <?php
+		                    $textComment = "";
+		                    if (!empty($book->comment)) {
+			                    $textComment .= "<b>COMENTARIOS DEL CLIENTE</b>:"."<br>"." ".$book->comment."<br>";
+		                    }
+		                    if (!empty($book->book_comments)) {
+			                    $textComment .= "<b>COMENTARIOS DE LA RESERVA</b>:"."<br>"." ".$book->book_comments;
+		                    }
+		                    ?>
+                            <span class="icons-comment" data-class-content="content-comment-<?php echo $book->id?>">
+                                        <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
+                                    </span>
+                            <div class="comment-floating content-comment-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $textComment ?></p></div>
+		                    <?php endif ?>
+
+		                    <?php endif ?>
                     </td>
                     <td class="text-center">
                         <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-danger deleteBook" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
