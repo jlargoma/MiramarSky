@@ -14,6 +14,8 @@
 
 <script type="text/javascript" src="{{asset('/frontend/js/moment.min.js')}}"></script>
 
+<script type="text/javascript" src="{{asset('/frontend/js/bootbox.min.js')}}"></script>
+
 <?php /* view para todos los scripts generales de la pagina */ ?>
 
 <!-- general scripts -->

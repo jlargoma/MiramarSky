@@ -11,6 +11,9 @@ use App\Classes\Mobile;
 use URL;
 use File;
 use Route;
+use App\ForfaitsPrices;
+use App\ForfaitsCalendar;
+use App\Http\Controllers\FortfaitsController;
 
 class FortfaitsController extends Controller
 {
@@ -200,7 +203,105 @@ class FortfaitsController extends Controller
     	return view('frontend.forfait.index', ['products' => $products, 'mobile' => $mobile] );
     }
 
+    public static function calculatePrice(){
+//        print_r($_POST);
+        
+        $price = NULL;
+        $prices = [];
+        $prices_blocks = [];
+        
+        $start_date = date('Ymd',strtotime($_POST['start_date']));
+        $end_date = date('Ymd',strtotime($_POST['end_date']));
+//        echo $start_date.'<br/>';
+//        echo $end_date.'<br/>';
 
+        $type = $_POST['type'];
+        $subtype = $_POST['subtype'];
+        $quantity = $_POST['quantity'];
+        $times = $_POST['times'];
+        $ski_type = $_POST['ski_type'];
+        $material_type = $_POST['material_type'];
+
+        switch ($type){
+            case 'forfait':
+                
+                $dates = FortfaitsController::dateRange($start_date,$end_date);
+//                print_r($dates);
+
+                $calendar_sql = ForfaitsCalendar::  select("date","type")
+                                                    ->where("date",">=",$start_date)
+                                                    ->where("date","<=",$end_date)
+                                                    ->get();
+                foreach($calendar_sql as $item){
+                    $prices[$item->date] = $item->type;
+                }
+//                print_r($prices);
+                
+                $counter = 0;
+                $rate_temp = NULL;
+                
+                foreach($prices as $price_date => $rate){
+                    if($rate_temp != NULL && $rate_temp != $rate){
+                        $counter++;
+                    }
+                    
+                    if(!isset($prices_blocks[$counter][$rate])){
+                        $prices_blocks[$counter][$rate] = 1;
+                    }else{
+                        $prices_blocks[$counter][$rate] += 1; 
+                    }
+                    
+                    $rate_temp = $rate;
+                }
+//                print_r($prices_blocks);
+
+                if(count($prices) > 0){
+                    $price = 0;
+                    
+                    foreach($prices_blocks as $rates){
+                        foreach($rates as $rate => $rate_times){
+                            $prices_sql = ForfaitsPrices::  select("price_".$rate)
+                                                            ->where("type","=","$subtype")
+                                                            ->where("days","=","$rate_times")
+                                                            ->get();
+
+                            foreach($prices_sql as $forfait){
+                                $price += $forfait->{"price_".$rate}*$quantity;
+                            }
+                        }
+                    }
+                }
+
+                $price = str_replace('.',',',$price);
+
+                break;
+            case 'material':
+                $price = 100*$times;
+                break;
+            
+            case 'classes':
+                $price = 100*$times;
+                break;
+        }
+
+        return $price;
+    }
+    
+    public static function dateRange($startDate, $endDate){
+        $range = array();
+
+        if (is_string($startDate) === true) $startDate = strtotime($startDate);
+        if (is_string($endDate) === true ) $endDate = strtotime($endDate);
+
+        if ($startDate > $endDate) return UtilsController::dateRange($endDate, $startDate);
+
+        do {
+            $range[] = date('Ymd', $startDate);
+            $startDate = strtotime("+ 1 day", $startDate);
+        } while($startDate <= $endDate);
+
+        return $range;
+    }
 	
 
 }
