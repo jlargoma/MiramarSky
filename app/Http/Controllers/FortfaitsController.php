@@ -208,12 +208,18 @@ class FortfaitsController extends Controller
         
         $price = NULL;
         $prices = [];
-        $prices_blocks = [];
+        
+        $prices_blocks = [
+            'promo' => 0,
+            'spring' => 0,
+            'season_low' => 0,
+            'season_high' => 0
+        ];
+        
+        $rates_priorities = ['season_high','season_low','promo','spring'];
         
         $start_date = date('Ymd',strtotime($_POST['start_date']));
         $end_date = date('Ymd',strtotime($_POST['end_date']));
-//        echo $start_date.'<br/>';
-//        echo $end_date.'<br/>';
 
         $type = $_POST['type'];
         $subtype = $_POST['subtype'];
@@ -226,7 +232,7 @@ class FortfaitsController extends Controller
             case 'forfait':
                 
                 $dates = FortfaitsController::dateRange($start_date,$end_date);
-//                print_r($dates);
+//                $days = count($dates);
 
                 $calendar_sql = ForfaitsCalendar::  select("date","type")
                                                     ->where("date",">=",$start_date)
@@ -235,40 +241,42 @@ class FortfaitsController extends Controller
                 foreach($calendar_sql as $item){
                     $prices[$item->date] = $item->type;
                 }
-//                print_r($prices);
-                
-                $counter = 0;
-                $rate_temp = NULL;
-                
+
                 foreach($prices as $price_date => $rate){
-                    if($rate_temp != NULL && $rate_temp != $rate){
-                        $counter++;
-                    }
-                    
-                    if(!isset($prices_blocks[$counter][$rate])){
-                        $prices_blocks[$counter][$rate] = 1;
+                    if(!isset($prices_blocks[$rate])){
+                        $prices_blocks[$rate] = 1;
                     }else{
-                        $prices_blocks[$counter][$rate] += 1; 
+                        $prices_blocks[$rate] += 1; 
                     }
-                    
-                    $rate_temp = $rate;
                 }
+                
+                arsort($prices_blocks);
 //                print_r($prices_blocks);
+                
+                $rate_selected = NULL;
+                $rate_value_selected = NULL;
+                foreach($prices_blocks as $rate_key => $price_block){
+                    if($rate_selected == NULL){
+                        $rate_selected = $rate_key;
+                        $rate_value_selected = $price_block;
+                    }elseif($price_block == $rate_value_selected){
+                        if(array_search($rate_key,$rates_priorities) > array_search($rate_selected,$rates_priorities)){
+                            $rate_selected = $rate_key;
+                            $rate_value_selected = $price_block;
+                        }
+                    }
+                }
 
                 if(count($prices) > 0){
                     $price = 0;
-                    
-                    foreach($prices_blocks as $rates){
-                        foreach($rates as $rate => $rate_times){
-                            $prices_sql = ForfaitsPrices::  select("price_".$rate)
-                                                            ->where("type","=","$subtype")
-                                                            ->where("days","=","$rate_times")
-                                                            ->get();
 
-                            foreach($prices_sql as $forfait){
-                                $price += $forfait->{"price_".$rate}*$quantity;
-                            }
-                        }
+                    $prices_sql = ForfaitsPrices::  select("price_".$rate)
+                                                    ->where("type","=","$subtype")
+                                                    ->where("days","=","$times")
+                                                    ->get();
+
+                    foreach($prices_sql as $forfait){
+                        $price += $forfait->{"price_".$rate}*$quantity;
                     }
                 }
 
