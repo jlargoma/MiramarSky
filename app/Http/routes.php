@@ -25,8 +25,8 @@
 
 	Route::auth();
 	Route::get( '/' , 'HomeController@index' )->middleware( 'web' );
-   Route::get( '/homeTest' , 'HomeTestController@index' )->middleware( 'web' );
-   Route::get( '/homeTest' , 'HomeTestController@index' )->middleware( 'web' );
+        Route::get( '/homeTest' , 'HomeTestController@index' )->middleware( 'web' );
+        Route::get( '/homeTest' , 'HomeTestController@index' )->middleware( 'web' );
 	Route::get( '/sitemap' , 'HomeController@siteMap' )->middleware( 'web' );
 	Route::get( '/apartamentos/galeria/{apto}' , 'HomeController@galeriaApartamento' )->middleware( 'web' );
 	Route::get( '/apartamentos/{apto}' , 'HomeController@apartamento' )->middleware( 'web' );
@@ -574,9 +574,6 @@
 		} );
 
 		Route::get( '/admin/settings' , 'SettingsController@index' );
-		Route::post( '/admin/agentRoom/create' , 'SettingsController@createAgentRoom' );
-		Route::get( '/admin/agentRoom/delete/{id}' , 'SettingsController@deleteAgentRoom' );
-
 
 		Route::post( '/admin/specialSegments/create' , 'SpecialSegmentController@create' );
 		Route::get( '/admin/specialSegments/update/{id?}' , 'SpecialSegmentController@update' );
@@ -598,3 +595,6 @@
 	Route::get( '/refreshBloqueos' , 'Admin\BackendController@refreshBloqueos' );
 
 
+// AJAX REQUESTS
+        
+       Route::post( '/ajax/requestPrice' , 'FortfaitsController@calculatePrice');
