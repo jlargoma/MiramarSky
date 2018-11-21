@@ -17,6 +17,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/admin/reservas/stripe/paymentsBooking',
         '/solicitudForfait',
         '/admin/stripe-connect/load-transfer-form',
-        '/admin/stripe-connect/create-account-stripe-connect'
+        '/admin/stripe-connect/create-account-stripe-connect',
+        '/ajax/requestPrice'
     ];
 }
