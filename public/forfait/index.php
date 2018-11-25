@@ -8,15 +8,15 @@
 	<!-- Stylesheets
 	============================================= -->
 	<link href="http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
-	<link rel="stylesheet" href="/css/app.css" type="text/css" />
+	<link rel="stylesheet" href="../css/app.css" type="text/css" />
 
-	<link rel="stylesheet" href="/frontend/css/dark.css" type="text/css" />
-	<link rel="stylesheet" href="/frontend/css/responsive.css" type="text/css" />
+	<link rel="stylesheet" href="../frontend/css/dark.css" type="text/css" />
+	<link rel="stylesheet" href="../frontend/css/responsive.css" type="text/css" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
-	<link rel="stylesheet" href="/frontend/css/components/daterangepicker.css" type="text/css" />
+	<link rel="stylesheet" href="../frontend/css/components/daterangepicker.css" type="text/css" />
 
     <!-- Plugin for date picker 
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.css"/>-->
@@ -59,7 +59,7 @@
         <!-- Form for Reserve forfait2
         ============================================-->	
     <form role="form" id='form' method="post" action="/solicitudForfait" style="margin-bottom: 0px">
-		<section id="content" style="background-image: url('/img/fortfait/background.jpg')!important; background-repeat: no-repeat; background-size: cover;">
+		<section id="content" style="background-image: url('../img/fortfait/background.jpg') !important; background-repeat: no-repeat; background-size: cover;">
 		    <div class="content-wrap nopadding">
 		        <div id="section-works"  class="full-screen" style="padding-top:5px;overflow: scroll">
 		            <div class="col-md-10 col-lg-6 col-lg-offset-3 col-md-offset-1 sin-margin-mobile" style="padding:0!important;">
@@ -90,7 +90,7 @@
 			                                </div>
 
 			                                <div class="form-group col-md-6 col-sm-offset-3 col-xs-12 push-30">
-			                                	<h4 class="text-center push-0">* Fecha de tu reserva</h4>
+			                                	<h4 class="text-center push-0">* Fecha de tus Forfaits</h4>
 			                                    <div class='input-group'>
 			                                        <input class="sm-form-control" type="text" name="date-entrada" id="date-entrada" name="example-daterange1" placeholder="Desde" maxlength="10" readonly="readonly" required>
 			                                        <span class="input-group-addon" id="btnCalendarEntrada"><span class="icon-calendar"></span></span>
@@ -108,10 +108,10 @@
 			                            	</div>
 		                            	
 		                            	<!-- Selector Forfaits -->
-			                                <div class="col-sm-12 push-20">
+			                                <div class="col-sm-12 push-20 label_hide">
 				                                <div class="col-md-2 col-xs-6 forfait" data-value="0">
 				                                	<div class="col-xs-12 not-padding">
-					                                	<img src="/img/fortfait/juvenil.jpg" class="img-responsive push-10"/>
+					                                	<img src="../img/fortfait/juvenil.jpg" class="img-responsive push-10"/>
 					                                	<h3 class="text-center title-forfait push-5">
 					                                		Forfait Juvenil
 					                                	</h3>
@@ -119,7 +119,7 @@
 				                                </div>
 				                                <div class="col-md-2 col-xs-6 forfait" data-value="1">
 				                                	<div class="col-xs-12 not-padding">
-					                                	<img src="/img/fortfait/junior.jpg" class="img-responsive push-10"/>
+					                                	<img src="../img/fortfait/junior.jpg" class="img-responsive push-10"/>
 					                                	<h3 class="text-center title-forfait push-5">
 					                                		Forfait Junior
 					                                	</h3>
@@ -127,7 +127,7 @@
 				                                </div>
 				                                <div class="col-md-2 col-xs-6 forfait" data-value="2">
 				                                	<div class="col-xs-12 not-padding">
-					                                	<img src="/img/fortfait/adulto.jpg" class="img-responsive push-10"/>
+					                                	<img src="../img/fortfait/adulto.jpg" class="img-responsive push-10"/>
 					                                	<h3 class="text-center title-forfait push-5">
 					                                		Forfait Adulto
 					                                	</h3>
@@ -135,7 +135,7 @@
 				                                </div>
 				                                <div class="col-md-2 col-xs-6 forfait" data-value="3">
 				                                	<div class="col-xs-12 not-padding">
-					                                	<img src="/img/fortfait/senior.jpg" class="img-responsive push-10"/>
+					                                	<img src="../img/fortfait/senior.jpg" class="img-responsive push-10"/>
 					                                	<h3 class="text-center title-forfait push-5">
 					                                		Forfait Senior
 					                                	</h3>
@@ -143,7 +143,7 @@
 				                                </div>
 				                                <div class="col-md-2 col-xs-6 forfait" data-value="4">
 				                                	<div class="col-xs-12 not-padding">
-					                                	<img src="/img/fortfait/juvenil-familiar.jpg" class="img-responsive push-10"/>
+					                                	<img src="../img/fortfait/juvenil-familiar.jpg" class="img-responsive push-10"/>
 					                                	<h3 class="text-center title-forfait push-5">
 					                                		Forfait Juvenil Familia
 					                                	</h3>
@@ -151,7 +151,7 @@
 				                                </div>
 				                                <div class="col-md-2 col-xs-6 forfait" data-value="5">
 				                                	<div class="col-xs-12 not-padding">
-					                                	<img src="/img/fortfait/junior_familiar.jpg" class="img-responsive push-10"/>
+					                                	<img src="../img/fortfait/junior_familiar.jpg" class="img-responsive push-10"/>
 					                                	<h3 class="text-center title-forfait push-5">
 					                                		Forfait Junior Familiar
 					                                	</h3>
@@ -165,7 +165,7 @@
 				                                    <div id="Forfait0" class="row desc" style="display: none;border-left: solid;border-right: solid">
 				                                    	<div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
 				                                    		<div class="col-md-3 col-xs-12">
-				                                    			<img src="/img/fortfait/juvenil.jpg" class="img-responsive" style="margin-top: 30px;">
+				                                    			<img src="../img/fortfait/juvenil.jpg" class="img-responsive" style="margin-top: 30px;">
 				                                    		</div>
 				                                    		<div class="col-md-9 col-xs-12">
 				                                    			<h2 class="text-center font-w300 text-black black" >Reserva <span class="font-w800">Forfait Juvenil</span></h2>
@@ -210,7 +210,7 @@
 				                                    	</div>
 				                                    	<div class="form-group col-sm-3">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonjuv" class="btn btn-success form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonjuv" class="btn btn-success form-control price_request" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>
 			                                    
@@ -219,7 +219,7 @@
 				                                        
 														<div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
 															<div class="col-md-3 col-xs-12">
-																<img src="/img/fortfait/junior.jpg" class="img-responsive" style="margin-top: 30px;">
+																<img src="../img/fortfait/junior.jpg" class="img-responsive" style="margin-top: 30px;">
 															</div>
 															<div class="col-md-9 col-xs-12">
 																<h2 class="text-center font-w300 text-black black" >Reserva <span class="font-w800">Forfait Junior</span> / Discapacitado Adulto Senior</h2>
@@ -263,7 +263,7 @@
 				                                    	</div>
 				                                    	<div class="form-group col-sm-3">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonjun" class="btn btn-success form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonjun" class="btn btn-success form-control price_request" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>
 			                                    
@@ -271,7 +271,7 @@
 				                                    <div id="Forfait2" class="row desc" style="display: none;border-left: solid;border-right: solid">
 				                                    	<div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
 					                                    	<div class="col-md-3 col-xs-12">
-					                                    		<img src="/img/fortfait/adulto.jpg" class="img-responsive" style="margin-top: 30px;">
+					                                    		<img src="../img/fortfait/adulto.jpg" class="img-responsive" style="margin-top: 30px;">
 					                                    	</div>
 					                                    	<div class="col-md-9 col-xs-12">
 					                                    		<h2 class="text-center font-w300 text-black black" >Reserva <span class="font-w800">Forfait Adulto</span> </h2>
@@ -314,7 +314,7 @@
 				                                    	</div>
 				                                    	<div class="form-group col-sm-3">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonadult" class="btn btn-success form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonadult" class="btn btn-success form-control price_request" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>
 			                                    
@@ -322,7 +322,7 @@
 				                                    <div id="Forfait3" class="row desc" style="display: none;border-left: solid;border-right: solid">
 				                                    	<div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
 					                                    	<div class="col-md-3 col-xs-12">
-					                                    		<img src="/img/fortfait/adulto.jpg" class="img-responsive" style="margin-top: 30px;">
+					                                    		<img src="../img/fortfait/adulto.jpg" class="img-responsive" style="margin-top: 30px;">
 					                                    	</div>
 					                                    	<div class="col-md-9 col-xs-12">
 					                                    		<h2 class="text-center font-w300 text-black black" >Reserva <span class="font-w800">Forfait Senior</span> </h2>
@@ -365,7 +365,7 @@
 				                                    	</div>
 				                                    	<div class="form-group col-sm-3">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonsenior" class="btn btn-success form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonsenior" class="btn btn-success form-control price_request" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>
 			                                    
@@ -373,7 +373,7 @@
 				                                    <div id="Forfait4" class="row desc" style="display: none;border-left: solid;border-right: solid">
 				                                    	<div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
 					                                    	<div class="col-md-3 col-xs-12">
-					                                    		<img src="/img/fortfait/adulto.jpg" class="img-responsive" style="margin-top: 30px;">
+					                                    		<img src="../img/fortfait/adulto.jpg" class="img-responsive" style="margin-top: 30px;">
 					                                    	</div>
 					                                    	<div class="col-md-9 col-xs-12">
 					                                    		<h2 class="text-center font-w300 text-black black" >Reserva <span class="font-w800">Forfait Junior Formula Familiar</span> </h2>
@@ -417,7 +417,7 @@
 				                                    	</div>
 				                                    	<div class="form-group col-sm-3">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonjuvfam" class="btn btn-success form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonjuvfam" class="btn btn-success form-control price_request" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>
 				                                    
@@ -425,7 +425,7 @@
 				                                    <div id="Forfait5" class="row desc" style="display: none;border-left: solid;border-right: solid">
 				                                    	<div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
 					                                    	<div class="col-md-3 col-xs-12">
-					                                    		<img src="/img/fortfait/adulto.jpg" class="img-responsive" style="margin-top: 30px;">
+					                                    		<img src="../img/fortfait/adulto.jpg" class="img-responsive" style="margin-top: 30px;">
 					                                    	</div>
 					                                    	<div class="col-md-9 col-xs-12">
 					                                    		<h2 class="text-center font-w300 text-black black" >Reserva <span class="font-w800">Forfait Juvenil Formula Familiar</span> </h2>
@@ -468,7 +468,7 @@
 				                                    	</div>
 				                                    	<div class="form-group col-sm-3">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonjunfam" class="btn btn-success form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonjunfam" class="btn btn-success form-control price_request" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>
 			                                </div>
@@ -589,7 +589,7 @@
 				                                    	</div>
 				                                    	<div class="form-group col-sm-2">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonpack" class="btn btn-success form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonpack" class="btn btn-success form-control price_request" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>
 
@@ -692,7 +692,7 @@
 
 				                                    	<div class="form-group col-sm-2">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonesquis" class="btn btn-success form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonesquis" class="btn btn-success form-control price_request" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>		                                  
 
@@ -795,7 +795,7 @@
 				                                    	
 				                                    	<div class="form-group col-sm-2">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonsnow" class="btn btn-success form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonsnow" class="btn btn-success form-control price_request" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>		
 
@@ -861,7 +861,7 @@
 				                                    	
 				                                    	<div class="form-group col-sm-2">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botonblade" class="btn btn-success form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botonblade" class="btn btn-success form-control price_request" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>		
 
@@ -927,7 +927,7 @@
 				                                    	
 				                                    	<div class="form-group col-sm-2 col-xs-12">
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botoncasco" class="btn btn-success form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botoncasco" class="btn btn-success form-control price_request" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>		
 		                                	</div>
@@ -946,7 +946,7 @@
         		                                
 												<div class="col-md-2 col-xs-6 clase" data-value="0">
 				                                	<div class="col-xs-12 not-padding">
-					                                	<img src="/img/fortfait/clase-particular.jpg" class="img-responsive push-10"/>
+					                                	<img src="../img/fortfait/clase-particular.jpg" class="img-responsive push-10"/>
 					                                	<h3 class="text-center title-forfait push-5">
 					                                		Clases particulares
 					                                	</h3>
@@ -954,7 +954,7 @@
 				                                </div>
 				                                <div class="col-md-2 col-xs-6 clase" data-value="1">
 				                                	<div class="col-xs-12 not-padding">
-					                                	<img src="/img/fortfait/clase-colectiva-semanal.jpg" class="img-responsive push-10"/>
+					                                	<img src="../img/fortfait/clase-colectiva-semanal.jpg" class="img-responsive push-10"/>
 					                                	<h3 class="text-center title-forfait push-5">
 					                                		Clases colectivas semanal
 					                                	</h3>
@@ -969,7 +969,7 @@
 			                                	<div id="clase0" class="row desc" style="display: none;border-left: solid;border-right: solid">			
 			                                		<div class="col-xs-12 push-12">
 			                                			<div class="col-md-3">
-			                                				<img src="/img/fortfait/clase-particular.jpg" class="img-responsive push-10" style="margin-top: 30px;" />
+			                                				<img src="../img/fortfait/clase-particular.jpg" class="img-responsive push-10" style="margin-top: 30px;" />
 			                                			</div>
 			                                			<div class="col-md-9">
 			                                				<h2 class="text-center font-w300 text-black black" >CLASES <span class="font-w800">Particulares</span> </h2>
@@ -1063,7 +1063,7 @@
 
 
 				                                    	<div class="form-group col-sm-4" >
-			                                    			<button name="boton" id="botonparticular" class="btn btn-success form-control" type="button">Solicitar</button>
+			                                    			<button name="boton" id="botonparticular" class="btn btn-success form-control price_request" type="button">Solicitar</button>
 				                                    	</div>
 			                                    </div>
 
@@ -1172,7 +1172,7 @@
 
 				                                    	<div class="form-group col-sm-3 col-sm-offset-4" >
 						                                    <span>*Carrito</span>
-				                                    			<button name="boton" id="botoncolectivo" class="btn btn-success form-control" type="button">Solicitar</button>
+				                                    			<button name="boton" id="botoncolectivo" class="btn btn-success form-control price_request" type="button">Solicitar</button>
 				                                    	</div>
 				                                    </div>
 		                                	</div>		                       		                                
@@ -1209,10 +1209,24 @@
 		</form>
 		
     </div>
+    
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <span style="font-weight: bold;">Debe seleccionar Fecha de Forfaits</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<script type="text/javascript" src="/pages/js/bootstrap-notify.js"></script>
-	<script type="text/javascript" src="/frontend/js/plugins.js"></script>
-	<script type="text/javascript" src="/frontend/js/functions.js"></script>	
+    <script type="text/javascript" src="../pages/js/bootstrap-notify.js"></script>
+    <script type="text/javascript" src="../frontend/js/plugins.js"></script>
+    <script type="text/javascript" src="../frontend/js/functions.js"></script>	
 
     <script>
         jQuery(document).ready(function(){
@@ -1244,520 +1258,679 @@
 	   
     </script>
     <script type="text/javascript">
-        if(typeof wabtn4fg==="undefined"){
-            wabtn4fg=1;
-            h = document.head || document.getElementsByTagName("head")[0] , s = document.createElement("script");
+
+        $("#myModal button.btn").on("click", function (e) {
+            console.log('test');
+            $("#myModal").modal('hide'); // dismiss the dialog
+        });
+
+        $("#myModal").on("hide", function () { // remove the event listeners when the dialog is dismissed
+            $("#myModal a.btn").off("click");
+        });
+
+        $("#myModal").on("hidden", function () { // remove the actual elements from the DOM when fully hidden
+            $("#myModal").remove();
+        });
+
+        function checkForfaitDates(){
+            if(start_date = $('input#date-entrada').val().length > 0 && $('input#date-salida').val().length > 0){
+                return true;
+            }else{
+//                console.log(false);
+                $("#myModal").modal({ // wire up the actual modal functionality and show the dialog
+                    "backdrop": "static",
+                    "keyboard": true,
+                    "show": true // ensure the modal is shown immediately
+                });
+
+                return false;
+            }
+        }
+        
+        function requestPrice(cont,type,subtype,quantity,times,ski_type = null,material_type = null){
+            
+            start_date = $('input#date-entrada').val();
+            end_date = $('input#date-salida').val()
+            
+//            console.log(start_date);
+//            console.log(end_date);
+//            console.log(type);
+//            console.log(subtype);
+//            console.log(quantity);
+//            console.log(times);
+//            console.log(start_date);
+//            console.log(end_date);
+//            console.log(ski_type);
+//            console.log(material_type);
+
+            $.ajax({
+//                headers: {
+//                    'X-CSRF-TOKEN': 
+//                },
+                type: "POST",
+                url: "/ajax/requestPrice",
+                data: {start_date:start_date,end_date:end_date,type:type,subtype:subtype,quantity:quantity,times:times,ski_type:ski_type,material_type:material_type},
+                dataType:'json',
+//                async: false,
+                success: function(response){
+//                    console.log(response);
+                    $("#" + cont).append(" - "+response+"&euro;");
+                    console.log($('input[name="carrito['+cont+']"]').val());
+                    input_cont = $('input[name="carrito['+cont+']"]');
+                    $('input[name="carrito['+cont+']"]').val(input_cont.val()+" - "+response+"&euro;")
+                },
+                error: function(response){
+//                    console.log(response);
+                }
+            });
+
+        }
+
+        if (typeof wabtn4fg === "undefined") {
+            wabtn4fg = 1;
+            h = document.head || document.getElementsByTagName("head")[0], s = document.createElement("script");
             s.type = "text/javascript";
-            s.src="js/button.js";
+            s.src = "js/button.js";
             h.appendChild(s);
-        }  
+        }
 
-		var cont = 0;
-		// Forfaits
-		$(document).ready(function(){
-			// $("input[name$='forfait']").click(function() {
-			$(".forfait").click(function() {
-		        var test = $(this).attr('data-value');
-		        $("div.desc").hide();
-		        $("#Forfait" + test).show();
+        var cont = 0;
+        // Forfaits
+        $(document).ready(function () {
+            // $("input[name$='forfait']").click(function() {
+            $(".forfait").click(function () {
+                var test = $(this).attr('data-value');
+                $("div.desc").hide();
+                $("#Forfait" + test).show();
 
-		        $("div.forfait").each(function(index, el) {
-					$(this).css('border', 'none');		        	
-		        });
+                $("div.forfait").each(function (index, el) {
+                    $(this).css('border', 'none');
+                });
 
-		        $(this).css('border', '3px solid #00b4e9');
-		    });
-
-			
-			// Funcion de creacion de carrito
-				$("#botonjuv").click(function(){
-					
-					if ($(".carrito").text() == "") {
-						if ($("#forfait-juvenil").val() != 0 && $("#JuvenilDias option:selected").html() != "Elige una opcion") {
-							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-juvenil").val()+" Forfait Juvenil ");
-							$("#"+cont).append($("#JuvenilDias").val()+" Dias"+"");
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-							$("button#btdel"+cont).on('click', function() {
-								$(this).parent().remove();
-
-							 });
-						}else{
-							alert("Debes ingresar una cantidad y un bono");
-						}
-						
-					}else{
-						if ($("#forfait-juvenil").val() != 0 && $("#JuvenilDias option:selected").html() != "Elige una opcion") {
-							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-juvenil").val()+" Forfait Juvenil ");
-							$("#"+cont).append($("#JuvenilDias").val()+" Dias"+"");
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-							$("button#btdel"+cont).on('click', function() {
-							 	$(this).parent().remove();	
-							 });
-						}else{
-							alert("Debes ingresar una cantidad y un bono");
-						}
-					}
-					cont ++;
-				});
-
-				$("#botonjun").click(function(){
-					
-					if ($(".carrito").text() == "") {
-						if ($("#forfait-junior").val() != 0 && $("#JuniorDias option:selected").html() != "Elige una opcion") {
-							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-junior").val()+" Forfait Junior ");
-							$("#"+cont).append($("#JuniorDias").val()+" Dias"+"");
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-
-							$("button#btdel"+cont).on('click', function() {
-							 	$(this).parent().remove();	
-							 });
-						}else{
-							alert("Debes ingresar una cantidad y un bono");
-						}
-						
-					}else{
-						if ($("#forfait-junior").val() != 0 && $("#JuniorDias option:selected").html() != "Elige una opcion") {
-							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-junior").val()+" Forfait Junior ");
-							$("#"+cont).append($("#JuniorDias").val()+" Dias"+"");
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-
-							$("button#btdel"+cont).on('click', function() {
-							 	$(this).parent().remove();
-							 });
-						}else{
-							alert("Debes ingresar una cantidad y un bono");
-						}
-					}
-					cont ++;
-				});
-
-				$("#botonadult").click(function(){
-					
-					if ($(".carrito").text() == "") {
-						if ($("#forfait-adulto").val() != 0 && $("#AdultosDias option:selected").html() != "Elige una opcion") {
-							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-adulto").val()+" Forfait Adultos ");
-							$("#"+cont).append($("#AdultosDias").val()+" Dias"+"");
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-
-							$("button#btdel"+cont).on('click', function() {
-							 	$(this).parent().remove();
-							 });
-						}else{
-							alert("Debes ingresar una cantidad y un bono");
-						}
-						
-					}else{
-						if ($("#forfait-adulto").val() != 0 && $("#AdultosDias option:selected").html() != "Elige una opcion") {
-							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-adulto").val()+" Forfait Adultos ");
-							$("#"+cont).append($("#AdultosDias").val()+" Dias"+"");
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-
-							$("button#btdel"+cont).on('click', function() {
-							 	$(this).parent().remove();
-							 });
-						}else{
-							alert("Debes ingresar una cantidad y un bono");
-						}
-					}
-					cont ++;
-				});
-
-				$("#botonsenior").click(function(){
-					
-					if ($(".carrito").text() == "") {
-						if ($("#forfait-senior").val() != 0 && $("#SeniorDias option:selected").html() != "Elige una opcion") {
-							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-senior").val()+" Forfait Senior ");
-							$("#"+cont).append($("#SeniorDias").val()+" Dias"+"");
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-
-							$("button#btdel"+cont).on('click', function() {
-							 	$(this).parent().remove();	
-							 });
-						}else{
-							alert("Debes ingresar una cantidad y un bono");
-						}
-						
-					}else{
-						if ($("#forfait-senior").val() != 0 && $("#SeniorDias option:selected").html() != "Elige una opcion") {
-							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-senior").val()+" Forfait Senior ");
-							$("#"+cont).append($("#SeniorDias").val()+" Dias"+"");
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-
-							$("button#btdel"+cont).on('click', function() {
-							 	$(this).parent().remove();	
-							 });
-						}else{
-							alert("Debes ingresar una cantidad y un bono");
-						}
-					}
-					cont ++;
-				});
-
-				$("#botonjuvfam").click(function(){
-					
-					if ($(".carrito").text() == "") {
-						if ($("#forfait-juvenil-familiar").val() != 0 && $("#juvfaDias option:selected").html() != "Elige una opcion") {
-							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-juvenil-familiar").val()+" Forfait juvenil-Familiar ");
-							$("#"+cont).append($("#juvfaDias").val()+" Dias"+"");
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");							
-
-							$("button#btdel"+cont).on('click', function() {
-							 	$(this).parent().remove();	
-							 });
-						}else{
-							alert("Debes ingresar una cantidad y un bono");
-						}
-						
-					}else{
-						if ($("#forfait-juvenil-familiar").val() != 0 && $("#juvfaDias option:selected").html() != "Elige una opcion") {
-							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-juvenil-familiar").val()+" Forfait juvenil-Familiar ");
-							$("#"+cont).append($("#juvfaDias").val()+" Dias"+"");
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-
-							$("button#btdel"+cont).on('click', function() {
-							 	$(this).parent().remove();	
-							 });
-						}else{
-							alert("Debes ingresar una cantidad y un bono");
-						}
-					}
-					cont ++;
-				});
-
-				$("#botonjunfam").click(function(){
-					
-					if ($(".carrito").text() == "") {
-						if ($("#forfait-junior-familiar").val() != 0 && $("#junfaDias option:selected").html() != "Elige una opcion") {
-							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-junior-familiar").val()+" Forfait junior-Familiar ");
-							$("#"+cont).append($("#junfaDias").val()+" Dias"+"");
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-
-							$("button#btdel"+cont).on('click', function() {
-							 	$(this).parent().remove();	
-							 });
-						}else{
-							alert("Debes ingresar una cantidad y un bono");
-						}
-						
-					}else{
-						if ($("#forfait-junior-familiar").val() != 0 && $("#junfaDias option:selected").html() != "Elige una opcion") {
-							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							$("#"+cont).append($("#forfait-junior-familiar").val()+" Forfait junior-Familiar ");
-							$("#"+cont).append($("#junfaDias").val()+" Dias"+"");
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-
-							$("button#btdel"+cont).on('click', function() {
-							 	$(this).parent().remove();	
-							 });
-						}else{
-							alert("Debes ingresar una cantidad y un bono");
-						}
-					}
-					cont ++;
-				});
-		});
-		
-		// Material
-		$(document).ready(function() {
-		    $("input[name$='material']").click(function() {
-		        var test = $(this).val();
-
-		        $("div.desc").hide();
-		        $("#material" + test).show();
-		    });
-
-		    // Funcion de creacion de carrito Material
-		    $("#botonpack").click(function(){
-					
-					if ($(".carrito").text() == "") {
-						if ($("#material-pack-cant").val() != 0 && $("#packtipo option:selected").html() != "Tipo" && $("#packdias option:selected").html() != "Dias") {
-							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");					
-							$("#"+cont).append($("#material-pack-cant").val()+" Alquiler material "+" Packs, Tipo ");
-							$("#"+cont).append($("#packtipo").val()+",");
-							$("#"+cont).append($("#packdias").val()+" Dias ");
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-
-							$("button#btdel"+cont).on('click', function() {
-								$(this).parent().remove();	
-							 });
-						}else{
-							alert("Debes ingresar una Cantidad ,Tipo y Dias");
-						}
-						
-					}else{
-						if ($("#material-pack-cant").val() != 0 && $("#packtipo option:selected").html() != "Tipo" && $("#packdias option:selected").html() != "Dias") {
-							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");					
-							$("#"+cont).append($("#material-pack-cant").val()+" Packs, Tipo ");
-							$("#"+cont).append($("#packtipo").val()+",");
-							$("#"+cont).append($("#packdias").val()+" Dias ");
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-
-							$("button#btdel"+cont).on('click', function() {
-								$(this).parent().remove();		
-							 });
-						}else{
-							alert("Debes ingresar una Cantidad ,Tipo y Dias");
-						}
-					}
-					cont ++;
-				});
-
-		    $("#botonesquis").click(function(){
-					
-					if ($(".carrito").text() == "") {
-						if ($("#material-Esquis-cant").val() != 0 && $("#EsquisDias option:selected").html() != "Dias" && $("#esquitipo option:selected").html() != "Tipo" && $("#esquisgama option:selected").html() != "Gama") {
-							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>");					
-							$("#"+cont).append($("#material-Esquis-cant").val()+" Alquiler material "+$("#esquitipo").val()+" ,");
-							$("#"+cont).append($("#EsquisDias").val()+" Dias,Gama  " );
-							$("#"+cont).append($("#esquisgama").val());
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-
-							$("button#btdel"+cont).on('click', function() {
-								$(this).parent().remove();	
-							 });
-						}else{
-							alert("Debes elegir, Cantidad , Dias , Tipo y Gama ");
-						}
-						
-					}else{
-						if ($("#material-Esquis-cant").val() != 0 && $("#EsquisDias option:selected").html() != "Dias" && $("#esquitipo option:selected").html() != "Tipo" && $("#esquisgama option:selected").html() != "Gama") {
-							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>");					
-							$("#"+cont).append($("#material-Esquis-cant").val()+" Alquiler material "+$("#esquitipo").val()+" ,");
-							$("#"+cont).append($("#EsquisDias").val()+" Dias,Gama  " );
-							$("#"+cont).append($("#esquisgama").val());
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-
-							$("button#btdel"+cont).on('click', function() {
-								$(this).parent().remove();	
-							 });
-						}else{
-							alert("Debes elegir, Cantidad , Dias , Tipo y Gama ");
-						}
-					}
-					cont ++;
-				});
-
-	        $("#botonsnow").click(function(){
-				
-					if ($(".carrito").text() == "") {
-						if ($("#material-snow-cant").val() != 0 && $("#snowDias option:selected").html() != "Dias" && $("#snowtipo option:selected").html() != "Tipo" && $("#snowgama option:selected").html() != "Gama") {
-							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");					
-							$("#"+cont).append($("#material-snow-cant").val()+" Alquiler material "+$("#snowtipo").val()+" ,");
-							$("#"+cont).append($("#snowDias").val()+" Dias,Gama " );
-							$("#"+cont).append($("#snowgama").val());
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-
-							$("button#btdel"+cont).on('click', function() {
-								$(this).parent().remove();	
-							 });
-						}else{
-							alert("Debes elegir, Cantidad , Dias , Tipo y Gama ");
-						}
-						
-					}else{
-						if ($("#material-snow-cant").val() != 0 && $("#snowDias option:selected").html() != "Dias" && $("#snowtipo option:selected").html() != "Tipo" && $("#snowgama option:selected").html() != "Gama") {
-							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");					
-							$("#"+cont).append($("#material-snow-cant").val()+" Alquiler material "+$("#snowtipo").val()+" ,");
-							$("#"+cont).append($("#snowDias").val()+" Dias,Gama " );
-							$("#"+cont).append($("#snowgama").val());
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-
-							$("button#btdel"+cont).on('click', function() {
-								$(this).parent().remove();	
-							 });
-						}else{
-							alert("Debes elegir, Cantidad , Dias , Tipo y Gama ");
-						}
-					}
-					cont ++;
-				});
-
-	        $("#botonblade").click(function(){
-				
-					if ($(".carrito").text() == "") {
-						if ($("#material-blade-cant").val() != 0 && $("#bladeDias option:selected").html() != "Dias" && $("#bladeTipo option:selected").html() != "Tipo") {
-							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");					
-							$("#"+cont).append($("#material-blade-cant").val()+" Alquiler material "+$("#bladeTipo").val()+", ");
-							$("#"+cont).append($("#bladeDias").val()+" Dias,Tipo ");						
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-
-							$("button#btdel"+cont).on('click', function() {
-								$(this).parent().remove();	
-							 });
-						}else{
-							alert("Debes elegir, Cantidad , Dias y Tipo  ");
-						}
-						
-					}else{
-						if ($("#material-blade-cant").val() != 0 && $("#bladeDias option:selected").html() != "Dias" && $("#bladeTipo option:selected").html() != "Tipo") {
-							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");					
-							$("#"+cont).append($("#material-blade-cant").val()+" Alquiler material "+$("#bladeTipo").val()+" ,");
-							$("#"+cont).append($("#bladeDias").val()+" Dias,Tipo ");
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-
-							$("button#btdel"+cont).on('click', function() {
-								$(this).parent().remove();	
-							 });
-						}else{
-							alert("Debes elegir, Cantidad , Dias y Tipo ");
-						}
-					}
-					cont ++;
-				});
-
-	        $("#botoncasco").click(function(){
-				
-					if ($(".carrito").text() == "") {
-						if ($("#material-casco-cant").val() != 0 && $("#cascoDias option:selected").html() != "Dias" && $("#cascoTipo option:selected").html() != "Tipo") {
-							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							if ($("#material-casco-cant").val() == 1) {					
-							 	$("#"+cont).append($("#material-casco-cant").val() +" Alquiler material "+" casco,");
-							}else{
-								$("#"+cont).append($("#material-casco-cant").val() +" Alquiler material "+" cascos,");
-							}
-							$("#"+cont).append($("#cascoDias").val()+" Dias,Tipo " );
-							$("#"+cont).append($("#cascoTipo").val());
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-
-							$("button#btdel"+cont).on('click', function() {
-								$(this).parent().remove();	
-							 });
-						}else{
-							alert("Debes elegir, Cantidad , Dias y Tipo  ");
-						}
-						
-					}else{
-						if ($("#material-casco-cant").val() != 0 && $("#cascoDias option:selected").html() != "Dias" && $("#cascoTipo option:selected").html() != "Tipo") {
-							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbsp");
-							if ($("#material-casco-cant").val() == 1) {					
-								$("#"+cont).append($("#material-casco-cant").val()+" casco,");
-							}else{
-								$("#"+cont).append($("#material-casco-cant").val()+" cascos,");
-							}
-							$("#"+cont).append($("#cascoDias").val()+" Dias,Tipo " );
-							$("#"+cont).append($("#cascoTipo").val());
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
-
-							$("button#btdel"+cont).on('click', function() {
-								$(this).parent().remove();	
-							 });
-						}else{
-							alert("Debes elegir, Cantidad , Dias y Tipo ");
-						}
-					}
-					cont ++;
-				});
-		}); 
-
-		//Clases
-		$(document).ready(function() {
-		    $("div.clase").click(function() {
-		        var test = $(this).attr('data-value');
+                $(this).css('border', '3px solid #00b4e9');
+            });
 
 
+            // Funcion de creacion de carrito
+            $("#botonjuv").click(function () {
 
-		        $("div.desc").hide();
-		        $("#clase" + test).show();
+                if(checkForfaitDates() === true){
+                    if ($(".carrito").text() == "") {
+                        if ($("#forfait-juvenil").val() != 0 && $("#JuvenilDias option:selected").html() != "Elige una opcion") {
 
-		        $("div.clase").each(function(index, el) {
-					$(this).css('border', 'none');		        	
-		        });
+                            $(".carrito").html("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> ");
+                            $("#" + cont).append($("#forfait-juvenil").val() + " Forfait Juvenil ");
+                            $("#" + cont).append($("#JuvenilDias").val() + " Dias" + "");
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
 
-		        $(this).css('border', '3px solid #00b4e9');
-		    });
+                            requestPrice(cont,'forfait','juv',$("#forfait-juvenil").val(),$("#JuvenilDias").val());
 
-		    $("#botonparticular").click(function(){
-					
-					if ($(".carrito").text() == "") {
-						if ($("#clase-particular-cant").val() != 0 && $("#clasehora option:selected").html() != "Hora de inicio" && $("#clasetipo option:selected").html() != "Clase" && $("#clasehoras option:selected").html() != "Nº de horas" && $("#claseprofesor option:selected").html() != "Profesor" && $("#claseidioma option:selected").html() != "Idioma") {
+                        } else {
+                            alert("Debes ingresar una cantidad y un bono");
+                        }
 
-							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbspClase Particular ");					
-							$("#"+cont).append($("#clase-particular-cant").val()+" Personas,a las  ");
-							$("#"+cont).append($("#clasehora").val()+",");
-							$("#"+cont).append($("#clasehoras").val()+" hora/as, para  ");							
-							$("#"+cont).append($("#clasetipo").val()+", en  ");			
-							$("#"+cont).append($("#claseidioma").val());
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");																		
+                    } else {
+                        if ($("#forfait-juvenil").val() != 0 && $("#JuvenilDias option:selected").html() != "Elige una opcion") {
 
-							$("button#btdel"+cont).on('click', function() {
-								$(this).parent().remove();	
-							 });
-						}else{
-							alert("Debes ingresar una Cantidad ,Tipo y Dias");
-						}
-						
-					}else{
-						if ($("#clase-particular-cant").val() != 0 && $("#clasehora option:selected").html() != "Hora de inicio" && $("#clasetipo option:selected").html() != "Clase" && $("#clasehoras option:selected").html() != "Nº de horas" && $("#claseprofesor option:selected").html() != "Profesor" && $("#claseidioma option:selected").html() != "Idioma") {
+                            $(".carrito").append("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> ");
+                            $("#" + cont).append($("#forfait-juvenil").val() + " Forfait Juvenil ");
+                            $("#" + cont).append($("#JuvenilDias").val() + " Dias" + "");
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
 
-							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbspClase Particular ");					
-							$("#"+cont).append($("#clase-particular-cant").val()+" Personas,a las  ");
-							$("#"+cont).append($("#clasehora").val()+",");
-							$("#"+cont).append($("#clasehoras").val()+" hora/as, para  ");							
-							$("#"+cont).append($("#clasetipo").val()+", en  ");			
-							$("#"+cont).append($("#claseidioma").val());
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
+                            requestPrice(cont,'forfait','juv',$("#forfait-juvenil").val(),$("#JuvenilDias").val());
 
-							$("button#btdel"+cont).on('click', function() {
-								$(this).parent().remove();		
-							 });
-						}else{
-							alert("Debes ingresar una Cantidad ,Tipo y Dias");
-						}
-					}
-					cont ++;
-				});
+                        } else {
+                            alert("Debes ingresar una cantidad y un bono");
+                        }
+                    }
+                    cont++;
+                }
 
-		    $("#botoncolectivo").click(function(){
-					
-					if ($(".carrito").text() == "") {
-						if ($("#clase-colectivo-cant").val() != 0  && $("#colectipo option:selected").html() != "Clase" && $("#colecprofesor option:selected").html() != "Profesor" && $("#colecidioma option:selected").html() != "Idioma") {
+            });
 
-							$(".carrito").html("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbspClase Colectiva ");
-							$("#"+cont).append($("#colecDias").val()+" ,para ");					
-							$("#"+cont).append($("#clase-colectivo-cant").val()+" persona/as, para ");							
-							$("#"+cont).append($("#colectipo").val()+", en  ");	
-							$("#"+cont).append($("#colecidioma").val());
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");																		
+            $("#botonjun").click(function () {
 
-							$("button#btdel"+cont).on('click', function() {
-								$(this).parent().remove();	
-							 });
-						}else{
-							alert("Debes ingresar una Cantidad ,Tipo y Dias");
-						}
-						
-					}else{
-						if ($("#clase-colectivo-cant").val() != 0  && $("#colectipo option:selected").html() != "Clase" && $("#colecprofesor option:selected").html() != "Profesor" && $("#colecidioma option:selected").html() != "Idioma") {
+                if(checkForfaitDates() === true){
+                    if ($(".carrito").text() == "") {
+                        if ($("#forfait-junior").val() != 0 && $("#JuniorDias option:selected").html() != "Elige una opcion") {
+                            $(".carrito").html("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> ");
+                            $("#" + cont).append($("#forfait-junior").val() + " Forfait Junior ");
+                            $("#" + cont).append($("#JuniorDias").val() + " Dias" + "");
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
 
-							$(".carrito").append("<div id='"+cont+"'><button name='btdel' id='btdel"+cont+"' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>&nbspClase Colectiva ");
-							$("#"+cont).append($("#colecDias").val()+",para ");					
-							$("#"+cont).append($("#clase-colectivo-cant").val()+" persona/as, para ");							
-							$("#"+cont).append($("#colectipo").val()+", en ");		
-							$("#"+cont).append($("#colecidioma").val());
-							$("#"+cont).append("<input type='hidden' name='carrito["+cont+"]' value='"+$("#"+cont).text()+"'>");
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
 
-							$("button#btdel"+cont).on('click', function() {
-								$(this).parent().remove();		
-							 });
-						}else{
-							alert("Debes ingresar una Cantidad ,Tipo y Dias");
-						}
-					}
-					cont ++;
-				});
+                            requestPrice(cont,'forfait','jun',$("#forfait-junior").val(),$("#JuniorDias").val());
 
-		}); 
+                        } else {
+                            alert("Debes ingresar una cantidad y un bono");
+                        }
+
+                    } else {
+                        if ($("#forfait-junior").val() != 0 && $("#JuniorDias option:selected").html() != "Elige una opcion") {
+                            $(".carrito").append("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> ");
+                            $("#" + cont).append($("#forfait-junior").val() + " Forfait Junior ");
+                            $("#" + cont).append($("#JuniorDias").val() + " Dias" + "");
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'forfait','jun',$("#forfait-junior").val(),$("#JuniorDias").val());
+                        } else {
+                            alert("Debes ingresar una cantidad y un bono");
+                        }
+                    }
+                    cont++;
+                }
+            });
+
+            $("#botonadult").click(function () {
+
+                if(checkForfaitDates() === true){
+                    if ($(".carrito").text() == "") {
+                        if ($("#forfait-adulto").val() != 0 && $("#AdultosDias option:selected").html() != "Elige una opcion") {
+                            $(".carrito").html("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> ");
+                            $("#" + cont).append($("#forfait-adulto").val() + " Forfait Adultos ");
+                            $("#" + cont).append($("#AdultosDias").val() + " Dias" + "");
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'forfait','adult',$("#forfait-adulto").val(),$("#AdultosDias").val());
+                        } else {
+                            alert("Debes ingresar una cantidad y un bono");
+                        }
+
+                    } else {
+                        if ($("#forfait-adulto").val() != 0 && $("#AdultosDias option:selected").html() != "Elige una opcion") {
+                            $(".carrito").append("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> ");
+                            $("#" + cont).append($("#forfait-adulto").val() + " Forfait Adultos ");
+                            $("#" + cont).append($("#AdultosDias").val() + " Dias" + "");
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'forfait','adult',$("#forfait-adulto").val(),$("#AdultosDias").val());
+                        } else {
+                            alert("Debes ingresar una cantidad y un bono");
+                        }
+                    }
+                    cont++;
+                }
+                
+            });
+
+            $("#botonsenior").click(function () {
+
+                if(checkForfaitDates() === true){
+                    if ($(".carrito").text() == "") {
+                        if ($("#forfait-senior").val() != 0 && $("#SeniorDias option:selected").html() != "Elige una opcion") {
+                            $(".carrito").html("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> ");
+                            $("#" + cont).append($("#forfait-senior").val() + " Forfait Senior ");
+                            $("#" + cont).append($("#SeniorDias").val() + " Dias" + "");
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'forfait','senior',$("#forfait-senior").val(),$("#SeniorDias").val());
+                        } else {
+                            alert("Debes ingresar una cantidad y un bono");
+                        }
+
+                    } else {
+                        if ($("#forfait-senior").val() != 0 && $("#SeniorDias option:selected").html() != "Elige una opcion") {
+                            $(".carrito").append("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> ");
+                            $("#" + cont).append($("#forfait-senior").val() + " Forfait Senior ");
+                            $("#" + cont).append($("#SeniorDias").val() + " Dias" + "");
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'forfait','senior',$("#forfait-senior").val(),$("#SeniorDias").val());
+                        } else {
+                            alert("Debes ingresar una cantidad y un bono");
+                        }
+                    }
+                    cont++;
+                }
+                
+            });
+
+            $("#botonjuvfam").click(function () {
+            
+                if(checkForfaitDates() === true){
+                    if ($(".carrito").text() == "") {
+                        if ($("#forfait-juvenil-familiar").val() != 0 && $("#juvfaDias option:selected").html() != "Elige una opcion") {
+                            $(".carrito").html("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> ");
+                            $("#" + cont).append($("#forfait-juvenil-familiar").val() + " Forfait juvenil-Familiar ");
+                            $("#" + cont).append($("#juvfaDias").val() + " Dias" + "");
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'forfait','juvfam',$("#forfait-juvenil-familiar").val(),$("#juvfaDias").val());
+                        } else {
+                            alert("Debes ingresar una cantidad y un bono");
+                        }
+
+                    } else {
+                        if ($("#forfait-juvenil-familiar").val() != 0 && $("#juvfaDias option:selected").html() != "Elige una opcion") {
+                            $(".carrito").append("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> ");
+                            $("#" + cont).append($("#forfait-juvenil-familiar").val() + " Forfait juvenil-Familiar ");
+                            $("#" + cont).append($("#juvfaDias").val() + " Dias" + "");
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'forfait','juvfam',$("#forfait-juvenil-familiar").val(),$("#juvfaDias").val());
+                        } else {
+                            alert("Debes ingresar una cantidad y un bono");
+                        }
+                    }
+                    cont++;
+                }
+                
+            });
+
+            $("#botonjunfam").click(function () {
+
+                if(checkForfaitDates() === true){
+                    if ($(".carrito").text() == "") {
+                        if ($("#forfait-junior-familiar").val() != 0 && $("#junfaDias option:selected").html() != "Elige una opcion") {
+                            $(".carrito").html("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> ");
+                            $("#" + cont).append($("#forfait-junior-familiar").val() + " Forfait junior-Familiar ");
+                            $("#" + cont).append($("#junfaDias").val() + " Dias" + "");
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'forfait','junfam',$("#forfait-junior-familiar").val(),$("#junfaDias").val());
+                        } else {
+                            alert("Debes ingresar una cantidad y un bono");
+                        }
+
+                    } else {
+                        if ($("#forfait-junior-familiar").val() != 0 && $("#junfaDias option:selected").html() != "Elige una opcion") {
+                            $(".carrito").append("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> ");
+                            $("#" + cont).append($("#forfait-junior-familiar").val() + " Forfait junior-Familiar ");
+                            $("#" + cont).append($("#junfaDias").val() + " Dias" + "");
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'forfaits','junfam',$("#forfait-junior-familiar").val(),$("#junfaDias").val());
+                        } else {
+                            alert("Debes ingresar una cantidad y un bono");
+                        }
+                    }
+                    cont++;
+                }
+            });
+        });
+
+        // Material
+        $(document).ready(function () {
+            $("input[name$='material']").click(function () {
+                var test = $(this).val();
+
+                $("div.desc").hide();
+                $("#material" + test).show();
+            });
+
+            // Funcion de creacion de carrito Material
+            $("#botonpack").click(function () {
+
+                if(checkForfaitDates() === true){
+                    if ($(".carrito").text() == "") {
+                        if ($("#material-pack-cant").val() != 0 && $("#packtipo option:selected").html() != "Tipo" && $("#packdias option:selected").html() != "Dias") {
+                            $(".carrito").html("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> ");
+                            $("#" + cont).append($("#material-pack-cant").val() + " Alquiler material " + " Packs, Tipo ");
+                            $("#" + cont).append($("#packtipo").val() + ",");
+                            $("#" + cont).append($("#packdias").val() + " Dias ");
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'material','material-pack',$("#material-pack-cant").val(),$("#packdias").val(),$("#packtipo").val(),$("#esquisgama").val());
+                        } else {
+                            alert("Debes ingresar una Cantidad ,Tipo y Dias");
+                        }
+
+                    } else {
+                        if ($("#material-pack-cant").val() != 0 && $("#packtipo option:selected").html() != "Tipo" && $("#packdias option:selected").html() != "Dias") {
+                            $(".carrito").append("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> ");
+                            $("#" + cont).append($("#material-pack-cant").val() + " Packs, Tipo ");
+                            $("#" + cont).append($("#packtipo").val() + ",");
+                            $("#" + cont).append($("#packdias").val() + " Dias ");
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'material','material-pack',$("#material-pack-cant").val(),$("#packdias").val(),$("#packtipo").val(),$("#esquisgama").val());
+                        } else {
+                            alert("Debes ingresar una Cantidad ,Tipo y Dias");
+                        }
+                    }
+                    cont++;
+                }
+            });
+
+            $("#botonesquis").click(function () {
+
+                if(checkForfaitDates() === true){
+                    if ($(".carrito").text() == "") {
+                        if ($("#material-Esquis-cant").val() != 0 && $("#EsquisDias option:selected").html() != "Dias" && $("#esquitipo option:selected").html() != "Tipo" && $("#esquisgama option:selected").html() != "Gama") {
+                            $(".carrito").html("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>");
+                            $("#" + cont).append($("#material-Esquis-cant").val() + " Alquiler material " + $("#esquitipo").val() + " ,");
+                            $("#" + cont).append($("#EsquisDias").val() + " Dias,Gama  ");
+                            $("#" + cont).append($("#esquisgama").val());
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'material','esquis',$("#material-Esquis-cant").val(),$("#EsquisDias").val(),$("#esquisgama").val());
+                        } else {
+                            alert("Debes elegir, Cantidad , Dias , Tipo y Gama ");
+                        }
+
+                    } else {
+                        if ($("#material-Esquis-cant").val() != 0 && $("#EsquisDias option:selected").html() != "Dias" && $("#esquitipo option:selected").html() != "Tipo" && $("#esquisgama option:selected").html() != "Gama") {
+                            $(".carrito").append("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>");
+                            $("#" + cont).append($("#material-Esquis-cant").val() + " Alquiler material " + $("#esquitipo").val() + " ,");
+                            $("#" + cont).append($("#EsquisDias").val() + " Dias,Gama  ");
+                            $("#" + cont).append($("#esquisgama").val());
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'material','esquis',$("#material-Esquis-cant").val(),$("#EsquisDias").val(),$("#esquisgama").val());
+                        } else {
+                            alert("Debes elegir, Cantidad , Dias , Tipo y Gama ");
+                        }
+                    }
+                    cont++;
+                }
+                
+            });
+
+            $("#botonsnow").click(function () {
+
+                if(checkForfaitDates() === true){
+                    if ($(".carrito").text() == "") {
+                        if ($("#material-snow-cant").val() != 0 && $("#snowDias option:selected").html() != "Dias" && $("#snowtipo option:selected").html() != "Tipo" && $("#snowgama option:selected").html() != "Gama") {
+                            $(".carrito").html("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> ");
+                            $("#" + cont).append($("#material-snow-cant").val() + " Alquiler material " + $("#snowtipo").val() + " ,");
+                            $("#" + cont).append($("#snowDias").val() + " Dias,Gama ");
+                            $("#" + cont).append($("#snowgama").val());
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'material','snow',$("#material-snow-cant").val(),$("#snowDias").val(),$("#snowtipo").val(),$("#snowgama").val());
+                        } else {
+                            alert("Debes elegir, Cantidad , Dias , Tipo y Gama ");
+                        }
+
+                    } else {
+                        if ($("#material-snow-cant").val() != 0 && $("#snowDias option:selected").html() != "Dias" && $("#snowtipo option:selected").html() != "Tipo" && $("#snowgama option:selected").html() != "Gama") {
+                            $(".carrito").append("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> ");
+                            $("#" + cont).append($("#material-snow-cant").val() + " Alquiler material " + $("#snowtipo").val() + " ,");
+                            $("#" + cont).append($("#snowDias").val() + " Dias,Gama ");
+                            $("#" + cont).append($("#snowgama").val());
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'material','snow',$("#material-snow-cant").val(),$("#snowDias").val(),$("#snowtipo").val(),$("#snowgama").val());
+                        } else {
+                            alert("Debes elegir, Cantidad , Dias , Tipo y Gama ");
+                        }
+                    }
+                    cont++;
+                }
+                
+            });
+
+            $("#botonblade").click(function () {
+            
+            
+                if(checkForfaitDates() === true){
+                    if ($(".carrito").text() == "") {
+                        if ($("#material-blade-cant").val() != 0 && $("#bladeDias option:selected").html() != "Dias" && $("#bladeTipo option:selected").html() != "Tipo") {
+                            $(".carrito").html("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> ");
+                            $("#" + cont).append($("#material-blade-cant").val() + " Alquiler material " + $("#bladeTipo").val() + ", ");
+                            $("#" + cont).append($("#bladeDias").val() + " Dias,Tipo ");
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'material','blade',$("#material-blade-cant").val(),$("#bladeDias").val());
+                        } else {
+                            alert("Debes elegir, Cantidad , Dias y Tipo  ");
+                        }
+
+                    } else {
+                        if ($("#material-blade-cant").val() != 0 && $("#bladeDias option:selected").html() != "Dias" && $("#bladeTipo option:selected").html() != "Tipo") {
+                            $(".carrito").append("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> ");
+                            $("#" + cont).append($("#material-blade-cant").val() + " Alquiler material " + $("#bladeTipo").val() + " ,");
+                            $("#" + cont).append($("#bladeDias").val() + " Dias,Tipo ");
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'material','blade',$("#material-blade-cant").val(),$("#bladeDias").val());
+                        } else {
+                            alert("Debes elegir, Cantidad , Dias y Tipo ");
+                        }
+                    }
+                    cont++;
+                }
+                
+            });
+
+            $("#botoncasco").click(function () {
+            
+                if(checkForfaitDates() === true){
+                    if ($(".carrito").text() == "") {
+                        if ($("#material-casco-cant").val() != 0 && $("#cascoDias option:selected").html() != "Dias" && $("#cascoTipo option:selected").html() != "Tipo") {
+                            $(".carrito").html("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> ");
+                            if ($("#material-casco-cant").val() == 1) {
+                                $("#" + cont).append($("#material-casco-cant").val() + " Alquiler material " + " casco,");
+                            } else {
+                                $("#" + cont).append($("#material-casco-cant").val() + " Alquiler material " + " cascos,");
+                            }
+                            $("#" + cont).append($("#cascoDias").val() + " Dias,Tipo ");
+                            $("#" + cont).append($("#cascoTipo").val());
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'material','casco',$("#material-casco-cant").val(),$("#cascoDias").val(),$("#cascoTipo").val());
+                        } else {
+                            alert("Debes elegir, Cantidad , Dias y Tipo  ");
+                        }
+
+                    } else {
+                        if ($("#material-casco-cant").val() != 0 && $("#cascoDias option:selected").html() != "Dias" && $("#cascoTipo option:selected").html() != "Tipo") {
+                            $(".carrito").append("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> ");
+                            if ($("#material-casco-cant").val() == 1) {
+                                $("#" + cont).append($("#material-casco-cant").val() + " casco,");
+                            } else {
+                                $("#" + cont).append($("#material-casco-cant").val() + " cascos,");
+                            }
+                            $("#" + cont).append($("#cascoDias").val() + " Dias,Tipo ");
+                            $("#" + cont).append($("#cascoTipo").val());
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'material','casco',$("#material-casco-cant").val(),$("#cascoDias").val(),$("#cascoTipo").val());
+                        } else {
+                            alert("Debes elegir, Cantidad , Dias y Tipo ");
+                        }
+                    }
+                    cont++;
+                }
+            });
+        });
+
+        //Clases
+        $(document).ready(function () {
+            $("div.clase").click(function () {
+                var test = $(this).attr('data-value');
+
+
+                $("div.desc").hide();
+                $("#clase" + test).show();
+
+                $("div.clase").each(function (index, el) {
+                    $(this).css('border', 'none');
+                });
+
+                $(this).css('border', '3px solid #00b4e9');
+            });
+
+            $("#botonparticular").click(function () {
+                
+                if(checkForfaitDates() === true){
+                    if ($(".carrito").text() == "") {
+                        if ($("#clase-particular-cant").val() != 0 && $("#clasehora option:selected").html() != "Hora de inicio" && $("#clasetipo option:selected").html() != "Clase" && $("#clasehoras option:selected").html() != "Nº de horas" && $("#claseprofesor option:selected").html() != "Profesor" && $("#claseidioma option:selected").html() != "Idioma") {
+
+                            $(".carrito").html("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> Clase Particular ");
+                            $("#" + cont).append($("#clase-particular-cant").val() + " Personas,a las  ");
+                            $("#" + cont).append($("#clasehora").val() + ",");
+                            $("#" + cont).append($("#clasehoras").val() + " hora/as, para  ");
+                            $("#" + cont).append($("#clasetipo").val() + ", en  ");
+                            $("#" + cont).append($("#claseidioma").val());
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'classes','particular',$("#clasehoras").val(),$("#clase-particular-cant").val(),$("#clasetipo").val());
+                        } else {
+                            alert("Debes ingresar una Cantidad ,Tipo y Dias");
+                        }
+
+                    } else {
+                        if ($("#clase-particular-cant").val() != 0 && $("#clasehora option:selected").html() != "Hora de inicio" && $("#clasetipo option:selected").html() != "Clase" && $("#clasehoras option:selected").html() != "Nº de horas" && $("#claseprofesor option:selected").html() != "Profesor" && $("#claseidioma option:selected").html() != "Idioma") {
+
+                            $(".carrito").append("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> Clase Particular ");
+                            $("#" + cont).append($("#clase-particular-cant").val() + " Personas,a las  ");
+                            $("#" + cont).append($("#clasehora").val() + ",");
+                            $("#" + cont).append($("#clasehoras").val() + " hora/as, para  ");
+                            $("#" + cont).append($("#clasetipo").val() + ", en  ");
+                            $("#" + cont).append($("#claseidioma").val());
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'classes','particular',$("#clasehoras").val(),$("#clase-particular-cant").val(),$("#clasetipo").val());
+                        } else {
+                            alert("Debes ingresar una Cantidad ,Tipo y Dias");
+                        }
+                    }
+                    cont++;
+                }
+                
+            });
+
+            $("#botoncolectivo").click(function () {
+
+                if(checkForfaitDates() === true){
+                    if ($(".carrito").text() == "") {
+                        if ($("#clase-colectivo-cant").val() != 0 && $("#colectipo option:selected").html() != "Clase" && $("#colecprofesor option:selected").html() != "Profesor" && $("#colecidioma option:selected").html() != "Idioma") {
+
+                            $(".carrito").html("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> Clase Colectiva ");
+                            $("#" + cont).append($("#colecDias").val() + " ,para ");
+                            $("#" + cont).append($("#clase-colectivo-cant").val() + " persona/as, para ");
+                            $("#" + cont).append($("#colectipo").val() + ", en  ");
+                            $("#" + cont).append($("#colecidioma").val());
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'classes','colectivo',$("#clase-colectivo-cant").val(),$("#colecDias").val(),$("#colectipo").val());
+                        } else {
+                            alert("Debes ingresar una Cantidad ,Tipo y Dias");
+                        }
+
+                    } else {
+                        if ($("#clase-colectivo-cant").val() != 0 && $("#colectipo option:selected").html() != "Clase" && $("#colecprofesor option:selected").html() != "Profesor" && $("#colecidioma option:selected").html() != "Idioma") {
+
+                            $(".carrito").append("<div id='" + cont + "'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button> Clase Colectiva ");
+                            $("#" + cont).append($("#colecDias").val() + ",para ");
+                            $("#" + cont).append($("#clase-colectivo-cant").val() + " persona/as, para ");
+                            $("#" + cont).append($("#colectipo").val() + ", en ");
+                            $("#" + cont).append($("#colecidioma").val());
+                            $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+
+                            $("button#btdel" + cont).on('click', function () {
+                                $(this).parent().remove();
+                            });
+
+                            requestPrice(cont,'classes','colectivo',$("#clase-colectivo-cant").val(),$("#colecDias").val(),$("#colectipo").val());
+                        } else {
+                            alert("Debes ingresar una Cantidad ,Tipo y Dias");
+                        }
+                    }
+                    cont++;
+                }
+            });
+
+        });
+    
     </script>
 
     <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
