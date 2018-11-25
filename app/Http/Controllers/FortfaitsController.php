@@ -13,7 +13,6 @@ use File;
 use Route;
 use App\ForfaitsPrices;
 use App\ForfaitsCalendar;
-use App\Http\Controllers\FortfaitsController;
 
 class FortfaitsController extends Controller
 {
@@ -284,11 +283,11 @@ class FortfaitsController extends Controller
 
                 break;
             case 'material':
-                $price = 100*$times;
+                $price = '';//100*$times;
                 break;
             
             case 'classes':
-                $price = 100*$times;
+                $price = '';//100*$times;
                 break;
         }
 
