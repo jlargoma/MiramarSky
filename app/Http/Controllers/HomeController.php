@@ -640,15 +640,15 @@ class HomeController extends Controller
       $solicitud->start  = Carbon::createFromFormat('d-m-Y', $data['date-entrada'])->format('Y-m-d');
       $solicitud->finish = Carbon::createFromFormat('d-m-Y', $data['date-salida'])->format('Y-m-d');
       
-      if($data['forfaits'] > 0){
+      if(isset($data['forfaits'])){
          $solicitud->request_forfaits = serialize($data['forfaits']);
       }
       
-      if($data['material'] > 0){
+      if(isset($data['material'])){
          $solicitud->request_material = serialize($data['material']);
       }
       
-      if($data['classes'] > 0){
+      if(isset($data['classes'])){
          $solicitud->request_classes = serialize($data['classes']);
       }
 
