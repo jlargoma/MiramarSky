@@ -686,6 +686,7 @@ class HomeController extends Controller
          foreach($emailsTo as $emailTo){
          
             $arrayProductsCloned = $arrayProducts;
+            $data['emailTo'] = $emailTo;
          
             if($emailTo == 'forfaits@apartamentosierranevada.net'){
             
@@ -716,7 +717,7 @@ class HomeController extends Controller
                'data'      => $data
             ], function ($message) use ($data) {
                $message->from('reservas@apartamentosierranevada.net');
-               $message->to($emailTo);
+               $message->to($data['emailTo']);
                $message->replyTo($data['email']);
                $message->subject('Solicitud de FORFAIT');
             });
