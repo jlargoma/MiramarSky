@@ -13,7 +13,6 @@ use File;
 use Route;
 use App\ForfaitsPrices;
 use App\ForfaitsCalendar;
-use App\Http\Controllers\FortfaitsController;
 
 class FortfaitsController extends Controller
 {
