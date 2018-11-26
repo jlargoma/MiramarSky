@@ -1290,7 +1290,7 @@
         function requestPrice(cont,type,subtype,quantity,times,ski_type = null,material_type = null){
             
             start_date = $('input#date-entrada').val();
-            end_date = $('input#date-salida').val()
+            end_date = $('input#date-salida').val();
             
 //            console.log(start_date);
 //            console.log(end_date);
