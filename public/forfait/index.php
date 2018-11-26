@@ -1308,7 +1308,7 @@
 //                    'X-CSRF-TOKEN': 
 //                },
                 type: "POST",
-                url: "/public/ajax/requestPrice",
+                url: "/ajax/requestPrice",
                 data: {start_date:start_date,end_date:end_date,type:type,subtype:subtype,quantity:quantity,times:times,ski_type:ski_type,material_type:material_type},
                 dataType:'json',
 //                async: false,
