@@ -709,7 +709,7 @@ class HomeController extends Controller
                
             }
 
-            /*$sended = Mail::send(['html' => 'frontend.emails._responseSolicitudForfait'], [
+            $sended = Mail::send(['html' => 'frontend.emails._responseSolicitudForfait'], [
                'solicitud' => $solicitud,
                'productos' => $arrayProductsCloned,
                'precios' => $data['prices'],
@@ -719,7 +719,7 @@ class HomeController extends Controller
                $message->to($emailTo);
                $message->replyTo($data['email']);
                $message->subject('Solicitud de FORFAIT');
-            });*/
+            });
          }
          
          /*$sended = Mail::send(['html' => 'frontend.emails._responseSolicitudForfait'], [
