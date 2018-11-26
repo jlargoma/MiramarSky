@@ -1290,7 +1290,7 @@
         function requestPrice(cont,type,subtype,quantity,times,ski_type = null,material_type = null){
             
             start_date = $('input#date-entrada').val();
-            end_date = $('input#date-salida').val()
+            end_date = $('input#date-salida').val();
             
 //            console.log(start_date);
 //            console.log(end_date);
@@ -1308,7 +1308,7 @@
 //                    'X-CSRF-TOKEN': 
 //                },
                 type: "POST",
-                url: "/public/ajax/requestPrice",
+                url: "/ajax/requestPrice",
                 data: {start_date:start_date,end_date:end_date,type:type,subtype:subtype,quantity:quantity,times:times,ski_type:ski_type,material_type:material_type},
                 dataType:'json',
 //                async: false,
