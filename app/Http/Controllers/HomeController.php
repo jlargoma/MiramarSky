@@ -707,20 +707,23 @@ class HomeController extends Controller
                      unset($arrayProductsCloned[$key]);
                   }
                }
-               
-            }
 
-            $sended = Mail::send(['html' => 'frontend.emails._responseSolicitudForfait'], [
-               'solicitud' => $solicitud,
-               'productos' => $arrayProductsCloned,
-               'precios' => $data['prices'],
-               'data'      => $data
-            ], function ($message) use ($data) {
-               $message->from('reservas@apartamentosierranevada.net');
-               $message->to($data['emailTo']);
-               $message->replyTo($data['email']);
-               $message->subject('Solicitud de FORFAIT');
-            });
+            }
+            
+            if(count($arrayProductsCloned) > 0){
+                $sended = Mail::send(['html' => 'frontend.emails._responseSolicitudForfait'], [
+                  'solicitud' => $solicitud,
+                  'productos' => $arrayProductsCloned,
+                  'precios' => $data['prices'],
+                  'data'      => $data
+               ], function ($message) use ($data) {
+                  $message->from('reservas@apartamentosierranevada.net');
+                  $message->to($data['emailTo']);
+                  $message->replyTo($data['email']);
+                  $message->subject('Solicitud de FORFAIT');
+               });
+            }
+           
          }
          
          /*$sended = Mail::send(['html' => 'frontend.emails._responseSolicitudForfait'], [
