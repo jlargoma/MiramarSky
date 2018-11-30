@@ -628,7 +628,6 @@ class HomeController extends Controller
    {
       $arrayProducts = array();
 
-
       // die();
 
       $data = $request->input();
@@ -639,6 +638,10 @@ class HomeController extends Controller
       $solicitud->phone  = $data['telefono'];
       $solicitud->start  = Carbon::createFromFormat('d-m-Y', $data['date-entrada'])->format('Y-m-d');
       $solicitud->finish = Carbon::createFromFormat('d-m-Y', $data['date-salida'])->format('Y-m-d');
+      
+      if(!isset($data['prices'])){
+          $data['prices'] = [];
+      }
       
       if(isset($data['forfaits'])){
          $solicitud->request_forfaits = serialize($data['forfaits']);
@@ -680,35 +683,25 @@ class HomeController extends Controller
 
          // return view('frontend.emails._responseSolicitudForfait' ,['solicitud' => $solicitud, 'productos' => $arrayProducts,'data' => $data]);
          // die();
-         
-         $emailsTo = ['reservas@apartamentosierranevada.net','forfaits@apartamentosierranevada.net','escuela@sierranevadaeee.com',$data['email']];
+
+         $emailsTo = ['forfaits@apartamentosierranevada.net','escuela@sierranevadaeee.com',$data['email']];
          
          foreach($emailsTo as $emailTo){
-         
+//         echo $emailTo.'<br/>';
             $arrayProductsCloned = $arrayProducts;
             $data['emailTo'] = $emailTo;
          
-            if($emailTo == 'forfaits@apartamentosierranevada.net'){
-            
-                  $products = [];
-               
-                  foreach($arrayProducts as $key => $arrayProduct){
-                     if(!isset($data['forfaits'][$key])){
-                        unset($arrayProductsCloned[$key]);
-                     }
-                  }
-            
-            }elseif($emailTo == 'escuela@sierranevadaeee.com'){
-               
+            if($emailTo == 'escuela@sierranevadaeee.com'){
                $products = [];
                
                foreach($arrayProducts as $key => $arrayProduct){
-                  if(!isset($data['classes'][$key])){
+                  if(!isset($data['classes'][$key]) && !isset($data['material'][$key])){
                      unset($arrayProductsCloned[$key]);
                   }
                }
-
             }
+
+//            print_r($arrayProductsCloned);
             
             if(count($arrayProductsCloned) > 0){
                 $sended = Mail::send(['html' => 'frontend.emails._responseSolicitudForfait'], [
@@ -725,7 +718,7 @@ class HomeController extends Controller
             }
            
          }
-         
+
          /*$sended = Mail::send(['html' => 'frontend.emails._responseSolicitudForfait'], [
             'solicitud' => $solicitud,
             'productos' => $arrayProducts,

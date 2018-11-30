@@ -1260,7 +1260,7 @@
     <script type="text/javascript">
 
         $("#myModal button.btn").on("click", function (e) {
-            console.log('test');
+//            console.log('test');
             $("#myModal").modal('hide'); // dismiss the dialog
         });
 
@@ -1292,6 +1292,7 @@
             start_date = $('input#date-entrada').val();
             end_date = $('input#date-salida').val();
             
+//            console.log(cont);
 //            console.log(start_date);
 //            console.log(end_date);
 //            console.log(type);
@@ -1308,17 +1309,18 @@
 //                    'X-CSRF-TOKEN': 
 //                },
                 type: "POST",
-                url: "/ajax/requestPrice",
+                url: "/public/ajax/requestPrice",
                 data: {start_date:start_date,end_date:end_date,type:type,subtype:subtype,quantity:quantity,times:times,ski_type:ski_type,material_type:material_type},
                 dataType:'json',
 //                async: false,
                 success: function(response){
-//                    console.log(response);
-                    $("#" + cont).append(" - "+response+"&euro;");
-                    console.log($('input[name="carrito['+cont+']"]').val());
+                    price = JSON.stringify(response).replace('.',',');
+//                    console.log(price);
+                    $("#" + cont).append(" - "+price+"&euro;");
+//                    console.log($('input[name="carrito['+cont+']"]').val());
                     input_cont = $('input[name="carrito['+cont+']"]');
-                    $('input[name="carrito['+cont+']"]').val(input_cont.val()+" - "+response+"&euro;");
-                    $("#" + cont).append("<input type='hidden' name='prices[" + cont + "]' value='" + response+ "'>");
+                    $('input[name="carrito['+cont+']"]').val(input_cont.val()+" - "+price+"&euro;");
+                    $("#" + cont).append("<input type='hidden' name='prices["+cont+"]' value='"+response+"'>");
                 },
                 error: function(response){
 //                    console.log(response);
@@ -1880,7 +1882,7 @@
                                 $(this).parent().remove();
                             });
 
-                            requestPrice(cont,'classes','particular',$("#clasehoras").val(),$("#clase-particular-cant").val(),$("#clasetipo").val());
+                            requestPrice(cont,'classes','particulares',$("#clase-particular-cant").val(),$("#clasehoras").val().split(' ')[0],$("#clasetipo").val());
                         } else {
                             alert("Debes ingresar una Cantidad ,Tipo y Dias");
                         }
@@ -1901,7 +1903,7 @@
                                 $(this).parent().remove();
                             });
 
-                            requestPrice(cont,'classes','particular',$("#clasehoras").val(),$("#clase-particular-cant").val(),$("#clasetipo").val());
+                            requestPrice(cont,'classes','particulares',$("#clase-particular-cant").val(),$("#clasehoras").val().split(' ')[0],$("#clasetipo").val());
                         } else {
                             alert("Debes ingresar una Cantidad ,Tipo y Dias");
                         }
@@ -1929,7 +1931,7 @@
                                 $(this).parent().remove();
                             });
 
-                            requestPrice(cont,'classes','colectivo',$("#clase-colectivo-cant").val(),$("#colecDias").val(),$("#colectipo").val());
+                            requestPrice(cont,'classes','colectivas',$("#clase-colectivo-cant").val(),$("#colecDias").val().split(' ')[0],$("#colectipo").val());
                         } else {
                             alert("Debes ingresar una Cantidad ,Tipo y Dias");
                         }
@@ -1949,7 +1951,7 @@
                                 $(this).parent().remove();
                             });
 
-                            requestPrice(cont,'classes','colectivo',$("#clase-colectivo-cant").val(),$("#colecDias").val(),$("#colectipo").val());
+                            requestPrice(cont,'classes','colectivas',$("#clase-colectivo-cant").val(),$("#colecDias").val().split(' ')[0],$("#colectipo").val());
                         } else {
                             alert("Debes ingresar una Cantidad ,Tipo y Dias");
                         }

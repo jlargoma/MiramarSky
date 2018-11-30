@@ -12,7 +12,9 @@ use URL;
 use File;
 use Route;
 use App\ForfaitsPrices;
+use App\ClassesPrices;
 use App\ForfaitsCalendar;
+use App\Http\Controllers\FortfaitsController;
 
 class FortfaitsController extends Controller
 {
@@ -220,19 +222,17 @@ class FortfaitsController extends Controller
         $start_date = date('Ymd',strtotime($_POST['start_date']));
         $end_date = date('Ymd',strtotime($_POST['end_date']));
 
-        $type = $_POST['type'];
-        $subtype = $_POST['subtype'];
+        $type = trim($_POST['type']);
+        $subtype = trim($_POST['subtype']);
         $quantity = $_POST['quantity'];
         $times = $_POST['times'];
-        $ski_type = $_POST['ski_type'];
-        $material_type = $_POST['material_type'];
+        $ski_type = trim($_POST['ski_type']);
+        $material_type = trim($_POST['material_type']);
 
         switch ($type){
             case 'forfait':
                 
                 $dates = FortfaitsController::dateRange($start_date,$end_date);
-//                $days = count($dates);
-
                 $calendar_sql = ForfaitsCalendar::  select("date","type")
                                                     ->where("date",">=",$start_date)
                                                     ->where("date","<=",$end_date)
@@ -267,27 +267,49 @@ class FortfaitsController extends Controller
                 }
 
                 if(count($prices) > 0){
+                    
                     $price = 0;
-
                     $prices_sql = ForfaitsPrices::  select("price_".$rate)
                                                     ->where("type","=","$subtype")
                                                     ->where("days","=","$times")
                                                     ->get();
-
                     foreach($prices_sql as $forfait){
                         $price += $forfait->{"price_".$rate}*$quantity;
                     }
                 }
 
-                $price = str_replace('.',',',$price);
-
                 break;
             case 'material':
                 $price = '';/*100*$times;*/
+                
                 break;
-            
             case 'classes':
-                $price = '';/*100*$times;*/
+                
+                if($subtype === 'particulares'){
+
+                    $price = 0;
+                    $classes_sql = ClassesPrices:: select("price")
+                                                    ->where("type","=","particulares")
+                                                    ->where("pax","=","$quantity")
+                                                    ->get();
+                    foreach($classes_sql as $class){
+                        $price += $class->price*$times;
+                    }
+
+                }elseif($subtype === 'colectivas'){
+
+                    $price = 0;
+                    $classes_sql = ClassesPrices::  select("price")
+                                                    ->where("type","=","colectivas")
+                                                    ->where("subtype","=","$ski_type")
+                                                    ->where("days","=",$times)
+                                                    ->get();
+                    foreach($classes_sql as $class){
+                        $price += $class->price*$quantity;
+                    }
+
+                }
+
                 break;
         }
 
