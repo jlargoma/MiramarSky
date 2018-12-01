@@ -150,7 +150,7 @@
                                                          
                                                       </td>
                                                       <td style="text-align: center;border: 1px double #e8e8e8; padding: 10px">
-                                                         <?php if( $precios[$key] == 0 ){ $precios[$key] = 0; }?>
+                                                         <?php if(!isset($precios[$key]) || $precios[$key] == 0 ){ $precios[$key] = 0; }?>
                                                          <b><?php echo number_format($precios[$key], 2,',','.'); ?>€ <span style="color: red">*</span></b>
                                                       </td>
                                                    </tr>
