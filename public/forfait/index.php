@@ -1105,10 +1105,10 @@
                                                             <div class="input-group" >
                                                                <select type="text" class="form-control" id="colecDias">
                                                                   <option>Dias</option>
-                                                                  <option value="2 Dias">2 Dias</option>
-                                                                  <option value="3 Dias">3 Dias</option>
-                                                                  <option value="4 Dias">4 Dias</option>
-                                                                  <option value="5 Dias">5 Dias</option>
+                                                                  <option value="2 Dias" data-week="weekend">2 Dias</option>
+                                                                  <option value="3 Dias" data-week="week">3 Dias</option>
+                                                                  <option value="4 Dias" data-week="week">4 Dias</option>
+                                                                  <option value="5 Dias" data-week="week">5 Dias</option>
                                                                </select>
                                                             </div>
                                                       </div>
@@ -1133,10 +1133,10 @@
                                                             <div class="input-group" >
                                                                <select type="text" class="form-control" id="colectipo">
                                                                   <option>Clase</option>
-                                                                  <option value="Esqui Fin de semana">Esqui Fin de semana</option>
-                                                                  <option value="Snow Fin de semana">Snow Fin de semana</option>
-                                                                  <option value="Esquí Semanal">Esquí Semanal</option>
-                                                                  <option value="Snow Semanal">Snow Semanal</option>
+                                                                  <option value="Esqui Fin de semana" data-week="weekend">Esqui Fin de semana</option>
+                                                                  <option value="Snow Fin de semana" data-week="weekend">Snow Fin de semana</option>
+                                                                  <option value="Esquí Semanal" data-week="week">Esquí Semanal</option>
+                                                                  <option value="Snow Semanal" data-week="week">Snow Semanal</option>
                                                                </select>
                                                             </div>
                                                       </div>
@@ -1270,6 +1270,19 @@
 
         $("#myModal").on("hidden", function () { // remove the actual elements from the DOM when fully hidden
             $("#myModal").remove();
+        });
+        
+        $('select#colectipo').on('change',function(){
+            week_type = $(this).find('option:selected').attr('data-week');
+            
+            if(week_type === 'weekend'){
+                $('select#colecDias').prop('selectedIndex',0);
+                $('select#colecDias option[data-week="week"]').hide();
+                $('select#colecDias option[data-week="weekend"]').show();
+            }else{
+                $('select#colecDias option[data-week="weekend"]').hide();
+                $('select#colecDias option[data-week="week"]').show();
+            }
         });
 
         function checkForfaitDates(){
