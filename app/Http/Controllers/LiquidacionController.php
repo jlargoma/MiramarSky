@@ -1661,7 +1661,8 @@ class LiquidacionController extends Controller
 					                        ->orderBy('created_at', 'DESC')
 					                        ->get();
 
-				} else
+				}
+				else
 				{
 					$books = \App\Book::whereIn('customer_id', $arrayCustomersId)
 					                  ->where('start', '>=', $date->format('Y-m-d'))
@@ -1800,7 +1801,8 @@ class LiquidacionController extends Controller
 			{
 				return "<h2>No hay reservas para este término '" . $request->searchString . "'</h2>";
 			}
-		} else
+		}
+		else
 		{
 
 			if ($request->searchRoom && $request->searchRoom != "all")
@@ -2381,7 +2383,6 @@ class LiquidacionController extends Controller
 
 		if ($request->searchString != "")
 		{
-
 			$customers = \App\Customers::where('name', 'LIKE', '%' . $request->searchString . '%')->get();
 
 			if (count($customers) > 0)
@@ -2400,73 +2401,99 @@ class LiquidacionController extends Controller
 				{
 
 					$books = \App\Book::whereIn('customer_id', $arrayCustomersId)
-					                  ->where('start', '>=', $date->format('Y-m-d'))->where('start', '<=', $date->copy()
-					                                                                                            ->addYear()
-					                                                                                            ->subMonth()
-					                                                                                            ->format('Y-m-d'))
+					                  ->where('start', '>=', $date->format('Y-m-d'))
+					                  ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
 					                  ->whereIn('type_book', [
 						                  2,
-						                  7
-					                  ])->where('room_id', $request->searchRoom)->orderBy('inc_percent', 'ASC')->get();
+						                  7,
+						                  8
+					                  ])
+					                  ->where('room_id', $request->searchRoom)
+					                  ->where('agency', $request->searchAgency)
+					                  ->orderBy('start', 'ASC')
+					                  ->get();
 
 					$diasPropios = \App\Book::whereIn('customer_id', $arrayCustomersId)
 					                        ->where('start', '>', $date->copy()->subMonth())
-					                        ->where('finish', '<', $date->copy()->addYear())->whereIn('type_book', [
-						7,
-						8
-					])->where('room_id', $request->searchRoom)->orderBy('inc_percent', 'ASC')->get();
+					                        ->where('finish', '<', $date->copy()->addYear())
+					                        ->whereIn('type_book', [
+						                        7,
+						                        8
+					                        ])
+					                        ->where('room_id', $request->searchRoom)
+					                        ->where('agency', $request->searchAgency)
+					                        ->orderBy('created_at', 'DESC')
+					                        ->get();
 
-				} else
+				}
+				else
 				{
 					$books = \App\Book::whereIn('customer_id', $arrayCustomersId)
-					                  ->where('start', '>=', $date->format('Y-m-d'))->where('start', '<=', $date->copy()
-					                                                                                            ->addYear()
-					                                                                                            ->subMonth()
-					                                                                                            ->format('Y-m-d'))
+					                  ->where('start', '>=', $date->format('Y-m-d'))
+					                  ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
 					                  ->whereIn('type_book', [
 						                  2,
-						                  7
-					                  ])->orderBy('inc_percent', 'ASC')->get();
+						                  7,
+						                  8
+					                  ])
+					                  ->where('agency', $request->searchAgency)
+					                  ->orderBy('start', 'ASC')
+					                  ->get();
 
 					$diasPropios = \App\Book::whereIn('customer_id', $arrayCustomersId)
 					                        ->where('start', '>', $date->copy()->subMonth())
-					                        ->where('finish', '<', $date->copy()->addYear())->whereIn('type_book', [
-						7,
-						8
-					])->orderBy('inc_percent', 'ASC')->get();
+					                        ->where('finish', '<', $date->copy()->addYear())
+					                        ->whereIn('type_book', [
+						                        7,
+						                        8
+					                        ])
+					                        ->where('agency', $request->searchAgency)
+					                        ->orderBy('created_at', 'DESC')
+					                        ->get();
+
 				}
+
+				$books->load([
+					             'customer',
+					             'payments',
+					             'room.type'
+				             ]);
 
 
 				foreach ($books as $key => $book)
 				{
 
-					$totales["total"]        += $book->total_price;
-					$totales["coste"]        += ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp);
-					$totales["costeApto"]    += $book->cost_apto;
-					$totales["costePark"]    += $book->cost_park;
-					$totales["costeLujo"]    += $book->cost_lujo;
+					// if($book->type_book != 7 && $book->type_book != 8){
+					$totales["total"]     += $book->total_price;
+					$totales["costeApto"] += $book->cost_apto;
+					$totales["costePark"] += $book->cost_park;
+					if ($book->room->luxury == 1)
+					{
+						$costTotal            = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->cost_limp + $book->PVPAgencia;
+						$totales["costeLujo"] += $book->cost_lujo;
+						$totales["coste"]     += $costTotal;
+					} else
+					{
+						$costTotal            = $book->cost_apto + $book->cost_park + 0 + $book->cost_limp + $book->PVPAgencia;
+						$totales["costeLujo"] += 0;
+						$totales["coste"]     += $costTotal;
+					}
+
 					$totales["costeLimp"]    += $book->cost_limp;
 					$totales["costeAgencia"] += $book->PVPAgencia;
 					$totales["bancoJorge"]   += $book->getPayment(2);
 					$totales["bancoJaime"]   += $book->getPayment(3);
 					$totales["jorge"]        += $book->getPayment(0);
 					$totales["jaime"]        += $book->getPayment(1);
-					$totales["benJorge"]     += $book->ben_jorge;
-					$totales["benJaime"]     += $book->ben_jaime;
-					$totales["pendiente"]    += $book->getPayment(4);
+					$totales["benJorge"]     += $book->getJorgeProfit();
+					$totales["benJaime"]     += $book->getJaimeProfit();
 					$totales["limpieza"]     += $book->sup_limp;
-					$totales["beneficio"]    += ($book->total_price - ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp));
-					$totalStripep            = 0;
-					$stripePayment           = \App\Payments::where('book_id', $book->id)
-					                                        ->where('comment', 'LIKE', '%stripe%')->get();
-					foreach ($stripePayment as $key => $stripe):
-						$totalStripep += $stripe->import;
-					endforeach;
-					if ($totalStripep > 0):
-						$totales["stripe"] += ((1.4 * $totalStripep) / 100) + 0.25;
-					endif;
+					$totales["beneficio"]    += $book->profit;
+					$totales["stripe"]       += $book->stripeCost;
+					$totales["obs"]          += $book->extraCost;
+					$totales["pendiente"]    += $book->pending;
+					// }
 
-					$totales['obs'] += $book->extraCost;
 				}
 
 				$totBooks         = (count($books) > 0) ? count($books) : 1;
@@ -2538,76 +2565,92 @@ class LiquidacionController extends Controller
 			{
 				return "<h2>No hay reservas para este término '" . $request->searchString . "'</h2>";
 			}
-		} else
+		}
+		else
 		{
-
 
 			if ($request->searchRoom && $request->searchRoom != "all")
 			{
 
-				$books = \App\Book::where('start', '>=', $date)->where('start', '<=', $date->copy()->addYear()
-				                                                                           ->subMonth())
+				$books = \App\Book::where('start', '>=', $date)
+				                  ->where('start', '<=', $date->copy()->addYear()->subMonth())
 				                  ->whereIn('type_book', [
 					                  2,
-					                  7
-				                  ])->where('room_id', $request->searchRoom)->orderBy('inc_percent', 'ASC')->get();
+					                  7,
+					                  8
+				                  ])
+				                  ->where('room_id', $request->searchRoom)
+				                  ->where('agency', $request->searchAgency)
+				                  ->orderBy('start', 'ASC')
+				                  ->get();
 
 				$diasPropios = \App\Book::where('start', '>', $date->copy()->subMonth())
-				                        ->where('room_id', $request->searchRoom)->where('finish', '<', $date->copy()
-				                                                                                            ->addYear())
+				                        ->where('room_id', $request->searchRoom)
+				                        ->where('finish', '<', $date->copy()->addYear())
 				                        ->whereIn('type_book', [
 					                        7,
 					                        8
-				                        ])->orderBy('inc_percent', 'ASC')->get();
-
-
+				                        ])
+				                        ->where('agency', $request->searchAgency)
+				                        ->orderBy('created_at', 'DESC')
+				                        ->get();
 			} else
 			{
-				$books = \App\Book::where('start', '>=', $date)->where('start', '<=', $date->copy()->addYear()
-				                                                                           ->subMonth())
+				$books = \App\Book::where('start', '>=', $date)
+				                  ->where('start', '<=', $date->copy()->addYear()->subMonth())
 				                  ->whereIn('type_book', [
 					                  2,
-					                  7
-				                  ])->orderBy('inc_percent', 'ASC')->get();
+					                  7,
+					                  8
+				                  ])
+				                  ->where('agency', $request->searchAgency)
+				                  ->orderBy('start', 'ASC')
+				                  ->get();
 
 				$diasPropios = \App\Book::where('start', '>', $date->copy()->subMonth())
-				                        ->where('finish', '<', $date->copy()->addYear())->whereIn('type_book', [
-					7,
-					8
-				])->orderBy('inc_percent', 'ASC')->get();
-
-
+				                        ->where('finish', '<', $date->copy()->addYear())
+				                        ->whereIn('type_book', [
+					                        7,
+					                        8
+				                        ])
+				                        ->where('agency', $request->searchAgency)
+				                        ->orderBy('created_at', 'DESC')
+				                        ->get();
 			}
+
 
 			foreach ($books as $key => $book)
 			{
-				$totales["total"]        += $book->total_price;
-				$totales["coste"]        += ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp);
-				$totales["costeApto"]    += $book->cost_apto;
-				$totales["costePark"]    += $book->cost_park;
-				$totales["costeLujo"]    += $book->cost_lujo;
+				// if($book->type_book != 7 && $book->type_book != 8){
+				$totales["total"]     += $book->total_price;
+				$totales["costeApto"] += $book->cost_apto;
+				$totales["costePark"] += $book->cost_park;
+				if ($book->room->luxury == 1)
+				{
+					$costTotal            = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->cost_limp + $book->PVPAgencia;
+					$totales["costeLujo"] += $book->cost_lujo;
+					$totales["coste"]     += $costTotal;
+				} else
+				{
+					$costTotal            = $book->cost_apto + $book->cost_park + 0 + $book->cost_limp + $book->PVPAgencia;
+					$totales["costeLujo"] += 0;
+					$totales["coste"]     += $costTotal;
+				}
+
 				$totales["costeLimp"]    += $book->cost_limp;
 				$totales["costeAgencia"] += $book->PVPAgencia;
 				$totales["bancoJorge"]   += $book->getPayment(2);
 				$totales["bancoJaime"]   += $book->getPayment(3);
 				$totales["jorge"]        += $book->getPayment(0);
 				$totales["jaime"]        += $book->getPayment(1);
-				$totales["benJorge"]     += $book->ben_jorge;
-				$totales["benJaime"]     += $book->ben_jaime;
-				$totales["pendiente"]    += $book->getPayment(4);
+				$totales["benJorge"]     += $book->getJorgeProfit();
+				$totales["benJaime"]     += $book->getJaimeProfit();
 				$totales["limpieza"]     += $book->sup_limp;
-				$totales["beneficio"]    += ($book->total_price - ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp));
-				$totalStripep            = 0;
-				$stripePayment           = \App\Payments::where('book_id', $book->id)
-				                                        ->where('comment', 'LIKE', '%stripe%')->get();
-				foreach ($stripePayment as $key => $stripe):
-					$totalStripep += $stripe->import;
-				endforeach;
-				if ($totalStripep > 0):
-					$totales["stripe"] += ((1.4 * $totalStripep) / 100) + 0.25;
-				endif;
-
-				$totales['obs'] += $book->extraCost;
+				$totales["beneficio"]    += $book->profit;
+				$totales["stripe"]       += $book->stripeCost;
+				$totales["obs"]          += $book->extraCost;
+				$totales["pendiente"]    += $book->pending;
+				// }
 			}
 			$totBooks         = (count($books) > 0) ? count($books) : 1;
 			$countDiasPropios = 0;
@@ -2665,7 +2708,6 @@ class LiquidacionController extends Controller
 
 			/* Inquilinos media */
 			$data['pax-media'] = ($data['num-pax'] / $totBooks);
-
 
 			return view('backend/sales/_tableSummary', [
 				'books'        => $books,

@@ -14,6 +14,9 @@
         #TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G{
             margin: 10px auto;
         }
+        .table-data select.form-control{
+            width: 100%!important;
+        }
     </style>
 @endsection
     

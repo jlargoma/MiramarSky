@@ -5,20 +5,19 @@
         <div class="row">
             <table class="table  table-condensed table-striped table-data"  data-type="confirmadas" style="margin-top: 0;">
                 <thead>
-                    <tr>   
-                        <th style="display: none">ID</th> 
-                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 4%!important">&nbsp;</th> 
-                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 11%!important">   Cliente     </th>
+                    <tr>
+                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 2%!important">&nbsp;</th>
+                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 12%!important">   Cliente     </th>
                         <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 10%!important">   Telefono     </th>
-                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 7%!important">   Pax         </th>
+                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 9%!important">   Pax         </th>
                         <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 5%!important"> </th>
-                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 10%!important">   Apart       </th>
+                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 12%!important">   Apart       </th>
                         <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 5%!important">  <i class="fa fa-moon-o"></i> </th>
-                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 6%!important">   IN     </th>
-                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 8%!important">   OUT      </th>
+                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 8%!important">   IN     </th>
+                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 10%!important">   OUT      </th>
                         <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 17%!important">   Precio      </th>
                         <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 50px!important">   &nbsp;      </th>
-                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 17%!important">   Estado      </th>
+                        <th class ="text-center @if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white" style="width: 14%!important">   Estado      </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -103,17 +102,14 @@
                                 </select>
                             </td>
                             <td class ="text-center"><?php echo $book->nigths ?></td>
-                            <td class ="text-center" style="width: 20%!important">
-                                <b><?php
-                                    $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                    echo $start->formatLocalized('%d %b');
-                                ?></b>
+	                        <?php $start = Carbon::createFromFormat('Y-m-d',$book->start); ?>
+                            <td class ="text-center" data-sort="<?php echo $start->copy()->format('Y-m-d')?>"  style="width:
+                20%!important">
+		                        <?php echo $start->formatLocalized('%d %b'); ?>
                             </td>
-                            <td class ="text-center" style="width: 20%!important">
-                                <b><?php
-                                    $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                    echo $finish->formatLocalized('%d %b');
-                                ?></b>
+	                        <?php $finish = Carbon::createFromFormat('Y-m-d',$book->finish);?>
+                            <td class ="text-center" data-sort="<?php echo $finish->copy()->format('Y-m-d')?>"  style="width: 20%!important">
+		                        <?php echo $finish->formatLocalized('%d %b'); ?>
                             </td>
                             
                             <td class ="text-center">
