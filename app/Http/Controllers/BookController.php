@@ -2098,6 +2098,7 @@ class BookController extends Controller
 				$totalPrice = array_sum($data['totales']);
 			}
 		}
+		$totalPrice  = ($totalPrice == 0)? $data['totales']['book']: $totalPrice;
 
 		$totalCost = array_sum($data['costes']) - $promotion;
 		$profit    = $totalPrice - $totalCost;
