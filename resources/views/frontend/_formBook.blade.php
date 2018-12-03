@@ -34,7 +34,7 @@
                <input id="quantity" type="text" name="quantity" value="4" class="qty" style="background: white; color: black;"> -->
                     <select id="quantity" class="sm-form-control" name="quantity">
                         <?php for ($i = 1;  $i <= 14 ; $i++): ?>
-                            <?php if ($i != 9 && $i != 11 && $i != 13): ?>
+                            <?php if ($i != 11 && $i != 13): ?>
                                 <option value="<?php echo $i ?>"><?php echo $i ?></option>
                             <?php endif ?>
                             

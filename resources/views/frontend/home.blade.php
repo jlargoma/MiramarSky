@@ -373,7 +373,8 @@
                                     </div>
                                     <div class="col-xs-12 not-padding text-right overlay-text">
                                         <h2 class="font-w200 center push-10 text-center text font-s24 white">
-                                            <span class="font-w800 white" style="letter-spacing: -2px;">SOLICITA<br>CLASES DE SKI, ALQUILER MATERIAL Y EN FORFAITS</span>
+                                            <span class="font-w800 white" style="letter-spacing: -2px;">SOLICITA<br>FORFAITS,
+                                            <br>MATERIAL<br>CLASES DE SKI</span>
                                         </h2>
                                     </div>
                                 </div>
@@ -773,7 +774,8 @@
                                     </div>
                                     <div class="col-xs-12 not-padding text-right overlay-text">
                                         <h2 class="font-w200 center push-10 text-center text font-s24 white">
-                                            <span class="font-w800 white" style="letter-spacing: -2px;">SOLICITA<br>CLASES DE SKI, ALQUILER MATERIAL Y EN FORFAITS</span>
+                                            <span class="font-w800 white" style="letter-spacing: -2px;">SOLICITA<br>FORFAITS,
+                                            <br>MATERIAL<br>CLASES DE SKI</span>
                                         </h2>
                                     </div>
                                 </div>
