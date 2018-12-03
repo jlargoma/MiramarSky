@@ -173,20 +173,21 @@
     </div>
 <?php else: ?>
 <div class="table-responsive" style="border: none!important">
-    <table class="table table-striped" style="margin-top: 0;">
+    <table class="table table-striped table-data"  data-type="confirmadas"  style="margin-top: 0;">
         <thead>
-            <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center" ></th>
-            <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center" >Nombre</th>
-            <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center" style="min-width:50px">In</th>
-            <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center" style="min-width:50px ">Out</th>
-            <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center">Pax</th>
-            <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center">Tel</th>
-            <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center" style="min-width:100px">Apart</th>
-            <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center"><i class="fa fa-moon-o"></i></th>
-            <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center" style="min-width:65px">PVP</th>
-            <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-center  text-white" style="width: 50px!important">   &nbsp;      </th>
-            
-            <th class="Pagada-la-señal text-white text-center" style="min-width:200px">Estado</th>
+            <tr>
+                <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center" ></th>
+                <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center" >Nombre</th>
+                <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center">In</th>
+                <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center">Out</th>
+                <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center">Pax</th>
+                <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center">Tel</th>
+                <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center">Apart</th>
+                <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center"><i class="fa fa-moon-o"></i></th>
+                <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center">PVP</th>
+                <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-center  text-white">   &nbsp; </th>
+                <th class="Pagada-la-señal text-white text-center" >Estado</th>
+            </tr>
         </thead>
         <tbody>
             <?php foreach ($books as $book): ?>
@@ -208,8 +209,15 @@
                         </a>
 
                     </td>
-                    <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b') ?></td>
-                    <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b') ?></td>
+	                <?php $start = Carbon::createFromFormat('Y-m-d',$book->start); ?>
+                    <td class ="text-center" data-order="<?php echo strtotime($start->copy()->format('Y-m-d'))?>"  style="width:
+                20%!important">
+		                <?php echo $start->formatLocalized('%d %b'); ?>
+                    </td>
+	                <?php $finish = Carbon::createFromFormat('Y-m-d',$book->finish);?>
+                    <td class ="text-center" data-order="<?php echo strtotime($finish->copy()->format('Y-m-d'))?>"  style="width: 20%!important">
+		                <?php echo $finish->formatLocalized('%d %b'); ?>
+                    </td>
                     <td class ="text-center" >
                         <?php if ($book->real_pax > 6 ): ?>
                             <?php echo $book->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
