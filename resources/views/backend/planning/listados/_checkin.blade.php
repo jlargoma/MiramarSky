@@ -182,7 +182,6 @@
                             <td class ="text-center">
                                 <div class="col-md-6 col-xs-12 not-padding">
                                     <?php echo round($book->total_price)."€" ?><br>
-
                                         <?php if (isset($payment[$book->id])): ?>
                                             <p style="color: <?php if ($book->total_price == $payment[$book->id]):?>#008000<?php else: ?>red<?php endif ?>;">
                                                 <?php echo $payment[$book->id] ?> €
@@ -247,7 +246,7 @@
     </div>
 <?php else: ?>
 <div class="table-responsive" style="border: none!important">
-    <table class="table table-striped" style="margin-top: 0;">
+    <table class="table table-striped table-data" style="margin-top: 0;">
         <thead>
             <th class="bg-success text-white text-center" >Nom</th>
             <th class="bg-success text-white text-center" style="min-width:50px">Apto</th>
@@ -259,8 +258,7 @@
             <th class="bg-success text-white text-center">Pax</th>
             
             <th class="bg-success text-white text-center"><i class="fa fa-moon-o"></i></th>
-            <th class="bg-success text-white text-center" style="min-width:60px">a</th>
-            <th class ="text-center bg-success text-white">&nbsp;</th>
+            <th class="bg-success text-white text-center">a</th>
         </thead>
         <tbody>
 
@@ -290,8 +288,6 @@
                 <tr class="<?php if($count <= 1){echo $class;} ?> <?php echo ucwords($book->getStatus($book->type_book)) ;?>">
 
                     <td class="text-left" style="padding: 5px !important;">
-                        
-
                         <a href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                             <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " "); ?> 
                         </a><br>
@@ -366,8 +362,15 @@
                             <?php endfor ?>
                         </select>
                     </td>
-                    <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b') ?></td>
-                    <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b') ?></td>
+	                <?php $start = Carbon::createFromFormat('Y-m-d',$book->start); ?>
+                    <td class ="text-center" data-order="<?php echo strtotime($start->copy()->format('Y-m-d'))?>"  style="width:
+                20%!important">
+		                <?php echo $start->formatLocalized('%d %b'); ?>
+                    </td>
+	                <?php $finish = Carbon::createFromFormat('Y-m-d',$book->finish);?>
+                    <td class ="text-center" data-order="<?php echo strtotime($finish->copy()->format('Y-m-d'))?>"  style="width: 20%!important">
+		                <?php echo $finish->formatLocalized('%d %b'); ?>
+                    </td>
                     
                     <td class ="text-center" >
                         <?php if ($book->real_pax > 6 ): ?>
@@ -390,10 +393,8 @@
                                 <img src="/pages/oferta.png" style="width: 40px;">
                             </span>
                             <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
-                            
+                            <br>
                         <?php endif ?>
-                    </td>
-                    <td class="text-center sm-p-t-10 sm-p-b-10">
                         <?php if ($book->send == 1): ?>
                             <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-default sendSecondPay" type="button" data-toggle="   tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="1">
                                <i class="fa fa-paper-plane" aria-hidden="true"></i>

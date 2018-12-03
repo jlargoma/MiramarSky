@@ -197,8 +197,15 @@
                             </a>
                         <?php endif ?>
                     </td>
-                    <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b') ?></td>
-                    <td class="text-center"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b') ?></td>
+	                <?php $start = Carbon::createFromFormat('Y-m-d',$book->start); ?>
+                    <td class ="text-center" data-order="<?php echo strtotime($start->copy()->format('Y-m-d'))?>"  style="width:
+                20%!important">
+		                <?php echo $start->formatLocalized('%d %b'); ?>
+                    </td>
+	                <?php $finish = Carbon::createFromFormat('Y-m-d',$book->finish);?>
+                    <td class ="text-center" data-order="<?php echo strtotime($finish->copy()->format('Y-m-d'))?>"  style="width: 20%!important">
+		                <?php echo $finish->formatLocalized('%d %b'); ?>
+                    </td>
                     <td class ="text-center" >
                         <?php if ($book->real_pax > 6 ): ?>
                             <?php echo $book->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>

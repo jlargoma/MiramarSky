@@ -1355,8 +1355,6 @@ class BookController extends Controller
 	public function getTableData(Request $request)
 	{
 		$mobile = new Mobile();
-
-
 		if (empty($request->year))
 		{
 			$date = Carbon::now();

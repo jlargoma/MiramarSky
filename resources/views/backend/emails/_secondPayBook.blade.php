@@ -35,12 +35,13 @@
 	<b>-------------------------</b><br>
 	<b>Cobrado: </b><?php echo number_format($totalPayment,2,',','.') ?>€<br>
 	<b>-------------------------</b><br>
+	<?php $pendiente = ($book->total_price - $totalPayment);?>
 	<h2 style="color:red"><b>Pendiente: </b><?php echo number_format(($book->total_price - $totalPayment),2,',','.') ?>€</h2><br>
 	<b>-------------------------</b><br>
 	Para realizar el pago del restante <?php echo 100 - $percent ?>% haz clic en el siguiente link <br><br>
 
-	<a target="_blank" href="https://miramarski.com/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>/<?php echo base64_encode(number_format(($totalPayment),2,',','.')) ?>">
-        https://miramarski.com/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>/<?php echo base64_encode(number_format(($totalPayment),2,',','.')) ?>
+	<a target="_blank" href="https://miramarski.com/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>/<?php echo base64_encode(round($pendiente)); ?>">
+        https://miramarski.com/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>/<?php echo base64_encode(round($pendiente)); ?>
     </a>
 
 	<br><br>
