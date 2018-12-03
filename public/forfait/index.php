@@ -261,10 +261,7 @@
                                                          </div>
 
                                                    </div>
-                                                   <div class="form-group col-sm-3">
-                                                      <span>*Carrito</span>
-                                                         <button name="boton" id="botonjun" class="btn btn-success form-control price_request" type="button">Solicitar</button>
-                                                   </div>
+
                                                 </div>
                                              
                                              <!-- Adulto -->
@@ -1105,10 +1102,10 @@
                                                             <div class="input-group" >
                                                                <select type="text" class="form-control" id="colecDias">
                                                                   <option>Dias</option>
-                                                                  <option value="2 Dias">2 Dias</option>
-                                                                  <option value="3 Dias">3 Dias</option>
-                                                                  <option value="4 Dias">4 Dias</option>
-                                                                  <option value="5 Dias">5 Dias</option>
+                                                                  <option value="2 Dias" data-week="weekend">2 Dias</option>
+                                                                  <option value="3 Dias" data-week="week">3 Dias</option>
+                                                                  <option value="4 Dias" data-week="week">4 Dias</option>
+                                                                  <option value="5 Dias" data-week="week">5 Dias</option>
                                                                </select>
                                                             </div>
                                                       </div>
@@ -1133,10 +1130,10 @@
                                                             <div class="input-group" >
                                                                <select type="text" class="form-control" id="colectipo">
                                                                   <option>Clase</option>
-                                                                  <option value="Esqui Fin de semana">Esqui Fin de semana</option>
-                                                                  <option value="Snow Fin de semana">Snow Fin de semana</option>
-                                                                  <option value="Esquí Semanal">Esquí Semanal</option>
-                                                                  <option value="Snow Semanal">Snow Semanal</option>
+                                                                  <option value="Esqui Fin de semana" data-week="weekend">Esqui Fin de semana</option>
+                                                                  <option value="Snow Fin de semana" data-week="weekend">Snow Fin de semana</option>
+                                                                  <option value="Esquí Semanal" data-week="week">Esquí Semanal</option>
+                                                                  <option value="Snow Semanal" data-week="week">Snow Semanal</option>
                                                                </select>
                                                             </div>
                                                       </div>
@@ -1197,6 +1194,10 @@
                                       <div class="form-group col-sm-12"  id="content-carrito">
                                        <h3 class="form-group text-center black font-w300" style="text-transform: uppercase;">Resumen Solicitud</h3>
                                        <p class="carrito"></p>
+                                      </div>
+                                      <div class="form-group col-sm-3">
+                                        <span>*Carrito</span>
+                                        <button name="boton" id="botonjun" class="btn btn-success form-control price_request" type="button">Solicitar</button>
                                       </div>
                                   </div>
                               </div>
@@ -1260,7 +1261,7 @@
     <script type="text/javascript">
 
         $("#myModal button.btn").on("click", function (e) {
-            console.log('test');
+//            console.log('test');
             $("#myModal").modal('hide'); // dismiss the dialog
         });
 
@@ -1270,6 +1271,19 @@
 
         $("#myModal").on("hidden", function () { // remove the actual elements from the DOM when fully hidden
             $("#myModal").remove();
+        });
+        
+        $('select#colectipo').on('change',function(){
+            week_type = $(this).find('option:selected').attr('data-week');
+            
+            if(week_type === 'weekend'){
+                $('select#colecDias').prop('selectedIndex',0);
+                $('select#colecDias option[data-week="week"]').hide();
+                $('select#colecDias option[data-week="weekend"]').show();
+            }else{
+                $('select#colecDias option[data-week="weekend"]').hide();
+                $('select#colecDias option[data-week="week"]').show();
+            }
         });
 
         function checkForfaitDates(){
@@ -1292,6 +1306,7 @@
             start_date = $('input#date-entrada').val();
             end_date = $('input#date-salida').val();
             
+//            console.log(cont);
 //            console.log(start_date);
 //            console.log(end_date);
 //            console.log(type);
@@ -1313,12 +1328,13 @@
                 dataType:'json',
 //                async: false,
                 success: function(response){
-//                    console.log(response);
-                    $("#" + cont).append(" - "+response+"&euro;");
-                    console.log($('input[name="carrito['+cont+']"]').val());
+                    price = JSON.stringify(response).replace('.',',');
+//                    console.log(price);
+                    $("#" + cont).append(" - "+price+"&euro;");
+//                    console.log($('input[name="carrito['+cont+']"]').val());
                     input_cont = $('input[name="carrito['+cont+']"]');
-                    $('input[name="carrito['+cont+']"]').val(input_cont.val()+" - "+response+"&euro;");
-                    $("#" + cont).append("<input type='hidden' name='prices[" + cont + "]' value='" + response+ "'>");
+                    $('input[name="carrito['+cont+']"]').val(input_cont.val()+" - "+price+"&euro;");
+                    $("#" + cont).append("<input type='hidden' name='prices["+cont+"]' value='"+response+"'>");
                 },
                 error: function(response){
 //                    console.log(response);
@@ -1880,7 +1896,7 @@
                                 $(this).parent().remove();
                             });
 
-                            requestPrice(cont,'classes','particular',$("#clasehoras").val(),$("#clase-particular-cant").val(),$("#clasetipo").val());
+                            requestPrice(cont,'classes','particulares',$("#clase-particular-cant").val(),$("#clasehoras").val().split(' ')[0],$("#clasetipo").val());
                         } else {
                             alert("Debes ingresar una Cantidad ,Tipo y Dias");
                         }
@@ -1901,7 +1917,7 @@
                                 $(this).parent().remove();
                             });
 
-                            requestPrice(cont,'classes','particular',$("#clasehoras").val(),$("#clase-particular-cant").val(),$("#clasetipo").val());
+                            requestPrice(cont,'classes','particulares',$("#clase-particular-cant").val(),$("#clasehoras").val().split(' ')[0],$("#clasetipo").val());
                         } else {
                             alert("Debes ingresar una Cantidad ,Tipo y Dias");
                         }
@@ -1929,7 +1945,7 @@
                                 $(this).parent().remove();
                             });
 
-                            requestPrice(cont,'classes','colectivo',$("#clase-colectivo-cant").val(),$("#colecDias").val(),$("#colectipo").val());
+                            requestPrice(cont,'classes','colectivas',$("#clase-colectivo-cant").val(),$("#colecDias").val().split(' ')[0],$("#colectipo").val());
                         } else {
                             alert("Debes ingresar una Cantidad ,Tipo y Dias");
                         }
@@ -1949,7 +1965,7 @@
                                 $(this).parent().remove();
                             });
 
-                            requestPrice(cont,'classes','colectivo',$("#clase-colectivo-cant").val(),$("#colecDias").val(),$("#colectipo").val());
+                            requestPrice(cont,'classes','colectivas',$("#clase-colectivo-cant").val(),$("#colecDias").val().split(' ')[0],$("#colectipo").val());
                         } else {
                             alert("Debes ingresar una Cantidad ,Tipo y Dias");
                         }

@@ -293,21 +293,15 @@
                                 ?>
                                 <?php echo number_format($profit,0,',','.') ?> €</b>
                             </td>
-                            <?php if(round($book->inc_percent) < $percentBenef): ?>
+                            <?php if(round($book->inc_percent) <= $percentBenef && round($book->inc_percent) > 0): ?>
                                 <?php $classDanger = "background-color: #f8d053!important; color:black!important;" ?>
-                            <?php elseif(round($book->inc_percent) == 0): ?>
-                                <?php $classDanger = "background-color: #f8d053!important; color:black!important;" ?>
+                            <?php elseif(round($book->inc_percent) <= 0): ?>
+                                <?php $classDanger = "background-color: red!important; color:white!important;" ?>
                             <?php else: ?>
                                 <?php $classDanger = "" ?>
                             <?php endif; ?>
                             <td class="text-center beneficio bf " style="border-left: 1px solid black; <?php echo $classDanger ?>">
-
-                                <?php if ( $inc_percent > 0): ?>
-                                    <?php echo number_format($inc_percent,0)." %" ?>
-                                <?php else: ?>
-                                    ----
-                                <?php endif ?>
-
+	                            <?php echo number_format($inc_percent,0)."%" ?>
                             </td>
                             <td class="text-center coste bi " style="border-left: 1px solid black;">
                                 {{$cost_total}}
@@ -598,16 +592,10 @@
                                         <?php $classDanger = "" ?>
                                     <?php endif; ?>
                                     <td class="text-center beneficio bf " style="border-left: 1px solid black; <?php echo $classDanger ?>">
-                                        <?php if ( $book->inc_percent > 0): ?>
-                                            <?php echo number_format($book->inc_percent,0)." %" ?>
-                                        <?php else: ?>
-                                            ----
-                                        <?php endif ?>
-
+	                                    <?php echo number_format($book->inc_percent,0)." %" ?>
                                     </td>
                                     <td class="text-center coste bi ">
-                                        <b>{{ $book->cost_total > 0 ? number_format(( $book->cost_total + $book->stripeCost),0,',','.') . ' €' :
-                                '----' }}</b>
+                                        <b>{{ $book->cost_total > 0 ? number_format(( $book->cost_total + $book->stripeCost),0,',','.') . ' €' :'----' }}</b>
                                     </td>
                                     <td class="text-center coste">
                                          <input class="updateCostApto " type="number" value="<?php echo round($book->cost_apto); ?>" data-idBook="<?php echo $book->id; ?>"/>
@@ -670,7 +658,7 @@
 	"paging":   false,
 	"columnDefs": [
 	                {
-	                    "targets": [0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23], // column or
+	                    "targets": [0,2,3,4,5,6,7,8,9,10,11,12,14,15,16,17,18,19,20,21,22,23], // column or
 	                  // columns numbers
 	                    "orderable": false,  // set orderable for selected columns
 	                }

@@ -4,19 +4,18 @@
 
 <table class="table table-condensed table-striped table-data"  data-type="pendientes" style="margin-top: 0;">
     <thead>
-        <tr>  
-            <th style="display: none">ID</th> 
-            <th class ="text-center Reservado-table text-white" style="width: 4%!important">&nbsp;</th> 
-            <th class ="text-center Reservado-table text-white" >   Cliente     </th>
+        <tr>
+            <th class ="text-center Reservado-table text-white" style="width: 2%!important">&nbsp;</th>
+            <th class ="text-center Reservado-table text-white" style="width: 12%!important">   Cliente     </th>
             <th class ="text-center Reservado-table text-white" >   Telefono     </th>
-            <th class ="text-center Reservado-table text-white" style="width: 7%!important">   Pax         </th>
-            <th class ="text-center Reservado-table text-white" style="width: 5%!important"></th>
-            <th class ="text-center Reservado-table text-white" style="width: 10%!important">   Apart       </th>
+            <th class ="text-center Reservado-table text-white" style="width: 9%!important">   Pax         </th>
+            <th class ="text-center Reservado-table text-white" style="width: 5%!important">&nbsp;&nbsp;</th>
+            <th class ="text-center Reservado-table text-white" style="width: 11%!important">   Apart       </th>
             <th class ="text-center Reservado-table text-white" style="width: 6%!important">   IN     </th>
             <th class ="text-center Reservado-table text-white" style="width: 8%!important">   OUT      </th>
             <th class ="text-center Reservado-table text-white" style="width: 6%!important">  <i class="fa fa-moon-o"></i> </th>
             <th class ="text-center Reservado-table text-white" >   Precio      </th>
-            <th class ="text-center Reservado-table text-white" style="width: 17%!important">   Estado      </th>
+            <th class ="text-center Reservado-table text-white" style="width: 12%!important">   Estado      </th>
             <th class ="text-center Reservado-table text-white" style="width: 6%!important">&nbsp;</th>
             <th class ="text-center Reservado-table text-white" style="width: 6%!important">A</th>
         </tr>
@@ -28,8 +27,7 @@
                 <?php $class = "contestado-email" ?>
             <?php endif ?>
                 
-            <tr class="<?php echo $class ;?>"> 
-                <td style="display: none"><?php echo $book->id ?></td>
+            <tr class="<?php echo $class ;?>">
                 <td class="text-center">
                     <?php if ($book->agency != 0): ?>
                         <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
@@ -108,19 +106,14 @@
                         <?php endforeach ?>
                     </select>
                 </td>
-
-                <td class ="text-center"  style="width: 20%!important">
-                    <?php
-                        $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                        echo $start->formatLocalized('%d %b');
-                    ?>
+                <?php $start = Carbon::createFromFormat('Y-m-d',$book->start); ?>
+                <td class ="text-center" data-sort="<?php echo $start->copy()->format('Y-m-d')?>"  style="width:
+                20%!important">
+                    <?php echo $start->formatLocalized('%d %b'); ?>
                 </td>
-
-                <td class ="text-center"  style="width: 20%!important">
-                    <?php
-                        $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                        echo $finish->formatLocalized('%d %b');
-                    ?>
+                <?php $finish = Carbon::createFromFormat('Y-m-d',$book->finish);?>
+                <td class ="text-center" data-sort="<?php echo $finish->copy()->format('Y-m-d')?>"  style="width: 20%!important">
+                    <?php echo $finish->formatLocalized('%d %b'); ?>
                 </td>
 
                 <td class ="text-center" ><?php echo $book->nigths ?></td>

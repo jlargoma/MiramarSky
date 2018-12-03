@@ -7,23 +7,22 @@
 <?php if(!$mobile->isMobile() ): ?>
     <div class="tab-pane" id="tabPagadas">
         <div class="row">
-            <table class="table  table-condensed table-striped table-data"  data-type="confirmadas" style="margin-top: 0;">
+            <table class="table table-condensed table-striped table-data"  data-type="confirmadas" style="margin-top: 0;">
                 <thead>
-                    <tr>   
-                        <th style="display: none">ID</th> 
+                    <tr>
                         <th class ="text-center bg-success text-white" style="width: 4%!important">&nbsp;</th> 
-                        <th class ="text-center bg-success text-white" style="width: 20%!important">   Cliente     </th>
+                        <th class ="text-center bg-success text-white" style="width: 12%!important">   Cliente     </th>
                         <th class ="text-center bg-success text-white" style="width: 10%!important">   Telefono     </th>
-                        <th class ="text-center bg-success text-white" style="width: 7%!important">   Pax         </th>
-                        <th class ="text-center bg-success text-white" style="width: 7%!important">   Apart       </th>
+                        <th class ="text-center bg-success text-white" style="width: 9%!important">   Pax         </th>
+                        <th class ="text-center bg-success text-white" style="width: 12%!important">   Apart       </th>
                         <th class ="text-center bg-success text-white" style="width: 9%!important">  <i class="fa fa-moon-o"></i> </th>
-                         <th class="bg-success text-white text-center" style="width: 8%!important">
+                         <th class="bg-success text-white text-center" style="width: 9%!important">
                             <i class="fa fa-clock-o" aria-hidden="true"></i> Hora
                         </th>
-                        <th class ="text-center bg-success text-white" style="width: 8%!important">   IN     </th>
-                        <th class ="text-center bg-success text-white" style="width: 8%!important">   OUT      </th>
+                        <th class ="text-center bg-success text-white" style="width: 10%!important">   IN     </th>
+                        <th class ="text-center bg-success text-white" style="width: 10%!important">   OUT      </th>
                        
-                        <th class ="text-center bg-success text-white" style="width: 15%!important">   Precio      </th>
+                        <th class ="text-center bg-success text-white" style="width: 12%!important">   Precio      </th>
                         
                         <th class ="text-center bg-success text-white" style="width: 4%!important">&nbsp;</th>
                         <th class ="text-center bg-success text-white" style="width: 4%!important">   a      </th>
@@ -56,10 +55,6 @@
                                 $dateStart = Carbon::createFromFormat('Y-m-d', $book->start);
                                 $now = Carbon::now();
                             ?>
-
-
-
-                            
                             <td class="text-center">
                                 <?php if ( $payment[$book->id] == 0): ?>
                                     <?php if ( $now->diffInDays($dateStart) <= 15 ):?>
@@ -172,17 +167,16 @@
                                     <?php endfor ?>
                                 </select>
                             </td>
-                            <td class ="text-center" style="width: 20%!important">
-                                <b><?php
-                                    $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                    echo $start->formatLocalized('%d %b');
-                                ?></b>
+
+                            <?php $start = Carbon::createFromFormat('Y-m-d',$book->start); ?>
+                            <td class ="text-center" data-sort="<?php echo strtotime($start->copy()->format('Y-m-d'))?>"  style="width:
+            20%!important">
+                                <b><?php echo $start->formatLocalized('%d %b'); ?></b>
                             </td>
-                            <td class ="text-center" style="width: 20%!important">
-                                <b><?php
-                                    $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                    echo $finish->formatLocalized('%d %b');
-                                ?></b>
+
+                            <?php $finish = Carbon::createFromFormat('Y-m-d',$book->finish);?>
+                            <td class ="text-center" data-sort="<?php echo strtotime($finish->copy()->format('Y-m-d'))?>"  style="width: 20%!important">
+                                <b><?php echo $finish->formatLocalized('%d %b'); ?></b>
                             </td>
                            
                             <td class ="text-center">

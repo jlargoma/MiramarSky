@@ -157,11 +157,11 @@
                     Exportar Excel
                 </button>
             </div>
-            <div class="col-md-1 pull-right">
-                <button class="btn btn-md btn-danger orderPercentBenef">
-                    Ord benef critico
-                </button>
-            </div>
+            {{--<div class="col-md-1 pull-right">--}}
+                {{--<button class="btn btn-md btn-danger orderPercentBenef">--}}
+                    {{--Ord benef critico--}}
+                {{--</button>--}}
+            {{--</div>--}}
         </div>
 
         <div class="row">
@@ -254,10 +254,12 @@
         $('.orderPercentBenef').click(function () {
           var searchRoom = $('.searchSelect').val();
           var searchString = $('.searchabled').val();
+          var searchAgency = $('.searchAgency').val();
           var year = '<?php echo $temporada->copy()->format('Y')?>';
           $.get('/admin/liquidation/orderByBenefCritico', {
             searchRoom: searchRoom,
             searchString: searchString,
+            searchAgency: searchAgency,
             year: year
           }, function (data) {
 

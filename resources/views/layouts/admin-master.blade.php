@@ -31,10 +31,10 @@
       <link href="{{ asset('/pages/css/pages-icons.css') }}" rel="stylesheet" type="text/css">
       <link class="main-stylesheet" href="{{ asset('/pages/css/pages.css') }}" rel="stylesheet" type="text/css" />
       <script src="//code.jquery.com/jquery.js"></script>
-
+       <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
       @yield('externalScripts')
        <!--[if lte IE 9]>
-       <link href="assets/plugins/codrops-dialogFx/dialog.ie.css" rel="stylesheet" type="text/css" media="screen" />
+       <link href="/assets/plugins/codrops-dialogFx/dialog.ie.css" rel="stylesheet" type="text/css" media="screen" />
        <![endif]-->
        <link rel="stylesheet" type="text/css" href="{{ asset('/pages/css/custom.css')}}">
       

@@ -1,7 +1,25 @@
- <?php if ( $type == 'pendientes'): ?>
+<script src="/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
+<script src="/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
+<script src="/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
+<script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
+<script type="text/javascript" src="/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
+<script type="text/javascript" src="/assets/js/datatables.js"></script>
+
+<?php if ( $type == 'pendientes'): ?>
 
 	@include('backend.planning.listados._pendientes', ['books' => $books ])
+	<script>
+	  $('.table-data').dataTable({
+		"searching": false,
+		"ordering": true,
+		"paging":   false,
+		"columnDefs": [
+          { "orderSequence": [ "desc" ], "targets": [0,1,2,3,4,5,8,9,10,11], "orderable": false }
+		],
 
+	  });
+	</script>
 <?php elseif( $type == 'especiales'): ?>
 
 	@include('backend.planning.listados._especiales', ['books' => $books ])
@@ -9,16 +27,36 @@
 <?php elseif( $type == 'confirmadas' || $type == 'blocked-ical' ): ?>
 
 	@include('backend.planning.listados._pagadas', ['books' => $books, "type" => $type ])
+	<script>
+	  $('.table-data').dataTable({
+		"searching": false,
+		"ordering": true,
+		"paging":   false,
+		"columnDefs": [
+		  { "orderSequence": [ "desc" ], "targets": [0,1,2,3,4,5,6,9,10], "orderable": false }
+		],
 
+	  });
+	</script>
 <?php elseif( $type == 'checkin'): ?>
 	@include('backend.planning.listados._checkin', ['books' => $books ])
+	<script>
+	  $('.table-data').dataTable({
+		"searching": false,
+        "order": [[ 7, "asc" ]],
+		"paging":   false,
 
+
+	  });
+	</script>
 <?php elseif( $type == 'checkout'): ?>
 	@include('backend.planning.listados._checkout', ['books' => $books ])
 
 <?php elseif( $type == 'eliminadas'): ?>
 	@include('backend.planning.listados._eliminadas', ['books' => $books ])
 <?php endif ?>
+
+
 <script type="text/javascript">
 	// Cambiamos los horarios para Check IN y Check Out
 	$('#schedule, #scheduleOut').change(function(event) {
@@ -312,16 +350,10 @@
 	// Comentarios flotantes
 	$('.icons-comment').hover(function() {
 		var content = $(this).attr('data-class-content');
-
 		$('.'+content).show();
-
-
 	}, function() {
-		
 		var content = $(this).attr('data-class-content');
-
 		$('.'+content).hide();
-
 	});
 
 	$('.only-numbers').keydown(function (e) {
@@ -378,7 +410,6 @@
 	        });
 		});
 	});
-	
 
     $('.restoreBook').click(function(event) {
     	var id = $(this).attr('data-id');

@@ -128,43 +128,36 @@ class BookController extends Controller
 		})->count();*/
 
 		$mobile = new Mobile();
-
-		$booksAlarms = \App\Book::where('start', '>=', Carbon::now())
-		                        ->where('finish', '<=', Carbon::now()->copy()->addDays(15))
+		$now         = Carbon::now();
+		$booksAlarms = \App\Book::where('start', '>=', $now->format('Y-m-d'))
+		                        ->where('start', '<=', $now->copy()->addDays(15)->format('Y-m-d'))
 		                        ->where('type_book', 2)
 		                        ->get();
 		$alarms      = array();
 		foreach ($booksAlarms as $key => $book)
 		{
 			$dateStart = Carbon::createFromFormat('Y-m-d', $book->start);
-			$now       = Carbon::now();
+			$diff = $now->diffInDays($dateStart);
 
-			$payments = \App\Payments::where('book_id', $book->id)->get();
-
-
-			if (count($payments) == 0)
-			{
-				if ($now->diffInDays($dateStart) <= 15):
-					$alarms[] = $book;
-				endif;
-			} else
+			if (count($book->payments) > 0)
 			{
 				$total = 0;
-				foreach ($payments as $key => $pay)
+				foreach ($book->payments as $pay)
 				{
 					$total += $pay->import;
 				}
+				//echo $total." DE ----> ".$book->total_price."<br>";
+
 				$percent = 100 / ($book->total_price / $total);
-				if ($percent <= 25):
-					if ($now->diffInDays($dateStart) <= 15):
+				if ($percent <= 25)
+					if ($now->diffInDays($dateStart) <= 15)
 						$alarms[] = $book;
-					endif;
-				endif;
+			} else
+			{
+				if ($diff <= 15)
+					$alarms[] = $book;
 			}
-
-
 		}
-
 		return view(
 			'backend/planning/index',
 			compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
@@ -384,8 +377,7 @@ class BookController extends Controller
 						LiquidacionController::setExpenseLimpieza($request->input('status'), $room->id, $finish);
 						/* Asiento automatico */
 
-					}
-					elseif ($request->input('status') == 7)
+					} elseif ($request->input('status') == 7)
 					{
 						$book->PVPAgencia  = ($request->input('agencia')) ? $request->input('agencia') : 0;
 						$book->sup_limp    = ($room->sizeApto == 1) ? 30 : 50;
@@ -563,27 +555,28 @@ class BookController extends Controller
 			$book->pax                 = $request->input('pax');
 			$book->real_pax            = $request->input('real_pax');
 			$book->nigths              = $request->input('nigths');
-			if ($book->type_book == 7){
+			if ($book->type_book == 7)
+			{
 				$book->sup_park  = 0;
 				$book->sup_limp  = ($room->sizeApto == 1) ? 30 : 50;
 				$book->cost_limp = ($room->sizeApto == 1) ? 30 : 40;
 
-				$book->sup_lujo    = 0;
-				$book->cost_lujo   = 0;
+				$book->sup_lujo  = 0;
+				$book->cost_lujo = 0;
 
-				$book->real_price  = ($room->sizeApto == 1) ? 30 : 50;
-			}
-			else{
+				$book->real_price = ($room->sizeApto == 1) ? 30 : 50;
+			} else
+			{
 				$book->sup_park  = $computedData->totales->parking;
 				$book->sup_limp  = $computedData->totales->limp;
 				$book->cost_limp = $computedData->costes->limp;
 
-				$book->sup_lujo    = $computedData->totales->lujo;
-				$book->cost_lujo   = $computedData->costes->lujo;
-				$book->real_price  = $computedData->calculated->real_price;
+				$book->sup_lujo   = $computedData->totales->lujo;
+				$book->cost_lujo  = $computedData->costes->lujo;
+				$book->real_price = $computedData->calculated->real_price;
 			}
 
-			$book->cost_park = $request->input('costParking');
+			$book->cost_park  = $request->input('costParking');
 			$book->type_park  = $request->input('parking');
 			$book->agency     = $request->input('agency');
 			$book->PVPAgencia = $request->input('agencia') ? : 0;
@@ -2105,6 +2098,7 @@ class BookController extends Controller
 				$totalPrice = array_sum($data['totales']);
 			}
 		}
+		$totalPrice  = ($totalPrice == 0)? $data['totales']['book']: $totalPrice;
 
 		$totalCost = array_sum($data['costes']) - $promotion;
 		$profit    = $totalPrice - $totalCost;

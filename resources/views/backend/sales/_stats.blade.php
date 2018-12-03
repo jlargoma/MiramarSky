@@ -122,9 +122,9 @@
 								<span style="font-size: 14px;">
 									<?php if ($i > 1): ?>
 										<?php if ($totalPVP > $oldTotalPVP): ?>
-											<i class="fa fa-arrow-up text-success"></i>
+											<i class="fa fa-arrow-up text-success" style="font-size: 20px;"></i>
 										<?php else: ?>
-											<i class="fa fa-arrow-down text-danger"></i>
+											<i class="fa fa-arrow-down text-danger" style="font-size: 20px;"></i>
 
 										<?php endif ?>
 									<?php endif ?>
