@@ -149,7 +149,7 @@ class BookController extends Controller
 				//echo $total." DE ----> ".$book->total_price."<br>";
 
 				$percent = 100 / ($book->total_price / $total);
-				if ($percent <= 25)
+				if ($percent < 100)
 					if ($now->diffInDays($dateStart) <= 15)
 						$alarms[] = $book;
 			} else

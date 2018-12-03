@@ -184,10 +184,11 @@
                         </div>
                     @endif
                     <div class="col-md-12 text-center col-xs-12 push-20">
-                        <input type="hidden" id="shareEmailImages"  value="<?php echo $book->customer->email; ?>">
-                        <input type="hidden"  value="<?php echo $book->id; ?>" id="registerData">
+                        <input type="hidden" id="shareEmailImages" value="<?php echo $book->customer->email; ?>">
+                        <input type="hidden" value="<?php echo $book->id; ?>" id="registerData">
                         <div class=" col-md-4 col-md-offset-4 col-xs-12 text-center">
-                            <button class="btn btn-complete btn-md" id="sendShareImagesEmail" onclick="return confirm('¿Quieres reenviar las imagenes');">
+                            <button class="btn btn-complete btn-md" id="sendShareImagesEmail"
+                                    onclick="return confirm('¿Quieres reenviar las imagenes');">
                                 <i class="fa fa-eye"></i> Enviar
                             </button>
                         </div>
@@ -195,21 +196,22 @@
                     <div class=" col-md-8 col-md-offset-2 col-xs-12 text-left">
 						<?php $logSendImages = $book->getSendPicture(); ?>
 						<?php if ($logSendImages): ?>
-                            <?php foreach ($logSendImages as $index => $logSendImage): ?>
-                            <?php
-                            $roomSended = \App\Rooms::find($logSendImage->room_id);
-                            $adminSended = \App\User::find($logSendImage->admin_id);
-                            $dateSended = Carbon::createFromFormat('Y-m-d H:i:s', $logSendImage->created_at)
-                            ?>
-                            <div class="col-xs-12 push-5">
-                                <p class="text-center" style="font-size: 18px; ">
-                                    <i class="fa fa-eye"></i>
-                                    Fotos <b><?php echo strtoupper($roomSended->nameRoom)?></b> enviadas
-                                    por <b><?php echo strtoupper($adminSended->name)?></b> el <b><?php echo $dateSended->formatLocalized('%d %B de %Y')?></b>
-                                </p>
-                            </div>
-                            <?php endforeach;?>
-                        <?php endif;?>
+						<?php foreach ($logSendImages as $index => $logSendImage): ?>
+						<?php
+						$roomSended = \App\Rooms::find($logSendImage->room_id);
+						$adminSended = \App\User::find($logSendImage->admin_id);
+						$dateSended = Carbon::createFromFormat('Y-m-d H:i:s', $logSendImage->created_at)
+						?>
+                        <div class="col-xs-12 push-5">
+                            <p class="text-center" style="font-size: 18px; ">
+                                <i class="fa fa-eye"></i>
+                                Fotos <b><?php echo strtoupper($roomSended->nameRoom)?></b> enviadas
+                                por <b><?php echo strtoupper($adminSended->name)?></b> el
+                                <b><?php echo $dateSended->formatLocalized('%d %B de %Y')?></b>
+                            </p>
+                        </div>
+						<?php endforeach;?>
+						<?php endif;?>
                     </div>
                 </div>
 
@@ -277,7 +279,8 @@
                             <select class="form-control country minimal" name="country">
                                 <option>--Seleccione país --</option>
 								<?php foreach (\App\Countries::orderBy('code', 'ASC')->get() as $country): ?>
-                                <option value="<?php echo $country->code ?>" <?php if ($country->code == $book->customer->country) {
+                                <option value="<?php echo $country->code ?>" <?php if ($country->code == $book->customer->country)
+								{
 									echo "selected";
 								} ?>>
 									<?php echo $country->country ?>
@@ -290,7 +293,8 @@
                             <select class="form-control city minimal" name="city">
                                 <option>--Seleccione ciudad --</option>
 								<?php foreach (\App\Cities::orderBy('city', 'ASC')->get() as $city): ?>
-                                <option value="<?php echo $city->id ?>" <?php if ($city->id == $book->customer->city) {
+                                <option value="<?php echo $city->id ?>" <?php if ($city->id == $book->customer->city)
+								{
 									echo "selected";
 								} ?>>
 									<?php echo $city->city ?>
@@ -335,7 +339,7 @@
                             <label>Pax</label>
                             <select class=" form-control pax minimal" name="pax">
 								<?php for ($i = 1; $i <= 14 ; $i++): ?>
-								<?php if ($i != 9 && $i != 11): ?>
+								<?php if ($i != 11): ?>
                                 <option value="<?php echo $i ?>" <?php echo ($i == $book->pax) ? "selected" : ""; ?>>
 									<?php echo $i ?>
                                 </option>
@@ -393,7 +397,8 @@
                             <select id="schedule" class="form-control minimal" style="width: 100%;" name="schedule">
                                 <option>-- Sin asignar --</option>
 								<?php for ($i = 0; $i < 24; $i++): ?>
-                                <option value="<?php echo $i ?>" <?php if ($i == $book->schedule) {
+                                <option value="<?php echo $i ?>" <?php if ($i == $book->schedule)
+								{
 									echo 'selected';
 								}?>>
 									<?php if ($i < 10): ?>
@@ -416,7 +421,8 @@
                                     name="scheduleOut">
                                 <option>-- Sin asignar --</option>
 								<?php for ($i = 0; $i < 24; $i++): ?>
-                                <option value="<?php echo $i ?>" <?php if ($i == $book->scheduleOut) {
+                                <option value="<?php echo $i ?>" <?php if ($i == $book->scheduleOut)
+								{
 									echo 'selected';
 								}?>>
 									<?php if ($i < 10): ?>
@@ -440,9 +446,10 @@
                                 <label>Agencia</label>
                                 <select class="form-control full-width agency minimal" name="agency">
 									<?php for ($i = 0; $i <= 7 ; $i++): ?>
-                                    <option value="<?php echo $i ?>" {{ $book->agency == $i ? 'selected' : '' }} <?php if ( Auth::user()->role == "agente" &&  $book->getAgency($i) == "S.essence"): ?>
-                                    selected<?php endif ?>>
-                                        <?php echo $book->getAgency($i) ?></option>
+                                    <option value="<?php echo $i ?>"
+                                            {{ $book->agency == $i ? 'selected' : '' }} <?php if ( Auth::user()->role == "agente" && $book->getAgency($i) == "S.essence"): ?>
+                                            selected<?php endif ?>>
+										<?php echo $book->getAgency($i) ?></option>
 									<?php endfor;?>
                                 </select>
                             </div>
@@ -840,7 +847,8 @@
                             <select class="form-control country minimal" name="country">
                                 <option>--Seleccione país --</option>
 								<?php foreach (\App\Countries::orderBy('code', 'ASC')->get() as $country): ?>
-                                <option value="<?php echo $country->code ?>" <?php if ($country->code == $book->customer->country) {
+                                <option value="<?php echo $country->code ?>" <?php if ($country->code == $book->customer->country)
+								{
 									echo "selected";
 								} ?>>
 									<?php echo $country->country ?>
@@ -854,7 +862,8 @@
                                 <option>--Seleccione ciudad --</option>
 								<?php foreach (\App\Cities::where('code_country', $book->customer->country)
 								                          ->orderBy('city', 'ASC')->get() as $city): ?>
-                                <option value="<?php echo $city->id ?>" <?php if ($city->id == $book->customer->city) {
+                                <option value="<?php echo $city->id ?>" <?php if ($city->id == $book->customer->city)
+								{
 									echo "selected";
 								} ?>>
 									<?php echo $city->city ?>
@@ -945,7 +954,8 @@
                             <select id="schedule" class="form-control " style="width: 100%;" name="schedule">
                                 <option>-- Sin asignar --</option>
 								<?php for ($i = 0; $i < 24; $i++): ?>
-                                <option value="<?php echo $i ?>" <?php if ($i == $book->schedule) {
+                                <option value="<?php echo $i ?>" <?php if ($i == $book->schedule)
+								{
 									echo 'selected';
 								}?>>
 									<?php if ($i < 10): ?>
@@ -967,7 +977,8 @@
                             <select id="scheduleOut" class="form-control " style="width: 100%;" name="scheduleOut">
                                 <option>-- Sin asignar --</option>
 								<?php for ($i = 0; $i < 24; $i++): ?>
-                                <option value="<?php echo $i ?>" <?php if ($i == $book->scheduleOut) {
+                                <option value="<?php echo $i ?>" <?php if ($i == $book->scheduleOut)
+								{
 									echo 'selected';
 								}?>>
 									<?php if ($i < 10): ?>
@@ -992,9 +1003,10 @@
                                 <label>Agencia</label>
                                 <select class="form-control full-width agency minimal" name="agency">
 									<?php for ($i = 0; $i <= 7 ; $i++): ?>
-                                    <option value="<?php echo $i ?>" {{ $book->agency == $i ? 'selected' : '' }} <?php if ( Auth::user()->role == "agente" &&  $book->getAgency($i) == "S.essence"): ?>
-                                    selected<?php endif ?>>
-                                        <?php echo $book->getAgency($i) ?>
+                                    <option value="<?php echo $i ?>"
+                                            {{ $book->agency == $i ? 'selected' : '' }} <?php if ( Auth::user()->role == "agente" && $book->getAgency($i) == "S.essence"): ?>
+                                            selected<?php endif ?>>
+										<?php echo $book->getAgency($i) ?>
                                     </option>
 									<?php endfor;?>
                                 </select>
@@ -1334,11 +1346,11 @@
                   var register = $('#registerData').val();
                   var roomId = $('#newroom').val();
 
-                  $.get('/sendImagesRoomEmail', {email: email, roomId: roomId, register: register, returned : '1'},
-                  function
-                  (data) {
+                  $.get('/sendImagesRoomEmail', {email: email, roomId: roomId, register: register, returned: '1'},
+                      function
+                          (data) {
                         location.reload();
-                  });
+                      });
                 });
               });
             </script>

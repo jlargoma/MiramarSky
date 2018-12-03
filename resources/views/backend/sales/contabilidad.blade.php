@@ -187,9 +187,13 @@ setlocale(LC_TIME, "es_ES");
 
       var data = {
         labels: [
-			<?php foreach ($arrayTotales as $key => $value): ?>
-                    <?php echo "'" . $key . "'," ?>
-                <?php endforeach ?>
+
+	        <?php $lastThreeSeason = $inicio->copy()->subYears(2) ?>
+	        <?php for ($i=1; $i <= 4; $i++): ?>
+	            <?php echo "'" . $lastThreeSeason->format('y') . "-".$lastThreeSeason->copy()->addYear()->format('y')
+	            ."'," ?>
+                <?php $lastThreeSeason->addYear(); ?>
+            <?php endfor; ?>
         ],
         datasets: [
           {
@@ -198,35 +202,22 @@ setlocale(LC_TIME, "es_ES");
               'rgba(54, 162, 235, 0.2)',
               'rgba(54, 162, 235, 0.2)',
               'rgba(54, 162, 235, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
+              'rgba(54, 162, 235, 0.2)'
             ],
             borderColor: [
               'rgba(54, 162, 235, 1)',
               'rgba(54, 162, 235, 1)',
               'rgba(54, 162, 235, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(54, 162, 235, 1)',
+              'rgba(54, 162, 235, 1)'
             ],
             borderWidth: 1,
             data: [
-				<?php foreach ($arrayTotales as $key => $value): ?>
-                            <?php echo "'" . round($value) . "'," ?>
-                        <?php endforeach ?>
+	            <?php $lastThreeSeason = $inicio->copy()->subYears(2) ?>
+                <?php for ($i=1; $i <= 4; $i++): ?>
+                    <?php $totalYear = \App\Rooms::getPvpByYear($lastThreeSeason->copy()->format('Y')); ?>
+                    <?php echo "'" . $totalYear. "'," ?>
+                    <?php $lastThreeSeason->addYear(); ?>
+                <?php endfor; ?>
             ],
           }
         ]

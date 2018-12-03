@@ -169,22 +169,25 @@
                             </td>
 
                             <?php $start = Carbon::createFromFormat('Y-m-d',$book->start); ?>
-                            <td class ="text-center" data-sort="<?php echo strtotime($start->copy()->format('Y-m-d'))?>"  style="width:
+                            <td class ="text-center" data-order="<?php echo strtotime($start->copy()->format('Y-m-d'))?>"  style="width:
             20%!important">
                                 <b><?php echo $start->formatLocalized('%d %b'); ?></b>
                             </td>
 
                             <?php $finish = Carbon::createFromFormat('Y-m-d',$book->finish);?>
-                            <td class ="text-center" data-sort="<?php echo strtotime($finish->copy()->format('Y-m-d'))?>"  style="width: 20%!important">
+                            <td class ="text-center" data-order="<?php echo strtotime($finish->copy()->format('Y-m-d'))?>"  style="width: 20%!important">
                                 <b><?php echo $finish->formatLocalized('%d %b'); ?></b>
                             </td>
                            
                             <td class ="text-center">
                                 <div class="col-md-6 col-xs-12 not-padding">
                                     <?php echo round($book->total_price)."€" ?><br>
-                                    <?php if (isset($payment[$book->id])): ?>
-                                        <?php echo "<p style='color:red'>".$payment[$book->id]."€</p>" ?>
-                                    <?php else: ?>
+
+                                        <?php if (isset($payment[$book->id])): ?>
+                                            <p style="color: <?php if ($book->total_price == $payment[$book->id]):?>#008000<?php else: ?>red<?php endif ?>;">
+                                                <?php echo $payment[$book->id] ?> €
+                                            </p>
+                                        <?php else: ?>
                                     <?php endif ?>
                                 </div>
 
@@ -195,7 +198,10 @@
                                         </div>
                                     <?php else:?>
                                         <div class="col-md-5  col-xs-12 not-padding">
-                                            <p class="text-white m-t-10"><b style="color: red;font-weight: bold"><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></b></p>
+	                                        <?php $total = number_format(100/($book->total_price/$payment[$book->id]),0);?>
+                                            <p class="text-white m-t-10">
+                                                <b style="color: <?php if ($total == 100):?>#008000<?php else: ?>red<?php endif ?>;font-weight: bold"><?php echo $total.'%' ?></b>
+                                            </p>
                                         </div> 
                                                                                                    
                                     <?php endif; ?>

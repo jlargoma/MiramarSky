@@ -126,7 +126,7 @@
                     <label>Pax</label>
                     <select class=" form-control pax minimal"  name="pax">
                         <?php for ($i=1; $i <= 14 ; $i++): ?>
-                            <?php if ($i != 9 && $i != 11): ?>
+                            <?php if ($i != 11): ?>
                                 <option value="<?php echo $i ?>">
                                     <?php echo $i ?>
                                 </option>
