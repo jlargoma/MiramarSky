@@ -62,8 +62,8 @@
                                         <label for="quantity" style="display: inherit!important;">*Personas</label>
                                         <div class="quantity center clearfix divcenter">
                                             <select id="quantity" class="form-control minimal" name="quantity">
-                                                <?php for ($i = 1;  $i <= 12 ; $i++): ?>
-                                                    <?php if ($i != 11): ?>
+                                                <?php for ($i = 1;  $i <= 14 ; $i++): ?>
+                                                    <?php if ($i != 11 && $i != 13): ?>
                                                         <option value="<?php echo $i ?>"><?php echo $i ?></option>  
                                                     <?php endif ?>
                                                 <?php endfor ?>
