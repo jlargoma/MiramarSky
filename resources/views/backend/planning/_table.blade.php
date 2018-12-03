@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+
 <script src="/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
 <script src="/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
 <script src="/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
@@ -12,10 +14,10 @@
 	<script>
 	  $('.table-data').dataTable({
 		"searching": false,
-		"ordering": true,
+		"order": [[ 7, "asc" ], [ 8, "asc" ]],
 		"paging":   false,
 		"columnDefs": [
-          { "orderSequence": [ "desc" ], "targets": [0,1,2,3,4,5,8,9,10,11], "orderable": false }
+          { "targets": [0,1,2,3,4,5,9,10,11,12], "orderable": false }
 		],
 
 	  });
@@ -30,10 +32,10 @@
 	<script>
 	  $('.table-data').dataTable({
 		"searching": false,
-		"ordering": true,
+        "order": [[ 7, "asc" ], [ 8, "asc" ]],
 		"paging":   false,
 		"columnDefs": [
-		  { "orderSequence": [ "desc" ], "targets": [0,1,2,3,4,5,6,9,10], "orderable": false }
+		  {"targets": [0,1,2,3,4,5,6,9,10], "orderable": false }
 		],
 
 	  });
@@ -45,8 +47,9 @@
 		"searching": false,
         "order": [[ 7, "asc" ]],
 		"paging":   false,
-
-
+        "columnDefs": [
+          {"targets": [0,1,2,3,4,5,6,8,9,10], "orderable": false }
+        ],
 	  });
 	</script>
 <?php elseif( $type == 'checkout'): ?>

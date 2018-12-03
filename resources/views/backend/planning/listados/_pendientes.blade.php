@@ -107,12 +107,12 @@
                     </select>
                 </td>
                 <?php $start = Carbon::createFromFormat('Y-m-d',$book->start); ?>
-                <td class ="text-center" data-sort="<?php echo $start->copy()->format('Y-m-d')?>"  style="width:
+                <td class ="text-center" data-order="<?php echo strtotime($start->copy()->format('Y-m-d'))?>"  style="width:
                 20%!important">
                     <?php echo $start->formatLocalized('%d %b'); ?>
                 </td>
                 <?php $finish = Carbon::createFromFormat('Y-m-d',$book->finish);?>
-                <td class ="text-center" data-sort="<?php echo $finish->copy()->format('Y-m-d')?>"  style="width: 20%!important">
+                <td class ="text-center" data-order="<?php echo strtotime($finish->copy()->format('Y-m-d'))?>"  style="width: 20%!important">
                     <?php echo $finish->formatLocalized('%d %b'); ?>
                 </td>
 
