@@ -15,10 +15,10 @@
 		<script>
 		  $('.table-data').dataTable({
 			"searching": false,
-			"order": [[ 7, "asc" ], [ 8, "asc" ]],
-			"paging":   false,
+			"order": [ 5, "asc" ],
+			"paging":  false,
 			"columnDefs": [
-			  { "targets": [0,1,2,3,4,5,9,10,11,12], "orderable": false }
+			  { "targets": [0,1,2,3,4,9,10,11,12], "orderable": false }
 			],
 
 		  });
@@ -27,10 +27,10 @@
 		<script>
 		  $('.table-data').dataTable({
 			"searching": false,
-			"order": [[ 1, "asc" ], [ 2, "asc" ]],
+			"order": [ 5, "asc" ],
 			"paging":   false,
 			"columnDefs": [
-			  {"targets": [0,3,4,5,6,7,8,9,10], "orderable": false }
+			  {"targets": [0,3,4,6,7,8,9,10], "orderable": false }
 			],
 
 		  });
