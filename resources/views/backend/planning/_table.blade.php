@@ -15,10 +15,10 @@
 		<script>
 		  $('.table-data').dataTable({
 			"searching": false,
-			"order": [[ 6, "asc" ]],
-			"paging":  alse,
+			"order": [[ 5, "asc" ]],
+			"paging":  false,
 			"columnDefs": [
-			  { "targets": [0,1,2,3,4,5,9,10,11,12], "orderable": false }
+			  { "targets": [0,1,2,3,4,9,10,11,12], "orderable": false }
 			],
 
 		  });
