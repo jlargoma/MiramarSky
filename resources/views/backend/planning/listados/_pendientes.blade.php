@@ -94,7 +94,7 @@
                 </td>
 
                 <td class ="text-center" >
-                    <?php $created = Carbon::createFromFormat('Y-m-d :H:i:s',$book->created_at); ?>
+                    <?php $created = Carbon::createFromFormat('Y-m-d H:i:s',$book->created_at); ?>
                     <select class="room form-control minimal" data-order="<?php echo strtotime($created->copy()->format('Y-m-d'))?>" data-id="<?php echo $book->id ?>"  >
                         <?php foreach ($rooms as $room): ?>
                             <?php if ($room->id == $book->room_id): ?>
@@ -224,7 +224,7 @@
                         
                     </td>
                     <td class ="text-center" >
-                        <?php $created = Carbon::createFromFormat('Y-m-d :H:i:s',$book->created_at); ?>
+                        <?php $created = Carbon::createFromFormat('Y-m-d H:i:s',$book->created_at); ?>
                         <select class="room form-control minimal" data-order="<?php echo strtotime($created->copy()->format('Y-m-d'))?>" data-id="<?php echo $book->id ?>">
                             
                             <?php foreach ($rooms as $room): ?>
