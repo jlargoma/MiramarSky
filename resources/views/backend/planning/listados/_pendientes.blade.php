@@ -94,12 +94,7 @@
                 </td>
 
                 <td class ="text-center" >
-                    <?php
-                        $created = Carbon::createFromFormat('Y-m-d H:i:s',$book->created_at);
-                        $now    = Carbon::now();
-                        $countDays = $created->diffInDays($now);
-                    ?>
-                    <select class="room form-control minimal" data-order="<?php echo $countDays ?>" data-id="<?php  echo  $book->id ?>"  >
+                    <select class="room form-control minimal" data-order="<?php echo $book->id ?>" data-id="<?php  echo  $book->id ?>"  >
                         <?php foreach ($rooms as $room): ?>
                             <?php if ($room->id == $book->room_id): ?>
                                 <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
@@ -228,12 +223,8 @@
 
                     </td>
                     <td class ="text-center" >
-                        <?php
-                            $created = Carbon::createFromFormat('Y-m-d H:i:s',$book->created_at);
-                            $now    = Carbon::now();
-                            $countDays = $created->diffInDays($now);
-                        ?>
-                        <select class="room form-control minimal" data-order="<?php echo $countDays ?>" data-id="<?php  echo  $book->id ?>"  >
+
+                        <select class="room form-control minimal" data-order="<?php echo $book->id ?>" data-id="<?php  echo  $book->id ?>"  >
 
                             <?php foreach ($rooms as $room): ?>
                                 <?php if ($room->id == $book->room_id): ?>
