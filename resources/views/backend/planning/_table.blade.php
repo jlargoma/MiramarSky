@@ -15,7 +15,7 @@
 		<script>
 		  $('.table-data').dataTable({
 			"searching": false,
-			"order": [ , "desc" ],
+			"order": [ 5, "desc" ],
 			"paging":  false,
 			"columnDefs": [
 			  { "targets": [0,1,2,3,4,8,9,10,11,12], "orderable": false }
