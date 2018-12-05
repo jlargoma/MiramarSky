@@ -17,7 +17,8 @@
 			"searching": false,
 			"paging":  false,
 			"columnDefs": [
-			  { "targets": [5,6,7], "orderable": true }
+			  { "targets": [1,2,3,4,8,9,10,11,12], "orderable": false }
+			  //5,6,7,
 			],
 
 		  });
@@ -28,7 +29,8 @@
 			"searching": false,
 			"paging":   false,
 			"columnDefs": [
-			  {"targets": [1,2,5], "orderable": true }
+			  {"targets": [3,4,6,7,8,9,10,11], "orderable": false }
+			  //1,2,5
 			],
 
 		  });
