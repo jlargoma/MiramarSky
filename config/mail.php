@@ -55,7 +55,10 @@ return [
     |
     */
 
-    'from' => ['address' => 'reservas@apartamentosierranevada.net', 'name' => 'reservas@apartamentosierranevada.net'],
+    'from' => [
+        'address' => 'reservas@apartamentosierranevada.net',
+        'name'    => 'reservas@apartamentosierranevada.net'
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -69,7 +72,13 @@ return [
     */
 
     'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-
+    'stream'     => [
+        'ssl' => [
+            'allow_self_signed' => true,
+            'verify_peer'       => false,
+            'verify_peer_name'  => false,
+        ],
+    ],
     /*
     |--------------------------------------------------------------------------
     | SMTP Server Username
