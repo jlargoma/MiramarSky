@@ -890,7 +890,7 @@ class BookController extends Controller
 		$counter   = $start->copy();
 		$priceBook = 0;
 		for ($i = 1; $i <= $countDays; $i++)
-		{
+		{ 
 			$date         = $counter->format('Y-m-d');
 			$seasonActive = $this->cachedRepository->getSeasonType($date);
 			$costs        = $this->cachedRepository->getCostsFromSeason($seasonActive, $pax);
