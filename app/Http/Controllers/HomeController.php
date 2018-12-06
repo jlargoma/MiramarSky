@@ -791,7 +791,6 @@ class HomeController extends Controller
    {
       return view('frontend.condiciones-contratacion', ['mobile' => new Mobile()]);
    }
->>>>>>> Stashed changes
 
 
 }
