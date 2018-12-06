@@ -331,5 +331,175 @@ class FortfaitsController extends Controller
 
         return $range;
     }
+    
+    public static function deleteRequest(Request $request, $id){
+        
+        $db = \App\Solicitudes::find($id);
+        $db->enable = 0;
+        
+        if($db->save()){
+            return redirect('/admin/forfaits');  
+        }
+
+    }
+    
+    public static function updateRequestStatus(){
+
+        $db = \App\Solicitudes::find($_POST['request_id']);
+        $db->status = (int)$_POST['status'];
+        
+        if($db->save()){
+            return 'true';
+        }else{
+            return 'false';
+        }
+
+    }
+    
+    public static function updateRequestPAN(){
+
+        $db = \App\Solicitudes::find($_POST['request_id']);
+        $db->pan = $_POST['pan'];
+        
+        if($db->save()){
+            return 'true';
+        }else{
+            return 'false';
+        }
+
+    }
+    
+    public static function updateRequestComments(){
+
+        $db = \App\Solicitudes::find($_POST['request_id']);
+        $db->comments = $_POST['comments'];
+        
+        if($db->save()){
+            return 'true';
+        }else{
+            return 'false';
+        }
+
+    }
+    
+    public static function getCommissions(){
+        $sql = \App\Commissions::all();
+        
+        return $sql;
+    }
+    
+    public static function getRequestsPayments(){
+
+        $prices = [];
+        
+        $payments = [
+            '1' => [
+                'total' => 0,
+                'commissioned' => 0
+            ],
+            '2' => [
+                'total' => 0,
+                'commissioned' => 0
+            ]
+        ];
+        
+        $requested = [
+            'forfaits' => [
+                'items' => [],
+                'prices' => [],
+                'total' => 0,
+//                'commissioned' => 0
+            ],
+            'material' => [
+                'items' => [],
+                'prices' => [],
+                'total' => 0,
+//                'commissioned' => 0
+            ],
+            'classes' => [
+                'items' => [],
+                'prices' => [],
+                'total' => 0,
+//                'commissioned' => 0
+            ],
+        ];
+
+        $requests = \App\Solicitudes::where("status","=",1)->where("enable","=",1)->whereNotNull("commissions")->orderBy('id','DESC')->take(10)->get();
+
+        foreach($requests as $request){
+
+            $forfaits_commission = 0;
+            $material_classes_commission = 0;
+            
+            if($request->commissions != NULL){
+                $commissions = unserialize($request->commissions);
+                $forfaits_commission = $commissions[0];
+                $material_classes_commission = $commissions[1];
+            }
+            
+            if($request->request_forfaits != NULL){
+                $requested['forfaits']['items'] = unserialize($request->request_forfaits);
+            }
+            if($request->request_material != NULL){
+                $requested['material']['items'] = unserialize($request->request_material);
+            }
+            if($request->request_classes != NULL){
+                $requested['classes']['items'] = unserialize($request->request_classes);
+            }
+            
+            if($request->request_prices != NULL){
+                $prices = unserialize($request->request_prices);
+            }
+
+            foreach($requested as $product_key => $product){
+                foreach($product['items'] as $item_key => $item){     
+                    if(isset($prices[$item_key])){
+                        if($product_key == 'forfaits'){
+                            $commission_key = 1;
+                            $commission = $forfaits_commission;
+                        }else{
+                            $commission_key = 2;
+                            $commission = $material_classes_commission;
+                        }
+
+                        $requested[$product_key]['prices'][$item_key] = $prices[$item_key]; 
+                        
+                        $commission_calc = ($prices[$item_key]/100)*$commission;
+                        $payments[$commission_key]['total'] += $prices[$item_key];
+                        $payments[$commission_key]['commissioned'] += $commission_calc;
+                    }
+                }
+            }
+        }
+
+        $payments[1]['total'] = str_replace('.',',',$payments[1]['total']);
+        $payments[1]['commissioned'] = str_replace('.',',',$payments[1]['commissioned']);
+        $payments[2]['total'] = str_replace('.',',',$payments[2]['total']);
+        $payments[2]['commissioned'] = str_replace('.',',',$payments[2]['commissioned']);
+
+//        print_r($commissions);
+//        print_r($prices);
+//        print_r($requested);
+//        print_r($payments);
+//        exit;
+        return $payments;
+    }
+    
+    public static function updatePayments(){
+        return json_encode(FortfaitsController::getRequestsPayments());
+    }
+    
+    public static function updateCommissions(){
+//        print_r($_POST);
+        
+        $db = \App\Commissions::find($_POST['request_id']);
+        $db->value = $_POST['commission'];
+        
+        if($db->save()){
+            return 'true';
+        }else{
+            return 'false';
+        }
+    }
 
 }

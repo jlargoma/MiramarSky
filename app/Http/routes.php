@@ -11,7 +11,6 @@
    |
    */
 
-
    /*ICalendar links*/
    Route::post( '/ical/import/saveUrl' , 'ICalendarController@saveUrl' );
    Route::get( '/ical/urls/deleteUrl' , 'ICalendarController@deleteUrl' );
@@ -331,7 +330,7 @@
 // AUX PROPIETARIOS 
    Route::get( 'admin/propietarios/dashboard/{name?}/{year?}' , ['middleware' => 'authAdmin' , 'uses' => 'OwnedController@index'] );
 
-//PDF´s
+//PDFÂ´s
 
    Route::get( 'admin/pdf/pdf-reserva/{id}' , 'PdfController@invoice' );
    Route::get( 'admin/pdf/descarga-excel-propietario/{id}' , 'PdfController@pdfPropietario' );
@@ -443,9 +442,9 @@
          $customer        = \App\Customers::find( $id );
          $customer->phone = $phone;
          if ( $customer->save() ) {
-            return ['status' => 'success' , 'title' => 'OK' , 'response' => "Teléfono cambiado"];
+            return ['status' => 'success' , 'title' => 'OK' , 'response' => "TelÃ©fono cambiado"];
          } else {
-            return ['status' => 'danger' , 'title' => 'Error' , 'response' => "No se ha cambiado el teléfono"];
+            return ['status' => 'danger' , 'title' => 'Error' , 'response' => "No se ha cambiado el telÃ©fono"];
          }
 
       } );
@@ -597,8 +596,14 @@
 
 // AJAX REQUESTS
         
-       Route::post( '/ajax/requestPrice' , 'FortfaitsController@calculatePrice');
+    Route::post( '/ajax/requestPrice' , 'FortfaitsController@calculatePrice');
+    Route::post( '/ajax/forfaits/updateRequestStatus' , 'FortfaitsController@updateRequestStatus');
+    Route::post( '/ajax/forfaits/updateRequestPAN' , 'FortfaitsController@updateRequestPAN');
+    Route::post( '/ajax/forfaits/updateRequestComments' , 'FortfaitsController@updateRequestComments');
+    Route::post( '/ajax/forfaits/updateCommissions' , 'FortfaitsController@updateCommissions');
+    Route::post( '/ajax/forfaits/updatePayments' , 'FortfaitsController@updatePayments');
 
 // FORFATIS
 
-        Route::get( 'admin/forfaits' , ['middleware' => 'authAdmin' , 'uses' => 'HomeController@getForfaitsRequests'] );
+    Route::get( '/admin/forfaits' , ['middleware' => 'authAdmin' , 'uses' => 'HomeController@getForfaitsRequests'] );
+    Route::get( '/admin/forfaits/deleteRequest/{id}' , ['middleware' => 'authAdmin' , 'uses' => 'FortfaitsController@deleteRequest'] );
