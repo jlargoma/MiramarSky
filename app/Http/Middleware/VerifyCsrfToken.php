@@ -18,6 +18,11 @@ class VerifyCsrfToken extends BaseVerifier
         '/solicitudForfait',
         '/admin/stripe-connect/load-transfer-form',
         '/admin/stripe-connect/create-account-stripe-connect',
-        '/ajax/requestPrice'
+        '/ajax/requestPrice',
+        '/ajax/forfaits/updateRequestStatus',
+        '/ajax/forfaits/updateRequestPAN',
+        '/ajax/forfaits/updateRequestComments',
+        '/ajax/forfaits/updateCommissions',
+        '/ajax/forfaits/updatePayments'
     ];
 }

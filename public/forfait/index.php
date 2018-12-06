@@ -261,7 +261,10 @@
                                                          </div>
 
                                                    </div>
-
+                                                   <div class="form-group col-sm-3">
+                                                      <span>*Carrito</span>
+                                                         <button name="boton" id="botonjun" class="btn btn-success form-control price_request" type="button">Solicitar</button>
+                                                   </div>
                                                 </div>
                                              
                                              <!-- Adulto -->
@@ -1194,10 +1197,6 @@
                                       <div class="form-group col-sm-12"  id="content-carrito">
                                        <h3 class="form-group text-center black font-w300" style="text-transform: uppercase;">Resumen Solicitud</h3>
                                        <p class="carrito"></p>
-                                      </div>
-                                      <div class="form-group col-sm-3">
-                                        <span>*Carrito</span>
-                                        <button name="boton" id="botonjun" class="btn btn-success form-control price_request" type="button">Solicitar</button>
                                       </div>
                                   </div>
                               </div>
