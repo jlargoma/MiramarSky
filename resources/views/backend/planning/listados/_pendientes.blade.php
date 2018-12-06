@@ -1,6 +1,6 @@
 <?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
-<?php if (!$mobile->isMobile()): ?> 
-    
+<?php if (!$mobile->isMobile()): ?>
+
 
 <table class="table table-condensed table-striped table-data"  data-type="pendientes" style="margin-top: 0;">
     <thead>
@@ -26,7 +26,7 @@
             <?php if ($class == "Contestado(EMAIL)"): ?>
                 <?php $class = "contestado-email" ?>
             <?php endif ?>
-                
+
             <tr class="<?php echo $class ;?>">
                 <td class="text-center">
                     <?php if ($book->agency != 0): ?>
@@ -38,11 +38,11 @@
                         <a class="update-book" data-id="<?php echo $book->id ?>" title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>
                     <?php else: ?>
                         <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" ><?php echo $book->customer['name']  ?></a>
-                    <?php endif ?>     
+                    <?php endif ?>
 
                 </td>
 
-                <td class ="text-center"  > 
+                <td class ="text-center"  >
                     <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
                         <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?>
                     <?php else: ?>
@@ -56,7 +56,7 @@
                     <?php else: ?>
                         <?php echo $book->pax ?>
                     <?php endif ?>
-                        
+
                 </td>
 
                 <td class ="text-center" >
@@ -94,7 +94,8 @@
                 </td>
 
                 <td class ="text-center" >
-                    <select class="room form-control minimal" data-id="<?php echo $book->id ?>"  >
+                    <select class="room form-control minimal" data-order="<?php echo $book->id ?>" data-id="<?php
+                    echo  $book->id ?>"  >
                         <?php foreach ($rooms as $room): ?>
                             <?php if ($room->id == $book->room_id): ?>
                                 <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
@@ -124,17 +125,17 @@
                 <td class ="text-center"  >
                     <select class="status form-control minimal" data-id="<?php echo $book->id ?>" >
 
-                        <?php for ($i=1; $i <= 12; $i++): ?> 
+                        <?php for ($i=1; $i <= 12; $i++): ?>
                             <?php if ($i == 5 && $book->customer->email == ""): ?>
                             <?php else: ?>
-                                <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
+                                <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?>
                                 <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
                                 value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
                                     <?php echo $book->getStatus($i) ?>
-                                    
-                                </option>   
+
+                                </option>
                             <?php endif ?>
-                                                             
+
 
                         <?php endfor; ?>
                     </select>
@@ -146,20 +147,20 @@
                             <img src="/pages/oferta.png" style="width: 40px;">
                         </span>
                         <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
-                        
+
                     <?php endif ?>
                 </td>
 
-                <td class="text-center">                                                         
+                <td class="text-center">
                     <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-danger deleteBook" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
                         <i class="fa fa-trash"></i>
-                    </button>                            
+                    </button>
 
                 </td>
             </tr>
         <?php endforeach ?>
     </tbody>
-</table> 
+</table>
 <?php else: ?>
 <div class="table-responsive" style="border: none!important">
     <table class="table table-striped table-data"  data-type="pendientes" style="margin-top: 0;">
@@ -182,18 +183,18 @@
                 <?php if ($class == "Contestado(EMAIL)"): ?>
                     <?php $class = "contestado-email" ?>
                 <?php endif ?>
-                
-                <tr class="<?php echo $class ;?>"> 
-                    
+
+                <tr class="<?php echo $class ;?>">
+
                     <td class="text-left">
                         <?php if ($book->agency != 0): ?>
                             <img style="width: 15px;margin: 0 auto; margin-right: 3px;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
                             <a title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" >
-                                <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " ")  ?> 
+                                <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " ")  ?>
                             </a>
                         <?php else: ?>
                             <a title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="margin-left: 15px;">
-                                <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " ")  ?> 
+                                <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " ")  ?>
                             </a>
                         <?php endif ?>
                     </td>
@@ -212,7 +213,7 @@
                         <?php else: ?>
                             <?php echo $book->pax ?>
                         <?php endif ?>
-                        
+
                     </td>
                     <td class="text-center">
                         <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
@@ -220,11 +221,13 @@
                         <?php else: ?>
                             <input type="text" class="only-numbers customer-phone" data-id="<?php echo $book->customer->id ?>" />
                         <?php endif ?>
-                        
+
                     </td>
                     <td class ="text-center" >
-                        <select class="room form-control minimal" data-id="<?php echo $book->id ?>"  >
-                            
+
+                        <select class="room form-control minimal" data-order="<?php echo $book->id ?>" data-id="<?php
+                        echo  $book->id ?>"  >
+
                             <?php foreach ($rooms as $room): ?>
                                 <?php if ($room->id == $book->room_id): ?>
                                     <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
@@ -242,17 +245,17 @@
                     <td class="text-center sm-p-l-10 sm-p-r-10">
                         <select class="status form-control minimal" data-id="<?php echo $book->id ?>">
 
-                            <?php for ($i=1; $i <= 12; $i++): ?> 
+                            <?php for ($i=1; $i <= 12; $i++): ?>
                                 <?php if ($i == 5 && $book->customer->email == ""): ?>
                                 <?php else: ?>
-                                    <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
+                                    <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?>
                                         <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
                                         value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
                                         <?php echo $book->getStatus($i) ?>
-                                        
-                                    </option>   
+
+                                    </option>
                                 <?php endif ?>
-                                
+
 
                             <?php endfor; ?>
                         </select>
@@ -283,12 +286,12 @@
                     <td class="text-center">
                         <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-danger deleteBook" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
                             <i class="fa fa-trash"></i>
-                        </button>   
+                        </button>
                     </td>
                 </tr>
             <?php endforeach ?>
         </tbody>
     </table>
 </div>
-    
+
 <?php endif ?>
