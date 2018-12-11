@@ -58,34 +58,39 @@ class BookController extends Controller
 
 		if (Auth::user()->role != "agente")
 		{
-			$rooms         = \App\Rooms::where('state', '=', 1)->orderBy('order')->get();
-			$roomscalendar = $rooms->filter(function ($room) {
-				return $room->id >= 5;
-			})->sortBy('order');
-
-			$booksCollection = \App\Book::with('customer')
-			                            ->where('start', '>', $start->copy())
-			                            ->where('finish', '<', $start->copy()->addYear())
-			                            ->get();
-			$types = [1, 3, 4, 5, 6, 10, 11	];
+			$roomsAgents = \App\Rooms::all(['id'])->toArray();
+			$rooms       = \App\Rooms::where('state', '=', 1)->get();
+			$types       = [
+				1,
+				3,
+				4,
+				5,
+				6,
+				10,
+				11
+			];
 		} else
 		{
 			$roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
 			$rooms       = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order')->get();
-
-			$roomscalendar = $rooms->filter(function ($room) {
-				return $room->id >= 5;
-			})->sortBy('order');
-
-			$booksCollection = \App\Book::with('customer')
-			                            ->where('start', '>', $start->copy())
-			                            ->where('finish', '<', $start->copy()->addYear())
-			                            ->whereIn('room_id', $roomsAgents)
-			                            ->get();
-			$types = [1];
-
+			$types       = [1];
 		}
-
+		if (Auth::user()->role != "agente")
+		{
+			$booksCollection = \App\Book::where('start', '>', $date->copy())
+			                  ->where('start', '<', $date->copy()->addYear())
+			                  ->whereIn('room_id', $roomsAgents)
+			                  ->orderBy('created_at', 'DESC')
+			                  ->get();
+		} else
+		{
+			$booksCollection = \App\Book::where('start', '>', $date->copy())
+			                  ->where('start', '<', $date->copy()->addYear())
+			                  ->where('user_id', Auth::user()->id)
+			                  ->whereIn('room_id', $roomsAgents)
+			                  ->orderBy('created_at', 'DESC')
+			                  ->get();
+		}
 
 		$books = $booksCollection->whereIn('type_book', $types)->sortByDesc('created_at');
 

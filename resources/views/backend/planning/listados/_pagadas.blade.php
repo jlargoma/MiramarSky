@@ -29,15 +29,37 @@
                                     <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
                                 <?php endif ?>
                             </td>
-                            <td class ="text-center" style="padding: 10px 15px!important">
-                               
-
-                                <?php if (isset($payment[$book->id])): ?>
-                                    <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>
-                                <?php else: ?>
-                                    <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" ><?php echo $book->customer['name']  ?></a>
-                                <?php endif ?>
-
+                            <td class="text-center" style="padding: 10px 15px!important">
+		                        <?php if (isset($payment[$book->id])): ?>
+                                <a class="update-book" data-id="<?php echo $book->id ?>"
+                                   title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"
+		                           <?php if ( Auth::user()->role != "agente"): ?> href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" <?php endif ?>
+                                   style="color: red"><?php echo $book->customer['name']  ?></a>
+		                        <?php else: ?>
+                                <a class="update-book" data-id="<?php echo $book->id ?>"
+                                   title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"
+		                           <?php if ( Auth::user()->role != "agente"): ?> href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" <?php endif ?>
+                                >
+			                        <?php echo $book->customer['name']  ?></a>
+		                        <?php endif ?>
+		                        <?php if (!empty($book->comment) || !empty($book->book_comments)): ?>
+		                        <?php
+		                        $textComment = "";
+		                        if (!empty($book->comment))
+		                        {
+			                        $textComment .= "<b>COMENTARIOS DEL CLIENTE</b>:" . "<br>" . " " . $book->comment . "<br>";
+		                        }
+		                        if (!empty($book->book_comments))
+		                        {
+			                        $textComment .= "<b>COMENTARIOS DE LA RESERVA</b>:" . "<br>" . " " . $book->book_comments;
+		                        }
+		                        ?>
+                                <span class="icons-comment" data-class-content="content-comment-<?php echo $book->id?>">
+                                        <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
+                                    </span>
+                                <div class="comment-floating content-comment-<?php echo $book->id?>" style="display: none;"><p
+                                            class="text-left"><?php echo $textComment ?></p></div>
+		                        <?php endif ?>
                             </td>
 
                             <td class ="text-center">
@@ -53,7 +75,7 @@
                                 <?php else: ?>
                                     <?php echo $book->pax ?>
                                 <?php endif ?>
-                                    
+
                             </td>
                             <td class ="text-center" >
 		                        <?php if ($book->hasSendPicture()): ?>
@@ -89,7 +111,7 @@
                                 <?php endif ?>
                             </td>
                             <td class ="text-center">
-                                <select class="room form-control minimal" data-id="<?php echo $book->id ?>" >                                
+                                <select class="room form-control minimal" data-id="<?php echo $book->id ?>" >
                                     <?php foreach ($rooms as $room): ?>
                                         <?php if ($room->id == $book->room_id): ?>
                                             <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
@@ -111,33 +133,38 @@
                             <td class ="text-center" data-order="<?php echo $finish->copy()->format('Y-m-d')?>"  style="width: 20%!important">
 		                        <?php echo $finish->formatLocalized('%d %b'); ?>
                             </td>
-                            
-                            <td class ="text-center">
-                                <div class="col-md-6">
-                                    <?php echo round($book->total_price)."€" ?><br>
-                                    <?php if (isset($payment[$book->id])): ?>
-                                        <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
-                                    <?php else: ?>
-                                    <?php endif ?>
-                                </div>
 
-                                <?php if (isset($payment[$book->id])): ?>
-                                    <?php if ($payment[$book->id] == 0): ?>
+                            <td class="text-center">
+		                        <?php if (Auth::user()->role != "agente"): ?>
+                                    <div class="col-md-6">
+                                        <?php echo round($book->total_price) . "€" ?><br>
+                                        <?php if (isset($payment[$book->id])): ?>
+                                            <?php echo "<p style='color:red'>" . $payment[$book->id] . "</p>" ?>
+                                        <?php else: ?>
+                                        <?php endif ?>
+                                    </div>
+
+                                    <?php if (isset($payment[$book->id])): ?>
+                                        <?php if ($payment[$book->id] == 0): ?>
                                         <div class="col-md-5 bg-success m-t-10">
-                                        <b style="color: red;font-weight: bold">0%</b>
+                                            <b style="color: red;font-weight: bold">0%</b>
                                         </div>
-                                    <?php else:?>
+                                        <?php else:?>
                                         <div class="col-md-5 ">
-                                            <p class="text-white m-t-10"><b style="color: red;font-weight: bold"><?php echo number_format(100/($book->total_price/$payment[$book->id]),0).'%' ?></b></p>
-                                        </div> 
-                                                                                                   
-                                    <?php endif; ?>
-                                <?php else: ?>
-                                    <div class="col-md-5 bg-success">
-                                        <b style="color: red;font-weight: bold">0%</b>
+                                            <p class="text-white m-t-10"><b
+                                                        style="color: red;font-weight: bold"><?php echo number_format(100 / ($book->total_price / $payment[$book->id]), 0) . '%' ?></b>
+                                            </p>
                                         </div>
+
+                                        <?php endif; ?>
+                                    <?php else: ?>
+                                        <div class="col-md-5 bg-success">
+                                            <b style="color: red;font-weight: bold">0%</b>
+                                        </div>
+                                    <?php endif ?>
+                                <?php else: ?>
+                                    <?php echo round($book->total_price) . "€" ?>
                                 <?php endif ?>
-                                                
                             </td>
                             <td class="text-center">
 	                            <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
@@ -145,30 +172,47 @@
                                         <img src="/pages/oferta.png" style="width: 40px;">
                                     </span>
                                     <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
-                                    
+
                                 <?php endif ?>
                             </td>
-                            <td class ="text-center">
+                            <td class="text-center">
                                 <select class="status form-control minimal" data-id="<?php echo $book->id ?>" style="width: 95%">
-                                    <?php for ($i=1; $i <= 12; $i++): ?> 
-                                        <?php if ($i == 5 && $book->customer->email == ""): ?>
-                                        <?php else: ?>
-                                            <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
-                                            <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
-                                            value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
-                                                <?php echo $book->getStatus($i) ?>
-                                                
-                                            </option>   
-                                        <?php endif ?>
-                                                                         
+			                        <?php
 
-                                    <?php endfor; ?>
+                                        $status = [ 1 => 1, 2 => 2 ];
+			                            if (!in_array($book->type_book, $status))
+				                            $status[] = $book->type_book;
+
+			                        ?>
+			                        <?php if ( Auth::user()->role != "agente" && in_array($i, $status)): ?>
+                                        <?php for ($i = 1; $i <= 12; $i++): ?>
+                                            <?php if ($i == 5 && $book->customer->email == ""): ?><?php else: ?>
+                                            <option
+                                                <?php echo $i == ($book->type_book) ? "selected" : ""; ?> <?php echo ($i == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?> value="<?php echo $i ?>"
+                                                data-id="<?php echo
+                                                $book->id ?>">
+                                                <?php echo $book->getStatus($i) ?>
+                                            </option>
+                                            <?php endif ?>
+                                        <?php endfor; ?>
+			                        <?php else: ?>
+                                        <?php for ($i = 1; $i <= count($status); $i++): ?>
+                                            <?php if ($i == 5 && $book->customer->email == ""): ?> <?php else: ?>
+                                            <option <?php echo $status[$i] == ($book->type_book) ? "selected" : ""; ?> <?php
+                                                    echo ($status[$i] == 1 || $status[$i] == 5) ? "style='font-weight:bold'" : "" ?> value="<?php echo $status[$i] ?>"
+                                                    data-id="<?php echo
+                                                    $book->id ?>">
+                                                <?php echo $book->getStatus($status[$i]) ?>
+                                            </option>
+                                            <?php endif ?>
+                                        <?php endfor; ?>
+			                        <?php endif ?>
                                 </select>
                             </td>
                         </tr>
                     <?php endforeach ?>
                 </tbody>
-            </table>  
+            </table>
         </div>
     </div>
 <?php else: ?>
@@ -192,22 +236,26 @@
         <tbody>
             <?php foreach ($books as $book): ?>
                 <tr class="<?php echo ucwords($book->getStatus($book->type_book)) ;?>">
-                    
+
                     <td class="text-center">
                         <?php if ($book->agency != 0): ?>
                             <img style="width: 15px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
                         <?php endif ?>
                     </td>
                     <td class="text-left">
-                        <?php if (isset($payment[$book->id]) && empty($payment[$book->id])): ?>
-                            <span class="bg-danger text-white" style="padding: 1px 1px 1px 5px; margin-left:5px;border-radius: 100%; margin-right: 5px;">
+		                <?php if (isset($payment[$book->id]) && empty($payment[$book->id])): ?>
+                            <span class="bg-danger text-white"
+                                  style="padding: 1px 1px 1px 5px; margin-left:5px;border-radius: 100%; margin-right: 5px;">
                                 <i class="fa fa-eur" aria-hidden="true"></i>
                             </span>
-                        <?php endif; ?>
-                        <a href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
-                            <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " ")  ?> 
+		                <?php endif; ?>
+                        <a <?php if ( Auth::user()->role != "agente"): ?> href="{{url ('/admin/reservas/update')}}/<?php echo
+		                $book->id ?>" <?php endif ?>>
+			                <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " ")  ?>
                         </a>
-
+		                <?php if (!empty($book->comment)): ?>
+                            <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
+		                <?php endif ?>
                     </td>
 	                <?php $start = Carbon::createFromFormat('Y-m-d',$book->start); ?>
                     <td class ="text-center" data-order="<?php echo strtotime($start->copy()->format('Y-m-d'))?>"  style="width:
@@ -226,7 +274,7 @@
                         <?php else: ?>
                             <?php echo $book->pax ?>
                         <?php endif ?>
-                            
+
                     </td>
                     <td class="text-center">
                         <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
@@ -234,28 +282,34 @@
                         <?php else: ?>
                             <input type="text" class="only-numbers customer-phone" data-id="<?php echo $book->customer->id ?>"/>
                         <?php endif ?>
-                           
+
                     </td>
                     <td class="text-center">
-                        <select class="room form-control minimal" data-id="<?php echo $book->id ?>"  >
-                            
-                            <?php foreach ($rooms as $room): ?>
-                                <?php if ($room->id == $book->room_id): ?>
-                                    <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                        <?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?>
-                                    </option>
-                                <?php else:?>
-                                    <option value="<?php echo $room->id ?>"><?php echo substr($room->nameRoom." - ".$room->name, 0, 8)  ?></option>
-                                <?php endif ?>
-                            <?php endforeach ?>
-
+                        <select class="room form-control minimal" data-id="<?php echo $book->id ?>" >
+		                    <?php if ( Auth::user()->role != "agente" ): ?>
+		                        <?php foreach ($rooms as $room): ?>
+		                            <?php if ($room->id == $book->room_id): ?>
+                                        <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
+                                            <?php echo substr($room->nameRoom . " - " . $room->name, 0, 15)  ?>
+                                        </option>
+                                    <?php else:?>
+                                        <option value="<?php echo $room->id ?>"><?php echo substr($room->nameRoom . " - " . $room->name, 0, 15)  ?></option>
+		                            <?php endif ?>
+		                        <?php endforeach ?>
+		                    <?php else: ?>
+                                <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $book->room->name ?>">
+                                    <?php echo substr($book->room->nameRoom . " - " . $book->room->name, 0, 15)  ?>
+                                </option>
+		                    <?php endif ?>
                         </select>
                     </td>
                     <td class="text-center"><?php echo $book->nigths ?></td>
                     <td class="text-center">
-                        <?php echo round($book->total_price)."€" ?><br>
-                        <?php if (isset($payment[$book->id])): ?>
-                            <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
+		                <?php echo round($book->total_price) . "€" ?><br>
+		                <?php if (isset($payment[$book->id])): ?>
+		                    <?php if ( Auth::user()->role != "agente"): ?>
+                                <?php echo "<p style='color:red'>" . $payment[$book->id] . "</p>" ?>
+                            <?php endif ?>
                         <?php else: ?>
                         <?php endif ?>
                     </td>
@@ -283,21 +337,35 @@
 	                        <?php endif ?>
                     </td>
                     <td class="text-center">
-                        <select class="status form-control minimal" data-id="<?php echo $book->id ?>">
-
-                            <?php for ($i=1; $i <= 12; $i++): ?> 
-                                <?php if ($i == 5 && $book->customer->email == ""): ?>
-                                <?php else: ?>
-                                    <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
-                                    <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
-                                    value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
-                                        <?php echo $book->getStatus($i) ?>
-                                        
-                                    </option>   
-                                <?php endif ?>
-                                                                 
-
-                            <?php endfor; ?>
+                        <select class="status form-control minimal" data-id="<?php echo $book->id ?>" style="width: 95%">
+			                <?php
+                                $status = [ 1 => 1, 2 => 2 ];
+                                if (!in_array($book->type_book, $status))
+                                    $status[] = $book->type_book
+			                ?>
+			                <?php if ( Auth::user()->role != "agente" && in_array($i, $status)): ?>
+                                <?php for ($i = 1; $i <= 12; $i++): ?>
+                                    <?php if ($i == 5 && $book->customer->email == ""): ?><?php else: ?>
+                                        <option
+                                            <?php echo $i == ($book->type_book) ? "selected" : ""; ?> <?php echo ($i == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?> value="<?php echo $i ?>"
+                                            data-id="<?php echo
+                                            $book->id ?>">
+                                            <?php echo $book->getStatus($i) ?>
+                                        </option>
+                                    <?php endif ?>
+                                <?php endfor; ?>
+			                <?php else: ?>
+                                <?php for ($i = 1; $i <= count($status); $i++): ?>
+                                    <?php if ($i == 5 && $book->customer->email == ""): ?> <?php else: ?>
+                                        <option <?php echo $status[$i] == ($book->type_book) ? "selected" : ""; ?> <?php
+                                                echo ($status[$i] == 1 || $status[$i] == 5) ? "style='font-weight:bold'" : "" ?> value="<?php echo $status[$i] ?>"
+                                                data-id="<?php echo
+                                                $book->id ?>">
+                                            <?php echo $book->getStatus($status[$i]) ?>
+                                        </option>
+                                    <?php endif ?>
+                                <?php endfor; ?>
+			                <?php endif ?>
                         </select>
                     </td>
                 </tr>
