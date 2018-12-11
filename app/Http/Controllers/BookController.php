@@ -67,15 +67,7 @@ class BookController extends Controller
 			                            ->where('start', '>', $start->copy())
 			                            ->where('finish', '<', $start->copy()->addYear())
 			                            ->get();
-			$types           = [
-				1,
-				3,
-				4,
-				5,
-				6,
-				10,
-				11
-			];
+			$types = [1, 3, 4, 5, 6, 10, 11	];
 		} else
 		{
 			$roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
@@ -86,12 +78,11 @@ class BookController extends Controller
 			})->sortBy('order');
 
 			$booksCollection = \App\Book::with('customer')
-			                            ->where('user_id', Auth::user()->id)
 			                            ->where('start', '>', $start->copy())
 			                            ->where('finish', '<', $start->copy()->addYear())
 			                            ->whereIn('room_id', $roomsAgents)
 			                            ->get();
-			$types           = [1];
+			$types = [1];
 
 		}
 
