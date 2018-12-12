@@ -4,7 +4,7 @@ $mobile = new Mobile();
 ?>
 <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
 <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
-<style type="text/css" media="screen"> 
+<style type="text/css" media="screen">
     .daterangepicker{
         z-index: 10000!important;
     }
@@ -245,8 +245,8 @@ $mobile = new Mobile();
                     <div class="col-md-6 col-xs-6 push-10">
                         <label>Agencia</label>
                         <select class="form-control full-width agency minimal" name="agency">
-                            <?php for ($i=0; $i <= 4 ; $i++): ?>
-                            <option value="<?php echo $i ?>">
+                            <?php for ($i=0; $i <= 7 ; $i++): ?>
+                            <option value="<?php echo $i ?>" <?php if ( Auth::user()->role == "agente" &&  $i == 6): ?>selected <?php endif ?>>
                                     <?php echo \App\Book::getAgency($i) ?>
                                 </option>
                             <?php endfor;?>
@@ -329,7 +329,7 @@ $mobile = new Mobile();
             <div class="row bg-white padding-block">
                 <div class="col-md-4 col-md-offset-4 col-xs-12 text-center">
                     <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" style="min-height: 50px;width: 100%;">Guardar</button>
-                </div>  
+                </div>
             </div>
         </form>
     </div>
