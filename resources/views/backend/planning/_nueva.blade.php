@@ -259,21 +259,28 @@
             <div class="col-xs-12 bg-white">
                     <div class="col-xs-12 not-padding">
                         <div class="col-md-3 col-xs-12 text-center  first" style="background-color: #0c685f;">
-                            <label class="font-w800 text-white" for="">TOTAL</label>
-                            <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" name="total" >
-                        </div>
-                        <div class="col-md-3 col-xs-6 text-center " style="background: #99D9EA;">
-                            <label class="font-w800 text-white" for="">COSTE TOTAL</label>
-                            <input type="number" step='0.01' class="form-control  cost m-t-10 m-b-10 white" name="cost" >
-                        </div>
-                        <div class="col-md-2 col-xs-6 text-center " style="background: #91cf81;">
-                            <label class="font-w800 text-white" for="">APTO</label>
-                            <input type="number" step='0.01' class="form-control costApto m-t-10 m-b-10 white" name="costApto" >
-                        </div>
-                        <div class="col-md-2 col-xs-6 text-center " style="background: #337ab7;">
-                            <label class="font-w800 text-white" for="">PARKING</label>
-                            <input type="number" step='0.01' class="form-control costParking m-t-10 m-b-10 white" name="costParking" >
-                        </div>
+                        <label class="font-w800 text-white" for="">TOTAL</label>
+                        <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" name="total" >
+                    </div>
+                        <?php if ( Auth::user()->role != "agente" ): ?>
+                            <div class="col-md-3 col-xs-6 text-center " style="background: #99D9EA;">
+                                <label class="font-w800 text-white" for="">COSTE TOTAL</label>
+                                <input type="number" step='0.01' class="form-control  cost m-t-10 m-b-10 white" name="cost" >
+                            </div>
+
+                            <div class="col-md-2 col-xs-6 text-center " style="background: #91cf81;">
+                                <label class="font-w800 text-white" for="">APTO</label>
+                                <input type="number" step='0.01' class="form-control costApto m-t-10 m-b-10 white" name="costApto" >
+                            </div>
+                            <div class="col-md-2 col-xs-6 text-center " style="background: #337ab7;">
+                                <label class="font-w800 text-white" for="">PARKING</label>
+                                <input type="number" step='0.01' class="form-control costParking m-t-10 m-b-10 white" name="costParking" >
+                            </div>
+                        <?else: ?>
+                            <input type="hidden" step='0.01' class="cost white" name="cost" >
+                            <input type="hidden" step='0.01' class="costApto white" name="costApto" >
+                            <input type="hidden" step='0.01' class="costParking white" name="costParking" >
+                        <?php endif ?>
                         <?php if (Auth::user()->role == "admin"): ?>
                             <div class="col-md-2 col-xs-6 text-center  not-padding" style="background: #ff7f27;">
                                 <label class="font-w800 text-white" style="width: 100%;" for="">BENEFICIO</label>
