@@ -178,7 +178,7 @@
 					$status[] = $book->type_book;
 
 				?>
-				<?php if ( Auth::user()->role != "agente" && in_array($i, $status)): ?>
+				<?php if ( Auth::user()->role != "agente" && in_array($book->type_book, $status)): ?>
 				<?php for ($i = 1; $i <= 12; $i++): ?>
 				<?php if ($i == 5 && $book->customer->email == ""): ?><?php else: ?>
                 <option
@@ -331,7 +331,7 @@
 						$status[] = $book->type_book;
 
 					?>
-					<?php if ( Auth::user()->role != "agente" && in_array($i, $status)): ?>
+					<?php if ( Auth::user()->role != "agente" && in_array($book->type_book, $status)): ?>
 					<?php for ($i = 1; $i <= 12; $i++): ?>
 					<?php if ($i == 5 && $book->customer->email == ""): ?><?php else: ?>
                     <option
