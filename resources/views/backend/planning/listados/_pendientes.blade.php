@@ -60,26 +60,6 @@
 				<?php echo $book->customer['name']  ?>
             </a>
 			<?php endif ?>
-
-			<?php if (!empty($book->comment) || !empty($book->book_comments)): ?>
-			<?php
-			$textComment = "";
-			if (!empty($book->comment))
-			{
-				$textComment .= "<b>COMENTARIOS DEL CLIENTE</b>:" . "<br>" . " " . $book->comment . "<br>";
-			}
-			if (!empty($book->book_comments))
-			{
-				$textComment .= "<b>COMENTARIOS DE LA RESERVA</b>:" . "<br>" . " " . $book->book_comments;
-			}
-			?>
-            <span class="icons-comment" data-class-content="content-comment-<?php echo $book->id?>">
-                    <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
-                </span>
-            <div class="comment-floating content-comment-<?php echo $book->id?>" style="display: none;">
-                <p class="text-left"><?php echo $textComment ?></p>
-            </div>
-			<?php endif ?>
         </td>
 
         <td class="text-center">
@@ -271,9 +251,6 @@
 				   <?php endif ?> style="margin-left: 15px;">
 					<?php echo str_pad(substr($book->customer->name, 0, 10), 10, " ")  ?>
                 </a>
-				<?php endif ?>
-				<?php if (!empty($book->comment)): ?>
-                <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
 				<?php endif ?>
             </td>
 			<?php $start = Carbon::createFromFormat('Y-m-d',$book->start); ?>
