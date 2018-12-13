@@ -603,6 +603,12 @@
     Route::post( '/ajax/forfaits/updatePayments' , 'FortfaitsController@updatePayments');
     Route::post( '/ajax/forfaits/requestPriceForfaits' , 'FortfaitsController@requestPriceForfaits');
 
+//AGENTES
+    Route::post( '/admin/agentRoom/create' , 'SettingsController@createAgentRoom' );
+    Route::get( '/admin/agentRoom/delete/{id}' , 'SettingsController@deleteAgentRoom' );
+
+
+
 // FORFATIS
 
     Route::get( '/admin/forfaits' , ['middleware' => 'authAdmin' , 'uses' => 'HomeController@getForfaitsRequests'] );
