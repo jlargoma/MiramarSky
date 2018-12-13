@@ -12,7 +12,7 @@
 
 <script type="text/javascript" src="{{asset('/frontend/js/jquery.flip/1.1.2/jquery.flip.min.js')}}"></script>
 
-<script type="text/javascript" src="{{asset('/frontend/js/moment.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('/frontend/js/moment.min.js')}}">/script>
 
 <?php /* view para todos los scripts generales de la pagina */ ?>
 
@@ -168,7 +168,7 @@
 
     });
 
-	  <?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
+     <?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
       $('#banner-offert, .menu-booking').click(function (event) {
         $('#content-book').show('400');
         $('#banner-offert').hide();
@@ -195,7 +195,7 @@
       }, 2000);
     });
 
-	  <?php else: ?>
+     <?php else: ?>
       $('#banner-offert, .menu-booking').click(function (event) {
         $('#content-book').show('400');
         $('#banner-offert').hide();
@@ -217,7 +217,7 @@
         scrollTop: $("body").offset().top
       }, 2000);
     });
-	  <?php endif; ?>
+     <?php endif; ?>
 
       $('.daterange1').change(function (event) {
         var date = $(this).val();
@@ -324,7 +324,7 @@
     $('#fixed-book').fadeOut();
 
   });
-	<?php endif; ?>
+   <?php endif; ?>
 </script>
 
 <!-- after general -->
@@ -505,11 +505,11 @@
 
 <script type="text/javascript">
 
-	<?php if (!$mobile->isMobile()): ?>
+   <?php if (!$mobile->isMobile()): ?>
     $('div.bg-img img').attr('style', 'max-width:none !important;');
-	<?php else: ?>
+   <?php else: ?>
     $('div.bg-img img').attr('style', 'max-width:none !important;margin-left: -67.2vw;');
-	<?php endif; ?>
+   <?php endif; ?>
 
     $('div.bg-img').attr('style', 'background:none !important;');
     $('div#boxgallery span.prev, div#boxgallery span.next').attr('style', 'z-index:10000;');

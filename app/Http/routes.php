@@ -593,7 +593,6 @@
    Route::get( '/insertDNIS' , 'Admin\BackendController@insertDNIS' );
    Route::get( '/refreshBloqueos' , 'Admin\BackendController@refreshBloqueos' );
 
-
 // AJAX REQUESTS
         
     Route::post( '/ajax/requestPrice' , 'FortfaitsController@calculatePrice');
@@ -602,6 +601,7 @@
     Route::post( '/ajax/forfaits/updateRequestComments' , 'FortfaitsController@updateRequestComments');
     Route::post( '/ajax/forfaits/updateCommissions' , 'FortfaitsController@updateCommissions');
     Route::post( '/ajax/forfaits/updatePayments' , 'FortfaitsController@updatePayments');
+    Route::post( '/ajax/forfaits/requestPriceForfaits' , 'FortfaitsController@requestPriceForfaits');
 
 // FORFATIS
 

@@ -638,9 +638,15 @@ class HomeController extends Controller
       $solicitud->name   = $data['nombre'];
       $solicitud->email  = $data['email'];
       $solicitud->phone  = $data['telefono'];
-      $solicitud->start  = Carbon::createFromFormat('d-m-Y', $data['date-entrada'])->format('Y-m-d');
-      $solicitud->finish = Carbon::createFromFormat('d-m-Y', $data['date-salida'])->format('Y-m-d');
       
+      if(!empty($data['date-entrada'])){
+          $solicitud->start  = Carbon::createFromFormat('d-m-Y', $data['date-entrada'])->format('Y-m-d');
+      }
+      
+      if(!empty($data['date-salida'])){
+          $solicitud->finish = Carbon::createFromFormat('d-m-Y', $data['date-salida'])->format('Y-m-d');
+      }
+
       if(!isset($data['prices'])){
           $data['prices'] = [];
       }
@@ -666,6 +672,11 @@ class HomeController extends Controller
       }
       
       $solicitud->commissions = serialize($commissions);
+      
+      $solicitud->cc_name = $_POST['cc_name'];
+      $solicitud->cc_pan = $_POST['cc_pan'];
+      $solicitud->cc_expiry = $_POST['cc_expiry'];
+      $solicitud->cc_cvc = $_POST['cc_cvc'];
 
       if ($solicitud->save())
       {
@@ -696,9 +707,8 @@ class HomeController extends Controller
          // return view('frontend.emails._responseSolicitudForfait' ,['solicitud' => $solicitud, 'productos' => $arrayProducts,'data' => $data]);
          // die();
 
-         $emailsTo = ['forfaits@apartamentosierranevada.net','escuela@sierranevadaeee.com',$data['email']];
-//         $emailsTo = ['joyragdoll@gmail.com'];
-         
+         $emailsTo = ['forfait@miramarski','escuela@sierranevadaeee.com',$data['email']];
+          
          foreach($emailsTo as $emailTo){
 //         echo $emailTo.'<br/>';
             $arrayProductsCloned = $arrayProducts;

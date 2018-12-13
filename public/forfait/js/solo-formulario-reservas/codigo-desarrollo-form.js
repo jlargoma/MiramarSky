@@ -8,47 +8,91 @@ var today = new Date();
 var dd = today.getDate();
 var mm = today.getMonth()+1; //January is 0!
 var yyyy = today.getFullYear();
-$('#date-entrada').daterangepicker({
-    "locale": {
-        "format": "DD-MM-YYYY",
-        "separator": " - ",
-        "applyLabel": "Aplicar",
-        "cancelLabel": "Cancelar",
-        "fromLabel": "From",
-        "toLabel": "To",
-        "customRangeLabel": "Custom",
-        "daysOfWeek": [
-            "Do",
-            "Lu",
-            "Mar",
-            "Mi",
-            "Ju",
-            "Vi",
-            "Sa"
-        ],
-        "monthNames": [
-            "Enero",
-            "Febrero",
-            "Marzo",
-            "Abril",
-            "Mayo",
-            "Junio",
-            "Julio",
-            "Agosto",
-            "Septiembre",
-            "Octubre",
-            "Noviembre",
-            "Diciembre"
-        ],
-        "firstDay": 1
-    },
-	"minDate": dd+"/"+mm+"/"+yyyy,
-}, function(start, end, label) {
-  console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
-});
 
-$('#date-entrada').val('');
-$('#date-salida').val('');
+$('div#requests_header input.datepicker_init_start_date').daterangepicker({
+        "locale": {
+            "format": "DD-MM-YYYY",
+            "separator": " - ",
+            "applyLabel": "Aplicar",
+            "cancelLabel": "Cancelar",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "daysOfWeek": [
+                "Do",
+                "Lu",
+                "Mar",
+                "Mi",
+                "Ju",
+                "Vi",
+                "Sa"
+            ],
+            "monthNames": [
+                "Enero",
+                "Febrero",
+                "Marzo",
+                "Abril",
+                "Mayo",
+                "Junio",
+                "Julio",
+                "Agosto",
+                "Septiembre",
+                "Octubre",
+                "Noviembre",
+                "Diciembre"
+            ],
+            "firstDay": 1
+        },
+            "minDate": dd+"/"+mm+"/"+yyyy,
+    }, function(start, end, label) {
+      console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
+    });
+
+function instance_extra_datepickers(){
+    $('div#requests_container div.request_row input.datepicker_init_start_date').daterangepicker({
+        "locale": {
+            "format": "DD-MM-YYYY",
+            "separator": " - ",
+            "applyLabel": "Aplicar",
+            "cancelLabel": "Cancelar",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "daysOfWeek": [
+                "Do",
+                "Lu",
+                "Mar",
+                "Mi",
+                "Ju",
+                "Vi",
+                "Sa"
+            ],
+            "monthNames": [
+                "Enero",
+                "Febrero",
+                "Marzo",
+                "Abril",
+                "Mayo",
+                "Junio",
+                "Julio",
+                "Agosto",
+                "Septiembre",
+                "Octubre",
+                "Noviembre",
+                "Diciembre"
+            ],
+            "firstDay": 1
+        },
+            "minDate": dd+"/"+mm+"/"+yyyy,
+    }, function(start, end, label) {
+      console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
+    });
+}
+
+instance_extra_datepickers();
+
+$('.datepicker_init_start_date').val('');
+$('.datepicker_init_end_date').val('');
 $('.today.active.start-date.active.end-date.available').removeClass('active start-date active end-date');
 
 /**
@@ -78,9 +122,50 @@ var regExpre = {'email':/^[a-zA-Z0-9\._-]+@[a-zA-Z0-9-]{2,}[.][a-zA-Z]{2,4}$/,
 				'fecha':/^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/,
 				'telefono':/^[0-9]{9}$/
 				}
-$('#confirm-reserva').click(function(){	
-	if(!setValues())
-		$('#form').submit();
+$('#confirm-reserva').click(function(){
+
+        if($('input[name^="carrito"]').length > 0){
+            cc_name = $('input[name="cc_name"]');
+            cc_pan = $('input[name="cc_pan"]');
+            cc_expiry = $('input[name="cc_expiry"]');
+            cc_cvc = $('input[name="cc_cvc"]');
+
+            cc_name_value = cc_name.val();
+            cc_pan_value = cc_pan.val();
+            cc_expiry_value = cc_expiry.val()
+            cc_cvc_value = cc_cvc.val();
+
+            if( cc_name_value.length == 0){
+                cc_name.attr('style','border: 1px solid red;');
+            }else{
+                cc_name.removeAttr('style');
+            }
+            if( cc_pan_value.length == 0){
+                cc_pan.attr('style','border: 1px solid red;');
+            }else{
+                cc_pan.removeAttr('style');
+            }
+            if( cc_expiry_value.length == 0){
+                cc_expiry.attr('style','border: 1px solid red;');
+            }else{
+                cc_expiry.removeAttr('style');
+            }
+            if( cc_cvc_value.length == 0){
+                cc_cvc.attr('style','border: 1px solid red;');
+            }else{
+                cc_cvc.removeAttr('style');
+            }
+
+            if(!setValues() &&
+                cc_name_value.length > 0 &&
+                cc_pan_value.length > 0 &&
+                cc_expiry_value.length > 0 &&
+                cc_cvc_value.length > 0 ){
+
+                $('form').submit();
+            }
+        }
+
 });
 /**
  * Metodo que da valor a la variables de formulario
@@ -117,6 +202,7 @@ function setValues(){
 	return error;				
 }
 
-$(document).on('click','#date-salida,#btnCalendarEntrada,#btnCalendarSalida',function(){
-	$('#date-entrada').focus();
+$(document).on('click','.datepicker_init_end_date,#btnCalendarEntrada,#btnCalendarSalida',function(){
+//    console.log($(this).parent('div').parent('div'));
+    $(this).parent('div').parent('div').find('.datepicker_init_start_date').focus();
 });

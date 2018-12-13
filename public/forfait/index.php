@@ -21,34 +21,96 @@
     <!-- Plugin for date picker 
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/latest/css/bootstrap.css"/>-->
     <link rel="stylesheet" type="text/css" href="css/datepicker.css"/>
+    <!--<link rel="stylesheet" href="css/card.css" type="text/css" />-->
+    
    <!-- Document Title
    ============================================= -->
     <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
+    <!--<script type="text/javascript" src="js/jquery.card.js"></script>-->
+    
     <style type="text/css">
-      div.clase{
-         cursor: pointer;
-         padding: 0 10px;
-      }
-      div.forfait{
-         cursor: pointer;
-         padding: 0 10px;
-      }
-      .title-forfait{
-          line-height: 1;
-         font-size: 16px;
-         text-transform: uppercase;
-         font-weight: 300;
-      }
-      #Forfait0, #Forfait1, #Forfait2, #Forfait3, #Forfait4, #Forfait5{
-         padding: 0 15px;
-      }
-      h2.text-center.font-w300.text-black.black{
-         line-height: 1; 
-         text-transform: uppercase;
-      }
-      .fancy-title.title-bottom-border h1, .fancy-title.title-bottom-border h2, .fancy-title.title-bottom-border h3, .fancy-title.title-bottom-border h4, .fancy-title.title-bottom-border h5, .fancy-title.title-bottom-border h6{
-         border-bottom: 1px solid #00b5ec!important;
-      }
+        div.clase{
+           cursor: pointer;
+           padding: 0 10px;
+        }
+        div.forfait{
+           cursor: pointer;
+           padding: 0 10px;
+        }
+        .title-forfait{
+            line-height: 1;
+           font-size: 16px;
+           text-transform: uppercase;
+           font-weight: 300;
+        }
+        #Forfait0, #Forfait1, #Forfait2, #Forfait3, #Forfait4, #Forfait5{
+           padding: 0 15px;
+        }
+        h2.text-center.font-w300.text-black.black{
+           line-height: 1; 
+           text-transform: uppercase;
+        }
+        .fancy-title.title-bottom-border h1, .fancy-title.title-bottom-border h2, .fancy-title.title-bottom-border h3, .fancy-title.title-bottom-border h4, .fancy-title.title-bottom-border h5, .fancy-title.title-bottom-border h6{
+           border-bottom: 1px solid #00b5ec!important;
+        }
+
+        .input_required{
+            color:red;
+        }
+        
+        .request_row{
+            background: rgb(255,255,255,0.4);
+            border: 1px solid #FFFFFF;
+            margin-bottom: 8px !important;
+            padding-bottom: 8px;
+            padding-top: 8px;
+        }
+        
+        .requests_header{
+            margin: 8px 0 0 0 !important;
+        }
+        
+        .requests_header, #requests_header{
+            background: rgb(255,255,255,0.8);
+            padding-bottom: 8px;
+        }
+        
+        .requests_label{
+            color:#000 !important;
+            font-weight: initial !important;
+            font-family: Roboto,sans-serif !important;
+            font-size:12px;
+        }
+
+        div#requests_button button{
+            width:100px;
+            margin-bottom:16px;
+        }
+        
+        div#requests_container{
+            margin-left: 6px;
+            padding-right: 0;
+        }
+
+        .border_blue{
+            border: 1px solid dodgerblue;
+        }
+        
+        .mobile{
+            display:none;
+        }
+        .desktop{
+            display:block;
+        }
+        
+        @media (max-width: 991px) {
+            .mobile{
+                display:block;
+            }
+            .desktop{
+                display:none;
+            }
+        }
     </style>
 </head>
 
@@ -89,17 +151,16 @@
                                              <input type="text" class="sm-form-control" name="telefono" id="telefono" placeholder="Aquí pon el telefono" maxlength="9" required>
                                          </div>
 
-                                         <div class="form-group col-md-6 col-sm-offset-3 col-xs-12 push-30">
+<!--                                         <div class="form-group col-md-6 col-sm-offset-3 col-xs-12 push-30">
                                           <h4 class="text-center push-0">* Fecha de tus Forfaits</h4>
                                              <div class='input-group'>
                                                  <input class="sm-form-control" type="text" name="date-entrada" id="date-entrada" name="example-daterange1" placeholder="Desde" maxlength="10" readonly="readonly" required>
                                                  <span class="input-group-addon" id="btnCalendarEntrada"><span class="icon-calendar"></span></span>
-                                                 <input class="sm-form-control" type="text" name="date-salida" id="date-salida" name="example-daterange1" placeholder="Hasta" maxlength="10"
-                                                 readonly="readonly" required>
+                                                 <input class="sm-form-control" type="text" name="date-salida" id="date-salida" name="example-daterange1" placeholder="Hasta" maxlength="10" readonly="readonly" required>
                                              </div>
-                                         </div>    
+                                         </div>-->
 
-                                      <!-- Forfaits -->
+                                    <!-- Forfaits -->
 
                                        <div class="heading-block fancy-title nobottomborder title-bottom-border col-xs-12">
                                           <h2 class="black font-w800 center t400 ls1 push-20 " style="color:white;font-size:23px">
@@ -107,8 +168,136 @@
                                           </h2>
                                        </div>
                                     
+                                        <h4 class="text-center push-0">* Seleccione tus días de esquí</h4><br/>
+
+                                        <div class="form-group col-md-12 col-xs-12 push-10 border_blue desktop">
+                                            <div class="form-group col-md-12 col-xs-12 push-10 requests_header">
+                                                <div class="col-lg-2"></div>
+                                                <div class="col-lg-3">*Primer día de Esquí</div>
+                                                <div class="col-lg-3">*Última día de Esquí</div>
+                                                <div class="col-lg-2">Días</div>
+                                                <div class="col-lg-2">*Elige Nº Forfaits</div>
+                                            </div>
+                                            <div id="requests_header" class="form-group col-md-12 col-xs-12 push-10">
+                                                <div class="col-lg-2">*Seleccione</div>
+                                                <div class="col-lg-3">
+                                                    <input class="sm-form-control datepicker_init_start_date" type="text" name="date-entrada" id="date-entrada" name="example-daterange1" placeholder="Desde" maxlength="10" required>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <input class="sm-form-control datepicker_init_end_date" type="text" name="date-salida" id="date-salida" name="example-daterange1" placeholder="Hasta" maxlength="10" required>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <input type="text" name="request_days" class="form-control request_days" placeholder="0" disabled="disabled">
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <select id="forfatis_number" class="form-control" name="forfatis_number">
+                                                        <?php
+                                                            for($x=0;$x<=10;$x++){
+                                                                echo '<option value="'.$x.'">'.$x.'</option>';
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-12 col-xs-12 push-10 border_blue mobile">
+                                            <div id="requests_header" class="form-group col-md-12 col-xs-12 push-10" style="margin: 8px 0 8px 0 !important;">
+                                                <div class="col-xs-12">*Primer día de Esquí</div>
+                                                <div class="col-xs-12">
+                                                    <input class="sm-form-control datepicker_init_start_date" type="text" name="date-entrada" id="date-entrada" name="example-daterange1" placeholder="Desde" maxlength="10" required>
+                                                </div>
+                                                <div class="col-xs-12">*Última día de Esquí</div>
+                                                <div class="col-xs-12">
+                                                    <input class="sm-form-control datepicker_init_end_date" type="text" name="date-salida" id="date-salida" name="example-daterange1" placeholder="Hasta" maxlength="10" required>
+                                                </div>
+                                                <div class="col-xs-12">Días</div>
+                                                <div class="col-xs-12">
+                                                    <input type="text" name="request_days" class="form-control request_days" placeholder="0" disabled="disabled">
+                                                </div>
+                                                <div class="col-xs-12">*Elige Nº Forfaits</div>
+                                                <div class="col-xs-12">
+                                                    <select id="forfatis_number" class="form-control" name="forfatis_number">
+                                                        <?php
+                                                            for($x=0;$x<=10;$x++){
+                                                                echo '<option value="'.$x.'">'.$x.'</option>';
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>                                        
+
+                                        <div id="requests_container" class="form-group col-md-12 col-xs-12 push-10">
+
+                                        </div>
+                                        
+                                        <div id="requests_button" class="text-center" style="display:none;">
+                                            <button name="boton" id="request_button" class="btn btn-success form-control price_request" type="button">Solicitar</button>
+                                        </div>
+
+
+                                        <div id="request_row_div" class="form-group col-md-12 col-xs-12 push-10 desktop" style="display:none;">
+                                            <div class="form-group col-md-12 col-xs-12 push-10 request_row row">
+
+                                                <div class="col-lg-2">
+                                                    <div class="col-lg-12">
+                                                        <label class="requests_label">&nbsp;</label>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <i class="fa fa-user" aria-hidden="true"></i> <span>Forfait <span class="forfait_number"></span></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label class="requests_label">*Primer día de Esquí</label>
+                                                    <input class="sm-form-control datepicker_init_start_date" type="text" name="date-entrada-template" id="date-entrada" name="example-daterange1" placeholder="Desde" maxlength="10" required>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label class="requests_label">*Última día de Esquí</label>
+                                                    <input class="sm-form-control datepicker_init_end_date" type="text" name="date-salida-template" id="date-salida" name="example-daterange1" placeholder="Hasta" maxlength="10" required>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <label class="requests_label">Días</label>
+                                                    <input type="text" name="request_days" class="form-control request_days" placeholder="0" disabled="disabled">
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <label class="requests_label">Edad</label>
+                                                    <input type="number" name="request_years" class="form-control request_years" placeholder="0">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="request_row_div" class="form-group col-md-12 col-xs-12 push-10 mobile" style="display:none;">
+                                            <div class="form-group col-md-12 col-xs-12 push-10 request_row row">
+                                                <div class="col-lg-2">
+                                                    <div class="col-lg-12">
+                                                        <label class="requests_label">&nbsp;</label>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <i class="fa fa-user" aria-hidden="true"></i> <span>Forfait <span class="forfait_number"></span></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label class="requests_label">*Primer día de Esquí</label>
+                                                    <input class="sm-form-control datepicker_init_start_date" type="text" name="date-entrada-template" id="date-entrada" name="example-daterange1" placeholder="Desde" maxlength="10" required>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <label class="requests_label">*Última día de Esquí</label>
+                                                    <input class="sm-form-control datepicker_init_end_date" type="text" name="date-salida-template" id="date-salida" name="example-daterange1" placeholder="Hasta" maxlength="10" required>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <label class="requests_label">Días</label>
+                                                    <input type="text" name="request_days" class="form-control request_days" placeholder="0" disabled="disabled">
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <label class="requests_label">Edad</label>
+                                                    <input type="number" name="request_years" class="form-control request_years" placeholder="0">
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     <!-- Selector Forfaits -->
-                                         <div class="col-sm-12 push-20 label_hide">
+<!--                                         <div class="col-sm-12 push-20 label_hide">
                                             <div class="col-md-2 col-xs-6 forfait" data-value="0">
                                              <div class="col-xs-12 not-padding">
                                                 <img src="../img/fortfait/juvenil.jpg" class="img-responsive push-10"/>
@@ -161,7 +350,7 @@
 
                                          <div class="form-group col-sm-12 col-xs-12">
                                           
-                                          <!-- Juvenil -->
+                                           Juvenil 
                                                 <div id="Forfait0" class="row desc" style="display: none;border-left: solid;border-right: solid">
                                                    <div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
                                                       <div class="col-md-3 col-xs-12">
@@ -214,7 +403,7 @@
                                                    </div>
                                                 </div>
                                              
-                                             <!-- Junior -->
+                                              Junior 
                                                 <div id="Forfait1" class="row desc" style="display: none;border-left: solid;border-right: solid">
                                                     
                                           <div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
@@ -267,7 +456,7 @@
                                                    </div>
                                                 </div>
                                              
-                                             <!-- Adulto -->
+                                              Adulto 
                                                 <div id="Forfait2" class="row desc" style="display: none;border-left: solid;border-right: solid">
                                                    <div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
                                                       <div class="col-md-3 col-xs-12">
@@ -318,7 +507,7 @@
                                                    </div>
                                                 </div>
                                              
-                                             <!-- Senior -->
+                                              Senior 
                                                 <div id="Forfait3" class="row desc" style="display: none;border-left: solid;border-right: solid">
                                                    <div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
                                                       <div class="col-md-3 col-xs-12">
@@ -369,7 +558,7 @@
                                                    </div>
                                                 </div>
                                              
-                                             <!-- Juvenil Familiar -->
+                                              Juvenil Familiar 
                                                 <div id="Forfait4" class="row desc" style="display: none;border-left: solid;border-right: solid">
                                                    <div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
                                                       <div class="col-md-3 col-xs-12">
@@ -421,7 +610,7 @@
                                                    </div>
                                                 </div>
                                                 
-                                             <!-- Junio Familiar -->
+                                              Junio Familiar 
                                                 <div id="Forfait5" class="row desc" style="display: none;border-left: solid;border-right: solid">
                                                    <div class="col-md-12 col-xs-12" style="margin-bottom: 20px;">
                                                       <div class="col-md-3 col-xs-12">
@@ -471,7 +660,7 @@
                                                          <button name="boton" id="botonjunfam" class="btn btn-success form-control price_request" type="button">Solicitar</button>
                                                    </div>
                                                 </div>
-                                         </div>
+                                         </div>-->
                                     
                                       <!-- Alquiler de Material -->
                                        <div class="heading-block fancy-title nobottomborder title-bottom-border col-xs-12">
@@ -1176,40 +1365,47 @@
                                                    </div>
                                                 </div>
                                        </div>                                                                 
-                                      
-                                         <div class="form-group col-xs-12 text-center" style="margin-top: 20px;">
-                                             <button type="button" class="btn btn-primary btn-lg text-center" id='confirm-reserva'>Solicitar reserva</button>
-                                         </div>
-                                      
+
                                   </div>
                                   <div style="text-align: right; margin-right: 5px"><h3 style="color: black">Atencion al cliente: 958-48-01-68</h3></div>
                               </div>
 
-
-                        
                       </div>
                   </div>
                   <div class="col-md-10 col-lg-3  sin-margin-mobile" style="padding:0!important;">
                       <div id='calendar-content' class='container-fluid'>                        
-                              <div class="panel panel-default" style="background-color: rgba(255,255,255,0.75);">
-                                  <div class="panel-body">                                                                      
-                                      <!-- Carrito -->
+                            <div class="panel panel-default" style="background-color: rgba(255,255,255,0.75);">
+                                <div class="panel-body">                                                                      
+                                    <!-- Carrito -->
                                       <div class="form-group col-sm-12"  id="content-carrito">
-                                       <h3 class="form-group text-center black font-w300" style="text-transform: uppercase;">Resumen Solicitud</h3>
-                                       <p class="carrito"></p>
+                                          <h3 class="form-group text-center black font-w300" style="text-transform: uppercase;">Resumen Solicitud</h3>
+                                          <p class="carrito_forfaits"></p>
+                                          <p class="carrito"></p>
                                       </div>
-                                  </div>
-                              </div>
-                          
+                                    <div class="heading-block fancy-title nobottomborder title-bottom-border col-xs-12" style="margin-bottom:0 !important;">
+                                        <h2 class="black font-w800 center t400 ls1 push-20 " style="color:white;font-size:23px; margin-bottom:0 !important;"></h2>
+                                    </div>
+                                    <div id="cc" class="form-group col-sm-12 text-center">
+                                        <div id="cc" class="form-group col-sm-12 text-center h4" style="margin-bottom:0;">Datos de Pago</div>
+                                        <div id="cc" class="form-group col-sm-12 text-center h5" style="margin-bottom:8px;">Tarjeta Débito/Crédito</div>
+                                        <input type="text" min="16" max="16" name="cc_pan" placeholder="Número Tarjeta"/>
+                                        <input type="text" name="cc_name" placeholder="Nombre completo"/>
+                                        <input type="text" name="cc_expiry" placeholder="Expiración MM/YY"/>
+                                        <input type="text" min="3" max="3" name="cc_cvc" placeholder="CVC"/>
+                                    </div>
+                                      <div class="form-group col-xs-12 text-center" style="margin-top: 20px;">
+                                          <button type="button" class="btn btn-primary btn-lg text-center" id="confirm-reserva">Solicitar reserva</button>
+                                      </div>
+                                </div>
+                            </div>
                       </div>
                   </div>
               </div>
           </div>
       </section>
       </form>
-      
     </div>
-    
+
     <div id="myModal" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -1258,6 +1454,14 @@
       
     </script>
     <script type="text/javascript">
+        
+        if($('div.mobile:visible').length == 0){
+            $('div.mobile').remove();
+        }
+        
+        if($('div.desktop:visible').length == 0){
+            $('div.desktop').remove();
+        }
 
         $("#myModal button.btn").on("click", function (e) {
 //            console.log('test');
@@ -1286,7 +1490,7 @@
         });
 
         function checkForfaitDates(){
-            if(start_date = $('input#date-entrada').val().length > 0 && $('input#date-salida').val().length > 0){
+            if(start_date = $('div#requests_header input[name="date-entrada"]').val().length > 0 && $('div#requests_header input[name="date-salida"]').val().length > 0){
                 return true;
             }else{
 //                console.log(false);
@@ -1302,8 +1506,8 @@
         
         function requestPrice(cont,type,subtype,quantity,times,ski_type = null,material_type = null){
             
-            start_date = $('input#date-entrada').val();
-            end_date = $('input#date-salida').val();
+            start_date = $('div#requests_header input[name="date-entrada"]').val();
+            end_date = $('div#requests_header input[name="date-salida"]').val();
             
 //            console.log(cont);
 //            console.log(start_date);
@@ -1972,9 +2176,231 @@
                     cont++;
                 }
             });
+            
+//            $('select#forfatis_number').prop("disabled", true);
 
         });
-    
+        
+        function launchAjaxCalcForfaitsPrices(prepare_forfaits_data){
+//            console.log(prepare_forfaits_data);
+            $.ajax({
+//                headers: {
+//                    'X-CSRF-TOKEN': 
+//                },
+                type: "POST",
+                url: "/ajax/forfaits/requestPriceForfaits",
+                data: {requests:prepare_forfaits_data},
+                dataType:'json',
+//                async: false,
+                success: function(response){
+                    console.log(response);
+                    $('.forfaits_request').remove();
+                    
+                    $.each(response.products.items,function(key,item){
+
+                        $(".carrito").append("<div id='" + cont + "' class='forfaits_request'><button name='btdel' id='btdel" + cont + "' class='icon-remove-sign btn-danger'  type='button' style='border-radius:20px'></button>");
+                        $("#" + cont).append('<span class="carrito_forfait_request">'+item.name+'</span>');
+                        
+                        $("#" + cont).append("<input type='hidden' class='forfaits_request' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+                        $("#" + cont).append("<input type='hidden' class='forfaits_request' name='forfaits[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+                        $("#" + cont).append("<input type='hidden' class='forfaits_request' name='prices["+cont+"]' value='"+item.price+"'></div><br/>");
+                        
+                        cont++;
+                    });
+
+                    
+//                    console.log(price);
+//                    $("#" + cont).append(" - "+price+"&euro;");
+////                    console.log($('input[name="carrito['+cont+']"]').val());
+//                    input_cont = $('input[name="carrito['+cont+']"]');
+//                    $('input[name="carrito['+cont+']"]').val(input_cont.val()+" - "+price+"&euro;");
+//                    
+//                    
+//                    $("#" + cont).append("<input type='hidden' name='carrito[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+//                    $("#" + cont).append("<input type='hidden' name='forfaits[" + cont + "]' value='" + $("#" + cont).text() + "'>");
+//                    $("#" + cont).append("<input type='hidden' name='prices["+cont+"]' value='"+response+"'>");
+                    
+                    
+                },
+                error: function(response){
+//                    console.log(response);
+                }
+            });
+        }
+        
+        function calc_days_diff(start_date,end_date){
+            var start = moment(start_date, "DD-MM-YYYY");
+            var end = moment(end_date, "DD-MM-YYYY");
+            var diff = (end.diff(start, 'days')+1);
+            
+            if(diff == 1){
+                return 0;
+            }else{
+                return diff;
+            }
+        }
+        
+        function set_dates(){
+            start_date = $('div#requests_header input[name="date-entrada"]').val();
+            end_date = $('div#requests_header input[name="date-salida"]').val();
+            
+//            console.log(start_date);
+//            console.log(end_date);
+            
+            $('div#requests_container div.request_row input.datepicker_init_start_date').val(start_date);
+            $('div#requests_container div.request_row input.datepicker_init_end_date').val(end_date);
+
+            if(start_date.length > 0 && end_date.length > 0){
+//                console.log(calc_days_diff(start_date,end_date));
+                $('div#requests_container div.request_row input.request_days').val(calc_days_diff(start_date,end_date));
+            }
+        }
+        
+        function prepare_forfaits_data(){
+            
+            forfaits_data = {};
+            
+            c = 0;
+            $('div#requests_container').find('div.request_row').each(function(){
+                forfaits_data[c] = {};
+
+                forfaits_data[c].start_date = $(this).find('input#date-entrada').val();
+                forfaits_data[c].end_date = $(this).find('input#date-salida').val();
+                forfaits_data[c].days = $(this).find('input.request_days').val();
+                forfaits_data[c].years = $(this).find('input.request_years').val();
+                c++;
+            });
+            
+            return forfaits_data;
+        }
+        
+        function bind_extra_datepicker_changes(){
+            $('div#requests_container div.request_row input.datepicker_init_start_date, div#requests_container div.request_row input.datepicker_init_end_date').on('change',function(){
+
+                parent_div = $(this).parent('div').parent('div');
+
+                start_date = parent_div.find('input.datepicker_init_start_date').val();
+                end_date = parent_div.find('input.datepicker_init_end_date').val();
+
+                if(start_date.length > 0 && end_date.length > 0){
+                    parent_div.find('input.request_days').val(calc_days_diff(start_date,end_date));
+                }
+
+            });
+        }
+
+        $('select#forfatis_number').on('change',function(){
+
+            forfaits_number = $(this).find('option:selected').val();
+            actual_requests = $('div#requests_container').find('div.request_row');
+            actual_requests_length = actual_requests.length;
+            requests_needed = forfaits_number-actual_requests_length;
+
+            if(requests_needed > 0){
+                for(x=1;x<=requests_needed;x++){
+                    counter = x+actual_requests_length;
+                    request_row = $('div#request_row_div').clone();
+                    request_row.find('span.forfait_number').text(counter);
+                    request_row.find('input[name="date-entrada-template"]').attr('name','date-entrada-'+counter);
+                    request_row.find('input[name="date-salida-template"]').attr('name','date-salida-'+counter);
+                    $('div#requests_container').append(request_row.html());
+                }
+            }else if(requests_needed == 0){
+                $('div#requests_container div.request_row').remove();
+            }else if(requests_needed < 0){
+                requests_rows = $('div#requests_container').find('div.request_row');
+
+                for(x=0;x<Math.abs(requests_needed);x++){
+                    requests_rows[(actual_requests_length-1)-x].remove();
+                }
+            }
+            
+//            console.log(forfaits_number);
+            if(forfaits_number > 0){
+                $('div#requests_button').show();
+            }else{
+                $('div#requests_button').hide();
+            }
+
+            set_dates();
+            instance_extra_datepickers();
+            bind_extra_datepicker_changes();
+        });
+        
+        $('div#requests_header input[name="date-entrada"], div#requests_header input[name="date-salida"]').change(function(){
+            if($('input[name="date-entrada"]').val().length > 0 && $('input[name="date-salida"]').val().length > 0){
+//                $('select#forfatis_number').prop("disabled", false);
+//                $('select#forfatis_number').removeAttr("disabled");
+                set_dates();
+            }
+        });
+        
+        $('input.datepicker_init_start_date, input.datepicker_init_end_date').change(function(){
+//            console.log('test');
+            parent_div = $(this).parent('div').parent('div');
+            
+            start_date = parent_div.find('input.datepicker_init_start_date').val();
+            end_date = parent_div.find('input.datepicker_init_end_date').val();
+
+            if(start_date.length > 0 && end_date.length > 0){
+                parent_div.find('input.request_days').val(calc_days_diff(start_date,end_date));
+            }
+        });
+
+        $('button#request_button').click(function(){
+            
+            status = true;
+            
+            $('div#requests_container').find('div.request_row').each(function(){
+                
+                forfait_data_start_date = $(this).find('input#date-entrada');
+                forfait_data_end_date = $(this).find('input#date-salida');
+                forfait_data_days = $(this).find('input.request_days');
+                forfait_data_years = $(this).find('input.request_years');
+                
+                forfait_data_start_date_value = forfait_data_start_date.val();
+                forfait_data_end_date_value = forfait_data_end_date.val();
+                forfait_data_days_value = forfait_data_days.val();
+                forfait_data_years_value = forfait_data_years.val();
+                
+                if( forfait_data_start_date_value.length == 0){
+                    forfait_data_start_date.attr('style','border: 1px solid red;');
+                }else{
+                    forfait_data_start_date.removeAttr('style');
+                }
+                if( forfait_data_end_date_value.length == 0){
+                    forfait_data_end_date.attr('style','border: 1px solid red;');
+                }else{
+                    forfait_data_end_date.removeAttr('style');
+                }
+                if( forfait_data_days_value.length == 0){
+                    forfait_data_days.attr('style','border: 1px solid red;');
+                }else{
+                    forfait_data_days.removeAttr('style');
+                }
+                if( forfait_data_years_value.length == 0){
+                    forfait_data_years.attr('style','border: 1px solid red;');
+                }else{
+                    forfait_data_years.removeAttr('style');
+                }
+
+                if( forfait_data_start_date_value.length == 0 ||
+                    forfait_data_end_date_value.length == 0 ||
+                    forfait_data_days_value.length == 0 ||
+                    forfait_data_years_value.length == 0 ){
+                    status = false;
+                }
+            });
+
+            if(status == 'true'){
+                forfaits_data = prepare_forfaits_data();
+                launchAjaxCalcForfaitsPrices(forfaits_data);
+            }else{
+//                console.log('fail');
+            }
+            
+        });
+
     </script>
 
     <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
