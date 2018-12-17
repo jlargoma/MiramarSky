@@ -815,14 +815,17 @@ class HomeController extends Controller
            $books = \App\Book::where("customer_id","=","$customer->id")->orderBy('ID','DESC')->take(1)->get();
            
            foreach($books as $book){
-                $db = \App\Book::find($book->id);
-                $db->ff_request_id = $ff_request_id;
-                
-                if($db->save()){
-                    return true;
-                }
+               $db = \App\Book::find($book->id);
+               
+               if($db->ff_request_id == NULL){
+                    $db->ff_request_id = $ff_request_id;
+
+                    if($db->save()){
+                        return true;
+                    }
+               }
            }
-           
+
        }
        
        return false;

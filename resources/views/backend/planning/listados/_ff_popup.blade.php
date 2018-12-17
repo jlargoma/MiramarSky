@@ -7,7 +7,7 @@
     $classes_price = 0;
     
     $ff_prices_total = 0;
-    if($ff_request->request_prices != NULL){
+    if(isset($ff_request->request_prices) && $ff_request->request_prices != NULL){
        $request_prices = unserialize($ff_request->request_prices);
        
        if($ff_request->request_forfaits != NULL){
@@ -33,9 +33,9 @@
         <div class="col-lg-4 col-md-4 bold" style="background-color:#0000E6; color:#ffffff; padding:4px;">Estado</div>
         <?php
             if($book->ff_status == 0){
-                echo '<div class="col-lg-8 col-md-8 h5 bold" style="background-color:#ffffff; color:#ffffff; margin:0; padding:6.2px;">No Gestionada</div>';
+                echo '<div class="col-lg-8 col-md-8 h5 bold" style="background-color:#ffffff; color:#000000; margin:0; padding:6.2px;">No Gestionada</div>';
             }elseif($book->ff_status == 1){
-                echo '<div class="col-lg-8 col-md-8 h5 bold" style="background-color:#cccccc; color:#ffffff; margin:0; padding:6.2px;">Cancelada</div>';
+                echo '<div class="col-lg-8 col-md-8 h5 bold" style="background-color:#cccccc; color:#000000; margin:0; padding:6.2px;">Cancelada</div>';
             }elseif($book->ff_status == 2){
                 echo '<div class="col-lg-8 col-md-8 h5 bold" style="background-color:red; color:#ffffff; margin:0; padding:6.2px;">No Cobrada</div>';
             }elseif($book->ff_status == 3){
@@ -79,19 +79,27 @@
     
     <div class="container div_margin col-lg-12">
         <div class="col-lg-4 col-md-4" style="background-color:#d1daff; padding:4px;">Nombre Tarjeta de Crédito</div>
-        <div class="col-lg-8 col-md-8 bold" style="background-color:#d1daff; padding:4px;"><?php echo $ff_request->cc_name ;?></div>
+        <div class="col-lg-8 col-md-8 bold" style="background-color:#d1daff; padding:4px;">
+            <?php if(isset($ff_request->cc_name)){echo $ff_request->cc_name;}?>
+        </div>
     </div>
     <div class="container div_margin col-lg-12">
         <div class="col-lg-4 col-md-4" style="padding:4px;">Tarjeta de Crédito</div>
-        <div class="col-lg-8 col-md-8 bold" style="padding:4px;"><?php echo $ff_request->cc_pan ;?></div>
+        <div class="col-lg-8 col-md-8 bold" style="padding:4px;">
+            <?php if(isset($ff_request->cc_pan)){echo $ff_request->cc_pan;}?>
+        </div>
     </div>
     <div class="container div_margin col-lg-12">
         <div class="col-lg-4 col-md-4" style="background-color:#d1daff; padding:4px;">CV2</div>
-        <div class="col-lg-8 col-md-8 bold" style="background-color:#d1daff; padding:4px;"><?php echo $ff_request->cc_cvc ;?></div>
+        <div class="col-lg-8 col-md-8 bold" style="background-color:#d1daff; padding:4px;">
+            <?php if(isset($ff_request->cc_cvc)){echo $ff_request->cc_cvc;}?>
+        </div>
     </div>
     <div class="container div_margin col-lg-12">
         <div class="col-lg-4 col-md-4" style="padding:4px;">Caducidad</div>
-        <div class="col-lg-8 col-md-8 bold" style="padding:4px;"><?php echo $ff_request->cc_expiry ;?></div>
+        <div class="col-lg-8 col-md-8 bold" style="padding:4px;">
+            <?php if(isset($ff_request->cc_expiry)){echo $ff_request->cc_expiry;}?>
+        </div>
     </div>
 
 <!--    <div class="container div_margin col-lg-12">
@@ -126,7 +134,7 @@
 
     <div class="container div_margin col-lg-12 col-md-12 h3 bold">Forfaits</div>
     <div class="container col-lg-12 col-md-12">
-        @if($ff_request->request_forfaits != NULL)
+        @if(isset($ff_request->request_forfaits) && $ff_request->request_forfaits != NULL)
             @foreach(unserialize($ff_request->request_forfaits) as $forfait_request_key => $forfait_request)
                 <span>- <?php echo $forfait_request; ?></span><br/>
                 <?php $forfait_price += $request_prices[$forfait_request_key]; ?>
@@ -140,7 +148,7 @@
     
     <div class="container col-lg-12 col-md-12 h3 bold">Alquiler de Esquipos</div>
     <div class="container col-lg-12 col-md-12">
-        @if($ff_request->request_material != NULL)
+        @if(isset($ff_request->request_material) && $ff_request->request_material != NULL)
             @foreach(unserialize($ff_request->request_material) as $material_request_key => $material_request)
                 <span>- <?php echo $material_request; ?></span><br/>
                 <?php $material_price += $request_prices[$material_request_key]; ?>
@@ -154,7 +162,7 @@
     
     <div class="container col-lg-12 col-md-12 h3 bold">Clases</div>
     <div class="container col-lg-12 col-md-12">
-        @if($ff_request->request_classes != NULL)
+        @if(isset($ff_request->request_classes) && $ff_request->request_classes != NULL)
             @foreach(unserialize($ff_request->request_classes) as $classes_request_key => $classes_request)
                 <span>- <?php echo $classes_request; ?></span><br/>
                 <?php $classes_price += $request_prices[$classes_request_key]; ?>
