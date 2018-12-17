@@ -5,13 +5,12 @@
 <table class="table table-condensed table-striped table-data" data-type="pendientes" style="margin-top: 0;">
     <thead>
     <tr>
-        <th style="display: none">ID</th>
         <th class="text-center Reservado-table text-white" style="width: 4%!important">&nbsp;</th>
         <th class="text-center Reservado-table text-white"> Cliente</th>
         <th class="text-center Reservado-table text-white"> Telefono</th>
         <th class="text-center Reservado-table text-white" style="width: 7%!important"> Pax</th>
         <th class="text-center Reservado-table text-white" style="width: 5%!important"></th>
-        <th class="text-center Reservado-table text-white" style="width: 10%!important"> Apart</th>
+        <th class="text-center Reservado-table text-white" style="width: 12%!important"> Apart</th>
         <th class="text-center Reservado-table text-white" style="width: 6%!important"> IN</th>
         <th class="text-center Reservado-table text-white" style="width: 8%!important"> OUT</th>
         <th class="text-center Reservado-table text-white" style="width: 6%!important"><i class="fa fa-moon-o"></i></th>
@@ -31,7 +30,6 @@
             <?php endif ?>
 
     <tr class="<?php echo $class;?>">
-        <td style="display: none"><?php echo $book->id ?></td>
         <td class="text-center">
 			<?php if ($book->agency != 0): ?>
             <img style="width: 20px;margin: 0 auto;"

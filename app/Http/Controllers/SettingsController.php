@@ -22,10 +22,12 @@ class SettingsController extends Controller
 	{
 
 		$agent = AgentsRooms::create([
-			                             "room_id" => $request->input('room_id'),
-			                             "user_id" => $request->input('user_id')
+			                             "room_id"   => $request->input('room_id'),
+			                             "user_id"   => $request->input('user_id'),
+			                             "agency_id" => $request->input('agency_id'),
+
 		                             ]);
-		if($agent)
+		if ($agent)
 		{
 			return redirect()->back();
 		}
@@ -34,7 +36,7 @@ class SettingsController extends Controller
 	public function deleteAgentRoom($id)
 	{
 		$agent = \App\AgentsRooms::find($id);
-		if($agent->delete())
+		if ($agent->delete())
 		{
 			return redirect()->back();
 		}
