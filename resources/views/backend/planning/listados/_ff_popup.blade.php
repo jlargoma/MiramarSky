@@ -33,9 +33,9 @@
         <div class="col-lg-4 col-md-4 bold" style="background-color:#0000E6; color:#ffffff; padding:4px;">Estado</div>
         <?php
             if($book->ff_status == 0){
-                echo '<div class="col-lg-8 col-md-8 h5 bold" style="background-color:#ffffff; color:#ffffff; margin:0; padding:6.2px;">No Gestionada</div>';
+                echo '<div class="col-lg-8 col-md-8 h5 bold" style="background-color:#ffffff; color:#000000; margin:0; padding:6.2px;">No Gestionada</div>';
             }elseif($book->ff_status == 1){
-                echo '<div class="col-lg-8 col-md-8 h5 bold" style="background-color:#cccccc; color:#ffffff; margin:0; padding:6.2px;">Cancelada</div>';
+                echo '<div class="col-lg-8 col-md-8 h5 bold" style="background-color:#cccccc; color:#000000; margin:0; padding:6.2px;">Cancelada</div>';
             }elseif($book->ff_status == 2){
                 echo '<div class="col-lg-8 col-md-8 h5 bold" style="background-color:red; color:#ffffff; margin:0; padding:6.2px;">No Cobrada</div>';
             }elseif($book->ff_status == 3){
