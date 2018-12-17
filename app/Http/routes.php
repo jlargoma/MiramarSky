@@ -593,7 +593,6 @@
    Route::get( '/insertDNIS' , 'Admin\BackendController@insertDNIS' );
    Route::get( '/refreshBloqueos' , 'Admin\BackendController@refreshBloqueos' );
 
-
 // AJAX REQUESTS
         
     Route::post( '/ajax/requestPrice' , 'FortfaitsController@calculatePrice');
@@ -602,14 +601,17 @@
     Route::post( '/ajax/forfaits/updateRequestComments' , 'FortfaitsController@updateRequestComments');
     Route::post( '/ajax/forfaits/updateCommissions' , 'FortfaitsController@updateCommissions');
     Route::post( '/ajax/forfaits/updatePayments' , 'FortfaitsController@updatePayments');
+    Route::post( '/ajax/forfaits/requestPriceForfaits' , 'FortfaitsController@requestPriceForfaits');
 
 //AGENTES
+    
     Route::post( '/admin/agentRoom/create' , 'SettingsController@createAgentRoom' );
     Route::get( '/admin/agentRoom/delete/{id}' , 'SettingsController@deleteAgentRoom' );
-
-
 
 // FORFATIS
 
     Route::get( '/admin/forfaits' , ['middleware' => 'authAdmin' , 'uses' => 'HomeController@getForfaitsRequests'] );
     Route::get( '/admin/forfaits/deleteRequest/{id}' , ['middleware' => 'authAdmin' , 'uses' => 'FortfaitsController@deleteRequest'] );
+    Route::get( '/admin/forfaits/deleteRequest/{id}' , ['middleware' => 'authAdmin' , 'uses' => 'FortfaitsController@deleteRequest'] );
+    Route::get( '/admin/reservas/ff_status_popup/{id}' , ['middleware' => 'authAdmin' , 'uses' => 'BookController@getBookFFData'] );
+    Route::get( '/admin/reservas/ff_change_status_popup/{id}/{status}' , ['middleware' => 'authAdmin' , 'uses' => 'BookController@updateBookFFStatus'] );

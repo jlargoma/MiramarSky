@@ -74,7 +74,9 @@
                                  <span style="font-weight: 300; font-size: 18px;">
                                     <?php $date = Carbon::createFromFormat('Y-m-d H:i:s', $solicitud->created_at); ?>
                                     Fecha solicitud : <?php echo $date->formatLocalized('%d %B %Y') ?>
-                                 </span><br><br>
+                                 </span><br/><br/>
+                                 
+                                 <?php echo $anon_request_text; ?><br/><br/>
 
                                  <span style="font-size: 18px"><b><?php echo ucfirst($solicitud->name) ?></b></span><br>
                                  <a href="mailto:<?php echo $solicitud->email ?>"><?php echo $solicitud->email ?></a><br>

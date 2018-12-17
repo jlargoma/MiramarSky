@@ -263,7 +263,21 @@
                          min-height: 750px !important;
                      }
             }
+            .claim-icons.claim-icons-big {
+                padding: 30px 0 0;
+            }
 
+            .claim-icons.claim-icons-big .claim-icons-img {
+                width: 91px;
+            }
+
+            .claim-icons .claim-icons-img {
+                background: rgba(153,17,85,1);
+                border-radius: 300px;
+                box-shadow: 0 0 0 8px rgba(204,204,204,1);
+                margin: 0 auto 15px;
+            }
+            span.forfait_icons{font-size:16px;}
         </style>
         <script type="text/javascript">
           (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

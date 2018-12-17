@@ -23,6 +23,8 @@ class VerifyCsrfToken extends BaseVerifier
         '/ajax/forfaits/updateRequestPAN',
         '/ajax/forfaits/updateRequestComments',
         '/ajax/forfaits/updateCommissions',
-        '/ajax/forfaits/updatePayments'
+        '/ajax/forfaits/updatePayments',
+        '/ajax/forfaits/requestPriceForfaits',
+        '/ajax/reservas/getBookData'
     ];
 }
