@@ -604,12 +604,14 @@
     Route::post( '/ajax/forfaits/requestPriceForfaits' , 'FortfaitsController@requestPriceForfaits');
 
 //AGENTES
+    
     Route::post( '/admin/agentRoom/create' , 'SettingsController@createAgentRoom' );
     Route::get( '/admin/agentRoom/delete/{id}' , 'SettingsController@deleteAgentRoom' );
-
-
 
 // FORFATIS
 
     Route::get( '/admin/forfaits' , ['middleware' => 'authAdmin' , 'uses' => 'HomeController@getForfaitsRequests'] );
     Route::get( '/admin/forfaits/deleteRequest/{id}' , ['middleware' => 'authAdmin' , 'uses' => 'FortfaitsController@deleteRequest'] );
+    Route::get( '/admin/forfaits/deleteRequest/{id}' , ['middleware' => 'authAdmin' , 'uses' => 'FortfaitsController@deleteRequest'] );
+    Route::get( '/admin/reservas/ff_status_popup/{id}' , ['middleware' => 'authAdmin' , 'uses' => 'BookController@getBookFFData'] );
+    Route::get( '/admin/reservas/ff_change_status_popup/{id}/{status}' , ['middleware' => 'authAdmin' , 'uses' => 'BookController@updateBookFFStatus'] );
