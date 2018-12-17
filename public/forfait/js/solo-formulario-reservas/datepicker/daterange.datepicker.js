@@ -39,7 +39,7 @@
         //default settings for options
         this.parentEl = 'body';
         this.element = $(element);
-        this.elementEnd = $('#date-salida')
+        this.elementEnd = element.parent('div').parent('div').find('.datepicker_init_end_date');
         this.startDate = moment().startOf('day');
         this.endDate = moment().endOf('day');
         this.minDate = false;

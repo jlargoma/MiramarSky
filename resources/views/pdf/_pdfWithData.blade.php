@@ -39,7 +39,8 @@
 	</h2>
 	       
 	<p style="color: black; font-family: 'Verdana';margin-bottom: 50px;font-size: 12px; text-align: justify;">
-		<b>Hora de Entrada</b>: Desde las <b>17,00h a 19,00h</b> en el caso de llegar más tarde avisarán por teléfono y se incrementara en el alquiler de 10€ por la demora en recogida de llaves. De 22,00h en adelante se cobrará 20€<br><br>
+		<b>Hora de Entrada</b>: Desde las <b>17,30h a 19,00h</b> en el caso de llegar más tarde avisarán por teléfono
+		 y se incrementara en el alquiler de 10€ por la demora en recogida de llaves. De 22,00h en adelante se cobrará 20€<br><br>
 
 		<b>Hora de Salida</b>: La vivienda deberá  ser desocupada antes de las <b>11,59h a.m</b> (de lo contrario se podrá cobrará un noche más de alquiler apartamento según tarifa apartamento  y ocupación. La plaza de garaje debe quedar libre a esta hora o bien pagar la estancia de un nuevo día.(según tarifa 15€ / día.) <br><br>
 
@@ -69,7 +70,9 @@
 		•	Edredones doblados en los armarios.<br>
 
 		Si algunos de estos requisitos no se cumplen podría conllevar la perdida de la fianza, total o parcialmente.<br><br>
-		<b><u>Para la devolución de Fianza llamar al teléfono de Manolo: 678728196</u></b><br><br>
+
+		
+		<b><u>Devolución de llaves: las puedes dejar en la cocina de tu apartamento ( ojo, antes tendrás que sacar el coche del parking) o llamando a este número CARMELA: 661907785</u></b><br><br>
 		Confirmo que se me ha informado y acepto las condiciones del alquiler de la vivienda que se detallan en este documento.
 
 		
