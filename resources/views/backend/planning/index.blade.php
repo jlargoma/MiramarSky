@@ -14,6 +14,9 @@ setlocale(LC_TIME, "es_ES");
         #TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G{
             margin: 10px auto;
         }
+        .table-data .form-control{
+            width: 100%;
+        }
     </style>
 @endsection
 

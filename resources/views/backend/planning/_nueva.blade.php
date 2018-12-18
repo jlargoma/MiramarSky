@@ -79,7 +79,7 @@ $mobile = new Mobile();
                 </div>
                 <div class="col-md-4 col-xs-12 push-10">
                     <label for="email">Email</label>
-                    <input class="form-control cliente email-cliente" type="email" name="email" >
+                    <input class="form-control cliente email-cliente" type="email" name="email" <?php if ( Auth::user()->role == "agente"):?>value="{{ Auth::user()->email }}" <?php endif ?>>
                 </div>
                 <div class="col-md-4 col-xs-12 push-10">
                     <label for="phone">Telefono</label>
@@ -244,13 +244,18 @@ $mobile = new Mobile();
                 <div class="col-xs-12 col-md-4 not-padding">
                     <div class="col-md-6 col-xs-6 push-10">
                         <label>Agencia</label>
-                        <select class="form-control full-width agency minimal" name="agency">
-                            <?php for ($i=0; $i <= 7 ; $i++): ?>
-                            <option value="<?php echo $i ?>" <?php if ( Auth::user()->role == "agente" &&  $i == 6): ?>selected <?php endif ?>>
+                        <?php if ( Auth::user()->role != "agente"): ?>
+                            <select class="form-control full-width agency minimal" name="agency">
+                                <?php for ($i=0; $i <= 7 ; $i++): ?>
+                                <option value="<?php echo $i ?>">
                                     <?php echo \App\Book::getAgency($i) ?>
                                 </option>
-                            <?php endfor;?>
-                        </select>
+                                <?php endfor;?>
+                            </select>
+                        <?php else: ?>
+                            <input type="hidden" name="agency" value="<?php echo Auth::user()->agent->agency_id ?>">
+                            <input type="text" disabled class="form-control full-width agency minimal" value="<?php echo \App\Book::getAgency(Auth::user()->agent->agency_id) ?>">
+                        <?php endif ?>
                     </div>
                     <div class="col-md-6 col-xs-6 push-10">
                         <label>Cost Agencia</label>
@@ -268,6 +273,8 @@ $mobile = new Mobile();
                         <img src="/pages/oferta.png" style="width: 90px;">
                     </div>
                 </div>
+	            <?php else: ?>
+                    <input type="hidden" class="promociones form-control" step='0.01' name="promociones" value="0">
                 <?php endif ?>
             </div>
             <div class="col-xs-12">

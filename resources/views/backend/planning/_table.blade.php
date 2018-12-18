@@ -1,5 +1,4 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-
 <script src="/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
 <script src="/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
 <script src="/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
@@ -17,8 +16,9 @@
               $('.table-data').dataTable({
                 "searching": false,
                 "paging":  false,
+                "aaSorting": [],
                 "columnDefs": [
-                  { "targets": [1,2,3,4,8,9,10,11,12], "orderable": false }
+                  { "targets": [0,1,2,3,4,8,9,10,11,12], "orderable": false }
                   //5,6,7,
                 ],
 
@@ -29,8 +29,9 @@
               $('.table-data').dataTable({
                 "searching": false,
                 "paging":   false,
+                "aaSorting": [],
                 "columnDefs": [
-                  {"targets": [3,4,6,7,8,9,10,11], "orderable": false }
+                  {"targets": [0,3,4,6,7,8,9,10,11], "orderable": false }
                   //1,2,5
                 ],
 
@@ -50,10 +51,10 @@
             <script>
               $('.table-data').dataTable({
                 "searching": false,
-                "order": [[ 7, "asc" ], [ 8, "asc" ]],
+                "aaSorting": [],
                 "paging":   false,
                 "columnDefs": [
-                  {"targets": [0,1,2,3,4,5,6,9,10], "orderable": false }
+                  {"targets": [0,1,2,3,4,6,9,10], "orderable": false }
                 ],
 
               });
@@ -62,7 +63,7 @@
             <script>
               $('.table-data').dataTable({
                 "searching": false,
-                "order": [[ 2, "asc" ], [ 3, "asc" ]],
+                "aaSorting": [],
                 "paging":   false,
                 "columnDefs": [
                   {"targets": [0,2,4,5,6,7,8], "orderable": false }
@@ -74,7 +75,7 @@
     <?php endif ?>
 <?php elseif( $type == 'checkin'): ?>
 	@include('backend.planning.listados._checkin', ['books' => $books ])
-    <?php if (Auth::user()->role != "agente" ): ?>
+    <?php if (Auth::user()->role != "agente" && Auth::user()->role != "limpieza"): ?>
         <?php if (!$mobile->isMobile() ): ?>
             <script>
           $('.table-data').dataTable({
@@ -82,22 +83,22 @@
             "order": [[ 7, "asc" ]],
             "paging":   false,
             "columnDefs": [
-              {"targets": [0,1,2,3,4,5,6,8,9,10], "orderable": false }
+              {"targets": [0,1,2,3,4,5,6,8,9,10,11], "orderable": false }
             ],
           });
         </script>
         <?php else: ?>
             <script>
-          $('.table-data').dataTable({
-            "searching": false,
-            "order": [[ 5, "asc" ], [6, "asc" ]],
-            "paging":   false,
-            "columnDefs": [
-              {"targets": [0,1,2,3,4,7,8,9,10], "orderable": false }
-            ],
+              $('.table-data').dataTable({
+                "searching": false,
+                "order": [[ 5, "asc" ], [6, "asc" ]],
+                "paging":   false,
+                "columnDefs": [
+                  {"targets": [0,1,2,3,4,7,8,9,10, 11], "orderable": false }
+                ],
 
-          });
-        </script>
+              });
+            </script>
         <?php endif ?>
     <?php endif ?>
 

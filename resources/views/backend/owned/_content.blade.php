@@ -227,7 +227,7 @@
 			</div>
 			<div class="col-md-12 push-20 text-center" id="content-info" style="display: none;"></div>
 			<div class="col-md-12 push-20 text-center" id="content-info-ini">
-				<?php if (count($room) > 0): ?>
+				<?php if ($room): ?>
 					<div class="row">
 						<div class="col-md-6 col-xs-12 resumen blocks">
 							<div class="col-md-6 col-md-offset-3">

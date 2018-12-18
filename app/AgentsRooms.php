@@ -8,7 +8,8 @@ class AgentsRooms extends Model
 {
 	protected $fillable = [
 		"room_id",
-		"user_id"
+		"user_id",
+		"agency_id"
 	];
 	public function room()
 	{

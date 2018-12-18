@@ -98,7 +98,7 @@
                                         </td>
                                         <?php foreach ($seasons as $key => $season): ?>
                                             <?php $price =  \App\Prices::where('occupation', $i)->where('season', $season->id )->first(); ?>
-                                            <?php if ( count($price) > 0): ?>
+                                            <?php if ( $price): ?>
                                                 <td class="text-center" style="border-left: 1px solid #48b0f7">
                                                     <input class="editable price-<?php echo $price->id?>" type="text" name="cost" data-id="<?php echo $price->id ?>" value="<?php echo $price->price ?>" style="width: 100%;text-align: center;border-style: none none">
                                                 </td>
