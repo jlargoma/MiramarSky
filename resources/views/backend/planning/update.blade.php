@@ -573,7 +573,7 @@
                 </form>
             </div>
             <div class="col-md-6 col-xs-12 padding-block">
-                <?php if ( Auth::user()->role == "limpieza" && $totalpayment != $book->total_price):?>
+                <?php if ( Auth::user()->role != "limpieza"):?>
                     <div class="row">
                         <div class="col-xs-12 bg-black push-0">
                             <h4 class="text-center white">
@@ -1176,7 +1176,7 @@
                     </div>
 					<?php endif; ?>
                 </div>
-                <?php if ( Auth::user()->role == "limpieza" && $totalpayment != $book->total_price):?>
+                <?php if ( Auth::user()->role != "limpieza"):?>
                     <div class="row">
                         <div class="col-xs-12 bg-black push-0">
                             <h4 class="text-center white">
