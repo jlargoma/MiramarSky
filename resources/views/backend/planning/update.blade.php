@@ -768,7 +768,7 @@
                     </div>
 					<?php endif; ?>
                 </div>
-                <?php if ( Auth::user()->role == "limpieza" && $totalpayment != $book->total_price):?>
+                <?php if (Auth::user()->role != "limpieza"):?>
                     <div class="row">
                         @include('backend.stripe.stripe', ['bookTocharge' => $book])
                     </div>
