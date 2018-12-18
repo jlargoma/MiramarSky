@@ -75,6 +75,7 @@ class BookController extends Controller
 			$rooms       = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order')->get();
 			$types       = [1];
 		}
+
 		if (Auth::user()->role != "agente")
 		{
 			$booksCollection = \App\Book::where('start', '>', $date->copy())

@@ -74,7 +74,7 @@
     <?php endif ?>
 <?php elseif( $type == 'checkin'): ?>
 	@include('backend.planning.listados._checkin', ['books' => $books ])
-    <?php if (Auth::user()->role != "agente" ): ?>
+    <?php if (Auth::user()->role != "agente" && Auth::user()->role != "limpieza"): ?>
         <?php if (!$mobile->isMobile() ): ?>
             <script>
           $('.table-data').dataTable({
@@ -82,22 +82,22 @@
             "order": [[ 7, "asc" ]],
             "paging":   false,
             "columnDefs": [
-              {"targets": [0,1,2,3,4,5,6,8,9,10], "orderable": false }
+              {"targets": [0,1,2,3,4,5,6,8,9,10,11], "orderable": false }
             ],
           });
         </script>
         <?php else: ?>
             <script>
-          $('.table-data').dataTable({
-            "searching": false,
-            "order": [[ 5, "asc" ], [6, "asc" ]],
-            "paging":   false,
-            "columnDefs": [
-              {"targets": [0,1,2,3,4,7,8,9,10], "orderable": false }
-            ],
+              $('.table-data').dataTable({
+                "searching": false,
+                "order": [[ 5, "asc" ], [6, "asc" ]],
+                "paging":   false,
+                "columnDefs": [
+                  {"targets": [0,1,2,3,4,7,8,9,10, 11], "orderable": false }
+                ],
 
-          });
-        </script>
+              });
+            </script>
         <?php endif ?>
     <?php endif ?>
 

@@ -7,16 +7,16 @@
 <?php if(!$mobile->isMobile() ): ?>
     <div class="tab-pane" id="tabPagadas">
         <div class="row">
-            <table class="table table-condensed table-striped table-data"  data-type="confirmadas" style="margin-top: 0;">
+            <table class="table <?php if (Auth::user()->role != "limpieza"): ?>table-condensed<?php endif ?> table-striped table-data"  data-type="confirmadas" style="margin-top: 0;">
                 <thead>
                     <tr>
                         <th class ="text-center bg-success text-white" style="width: 4%!important">&nbsp;</th> 
                         <th class ="text-center bg-success text-white" style="width: 12%!important">   Cliente     </th>
                         <th class ="text-center bg-success text-white" style="width: 10%!important">   Telefono     </th>
                         <th class ="text-center bg-success text-white" style="width: 9%!important">   Pax         </th>
-                        <th class ="text-center bg-success text-white" style="width: 12%!important">   Apart       </th>
+                        <th class ="text-center bg-success text-white" style="width: 14%!important">   Apart       </th>
                         <th class ="text-center bg-success text-white" style="width: 9%!important">  <i class="fa fa-moon-o"></i> </th>
-                         <th class="bg-success text-white text-center" style="width: 9%!important">
+                         <th class="bg-success text-white text-center" style="width: 10%!important">
                             <i class="fa fa-clock-o" aria-hidden="true"></i> Hora
                         </th>
                         <th class ="text-center bg-success text-white" style="width: 10%!important">   IN     </th>
@@ -25,7 +25,9 @@
                         <th class ="text-center bg-success text-white" style="width: 12%!important">   Precio      </th>
                         
                         <th class ="text-center bg-success text-white" style="width: 4%!important">&nbsp;</th>
-                        <th class ="text-center bg-success text-white" style="width: 4%!important">   a      </th>
+                        <?php if (Auth::user()->role != "limpieza"): ?>
+                            <th class ="text-center bg-success text-white" style="width: 4%!important">   a      </th>
+                        <?php endif ?>
                         
                     </tr>
                 </thead>
@@ -48,7 +50,6 @@
                                <?php $class = "lined"; $count++ ?>
                            <?php endif ?>
                        <?php endif ?>
-
 
                         <tr class="<?php if($count <= 1){echo $class;} ?>">
                             <?php 
@@ -91,14 +92,13 @@
                                     <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
                                 <?php endif ?>
                             </td>
-                            <td class ="text-center" style="padding: 10px 15px!important">
-                               
-
+                            <td class="text-center" style="padding: 10px 15px!important">
                                 <?php if (isset($payment[$book->id])): ?>
                                     <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>
                                 <?php else: ?>
                                     <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" ><?php echo $book->customer['name']  ?></a>
-                                <?php endif ?>   
+                                <?php endif ?>
+                                <?php if (Auth::user()->role != "limpieza"): ?>
                                 <?php if (!empty($book->comment) || !empty($book->book_comments)): ?>
                                     <?php 
                                         $textComment = "";
@@ -113,10 +113,10 @@
                                         <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
                                     </span>
                                     <div class="comment-floating content-comment-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $textComment ?></p></div>
-                                <?php endif ?>                                                                
+                            <?php endif ?>
+                                <?php endif ?>
                             </td>
-
-                            <td class ="text-center">
+                            <td class="text-center">
                                 <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
                                     <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?>
                                 <?php else: ?>
@@ -132,7 +132,7 @@
                                     
                             </td>
                             <td class ="text-center">
-                                <select class="room form-control minimal" data-id="<?php echo $book->id ?>"  >
+                                <select class="room form-control minimal" data-id="<?php echo $book->id ?>" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
                             
                                     <?php foreach ($rooms as $room): ?>
                                         <?php if ($room->id == $book->room_id): ?>
@@ -149,7 +149,8 @@
                             <td class ="text-center"><?php echo $book->nigths ?></td>
                             <td class="text-center sm-p-t-10 sm-p-b-10">
                                 
-                                <select id="schedule" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?> <?php if ($book->schedule < 17 && $book->schedule > 0): ?>alerta-horarios<?php endif ?>" data-type="in" data-id="<?php echo $book->id ?>">
+                                <select id="schedule" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?> <?php if ($book->schedule < 17 && $book->schedule > 0): ?>alerta-horarios<?php endif ?>" data-type="in" data-id="<?php echo $book->id ?>" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php
+                                endif ?>>
                                     <option>-- Sin asignar --</option>
                                     <?php for ($i = 0; $i < 24; $i++): ?>
                                         <option value="<?php echo $i ?>" <?php if($i == $book->schedule) { echo 'selected';}?>>
@@ -180,36 +181,39 @@
                             </td>
                            
                             <td class ="text-center">
-                                <div class="col-md-6 col-xs-12 not-padding">
+                                <?php if (Auth::user()->role != "limpieza"): ?>
+                                    <div class="col-md-6 col-xs-12 not-padding">
                                     <?php echo round($book->total_price)."€" ?><br>
                                         <?php if (isset($payment[$book->id])): ?>
-                                            <p style="color: <?php if ($book->total_price == $payment[$book->id]):?>#008000<?php else: ?>red<?php endif ?>;">
+                                        <p style="color: <?php if ($book->total_price == $payment[$book->id]):?>#008000<?php else: ?>red<?php endif ?>;">
                                                 <?php echo $payment[$book->id] ?> €
                                             </p>
                                         <?php else: ?>
                                     <?php endif ?>
                                 </div>
 
-                                <?php if (isset($payment[$book->id])): ?>
+                                    <?php if (isset($payment[$book->id])): ?>
                                     <?php if ($payment[$book->id] == 0): ?>
-                                        <div class="col-md-5 col-xs-12 not-padding bg-success">
-                                        <b style="color: red;font-weight: bold">0%</b>
-                                        </div>
-                                    <?php else:?>
-                                        <div class="col-md-5  col-xs-12 not-padding">
-	                                        <?php $total = number_format(100/($book->total_price/$payment[$book->id]),0);?>
-                                            <p class="text-white m-t-10">
-                                                <b style="color: <?php if ($total == 100):?>#008000<?php else: ?>red<?php endif ?>;font-weight: bold"><?php echo $total.'%' ?></b>
-                                            </p>
-                                        </div> 
-                                                                                                   
-                                    <?php endif; ?>
-                                <?php else: ?>
                                     <div class="col-md-5 col-xs-12 not-padding bg-success">
                                         <b style="color: red;font-weight: bold">0%</b>
                                         </div>
+                                    <?php else:?>
+                                    <div class="col-md-5  col-xs-12 not-padding">
+	                                        <?php $total = number_format(100/($book->total_price/$payment[$book->id]),0);?>
+                                        <p class="text-white m-t-10">
+                                                <b style="color: <?php if ($total == 100):?>#008000<?php else: ?>red<?php endif ?>;font-weight: bold"><?php echo $total.'%' ?></b>
+                                            </p>
+                                        </div>
+
+                                    <?php endif; ?>
+                                    <?php else: ?>
+                                    <div class="col-md-5 col-xs-12 not-padding bg-success">
+                                        <b style="color: red;font-weight: bold">0%</b>
+                                        </div>
+                                    <?php endif ?>
+                                <?php else: ?>
+                                    <?php echo round($book->total_price)."€" ?>
                                 <?php endif ?>
-                                                
                             </td>
                             <td class="text-center">
                                 <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
@@ -220,8 +224,7 @@
                                     
                                 <?php endif ?>
                             </td>
-                            
-                            
+                            <?php if (Auth::user()->role != "limpieza"): ?>
                             <td class="text-center sm-p-t-10 sm-p-b-10">
 
                                 <?php if ($book->send == 1): ?>
@@ -235,7 +238,7 @@
                                 <?php endif ?>
                                 
                             </td>
-
+                            <?php endif ?>
                             
                             
                         </tr>

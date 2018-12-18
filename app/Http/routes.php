@@ -613,3 +613,9 @@
 
     Route::get( '/admin/forfaits' , ['middleware' => 'authAdmin' , 'uses' => 'HomeController@getForfaitsRequests'] );
     Route::get( '/admin/forfaits/deleteRequest/{id}' , ['middleware' => 'authAdmin' , 'uses' => 'FortfaitsController@deleteRequest'] );
+
+//LIMPIEZA
+
+    Route::group( ['middleware' => 'auth'] , function () {
+        Route::get( 'admin/limpieza' , 'LimpiezaController@index');
+    } );
