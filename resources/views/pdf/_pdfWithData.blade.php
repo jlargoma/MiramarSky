@@ -34,11 +34,11 @@
 		<div style="width: 15px; height: 15px; border: 1px solid black;position: absolute; top: 180px; left: 300px;"></div>&nbsp;&nbsp;<span style="position: absolute; top: 180px; left: 200px;">Tarjeta</span>
 
 	</p>
-	<h2 style="font-weight: 800; color: red; text-align: center; font-family: 'Verdana'; font-size: 20px;">
+	<h2 style="font-weight: 800; color: red; text-align: center; font-family: 'Verdana'; font-size: 18px;">
 		Condiciones Alquiler Apartamentos Miramar Ski
 	</h2>
 	       
-	<p style="color: black; font-family: 'Verdana';margin-bottom: 50px;font-size: 12px; text-align: justify;">
+	<p style="color: black; font-family: 'Verdana';margin-bottom: 30px;font-size: 12px; text-align: justify;">
 		<b>Hora de Entrada</b>: Desde las <b>17,30h a 19,00h</b> en el caso de llegar más tarde avisarán por teléfono
 		 y se incrementara en el alquiler de 10€ por la demora en recogida de llaves. De 22,00h en adelante se cobrará 20€<br><br>
 
@@ -74,8 +74,6 @@
 		
 		<b><u>Devolución de llaves: las puedes dejar en la cocina de tu apartamento ( ojo, antes tendrás que sacar el coche del parking) o llamando a este número CARMELA: 661907785</u></b><br><br>
 		Confirmo que se me ha informado y acepto las condiciones del alquiler de la vivienda que se detallan en este documento.
-
-		
 	</p>
 	<span style="position: absolute; bottom: 0px; left: 0px;">
 	 	Firmado: <b><?php echo ucfirst($data['book']->customer->name) ?></b>
