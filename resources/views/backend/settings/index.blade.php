@@ -245,6 +245,7 @@
                                 <th class="text-center bg-complete text-white">ID</th>
                                 <th class="text-center bg-complete text-white">Agente</th>
                                 <th class="text-center bg-complete text-white">Apart</th>
+                                <th class="text-center bg-complete text-white">Agencia</th>
                                 <th class="text-center bg-complete text-white">Accion</th>
                             </tr>
                             </thead>
@@ -259,6 +260,9 @@
                                 </td>
                                 <td class="text-center" style="padding: 12px 20px!important">
 									<?php echo $agent->room->nameRoom; ?>
+                                </td>
+                                <td class="text-center" style="padding: 12px 20px!important">
+	                                <?php echo \App\Book::getAgency($agent->agency_id) ?>
                                 </td>
                                 <td class="text-center" style="padding: 12px 20px!important">
 
@@ -327,7 +331,7 @@
                                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 									<?php $roomsToAgents = \App\Rooms::where('state', '=', 1)->orderBy('order')->get();?>
 									<?php $agents = \App\User::where('role', 'agente')->get();?>
-                                    <div class="col-md-4 col-xs-12 push-10">
+                                    <div class="col-md-3 col-xs-12 push-10">
                                         <label>Agente</label>
                                         <select class="form-control full-width minimal" name="user_id" required>
                                             <option ></option>
@@ -338,7 +342,7 @@
 											<?php endforeach ?>
                                         </select>
                                     </div>
-                                    <div class="col-md-4 col-xs-12 push-10">
+                                    <div class="col-md-3 col-xs-12 push-10">
                                         <label>Apartamento</label>
                                         <select class="form-control full-width minimal" name="room_id" required>
                                             <option ></option>
@@ -349,7 +353,17 @@
 											<?php endforeach ?>
                                         </select>
                                     </div>
-                                    <div class="col-md-4 col-xs-12 push-10">
+                                    <div class="col-md-3 col-xs-12 push-10">
+                                        <label>Agencia</label>
+                                        <select class="form-control full-width agency minimal" name="agency_id">
+			                                <?php for ($i=0; $i <= 7 ; $i++): ?>
+                                            <option value="<?php echo $i ?>">
+				                                <?php echo \App\Book::getAgency($i) ?>
+                                            </option>
+			                                <?php endfor;?>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 col-xs-12 push-10">
                                         <br>
                                         <button class="btn btn-complete font-w400" type="submit">Guardar</button>
                                     </div>

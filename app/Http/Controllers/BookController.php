@@ -2232,5 +2232,33 @@ class BookController extends Controller
 
 
 	}
+        
+        public static function getBookFFData(Request $request, $request_id){
+            
+            $ff_request = [];
+            
+            $book = \App\Book::find($request_id);
+            $customer = \App\Customers::find($book->customer_id);
+            
+            if($book->ff_request_id != NULL){
+                $ff_request = \App\Solicitudes::find($book->ff_request_id);
+            }
 
+//            print_r($book);
+//            print_r($customer);
+//            print_r($ff_request);
+            
+            return view('/backend/planning/listados/_ff_popup') ->with('book',$book)
+                                                                ->with('customer',$customer)
+                                                                ->with('ff_request',$ff_request);
+        }
+        
+        public static function updateBookFFStatus(Request $request, $request_id, $status){
+            $book = \App\Book::find($request_id);
+            $book->ff_status = $status;
+            
+            if($book->save()){
+                return redirect('/admin/reservas/ff_status_popup/'.$request_id);
+            }
+        }
 }

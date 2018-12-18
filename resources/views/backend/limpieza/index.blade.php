@@ -17,7 +17,6 @@ setlocale(LC_TIME, "es_ES");
         }
     </style>
 @endsection
-
 @section('content')
     <?php if (!$mobile->isMobile() ): ?>
     <div class="container  p-l-15 p-r-15 p-t-20 bg-white">

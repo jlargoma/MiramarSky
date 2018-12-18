@@ -629,6 +629,7 @@ class HomeController extends Controller
    {
       $arrayProducts = array();
       $commissions = [];
+      $anon_request_text = NULL;
 
       // die();
 
@@ -680,11 +681,14 @@ class HomeController extends Controller
 
       if ($solicitud->save())
       {
+        
+        if(HomeController::getLastBookByPhone($solicitud->id, trim($data['telefono'])) === false){
+            $anon_request_text = '<span style="color:#red; font-weight:bold;">Solicitud Anónima - Consultar en Pestaña Forfaits</span>';
+        }  
 
       //print_r($_POST);
       //print_r($solicitud);
       //print_r($data);
-//      exit;
 
          foreach ($data['carrito'] as $key => $carrito)
          {
@@ -731,6 +735,7 @@ class HomeController extends Controller
                   'solicitud' => $solicitud,
                   'productos' => $arrayProductsCloned,
                   'precios' => $data['prices'],
+                  'anon_request_text' => $anon_request_text,
                   'data'      => $data
                ], function ($message) use ($data) {
                   $message->from('reservas@apartamentosierranevada.net');
@@ -802,7 +807,29 @@ class HomeController extends Controller
       return view('frontend.condiciones-contratacion', ['mobile' => new Mobile()]);
    }
 
+   public static function getLastBookByPhone($ff_request_id, $phone){
+       $customers = \App\Customers::where("phone","=","$phone")->orderBy('ID','DESC')->take(1)->get();
 
+       foreach($customers as $customer){
+
+           $books = \App\Book::where("customer_id","=","$customer->id")->orderBy('ID','DESC')->take(1)->get();
+           
+           foreach($books as $book){
+               $db = \App\Book::find($book->id);
+               
+               if($db->ff_request_id == NULL){
+                    $db->ff_request_id = $ff_request_id;
+
+                    if($db->save()){
+                        return true;
+                    }
+               }
+           }
+
+       }
+       
+       return false;
+   }
 }
 
 

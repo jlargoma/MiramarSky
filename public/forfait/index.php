@@ -2334,7 +2334,7 @@
                 set_dates();
             }
         });
-        
+
         $('input.datepicker_init_start_date, input.datepicker_init_end_date').change(function(){
 //            console.log('test');
             parent_div = $(this).parent('div').parent('div');
@@ -2399,6 +2399,20 @@
 //                console.log('fail');
             }
             
+        });
+        
+        $(window).load(function(){
+            $('input.datepicker_init_start_date, input.datepicker_init_end_date').on('click',function(){
+                console.log('click');
+                console.log($('div.daterangepicker'));
+                input_div = $(this);
+                $('div.daterangepicker').css('top','20%');
+                $('div.daterangepicker').css('position','fixed');
+
+                $([document.documentElement, document.body]).animate({
+                    scrollTop: input_div.parent('div').parent('div').offset().top
+                }, 2000);
+            });
         });
 
     </script>
