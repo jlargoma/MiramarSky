@@ -1482,12 +1482,12 @@ class BookController extends Controller
                 break;
             case 'checkout':
                 $dateX = Carbon::now();
-
-                $books = \App\Book::where('start', '>', $dateX->copy()->subDays(3))
-                                  ->where('start', '<', $dateX->copy()->addYear())
+                $books = \App\Book::where('finish', '>=', $dateX->copy()->subDays(3))
+                                  ->where('finish', '<', $dateX->copy()->subDays(3)->addYear())
                                   ->where('type_book', 2)
-                                  ->orderBy('start', 'ASC')
+                                  ->orderBy('finish', 'ASC')
                                   ->get();
+	            break;
             case 'eliminadas':
                 $books = \App\Book::where('start', '>', $date->copy()->subDays(3))
                                   ->where('start', '<', $date->copy()->addYear())

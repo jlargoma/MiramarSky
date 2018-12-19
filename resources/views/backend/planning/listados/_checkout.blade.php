@@ -5,7 +5,7 @@
 <?php $startWeek = Carbon::now()->startOfWeek(); ?>
 <?php $endWeek = Carbon::now()->endOfWeek(); ?>
 <div class="table-responsive">
-    <table class="table table-striped no-footer" style="margin: 0;">
+    <table class="table table-striped no-footer table-data" style="margin: 0;">
         <thead>
             <th class="bg-primary text-white text-center">Nombre</th>
             <th class="bg-primary text-white text-center">Tel</th>
@@ -44,7 +44,9 @@
                         <?php endif ?>
                             
                     </td>
-                    <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
+                    <td class="text-center sm-p-t-10 sm-p-b-10" data-order="<?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->format("U") ?>">
+                        <?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b-%y') ?>
+                    </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
                         <b><?php echo substr($book->room->nameRoom." - ".$book->room->name, 0, 15)  ?></b>
                     </td>
@@ -69,6 +71,7 @@
                             <?php echo number_format($book->total_price,2,',','.') ?> €
                         <?php endif ?> -->
                     </td>
+
                     <?php if (Auth::user()->role != "limpieza"): ?>
                     <td class="text-center">
                         <?php $text = "Hola, esperamos que hayas disfrutado de tu estancia con nosotros."."\n"."Nos gustaria que valorarás, para ello te dejamos este link : https://www.apartamentosierranevada.net/encuesta-satisfaccion/".base64_encode($book->id);

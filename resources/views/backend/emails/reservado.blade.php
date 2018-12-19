@@ -51,7 +51,7 @@ En todas nuestras reservas están incluidas las Sábanas y toallas. <br>
 Para realizar una reserva se debe de abonar el 50% del importe total.<br>
 El segundo pago con el 50% restante, se realizará 15 días antes de la entrada.<br><br>
 
-<b>Hora de Entrada: La entrega de llaves la realizamos en el propio edifico entre las 17 a 19.30 Horas</b><br><br>
+<b>Hora de Entrada: La entrega de llaves la realizamos en el propio edifico entre las 17.30 a 19.30 Horas</b><br><br>
 La entrega de llaves fuera de horario puede llevar gastos por el tiempo de espera.<br><br>
 
 10€ Si llegas entre 20:00 h de las 22.00<br><br>
