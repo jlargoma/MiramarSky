@@ -101,13 +101,14 @@ setlocale(LC_TIME, "es_ES");
 
                                     <?php if($calendars[$x]->finish == $inicio->copy()->format('Y-m-d') && $calendars[$x]->type_book != 5): ?>
                                     <a
-                                        <?php if ( Auth::user()->role != "agente"): ?>
+                                        <?php if ( Auth::user()->role != "agente" && Auth::user()->role != "limpieza")
+                                        : ?>
                                         href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>"
                                         <?php endif ?>
 
                                         <?php //getAgency
                                         $agency = ($calendars[$x]->agency != 0)?"Agencia: ".$calendars[$x]->getAgency($calendars[$x]->agency):"";
-                                        if (Auth::user()->role != "agente")
+                                        if (Auth::user()->role != "agente" && Auth::user()->role != "limpieza")
                                         {
                                             $titulo =
                                                 $calendars[$x]->customer['name'].'&#10'.
@@ -136,11 +137,11 @@ setlocale(LC_TIME, "es_ES");
                                     <?php elseif ($calendars[$x]->start == $inicio->copy()->format('Y-m-d') && $calendars[$x]->type_book != 5 ): ?>
 
                                     <a
-                                        <?php if ( Auth::user()->role != "agente"): ?>href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>"  <?php endif ?>
+                                        <?php if ( Auth::user()->role != "agente" && Auth::user()->role != "limpieza"): ?>href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>"  <?php endif ?>
 
                                     <?php
                                     $agency = ($calendars[$x]->agency != 0)?"Agencia: ".$calendars[$x]->getAgency($calendars[$x]->agency):"";
-                                    if (Auth::user()->role != "agente")
+                                    if (Auth::user()->role != "agente" && Auth::user()->role != "limpieza")
                                     {
                                         $titulo =
                                             $calendars[$x]->customer['name'].'&#10'.
@@ -173,10 +174,10 @@ setlocale(LC_TIME, "es_ES");
                                     <?php else: ?>
                                     <?php if ($calendars[$x]->type_book != 9 && $calendars[$x]->type_book != 5): ?>
                                     <a
-                                        <?php if ( Auth::user()->role != "agente"): ?>href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" <?php endif ?>
+                                        <?php if ( Auth::user()->role != "agente" && Auth::user()->role != "limpieza"): ?>href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" <?php endif ?>
                                     <?php
                                     $agency = ($calendars[$x]->agency != 0)?"Agencia: ".$calendars[$x]->getAgency($calendars[$x]->agency):"";
-                                    if (Auth::user()->role != "agente")
+                                    if (Auth::user()->role != "agente" && Auth::user()->role != "limpieza")
                                     {
                                         $titulo =
                                             $calendars[$x]->customer['name'].'&#10'.
@@ -216,7 +217,7 @@ setlocale(LC_TIME, "es_ES");
                                     <?php
                                     $agency = ($calendars[0]->agency != 0)?"Agencia: ".$calendars[0]->getAgency($calendars[0]->agency):"";
 
-                                    if (Auth::user()->role != "agente")
+                                    if (Auth::user()->role != "agente" && Auth::user()->role != "limpieza")
                                     {
                                         $titulo =
                                             $calendars[0]->customer['name'].'&#10'.
@@ -251,7 +252,7 @@ setlocale(LC_TIME, "es_ES");
                                     <?php
                                     $agency = ($calendars[0]->agency != 0)?"Agencia: ".$calendars[0]->getAgency($calendars[0]->agency):"";
 
-                                    if (Auth::user()->role != "agente")
+                                    if (Auth::user()->role != "agente" && Auth::user()->role != "limpieza")
                                     {
                                         $titulo =
                                             $calendars[0]->customer['name'].'&#10'.
@@ -287,7 +288,7 @@ setlocale(LC_TIME, "es_ES");
                                         style='border:1px solid grey;width: 24px; height: 20px;'
                                         <?php
                                         $agency = ($calendars[0]->agency != 0)?"Agencia: ".$calendars[0]->getAgency($calendars[0]->agency):"";
-                                        if (Auth::user()->role != "agente")
+                                        if (Auth::user()->role != "agente" && Auth::user()->role != "limpieza")
                                         {
                                             $titulo =
                                                 $calendars[0]->customer['name'].'&#10'.
@@ -315,7 +316,7 @@ setlocale(LC_TIME, "es_ES");
                                         &nbsp;
                                     </div>
                                     <?php else: ?>
-                                    <a <?php if ( Auth::user()->role != "agente"): ?>href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[0]->id ?>"<?php endif ?>>
+                                    <a <?php if ( Auth::user()->role != "agente" && Auth::user()->role != "limpieza"): ?>href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[0]->id ?>"<?php endif ?>>
                                         <div style="width: 100%;height: 100%">
                                             &nbsp;
                                         </div>

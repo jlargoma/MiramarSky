@@ -104,7 +104,31 @@
 
 <?php elseif( $type == 'checkout'): ?>
 	@include('backend.planning.listados._checkout', ['books' => $books ])
+	<?php if (Auth::user()->role != "limpieza"): ?>
+	<script>
+	  $('.table-data').dataTable({
+		"searching": false,
+		"paging":   false,
+		"order": [[ 3, "asc" ]],
+		"columnDefs": [
+		  {"targets": [0,1,2,4,5,6], "orderable": false }
+		],
 
+	  });
+	</script>
+	<?php else: ?>
+	<script>
+	  $('.table-data').dataTable({
+		"searching": false,
+		"paging":   false,
+		"order": [[ 3, "asc" ]],
+		"columnDefs": [
+		  {"targets": [0,1,2,4,5], "orderable": false }
+		],
+
+	  });
+	</script>
+	<?php endif ?>
 <?php elseif( $type == 'eliminadas'): ?>
 	@include('backend.planning.listados._eliminadas', ['books' => $books ])
 <?php endif ?>
