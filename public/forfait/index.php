@@ -111,6 +111,25 @@
                 display:none;
             }
         }
+        
+/*        input#cc_pan, input#cc_cvc{
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                 display: none; <- Crashes Chrome on hover 
+                -webkit-appearance: none;
+                margin: 0;  <-- Apparently some margin are still there even though it's hidden 
+            }
+        }*/
+        
+/*        input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }*/
+        
     </style>
 </head>
 
@@ -1388,10 +1407,10 @@
                                     <div id="cc" class="form-group col-sm-12 text-center">
                                         <div id="cc" class="form-group col-sm-12 text-center h4" style="margin-bottom:0;">Datos de Pago</div>
                                         <div id="cc" class="form-group col-sm-12 text-center h5" style="margin-bottom:8px;">Tarjeta Débito/Crédito</div>
-                                        <input type="text" min="16" max="16" name="cc_pan" placeholder="Número Tarjeta"/>
+                                        <input type="text" min="16" max="16" name="cc_pan" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "16" placeholder="Número Tarjeta"/>
                                         <input type="text" name="cc_name" placeholder="Nombre completo"/>
-                                        <input type="text" name="cc_expiry" placeholder="Expiración MM/YY"/>
-                                        <input type="text" min="3" max="3" name="cc_cvc" placeholder="CVC"/>
+                                        <input type="text" name="cc_expiry" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "4" placeholder="Expiración MM/YY"/>
+                                        <input type="text" name="cc_cvc" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "3" placeholder="CVC"/>
                                     </div>
                                       <div class="form-group col-xs-12 text-center" style="margin-top: 20px;">
                                           <button type="button" class="btn btn-primary btn-lg text-center" id="confirm-reserva">Solicitar reserva</button>
@@ -1430,26 +1449,26 @@
             var maxClients  = 10;
             var minClients  = 0;
             $('.count-clients').val(clients);
-         //añadir clientes
-         $(".add-client").click(function(){
-            var actualClients = $(this).parent().parent().children('.count-clients').val();
-            if(actualClients < maxClients)
-            {
-               actualClients = parseInt(actualClients) + 1;
-               $(this).parent().parent().children('.count-clients').val(actualClients);
-            } else 
-               swal("Oops!", "Solo permitimos un maximo de "+ maxClients +"personas por reserva", "info");  
-         });
+            //añadir clientes
+            $(".add-client").click(function(){
+               var actualClients = $(this).parent().parent().children('.count-clients').val();
+               if(actualClients < maxClients)
+               {
+                  actualClients = parseInt(actualClients) + 1;
+                  $(this).parent().parent().children('.count-clients').val(actualClients);
+               } else 
+                  swal("Oops!", "Solo permitimos un maximo de "+ maxClients +"personas por reserva", "info");  
+            });
 
-         //restar clientes
-         $(".rest-clients").click(function(){
-            var actualClients = $(this).parent().parent().children('.count-clients').val();
-            if(parseInt(actualClients) > 0)
-            {
-               actualClients = parseInt(actualClients) - 1;
-               $(this).parent().parent().children('.count-clients').val(actualClients);
-            } 
-         });
+            //restar clientes
+            $(".rest-clients").click(function(){
+               var actualClients = $(this).parent().parent().children('.count-clients').val();
+               if(parseInt(actualClients) > 0)
+               {
+                  actualClients = parseInt(actualClients) - 1;
+                  $(this).parent().parent().children('.count-clients').val(actualClients);
+               } 
+            });
          });
       
     </script>
@@ -2413,6 +2432,63 @@
                     scrollTop: input_div.parent('div').parent('div').offset().top
                 }, 2000);
             });
+        });
+        
+//        reg_cc_pan = /^\d+$/;
+//        
+//        $('input[name="cc_pan"]').bind('keyup', function(e) {
+//            e.preventDefault();
+//            
+//            console.log(e.key);
+//            console.log(reg_cc_pan.test(e.key));
+//            
+//           
+//        });
+//        
+//        $('input[name="cc_expiry"]').bind('keyup', function(e) {
+//            console.log(e.key);
+//        });
+//        
+//        $('input[name="cc_cvc"]').bind('keyup', function(e) {
+//            console.log(e.key);
+//        });
+
+            
+        // Restricts input for each element in the set of matched elements to the given inputFilter.
+        (function($) {
+          $.fn.inputFilter = function(inputFilter) {
+            return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
+              if (inputFilter(this.value)) {
+                this.oldValue = this.value;
+                this.oldSelectionStart = this.selectionStart;
+                this.oldSelectionEnd = this.selectionEnd;
+              } else if (this.hasOwnProperty("oldValue")) {
+                this.value = this.oldValue;
+                this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+              }
+            });
+          };
+        }(jQuery));
+
+        // Install input filters.
+        $('input[name="cc_pan"],input[name="cc_cvc"]').inputFilter(function(value) {
+            return /^-?\d*$/.test(value);
+        });
+        
+        $('input[name="cc_expiry"]').inputFilter(function(value){
+            return /^-?\d*$/.test(value);
+        });
+        
+        $('input[name="cc_expiry"]').on('keydown keyup mouseup ',function(){
+            
+            input = $(this);
+            new_string = $(this).val();
+
+            setTimeout(function(){
+                if(new_string.length > 2 && new_string.indexOf('/') < 0){
+                   input.val(new_string.slice(0, 2)+'/'+new_string.slice(2, 5));
+                }
+            },200);
         });
 
     </script>
