@@ -12,8 +12,6 @@
 
 <script type="text/javascript" src="{{asset('/frontend/js/jquery.flip/1.1.2/jquery.flip.min.js')}}"></script>
 
-<script type="text/javascript" src="{{asset('/frontend/js/moment.min.js')}}">/script>
-
 <?php /* view para todos los scripts generales de la pagina */ ?>
 
 <!-- general scripts -->
@@ -153,9 +151,9 @@
             $("#content-book-response").flip(true);
             if (data.specialSegment != false) {
               $('.content-alert-min-special-days').append('<h2 class="text-center text-white white" ' +
-                  'style="line-height: 1; letter-spacing: -1px;">ESTANCIA M√çNIMA EN ' +
+                  'style="line-height: 1; letter-spacing: -1px;">ESTANCIA M√?NIMA EN ' +
                   'ESTAS ' +
-                  'FECHAS: ' + minDays + ' D√çAS</h2>');
+                  'FECHAS: ' + minDays + ' D√?AS</h2>');
             }
           });
         } else {

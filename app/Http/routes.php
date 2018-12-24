@@ -11,6 +11,8 @@
    |
    */
 
+    use App\Http\Controllers\ForfaitsController;
+
    /*ICalendar links*/
    Route::post( '/ical/import/saveUrl' , 'ICalendarController@saveUrl' );
    Route::get( '/ical/urls/deleteUrl' , 'ICalendarController@deleteUrl' );
@@ -602,6 +604,7 @@
     Route::post( '/ajax/forfaits/updateCommissions' , 'FortfaitsController@updateCommissions');
     Route::post( '/ajax/forfaits/updatePayments' , 'FortfaitsController@updatePayments');
     Route::post( '/ajax/forfaits/requestPriceForfaits' , 'FortfaitsController@requestPriceForfaits');
+    Route::post( '/ajax/forfaits/deleteRequestPopup' , ['middleware' => 'authAdmin' , 'uses' => 'FortfaitsController@deleteRequestPopup'] );
 
 //AGENTES
     

@@ -131,6 +131,7 @@
         }*/
         
     </style>
+    <script src='https://www.google.com/recaptcha/api.js?render=6LdhI4MUAAAAANE2coqXR4cw1mgggC40BVcETwKT'></script>
 </head>
 
 <body class="stretched no-transition" >
@@ -139,7 +140,7 @@
     <div id="wrapper" class="clearfix" style="padding-bottom: 0px">
         <!-- Form for Reserve forfait2
         ============================================-->  
-    <form role="form" id='form' method="post" action="/solicitudForfait" style="margin-bottom: 0px">
+    <form role="form" id="form" method="post" action="/solicitudForfait" style="margin-bottom: 0px">
       <section id="content" style="background-image: url('../img/fortfait/background.jpg') !important; background-repeat: no-repeat; background-size: cover;">
           <div class="content-wrap nopadding">
               <div id="section-works"  class="full-screen" style="padding-top:5px;overflow: scroll">
@@ -200,10 +201,10 @@
                                             <div id="requests_header" class="form-group col-md-12 col-xs-12 push-10">
                                                 <div class="col-lg-2">*Seleccione</div>
                                                 <div class="col-lg-3">
-                                                    <input class="sm-form-control datepicker_init_start_date" type="text" name="date-entrada" id="date-entrada" name="example-daterange1" placeholder="Desde" maxlength="10" required>
+                                                    <input class="sm-form-control datepicker_init_start_date" type="text" name="date-entrada1" id="date-entrada" name="example-daterange1" placeholder="Desde" maxlength="10" required>
                                                 </div>
                                                 <div class="col-lg-3">
-                                                    <input class="sm-form-control datepicker_init_end_date" type="text" name="date-salida" id="date-salida" name="example-daterange1" placeholder="Hasta" maxlength="10" required>
+                                                    <input class="sm-form-control datepicker_init_end_date" type="text" name="date-salida1" id="date-salida" name="example-daterange1" placeholder="Hasta" maxlength="10" required>
                                                 </div>
                                                 <div class="col-lg-2">
                                                     <input type="text" name="request_days" class="form-control request_days" placeholder="0" disabled="disabled">
@@ -224,11 +225,11 @@
                                             <div id="requests_header" class="form-group col-md-12 col-xs-12 push-10" style="margin: 8px 0 8px 0 !important;">
                                                 <div class="col-xs-12">*Primer día de Esquí</div>
                                                 <div class="col-xs-12">
-                                                    <input class="sm-form-control datepicker_init_start_date" type="text" name="date-entrada" id="date-entrada" name="example-daterange1" placeholder="Desde" maxlength="10" required>
+                                                    <input class="sm-form-control datepicker_init_start_date" type="text" name="date-entrada1" id="date-entrada" name="example-daterange1" placeholder="Desde" maxlength="10" required>
                                                 </div>
                                                 <div class="col-xs-12">*Última día de Esquí</div>
                                                 <div class="col-xs-12">
-                                                    <input class="sm-form-control datepicker_init_end_date" type="text" name="date-salida" id="date-salida" name="example-daterange1" placeholder="Hasta" maxlength="10" required>
+                                                    <input class="sm-form-control datepicker_init_end_date" type="text" name="date-salida1" id="date-salida" name="example-daterange1" placeholder="Hasta" maxlength="10" required>
                                                 </div>
                                                 <div class="col-xs-12">Días</div>
                                                 <div class="col-xs-12">
@@ -1509,7 +1510,7 @@
         });
 
         function checkForfaitDates(){
-            if(start_date = $('div#requests_header input[name="date-entrada"]').val().length > 0 && $('div#requests_header input[name="date-salida"]').val().length > 0){
+            if(start_date = $('div#requests_header input[name="date-entrada1"]').val().length > 0 && $('div#requests_header input[name="date-salida1"]').val().length > 0){
                 return true;
             }else{
 //                console.log(false);
@@ -1525,8 +1526,8 @@
         
         function requestPrice(cont,type,subtype,quantity,times,ski_type = null,material_type = null){
             
-            start_date = $('div#requests_header input[name="date-entrada"]').val();
-            end_date = $('div#requests_header input[name="date-salida"]').val();
+            start_date = $('div#requests_header input[name="date-entrada1"]').val();
+            end_date = $('div#requests_header input[name="date-salida1"]').val();
             
 //            console.log(cont);
 //            console.log(start_date);
@@ -2260,8 +2261,8 @@
         }
         
         function set_dates(){
-            start_date = $('div#requests_header input[name="date-entrada"]').val();
-            end_date = $('div#requests_header input[name="date-salida"]').val();
+            start_date = $('div#requests_header input[name="date-entrada1"]').val();
+            end_date = $('div#requests_header input[name="date-salida1"]').val();
             
 //            console.log(start_date);
 //            console.log(end_date);
@@ -2346,8 +2347,8 @@
             bind_extra_datepicker_changes();
         });
         
-        $('div#requests_header input[name="date-entrada"], div#requests_header input[name="date-salida"]').change(function(){
-            if($('input[name="date-entrada"]').val().length > 0 && $('input[name="date-salida"]').val().length > 0){
+        $('div#requests_header input[name="date-entrada1"], div#requests_header input[name="date-salida1"]').change(function(){
+            if($('input[name="date-entrada1"]').val().length > 0 && $('input[name="date-salida1"]').val().length > 0){
 //                $('select#forfatis_number').prop("disabled", false);
 //                $('select#forfatis_number').removeAttr("disabled");
                 set_dates();
@@ -2489,6 +2490,10 @@
                    input.val(new_string.slice(0, 2)+'/'+new_string.slice(2, 5));
                 }
             },200);
+        });
+        
+        $('input.datepicker_init_start_date').inputFilter(function(value){
+            return /^[0-9]{2}[\/][0-9]{2}[\/][0-9]{4}$/g.test(value);
         });
 
     </script>

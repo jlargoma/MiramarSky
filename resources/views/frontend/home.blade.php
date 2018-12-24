@@ -427,19 +427,19 @@
                 <div class="row text-center">
                     <div class="col-sm-4">
                         <div class="claim-icons-img">
-                            <img src="{{ asset('/img/miramarski/índice.png')}}" alt="" data-pagespeed-url-hash="1295597102" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                            <img src="{{ asset('/img/miramarski/índice.png')}}" alt="">
                         </div>
                         <span class="forfait_icons">Compra tu forfait y <strong>sáltate las colas</strong></span>
                     </div>
                     <div class="col-sm-4">
                         <div class="claim-icons-img">
-                            <img src="{{ asset('/img/miramarski/xf-claim-big-02.png.pagespeed.ic.Sh4LtLXCHL.png')}}" alt="" data-pagespeed-url-hash="1590097023" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                            <img src="{{ asset('/img/miramarski/xf-claim-big-02.png.pagespeed.ic.Sh4LtLXCHL.png')}}" alt="">
                         </div>
                         <span class="forfait_icons">Vendedores de forfait <strong>oficiales</strong></span>
                     </div>
                     <div class="col-sm-4">
                         <div class="claim-icons-img">
-                            <img src="{{ asset('/img/miramarski/xf-claim-big-03.png.pagespeed.ic.Ft9dDSXnTr.png')}}" alt="" data-pagespeed-url-hash="1884596944" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                            <img src="{{ asset('/img/miramarski/xf-claim-big-03.png.pagespeed.ic.Ft9dDSXnTr.png')}}" alt="">
                         </div>
                         <span class="forfait_icons"><strong>Cancelación Gratuita</strong> hasta 48 horas antes</span>
                     </div>

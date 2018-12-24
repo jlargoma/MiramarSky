@@ -274,7 +274,8 @@
             <th class="bg-success text-white text-center" style="min-width:55px">PVP</th>
             <th class="bg-success text-white text-center" style="min-width:30px ">Hor</th>
             <th class="bg-success text-white text-center" style="min-width:50px">In</th>
-            <th class="bg-success text-white text-center" style="min-width:50px ">Out</th>
+            <th class="bg-success text-white text-center" style="min-width:50px ">Out2</th>
+            <th class="bg-success text-white text-center" style="min-width:50px">FF</th>
             <th class="bg-success text-white text-center">Pax</th>
             
             <th class="bg-success text-white text-center"><i class="fa fa-moon-o"></i></th>
@@ -390,6 +391,22 @@
 	                <?php $finish = Carbon::createFromFormat('Y-m-d',$book->finish);?>
                     <td class ="text-center" data-order="<?php echo strtotime($finish->copy()->format('Y-m-d'))?>"  style="width: 20%!important">
 		                <?php echo $finish->formatLocalized('%d %b'); ?>
+                    </td>
+                    
+                    <td class="text-center">
+                        <a href="/admin/reservas/ff_status_popup/<?php echo $book->id; ?>" onclick="window.open(this.href, 'Reserva - FF','left=400,top=20,width=1200,height=900,toolbar=0,resizable=0'); return false;" >
+                            <?php
+                                if($book->ff_status == 0){
+                                    echo '<img src="'.asset('/img/miramarski/ski_icon_status_transparent.png').'" style="max-width:30px;"/>';
+                                }elseif($book->ff_status == 1){
+                                    echo '<img src="'.asset('/img/miramarski/ski_icon_status_grey.png').'" style="max-width:30px;"/>';
+                                }elseif($book->ff_status == 2){
+                                    echo '<img src="'.asset('/img/miramarski/ski_icon_status_red.png').'" style="max-width:30px;"/>';
+                                }elseif($book->ff_status == 3){
+                                    echo '<img src="'.asset('/img/miramarski/ski_icon_status_green.png').'" style="max-width:30px;"/>';
+                                }
+                            ?>
+                        </a>
                     </td>
                     
                     <td class ="text-center" >

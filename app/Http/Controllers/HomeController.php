@@ -640,12 +640,12 @@ class HomeController extends Controller
       $solicitud->email  = $data['email'];
       $solicitud->phone  = $data['telefono'];
       
-      if(!empty($data['date-entrada'])){
-          $solicitud->start  = Carbon::createFromFormat('d-m-Y', $data['date-entrada'])->format('Y-m-d');
+      if(!empty($data['date-entrada1'])){
+          $solicitud->start  = Carbon::createFromFormat('d-m-Y', $data['date-entrada1'])->format('Y-m-d');
       }
       
-      if(!empty($data['date-salida'])){
-          $solicitud->finish = Carbon::createFromFormat('d-m-Y', $data['date-salida'])->format('Y-m-d');
+      if(!empty($data['date-salida1'])){
+          $solicitud->finish = Carbon::createFromFormat('d-m-Y', $data['date-salida1'])->format('Y-m-d');
       }
 
       if(!isset($data['prices'])){
