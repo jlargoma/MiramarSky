@@ -201,8 +201,8 @@
    Route::get( 'admin/temporadas' , ['middleware' => 'authAdmin' , 'uses' => 'SeasonsController@index'] );
    Route::get( 'admin/temporadas/new' , ['middleware' => 'authAdmin' , 'uses' => 'SeasonsController@newSeasons'] );
    Route::get( 'admin/temporadas/new-type' , ['middleware' => 'authAdmin' , 'uses' => 'SeasonsController@newTypeSeasons'] );
-   Route::get( 'admin/temporadas/update/{}' , ['middleware' => 'authAdmin' , 'uses' => 'SeasonsController@update'] );
-   Route::post( 'admin/temporadas/update/{}' , ['middleware' => 'authAdmin' , 'uses' => 'SeasonsController@update'] );
+   Route::get( 'admin/temporadas/update/{id}' , ['middleware' => 'authAdmin' , 'uses' => 'SeasonsController@update'] );
+   Route::post( 'admin/temporadas/update/{id}' , ['middleware' => 'authAdmin' , 'uses' => 'SeasonsController@update'] );
    Route::post( 'admin/temporadas/saveupdate' , ['middleware' => 'authAdmin' , 'uses' => 'SeasonsController@saveUpdate'] );
    Route::post( 'admin/temporadas/create' , ['middleware' => 'authAdmin' , 'uses' => 'SeasonsController@create'] );
    Route::post( 'admin/temporadas/create-type' , ['middleware' => 'authAdmin' , 'uses' => 'SeasonsController@createType'] );
