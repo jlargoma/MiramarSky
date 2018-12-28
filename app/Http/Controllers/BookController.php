@@ -91,13 +91,18 @@ class BookController extends Controller
                                         ->where(
                                             [
                                                 [
-                                                    'start', '>=', $date->copy()
+                                                    'start',
+                                                    '>=',
+                                                    $date->copy()
                                                 ],
                                                 [
-                                                    'start', '<=', $date->copy()->addYear()
+                                                    'start',
+                                                    '<=',
+                                                    $date->copy()->addYear()
                                                 ],
                                                 [
-                                                    'user_id', Auth::user()->id
+                                                    'user_id',
+                                                    Auth::user()->id
                                                 ]
                                             ]
                                         )
@@ -516,6 +521,7 @@ class BookController extends Controller
 
         // We are passing wrong data from this to view by using $book data, in order to correct data
         // an AJAX call has been made after rendering the page.
+        $hasFiance = \App\Fianzas::where('book_id', $book->id)->first();
 
         return view('backend/planning/update', [
             'book'         => $book,
@@ -526,6 +532,7 @@ class BookController extends Controller
             'typecobro'    => new \App\Book(),
             'totalpayment' => $totalpayment,
             'mobile'       => new Mobile(),
+            'hasFiance'    => $hasFiance,
             'stripe'       => StripeController::$stripe,
         ]);
     }
@@ -1487,7 +1494,7 @@ class BookController extends Controller
                                   ->where('type_book', 2)
                                   ->orderBy('finish', 'ASC')
                                   ->get();
-	            break;
+                break;
             case 'eliminadas':
                 $books = \App\Book::where('start', '>', $date->copy()->subDays(3))
                                   ->where('start', '<', $date->copy()->addYear())

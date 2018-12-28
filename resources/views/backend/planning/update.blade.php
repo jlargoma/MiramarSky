@@ -744,10 +744,10 @@
                     </div>
                 <?php endif ?>
                 <div class="row">
-					<?php $hasFiance = \App\Fianzas::where('book_id', $book->id)->get(); ?>
+
                     <div class="col-xs-12 push-20 ">
 						<?php if ($book->type_book == 2): ?>
-                            <?php if ( count($hasFiance) > 0): ?>
+                            <?php if ( !$hasFiance):  ?>
                                 <div class="col-md-6">
 
                                     <button class="btn btn-primary btn-lg" type="button" id="fianza"> COBRAR FIANZA</button>
@@ -761,24 +761,21 @@
 						<?php endif ?>
                     </div>
 					<?php if ($book->type_book == 2): ?>
-                    <div class="row content-fianza" style="display: none;">
-						<?php if ( count($hasFiance) > 0): ?>
-                        <div class="col-md-6 col-md-offset-3 alert alert-info fade in alert-dismissable"
-                             style="margin-top: 30px; background-color: #10cfbd70!important;">
-                            <h3 class="text-center font-w300">
-                                CARGAR LA FIANZA DE <span class="font-w800"><?php echo($hasFiance->amount / 100) ?>
-                                    €</span>
-                            </h3>
-                            <div class="row">
-                                <form action="{{ url('admin/reservas/stripe/pay/fianza') }}" method="post">
-                                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                    <input type="hidden" name="id_fianza" value="<?php echo $hasFiance->id; ?>">
-                                    <div class="col-xs-12 text-center">
-                                        <button class="btn btn-primary">COBRAR</button>
-                                    </div>
-                                </form>
+                    <div class="row content-fianza" >
+						<?php if ( $hasFiance ): ?>
+                            <div class="col-md-6 col-md-offset-3 alert alert-info fade in alert-dismissable" style="margin-top: 30px; background-color: #10cfbd70!important;">
+                                <h3 class="text-center font-w300"> CARGAR LA FIANZA DE <span class="font-w800"><?php echo($hasFiance->amount / 100) ?> €</span>
+                                </h3>
+                                <div class="row">
+                                    <form action="{{ url('admin/reservas/stripe/pay/fianza') }}" method="post">
+                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                        <input type="hidden" name="id_fianza" value="<?php echo $hasFiance->id; ?>">
+                                        <div class="col-xs-12 text-center">
+                                            <button class="btn btn-primary">COBRAR</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
 						<?php endif ?>
 
                     </div>
@@ -1150,47 +1147,44 @@
             </div>
 
             <div class="col-md-6 col-xs-12 padding-block">
-                <div class="row push-20">
-					<?php $hasFiance = \App\Fianzas::where('book_id', $book->id)->get(); ?>
+                <div class="row">
                     <div class="col-xs-12 push-20 ">
 						<?php if ($book->type_book == 2): ?>
-                            <?php if ( count($hasFiance) > 0): ?>
-                                <div class="col-md-6 col-xs-12 text-center">
-                                    <button class="btn btn-primary btn-lg" type="button" id="fianza"
-                                            style="color: #fff;background-color: #337ab7;border-color: #2e6da4;"> COBRAR FIANZA
-                                    </button>
+                        <?php if ( $hasFiance ): ?>
+                        <div class="col-md-6">
+
+                                    <button class="btn btn-primary btn-lg" type="button" id="fianza"> COBRAR FIANZA</button>
                                 </div>
-                            <?php else: ?>
-                                <div class="col-md-6 col-xs-12 text-center">
+                        <?php else: ?>
+                        <div class="col-md-6">
                                     <a class="btn btn-primary btn-lg"
-                                       href="{{ url('/admin/reservas/fianzas/cobrar/'.$book->id) }}"
-                                       style="color: #fff;background-color: #337ab7;border-color: #2e6da4;"> RECOGER FIANZA</a>
+                                       href="{{ url('/admin/reservas/fianzas/cobrar/'.$book->id) }}"> RECOGER FIANZA</a>
                                 </div>
-                            <?php endif ?>
-						<?php endif ?>
+                        <?php endif ?>
+                        <?php endif ?>
                     </div>
-					<?php if ($book->type_book == 2): ?>
+                    <?php if ($book->type_book == 2): ?>
                     <div class="row content-fianza" style="display: none;">
-						<?php if ( count($hasFiance) > 0): ?>
-                        <div class="col-md-6 col-md-offset-3 alert alert-info fade in alert-dismissable"
-                             style="margin-top: 30px; background-color: #10cfbd70!important;">
-                            <h3 class="text-center font-w300">
-                                CARGAR LA FIANZA
-                            </h3>
-                            <div class="row">
-                                <form action="{{ url('admin/reservas/stripe/pay/fianza') }}" method="post">
-
-                                    <input type="hidden" name="id_fianza" value="<?php echo $hasFiance->id; ?>">
-                                    <div class="col-xs-12 text-center">
-                                        <button class="btn btn-primary">COBRAR</button>
-                                    </div>
-                                </form>
+						<?php if (  $hasFiance ): ?>
+                            <div class="col-md-6 col-md-offset-3 alert alert-info fade in alert-dismissable"
+                                 style="margin-top: 30px; background-color: #10cfbd70!important;">
+                                <h3 class="text-center font-w300">
+                                    CARGAR LA FIANZA DE <span class="font-w800"><?php echo($hasFiance->amount / 100) ?>
+                                        €</span>
+                                </h3>
+                                <div class="row">
+                                    <form action="{{ url('admin/reservas/stripe/pay/fianza') }}" method="post">
+                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                        <input type="hidden" name="id_fianza" value="<?php echo $hasFiance->id; ?>">
+                                        <div class="col-xs-12 text-center">
+                                            <button class="btn btn-primary">COBRAR</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
-						<?php endif ?>
-
+                        <?php endif ?>
                     </div>
-					<?php endif; ?>
+                    <?php endif; ?>
                 </div>
                 <?php if ( Auth::user()->role != "limpieza"):?>
                     <div class="row">
