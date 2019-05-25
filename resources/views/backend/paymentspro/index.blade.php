@@ -197,7 +197,9 @@
 	    							
 	    						</td>
 	    						<td class="text-center" style="padding: 8px;">
-	    							<?php $benPercentage = ($beneficio/$summary['totalPVP'])*100;?>
+	    							<?php $summary['totalPVP'] = ($summary['totalPVP'] == 0) ? 1 :
+	    							$summary['totalPVP']; ?>
+	    							<?php $benPercentage = ($beneficio/ $summary['totalPVP'])*100;?>
 	    							<?php  echo number_format($benPercentage,0,',','.') ?>%
 	    						</td>
 	    						<td class="text-center" style="padding: 8px;">

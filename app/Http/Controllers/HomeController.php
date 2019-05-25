@@ -25,8 +25,9 @@ class HomeController extends Controller
     */
    public function index(Request $request)
    {
+   	    return redirect('admin/reservas');
       /* Detectamos el tipo de dispositivo*/
-      $mobile = new Mobile();
+      /*$mobile = new Mobile();
 
       if (!$mobile->isMobile())
       {
@@ -49,7 +50,7 @@ class HomeController extends Controller
          'cookie'         => $cookie,
          'mobile'         => $mobile,
          'slidesEdificio' => $slides,
-      ]);
+      ]);*/
    }
 
 

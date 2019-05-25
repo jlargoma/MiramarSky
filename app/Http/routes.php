@@ -25,61 +25,62 @@
    } );
 
    Route::auth();
-   Route::get( '/' , 'HomeController@index' )->middleware( 'web' );
-        Route::get( '/homeTest' , 'HomeTestController@index' )->middleware( 'web' );
-        Route::get( '/homeTest' , 'HomeTestController@index' )->middleware( 'web' );
-   Route::get( '/sitemap' , 'HomeController@siteMap' )->middleware( 'web' );
-   Route::get( '/apartamentos/galeria/{apto}' , 'HomeController@galeriaApartamento' )->middleware( 'web' );
-   Route::get( '/apartamentos/{apto}' , 'HomeController@apartamento' )->middleware( 'web' );
-   Route::get( '/fotos/{apto}' , 'HomeController@apartamento' )->middleware( 'web' );
-   Route::get( '/edificio-miramarski-sierra-nevada' , 'HomeController@edificio' )->middleware( 'web' );
-   Route::get( '/contacto' , 'HomeController@contacto' )->middleware( 'web' );
+   Route::get( '/' , 'HomeController@index' )->middleware( 'auth' );
+//        Route::get( '/homeTest' , 'HomeTestController@index' )->middleware( 'web' );
+//        Route::get( '/homeTest' , 'HomeTestController@index' )->middleware( 'web' );
+//   Route::get( '/sitemap' , 'HomeController@siteMap' )->middleware( 'web' );
+//   Route::get( '/apartamentos/galeria/{apto}' , 'HomeController@galeriaApartamento' )->middleware( 'web' );
+//   Route::get( '/apartamentos/{apto}' , 'HomeController@apartamento' )->middleware( 'web' );
+//   Route::get( '/fotos/{apto}' , 'HomeController@apartamento' )->middleware( 'web' );
+//   Route::get( '/edificio-miramarski-sierra-nevada' , 'HomeController@edificio' )->middleware( 'web' );
+//   Route::get( '/contacto' , 'HomeController@contacto' )->middleware( 'web' );
+//
+//   /*Correos Frontend */
+//   Route::post( '/contacto-form' , 'HomeController@formContacto' );
+//   Route::post( '/contacto-ayuda' , 'HomeController@formAyuda' );
+//   Route::post( '/contacto-propietario' , 'HomeController@formPropietario' );
+//   Route::post( '/contacto-grupos' , 'HomeController@formGrupos' );
+//
+//   /* Correos Frontend */
+//   Route::get( '/terminos-condiciones' , 'HomeController@terminos' );
+//   Route::get( '/politica-cookies' , 'HomeController@politicaCookies' );
+//   Route::get( '/politica-privacidad' , 'HomeController@politicaPrivacidad' );
+//   Route::get( '/condiciones-generales' , 'HomeController@condicionesGenerales' );
+//   Route::get( '/preguntas-frecuentes' , 'HomeController@preguntasFrecuentes' );
+//   Route::get( '/eres-propietario' , 'HomeController@eresPropietario' );
+//   Route::get( '/grupos' , 'HomeController@grupos' );
+//   Route::get( '/quienes-somos' , 'HomeController@quienesSomos' );
+//   Route::get( '/ayudanos-a-mejorar' , 'HomeController@ayudanosAMejorar' );
+//   Route::get( '/aviso-legal' , 'HomeController@avisoLegal' );
+//   Route::get( '/huesped' , 'HomeController@huesped' );
+//   Route::get( '/el-tiempo' , 'HomeController@tiempo' );
+//   Route::get( '/condiciones-contratacion' , 'HomeController@condicionesContratacion' );
 
-   /*Correos Frontend */
-   Route::post( '/contacto-form' , 'HomeController@formContacto' );
-   Route::post( '/contacto-ayuda' , 'HomeController@formAyuda' );
-   Route::post( '/contacto-propietario' , 'HomeController@formPropietario' );
-   Route::post( '/contacto-grupos' , 'HomeController@formGrupos' );
 
-   /* Correos Frontend */
-   Route::get( '/terminos-condiciones' , 'HomeController@terminos' );
-   Route::get( '/politica-cookies' , 'HomeController@politicaCookies' );
-   Route::get( '/politica-privacidad' , 'HomeController@politicaPrivacidad' );
-   Route::get( '/condiciones-generales' , 'HomeController@condicionesGenerales' );
-   Route::get( '/preguntas-frecuentes' , 'HomeController@preguntasFrecuentes' );
-   Route::get( '/eres-propietario' , 'HomeController@eresPropietario' );
-   Route::get( '/grupos' , 'HomeController@grupos' );
-   Route::get( '/quienes-somos' , 'HomeController@quienesSomos' );
-   Route::get( '/ayudanos-a-mejorar' , 'HomeController@ayudanosAMejorar' );
-   Route::get( '/aviso-legal' , 'HomeController@avisoLegal' );
-   Route::get( '/huesped' , 'HomeController@huesped' );
-   Route::get( '/el-tiempo' , 'HomeController@tiempo' );
-   Route::get( '/condiciones-contratacion' , 'HomeController@condicionesContratacion' );
-
-
-   Route::get( '/restaurantes' , function () {
-
-      $mobile = new \App\Classes\Mobile();
-      return view( 'frontend.restaurantes' , ['mobile' => $mobile] );
-   } );
-   Route::post( '/getDiffIndays' , 'HomeController@getDiffIndays' );
-
-   Route::post( '/solicitudForfait' , 'HomeController@solicitudForfait' );
+//   Route::get( '/restaurantes' , function () {
+//
+//      $mobile = new \App\Classes\Mobile();
+//      return view( 'frontend.restaurantes' , ['mobile' => $mobile] );
+//   } );
+//   Route::post( '/getDiffIndays' , 'HomeController@getDiffIndays' );
+//
+//   Route::post( '/solicitudForfait' , 'HomeController@solicitudForfait' );
 
    Route::get( '/admin/links-stripe' , 'StripeController@link' );
 
-   /* SUPERMERCADO */
-   Route::get( '/supermercado' , function () {
-      return redirect( 'http://miramarski.com/supermercado' );
-   } );
-   /* FIN SUPERMERCADO */
+//   /* SUPERMERCADO */
+//   Route::get( '/supermercado' , function () {
+//      return redirect( 'http://miramarski.com/supermercado' );
+//   } );
+//   /* FIN SUPERMERCADO */
+//
+//   /* ENCUESTAS */
+//   Route::get( '/encuesta-satisfaccion/{id}' , 'QuestionsController@index' );
+//   Route::post( '/questions/vote' , 'QuestionsController@vote' );
+//
+//
+//   /* FIN ENCUESTAS*/
 
-   /* ENCUESTAS */
-   Route::get( '/encuesta-satisfaccion/{id}' , 'QuestionsController@index' );
-   Route::post( '/questions/vote' , 'QuestionsController@vote' );
-
-
-   /* FIN ENCUESTAS*/
    /* CRONTABS */
    Route::get( '/admin/reservas/api/checkSecondPay' , 'BookController@checkSecondPay' );
 
