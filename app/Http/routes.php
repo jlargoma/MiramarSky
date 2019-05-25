@@ -219,6 +219,7 @@
    Route::get( 'admin/pagos-propietarios/update/{id}/{month?}' , ['middleware' => 'authAdmin' , 'uses' => 'PaymentsProController@update'] );
    Route::get( 'admin/paymentspro/getBooksByRoom/{idRoom}' , 'PaymentsProController@getBooksByRoom' );
    Route::get( 'admin/paymentspro/getLiquidationByRoom' , 'PaymentsProController@getLiquidationByRoom' );
+   Route::get( 'admin/pagos-propietarios/get/historic_production/{room_id}' , ['middleware' => 'authAdmin' , 'uses' => 'PaymentsProController@getHistoricProduction'] );
 
 
 //Liquidacion
@@ -605,7 +606,12 @@
     Route::post( '/ajax/forfaits/updatePayments' , 'FortfaitsController@updatePayments');
     Route::post( '/ajax/forfaits/requestPriceForfaits' , 'FortfaitsController@requestPriceForfaits');
     Route::post( '/ajax/forfaits/deleteRequestPopup' , ['middleware' => 'authAdmin' , 'uses' => 'FortfaitsController@deleteRequestPopup'] );
-
+    Route::post( '/ajax/booking/getBookingAgencyDetails' , ['middleware' => 'authAdmin' , 'uses' => 'BookController@getBookingAgencyDetails'] );
+    
+    
+// ReCaptcha v3
+    Route::post( '/ajax/checkRecaptcha' , 'FortfaitsController@checkReCaptcha');
+    
 //AGENTES
     
     Route::post( '/admin/agentRoom/create' , 'SettingsController@createAgentRoom' );

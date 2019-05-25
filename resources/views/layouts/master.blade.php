@@ -323,7 +323,7 @@
 
     </div>
 
-    <div id="gotoTop" class="fa fa-chevron-up"></div>
+    <div id="gotoTop" class="fa fa-chevron-up" style="bottom:100px; right:15px;"></div>
 
     @include('layouts._generalScripts')
 

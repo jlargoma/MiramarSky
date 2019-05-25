@@ -164,6 +164,7 @@ setlocale(LC_TIME, "es_ES");
                 <div class="col-md-12 col-xs-12">
                     <div>
 						<?php $dataChartYear = \App\Rooms::getPvpByMonth($inicio->copy()->subYear()->format('Y')) ?>
+                                                <?php $dataChartPrevYear = \App\Rooms::getPvpByMonth($inicio->copy()->subYear()->subYear()->format('Y')) ?>
 
                         <canvas id="barChartTemp" style="width: 100%; height: 250px;"></canvas>
                     </div>
@@ -313,6 +314,17 @@ setlocale(LC_TIME, "es_ES");
 				<?php $aux = $inicio->copy()->subYears(1) ?>
                 label: '<?php echo $aux->copy()->format('Y')?>-<?php echo $aux->copy()->addYear()->format("Y")?>',
               borderColor: "rgba(104, 255, 0, 1)",
+              fill: false
+            },
+            {
+              data: [
+				  <?php foreach ($dataChartPrevYear as $key => $value): ?>
+                <?php echo "'" . round($value) . "'," ?>
+              <?php endforeach ?>
+              ],
+				<?php $aux = $inicio->copy()->subYears(1) ?>
+                label: '<?php echo $aux->copy()->subYear()->format('Y')?>-<?php echo $aux->copy()->format("Y")?>',
+              borderColor: "rgba(232, 142, 132, 1)",
               fill: false
             }
           ]

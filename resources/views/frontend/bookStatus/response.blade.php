@@ -73,7 +73,8 @@
 						<input type="hidden" name="type_luxury" value="2">
 					<?php endif; ?>
 					<button type="submit" class="button button-rounded button-reveal button-large button-green tright center hvr-grow-shadow font-s16" style="letter-spacing: 1px;"><i class="icon-angle-right"></i><span style=" font-size: 16px">SOLICITAR</span></button>
-				</form>
+                                        <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
+                                </form>
 			</div>
 	        <div class="col-md-5 col-xs-5">
 	        	<button onclick="unflip()" class="button button-rounded button-reveal button-large button-red tright center hvr-grow-shadow "><i class="icon-angle-right"></i><span>volver</span></button>
@@ -117,29 +118,57 @@
 		var type_luxury 		  = $('input[name="type_luxury"]').val();
 
 		var url = $(this).attr('action');
+                
+                public_key = '6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV';
+                
+                grecaptcha.ready(function() {
+                    grecaptcha.execute(public_key, {action: 'launch_form_submit'})
+                    .then(function(token) {
+                    // Verify the token on the server.
 
-		$.post( url , {
-				_token : _token,
-				newroom : newroom,
-				name : name,
-				email : email,
-				phone : phone,
-				fechas : fechas,
-				pax : pax,
-				nigths : nigths,
-				comments : comments,
-				from : from,
-				parking : <?php echo $parking; ?>,
-				agencia : agencia,
-				agency : agency,
-				book_comments : book_comments,
-				Suplujo : lujo,
-				type_luxury : type_luxury,
-			}, function(data) {
-		hideLoad();
-		$('#content-response').empty().append(data).fadeIn('300');
-				
-		});
+                        var recaptchaResponse = document.getElementById('recaptchaResponse');
+                        recaptchaResponse.value = token;
+                        
+                        $.ajax({
+                            type: "POST",
+                            url: "/ajax/checkRecaptcha",
+                            data: {token:token, public_key:public_key},
+                            dataType:'json',
+                            success: function(response){
+    //                            price = JSON.stringify(response).replace('.',',');
+//                                console.log(response.status);
+//                                alert(response.status);
+                                if(response.status == 'true'){
+                                    $.post( url , {
+                                        _token : _token,
+                                        newroom : newroom,
+                                        name : name,
+                                        email : email,
+                                        phone : phone,
+                                        fechas : fechas,
+                                        pax : pax,
+                                        nigths : nigths,
+                                        comments : comments,
+                                        from : from,
+                                        parking : <?php echo $parking; ?>,
+                                        agencia : agencia,
+                                        agency : agency,
+                                        book_comments : book_comments,
+                                        Suplujo : lujo,
+                                        type_luxury : type_luxury,
+                                    }, function(data) {
+                                        hideLoad();
+                                        $('#content-response').empty().append(data).fadeIn('300');
+
+                                    });
+                                }
+                            },
+                            error: function(response){
+            //                    console.log(response);
+                            }
+                        });
+                    });
+                });
 
 	});
 </script>

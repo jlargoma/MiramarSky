@@ -529,4 +529,29 @@ class PaymentsProController extends Controller
                                                             ]);
 
     }
+    
+    public static function getHistoricProduction($room_id, Request $request){
+
+        if ( empty($year) ) {
+            $date = Carbon::now();
+            if ($date->copy()->format('n') >= 9) {
+                $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+            }else{
+                $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            }
+            
+        }else{
+            $year = Carbon::createFromFormat('Y',$year);
+            $date = $year->copy();
+
+        }
+
+        $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
+        
+        return view('backend/paymentspro/_historicProductionGraphic', [
+                                                                        'inicio' => $inicio,
+                                                                        'date' => $date,
+                                                                        'room_id' => $room_id
+                                                                    ]);
+    }
 }
