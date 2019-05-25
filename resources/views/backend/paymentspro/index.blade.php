@@ -7,11 +7,13 @@
 @section('title') Administrador de reservas MiramarSKI @endsection
 
 @section('externalScripts') 
-	<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/font-icons.css')}}">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/font-icons.css')}}">
     <link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
     <link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
-    </script>
     <script type="text/javascript" src="/assets/js/canvasjs/canvasjs.min.js"></script>
     <style>
 
@@ -436,7 +438,9 @@
 			        		<?php if ($room->state == 1): ?>
 			        		<tr>
 			        			<td class="text-center"  style="padding: 10px 5px ;">
-			        				<?php echo ucfirst(substr($room->user->name, 0, 6)) ?> (<?php echo substr($room->nameRoom, 0, 6) ?>)
+                                                            <a class="historic-production" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments">
+                                                                <?php echo ucfirst(substr($room->user->name, 0, 6)) ?> (<?php echo substr($room->nameRoom, 0, 6) ?>)
+                                                            </a>
 			        			</td>
 			        			<?php $lastThreeSeason = $date->copy()->subYears(2) ?>
 								<?php for ($i=1; $i < 4; $i++): ?>
@@ -776,7 +780,9 @@
 					        		
 					        		<tr>
 					        			<td class="text-center"  style="padding: 10px 5px ;">
-					        				<?php echo ucfirst(substr($room->user->name, 0, 6)) ?> (<?php echo substr($room->nameRoom, 0, 6) ?>)
+                                                                            <a class="historic-production" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments">
+                                                                                <?php echo ucfirst(substr($room->user->name, 0, 6)) ?> (<?php echo substr($room->nameRoom, 0, 6) ?>)
+                                                                            </a>
 					        			</td>
 					        			<?php $lastThreeSeason = $date->copy()->subYears(2) ?>
 										<?php for ($i=1; $i < 4; $i++): ?>
@@ -864,9 +870,11 @@
             $(".dateRange").daterangepicker({
                 "buttonClasses": "button button-rounded button-mini nomargin",
                 "applyClass": "button-color",
-                "cancelClass": "button-light",            
-                "startDate": '01 Nov, <?php echo $date->copy()->format('y') ?>',
-                "endDate": '01 Nov, <?php echo $date->copy()->addYear()->format('y') ?>',
+                "cancelClass": "button-light",
+                "startDate": moment().format("DD MMM, YY"),
+                "endDate": moment().add(1, 'years').format("DD MMM, YY"),
+//                "startDate": '01 Nov, <?php // echo $date->copy()->format('y') ?>',
+//                "endDate": '01 Nov, <?php // echo $date->copy()->addYear()->format('y') ?>',
                 locale: {
                     format: 'DD MMM, YY',
                     "applyLabel": "Aplicar",
@@ -909,6 +917,13 @@
 				var id   = $(this).attr('data-id');
 				var month = $(this).attr('data-month');
 				$.get('/admin/pagos-propietarios/update/'+id+'/'+month,{ debt: debt}, function(data) {
+					$('.contentPayments').empty().append(data);
+				});
+			});
+                        
+                        $('.historic-production').click(function(event) {
+				var room_id   = $(this).attr('data-id');
+				$.get('/admin/pagos-propietarios/get/historic_production/'+room_id, function(data) {
 					$('.contentPayments').empty().append(data);
 				});
 			});

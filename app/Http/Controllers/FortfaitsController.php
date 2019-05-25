@@ -839,5 +839,25 @@ class FortfaitsController extends Controller
         
         return json_encode(array('products' => $products)); 
     }
+    
+    public static function checkReCaptcha(){
+//        print_r($_POST);
+
+        //your site public key
+        $public_key = '6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV';
+        //your site secret key
+        $secret = '6LdOoYYUAAAAAL8A017bGUyR6pH-ZrBGrtYqpedX';
+        //get verify response data
+        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$_POST['token']);
+        $responseData = json_decode($verifyResponse);
+        
+//        print_r($responseData);
+        
+        if($_POST['public_key'] == $public_key && $responseData->success && $responseData->score >= 0.4){
+            echo json_encode(array('status' => 'true'));  
+        }else{
+            echo json_encode(array('status' => 'false'));  
+        }
+    }
 
 }

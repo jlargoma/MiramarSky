@@ -1,4 +1,8 @@
-<?php use \Carbon\Carbon; ?>
+<?php 
+    use \Carbon\Carbon;
+    use \App\Classes\Mobile;
+    $mobile = new Mobile();
+?>
 @extends('layouts.admin-master')
 
 @section('title') Liquidacion @endsection
@@ -98,7 +102,7 @@
 
     <div class="container-fluid padding-5 sm-padding-10">
 
-        <div class="row push-20">
+        <div class="row push-10">
             <div class="col-md-4 push-20">
                 <div class="col-md-6">
                     <label>Nombre del cliente:</label>
@@ -163,6 +167,17 @@
                 {{--</button>--}}
             {{--</div>--}}
         </div>
+        <div class="row">
+            <?php if ( !$mobile->isMobile() ): ?>
+                <div class="col-lg-1 col-lg-offset-3 text-center">
+                    <button id="booking_agency_details" class="btn btn-primary btn-xs">Ventas por Agencia</button>
+                </div>
+            <?php else: ?>
+                <div class="col-lg-1 col-lg-offset-3 text-right">
+                    <button id="booking_agency_details" class="btn btn-primary btn-xs">Ventas por Agencia</button>
+                </div>
+            <?php endif; ?>
+        </div>
 
         <div class="row">
             <div class="liquidationSummary">
@@ -189,6 +204,7 @@
     <script src="/assets/plugins/bootstrap-typehead/typeahead.bundle.min.js"></script>
     <script src="/assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
     <script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
+    <script type="text/javascript" src="{{asset('/forfait/js/bootbox.min.js')}}"></script>
 
     <script type="text/javascript">
 
@@ -295,7 +311,105 @@
 
           });
         });
+        
+        function formatNumber (n) {
 
+            n_array = n.toString().split('.');
+            
+            if(n_array.length == 1){
+                 return n === '' ? n : Number(n).toLocaleString();
+            }else{
+                n = Number(n_array[0]).toLocaleString()+','+n_array[1];
+                return n;
+            }
+            
+        }
+        
+        function toFixed(n,length){
+            
+            if(n % 1 != 0){
+                return n.toFixed(length);
+            }else{
+                return n;
+            }
+            
+        }
+
+        $('button#booking_agency_details').click(function(){
+            $.ajax({
+                type: "POST",
+                url: "/ajax/booking/getBookingAgencyDetails",
+//                data: {request_id:request_id,comments:comments},
+                dataType:'json',
+                async: false,
+                success: function(response){
+                    if(response.status === 'true'){
+
+                        agencies_count = Object.keys(response.agencyBooks.data).length;
+
+                        agencyBookHTML = '<div class="table-responsive col-lg-12" style="padding:0">';
+                        agencyBookHTML += '<table class="table col-lg-12" border="1"><thead><tr style="background-color:#48b0f7;">';
+                        agencyBookHTML += '<th style="color:#000000;">AGENCIA</th><th class="text-center" colspan="5" style="color:#000000;">TEMP '+response.agencyBooks.years[0]+'</th><th rowspan="2"></th><th class="text-center" colspan="5" style="color:#000000;">TEMP '+response.agencyBooks.years[1]+'</th><th rowspan="2"></th><th class="text-center" colspan="5" style="color:#000000;">TEMP '+response.agencyBooks.years[2]+'</th></tr>\n\
+                                           <tr style="background-color:#48b0f7;"><th></th><th class="text-center" style="color:#000000;">Vtas</th><th class="text-center" style="color:#000000;">Vtas. %</th><th class="text-center" style="color:#000000;">Reservas</th><th class="text-center" style="color:#000000;">Res. %</th><th class="text-center" style="color:#000000;">Comisión</th><th class="text-center" style="color:#000000;">Vtas</th><th class="text-center" style="color:#000000;">Vtas. %</th><th class="text-center" style="color:#000000;">Reservas</th><th class="text-center" style="color:#000000;">Res. %</th><th class="text-center" style="color:#000000;">Comisión</th><th class="text-center" style="color:#000000;">Vtas</th><th class="text-center" style="color:#000000;">Vtas. %</th><th class="text-center" style="color:#000000;">Reservas</th><th class="text-center" style="color:#000000;">Res. %</th><th class="text-center" style="color:#000000;">Comisión</th></tr>';
+                       
+                        agencyBookHTML += '</thead><body>';
+                        
+                        x = 1;
+                        
+                        $.each(response.agencyBooks.data,function(agency,seasons){
+                            
+                            seasons_count = Object.keys(seasons).length;
+        
+                            agencyBookHTML += '<tr class="text-right"><td class="bold" style="font-size:16px !important;">'+agency+'</td>';
+                            
+                            a = 1;
+                            $.each(seasons,function(season,data){
+                                agencyBookHTML += '<td class="bold" style="font-size:16px !important;">'+formatNumber(toFixed(data.total,0))+' €</td><td style="font-size:16px !important;">'+toFixed(data.total_rate,0)+' %</td><td style="font-size:16px !important;">'+formatNumber(data.reservations)+'</td><td style="font-size:16px !important;">'+toFixed(data.reservations_rate,0)+' %</td><td style="font-size:16px !important;">'+formatNumber(toFixed(data.commissions,0))+' €</td>';
+
+                                if(x == 1 && a < seasons_count){
+                                    agencyBookHTML += '<td style="background-color:#48b0f7;" rowspan="'+agencies_count+'"></td>';
+                                }else if(x < agencies_count){
+//                                    agencyBookHTML += '<td style="background-color:#48b0f7;"></td>';
+                                }
+                                
+                                a++;
+                            });
+
+                            agencyBookHTML += '</tr>';
+                            
+                            x++;
+                        });
+
+                        agencyBookHTML += '<tbody></table>';
+                        agencyBookHTML += '</div>';
+
+                        bootbox.alert({
+                            message: agencyBookHTML,
+                            size: 'large',
+                            backdrop: true
+                        });
+                        
+                        <?php if ( !$mobile->isMobile() ): ?>
+                            $('.modal-lg').attr('style','width: 70% !important;');
+                        <?php else: ?>
+                            $('.modal-lg').attr('style','width: 100% !important;');
+                        <?php endif; ?>
+
+                    }else{
+                        bootbox.alert({
+                            message: '<div class="text-danger bold" style="margin-top:10px">Se ha producido un ERROR. El PAN no ha sido guardado.<br/>Contacte con el administrador.</div>',
+                            backdrop: true
+                        });
+                    }
+                },
+                error: function(response){
+                    bootbox.alert({
+                        message: '<div class="text-danger bold" style="margin-top:10px">Se ha producido un ERROR. No se ha podido obtener los detalles de la consulta.<br/>Contacte con el administrador.</div>',
+                        backdrop: true
+                    });
+                }
+            });
+        });
 
       });
     </script>

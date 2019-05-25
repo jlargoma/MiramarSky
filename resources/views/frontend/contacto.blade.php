@@ -82,8 +82,7 @@
 	
 </style>
 
-
-
+<script src='https://www.google.com/recaptcha/api.js?render=6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV'></script>
 
 <?php if (!$mobile->isMobile()): ?>
 	<section id="slider" class="slider-parallax full-screen dark error404-wrap" style="background: url(/img/miramarski/contacto.jpg) center;">
@@ -157,7 +156,7 @@
 													<div class="col-xs-12 center">
 														<button class="button button-3d nomargin" type="submit">Enviar</button>
 													</div>
-
+                                                                                                        <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
 												</form>
 											</div>
 										</div>						
@@ -305,7 +304,7 @@
 														<div class="col-xs-12 center">
 															<button class="button button-3d nomargin" type="submit">Enviar</button>
 														</div>
-
+                                                                                                                <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
 													</form>
 												</div>
 											</div>						
@@ -384,10 +383,43 @@
 		            e.preventDefault();
 		        }
 		    });
-
-
-		    
 		});
+                
+                $('form#contact-form button[type="submit"]').click(function(event){
+                    event.preventDefault();
+                    
+                    public_key = '6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV';
+                
+                    grecaptcha.ready(function() {
+                        grecaptcha.execute(public_key, {action: 'launch_form_submit'})
+                        .then(function(token) {
+                        // Verify the token on the server.
+
+                            var recaptchaResponse = document.getElementById('recaptchaResponse');
+                            recaptchaResponse.value = token;
+
+                            $.ajax({
+                                type: "POST",
+                                url: "/ajax/checkRecaptcha",
+                                data: {token:token, public_key:public_key},
+                                dataType:'json',
+                                success: function(response){
+        //                            price = JSON.stringify(response).replace('.',',');
+    //                                console.log(response.status);
+//                                    alert(response.status);
+                                    if(response.status == 'true'){
+                                        $('form').submit();
+                                    }
+                                },
+                                error: function(response){
+                //                    console.log(response);
+                                }
+                            });
+                        });
+                    });
+                });
+                
+                
 	</script>	
 
 @endsection

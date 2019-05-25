@@ -143,7 +143,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="gotoTop" class="fa fa-chevron-up"></div>
+		<div id="gotoTop" class="fa fa-chevron-up" style="bottom:100px; right:15px;"></div>
 		<!-- <script type="text/javascript" src="{{ asset('/js/scripts.js')}}"></script> -->
 
 		<script type="text/javascript" src="{{ asset('/frontend/js/jquery.js') }}"></script>

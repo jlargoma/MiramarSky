@@ -71,7 +71,7 @@ class OwnedController extends Controller
 		$reservas = \App\Book::whereIn('type_book', [
 			1,
 			2,
-			4,
+//			4,
 			7,
 			8
 		])->where('room_id', $room->id)->where('start', '>=', $firstDayOfTheYear->copy())

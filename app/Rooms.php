@@ -103,10 +103,10 @@ class Rooms extends Model
         $start = $start->format('n') >= 9 ? $start : $start->subYear();
         $inicio = $start->copy();
 
-        $books = \App\Book::whereIn('type_book', [2])
+        $books = \App\Book::whereIn('type_book', [2,7,8])
                             ->where('room_id', $this->id)
-                            ->where('start', '>', $inicio->copy()->format('Y-m-d'))
-                            ->where('start', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+                            ->where('start', '>=', $inicio->copy()->format('Y-m-d'))
+                            ->where('finish', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
                             ->orderBy('start', 'ASC')
                             ->get();
 
@@ -150,7 +150,7 @@ class Rooms extends Model
 
     }
 
-    static function getPvpByMonth($year)
+    static function getPvpByMonth($year,$room_id = NULL)
     {
         setlocale(LC_TIME, "ES"); 
         setlocale(LC_TIME, "es_ES");
@@ -172,12 +172,20 @@ class Rooms extends Model
        
         for ($i=1; $i <= 12 ; $i++) { 
             
-
-            $books = \App\Book::whereIn('type_book', [2])
+            if($room_id == NULL){
+                $books = \App\Book::whereIn('type_book', [2])
                                 ->where('start', '>', $dateInit->copy()->format('Y-m-d'))
                                 ->where('start', '<=', $dateInit->copy()->addMonth()->format('Y-m-d'))
                                 ->orderBy('start', 'ASC')
                                 ->get();
+            }else{
+                $books = \App\Book::whereIn('type_book', [2])
+                                ->where('start', '>', $dateInit->copy()->format('Y-m-d'))
+                                ->where('start', '<=', $dateInit->copy()->addMonth()->format('Y-m-d'))
+                                ->where('room_id',"=","$room_id")
+                                ->orderBy('start', 'ASC')
+                                ->get();
+            }
 
             foreach ($books as $book) {
                $arrayMonth[$dateInit->copy()->formatLocalized('%B')]  +=  $book->total_price;

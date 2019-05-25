@@ -131,7 +131,7 @@
         }*/
         
     </style>
-    <script src='https://www.google.com/recaptcha/api.js?render=6LdhI4MUAAAAANE2coqXR4cw1mgggC40BVcETwKT'></script>
+    <script src='https://www.google.com/recaptcha/api.js?render=6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV'></script>
 </head>
 
 <body class="stretched no-transition" >
@@ -147,6 +147,12 @@
                   <div class="col-md-10 col-lg-6 col-lg-offset-3 col-md-offset-1 sin-margin-mobile" style="padding:0!important;">
                       <div id='calendar-content' class='container-fluid'>
                          
+                                <?php
+                                    if(isset($_GET['sended']) && $_GET['sended'] === 'true'){
+                                        echo '<div id="message" class="text-center" style="margin: 14px 0 20px 0; font-weight:bold; display:none;"><span class="alert alert-success">Gracias, en breve nos pondremos en contacto contigo.</span></div>';
+                                    }
+                                ?>
+                          
                               <div class="panel panel-default" style="background-color: rgba(255,255,255,0.75);">
                                   <div class="panel-body" >
                                     <!-- Cabecera -->
@@ -1423,6 +1429,7 @@
               </div>
           </div>
       </section>
+        <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
       </form>
     </div>
 
@@ -1469,6 +1476,15 @@
                   actualClients = parseInt(actualClients) - 1;
                   $(this).parent().parent().children('.count-clients').val(actualClients);
                } 
+            });
+            
+            $('div#message').slideDown( "slow", function() {
+                $('div#message').show();
+//                setTimeout(function(){
+//                    $('div#message').slideUp( "slow", function() {
+//                        $('div#message').hide();
+//                    });
+//                },5000);
             });
          });
       

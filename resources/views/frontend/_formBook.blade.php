@@ -21,7 +21,7 @@
                     <input type="text" class="sm-form-control daterange1" id="date"   name="date" required style="cursor: pointer;text-align: center;" readonly="">
                 </div>
                 <p  class="help-block min-days" style="display:none;line-height:1.2;color:red;">
-                    <b>* ESTANCIA MÍNIMA: 2 NOCHES</b>
+                    <b>* ESTANCIA M&IacuteNIMA: 2 NOCHES</b>
                 </p>
             </div>
 
@@ -138,7 +138,7 @@
                     <input type="text" class="sm-form-control daterange1" id="date"   name="date" required style="cursor: pointer;text-align: center;" readonly="">
 
                     <p  class="help-block min-days" style="display:none;line-height:1.2;color:red;">
-                        <b>* ESTANCIA MÍNIMA: 2 NOCHES</b>
+                        <b>* ESTANCIA M&IacuteNIMA: 2 NOCHES</b>
                     </p>
                 </div>
 

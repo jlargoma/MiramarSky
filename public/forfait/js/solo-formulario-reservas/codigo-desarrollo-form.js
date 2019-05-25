@@ -161,8 +161,37 @@ $('#confirm-reserva').click(function(){
                 cc_pan_value.length > 0 &&
                 cc_expiry_value.length > 0 &&
                 cc_cvc_value.length > 0 ){
+            
+                public_key = '6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV';
+                
+                grecaptcha.ready(function() {
+                    grecaptcha.execute(public_key, {action: 'launch_form_submit'})
+                    .then(function(token) {
+                    // Verify the token on the server.
 
-                $('form').submit();
+                        var recaptchaResponse = document.getElementById('recaptchaResponse');
+                        recaptchaResponse.value = token;
+                        
+                        $.ajax({
+                            type: "POST",
+                            url: "/ajax/checkRecaptcha",
+                            data: {token:token, public_key:public_key},
+                            dataType:'json',
+                            success: function(response){
+    //                            price = JSON.stringify(response).replace('.',',');
+//                                console.log(response.status);
+//                                alert(response.status);
+                                if(response.status == 'true'){
+                                    $('form').submit();
+                                }
+                            },
+                            error: function(response){
+            //                    console.log(response);
+                            }
+                        });
+                    });
+                });
+                
             }
         }
 

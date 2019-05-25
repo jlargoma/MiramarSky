@@ -409,8 +409,8 @@ class LiquidacionController extends Controller
 	public function gastoCreate(Request $request)
 	{
 
-		var_dump($request->input());
-		die();
+//		var_dump($request->input());
+//		die();
 		$gasto              = new \App\Expenses();
 		$gasto->concept     = $request->input('concept');
 		$gasto->date        = Carbon::createFromFormat('d/m/Y', $request->input('fecha'))->format('Y-m-d');
@@ -2835,6 +2835,6 @@ class LiquidacionController extends Controller
 
 			});
 
-		})->download('xls');
+		})->download('xlsx');
 	}
 }

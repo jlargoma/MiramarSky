@@ -711,7 +711,7 @@ class HomeController extends Controller
          // return view('frontend.emails._responseSolicitudForfait' ,['solicitud' => $solicitud, 'productos' => $arrayProducts,'data' => $data]);
          // die();
 
-         $emailsTo = ['forfait@miramarski','escuela@sierranevadaeee.com',$data['email']];
+         $emailsTo = ['forfait@miramarski.com','escuela@sierranevadaeee.com',$data['email']];
           
          foreach($emailsTo as $emailTo){
 //         echo $emailTo.'<br/>';
@@ -765,7 +765,8 @@ class HomeController extends Controller
 
          if ($sended)
          {
-            return redirect()->back();
+            return redirect('/forfait?sended=true');
+//            return redirect()->back();            
          }
 
 

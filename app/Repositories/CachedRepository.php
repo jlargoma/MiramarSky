@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Cache;
 
 class CachedRepository
 {
-    const TTL_IN_MINUTES = 5 * 24 * 60;
+//    const TTL_IN_MINUTES = 5 * 24 * 60;
+    const TTL_IN_MINUTES = 1;
 
     /**
      * @param string $date

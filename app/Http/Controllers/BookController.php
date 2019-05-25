@@ -15,6 +15,8 @@ use Illuminate\Routing\Controller;
 use App\Classes\Mobile;
 use App\Rooms;
 use App\Book;
+use App\Seasons;
+use App\Prices;
 
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
@@ -123,10 +125,10 @@ class BookController extends Controller
         $booksCount['blocked-ical'] = $booksCollection->whereIn('type_book', [
             11,
             12
-        ])->count();
+        ])->where("enable","=","1")->count();
         $booksCount['deletes']      = \App\Book::where('start', '>', $start->copy())
                                                ->where('finish', '<', $start->copy()->addYear())->where('type_book', 0)
-                                               ->where('comment', 'LIKE', '%Antiguos cobros%')->count();
+                                               ->where('comment', 'LIKE', '%Antiguos cobros%')->where("enable","=","1")->count();
         $booksCount['checkin']      = $this->getCounters($start, 'checkin');
         $booksCount['checkout']     = $booksCount['confirmed'] - $booksCount['checkin'];
 
@@ -877,8 +879,11 @@ class BookController extends Controller
         {
             $date = $counter->copy()->format('Y-m-d');
 
-            $seasonActive = $this->cachedRepository->getSeasonType($date);
-            $costs        = $this->cachedRepository->getCostsFromSeason($seasonActive, $pax);
+            $seasonActive = Seasons::getSeasonType($date);
+            $costs        = Prices::getCostsFromSeason($seasonActive, $pax);
+            
+//            $seasonActive = $this->cachedRepository->getSeasonType($date);
+//            $costs        = $this->cachedRepository->getCostsFromSeason($seasonActive, $pax);
 
             foreach ($costs as $precio)
             {
@@ -911,8 +916,11 @@ class BookController extends Controller
         for ($i = 1; $i <= $countDays; $i++)
         {
             $date         = $counter->format('Y-m-d');
-            $seasonActive = $this->cachedRepository->getSeasonType($date);
-            $costs        = $this->cachedRepository->getCostsFromSeason($seasonActive, $pax);
+            $seasonActive = Seasons::getSeasonType($date);
+            $costs        = Prices::getCostsFromSeason($seasonActive, $pax);
+            
+//            $seasonActive = $this->cachedRepository->getSeasonType($date);
+//            $costs        = $this->cachedRepository->getCostsFromSeason($seasonActive, $pax);
 
             foreach ($costs as $precio)
             {
@@ -1131,11 +1139,12 @@ class BookController extends Controller
             {
                 $expenseLimp = \App\Expenses::where('date', $book->finish)
                     // ->where('import', $book->total_price)
-                                            ->where('concept', "LIMPIEZA RESERVA PROPIETARIO. " . $book->room->nameRoom)
-                                            ->first();
+                                            ->where('concept', "LIMPIEZA RESERVA PROPIETARIO. " . $book->room->nameRoom);
 
-                if (count($expenseLimp) > 0)
-                    $expenseLimp->delete();
+                if ($expenseLimp->count() > 0){
+                    $expenseLimp->first()->delete();
+                }
+
             }
 
 
@@ -2296,5 +2305,114 @@ class BookController extends Controller
         {
             return redirect('/admin/reservas/ff_status_popup/' . $request_id);
         }
+    }
+    
+    public static function getBookingAgencyDetails(){
+        
+        $years = [];
+        
+        $now = Carbon::now();
+        $year = date('Y');
+
+        if($year){
+            if($now->copy()->format('n') >= 9){
+                $date = new Carbon('first day of September ' . $now->copy()->format('Y'));
+            }else{
+                $date = new Carbon('first day of September ' . $now->copy()->subYear()->format('Y'));
+            }
+        }else{
+            $date = new Carbon('first day of September ' . $year);
+        }
+
+        $year_season = date('y',strtotime($date));
+        $year_season_full = date('Y',strtotime($date));
+
+
+        $years[] = $year_season.'-'.($year_season+1);
+        $years[] = ($year_season-1).'-'.$year_season;
+        $years[] = ($year_season-2).'-'.($year_season-1);
+        
+        $years_full[] = $year_season_full.'-'.($year_season_full+1);
+        $years_full[] = ($year_season_full-1).'-'.$year_season_full;
+        $years_full[] = ($year_season_full-2).'-'.($year_season_full-1);
+
+        sort($years);
+        sort($years_full);
+        
+        $dataNode =  ['reservations' => 0, 'total' => 0, 'commissions' => 0, 'reservations_rate' => 0, 'total_rate' => 0];
+        
+        $yearsNode = [
+            $years[0] => $dataNode,
+            $years[1] => $dataNode,
+            $years[2] => $dataNode
+        ];
+
+        $agencyBooks = [
+            'years' => $years,
+            'data' => [
+                'V. Directa'    => $yearsNode,
+                'Booking'       => $yearsNode,
+                'Trivago'       => $yearsNode,
+                'Bed&Snow'      => $yearsNode,
+                'AirBnb'        => $yearsNode
+            ],
+            'totals' => $yearsNode  
+        ];
+ 
+        $agencyBooksSQL = Book::    where("created_at",">=",explode('-',$years_full[0])[0].'0901')
+                                    ->get();
+
+        foreach($agencyBooksSQL as $book){
+
+            $book_date = date('Ymd',strtotime($book->start));
+
+            if($book_date < explode('-',$years_full[0])[1].'0901'){
+                $season = $years[0];
+            }elseif($book_date < explode('-',$years_full[1])[1].'0901'){
+                $season = $years[1];
+            }elseif($book_date < explode('-',$years_full[2])[1].'0901'){
+                $season = $years[2];
+            }
+
+            if($book->agency == 0){
+                $agency_name = 'V. Directa';
+            }elseif($book->agency == 1){
+                $agency_name = 'Booking';
+            }elseif($book->agency == 2){
+                $agency_name = 'Trivago';
+            }elseif($book->agency == 3){
+                $agency_name = 'Bed&Snow';
+            }elseif($book->agency == 4){
+                $agency_name = 'AirBnb';
+            }
+
+            $agencyBooks['data'][$agency_name][$season]['total'] += $book->real_price;
+            $agencyBooks['data'][$agency_name][$season]['reservations'] += 1;
+            $agencyBooks['data'][$agency_name][$season]['commissions'] += str_replace(',','.',$book->PVPAgencia);
+            
+            $agencyBooks['totals'][$season]['total'] += $book->real_price;
+            $agencyBooks['totals'][$season]['reservations'] += 1;
+            $agencyBooks['totals'][$season]['commissions'] += str_replace(',','.',$book->PVPAgencia);
+
+        }
+        
+        foreach($agencyBooks['data'] as $agency_name => $seasons){
+            foreach($seasons as $season_key => $season_data){
+                
+                $agencyBooks['data'][$agency_name][$season_key]['reservations_rate'] = 0;
+                $agencyBooks['data'][$agency_name][$season_key]['total_rate'] = 0;
+                
+                if($season_data['reservations'] !== 0 && $agencyBooks['totals'][$season_key]['reservations'] !== 0){
+                    $agencyBooks['data'][$agency_name][$season_key]['reservations_rate'] = round(($season_data['reservations']/$agencyBooks['totals'][$season_key]['reservations'])*100,2);
+                }
+                
+                if($season_data['total'] !== 0 && $agencyBooks['totals'][$season_key]['total'] !== 0){
+                    $agencyBooks['data'][$agency_name][$season_key]['total_rate'] = round(($season_data['total']/$agencyBooks['totals'][$season_key]['total'])*100,2);
+                }
+
+            }
+        }
+
+        echo json_encode(array('status' => 'true', 'agencyBooks' => $agencyBooks));
     }
 }
