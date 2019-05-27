@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use \Carbon\Carbon;
 use App\Http\Requests;
 
-class PricesController extends Controller
+class PricesController extends AppController
 {
 	/**
 	 * Display a listing of the resource.

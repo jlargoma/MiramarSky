@@ -10,7 +10,7 @@ use DB;
 use \Carbon\Carbon;
 use App\Http\Requests;
 
-class StripeConnectController extends Controller
+class StripeConnectController extends AppController
 {
 	public static $stripe = [
 		//"secret_key"      => "sk_test_o40xNAzPuB6sGDEY3rPQ2KUN",

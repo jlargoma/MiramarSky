@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use \Carbon\Carbon;
 
-class SeasonsController extends Controller
+class SeasonsController extends AppController
 {
 	/**
 	 * Display a listing of the resource.

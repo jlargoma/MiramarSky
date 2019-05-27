@@ -13,7 +13,7 @@ use Excel;
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
 
-class LiquidacionController extends Controller
+class LiquidacionController extends AppController
 {
 	/**
 	 * Display a listing of the resource.

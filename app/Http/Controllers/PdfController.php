@@ -7,7 +7,7 @@ use App\Product as Product;
 use PDF;
 use Carbon\Carbon;
 
-class PdfController extends Controller
+class PdfController extends AppController
 {
     public function invoice($id)
     {

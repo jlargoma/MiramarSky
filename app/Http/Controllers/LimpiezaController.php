@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-class LimpiezaController extends Controller
+class LimpiezaController extends AppController
 {
     public function index(Request $request, $year = "")
     {

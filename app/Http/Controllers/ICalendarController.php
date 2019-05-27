@@ -7,7 +7,7 @@ use App\Http\Requests;
 use DateTime;
 use DateInterval;
 
-class ICalendarController extends Controller
+class ICalendarController extends AppController
 {
     /**
      * Get the icalendar for the specific

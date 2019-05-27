@@ -90,7 +90,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php for ($i=4; $i <= 14 ; $i++): ?>
+                            <?php for ($i=2; $i <= 10 ; $i++): ?>
                                     <tr>
                                     
                                         <td class ="text-center"> 

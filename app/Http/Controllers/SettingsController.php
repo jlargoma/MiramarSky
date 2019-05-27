@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-class SettingsController extends Controller
+class SettingsController extends AppController
 {
 	public function index()
 	{
@@ -15,6 +15,7 @@ class SettingsController extends Controller
 			'extras'          => \App\Extras::all(),
 			'agentsRooms'     => \App\AgentsRooms::all(),
 			'specialSegments' => \App\SpecialSegment::orderBy('start', 'ASC')->get(),
+			'year'            => $this->getActiveYear(),
 		]);
 	}
 

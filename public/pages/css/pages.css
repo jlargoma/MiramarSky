@@ -14495,10 +14495,14 @@ span.numPaymentLastBooks{
     z-index: 15;
 }
 .btn-fechas-calendar{
-background-color: #899098;
-color: white;
-border-radius: 0px!important;
-text-transform: uppercase;
+  background-color: #899098;
+  color: white;
+  text-transform: capitalize;
+  font-size: 11.5px;
+  line-height: 1.5;
+  padding: 5px 8px;
+  font-weight: 400;
+  font-family: 'Raleway';
 }
 .fixed-td{
 position: absolute;

@@ -13,7 +13,7 @@ use URL;
 use File;
 use Route;
 
-class HomeTestController extends Controller
+class HomeTestController extends AppController
 {
 	const minDays = 2;
 

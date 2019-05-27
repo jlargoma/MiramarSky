@@ -13,7 +13,7 @@ use Mail;
 use File;
 use PDF;
 
-class RoomsController extends Controller
+class RoomsController extends AppController
 {
 	/**
 	 * @var CachedRepository

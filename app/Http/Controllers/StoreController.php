@@ -9,7 +9,7 @@ use Mail;
 use App\Classes;
 use App\Classes\Mobile;
 use \Stripe\Stripe as Stripe;
-class StoreController extends Controller
+class StoreController extends AppController
 {
     public static   $stripe = [
                         // "secret_key"      => "sk_test_rqTqvjOVCPcnme6FL7TWPVpY",

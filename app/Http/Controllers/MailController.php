@@ -8,7 +8,7 @@ use App\Http\Requests;
 use \Carbon\Carbon;
 use Mail;
 
-class MailController extends Controller
+class MailController extends AppController
 {
     public static function sendEmailBookSuccess( $data ,$admin = 0)
     {

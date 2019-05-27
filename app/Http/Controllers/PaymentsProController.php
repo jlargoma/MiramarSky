@@ -8,7 +8,7 @@ use App\Http\Requests;
 use \Carbon\Carbon;
 use App\Classes\Mobile;
 
-class PaymentsProController extends Controller
+class PaymentsProController extends AppController
 {
     /**
      * Display a listing of the resource.

@@ -7,7 +7,7 @@ use Auth;
 use App\Http\Requests;
 use Excel;
 
-class CustomersController extends Controller
+class CustomersController extends AppController
 {
     /**
      * Display a listing of the resource.

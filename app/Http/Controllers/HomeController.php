@@ -14,7 +14,7 @@ use File;
 use Route;
 use App\Http\Controllers\FortfaitsController;
 
-class HomeController extends Controller
+class HomeController extends AppController
 {
    const minDays = 2;
 

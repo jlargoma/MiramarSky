@@ -165,7 +165,7 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <div class="col-md-6 col-xs-12">
+                <div class="col-md-4 col-xs-12">
                     <div class="col-md-12 text-center">
                         <h2>Días minimos</h2>
                     </div>
@@ -262,7 +262,7 @@
 									<?php echo $agent->room->nameRoom; ?>
                                 </td>
                                 <td class="text-center" style="padding: 12px 20px!important">
-	                                <?php echo \App\Book::getAgency($agent->agency_id) ?>
+									<?php echo \App\Book::getAgency($agent->agency_id) ?>
                                 </td>
                                 <td class="text-center" style="padding: 12px 20px!important">
 
@@ -281,6 +281,17 @@
                             No has establecido ningún Agente para habitaciones
                         </h3>
 						<?php endif?>
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    @include('backend.years.selector', ['minimal' => true])
+                    <div class="col-md-12 text-center">
+                        <div class="col-md-6 not-padding">
+                            <h3 class="text-left">Meses de Año Actual</h3>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control monthRange" id="monthRange" style="cursor:pointer; text-align: center;min-height: 28px;" readonly="" value="<?php echo $year->start_date;?> - <?php echo $year->end_date ?>">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -329,12 +340,13 @@
                             <div class="row">
                                 <form action="{{ url('/admin/agentRoom/create') }}" method="post">
                                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-									<?php $roomsToAgents = \App\Rooms::where('state', '=', 1)->orderBy('order')->get();?>
+									<?php $roomsToAgents = \App\Rooms::where('state', '=', 1)->orderBy('order')
+									                                 ->get();?>
 									<?php $agents = \App\User::where('role', 'agente')->get();?>
                                     <div class="col-md-3 col-xs-12 push-10">
                                         <label>Agente</label>
                                         <select class="form-control full-width minimal" name="user_id" required>
-                                            <option ></option>
+                                            <option></option>
 											<?php foreach ($agents as $agent): ?>
                                             <option value="<?php echo $agent->id ?>">
 												<?php echo $agent->name  ?>
@@ -345,10 +357,10 @@
                                     <div class="col-md-3 col-xs-12 push-10">
                                         <label>Apartamento</label>
                                         <select class="form-control full-width minimal" name="room_id" required>
-                                            <option ></option>
+                                            <option></option>
 											<?php foreach ($roomsToAgents as $room): ?>
                                             <option value="<?php echo $room->id ?>">
-												<?php echo substr($room->nameRoom." - ".$room->name, 0,12)  ?>
+												<?php echo substr($room->nameRoom . " - " . $room->name, 0, 12)  ?>
                                             </option>
 											<?php endforeach ?>
                                         </select>
@@ -356,11 +368,11 @@
                                     <div class="col-md-3 col-xs-12 push-10">
                                         <label>Agencia</label>
                                         <select class="form-control full-width agency minimal" name="agency_id">
-			                                <?php for ($i=0; $i <= 7 ; $i++): ?>
+											<?php for ($i = 0; $i <= 7 ; $i++): ?>
                                             <option value="<?php echo $i ?>">
-				                                <?php echo \App\Book::getAgency($i) ?>
+												<?php echo \App\Book::getAgency($i) ?>
                                             </option>
-			                                <?php endfor;?>
+											<?php endfor;?>
                                         </select>
                                     </div>
                                     <div class="col-md-3 col-xs-12 push-10">
@@ -379,7 +391,8 @@
 @endsection
 
 @section('scripts')
-
+    <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
+    <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
     <script src="/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
     <script src="/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js"
             type="text/javascript"></script>
@@ -391,6 +404,46 @@
 
     <script type="text/javascript">
       $(document).ready(function () {
+        $(".monthRange").daterangepicker({
+          "buttonClasses": "button button-rounded button-mini nomargin",
+          "applyClass": "button-color",
+          "cancelClass": "button-light",
+          // "startDate": moment().format("DD MMM, YY"),
+//                "startDate": '10 Dec, YY',
+          locale: {
+            format: 'YYYY-MM-DD',
+            "applyLabel": "Aplicar",
+            "cancelLabel": "Cancelar",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "daysOfWeek": [
+              "Do",
+              "Lu",
+              "Mar",
+              "Mi",
+              "Ju",
+              "Vi",
+              "Sa"
+            ],
+            "monthNames": [
+              "Enero",
+              "Febrero",
+              "Marzo",
+              "Abril",
+              "Mayo",
+              "Junio",
+              "Julio",
+              "Agosto",
+              "Septiembre",
+              "Octubre",
+              "Noviembre",
+              "Diciembre"
+            ],
+            "firstDay": 1,
+          },
+
+        });
 
         $('.rules').change(function (event) {
           var id = $(this).attr('data-id');
@@ -431,6 +484,14 @@
           var id = $(this).attr('data-id');
           $.get('/admin/specialSegments/update/' + id, function (data) {
             $('#contentSegments').empty().append(data);
+          });
+        });
+
+        $(".monthRange").change(function () {
+          var yearMonths = $(this).val();
+          $.post("{{ route('years.change.month') }}", { dates: yearMonths }).done(function( data ) {
+            console.log(data);
+            location.reload();
           });
         });
       });

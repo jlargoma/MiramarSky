@@ -14,9 +14,8 @@ use Route;
 use App\ForfaitsPrices;
 use App\ClassesPrices;
 use App\ForfaitsCalendar;
-use App\Http\Controllers\FortfaitsController;
 
-class FortfaitsController extends Controller
+class FortfaitsController extends AppController
 {
     public static $fortfaits = [
 
@@ -112,7 +111,7 @@ class FortfaitsController extends Controller
                                        ],
                         ];
 
-   public static $cursillos = [
+    public static $cursillos = [
                'cursillo-esqui-semanal' => [
                                  'info' => 'SEMANA 3 HRS DIARIAS',
                                  'precios' => [
@@ -150,7 +149,7 @@ class FortfaitsController extends Controller
                                              ],
                                  ],
             ];
-   public static $jardin = [
+    public static $jardin = [
 
             'guarderia-jardin-alpino-am' => [
                               'info' => 'MAÑANAS 10:00.- A 13:00.-HRS',
@@ -191,7 +190,7 @@ class FortfaitsController extends Controller
             ];
 
 
-   public function forfait(Request $request)
+    public function forfait(Request $request)
     {   
          $mobile = new Mobile();
       $products = [

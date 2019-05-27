@@ -9,7 +9,7 @@ use Auth;
 use Mail;
 use App\Classes\Mobile;
 
-class OwnedController extends Controller
+class OwnedController extends AppController
 {
 	/**
 	 * Display a listing of the resource.

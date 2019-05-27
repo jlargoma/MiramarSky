@@ -41,7 +41,7 @@
 //   Route::post( '/contacto-propietario' , 'HomeController@formPropietario' );
 //   Route::post( '/contacto-grupos' , 'HomeController@formGrupos' );
 //
-//   /* Correos Frontend */
+//   /* Correos Frontend */getCalendarMobile
 //   Route::get( '/terminos-condiciones' , 'HomeController@terminos' );
 //   Route::get( '/politica-cookies' , 'HomeController@politicaCookies' );
 //   Route::get( '/politica-privacidad' , 'HomeController@politicaPrivacidad' );
@@ -115,7 +115,6 @@
    Route::get( 'admin/reservas/saveFianza' , ['middleware' => 'auth' , 'uses' => 'BookController@saveFianza'] );
    Route::get( 'admin/reservas/reserva/{id}' , ['middleware' => 'auth' , 'uses' => 'BookController@tabReserva'] );
    Route::get( 'admin/reservas/cobrar/{id}' , ['middleware' => 'auth' , 'uses' => 'BookController@cobroBook'] );
-   Route::get( 'admin/reservas/{year?}' , ['middleware' => 'auth' , 'uses' => 'BookController@index'] );
 
    Route::get( 'admin/reservas/search/searchByName' , 'BookController@searchByName' );
    Route::get( 'admin/reservas/api/getTableData' , ['middleware' => 'auth' , 'uses' => 'BookController@getTableData'] );
@@ -590,6 +589,10 @@
       Route::post( '/admin/stripe-connect/load-transfer-form' , 'StripeConnectController@loadTransferForm' );
       Route::get( '/admin/stripe-connect/load-table-owneds' , 'StripeConnectController@loadTableOwneds' );
       Route::post( '/admin/stripe-connect/send-transfers' , 'StripeConnectController@sendTransfers' );
+
+      //YEARS
+	   Route::post( '/admin/years/change' , 'YearsController@changeActiveYear' )->name('years.change');
+	   Route::post( '/admin/years/change/months' , 'YearsController@changeMonthActiveYear' )->name('years.change.month');
 
    } );
 

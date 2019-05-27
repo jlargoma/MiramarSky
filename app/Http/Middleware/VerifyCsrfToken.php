@@ -28,6 +28,9 @@ class VerifyCsrfToken extends BaseVerifier
         '/ajax/forfaits/requestPriceForfaits',
         '/ajax/reservas/getBookData',
         '/ajax/checkRecaptcha',
-        '/ajax/booking/getBookingAgencyDetails'
+        '/ajax/booking/getBookingAgencyDetails',
+        '/ajax/booking/getBookingAgencyDetails',
+        '/admin/years/change',
+        '/admin/years/change/months',
     ];
 }
