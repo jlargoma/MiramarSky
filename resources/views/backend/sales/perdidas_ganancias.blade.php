@@ -22,13 +22,7 @@
 				</h2>
 			</div>
 			<div class="col-md-2 col-xs-12 sm-padding-10" style="padding: 10px">
-				<select id="fecha" class="form-control minimal">
-					@for ($year = 2015; $year < date('Y'); $year++)
-						<option value="{{ $year }}" {{ $year == $selectedYear ? 'selected' : '' }}>
-							{{ $year . '-' . ($year + 1) }}
-						</option>
-					@endfor
-                 </select>
+				@include('backend.years._selector')
 			</div>
 		</div>
 	</div>
@@ -36,9 +30,7 @@
 <div class="container-fluid">
 	<div class="row bg-white push-30">
 		<div class="col-lg-8 col-md-10 col-xs-12 push-20">
-			
 			@include('backend.sales._button-contabiliad')
-		
 		</div>
 	</div>
 	<div class="row bg-white push-30">
@@ -49,8 +41,8 @@
 		</div>
 		<?php $totalYearIncomes = 0; ?>
 		<?php $totalYearExpenses = 0; ?>
-		<?php $init = $inicio->copy(); ?>
-			<?php for($i = 1 ; $i <= 12; $i++): ?>
+		<?php $init = Carbon::createFromFormat('Y-m-d', $year->start_date) ?>
+			<?php for($i = 1 ; $i <= $diff; $i++): ?>
 
 				<?php 
 					$totalMonthIncomes = 	
@@ -198,9 +190,9 @@
 	/* GRAFICA INGRESOS/GASTOS */
 	var data = {
 	    labels: [
-	    			<?php $init = $inicio->copy(); ?>
-					<?php for($i = 1 ; $i <= 12; $i++): ?>
-						<?php if ($i == 12): ?>
+	    			<?php $init = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
+					<?php for($i = 1 ; $i <= $diff; $i++): ?>
+						<?php if ($i == $diff): ?>
 							"<?php echo substr(ucfirst($init->formatlocalized('%B')), 0, 3); ?>"
 						<?php else: ?>
 							"<?php echo substr(ucfirst($init->formatlocalized('%B')), 0, 3); ?>",
@@ -242,8 +234,8 @@
 	            borderWidth: 1,
 	            data: [
 
-		    			<?php $init = $inicio->copy(); ?>
-						<?php for($i = 1 ; $i <= 12; $i++): ?>
+							<?php $init = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
+							<?php for($i = 1 ; $i <= $diff; $i++): ?>
 							<?php 
 	            				$totalMonth = 	$arrayTotales['meses'][$init->copy()->format('n')] + 
 	            								$arrayIncomes['INGRESOS EXTRAORDINARIOS'][$init->copy()->format('n')] + 
@@ -251,7 +243,7 @@
 	            								$arrayIncomes['RAPPEL FORFAITS'][$init->copy()->format('n')] + 
 	            								$arrayIncomes['RAPPEL ALQUILER MATERIAL'][$init->copy()->format('n')];
 	            			?>
-            				<?php if ($i == 12): ?>
+            				<?php if ($i == $diff): ?>
             					<?php echo $totalMonth; ?>
             				<?php else: ?>
             					<?php echo $totalMonth; ?>,
@@ -293,8 +285,8 @@
 	            ],
 	            borderWidth: 1,
 	            data: [
-	            	<?php $init = $inicio->copy(); ?>
-            		<?php for($i = 1 ; $i <= 12; $i++): ?>
+					<?php $init = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
+					<?php for($i = 1 ; $i <= $diff; $i++): ?>
             			<?php 
             				$totalMonth = 
             								$arrayExpenses['PAGO PROPIETARIO'][$init->copy()->format('n')] +
@@ -316,7 +308,7 @@
 											$arrayExpenses['MENSAJERIA'][$init->copy()->format('n')] +
 											$arrayExpenses['COMISIONES COMERCIALES'][$init->copy()->format('n')] ;
             			?>
-        				<?php if ($i == 12): ?>
+        				<?php if ($i == $diff): ?>
         					<?php echo abs($totalMonth); ?>
         				<?php else: ?>
         					<?php echo abs($totalMonth); ?>,

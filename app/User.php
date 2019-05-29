@@ -26,7 +26,7 @@ class User extends Authenticatable
 
     public function rooms()
     {
-        return $this->hasOne('\App\Rooms', 'id', 'user_id');
+        return $this->hasMany('\App\Rooms', 'owned', 'id');
     }
 
     public function book()

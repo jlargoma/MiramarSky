@@ -62,12 +62,13 @@
 <div class="container-fluid padding-25 sm-padding-10">
     <div class="row">
         <div class="col-md-12">
-            <div class="col-md-12 text-center">
-                <?php $year = $date->copy();?>
+            <div class="col-md-3 col-md-offset-3 text-center">
                 <h2 class="font-w800">
-                    Precios de Temporadas <?php echo $year->copy()->format('Y') ?> -  <?php echo $year->copy()
-                    ->addYear()->format('Y') ?>
+                    Precios de Temporadas
                 </h2>
+            </div>
+            <div class="col-md-1" style="padding: 10px 0;">
+                @include('backend.years._selector', ['minimal' => true])
             </div>
             <div class="clearfix"></div>
             <div class="tab-content">
@@ -90,7 +91,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php for ($i=2; $i <= 10 ; $i++): ?>
+                            <?php for ($i = $minMax->min; $i <= $minMax->max ; $i++): ?>
                                     <tr>
                                     
                                         <td class ="text-center"> 
@@ -98,14 +99,14 @@
                                         </td>
                                         <?php foreach ($seasons as $key => $season): ?>
                                             <?php $price =  \App\Prices::where('occupation', $i)->where('season', $season->id )->first(); ?>
-                                            <?php if ( $price): ?>
+                                            <?php if ($price): ?>
                                                 <td class="text-center" style="border-left: 1px solid #48b0f7">
                                                     <input class="editable price-<?php echo $price->id?>" type="text" name="cost" data-id="<?php echo $price->id ?>" value="<?php echo $price->price ?>" style="width: 100%;text-align: center;border-style: none none">
                                                 </td>
                                                 <td class="text-center">
                                                     <input class="editable cost-<?php echo $price->id?>" type="text" name="cost" data-id="<?php echo $price->id ?>" value="<?php echo $price->cost ?>" style="width: 100%;text-align: center;border-style: none none">
                                                 </td>
-                                                <td class="text-center" style="border-right: : 1px solid #48b0f7">
+                                                <td class="text-center" style="border-right: 1px solid #48b0f7">
                                                     <?php if ($price->price == 0 || $price->cost == 0): ?>
                                                         0%
                                                     <?php else: ?>

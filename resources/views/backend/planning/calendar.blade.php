@@ -10,9 +10,7 @@ setlocale(LC_TIME, "es_ES");
 	        <?php $diffInMonths = $startYear->diffInMonths($endYear) + 1; ?>
                 <div class="col-12" style="overflow-x: auto;">
 	                <?php for ($i=1; $i <= $diffInMonths ; $i++) :?>
-                        <button <?php if($dateAux->copy()->format('n') == date('n')): ?>id="btn-active"<?php endif?>
-                        class='btn btn-rounded btn-sm btn-default btn-fechas-calendar <?php if($i < 4){ echo 'hidden-xs'; }?>'
-                                data-month="<?php echo $dateAux->copy()->format('n') ?>">
+                        <button <?php if($dateAux->copy()->format('n') == date('n')): ?>id="btn-active"<?php endif?> class='btn btn-rounded btn-sm btn-default btn-fechas-calendar <?php if($i < 4){ echo 'hidden-xs'; }?>' data-month="<?php echo $dateAux->copy()->format('n') ?>">
                             <?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>
                         </button>
                         <?php $dateAux->addMonth(); ?>
@@ -64,10 +62,7 @@ setlocale(LC_TIME, "es_ES");
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php
-                                $luxAux = 1;
-                                $typeAux = 2;
-                                ?>
+                                <?php $luxAux = 1; $typeAux = 2; ?>
                                 <?php foreach ($roomscalendar as $key => $room): ?>
                                     <?php $inicio = $inicioAux->copy() ?>
 
@@ -329,7 +324,7 @@ setlocale(LC_TIME, "es_ES");
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
-                        <?php $inicio = $inicio->addMonth(); ?>
+
                     </div>
                 </div>
             </div>
@@ -337,33 +332,35 @@ setlocale(LC_TIME, "es_ES");
         </div>
     </div>
 </div>
-    <script type="text/javascript">
+<script type="text/javascript">
 
-      $('.btn-fechas-calendar').click(function(event) {
-        event.preventDefault();
-        $('.btn-fechas-calendar').css({
-          'background-color': '#899098',
-          'color': '#fff'
-        });
-        $(this).css({
-          'background-color': '#10cfbd',
-          'color': '#fff'
-        });
-        var target = $(this).attr('data-month');
-        var targetPosition = $('.content-calendar #month-'+target).position();
-        // alert("Left: "+targetPosition.left+ ", right: "+targetPosition.right);
-        $('.content-calendar').animate({ scrollLeft: "+="+targetPosition.left+"px" }, "slow");
-      });
+  $('.btn-fechas-calendar').click(function(event) {
+    event.preventDefault();
+    $('.btn-fechas-calendar').css({
+      'background-color': '#899098',
+      'color': '#fff'
+    });
+    $(this).css({
+      'background-color': '#10cfbd',
+      'color': '#fff'
+    });
+    var target = $(this).attr('data-month');
+    var targetPosition = $('.content-calendar #month-'+target).position();
+    // alert("Left: "+targetPosition.left+ ", right: "+targetPosition.right);
+    $('.content-calendar').animate({ scrollLeft: "+="+targetPosition.left+"px" }, "slow");
+  });
 
 
-      $('#btn-active').trigger('click');
 
-      // Ver imagenes por piso
 
-      $('.getImages').click(function(event) {
-        var idRoom = $(this).attr('data-id');
-        $.get('/admin/rooms/api/getImagesRoom/'+idRoom, function(data) {
-          $('#modalRoomImages .modal-content').empty().append(data);
-        });
-      });
-    </script>
+  // Ver imagenes por piso
+
+  $('.getImages').click(function(event) {
+    var idRoom = $(this).attr('data-id');
+    $.get('/admin/rooms/api/getImagesRoom/'+idRoom, function(data) {
+      $('#modalRoomImages .modal-content').empty().append(data);
+    });
+  });
+
+  $('#btn-active').trigger('click');
+</script>

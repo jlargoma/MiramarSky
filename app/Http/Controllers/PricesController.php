@@ -15,22 +15,29 @@ class PricesController extends AppController
 	 */
 	public function index()
 	{
-		$date          = new Carbon('first day of September 2018');
-		$seasonTemp    = \App\Seasons::where('start_date', '>=', $date->copy())
-		                             ->where('finish_date', '<=', $date->copy()->addYear())
+		$year      = $this->getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
+		$diff      = $startYear->diffInMonths($endYear) + 1;
+
+		$seasonTemp    = \App\Seasons::where('start_date', '>=', $startYear)
+		                             ->where('finish_date', '<=', $endYear)
 		                             ->orderBy('start_date', 'ASC')
 		                             ->get();
+		$minMax        = \App\Rooms::where('state', 1)->selectRaw('min(minOcu) as min, max(maxOcu) as max')->first();
 		$auxSeasonType = \App\TypeSeasons::orderBy('order', 'ASC')->get();
 		return view('backend/prices/index', [
-
-			'seasons'    => $auxSeasonType,
-			'newseasons' => $auxSeasonType,
-			'extras'     => \App\Extras::all(),
-
+			'minMax'             => $minMax,
+			'seasons'            => $auxSeasonType,
+			'newseasons'         => $auxSeasonType,
+			'extras'             => \App\Extras::all(),
 			'seasonsTemp'        => $seasonTemp,
 			'newtypeSeasonsTemp' => $auxSeasonType,
 			'typeSeasonsTemp'    => $auxSeasonType,
-			'date'               => $date,
+			'year'               => $year,
+			'diff'               => $diff,
+			'startYear'          => $startYear,
+			'endYear'            => $endYear,
 		]);
 	}
 

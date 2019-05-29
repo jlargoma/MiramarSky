@@ -108,8 +108,19 @@
                         </li>
                     <?php endif ?>
                     <?php if ( Auth::user()->role == "admin" ): ?>
-                    <li class="{{ Request::path() == 'admin/propietario/8D'  ? 'active' : '' }}">
-                        <a href="{{ url('admin/propietario/8D') }}" class="detailed">Area Propietario</a>
+                    <?php
+	                    $defaultRoom = '';
+                        if ( count(Auth::user()->rooms) > 0)
+                        {
+                            foreach (Auth::user()->rooms as $room)
+                            {
+	                            $defaultRoom = $room->name;
+	                            break;
+                            }
+                        }
+                    ?>
+                    <li class="{{  (preg_match('/propietario/i',Request::path()))  ? 'active' : '' }}">
+                        <a href="{{ url('admin/propietario/'. $defaultRoom) }}" class="detailed">Area Propietario</a>
                     </li>
 
                     <li class="{{ Request::path() == 'admin/precios' ? 'active' : '' }}">
@@ -210,8 +221,9 @@
         <script src="{{ asset('assets/plugins/skycons/skycons.js') }}" type="text/javascript"></script>
         <script src="{{ asset('assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') }}" type="text/javascript"></script>
         <script type="text/javascript" src="{{ asset('/pages/js/bootstrap-notify.js')}}"></script>
-        @yield('scripts')
+
         <script src="{{ asset('pages/js/pages.min.js') }}"></script>
         <script src="{{ asset('js/custom.js') }}"></script>
+        @yield('scripts')
     </body>
 </html>

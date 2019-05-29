@@ -37,9 +37,9 @@ class BookController extends AppController
 	 */
 	public function index()
 	{
-		$year       = $this->getActiveYear();
-		$startYear  = new Carbon($year->start_date);
-		$endYear    = new Carbon($year->end_date);
+		$year      = $this->getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
 
 		if (Auth::user()->role != "agente")
 		{
@@ -70,17 +70,20 @@ class BookController extends AppController
 			                            ->whereIn('room_id', $roomsAgents)
 			                            ->orderBy('created_at', 'DESC')
 			                            ->get();
-		}
-		else
+		} else
 		{
 			$booksCollection = \App\Book::whereIn('room_id', $roomsAgents)
 			                            ->where(
 				                            [
 					                            [
-						                            'start', '>=', $startYear
+						                            'start',
+						                            '>=',
+						                            $startYear
 					                            ],
 					                            [
-						                            'start', '<=', $endYear
+						                            'start',
+						                            '<=',
+						                            $endYear
 					                            ],
 					                            [
 						                            'user_id',
@@ -96,7 +99,7 @@ class BookController extends AppController
 			                            ->get();
 		}
 
-		$booksCount['pending']      = $booksCollection->where('type_book', 3)->count();
+		$booksCount['pending'] = $booksCollection->where('type_book', 3)->count();
 
 		$booksCount['special']      = $booksCollection->whereIn('type_book', [
 			7,
@@ -130,7 +133,9 @@ class BookController extends AppController
 
 		$mobile      = new Mobile();
 		$now         = Carbon::now();
-		$booksAlarms = \App\Book::where('start', '>=', $now->format('Y-m-d'))
+		$booksAlarms = \App\Book::where('start', '>', $startYear)
+		                        ->where('finish', '<', $endYear)
+		                        ->where('start', '>=', $now->format('Y-m-d'))
 		                        ->where('start', '<=', $now->copy()->addDays(15)->format('Y-m-d'))
 		                        ->where('type_book', 2)
 		                        ->get();
@@ -1365,10 +1370,10 @@ class BookController extends AppController
 
 	public function getTableData(Request $request)
 	{
-		$mobile = new Mobile();
-		$year       = self::getActiveYear();
-		$startYear  = new Carbon($year->start_date);
-		$endYear    = new Carbon($year->end_date);
+		$mobile    = new Mobile();
+		$year      = self::getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
 
 
 		if (Auth::user()->role != "agente")
@@ -1480,7 +1485,7 @@ class BookController extends AppController
 				                  ->get();
 				break;
 			case 'blocked-ical':
-				$books = \App\Book::where('start', '>=',  $startYear->copy()->subDays(3))
+				$books = \App\Book::where('start', '>=', $startYear->copy()->subDays(3))
 				                  ->where('finish', '<=', $endYear)
 				                  ->whereIn('type_book', [
 					                  11,
@@ -1875,7 +1880,7 @@ class BookController extends AppController
 			case 'checkout':
 				$dateX      = Carbon::now();
 				$booksCount = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))
-										->where('start', '<=', $dateX)
+				                       ->where('start', '<=', $dateX)
 				                       ->where('type_book', 2)
 				                       ->count();
 				break;
@@ -2231,34 +2236,20 @@ class BookController extends AppController
 
 		$years = [];
 
-		$now  = Carbon::now();
-		$year = date('Y');
+		$year      = self::getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
 
-		if ($year)
-		{
-			if ($now->copy()->format('n') >= 9)
-			{
-				$date = new Carbon('first day of September ' . $now->copy()->format('Y'));
-			} else
-			{
-				$date = new Carbon('first day of September ' . $now->copy()->subYear()->format('Y'));
-			}
-		} else
-		{
-			$date = new Carbon('first day of September ' . $year);
-		}
-
-		$year_season      = date('y', strtotime($date));
-		$year_season_full = date('Y', strtotime($date));
-
+		$year_season      = date('y', strtotime($startYear));
+		$year_season_full = date('Y', strtotime($startYear));
 
 		$years[] = $year_season . '-' . ($year_season + 1);
 		$years[] = ($year_season - 1) . '-' . $year_season;
 		$years[] = ($year_season - 2) . '-' . ($year_season - 1);
 
-		$years_full[] = $year_season_full . '-' . ($year_season_full + 1);
-		$years_full[] = ($year_season_full - 1) . '-' . $year_season_full;
-		$years_full[] = ($year_season_full - 2) . '-' . ($year_season_full - 1);
+		$years_full[] = (int) $year_season_full;
+		$years_full[] = (int) $year_season_full - 1;
+		$years_full[] = (int) $year_season_full - 2;
 
 		sort($years);
 		sort($years_full);
@@ -2277,7 +2268,7 @@ class BookController extends AppController
 			$years[2] => $dataNode
 		];
 
-		$agencyBooks = [
+		$agencyBooks    = [
 			'years'  => $years,
 			'data'   => [
 				'V. Directa' => $yearsNode,
@@ -2288,22 +2279,23 @@ class BookController extends AppController
 			],
 			'totals' => $yearsNode
 		];
-
-		$agencyBooksSQL = Book::    where("created_at", ">=", explode('-', $years_full[0])[0] . '0901')
-		                      ->get();
+		$auxYearOne     = \App\Years::where('year', $years_full[0])->first();
+		$auxYearTwo     = \App\Years::where('year', $years_full[1])->first();
+		$auxYearThree   = \App\Years::where('year', $years_full[2])->first();
+		$agencyBooksSQL = Book::where("created_at", ">=", $auxYearThree->start_date)->get();
 
 		foreach ($agencyBooksSQL as $book)
 		{
+			$book_date = Carbon::createFromFormat('Y-m-d', $book->start);
 
-			$book_date = date('Ymd', strtotime($book->start));
-
-			if ($book_date < explode('-', $years_full[0])[1] . '0901')
+			if ($book_date >= $auxYearOne->start_date && $book_date <= $auxYearOne->end_date)
 			{
 				$season = $years[0];
-			} elseif ($book_date < explode('-', $years_full[1])[1] . '0901')
+
+			} elseif ($book_date >= $auxYearTwo->start_date &&  $book_date <= $auxYearTwo->end_date)
 			{
 				$season = $years[1];
-			} elseif ($book_date < explode('-', $years_full[2])[1] . '0901')
+			} elseif ($book_date >= $auxYearThree->start_date &&  $book_date <= $auxYearThree->end_date)
 			{
 				$season = $years[2];
 			}
@@ -2324,14 +2316,17 @@ class BookController extends AppController
 			{
 				$agency_name = 'AirBnb';
 			}
+			
+			if (isset($season))
+			{
+				$agencyBooks['data'][$agency_name][$season]['total']        += $book->real_price;
+				$agencyBooks['data'][$agency_name][$season]['reservations'] += 1;
+				$agencyBooks['data'][$agency_name][$season]['commissions']  += str_replace(',', '.', $book->PVPAgencia);
 
-			$agencyBooks['data'][$agency_name][$season]['total']        += $book->real_price;
-			$agencyBooks['data'][$agency_name][$season]['reservations'] += 1;
-			$agencyBooks['data'][$agency_name][$season]['commissions']  += str_replace(',', '.', $book->PVPAgencia);
-
-			$agencyBooks['totals'][$season]['total']        += $book->real_price;
-			$agencyBooks['totals'][$season]['reservations'] += 1;
-			$agencyBooks['totals'][$season]['commissions']  += str_replace(',', '.', $book->PVPAgencia);
+				$agencyBooks['totals'][$season]['total']        += $book->real_price;
+				$agencyBooks['totals'][$season]['reservations'] += 1;
+				$agencyBooks['totals'][$season]['commissions']  += str_replace(',', '.', $book->PVPAgencia);
+			}
 
 		}
 

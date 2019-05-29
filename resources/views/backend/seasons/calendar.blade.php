@@ -796,111 +796,106 @@ use \Carbon\Carbon;
 </div>
 
 <div style="clear: both;"></div>
-<?php for ($j = 0; $j < 8; $j++):
+<?php $dateAux = $startYear->copy(); ?>
+<?php for ($j = 1; $j <= $diff; $j++): ?>
+    <?php
+        $startMonth = $dateAux->copy()->startOfMonth();
+        $endMonth   = $dateAux->copy()->endOfMonth();
+        $countDays  = $endMonth->diffInDays($startMonth);
+    ?>
+    <div id="calendar" class="col-xs-12 col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="calendar fc fc-ltr">
+                    <div class="col-md-2">
+                        <?php echo ucfirst($startMonth->copy()->formatLocalized('%b %Y')) ?>
+                    </div>
 
-$startMonth = $date->copy()->startOfMonth();
-$endMonth = $date->copy()->endOfMonth();
-$countDays = $endMonth->diffInDays($startMonth);
-?>
-<div id="calendar" class="col-xs-12 col-md-3">
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div class="calendar fc fc-ltr">
-                <div class="col-md-2">
-					<?php echo ucfirst($date->copy()->formatLocalized('%b %Y')) ?>
-                </div>
+                    <div class="fc-content" style="position: relative; min-height: 1px;">
+                        <div class="fc-view fc-view-month fc-grid" style="position: relative; min-height: 1px;" unselectable="on">
+                            <table class="fc-border-separate" style="width:100%;border: 1px solid black" cellspacing="0">
+                                <thead>
 
+                                    <?php $dayMonth = $startMonth;?>
+                                    <?php for ($i = 1; $i <= $countDays + 1; $i++): ?>
+                                    <?php if($dayMonth->format('w') == 0 && $i == 1): ?>
+                                        <?php for ($h = 1; $h <= 6; $h++): ?>
+                                            <th class="fc-day-header fc-mon fc-widget-header" style="width: 100px;">
+                                                &nbsp;
+                                            </th>
+                                        <?php endfor ?>
+                                    <?php elseif ($dayMonth->format('w') != 1 && $i == 1): ?>
+                                        <?php for ($h = 1; $h <= $dayMonth->format('w') - 1; $h++): ?>
+                                            <th class="fc-day-header fc-mon fc-widget-header" style="width: 100px;">
+                                                &nbsp;
+                                            </th>
+                                        <?php endfor ?>
+                                    <?php endif ?>
+                                    <?php
+                                        $daySeasons = \App\Seasons::where('start_date', '<=', $dayMonth)
+                                                          ->where('finish_date', '>=', $dayMonth)
+                                                          ->get();
+                                        $status = "";
+                                        if (count($daySeasons) > 0)
+                                        {
+                                            foreach ($daySeasons as $daySeason)
+                                    {
+                                        $nameSeason  = $daySeason->typeSeasons->name;
+                                        $startseason = $daySeason->start_date;
+                                        $endseason   = $daySeason->finish_date;
+                                        switch ($daySeason->type)
+                                        {
+                                            case 1:
+                                                $status = "Alta";
+                                                break;
+                                            case 2:
+                                                $status = "Media";
+                                                break;
+                                            case 3:
+                                                $status = "Baja";
+                                                break;
+                                            case 4:
+                                                $status = "Premium";
+                                                break;
+                                            default:
+                                                $status = "";
+                                                break;
+                                        }
+                                    }
+                                        } else
+                                        {
+                                            $status      = "";
+                                            $nameSeason  = "";
+                                            $startseason = "";
+                                            $endseason   = "";
+                                        }
+                                    ?>
+                                        <th class="fc-day-header fc-mon fc-widget-header <?php echo $status ?>"
+                                            style="width: 100px;">
+                                            <span style="font-size: 11px">
+                                                <?php echo $dayMonth->format('d') ?> <br>
+                                            <!-- <?php echo ucfirst($dayMonth->formatLocalized('%a')) ?> -->
+                                            </span>
+                                        </th>
 
-                <div class="fc-content" style="position: relative; min-height: 1px;">
-                    <div class="fc-view fc-view-month fc-grid" style="position: relative; min-height: 1px;"
-                         unselectable="on">
-                        <table class="fc-border-separate" style="width:100%;border: 1px solid black" cellspacing="0">
-                            <thead>
+                                    <?php $dayMonth->addDay() ?>
 
-							<?php $dayMonth = $startMonth;?>
-
-							<?php for ($i = 1; $i <= $countDays + 1; $i++): ?>
-							<?php if($dayMonth->format('w') == 0 && $i == 1): ?>
-							<?php for ($h = 1; $h <= 6; $h++): ?>
-                            <th class="fc-day-header fc-mon fc-widget-header" style="width: 100px;">
-                                &nbsp;
-                            </th>
-							<?php endfor ?>
-							<?php elseif ($dayMonth->format('w') != 1 && $i == 1): ?>
-							<?php for ($h = 1; $h <= $dayMonth->format('w') - 1; $h++): ?>
-                            <th class="fc-day-header fc-mon fc-widget-header" style="width: 100px;">
-                                &nbsp;
-                            </th>
-							<?php endfor ?>
-
-							<?php endif ?>
-							<?php
-							$daySeasons = \App\Seasons::where('start_date', '<=', $dayMonth)
-							                          ->where('finish_date', '>=', $dayMonth)
-							                          ->get();
-							$status = "";
-							if (count($daySeasons) > 0)
-							{
-
-								foreach ($daySeasons as $daySeason)
-								{
-									$nameSeason  = $daySeason->typeSeasons->name;
-									$startseason = $daySeason->start_date;
-									$endseason   = $daySeason->finish_date;
-									switch ($daySeason->type)
-									{
-										case 1:
-											$status = "Alta";
-											break;
-										case 2:
-											$status = "Media";
-											break;
-										case 3:
-											$status = "Baja";
-											break;
-										case 4:
-											$status = "Premium";
-											break;
-										default:
-											$status = "";
-											break;
-									}
-								}
-							} else
-							{
-								$status      = "";
-								$nameSeason  = "";
-								$startseason = "";
-								$endseason   = "";
-							}
-							?>
-                            <th class="fc-day-header fc-mon fc-widget-header <?php echo $status ?>"
-                                style="width: 100px;">
-												<span style="font-size: 11px">
-													<?php echo $dayMonth->format('d') ?> <br>
-                                                <!-- <?php echo ucfirst($dayMonth->formatLocalized('%a')) ?> -->
-												</span>
-                            </th>
-
-							<?php $dayMonth->addDay() ?>
-
-							<?php if ($dayMonth->format('D') == "Mon"): ?>
-                            </tr>
-							<?php endif ?>
-							<?php endfor ?>
-
-                            </thead>
-                        </table>
+                                    <?php if ($dayMonth->format('D') == "Mon"): ?>
+                                        </tr>
+                                    <?php endif ?>
+                                <?php endfor ?>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<?php $date->addMonth(); ?>
-<?php if ($j == 3 || $j == 7): ?>
-<div style="clear: both;"></div>
-<?php endif ?>
+    <?php $dateAux->addMonth(); ?>
+    <?php if ($j == 4 || $j == 8): ?>
+        <div style="clear: both;"></div>
+    <?php endif ?>
 <?php endfor;?>
 
 

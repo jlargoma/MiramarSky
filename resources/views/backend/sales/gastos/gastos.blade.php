@@ -35,22 +35,7 @@ background: white;
 			</h2>
 		</div>
 		<div class="col-md-2 col-xs-12 sm-padding-10" style="padding: 10px">
-			<select id="fecha" class="form-control minimal">
-				<?php $fecha = $inicio->copy()->SubYears(2); ?>
-				<?php if ($fecha->copy()->format('Y') < 2015): ?>
-					<?php $fecha = new Carbon('first day of September 2015'); ?>
-				<?php endif ?>
-
-				<?php for ($i=1; $i <= 3; $i++): ?>                           
-					<option value="<?php echo $fecha->copy()->format('Y'); ?>" 
-						<?php if (  $fecha->copy()->format('Y') == date('Y') || 
-							$fecha->copy()->addYear()->format('Y') == date('Y') 
-							){ echo "selected"; }?> >
-							<?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
-						</option>
-						<?php $fecha->addYear(); ?>
-					<?php endfor; ?>
-				</select>    
+			@include('backend.years._selector')
 			</div>
 		</div>
 	</div>
@@ -96,7 +81,8 @@ background: white;
 				<div class="container-xs-height full-height">
 					<div class="row-xs-height">
 						<div class="modal-body contentExpencesByRoom">
-							@include('backend.sales.gastos._expensesByRoom', ['gastos' => $gastos, 'room' => 'all'])
+							@include('backend.sales.gastos._expensesByRoom', ['gastos' => $gastos, 'room' => 'all',
+							'year' => $year])
 						</div>
 					</div>
 				</div>
@@ -115,11 +101,11 @@ background: white;
 		$(document).ready(function() {
 			$('.deleteExpense').click(function(event) {
 				var id = $(this).attr('data-id');
-				var year = $('#fecha').val();
 				$.get('/admin/gastos/delete/'+id, function(data) {
 					
 					if (data == "ok") {
-						$('#contentTableExpenses').empty().load('/admin/gastos/getTableGastos/'+year)
+						location.reload();
+						//$('#contentTableExpenses').empty().load('/admin/gastos/getTableGastos')
 					}
 
 				});

@@ -16,50 +16,32 @@ class OwnedController extends AppController
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index($name, $year = "")
+	public function index($name = "")
 	{
+		$year      = $this->getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
+		$diff      = $startYear->diffInMonths($endYear) + 1;
 
-		// Rooms
-		$room = \App\Rooms::where('nameRoom', $name)->first();
+		if (empty($name))
+			if (count(Auth::user()->rooms) == 0)
+				return view('backend.rooms.not_rooms_avaliables');
+			else
+				$room = Auth::user()->rooms[0];
+		else
+			if (count(Auth::user()->rooms) == 0)
+				return view('backend.rooms.not_rooms_avaliables');
+			else
+				$room = \App\Rooms::where('owned', Auth::user()->id)->where('nameRoom', 'LIKE' , "%".$name."%")->first();
 
-		if ($room->owned == Auth::user()->id)
-		{
-			$room = \App\Rooms::where('nameRoom', $name)->first();
-
-		} elseif (Auth::user()->role == 'admin')
-		{
-			$room = \App\Rooms::where('nameRoom', $name)->first();
-		} else
-		{
+		if ($room->owned != Auth::user()->id && Auth::user()->role != "admin")
 			return view('errors.owned-access');
-		}
-		// Año
-		if (empty($year))
-		{
-			$date = Carbon::now();
-		} else
-		{
-			$year = Carbon::createFromFormat('Y', $year);
-			$date = $year->copy();
-
-		}
-
-		if ($date->copy()->format('n') >= 9)
-		{
-			$firstDayOfTheYear = new Carbon('first day of September ' . $date->copy()->format('Y'));
-			$date              = new Carbon('first day of September ' . $date->copy()->format('Y'));
-		} else
-		{
-			$firstDayOfTheYear = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
-			$date              = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
-		}
 
 		// Variables
 		$mes           = array();
 		$arrayReservas = array();
 		$arrayMonths   = array();
 		$arrayDays     = array();
-
 
 		$total = 0;
 		$apto  = 0;
@@ -68,22 +50,17 @@ class OwnedController extends AppController
 
 		// Datos
 
-		$reservas = \App\Book::whereIn('type_book', [
-			1,
-			2,
-//			4,
-			7,
-			8
-		])->where('room_id', $room->id)->where('start', '>=', $firstDayOfTheYear->copy())
-		                     ->where('start', '<=', $firstDayOfTheYear->copy()->addYear())->orderBy('start', 'ASC')
+		$reservas = \App\Book::whereIn('type_book', [1, 2, 7, 8])
+		                     ->where('room_id', $room->id)
+		                     ->where('start', '>=', $startYear)
+		                     ->where('start', '<=', $endYear)
+		                     ->orderBy('start', 'ASC')
 		                     ->get();
 
-		$books = \App\Book::where('room_id', $room->id)->whereIn('type_book', [
-			2,
-			7,
-			8
-		])->where('start', '>=', $firstDayOfTheYear->copy())->where('start', '<=', $firstDayOfTheYear->copy()
-		                                                                                             ->addYear())
+		$books = \App\Book::where('room_id', $room->id)
+						  ->whereIn('type_book', [2, 7, 8])
+		                  ->where('start', '>=', $startYear)
+		                  ->where('start', '<=', $endYear)
 		                  ->orderBy('start', 'ASC')->get();
 
 		foreach ($reservas as $reserva)
@@ -94,47 +71,45 @@ class OwnedController extends AppController
 			$diferencia = $start->diffInDays($finish);
 			for ($i = 0; $i <= $diferencia; $i++)
 			{
-				$arrayReservas[$reserva->room_id][$dia->copy()->format('Y')][$dia->copy()->format('n')][$dia->copy()
-				                                                                                            ->format('j')][] = $reserva;
-				$dia                                                                                                         = $dia->addDay();
+				$arrayReservas[$reserva->room_id][$dia->copy()->format('Y')][$dia->copy()->format('n')][$dia->copy()->format('j')][] = $reserva;
+				$dia = $dia->addDay();
 			}
 		}
 
-		$ax = $firstDayOfTheYear->copy();
-		for ($i = 1; $i <= 12; $i++)
+		$ax = Carbon::createFromFormat('Y-m-d', $year->start_date);
+		for ($i = 1; $i <= $diff; $i++)
 		{
 			$mes[$ax->copy()->format('n')] = $ax->copy()->format('M Y');
 			$ax                            = $ax->addMonth();
 		}
 		$book = new \App\Book();
-		for ($i = 1; $i <= 12; $i++)
+
+		$aux = Carbon::createFromFormat('Y-m-d', $year->start_date);
+
+		for ($i = 1; $i <= $diff; $i++)
 		{
 
-			$startMonth = $firstDayOfTheYear->copy()->startOfMonth();
-			$endMonth   = $firstDayOfTheYear->copy()->endOfMonth();
+			$startMonth = $aux->copy()->startOfMonth();
+			$endMonth   = $aux->copy()->endOfMonth();
 			$countDays  = $endMonth->diffInDays($startMonth);
 			$day        = $startMonth;
 
 
-			$arrayMonths[$firstDayOfTheYear->copy()->format('n')] = $day->copy()->format('t');
+			$arrayMonths[$aux->copy()->format('n')] = $day->copy()->format('t');
 
 
 			for ($j = 1; $j <= $day->copy()->format('t'); $j++)
 			{
 
-				$arrayDays[$firstDayOfTheYear->copy()->format('n')][$j] = $book->getDayWeek($day->copy()->format('w'));
+				$arrayDays[$aux->copy()->format('n')][$j] = $book->getDayWeek($day->copy()->format('w'));
 
 				$day = $day->copy()->addDay();
 
 			}
 
-			$firstDayOfTheYear->addMonth();
+			$aux->addMonth();
 
 		}
-
-		unset($arrayMonths[6]);
-		unset($arrayMonths[7]);
-		unset($arrayMonths[8]);
 
 		foreach ($books as $book)
 		{
@@ -159,8 +134,8 @@ class OwnedController extends AppController
 
 		// $paymentspro = \App\Paymentspro::where('room_id',$room->id)->where('datePayment','>=',$date->copy()->format('Y-m-d'))->where('datePayment','<=',$date->copy()->addYear()->format('Y-m-d'))->get();
 
-		$gastos    = \App\Expenses::where('date', '>=', $date->copy()->format('Y-m-d'))
-		                          ->where('date', '<=', $date->copy()->addYear()->format('Y-m-d'))
+		$gastos    = \App\Expenses::where('date', '>=', $startYear)
+		                          ->where('date', '<=', $endYear)
 		                          ->where('PayFor', 'LIKE', '%' . $room->id . '%')
 		                          ->orderBy('date', 'ASC')
 		                          ->get();
@@ -173,7 +148,7 @@ class OwnedController extends AppController
 		}
 		$estadisticas['ingresos'] = array();
 		$estadisticas['clientes'] = array();
-		$dateStadistic            = $date->copy()->startOfMonth();
+		$dateStadistic            = Carbon::createFromFormat('Y-m-d', $year->start_date);
 
 		for ($i = $dateStadistic->copy()->format('n'); $i < 21; $i++)
 		{
@@ -221,7 +196,7 @@ class OwnedController extends AppController
 			'books'         => $books,
 			'mes'           => $mes,
 			'reservas'      => $arrayReservas,
-			'date'          => $date,
+			'year'          => $year,
 			'days'          => $arrayDays,
 			'arrayMonths'   => $arrayMonths,
 			'total'         => $total,
@@ -232,9 +207,11 @@ class OwnedController extends AppController
 			'pagototal'     => $pagototal,
 			'mobile'        => new Mobile(),
 			'estadisticas'  => $estadisticas,
-			'inicio'        => $date,
-			'roomscalendar' => \App\Rooms::where('nameRoom', $name)->get(),
+			'roomscalendar' => [$room],
 			'arrayReservas' => $arrayReservas,
+			'diff'          => $diff,
+			'startYear'     => $startYear,
+			'endYear'      => $endYear
 		]);
 
 
@@ -298,7 +275,8 @@ class OwnedController extends AppController
 		$start  = Carbon::createFromFormat('d M, y', trim($date[0]))->format('d/m/Y');
 		$finish = Carbon::createFromFormat('d M, y', trim($date[1]))->format('d/m/Y');
 
-		$diff = Carbon::createFromFormat('d M, y', trim($date[1]))->diffInDays(Carbon::createFromFormat('d M, y', trim($date[0])));
+		$diff = Carbon::createFromFormat('d M, y', trim($date[1]))
+		              ->diffInDays(Carbon::createFromFormat('d M, y', trim($date[0])));
 
 		$room = \App\Rooms::find($request->input('room'));
 

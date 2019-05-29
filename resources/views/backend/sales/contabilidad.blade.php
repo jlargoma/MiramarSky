@@ -23,22 +23,7 @@ setlocale(LC_TIME, "es_ES");
                     </h2>
                 </div>
                 <div class="col-md-2 col-xs-12 sm-padding-10" style="padding: 10px">
-                    <select id="fecha" class="form-control minimal">
-						<?php $fecha = $inicio->copy(); ?>
-						<?php $init = Carbon::now()->copy()->SubYears(3); ?>
-						<?php for ($i = 1; $i <= 3; $i++): ?>
-                        <option value="<?php echo $init->copy()->format('Y'); ?>"
-						<?php if ($fecha->copy()->format('Y') == $init->copy()->format('Y') ||
-							$fecha->copy()->addYear()->format('Y') == $init->copy()->format('Y')
-						)
-						{
-							echo "selected";
-						}?> >
-							<?php echo $fecha->copy()->format('Y') . "-" . $fecha->copy()->addYear()->format('Y'); ?>
-                        </option>
-						<?php $init->addYear(); ?>
-						<?php endfor; ?>
-                    </select>
+                    @include('backend.years._selector')
                 </div>
             </div>
         </div>
@@ -78,8 +63,8 @@ setlocale(LC_TIME, "es_ES");
                             <th class="text-center bg-complete text-white">Apto</th>
                             <th class="text-center bg-complete text-white">total</th>
                             <th class="text-center bg-complete text-white">%</th>
-							<?php $months = $inicio->copy(); ?>
-							<?php for ($i = 1; $i <= 12 ; $i++): ?>
+							<?php $months = new Carbon($year->start_date); ?>
+							<?php for ($i = 1; $i <= $diff ; $i++): ?>
                             <th class="text-center bg-complete text-white">
                                 &nbsp;<?php echo $months->formatLocalized('%b') ?>&nbsp;
                             </th>
@@ -94,11 +79,9 @@ setlocale(LC_TIME, "es_ES");
 
 						<?php foreach ($rooms as $key => $room): ?>
                             <?php $totalRoom = 0; ?>
-                            <?php $monthsRooms = $inicio->copy(); ?>
-                            <?php for ($i = 1; $i <= 12; $i++): ?>
-                                <?php $totalRoom += $priceBookRoom[$room->id][$monthsRooms->copy()
-						                                                                  ->format('Y')][$monthsRooms->copy()
-						                                                                                             ->format('n')] ?>
+                            <?php $monthsRooms = new Carbon($year->start_date); ?>
+                            <?php for ($i = 1; $i <= $diff; $i++): ?>
+                                <?php $totalRoom += $priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')] ?>
                                 <?php $monthsRooms->addMonth() ?>
                             <?php endfor; ?>
                             <?php $totalAllRoom += $totalRoom; ?>
@@ -109,11 +92,9 @@ setlocale(LC_TIME, "es_ES");
 								<?php echo $room->name ?> <b><?php echo $room->nameRoom ?></b>
                             </td>
 							<?php $totalRoom = 0; ?>
-							<?php $monthsRooms = $inicio->copy(); ?>
-							<?php for ($i = 1; $i <= 12; $i++): ?>
-                                    <?php $totalRoom += $priceBookRoom[$room->id][$monthsRooms->copy()
-							                                                                  ->format('Y')][$monthsRooms->copy()
-							                                                                                             ->format('n')] ?>
+							<?php $monthsRooms = new Carbon($year->start_date); ?>
+							<?php for ($i = 1; $i <= $diff; $i++): ?>
+                                    <?php $totalRoom += $priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')] ?>
                                     <?php $monthsRooms->addMonth() ?>
                                 <?php endfor; ?>
                             <td class="text-center">
@@ -127,17 +108,13 @@ setlocale(LC_TIME, "es_ES");
                                 &nbsp;&nbsp;<b><?php echo number_format($percent, 0, ',', '.') ?>%</b>&nbsp;&nbsp;
                             </td>
 
-							<?php $monthsRooms = $inicio->copy(); ?>
-							<?php for ($i = 1; $i <= 12 ; $i++): ?>
+							<?php $monthsRooms = new Carbon($year->start_date);  ?>
+							<?php for ($i = 1; $i <= $diff ; $i++): ?>
                             <td class="text-center" style="padding: 12px 20px!important">
-								<?php if ($priceBookRoom[$room->id][$monthsRooms->copy()
-								                                                ->format('Y')][$monthsRooms->copy()
-								                                                                           ->format('n')] == 0): ?>
+								<?php if ($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')] == 0): ?>
                                 ---
 								<?php else: ?>
-                                <b><?php echo number_format($priceBookRoom[$room->id][$monthsRooms->copy()
-								                                                                  ->format('Y')][$monthsRooms->copy()
-								                                                                                             ->format('n')], 0, ',', '.') ?>
+                                <b><?php echo number_format($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')], 0, ',', '.') ?>
                                     €</b>
 								<?php endif ?>
 
@@ -156,15 +133,15 @@ setlocale(LC_TIME, "es_ES");
             <div class="col-lg-4 col-md-4 col-xs-12">
                 <div class="col-md-12 col-xs-12">
                     <div>
-						<?php $dataChartMonths = \App\Rooms::getPvpByMonth($inicio->copy()->format('Y')) ?>
+						<?php $dataChartMonths = \App\Rooms::getPvpByMonth($year->year) ?>
 
                         <canvas id="barChartMonth" style="width: 100%; height: 250px;"></canvas>
                     </div>
                 </div>
                 <div class="col-md-12 col-xs-12">
                     <div>
-						<?php $dataChartYear = \App\Rooms::getPvpByMonth($inicio->copy()->subYear()->format('Y')) ?>
-                                                <?php $dataChartPrevYear = \App\Rooms::getPvpByMonth($inicio->copy()->subYear()->subYear()->format('Y')) ?>
+						<?php $dataChartYear = \App\Rooms::getPvpByMonth(($year->year - 1 )) ?>
+                        <?php $dataChartPrevYear = \App\Rooms::getPvpByMonth(($year->year - 2 )) ?>
 
                         <canvas id="barChartTemp" style="width: 100%; height: 250px;"></canvas>
                     </div>
@@ -172,27 +149,18 @@ setlocale(LC_TIME, "es_ES");
             </div>
         </div>
     </div>
-
 @endsection
 
 
 @section('scripts')
     <script type="text/javascript">
 
-      $('#fecha').change(function (event) {
-
-        var year = $(this).val();
-        window.location = '/admin/contabilidad/' + year;
-
-      });
-
       var data = {
         labels: [
 
-	        <?php $lastThreeSeason = $inicio->copy()->subYears(2) ?>
+	        <?php $lastThreeSeason = Carbon::createFromFormat('Y', $year->year)->subYears(3) ?>
 	        <?php for ($i=1; $i <= 4; $i++): ?>
-	            <?php echo "'" . $lastThreeSeason->format('y') . "-".$lastThreeSeason->copy()->addYear()->format('y')
-	            ."'," ?>
+	            <?php echo "'" . $lastThreeSeason->format('y') . "-".$lastThreeSeason->copy()->addYear()->format('y')."'," ?>
                 <?php $lastThreeSeason->addYear(); ?>
             <?php endfor; ?>
         ],
@@ -213,7 +181,7 @@ setlocale(LC_TIME, "es_ES");
             ],
             borderWidth: 1,
             data: [
-	            <?php $lastThreeSeason = $inicio->copy()->subYears(2) ?>
+	            <?php $lastThreeSeason = Carbon::createFromFormat('Y', $year->year)->subYears(3) ?>
                 <?php for ($i=1; $i <= 4; $i++): ?>
                     <?php $totalYear = \App\Rooms::getPvpByYear($lastThreeSeason->copy()->format('Y')); ?>
                     <?php echo "'" . $totalYear. "'," ?>
@@ -240,8 +208,8 @@ setlocale(LC_TIME, "es_ES");
         data: {
           labels: [
 			  <?php foreach ($dataChartMonths as $key => $value): ?>
-                            <?php echo "'" . $key . "'," ?>
-                        <?php endforeach ?>
+                    <?php echo "'" . $key . "'," ?>
+                <?php endforeach ?>
           ],
           datasets: [
             {
@@ -278,8 +246,8 @@ setlocale(LC_TIME, "es_ES");
 
               data: [
 				  <?php foreach ($dataChartMonths as $key => $value): ?>
-                                            <?php echo "'" . round($value) . "'," ?>
-                                        <?php endforeach ?>
+                    <?php echo "'" . round($value) . "'," ?>
+                <?php endforeach ?>
               ],
             }
           ]
@@ -301,7 +269,7 @@ setlocale(LC_TIME, "es_ES");
                 <?php echo "'" . round($value) . "'," ?>
             <?php endforeach ?>
             ],
-            label: '<?php echo $inicio->copy()->format('Y')?>-<?php echo $inicio->copy()->addYear()->format("Y")?>',
+            label: '<?php echo $year->year ?>-<?php echo $year->year + 1?>',
             borderColor: "rgba(54, 162, 235, 1)",
             fill: false
           },
@@ -311,8 +279,8 @@ setlocale(LC_TIME, "es_ES");
                 <?php echo "'" . round($value) . "'," ?>
               <?php endforeach ?>
               ],
-				<?php $aux = $inicio->copy()->subYears(1) ?>
-                label: '<?php echo $aux->copy()->format('Y')?>-<?php echo $aux->copy()->addYear()->format("Y")?>',
+				<?php $aux = $year->year - 1?>
+                label: '<?php echo $aux ?>-<?php echo $aux + 1?>',
               borderColor: "rgba(104, 255, 0, 1)",
               fill: false
             },
@@ -322,8 +290,8 @@ setlocale(LC_TIME, "es_ES");
                 <?php echo "'" . round($value) . "'," ?>
               <?php endforeach ?>
               ],
-				<?php $aux = $inicio->copy()->subYears(1) ?>
-                label: '<?php echo $aux->copy()->subYear()->format('Y')?>-<?php echo $aux->copy()->format("Y")?>',
+				<?php $aux = $year->year - 1 ?>
+                label: '<?php echo $aux - 1 ?>-<?php echo $aux ?>',
               borderColor: "rgba(232, 142, 132, 1)",
               fill: false
             }

@@ -214,7 +214,7 @@
    Route::get( 'admin/pagos/update' , ['middleware' => 'authAdmin' , 'uses' => 'PaymentsController@update'] );
 
 // Pagos-Propietarios
-   Route::get( 'admin/pagos-propietarios/{month?}' , ['middleware' => 'authAdmin' , 'uses' => 'PaymentsProController@index'] );
+   Route::get( 'admin/pagos-propietarios' , ['middleware' => 'authAdmin' , 'uses' => 'PaymentsProController@index'] );
    Route::post( 'admin/pagos-propietarios/create' , ['middleware' => 'authAdmin' , 'uses' => 'PaymentsProController@create'] );
    Route::get( 'admin/pagos-propietarios/update/{id}/{month?}' , ['middleware' => 'authAdmin' , 'uses' => 'PaymentsProController@update'] );
    Route::get( 'admin/paymentspro/getBooksByRoom/{idRoom}' , 'PaymentsProController@getBooksByRoom' );
@@ -223,13 +223,13 @@
 
 
 //Liquidacion
-   Route::get( 'admin/liquidacion/{year?}' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@index'] );
-   Route::get( 'admin/liquidacion-apartamentos/{year?}' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@apto'] );
+   Route::get( 'admin/liquidacion' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@index'] );
+   Route::get( 'admin/liquidacion-apartamentos' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@apto'] );
    Route::get( 'admin/liquidacion/export/excel' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@exportExcel'] );
 
    Route::get( 'admin/gastos/{year?}' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@gastos'] );
    Route::post( 'admin/gastos/create' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@gastoCreate'] );
-   Route::get( '/admin/gastos/getTableGastos/{year?}' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@getTableGastos'] );
+   Route::get( '/admin/gastos/getTableGastos' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@getTableGastos'] );
 
    Route::get( 'admin/gastos/update/{id}' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@updateGasto'] );
    Route::get( '/admin/gastos/getHojaGastosByRoom/{year?}/{id}' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@getHojaGastosByRoom'] );
@@ -245,7 +245,7 @@
       }
 
    } );
-   Route::get( 'admin/ingresos/{year?}' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@ingresos'] );
+   Route::get( 'admin/ingresos' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@ingresos'] );
    Route::post( 'admin/ingresos/create' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@ingresosCreate'] );
    Route::get( '/admin/ingresos/delete/{id}' , function ( $id ) {
 
@@ -257,7 +257,7 @@
 
    } );
 
-   Route::get( 'admin/caja/{year?}' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@caja'] );
+   Route::get( 'admin/caja' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@caja'] );
    Route::get( 'admin/caja/getTableMoves/{year?}/{type}' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@getTableMoves'] );
    Route::post( 'admin/cashBox/create' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@cashBoxCreate'] );
 
@@ -270,7 +270,7 @@
 
    } );
 
-   Route::get( 'admin/banco/{year?}' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@bank'] );
+   Route::get( 'admin/banco' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@bank'] );
    Route::get( 'admin/banco/getTableMoves/{year?}/{type}' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@getTableMovesBank'] );
    Route::get( 'admin/bank/updateSaldoInicial/{id}/{type}/{importe}' , function ( $id , $type , $importe ) {
       $cashbox         = \App\Cashbox::find( $id );
@@ -290,7 +290,7 @@
 
 
    Route::get( 'admin/estadisticas/{year?}' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@Statistics'] );
-   Route::get( 'admin/contabilidad/{year?}' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@contabilidad'] );
+   Route::get( 'admin/contabilidad' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@contabilidad'] );
    Route::get( 'admin/perdidas-ganancias/{year?}' , ['middleware' => 'authAdmin' , 'uses' => 'LiquidacionController@perdidasGanancias'] );
 
 
@@ -324,7 +324,7 @@
    Route::get( 'admin/propietario/{name?}/descuentos' , 'OwnedController@descuentosOwned' );
    Route::get( 'admin/propietario/{name?}/fiscalidad' , 'OwnedController@fiscalidadOwned' );
    Route::get( 'admin/propietario/{name?}/facturas' , 'OwnedController@facturasOwned' );
-   Route::get( 'admin/propietario/{name?}/{year?}' , 'OwnedController@index' );
+   Route::get( 'admin/propietario/{name?}' , 'OwnedController@index' );
 
 
    Route::get( 'admin/propietario/create/password/{email}' , 'UsersController@createPasswordUser' );

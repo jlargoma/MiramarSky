@@ -22,7 +22,7 @@
             <input class="form-control text-black font-w400 text-center percentBenef" value="<?php echo $percentBenef ?>" style="border: none; font-size: 32px;margin: 10px 0;color:red!important; width: 70%; float:left;"/> <span class="font-w800" style="font-size: 32px">%</span>
         </div>
         <div style="clear: both;"></div>
-        @include('backend.sales._tableSummaryBoxes', ['totales' => $totales, 'books' => $books, 'data' => $data, 'temporada' => $temporada])
+        @include('backend.sales._tableSummaryBoxes', ['totales' => $totales, 'books' => $books, 'data' => $data, 'year'=> $year])
     </div>
     <div class="col-xs-12">
         <div class="row push-10">

@@ -32,7 +32,7 @@
 		}
 </style>
 
-<?php $dataStats = \App\http\Controllers\LiquidacionController::getSalesByYear($inicio->copy()->format('Y')); ?>
+<?php $dataStats = \App\http\Controllers\LiquidacionController::getSalesByYear($year->year); ?>
 <div class="col-lg-3 col-md-6 col-xs-12">
 	
 	<table class="table table-hover table-striped table-ingresos" style="background-color: #92B6E2">
@@ -105,7 +105,7 @@
 	<div class="row ">
 		<?php $oldTotalPVP = 0; ?>
 		<?php $arrayColors = [ 1 => 'bg-info', 2 => 'bg-complete', 3 => 'bg-primary', ]; ?>
-		<?php $lastThreeSeason = $inicio->copy()->subYears(2) ?>
+		<?php $lastThreeSeason = \Carbon\Carbon::createFromFormat('Y', $year->year)->subYears(2) ?>
 		<?php for ($i=1; $i < 4; $i++): ?>
 			<div class="col-md-4 m-b-10">
 			
@@ -223,7 +223,7 @@
         options: {
           title: {
             display: true,
-            text: 'Ingresos de la temporada <?php echo $fecha->copy()->subYear()->format('Y');?> - <?php echo $fecha->copy()->format('Y');?>'
+            text: 'Ingresos de la temporada <?php echo ($year->year - 1);?> - <?php echo $year->year;?>'
           }
         }
     });
@@ -244,7 +244,7 @@
         options: {
           title: {
             display: true,
-            text: 'Cobros de la temporada <?php echo $fecha->copy()->subYear()->format('Y');?> - <?php echo $fecha->copy()->format('Y');?>'
+            text: 'Cobros de la temporada <?php echo ($year->year - 1);?> - <?php echo $year->year;?>'
           }
         }
     });
