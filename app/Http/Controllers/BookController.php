@@ -305,7 +305,8 @@ class BookController extends AppController
 
 				}
 			}
-		} else
+		}
+		else
 		{
 			$isReservable = 0;
 			if (in_array($request->input('status'), [
@@ -526,7 +527,6 @@ class BookController extends AppController
 		]);
 	}
 
-
 	//Funcion para actualizar la reserva
 	public function saveUpdate(Request $request, $id)
 	{
@@ -647,7 +647,6 @@ class BookController extends AppController
 		}
 	}
 
-
 	public function changeStatusBook(Request $request, $id)
 	{
 		if (isset($request->status) && !empty($request->status))
@@ -697,7 +696,6 @@ class BookController extends AppController
 		}
 	}
 
-
 	public function changeBook(Request $request, $id)
 	{
 
@@ -724,95 +722,81 @@ class BookController extends AppController
 		}
 	}
 
-
 	/**
 	 * @param        $park             Parking Option (Yes, No, Free, 50%)
 	 * @param        $noches           Book Nights
 	 * @param string $room             Room ID
 	 * @return float|int
 	 */
-	public function getPricePark($park, $noches, $room = "")
+	public static function getPricePark($typePark, $nights)
 	{
+		$priceParking   = 0;
+		$parkPvpSetting = \App\Settings::where('key', SettingsController::PARK_PVP_SETTING_CODE)->first();
+		if (!$parkPvpSetting)
+			return 0;
 
-		$priceParking = 0;
-		switch ($park)
+		switch ($typePark)
 		{
 			case 1: // Yes
-				$priceParking = Rooms::PARKING_PRICE * $noches;
+				$priceParking = $parkPvpSetting->value * $nights;
 				break;
 			case 2: // No
 			case 3: // Free
 				$priceParking = 0;
 				break;
 			case 4: // 50%
-				$priceParking = (Rooms::PARKING_PRICE * $noches) / 2;
+				$priceParking = ($parkPvpSetting->value * $nights) / 2;
 				break;
-		}
-		if ($room != "")
-		{
-			if ($room == 150)
-			{
-				$priceParking = $priceParking * 3;
-			}
-			if ($room == 149 || $room == 153)
-			{
-				$priceParking = $priceParking * 2;
-			}
 		}
 		return $priceParking;
 
 	}
 
-	public function getCostPark($park, $noches, $room = "")
+	public function getCostPark($typePark, $nights)
 	{
+		$costParking     = 0;
+		$parkCostSetting = \App\Settings::where('key', SettingsController::PARK_COST_SETTING_CODE)->first();
+		if (!$parkCostSetting)
+			return 0;
 
-		$costParking = 0;
-		switch ($park)
+		switch ($typePark)
 		{
 			case 1: // Yes
-				$costParking = Rooms::PARKING_COST * $noches;
+				$costParking = $parkCostSetting->value * $nights;
 				break;
 			case 2: // No
 			case 3: // Free
 				$costParking = 0;
 				break;
 			case 4: // 50%
-				$costParking = (Rooms::PARKING_COST * $noches) / 2;
+				$costParking = ($parkCostSetting->value * $nights) / 2;
 				break;
 		}
-
-		if ($room != "" && ($room == 150 || $room == 149 || $room == 153))
-		{
-			$costParking = $costParking * 2;
-		}
-
-
 		return $costParking;
 
 	}
 
-	public function getPriceLujo($typeLuxury)
+	public static function getPriceLujo($typeLuxury)
 	{
-		$priceLuxury = 0;
-		if ($typeLuxury > 4)
+		$priceLuxury      = 0;
+		$luxuryPvpSetting = \App\Settings::where('key', SettingsController::LUXURY_PVP_SETTING_CODE)->first();
+		if (!$luxuryPvpSetting)
+			return 0;
+
+		switch ($typeLuxury)
 		{
-			$priceLuxury = $typeLuxury;
-		} else
-		{
-			switch ($typeLuxury)
-			{
-				case 1: // Yes
-					$priceLuxury = Rooms::LUXURY_PRICE;
-					break;
-				case 2: // No
-				case 3: // Free
-					$priceLuxury = 0;
-					break;
-				case 4: // 50%
-					$priceLuxury = Rooms::LUXURY_PRICE / 2;
-					break;
-			}
+			case 1: // Yes
+				$priceLuxury = $luxuryPvpSetting->value;
+				break;
+			case 2: // No
+			case 3: // Free
+				$priceLuxury = 0;
+				break;
+			case 4: // 50%
+				$priceLuxury = $luxuryPvpSetting->value / 2;
+				break;
 		}
+
 		return $priceLuxury;
 	}
 
@@ -822,27 +806,23 @@ class BookController extends AppController
 	 */
 	public function getCostLujo($typeLuxury)
 	{
-		$costLuxury = 0;
-		if ($typeLuxury > 4)
+		$costLuxury        = 0;
+		$luxuryCostSetting = \App\Settings::where('key', SettingsController::LUXURY_COST_SETTING_CODE)->first();
+		if (!$luxuryCostSetting)
+			return 0;
+
+		switch ($typeLuxury)
 		{
-			$costLuxury = $typeLuxury - 10;
-		} else
-		{
-			switch ($typeLuxury)
-			{
-				case 1: // Yes
-					$costLuxury = Rooms::LUXURY_COST;
-					break;
-				case 2: // No
-					$costLuxury = 0;
-					break;
-				case 3: // Free
-					$costLuxury = 0;
-					break;
-				case 4: // 50%
-					$costLuxury = Rooms::LUXURY_COST / 2;
-					break;
-			}
+			case 1: // Yes
+				$costLuxury = $luxuryCostSetting->value;
+				break;
+			case 2: // No
+			case 3: // Free
+				$costLuxury = 0;
+				break;
+			case 4: // 50%
+				$costLuxury = $luxuryCostSetting->value / 2;
+				break;
 		}
 
 		return $costLuxury;
@@ -882,7 +862,7 @@ class BookController extends AppController
 		return $costBook;
 	}
 
-	public function getPriceBook($start, $finish, $pax, $room)
+	public static function getPriceBook($start, $finish, $pax, $room)
 	{
 		$start     = Carbon::createFromFormat('d/m/Y', $start);
 		$finish    = Carbon::createFromFormat('d/m/Y', $finish);
@@ -917,40 +897,6 @@ class BookController extends AppController
 		}
 
 		return $priceBook;
-	}
-
-
-	// Funcion para la migracion de la base antigua  a la nuevas "cobros"
-	public function getCobrosBD()
-	{
-		$cobros = DB::connection('apartamento')->table('cobros')->orderBy('ID', 'ASC')->get();
-
-		echo "<pre>";
-		foreach ($cobros as $cobro)
-		{
-			$payment = \App\Payments::find($cobro->ID);
-			if (count($payment) > 0)
-			{
-				echo "Ya existe este cobro  " . $cobro->ID . " <br>";
-			} else
-			{
-				$payment              = new \App\Payments();
-				$payment->id          = $cobro->ID;
-				$payment->book_id     = $cobro->bookID;
-				$payment->datePayment = $cobro->dateCobro;
-				$payment->import      = $cobro->import;
-				$payment->type        = $cobro->type;
-				$payment->comment     = $cobro->Comment;
-
-				if ($payment->save())
-				{
-					echo "Insertado ID " . $cobro->ID . "<br>";
-				} else
-				{
-					# code...
-				}
-			}
-		}
 	}
 
 	//Funcion para coger la reserva mobil
@@ -1025,7 +971,6 @@ class BookController extends AppController
 		}
 
 	}
-
 
 	public function emails($id)
 	{
@@ -1163,9 +1108,7 @@ class BookController extends AppController
 	}
 
 	/* FUNCION DUPLICADA DE HOMECONTROLLER PARA CALCULAR LA RESERVA DESDE EL ADMIN */
-
-
-	static function getTotalBook(Request $request)
+	/*static function getTotalBook(Request $request)
 	{
 
 		$aux = str_replace('Abr', 'Apr', $request->input('fechas'));
@@ -1204,7 +1147,7 @@ class BookController extends AppController
 			$limp         = (int) \App\Extras::find(1)->price;
 		} elseif (($request->input('apto') == '3dorm' && $request->input('luxury') == 'si') || $request->input('apto') == '3dorm' && $request->input('luxury') == 'no')
 		{
-			/* Rooms para grandes capacidades */
+			// Rooms para grandes capacidades
 			if ($request->input('quantity') >= 8 && $request->input('quantity') <= 10)
 			{
 				$roomAssigned = 153;
@@ -1297,7 +1240,7 @@ class BookController extends AppController
 		{
 			return view('backend.bookStatus.bookError');
 		}
-	}
+	}*/
 
 	public function searchByName(Request $request)
 	{
@@ -1366,7 +1309,6 @@ class BookController extends AppController
 
 
 	}
-
 
 	public function getTableData(Request $request)
 	{
@@ -1519,24 +1461,14 @@ class BookController extends AppController
 		}
 	}
 
-
 	public function getLastBooks(Request $request)
 	{
 		$mobile = new Mobile();
 
-		if ($request->year)
-		{
-			if ($now->copy()->format('n') >= 9)
-			{
-				$date = new Carbon('first day of September ' . $now->copy()->format('Y'));
-			} else
-			{
-				$date = new Carbon('first day of September ' . $now->copy()->subYear()->format('Y'));
-			}
-		} else
-		{
-			$date = new Carbon('first day of September ' . $request->year);
-		}
+		$year      = self::getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
+
 		$booksAux = array();
 		foreach (\App\Payments::orderBy('id', 'DESC')->get() as $key => $payment)
 		{
@@ -1741,7 +1673,6 @@ class BookController extends AppController
 		return view('backend.planning._calendarToBooking', compact('days', 'dateX', 'arrayMonths', 'mobile', 'typesRoom'));
 	}
 
-
 	function getAlertsBooking(Request $request)
 	{
 		return view('backend.planning._tableAlertBooking', compact('days', 'dateX', 'arrayMonths', 'mobile'));
@@ -1896,7 +1827,6 @@ class BookController extends AppController
 		return $booksCount;
 	}
 
-
 	public function sendSencondEmail(Request $request)
 	{
 		$book = \App\Book::find($request->id);
@@ -1939,7 +1869,6 @@ class BookController extends AppController
 
 	}
 
-
 	public function cobrarFianzas($id)
 	{
 		$book      = \App\Book::find($id);
@@ -1947,7 +1876,6 @@ class BookController extends AppController
 		$stripe    = StripeController::$stripe;
 		return view('backend/planning/_fianza', compact('book', 'hasFiance', 'stripe'));
 	}
-
 
 	public function checkSecondPay()
 	{
@@ -2008,7 +1936,6 @@ class BookController extends AppController
 
 	}
 
-
 	public function getAllDataToBook(Request $request)
 	{
 		$room = \App\Rooms::with('extra')->find($request->room);
@@ -2020,7 +1947,7 @@ class BookController extends AppController
 
 		$promotion = $request->promotion ? floatval($request->promotion) : 0;
 
-		$data['costes']['parking']   = $this->getCostPark($request->park, $request->noches, $room->id);
+		$data['costes']['parking']   = $this->getCostPark($request->park, $request->noches) * $room->num_garage;
 		$data['costes']['book']      = $this->getCostBook($request->start, $request->finish, $request->pax, $request->room) - $promotion;
 		$data['costes']['lujo']      = $this->getCostLujo($request->lujo);
 		$data['costes']['limp']      = (int) $room->cost_cleaning;
@@ -2028,7 +1955,7 @@ class BookController extends AppController
 		$data['costes']['agencia']   = (float) $request->agencyCost;
 		$data['costes']['promotion'] = $promotion;
 
-		$data['totales']['parking']  = $this->getPricePark($request->park, $request->noches, $room->id);
+		$data['totales']['parking']  = $this->getPricePark($request->park, $request->noches) * $room->num_garage;
 		$data['totales']['lujo']     = $this->getPriceLujo($request->lujo);
 		$data['totales']['limp']     = (int) $room->price_cleaning;
 		$data['totales']['book']     = $this->getPriceBook($request->start, $request->finish, $request->pax, $request->room);
@@ -2071,101 +1998,6 @@ class BookController extends AppController
 
 		return $data;
 	}
-
-	public function updateBooksCosts()
-	{
-		$reservas = \App\Book::whereIn('type_book', [
-			1,
-			2,
-			4,
-			5
-		])->where('start', '>=', '2017-09-01')->get();
-		//$reservas = \App\Book::whereIn('type_book',[1,2,4,5])->where('start','>=', '2017-09-01')->where('room_id', 138)->get();
-		foreach ($reservas as $key => $book):
-
-			$extraPrice = (int) \App\Extras::find(4)->price;
-			$extraCost  = (int) \App\Extras::find(4)->cost;
-			if ($book->room->sizeApto == 1)
-			{
-
-				$data['costes']['limp'] = (int) \App\Extras::find(2)->cost;
-
-			} elseif ($book->room->sizeApto == 2)
-			{
-
-				$data['costes']['limp'] = (int) \App\Extras::find(1)->cost;
-
-			} elseif ($book->room->sizeApto == 3 || $book->room->sizeApto == 4)
-			{
-
-				$data['costes']['limp'] = (int) \App\Extras::find(3)->cost;
-
-			}
-
-			$costParking = 0;
-			switch ($book->type_park)
-			{
-				case 1:
-					$costParking = 13.5 * $book->nigths;
-					break;
-				case 2:
-					$costParking = 0;
-					break;
-				case 3:
-					$costParking = 0;
-					break;
-				case 4:
-					$costParking = (13.5 * $book->nigths) / 2;
-					break;
-			}
-
-			if ($book->room_id != "")
-			{
-				if ($book->room_id == 150)
-				{
-					$costParking = $costParking * 3;
-				} else if ($book->room_id == 149)
-				{
-					$costParking = $costParking * 2;
-				}
-			}
-
-			/* LUJO */
-			$data['costes']['lujo'] = $this->getCostLujo($book->type_luxury);
-
-			/* PARKING */
-			$data['costes']['parking'] = $costParking;
-
-
-			/* RESERVA */
-			$start  = Carbon::createFromFormat('Y-m-d', $book->start)->format('d/m/Y');
-			$finish = Carbon::createFromFormat('Y-m-d', $book->finish)->format('d/m/Y');
-
-
-			$data['costes']['book'] = $this->getCostBook($start, $finish, $book->pax, $book->room->id);
-
-			$totalCost        = $data['costes']['book'] + $data['costes']['parking'] + $data['costes']['lujo'] + $data['costes']['limp'] + $book->PVPAgencia + $extraCost;
-			$book->cost_apto  = $data['costes']['book'];
-			$book->cost_park  = $data['costes']['parking'];
-			$book->cost_lujo  = $data['costes']['lujo'];
-			$book->cost_limp  = $data['costes']['limp'];
-			$book->extraPrice = $extraPrice;
-			$book->extraCost  = $extraCost;
-
-			$book->cost_total = $totalCost;
-			$book->total_ben  = $book->total_price - $totalCost;
-			if ($book->total_price == 0)
-			{
-				$book->total_price = 1;
-			}
-			$book->inc_percent = round(($book->total_ben / $book->total_price) * 100, 2);
-			$book->save();
-
-		endforeach;
-
-
-	}
-
 
 	public function saveComment(Request $request, $idBook, $type)
 	{
@@ -2210,10 +2042,6 @@ class BookController extends AppController
 		{
 			$ff_request = \App\Solicitudes::find($book->ff_request_id);
 		}
-
-		//            print_r($book);
-		//            print_r($customer);
-		//            print_r($ff_request);
 
 		return view('/backend/planning/listados/_ff_popup')->with('book', $book)
 		                                                   ->with('customer', $customer)
@@ -2292,10 +2120,10 @@ class BookController extends AppController
 			{
 				$season = $years[0];
 
-			} elseif ($book_date >= $auxYearTwo->start_date &&  $book_date <= $auxYearTwo->end_date)
+			} elseif ($book_date >= $auxYearTwo->start_date && $book_date <= $auxYearTwo->end_date)
 			{
 				$season = $years[1];
-			} elseif ($book_date >= $auxYearThree->start_date &&  $book_date <= $auxYearThree->end_date)
+			} elseif ($book_date >= $auxYearThree->start_date && $book_date <= $auxYearThree->end_date)
 			{
 				$season = $years[2];
 			}
@@ -2316,7 +2144,7 @@ class BookController extends AppController
 			{
 				$agency_name = 'AirBnb';
 			}
-			
+
 			if (isset($season))
 			{
 				$agencyBooks['data'][$agency_name][$season]['total']        += $book->real_price;
@@ -2355,5 +2183,38 @@ class BookController extends AppController
 			                 'status'      => 'true',
 			                 'agencyBooks' => $agencyBooks
 		                 ));
+	}
+
+	public function demoFormIntegration(Request $request)
+	{
+		$minMax = \App\Rooms::where('state', 1)->selectRaw('min(minOcu) as min, max(maxOcu) as max')->first();
+		return view('backend.form_demo', ['minMax' => $minMax]);
+	}
+
+	public function apiCheckBook(Request $request)
+	{
+		$rooms   = [];
+		$auxDate = explode('-', $request->input('dates'));
+		$start   = Carbon::createFromFormat('d M, y', trim($auxDate[0]));
+		$finish  = Carbon::createFromFormat('d M, y', trim($auxDate[1]));
+		$pax     = $request->input('pax');
+
+		$roomsWithPax = \App\Rooms::where('state', 1)->where('minOcu', '<=', $pax)->where('maxOcu', '>=', $pax)->get();
+		foreach ($roomsWithPax as $index => $roomsWithPax)
+		{
+			if (\App\Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'),
+			                         $roomsWithPax->id))
+				$rooms[] = $roomsWithPax;
+		}
+
+		$instantPayment = (\App\Settings::where('key', 'instant_payment')->first()) ? \App\Settings::where('key', 'instant_payment') ->first()->value : false;
+
+		return view('backend.api.response-book-request', [
+			'rooms'          => $rooms,
+			'start'          => $start,
+			'finish'         => $finish,
+			'pax'            => $pax,
+			'instantPayment' => $instantPayment,
+		]);
 	}
 }

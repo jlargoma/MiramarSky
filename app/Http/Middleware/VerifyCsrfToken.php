@@ -32,5 +32,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/ajax/booking/getBookingAgencyDetails',
         '/admin/years/change',
         '/admin/years/change/months',
+        '/admin/settings/createUpdate',
+        '/api/check_rooms_avaliables'
     ];
 }

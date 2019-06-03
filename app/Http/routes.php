@@ -26,6 +26,9 @@
 
    Route::auth();
    Route::get( '/' , 'HomeController@index' )->middleware( 'auth' );
+   Route::get( '/form-demo' , 'BookController@demoFormIntegration' );
+   Route::post( '/api/check_rooms_avaliables' , 'BookController@apiCheckBook' )->name('api.proccess');
+
 //        Route::get( '/homeTest' , 'HomeTestController@index' )->middleware( 'web' );
 //        Route::get( '/homeTest' , 'HomeTestController@index' )->middleware( 'web' );
 //   Route::get( '/sitemap' , 'HomeController@siteMap' )->middleware( 'web' );
@@ -90,7 +93,7 @@
    Route::get( '/getFormBook' , 'HomeController@form' );
    Route::get( '/getCitiesByCountry' , 'HomeController@getCitiesByCountry' );
    Route::get( '/getCalendarMobile' , 'BookController@getCalendarMobileView' );
-   Route::post( 'admin/reservas/create' , 'BookController@create' );
+   Route::post( 'admin/reservas/create' , 'BookController@create' )->name('book.create');
 
    Route::post( 'admin/reservas/stripe/save/fianza' , ['middleware' => 'auth' , 'uses' => 'StripeController@fianza'] );
    Route::post( 'admin/reservas/stripe/pay/fianza' , ['middleware' => 'auth' , 'uses' => 'StripeController@payFianza'] );
@@ -100,6 +103,7 @@
    Route::post( '/admin/reservas/stripe/paymentsBooking' , 'StripeController@stripePaymentBooking' );
 
    Route::get( 'admin/reservas' , ['middleware' => 'authSubAdmin' , 'uses' => 'BookController@index'] );
+
    Route::get( 'admin/reservas/emails/{id}' , ['middleware' => 'authSubAdmin' , 'uses' => 'BookController@emails'] );
    Route::get( 'admin/reservas/new' , ['middleware' => 'auth' , 'uses' => 'BookController@newBook'] );
    Route::get( 'admin/reservas/delete/{id}' , ['middleware' => 'auth' , 'uses' => 'BookController@delete'] );
@@ -278,8 +282,7 @@
       if ( $cashbox->save() ) {
          return "OK";
       }
-
-   } );
+   });
 
    Route::get( '/admin/rules/stripe/update' , ['middleware' => 'authAdmin' , 'uses' => 'RulesStripeController@update'] );
    Route::get( '/admin/days/secondPay/update/{id}/{days}' , function ( $id , $days ) {
@@ -590,10 +593,12 @@
       Route::get( '/admin/stripe-connect/load-table-owneds' , 'StripeConnectController@loadTableOwneds' );
       Route::post( '/admin/stripe-connect/send-transfers' , 'StripeConnectController@sendTransfers' );
 
-      //YEARS
+       //YEARS
 	   Route::post( '/admin/years/change' , 'YearsController@changeActiveYear' )->name('years.change');
 	   Route::post( '/admin/years/change/months' , 'YearsController@changeMonthActiveYear' )->name('years.change.month');
 
+	   //SETTINGS
+	   Route::post( '/admin/settings/createUpdate' , 'SettingsController@createUpdateSetting' )->name('settings.createUpdate');
    } );
 
    Route::get( '/importPaymenCashBank' , 'Admin\BackendController@migrationCashBank' );
@@ -601,7 +606,7 @@
    Route::get( '/refreshBloqueos' , 'Admin\BackendController@refreshBloqueos' );
 
 // AJAX REQUESTS
-        
+
     Route::post( '/ajax/requestPrice' , 'FortfaitsController@calculatePrice');
     Route::post( '/ajax/forfaits/updateRequestStatus' , 'FortfaitsController@updateRequestStatus');
     Route::post( '/ajax/forfaits/updateRequestPAN' , 'FortfaitsController@updateRequestPAN');
@@ -611,13 +616,13 @@
     Route::post( '/ajax/forfaits/requestPriceForfaits' , 'FortfaitsController@requestPriceForfaits');
     Route::post( '/ajax/forfaits/deleteRequestPopup' , ['middleware' => 'authAdmin' , 'uses' => 'FortfaitsController@deleteRequestPopup'] );
     Route::post( '/ajax/booking/getBookingAgencyDetails' , ['middleware' => 'authAdmin' , 'uses' => 'BookController@getBookingAgencyDetails'] );
-    
-    
+
+
 // ReCaptcha v3
     Route::post( '/ajax/checkRecaptcha' , 'FortfaitsController@checkReCaptcha');
-    
+
 //AGENTES
-    
+
     Route::post( '/admin/agentRoom/create' , 'SettingsController@createAgentRoom' );
     Route::get( '/admin/agentRoom/delete/{id}' , 'SettingsController@deleteAgentRoom' );
 

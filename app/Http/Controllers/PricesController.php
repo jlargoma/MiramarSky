@@ -15,15 +15,25 @@ class PricesController extends AppController
 	 */
 	public function index()
 	{
-		$year      = $this->getActiveYear();
-		$startYear = new Carbon($year->start_date);
-		$endYear   = new Carbon($year->end_date);
-		$diff      = $startYear->diffInMonths($endYear) + 1;
+		$year                 = $this->getActiveYear();
+		$startYear            = new Carbon($year->start_date);
+		$endYear              = new Carbon($year->end_date);
+		$diff                 = $startYear->diffInMonths($endYear) + 1;
+		$issetRooms           = \App\Rooms::all();
+		$issetRoomsAvaliables = \App\Rooms::where('state', 1)->get();
 
-		$seasonTemp    = \App\Seasons::where('start_date', '>=', $startYear)
-		                             ->where('finish_date', '<=', $endYear)
-		                             ->orderBy('start_date', 'ASC')
-		                             ->get();
+		if (count($issetRooms) == 0)
+			return view('backend.not_avaliable', ['message' => 'No hay Apartamentos creados, puedes crearlos desde la pestaña de Aptos']);
+
+		if (count($issetRoomsAvaliables) == 0)
+			return view('backend.not_avaliable', ['message' => 'Debes activar los aptos para poder crear precios y temporadas. Puedes hacerlo desde la pestaña de Aptos']);
+
+		$seasonTemp = \App\Seasons::where('start_date', '>=', $startYear)
+		                          ->where('finish_date', '<=', $endYear)
+		                          ->orderBy('start_date', 'ASC')
+		                          ->get();
+
+
 		$minMax        = \App\Rooms::where('state', 1)->selectRaw('min(minOcu) as min, max(maxOcu) as max')->first();
 		$auxSeasonType = \App\TypeSeasons::orderBy('order', 'ASC')->get();
 		return view('backend/prices/index', [
