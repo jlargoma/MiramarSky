@@ -47,9 +47,12 @@ $('.back-to-form').click(function () {
 $('#api-form').submit(function (event) {
   event.preventDefault();
   var url = $(this).attr('action');
-  var dates = $('#dates').val();
-  var pax = $('#pax').val();
-  $.post(url, {dates: dates, pax: pax}).done(function (data) {
+  var result = { };
+  $.each($('#api-form').serializeArray(), function() {
+    result[this.name] = this.value;
+  });
+
+  $.post(url, {result : result}).done(function (data) {
     //$('#content-form').hide();
     $('#content-info').empty().append(data);
     $('#content-info').show();

@@ -209,10 +209,9 @@ class BookController extends AppController
 
 		if ($request->input('from'))
 		{
-
 			//createacion del cliente
 			$customer          = new \App\Customers();
-			$customer->user_id = (Auth::check()) ? Auth::user()->id : 23;
+			$customer->user_id = (Auth::check()) ? Auth::user()->id : 1;
 			$customer->name    = $request->input('name');
 			$customer->email   = $request->input('email');
 			$customer->phone   = $request->input('phone');
@@ -224,7 +223,7 @@ class BookController extends AppController
 			if ($customer->save())
 			{
 				//Creacion de la reserva
-				$book->user_id       = 39;
+				$book->user_id       = (Auth::check()) ? Auth::user()->id : 1;
 				$book->customer_id   = $customer->id;
 				$book->room_id       = $request->input('newroom');
 				$book->start         = Carbon::createFromFormat('d/m/Y', $start);
@@ -305,8 +304,7 @@ class BookController extends AppController
 
 				}
 			}
-		}
-		else
+		} else
 		{
 			$isReservable = 0;
 			if (in_array($request->input('status'), [
@@ -2194,10 +2192,14 @@ class BookController extends AppController
 	public function apiCheckBook(Request $request)
 	{
 		$rooms   = [];
-		$auxDate = explode('-', $request->input('dates'));
+		$auxDate = explode('-', $request->input('result')['dates']);
 		$start   = Carbon::createFromFormat('d M, y', trim($auxDate[0]));
 		$finish  = Carbon::createFromFormat('d M, y', trim($auxDate[1]));
-		$pax     = $request->input('pax');
+		$name    = $request->input('result')['name'];
+		$email   = $request->input('result')['email'];
+		$phone   = $request->input('result')['phone'];
+		$dni     = $request->input('result')['dni'];
+		$pax     = $request->input('result')['pax'];
 
 		$roomsWithPax = \App\Rooms::where('state', 1)->where('minOcu', '<=', $pax)->where('maxOcu', '>=', $pax)->get();
 		foreach ($roomsWithPax as $index => $roomsWithPax)
@@ -2207,13 +2209,19 @@ class BookController extends AppController
 				$rooms[] = $roomsWithPax;
 		}
 
-		$instantPayment = (\App\Settings::where('key', 'instant_payment')->first()) ? \App\Settings::where('key', 'instant_payment') ->first()->value : false;
+		$instantPayment = (\App\Settings::where('key', 'instant_payment')
+		                                ->first()) ? \App\Settings::where('key', 'instant_payment')
+		                                                          ->first()->value : false;
 
 		return view('backend.api.response-book-request', [
 			'rooms'          => $rooms,
 			'start'          => $start,
 			'finish'         => $finish,
 			'pax'            => $pax,
+			'name'           => $name,
+			'email'          => $email,
+			'phone'          => $phone,
+			'dni'            => $dni,
 			'instantPayment' => $instantPayment,
 		]);
 	}

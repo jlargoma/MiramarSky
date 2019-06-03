@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 03-06-2019 a las 01:11:06
+-- Tiempo de generación: 03-06-2019 a las 19:04:20
 -- Versión del servidor: 5.6.34-log
 -- Versión de PHP: 7.1.7
 
@@ -21,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `riad`
 --
-CREATE DATABASE IF NOT EXISTS `riad` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `riad`;
 
 -- --------------------------------------------------------
 
@@ -151,7 +149,11 @@ CREATE TABLE `book` (
 
 INSERT INTO `book` (`id`, `user_id`, `customer_id`, `room_id`, `start`, `finish`, `comment`, `ff_status`, `ff_request_id`, `book_comments`, `type_book`, `pax`, `nigths`, `agency`, `PVPAgencia`, `sup_limp`, `cost_limp`, `sup_park`, `type_park`, `cost_park`, `type_luxury`, `sup_lujo`, `cost_lujo`, `cost_apto`, `cost_total`, `total_price`, `total_ben`, `extraPrice`, `extraCost`, `extra`, `inc_percent`, `ben_jorge`, `ben_jaime`, `send`, `statusCobro`, `real_price`, `created_at`, `updated_at`, `schedule`, `scheduleOut`, `real_pax`, `book_owned_comments`, `promociones`, `enable`) VALUES
 (1, 1, 1, 6, '2019-06-02', '2019-06-19', '', 0, NULL, '', 2, 6, 30, 0, 0.00, 40.00, 30, 0.00, 2, 0.00, 2, 0.00, 0.00, 750.00, 785.00, 4840.00, 4055.00, 5.00, 5.00, 0.00, 83.78, 2635.75, 1419.25, 0, 0, 4840.00, '2019-05-27 17:37:57', '2019-06-02 16:05:03', 0, 0, 6, '', 0.00, 1),
-(2, 1, 2, 1, '2019-06-19', '2019-07-21', '', 0, NULL, '', 2, 6, 6, 0, 0.00, 40.00, 30, 180.00, 1, 60.00, 2, 0.00, 0.00, 150.00, 245.00, 1120.00, 875.00, 0.00, 0.00, 0.00, 78.13, 568.75, 306.25, 0, 0, 1120.00, '2019-06-01 15:23:38', '2019-06-02 16:01:31', 0, 0, 6, '', 0.00, 1);
+(2, 1, 2, 1, '2019-06-19', '2019-07-21', '', 0, NULL, '', 2, 6, 6, 0, 0.00, 40.00, 30, 180.00, 1, 60.00, 2, 0.00, 0.00, 150.00, 245.00, 1120.00, 875.00, 0.00, 0.00, 0.00, 78.13, 568.75, 306.25, 0, 0, 1120.00, '2019-06-01 15:23:38', '2019-06-02 16:01:31', 0, 0, 6, '', 0.00, 1),
+(6, 1, 12, 6, '2019-06-24', '2019-06-28', '', 0, NULL, '', 0, 4, 4, 0, 0.00, 40.00, 30, 120.00, 1, 40.00, 1, 50.00, 40.00, 130.00, 210.00, 730.00, 520.00, 0.00, 0.00, 0.00, 71.23, 338.00, 182.00, 0, 0, 730.00, '2019-06-03 15:55:35', '2019-06-03 16:03:14', 0, 12, 4, '', 0.00, 1),
+(7, 1, 13, 6, '2019-06-24', '2019-06-28', '', 0, NULL, '', 0, 4, 4, 0, 0.00, 40.00, 30, 120.00, 1, 40.00, 1, 50.00, 40.00, 130.00, 210.00, 730.00, 520.00, 0.00, 0.00, 0.00, 71.23, 338.00, 182.00, 0, 0, 730.00, '2019-06-03 15:56:54', '2019-06-03 16:03:17', 0, 12, 4, '', 0.00, 1),
+(8, 1, 14, 6, '2019-06-24', '2019-06-28', '', 0, NULL, '', 0, 4, 4, 0, 0.00, 40.00, 30, 120.00, 1, 40.00, 1, 50.00, 40.00, 130.00, 210.00, 730.00, 520.00, 0.00, 0.00, 0.00, 71.23, 338.00, 182.00, 0, 0, 730.00, '2019-06-03 15:57:16', '2019-06-03 16:03:20', 0, 12, 4, '', 0.00, 1),
+(9, 1, 15, 6, '2019-06-24', '2019-06-28', '', 0, NULL, '', 3, 4, 4, 0, 0.00, 40.00, 30, 120.00, 1, 40.00, 1, 50.00, 40.00, 130.00, 210.00, 730.00, 520.00, 0.00, 0.00, 0.00, 71.23, 338.00, 182.00, 0, 0, 730.00, '2019-06-03 15:58:31', '2019-06-03 15:58:31', 0, 12, 4, '', 0.00, 1);
 
 -- --------------------------------------------------------
 
@@ -286,7 +288,20 @@ CREATE TABLE `customers` (
 
 INSERT INTO `customers` (`id`, `user_id`, `name`, `email`, `phone`, `comments`, `created_at`, `updated_at`, `DNI`, `address`, `country`, `city`) VALUES
 (1, 1, 'ian avila', 'iankurosaki17@gmail.com', '622411066', NULL, '2019-05-27 17:37:57', '2019-05-27 17:37:57', 'X8026232Z', 'Arroyo de las pilillas 22 bajo c', 'ES', ''),
-(2, 1, 'ian avila', 'iankurosaki17@gmail.com', '622411066', NULL, '2019-06-01 15:23:38', '2019-06-01 15:23:38', 'X8026232Z', 'Arroyo de las pilillas 22 bajo c', 'ES', '');
+(2, 1, 'ian avila', 'iankurosaki17@gmail.com', '622411066', NULL, '2019-06-01 15:23:38', '2019-06-01 15:23:38', 'X8026232Z', 'Arroyo de las pilillas 22 bajo c', 'ES', ''),
+(3, 1, 'ian avila', 'iankurosaki17@gmail.com', '622411066', NULL, '2019-06-03 15:40:02', '2019-06-03 15:40:02', 'X8026232Z', '', '', ''),
+(4, 1, 'ian avila', 'iankurosaki17@gmail.com', '622411066', NULL, '2019-06-03 15:49:28', '2019-06-03 15:49:28', 'X8026232Z', '', '', ''),
+(5, 1, 'ian avila', 'iankurosaki17@gmail.com', '622411066', NULL, '2019-06-03 15:50:15', '2019-06-03 15:50:15', 'X8026232Z', '', '', ''),
+(6, 1, 'ian avila', 'iankurosaki17@gmail.com', '622411066', NULL, '2019-06-03 15:50:21', '2019-06-03 15:50:21', 'X8026232Z', '', '', ''),
+(7, 1, 'ian avila', 'iankurosaki17@gmail.com', '622411066', NULL, '2019-06-03 15:51:02', '2019-06-03 15:51:02', 'X8026232Z', '', '', ''),
+(8, 1, 'ian avila', 'iankurosaki17@gmail.com', '622411066', NULL, '2019-06-03 15:51:09', '2019-06-03 15:51:09', 'X8026232Z', '', '', ''),
+(9, 1, 'ian avila', 'iankurosaki17@gmail.com', '622411066', NULL, '2019-06-03 15:51:49', '2019-06-03 15:51:49', 'X8026232Z', '', '', ''),
+(10, 1, 'ian avila', 'iankurosaki17@gmail.com', '622411066', NULL, '2019-06-03 15:52:24', '2019-06-03 15:52:24', 'X8026232Z', '', '', ''),
+(11, 1, 'ian avila', 'iankurosaki17@gmail.com', '622411066', NULL, '2019-06-03 15:53:09', '2019-06-03 15:53:09', 'X8026232Z', '', '', ''),
+(12, 1, 'ian avila', 'iankurosaki17@gmail.com', '622411066', NULL, '2019-06-03 15:55:35', '2019-06-03 15:55:35', 'X8026232Z', '', '', ''),
+(13, 1, 'ian avila', 'iankurosaki17@gmail.com', '622411066', NULL, '2019-06-03 15:56:54', '2019-06-03 15:56:54', 'X8026232Z', '', '', ''),
+(14, 1, 'ian avila', 'iankurosaki17@gmail.com', '622411066', NULL, '2019-06-03 15:57:16', '2019-06-03 15:57:16', 'X8026232Z', '', '', ''),
+(15, 1, 'ian avila', 'iankurosaki17@gmail.com', '622411066', NULL, '2019-06-03 15:58:31', '2019-06-03 15:58:31', 'X8026232Z', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -793,7 +808,7 @@ CREATE TABLE `rooms` (
 --
 
 INSERT INTO `rooms` (`id`, `name`, `nameRoom`, `owned`, `sizeApto`, `typeApto`, `minOcu`, `maxOcu`, `luxury`, `created_at`, `updated_at`, `order`, `state`, `parking`, `locker`, `profit_percent`, `description`, `num_garage`) VALUES
-(1, 'N001', 'N001', 1, 1, 3, 4, 4, 0, '2019-05-26 16:35:09', '2019-05-26 16:39:27', 1, 1, '', '', 0, 'Lorem ipsum dolor sit amet consectetur adipiscing elit, nullam lacus nisl aenean massa aptent a in, at neque malesuada cras sem convallis. Mollis nisi libero enim dapibus auctor tristique, habitasse sagittis cras posuere dignissim nostra ultricies, phasellus inceptos placerat vel fringilla. Proin etiam facilisi hac varius cum euismod pulvinar, fermentum nibh condimentum tortor turpis praesent porttitor felis, eu fames est quam torquent habitant purus, urna facilisis semper in maecenas arcu.', 1),
+(1, 'N001', 'N001', 1, 1, 3, 4, 4, 0, '2019-05-26 16:35:09', '2019-06-02 22:19:37', 1, 1, '', '', 0, 'Lorem ipsum dolor sit amet consectetur adipiscing elit, nullam lacus nisl aenean massa aptent a in, at neque malesuada cras sem convallis. Mollis nisi libero enim dapibus auctor tristique, habitasse sagittis cras posuere dignissim nostra ultricies, phasellus inceptos placerat vel fringilla. Proin etiam facilisi hac varius cum euismod pulvinar, fermentum nibh condimentum tortor turpis praesent porttitor felis, eu fames est quam torquent habitant purus, urna facilisis semper in maecenas arcu.', 3),
 (2, 'N002', 'N002', 1, 1, 3, 2, 2, 0, '2019-05-26 16:35:37', '2019-05-26 16:39:31', 2, 1, '', '', 0, 'Lorem ipsum dolor sit amet consectetur adipiscing elit, nullam lacus nisl aenean massa aptent a in, at neque malesuada cras sem convallis. Mollis nisi libero enim dapibus auctor tristique, habitasse sagittis cras posuere dignissim nostra ultricies, phasellus inceptos placerat vel fringilla. Proin etiam facilisi hac varius cum euismod pulvinar, fermentum nibh condimentum tortor turpis praesent porttitor felis, eu fames est quam torquent habitant purus, urna facilisis semper in maecenas arcu.', 1),
 (3, 'N003', 'N003', 1, 2, 3, 6, 8, 0, '2019-05-26 16:36:00', '2019-05-26 16:39:35', 3, 1, '', '', 0, 'Lorem ipsum dolor sit amet consectetur adipiscing elit, nullam lacus nisl aenean massa aptent a in, at neque malesuada cras sem convallis. Mollis nisi libero enim dapibus auctor tristique, habitasse sagittis cras posuere dignissim nostra ultricies, phasellus inceptos placerat vel fringilla. Proin etiam facilisi hac varius cum euismod pulvinar, fermentum nibh condimentum tortor turpis praesent porttitor felis, eu fames est quam torquent habitant purus, urna facilisis semper in maecenas arcu.', 1),
 (4, 'N004', 'N004', 1, 2, 3, 6, 8, 0, '2019-05-26 16:36:18', '2019-05-26 16:39:38', 4, 1, '', '', 0, 'Lorem ipsum dolor sit amet consectetur adipiscing elit, nullam lacus nisl aenean massa aptent a in, at neque malesuada cras sem convallis. Mollis nisi libero enim dapibus auctor tristique, habitasse sagittis cras posuere dignissim nostra ultricies, phasellus inceptos placerat vel fringilla. Proin etiam facilisi hac varius cum euismod pulvinar, fermentum nibh condimentum tortor turpis praesent porttitor felis, eu fames est quam torquent habitant purus, urna facilisis semper in maecenas arcu.', 1),
@@ -1478,7 +1493,7 @@ ALTER TABLE `bank`
 -- AUTO_INCREMENT de la tabla `book`
 --
 ALTER TABLE `book`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT de la tabla `bookingnotification`
 --
@@ -1508,7 +1523,7 @@ ALTER TABLE `commissions`
 -- AUTO_INCREMENT de la tabla `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT de la tabla `dayssecondpay`
 --

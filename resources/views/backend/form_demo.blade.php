@@ -19,6 +19,22 @@
                         </h2>
                     </div>
                     <div class="col-md-offset-4 col-md-4 text-center" style="margin-bottom: 20px;">
+                        <div class="col-md-6">
+                            <label for="name">Nombre</label>
+                            <input class="form-control cliente" type="text" name="name">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email">Email</label>
+                            <input class="form-control cliente" type="email" name="email" >
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phone">Telefono</label>
+                            <input class="form-control cliente" type="text" name="phone" >
+                        </div>
+                        <div class="col-md-6 col-xs-12 push-10">
+                            <label for="dni">DNI</label>
+                            <input class="form-control cliente" type="text" name="dni">
+                        </div>
                         <div class="col-md-6 m-b-10">
                             <label for="dates"></label>
                             <input type="text" class="form-control" name="dates" id="dates" style="cursor: pointer;"
