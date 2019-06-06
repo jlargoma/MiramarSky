@@ -8,32 +8,45 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\PaylandService;
 use App\Years;
-use Illuminate\Http\Request;
 
 class AppController extends Controller
 {
-	/**
-	 * @return mixed
-	 */
-	protected static function getActiveYear()
-	{
-		$activeYear = Years::where('active', 1)->first();
-		return $activeYear;
-	}
+    private $paylandClient;
 
-	/**
-	 * @param array $params
-	 *  params must be content:
-		- dates
-		- pax
-	 * @return html-form  with rooms avaliable to book and pay
-	 */
-	protected function searchRoomsAvaliables(array $params)
-	{
-		//TODO refactoring this function to look for rooms with capacity to accommodate the guests and that area
-		// vailable to reserve
+    public function __construct()
+    {
+        $paylandConfig       = [
+            'endpoint'  => env('PAYLAND_ENDPOINT'),
+            'api_key'   => env('PAYLAND_API_KEY'),
+            'signarute' => env('PAYLAND_SIGNATURE'),
+            'service'   => env('PAYLAND_SERVICE')
+        ];
+        $this->paylandClient = new PaylandService($paylandConfig);
+    }
+
+    /**
+     * @return mixed
+     */
+    protected static function getActiveYear()
+    {
+        $activeYear = Years::where('active', 1)->first();
+        return $activeYear;
+    }
+
+    /**
+     * @param array $params
+     *  params must be content:
+     *  - dates
+     *  - pax
+     * @return html-form  with rooms avaliable to book and pay
+     */
+    protected function searchRoomsAvaliables(array $params)
+    {
+        //TODO refactoring this function to look for rooms with capacity to accommodate the guests and that area
+        // vailable to reserve
 
 
-	}
+    }
 }
