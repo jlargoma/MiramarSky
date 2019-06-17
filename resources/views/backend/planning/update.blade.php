@@ -783,7 +783,7 @@
                 </div>
                 <?php if (Auth::user()->role != "limpieza"):?>
                     <div class="row">
-                        @include('backend.stripe.stripe', ['bookTocharge' => $book])
+                        @include('Paylands.payment', ['routeToRedirect' => route('book.update', ['id' => $book->id])])
                     </div>
                  <?php endif ?>
             </div>
@@ -1151,15 +1151,14 @@
                     <div class="col-xs-12 push-20 ">
 						<?php if ($book->type_book == 2): ?>
                         <?php if ( $hasFiance ): ?>
-                        <div class="col-md-6">
-
-                                    <button class="btn btn-primary btn-lg" type="button" id="fianza"> COBRAR FIANZA</button>
-                                </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-primary btn-lg" type="button" id="fianza"> COBRAR FIANZA</button>
+                            </div>
                         <?php else: ?>
-                        <div class="col-md-6">
-                                    <a class="btn btn-primary btn-lg"
-                                       href="{{ url('/admin/reservas/fianzas/cobrar/'.$book->id) }}"> RECOGER FIANZA</a>
-                                </div>
+                            <div class="col-md-6">
+                                <a class="btn btn-primary btn-lg"
+                                   href="{{ url('/admin/reservas/fianzas/cobrar/'.$book->id) }}"> RECOGER FIANZA</a>
+                            </div>
                         <?php endif ?>
                         <?php endif ?>
                     </div>

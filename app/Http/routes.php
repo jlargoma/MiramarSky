@@ -107,7 +107,7 @@
    Route::get( 'admin/reservas/emails/{id}' , ['middleware' => 'authSubAdmin' , 'uses' => 'BookController@emails'] );
    Route::get( 'admin/reservas/new' , ['middleware' => 'auth' , 'uses' => 'BookController@newBook'] );
    Route::get( 'admin/reservas/delete/{id}' , ['middleware' => 'auth' , 'uses' => 'BookController@delete'] );
-   Route::get( 'admin/reservas/update/{id}' , ['middleware' => 'auth' , 'uses' => 'BookController@update'] );
+   Route::get( 'admin/reservas/update/{id}' , ['middleware' => 'auth' , 'uses' => 'BookController@update'] )->name('book.update');
    Route::post( 'admin/reservas/saveUpdate/{id}' , ['middleware' => 'auth' , 'uses' => 'BookController@saveUpdate'] );
    Route::get( 'admin/reservas/changeBook/{id}' , ['middleware' => 'auth' , 'uses' => 'BookController@changeBook'] );
    Route::get( '/admin/reservas/changeStatusBook/{id}' , ['middleware' => 'auth' , 'uses' => 'BookController@changeStatusBook'] );
@@ -639,3 +639,11 @@
     Route::get( '/admin/forfaits/deleteRequest/{id}' , ['middleware' => 'authAdmin' , 'uses' => 'FortfaitsController@deleteRequest'] );
     Route::get( '/admin/reservas/ff_status_popup/{id}' , ['middleware' => 'authAdmin' , 'uses' => 'BookController@getBookFFData'] );
     Route::get( '/admin/reservas/ff_change_status_popup/{id}/{status}' , ['middleware' => 'authAdmin' , 'uses' => 'BookController@updateBookFFStatus'] );
+
+
+//PAYLANDS
+
+    Route::group( ['middleware' => 'authAdmin'] , function () {
+
+        Route::post( '/paylands/payment' , 'PaylandsController@payment')->name('payland.payment');
+} );

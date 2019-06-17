@@ -8,32 +8,29 @@ use GuzzleHttp\Exception\RequestException;
 
 class PaylandService
 {
-    const METHOD_POST   = "POST";
-    const METHOD_GET    = "GET";
-    const FORMAT        = "json";
+    const METHOD_POST = "POST";
+    const METHOD_GET  = "GET";
+    const FORMAT      = "json";
 
-    protected $client;
-    protected $api;
-    protected $apiKey;
-    protected $secretKey;
+    protected      $client;
+    protected      $api;
+    protected      $apiKey;
+    protected      $secretKey;
+    protected      $ssl;
+    private static $PAYMENT_URL      = "/payment";
+    private static $PROCCESS_PAYMENT = "/payment/process/";
 
     public function __construct($config)
     {
         $this->api       = $config['endpoint'];
         $this->apiKey    = $config['api_key'];
         $this->secretKey = $config['signarute'];
+        $this->ssl       = env('CURL_CERT');
         $this->client    = new Client([
-                                          "headers"         => [
+                                          "headers" => [
                                               'Authorization' => 'Bearer ' . $this->apiKey,
                                               'Accept'        => 'application/json',
-                                          ],
-                                          "curl"            => [
-                                              CURLOPT_TIMEOUT        => 360,
-                                              CURLOPT_CONNECTTIMEOUT => 360,
-
-                                          ],
-                                          "http_errors"     => false,
-                                          "connect_timeout" => 120
+                                          ]
                                       ]);
     }
 
@@ -41,7 +38,8 @@ class PaylandService
     {
         if ($method === self::METHOD_GET)
         {
-            $url = $this->api . $endpoint . '?' . http_build_query($params);
+            $url     = $this->api . $endpoint . '?' . http_build_query($params);
+            $options = $params;
         } else
         {
             $url             = $this->api . $endpoint;
@@ -75,7 +73,26 @@ class PaylandService
             return $response;
         } catch (\Exception $e)
         {
-            throw new RequestException($e->getMessage(), $e->getCode());
+            throw new \Exception($e->getMessage());
         }
+    }
+
+    public function payment(array $params)
+    {
+        try
+        {
+            $response = $this->call(self::METHOD_POST, self::$PAYMENT_URL, $params);
+            return $response;
+        } catch (\Exception $e)
+        {
+            echo($e->getMessage());
+            die();
+        }
+    }
+
+    public function processPayment($orderToken)
+    {
+        //dump($this->api. self::$PROCCESS_PAYMENT . $orderToken);
+        return $this->api. self::$PROCCESS_PAYMENT . $orderToken;
     }
 }

@@ -14,17 +14,24 @@ use App\Years;
 class AppController extends Controller
 {
     private $paylandClient;
-
+    const SANDBOX_ENV = "/sandbox";
     public function __construct()
     {
+        $endPoint = (env('PAYLAND_ENVIRONMENT') == "dev")? env('PAYLAND_ENDPOINT'). self::SANDBOX_ENV : env('PAYLAND_ENDPOINT');
         $paylandConfig       = [
-            'endpoint'  => env('PAYLAND_ENDPOINT'),
-            'api_key'   => env('PAYLAND_API_KEY'),
-            'signarute' => env('PAYLAND_SIGNATURE'),
-            'service'   => env('PAYLAND_SERVICE')
-        ];
+                                    'endpoint'  => $endPoint,
+                                    'api_key'   => env('PAYLAND_API_KEY'),
+                                    'signarute' => env('PAYLAND_SIGNATURE'),
+                                    'service'   => env('PAYLAND_SERVICE')
+                                ];
         $this->paylandClient = new PaylandService($paylandConfig);
     }
+    protected function getPaylandApiClient()
+    {
+        return $this->paylandClient;
+    }
+
+
 
     /**
      * @return mixed
@@ -46,7 +53,5 @@ class AppController extends Controller
     {
         //TODO refactoring this function to look for rooms with capacity to accommodate the guests and that area
         // vailable to reserve
-
-
     }
 }
