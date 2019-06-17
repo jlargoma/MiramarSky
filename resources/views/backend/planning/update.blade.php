@@ -783,7 +783,8 @@
                 </div>
                 <?php if (Auth::user()->role != "limpieza"):?>
                     <div class="row">
-                        @include('Paylands.payment', ['routeToRedirect' => route('book.update', ['id' => $book->id])])
+                        @include('Paylands.payment', ['routeToRedirect' => route('payland.proccess.payment.book',
+                        ['id' => $book->id]), 'customer' => $book->customer->id])
                     </div>
                  <?php endif ?>
             </div>
@@ -1303,7 +1304,8 @@
                     </div>
 
                     <div class="row">
-                        @include('backend.stripe.stripe', ['bookTocharge' => $book])
+                        @include('Paylands.payment', ['routeToRedirect' => route('payland.proccess.payment.book',
+                       ['id' => $book->id]), 'customer' => $book->customer->id])
                     </div>
                 <?php endif ?>
             </div>

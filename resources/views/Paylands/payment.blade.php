@@ -7,7 +7,7 @@
     <div class="col-md-12">
         <form action="{{ route('payland.payment') }}" method="post" target="_blank">
             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-            <input type="hidden" name="customer_id" value="<?php echo $book->customer->id ?>">
+            <input type="hidden" name="customer_id" value="{{ $customer }}">
             <input type="hidden" name="url_post" value="{{ route('payland.payment') }}">
             <input type="hidden" name="url_ok" value="{{ $routeToRedirect }}">
             <input type="hidden" name="url_ko" value="{{ $routeToRedirect }}">
