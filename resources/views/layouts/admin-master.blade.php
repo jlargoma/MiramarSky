@@ -98,9 +98,9 @@
                             <a href="{{ url('admin/liquidacion') }}" class="detailed">Liq. por reservas</a>
                         </li>
 
-                        <li class="{{ Request::path() == 'admin/pagos-propietarios'  ? 'active' : '' }}">
-                            <a href="{{ url('admin/pagos-propietarios') }}" class="detailed">Pagos a propietarios</a>
-                        </li>
+                        {{--<li class="{{ Request::path() == 'admin/pagos-propietarios'  ? 'active' : '' }}">--}}
+                            {{--<a href="{{ url('admin/pagos-propietarios') }}" class="detailed">Pagos a propietarios</a>--}}
+                        {{--</li>--}}
 
 
                         <li class="{{ Request::path() == 'admin/contabilidad'  ? 'active' : '' }}">
@@ -119,9 +119,9 @@
                             }
                         }
                     ?>
-                    <li class="{{  (preg_match('/propietario/i',Request::path()))  ? 'active' : '' }}">
-                        <a href="{{ url('admin/propietario/'. $defaultRoom) }}" class="detailed">Area Propietario</a>
-                    </li>
+                    {{--<li class="{{  (preg_match('/propietario/i',Request::path()))  ? 'active' : '' }}">--}}
+                        {{--<a href="{{ url('admin/propietario/'. $defaultRoom) }}" class="detailed">Area Propietario</a>--}}
+                    {{--</li>--}}
 
                     <li class="{{ Request::path() == 'admin/precios' ? 'active' : '' }}">
                         <a href="{{ url('admin/precios') }}" class="detailed">Precios y temporadas</a>
@@ -156,9 +156,9 @@
                     <li class="{{ Request::path() == 'admin/settings' ? 'active' : '' }}">
                         <a href="{{ url('admin/settings') }}" class="detailed">Settings</a>
                     </li>
-                    <li class="{{ Request::path() == 'admin/stripe-connect' ? 'active' : '' }}">
-                        <a href="{{ url('admin/stripe-connect') }}" class="detailed">Stripe Connect</a>
-                    </li>
+                    {{--<li class="{{ Request::path() == 'admin/stripe-connect' ? 'active' : '' }}">--}}
+                        {{--<a href="{{ url('admin/stripe-connect') }}" class="detailed">Stripe Connect</a>--}}
+                    {{--</li>--}}
                     <?php endif ?>
 
                 </ul>
