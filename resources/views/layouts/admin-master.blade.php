@@ -80,6 +80,11 @@
         <!-- <body class="fixed-header dashboard  windows desktop sidebar-visible pace-done menu-pin"> -->
         <?php if (preg_match('/subadmin/i', Auth::user()->role) || preg_match('/admin/i', Auth::user()->role) || preg_match('/agente/i', Auth::user()->role)): ?>
             <nav class="navbar navbar-inverse" role="navigation">
+            <?php if (env('APP_APPLICATION') == "riad"): ?>
+                <a class="navbar-brand" href="{{ route('dashboard.planning') }}" style="max-width: 155px;">
+                    <img src="{{ asset('img/riad/logo_riad_b.png') }}" alt="" style="width: 100%">
+                </a>
+            <?php endif; ?>
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>

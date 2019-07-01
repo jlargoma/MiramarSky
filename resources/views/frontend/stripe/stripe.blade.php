@@ -8,8 +8,6 @@
 @section('title')Graicas por tu reserva @endsection
 
 @section('content')
-
-
 <style type="text/css">
 	#primary-menu ul li  a{
 		color: #3F51B5!important;
@@ -86,18 +84,26 @@
     	margin-top: 0!important
     }
 </style>
-
 <?php if (!$mobile->isMobile()): ?>
-	<section class="section full-screen nobottommargin" style="background-image: url({{ asset('/img/mountain.png')}});background-size: cover;background-position: 0; margin: 0" >
+	<section class="section full-screen nobottommargin" style="background-color: white;background-size: cover;background-position: 0; margin: 0" >
 		<div class="container container-mobile clearfix" style="width: 85%;">
             <div class="col-md-12" style="padding: 100px 15px 300px 15px;">
-                <h2 class="text-center font-w300 ls1 " style="line-height: 1; font-size: 42px; color: black">
+				<div class="row" style="margin-bottom: 15px;">
+					<?php if (env('APP_APPLICATION') == "riad"): ?>
+						<div class="col-md-2 col-md-offset-5">
+							<img src="{{ asset('img/riad/logo_riad.png') }}" alt="" style="width: 100%">
+						</div>
+					<?php endif; ?>
+				</div>
+                <div class="row">
+					<h2 class="text-center font-w300 ls1 " style="line-height: 1; font-size: 42px; color: black">
                     <span class="font-w800 " style="font-size: 48px;letter-spacing: -3px; color: black">
                         ¡Muchas gracias por confiar en nosotros!
                     </span><br>
-                    Te enviaremos un email con la confirmación de tu reserva y los pasos a seguir.<br><br>
-                    Un saludo
-                </h2>
+						Te enviaremos un email con la confirmación de tu reserva y los pasos a seguir.<br><br>
+						Un saludo
+					</h2>
+				</div>
             </div>
 		</div>
 	</section>
