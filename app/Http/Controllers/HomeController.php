@@ -710,6 +710,11 @@ class HomeController extends AppController
 
 		return false;
 	}
+
+    public function thanksYou(Request $request)
+    {
+        return view('frontend.stripe.stripe', ['mobile' => new Mobile()]);
+	}
 }
 
 

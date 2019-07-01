@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 use App\Services\PaylandService;
 use App\Years;
+use Carbon\Carbon;
 
 class AppController extends Controller
 {
@@ -53,5 +54,36 @@ class AppController extends Controller
     {
         //TODO refactoring this function to look for rooms with capacity to accommodate the guests and that area
         // vailable to reserve
+    }
+
+    public function payBook($id, $payment)
+    {
+        $book = \App\Book::find($id);
+        if ($book->changeBook(2, "", $book))
+        {
+            $realPrice = ($payment / 100);
+
+            $payment = new \App\Payments();
+
+            $date                 = Carbon::now()->format('Y-m-d');
+            $payment->book_id     = $book->id;
+            $payment->datePayment = $date;
+            $payment->import      = $realPrice;
+            $payment->comment     = "Pago desde Payland";
+            $payment->type        = 2;
+            $payment->save();
+
+            $data['concept']     = $payment->comment;
+            $data['date']        = $date;
+            $data['import']      = $realPrice;
+            $data['comment']     = $payment->comment;
+            $data['typePayment'] = 2;
+            $data['type']        = 0;
+
+            LiquidacionController::addBank($data);
+
+            return true;
+        }
+        return false;
     }
 }

@@ -41,7 +41,7 @@ setlocale(LC_TIME, "es_ES");
                         </button>
 
                         <button class="btn btn-success btn-cons" type="button" id="stripePayment">
-                            <i class="fa fa-money" aria-hidden="true"></i> <span class="bold">Cobros stripe</span>
+                            <i class="fa fa-money" aria-hidden="true"></i> <span class="bold">Cobros TPV</span>
                         </button>
 
                         <button class="btn btn-success btn-calcuteBook btn-cons" type="button" data-toggle="modal" data-target="#modalCalculateBook">
@@ -160,7 +160,7 @@ setlocale(LC_TIME, "es_ES");
                     <?php if ( Auth::user()->role != "agente" ): ?>
                     <div class="col-md-12" id="stripe-conten-index" style="display: none;">
                         @include('backend.stripe.link')
-                        @include('backend.stripe.stripe', ['bookTocharge' => null])
+                        {{--@include('backend.stripe.stripe', ['bookTocharge' => null])--}}
                     </div>
                     <?php endif ?>
                 </div>
@@ -331,7 +331,7 @@ setlocale(LC_TIME, "es_ES");
             <div class="col-md-12" id="stripe-conten-index" style="display: none;">
                 <?php if ( Auth::user()->role != "agente" ): ?>
                 @include('backend.stripe.link')
-                @include('backend.stripe.stripe', ['bookTocharge' => null])
+                {{--@include('backend.stripe.stripe', ['bookTocharge' => null])--}}
                 <?php endif ?>
             </div>
 

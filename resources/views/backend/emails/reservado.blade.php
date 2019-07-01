@@ -23,15 +23,9 @@ a través de nuestra pasarela de pago para tarjetas.<br><br>
 
 	$urlToRedirect        = $controller->generateOrderPayment([
                                                         'customer_id' => $book->customer->id,
-                                                        'amount' => (round($book->total_price * $percent)),
-                                                        'url_ok' => route('payland.proccess.payment.book.customer',
-                                                        ['id'
-                                                         =>
-                                                        $book->id]),
-                                                        'url_ko' => route('payland.proccess.payment.book.customer',
-                                                        ['id'
-                                                         =>
-                                                        $book->id]),
+                                                        'amount'      => (round($book->total_price * $percent)),
+                                                        'url_ok'      => route('payland.thanks.payment', ['id' => $book->id]),
+                                                        'url_ko'      => route('payland.thanks.payment', ['id' => $book->id]),
 														]);
 	?>
 	<a href="{{ $urlToRedirect }}">
