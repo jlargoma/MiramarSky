@@ -204,6 +204,14 @@ Route::get('admin/reservas/api/sendSencondEmail', [
     'middleware' => 'auth',
     'uses'       => 'BookController@sendSencondEmail'
 ]);
+Route::get('admin/reservas/api/toggleAlertLowProfits', [
+    'middleware' => 'auth',
+    'uses'       => 'BookController@toggleAlertLowProfits'
+]);
+Route::get('admin/reservas/api/activateAlertLowProfits', [
+    'middleware' => 'auth',
+    'uses'       => 'BookController@activateAlertLowProfits'
+]);
 Route::get('/admin/reservas/fianzas/cobrar/{id}', [
     'middleware' => 'auth',
     'uses'       => 'BookController@cobrarFianzas'

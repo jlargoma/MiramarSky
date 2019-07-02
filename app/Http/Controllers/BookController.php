@@ -164,13 +164,48 @@ class BookController extends AppController
 					$alarms[] = $book;
 			}
 		}
+                $lowProfits = $this->lowProfitAlert($startYear,$endYear);
 		return view(
 			'backend/planning/index',
 			compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
-			        'stripedsPayments', 'notifications', 'booksCount', 'alarms')
+			        'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits')
 		);
 	}
 
+        private function lowProfitAlert($startYear,$endYear) {
+
+          $booksAlarms = \App\Book::where('start', '>', $startYear)
+		  ->where('finish', '<', $endYear)
+                  ->where('has_low_profit',FALSE)
+                  ->whereIn('type_book', [2,7,8])
+                  ->orderBy('start', 'ASC')->get();
+	
+          $alarms      = array();
+          $percentBenef = DB::table('percent')->find(1)->percent;
+          foreach ($booksAlarms as $key => $book)
+          {
+                 
+            
+            
+             $profit = $book->profit;
+             $total_price = $book->total_price;
+             $inc_percent = 0;
+             if($book->room->luxury == 0 && $book->cost_lujo > 0) {
+              $profit     = $book->profit - $book->cost_lujo;
+              $total_price = ( $book->total_price - $book->sup_lujo );
+              }
+              if ($total_price != 0){
+                $inc_percent = ($profit/ $total_price )*100;
+                if(round($inc_percent) <= $percentBenef){
+                  $alarms[] = $book;
+                }
+              } else {
+                $alarms[] = $book;
+              }
+          }
+          return $alarms;
+        }
+        
 	public function newBook(Request $request)
 	{
 		if (Auth::user()->role != "agente")
@@ -1825,7 +1860,7 @@ class BookController extends AppController
 		return $booksCount;
 	}
 
-	public function sendSencondEmail(Request $request)
+        public function sendSencondEmail(Request $request)
 	{
 		$book = \App\Book::find($request->id);
 		if (!empty($book->customer->email))
@@ -1864,6 +1899,79 @@ class BookController extends AppController
 			];
 		}
 
+
+	}
+        
+        /**
+         * Enable/Disable alerts has_low_profit
+         * 
+         * @param Request $request
+         * @return type
+         * 
+         */
+	public function toggleAlertLowProfits(Request $request)
+	{
+		$book = \App\Book::find($request->id);
+		if ($book)
+		{
+                  $book->has_low_profit = !$book->has_low_profit;
+                  $book->save();
+                  if ($book->has_low_profit)
+                  {
+                    return [
+                      'status'   => 'success',
+                      'title'    => 'OK',
+                      'response' => "Alarma desactivada para  ".$book->customer->name
+                    ];
+                  } else
+                  {
+                    return [
+                      'status'   => 'success',
+                      'title'    => 'OK',
+                      'response' => "Alarma activada para  ".$book->customer->name
+                    ];
+                  }
+		} else
+		{
+			return [
+				'status'   => 'warning',
+				'title'    => 'Cuidado',
+				'response' => "Registro no encontrado"
+			];
+		}
+
+
+	}
+        /**
+         * Enable alerts has_low_profit to all
+         * 
+         * @param Request $request
+         * @return type
+         * 
+         */
+	public function activateAlertLowProfits()
+	{
+          if(Auth::user()->role == 'admin'){
+            $year      = $this->getActiveYear();
+            $startYear = new Carbon($year->start_date);
+            $endYear   = new Carbon($year->end_date);
+                
+            $book = \App\Book::where('start', '>', $startYear)
+		  ->where('finish', '<', $endYear)
+                  ->where('has_low_profit', TRUE)
+                  ->update(['has_low_profit' => FALSE]);
+            return [
+              'status'   => 'success',
+              'title'    => 'OK',
+              'response' => "Alarma activada para  todos los registros"
+            ];
+          } else {
+              return [
+                      'status'   => 'warning',
+                      'title'    => 'Cuidado',
+                      'response' => "No tiene permisos para la acción que desea realizar"
+              ];
+            }
 
 	}
 

@@ -48,9 +48,13 @@ setlocale(LC_TIME, "es_ES");
                             <span class="bold">Calcular reserva</span>
                         </button>
 
-                        <button class="btn btn-danger btn-cons btn-alarms" type="button" data-toggle="modal" data-target="#modalAlarms">
+                        <button class="btn btn-danger btn-cons <?php if(count($alarms)>0) echo 'btn-alarms'; ?>" type="button" data-toggle="modal" data-target="#modalAlarms">
                             <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">ALARMAS</span>
                             <span class="numPaymentLastBooks"><?php echo  count($alarms); ?></span>
+                        </button>
+                      <button class="btn btn-danger btn-cons <?php if(count($lowProfits)>0) echo 'btn-alarms'; ?> " type="button" data-toggle="modal" data-target="#modalLowProfits">
+                            <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">BAJOS BENEFICIOS</span>
+                            <span class="numPaymentLastBooks"><?php echo  count($lowProfits); ?></span>
                         </button>
                         <?php endif ?>
                     </div>
@@ -205,6 +209,15 @@ setlocale(LC_TIME, "es_ES");
                 <div class="modal-content-wrapper">
                     <div class="modal-content">
                         @include('backend.planning._alarmsBooks', ['alarms' => $alarms])
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade slide-up in" id="modalLowProfits" tabindex="-1" role="dialog" aria-hidden="true" >
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content-wrapper">
+                    <div class="modal-content">
+                        @include('backend.planning._alarmsLowProfits', ['alarms' => $lowProfits])
                     </div>
                 </div>
             </div>
