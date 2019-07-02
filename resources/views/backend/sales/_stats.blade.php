@@ -162,37 +162,22 @@
     			</div>
     		</div>
     		<div class="col-md-12">
-    			<div class="col-md-3 bordered">
+    			<div class="col-md-6 bordered">
     				<div class="card-title text-black hint-text">
-    					CAJA JORG
+    					CAJA
     				</div>
     				<div class="p-l-20">
-    					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['metalico_jorge'],0,',','.') ?>€</h3>
+    					<h3 class="text-black font-w400 text-center">
+                                          <?php echo number_format($dataX['metalico_jorge']+$dataX['metalico_jaime'],0,',','.') ?>€
+                                        </h3>
     				</div>
     			</div>
-    			<div class="col-md-3 bordered">
+    			<div class="col-md-6 bordered">
     				<div class="card-title text-black hint-text">
-    					CAJA JAIME
+    					BANCO
     				</div>
     				<div class="p-l-20">
-    					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['metalico_jaime'],0,',','.') ?>€</h3>
-    				</div>
-    			</div>
-    			<div class="col-md-3 bordered">
-    				<div class="card-title text-black hint-text">
-    					BANCO JORG
-    				</div>
-    				<div class="p-l-20">
-    					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['banco_jorge'],0,',','.') ?>€</h3>
-    				</div>
-    			</div>
-
-    			<div class="col-md-3 bordered">
-    				<div class="card-title text-black hint-text">
-    					BANCO JAIME
-    				</div>
-    				<div class="p-l-20">
-    					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['banco_jaime'],0,',','.') ?>€</h3>
+    					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['banco_jorge']+$dataX['banco_jaime'],0,',','.') ?>€</h3>
     				</div>
     			</div>
     		</div>

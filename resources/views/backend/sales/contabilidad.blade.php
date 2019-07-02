@@ -61,12 +61,35 @@ setlocale(LC_TIME, "es_ES");
                         <thead>
                         <tr>
                             <th class="text-center bg-complete text-white">Apto</th>
-                            <th class="text-center bg-complete text-white">total</th>
+                            <th class="text-center bg-complete text-white">
+                              total
+                              <?php $totalMain = 0; ?>
+                              <div id="main_total"></div>
+                            </th>
                             <th class="text-center bg-complete text-white">%</th>
 							<?php $months = new Carbon($year->start_date); ?>
 							<?php for ($i = 1; $i <= $diff ; $i++): ?>
                             <th class="text-center bg-complete text-white">
                                 &nbsp;<?php echo $months->formatLocalized('%b') ?>&nbsp;
+                                <?php 
+                                  $totalMonth = 0; 
+                                  $aux_year = $months->copy()->format('Y');
+                                  $aux_month = $months->copy()->format('n');
+                                ?>
+                                <?php 
+                                foreach ($rooms as $key => $room):
+                                  $totalMonth += $priceBookRoom[$room->id][$aux_year][$aux_month];
+                                endforeach; 
+                                ?>
+                                <br/>
+                                <?php 
+                                  if ($totalMonth>0):
+                                    echo number_format( $totalMonth, 0, ',', '.' ).' €';
+                                    $totalMain += $totalMonth;
+                                  else:
+                                    echo '---';
+                                  endif;
+                                ?>
                             </th>
 							<?php $months->addMonth() ?>
 							<?php endfor; ?>
@@ -155,6 +178,8 @@ setlocale(LC_TIME, "es_ES");
 @section('scripts')
     <script type="text/javascript">
 
+    $('#main_total').text("<?php echo number_format( $totalMain, 0, ',', '.' ); ?> €");
+      
       var data = {
         labels: [
 
@@ -299,8 +324,8 @@ setlocale(LC_TIME, "es_ES");
         },
         options: {
           title: {
-            display: true,
-            text: 'World population per region (in millions)'
+            display: false,
+            text: ''
           }
         }
       });
