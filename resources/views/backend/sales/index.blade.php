@@ -145,11 +145,7 @@
                     Exportar Excel
                 </button>
             </div>
-            {{--<div class="col-md-1 pull-right">--}}
-                {{--<button class="btn btn-md btn-danger orderPercentBenef">--}}
-                    {{--Ord benef critico--}}
-                {{--</button>--}}
-            {{--</div>--}}
+            
         </div>
         <div class="row">
             <?php if ( !$mobile->isMobile() ): ?>
@@ -161,11 +157,31 @@
                     <button id="booking_agency_details" class="btn btn-primary btn-xs">Ventas por Agencia</button>
                 </div>
             <?php endif; ?>
+          
+          @if ( $mobile->isMobile() ): 
+            <div class="col-lg-1 col-lg-offset-3 text-right m-t-5">
+          @else:
+            <div class="col-lg-1 col-lg-offset-3 text-center">
+          @endif
+            <button class="btn btn-danger btn-cons btn-xs <?php if($alert_lowProfits) echo 'btn-alarms'; ?> " type="button" data-toggle="modal" data-target="#modalLowProfits">
+                <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">BAJO BENEFICIO</span>
+                <span class="numPaymentLastBooks"><?php echo  count($lowProfits); ?></span>
+            </button>
+          </div>
         </div>
 
         <div class="row">
             <div class="liquidationSummary">
                 @include('backend.sales._tableSummary', ['totales' => $totales, 'books' => $books, 'year' => $year])
+            </div>
+        </div>
+        <div class="modal fade slide-up in" id="modalLowProfits" tabindex="-1" role="dialog" aria-hidden="true" >
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content-wrapper">
+                    <div class="modal-content">
+                        @include('backend.planning._alarmsLowProfits', ['alarms' => $lowProfits])
+                    </div>
+                </div>
             </div>
         </div>
     </div>

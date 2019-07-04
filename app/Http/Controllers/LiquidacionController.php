@@ -61,6 +61,10 @@ class LiquidacionController extends AppController
 			                  8
 		                  ])->orderBy('start', 'ASC')->get();
 
+                $alert_lowProfits = false; //To the alert efect
+                $percentBenef = DB::table('percent')->find(1)->percent;
+                $lowProfits = [];
+                
 		foreach ($books as $key => $book)
 		{
 
@@ -94,6 +98,16 @@ class LiquidacionController extends AppController
 			$totales["obs"]          += $book->extraCost;
 			$totales["pendiente"]    += $book->pending;
 			// }
+                        
+                    //Alarms
+                    $inc_percent = $book->get_inc_percent();
+                    if(round($inc_percent) <= $percentBenef){
+                      if (!$book->has_low_profit){
+                        $alert_lowProfits = true;
+                      }
+                      $lowProfits[] = $book;
+                    }
+                    
 		}
 
 
@@ -166,6 +180,9 @@ class LiquidacionController extends AppController
 		{
 			return view('backend/sales/index', [
 				'books'        => $books,
+                                'lowProfits' =>$lowProfits,
+                                'alert_lowProfits'=>$alert_lowProfits,
+                                'percentBenef'=>$percentBenef,
 				'totales'      => $totales,
 				'year'         => $year,
 				'data'         => $data,
@@ -175,6 +192,9 @@ class LiquidacionController extends AppController
 		{
 			return view('backend/sales/index', [
 				'books'        => $books,
+                                'lowProfits' =>$lowProfits,
+                                'alert_lowProfits'=>$alert_lowProfits,
+                                'percentBenef'=>$percentBenef,
 				'totales'      => $totales,
 				'year'         => $year,
 				'data'         => $data,
