@@ -147,10 +147,10 @@
 										---
 									<?php endif ?>
 
-									<?php if (($totalYearIncomes - $totalYearExpenses) > 0): ?>
-										<i class="fa fa-arrow-up text-success "></i>
+									<?php if (($totalYearIncomes - $totalYearExpenses) > 0 ): ?>
+                                                                                <i class="fa fa-arrow-up text-success result"></i>
 									<?php else: ?>
-										<i class="fa fa-arrow-down text-danger "></i>
+										<i class="fa fa-arrow-down text-danger result"></i>
 									<?php endif ?>
 		   							
 		   						</h3>
@@ -328,4 +328,9 @@
 	});
 
 </script>
+<style>
+  .fa.result{
+    font-size: 1.13em
+  }
+</style>
 @endsection

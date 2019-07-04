@@ -519,7 +519,7 @@ class LiquidacionController extends AppController
 		$diff      = $startYear->diffInMonths($endYear) + 1;
 
 
-		$books = \App\Book::whereIn('type_book', [2])
+		$books = \App\Book::type_book_sales()
 		                  ->where('start', '>=', $startYear)
 		                  ->where('start', '<=', $endYear)
 		                  ->get();
@@ -688,33 +688,35 @@ class LiquidacionController extends AppController
 
 	}
 
-	public function bank()
+        public function bank()
 	{
 		$year      = $this->getActiveYear();
 		$startYear = new Carbon($year->start_date);
 		$endYear   = new Carbon($year->end_date);
 
-		$bankJaime = \App\Bank::where('typePayment', 3)
-		                      ->where('date', '>=', $startYear)
-		                      ->where('date', '<=', $endYear)
-		                      ->orderBy('date', 'ASC')
-		                      ->get();
-
 		$saldoInicial = \App\Bank::where('concept', 'SALDO INICIAL')->where('typePayment', 3)->first();
 
-		$bankJorge = \App\Bank::whereIn('typePayment', [
-			2,
-			0
-		])
+		$bankItems = \App\Bank::whereIn('typePayment', [2,0,3])
 		                      ->where('date', '>=', $startYear)
 		                      ->where('date', '<=', $endYear)
 		                      ->orderBy('date', 'ASC')
 		                      ->get();
 
+                //Totals
+                $totals = 0;//$saldoInicial->import; 
+                foreach ($bankItems as $key => $cash): 
+                    if ($cash->type == 1): 
+                        $totals -= $cash->import;
+                    endif;
+                    if ($cash->type == 0):
+                        $totals += $cash->import;
+                    endif;
+                endforeach;
+                  
 		return view('backend.sales.bank.bank', [
 			'year'         => $year,
-			'bankJaime'    => $bankJaime,
-			'bankJorge'    => $bankJorge,
+			'totals'    => $totals,
+			'bankItems'    => $bankItems,
 			'saldoInicial' => $saldoInicial,
 		]);
 	}
@@ -789,11 +791,7 @@ class LiquidacionController extends AppController
 		$startYear = new Carbon($year->start_date);
 		$endYear   = new Carbon($year->end_date);
 		$diff      = $startYear->diffInMonths($endYear) + 1;
-		$books     = \App\Book::whereIn('type_book', [
-			2,
-			7,
-			8
-		])->where('start', '>', $startYear)->where('start', '<=', $endYear)->get();
+		$books     = \App\Book::type_book_sales()->where('start', '>', $startYear)->where('start', '<=', $endYear)->get();
 		/* INGRESOS */
 		$arrayTotales = [
 			'totales' => 0,
@@ -972,20 +970,23 @@ class LiquidacionController extends AppController
 	static function getSalesByYear($year = "")
 	{
 		// $array = [0 =>"Metalico Jorge", 1 =>"Metalico Jaime",2 =>"Banco Jorge",3=>"Banco Jaime"];
-		if ($year == "")
-		{
-			$year = date('Y');
-		}
-		$start = new Carbon('first day of September ' . $year);
-		$end   = $start->copy()->addYear();
+          
+          if ($year == "")
+          {
+            $year      = self::getActiveYear();
+            $startYear = new Carbon($year->start_date);
+            $endYear   = new Carbon($year->end_date);
+          } else {
+            $start = new Carbon('first day of September ' . $year);
+            $end   = $start->copy()->addYear();
+            $startYear = $start->copy()->format('Y-m-d');
+            $endYear   = $end->copy()->format('Y-m-d');
+          }
 
-		$books = \App\Book::with('payments')->whereIn('type_book', [
-			2,
-			7,
-			8
-		])->where('start', '>=', $start->copy()->format('Y-m-d'))->where('start', '<=', $end->copy()->format('Y-m-d'))
-		                  ->orderBy('start', 'ASC')->get();
-
+           $books = \App\Book::type_book_sales()->with('payments')->where('start', '>=', $startYear)
+                  ->where('start', '<=',$endYear)
+                  ->orderBy('start', 'ASC')->get();
+           
 		$result = [
 			'ventas'    => 0,
 			'cobrado'   => 0,

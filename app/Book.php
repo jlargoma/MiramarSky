@@ -1008,4 +1008,19 @@ class Book extends Model
           
           return $cost_total;
         }
+        
+        /**
+         * Get object Book that has status 2,7,8
+         * 
+         * @return Object Query
+         */
+        static function type_book_sales() {
+          return self::whereIn('type_book', [2,7,8]);
+          
+        }
+        
+        
+        
+    
+                
 }

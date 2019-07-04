@@ -32,7 +32,7 @@
 		}
 </style>
 
-<?php $dataStats = \App\http\Controllers\LiquidacionController::getSalesByYear($year->year); ?>
+<?php $dataStats = \App\http\Controllers\LiquidacionController::getSalesByYear(); ?>
 <div class="col-lg-3 col-md-6 col-xs-12">
 	
 	<table class="table table-hover table-striped table-ingresos" style="background-color: #92B6E2">
