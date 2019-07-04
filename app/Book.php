@@ -971,4 +971,41 @@ class Book extends Model
 		$sendPictures = \App\LogImages::where('book_id', $this->id)->get();
 		return (count($sendPictures) > 0) ? $sendPictures : false;
 	}
+        
+        /**
+         * Get the inc_percent from the book
+         * 
+         * @return int inc_percent
+         */
+        public function get_inc_percent() {
+          $profit = $this->profit;
+          $total_price = $this->total_price;
+          $inc_percent = 0;
+          
+          if($this->room->luxury == 0 && $this->cost_lujo > 0) {
+            $profit      = $this->profit - $this->cost_lujo;
+            $total_price = $this->total_price - $this->sup_lujo;
+          }
+          
+          if ($total_price != 0){
+            $inc_percent = ($profit/ $total_price )*100;
+          }
+          
+          return $inc_percent;
+        }
+        
+        /**
+         * Get the total cost
+         * 
+         * @return int $cost_total
+         */
+        public function get_costeTotal(){
+          
+          $cost_total = $this->cost_apto + $this->cost_park + $this->cost_lujo + $this->cost_limp + $this->PVPAgencia + $this->stripeCost + $this->extraCost;
+          if($this->room->luxury == 0 && $this->cost_lujo > 0) {
+            $cost_total = $this->cost_total - $this->cost_lujo;
+          }
+          
+          return $cost_total;
+        }
 }

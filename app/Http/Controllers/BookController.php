@@ -164,44 +164,36 @@ class BookController extends AppController
 					$alarms[] = $book;
 			}
 		}
-                $lowProfits = $this->lowProfitAlert($startYear,$endYear);
+                
+                $alert_lowProfits = false; //To the alert efect
+                $percentBenef = DB::table('percent')->find(1)->percent;
+                $lowProfits = $this->lowProfitAlert($startYear,$endYear,$percentBenef,$alert_lowProfits);
+                
 		return view(
 			'backend/planning/index',
 			compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
-			        'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits')
+			        'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits','alert_lowProfits','percentBenef')
 		);
 	}
 
-        private function lowProfitAlert($startYear,$endYear) {
+        private function lowProfitAlert($startYear,$endYear,$percentBenef,&$alert) {
 
           $booksAlarms = \App\Book::where('start', '>', $startYear)
 		  ->where('finish', '<', $endYear)
-                  ->where('has_low_profit',FALSE)
                   ->whereIn('type_book', [2,7,8])
                   ->orderBy('start', 'ASC')->get();
 	
           $alarms      = array();
-          $percentBenef = DB::table('percent')->find(1)->percent;
+          
           foreach ($booksAlarms as $key => $book)
           {
-                 
-            
-            
-             $profit = $book->profit;
-             $total_price = $book->total_price;
-             $inc_percent = 0;
-             if($book->room->luxury == 0 && $book->cost_lujo > 0) {
-              $profit     = $book->profit - $book->cost_lujo;
-              $total_price = ( $book->total_price - $book->sup_lujo );
+            $inc_percent = $book->get_inc_percent();
+            if(round($inc_percent) <= $percentBenef){
+              if (!$book->has_low_profit){
+                $alert = true;
               }
-              if ($total_price != 0){
-                $inc_percent = ($profit/ $total_price )*100;
-                if(round($inc_percent) <= $percentBenef){
-                  $alarms[] = $book;
-                }
-              } else {
-                $alarms[] = $book;
-              }
+              $alarms[] = $book;
+            }
           }
           return $alarms;
         }
@@ -538,26 +530,42 @@ class BookController extends AppController
 
 	public function update(Request $request, $id)
 	{
-		$book = \App\Book::with('payments')->find($id);
+          $book = \App\Book::with('payments')->find($id);
 
-		$totalpayment = $book->sum_payments;
+          $totalpayment = $book->sum_payments;
 
-		// We are passing wrong data from this to view by using $book data, in order to correct data
-		// an AJAX call has been made after rendering the page.
-		$hasFiance = \App\Fianzas::where('book_id', $book->id)->first();
-
-		return view('backend/planning/update', [
-			'book'         => $book,
-			'rooms'        => \App\Rooms::where('state', '=', 1)->orderBy('order')->get(),
-			'extras'       => \App\Extras::all(),
-			'start'        => Carbon::createFromFormat('Y-m-d', $book->start)->format('d M,y'),
-			'payments'     => $book->payments,
-			'typecobro'    => new \App\Book(),
-			'totalpayment' => $totalpayment,
-			'mobile'       => new Mobile(),
-			'hasFiance'    => $hasFiance,
-			'stripe'       => StripeController::$stripe,
-		]);
+          // We are passing wrong data from this to view by using $book data, in order to correct data
+          // an AJAX call has been made after rendering the page.
+          $hasFiance = \App\Fianzas::where('book_id', $book->id)->first();
+                
+          /**
+           * Check low_profit alert
+           */
+          $low_profit = false;
+          $inc_percent = $book->get_inc_percent();
+          $percentBenef = DB::table('percent')->find(1)->percent;
+          
+          if(round($inc_percent) <= $percentBenef){
+            if (!$book->has_low_profit){
+              $low_profit = true;
+            }
+          }
+          
+          //END: Check low_profit alert
+          
+          return view('backend/planning/update', [
+                  'book'         => $book,
+                  'low_profit'         => $low_profit,
+                  'rooms'        => \App\Rooms::where('state', '=', 1)->orderBy('order')->get(),
+                  'extras'       => \App\Extras::all(),
+                  'start'        => Carbon::createFromFormat('Y-m-d', $book->start)->format('d M,y'),
+                  'payments'     => $book->payments,
+                  'typecobro'    => new \App\Book(),
+                  'totalpayment' => $totalpayment,
+                  'mobile'       => new Mobile(),
+                  'hasFiance'    => $hasFiance,
+                  'stripe'       => StripeController::$stripe,
+          ]);
 	}
 
 	//Funcion para actualizar la reserva

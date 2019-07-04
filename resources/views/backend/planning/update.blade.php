@@ -166,6 +166,9 @@
 
                     </div>
                     <div class="col-md-3 col-xs-12 content-guardar" style="padding: 20px 0;">
+                      @if($low_profit)
+                      <div class="btn btn-danger btn-cons btn-alarms m-b-10">BAJO BENEFICIO</div>
+                      @endif
                         <div id="overlay" style="display: none;"></div>
                         <select class="status form-control minimal" data-id="<?php echo $book->id ?>" name="status" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
 							<?php for ($i = 1; $i <= 12; $i++): ?>

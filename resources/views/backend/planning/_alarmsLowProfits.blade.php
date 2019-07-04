@@ -11,73 +11,91 @@
         <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a> -->
         <!-- <strong>Info!</strong> This alert box indicates a neutral informative change or action. -->
         <h4 class="text-center"> ALARMAS DE BAJO BENEFICIOS </h4>
-        <table class="table" style="margin-top: 0;">
-            <tbody>
-                <?php foreach ($alarms as $key => $book): ?>
-                    <tr>
-                        <td class="text-center"  style="width: 30px; padding: 5px 0!important">
-                            <?php if ($book->agency != 0): ?>
-                                <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
-                            <?php endif ?>
-                        </td>
-                        <td class ="text-center" style="color: black;padding: 5px!important;">  
-                            <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
-                                <?php echo $book->customer->name ?>
-                            </a> 
-                            
-                        </td>
-                        <td class="text-center" style="color: black; padding: 5px!important">   
-                            <?php echo substr($book->room->nameRoom,0,5) ?>       
-                        </th>
-                        <td class="text-center" style="color: black; padding: 5px!important">   
-                            <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?>
-                        </th>
-                        <td class="text-center" style="color: black;padding: 5px 10px!important">   
-                            <b>
+        
+        
+         <div class="col-md-12 col-xs-12" style="padding-right: 0;">
+            <table class="table table-striped" id="tableOrderable">
+                <thead >
+                    <th class ="text-center bg-complete text-white sorting_disabled" style="width: 20% !important; font-size:
+                    10px!important">Nombre</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">Apto</th>
+                    <th class ="text-center bg-complete text-white" style="width: 12% !important;font-size:10px!important">IN - OUT</th>
+                    <th class ="text-center bg-complete text-white" style="width: 7% !important;font-size:10px!important">PVP</th>
+                    <th class ="text-center bg-complete text-white" style="width: 7% !important;font-size:10px!important">Coste <br> Total</th>
+                    <th class ="text-center bg-complete text-white" style="width: 7% !important;font-size:10px!important">%Benef</th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important"></th>
+                </thead>
+                <tbody >
+                    <!-- Totales -->
+
+                    <?php foreach ($alarms as $book): ?>
+                        <tr >
+                            <td class="text-center">
+                                <span style="display: none;"><?php echo strtotime($book->start);?></span>
+                                <div class="col-xs-2">
+                                    <?php if ($book->agency != 0): ?>
+                                        <img style="width: 20px;margin: 0 auto;position: absolute; left: 0px;" src="/pages/<?php  echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
+	                               <?php endif ?>
+
+                                </div>
+                                <div class="col-xs-8">
+                                    <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
+                                        <?php  echo $book->customer->name ?>
+                                    </a>
+                                </div>
+                                <div class="col-xs-2">
+                                    <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
+                                        <img src="/pages/oferta.png" style="width: 40px;" title="<?php echo $book->book_owned_comments ?>">
+                                    <?php endif ?>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <!-- apto -->
+                                <?php echo $book->room->nameRoom ?>
+                            </td>
+                            <td class="text-center">
                                 <?php
                                     $start = Carbon::createFromFormat('Y-m-d',$book->start);
                                     echo $start->formatLocalized('%d %b');
-                                ?>        
-                            </b> - 
-                            <b>
+                                ?> -
                                 <?php
                                     $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
                                     echo $finish->formatLocalized('%d %b');
-                                ?>        
-                            </b>           
-                        </td>
-                        <td class="text-center" style="color: black;padding: 5px!important;">
-                             <b><?php echo $book->total_price ?>€</b>
-                        </td>
-                        
-                        <td class="text-center" style="color:red;">
-                          <?php
-                          $profit = $book->profit;
-                          $total_price = $book->total_price;
-                          $inc_percent = 0;
-                          if($book->room->luxury == 0 && $book->cost_lujo > 0) {
-                           $profit     = $book->profit - $book->cost_lujo;
-                           $total_price = ( $book->total_price - $book->sup_lujo );
-                          }
-                          ?>
-                          <?php 
-                          if ($total_price != 0):
-                            $inc_percent = ($profit/ $total_price )*100;
-                            echo round($inc_percent);
-                          else:
-                            echo '0';
-                          endif;
-                          ?>%
-                        </td>
-                        <td class="text-center">
-                          <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-default toggleAlertLowProfits" type="button" data-toggle="tooltip" title="" data-original-title="Activa / Desactiva el control de Beneficio para este registro." data-sended="1">
-                              <i class="fa fa-bell" aria-hidden="true"></i>
-                          </button> 
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                                ?>
+                            </td>
+                            <td class="text-center coste" style="border-left: 1px solid black;">
+                              <?php echo number_format($book->real_price,0,',','.') ?> €</b>
+                            </td>
+                            <td class="text-center coste bi " style="border-left: 1px solid black;">
+                              <?php echo number_format($book->get_costeTotal(),2,',','.') ?> €</b>
+                            </td>
+                            <?php $inc_percent = $book->get_inc_percent();?>
+                            <?php if(round($inc_percent) <= $percentBenef && round($inc_percent) > 0): ?>
+                                <?php $classDanger = "background-color: #f8d053!important; color:black!important;" ?>
+                            <?php elseif(round($inc_percent) <= 0): ?>
+                                <?php $classDanger = "background-color: red!important; color:white!important;" ?>
+                            <?php else: ?>
+                                <?php $classDanger = "" ?>
+                            <?php endif; ?>
+                            <td class="text-center beneficio bf " style="border-left: 1px solid black; <?php echo $classDanger ?>">
+	                            <?php echo number_format($inc_percent,0)."%" ?>
+                            </td>
+                            
+                            <td class="text-center " >
+                              <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-default toggleAlertLowProfits" type="button" data-toggle="tooltip" title="" data-original-title="Activa / Desactiva el control de Beneficio para este registro." data-sended="1">
+                                @if($book->has_low_profit)
+                                  <i class="fa fa-bell-slash" aria-hidden="true"></i>
+                                @else
+                                  <i class="fa fa-bell" aria-hidden="true"></i>
+                                @endif
+                              </button> 
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
+
+                </tbody>
+            </table>
+        </div>
         <button id="activateAlertLowProfits" class="btn btn-xs btn-default " type="button" >
           <i class="fa fa-bell" aria-hidden="true"></i>&nbsp;Activar para todos
         </button>
