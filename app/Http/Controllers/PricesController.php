@@ -15,7 +15,7 @@ class PricesController extends Controller
 	 */
 	public function index()
 	{
-		$date          = new Carbon('first day of September 2018');
+		$date          = new Carbon('first day of june 2018');
 		$seasonTemp    = \App\Seasons::where('start_date', '>=', $date->copy())
 		                             ->where('finish_date', '<=', $date->copy()->addYear())
 		                             ->orderBy('start_date', 'ASC')

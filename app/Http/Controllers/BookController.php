@@ -40,12 +40,12 @@ class BookController extends Controller
         if (empty($year))
         {
             $date = Carbon::now();
-            if ($date->copy()->format('n') >= 9)
+            if ($date->copy()->format('n') >= 6)
             {
-                $date = new Carbon('first day of September ' . $date->copy()->format('Y'));
+                $date = new Carbon('first day of June ' . $date->copy()->format('Y'));
             } else
             {
-                $date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
+                $date = new Carbon('first day of June ' . $date->copy()->subYear()->format('Y'));
             }
 
         } else
@@ -55,7 +55,7 @@ class BookController extends Controller
 
         }
 
-        $inicio = new Carbon('first day of September ' . $date->copy()->format('Y'));
+        $inicio = new Carbon('first day of June ' . $date->copy()->format('Y'));
         $start  = $inicio->copy();
 
         if (Auth::user()->role != "agente")
@@ -1319,7 +1319,7 @@ class BookController extends Controller
         }
 
         $year     = $request->input('year', date('Y'));
-        $dateFrom = (new Carbon("first day of September {$year}"));
+        $dateFrom = (new Carbon("first day of June {$year}"));
         $dateTo   = $dateFrom->copy()->addYear();
 
         $customerIds = \App\Customers::where('name', 'LIKE', '%' . $request->searchString . '%')
@@ -1388,10 +1388,10 @@ class BookController extends Controller
             $date = Carbon::now();
             if ($date->copy()->format('n') >= 9)
             {
-                $date = new Carbon('first day of September ' . $date->copy()->format('Y'));
+                $date = new Carbon('first day of June ' . $date->copy()->format('Y'));
             } else
             {
-                $date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
+                $date = new Carbon('first day of June ' . $date->copy()->subYear()->format('Y'));
             }
 
         } else
@@ -1401,7 +1401,7 @@ class BookController extends Controller
 
         }
 
-        $date = new Carbon('first day of September ' . $date->copy()->format('Y'));
+        $date = new Carbon('first day of June ' . $date->copy()->format('Y'));
 
         if (Auth::user()->role != "agente")
         {
@@ -1560,16 +1560,16 @@ class BookController extends Controller
 
         if ($request->year)
         {
-            if ($now->copy()->format('n') >= 9)
+            if ($now->copy()->format('n') >= 6)
             {
-                $date = new Carbon('first day of September ' . $now->copy()->format('Y'));
+                $date = new Carbon('first day of June ' . $now->copy()->format('Y'));
             } else
             {
-                $date = new Carbon('first day of September ' . $now->copy()->subYear()->format('Y'));
+                $date = new Carbon('first day of June ' . $now->copy()->subYear()->format('Y'));
             }
         } else
         {
-            $date = new Carbon('first day of September ' . $request->year);
+            $date = new Carbon('first day of June ' . $request->year);
         }
         $booksAux = array();
         foreach (\App\Payments::orderBy('id', 'DESC')->get() as $key => $payment)
@@ -1607,7 +1607,7 @@ class BookController extends Controller
             $date = $year->copy();
 
         }
-        $firstDayOfTheYear = new Carbon('first day of September ' . $date->copy()->format('Y'));
+        $firstDayOfTheYear = new Carbon('first day of June ' . $date->copy()->format('Y'));
         $rooms             = \App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get();
         $typesRoom         = [
             '2dorm-lujo'   => [
@@ -1801,12 +1801,12 @@ class BookController extends Controller
             $year = Carbon::createFromFormat('Y', $year);
             $date = $year->copy();
         }
-        if ($date->copy()->format('n') >= 9)
+        if ($date->copy()->format('n') >= 6)
         {
-            $date = new Carbon('first day of September ' . $now->copy()->format('Y'));
+            $date = new Carbon('first day of June ' . $now->copy()->format('Y'));
         } else
         {
-            $date = new Carbon('first day of September ' . $now->copy()->subYear()->format('Y'));
+            $date = new Carbon('first day of June ' . $now->copy()->subYear()->format('Y'));
         }
         $apartamentos = \App\Rooms::where('state', '=', 1);
         $reservas     = \App\Book::whereIn('type_book', [
@@ -1834,7 +1834,7 @@ class BookController extends Controller
         }
 
 
-        $firstDayOfTheYear = new Carbon('first day of September ' . $date->copy()->format('Y'));
+        $firstDayOfTheYear = new Carbon('first day of June ' . $date->copy()->format('Y'));
         $book              = new \App\Book();
 
         for ($i = 1; $i <= 12; $i++)
@@ -1862,16 +1862,14 @@ class BookController extends Controller
 
         }
 
-        unset($arrayMonths[6]);
-        unset($arrayMonths[7]);
-        unset($arrayMonths[8]);
+        
 
-        if ($date->copy()->format('n') >= 9)
+        if ($date->copy()->format('n') >= 6)
         {
-            $start = new Carbon('first day of September ' . $date->copy()->format('Y'));
+            $start = new Carbon('first day of June ' . $date->copy()->format('Y'));
         } else
         {
-            $start = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
+            $start = new Carbon('first day of June ' . $date->copy()->subYear()->format('Y'));
         }
 
 
@@ -1899,16 +1897,16 @@ class BookController extends Controller
 
         if ($year)
         {
-            if ($now->copy()->format('n') >= 9)
+            if ($now->copy()->format('n') >= 6)
             {
-                $date = new Carbon('first day of September ' . $now->copy()->format('Y'));
+                $date = new Carbon('first day of June ' . $now->copy()->format('Y'));
             } else
             {
-                $date = new Carbon('first day of September ' . $now->copy()->subYear()->format('Y'));
+                $date = new Carbon('first day of June ' . $now->copy()->subYear()->format('Y'));
             }
         } else
         {
-            $date = new Carbon('first day of September ' . $year);
+            $date = new Carbon('first day of June ' . $year);
         }
 
         switch ($type)
@@ -2315,13 +2313,13 @@ class BookController extends Controller
         $year = date('Y');
 
         if($year){
-            if($now->copy()->format('n') >= 9){
-                $date = new Carbon('first day of September ' . $now->copy()->format('Y'));
+            if($now->copy()->format('n') >= 6){
+                $date = new Carbon('first day of June ' . $now->copy()->format('Y'));
             }else{
-                $date = new Carbon('first day of September ' . $now->copy()->subYear()->format('Y'));
+                $date = new Carbon('first day of June ' . $now->copy()->subYear()->format('Y'));
             }
         }else{
-            $date = new Carbon('first day of September ' . $year);
+            $date = new Carbon('first day of June ' . $year);
         }
 
         $year_season = date('y',strtotime($date));

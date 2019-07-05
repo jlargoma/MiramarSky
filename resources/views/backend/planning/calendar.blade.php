@@ -7,7 +7,7 @@ setlocale(LC_TIME, "es_ES");
     <div class="panel panel-mobile">
         <div class="row">
             <?php $dateAux = $inicio->copy(); ?>
-            <?php for ($i=1; $i <= 9 ; $i++) :?>
+            <?php for ($i=1; $i <= 12 ; $i++) :?>
 
             <button <?php if($dateAux->copy()->format('n') == date('n')){ echo 'id="btn-active"';} ?> class='btn btn-sm btn-default btn-fechas-calendar <?php if($i < 4){ echo 'hidden-xs'; }?>' data-month="<?php echo $dateAux->copy()->format('n') ?>">
                 <?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>

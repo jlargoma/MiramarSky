@@ -48,12 +48,12 @@ class LiquidacionController extends Controller
 		if (empty($year))
 		{
 			$date = Carbon::now();
-			if ($date->copy()->format('n') >= 9)
+			if ($date->copy()->format('n') >= 6)
 			{
-				$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
+				$date = new Carbon('first day of June ' . $date->copy()->format('Y'));
 			} else
 			{
-				$date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
+				$date = new Carbon('first day of June ' . $date->copy()->subYear()->format('Y'));
 			}
 
 		} else
@@ -63,7 +63,7 @@ class LiquidacionController extends Controller
 
 		}
 
-		$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
+		$date = new Carbon('first day of June ' . $date->copy()->format('Y'));
 
 		$books = \App\Book::with([
 			                         'customer',
@@ -205,17 +205,17 @@ class LiquidacionController extends Controller
 
 		if (empty($year))
 		{
-			if ($now->copy()->format('n') >= 9)
+			if ($now->copy()->format('n') >= 6)
 			{
-				$date = new Carbon('first day of September ' . $now->copy()->format('Y'));
+				$date = new Carbon('first day of June ' . $now->copy()->format('Y'));
 			} else
 			{
-				$date = new Carbon('first day of September ' . $now->copy()->subYear()->format('Y'));
+				$date = new Carbon('first day of June ' . $now->copy()->subYear()->format('Y'));
 			}
 
 		} else
 		{
-			$date = new Carbon('first day of September ' . $year);
+			$date = new Carbon('first day of June ' . $year);
 		}
 
 		$rooms        = \App\Rooms::all();
@@ -284,12 +284,12 @@ class LiquidacionController extends Controller
 			$date = $year->copy();
 
 		}
-		if ($date->copy()->format('n') >= 9)
+		if ($date->copy()->format('n') >= 6)
 		{
-			$inicio = new Carbon('first day of September ' . $date->copy()->format('Y'));
+			$inicio = new Carbon('first day of June ' . $date->copy()->format('Y'));
 		} else
 		{
-			$inicio = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
+			$inicio = new Carbon('first day of June ' . $date->copy()->subYear()->format('Y'));
 		}
 
 		$rooms        = \App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get();
@@ -354,12 +354,12 @@ class LiquidacionController extends Controller
 			$date = $year->copy();
 
 		}
-		if ($date->copy()->format('n') >= 9)
+		if ($date->copy()->format('n') >= 6)
 		{
-			$inicio = new Carbon('first day of September ' . $date->copy()->format('Y'));
+			$inicio = new Carbon('first day of June ' . $date->copy()->format('Y'));
 		} else
 		{
-			$inicio = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
+			$inicio = new Carbon('first day of June ' . $date->copy()->subYear()->format('Y'));
 		}
 
 
@@ -493,7 +493,7 @@ class LiquidacionController extends Controller
 
 		}
 
-		$inicio = new Carbon('first day of September ' . $year->format('Y'));
+		$inicio = new Carbon('first day of June ' . $year->format('Y'));
 
 
 		$gastos = \App\Expenses::where('date', '>=', $inicio->copy()->format('Y-m-d'))
@@ -541,12 +541,12 @@ class LiquidacionController extends Controller
 		if (empty($year))
 		{
 			$date = Carbon::now();
-			if ($date->copy()->format('n') >= 9)
+			if ($date->copy()->format('n') >= 6)
 			{
-				$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
+				$date = new Carbon('first day of June ' . $date->copy()->format('Y'));
 			} else
 			{
-				$date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
+				$date = new Carbon('first day of June ' . $date->copy()->subYear()->format('Y'));
 			}
 
 		} else
@@ -556,7 +556,7 @@ class LiquidacionController extends Controller
 
 		}
 
-		$inicio = new Carbon('first day of September ' . $date->copy()->format('Y'));
+		$inicio = new Carbon('first day of June ' . $date->copy()->format('Y'));
 
 
 		$books = \App\Book::whereIn('type_book', [2])
@@ -649,12 +649,12 @@ class LiquidacionController extends Controller
 		if (empty($year))
 		{
 			$date = Carbon::now();
-			if ($date->copy()->format('n') >= 9)
+			if ($date->copy()->format('n') >= 6)
 			{
-				$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
+				$date = new Carbon('first day of June ' . $date->copy()->format('Y'));
 			} else
 			{
-				$date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
+				$date = new Carbon('first day of June ' . $date->copy()->subYear()->format('Y'));
 			}
 
 		} else
@@ -664,7 +664,7 @@ class LiquidacionController extends Controller
 
 		}
 
-		$inicio = new Carbon('first day of September ' . $date->copy()->format('Y'));
+		$inicio = new Carbon('first day of June ' . $date->copy()->format('Y'));
 
 		$cashJaime    = \App\Cashbox::where('typePayment', 1)->where('date', '>=', $inicio->copy()->format('Y-m-d'))
 		                            ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
@@ -688,12 +688,12 @@ class LiquidacionController extends Controller
 		if (empty($year))
 		{
 			$date = Carbon::now();
-			if ($date->copy()->format('n') >= 9)
+			if ($date->copy()->format('n') >= 6)
 			{
-				$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
+				$date = new Carbon('first day of June ' . $date->copy()->format('Y'));
 			} else
 			{
-				$date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
+				$date = new Carbon('first day of June ' . $date->copy()->subYear()->format('Y'));
 			}
 
 		} else
@@ -703,7 +703,7 @@ class LiquidacionController extends Controller
 
 		}
 
-		$inicio = new Carbon('first day of September ' . $date->copy()->format('Y'));
+		$inicio = new Carbon('first day of June ' . $date->copy()->format('Y'));
 		if ($type == 'jaime')
 		{
 
@@ -766,12 +766,12 @@ class LiquidacionController extends Controller
 		if (empty($year))
 		{
 			$date = Carbon::now();
-			if ($date->copy()->format('n') >= 9)
+			if ($date->copy()->format('n') >= 6)
 			{
-				$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
+				$date = new Carbon('first day of June ' . $date->copy()->format('Y'));
 			} else
 			{
-				$date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
+				$date = new Carbon('first day of June ' . $date->copy()->subYear()->format('Y'));
 			}
 
 		} else
@@ -781,7 +781,7 @@ class LiquidacionController extends Controller
 
 		}
 
-		$inicio = new Carbon('first day of September ' . $date->copy()->format('Y'));
+		$inicio = new Carbon('first day of June ' . $date->copy()->format('Y'));
 
 		$bankJaime    = \App\Bank::where('typePayment', 3)->where('date', '>=', $inicio->copy()->format('Y-m-d'))
 		                         ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
@@ -809,12 +809,12 @@ class LiquidacionController extends Controller
 		if (empty($year))
 		{
 			$date = Carbon::now();
-			if ($date->copy()->format('n') >= 9)
+			if ($date->copy()->format('n') >= 6)
 			{
-				$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
+				$date = new Carbon('first day of June ' . $date->copy()->format('Y'));
 			} else
 			{
-				$date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
+				$date = new Carbon('first day of June ' . $date->copy()->subYear()->format('Y'));
 			}
 
 		} else
@@ -824,7 +824,7 @@ class LiquidacionController extends Controller
 
 		}
 
-		$inicio = new Carbon('first day of September ' . $date->copy()->format('Y'));
+		$inicio = new Carbon('first day of June ' . $date->copy()->format('Y'));
 		if ($type == 'jaime')
 		{
 
@@ -874,12 +874,12 @@ class LiquidacionController extends Controller
 		if (empty($year))
 		{
 			$date = Carbon::now();
-			if ($date->copy()->format('n') >= 9)
+			if ($date->copy()->format('n') >= 6)
 			{
-				$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
+				$date = new Carbon('first day of June ' . $date->copy()->format('Y'));
 			} else
 			{
-				$date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
+				$date = new Carbon('first day of June ' . $date->copy()->subYear()->format('Y'));
 			}
 
 		} else
@@ -888,7 +888,7 @@ class LiquidacionController extends Controller
 			$date = $year->copy();
 		}
 
-		$inicio = new Carbon('first day of September ' . $date->copy()->format('Y'));
+		$inicio = new Carbon('first day of June ' . $date->copy()->format('Y'));
 
 		$books = \App\Book::whereIn('type_book', [
 			2,
@@ -1080,7 +1080,7 @@ class LiquidacionController extends Controller
 		{
 			$year = date('Y');
 		}
-		$start = new Carbon('first day of September ' . $year);
+		$start = new Carbon('first day of June ' . $year);
 		$end   = $start->copy()->addYear();
 
 		$books = \App\Book::with('payments')->whereIn('type_book', [
@@ -1136,12 +1136,12 @@ class LiquidacionController extends Controller
 			$date = $year->copy();
 
 		}
-		if ($date->copy()->format('n') >= 9)
+		if ($date->copy()->format('n') >= 6)
 		{
-			$start = new Carbon('first day of September ' . $date->copy()->format('Y'));
+			$start = new Carbon('first day of June ' . $date->copy()->format('Y'));
 		} else
 		{
-			$start = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
+			$start = new Carbon('first day of June ' . $date->copy()->subYear()->format('Y'));
 		}
 
 		$end = $start->copy()->addYear();
