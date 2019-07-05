@@ -29,7 +29,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-lg-6">
+	<div class="col-lg-7">
 		<div class="col-md-3 bordered">
 			<div class="card-title text-black hint-text">
 				Total vnts temp
