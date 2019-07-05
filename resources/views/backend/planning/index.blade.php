@@ -52,7 +52,7 @@ setlocale(LC_TIME, "es_ES");
                             <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">ALARMAS</span>
                             <span class="numPaymentLastBooks"><?php echo  count($alarms); ?></span>
                         </button>
-                      <button class="btn btn-danger btn-cons <?php if($alert_lowProfits) echo 'btn-alarms'; ?> " type="button" data-toggle="modal" data-target="#modalLowProfits">
+                      <button class="btn btn-danger btn-cons <?php if($alert_lowProfits) echo 'btn-alarms'; ?> "  id="btnLowProfits" type="button" data-toggle="modal" data-target="#modalLowProfits">
                             <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">BAJO BENEFICIO</span>
                             <span class="numPaymentLastBooks"><?php echo  count($lowProfits); ?></span>
                         </button>

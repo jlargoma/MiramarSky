@@ -1,6 +1,8 @@
 <?php   use \Carbon\Carbon;  
         setlocale(LC_TIME, "ES"); 
         setlocale(LC_TIME, "es_ES");  
+        $total_pvp = 0;
+        $total_coste = 0;
 ?>
 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
     <i class="fa fa-times fa-2x" style="color: #000!important;"></i>
@@ -14,14 +16,16 @@
         
         
          <div class="col-md-12 col-xs-12" style="padding-right: 0;">
-            <table class="table table-striped" id="tableOrderable">
+           <table class="table table-striped" id="list_lowProf">
                 <thead >
                     <th class ="text-center bg-complete text-white sorting_disabled" style="width: 20% !important; font-size:
                     10px!important">Nombre</th>
                     <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">Apto</th>
                     <th class ="text-center bg-complete text-white" style="width: 12% !important;font-size:10px!important">IN - OUT</th>
-                    <th class ="text-center bg-complete text-white" style="width: 7% !important;font-size:10px!important">PVP</th>
-                    <th class ="text-center bg-complete text-white" style="width: 7% !important;font-size:10px!important">Coste <br> Total</th>
+                    <th class ="text-center bg-complete text-white" style="width: 7% !important;font-size:10px!important">
+                      PVP<br/><b id="alarms_totalPVP"></b></th>
+                    <th class ="text-center bg-complete text-white" style="width: 7% !important;font-size:10px!important">
+                      Coste Total<br/><b id="alarms_totalCosteTotal"></b></th>
                     <th class ="text-center bg-complete text-white" style="width: 7% !important;font-size:10px!important">%Benef</th>
                     <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important"></th>
                 </thead>
@@ -63,10 +67,12 @@
                                     echo $finish->formatLocalized('%d %b');
                                 ?>
                             </td>
-                            <td class="text-center coste" style="border-left: 1px solid black;">
+                            <td class="text-center PVP" style="border-left: 1px solid black;">
+                              <?php $total_pvp += $book->real_price;?>
                               <?php echo number_format($book->real_price,0,',','.') ?> €</b>
                             </td>
                             <td class="text-center coste bi " style="border-left: 1px solid black;">
+                              <?php $total_coste += $book->get_costeTotal();?>
                               <?php echo number_format($book->get_costeTotal(),2,',','.') ?> €</b>
                             </td>
                             <?php $inc_percent = $book->get_inc_percent();?>
@@ -107,6 +113,10 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
+      
+      $('#alarms_totalPVP').text("<?php echo $total_pvp.' €';?>");
+      $('#alarms_totalCosteTotal').text("<?php echo $total_coste.' €';?>");
+      
       $('.toggleAlertLowProfits').click(function(event) {
       var id = $(this).attr('data-id');
       var objectIcon = $(this).find('i');
@@ -161,6 +171,17 @@
                             delay: 5000,
                             timer: 1500,
                         }); 
+                        
+                        /**Change button alert class */
+                        if ($('#list_lowProf').find('.fa-bell').length>0){
+                          //hasn't active items
+                          if ( !$('#btnLowProfits').hasClass('btn-alarms') )
+                            $('#btnLowProfits').addClass('btn-alarms')
+                        } else {
+                          if ( $('#btnLowProfits').hasClass('btn-alarms') )
+                            $('#btnLowProfits').removeClass('btn-alarms')
+                        }
+                        
                     }
                 });
          

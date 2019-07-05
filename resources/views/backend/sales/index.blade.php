@@ -163,7 +163,7 @@
           @else:
             <div class="col-lg-1 col-lg-offset-3 text-center">
           @endif
-            <button class="btn btn-danger btn-cons btn-xs <?php if($alert_lowProfits) echo 'btn-alarms'; ?> " type="button" data-toggle="modal" data-target="#modalLowProfits">
+          <button class="btn btn-danger btn-cons btn-xs <?php if($alert_lowProfits) echo 'btn-alarms'; ?> " id="btnLowProfits" type="button" data-toggle="modal" data-target="#modalLowProfits">
                 <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">BAJO BENEFICIO</span>
                 <span class="numPaymentLastBooks"><?php echo  count($lowProfits); ?></span>
             </button>
