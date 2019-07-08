@@ -1386,7 +1386,7 @@ class BookController extends Controller
         if (empty($request->year))
         {
             $date = Carbon::now();
-            if ($date->copy()->format('n') >= 9)
+            if ($date->copy()->format('n') >= 6)
             {
                 $date = new Carbon('first day of June ' . $date->copy()->format('Y'));
             } else
@@ -1426,7 +1426,6 @@ class BookController extends Controller
         switch ($request->type)
         {
             case 'pendientes':
-
 
                 if (Auth::user()->role != "agente")
                 {
@@ -1862,7 +1861,7 @@ class BookController extends Controller
 
         }
 
-        
+
 
         if ($date->copy()->format('n') >= 6)
         {

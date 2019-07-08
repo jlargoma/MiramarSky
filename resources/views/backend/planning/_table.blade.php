@@ -185,7 +185,6 @@
     $('.deleteBook').click(function(event) {
     	var id = $(this).attr('data-id');
     	$.get('/admin/reservas/delete/'+id, function(data) {
-           	
 
     		$.notify({
                 title: '<strong>'+data.title+'</strong>, ',
@@ -206,7 +205,7 @@
                 spacing: 10,
                 z_index: 1031,
                 delay: 5000,
-                timer: 1500,
+                timer: 1500
             }); 
 
     		// recargamos la actual tabla
