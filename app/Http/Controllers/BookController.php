@@ -1452,8 +1452,8 @@ class BookController extends Controller
                 }
                 break;
             case 'especiales':
-                $books = \App\Book::where('start', '>', $date->copy()->subMonth())
-                                  ->where('start', '<', $date->copy()->addYear())
+                $books = \App\Book::where('start', '>=', $date->copy())
+                                  ->where('start', '<=', $date->copy()->addYear())
                                   ->whereIn('type_book', [
                                       7,
                                       8
