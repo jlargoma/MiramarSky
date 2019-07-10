@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Http\Response;
+use App\Settings;
 
 class SettingsController extends AppController
 {
@@ -91,4 +92,61 @@ class SettingsController extends AppController
 				                                            'message' => 'Error durante el proceso de guardado, intentelo de nuevo más tarde',
 			                                            ]), 200);
 	}
+        
+        /**
+         * Get messages page
+         */
+        public function messages() {
+          //get all emial's options
+          $settings = Settings::getKeysTxtMails();
+          //get from DB all messages
+          $keysValue = Settings::whereIn('key',array_keys($settings))->get();
+          $data = [];
+          if ($keysValue){
+            foreach ($keysValue as $item){
+              $data[$item->key] = $item->content;
+            }
+          }
+          
+          return view('backend/settings/txt-email', [
+                  'settings'  => $settings,
+                  'data' =>$data
+                  ]);
+        }
+        
+        /**
+         * Save the email template setting
+         * 
+         * @param Request $request
+         * @return type
+         */
+        public function messages_upd(Request $request) {
+          
+          $settings = Settings::getKeysTxtMails();
+          $key = $request->input('key');
+          
+          //key controll
+          if ($key && isset($settings[$key])){
+            
+            $value  = $request->input($key,null);
+            $Object = Settings::where('key',$key)->first();
+            
+            if ($Object){
+              
+              $Object->content = $value;
+              $Object->save();
+              
+            } else {
+              
+              $Object = new Settings();
+              $Object->key = $key;
+              $Object->name = $settings[$key];
+              $Object->value = 0;
+              $Object->content = $value;
+              $Object->save();
+              
+            }
+          }
+          return back()->with('status', 'Profile updated!');
+        }
 }

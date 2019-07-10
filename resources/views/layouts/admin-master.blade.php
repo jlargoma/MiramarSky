@@ -164,6 +164,10 @@
                     {{--<li class="{{ Request::path() == 'admin/stripe-connect' ? 'active' : '' }}">--}}
                         {{--<a href="{{ url('admin/stripe-connect') }}" class="detailed">Stripe Connect</a>--}}
                     {{--</li>--}}
+                    
+                    <li class="{{ Request::path() == 'admin/settings_msgs' ? 'active' : '' }}">
+                        <a href="{{ url('admin/settings_msgs') }}" class="detailed">Txt Email</a>
+                    </li>
                     <?php endif ?>
 
                 </ul>

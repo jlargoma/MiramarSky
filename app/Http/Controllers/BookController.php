@@ -17,12 +17,15 @@ use App\Rooms;
 use App\Book;
 use App\Seasons;
 use App\Prices;
+use App\Traits\BookEmailsStatus;
 
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
 
 class BookController extends AppController
 {
+        use BookEmailsStatus;
+  
 	private $cachedRepository;
 
 	public function __construct(CachedRepository $cachedRepository)
@@ -1875,14 +1878,7 @@ class BookController extends AppController
 		{
 			$book->send = 1;
 			$book->save();
-			$sended = Mail::send(['html' => 'backend.emails._secondPayBook'], ['book' => $book], function ($message) use ($book) {
-				$message->from('reservas@apartamentosierranevada.net');
-				// $message->to('iankurosaki17@gmail.com');
-				$message->to($book->customer->email);
-				$message->subject('Recordatorio de pago Apto. de lujo Miramarski - ' . $book->customer->name);
-				$message->replyTo('reservas@apartamentosierranevada.net');
-			});
-
+                        $this->sendEmail_secondPayBook($book,'Recordatorio de pago Apto. de lujo Miramarski - ' . $book->customer->name);
 			if ($sended)
 			{
 				return [
@@ -2013,15 +2009,7 @@ class BookController extends AppController
 				{
 					$book->send = 1;
 					$book->save();
-
-					$sended = Mail::send(['html' => 'backend.emails._secondPayBook'], ['book' => $book], function ($message) use ($book) {
-						$message->from('reservas@apartamentosierranevada.net');
-						// $message->to('iankurosaki17@gmail.com');
-						$message->to($book->customer->email);
-						$message->subject('Recordatorio de pago Apto. de lujo Miramarski - ' . $book->customer->name);
-						$message->replyTo('reservas@apartamentosierranevada.net');
-					});
-
+                                        $this->sendEmail_secondPayBook($book,'Recordatorio de pago Apto. de lujo Miramarski - ' . $book->customer->name);
 					if ($sended = 1)
 					{
 						echo json_encode([

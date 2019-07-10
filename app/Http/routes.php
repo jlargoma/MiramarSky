@@ -1030,6 +1030,8 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::get('/admin/settings', 'SettingsController@index');
+    Route::get('/admin/settings_msgs', 'SettingsController@messages')->name('settings.msgs');
+    Route::post('/admin/settings_msgs', 'SettingsController@messages_upd')->name('settings.msgs.upd');
 
     Route::post('/admin/specialSegments/create', 'SpecialSegmentController@create');
     Route::get('/admin/specialSegments/update/{id?}', 'SpecialSegmentController@update');
