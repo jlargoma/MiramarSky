@@ -62,6 +62,7 @@ setlocale(LC_TIME, "es_ES"); ?>
       Valor restante de tu reserva (Recordatorio 2º pago):<b>{pend_payment}</b><br>
       Url pago restante de tu reserva (Recordatorio 2º pago):<b>{urlPaymeny_rest}</b><br>
       Cobrado (Recordatorio 2º pago):<b>{total_payment}</b><br>
+      Partee link:<b>{partee}</b> <br>
     </div>
   </div>
  </div>

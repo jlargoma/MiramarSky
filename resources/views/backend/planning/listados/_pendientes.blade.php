@@ -18,7 +18,7 @@
         <th class="text-center Reservado-table text-white" style="width: 17%!important"> Estado</th>
         <th class="text-center Reservado-table text-white" style="width: 6%!important">&nbsp;</th>
 		<?php if ( Auth::user()->role != "agente" ): ?>
-        <th class="text-center Reservado-table text-white" style="width: 6%!important">A</th>
+        <th class="text-center Reservado-table text-white" style="width: 65px!important">Acciones</th>
 		<?php endif ?>
     </tr>
     </thead>
@@ -194,6 +194,15 @@
         </td>
 		<?php if ( Auth::user()->role != "agente" ): ?>
         <td class="text-center">
+          <?php 
+          if (($partee = $book->partee())):
+            $active = ($partee->status == "finish") ? 'active' : '';
+          ?>
+          <div class="policeman {{$active}}"></div>
+          <button class="sms" ><i class="fas fa-sms"></i></button>
+          <?php
+          endif;
+          ?>
             <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-danger deleteBook" type="button"
                     data-toggle="tooltip" title="" data-original-title="Eliminar Reserva"
                     onclick="return confirm('¿Quieres Eliminar la reserva?');">

@@ -4,6 +4,7 @@ namespace App\Traits;
 use App\Settings;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
+use App\BookPartee;
 
 
 trait BookEmailsStatus {
@@ -39,6 +40,14 @@ trait BookEmailsStatus {
               break;
             
             case "2":
+
+              $linkPartee = null;
+              $BookPartee = BookPartee::where('book_id',$book->id)->first();
+          
+              if ( $BookPartee && $BookPartee->partee_id>0 ) { 
+                $linkPartee = $BookPartee->link;
+              }
+              $mailClientContent = str_replace('{partee}', $linkPartee, $mailClientContent);
               $mailClientContent = str_replace('{LastPayment}', number_format($book->getLastPayment(),2,',','.'), $mailClientContent);
               break;
           }

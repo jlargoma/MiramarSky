@@ -7,6 +7,7 @@ use \Carbon\Carbon;
 use DB;
 use Mail;
 use App\Traits\BookEmailsStatus;
+use App\BookPartee;
 
 /**
  * Class Book
@@ -379,7 +380,10 @@ class Book extends Model
               if ($existStart == false && $existFinish == false)
               {
                 $this->type_book = $status;
-
+                if ($status == 2){
+                  $this->sendToPartee();
+                }
+                
                 if ($this->customer->email == "")
                 {
                   $this->save();
@@ -728,6 +732,11 @@ class Book extends Model
 	{
 		return $this->hasMany(Payments::class);
 	}
+        
+	public function partee()
+	{
+		return $this->hasOne(BookPartee::class)->first();
+	}
 
 	public function getSumPaymentsAttribute()
 	{
@@ -898,7 +907,50 @@ class Book extends Model
         }
         
         
-        
+        /**
+         * Send the Booking to Partee
+         */
+        public function sendToPartee() {
+          $BookPartee = BookPartee::where('book_id',$this->id)->first();
+          
+          if ( $BookPartee ){ 
+            if ( $BookPartee->partee_id>0 ){
+              return FALSE;
+            }
+          } else {
+            $BookPartee = new BookPartee();
+            $BookPartee->book_id = $this->id;
+          }
+          
+          //Create Partee
+          $partee = new \App\Services\ParteeService();
+          if ($partee->conect()){
+
+            $result = $partee->getCheckinLink($this->customer->email, strtotime($this->start));
+            
+            if ($result){
+              
+              $BookPartee->link = $partee->response->checkInOnlineURL;
+              $BookPartee->partee_id = $partee->response->id;
+              $BookPartee->status = 'sent';
+              $BookPartee->log_data = $BookPartee->log_data .",". time() .'- Sent';
+              $BookPartee->save();
+              
+            } else {
+              $BookPartee->status = 'error';
+              $BookPartee->log_data = $BookPartee->log_data .",". time() .'-'.$partee->response;
+              $BookPartee->save();
+            }
+            
+          } else {
+            
+            $BookPartee->status = 'error';
+            $BookPartee->log_data = $BookPartee->log_data .",". time() .'-'.$partee->response;
+            $BookPartee->save();
+            
+          }
+          
+        }
     
                 
 }

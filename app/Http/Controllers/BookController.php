@@ -294,9 +294,9 @@ class BookController extends AppController
 					$book->cost_park = $this->getCostPark($request->input('parking'), $request->input('nigths'), $room->id, 3);
 				}
 
-				$book->type_park = $request->input('parking');
+				$book->type_park = $request->input('parking',0);
 
-				$book->type_luxury = $request->input('type_luxury');
+				$book->type_luxury = $request->input('type_luxury',0);
 				$book->sup_lujo    = $this->getPriceLujo($request->input('type_luxury'));
 				$book->cost_lujo   = $this->getCostLujo($request->input('type_luxury'));
 				// if ($room->typeApto == 3 || $room->typeApto == 1) {

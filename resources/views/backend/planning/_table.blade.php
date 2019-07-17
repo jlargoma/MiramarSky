@@ -535,3 +535,25 @@
 
 
 </script>
+<style>
+  .policeman{
+    display: inline-block;
+    background-image: url(/img/police.ico);
+    background-size: contain;
+    height: 2em;
+    width: 2em;
+    content: "";
+  }  
+  .policeman.active {
+    background-color: #97ef99;
+    border-radius: 2px;
+  }
+  .sms{
+    background-image: url(/img/icon-sms.png);
+    background-color: #fff;
+    background-size: contain;
+    height: 2em;
+    width: 2em;
+    content: "";
+  }  
+</style>

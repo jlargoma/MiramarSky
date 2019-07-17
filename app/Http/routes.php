@@ -13,6 +13,15 @@
 
 use App\Http\Controllers\ForfaitsController;
 
+Route::get('/partee-checkHuespedes', function(){
+  $partee = new \App\Services\ParteeService();
+  $partee->conect();
+  $id = 2608;
+  $partee->getCheckHuespedes($id);
+  dd($partee);
+});
+
+
 /*ICalendar links*/
 Route::post('/ical/import/saveUrl', 'ICalendarController@saveUrl');
 Route::get('/ical/urls/deleteUrl', 'ICalendarController@deleteUrl');
