@@ -427,6 +427,39 @@
             </div>
         </div>
     </div>
+<div class="container-fluid padding-25 sm-padding-10">
+<div class="row">
+  <div class="col-md-3 col-xs-6">
+    @if ($message = Session::get('success-gral'))
+    <div class="alert alert-success alert-block">
+            <button type="button" class="close" data-dismiss="alert">×</button>	
+            <strong>{{ $message }}</strong>
+    </div>
+    @endif
+    <form method="POST" action="{{route('settings.gral.upd')}}">
+    <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
+    <table class="table table-hover  table-responsive">
+      <thead>
+        <tr>
+          <th class="text-center bg-complete text-white" colspan="2"> General Settings</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($general as $k => $v): ?>
+          <tr>
+            <td class="text-center" >{{$v['label']}}</td>
+            <td class="text-center" >
+              <input class="form-control" type="text" name="{{$k}}" id="{{$k}}" value="{{$v['val']}}" >
+            </td>
+          </tr>
+        <?php endforeach ?>
+      </tbody>
+    </table>
+    <button class="btn btn-complete font-w400" type="submit">Guardar</button>
+    </form>
+  </div>
+</div>
+</div>
 @endsection
 
 @section('scripts')

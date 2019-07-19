@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\ImportICal::class,
         Commands\CheckPartee::class,
+        Commands\SendParteeSMS::class,
     ];
 
     /**

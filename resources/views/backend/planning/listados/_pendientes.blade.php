@@ -196,10 +196,18 @@
         <td class="text-center">
           <?php 
           if (($partee = $book->partee())):
-            $active = ($partee->status == "finish") ? 'active' : '';
+            $active = $phoneSMS = '';
+            if ($partee->status == "FINALIZADO"){
+              $active = 'active';
+              $phoneSMS = 'disabled';
+            }
+            if ($partee->partee_id<1){
+              $active = 'disabled-error';
+              $phoneSMS = 'disabled-error';
+            }
           ?>
           <div class="policeman {{$active}}"></div>
-          <button class="sms" ><i class="fas fa-sms"></i></button>
+          <div class="sendSMS {{$phoneSMS}}" data-id="{{$book->id}}" {{$phoneSMS}}></div>
           <?php
           endif;
           ?>

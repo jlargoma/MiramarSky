@@ -534,26 +534,67 @@
     });
 
 
+ $('.sendSMS').click(function(event) {
+        var id = $(this).data('id');
+        var that = $(this);
+        if (that.hasClass('disabled-error')) {
+          alert('Partee error.');
+          return ;
+        }
+        if (that.hasClass('disabled')) {
+          alert('SMS ya envíado.');
+          return ;
+        }
+        that.addClass('disabled')
+        $.post('/ajax/send-partee-sms', { _token: "{{ csrf_token() }}",id:id }, function(data) {
+                    if (data.status == 'danger') {
+                        $.notify({
+                            title: '<strong>Partee</strong>, ',
+                            icon: 'glyphicon glyphicon-star',
+                            message: data.response
+                        },{
+                            type: data.status,
+                            animate: {
+                                enter: 'animated fadeInUp',
+                                exit: 'animated fadeOutRight'
+                            },
+                            placement: {
+                                from: "top",
+                                align: "left"
+                            },
+                            offset: 80,
+                            spacing: 10,
+                            z_index: 1031,
+                            allow_dismiss: true,
+                            delay: 60000,
+                            timer: 60000,
+                        }); 
+                    } else {
+                        $.notify({
+                            title: '<strong>Partee</strong>, ',
+                            icon: 'glyphicon glyphicon-star',
+                            message: data.response
+                        },{
+                            type: data.status,
+                            animate: {
+                                enter: 'animated fadeInUp',
+                                exit: 'animated fadeOutRight'
+                            },
+                            placement: {
+                                from: "top",
+                                align: "left"
+                            },
+                            allow_dismiss: false,
+                            offset: 80,
+                            spacing: 10,
+                            z_index: 1031,
+                            delay: 5000,
+                            timer: 1500,
+                        }); 
+                        
+                        that.prop('disabled', true);
+                        
+                    }
+                });
+        });
 </script>
-<style>
-  .policeman{
-    display: inline-block;
-    background-image: url(/img/police.ico);
-    background-size: contain;
-    height: 2em;
-    width: 2em;
-    content: "";
-  }  
-  .policeman.active {
-    background-color: #97ef99;
-    border-radius: 2px;
-  }
-  .sms{
-    background-image: url(/img/icon-sms.png);
-    background-color: #fff;
-    background-size: contain;
-    height: 2em;
-    width: 2em;
-    content: "";
-  }  
-</style>

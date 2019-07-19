@@ -16,7 +16,7 @@ use App\Http\Controllers\ForfaitsController;
 Route::get('/partee-checkHuespedes', function(){
   $partee = new \App\Services\ParteeService();
   $partee->conect();
-  $id = 2608;
+  $id = 0;
   $partee->getCheckHuespedes($id);
   dd($partee);
 });
@@ -897,6 +897,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/sendImagesRoomEmail', 'RoomsController@sendImagesRoomEmail');
 
 
+    
     Route::get('/admin/books/getStripeLink/{book}/{importe}', function ($book, $importe) {
         $book   = \App\Book::find($book);
         $import = $importe;
@@ -1039,6 +1040,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::get('/admin/settings', 'SettingsController@index');
+    Route::post('/admin/settings-general', 'SettingsController@upd_general')->name('settings.gral.upd');
     Route::get('/admin/settings_msgs', 'SettingsController@messages')->name('settings.msgs');
     Route::post('/admin/settings_msgs', 'SettingsController@messages_upd')->name('settings.msgs.upd');
 
@@ -1085,6 +1087,19 @@ Route::post('/ajax/booking/getBookingAgencyDetails', [
     'middleware' => 'authAdmin',
     'uses'       => 'BookController@getBookingAgencyDetails'
 ]);
+Route::get('/get-partee-msg', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'BookController@getParteeMsg'
+]);
+Route::post('/ajax/send-partee-finish', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'BookController@finishParteeCheckIn'
+]);
+Route::post('/ajax/send-partee-sms', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'BookController@finishParteeSMS'
+]);
+
 
 
 // ReCaptcha v3

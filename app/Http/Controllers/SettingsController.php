@@ -30,7 +30,23 @@ class SettingsController extends AppController
 
 	public function index()
 	{
+          //Prepare general settings values
+          $generalKeys = Settings::getKeysSettingsGen();
+          $generalValues = Settings::whereIn('key', array_keys($generalKeys))->get();
+          
+          if ($generalValues){
+            foreach ($generalValues as $s){
+              if (isset($generalKeys[$s->key])){
+                $generalKeys[$s->key]['val'] = $s->value;
+              }
+            }
+          }
+          //END: Prepare general settings values
+          
+          
+          
 		return view('backend/settings/index', [
+			'general'          => $generalKeys,
 			'extras'          => \App\Extras::all(),
 			'settingsBooks'   => $this->settingsForBooks,
 			'agentsRooms'     => \App\AgentsRooms::all(),
@@ -147,6 +163,26 @@ class SettingsController extends AppController
               
             }
           }
-          return back()->with('status', 'Profile updated!');
+          return back()->with('status', 'Setting updated!');
+        }
+        /**
+         * Save the general setting
+         * 
+         * @param Request $request
+         * @return type
+         */
+        public function upd_general(Request $request) {
+          
+           //Prepare general settings values
+          $generalKeys = Settings::getKeysSettingsGen();
+          if ($generalKeys){
+            foreach ($generalKeys as $k=>$v){
+              $value = $request->input($k,'');
+              $obj = Settings::firstOrNew(array('key' => $k));
+              $obj->value = $value;
+              $obj->save();
+            }
+          }
+          return back()->with('success-gral', 'Setting updated!');
         }
 }

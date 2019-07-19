@@ -12,7 +12,7 @@
     <script src="//js.stripe.com/v3/"></script>
     <style>
         .pgn-wrapper[data-position$='-right'] {
-            right:: 82% !important;
+            right: 82% !important;
         }
 
         input[type=number]::-webkit-outer-spin-button,
@@ -162,6 +162,14 @@
                                     }
                                 ?>
                             </a>
+                        </div>
+                        <div class="col-md-2 col-xs-3 text-center push-10 ">
+                          <button class="partee-cp " onclick="copyParteeMsg()">
+                            <div class="tooltip" id="tooltipPartee">
+                            <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+                            </div>
+                            Partee
+                          </button>
                         </div>
 
                     </div>
@@ -1362,5 +1370,76 @@
                       });
                 });
               });
+              var copyParteeMsg = function(){
+                $.get('/get-partee-msg', {bookID: <?php echo $book->id ?>},
+                      function(data) {
+                        if (data == 'empty'){
+                          alert('No se ha encontrado un registro asociado');
+                        } else {
+                          var dummy = document.createElement("textarea");
+                          // to avoid breaking orgain page when copying more words
+                          // cant copy when adding below this code
+                          // dummy.style.display = 'none'
+                          document.body.appendChild(dummy);
+                          //Be careful if you use texarea. setAttribute('value', value), which works with "input" does not work with "textarea". – Eduard
+                          dummy.value = data;
+                          dummy.select();
+                          document.execCommand("copy");
+                          document.body.removeChild(dummy);
+                          $('#tooltipPartee').addClass('show');
+                          setTimeout(function(){
+                            $('#tooltipPartee').removeClass('show');
+                          },500);
+                        }
+                      
+                      });
+              }
             </script>
+            <style>
+              button.partee-cp {
+                position: relative;
+                margin-top: 0.15em;
+                padding: 9px;
+                border-radius: 10px;
+                background-color: #fff;
+                color: #ff5a5f;
+                font-size: 20px;
+                font-weight: 600;
+              }
+              button.partee-cp:hover {
+                background-color: #ff5a5f;
+                color:#fff;
+              }
+              .tooltip .tooltiptext::after {
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                margin-left: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: #555 transparent transparent transparent;
+              }
+
+              .tooltip:hover .tooltiptext {
+                visibility: visible;
+                opacity: 1;
+              }
+              button.partee-cp .tooltip.show{
+                display: block;
+                opacity: 1;
+                width: 100%;
+                top: -2em;
+                left: 0;
+              }
+              .tooltiptext {
+                position: absolute;
+                font-size: 11px;
+                color: #fff;
+                background-color: rgba(0, 0, 0, 0.42);
+                padding: 2px 5px;
+                width: 10em;
+                border-radius: 7px;
+              }
+            </style>
 @endsection

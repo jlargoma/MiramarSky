@@ -11,7 +11,23 @@ class Settings extends Model
         'value'
     ];
     
+    static function getKeysSettingsGen() {
+      return [
+          'partee_apartament'   => array('label' => 'Partee: ID Apartamento','val'=>null),
+          'send_sms_days'       => array('label' => 'Enviar SMS Partee a % días del CheckIn','val'=>null),
+      ];
+    }
     
+    static function getKeyValue($key){
+      $obj = Settings::select('value')->where('key', $key)->first();
+      if ($obj){
+        return $obj->value;
+      } else {
+        return null;
+      }
+      
+    }
+
     static function getKeysTxtMails() {
       /*
         *Cuando nos llega una Solicitud el cliente recibe un texto por email
@@ -30,6 +46,7 @@ class Settings extends Model
           'second_payment_reminder'           =>'Recordatorio 2º pago',
           'Forfait_email_payment_request'     =>'Solicitud de pago Forfaits',
           'Forfait_email_confirmation_payment'=>'Confirmación pago Forfait',
+          'SMS_Partee_msg'                    =>'Mensaje Partee (enviar por plataforma de terceros)',
           'SMS_Partee_upload_dni'             =>'SMS Partee (subir dni para el control diario de huéspedes)'
       ];
     }

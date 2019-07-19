@@ -73,7 +73,7 @@ class CheckPartee extends Command {
           } else {
             
             $log = $BookPartee->log_data . "," . time() . '-' . $apiPartee->response;
-            Log::error($log);
+            Log::error($apiPartee->response);
             $BookPartee->status = 'error';
             $BookPartee->log_data = $log;
             $BookPartee->save();

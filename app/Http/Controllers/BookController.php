@@ -18,13 +18,15 @@ use App\Book;
 use App\Seasons;
 use App\Prices;
 use App\Traits\BookEmailsStatus;
+use App\Traits\BookParteeActions;
+use App\BookPartee;
 
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
 
 class BookController extends AppController
 {
-        use BookEmailsStatus;
+        use BookEmailsStatus,BookParteeActions;
   
 	private $cachedRepository;
 
@@ -172,10 +174,12 @@ class BookController extends AppController
                 $percentBenef = DB::table('percent')->find(1)->percent;
                 $lowProfits = $this->lowProfitAlert($startYear,$endYear,$percentBenef,$alert_lowProfits);
                 
+                $parteeToActive = BookPartee::where('status','HUESPEDES')->get();
+                
 		return view(
 			'backend/planning/index',
 			compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
-			        'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits','alert_lowProfits','percentBenef')
+			        'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits','alert_lowProfits','percentBenef','parteeToActive')
 		);
 	}
 
@@ -2329,4 +2333,5 @@ class BookController extends AppController
 			'instantPayment' => $instantPayment,
 		]);
 	}
+        
 }

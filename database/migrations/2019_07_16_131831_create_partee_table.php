@@ -20,6 +20,7 @@ class CreateParteeTable extends Migration
           $table->string('link');
           $table->string('status');
           $table->integer('guestNumber')->nullable();
+          $table->boolean('sentSMS')->nullable();
           $table->text('log_data');
           $table->timestamps();
       });

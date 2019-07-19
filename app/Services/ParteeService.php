@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services;
+use App\Settings;
 
 class ParteeService
 {
@@ -17,11 +18,15 @@ class ParteeService
     {
       $this->PARTEE_URL = (env('PARTEE_ENVIRONMENT') == "dev")? env('PARTEE_SANDBOX_ENV') : env('PARTEE_ENDPOINT');
       $this->JWT = null;
-      $this->PARTEE_ID = env('PARTEE_ID'); //establecimiento_id
-      
+      $this->PARTEE_ID = Settings::getKeyValue('partee_apartament');
     }
     
     public function conect(){
+      
+      if ($this->PARTEE_ID<1){
+        $this->response = 'Server error - empty Partee Departament ID';
+        return FALSE;
+      }
       
       $data = array("username" =>  env('PARTEE_USR'), "password" => env('PARTEE_PSW'),"rememberMe"=> false);                                                                    
       $data_string = json_encode($data);                                                                                   
@@ -72,7 +77,7 @@ class ParteeService
         return FALSE; 
       } 
       
-      if ($method == "POST"){
+      if ($method == "POST" || $method == "PUT"){
         
         $data_string = json_encode($data);   
         $ch = curl_init($this->PARTEE_URL.$endpoint);
@@ -129,14 +134,19 @@ class ParteeService
     }
 
     /**
-  
+     * Send book to Partee and save the link Partee
+     * 
+     * @param type $email
+     * @param type $dateTime
+     * @param type $request_docs
+     * @return type
+     * @throws \Exception
      */
     public function getCheckinLink($email,$dateTime,$request_docs = false)
     {
         $code = null;
         try
         {
-          
           
           $data = [
             "email"=> empty($email) ? null : $email,
@@ -157,7 +167,12 @@ class ParteeService
         }
     }
     
-    
+    /**
+     * Check status Partee
+     * @param type $id
+     * @return type
+     * @throws \Exception
+     */
     public function getCheckStatus($id)
     {
         $code = null;
@@ -173,6 +188,12 @@ class ParteeService
         }
     }
     
+    /**
+     * Get Partee CheckIn data
+     * @param type $id
+     * @return type
+     * @throws \Exception
+     */
     public function getCheckHuespedes($id)
     {
         $code = null;
@@ -184,6 +205,27 @@ class ParteeService
           } else {
             return $this->response;
           }
+        } catch (\Exception $e)
+        {
+            throw new \Exception($e->getMessage());
+        }
+    }
+    
+    /**
+     * Finish Partee CheckIn 
+     * 
+     * @param Partee ID $id
+     * @return boolean
+     * @throws \Exception
+     */
+    public function finish($id)
+    {
+        $code = null;
+        try{
+          
+          $endpoint = 'parteviajeros/finalizar/'.$id;
+          return ($this->call( $endpoint,"PUT"));
+          
         } catch (\Exception $e)
         {
             throw new \Exception($e->getMessage());

@@ -56,6 +56,10 @@ setlocale(LC_TIME, "es_ES");
                             <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">BAJO BENEFICIO</span>
                             <span class="numPaymentLastBooks"><?php echo  count($lowProfits); ?></span>
                         </button>
+                      <button class="btn btn-danger btn-cons <?php if(count($parteeToActive)>0) echo 'btn-alarms'; ?> "  id="btnParteeToActive" type="button" data-toggle="modal" data-target="#modalParteeToActive">
+                            <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">PARTEE</span>
+                            <span class="numPaymentLastBooks"><?php echo  count($parteeToActive); ?></span>
+                        </button>
                         <?php endif ?>
                     </div>
                 </div>
@@ -222,7 +226,15 @@ setlocale(LC_TIME, "es_ES");
                 </div>
             </div>
         </div>
-
+        <div class="modal fade slide-up in" id="modalParteeToActive" tabindex="-1" role="dialog" aria-hidden="true" >
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content-wrapper">
+                    <div class="modal-content">
+                        @include('backend.planning._alarmsPartee', ['alarms' => $parteeToActive])
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- ALERTAS DE BOOKING -->
 

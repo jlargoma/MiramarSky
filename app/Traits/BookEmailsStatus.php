@@ -26,13 +26,13 @@ trait BookEmailsStatus {
               $percent = $this->getPercent($book);
               $mount_percent = number_format(($book->total_price*$percent),2,',','.');
               $PaylandsController = new \App\Http\Controllers\PaylandsController();
-//              $urlToPayment = $PaylandsController->generateOrderPayment([
-//                            'customer_id' => $book->customer->id,
-//                            'amount'      => (round($book->total_price * $percent)),
-//                            'url_ok'      => route('payland.thanks.payment', ['id' => $book->id]),
-//                            'url_ko'      => route('payland.thanks.payment', ['id' => $book->id]),
-//                          ]);
-              $urlToPayment = '$urlToPayment';
+              $urlToPayment = $PaylandsController->generateOrderPayment([
+                            'customer_id' => $book->customer->id,
+                            'amount'      => (round($book->total_price * $percent)),
+                            'url_ok'      => route('payland.thanks.payment', ['id' => $book->id]),
+                            'url_ko'      => route('payland.thanks.payment', ['id' => $book->id]),
+                          ]);
+//              $urlToPayment = '$urlToPayment';
               
               $mailClientContent = str_replace('{urlToPayment}', $urlToPayment, $mailClientContent);
               $mailClientContent = str_replace('{mount_percent}', $mount_percent, $mailClientContent);

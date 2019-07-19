@@ -182,10 +182,20 @@ endif
                                 <?php endif ?>
                                 <?php 
                                 if (($partee = $book->partee())):
-                                  $active = ($partee->status == "finish") ? 'active' : '';
+                                  $active = $phoneSMS = '';
+                                  if ($partee->status == "FINALIZADO"){
+                                    $active = 'active';
+                                    $phoneSMS = 'disabled';
+                                  }
+                                  if ($partee->partee_id<1){
+                                    $active = 'disabled-error';
+                                    $phoneSMS = 'disabled-error';
+                                  }
                                 ?>
                                 <div class="policeman {{$active}}"></div>
-                                <button class="sms" ><i class="fas fa-sms"></i></button>
+                                <div class="sendSMS {{$phoneSMS}}" data-id="{{$book->id}}"  >
+                                  <i class="fas fa-sms"></i>
+                                </div>
                                 <?php
                                 endif;
                                 ?>
@@ -236,16 +246,16 @@ endif
     <table class="table table-striped table-data"  data-type="confirmadas"  style="margin-top: 0;">
         <thead>
             <tr>
-                <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center" ></th>
-                <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center" >Nombre</th>
-                <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center">In</th>
-                <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center">Out</th>
-                <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center">Pax</th>
-                <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center">Tel</th>
-                <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center">Apart</th>
-                <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center"><i class="fa fa-moon-o"></i></th>
-                <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-white text-center">PVP</th>
-                <th class="@if($type == 'confirmadas')Pagada-la-señal @else blocked-ical @endif text-center  text-white">   &nbsp; </th>
+                <th class="{{$classTH}}" ></th>
+                <th class="{{$classTH}}" >Nombre</th>
+                <th class="{{$classTH}}">In</th>
+                <th class="{{$classTH}}">Out</th>
+                <th class="{{$classTH}}">Pax</th>
+                <th class="{{$classTH}}">Tel</th>
+                <th class="{{$classTH}}">Apart</th>
+                <th class="{{$classTH}}"><i class="fa fa-moon-o"></i></th>
+                <th class="{{$classTH}}">PVP</th>
+                <th class="{{$classTH}}">   &nbsp; </th>
                 <th class="Pagada-la-señal text-white text-center" >Estado</th>
             </tr>
         </thead>
