@@ -11,7 +11,7 @@ use Auth;
 use Mail;
 use App\Classes\Mobile;
 
-class InvoicesController extends Controller
+class InvoicesController extends AppController
 {
     public function index($year='')
     {

@@ -13,7 +13,7 @@ use Excel;
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
 
-class LiquidacionController extends Controller
+class LiquidacionController extends AppController
 {
 	/**
 	 * Display a listing of the resource.
@@ -21,9 +21,8 @@ class LiquidacionController extends Controller
 	 * @return \Illuminate\Http\Response
 	 */
 
-	public function index($year = "")
+	public function index()
 	{
-		$now         = Carbon::now();
 		$totales     = [
 			"total"        => 0,
 			"coste"        => 0,
@@ -45,38 +44,27 @@ class LiquidacionController extends Controller
 			"obs"          => 0,
 		];
 		$liquidacion = new \App\Liquidacion();
-		if (empty($year))
-		{
-			$date = Carbon::now();
-			if ($date->copy()->format('n') >= 9)
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
-			} else
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
-			}
 
-		} else
-		{
-			$year = Carbon::createFromFormat('Y', $year);
-			$date = $year->copy();
-
-		}
-
-		$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
+		$year      = $this->getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
 
 		$books = \App\Book::with([
 			                         'customer',
 			                         'payments',
 			                         'room.type'
-		                         ])->where('start', '>=', $date)->where('start', '<=', $date->copy()->addYear()
-		                                                                                    ->subMonth())
+		                         ])->where('start', '>=', $startYear)
+		                  ->where('start', '<=', $endYear)
 		                  ->whereIn('type_book', [
 			                  2,
 			                  7,
 			                  8
 		                  ])->orderBy('start', 'ASC')->get();
 
+                $alert_lowProfits = false; //To the alert efect
+                $percentBenef = DB::table('percent')->find(1)->percent;
+                $lowProfits = [];
+                
 		foreach ($books as $key => $book)
 		{
 
@@ -110,12 +98,22 @@ class LiquidacionController extends Controller
 			$totales["obs"]          += $book->extraCost;
 			$totales["pendiente"]    += $book->pending;
 			// }
+                        
+                    //Alarms
+                    $inc_percent = $book->get_inc_percent();
+                    if(round($inc_percent) <= $percentBenef){
+                      if (!$book->has_low_profit){
+                        $alert_lowProfits = true;
+                      }
+                      $lowProfits[] = $book;
+                    }
+                    
 		}
 
 
 		$totBooks    = (count($books) > 0) ? count($books) : 1;
-		$diasPropios = \App\Book::where('start', '>', $date->copy()->subMonth())->where('finish', '<', $date->copy()
-		                                                                                                    ->addYear())
+		$diasPropios = \App\Book::where('start', '>=', $startYear)
+		                        ->where('finish', '<=', $endYear)
 		                        ->whereIn('type_book', [
 			                        7,
 			                        8
@@ -182,8 +180,11 @@ class LiquidacionController extends Controller
 		{
 			return view('backend/sales/index', [
 				'books'        => $books,
+                                'lowProfits' =>$lowProfits,
+                                'alert_lowProfits'=>$alert_lowProfits,
+                                'percentBenef'=>$percentBenef,
 				'totales'      => $totales,
-				'temporada'    => $date,
+				'year'         => $year,
 				'data'         => $data,
 				'percentBenef' => DB::table('percent')->find(1)->percent,
 			]);
@@ -191,8 +192,11 @@ class LiquidacionController extends Controller
 		{
 			return view('backend/sales/index', [
 				'books'        => $books,
+                                'lowProfits' =>$lowProfits,
+                                'alert_lowProfits'=>$alert_lowProfits,
+                                'percentBenef'=>$percentBenef,
 				'totales'      => $totales,
-				'temporada'    => $date,
+				'year'         => $year,
 				'data'         => $data,
 				'percentBenef' => DB::table('percent')->find(1)->percent,
 			]);
@@ -273,45 +277,38 @@ class LiquidacionController extends Controller
 		]);
 	}
 
-	public function contabilidad($year = "")
+	public function contabilidad()
 	{
-		if (empty($year))
-		{
-			$date = Carbon::now();
-		} else
-		{
-			$year = Carbon::createFromFormat('Y', $year);
-			$date = $year->copy();
-
-		}
-		if ($date->copy()->format('n') >= 9)
-		{
-			$inicio = new Carbon('first day of September ' . $date->copy()->format('Y'));
-		} else
-		{
-			$inicio = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
-		}
-
-		$rooms        = \App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get();
-		$books        = \App\Book::whereIn('type_book', [2, 7, 8])->get();
+		$year      = $this->getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
+		$diff      = $startYear->diffInMonths($endYear) + 1;
+		$rooms     = \App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get();
+		$books     = \App\Book::where('start', '>=', $startYear)
+		                      ->where('start', '<=', $endYear)
+		                      ->whereIn('type_book', [
+			                      2,
+			                      7,
+			                      8
+		                      ])->get();
 
 		$arrayTotales = array();
 
 		for ($i = 2015; $i <= intval(date('Y')) + 1; $i++)
 		{
-			$j = $i + 1;
-			$key = $i."-".$j;
-			$arrayTotales[(string) $key ] = 0;
+			$j                           = $i + 1;
+			$key                         = $i . "-" . $j;
+			$arrayTotales[(string) $key] = 0;
 		}
 
 		$priceBookRoom = array();
 
 		foreach ($rooms as $key => $room)
 		{
-			for ($i = intval($inicio->copy()->format('Y')); $i <= intval(date('Y')) + 1; $i++)
+			for ($i = intval($year->year); $i <= intval(date('Y')) + 1; $i++)
 			{
 
-				for ($j = 1; $j <= 12; $j++)
+				for ($j = 1; $j <= $diff; $j++)
 				{
 					$priceBookRoom[$room->id][$i][$j] = 0;
 				}
@@ -320,8 +317,8 @@ class LiquidacionController extends Controller
 
 		foreach ($books as $key => $book)
 		{
-			$auxDate = Carbon::createFromFormat('Y-m-d', $book->start);
-			$index = $auxDate->copy()->format('Y')."-".$auxDate->copy()->addYear()->format('Y');
+			$auxDate              = Carbon::createFromFormat('Y-m-d', $book->start);
+			$index                = $auxDate->copy()->format('Y') . "-" . $auxDate->copy()->addYear()->format('Y');
 			$arrayTotales[$index] += $book->total_price;
 
 			if (!isset($priceBookRoom[$book->room->id][$auxDate->copy()->format('Y')][$auxDate->copy()->format('n')]))
@@ -329,47 +326,36 @@ class LiquidacionController extends Controller
 				$priceBookRoom[$book->room->id][$auxDate->copy()->format('Y')][$auxDate->copy()->format('n')] = 0;
 			} else
 			{
-				$priceBookRoom[$book->room->id][$auxDate->copy()->format('Y')][$auxDate->copy()->format('n')] += $book->total_price;
+				$priceBookRoom[$book->room->id][$auxDate->copy()->format('Y')][$auxDate->copy()
+				                                                                       ->format('n')] += $book->total_price;
 			}
 
 		}
 
 		return view('backend/sales/contabilidad', [
-			'date'          => $date,
-			'inicio'        => $inicio,
+			'year'          => $year,
+			'diff'          => $diff,
 			'arrayTotales'  => $arrayTotales,
 			'rooms'         => $rooms,
 			'priceBookRoom' => $priceBookRoom,
 		]);
 	}
 
-	public function gastos($year = "")
+	public function gastos()
 	{
-		if (empty($year))
-		{
-			$date = Carbon::now();
-		} else
-		{
-			$year = Carbon::createFromFormat('Y', $year);
-			$date = $year->copy();
-
-		}
-		if ($date->copy()->format('n') >= 9)
-		{
-			$inicio = new Carbon('first day of September ' . $date->copy()->format('Y'));
-		} else
-		{
-			$inicio = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
-		}
+		$year      = $this->getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
+		$diff      = $startYear->diffInMonths($endYear) + 1;
 
 
-		$gastos = \App\Expenses::where('date', '>=', $inicio->copy()->format('Y-m-d'))
-		                       ->Where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+		$gastos = \App\Expenses::where('date', '>=', $startYear)
+		                       ->Where('date', '<=', $endYear)
 		                       ->where('concept', 'NOT LIKE', '%LIMPIEZA RESERVA PROPIETARIO.%')
 		                       ->orderBy('date', 'DESC')->get();
 
-		$books           = \App\Book::whereIn('type_book', [2])->where('start', '>', $inicio->copy()->format('Y-m-d'))
-		                            ->where('start', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+		$books           = \App\Book::whereIn('type_book', [2])->where('start', '>', $startYear)
+		                            ->where('start', '<=', $startYear)
 		                            ->orderBy('start', 'ASC')->get();
 		$totalStripep    = 0;
 		$comisionBooking = 0;
@@ -396,21 +382,19 @@ class LiquidacionController extends Controller
 
 
 		return view('backend/sales/gastos/gastos', [
-			'date'            => $date,
-			'inicio'          => $inicio,
+			'year'            => $year,
 			'gastos'          => $gastos,
 			'totalStripep'    => $totalStripep,
 			'comisionBooking' => $comisionBooking,
 			'obsequios'       => $obsequios,
-			'year'            => $inicio
 		]);
 	}
 
 	public function gastoCreate(Request $request)
 	{
 
-		var_dump($request->input());
-		die();
+		//		var_dump($request->input());
+		//		die();
 		$gasto              = new \App\Expenses();
 		$gasto->concept     = $request->input('concept');
 		$gasto->date        = Carbon::createFromFormat('d/m/Y', $request->input('fecha'))->format('Y-m-d');
@@ -480,28 +464,20 @@ class LiquidacionController extends Controller
 		}
 	}
 
-
-	public function getTableGastos($year = '')
+	public function getTableGastos()
 	{
-		if (empty($year))
-		{
-			$date = Carbon::now();
-		} else
-		{
-			$year = Carbon::createFromFormat('Y', $year);
-			$date = $year->copy();
+		$year      = $this->getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
+		$diff      = $startYear->diffInMonths($endYear) + 1;
+		$gastos    = \App\Expenses::where('date', '>=', $startYear)
+		                          ->Where('date', '<=', $endYear)
+		                          ->orderBy('date', 'DESC')->get();
 
-		}
-
-		$inicio = new Carbon('first day of September ' . $year->format('Y'));
-
-
-		$gastos = \App\Expenses::where('date', '>=', $inicio->copy()->format('Y-m-d'))
-		                       ->Where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
-		                       ->orderBy('date', 'DESC')->get();
-
-		$books = \App\Book::whereIn('type_book', [2])->where('start', '>', $inicio->copy()->format('Y-m-d'))
-		                  ->where('start', '<=', $inicio->copy()->addYear()->format('Y-m-d'))->orderBy('start', 'ASC')
+		$books = \App\Book::whereIn('type_book', [2])
+		                  ->where('start', '>', $startYear)
+		                  ->where('start', '<=', $endYear)
+		                  ->orderBy('start', 'ASC')
 		                  ->get();
 
 		$totalStripep    = 0;
@@ -527,7 +503,7 @@ class LiquidacionController extends Controller
 
 		}
 
-		return view('backend/sales/gastos/_tableExpenses', [
+		return view('backend.sales.gastos._tableExpenses', [
 			'gastos'          => $gastos,
 			'totalStripep'    => $totalStripep,
 			'comisionBooking' => $comisionBooking,
@@ -535,46 +511,30 @@ class LiquidacionController extends Controller
 		]);
 	}
 
-
-	public function ingresos($year = "")
+	public function ingresos()
 	{
-		if (empty($year))
-		{
-			$date = Carbon::now();
-			if ($date->copy()->format('n') >= 9)
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
-			} else
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
-			}
-
-		} else
-		{
-			$year = Carbon::createFromFormat('Y', $year);
-			$date = $year->copy();
-
-		}
-
-		$inicio = new Carbon('first day of September ' . $date->copy()->format('Y'));
+		$year      = $this->getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
+		$diff      = $startYear->diffInMonths($endYear) + 1;
 
 
-		$books = \App\Book::whereIn('type_book', [2])
-		                  ->where('start', '>=', $inicio->copy()->format('Y-m-d'))
-		                  ->where('start', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+		$books = \App\Book::type_book_sales()
+		                  ->where('start', '>=', $startYear)
+		                  ->where('start', '<=', $endYear)
 		                  ->get();
 
 		$arrayTotales = [
 			'totales' => 0,
 			'meses'   => []
 		];
-		for ($i = 1; $i <= 12; $i++)
+		for ($i = 1; $i <= $diff; $i++)
 		{
 			$arrayTotales['meses'][$i] = 0;
 		}
 		foreach ($books as $book)
 		{
-			$fecha = Carbon::createFromFormat('Y-m-d', $book->start);
+			$fecha                                              = Carbon::createFromFormat('Y-m-d', $book->start);
 			$arrayTotales['meses'][$fecha->copy()->format('n')] += $book->total_price;
 
 			$arrayTotales['totales'] += $book->total_price;
@@ -590,15 +550,15 @@ class LiquidacionController extends Controller
 
 		foreach ($conceptIncomes as $typeIncome)
 		{
-			for ($i = 1; $i <= 12; $i++)
+			for ($i = 1; $i <= $diff; $i++)
 			{
 				$arrayIncomes[$typeIncome][$i] = 0;
 			}
 		}
 		foreach ($conceptIncomes as $typeIncome)
 		{
-			$incomes = \App\Incomes::where('concept', $typeIncome)->where('date', '>', $inicio->copy()->format('Y-m-d'))
-			                       ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))->get();
+			$incomes = \App\Incomes::where('concept', $typeIncome)->where('date', '>', $startYear)
+			                       ->where('date', '<=', $endYear)->get();
 
 			if (count($incomes) > 0)
 			{
@@ -610,7 +570,7 @@ class LiquidacionController extends Controller
 				}
 			} else
 			{
-				for ($i = 1; $i <= 12; $i++)
+				for ($i = 1; $i <= $diff; $i++)
 				{
 					$arrayIncomes[$typeIncome][$i] = 0;
 				}
@@ -619,17 +579,13 @@ class LiquidacionController extends Controller
 
 		}
 
-		/*echo "<pre>";
-		print_r($arrayIncomes);
-		die();*/
-
 		return view('backend/sales/ingresos/ingresos', [
-			'inicio'       => $inicio,
+			'year'         => $year,
+			'diff'         => $diff,
 			'arrayTotales' => $arrayTotales,
 			'incomes'      => $arrayIncomes,
 		]);
 	}
-
 
 	public function ingresosCreate(Request $request)
 	{
@@ -643,79 +599,50 @@ class LiquidacionController extends Controller
 		}
 	}
 
-
-	public function caja($year = "")
+	public function caja()
 	{
-		if (empty($year))
-		{
-			$date = Carbon::now();
-			if ($date->copy()->format('n') >= 9)
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
-			} else
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
-			}
+		$year      = $this->getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
 
-		} else
-		{
-			$year = Carbon::createFromFormat('Y', $year);
-			$date = $year->copy();
-
-		}
-
-		$inicio = new Carbon('first day of September ' . $date->copy()->format('Y'));
-
-		$cashJaime    = \App\Cashbox::where('typePayment', 1)->where('date', '>=', $inicio->copy()->format('Y-m-d'))
-		                            ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
-		                            ->orderBy('date', 'ASC')->get();
+		$cashJaime    = \App\Cashbox::where('typePayment', 1)
+		                            ->where('date', '>=', $startYear)
+		                            ->where('date', '<=', $endYear)
+		                            ->orderBy('date', 'ASC')
+		                            ->get();
 		$saldoInicial = \App\Cashbox::where('concept', 'SALDO INICIAL')->where('typePayment', 1)->first();
 
-		$cashJorge = \App\Cashbox::where('typePayment', 0)->where('date', '>', $inicio->copy()->format('Y-m-d'))
-		                         ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))->get();
+		$cashJorge = \App\Cashbox::where('typePayment', 0)
+		                         ->where('date', '>=', $startYear)
+		                         ->where('date', '<=', $endYear)
+		                         ->get();
 
 		return view('backend.sales.cashbox.cashbox', [
-			'inicio'       => $inicio,
+			'year'         => $year,
 			'cashJaime'    => $cashJaime,
 			'cashboxJor'   => $cashJorge,
 			'saldoInicial' => $saldoInicial,
 		]);
 	}
 
-
 	public function getTableMoves($year, $type)
 	{
-		if (empty($year))
-		{
-			$date = Carbon::now();
-			if ($date->copy()->format('n') >= 9)
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
-			} else
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
-			}
+		$year      = $this->getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
 
-		} else
-		{
-			$year = Carbon::createFromFormat('Y', $year);
-			$date = $year->copy();
-
-		}
-
-		$inicio = new Carbon('first day of September ' . $date->copy()->format('Y'));
 		if ($type == 'jaime')
 		{
 
-			$cashbox      = \App\Cashbox::where('typePayment', 1)->where('date', '>=', $inicio->copy()->format('Y-m-d'))
-			                            ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+			$cashbox      = \App\Cashbox::where('typePayment', 1)->where('date', '>=', $startYear)
+			                            ->where('date', '<=', $endYear)
 			                            ->orderBy('date', 'ASC')->get();
 			$saldoInicial = \App\Cashbox::where('concept', 'SALDO INICIAL')->where('typePayment', 1)->first();
 
 		} else
 		{
-			$cashbox = \App\Cashbox::where('typePayment', 0)->where('date', '>=', $inicio->copy()->format('Y-m-d'))
-			                       ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+			$cashbox = \App\Cashbox::where('typePayment', 0)->where('date', '>=', $startYear)
+			                       ->where('date', '<=', $endYear)
 			                       ->orderBy('date', 'ASC')->get();
 
 			$saldoInicial = \App\Cashbox::where('concept', 'SALDO INICIAL')->where('typePayment', 0)->first();
@@ -761,48 +688,38 @@ class LiquidacionController extends Controller
 
 	}
 
-	public function bank($year = "")
+        public function bank()
 	{
-		if (empty($year))
-		{
-			$date = Carbon::now();
-			if ($date->copy()->format('n') >= 9)
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
-			} else
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
-			}
+		$year      = $this->getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
 
-		} else
-		{
-			$year = Carbon::createFromFormat('Y', $year);
-			$date = $year->copy();
-
-		}
-
-		$inicio = new Carbon('first day of September ' . $date->copy()->format('Y'));
-
-		$bankJaime    = \App\Bank::where('typePayment', 3)->where('date', '>=', $inicio->copy()->format('Y-m-d'))
-		                         ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
-		                         ->orderBy('date', 'ASC')->get();
 		$saldoInicial = \App\Bank::where('concept', 'SALDO INICIAL')->where('typePayment', 3)->first();
 
-		$bankJorge = \App\Bank::whereIn('typePayment', [
-			2,
-			0
-		])->where('date', '>', $inicio->copy()->format('Y-m-d'))->where('date', '<=', $inicio->copy()->addYear()
-		                                                                                     ->format('Y-m-d'))
-		                      ->orderBy('date', 'ASC')->get();
+		$bankItems = \App\Bank::whereIn('typePayment', [2,0,3])
+		                      ->where('date', '>=', $startYear)
+		                      ->where('date', '<=', $endYear)
+		                      ->orderBy('date', 'ASC')
+		                      ->get();
 
+                //Totals
+                $totals = 0;//$saldoInicial->import; 
+                foreach ($bankItems as $key => $cash): 
+                    if ($cash->type == 1): 
+                        $totals -= $cash->import;
+                    endif;
+                    if ($cash->type == 0):
+                        $totals += $cash->import;
+                    endif;
+                endforeach;
+                  
 		return view('backend.sales.bank.bank', [
-			'inicio'       => $inicio,
-			'bankJaime'    => $bankJaime,
-			'bankJorge'    => $bankJorge,
+			'year'         => $year,
+			'totals'    => $totals,
+			'bankItems'    => $bankItems,
 			'saldoInicial' => $saldoInicial,
 		]);
 	}
-
 
 	public function getTableMovesBank($year, $type)
 	{
@@ -868,35 +785,13 @@ class LiquidacionController extends Controller
 
 	}
 
-
-	public function perdidasGanancias($year = "")
+	public function perdidasGanancias()
 	{
-		if (empty($year))
-		{
-			$date = Carbon::now();
-			if ($date->copy()->format('n') >= 9)
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
-			} else
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
-			}
-
-		} else
-		{
-			$year = Carbon::createFromFormat('Y', $year);
-			$date = $year->copy();
-		}
-
-		$inicio = new Carbon('first day of September ' . $date->copy()->format('Y'));
-
-		$books = \App\Book::whereIn('type_book', [
-			2,
-			7,
-			8
-		])->where('start', '>', $inicio->copy()->format('Y-m-d'))->where('start', '<=', $inicio->copy()->addYear()
-		                                                                                       ->format('Y-m-d'))
-		                  ->get();
+		$year      = $this->getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
+		$diff      = $startYear->diffInMonths($endYear) + 1;
+		$books     = \App\Book::type_book_sales()->where('start', '>', $startYear)->where('start', '<=', $endYear)->get();
 		/* INGRESOS */
 		$arrayTotales = [
 			'totales' => 0,
@@ -911,7 +806,7 @@ class LiquidacionController extends Controller
 			'LAVANDERIA'       => []
 		];
 
-		for ($i = 1; $i <= 12; $i++)
+		for ($i = 1; $i <= $diff; $i++)
 		{
 			$arrayTotales['meses'][$i] = 0;
 
@@ -964,15 +859,15 @@ class LiquidacionController extends Controller
 
 		foreach ($conceptIncomes as $typeIncome)
 		{
-			for ($i = 1; $i <= 12; $i++)
+			for ($i = 1; $i <= $diff; $i++)
 			{
 				$arrayIncomes[$typeIncome][$i] = 0;
 			}
 		}
 		foreach ($conceptIncomes as $typeIncome)
 		{
-			$incomes = \App\Incomes::where('concept', $typeIncome)->where('date', '>', $inicio->copy()->format('Y-m-d'))
-			                       ->where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))->get();
+			$incomes = \App\Incomes::where('concept', $typeIncome)->where('date', '>', $startYear)
+			                       ->where('date', '<=', $endYear)->get();
 
 			if (count($incomes) > 0)
 			{
@@ -984,7 +879,7 @@ class LiquidacionController extends Controller
 				}
 			} else
 			{
-				for ($i = 1; $i <= 12; $i++)
+				for ($i = 1; $i <= $diff; $i++)
 				{
 					$arrayIncomes[$typeIncome][$i] = 0;
 				}
@@ -1027,8 +922,8 @@ class LiquidacionController extends Controller
 		}
 
 
-		$gastos = \App\Expenses::where('date', '>', $inicio->copy()->format('Y-m-d'))
-		                       ->Where('date', '<=', $inicio->copy()->addYear()->format('Y-m-d'))
+		$gastos = \App\Expenses::where('date', '>', $startYear)
+		                       ->Where('date', '<=', $endYear)
 		                       ->where('concept', 'NOT LIKE', '%LIMPIEZA RESERVA PROPIETARIO.%')
 		                       ->orderBy('date', 'DESC')->get();
 
@@ -1038,7 +933,7 @@ class LiquidacionController extends Controller
 			$fecha = Carbon::createFromFormat('Y-m-d', $gasto->date);
 			if (!isset($arrayExpenses[$gasto->type]))
 			{
-				for ($i = 1; $i <= 12; $i++)
+				for ($i = 1; $i <= $diff; $i++)
 				{
 					$arrayExpenses[$gasto->type][$i] = 0;
 				}
@@ -1066,30 +961,32 @@ class LiquidacionController extends Controller
 			'arrayTotales'         => $arrayTotales,
 			'arrayIncomes'         => $arrayIncomes,
 			'arrayExpenses'        => $arrayExpenses,
-			'inicio'               => $inicio,
+			'diff'                 => $diff,
+			'year'                 => $year,
 			'arrayExpensesPending' => $arrayExpensesPending,
-			'selectedYear'         => empty($year) ? (date('Y') - 1) : $year->format('Y'),
 		]);
 	}
-
 
 	static function getSalesByYear($year = "")
 	{
 		// $array = [0 =>"Metalico Jorge", 1 =>"Metalico Jaime",2 =>"Banco Jorge",3=>"Banco Jaime"];
-		if ($year == "")
-		{
-			$year = date('Y');
-		}
-		$start = new Carbon('first day of September ' . $year);
-		$end   = $start->copy()->addYear();
+          
+          if ($year == "")
+          {
+            $year      = self::getActiveYear();
+            $startYear = new Carbon($year->start_date);
+            $endYear   = new Carbon($year->end_date);
+          } else {
+            $start = new Carbon('first day of September ' . $year);
+            $end   = $start->copy()->addYear();
+            $startYear = $start->copy()->format('Y-m-d');
+            $endYear   = $end->copy()->format('Y-m-d');
+          }
 
-		$books = \App\Book::with('payments')->whereIn('type_book', [
-			2,
-			7,
-			8
-		])->where('start', '>=', $start->copy()->format('Y-m-d'))->where('start', '<=', $end->copy()->format('Y-m-d'))
-		                  ->orderBy('start', 'ASC')->get();
-
+           $books = \App\Book::type_book_sales()->with('payments')->where('start', '>=', $startYear)
+                  ->where('start', '<=',$endYear)
+                  ->orderBy('start', 'ASC')->get();
+           
 		$result = [
 			'ventas'    => 0,
 			'cobrado'   => 0,
@@ -1202,7 +1099,6 @@ class LiquidacionController extends Controller
 
 
 	}
-
 
 	static function getSalesByYearByRoomGeneral($year = "", $room = "all")
 	{
@@ -1596,26 +1492,9 @@ class LiquidacionController extends Controller
 			"obs"          => 0,
 		];
 
-		if (empty($request->year))
-		{
-			$date = Carbon::now();
-			if ($date->copy()->format('n') >= 9)
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
-			} else
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
-			}
-
-		} else
-		{
-			$year = Carbon::createFromFormat('Y', $request->year);
-			$date = $year->copy();
-
-		}
-
-		$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
-
+		$year      = $this->getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
 
 		if ($request->searchString != "")
 		{
@@ -1637,8 +1516,8 @@ class LiquidacionController extends Controller
 				{
 
 					$books = \App\Book::whereIn('customer_id', $arrayCustomersId)
-					                  ->where('start', '>=', $date->format('Y-m-d'))
-					                  ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
+					                  ->where('start', '>=', $startYear)
+					                  ->where('start', '<=', $endYear)
 					                  ->whereIn('type_book', [
 						                  2,
 						                  7,
@@ -1650,8 +1529,8 @@ class LiquidacionController extends Controller
 					                  ->get();
 
 					$diasPropios = \App\Book::whereIn('customer_id', $arrayCustomersId)
-					                        ->where('start', '>', $date->copy()->subMonth())
-					                        ->where('finish', '<', $date->copy()->addYear())
+					                        ->where('start', '>', $startYear)
+					                        ->where('finish', '<', $endYear)
 					                        ->whereIn('type_book', [
 						                        7,
 						                        8
@@ -1661,12 +1540,11 @@ class LiquidacionController extends Controller
 					                        ->orderBy('created_at', 'DESC')
 					                        ->get();
 
-				}
-				else
+				} else
 				{
 					$books = \App\Book::whereIn('customer_id', $arrayCustomersId)
-					                  ->where('start', '>=', $date->format('Y-m-d'))
-					                  ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
+					                  ->where('start', '>=', $startYear)
+					                  ->where('start', '<=', $endYear)
 					                  ->whereIn('type_book', [
 						                  2,
 						                  7,
@@ -1677,8 +1555,8 @@ class LiquidacionController extends Controller
 					                  ->get();
 
 					$diasPropios = \App\Book::whereIn('customer_id', $arrayCustomersId)
-					                        ->where('start', '>', $date->copy()->subMonth())
-					                        ->where('finish', '<', $date->copy()->addYear())
+					                        ->where('start', '>', $startYear)
+					                        ->where('finish', '<', $endYear)
 					                        ->whereIn('type_book', [
 						                        7,
 						                        8
@@ -1795,21 +1673,20 @@ class LiquidacionController extends Controller
 					'totales'      => $totales,
 					'data'         => $data,
 					'percentBenef' => DB::table('percent')->find(1)->percent,
-					'temporada'    => $date
+					'year'         => $year
 				]);
 			} else
 			{
 				return "<h2>No hay reservas para este término '" . $request->searchString . "'</h2>";
 			}
-		}
-		else
+		} else
 		{
 
 			if ($request->searchRoom && $request->searchRoom != "all")
 			{
 
-				$books = \App\Book::where('start', '>=', $date)
-				                  ->where('start', '<=', $date->copy()->addYear()->subMonth())
+				$books = \App\Book::where('start', '>=', $startYear)
+				                  ->where('start', '<=', $endYear)
 				                  ->whereIn('type_book', [
 					                  2,
 					                  7,
@@ -1820,9 +1697,9 @@ class LiquidacionController extends Controller
 				                  ->orderBy('start', 'ASC')
 				                  ->get();
 
-				$diasPropios = \App\Book::where('start', '>', $date->copy()->subMonth())
+				$diasPropios = \App\Book::where('start', '>', $startYear)
 				                        ->where('room_id', $request->searchRoom)
-				                        ->where('finish', '<', $date->copy()->addYear())
+				                        ->where('finish', '<', $endYear)
 				                        ->whereIn('type_book', [
 					                        7,
 					                        8
@@ -1832,8 +1709,8 @@ class LiquidacionController extends Controller
 				                        ->get();
 			} else
 			{
-				$books = \App\Book::where('start', '>=', $date)
-				                  ->where('start', '<=', $date->copy()->addYear()->subMonth())
+				$books = \App\Book::where('start', '>=', $startYear)
+				                  ->where('start', '<=', $endYear)
 				                  ->whereIn('type_book', [
 					                  2,
 					                  7,
@@ -1843,8 +1720,8 @@ class LiquidacionController extends Controller
 				                  ->orderBy('start', 'ASC')
 				                  ->get();
 
-				$diasPropios = \App\Book::where('start', '>', $date->copy()->subMonth())
-				                        ->where('finish', '<', $date->copy()->addYear())
+				$diasPropios = \App\Book::where('start', '>', $startYear)
+				                        ->where('finish', '<', $endYear)
 				                        ->whereIn('type_book', [
 					                        7,
 					                        8
@@ -1950,7 +1827,7 @@ class LiquidacionController extends Controller
 				'totales'      => $totales,
 				'data'         => $data,
 				'percentBenef' => DB::table('percent')->find(1)->percent,
-				'temporada'    => $date
+				'year'         => $year
 			]);
 
 		}
@@ -1980,25 +1857,9 @@ class LiquidacionController extends Controller
 			"obs"          => 0,
 		];
 
-		if (empty($request->year))
-		{
-			$date = Carbon::now();
-			if ($date->copy()->format('n') >= 9)
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
-			} else
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
-			}
-
-		} else
-		{
-			$year = Carbon::createFromFormat('Y', $request->year);
-			$date = $year->copy();
-
-		}
-
-		$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
+		$year      = $this->getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
 
 
 		if ($request->searchString != "")
@@ -2022,8 +1883,8 @@ class LiquidacionController extends Controller
 				{
 
 					$books = \App\Book::whereIn('customer_id', $arrayCustomersId)
-					                  ->where('start', '>=', $date->format('Y-m-d'))
-					                  ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
+					                  ->where('start', '>=', $startYear)
+					                  ->where('start', '<=', $endYear)
 					                  ->whereIn('type_book', [
 						                  2,
 						                  7
@@ -2034,8 +1895,8 @@ class LiquidacionController extends Controller
 					                  ->get();
 
 					$diasPropios = \App\Book::whereIn('customer_id', $arrayCustomersId)
-					                        ->where('start', '>', $date->copy()->subMonth())
-					                        ->where('finish', '<', $date->copy()->addYear())
+					                        ->where('start', '>', $startYear)
+					                        ->where('finish', '<', $endYear)
 					                        ->whereIn('type_book', [
 						                        7,
 						                        8
@@ -2047,8 +1908,8 @@ class LiquidacionController extends Controller
 				} else
 				{
 					$books = \App\Book::whereIn('customer_id', $arrayCustomersId)
-					                  ->where('start', '>=', $date->format('Y-m-d'))
-					                  ->where('start', '<=', $date->copy()->addYear()->subMonth()->format('Y-m-d'))
+					                  ->where('start', '>=', $startYear)
+					                  ->where('start', '<=', $endYear)
 					                  ->whereIn('type_book', [
 						                  2,
 						                  7,
@@ -2059,8 +1920,8 @@ class LiquidacionController extends Controller
 					                  ->get();
 
 					$diasPropios = \App\Book::whereIn('customer_id', $arrayCustomersId)
-					                        ->where('start', '>', $date->copy()->subMonth())
-					                        ->where('finish', '<', $date->copy()->addYear())
+					                        ->where('start', '>', $startYear)
+					                        ->where('finish', '<', $endYear)
 					                        ->whereIn('type_book', [
 						                        7,
 						                        8
@@ -2170,7 +2031,7 @@ class LiquidacionController extends Controller
 
 
 				return view('backend/sales/_tableSummary', [
-					'temporada'    => $date,
+					'year'         => $year,
 					'books'        => $books,
 					'totales'      => $totales,
 					'data'         => $data,
@@ -2187,16 +2048,15 @@ class LiquidacionController extends Controller
 			if ($request->searchRoom && $request->searchRoom != "all")
 			{
 
-				$books = \App\Book::where('start', '>=', $date)->where('start', '<=', $date->copy()->addYear()
-				                                                                           ->subMonth())
+				$books = \App\Book::where('start', '>=', $startYear)
+				                  ->where('start', '<=', $endYear)
 				                  ->whereIn('type_book', [
 					                  2,
 					                  7
 				                  ])->where('room_id', $request->searchRoom)->orderBy('start', 'ASC')->get();
 
-				$diasPropios = \App\Book::where('start', '>', $date->copy()->subMonth())
-				                        ->where('room_id', $request->searchRoom)->where('finish', '<', $date->copy()
-				                                                                                            ->addYear())
+				$diasPropios = \App\Book::where('start', '>', $startYear)
+				                        ->where('room_id', $request->searchRoom)->where('finish', '<', $endYear)
 				                        ->whereIn('type_book', [
 					                        7,
 					                        8
@@ -2205,8 +2065,8 @@ class LiquidacionController extends Controller
 
 			} else
 			{
-				$books = \App\Book::where('start', '>=', $date)
-				                  ->where('start', '<=', $date->copy()->addYear()->subMonth())
+				$books = \App\Book::where('start', '>=', $startYear)
+				                  ->where('start', '<=', $endYear)
 				                  ->whereIn('type_book', [
 					                  2,
 					                  7
@@ -2215,8 +2075,8 @@ class LiquidacionController extends Controller
 				                  ->orderBy('start', 'ASC')
 				                  ->get();
 
-				$diasPropios = \App\Book::where('start', '>', $date->copy()->subMonth())
-				                        ->where('finish', '<', $date->copy()->addYear())
+				$diasPropios = \App\Book::where('start', '>', $startYear)
+				                        ->where('finish', '<', $endYear)
 				                        ->whereIn('type_book', [
 					                        7,
 					                        8
@@ -2326,7 +2186,7 @@ class LiquidacionController extends Controller
 
 
 			return view('backend/sales/_tableSummary', [
-				'temporada'    => $date,
+				'year'         => $year,
 				'books'        => $books,
 				'totales'      => $totales,
 				'data'         => $data,
@@ -2425,8 +2285,7 @@ class LiquidacionController extends Controller
 					                        ->orderBy('created_at', 'DESC')
 					                        ->get();
 
-				}
-				else
+				} else
 				{
 					$books = \App\Book::whereIn('customer_id', $arrayCustomersId)
 					                  ->where('start', '>=', $date->format('Y-m-d'))
@@ -2565,8 +2424,7 @@ class LiquidacionController extends Controller
 			{
 				return "<h2>No hay reservas para este término '" . $request->searchString . "'</h2>";
 			}
-		}
-		else
+		} else
 		{
 
 			if ($request->searchRoom && $request->searchRoom != "all")
@@ -2728,28 +2586,9 @@ class LiquidacionController extends Controller
 
 	public function exportExcel(Request $request)
 	{
-		$now = Carbon::now();
-
-		if (empty($request->year))
-		{
-			$date = Carbon::now();
-			if ($date->copy()->format('n') >= 9)
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
-			} else
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
-			}
-
-		} else
-		{
-			$year = Carbon::createFromFormat('Y', $request->year);
-			$date = $year->copy();
-
-		}
-
-		$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
-
+		$year      = $this->getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
 
 		if ($request->searchString != "")
 		{
@@ -2772,10 +2611,8 @@ class LiquidacionController extends Controller
 				{
 
 					$books = \App\Book::whereIn('customer_id', $arrayCustomersId)
-					                  ->where('start', '>=', $date->format('Y-m-d'))->where('start', '<=', $date->copy()
-					                                                                                            ->addYear()
-					                                                                                            ->subMonth()
-					                                                                                            ->format('Y-m-d'))
+					                  ->where('start', '>=', $startYear)
+					                  ->where('start', '<=', $endYear)
 					                  ->whereIn('type_book', [
 						                  2,
 						                  7,
@@ -2787,10 +2624,8 @@ class LiquidacionController extends Controller
 				{
 
 					$books = \App\Book::whereIn('customer_id', $arrayCustomersId)
-					                  ->where('start', '>=', $date->format('Y-m-d'))->where('start', '<=', $date->copy()
-					                                                                                            ->addYear()
-					                                                                                            ->subMonth()
-					                                                                                            ->format('Y-m-d'))
+					                  ->where('start', '>=', $startYear)
+					                  ->where('start', '<=', $endYear)
 					                  ->whereIn('type_book', [
 						                  2,
 						                  7,
@@ -2807,8 +2642,8 @@ class LiquidacionController extends Controller
 			if ($request->searchRoom != "all")
 			{
 
-				$books = \App\Book::where('start', '>=', $date)->where('start', '<=', $date->copy()->addYear()
-				                                                                           ->subMonth())
+				$books = \App\Book::where('start', '>=', $startYear)
+				                  ->where('start', '<=', $endYear)
 				                  ->whereIn('type_book', [
 					                  2,
 					                  7,
@@ -2817,8 +2652,8 @@ class LiquidacionController extends Controller
 			} else
 			{
 
-				$books = \App\Book::where('start', '>=', $date)->where('start', '<=', $date->copy()->addYear()
-				                                                                           ->subMonth())
+				$books = \App\Book::where('start', '>=', $startYear)
+				                  ->where('start', '<=', $endYear)
 				                  ->whereIn('type_book', [
 					                  2,
 					                  7,
@@ -2827,7 +2662,7 @@ class LiquidacionController extends Controller
 			}
 
 		}
-		Excel::create('Liquidacion ' . $date->copy()->format('Y'), function ($excel) use ($books) {
+		Excel::create('Liquidacion ' . $year->year, function ($excel) use ($books) {
 
 			$excel->sheet('Liquidacion', function ($sheet) use ($books) {
 
@@ -2835,6 +2670,6 @@ class LiquidacionController extends Controller
 
 			});
 
-		})->download('xls');
+		})->download('xlsx');
 	}
 }

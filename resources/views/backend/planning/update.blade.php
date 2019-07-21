@@ -12,7 +12,7 @@
     <script src="//js.stripe.com/v3/"></script>
     <style>
         .pgn-wrapper[data-position$='-right'] {
-            right:: 82% !important;
+            right: 82% !important;
         }
 
         input[type=number]::-webkit-outer-spin-button,
@@ -163,9 +163,20 @@
                                 ?>
                             </a>
                         </div>
+                        <div class="col-md-2 col-xs-3 text-center push-10 ">
+                          <button class="partee-cp " onclick="copyParteeMsg()">
+                            <div class="tooltip" id="tooltipPartee">
+                            <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+                            </div>
+                            Partee
+                          </button>
+                        </div>
 
                     </div>
                     <div class="col-md-3 col-xs-12 content-guardar" style="padding: 20px 0;">
+                      @if($low_profit)
+                      <div class="btn btn-danger btn-cons btn-alarms m-b-10">BAJO BENEFICIO</div>
+                      @endif
                         <div id="overlay" style="display: none;"></div>
                         <select class="status form-control minimal" data-id="<?php echo $book->id ?>" name="status" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
 							<?php for ($i = 1; $i <= 12; $i++): ?>
@@ -739,15 +750,15 @@
                     <div class="row push-20 content-link-stripe"
                          style="margin-top: 20px; border-top: 2px dashed #000; border-bottom: 2px dashed #000; padding: 20px 15px;">
 
-                        @include('backend.planning._links', ['import' => 0])
+                        @include('backend.stripe.link')
 
                     </div>
                 <?php endif ?>
                 <div class="row">
-					<?php $hasFiance = \App\Fianzas::where('book_id', $book->id)->get(); ?>
+
                     <div class="col-xs-12 push-20 ">
 						<?php if ($book->type_book == 2): ?>
-                            <?php if ( count($hasFiance) > 0): ?>
+                            <?php if ( !$hasFiance):  ?>
                                 <div class="col-md-6">
 
                                     <button class="btn btn-primary btn-lg" type="button" id="fianza"> COBRAR FIANZA</button>
@@ -761,24 +772,21 @@
 						<?php endif ?>
                     </div>
 					<?php if ($book->type_book == 2): ?>
-                    <div class="row content-fianza" style="display: none;">
-						<?php if ( count($hasFiance) > 0): ?>
-                        <div class="col-md-6 col-md-offset-3 alert alert-info fade in alert-dismissable"
-                             style="margin-top: 30px; background-color: #10cfbd70!important;">
-                            <h3 class="text-center font-w300">
-                                CARGAR LA FIANZA DE <span class="font-w800"><?php echo($hasFiance->amount / 100) ?>
-                                    €</span>
-                            </h3>
-                            <div class="row">
-                                <form action="{{ url('admin/reservas/stripe/pay/fianza') }}" method="post">
-                                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                    <input type="hidden" name="id_fianza" value="<?php echo $hasFiance->id; ?>">
-                                    <div class="col-xs-12 text-center">
-                                        <button class="btn btn-primary">COBRAR</button>
-                                    </div>
-                                </form>
+                    <div class="row content-fianza" >
+						<?php if ( $hasFiance ): ?>
+                            <div class="col-md-6 col-md-offset-3 alert alert-info fade in alert-dismissable" style="margin-top: 30px; background-color: #10cfbd70!important;">
+                                <h3 class="text-center font-w300"> CARGAR LA FIANZA DE <span class="font-w800"><?php echo($hasFiance->amount / 100) ?> €</span>
+                                </h3>
+                                <div class="row">
+                                    <form action="{{ url('admin/reservas/stripe/pay/fianza') }}" method="post">
+                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                        <input type="hidden" name="id_fianza" value="<?php echo $hasFiance->id; ?>">
+                                        <div class="col-xs-12 text-center">
+                                            <button class="btn btn-primary">COBRAR</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
 						<?php endif ?>
 
                     </div>
@@ -786,7 +794,8 @@
                 </div>
                 <?php if (Auth::user()->role != "limpieza"):?>
                     <div class="row">
-                        @include('backend.stripe.stripe', ['bookTocharge' => $book])
+                        @include('Paylands.payment', ['routeToRedirect' => route('payland.proccess.payment.book',
+                        ['id' => $book->id]), 'customer' => $book->customer->id])
                     </div>
                  <?php endif ?>
             </div>
@@ -1150,47 +1159,43 @@
             </div>
 
             <div class="col-md-6 col-xs-12 padding-block">
-                <div class="row push-20">
-					<?php $hasFiance = \App\Fianzas::where('book_id', $book->id)->get(); ?>
+                <div class="row">
                     <div class="col-xs-12 push-20 ">
 						<?php if ($book->type_book == 2): ?>
-                            <?php if ( count($hasFiance) > 0): ?>
-                                <div class="col-md-6 col-xs-12 text-center">
-                                    <button class="btn btn-primary btn-lg" type="button" id="fianza"
-                                            style="color: #fff;background-color: #337ab7;border-color: #2e6da4;"> COBRAR FIANZA
-                                    </button>
-                                </div>
-                            <?php else: ?>
-                                <div class="col-md-6 col-xs-12 text-center">
-                                    <a class="btn btn-primary btn-lg"
-                                       href="{{ url('/admin/reservas/fianzas/cobrar/'.$book->id) }}"
-                                       style="color: #fff;background-color: #337ab7;border-color: #2e6da4;"> RECOGER FIANZA</a>
-                                </div>
-                            <?php endif ?>
-						<?php endif ?>
-                    </div>
-					<?php if ($book->type_book == 2): ?>
-                    <div class="row content-fianza" style="display: none;">
-						<?php if ( count($hasFiance) > 0): ?>
-                        <div class="col-md-6 col-md-offset-3 alert alert-info fade in alert-dismissable"
-                             style="margin-top: 30px; background-color: #10cfbd70!important;">
-                            <h3 class="text-center font-w300">
-                                CARGAR LA FIANZA
-                            </h3>
-                            <div class="row">
-                                <form action="{{ url('admin/reservas/stripe/pay/fianza') }}" method="post">
-
-                                    <input type="hidden" name="id_fianza" value="<?php echo $hasFiance->id; ?>">
-                                    <div class="col-xs-12 text-center">
-                                        <button class="btn btn-primary">COBRAR</button>
-                                    </div>
-                                </form>
+                        <?php if ( $hasFiance ): ?>
+                            <div class="col-md-6">
+                                <button class="btn btn-primary btn-lg" type="button" id="fianza"> COBRAR FIANZA</button>
                             </div>
-                        </div>
-						<?php endif ?>
-
+                        <?php else: ?>
+                            <div class="col-md-6">
+                                <a class="btn btn-primary btn-lg"
+                                   href="{{ url('/admin/reservas/fianzas/cobrar/'.$book->id) }}"> RECOGER FIANZA</a>
+                            </div>
+                        <?php endif ?>
+                        <?php endif ?>
                     </div>
-					<?php endif; ?>
+                    <?php if ($book->type_book == 2): ?>
+                    <div class="row content-fianza" style="display: none;">
+						<?php if (  $hasFiance ): ?>
+                            <div class="col-md-6 col-md-offset-3 alert alert-info fade in alert-dismissable"
+                                 style="margin-top: 30px; background-color: #10cfbd70!important;">
+                                <h3 class="text-center font-w300">
+                                    CARGAR LA FIANZA DE <span class="font-w800"><?php echo($hasFiance->amount / 100) ?>
+                                        €</span>
+                                </h3>
+                                <div class="row">
+                                    <form action="{{ url('admin/reservas/stripe/pay/fianza') }}" method="post">
+                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                        <input type="hidden" name="id_fianza" value="<?php echo $hasFiance->id; ?>">
+                                        <div class="col-xs-12 text-center">
+                                            <button class="btn btn-primary">COBRAR</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        <?php endif ?>
+                    </div>
+                    <?php endif; ?>
                 </div>
                 <?php if ( Auth::user()->role != "limpieza"):?>
                     <div class="row">
@@ -1310,7 +1315,8 @@
                     </div>
 
                     <div class="row">
-                        @include('backend.stripe.stripe', ['bookTocharge' => $book])
+                        @include('Paylands.payment', ['routeToRedirect' => route('payland.proccess.payment.book',
+                       ['id' => $book->id]), 'customer' => $book->customer->id])
                     </div>
                 <?php endif ?>
             </div>
@@ -1364,5 +1370,76 @@
                       });
                 });
               });
+              var copyParteeMsg = function(){
+                $.get('/get-partee-msg', {bookID: <?php echo $book->id ?>},
+                      function(data) {
+                        if (data == 'empty'){
+                          alert('No se ha encontrado un registro asociado');
+                        } else {
+                          var dummy = document.createElement("textarea");
+                          // to avoid breaking orgain page when copying more words
+                          // cant copy when adding below this code
+                          // dummy.style.display = 'none'
+                          document.body.appendChild(dummy);
+                          //Be careful if you use texarea. setAttribute('value', value), which works with "input" does not work with "textarea". – Eduard
+                          dummy.value = data;
+                          dummy.select();
+                          document.execCommand("copy");
+                          document.body.removeChild(dummy);
+                          $('#tooltipPartee').addClass('show');
+                          setTimeout(function(){
+                            $('#tooltipPartee').removeClass('show');
+                          },500);
+                        }
+                      
+                      });
+              }
             </script>
+            <style>
+              button.partee-cp {
+                position: relative;
+                margin-top: 0.15em;
+                padding: 9px;
+                border-radius: 10px;
+                background-color: #fff;
+                color: #ff5a5f;
+                font-size: 20px;
+                font-weight: 600;
+              }
+              button.partee-cp:hover {
+                background-color: #ff5a5f;
+                color:#fff;
+              }
+              .tooltip .tooltiptext::after {
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                margin-left: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: #555 transparent transparent transparent;
+              }
+
+              .tooltip:hover .tooltiptext {
+                visibility: visible;
+                opacity: 1;
+              }
+              button.partee-cp .tooltip.show{
+                display: block;
+                opacity: 1;
+                width: 100%;
+                top: -2em;
+                left: 0;
+              }
+              .tooltiptext {
+                position: absolute;
+                font-size: 11px;
+                color: #fff;
+                background-color: rgba(0, 0, 0, 0.42);
+                padding: 2px 5px;
+                width: 10em;
+                border-radius: 7px;
+              }
+            </style>
 @endsection

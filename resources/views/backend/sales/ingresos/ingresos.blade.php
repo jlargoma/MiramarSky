@@ -35,22 +35,7 @@ background: white;
 			</h2>
 		</div>
 		<div class="col-md-2 col-xs-12 sm-padding-10" style="padding: 10px">
-			<select id="fecha" class="form-control minimal">
-				<?php $fecha = $inicio->copy()->SubYears(2); ?>
-				<?php if ($fecha->copy()->format('Y') < 2015): ?>
-					<?php $fecha = new Carbon('first day of September 2015'); ?>
-				<?php endif ?>
-
-				<?php for ($i=1; $i <= 3; $i++): ?>                           
-					<option value="<?php echo $fecha->copy()->format('Y'); ?>" 
-						<?php if (  $fecha->copy()->format('Y') == date('Y') || 
-							$fecha->copy()->addYear()->format('Y') == date('Y') 
-							){ echo "selected"; }?> >
-							<?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
-						</option>
-						<?php $fecha->addYear(); ?>
-					<?php endfor; ?>
-				</select>    
+			@include('backend.years._selector')
 			</div>
 		</div>
 	</div>
@@ -79,8 +64,8 @@ background: white;
     					<th class="text-center bg-complete text-white">AREA DE NEGOCIO</th>
                         <th class="text-center bg-complete text-white">total</th>
                         <th class="text-center bg-complete text-white"> % </th>
-    					<?php $months = $inicio->copy(); ?>
-    					<?php for ($i=1; $i <= 12 ; $i++): ?>
+    					<?php $months = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
+    					<?php for ($i=1; $i <= $diff ; $i++): ?>
     						<th class="text-center bg-complete text-white">&nbsp;<?php echo $months->formatLocalized('%b') ?>&nbsp;</th>
     						<?php $months->addMonth() ?>
     					<?php endfor; ?>
@@ -91,7 +76,8 @@ background: white;
 					<?php foreach ($incomes as $key => $income): ?>
 						<?php $totalIngresosYear += array_sum($income); ?>
 					<?php endforeach ?>
-						<?php $totalIngresosYear += $arrayTotales['totales']; ?>
+					<?php $totalIngresosYear += $arrayTotales['totales']; ?>
+					<?php $totalIngresosYear = ($totalIngresosYear > 0) ? $totalIngresosYear : 1?>
 
 					<tr>
 						<td class="text-center" style="padding: 12px 20px!important">
@@ -106,8 +92,8 @@ background: white;
                             <b><?php echo  number_format( $percent, 2, '.', ',') ?>%</b>
                         </td>
 						
-						<?php $monthsRooms = $inicio->copy(); ?>
-    					<?php for ($i=1; $i <= 12 ; $i++): ?>
+						<?php $monthsRooms = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
+    					<?php for ($i=1; $i <= $diff ; $i++): ?>
     						<td class="text-center" style="padding: 12px 20px!important">
     							<b><?php echo  number_format($arrayTotales['meses'][$monthsRooms->copy()->format('n')], 0,',','.'); ?>€</b>
     						</td>
@@ -133,8 +119,8 @@ background: white;
                             	<b><?php echo  number_format( $percent, 2, '.', ',') ?> %</b>
 	                        </td>
 							
-							<?php $monthsRooms = $inicio->copy(); ?>
-	    					<?php for ($i=1; $i <= 12 ; $i++): ?>
+							<?php $monthsRooms = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
+	    					<?php for ($i=1; $i <= $diff ; $i++): ?>
 	    						<td class="text-center" style="padding: 12px 20px!important">
 	    							<?php if ($income[$monthsRooms->copy()->format('n')] > 0): ?>
 	    								<b><?php echo number_format( array_sum($income) , 0,',','.') ?> €</b>
@@ -168,17 +154,5 @@ background: white;
 
 
 @section('scripts')
-	
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('#fecha').change(function(event) {
-	    
-			    var year = $(this).val();
-			    window.location = '/admin/ingresos/'+year;
-
-			});
-		});	
-	</script>
-	
 
 @endsection

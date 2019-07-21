@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\AppController;
 use Illuminate\Http\Request;
 use \Carbon\Carbon;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class BackendController extends Controller
+class BackendController extends AppController
 {
    	public function index()
     {

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use \Carbon\Carbon;
 
-class PaymentsController extends Controller
+class PaymentsController extends AppController
 {
     /**
      * Display a listing of the resource.

@@ -156,7 +156,6 @@ input.costParking
   color: white!important;
   text-align: center;
   padding: 30px;
-  font-size: 26px;
 }
 input.beneficio{
   text-align: left;
@@ -481,6 +480,7 @@ input.beneficio,
 }
 
 .btn-alarms{
+  margin-bottom: 1em;
   margin-left: 5px;
   padding: 5px;
   animation: pulsebtn 1s infinite!important;
@@ -507,7 +507,7 @@ input.beneficio,
 }
 
 .fa-arrow-up {
-  font-size: 8rem;
+  /*font-size: 8rem;*/
   color: limegreen;
 }
 
@@ -547,4 +547,65 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
   height: 15px!important;
   background-position: center center!important;
   opacity: 1!important;
+}
+.policeman{
+  display: inline-block;
+  background-image: url(/img/police-red.ico);
+  background-size: contain;
+  height: 2em;
+  width: 2em;
+  content: "";
+}  
+.policeman.active {
+  /*background-color: #97ef99;*/
+  background-image: url(/img/police-green.ico);
+  border-radius: 2px;
+}
+.sendSMS{
+  height: 2em;
+  width: 2em;
+  display: inline-block;
+  cursor: pointer;    
+  position: relative;
+}
+.sendSMS:hover{
+  background-color: #8e8e8e69;
+}
+.sendSMS.disabled{
+  cursor: not-allowed;
+}
+.sendSMS.disabled:before{
+    content: "";
+    background-image: url(/img/disable.ico);
+    background-size: contain;
+    color: red;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.sendSMS.disabled-error,.policeman.disabled-error{
+  cursor: not-allowed;
+}
+.disabled-error:before{
+    content: "";
+    background-image: url(/img/disable.ico);
+    background-size: contain;
+    color: red;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.sendSMS:after{
+  content: "";
+  background-image: url(/img/icon-sms.png);
+  background-size: contain;
+  width: 90%;
+  height: 90%;
+  position: absolute;
+  left: 2px;
+  top: 2px;
+}
+.p-8{
+  padding: 8px !important;
 }

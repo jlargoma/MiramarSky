@@ -63,7 +63,7 @@ class ImportICal extends Command
      * Import ICaledar for the agencies
      */
     public function importICalendar()
-    {
+    {              
         $icalendars_to_import = IcalImport::all();
         
         foreach ($icalendars_to_import as $ical_to_import) {
@@ -89,11 +89,21 @@ class ImportICal extends Command
             $valid_events = [];
 
             foreach ($events as $event) {
-                if ($this->isEventValidForAdd($event, $agency, $room_id)) {
-                	// $valid_events[] = $event;
-                    if (!$this->addBook($event, $agency, $room_id))
-                        Log::error("Adding event => " . print_r($event,true));
+              
+              // is is empty => is a AIRBNB alert
+              if ($agency == 4){
+                if ( empty($event->description) ){ 
+                  continue;
                 }
+              } elseif( $agency == 1 && trim($event->summary) == "CLOSED - Not Available"){ // is is empty => is a BOOKING alert
+                continue;
+              }
+               
+              if ($this->isEventValidForAdd($event, $agency, $room_id)) {
+                      // $valid_events[] = $event;
+                  if (!$this->addBook($event, $agency, $room_id))
+                      Log::error("Adding event => " . print_r($event,true));
+              }
             }
             // file_put_contents("/var/www/vhosts/apartamentosierranevada.net/httpdocs/miramarski/test.json", json_encode($valid_events));
         }
@@ -112,6 +122,17 @@ class ImportICal extends Command
         $finish = new DateTime($event->dtend);
         $interval = $start->diff($finish);
         $nights = $interval->format("%a");
+        $phone = '';
+        
+        if ($agency == 4){ //AIRBNB
+          $lines = explode(PHP_EOL, $event->description);
+          foreach ($lines as $data){
+            if (strpos($data, 'PHONE:') !== false) {
+              $phone = preg_replace('[PHONE\:|\\n]', '', $data);
+            }
+          }
+        }
+
 
         $book = new \App\Book();
 
@@ -119,8 +140,8 @@ class ImportICal extends Command
         $customer->user_id = 23;
         $customer->name    = $event->summary;
         $customer->name    .= ($agency == 1)? " -BOOKING-": " -AIRBNB-";
-        $customer->email   = "-";
-        $customer->phone   = "-";
+        $customer->email   = "";
+        $customer->phone   = trim($phone);
         $customer->DNI     = "-";
         $customer->save();
 

@@ -14,9 +14,8 @@ use Route;
 use App\ForfaitsPrices;
 use App\ClassesPrices;
 use App\ForfaitsCalendar;
-use App\Http\Controllers\FortfaitsController;
 
-class FortfaitsController extends Controller
+class FortfaitsController extends AppController
 {
     public static $fortfaits = [
 
@@ -112,7 +111,7 @@ class FortfaitsController extends Controller
                                        ],
                         ];
 
-   public static $cursillos = [
+    public static $cursillos = [
                'cursillo-esqui-semanal' => [
                                  'info' => 'SEMANA 3 HRS DIARIAS',
                                  'precios' => [
@@ -150,7 +149,7 @@ class FortfaitsController extends Controller
                                              ],
                                  ],
             ];
-   public static $jardin = [
+    public static $jardin = [
 
             'guarderia-jardin-alpino-am' => [
                               'info' => 'MAÑANAS 10:00.- A 13:00.-HRS',
@@ -191,7 +190,7 @@ class FortfaitsController extends Controller
             ];
 
 
-   public function forfait(Request $request)
+    public function forfait(Request $request)
     {   
          $mobile = new Mobile();
       $products = [
@@ -838,6 +837,26 @@ class FortfaitsController extends Controller
 //        print_r($products);
         
         return json_encode(array('products' => $products)); 
+    }
+    
+    public static function checkReCaptcha(){
+//        print_r($_POST);
+
+        //your site public key
+        $public_key = '6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV';
+        //your site secret key
+        $secret = '6LdOoYYUAAAAAL8A017bGUyR6pH-ZrBGrtYqpedX';
+        //get verify response data
+        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$_POST['token']);
+        $responseData = json_decode($verifyResponse);
+        
+//        print_r($responseData);
+        
+        if($_POST['public_key'] == $public_key && $responseData->success && $responseData->score >= 0.4){
+            echo json_encode(array('status' => 'true'));  
+        }else{
+            echo json_encode(array('status' => 'false'));  
+        }
     }
 
 }

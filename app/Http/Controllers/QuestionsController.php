@@ -8,7 +8,7 @@ use App\Http\Requests;
 use \Carbon\Carbon;
 use Mail;
 use App\Classes\Mobile;
-class QuestionsController extends Controller
+class QuestionsController extends AppController
 {
 
 	public static 	$meetUs = [

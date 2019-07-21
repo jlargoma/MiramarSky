@@ -23,6 +23,174 @@
                 <h2 class="font-w800">CONFIGURACIONES</h2>
             </div>
             <div class="col-md-12">
+                <div class="col-md-3 col-xs-12">
+                    <div class="col-md-12 m-b-15">
+                        <h3 class="text-center font-w300">Año actual</h3>
+                        @include('backend.years._selector')
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <div class="col-md-6 not-padding">
+                            <h3 class="text-left">Meses de Año Actual</h3>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control monthRange" id="monthRange"
+                                   style="cursor:pointer; text-align: center;min-height: 28px;" readonly=""
+                                   value="<?php echo $year->start_date;?> - <?php echo $year->end_date ?>">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-12">
+                    <div class="col-md-12 text-center">
+                        <h2>Settings - reservas </h2>
+                    </div>
+                    <div class="col-md-12 col-xs-12">
+                        <table class="table table-hover table-responsive-block">
+                            <thead>
+                            <tr>
+                                <th class="text-center bg-complete text-white">Nombre</th>
+                                <th class="text-center bg-complete text-white">Valor</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+							<?php foreach ($settingsBooks as $code => $name): ?>
+							<?php $setting = \App\Settings::where('key', $code)->first(); ?>
+                            <tr>
+                                <td class="text-center">
+                                    <b><?php echo $name ?></b>
+                                </td>
+                                <td class="text-center">
+                                    <input class="setting-editable" type="number" step="0.01"
+                                           data-code="{{ $code }}"
+                                           @if($setting != null) data-id="<?php echo $setting->id ?>" @else placeholder="introduce un valor" @endif
+                                           @if($setting != null) value="<?php echo $setting->value ?>" @endif
+                                           style="width: 100%;text-align: center; border-style: none none">
+                                </td>
+                            </tr>
+							<?php endforeach ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-12">
+                    <div class="col-md-12 text-center">
+                        <h2>Días minimos</h2>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="col-xs-12 push-10">
+                            <button class="btn btn-primary" style="float:right;" type="button" data-toggle="modal"
+                                    data-target="#segment">
+                                <i class="fa fa-plus"></i> Rango
+                            </button>
+                        </div>
+						<?php if ( count($specialSegments) > 0): ?>
+                        <table class="table table-condensed table-responsive-block">
+                            <thead>
+                            <tr>
+                                <th class="text-center bg-complete text-white">Inicio</th>
+                                <th class="text-center bg-complete text-white">Fin</th>
+                                <th class="text-center bg-complete text-white">Min Días</th>
+                                <th class="text-center bg-complete text-white">Accion</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+							<?php foreach ($specialSegments as $segment): ?>
+                            <tr>
+                                <td class="text-center" style="padding: 12px 20px!important">
+									<?php echo $segment->start ?>
+                                </td>
+                                <td class="text-center" style="padding: 12px 20px!important">
+									<?php echo $segment->finish ?>
+                                </td>
+                                <td class="text-center" style="padding: 12px 20px!important">
+									<?php echo $segment->minDays; ?>
+									<?php if($segment->minDays > 1): ?>
+                                    Días
+									<?php else: ?>
+                                    Día
+									<?php endif?>
+                                </td>
+                                <td class="text-center" style="padding: 12px 20px!important">
+                                    <button class="btn btn-primary btn-sm updateSegment" type="button"
+                                            data-toggle="modal" data-target="#segment"
+                                            data-id="<?php echo $segment->id ?>">
+                                        <i class="fa fa-edit"></i>
+                                    </button>
+
+                                    <a class="btn btn-danger btn-sm"
+                                       href="{{ url('/admin/specialSegments/delete/'.$segment->id )}}"
+                                       title="Eliminar Segmento">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+							<?php endforeach ?>
+                            </tbody>
+                        </table>
+						<?php else: ?>
+                        <h3 class="font-w300 text-center">
+                            No has establecido ningún Rango de días
+                        </h3>
+						<?php endif?>
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-12">
+                    <div class="col-md-12 text-center">
+                        <h2>Agentes - Rooms</h2>
+                    </div>
+                    <div class="col-xs-12 push-10">
+                        <button class="btn btn-primary" style="float:right;" type="button" data-toggle="modal"
+                                data-target="#agentRoom">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                    <div class="col-xs-12 push-10" style="overflow: auto; max-height: 335px;">
+						<?php if ( count($agentsRooms) > 0): ?>
+                        <table class="table table-condensed table-responsive-block">
+                            <thead>
+                            <tr>
+                                <th class="text-center bg-complete text-white">ID</th>
+                                <th class="text-center bg-complete text-white">Agente</th>
+                                <th class="text-center bg-complete text-white">Apart</th>
+                                <th class="text-center bg-complete text-white">Agencia</th>
+                                <th class="text-center bg-complete text-white">Accion</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+							<?php foreach ($agentsRooms as $agent): ?>
+                            <tr>
+                                <td class="text-center" style="padding: 12px 20px!important">
+									<?php echo $agent->id ?>
+                                </td>
+                                <td class="text-center" style="padding: 12px 20px!important">
+									<?php echo $agent->user->name ?>
+                                </td>
+                                <td class="text-center" style="padding: 12px 20px!important">
+									<?php echo $agent->room->nameRoom; ?>
+                                </td>
+                                <td class="text-center" style="padding: 12px 20px!important">
+									<?php echo \App\Book::getAgency($agent->agency_id) ?>
+                                </td>
+                                <td class="text-center" style="padding: 12px 20px!important">
+
+                                    <a class="btn btn-danger btn-sm"
+                                       href="{{ url('/admin/agentRoom/delete/'.$agent->id )}}"
+                                       title="Eliminar">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+							<?php endforeach ?>
+                            </tbody>
+                        </table>
+						<?php else: ?>
+                        <h3 class="font-w300 text-center">
+                            No has establecido ningún Agente para habitaciones
+                        </h3>
+						<?php endif?>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
                 <div class="col-md-6 col-xs-12">
                     <div class="col-md-12 text-center">
                         <h2>Extras</h2>
@@ -54,7 +222,9 @@
                                            style="width: 100%;text-align: center;border-style: none none">
                                 </td>
                                 <td class="text-center">
-									<?php $ben = (($extra->price * 100) / $extra->cost) - 100; ?>
+									<?php $cost = ($extra->cost == 0) ? 1 : $extra->cost?>
+									<?php $ben = (($extra->price * 100) / $cost); ?>
+									<?php $ben = ($ben == 0) ? $ben : ($ben - 100);  ?>
 									<?php echo number_format($ben, 2, ',', '.') ?>%
                                 </td>
                             </tr>
@@ -164,128 +334,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12">
-                <div class="col-md-6 col-xs-12">
-                    <div class="col-md-12 text-center">
-                        <h2>Días minimos</h2>
-                    </div>
-                    <div class="col-xs-12">
-                        <div class="col-xs-12 push-10">
-                            <button class="btn btn-primary" style="float:right;" type="button" data-toggle="modal"
-                                    data-target="#segment">
-                                <i class="fa fa-plus"></i> Rango
-                            </button>
-                        </div>
-						<?php if ( count($specialSegments) > 0): ?>
-                        <table class="table table-condensed table-responsive-block">
-                            <thead>
-                            <tr>
-                                <th class="text-center bg-complete text-white">Inicio</th>
-                                <th class="text-center bg-complete text-white">Fin</th>
-                                <th class="text-center bg-complete text-white">Min Días</th>
-                                <th class="text-center bg-complete text-white">Accion</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-							<?php foreach ($specialSegments as $segment): ?>
-                            <tr>
-                                <td class="text-center" style="padding: 12px 20px!important">
-									<?php echo $segment->start ?>
-                                </td>
-                                <td class="text-center" style="padding: 12px 20px!important">
-									<?php echo $segment->finish ?>
-                                </td>
-                                <td class="text-center" style="padding: 12px 20px!important">
-									<?php echo $segment->minDays; ?>
-									<?php if($segment->minDays > 1): ?>
-                                    Días
-									<?php else: ?>
-                                    Día
-									<?php endif?>
-                                </td>
-                                <td class="text-center" style="padding: 12px 20px!important">
-                                    <button class="btn btn-primary btn-sm updateSegment" type="button"
-                                            data-toggle="modal" data-target="#segment"
-                                            data-id="<?php echo $segment->id ?>">
-                                        <i class="fa fa-edit"></i>
-                                    </button>
 
-                                    <a class="btn btn-danger btn-sm"
-                                       href="{{ url('/admin/specialSegments/delete/'.$segment->id )}}"
-                                       title="Eliminar Segmento">
-                                        <i class="fa fa-times" aria-hidden="true"></i>
-                                    </a>
-                                </td>
-                            </tr>
-							<?php endforeach ?>
-                            </tbody>
-                        </table>
-						<?php else: ?>
-                        <h3 class="font-w300 text-center">
-                            No has establecido ningún Rango de días
-                        </h3>
-						<?php endif?>
-                    </div>
-                </div>
-                <div class="col-md-4 col-xs-12">
-                    <div class="col-md-12 text-center">
-                        <h2>Agentes - Rooms</h2>
-                    </div>
-                    <div class="col-xs-12 push-10">
-                        <button class="btn btn-primary" style="float:right;" type="button" data-toggle="modal"
-                                data-target="#agentRoom">
-                            <i class="fa fa-plus"></i>
-                        </button>
-                    </div>
-                    <div class="col-xs-12 push-10" style="overflow: auto; max-height: 335px;">
-						<?php if ( count($agentsRooms) > 0): ?>
-                        <table class="table table-condensed table-responsive-block">
-                            <thead>
-                            <tr>
-                                <th class="text-center bg-complete text-white">ID</th>
-                                <th class="text-center bg-complete text-white">Agente</th>
-                                <th class="text-center bg-complete text-white">Apart</th>
-                                <th class="text-center bg-complete text-white">Agencia</th>
-                                <th class="text-center bg-complete text-white">Accion</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-							<?php foreach ($agentsRooms as $agent): ?>
-                            <tr>
-                                <td class="text-center" style="padding: 12px 20px!important">
-									<?php echo $agent->id ?>
-                                </td>
-                                <td class="text-center" style="padding: 12px 20px!important">
-									<?php echo $agent->user->name ?>
-                                </td>
-                                <td class="text-center" style="padding: 12px 20px!important">
-									<?php echo $agent->room->nameRoom; ?>
-                                </td>
-                                <td class="text-center" style="padding: 12px 20px!important">
-	                                <?php echo \App\Book::getAgency($agent->agency_id) ?>
-                                </td>
-                                <td class="text-center" style="padding: 12px 20px!important">
-
-                                    <a class="btn btn-danger btn-sm"
-                                       href="{{ url('/admin/agentRoom/delete/'.$agent->id )}}"
-                                       title="Eliminar">
-                                        <i class="fa fa-times" aria-hidden="true"></i>
-                                    </a>
-                                </td>
-                            </tr>
-							<?php endforeach ?>
-                            </tbody>
-                        </table>
-						<?php else: ?>
-                        <h3 class="font-w300 text-center">
-                            No has establecido ningún Agente para habitaciones
-                        </h3>
-						<?php endif?>
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
     </div>
 
     <div class="modal fade slide-up in" id="segment" tabindex="-1" role="dialog" aria-hidden="true">
@@ -329,12 +379,13 @@
                             <div class="row">
                                 <form action="{{ url('/admin/agentRoom/create') }}" method="post">
                                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-									<?php $roomsToAgents = \App\Rooms::where('state', '=', 1)->orderBy('order')->get();?>
+									<?php $roomsToAgents = \App\Rooms::where('state', '=', 1)->orderBy('order')
+									                                 ->get();?>
 									<?php $agents = \App\User::where('role', 'agente')->get();?>
                                     <div class="col-md-3 col-xs-12 push-10">
                                         <label>Agente</label>
                                         <select class="form-control full-width minimal" name="user_id" required>
-                                            <option ></option>
+                                            <option></option>
 											<?php foreach ($agents as $agent): ?>
                                             <option value="<?php echo $agent->id ?>">
 												<?php echo $agent->name  ?>
@@ -345,10 +396,10 @@
                                     <div class="col-md-3 col-xs-12 push-10">
                                         <label>Apartamento</label>
                                         <select class="form-control full-width minimal" name="room_id" required>
-                                            <option ></option>
+                                            <option></option>
 											<?php foreach ($roomsToAgents as $room): ?>
                                             <option value="<?php echo $room->id ?>">
-												<?php echo substr($room->nameRoom." - ".$room->name, 0,12)  ?>
+												<?php echo substr($room->nameRoom . " - " . $room->name, 0, 12)  ?>
                                             </option>
 											<?php endforeach ?>
                                         </select>
@@ -356,11 +407,11 @@
                                     <div class="col-md-3 col-xs-12 push-10">
                                         <label>Agencia</label>
                                         <select class="form-control full-width agency minimal" name="agency_id">
-			                                <?php for ($i=0; $i <= 7 ; $i++): ?>
+											<?php for ($i = 0; $i <= 7 ; $i++): ?>
                                             <option value="<?php echo $i ?>">
-				                                <?php echo \App\Book::getAgency($i) ?>
+												<?php echo \App\Book::getAgency($i) ?>
                                             </option>
-			                                <?php endfor;?>
+											<?php endfor;?>
                                         </select>
                                     </div>
                                     <div class="col-md-3 col-xs-12 push-10">
@@ -376,21 +427,110 @@
             </div>
         </div>
     </div>
+<div class="container-fluid padding-25 sm-padding-10">
+<div class="row">
+  <div class="col-md-3 col-xs-6">
+    @if ($message = Session::get('success-gral'))
+    <div class="alert alert-success alert-block">
+            <button type="button" class="close" data-dismiss="alert">×</button>	
+            <strong>{{ $message }}</strong>
+    </div>
+    @endif
+    <form method="POST" action="{{route('settings.gral.upd')}}">
+    <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
+    <table class="table table-hover  table-responsive">
+      <thead>
+        <tr>
+          <th class="text-center bg-complete text-white" colspan="2"> General Settings</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($general as $k => $v): ?>
+          <tr>
+            <td class="text-center" >{{$v['label']}}</td>
+            <td class="text-center" >
+              <input class="form-control" type="text" name="{{$k}}" id="{{$k}}" value="{{$v['val']}}" >
+            </td>
+          </tr>
+        <?php endforeach ?>
+      </tbody>
+    </table>
+    <button class="btn btn-complete font-w400" type="submit">Guardar</button>
+    </form>
+  </div>
+</div>
+</div>
 @endsection
 
 @section('scripts')
-
-    <script src="/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
-    <script src="/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js"
-            type="text/javascript"></script>
-    <script src="/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
-    <script src="/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js"
-            type="text/javascript"></script>
-    <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
-    <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
-
+    <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
+    <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
+    <script src="{{ asset('/assets/js/notifications.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
+        function showNotify(status, message, type){
+          $.notify({
+            title: '<strong>'+status+'</strong>, ',
+            icon: 'glyphicon glyphicon-star',
+            message: message
+          },{
+            type: type,
+            animate: {
+              enter: 'animated fadeInUp',
+              exit: 'animated fadeOutRight'
+            },
+            placement: {
+              from: "top",
+              align: "right"
+            },
+            allow_dismiss: false,
+            offset: 80,
+            spacing: 10,
+            z_index: 1031,
+            delay: 500,
+            timer: 500,
+          });
+        }
       $(document).ready(function () {
+        $(".monthRange").daterangepicker({
+          "buttonClasses": "button button-rounded button-mini nomargin",
+          "applyClass": "button-color",
+          "cancelClass": "button-light",
+          // "startDate": moment().format("DD MMM, YY"),
+//                "startDate": '10 Dec, YY',
+          locale: {
+            format: 'YYYY-MM-DD',
+            "applyLabel": "Aplicar",
+            "cancelLabel": "Cancelar",
+            "fromLabel": "From",
+            "toLabel": "To",
+            "customRangeLabel": "Custom",
+            "daysOfWeek": [
+              "Do",
+              "Lu",
+              "Mar",
+              "Mi",
+              "Ju",
+              "Vi",
+              "Sa"
+            ],
+            "monthNames": [
+              "Enero",
+              "Febrero",
+              "Marzo",
+              "Abril",
+              "Mayo",
+              "Junio",
+              "Julio",
+              "Agosto",
+              "Septiembre",
+              "Octubre",
+              "Noviembre",
+              "Diciembre"
+            ],
+            "firstDay": 1,
+          },
+
+        });
 
         $('.rules').change(function (event) {
           var id = $(this).attr('data-id');
@@ -431,6 +571,26 @@
           var id = $(this).attr('data-id');
           $.get('/admin/specialSegments/update/' + id, function (data) {
             $('#contentSegments').empty().append(data);
+          });
+        });
+
+        $(".monthRange").change(function () {
+          var yearMonths = $(this).val();
+          $.post("{{ route('years.change.month') }}", {dates: yearMonths}).done(function (data) {
+            console.log(data);
+            location.reload();
+          });
+        });
+
+        $('.setting-editable').change(function () {
+          var code = $(this).attr('data-code');
+          var value = $(this).val();
+          $.post("{{ route('settings.createUpdate') }}", {code: code, value: value}).done(function (data) {
+            var response = jQuery.parseJSON(data);
+            showNotify(response.status, response.message, 'success')
+          }).fail(function (data) {
+            var response = jQuery.parseJSON(data);
+            showNotify(response.status, response.message, 'danger')
           });
         });
       });

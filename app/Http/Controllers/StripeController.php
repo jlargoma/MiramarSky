@@ -11,7 +11,7 @@ use \Carbon\Carbon;
 use Auth;
 use App\Classes\Mobile;
 use File;
-class StripeController extends Controller
+class StripeController extends AppController
 {
 
     public static 	$stripe = [

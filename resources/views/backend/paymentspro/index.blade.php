@@ -7,11 +7,13 @@
 @section('title') Administrador de reservas MiramarSKI @endsection
 
 @section('externalScripts') 
-	<link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/font-icons.css')}}">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset ('/frontend/css/font-icons.css')}}">
     <link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
     <link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
-    </script>
     <script type="text/javascript" src="/assets/js/canvasjs/canvasjs.min.js"></script>
     <style>
 
@@ -102,15 +104,7 @@
             <h2 class="font-w300">Pagos a <span class="font-w800">propietarios</span> </h2>
         </div>
         <div class="col-md-1 col-xs-12">
-        	<select id="fechas" class="form-control minimal">
-				<?php $fecha = Carbon::now()->SubYear(3)->copy(); ?>			
-                <?php for ($i=1; $i <= 4; $i++): ?>                           
-                    <option value="<?php echo $fecha->copy()->format('Y'); ?>" <?php if ($fecha->copy()->format('Y') == $date->copy()->format('Y')): ?>selected<?php endif ?>> 
-                        <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
-                    </option>
-                    <?php $fecha->addYear(); ?>
-                <?php endfor; ?>
-            </select>
+        	@include('backend.years._selector')
         </div>
     </div>
     <?php if (!$mobile->isMobile()): ?>
@@ -195,7 +189,9 @@
 	    							
 	    						</td>
 	    						<td class="text-center" style="padding: 8px;">
-	    							<?php $benPercentage = ($beneficio/$summary['totalPVP'])*100;?>
+	    							<?php $summary['totalPVP'] = ($summary['totalPVP'] == 0) ? 1 :
+	    							$summary['totalPVP']; ?>
+	    							<?php $benPercentage = ($beneficio/ $summary['totalPVP'])*100;?>
 	    							<?php  echo number_format($benPercentage,0,',','.') ?>%
 	    						</td>
 	    						<td class="text-center" style="padding: 8px;">
@@ -222,7 +218,6 @@
 	    	<div class="col-md-8 col-xs-12 push-0">
 	    		<div class="col-md-12 col-xs-12 pull-right not-padding">
 		    		<table class="table tableRooms">
-
 		    			<thead>
 		    				<tr>
 		    					
@@ -280,7 +275,10 @@
 					        		<?php $pendiente   = $costPropTot - $data[$room->id]['pagos'] ?>
 					        		<tr>
 					        			<td class="text-left"  style="padding: 10px 5px !important;">
-				        					<a class="update-payments" data-debt="<?php echo $pendiente ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments">
+				        					<a class="update-payments" data-debt="<?php echo $pendiente ?>"
+				        					data-month="{{ $year->year }}" data-id="<?php echo $room->id ?>"
+				        					data-toggle="modal"
+				        					data-target="#payments">
 				        						<?php echo ucfirst($room->user->name) ?> (<?php echo $room->nameRoom ?>)
 				        					</a>
 					        				
@@ -421,7 +419,7 @@
 	    					<th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
 	    						Apart
 	    					</th>
-	    					<?php $lastThreeSeason = $date->copy()->subYears(2) ?>
+							<?php $lastThreeSeason = Carbon::createFromFormat('Y', $year->year)->subYears(2) ?>
 							<?php for ($i=1; $i < 4; $i++): ?>
 								<th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
 									Temp. <?php echo $lastThreeSeason->copy()->format('y'); ?> - <?php echo $lastThreeSeason->copy()->addYear()->format('y'); ?>
@@ -436,9 +434,11 @@
 			        		<?php if ($room->state == 1): ?>
 			        		<tr>
 			        			<td class="text-center"  style="padding: 10px 5px ;">
-			        				<?php echo ucfirst(substr($room->user->name, 0, 6)) ?> (<?php echo substr($room->nameRoom, 0, 6) ?>)
+									<a class="historic-production" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments">
+										<?php echo ucfirst(substr($room->user->name, 0, 6)) ?> (<?php echo substr($room->nameRoom, 0, 6) ?>)
+									</a>
 			        			</td>
-			        			<?php $lastThreeSeason = $date->copy()->subYears(2) ?>
+			        			<?php $lastThreeSeason = Carbon::createFromFormat('Y', $year->year)->subYears(2) ?>
 								<?php for ($i=1; $i < 4; $i++): ?>
 				        			<td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
 										<?php echo  number_format( $room->getCostPropByYear($lastThreeSeason->copy()->format('Y')) ,0,',','.'); ?> €
@@ -619,7 +619,10 @@
 								<?php $pendiente   = $costPropTot - $data[$room->id]['pagos'] ?>
 				        		<tr>
 				        			<td class="text-left"  style="padding: 10px 5px ;">
-				        				<a class="update-payments" data-debt="<?php echo $pendiente ?>" data-month="<?php echo $date->copy()->format('Y') ?>" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments" title="Añadir pago" style="cursor: pointer">
+				        				<a class="update-payments" data-debt="<?php echo $pendiente ?>"
+				        				data-month="{{ $year->year }}" data-id="<?php echo $room->id ?>"
+				        				data-toggle="modal"
+				        				data-target="#payments" title="Añadir pago" style="cursor: pointer">
 				        					<?php echo ucfirst(substr($room->user->name, 0, 6)) ?> (<?php echo substr($room->nameRoom, 0, 6) ?>)
 				        				</a>
 				        			</td>
@@ -776,7 +779,9 @@
 					        		
 					        		<tr>
 					        			<td class="text-center"  style="padding: 10px 5px ;">
-					        				<?php echo ucfirst(substr($room->user->name, 0, 6)) ?> (<?php echo substr($room->nameRoom, 0, 6) ?>)
+											<a class="historic-production" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments">
+												<?php echo ucfirst(substr($room->user->name, 0, 6)) ?> (<?php echo substr($room->nameRoom, 0, 6) ?>)
+											</a>
 					        			</td>
 					        			<?php $lastThreeSeason = $date->copy()->subYears(2) ?>
 										<?php for ($i=1; $i < 4; $i++): ?>
@@ -864,9 +869,11 @@
             $(".dateRange").daterangepicker({
                 "buttonClasses": "button button-rounded button-mini nomargin",
                 "applyClass": "button-color",
-                "cancelClass": "button-light",            
-                "startDate": '01 Nov, <?php echo $date->copy()->format('y') ?>',
-                "endDate": '01 Nov, <?php echo $date->copy()->addYear()->format('y') ?>',
+                "cancelClass": "button-light",
+                "startDate": moment().format("DD MMM, YY"),
+                "endDate": moment().add(1, 'years').format("DD MMM, YY"),
+//                "startDate": '01 Nov, <?php // echo $date->copy()->format('y') ?>',
+//                "endDate": '01 Nov, <?php // echo $date->copy()->addYear()->format('y') ?>',
                 locale: {
                     format: 'DD MMM, YY',
                     "applyLabel": "Aplicar",
@@ -909,6 +916,13 @@
 				var id   = $(this).attr('data-id');
 				var month = $(this).attr('data-month');
 				$.get('/admin/pagos-propietarios/update/'+id+'/'+month,{ debt: debt}, function(data) {
+					$('.contentPayments').empty().append(data);
+				});
+			});
+                        
+			$('.historic-production').click(function(event) {
+				var room_id   = $(this).attr('data-id');
+				$.get('/admin/pagos-propietarios/get/historic_production/'+room_id, function(data) {
 					$('.contentPayments').empty().append(data);
 				});
 			});

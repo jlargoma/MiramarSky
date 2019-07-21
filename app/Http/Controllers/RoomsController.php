@@ -13,7 +13,7 @@ use Mail;
 use File;
 use PDF;
 
-class RoomsController extends Controller
+class RoomsController extends AppController
 {
 	/**
 	 * @var CachedRepository
@@ -26,9 +26,9 @@ class RoomsController extends Controller
 	 */
 	public function __construct(CachedRepository $repository)
 	{
-		$this->repository = $repository;	
+		$this->repository = $repository;
 	}
-	
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -310,8 +310,8 @@ class RoomsController extends Controller
 
 		$room = \App\Rooms::where('nameRoom', $id)->first();
 
-		$directory = public_path() . "/img/miramarski/apartamentos/" . $room->nameRoom;
-		$directoryThumbnail = public_path() . "/img/miramarski/apartamentos/" . $room->nameRoom. "/thumbnails";
+		$directory          = public_path() . "/img/miramarski/apartamentos/" . $room->nameRoom;
+		$directoryThumbnail = public_path() . "/img/miramarski/apartamentos/" . $room->nameRoom . "/thumbnails";
 
 		if (!file_exists($directory))
 		{
@@ -567,17 +567,18 @@ class RoomsController extends Controller
 		// die();
 
 		$room                 = \App\Rooms::find($request->input('id'));
-		$room->name           = $request->input('name');
-		$room->nameRoom       = $request->input('nameRoom');
-		$room->minOcu         = $request->input('minOcu');
-		$room->maxOcu         = $request->input('maxOcu');
-		$room->owned          = $request->input('owned');
-		$room->typeApto       = $request->input('type');
-		$room->sizeApto       = $request->input('sizeApto');
-		$room->parking        = $request->input('parking');
-		$room->locker         = $request->input('locker');
-		$room->profit_percent = $request->input('profit_percent');
-		$room->description    = $request->input('description');
+		$room->name           = ($request->input('name')) ? $request->input('name') : $room->name;
+		$room->nameRoom       = ($request->input('nameRoom')) ? $request->input('nameRoom') : $room->nameRoom;
+		$room->minOcu         = ($request->input('minOcu')) ? $request->input('minOcu') : $room->minOcu;
+		$room->maxOcu         = ($request->input('maxOcu')) ? $request->input('maxOcu') : $room->maxOcu;
+		$room->owned          = ($request->input('owned')) ? $request->input('owned') : $room->owned;
+		$room->typeApto       = ($request->input('type')) ? $request->input('type') : $room->typeApto;
+		$room->sizeApto       = ($request->input('sizeApto')) ? $request->input('sizeApto') : $room->sizeApto;
+		$room->parking        = ($request->input('parking')) ? $request->input('parking') : $room->parking;
+		$room->locker         = ($request->input('locker')) ? $request->input('locker') : $room->locker;
+		$room->profit_percent = ($request->input('profit_percent')) ? $request->input('profit_percent') : $room->profit_percent;
+		$room->description    = ($request->input('description')) ? $request->input('description') : $room->description;
+		$room->num_garage     = ($request->input('num_garage')) ? $request->input('num_garage') : $room->num_garage;
 
 		if ($room->save())
 		{
@@ -673,12 +674,12 @@ class RoomsController extends Controller
 				$message->subject('Imagenes del apartamento ' . $room->sizeRooms->name . ' // ' . $luxury);
 			});
 
-			if ($send )
+			if ($send)
 				echo "EMAIL SALIENDO";
 
-			$log          = new \App\LogImages();
-			$log->email   = $email;
-			$log->room_id = $room->id;
+			$log           = new \App\LogImages();
+			$log->email    = $email;
+			$log->room_id  = $room->id;
 			$log->admin_id = Auth::user()->id;
 			if ($request->register != 0)
 			{
@@ -688,7 +689,8 @@ class RoomsController extends Controller
 
 			if (isset($request->returned))
 				return redirect()->back();
-		}else{
+		} else
+		{
 			echo "No exite el directorio";
 		}
 

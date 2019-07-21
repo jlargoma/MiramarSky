@@ -1,9 +1,10 @@
-<?php use \Carbon\Carbon; setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
+<?php use \Carbon\Carbon; setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); $controller = new
+\App\Http\Controllers\PaylandsController()?>
 Hola "<?php echo $book->customer->name ?>" hemos bloqueado parcialmente un apartamento en respuesta a tu solicitud:<br/><br/>
 
 <h2><u>Pago de la reserva</u></h2>
-<b>Dispones de un plazo de 4 horas para realizar el pago de la señal </b> 
-<?php 
+<b>Dispones de un plazo de 4 horas para realizar el pago de la señal </b>
+<?php
 	$percent = 0.5;
 	$date = Carbon::createFromFormat('Y-m-d', $book->start);
 	$now = Carbon::now();
@@ -18,10 +19,19 @@ Hola "<?php echo $book->customer->name ?>" hemos bloqueado parcialmente un apart
 ?>
 <b style="color: red"><?php echo $percent*100; ?>% del total =  <?php echo number_format(($book->total_price*$percent),2,',','.') ?> €</b>
 a través de nuestra pasarela de pago para tarjetas.<br><br>
+	<?php
 
-	<a href="https://miramarski.com/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>/<?php echo base64_encode(number_format(($book->total_price*$percent),2,',','.')) ?>">
-		https://miramarski.com/reservas/stripe/pagos/<?php echo base64_encode($book->id) ?>/<?php echo base64_encode(number_format(($book->total_price*$percent),2,',','.')) ?>
-	</a><br><br>
+	$urlToRedirect        = $controller->generateOrderPayment([
+                                                        'customer_id' => $book->customer->id,
+                                                        'amount'      => (round($book->total_price * $percent)),
+                                                        'url_ok'      => route('payland.thanks.payment', ['id' => $book->id]),
+                                                        'url_ko'      => route('payland.thanks.payment', ['id' => $book->id]),
+														]);
+	?>
+	<a href="{{ $urlToRedirect }}">
+		PAGA AHORA
+	</a>
+<br><br>
 
 <b><strong>Una vez recibamos el pago de la señal, el apartamento quedará bloquedo y tu recibiras un email con la confirmación.</strong><br>
 

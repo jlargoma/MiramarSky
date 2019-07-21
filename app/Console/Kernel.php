@@ -14,6 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\ImportICal::class,
+        Commands\CheckPartee::class,
+        Commands\SendParteeSMS::class,
     ];
 
     /**
@@ -24,7 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+         $schedule->command('partee:check')->daily();
+         $schedule->command('partee:sendSMS')->dailyAt('7:00');
     }
 }

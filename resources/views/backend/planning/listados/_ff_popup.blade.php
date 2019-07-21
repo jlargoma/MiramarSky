@@ -49,9 +49,9 @@
     <div class="container div_margin col-lg-12">
         <div class="col-lg-4 col-md-4 bold" style="background-color:#0000E6; color:#ffffff; padding:4px;">Estado</div>
         <div class="col-lg-2 col-md-2 col-xs-5 text-center" style="margin-bottom:8px;"><a class="btn btn-raise update_ff_status" href="/admin/reservas/ff_change_status_popup/{{$book->id}}/3" style="@if($book->ff_status == 3)color:#ffffff; background-color:green;@else background-color:#cccccc;@endif">Confirmada</a></div>
-        <div class="col-lg-2 col-md-2 col-xs-5 text-center" style="margin-bottom:8px;"><a class="btn btn-raise update_ff_status" href="/admin/reservas/ff_change_status_popup/{{$book->id}} ?>/2" style="@if($book->ff_status == 2)color:#ffffff; background-color:red;@else background-color:#cccccc;@endif">No Cobrada</a></div>
-        <div class="col-lg-2 col-md-2 col-xs-5 text-center" style="margin-bottom:8px;"><a class="btn btn-raise update_ff_status" href="/admin/reservas/ff_change_status_popup/{{$book->id}} ?>/1" style="@if($book->ff_status == 1)background-color:#7F7F7F; color:#ffffff;@else background-color:#cccccc;@endif">Cancelada</a></div>
-        <div class="col-lg-2 col-md-2 col-xs-5 text-center" style="margin-bottom:8px;"><a class="btn btn-raise update_ff_status" href="/admin/reservas/ff_change_status_popup/{{$book->id}} ?>/0" style="@if($book->ff_status == 0)background-color:#7F7F7F; color:#ffffff;@else background-color:#cccccc;@endif">No Gestionada</a></div>
+        <div class="col-lg-2 col-md-2 col-xs-5 text-center" style="margin-bottom:8px;"><a class="btn btn-raise update_ff_status" href="/admin/reservas/ff_change_status_popup/{{$book->id}}/2" style="@if($book->ff_status == 2)color:#ffffff; background-color:red;@else background-color:#cccccc;@endif">No Cobrada</a></div>
+        <div class="col-lg-2 col-md-2 col-xs-5 text-center" style="margin-bottom:8px;"><a class="btn btn-raise update_ff_status" href="/admin/reservas/ff_change_status_popup/{{$book->id}}/1" style="@if($book->ff_status == 1)background-color:#7F7F7F; color:#ffffff;@else background-color:#cccccc;@endif">Cancelada</a></div>
+        <div class="col-lg-2 col-md-2 col-xs-5 text-center" style="margin-bottom:8px;"><a class="btn btn-raise update_ff_status" href="/admin/reservas/ff_change_status_popup/{{$book->id}}/0" style="@if($book->ff_status == 0)background-color:#7F7F7F; color:#ffffff;@else background-color:#cccccc;@endif">No Gestionada</a></div>
     </div>
 
     <div class="container div_margin col-lg-12">
