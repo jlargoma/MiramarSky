@@ -6,8 +6,7 @@
 
 @section('title') Administrador de reservas MiramarSKI @endsection
 
-@section('externalScripts') 
-
+@section('externalScripts')
 	<style type="text/css">
 		.name-back{
 			background-color: rgba(72,176,247,0.5)!important;

@@ -23,28 +23,6 @@ class PaylandsController extends AppController
 
 	}
 
-	public function generateOrderPayment($params)
-	{
-		$response = $params;
-		if (isset($response['_token']))
-			unset($params['_token']);
-		$customer                    = \App\Customers::find($response['customer_id']);
-		$response['amount']          = ($response['amount']) * 100;
-		$response['customer_ext_id'] = $customer->email;
-		$response['operative']       = "AUTHORIZATION";
-		$response['secure']          = true;
-		$response['signature']       = env('PAYLAND_SIGNATURE');
-		$response['service']         = env('PAYLAND_SERVICE');
-		$response['description']     = "COBRO RESERVA CLIENTE" . $customer->name;
-		$response['url_ok']          .= "/" . $response['amount'];
-		$response['url_ko']          .= "/" . $response['amount'];
-		//dd($response);
-		$orderPayment  = $this->getPaylandApiClient()->payment($response);
-		$urlToRedirect = $this->getPaylandApiClient()->processPayment($orderPayment->order->token);
-		return $urlToRedirect;
-
-	}
-
     public function link(Request $request)
     {
         if ($request->book != 0)

@@ -103,9 +103,9 @@
                             <a href="{{ url('admin/liquidacion') }}" class="detailed">Liq. por reservas</a>
                         </li>
 
-                        {{--<li class="{{ Request::path() == 'admin/pagos-propietarios'  ? 'active' : '' }}">--}}
-                            {{--<a href="{{ url('admin/pagos-propietarios') }}" class="detailed">Pagos a propietarios</a>--}}
-                        {{--</li>--}}
+                        <li class="{{ Request::path() == 'admin/pagos-propietarios'  ? 'active' : '' }}">
+                            <a href="{{ url('admin/pagos-propietarios') }}" class="detailed">Pagos a propietarios</a>
+                        </li>
 
 
                         <li class="{{ Request::path() == 'admin/contabilidad'  ? 'active' : '' }}">
@@ -113,20 +113,9 @@
                         </li>
                     <?php endif ?>
                     <?php if ( Auth::user()->role == "admin" ): ?>
-                    <?php
-	                    $defaultRoom = '';
-                        if ( count(Auth::user()->rooms) > 0)
-                        {
-                            foreach (Auth::user()->rooms as $room)
-                            {
-	                            $defaultRoom = $room->name;
-	                            break;
-                            }
-                        }
-                    ?>
-                    {{--<li class="{{  (preg_match('/propietario/i',Request::path()))  ? 'active' : '' }}">--}}
-                        {{--<a href="{{ url('admin/propietario/'. $defaultRoom) }}" class="detailed">Area Propietario</a>--}}
-                    {{--</li>--}}
+                    <li class="{{  (preg_match('/propietario/i',Request::path()))  ? 'active' : '' }}">
+                        <a href="{{ url('admin/propietario/8D') }}" class="detailed">Area Propietario</a>
+                    </li>
 
                     <li class="{{ Request::path() == 'admin/precios' ? 'active' : '' }}">
                         <a href="{{ url('admin/precios') }}" class="detailed">Precios y temporadas</a>
@@ -144,19 +133,19 @@
                         <a href="{{ url('admin/apartamentos') }}" class="detailed">Aptos</a>
                     </li>
 
-                    {{--<li class="{{ Request::path() == 'admin/facturas' ? 'active' : '' }}">--}}
-                        {{--<a href="{{ url('admin/facturas') }}"  class="detailed">Facturas</a>--}}
-                    {{--</li>--}}
+                    <li class="{{ Request::path() == 'admin/facturas' ? 'active' : '' }}">
+                        <a href="{{ url('admin/facturas') }}"  class="detailed">Facturas</a>
+                    </li>
 
                     {{--<li class="{{ Request::path() == 'admin/encuestas' ? 'active' : '' }}">--}}
-                    {{--<a href="{{ url('admin/encuestas') }}" class="detailed">Encuestas</a>--}}
+                        {{--<a href="{{ url('admin/encuestas') }}" class="detailed">Encuestas</a>--}}
                     {{--</li>--}}
 
-                    {{--<li class="{{ Request::path() == 'admin/supermercado' ? 'active' : '' }}">--}}
-                    {{--<a href="#" class="detailed">Super</a>--}}
-                    {{--</li>--}}
+                    <li class="{{ Request::path() == 'admin/supermercado' ? 'active' : '' }}">
+                        <a href="#" class="detailed">Super</a>
+                    </li>
 
-                    {{--<li class="{{ Request::path() == 'admin/forfaits' ? 'active' : '' }}"><a href="{{ url('admin/forfaits') }}" class="detailed">Forfaits</a></li>--}}
+                    <li class="{{ Request::path() == 'admin/forfaits' ? 'active' : '' }}"><a href="{{ url('admin/forfaits') }}" class="detailed">Forfaits</a></li>
 
                     <li class="{{ Request::path() == 'admin/settings' ? 'active' : '' }}">
                         <a href="{{ url('admin/settings') }}" class="detailed">Settings</a>

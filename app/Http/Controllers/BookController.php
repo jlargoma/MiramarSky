@@ -26,14 +26,9 @@ setlocale(LC_TIME, "es_ES");
 
 class BookController extends AppController
 {
-        use BookEmailsStatus,BookParteeActions;
-  
-	private $cachedRepository;
+	use BookEmailsStatus, BookParteeActions;
 
-	public function __construct(CachedRepository $cachedRepository)
-	{
-		$this->cachedRepository = $cachedRepository;
-	}
+
 
 	/**
 	 * Display a listing of the resource.
@@ -169,42 +164,49 @@ class BookController extends AppController
 					$alarms[] = $book;
 			}
 		}
-                
-                $alert_lowProfits = false; //To the alert efect
-                $percentBenef = DB::table('percent')->find(1)->percent;
-                $lowProfits = $this->lowProfitAlert($startYear,$endYear,$percentBenef,$alert_lowProfits);
-                
-                $parteeToActive = BookPartee::where('status','HUESPEDES')->get();
-                
+
+		$alert_lowProfits = false; //To the alert efect
+		$percentBenef     = DB::table('percent')->find(1)->percent;
+		$lowProfits       = $this->lowProfitAlert($startYear, $endYear, $percentBenef, $alert_lowProfits);
+
+		$parteeToActive = BookPartee::where('status', 'HUESPEDES')->get();
+
 		return view(
 			'backend/planning/index',
 			compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
-			        'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits','alert_lowProfits','percentBenef','parteeToActive')
+			        'stripedsPayments', 'notifications', 'booksCount', 'alarms', 'lowProfits', 'alert_lowProfits', 'percentBenef', 'parteeToActive')
 		);
 	}
 
-        private function lowProfitAlert($startYear,$endYear,$percentBenef,&$alert) {
+	private function lowProfitAlert($startYear, $endYear, $percentBenef, &$alert)
+	{
 
-          $booksAlarms = \App\Book::where('start', '>', $startYear)
-		  ->where('finish', '<', $endYear)
-                  ->whereIn('type_book', [2,7,8])
-                  ->orderBy('start', 'ASC')->get();
-	
-          $alarms      = array();
-          
-          foreach ($booksAlarms as $key => $book)
-          {
-            $inc_percent = $book->get_inc_percent();
-            if(round($inc_percent) <= $percentBenef){
-              if (!$book->has_low_profit){
-                $alert = true;
-              }
-              $alarms[] = $book;
-            }
-          }
-          return $alarms;
-        }
-        
+		$booksAlarms = \App\Book::where('start', '>', $startYear)
+		                        ->where('finish', '<', $endYear)
+		                        ->whereIn('type_book', [
+			                        2,
+			                        7,
+			                        8
+		                        ])
+		                        ->orderBy('start', 'ASC')->get();
+
+		$alarms = array();
+
+		foreach ($booksAlarms as $key => $book)
+		{
+			$inc_percent = $book->get_inc_percent();
+			if (round($inc_percent) <= $percentBenef)
+			{
+				if (!$book->has_low_profit)
+				{
+					$alert = true;
+				}
+				$alarms[] = $book;
+			}
+		}
+		return $alarms;
+	}
+
 	public function newBook(Request $request)
 	{
 		if (Auth::user()->role != "agente")
@@ -298,9 +300,9 @@ class BookController extends AppController
 					$book->cost_park = $this->getCostPark($request->input('parking'), $request->input('nigths'), $room->id, 3);
 				}
 
-				$book->type_park = $request->input('parking',0);
+				$book->type_park = $request->input('parking', 0);
 
-				$book->type_luxury = $request->input('type_luxury',0);
+				$book->type_luxury = $request->input('type_luxury', 0);
 				$book->sup_lujo    = $this->getPriceLujo($request->input('type_luxury'));
 				$book->cost_lujo   = $this->getCostLujo($request->input('type_luxury'));
 				// if ($room->typeApto == 3 || $room->typeApto == 1) {
@@ -332,9 +334,23 @@ class BookController extends AppController
 					/* Notificacion via email */
 					if ($customer->email)
 					{
-						MailController::sendEmailBookSuccess($book, 1);
+						//MailController::sendEmailBookSuccess($book, 1);
+					}
+					if ($request->input('fast_payment') == 1)
+					{
+						$urlPayland = $this->generateOrderPayment([
+							                                          'customer_id' => $book->customer->id,
+							                                          'amount'      => $book->total_price,
+							                                          'url_ok'      => route('payland.thanks.payment', ['id' => $book->id]),
+							                                          'url_ko'      => route('payland.thanks.payment', ['id' => $book->id]),
+						                                          ]);
+
+						return view('frontend.bookStatus.bookPaylandPay', [ 'urlPayland' => $urlPayland]);
+					}else{
 						return view('frontend.bookStatus.bookOk');
 					}
+				} else
+				{
 
 				}
 			}
@@ -537,42 +553,44 @@ class BookController extends AppController
 
 	public function update(Request $request, $id)
 	{
-          $book = \App\Book::with('payments')->find($id);
+		$book = \App\Book::with('payments')->find($id);
 
-          $totalpayment = $book->sum_payments;
+		$totalpayment = $book->sum_payments;
 
-          // We are passing wrong data from this to view by using $book data, in order to correct data
-          // an AJAX call has been made after rendering the page.
-          $hasFiance = \App\Fianzas::where('book_id', $book->id)->first();
-                
-          /**
-           * Check low_profit alert
-           */
-          $low_profit = false;
-          $inc_percent = $book->get_inc_percent();
-          $percentBenef = DB::table('percent')->find(1)->percent;
-          
-          if(round($inc_percent) <= $percentBenef){
-            if (!$book->has_low_profit){
-              $low_profit = true;
-            }
-          }
-          
-          //END: Check low_profit alert
-          
-          return view('backend/planning/update', [
-                  'book'         => $book,
-                  'low_profit'         => $low_profit,
-                  'rooms'        => \App\Rooms::where('state', '=', 1)->orderBy('order')->get(),
-                  'extras'       => \App\Extras::all(),
-                  'start'        => Carbon::createFromFormat('Y-m-d', $book->start)->format('d M,y'),
-                  'payments'     => $book->payments,
-                  'typecobro'    => new \App\Book(),
-                  'totalpayment' => $totalpayment,
-                  'mobile'       => new Mobile(),
-                  'hasFiance'    => $hasFiance,
-                  'stripe'       => StripeController::$stripe,
-          ]);
+		// We are passing wrong data from this to view by using $book data, in order to correct data
+		// an AJAX call has been made after rendering the page.
+		$hasFiance = \App\Fianzas::where('book_id', $book->id)->first();
+
+		/**
+		 * Check low_profit alert
+		 */
+		$low_profit   = false;
+		$inc_percent  = $book->get_inc_percent();
+		$percentBenef = DB::table('percent')->find(1)->percent;
+
+		if (round($inc_percent) <= $percentBenef)
+		{
+			if (!$book->has_low_profit)
+			{
+				$low_profit = true;
+			}
+		}
+
+		//END: Check low_profit alert
+
+		return view('backend/planning/update', [
+			'book'         => $book,
+			'low_profit'   => $low_profit,
+			'rooms'        => \App\Rooms::where('state', '=', 1)->orderBy('order')->get(),
+			'extras'       => \App\Extras::all(),
+			'start'        => Carbon::createFromFormat('Y-m-d', $book->start)->format('d M,y'),
+			'payments'     => $book->payments,
+			'typecobro'    => new \App\Book(),
+			'totalpayment' => $totalpayment,
+			'mobile'       => new Mobile(),
+			'hasFiance'    => $hasFiance,
+			'stripe'       => StripeController::$stripe,
+		]);
 	}
 
 	//Funcion para actualizar la reserva
@@ -1875,14 +1893,14 @@ class BookController extends AppController
 		return $booksCount;
 	}
 
-        public function sendSencondEmail(Request $request)
+	public function sendSencondEmail(Request $request)
 	{
 		$book = \App\Book::find($request->id);
 		if (!empty($book->customer->email))
 		{
 			$book->send = 1;
 			$book->save();
-                        $this->sendEmail_secondPayBook($book,'Recordatorio de pago Apto. de lujo Miramarski - ' . $book->customer->name);
+			$this->sendEmail_secondPayBook($book, 'Recordatorio de pago Apto. de lujo Miramarski - ' . $book->customer->name);
 			if ($sended)
 			{
 				return [
@@ -1909,36 +1927,36 @@ class BookController extends AppController
 
 
 	}
-        
-        /**
-         * Enable/Disable alerts has_low_profit
-         * 
-         * @param Request $request
-         * @return type
-         * 
-         */
+
+	/**
+	 * Enable/Disable alerts has_low_profit
+	 *
+	 * @param Request $request
+	 * @return type
+	 *
+	 */
 	public function toggleAlertLowProfits(Request $request)
 	{
 		$book = \App\Book::find($request->id);
 		if ($book)
 		{
-                  $book->has_low_profit = !$book->has_low_profit;
-                  $book->save();
-                  if ($book->has_low_profit)
-                  {
-                    return [
-                      'status'   => 'success',
-                      'title'    => 'OK',
-                      'response' => "Alarma desactivada para  ".$book->customer->name
-                    ];
-                  } else
-                  {
-                    return [
-                      'status'   => 'success',
-                      'title'    => 'OK',
-                      'response' => "Alarma activada para  ".$book->customer->name
-                    ];
-                  }
+			$book->has_low_profit = !$book->has_low_profit;
+			$book->save();
+			if ($book->has_low_profit)
+			{
+				return [
+					'status'   => 'success',
+					'title'    => 'OK',
+					'response' => "Alarma desactivada para  " . $book->customer->name
+				];
+			} else
+			{
+				return [
+					'status'   => 'success',
+					'title'    => 'OK',
+					'response' => "Alarma activada para  " . $book->customer->name
+				];
+			}
 		} else
 		{
 			return [
@@ -1950,36 +1968,39 @@ class BookController extends AppController
 
 
 	}
-        /**
-         * Enable alerts has_low_profit to all
-         * 
-         * @param Request $request
-         * @return type
-         * 
-         */
+
+	/**
+	 * Enable alerts has_low_profit to all
+	 *
+	 * @param Request $request
+	 * @return type
+	 *
+	 */
 	public function activateAlertLowProfits()
 	{
-          if(Auth::user()->role == 'admin'){
-            $year      = $this->getActiveYear();
-            $startYear = new Carbon($year->start_date);
-            $endYear   = new Carbon($year->end_date);
-                
-            $book = \App\Book::where('start', '>', $startYear)
-		  ->where('finish', '<', $endYear)
-                  ->where('has_low_profit', TRUE)
-                  ->update(['has_low_profit' => FALSE]);
-            return [
-              'status'   => 'success',
-              'title'    => 'OK',
-              'response' => "Alarma activada para  todos los registros"
-            ];
-          } else {
-              return [
-                      'status'   => 'warning',
-                      'title'    => 'Cuidado',
-                      'response' => "No tiene permisos para la acción que desea realizar"
-              ];
-            }
+		if (Auth::user()->role == 'admin')
+		{
+			$year      = $this->getActiveYear();
+			$startYear = new Carbon($year->start_date);
+			$endYear   = new Carbon($year->end_date);
+
+			$book = \App\Book::where('start', '>', $startYear)
+			                 ->where('finish', '<', $endYear)
+			                 ->where('has_low_profit', TRUE)
+			                 ->update(['has_low_profit' => FALSE]);
+			return [
+				'status'   => 'success',
+				'title'    => 'OK',
+				'response' => "Alarma activada para  todos los registros"
+			];
+		} else
+		{
+			return [
+				'status'   => 'warning',
+				'title'    => 'Cuidado',
+				'response' => "No tiene permisos para la acción que desea realizar"
+			];
+		}
 
 	}
 
@@ -2013,7 +2034,7 @@ class BookController extends AppController
 				{
 					$book->send = 1;
 					$book->save();
-                                        $this->sendEmail_secondPayBook($book,'Recordatorio de pago Apto. de lujo Miramarski - ' . $book->customer->name);
+					$this->sendEmail_secondPayBook($book, 'Recordatorio de pago Apto. de lujo Miramarski - ' . $book->customer->name);
 					if ($sended = 1)
 					{
 						echo json_encode([
@@ -2333,5 +2354,5 @@ class BookController extends AppController
 			'instantPayment' => $instantPayment,
 		]);
 	}
-        
+
 }

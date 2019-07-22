@@ -29,10 +29,10 @@ class OwnedController extends AppController
 			else
 				$room = Auth::user()->rooms[0];
 		else
-			if (count(Auth::user()->rooms) == 0)
+			if (count(Auth::user()->rooms) == 0 && Auth::user()->role != "admin")
 				return view('backend.rooms.not_rooms_avaliables');
 			else
-				$room = \App\Rooms::where('owned', Auth::user()->id)->where('nameRoom', 'LIKE' , "%".$name."%")->first();
+				$room = \App\Rooms::where('nameRoom', 'LIKE' , "%".$name."%")->first();
 
 		if ($room->owned != Auth::user()->id && Auth::user()->role != "admin")
 			return view('errors.owned-access');
@@ -142,9 +142,7 @@ class OwnedController extends AppController
 		$pagototal = 0;
 		foreach ($gastos as $pago)
 		{
-
 			$pagototal += $pago->import;
-
 		}
 		$estadisticas['ingresos'] = array();
 		$estadisticas['clientes'] = array();
@@ -170,16 +168,11 @@ class OwnedController extends AppController
 
 			if (count($bookStadistic) > 0)
 			{
-
 				foreach ($bookStadistic as $key => $book)
 				{
-
 					$ingresos += $book->cost_total;
 					$clientes += $book->pax;
-
-
 				}
-
 			}
 
 			$estadisticas['ingresos'][$x] = round($ingresos);
@@ -217,9 +210,7 @@ class OwnedController extends AppController
 
 	}
 
-
 	// Pagina de propietario
-
 	public function operativaOwned()
 	{
 

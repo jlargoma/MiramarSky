@@ -85,8 +85,7 @@ class PaylandService
             return $response;
         } catch (\Exception $e)
         {
-            echo($e->getMessage());
-            die();
+           return null;
         }
     }
 

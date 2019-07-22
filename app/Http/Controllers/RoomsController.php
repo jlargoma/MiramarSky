@@ -52,8 +52,6 @@ class RoomsController extends AppController
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-
-
 	public function create(Request $request)
 	{
 		$room = new \App\Rooms();
@@ -128,7 +126,6 @@ class RoomsController extends AppController
 			echo "Ya existe este tipo de apartamento";
 		}
 	}
-
 
 	/**
 	 * Update the specified resource in storage.

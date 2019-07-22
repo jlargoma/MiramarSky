@@ -70,7 +70,7 @@ setlocale(LC_TIME, "es_ES");
 							<?php $months = new Carbon($year->start_date); ?>
 							<?php for ($i = 1; $i <= $diff ; $i++): ?>
                             <th class="text-center bg-complete text-white">
-                                &nbsp;<?php echo $months->formatLocalized('%b') ?>&nbsp;
+                                <?php echo $months->formatLocalized('%b') ?>
                                 <?php 
                                   $totalMonth = 0; 
                                   $aux_year = $months->copy()->format('Y');

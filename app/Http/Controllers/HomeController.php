@@ -25,32 +25,31 @@ class HomeController extends AppController
 	 */
 	public function index(Request $request)
 	{
-		return redirect('/admin/reservas');
 		/* Detectamos el tipo de dispositivo*/
-		/*$mobile = new Mobile();
+		$mobile = new Mobile();
 
 		if (!$mobile->isMobile())
 		{
-		   $slides = File::allFiles(public_path() . '/img/miramarski/edificio/');
+			$slides = File::allFiles(public_path() . '/img/miramarski/edificio/');
 		} else
 		{
-		   $slides = File::allFiles(public_path() . '/img/miramarski/edificio/');
+			$slides = File::allFiles(public_path() . '/img/miramarski/edificio/');
 		}
 		$val = $request->cookie('showPopup');
 		if (!empty($val))
 		{
-		   $cookie = $request->cookie('showPopup');
+			$cookie = $request->cookie('showPopup');
 		} else
 		{
-		   $cookie = 0;
+			$cookie = 0;
 		}
 
 
 		return view('frontend.home', [
-		   'cookie'         => $cookie,
-		   'mobile'         => $mobile,
-		   'slidesEdificio' => $slides,
-		]);*/
+			'cookie'         => $cookie,
+			'mobile'         => $mobile,
+			'slidesEdificio' => $slides,
+		]);
 	}
 
 
@@ -415,7 +414,6 @@ class HomeController extends AppController
 		return view('frontend.cookies', ['mobile' => new Mobile()]);
 	}
 
-
 	public function condicionesGenerales()
 	{
 		return view('frontend.condiciones-generales', ['mobile' => new Mobile()]);
@@ -711,9 +709,127 @@ class HomeController extends AppController
 		return false;
 	}
 
-    public function thanksYou(Request $request)
-    {
-        return view('frontend.stripe.stripe', ['mobile' => new Mobile()]);
+	public function thanksYou(Request $request)
+	{
+		return view('frontend.stripe.stripe', ['mobile' => new Mobile()]);
+	}
+
+	static function getPriceBook(Request $request)
+	{
+		$aux       = str_replace('Abr', 'Apr', $request->input('fechas'));
+		$date      = explode('-', $aux);
+		$start     = Carbon::createFromFormat('d M, y', trim($date[0]));
+		$finish    = Carbon::createFromFormat('d M, y', trim($date[1]));
+		$countDays = $finish->diffInDays($start);
+		if ($request->input('apto') == '2dorm' && $request->input('luxury') == 'si')
+		{
+			$roomAssigned = 115;
+			$typeApto     = "2 DORM Lujo";
+			$limp         = (int) \App\Extras::find(1)->price;
+		} elseif ($request->input('apto') == '2dorm' && $request->input('luxury') == 'no')
+		{
+			$roomAssigned = 122;
+			$typeApto     = "2 DORM estandar";
+			$limp         = (int) \App\Extras::find(1)->price;
+		} elseif ($request->input('apto') == 'estudio' && $request->input('luxury') == 'si')
+		{
+			$roomAssigned = 138;
+			$limp         = (int) \App\Extras::find(2)->price;
+			$typeApto     = "Estudio Lujo";
+		} elseif ($request->input('apto') == 'estudio' && $request->input('luxury') == 'no')
+		{
+			$roomAssigned = 110;
+			$typeApto     = "Estudio estandar";
+			$limp         = (int) \App\Extras::find(2)->price;
+		} elseif ($request->input('apto') == 'chlt' && $request->input('luxury') == 'no')
+		{
+			$roomAssigned = 144;
+			$typeApto     = "CHALET los pinos";
+			$limp         = (int) \App\Extras::find(1)->price;
+		} elseif ($request->input('apto') == '3dorm')
+		{
+			/* Rooms para grandes capacidades */
+			if ($request->input('quantity') >= 8 && $request->input('quantity') <= 10)
+			{
+				$roomAssigned = 153;
+			} else
+			{
+				$roomAssigned = 149;
+			}
+			$typeApto = "3 DORM Lujo";
+			$limp     = (int) \App\Extras::find(3)->price;
+		}
+		$paxPerRoom = \App\Rooms::getPaxRooms($request->input('quantity'), $roomAssigned);
+		$pax        = $request->input('quantity');
+		if ($paxPerRoom > $pax)
+		{
+			$pax = $paxPerRoom;
+		}
+		$price   = 0;
+		$counter = $start->copy();
+		for ($i = 1; $i <= $countDays; $i++)
+		{
+			$seasonActive = \App\Seasons::getSeasonType($counter->copy()->format('Y-m-d'));
+			if ($seasonActive == null)
+			{
+				$seasonActive = 0;
+			}
+			$prices = \App\Prices::where('season', $seasonActive)
+			                     ->where('occupation', $pax)->get();
+			foreach ($prices as $precio)
+			{
+				$price = $price + $precio->price;
+			}
+			$counter->addDay();
+		}
+
+		$room = \App\Rooms::find($roomAssigned);
+
+		if ($request->input('parking') == 'si')
+		{
+			$priceParking = BookController::getPricePark(1, $countDays) * $room->num_garage;
+			$parking      = 1;
+		} else
+		{
+			$priceParking = 0;
+			$parking      = 2;
+		}
+
+		if ($request->input('luxury') == 'si')
+		{
+			$luxury = BookController::getPriceLujo(1);
+		} else
+		{
+			$luxury = BookController::getPriceLujo(2);
+		}
+		$total   = $price + $priceParking + $limp + $luxury;
+		$dni     = $request->input('dni');
+		$address = $request->input('address');
+		if ($seasonActive != 0)
+		{
+			return view('frontend.bookStatus.response', [
+				'id_apto'      => $roomAssigned,
+				'pax'          => $pax,
+				'nigths'       => $countDays,
+				'apto'         => $typeApto,
+				'name'         => $request->input('name'),
+				'phone'        => $request->input('phone'),
+				'email'        => $request->input('email'),
+				'start'        => $start,
+				'finish'       => $finish,
+				'parking'      => $parking,
+				'priceParking' => $priceParking,
+				'luxury'       => $luxury,
+				'total'        => $total,
+				'dni'          => $dni,
+				'address'      => $address,
+				'room'         => $room,
+				'comment'      => $request->input('comment'),
+			]);
+		} else
+		{
+			return view('frontend.bookStatus.bookError');
+		}
 	}
 }
 
