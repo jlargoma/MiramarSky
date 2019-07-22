@@ -36,7 +36,7 @@ Route::get('/ical/importFromUrl', function () {
 });
 
 Route::auth();
-Route::get('/', 'HomeController@index')->middleware('auth');
+Route::get('/', 'HomeController@index');
 Route::get('/thanks-you', 'HomeController@thanksYou')->name('thanks-you');
 Route::get('/form-demo', 'BookController@demoFormIntegration');
 Route::post('/api/check_rooms_avaliables', 'BookController@apiCheckBook')->name('api.proccess');
