@@ -235,10 +235,10 @@ class BackendController extends AppController
     {
         if ( empty($year) ) {
             $date = Carbon::now();
-            if ($date->copy()->format('n') >= 9) {
-                $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+            if ($date->copy()->format('n') >= 6) {
+                $date = new Carbon('first day of June '.$date->copy()->format('Y'));
             }else{
-                $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+                $date = new Carbon('first day of June '.$date->copy()->subYear()->format('Y'));
             }
 
         }else{
@@ -247,7 +247,7 @@ class BackendController extends AppController
 
         }
 
-        $inicio = new Carbon('first day of September '.$date->copy()->format('Y'));
+        $inicio = new Carbon('first day of June '.$date->copy()->format('Y'));
         $start = $inicio->copy();
 
 

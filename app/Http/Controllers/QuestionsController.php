@@ -60,10 +60,10 @@ class QuestionsController extends AppController
             $date = $year->copy();
         }
 
-        if ($date->copy()->format('n') >= 9) {
-            $start = new Carbon('first day of September '.$date->copy()->format('Y'));
+        if ($date->copy()->format('n') >= 6) {
+            $start = new Carbon('first day of June '.$date->copy()->format('Y'));
         }else{
-            $start = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            $start = new Carbon('first day of June '.$date->copy()->subYear()->format('Y'));
         }
 
         $data = array();
@@ -115,10 +115,10 @@ class QuestionsController extends AppController
             $date = $year->copy();
         }
 
-        if ($date->copy()->format('n') >= 9) {
-            $start = new Carbon('first day of September '.$date->copy()->format('Y'));
+        if ($date->copy()->format('n') >= 6) {
+            $start = new Carbon('first day of June '.$date->copy()->format('Y'));
         }else{
-            $start = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            $start = new Carbon('first day of June '.$date->copy()->subYear()->format('Y'));
         }
 
         if ($room_id != "") {

@@ -454,12 +454,12 @@ class RoomsController extends AppController
 
 				$date = Carbon::now();
 
-				if ($date->copy()->format('n') >= 9)
+				if ($date->copy()->format('n') >= 6)
 				{
-					$start = new Carbon('first day of September ' . $date->copy()->format('Y'));
+					$start = new Carbon('first day of june ' . $date->copy()->format('Y'));
 				} else
 				{
-					$start = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
+					$start = new Carbon('first day of june ' . $date->copy()->subYear()->format('Y'));
 
 				}
 

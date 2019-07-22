@@ -209,17 +209,17 @@ class LiquidacionController extends AppController
 
 		if (empty($year))
 		{
-			if ($now->copy()->format('n') >= 9)
+			if ($now->copy()->format('n') >= 6)
 			{
-				$date = new Carbon('first day of September ' . $now->copy()->format('Y'));
+				$date = new Carbon('first day of June ' . $now->copy()->format('Y'));
 			} else
 			{
-				$date = new Carbon('first day of September ' . $now->copy()->subYear()->format('Y'));
+				$date = new Carbon('first day of June ' . $now->copy()->subYear()->format('Y'));
 			}
 
 		} else
 		{
-			$date = new Carbon('first day of September ' . $year);
+			$date = new Carbon('first day of June ' . $year);
 		}
 
 		$rooms        = \App\Rooms::all();
@@ -726,12 +726,12 @@ class LiquidacionController extends AppController
 		if (empty($year))
 		{
 			$date = Carbon::now();
-			if ($date->copy()->format('n') >= 9)
+			if ($date->copy()->format('n') >= 6)
 			{
-				$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
+				$date = new Carbon('first day of June ' . $date->copy()->format('Y'));
 			} else
 			{
-				$date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
+				$date = new Carbon('first day of June ' . $date->copy()->subYear()->format('Y'));
 			}
 
 		} else
@@ -741,7 +741,7 @@ class LiquidacionController extends AppController
 
 		}
 
-		$inicio = new Carbon('first day of September ' . $date->copy()->format('Y'));
+		$inicio = new Carbon('first day of June ' . $date->copy()->format('Y'));
 		if ($type == 'jaime')
 		{
 
@@ -1033,12 +1033,12 @@ class LiquidacionController extends AppController
 			$date = $year->copy();
 
 		}
-		if ($date->copy()->format('n') >= 9)
+		if ($date->copy()->format('n') >= 6)
 		{
-			$start = new Carbon('first day of September ' . $date->copy()->format('Y'));
+			$start = new Carbon('first day of June ' . $date->copy()->format('Y'));
 		} else
 		{
-			$start = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
+			$start = new Carbon('first day of June ' . $date->copy()->subYear()->format('Y'));
 		}
 
 		$end = $start->copy()->addYear();

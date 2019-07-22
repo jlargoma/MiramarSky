@@ -23,9 +23,9 @@ class InvoicesController extends AppController
         }
 
         if ($date->copy()->format('n') >= 9) {
-            $start = new Carbon('first day of September '.$date->copy()->format('Y'));
+            $start = new Carbon('first day of June '.$date->copy()->format('Y'));
         }else{
-            $start = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            $start = new Carbon('first day of June '.$date->copy()->subYear()->format('Y'));
         }
 
 
@@ -124,10 +124,10 @@ class InvoicesController extends AppController
             $date = $year->copy();
         }
 
-        if ($date->copy()->format('n') >= 9) {
-            $start = new Carbon('first day of September '.$date->copy()->format('Y'));
+        if ($date->copy()->format('n') >= 6) {
+            $start = new Carbon('first day of June '.$date->copy()->format('Y'));
         }else{
-            $start = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            $start = new Carbon('first day of June '.$date->copy()->subYear()->format('Y'));
         }
 
 
@@ -148,7 +148,7 @@ class InvoicesController extends AppController
         $room = \App\Rooms::find($id);
 
         $year = Carbon::createFromFormat('Y',$year);
-        $start = new Carbon('first day of September '.$year->format('Y'));
+        $start = new Carbon('first day of June '.$year->format('Y'));
 
         $books = \App\Book::where('room_id', $room->id)
                             ->whereIn('type_book',[2])
