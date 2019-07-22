@@ -1,4 +1,8 @@
-<?php use \Carbon\Carbon; ?>
+<?php 
+    use \Carbon\Carbon;
+    use \App\Classes\Mobile;
+    $mobile = new Mobile();
+?>
 @extends('layouts.admin-master')
 
 @section('title') Liquidacion @endsection
@@ -89,7 +93,9 @@
         .alert-limp {
             background-color: #f8d053 !important;
         }
-
+        .title-year-selector{
+            display: none;
+        }
     </style>
 @endsection
 
@@ -98,7 +104,7 @@
 
     <div class="container-fluid padding-5 sm-padding-10">
 
-        <div class="row push-20">
+        <div class="row push-10">
             <div class="col-md-4 push-20">
                 <div class="col-md-6">
                     <label>Nombre del cliente:</label>
@@ -128,45 +134,54 @@
                 </div>
             </div>
             <div class="col-md-3 text-center">
-                <h2>Liquidación por reservas <?php echo $temporada->copy()->format('Y') . "-" . $temporada->copy()
-				                                                                                          ->AddYear()
-				                                                                                          ->format('Y') ?> </h2>
+                <h2>Liquidación por reservas {{ $year->year }} - {{ $year->year + 1 }}</h2>
             </div>
             <div class="col-md-1" style="padding: 10px 0;">
-                <select id="date" class="form-control minimal">
-					<?php $fecha = $temporada->copy()->SubYear(2); ?>
-					<?php if ($fecha->copy()->format('Y') < 2015): ?>
-					<?php $fecha = new Carbon('first day of September 2015'); ?>
-				<?php else: ?>
-
-				<?php endif ?>
-
-					<?php for ($i = 1; $i <= 4; $i++): ?>
-                    <option value="<?php echo $fecha->copy()
-					                                ->format('Y'); ?>" {{ $temporada->copy()->format('Y') == $fecha->copy()->format('Y') ? 'selected' : '' }}>
-						<?php echo $fecha->copy()->format('Y') . "-" . $fecha->copy()->addYear()->format('Y'); ?>
-                    </option>
-					<?php $fecha->addYear(); ?>
-					<?php endfor; ?>
-                </select>
+                @include('backend.years._selector', ['minimal' => true])
             </div>
-
 
             <div class="col-md-1 pull-right">
                 <button class="btn btn-md btn-primary exportExcel">
                     Exportar Excel
                 </button>
             </div>
-            {{--<div class="col-md-1 pull-right">--}}
-                {{--<button class="btn btn-md btn-danger orderPercentBenef">--}}
-                    {{--Ord benef critico--}}
-                {{--</button>--}}
-            {{--</div>--}}
+            
+        </div>
+        <div class="row">
+            <?php if ( !$mobile->isMobile() ): ?>
+                <div class="col-lg-1 col-lg-offset-3 text-center">
+                    <button id="booking_agency_details" class="btn btn-primary btn-xs">Ventas por Agencia</button>
+                </div>
+            <?php else: ?>
+                <div class="col-lg-1 col-lg-offset-3 text-right">
+                    <button id="booking_agency_details" class="btn btn-primary btn-xs">Ventas por Agencia</button>
+                </div>
+            <?php endif; ?>
+          
+          @if ( $mobile->isMobile() ): 
+            <div class="col-lg-1 col-lg-offset-3 text-right m-t-5">
+          @else:
+            <div class="col-lg-1 col-lg-offset-3 text-center">
+          @endif
+          <button class="btn btn-danger btn-cons btn-xs <?php if($alert_lowProfits) echo 'btn-alarms'; ?> " id="btnLowProfits" type="button" data-toggle="modal" data-target="#modalLowProfits">
+                <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">BAJO BENEFICIO</span>
+                <span class="numPaymentLastBooks"><?php echo  count($lowProfits); ?></span>
+            </button>
+          </div>
         </div>
 
         <div class="row">
             <div class="liquidationSummary">
-                @include('backend.sales._tableSummary', ['totales' => $totales, 'books' => $books, 'temporada' => $temporada])
+                @include('backend.sales._tableSummary', ['totales' => $totales, 'books' => $books, 'year' => $year])
+            </div>
+        </div>
+        <div class="modal fade slide-up in" id="modalLowProfits" tabindex="-1" role="dialog" aria-hidden="true" >
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content-wrapper">
+                    <div class="modal-content">
+                        @include('backend.planning._alarmsLowProfits', ['alarms' => $lowProfits])
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -189,6 +204,7 @@
     <script src="/assets/plugins/bootstrap-typehead/typeahead.bundle.min.js"></script>
     <script src="/assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
     <script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
+    <script type="text/javascript" src="{{asset('/forfait/js/bootbox.min.js')}}"></script>
 
     <script type="text/javascript">
 
@@ -203,7 +219,7 @@
         $('.searchabled').keyup(function (event) {
           var searchString = $(this).val();
           var searchRoom = $('.searchSelect').val();
-          var year = '<?php echo $temporada->copy()->format('Y')?>';
+          var year = "{{ $year->year }}";
           var searchAgency = $('.searchAgency').val();
           $.get('/admin/liquidation/searchByName', {
             searchString: searchString,
@@ -220,7 +236,7 @@
           var searchRoom = $('.searchSelect').val();
           var searchString = $('.searchabled').val();
           var searchAgency = $('.searchAgency').val();
-          var year = '<?php echo $temporada->copy()->format('Y')?>';
+          var year = "{{ $year->year }}";
 
           $.get('/admin/liquidation/searchByRoom', {
             searchRoom: searchRoom,
@@ -255,7 +271,7 @@
           var searchRoom = $('.searchSelect').val();
           var searchString = $('.searchabled').val();
           var searchAgency = $('.searchAgency').val();
-          var year = '<?php echo $temporada->copy()->format('Y')?>';
+          var year = "{{ $year->year }}";
           $.get('/admin/liquidation/orderByBenefCritico', {
             searchRoom: searchRoom,
             searchString: searchString,
@@ -273,7 +289,7 @@
         $('.exportExcel').click(function (event) {
           var searchString = $('.searchabled').val();
           var searchRoom = $('.searchSelect').val();
-          var year = '<?php echo $temporada->copy()->format('Y')?>';
+          var year = "{{ $year->year }}";
 
           window.open('/admin/liquidacion/export/excel?searchString=' + searchString + '&year=' + year + '&searchRoom=' + searchRoom, '_blank');
 
@@ -295,7 +311,105 @@
 
           });
         });
+        
+        function formatNumber (n) {
 
+            n_array = n.toString().split('.');
+            
+            if(n_array.length == 1){
+                 return n === '' ? n : Number(n).toLocaleString();
+            }else{
+                n = Number(n_array[0]).toLocaleString()+','+n_array[1];
+                return n;
+            }
+            
+        }
+        
+        function toFixed(n,length){
+            
+            if(n % 1 != 0){
+                return n.toFixed(length);
+            }else{
+                return n;
+            }
+            
+        }
+
+        $('button#booking_agency_details').click(function(){
+            $.ajax({
+                type: "POST",
+                url: "/ajax/booking/getBookingAgencyDetails",
+//                data: {request_id:request_id,comments:comments},
+                dataType:'json',
+                async: false,
+                success: function(response){
+                    if(response.status === 'true'){
+
+                        agencies_count = Object.keys(response.agencyBooks.data).length;
+
+                        agencyBookHTML = '<div class="table-responsive col-lg-12" style="padding:0">';
+                        agencyBookHTML += '<table class="table col-lg-12" border="1"><thead><tr style="background-color:#48b0f7;">';
+                        agencyBookHTML += '<th style="color:#000000;">AGENCIA</th><th class="text-center" colspan="5" style="color:#000000;">TEMP '+response.agencyBooks.years[0]+'</th><th rowspan="2"></th><th class="text-center" colspan="5" style="color:#000000;">TEMP '+response.agencyBooks.years[1]+'</th><th rowspan="2"></th><th class="text-center" colspan="5" style="color:#000000;">TEMP '+response.agencyBooks.years[2]+'</th></tr>\n\
+                                           <tr style="background-color:#48b0f7;"><th></th><th class="text-center" style="color:#000000;">Vtas</th><th class="text-center" style="color:#000000;">Vtas. %</th><th class="text-center" style="color:#000000;">Reservas</th><th class="text-center" style="color:#000000;">Res. %</th><th class="text-center" style="color:#000000;">Comisión</th><th class="text-center" style="color:#000000;">Vtas</th><th class="text-center" style="color:#000000;">Vtas. %</th><th class="text-center" style="color:#000000;">Reservas</th><th class="text-center" style="color:#000000;">Res. %</th><th class="text-center" style="color:#000000;">Comisión</th><th class="text-center" style="color:#000000;">Vtas</th><th class="text-center" style="color:#000000;">Vtas. %</th><th class="text-center" style="color:#000000;">Reservas</th><th class="text-center" style="color:#000000;">Res. %</th><th class="text-center" style="color:#000000;">Comisión</th></tr>';
+                       
+                        agencyBookHTML += '</thead><body>';
+                        
+                        x = 1;
+                        
+                        $.each(response.agencyBooks.data,function(agency,seasons){
+                            
+                            seasons_count = Object.keys(seasons).length;
+        
+                            agencyBookHTML += '<tr class="text-right"><td class="bold" style="font-size:16px !important;">'+agency+'</td>';
+                            
+                            a = 1;
+                            $.each(seasons,function(season,data){
+                                agencyBookHTML += '<td class="bold" style="font-size:16px !important;">'+formatNumber(toFixed(data.total,0))+' €</td><td style="font-size:16px !important;">'+toFixed(data.total_rate,0)+' %</td><td style="font-size:16px !important;">'+formatNumber(data.reservations)+'</td><td style="font-size:16px !important;">'+toFixed(data.reservations_rate,0)+' %</td><td style="font-size:16px !important;">'+formatNumber(toFixed(data.commissions,0))+' €</td>';
+
+                                if(x == 1 && a < seasons_count){
+                                    agencyBookHTML += '<td style="background-color:#48b0f7;" rowspan="'+agencies_count+'"></td>';
+                                }else if(x < agencies_count){
+//                                    agencyBookHTML += '<td style="background-color:#48b0f7;"></td>';
+                                }
+                                
+                                a++;
+                            });
+
+                            agencyBookHTML += '</tr>';
+                            
+                            x++;
+                        });
+
+                        agencyBookHTML += '<tbody></table>';
+                        agencyBookHTML += '</div>';
+
+                        bootbox.alert({
+                            message: agencyBookHTML,
+                            size: 'large',
+                            backdrop: true
+                        });
+                        
+                        <?php if ( !$mobile->isMobile() ): ?>
+                            $('.modal-lg').attr('style','width: 70% !important;');
+                        <?php else: ?>
+                            $('.modal-lg').attr('style','width: 100% !important;');
+                        <?php endif; ?>
+
+                    }else{
+                        bootbox.alert({
+                            message: '<div class="text-danger bold" style="margin-top:10px">Se ha producido un ERROR. El PAN no ha sido guardado.<br/>Contacte con el administrador.</div>',
+                            backdrop: true
+                        });
+                    }
+                },
+                error: function(response){
+                    bootbox.alert({
+                        message: '<div class="text-danger bold" style="margin-top:10px">Se ha producido un ERROR. No se ha podido obtener los detalles de la consulta.<br/>Contacte con el administrador.</div>',
+                        backdrop: true
+                    });
+                }
+            });
+        });
 
       });
     </script>

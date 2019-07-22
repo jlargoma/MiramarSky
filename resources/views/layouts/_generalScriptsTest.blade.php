@@ -1,29 +1,8 @@
 <!-- before general -->
 
-{{--<script type="text/javascript" src="{{ asset('/js/scriptsTest.js')}}"></script>--}}
-
 <script type="text/javascript" src="{{ asset('/frontend/js/jquery.js')}}"></script>
 <script type="text/javascript" src="{{ asset('/frontend/js/plugins.js')}}"></script>
 <script type="text/javascript" src="{{ asset('/frontend/js/functionsTest.js')}}"></script>
-
-{{--<script type="text/javascript" src="{{ asset('/js/scripts-slider.js')}}"></script>--}}
-{{--<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/jquery.themepunch.tools.min.js')}}"></script>--}}
-{{--<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/jquery.themepunch.revolution.min.js')}}"></script>--}}
-<?php if (!$mobile->isMobile()): ?>
-<{{--script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/addons/revolution.addon.slicey.min.js')}}"></script>--}}
-<?php else: ?>
-{{--<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/addons/revolution.addon.particles.min.js')}}"></script>--}}
-<?php endif; ?>
-{{--<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.actions.min.js')}}"></script>
-<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.carousel.min.js')}}"></script>
-<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.kenburn.min.js')}}"></script>
-<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.layeranimation.min.js')}}"></script>
-<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.migration.min.js')}}"></script>
-<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.navigation.min.js')}}"></script>
-<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.parallax.min.js')}}"></script>
-<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.slideanims.min.js')}}"></script>
-<script type="text/javascript" src="{{ asset('/frontend/include/rs-plugin/js/extensions/revolution.extension.video.min.js')}}"></script>--}}
-
 
 {{-- <script type="text/javascript" src="{{ asset('/js/flip.js')}}"></script> --}}
 <script type="text/javascript" src="{{ asset('/js/flip.min.js')}}"></script>
@@ -38,9 +17,6 @@
 <?php /* view para todos los scripts generales de la pagina*/ ?>
 
 <!-- general scripts -->
-
-{{-- <script type="text/javascript" src="https://cdn.rawgit.com/nnattawat/flip/master/dist/jquery.flip.min.js"></script> --}}
-{{-- <script type="text/javascript" src="{{asset('/frontend/js/jquery.flip/1.1.2/jquery.flip.min.js')}}"></script> --}}
 
 <script type="text/javascript">
   /* Calendario */
@@ -122,12 +98,18 @@
     $("#content-book-response").flip({
       trigger: 'manual'
     });
+    function showLoad() {
+      $('#loading-book').show();
+    }
 
+    function hideLoad() {
+      $('#loading-book').hide();
+    }
 
     $('#form-book-apto-lujo').submit(function (event) {
-
+      $('#content-book-response .back').empty();
+      $('#content-book-payland').empty();
       event.preventDefault();
-
 
       var _token = $('input[name="_token"]').val();
       var name = $('input[name="name"]').val();
@@ -157,8 +139,6 @@
       $.post('/getDiffIndays', {date1: arrayDates[0], date2: arrayDates[1]}, function (data) {
         var diffDays = data.diff;
         var minDays = data.minDays;
-
-        
           if (diffDays >= 2) {
             $.post(url, {
               _token: _token,
@@ -176,6 +156,7 @@
               $('#content-book-response .back').empty();
               $('#content-book-response .back').append(data);
               $("#content-book-response").flip(true);
+
               if (data.specialSegment != false) {
                 $('.content-alert-min-special-days').append('<h2 class="text-center text-white white" ' +
                  'style="line-height: 1; letter-spacing: -1px;">ESTANCIA MÍNIMA EN ' +
@@ -186,7 +167,7 @@
           } else {
             alert('Estancia minima ' + minDays + ' NOCHES')
           }
-        
+
 
 
       });
@@ -349,179 +330,13 @@
 
 <!-- after general -->
 
-<?php if (!$mobile->isMobile()): ?>
-    <!--<script type="text/javascript">
-      var tpj=jQuery;
-
-      var revapi27;
-      tpj(document).ready(function() {
-        if(tpj("#rev_slider_27_1_home").revolution == undefined){
-          revslider_showDoubleJqueryError("#rev_slider_27_1");
-        }else{
-          revapi27 = tpj("#rev_slider_27_1_home").show().revolution({
-            sliderType:"standard",
-            jsFileLocation:"/frontend/include/rs-plugin/js/",
-            sliderLayout:"fullscreen",
-            dottedOverlay:"none",
-            delay:9000,
-            navigation: {
-              keyboardNavigation:"off",
-              keyboard_direction: "horizontal",
-              mouseScrollNavigation:"off",
-              mouseScrollReverse:"default",
-              onHoverStop:"off",
-              bullets: {
-                enable:true,
-                hide_onmobile:false,
-                style:"uranus",
-                hide_onleave:false,
-                direction:"horizontal",
-                h_align:"center",
-                v_align:"bottom",
-                h_offset:0,
-                v_offset:50,
-                space:5,
-                tmp:''
-              }
-            },
-            responsiveLevels:[1240,1024,778,480],
-            visibilityLevels:[1240,1024,778,480],
-            gridwidth:[1240,1024,778,480],
-            gridheight:[868,768,960,720],
-            lazyType:"none",
-            shadow:0,
-            spinner:"off",
-            stopLoop:"off",
-            stopAfterLoops:-1,
-            stopAtSlide:-1,
-            shuffle:"off",
-            autoHeight:"off",
-            fullScreenAutoWidth:"off",
-            fullScreenAlignForce:"off",
-            fullScreenOffsetContainer: "",
-            fullScreenOffset: "0",
-            hideThumbsOnMobile:"off",
-            hideSliderAtLimit:0,
-            hideCaptionAtLimit:0,
-            hideAllCaptionAtLilmit:0,
-            debugMode:false,
-            fallbacks: {
-              simplifyAll:"off",
-              nextSlideOnWindowFocus:"off",
-              disableFocusListener:false,
-            }
-          });
-          revapi27.bind("revolution.slide.onloaded",function (e) {
-            revapi27.addClass("tiny_bullet_slider");
-          });
-        }
-
-        if(revapi27) revapi27.revSliderSlicey();
-      });   /*ready*/
-    </script>-->
-
-<?php else: ?>
-
-
-   <!--<script type="text/javascript">
-      var tpj=jQuery;
-
-      var revapi13;
-      tpj(document).ready(function() {
-        if(tpj("#rev_slider_13_1").revolution == undefined){
-          revslider_showDoubleJqueryError("#rev_slider_13_1");
-        }else{
-          revapi13 = tpj("#rev_slider_13_1").show().revolution({
-            sliderType:"standard",
-            jsFileLocation:"/frontend/include/rs-plugin/js/",
-            sliderLayout:"fullscreen",
-            dottedOverlay:"none",
-            delay:9000,
-            particles: {startSlide: "first", endSlide: "last", zIndex: "1",
-              particles: {
-                number: {value: 80}, color: {value: "#000000"},
-                shape: {
-                  type: "circle", stroke: {width: 0, color: "#FFF", opacity: 1},
-                  image: {src: ""}
-                },
-                opacity: {value: 0.3, random: false, min: 0.25, anim: {enable: false, speed: 3, opacity_min: 0, sync: false}},
-                size: {value: 10, random: true, min: 1, anim: {enable: false, speed: 40, size_min: 1, sync: false}},
-                line_linked: {enable: true, distance: 200, color: "#000000", opacity: 0.2, width: 1},
-                move: {enable: true, speed: 3, direction: "none", random: true, min_speed: 3, straight: false, out_mode: "out"}},
-              interactivity: {
-                events: {onhover: {enable: true, mode: "bubble"}, onclick: {enable: false, mode: "repulse"}},
-                modes: {grab: {distance: 400, line_linked: {opacity: 0.5}}, bubble: {distance: 400, size: 150, opacity: 1}, repulse: {distance: 200}}
-              }
-            },
-            navigation: {
-              keyboardNavigation:"off",
-              keyboard_direction: "horizontal",
-              mouseScrollNavigation:"off",
-              mouseScrollReverse:"default",
-              onHoverStop:"off",
-              arrows: {
-                style:"gyges",
-                enable:true,
-                hide_onmobile:false,
-                hide_onleave:false,
-                tmp:'',
-                left: {
-                  h_align:"center",
-                  v_align:"bottom",
-                  h_offset:-20,
-                  v_offset:0
-                },
-                right: {
-                  h_align:"center",
-                  v_align:"bottom",
-                  h_offset:20,
-                  v_offset:0
-                }
-              }
-            },
-            responsiveLevels:[1240,1024,767,480],
-            visibilityLevels:[1240,1024,767,480],
-            gridwidth:[1240,1024,778,480],
-            gridheight:[868,768,960,767],
-            lazyType:"none",
-            shadow:0,
-            spinner:"off",
-            stopLoop:"on",
-            stopAfterLoops:0,
-            stopAtSlide:1,
-            shuffle:"off",
-            autoHeight:"off",
-            fullScreenAutoWidth:"off",
-            fullScreenAlignForce:"off",
-            fullScreenOffsetContainer: "",
-            fullScreenOffset: "0",
-            disableProgressBar:"on",
-            hideThumbsOnMobile:"on",
-            hideSliderAtLimit:0,
-            hideCaptionAtLimit:0,
-            hideAllCaptionAtLilmit:0,
-            debugMode:false,
-            fallbacks: {
-              simplifyAll:"off",
-              nextSlideOnWindowFocus:"off",
-              disableFocusListener:false,
-            }
-          });
-        }
-
-        RsParticlesAddOn(revapi13);
-      });   /*ready*/
-    </script>-->
-<?php endif; ?>
-
-
 @yield('scripts')
 
 
  <script src="{{asset('/frontend/js/classie.min.js')}}"></script>
  <script src="{{asset('/frontend/js/boxesFx.min.js')}}"></script>
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
         new BoxesFx( document.getElementById( 'boxgallery' ) );
         

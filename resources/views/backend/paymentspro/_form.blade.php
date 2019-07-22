@@ -126,11 +126,20 @@
             </div>
         </div>
     </div>
+    <div class="col-xs-12">
+        <input type="hidden" name="room_id" value="{{$room->id}}"/>
+        @include('backend.sales.gastos._formGastosApto')
+    </div>
 </div>
 {{-- @TODO remove this, something is causing a conflict with the custom.js --}}
 <script>
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
-    })
+    
+        $('.roomEspecifica').not('[data-idRoom="'+$('input[name="room_id"]').val()+'"]').hide();
+        room_id_button = $('.roomEspecifica[data-idRoom="'+$('input[name="room_id"]').val()+'"]');
+        room_id_button.click();
+        room_id_button.unbind('click');
+    });
 </script>
 

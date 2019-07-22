@@ -2,11 +2,13 @@
 
     <?php if ($update == 0): // Datepicker pfor new book ?>
         $(function() {
+
             $(".daterange1").daterangepicker({
                 "buttonClasses": "button button-rounded button-mini nomargin",
                 "applyClass": "button-color",
                 "cancelClass": "button-light",
-                "startDate": '01 Dec, YY',
+                "startDate": moment().format("DD MMM, YY"),
+//                "startDate": '10 Dec, YY',
                 locale: {
                     format: 'DD MMM, YY',
                     "applyLabel": "Aplicar",

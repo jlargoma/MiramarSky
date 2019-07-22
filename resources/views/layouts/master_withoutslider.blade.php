@@ -91,7 +91,7 @@
 
 	<!-- Go To Top
 	============================================= -->
-	<div id="gotoTop" class="icon-angle-up"></div>
+	<div id="gotoTop" class="icon-angle-up" style="bottom:100px; right:15px;"></div>
 
 	<!-- External JavaScripts
 	============================================= -->

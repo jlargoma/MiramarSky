@@ -14,9 +14,8 @@ use Route;
 use App\ForfaitsPrices;
 use App\ClassesPrices;
 use App\ForfaitsCalendar;
-use App\Http\Controllers\FortfaitsController;
 
-class FortfaitsController extends Controller
+class FortfaitsController extends AppController
 {
     public static $fortfaits = [
 
@@ -112,7 +111,7 @@ class FortfaitsController extends Controller
                                        ],
                         ];
 
-   public static $cursillos = [
+    public static $cursillos = [
                'cursillo-esqui-semanal' => [
                                  'info' => 'SEMANA 3 HRS DIARIAS',
                                  'precios' => [
@@ -150,7 +149,7 @@ class FortfaitsController extends Controller
                                              ],
                                  ],
             ];
-   public static $jardin = [
+    public static $jardin = [
 
             'guarderia-jardin-alpino-am' => [
                               'info' => 'MAÑANAS 10:00.- A 13:00.-HRS',
@@ -191,7 +190,7 @@ class FortfaitsController extends Controller
             ];
 
 
-   public function forfait(Request $request)
+    public function forfait(Request $request)
     {   
          $mobile = new Mobile();
       $products = [
@@ -204,6 +203,7 @@ class FortfaitsController extends Controller
       return view('frontend.forfait.index', ['products' => $products, 'mobile' => $mobile] );
     }
 
+    // OLD Method - DON'T REMOVE YET!!!
     public static function calculatePrice(){
 //        print_r($_POST);
         
@@ -343,6 +343,24 @@ class FortfaitsController extends Controller
 
     }
     
+    public static function deleteRequestPopup(){
+
+        $db = \App\Solicitudes::find($_POST['request_id']);
+        $db->enable = 0;
+        $db->save();
+        
+        $db = \App\Book::find($_POST['book_id']);
+        $db->ff_request_id = NULL;
+        $db->save();
+        
+        if($db->save()){
+            return 'true';  
+        }else{
+            return 'false';
+        }
+
+    }
+    
     public static function updateRequestStatus(){
 
         $db = \App\Solicitudes::find($_POST['request_id']);
@@ -359,7 +377,7 @@ class FortfaitsController extends Controller
     public static function updateRequestPAN(){
 
         $db = \App\Solicitudes::find($_POST['request_id']);
-        $db->pan = $_POST['pan'];
+        $db->cc_pan = $_POST['pan'];
         
         if($db->save()){
             return 'true';
@@ -499,6 +517,345 @@ class FortfaitsController extends Controller
             return 'true';
         }else{
             return 'false';
+        }
+    }
+    
+    public static function requestPriceForfaits(){
+        $requests = $_POST['requests'];
+//        print_r($requests);
+        
+        $senior = 0;
+        $adultos = 0;
+        $juvenil = 0;
+        $junior = 0;
+        
+        $family_request = false;
+        
+        $requests_days = [];
+        $products = [
+            'items' => [],
+            'total_price' => 0
+        ];
+
+        foreach($requests as $request_key => $request){
+            if($request['years'] >= 60){
+                $requests[$request_key]['type'] = 'senior';
+                $senior++;
+            }elseif($request['years'] >= 17){
+                $requests[$request_key]['type'] = 'adult';
+                $adultos++;
+            }elseif($request['years'] >= 6){
+                $requests[$request_key]['type'] = 'juv';
+                $juvenil++;
+            }else{
+                $requests[$request_key]['type'] = 'jun';
+                $junior++;
+            }
+            
+            $requests_days[$request['days']][$request_key] = $requests[$request_key];
+        }
+        
+//        echo 'Senior: '.$senior.'<br/>';
+//        echo 'Adultos: '.$adultos.'<br/>';
+//        echo 'Juvenil: '.$juvenil.'<br/>';
+//        echo 'Junio: '.$junior.'<br/>';
+//        print_r($requests);
+//        print_r($requests_days);
+                
+        foreach($requests_days as $days_key => $requests_stack){
+            $family_request_counter = [
+                'adultos' => 0,
+                'juvenil' => 0
+            ];
+            
+            foreach($requests_stack as $request_item_key => $request_item){
+                if($request_item['type'] === 'adultos'){
+                    $family_request_counter['adultos']++; 
+                }elseif($request_item['type'] === 'juvenil'){
+                    $family_request_counter['juvenil']++;   
+                }
+            }
+            
+//            print_r($family_request_counter);
+            if( $days_key >= 3 &&
+                $family_request_counter['adultos'] >= 1 &&
+                $family_request_counter['juvenil'] >= 2 ){
+                
+                $family_request = true;
+            }
+            
+            
+            reset($requests_stack);
+            foreach($requests_stack as $request_item_key => $request_item){
+
+                $start_date = date('Ymd',strtotime($request_item['start_date']));
+                $end_date = date('Ymd',strtotime($request_item['end_date']));
+                $forfait_type = $request_item['type'];
+
+                $dates = FortfaitsController::dateRange($start_date,$end_date);
+                $calendar_sql = ForfaitsCalendar::  select("date","type")
+                                                    ->where("date",">=",$start_date)
+                                                    ->where("date","<=",$end_date)
+                                                    ->get();
+                foreach($calendar_sql as $item){
+                    $prices[$item->date] = $item->type;
+                }
+
+                foreach($prices as $price_date => $rate){
+                    if(!isset($prices_blocks[$rate])){
+                        $prices_blocks[$rate] = 1;
+                    }else{
+                        $prices_blocks[$rate] += 1; 
+                    }
+                }
+
+                arsort($prices_blocks);
+//                print_r($prices_blocks);
+
+                $rate_selected = NULL;
+                $rate_value_selected = NULL;
+                foreach($prices_blocks as $rate_key => $price_block){
+                    if($rate_selected == NULL){
+                        $rate_selected = $rate_key;
+                        $rate_value_selected = $price_block;
+                    }elseif($price_block == $rate_value_selected){
+                        if(array_search($rate_key,$rates_priorities) > array_search($rate_selected,$rates_priorities)){
+                            $rate_selected = $rate_key;
+                            $rate_value_selected = $price_block;
+                        }
+                    }
+                }
+
+                if(count($prices) > 0){
+
+                    $price = 0;
+                    
+                    // We don't have family rate yet.
+//                    if($family_request === true){
+//                        $rate = '';
+//                    }
+                    
+                    $prices_sql = ForfaitsPrices::  select("price_".$rate)
+                                                    ->where("type","=","$forfait_type")
+                                                    ->where("days","=","$days_key")
+                                                    ->get();
+
+                    foreach($prices_sql as $forfait){
+                        $price += $forfait->{"price_".$rate};
+                    }
+
+                    if($forfait_type === 'senior'){
+                        $forfait_name = 'Senior';
+                    }elseif($forfait_type === 'adult'){
+                        $forfait_name = 'Adulto';
+                    }elseif($forfait_type === 'juv'){
+                        $forfait_name = 'Juvenil';
+                    }else{
+                        $forfait_name = 'Junior';
+                    }
+
+                    if(strlen(substr(strrchr($price, "."), 1)) == 1){
+                       $price = number_format($price, 2, '.', '');
+                    }
+
+                    $price_formatted = str_replace('.',',',$price);
+
+                    $products['items'][] = [
+                        'name' => '1 Forfait '.$forfait_name.' de '.$days_key.' días - Del '.$request_item['start_date'].' al '.$request_item['end_date'].' - <strong>'.$price_formatted.'€</strong>',
+                        'type' => $forfait_type,
+                        'price' => $price
+                    ];
+
+                    $products['total_price'] += $price;
+                }
+
+            }
+
+        }
+        
+//        print_r($products);
+        
+        return json_encode(array('products' => $products)); 
+    }
+    
+    public static function requestPriceForfaits_test($parameters){
+        print_r($_POST);
+//        print_r($parameters);
+        exit;
+//        $requests = $_POST['requests'];
+//        print_r($requests);
+        exit;
+        $senior = 0;
+        $adultos = 0;
+        $juvenil = 0;
+        $junior = 0;
+        
+        $family_request = false;
+        
+        $requests_days = [];
+        $products = [
+            'items' => [],
+            'total_price' => 0
+        ];
+
+        foreach($requests as $request_key => $request){
+            if($request['years'] >= 60){
+                $requests[$request_key]['type'] = 'senior';
+                $senior++;
+            }elseif($request['years'] >= 17){
+                $requests[$request_key]['type'] = 'adult';
+                $adultos++;
+            }elseif($request['years'] >= 6){
+                $requests[$request_key]['type'] = 'juv';
+                $juvenil++;
+            }else{
+                $requests[$request_key]['type'] = 'jun';
+                $junior++;
+            }
+            
+            $requests_days[$request['days']][$request_key] = $requests[$request_key];
+        }
+        
+//        echo 'Senior: '.$senior.'<br/>';
+//        echo 'Adultos: '.$adultos.'<br/>';
+//        echo 'Juvenil: '.$juvenil.'<br/>';
+//        echo 'Junio: '.$junior.'<br/>';
+//        print_r($requests);
+//        print_r($requests_days);
+                
+        foreach($requests_days as $days_key => $requests_stack){
+            $family_request_counter = [
+                'adultos' => 0,
+                'juvenil' => 0
+            ];
+            
+            foreach($requests_stack as $request_item_key => $request_item){
+                if($request_item['type'] === 'adultos'){
+                    $family_request_counter['adultos']++; 
+                }elseif($request_item['type'] === 'juvenil'){
+                    $family_request_counter['juvenil']++;   
+                }
+            }
+            
+//            print_r($family_request_counter);
+            if( $days_key >= 3 &&
+                $family_request_counter['adultos'] >= 1 &&
+                $family_request_counter['juvenil'] >= 2 ){
+                
+                $family_request = true;
+            }
+            
+            
+            reset($requests_stack);
+            foreach($requests_stack as $request_item_key => $request_item){
+
+                $start_date = date('Ymd',strtotime($request_item['start_date']));
+                $end_date = date('Ymd',strtotime($request_item['end_date']));
+                $forfait_type = $request_item['type'];
+
+                $dates = FortfaitsController::dateRange($start_date,$end_date);
+                $calendar_sql = ForfaitsCalendar::  select("date","type")
+                                                    ->where("date",">=",$start_date)
+                                                    ->where("date","<=",$end_date)
+                                                    ->get();
+                foreach($calendar_sql as $item){
+                    $prices[$item->date] = $item->type;
+                }
+
+                foreach($prices as $price_date => $rate){
+                    if(!isset($prices_blocks[$rate])){
+                        $prices_blocks[$rate] = 1;
+                    }else{
+                        $prices_blocks[$rate] += 1; 
+                    }
+                }
+
+                arsort($prices_blocks);
+//                print_r($prices_blocks);
+
+                $rate_selected = NULL;
+                $rate_value_selected = NULL;
+                foreach($prices_blocks as $rate_key => $price_block){
+                    if($rate_selected == NULL){
+                        $rate_selected = $rate_key;
+                        $rate_value_selected = $price_block;
+                    }elseif($price_block == $rate_value_selected){
+                        if(array_search($rate_key,$rates_priorities) > array_search($rate_selected,$rates_priorities)){
+                            $rate_selected = $rate_key;
+                            $rate_value_selected = $price_block;
+                        }
+                    }
+                }
+
+                if(count($prices) > 0){
+
+                    $price = 0;
+                    
+                    // We don't have family rate yet.
+//                    if($family_request === true){
+//                        $rate = '';
+//                    }
+                    
+                    $prices_sql = ForfaitsPrices::  select("price_".$rate)
+                                                    ->where("type","=","$forfait_type")
+                                                    ->where("days","=","$days_key")
+                                                    ->get();
+
+                    foreach($prices_sql as $forfait){
+                        $price += $forfait->{"price_".$rate};
+                    }
+
+                    if($forfait_type === 'senior'){
+                        $forfait_name = 'Senior';
+                    }elseif($forfait_type === 'adult'){
+                        $forfait_name = 'Adulto';
+                    }elseif($forfait_type === 'juv'){
+                        $forfait_name = 'Juvenil';
+                    }else{
+                        $forfait_name = 'Junior';
+                    }
+
+                    if(strlen(substr(strrchr($price, "."), 1)) == 1){
+                       $price = number_format($price, 2, '.', '');
+                    }
+
+                    $price_formatted = str_replace('.',',',$price);
+
+                    $products['items'][] = [
+                        'name' => '1 Forfait '.$forfait_name.' de '.$days_key.' días - Del '.$request_item['start_date'].' al '.$request_item['end_date'].' - <strong>'.$price_formatted.'€</strong>',
+                        'type' => $forfait_type,
+                        'price' => $price
+                    ];
+
+                    $products['total_price'] += $price;
+                }
+
+            }
+
+        }
+        
+//        print_r($products);
+        
+        return json_encode(array('products' => $products)); 
+    }
+    
+    public static function checkReCaptcha(){
+//        print_r($_POST);
+
+        //your site public key
+        $public_key = '6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV';
+        //your site secret key
+        $secret = '6LdOoYYUAAAAAL8A017bGUyR6pH-ZrBGrtYqpedX';
+        //get verify response data
+        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$_POST['token']);
+        $responseData = json_decode($verifyResponse);
+        
+//        print_r($responseData);
+        
+        if($_POST['public_key'] == $public_key && $responseData->success && $responseData->score >= 0.4){
+            echo json_encode(array('status' => 'true'));  
+        }else{
+            echo json_encode(array('status' => 'false'));  
         }
     }
 

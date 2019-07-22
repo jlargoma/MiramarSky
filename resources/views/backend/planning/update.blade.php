@@ -12,7 +12,7 @@
     <script src="//js.stripe.com/v3/"></script>
     <style>
         .pgn-wrapper[data-position$='-right'] {
-            right:: 82% !important;
+            right: 82% !important;
         }
 
         input[type=number]::-webkit-outer-spin-button,
@@ -77,11 +77,9 @@
 
 @section('content')
 	<?php
-	use \Carbon\Carbon;
-	?>
-	<?php
-	use App\Classes\Mobile;
-	$mobile = new Mobile();
+        use \Carbon\Carbon;
+        use App\Classes\Mobile;
+        $mobile = new Mobile();
 	?>
     <div class="container-fluid padding-10 sm-padding-10">
         <div class="row">
@@ -90,73 +88,97 @@
                     <div class="col-md-9 col-xs-12">
                         @if( url()->previous() != "" )
                             @if( url()->previous() == url()->current() )
-                                <a href="{{ url('/admin/reservas') }}" class=" m-b-10"
-                                   style="min-width: 10px!important">
-                                    @else
-                                        <a href="{{ url()->previous() }}" class=" m-b-10"
-                                           style="min-width: 10px!important">
-                                            @endif
+                                <a href="{{ url('/admin/reservas') }}" class=" m-b-10" style="min-width: 10px!important">
+                                     <img src="{{ asset('/img/miramarski/iconos/close.png') }}" style="width: 20px"/>
+                                </a>
+                            @else
+                                <a href="{{ url()->previous() }}" class=" m-b-10" style="min-width: 10px!important">
+                                     <img src="{{ asset('/img/miramarski/iconos/close.png') }}" style="width: 20px"/>
+                                </a>
+                            @endif
+                        @else
+                            <a href="{{ url('/admin/reservas') }}" class=" m-b-10"  style="min-width: 10px!important">
+                                 <img src="{{ asset('/img/miramarski/iconos/close.png') }}" style="width: 20px"/>
+                            </a>
+                        @endif
 
-                                            @else
-                                                <a href="{{ url('/admin/reservas') }}" class=" m-b-10"
-                                                   style="min-width: 10px!important">
-                                                    @endif
-                                                    <img src="{{ asset('/img/miramarski/iconos/close.png') }}"
-                                                         style="width: 20px"/>
-                                                </a>
-                                                <h4 class="" style="line-height: 1; letter-spacing: -1px">
-													<?php echo "<b>" . strtoupper($book->customer->name) . "</b>" ?>
-                                                    creada el
-													<?php $fecha = Carbon::createFromFormat('Y-m-d H:i:s', $book->created_at);?>
-                                                    <br>
-                                                    <span class="font-s18"><?php echo $fecha->copy()
-													                                        ->formatLocalized('%d %B %Y') . " Hora: " . $fecha->copy()
-													                                                                                          ->format('H:m')?></span>
-                                                </h4>
-                                                <h5>Creado
-                                                    por <?php echo "<b>" . strtoupper($book->user->name) . "</b>" ?></h5>
-												<?php if ($book->type_book == 2): ?>
-                                                <div class="col-md-2 col-xs-3 text-center push-10">
-                                                    <a href="{{ url('/admin/pdf/pdf-reserva/'.$book->id) }}">
-                                                        <img src="/img/pdf.png"
-                                                             style="width: 50px; float:left; margin: 0 auto;">
-                                                    </a>
-                                                </div>
-                                                <div class="col-md-2 col-xs-3 text-center push-10">
-													<?php $text = "Hola, esperamos que hayas disfrutado de tu estancia con nosotros." . "\n" . "Nos gustaria que valorarás, para ello te dejamos este link : https://www.apartamentosierranevada.net/encuesta-satisfaccion/" . base64_encode($book->id);
-													?>
+                        <h4 class="" style="line-height: 1; letter-spacing: -1px">
+                            <?php echo "<b>" . strtoupper($book->customer->name) . "</b>" ?> creada el
+                            <?php $fecha = Carbon::createFromFormat('Y-m-d H:i:s', $book->created_at);?>
+                            <br>
+                            <span class="font-s18"><?php echo $fecha->copy()->formatLocalized('%d %B %Y') . " Hora: " . $fecha->copy()->format('H:m')?></span>
+                        </h4>
+                        <h5>Creado por <?php echo "<b>" . strtoupper($book->user->name) . "</b>" ?></h5>
+                        <?php if ($book->type_book == 2): ?>
+                            <div class="col-md-2 col-xs-3 text-center push-10">
+                                <a href="{{ url('/admin/pdf/pdf-reserva/'.$book->id) }}">
+                                    <img src="/img/pdf.png"
+                                         style="width: 50px; float:left; margin: 0 auto;">
+                                </a>
+                            </div>
+                            <div class="col-md-2 col-xs-3 text-center push-10">
+                                <?php $text = "Hola, esperamos que hayas disfrutado de tu estancia con nosotros." . "\n" . "Nos gustaria que valorarás, para ello te dejamos este link : https://www.apartamentosierranevada.net/encuesta-satisfaccion/" . base64_encode($book->id);
+                                ?>
 
-                                                    <a href="whatsapp://send?text=<?php echo $text; ?>"
-                                                       data-action="share/whatsapp/share"
-                                                       data-original-title="Enviar encuesta de satisfacción"
-                                                       data-toggle="tooltip">
-                                                        <i class="fa fa-share-square fa-3x" aria-hidden="true"></i><br>Encuesta
-                                                    </a>
-                                                </div>
-												<?php endif ?>
-                                                <div class="col-md-2 col-xs-3 text-center push-10">
-                                                    <a href="tel:<?php echo $book->customer->phone ?>"
-                                                       style="width: 50px; float:left;">
-                                                        <i class="fa fa-phone  text-success"
-                                                           style="font-size: 48px;"></i>
-                                                    </a>
-                                                </div>
-                                                <div class="col-md-2 col-xs-3 text-center push-10 hidden-lg hidden-md">
-                                                    <h2 class="text-center"
-                                                        style="font-size: 18px; line-height: 18px; margin: 0;">
-														<?php $text = "En este link podrás realizar el pago de la señal por el 25% del total." . "\n" . " En el momento en que efectúes el pago, te legará un email confirmando tu reserva - https://www.apartamentosierranevada.net/reservas/stripe/pagos/" . base64_encode($book->id);
-														?>
+                                <a href="whatsapp://send?text=<?php echo $text; ?>"
+                                   data-action="share/whatsapp/share"
+                                   data-original-title="Enviar encuesta de satisfacción"
+                                   data-toggle="tooltip">
+                                    <i class="fa fa-share-square fa-3x" aria-hidden="true"></i><br>Encuesta
+                                </a>
+                            </div>
+                        <?php endif ?>
+                        <div class="col-md-2 col-xs-3 text-center push-10">
+                            <a href="tel:<?php echo $book->customer->phone ?>"
+                               style="width: 50px; float:left;">
+                                <i class="fa fa-phone  text-success"
+                                   style="font-size: 48px;"></i>
+                            </a>
+                        </div>
+                        <div class="col-md-2 col-xs-3 text-center push-10 hidden-lg hidden-md">
+                            <h2 class="text-center"
+                                style="font-size: 18px; line-height: 18px; margin: 0;">
+                                <?php $text = "En este link podrás realizar el pago de la señal por el 25% del total." . "\n" . " En el momento en que efectúes el pago, te legará un email confirmando tu reserva - https://www.apartamentosierranevada.net/reservas/stripe/pagos/" . base64_encode($book->id);
+                                ?>
 
-                                                        <a href="whatsapp://send?text=<?php echo $text; ?>"
-                                                           data-action="share/whatsapp/share">
-                                                            <i class="fa fa-eye fa-3x" aria-hidden="true"></i>
-                                                        </a>
-                                                    </h2>
-                                                </div>
+                                <a href="whatsapp://send?text=<?php echo $text; ?>"
+                                   data-action="share/whatsapp/share">
+                                    <i class="fa fa-eye fa-3x" aria-hidden="true"></i>
+                                </a>
+                            </h2>
+                        </div>
+                        
+                        <div class="col-md-2 col-xs-3 text-center push-10">
+                            <a href="/admin/reservas/ff_status_popup/<?php echo $book->id; ?>" onclick="window.open(this.href, 'Reserva - FF','left=400,top=20,width=1200,height=900,toolbar=0,resizable=0'); return false;" >
+                                <?php
+                                    if($book->ff_status == 0){
+                                        echo '<img src="'.asset('/img/miramarski/ski_icon_status_transparent.png').'" style="max-width:45px;"/>';
+                                    }elseif($book->ff_status == 1){
+                                        echo '<img src="'.asset('/img/miramarski/ski_icon_status_grey.png').'" style="max-width:45px;"/>';
+                                    }elseif($book->ff_status == 2){
+                                        echo '<img src="'.asset('/img/miramarski/ski_icon_status_red.png').'" style="max-width:45px;"/>';
+                                    }elseif($book->ff_status == 3){
+                                        echo '<img src="'.asset('/img/miramarski/ski_icon_status_green.png').'" style="max-width:45px;"/>';
+                                    }
+                                ?>
+                            </a>
+                        </div>
+                        <div class="col-md-2 col-xs-3 text-center push-10 ">
+                          <button class="partee-cp " onclick="copyParteeMsg()">
+                            <div class="tooltip" id="tooltipPartee">
+                            <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+                            </div>
+                            Partee
+                          </button>
+                        </div>
+
                     </div>
                     <div class="col-md-3 col-xs-12 content-guardar" style="padding: 20px 0;">
+                      @if($low_profit)
+                      <div class="btn btn-danger btn-cons btn-alarms m-b-10">BAJO BENEFICIO</div>
+                      @endif
                         <div id="overlay" style="display: none;"></div>
-                        <select class="status form-control minimal" data-id="<?php echo $book->id ?>" name="status">
+                        <select class="status form-control minimal" data-id="<?php echo $book->id ?>" name="status" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
 							<?php for ($i = 1; $i <= 12; $i++): ?>
 							<?php if ($i == 5 && $book->customer->email == ""): ?>
                             <?php else: ?>
@@ -196,21 +218,21 @@
                     <div class=" col-md-8 col-md-offset-2 col-xs-12 text-left">
 						<?php $logSendImages = $book->getSendPicture(); ?>
 						<?php if ($logSendImages): ?>
-						<?php foreach ($logSendImages as $index => $logSendImage): ?>
-						<?php
-						$roomSended = \App\Rooms::find($logSendImage->room_id);
-						$adminSended = \App\User::find($logSendImage->admin_id);
-						$dateSended = Carbon::createFromFormat('Y-m-d H:i:s', $logSendImage->created_at)
-						?>
-                        <div class="col-xs-12 push-5">
-                            <p class="text-center" style="font-size: 18px; ">
-                                <i class="fa fa-eye"></i>
-                                Fotos <b><?php echo strtoupper($roomSended->nameRoom)?></b> enviadas
-                                por <b><?php echo strtoupper($adminSended->name)?></b> el
-                                <b><?php echo $dateSended->formatLocalized('%d %B de %Y')?></b>
-                            </p>
-                        </div>
-						<?php endforeach;?>
+                            <?php foreach ($logSendImages as $index => $logSendImage): ?>
+                                <?php
+                                $roomSended = \App\Rooms::find($logSendImage->room_id);
+                                $adminSended = \App\User::find($logSendImage->admin_id);
+                                $dateSended = Carbon::createFromFormat('Y-m-d H:i:s', $logSendImage->created_at)
+                                ?>
+                                <div class="col-xs-12 push-5">
+                                    <p class="text-center" style="font-size: 18px; ">
+                                        <i class="fa fa-eye"></i>
+                                        Fotos <b><?php echo strtoupper($roomSended->nameRoom)?></b> enviadas
+                                        por <b><?php echo strtoupper($adminSended->name)?></b> el
+                                        <b><?php echo $dateSended->formatLocalized('%d %B de %Y')?></b>
+                                    </p>
+                                </div>
+                            <?php endforeach;?>
 						<?php endif;?>
                     </div>
                 </div>
@@ -245,13 +267,13 @@
                             <label for="name">Nombre</label>
                             <input class="form-control cliente" type="text" name="nombre"
                                    value="<?php echo $book->customer->name ?>"
-                                   data-id="<?php echo $book->customer->id ?>">
+                                   data-id="<?php echo $book->customer->id ?>"  <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
                         </div>
                         <div class="col-md-4 push-10">
                             <label for="email">Email</label>
                             <input class="form-control cliente" type="email" name="email"
                                    value="<?php echo $book->customer->email ?>"
-                                   data-id="<?php echo $book->customer->id ?>">
+                                   data-id="<?php echo $book->customer->id ?>" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
                         </div>
                         <div class="col-md-4 push-10">
                             <label for="phone">Telefono</label>
@@ -260,23 +282,23 @@
                              <?php endif ?>
                             <input class="form-control only-numbers cliente" type="text" name="phone"
                                    value="<?php echo $book->customer->phone ?>"
-                                   data-id="<?php echo $book->customer->id ?>">
+                                   data-id="<?php echo $book->customer->id ?>" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
                         </div>
                     </div>
                     <div class="col-xs-12 bg-white">
                         <div class="col-md-3 col-xs-12 push-10">
                             <label for="dni">DNI</label>
                             <input class="form-control cliente" type="text" name="dni"
-                                   value="<?php echo $book->customer->DNI ?>">
+                                   value="<?php echo $book->customer->DNI ?>" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
                         </div>
                         <div class="col-md-3 col-xs-12 push-10">
                             <label for="address">DIRECCION</label>
                             <input class="form-control cliente" type="text" name="address"
-                                   value="<?php echo $book->customer->address ?>">
+                                   value="<?php echo $book->customer->address ?>" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
                         </div>
                         <div class="col-md-3 col-xs-12 push-10">
                             <label for="country">PAÍS</label>
-                            <select class="form-control country minimal" name="country">
+                            <select class="form-control country minimal" name="country" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
                                 <option>--Seleccione país --</option>
 								<?php foreach (\App\Countries::orderBy('code', 'ASC')->get() as $country): ?>
                                 <option value="<?php echo $country->code ?>" <?php if ($country->code == $book->customer->country)
@@ -290,7 +312,7 @@
                         </div>
                         <div class="col-md-3 col-xs-12 push-10 content-cities">
                             <label for="city">CIUDAD</label>
-                            <select class="form-control city minimal" name="city">
+                            <select class="form-control city minimal" name="city" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
                                 <option>--Seleccione ciudad --</option>
 								<?php foreach (\App\Cities::orderBy('city', 'ASC')->get() as $city): ?>
                                 <option value="<?php echo $city->id ?>" <?php if ($city->id == $book->customer->city)
@@ -324,7 +346,7 @@
 
                                 <input type="text" class="form-control daterange1" id="fechas" name="fechas" required=""
                                        style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;"
-                                       value="<?php echo $start1;?> - <?php echo $finish1 ?>" readonly="">
+                                       value="<?php echo $start1;?> - <?php echo $finish1 ?>" readonly="" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
 
                             </div>
                         </div>
@@ -337,7 +359,7 @@
                         </div>
                         <div class="col-md-2 col-xs-3">
                             <label>Pax</label>
-                            <select class=" form-control pax minimal" name="pax">
+                            <select class=" form-control pax minimal" name="pax" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
 								<?php for ($i = 1; $i <= 14 ; $i++): ?>
 								<?php if ($i != 11): ?>
                                 <option value="<?php echo $i ?>" <?php echo ($i == $book->pax) ? "selected" : ""; ?>>
@@ -350,7 +372,7 @@
                         </div>
                         <div class="col-md-2 col-xs-3 ">
                             <label style="color: red">Pax-Real</label>
-                            <select class=" form-control real_pax minimal" name="real_pax">
+                            <select class=" form-control real_pax minimal" name="real_pax" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
 								<?php for ($i = 1; $i <= 14 ; $i++): ?>
 								<?php if ($i != 9 && $i != 11): ?>
                                 <option value="<?php echo $i ?>"
@@ -364,7 +386,7 @@
                         <div class="col-md-3 col-xs-6 push-10">
                             <label>Apartamento</label>
 
-                            <select class="form-control full-width minimal newroom" name="newroom"
+                            <select class="form-control full-width minimal newroom" name="newroom" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>
                                     id="newroom" <?php if (isset($_GET['saveStatus']) && !empty($_GET['saveStatus'])): echo "style='border: 1px solid red'"; endif ?>>
 								<?php foreach ($rooms as $room): ?>
                                 <option data-size="<?php echo $room->sizeApto ?>"
@@ -378,7 +400,7 @@
 
                         <div class="col-md-2 col-xs-6 push-20 ">
                             <label>Parking</label>
-                            <select class=" form-control parking minimal" name="parking">
+                            <select class=" form-control parking minimal" name="parking" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
 								<?php for ($i = 1; $i <= 4 ; $i++): ?>
                                 <option value="<?php echo $i ?>" {{ $book->type_park == $i ? 'selected' : '' }}><?php echo $book->getParking($i) ?></option>
 								<?php endfor;?>
@@ -386,7 +408,7 @@
                         </div>
                         <div class="col-md-2 col-xs-6 push-20">
                             <label>Sup. Lujo</label>
-                            <select class=" form-control full-width type_luxury minimal" name="type_luxury">
+                            <select class=" form-control full-width type_luxury minimal" name="type_luxury" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
 								<?php for ($i = 1; $i <= 4 ; $i++): ?>
                                 <option value="<?php echo $i ?>" {{ $book->type_luxury == $i ? 'selected' : '' }}><?php echo $book->getSupLujo($i) ?></option>
 								<?php endfor;?>
@@ -394,7 +416,7 @@
                         </div>
                         <div class="col-md-2 col-xs-6 push-20">
                             <label>IN</label>
-                            <select id="schedule" class="form-control minimal" style="width: 100%;" name="schedule">
+                            <select id="schedule" class="form-control minimal" style="width: 100%;" name="schedule" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
                                 <option>-- Sin asignar --</option>
 								<?php for ($i = 0; $i < 24; $i++): ?>
                                 <option value="<?php echo $i ?>" <?php if ($i == $book->schedule)
@@ -418,7 +440,7 @@
                         <div class="col-md-2 col-xs-6 push-20">
                             <label>Out</label>
                             <select id="scheduleOut" class="form-control minimal" style="width: 100%;"
-                                    name="scheduleOut">
+                                    name="scheduleOut" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
                                 <option>-- Sin asignar --</option>
 								<?php for ($i = 0; $i < 24; $i++): ?>
                                 <option value="<?php echo $i ?>" <?php if ($i == $book->scheduleOut)
@@ -444,7 +466,7 @@
                         <div class="col-md-5 col-xs-6 push-20 not-padding">
                             <div class="col-md-5 col-xs-12 push-10">
                                 <label>Agencia</label>
-                                <select class="form-control full-width agency minimal" name="agency">
+                                <select class="form-control full-width agency minimal" name="agency" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
 									<?php for ($i = 0; $i <= 7 ; $i++): ?>
                                     <option value="<?php echo $i ?>"
                                             {{ $book->agency == $i ? 'selected' : '' }} <?php if ( Auth::user()->role == "agente" && $book->getAgency($i) == "S.essence"): ?>
@@ -456,9 +478,9 @@
                             <div class="col-md-7 col-xs-12 push-10">
                                 <label>Cost Agencia</label>
 								<?php if ($book->PVPAgencia == 0.00): ?>
-                                <input type="number" step='0.01' class="agencia form-control" name="agencia" value="">
+                                <input type="number" step='0.01' class="agencia form-control" name="agencia" value="" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
 								<?php else: ?>
-                                <input type="number" step='0.01' class="agencia form-control" name="agencia"
+                                <input type="number" step='0.01' class="agencia form-control" name="agencia" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>
                                        value="<?php echo $book->PVPAgencia ?>">
 								<?php endif ?>
                             </div>
@@ -467,7 +489,7 @@
                         <div class="col-md-2 col-xs-4 not-padding">
                             <label>promoción 3x2</label>
                             <input type="number" step='0.01' class="promociones only-numbers form-control"
-                                   name="promociones"
+                                   name="promociones" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>
                                    value="<?php echo ($book->promociones > 0) ? $book->promociones : "" ?>">
                         </div>
 						<?php if ($book->book_owned_comments != "" && $book->promociones != 0): ?>
@@ -479,7 +501,7 @@
                         <div class="col-md-12 col-xs-12 push-20 not-padding">
                             <div class="col-md-3 col-xs-12 text-center boxtotales" style="background-color: #0c685f;">
                                 <label class="font-w800 text-white" for="">PVP</label>
-                                <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white"
+                                <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>
                                        name="total" value="<?php echo $book->total_price ?>"
                                        data-edited="<?php if ($book->real_price != $book->total_price): echo '1'; else: echo '0'; endif ?>">
                             </div>
@@ -564,13 +586,13 @@
                                 <label>Comentarios Propietario</label>
                                 <textarea class="form-control book_owned_comments" name="book_owned_comments" rows="5"
                                           data-idBook="<?php echo $book->id ?>"
-                                          data-type="3"><?php if ($book->book_owned_comments != "" && $book->promociones != 0): ?><?php echo $book->book_owned_comments ?><?php endif; ?></textarea>
+                                          data-type="3"><?php if (!empty($book->book_owned_comments) && intval($book->promociones) == 0): ?><?php echo $book->book_owned_comments ?><?php endif; ?></textarea>
                             </div>
                         </div>
                         <div class="row push-40 bg-white padding-block">
                             <div class="col-md-4 col-md-offset-4 text-center">
                                 <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit"
-                                        style="min-height: 50px;width: 100%;">Guardar
+                                        style="min-height: 50px;width: 100%;" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>Guardar
                                 </button>
                             </div>
                         </div>
@@ -578,205 +600,204 @@
                 </form>
             </div>
             <div class="col-md-6 col-xs-12 padding-block">
-                <div class="row">
-                    <div class="col-xs-12 bg-black push-0">
-                        <h4 class="text-center white">
-                            {{ $totalpayment }}€ COBRADO
-                        </h4>
+                <?php if ( Auth::user()->role != "limpieza"):?>
+                    <div class="row">
+                        <div class="col-xs-12 bg-black push-0">
+                            <h4 class="text-center white">
+                                {{ $totalpayment }}€ COBRADO
+                            </h4>
+                        </div>
+                        <table class="table table-hover demo-table-search table-responsive-block" style="margin-top: 0;">
+                            <thead>
+                            <tr>
+                                <th class="text-center bg-success text-white" style="width:25%">fecha</th>
+                                <th class="text-center bg-success text-white" style="width:25%">importe</th>
+                                <th class="text-center bg-success text-white" style="width:30%">Tipo</th>
+                                <th class="text-center bg-success text-white" style="width:20%">comentario</th>
+                                <th class="text-center bg-success text-white" style="width:20%">Eliminar</th>
+
+                            </tr>
+                            </thead>
+                            <tbody><?php $total = 0; ?>
+                            <?php if (count($payments) > 0): ?>
+
+                            <?php foreach ($payments as $payment): ?>
+                            <tr>
+                                <td class="text-center p-t-25">
+                                    <?php
+                                    $fecha = new Carbon($payment->datePayment);
+                                    echo $fecha->format('d-m-Y')
+                                    ?>
+                                </td>
+                                <td class="text-center">
+                                    <input class="editable payment-<?php echo $payment->id?> m-t-5" type="text" name="cost"
+                                           data-id="<?php echo $payment->id ?>" value="<?php echo $payment->import ?>"
+                                           style="width: 50%;text-align: center;border-style: none none ">€
+                                </td>
+                                <td class="text-center p-t-25"><?php echo $typecobro->getTypeCobro($payment->type) ?> </td>
+
+                                <td class="text-center p-t-25"><?php echo $payment->comment ?></td>
+                                <td>
+                                    <a href="{{ url('/admin/reservas/deleteCobro/')}}/<?php echo $payment->id ?>"
+                                       class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title=""
+                                       data-original-title="Eliminar Cobro"
+                                       onclick="return confirm('¿Quieres Eliminar el obro?');">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <?php $total = $total + $payment->import ?>
+                            <?php endforeach ?>
+                            <tr>
+                                <td class="text-center">
+                                    <div class="input-daterange input-group" id="datepicker-range">
+                                        <input type="text" class="input-sm form-control fecha-cobro" name="start"
+                                               data-date-format="dd-mm-yyyy"
+                                               value="<?php $hoy = Carbon::now();echo $hoy->format('d/m/Y') ?>">
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <input class="importe m-t-5" type="number" name="importe"
+                                           style="width: 100%;text-align: center;border-style: none none ">
+                                </td>
+                                <td class="text-center">
+                                    <select class="full-width select2-hidden-accessible type_payment"
+                                            data-init-plugin="select2" name="type_payment" tabindex="-1" aria-hidden="true">
+                                        <?php for ($i = 0; $i < 4 ; $i++): ?>
+                                        <?php if (Auth::user()->id == 39 && $i == 2): ?>
+                                        <option value="<?php echo $i ?>"
+                                                selected><?php echo $book->getTypeCobro($i) ?></option>
+                                        <?php elseif (Auth::user()->id == 28 && $i == 1):?>
+                                        <option value="<?php echo $i ?>"
+                                                selected><?php echo $book->getTypeCobro($i) ?></option>
+                                        <?php else: ?>
+                                        <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
+                                        <?php endif ?>
+
+                                        <?php endfor ;?>
+                                    </select>
+                                </td>
+                                <td class="text-center">
+                                    <input class="comment" type="text" name="comment"
+                                           style="width: 100%;text-align: center;border-style: none">
+                                </td>
+                                <td>
+                                </td>
+
+                            </tr>
+                            <?php else: ?>
+                            <tr>
+                                <td class="text-center">
+                                    <div class="input-daterange input-group" id="datepicker-range">
+                                        <input type="text" class="input-sm form-control fecha-cobro" name="start"
+                                               data-date-format="dd-mm-yyyy"
+                                               value="<?php $hoy = Carbon::now();echo $hoy->format('d/m/Y') ?>">
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <input class="importe m-t-5" type="text" name="importe"
+                                           style="width: 100%;text-align: center;border-style: none">
+                                </td>
+                                <td class="text-center">
+                                    <select class="full-width select2-hidden-accessible type_payment"
+                                            data-init-plugin="select2" name="type_payment" tabindex="-1" aria-hidden="true">
+                                        <?php for ($i = 0; $i < 4 ; $i++): ?>
+                                        <?php if (Auth::user()->id == 39 && $i == 2): ?>
+                                        <option value="<?php echo $i ?>"
+                                                selected><?php echo $book->getTypeCobro($i) ?></option>
+                                        <?php elseif (Auth::user()->id == 28 && $i == 1):?>
+                                        <option value="<?php echo $i ?>"
+                                                selected><?php echo $book->getTypeCobro($i) ?></option>
+                                        <?php else: ?>
+                                        <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
+                                        <?php endif ?>
+
+                                        <?php endfor ;?>
+                                    </select>
+                                </td>
+                                <td class="text-center">
+                                    <input class="comment m-t-5" type="text" name="comment"
+                                           style="width: 100%;text-align: center;border-style: none">
+                                </td>
+
+                            </tr>
+                            <?php endif ?>
+                            <tr>
+                                <td></td>
+                                <?php if ($total < $book->total_price): ?>
+                                <td class="text-center"><p
+                                            style="color:red;font-weight: bold;font-size:15px"><?php echo $total - $book->total_price ?>
+                                        €</p></td>
+                                <td class="text-left" colspan="2"><p style="color:red;font-weight: bold;font-size:15px">
+                                        Pendiente de pago</p></td>
+                                <?php elseif($total > $book->total_price): ?>
+                                <td class="text-center"><p
+                                            style="color:black;font-weight: bold;font-size:15px"><?php echo $total - $book->total_price ?>
+                                        €</p></td>
+                                <td class="text-left" colspan="2">Sobrante</td>
+                                <?php else: ?>
+                                <td class="text-center"><p style="color:black;font-weight: bold;font-size:15px">0€</p></td>
+                                <td class="text-left" colspan="2">Al corriente de pago</td>
+                                <?php endif ?>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                        <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="GUARGAR"
+                               data-id="<?php echo $book->id ?>" style="width: 30%;min-height: 50px">
                     </div>
-                    <table class="table table-hover demo-table-search table-responsive-block" style="margin-top: 0;">
-                        <thead>
-                        <tr>
-                            <th class="text-center bg-success text-white" style="width:25%">fecha</th>
-                            <th class="text-center bg-success text-white" style="width:25%">importe</th>
-                            <th class="text-center bg-success text-white" style="width:30%">Tipo</th>
-                            <th class="text-center bg-success text-white" style="width:20%">comentario</th>
-                            <th class="text-center bg-success text-white" style="width:20%">Eliminar</th>
 
-                        </tr>
-                        </thead>
-                        <tbody><?php $total = 0; ?>
-						<?php if (count($payments) > 0): ?>
+                    <div class="row push-20 content-link-stripe"
+                         style="margin-top: 20px; border-top: 2px dashed #000; border-bottom: 2px dashed #000; padding: 20px 15px;">
 
-						<?php foreach ($payments as $payment): ?>
-                        <tr>
-                            <td class="text-center p-t-25">
-								<?php
-								$fecha = new Carbon($payment->datePayment);
-								echo $fecha->format('d-m-Y')
-								?>
-                            </td>
-                            <td class="text-center">
-                                <input class="editable payment-<?php echo $payment->id?> m-t-5" type="text" name="cost"
-                                       data-id="<?php echo $payment->id ?>" value="<?php echo $payment->import ?>"
-                                       style="width: 50%;text-align: center;border-style: none none ">€
-                            </td>
-                            <td class="text-center p-t-25"><?php echo $typecobro->getTypeCobro($payment->type) ?> </td>
+                        @include('backend.stripe.link')
 
-                            <td class="text-center p-t-25"><?php echo $payment->comment ?></td>
-                            <td>
-                                <a href="{{ url('/admin/reservas/deleteCobro/')}}/<?php echo $payment->id ?>"
-                                   class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title=""
-                                   data-original-title="Eliminar Cobro"
-                                   onclick="return confirm('¿Quieres Eliminar el obro?');">
-                                    <i class="fa fa-trash"></i>
-                                </a>
-                            </td>
-                        </tr>
-						<?php $total = $total + $payment->import ?>
-						<?php endforeach ?>
-                        <tr>
-                            <td class="text-center">
-                                <div class="input-daterange input-group" id="datepicker-range">
-                                    <input type="text" class="input-sm form-control fecha-cobro" name="start"
-                                           data-date-format="dd-mm-yyyy"
-                                           value="<?php $hoy = Carbon::now();echo $hoy->format('d/m/Y') ?>">
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <input class="importe m-t-5" type="number" name="importe"
-                                       style="width: 100%;text-align: center;border-style: none none ">
-                            </td>
-                            <td class="text-center">
-                                <select class="full-width select2-hidden-accessible type_payment"
-                                        data-init-plugin="select2" name="type_payment" tabindex="-1" aria-hidden="true">
-									<?php for ($i = 0; $i < 4 ; $i++): ?>
-									<?php if (Auth::user()->id == 39 && $i == 2): ?>
-                                    <option value="<?php echo $i ?>"
-                                            selected><?php echo $book->getTypeCobro($i) ?></option>
-									<?php elseif (Auth::user()->id == 28 && $i == 1):?>
-                                    <option value="<?php echo $i ?>"
-                                            selected><?php echo $book->getTypeCobro($i) ?></option>
-									<?php else: ?>
-                                    <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
-									<?php endif ?>
-
-									<?php endfor ;?>
-                                </select>
-                            </td>
-                            <td class="text-center">
-                                <input class="comment" type="text" name="comment"
-                                       style="width: 100%;text-align: center;border-style: none">
-                            </td>
-                            <td>
-                            </td>
-
-                        </tr>
-						<?php else: ?>
-                        <tr>
-                            <td class="text-center">
-                                <div class="input-daterange input-group" id="datepicker-range">
-                                    <input type="text" class="input-sm form-control fecha-cobro" name="start"
-                                           data-date-format="dd-mm-yyyy"
-                                           value="<?php $hoy = Carbon::now();echo $hoy->format('d/m/Y') ?>">
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <input class="importe m-t-5" type="text" name="importe"
-                                       style="width: 100%;text-align: center;border-style: none">
-                            </td>
-                            <td class="text-center">
-                                <select class="full-width select2-hidden-accessible type_payment"
-                                        data-init-plugin="select2" name="type_payment" tabindex="-1" aria-hidden="true">
-									<?php for ($i = 0; $i < 4 ; $i++): ?>
-									<?php if (Auth::user()->id == 39 && $i == 2): ?>
-                                    <option value="<?php echo $i ?>"
-                                            selected><?php echo $book->getTypeCobro($i) ?></option>
-									<?php elseif (Auth::user()->id == 28 && $i == 1):?>
-                                    <option value="<?php echo $i ?>"
-                                            selected><?php echo $book->getTypeCobro($i) ?></option>
-									<?php else: ?>
-                                    <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
-									<?php endif ?>
-
-									<?php endfor ;?>
-                                </select>
-                            </td>
-                            <td class="text-center">
-                                <input class="comment m-t-5" type="text" name="comment"
-                                       style="width: 100%;text-align: center;border-style: none">
-                            </td>
-
-                        </tr>
-						<?php endif ?>
-                        <tr>
-                            <td></td>
-							<?php if ($total < $book->total_price): ?>
-                            <td class="text-center"><p
-                                        style="color:red;font-weight: bold;font-size:15px"><?php echo $total - $book->total_price ?>
-                                    €</p></td>
-                            <td class="text-left" colspan="2"><p style="color:red;font-weight: bold;font-size:15px">
-                                    Pendiente de pago</p></td>
-							<?php elseif($total > $book->total_price): ?>
-                            <td class="text-center"><p
-                                        style="color:black;font-weight: bold;font-size:15px"><?php echo $total - $book->total_price ?>
-                                    €</p></td>
-                            <td class="text-left" colspan="2">Sobrante</td>
-							<?php else: ?>
-                            <td class="text-center"><p style="color:black;font-weight: bold;font-size:15px">0€</p></td>
-                            <td class="text-left" colspan="2">Al corriente de pago</td>
-							<?php endif ?>
-
-                        </tr>
-                        </tbody>
-                    </table>
-                    <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="GUARGAR"
-                           data-id="<?php echo $book->id ?>" style="width: 30%;min-height: 50px">
-                </div>
-
-                <div class="row push-20 content-link-stripe"
-                     style="margin-top: 20px; border-top: 2px dashed #000; border-bottom: 2px dashed #000; padding: 20px 15px;">
-
-                    @include('backend.planning._links', ['import' => 0])
-
-                </div>
-
+                    </div>
+                <?php endif ?>
                 <div class="row">
-					<?php $hasFiance = \App\Fianzas::where('book_id', $book->id)->first(); ?>
+
                     <div class="col-xs-12 push-20 ">
 						<?php if ($book->type_book == 2): ?>
-						<?php if ( count($hasFiance) > 0): ?>
-                        <div class="col-md-6">
+                            <?php if ( !$hasFiance):  ?>
+                                <div class="col-md-6">
 
-                            <button class="btn btn-primary btn-lg" type="button" id="fianza"> COBRAR FIANZA</button>
-                        </div>
-						<?php else: ?>
-                        <div class="col-md-6">
-
-                            <a class="btn btn-primary btn-lg"
-                               href="{{ url('/admin/reservas/fianzas/cobrar/'.$book->id) }}"> RECOGER FIANZA</a>
-                        </div>
-						<?php endif ?>
-
+                                    <button class="btn btn-primary btn-lg" type="button" id="fianza"> COBRAR FIANZA</button>
+                                </div>
+                            <?php else: ?>
+                                <div class="col-md-6">
+                                    <a class="btn btn-primary btn-lg"
+                                       href="{{ url('/admin/reservas/fianzas/cobrar/'.$book->id) }}"> RECOGER FIANZA</a>
+                                </div>
+                            <?php endif ?>
 						<?php endif ?>
                     </div>
 					<?php if ($book->type_book == 2): ?>
-                    <div class="row content-fianza" style="display: none;">
-						<?php if ( count($hasFiance) > 0): ?>
-                        <div class="col-md-6 col-md-offset-3 alert alert-info fade in alert-dismissable"
-                             style="margin-top: 30px; background-color: #10cfbd70!important;">
-                            <h3 class="text-center font-w300">
-                                CARGAR LA FIANZA DE <span class="font-w800"><?php echo($hasFiance->amount / 100) ?>
-                                    €</span>
-                            </h3>
-                            <div class="row">
-                                <form action="{{ url('admin/reservas/stripe/pay/fianza') }}" method="post">
-                                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                    <input type="hidden" name="id_fianza" value="<?php echo $hasFiance->id; ?>">
-                                    <div class="col-xs-12 text-center">
-                                        <button class="btn btn-primary">COBRAR</button>
-                                    </div>
-                                </form>
+                    <div class="row content-fianza" >
+						<?php if ( $hasFiance ): ?>
+                            <div class="col-md-6 col-md-offset-3 alert alert-info fade in alert-dismissable" style="margin-top: 30px; background-color: #10cfbd70!important;">
+                                <h3 class="text-center font-w300"> CARGAR LA FIANZA DE <span class="font-w800"><?php echo($hasFiance->amount / 100) ?> €</span>
+                                </h3>
+                                <div class="row">
+                                    <form action="{{ url('admin/reservas/stripe/pay/fianza') }}" method="post">
+                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                        <input type="hidden" name="id_fianza" value="<?php echo $hasFiance->id; ?>">
+                                        <div class="col-xs-12 text-center">
+                                            <button class="btn btn-primary">COBRAR</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
 						<?php endif ?>
 
                     </div>
 					<?php endif; ?>
                 </div>
-                <div class="row">
-                    @include('backend.stripe.stripe', ['bookTocharge' => $book])
-                </div>
+                <?php if (Auth::user()->role != "limpieza"):?>
+                    <div class="row">
+                        @include('Paylands.payment', ['routeToRedirect' => route('payland.proccess.payment.book',
+                        ['id' => $book->id]), 'customer' => $book->customer->id])
+                    </div>
+                 <?php endif ?>
             </div>
         </div>
 		<?php else: ?>
@@ -813,13 +834,13 @@
 
                         <div class="col-xs-12 push-10">
                             <label for="name">Nombre</label>
-                            <input class="form-control cliente" type="text" name="nombre"
+                            <input class="form-control cliente" type="text" name="nombre" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>
                                    value="<?php echo $book->customer->name ?>"
                                    data-id="<?php echo $book->customer->id ?>">
                         </div>
                         <div class="col-xs-12 push-10">
                             <label for="email">Email</label>
-                            <input class="form-control cliente" type="email" name="email"
+                            <input class="form-control cliente" type="email" name="email" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>
                                    value="<?php echo $book->customer->email ?>"
                                    data-id="<?php echo $book->customer->id ?>">
                         </div>
@@ -828,23 +849,23 @@
                          <?php endif ?>
                         <div class="col-xs-12 push-10">
                             <label for="phone">Telefono</label>
-                            <input class="form-control only-numbers cliente" type="text" name="phone"
+                            <input class="form-control only-numbers cliente" type="text" name="phone" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>
                                    value="<?php echo $book->customer->phone ?>"
                                    data-id="<?php echo $book->customer->id ?>">
                         </div>
                         <div class="col-xs-12 push-10">
                             <label for="dni">DNI</label>
-                            <input class="form-control cliente" type="text" name="dni"
+                            <input class="form-control cliente" type="text" name="dni" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>
                                    value="<?php echo $book->customer->DNI ?>">
                         </div>
                         <div class="col-xs-12 push-10">
                             <label for="address">DIRECCION</label>
-                            <input class="form-control cliente" type="text" name="address"
+                            <input class="form-control cliente" type="text" name="address" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>
                                    value="<?php echo $book->customer->address ?>">
                         </div>
                         <div class="col-xs-12 push-10">
                             <label for="country">PAÍS</label>
-                            <select class="form-control country minimal" name="country">
+                            <select class="form-control country minimal" name="country" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
                                 <option>--Seleccione país --</option>
 								<?php foreach (\App\Countries::orderBy('code', 'ASC')->get() as $country): ?>
                                 <option value="<?php echo $country->code ?>" <?php if ($country->code == $book->customer->country)
@@ -858,7 +879,7 @@
                         </div>
                         <div class="col-xs-12 push-10 content-cities">
                             <label for="city">CIUDAD</label>
-                            <select class="form-control city minimal" name="city">
+                            <select class="form-control city minimal" name="city" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
                                 <option>--Seleccione ciudad --</option>
 								<?php foreach (\App\Cities::where('code_country', $book->customer->country)
 								                          ->orderBy('city', 'ASC')->get() as $city): ?>
@@ -891,7 +912,7 @@
 
                             <input type="text" class="form-control daterange1" id="fechas" name="fechas" required=""
                                    style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;"
-                                   value="<?php echo $start1;?> - <?php echo $finish1 ?>" readonly="">
+                                   value="<?php echo $start1;?> - <?php echo $finish1 ?>" readonly="" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
                         </div>
                         <div class="col-md-1 col-xs-4 push-20 ">
                             <label>Noches</label>
@@ -902,7 +923,7 @@
                         </div>
                         <div class="col-md-1 col-xs-4 push-20 ">
                             <label>Pax</label>
-                            <select class=" form-control pax minimal" name="pax">
+                            <select class=" form-control pax minimal" name="pax" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
 								<?php for ($i = 1; $i <= 14 ; $i++): ?>
                                 <option value="<?php echo $i ?>" <?php echo ($i == $book->pax) ? "selected" : ""; ?>>
 									<?php echo $i ?>
@@ -910,7 +931,7 @@
 								<?php endfor;?>
                             </select>
                             <label class="m-t-20" style="color: red">Pax-Real</label>
-                            <select class=" form-control real_pax minimal" name="real_pax">
+                            <select class=" form-control real_pax minimal" name="real_pax" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
 								<?php for ($i = 1; $i <= 14 ; $i++): ?>
                                 <option value="<?php echo $i ?>"
 								        <?php echo ($i == $book->real_pax) ? "selected" : ""; ?> style="color: red">
@@ -922,7 +943,7 @@
                         <div class="col-md-3 col-xs-8 push-20">
                             <label>Apartamento</label>
 
-                            <select class="form-control full-width minimal newroom" name="newroom"
+                            <select class="form-control full-width minimal newroom" name="newroom" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>
                                     id="newroom" <?php if (isset($_GET['saveStatus']) && !empty($_GET['saveStatus'])): echo "style='border: 1px solid red'"; endif ?>>
 								<?php foreach ($rooms as $room): ?>
                                 <option data-size="<?php echo $room->sizeApto ?>"
@@ -935,7 +956,7 @@
                         </div>
                         <div class="col-md-1 col-xs-6 push-20">
                             <label>Parking</label>
-                            <select class=" form-control parking minimal" name="parking">
+                            <select class=" form-control parking minimal" name="parking" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
 								<?php for ($i = 1; $i <= 4 ; $i++): ?>
                                 <option value="<?php echo $i ?>" {{ $book->type_park == $i ? 'selected' : '' }}><?php echo $book->getParking($i) ?></option>
 								<?php endfor;?>
@@ -943,7 +964,7 @@
                         </div>
                         <div class="col-md-2 col-xs-6 push-0">
                             <label>Sup. Lujo</label>
-                            <select class=" form-control full-width type_luxury minimal" name="type_luxury">
+                            <select class=" form-control full-width type_luxury minimal" name="type_luxury" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
 								<?php for ($i = 1; $i <= 4 ; $i++): ?>
                                 <option value="<?php echo $i ?>" {{ $book->type_luxury == $i ? 'selected' : '' }}><?php echo $book->getSupLujo($i) ?></option>
 								<?php endfor;?>
@@ -951,7 +972,7 @@
                         </div>
                         <div class="col-md-2 col-xs-3 push-0" style="padding: 0 5px;">
                             <label>IN</label>
-                            <select id="schedule" class="form-control " style="width: 100%;" name="schedule">
+                            <select id="schedule" class="form-control " style="width: 100%;" name="schedule" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
                                 <option>-- Sin asignar --</option>
 								<?php for ($i = 0; $i < 24; $i++): ?>
                                 <option value="<?php echo $i ?>" <?php if ($i == $book->schedule)
@@ -974,7 +995,7 @@
                         </div>
                         <div class="col-md-2 col-xs-3 push-0" style="padding: 0 5px;">
                             <label>Out</label>
-                            <select id="scheduleOut" class="form-control " style="width: 100%;" name="scheduleOut">
+                            <select id="scheduleOut" class="form-control " style="width: 100%;" name="scheduleOut" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
                                 <option>-- Sin asignar --</option>
 								<?php for ($i = 0; $i < 24; $i++): ?>
                                 <option value="<?php echo $i ?>" <?php if ($i == $book->scheduleOut)
@@ -1001,7 +1022,7 @@
                         <div class="col-md-4 col-xs-12 push-20 not-padding">
                             <div class="col-md-6 col-xs-6 push-10">
                                 <label>Agencia</label>
-                                <select class="form-control full-width agency minimal" name="agency">
+                                <select class="form-control full-width agency minimal" name="agency" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
 									<?php for ($i = 0; $i <= 7 ; $i++): ?>
                                     <option value="<?php echo $i ?>"
                                             {{ $book->agency == $i ? 'selected' : '' }} <?php if ( Auth::user()->role == "agente" && $book->getAgency($i) == "S.essence"): ?>
@@ -1014,16 +1035,16 @@
                             <div class="col-md-6 col-xs-6 push-10">
                                 <label>Cost Agencia</label>
 								<?php if ($book->PVPAgencia == 0.00): ?>
-                                <input type="number" step='0.01' class="agencia form-control" name="agencia" value="">
+                                <input type="number" step='0.01' class="agencia form-control" name="agencia" value="" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
 								<?php else: ?>
-                                <input type="number" step='0.01' class="agencia form-control" name="agencia"
+                                <input type="number" step='0.01' class="agencia form-control" name="agencia" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>
                                        value="<?php echo $book->PVPAgencia ?>">
 								<?php endif ?>
                             </div>
                         </div>
                         <div class="col-md-2 col-xs-6 push-20 ">
                             <label>promoción 3x2</label>
-                            <input type="number" step='0.01' class="promociones only-numbers form-control"
+                            <input type="number" step='0.01' class="promociones only-numbers form-control" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>
                                    name="promociones"
                                    value="<?php echo ($book->promociones > 0) ? $book->promociones : "" ?>">
                         </div>
@@ -1036,7 +1057,7 @@
                         <div class="col-md-8 col-xs-12 push-20 not-padding">
                             <div class="col-md-3 col-xs-12 text-center" style="background-color: #0c685f;">
                                 <label class="font-w800 text-white" for="">PVP</label>
-                                <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white"
+                                <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>
                                        name="total" value="<?php echo $book->total_price ?>"
                                        data-edited="<?php if ($book->real_price != $book->total_price): echo '1'; else: echo '0'; endif ?>">
                             </div>
@@ -1129,7 +1150,7 @@
                         </div>
                         <div class="row push-40 bg-white padding-block">
                             <div class="col-md-4 col-md-offset-4 col-xs-12 text-center">
-                                <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit"
+                                <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>
                                         style="min-height: 50px;width: 100%;">Guardar reserva
                                 </button>
                             </div>
@@ -1138,170 +1159,166 @@
             </div>
 
             <div class="col-md-6 col-xs-12 padding-block">
-                <div class="row push-20">
-					<?php $hasFiance = \App\Fianzas::where('book_id', $book->id)->first(); ?>
+                <div class="row">
                     <div class="col-xs-12 push-20 ">
 						<?php if ($book->type_book == 2): ?>
-						<?php if ( count($hasFiance) > 0): ?>
-                        <div class="col-md-6 col-xs-12 text-center">
-
-                            <button class="btn btn-primary btn-lg" type="button" id="fianza"
-                                    style="color: #fff;background-color: #337ab7;border-color: #2e6da4;"> COBRAR FIANZA
-                            </button>
-                        </div>
-						<?php else: ?>
-                        <div class="col-md-6 col-xs-12 text-center">
-
-                            <a class="btn btn-primary btn-lg"
-                               href="{{ url('/admin/reservas/fianzas/cobrar/'.$book->id) }}"
-                               style="color: #fff;background-color: #337ab7;border-color: #2e6da4;"> RECOGER FIANZA</a>
-                        </div>
-						<?php endif ?>
-
-						<?php endif ?>
+                        <?php if ( $hasFiance ): ?>
+                            <div class="col-md-6">
+                                <button class="btn btn-primary btn-lg" type="button" id="fianza"> COBRAR FIANZA</button>
+                            </div>
+                        <?php else: ?>
+                            <div class="col-md-6">
+                                <a class="btn btn-primary btn-lg"
+                                   href="{{ url('/admin/reservas/fianzas/cobrar/'.$book->id) }}"> RECOGER FIANZA</a>
+                            </div>
+                        <?php endif ?>
+                        <?php endif ?>
                     </div>
-					<?php if ($book->type_book == 2): ?>
+                    <?php if ($book->type_book == 2): ?>
                     <div class="row content-fianza" style="display: none;">
-						<?php if ( count($hasFiance) > 0): ?>
-                        <div class="col-md-6 col-md-offset-3 alert alert-info fade in alert-dismissable"
-                             style="margin-top: 30px; background-color: #10cfbd70!important;">
-                            <h3 class="text-center font-w300">
-                                CARGAR LA FIANZA
-                            </h3>
-                            <div class="row">
-                                <form action="{{ url('admin/reservas/stripe/pay/fianza') }}" method="post">
-
-                                    <input type="hidden" name="id_fianza" value="<?php echo $hasFiance->id; ?>">
-                                    <div class="col-xs-12 text-center">
-                                        <button class="btn btn-primary">COBRAR</button>
-                                    </div>
-                                </form>
+						<?php if (  $hasFiance ): ?>
+                            <div class="col-md-6 col-md-offset-3 alert alert-info fade in alert-dismissable"
+                                 style="margin-top: 30px; background-color: #10cfbd70!important;">
+                                <h3 class="text-center font-w300">
+                                    CARGAR LA FIANZA DE <span class="font-w800"><?php echo($hasFiance->amount / 100) ?>
+                                        €</span>
+                                </h3>
+                                <div class="row">
+                                    <form action="{{ url('admin/reservas/stripe/pay/fianza') }}" method="post">
+                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                        <input type="hidden" name="id_fianza" value="<?php echo $hasFiance->id; ?>">
+                                        <div class="col-xs-12 text-center">
+                                            <button class="btn btn-primary">COBRAR</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        <?php endif ?>
+                    </div>
+                    <?php endif; ?>
+                </div>
+                <?php if ( Auth::user()->role != "limpieza"):?>
+                    <div class="row">
+                        <div class="col-xs-12 bg-black push-0">
+                            <h4 class="text-center white">
+                                {{ $totalpayment }}€ COBRADO
+                            </h4>
+                        </div>
+                        <div class="col-xs-12 not-padding">
+                            <div class="col-xs-4 not-padding bg-success text-white text-center" style="min-height: 50px">
+                                <span class="font-s18">Total:</span><br>
+                                <span class="font-w600 font-s18"><?php echo number_format($book->total_price, 2, ',', '.') ?>
+                                    €</span>
+                            </div>
+                            <div class="col-xs-4 not-padding bg-primary text-white text-center" style="min-height: 50px">
+                                <span class="font-s18">Cobrado:</span><br>
+                                <span class="font-w600 font-s18"><?php echo number_format($totalpayment, 2, ',', '.') ?>
+                                    €</span>
+                            </div>
+                            <div class="col-xs-4 not-padding bg-danger text-white text-center" style="min-height: 50px">
+                                <span class="font-s18">Pendiente:</span><br>
+                                <!-- si esta pendiente nada,.si esta de mas +X -->
+                                <span class="font-w600 font-s18"><?php echo ($book->total_price - $totalpayment) >= 0 ? "" : "+";echo number_format($totalpayment - $book->total_price, 2, ',', '.') ?>
+                                    €</span>
                             </div>
                         </div>
-						<?php endif ?>
+                        <div class="col-md-12 table-responsive not-padding ">
+                            <table class="table  table-responsive table-striped" style="margin-top: 0;">
+                                <thead>
+                                <tr>
+                                    <th class="text-center" style="min-width: 100px">fecha</th>
+                                    <th class="text-center" style="min-width: 100px">importe</th>
+                                    <th class="text-center" style="min-width: 200px">Tipo</th>
+                                    <th class="text-center" style="min-width: 100px">comentario</th>
+                                    <th class="text-center" style="width:20%">Eliminar</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <?php $total = 0; ?>
 
-                    </div>
-					<?php endif; ?>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12 bg-black push-0">
-                        <h4 class="text-center white">
-                            {{ $totalpayment }}€ COBRADO
-                        </h4>
-                    </div>
-                    <div class="col-xs-12 not-padding">
-                        <div class="col-xs-4 not-padding bg-success text-white text-center" style="min-height: 50px">
-                            <span class="font-s18">Total:</span><br>
-                            <span class="font-w600 font-s18"><?php echo number_format($book->total_price, 2, ',', '.') ?>
-                                €</span>
+                                <?php foreach ($payments as $payment): ?>
+                                <tr>
+                                    <td class="text-center">
+                                        <?php
+                                        $fecha = new Carbon($payment->datePayment);
+                                        echo $fecha->format('d-m-Y')
+                                        ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php echo $payment->import . " €" ?>
+                                    </td>
+                                    <td class="text-center"><?php echo $typecobro->getTypeCobro($payment->type) ?> </td>
+                                    <td class="text-center"><?php echo $payment->comment ?></td>
+
+                                    <td>
+                                        <a href="{{ url('/admin/reservas/deleteCobro/')}}/<?php echo $payment->id ?>"
+                                           class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title=""
+                                           data-original-title="Eliminar Cobro"
+                                           onclick="return confirm('¿Quieres Eliminar el obro?');">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <?php $total = $total + $payment->import ?>
+                                <?php endforeach ?>
+                                <tr>
+                                    <td class="text-center" style="padding: 20px 0px 0px 0px;">
+                                        <div class="input-daterange input-group" id="datepicker-range" style="width: 100%">
+                                            <input type="text" class="input-sm form-control fecha-cobro" name="start"
+                                                   data-date-format="dd-mm-yyyy"
+                                                   value="<?php $hoy = Carbon::now();echo $hoy->format('d/m/Y') ?>"
+                                                   style="min-height: 35px" readonly>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <input class="importe form-control" type="number" name="importe"
+                                               style="width: 100%;text-align: center;">
+                                    </td>
+
+                                    <td class="text-center">
+                                        <select class="form-control type_payment minimal" name="type_payment" tabindex="-1"
+                                                aria-hidden="true">
+                                            <?php for ($i = 0; $i < 4 ; $i++): ?>
+                                            <?php if (Auth::user()->id == 39 && $i == 2): ?>
+                                            <option value="<?php echo $i ?>"
+                                                    selected><?php echo $book->getTypeCobro($i) ?></option>
+                                            <?php elseif (Auth::user()->id == 28 && $i == 1):?>
+                                            <option value="<?php echo $i ?>"
+                                                    selected><?php echo $book->getTypeCobro($i) ?></option>
+                                            <?php else: ?>
+                                            <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
+                                            <?php endif ?>
+
+                                            <?php endfor ;?>
+                                        </select>
+                                    </td>
+                                    <td class="text-center">
+                                        <input class="comment form-control" type="text" name="comment"
+                                               style="width: 100%;text-align: center;min-height: 35px">
+                                    </td>
+
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="col-xs-4 not-padding bg-primary text-white text-center" style="min-height: 50px">
-                            <span class="font-s18">Cobrado:</span><br>
-                            <span class="font-w600 font-s18"><?php echo number_format($totalpayment, 2, ',', '.') ?>
-                                €</span>
-                        </div>
-                        <div class="col-xs-4 not-padding bg-danger text-white text-center" style="min-height: 50px">
-                            <span class="font-s18">Pendiente:</span><br>
-                            <!-- si esta pendiente nada,.si esta de mas +X -->
-                            <span class="font-w600 font-s18"><?php echo ($book->total_price - $totalpayment) >= 0 ? "" : "+";echo number_format($totalpayment - $book->total_price, 2, ',', '.') ?>
-                                €</span>
+                        <div class="col-xs-12 text-center push-40">
+                            <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="Cobrar"
+                                   data-id="<?php echo $book->id ?>" style="width: 50%;min-height: 50px">
                         </div>
                     </div>
-                    <div class="col-md-12 table-responsive not-padding ">
-                        <table class="table  table-responsive table-striped" style="margin-top: 0;">
-                            <thead>
-                            <tr>
-                                <th class="text-center" style="min-width: 100px">fecha</th>
-                                <th class="text-center" style="min-width: 100px">importe</th>
-                                <th class="text-center" style="min-width: 200px">Tipo</th>
-                                <th class="text-center" style="min-width: 100px">comentario</th>
-                                <th class="text-center" style="width:20%">Eliminar</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-							<?php $total = 0; ?>
+                    <div class="row push-20 content-link-stripe"
+                         style="margin-top: 20px; border-top: 2px dashed #000; border-bottom: 2px dashed #000; padding: 20px 15px;">
 
-							<?php foreach ($payments as $payment): ?>
-                            <tr>
-                                <td class="text-center">
-									<?php
-									$fecha = new Carbon($payment->datePayment);
-									echo $fecha->format('d-m-Y')
-									?>
-                                </td>
-                                <td class="text-center">
-									<?php echo $payment->import . " €" ?>
-                                </td>
-                                <td class="text-center"><?php echo $typecobro->getTypeCobro($payment->type) ?> </td>
-                                <td class="text-center"><?php echo $payment->comment ?></td>
+                        @include('backend.planning._links', ['import' => 0])
 
-                                <td>
-                                    <a href="{{ url('/admin/reservas/deleteCobro/')}}/<?php echo $payment->id ?>"
-                                       class="btn btn-tag btn-danger" type="button" data-toggle="tooltip" title=""
-                                       data-original-title="Eliminar Cobro"
-                                       onclick="return confirm('¿Quieres Eliminar el obro?');">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
-
-							<?php $total = $total + $payment->import ?>
-							<?php endforeach ?>
-                            <tr>
-                                <td class="text-center" style="padding: 20px 0px 0px 0px;">
-                                    <div class="input-daterange input-group" id="datepicker-range" style="width: 100%">
-                                        <input type="text" class="input-sm form-control fecha-cobro" name="start"
-                                               data-date-format="dd-mm-yyyy"
-                                               value="<?php $hoy = Carbon::now();echo $hoy->format('d/m/Y') ?>"
-                                               style="min-height: 35px" readonly>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <input class="importe form-control" type="number" name="importe"
-                                           style="width: 100%;text-align: center;">
-                                </td>
-
-                                <td class="text-center">
-                                    <select class="form-control type_payment minimal" name="type_payment" tabindex="-1"
-                                            aria-hidden="true">
-										<?php for ($i = 0; $i < 4 ; $i++): ?>
-										<?php if (Auth::user()->id == 39 && $i == 2): ?>
-                                        <option value="<?php echo $i ?>"
-                                                selected><?php echo $book->getTypeCobro($i) ?></option>
-										<?php elseif (Auth::user()->id == 28 && $i == 1):?>
-                                        <option value="<?php echo $i ?>"
-                                                selected><?php echo $book->getTypeCobro($i) ?></option>
-										<?php else: ?>
-                                        <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
-										<?php endif ?>
-
-										<?php endfor ;?>
-                                    </select>
-                                </td>
-                                <td class="text-center">
-                                    <input class="comment form-control" type="text" name="comment"
-                                           style="width: 100%;text-align: center;min-height: 35px">
-                                </td>
-
-                            </tr>
-                            </tbody>
-                        </table>
                     </div>
-                    <div class="col-xs-12 text-center push-40">
-                        <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="Cobrar"
-                               data-id="<?php echo $book->id ?>" style="width: 50%;min-height: 50px">
+
+                    <div class="row">
+                        @include('Paylands.payment', ['routeToRedirect' => route('payland.proccess.payment.book',
+                       ['id' => $book->id]), 'customer' => $book->customer->id])
                     </div>
-                </div>
-                <div class="row push-20 content-link-stripe"
-                     style="margin-top: 20px; border-top: 2px dashed #000; border-bottom: 2px dashed #000; padding: 20px 15px;">
-
-                    @include('backend.planning._links', ['import' => 0])
-
-                </div>
-
-                <div class="row">
-                    @include('backend.stripe.stripe', ['bookTocharge' => $book])
-                </div>
+                <?php endif ?>
             </div>
 			<?php endif ?>
         </div>
@@ -1353,5 +1370,76 @@
                       });
                 });
               });
+              var copyParteeMsg = function(){
+                $.get('/get-partee-msg', {bookID: <?php echo $book->id ?>},
+                      function(data) {
+                        if (data == 'empty'){
+                          alert('No se ha encontrado un registro asociado');
+                        } else {
+                          var dummy = document.createElement("textarea");
+                          // to avoid breaking orgain page when copying more words
+                          // cant copy when adding below this code
+                          // dummy.style.display = 'none'
+                          document.body.appendChild(dummy);
+                          //Be careful if you use texarea. setAttribute('value', value), which works with "input" does not work with "textarea". – Eduard
+                          dummy.value = data;
+                          dummy.select();
+                          document.execCommand("copy");
+                          document.body.removeChild(dummy);
+                          $('#tooltipPartee').addClass('show');
+                          setTimeout(function(){
+                            $('#tooltipPartee').removeClass('show');
+                          },500);
+                        }
+                      
+                      });
+              }
             </script>
+            <style>
+              button.partee-cp {
+                position: relative;
+                margin-top: 0.15em;
+                padding: 9px;
+                border-radius: 10px;
+                background-color: #fff;
+                color: #ff5a5f;
+                font-size: 20px;
+                font-weight: 600;
+              }
+              button.partee-cp:hover {
+                background-color: #ff5a5f;
+                color:#fff;
+              }
+              .tooltip .tooltiptext::after {
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                margin-left: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: #555 transparent transparent transparent;
+              }
+
+              .tooltip:hover .tooltiptext {
+                visibility: visible;
+                opacity: 1;
+              }
+              button.partee-cp .tooltip.show{
+                display: block;
+                opacity: 1;
+                width: 100%;
+                top: -2em;
+                left: 0;
+              }
+              .tooltiptext {
+                position: absolute;
+                font-size: 11px;
+                color: #fff;
+                background-color: rgba(0, 0, 0, 0.42);
+                padding: 2px 5px;
+                width: 10em;
+                border-radius: 7px;
+              }
+            </style>
 @endsection

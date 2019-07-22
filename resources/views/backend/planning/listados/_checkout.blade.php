@@ -5,7 +5,7 @@
 <?php $startWeek = Carbon::now()->startOfWeek(); ?>
 <?php $endWeek = Carbon::now()->endOfWeek(); ?>
 <div class="table-responsive">
-    <table class="table table-striped no-footer" style="margin: 0;">
+    <table class="table table-striped no-footer table-data" style="margin: 0;">
         <thead>
             <th class="bg-primary text-white text-center">Nombre</th>
             <th class="bg-primary text-white text-center">Tel</th>
@@ -13,7 +13,7 @@
             <th class="bg-primary text-white text-center">Out</th>
             <th class="bg-primary text-white text-center">Apto</th>
             <th class="bg-primary text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i>Salida</th>
-            <th class="bg-primary text-white text-center">A</th>
+            <?php if (Auth::user()->role != "limpieza"): ?><th class="bg-primary text-white text-center">A</th><?php endif ?>
         </thead>
         <tbody>
             <?php $count = 0 ?>
@@ -44,12 +44,14 @@
                         <?php endif ?>
                             
                     </td>
-                    <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b') ?></td>
+                    <td class="text-center sm-p-t-10 sm-p-b-10" data-order="<?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->format("U") ?>">
+                        <?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b-%y') ?>
+                    </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
                         <b><?php echo substr($book->room->nameRoom." - ".$book->room->name, 0, 15)  ?></b>
                     </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
-                        <select id="scheduleOut" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?>" style="width: 100%;" data-type="out" data-id="<?php echo $book->id ?>">
+                        <select id="scheduleOut" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?>" style="width: 100%;" data-type="out" data-id="<?php echo $book->id ?>" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
                             <option>---</option>
                             <?php for ($i = 0; $i < 24; $i++): ?>
                                 <option value="<?php echo $i ?>" <?php if($i == $book->scheduleOut) { echo 'selected';}?>>
@@ -69,6 +71,8 @@
                             <?php echo number_format($book->total_price,2,',','.') ?> €
                         <?php endif ?> -->
                     </td>
+
+                    <?php if (Auth::user()->role != "limpieza"): ?>
                     <td class="text-center">
                         <?php $text = "Hola, esperamos que hayas disfrutado de tu estancia con nosotros."."\n"."Nos gustaria que valorarás, para ello te dejamos este link : https://www.apartamentosierranevada.net/encuesta-satisfaccion/".base64_encode($book->id);
                             ?>
@@ -77,6 +81,7 @@
                             <i class="fa fa-whatsapp" aria-hidden="true"></i>
                         </a>
                     </td>
+                    <?php endif ?>
                 </tr>
             <?php endforeach ?>
         </tbody>

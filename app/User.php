@@ -26,11 +26,19 @@ class User extends Authenticatable
 
     public function rooms()
     {
-        return $this->hasOne('\App\Rooms', 'id', 'user_id');
+        return $this->hasMany('\App\Rooms', 'owned', 'id');
     }
 
     public function book()
     {
         return $this->hasOne('\App\Book', 'user_id', 'id');
     }
+	public function isAgent()
+	{
+		return ($this->hasOne('\App\AgentsRooms', 'user_id', 'id')) ? true : false;
+	}
+	public function agent()
+	{
+		return $this->hasOne('\App\AgentsRooms', 'user_id', 'id');
+	}
 }

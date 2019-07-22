@@ -8,7 +8,7 @@ use App\Http\Requests;
 use Carbon\Carbon;
 use \App\SpecialSegment;
 
-class SpecialSegmentController extends Controller
+class SpecialSegmentController extends AppController
 {
 
 	public function create(Request $request)

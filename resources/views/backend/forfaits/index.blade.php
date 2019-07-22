@@ -8,7 +8,7 @@
 
 @section('externalScripts') 
 <link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
+<link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
 <link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
 <style type="text/css">
     table.requests td,th{
@@ -147,7 +147,7 @@
                     <td>{{$request->start}}</td>
                     <td>{{$request->finish}}</td>
                     <td class="text-center">
-                        <p class="pan">{{$request->pan}}</p>
+                        <p class="pan">{{$request->cc_pan}}</p>
                         <button class="btn btn-primary btn-xs addPAN" data-id="{{$request->id}}">Modificar</button>
                     </td>
                     <td>

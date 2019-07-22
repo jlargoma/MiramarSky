@@ -10,5 +10,10 @@ class Prices extends Model
     {
         return $this->hasOne('\App\TypeSeasons', 'id', 'season');
     }
+    
+    public static function getCostsFromSeason($season, $pax){
+        return Prices::select(['cost', 'price'])->where('season', $season)
+                ->where('occupation', $pax)->get()->toArray();
+    }
 
 }

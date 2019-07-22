@@ -9,10 +9,8 @@
             <td style="text-align: center; font-weight: 800;">IN - OUT</td>
             <td style="text-align: center; font-weight: 800;">Noches</td>
             <td style="text-align: center; font-weight: 800;">PVP</td>
-            <td style="text-align: center; font-weight: 800;">Banco Jorg</td>
-            <td style="text-align: center; font-weight: 800;">Banco Jaime</td>
-            <td style="text-align: center; font-weight: 800;">Cash Jorge</td>
-            <td style="text-align: center; font-weight: 800;">Cash Jaime</td>
+            <td style="text-align: center; font-weight: 800;">BANCO</td>
+            <td style="text-align: center; font-weight: 800;">CAJA</td>
             <td style="text-align: center; font-weight: 800;">Pendiente</td>
             <td style="text-align: center; font-weight: 800;">Ingreso Neto</td>
             <td style="text-align: center; font-weight: 800;">%Benef</td>
@@ -23,9 +21,7 @@
             <td style="text-align: center; font-weight: 800;">Limp</td>
             <td style="text-align: center; font-weight: 800;">Agencia</td>
             <td style="text-align: center; font-weight: 800;">Extras</td>
-            <td style="text-align: center; font-weight: 800;">Stripe</td>
-            <td style="text-align: center; font-weight: 800;">Benef Jorge</td>
-            <td style="text-align: center; font-weight: 800;">Benef Jaime</td>
+            <td style="text-align: center; font-weight: 800;">TPV</td>
         </tr>
         <?php foreach ($books as $book): ?>
             <tr >
@@ -79,18 +75,10 @@
                 </td>
 
                 <td class="text-center coste">
-                     {{$book->getPayment(2)}}
-                </td>
-                <td class="text-center coste" >
-                    {{$book->getPayment(3)}}
+                     {{$book->getPayment(2)+$book->getPayment(3)}}
                 </td>
                 <td class="text-center coste">
-                    {{$book->getPayment(0)}}
-
-                </td>
-                <td class="text-center coste pagos">
-                    {{$book->getPayment(1)}}
-
+                    {{$book->getPayment(0)+$book->getPayment(1)}}
                 </td>
                 <td class="text-center coste pagos pendiente red " >
 
@@ -117,8 +105,7 @@
                 </td>
 
                 <td class="text-center beneficio bf ">
-                    {{$inc_percent}}
-                   
+                   <?php echo number_format($inc_percent,0,',','.') ?>
                 </td>
                 <td class="text-center coste bi ">
                     {{$cost_total}}
@@ -157,13 +144,7 @@
                     {{$book->stripeCost}}
                     
                 </td>
-                <td class="text-center coste">
-                    {{ $book->getJorgeProfit() }} 
-                </td>
 
-                <td class="text-center coste">
-                    {{ $book->getJaimeProfit() }} 
-                </td>
             </tr>
         <?php endforeach ?>
 

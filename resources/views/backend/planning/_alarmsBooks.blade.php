@@ -162,7 +162,15 @@
                                             <?php endforeach ?>
                                         <?php endif ?>
                                         <?php echo  $paymentBook." €" ?> <br>
-                                        <b class="text-danger"><?php echo  round(($paymentBook/$book->total_price)*100)?>%</b>
+                                        <b class="text-danger">
+                                            <?php
+                                                if($paymentBook != 0 && $book->total_price != 0){
+                                                    echo round(($paymentBook/$book->total_price)*100);
+                                                }else{
+                                                    echo '';
+                                                }
+                                            ?>%
+                                        </b>
                                     </td>
                                    
                                     <td class="text-center">

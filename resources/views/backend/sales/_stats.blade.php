@@ -32,7 +32,7 @@
 		}
 </style>
 
-<?php $dataStats = \App\http\Controllers\LiquidacionController::getSalesByYear($inicio->copy()->format('Y')); ?>
+<?php $dataStats = \App\http\Controllers\LiquidacionController::getSalesByYear(); ?>
 <div class="col-lg-3 col-md-6 col-xs-12">
 	
 	<table class="table table-hover table-striped table-ingresos" style="background-color: #92B6E2">
@@ -105,7 +105,7 @@
 	<div class="row ">
 		<?php $oldTotalPVP = 0; ?>
 		<?php $arrayColors = [ 1 => 'bg-info', 2 => 'bg-complete', 3 => 'bg-primary', ]; ?>
-		<?php $lastThreeSeason = $inicio->copy()->subYears(2) ?>
+		<?php $lastThreeSeason = \Carbon\Carbon::createFromFormat('Y', $year->year)->subYears(2) ?>
 		<?php for ($i=1; $i < 4; $i++): ?>
 			<div class="col-md-4 m-b-10">
 			
@@ -162,37 +162,22 @@
     			</div>
     		</div>
     		<div class="col-md-12">
-    			<div class="col-md-3 bordered">
+    			<div class="col-md-6 bordered">
     				<div class="card-title text-black hint-text">
-    					CAJA JORG
+    					CAJA
     				</div>
     				<div class="p-l-20">
-    					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['metalico_jorge'],0,',','.') ?>€</h3>
+    					<h3 class="text-black font-w400 text-center">
+                                          <?php echo number_format($dataX['metalico_jorge']+$dataX['metalico_jaime'],0,',','.') ?>€
+                                        </h3>
     				</div>
     			</div>
-    			<div class="col-md-3 bordered">
+    			<div class="col-md-6 bordered">
     				<div class="card-title text-black hint-text">
-    					CAJA JAIME
+    					BANCO
     				</div>
     				<div class="p-l-20">
-    					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['metalico_jaime'],0,',','.') ?>€</h3>
-    				</div>
-    			</div>
-    			<div class="col-md-3 bordered">
-    				<div class="card-title text-black hint-text">
-    					BANCO JORG
-    				</div>
-    				<div class="p-l-20">
-    					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['banco_jorge'],0,',','.') ?>€</h3>
-    				</div>
-    			</div>
-
-    			<div class="col-md-3 bordered">
-    				<div class="card-title text-black hint-text">
-    					BANCO JAIME
-    				</div>
-    				<div class="p-l-20">
-    					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['banco_jaime'],0,',','.') ?>€</h3>
+    					<h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['banco_jorge']+$dataX['banco_jaime'],0,',','.') ?>€</h3>
     				</div>
     			</div>
     		</div>
@@ -223,7 +208,7 @@
         options: {
           title: {
             display: true,
-            text: 'Ingresos de la temporada <?php echo $fecha->copy()->subYear()->format('Y');?> - <?php echo $fecha->copy()->format('Y');?>'
+            text: 'Ingresos de la temporada <?php echo ($year->year - 1);?> - <?php echo $year->year;?>'
           }
         }
     });
@@ -244,7 +229,7 @@
         options: {
           title: {
             display: true,
-            text: 'Cobros de la temporada <?php echo $fecha->copy()->subYear()->format('Y');?> - <?php echo $fecha->copy()->format('Y');?>'
+            text: 'Cobros de la temporada <?php echo ($year->year - 1);?> - <?php echo $year->year;?>'
           }
         }
     });

@@ -1,5 +1,5 @@
 <div class="col-padding">
-	<div class="heading-block center nobottomborder nobottommargin">
+	<div class="col-xs-12 col-md-6 col-md-offset-3 topmargin col_last">
 		<h2 class="white">Muchas gracias!</h2>
 		<span class="white">Tu solicitud será atendida lo mas rapido posible.</span>
 	</div>

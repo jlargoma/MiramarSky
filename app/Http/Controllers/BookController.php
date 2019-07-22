@@ -15,59 +15,37 @@ use Illuminate\Routing\Controller;
 use App\Classes\Mobile;
 use App\Rooms;
 use App\Book;
+use App\Seasons;
+use App\Prices;
+use App\Traits\BookEmailsStatus;
+use App\Traits\BookParteeActions;
+use App\BookPartee;
 
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
 
-class BookController extends Controller
+class BookController extends AppController
 {
-	private $cachedRepository;
+	use BookEmailsStatus, BookParteeActions;
 
-	public function __construct(CachedRepository $cachedRepository)
-	{
-		$this->cachedRepository = $cachedRepository;
-	}
+
 
 	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index($year = "")
+	public function index()
 	{
-		if (empty($year))
-		{
-			$date = Carbon::now();
-			if ($date->copy()->format('n') >= 9)
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
-			} else
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
-			}
-
-		} else
-		{
-			$year = Carbon::createFromFormat('Y', $year);
-			$date = $year->copy();
-
-		}
-
-		$inicio = new Carbon('first day of September ' . $date->copy()->format('Y'));
-		$start  = $inicio->copy();
+		$year      = $this->getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
 
 		if (Auth::user()->role != "agente")
 		{
-			$rooms         = \App\Rooms::where('state', '=', 1)->orderBy('order')->get();
-			$roomscalendar = $rooms->filter(function ($room) {
-				return $room->id >= 5;
-			})->sortBy('order');
-
-			$booksCollection = \App\Book::with('customer')
-			                            ->where('start', '>', $start->copy())
-			                            ->where('finish', '<', $start->copy()->addYear())
-			                            ->get();
-			$types           = [
+			$roomsAgents = \App\Rooms::all(['id'])->toArray();
+			$rooms       = \App\Rooms::where('state', '=', 1)->get();
+			$types       = [
 				1,
 				3,
 				4,
@@ -79,26 +57,50 @@ class BookController extends Controller
 		} else
 		{
 			$roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
-			$rooms       = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order')->get();
-
-			$roomscalendar = $rooms->filter(function ($room) {
-				return $room->id >= 5;
-			})->sortBy('order');
-
-			$booksCollection = \App\Book::with('customer')
-			                            ->where('user_id', Auth::user()->id)
-			                            ->where('start', '>', $start->copy())
-			                            ->where('finish', '<', $start->copy()->addYear())
-			                            ->whereIn('room_id', $roomsAgents)
-			                            ->get();
-			$types           = [1];
-
+			$rooms       = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)
+			                         ->orderBy('order')
+			                         ->get();
+			$types       = [1];
 		}
 
+		if (Auth::user()->role != "agente")
+		{
+			$booksCollection = \App\Book::where('start', '>=', $startYear)
+			                            ->where('start', '<=', $endYear)
+			                            ->whereIn('room_id', $roomsAgents)
+			                            ->orderBy('created_at', 'DESC')
+			                            ->get();
+		} else
+		{
+			$booksCollection = \App\Book::whereIn('room_id', $roomsAgents)
+			                            ->where(
+				                            [
+					                            [
+						                            'start',
+						                            '>=',
+						                            $startYear
+					                            ],
+					                            [
+						                            'start',
+						                            '<=',
+						                            $endYear
+					                            ],
+					                            [
+						                            'user_id',
+						                            Auth::user()->id
+					                            ]
+				                            ]
+			                            )
+			                            ->orWhere(function ($query) use ($roomsAgents, $types) {
+				                            $query->where('agency', Auth::user()->agent->agency_id)
+				                                  ->whereIn('room_id', $roomsAgents);
+			                            })
+			                            ->orderBy('created_at', 'DESC')
+			                            ->get();
+		}
 
-		$books = $booksCollection->whereIn('type_book', $types)->sortByDesc('created_at');
+		$booksCount['pending'] = $booksCollection->where('type_book', 3)->count();
 
-		$booksCount['pending']      = $booksCollection->where('type_book', 3)->count();
 		$booksCount['special']      = $booksCollection->whereIn('type_book', [
 			7,
 			8
@@ -107,13 +109,15 @@ class BookController extends Controller
 		$booksCount['blocked-ical'] = $booksCollection->whereIn('type_book', [
 			11,
 			12
-		])->count();
-		$booksCount['deletes']      = \App\Book::where('start', '>', $start->copy())
-		                                       ->where('finish', '<', $start->copy()->addYear())->where('type_book', 0)
-		                                       ->where('comment', 'LIKE', '%Antiguos cobros%')->count();
-		$booksCount['checkin']      = $this->getCounters($start, 'checkin');
-		$booksCount['checkout']     = $booksCount['confirmed'] - $booksCount['checkin'];
+		])->where("enable", "=", "1")->count();
+		$booksCount['deletes']      = \App\Book::where('start', '>', $startYear)
+		                                       ->where('finish', '<', $endYear)->where('type_book', 0)
+		                                       ->where('comment', 'LIKE', '%Antiguos cobros%')
+		                                       ->where("enable", "=", "1")->count();
+		$booksCount['checkin']      = $this->getCounters('checkin');
+		$booksCount['checkout']     = $this->getCounters('checkout');//$booksCount['confirmed'] - $booksCount['checkin'];
 
+		$books = $booksCollection->whereIn('type_book', $types);
 
 		$stripe           = StripeController::$stripe;
 		$stripedsPayments = \App\Payments::where('comment', 'LIKE', '%stripe%')
@@ -123,13 +127,15 @@ class BookController extends Controller
 		// Notificaciones de alertas booking
 		/*$notifications = \App\BookNotification::whereHas('book', function ($q) {
 			return $q->where('type_book', '<>', 3)
-			         ->orWhere('type_book', '<>', 5)
-			         ->orWhere('type_book', '<>', 6);
+					 ->orWhere('type_book', '<>', 5)
+					 ->orWhere('type_book', '<>', 6);
 		})->count();*/
 
-		$mobile = new Mobile();
+		$mobile      = new Mobile();
 		$now         = Carbon::now();
-		$booksAlarms = \App\Book::where('start', '>=', $now->format('Y-m-d'))
+		$booksAlarms = \App\Book::where('start', '>', $startYear)
+		                        ->where('finish', '<', $endYear)
+		                        ->where('start', '>=', $now->format('Y-m-d'))
 		                        ->where('start', '<=', $now->copy()->addDays(15)->format('Y-m-d'))
 		                        ->where('type_book', 2)
 		                        ->get();
@@ -137,7 +143,7 @@ class BookController extends Controller
 		foreach ($booksAlarms as $key => $book)
 		{
 			$dateStart = Carbon::createFromFormat('Y-m-d', $book->start);
-			$diff = $now->diffInDays($dateStart);
+			$diff      = $now->diffInDays($dateStart);
 
 			if (count($book->payments) > 0)
 			{
@@ -158,11 +164,47 @@ class BookController extends Controller
 					$alarms[] = $book;
 			}
 		}
+
+		$alert_lowProfits = false; //To the alert efect
+		$percentBenef     = DB::table('percent')->find(1)->percent;
+		$lowProfits       = $this->lowProfitAlert($startYear, $endYear, $percentBenef, $alert_lowProfits);
+
+		$parteeToActive = BookPartee::where('status', 'HUESPEDES')->get();
+
 		return view(
 			'backend/planning/index',
 			compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
-			        'stripedsPayments', 'notifications', 'booksCount', 'alarms')
+			        'stripedsPayments', 'notifications', 'booksCount', 'alarms', 'lowProfits', 'alert_lowProfits', 'percentBenef', 'parteeToActive')
 		);
+	}
+
+	private function lowProfitAlert($startYear, $endYear, $percentBenef, &$alert)
+	{
+
+		$booksAlarms = \App\Book::where('start', '>', $startYear)
+		                        ->where('finish', '<', $endYear)
+		                        ->whereIn('type_book', [
+			                        2,
+			                        7,
+			                        8
+		                        ])
+		                        ->orderBy('start', 'ASC')->get();
+
+		$alarms = array();
+
+		foreach ($booksAlarms as $key => $book)
+		{
+			$inc_percent = $book->get_inc_percent();
+			if (round($inc_percent) <= $percentBenef)
+			{
+				if (!$book->has_low_profit)
+				{
+					$alert = true;
+				}
+				$alarms[] = $book;
+			}
+		}
+		return $alarms;
 	}
 
 	public function newBook(Request $request)
@@ -203,10 +245,9 @@ class BookController extends Controller
 
 		if ($request->input('from'))
 		{
-
 			//createacion del cliente
 			$customer          = new \App\Customers();
-			$customer->user_id = (Auth::check()) ? Auth::user()->id : 23;
+			$customer->user_id = (Auth::check()) ? Auth::user()->id : 1;
 			$customer->name    = $request->input('name');
 			$customer->email   = $request->input('email');
 			$customer->phone   = $request->input('phone');
@@ -218,7 +259,7 @@ class BookController extends Controller
 			if ($customer->save())
 			{
 				//Creacion de la reserva
-				$book->user_id       = 39;
+				$book->user_id       = (Auth::check()) ? Auth::user()->id : 1;
 				$book->customer_id   = $customer->id;
 				$book->room_id       = $request->input('newroom');
 				$book->start         = Carbon::createFromFormat('d/m/Y', $start);
@@ -259,9 +300,9 @@ class BookController extends Controller
 					$book->cost_park = $this->getCostPark($request->input('parking'), $request->input('nigths'), $room->id, 3);
 				}
 
-				$book->type_park = $request->input('parking');
+				$book->type_park = $request->input('parking', 0);
 
-				$book->type_luxury = $request->input('type_luxury');
+				$book->type_luxury = $request->input('type_luxury', 0);
 				$book->sup_lujo    = $this->getPriceLujo($request->input('type_luxury'));
 				$book->cost_lujo   = $this->getCostLujo($request->input('type_luxury'));
 				// if ($room->typeApto == 3 || $room->typeApto == 1) {
@@ -293,9 +334,23 @@ class BookController extends Controller
 					/* Notificacion via email */
 					if ($customer->email)
 					{
-						MailController::sendEmailBookSuccess($book, 1);
+						//MailController::sendEmailBookSuccess($book, 1);
+					}
+					if ($request->input('fast_payment') == 1)
+					{
+						$urlPayland = $this->generateOrderPayment([
+							                                          'customer_id' => $book->customer->id,
+							                                          'amount'      => $book->total_price,
+							                                          'url_ok'      => route('payland.thanks.payment', ['id' => $book->id]),
+							                                          'url_ko'      => route('payland.thanks.payment', ['id' => $book->id]),
+						                                          ]);
+
+						return view('frontend.bookStatus.bookPaylandPay', [ 'urlPayland' => $urlPayland]);
+					}else{
 						return view('frontend.bookStatus.bookOk');
 					}
+				} else
+				{
 
 				}
 			}
@@ -504,9 +559,28 @@ class BookController extends Controller
 
 		// We are passing wrong data from this to view by using $book data, in order to correct data
 		// an AJAX call has been made after rendering the page.
+		$hasFiance = \App\Fianzas::where('book_id', $book->id)->first();
+
+		/**
+		 * Check low_profit alert
+		 */
+		$low_profit   = false;
+		$inc_percent  = $book->get_inc_percent();
+		$percentBenef = DB::table('percent')->find(1)->percent;
+
+		if (round($inc_percent) <= $percentBenef)
+		{
+			if (!$book->has_low_profit)
+			{
+				$low_profit = true;
+			}
+		}
+
+		//END: Check low_profit alert
 
 		return view('backend/planning/update', [
 			'book'         => $book,
+			'low_profit'   => $low_profit,
 			'rooms'        => \App\Rooms::where('state', '=', 1)->orderBy('order')->get(),
 			'extras'       => \App\Extras::all(),
 			'start'        => Carbon::createFromFormat('Y-m-d', $book->start)->format('d M,y'),
@@ -514,10 +588,10 @@ class BookController extends Controller
 			'typecobro'    => new \App\Book(),
 			'totalpayment' => $totalpayment,
 			'mobile'       => new Mobile(),
+			'hasFiance'    => $hasFiance,
 			'stripe'       => StripeController::$stripe,
 		]);
 	}
-
 
 	//Funcion para actualizar la reserva
 	public function saveUpdate(Request $request, $id)
@@ -639,7 +713,6 @@ class BookController extends Controller
 		}
 	}
 
-
 	public function changeStatusBook(Request $request, $id)
 	{
 		if (isset($request->status) && !empty($request->status))
@@ -689,7 +762,6 @@ class BookController extends Controller
 		}
 	}
 
-
 	public function changeBook(Request $request, $id)
 	{
 
@@ -716,95 +788,81 @@ class BookController extends Controller
 		}
 	}
 
-
 	/**
 	 * @param        $park             Parking Option (Yes, No, Free, 50%)
 	 * @param        $noches           Book Nights
 	 * @param string $room             Room ID
 	 * @return float|int
 	 */
-	public function getPricePark($park, $noches, $room = "")
+	public static function getPricePark($typePark, $nights)
 	{
+		$priceParking   = 0;
+		$parkPvpSetting = \App\Settings::where('key', SettingsController::PARK_PVP_SETTING_CODE)->first();
+		if (!$parkPvpSetting)
+			return 0;
 
-		$priceParking = 0;
-		switch ($park)
+		switch ($typePark)
 		{
 			case 1: // Yes
-				$priceParking = Rooms::PARKING_PRICE * $noches;
+				$priceParking = $parkPvpSetting->value * $nights;
 				break;
 			case 2: // No
 			case 3: // Free
 				$priceParking = 0;
 				break;
 			case 4: // 50%
-				$priceParking = (Rooms::PARKING_PRICE * $noches) / 2;
+				$priceParking = ($parkPvpSetting->value * $nights) / 2;
 				break;
-		}
-		if ($room != "")
-		{
-			if ($room == 150)
-			{
-				$priceParking = $priceParking * 3;
-			}
-			if ($room == 149 || $room == 153)
-			{
-				$priceParking = $priceParking * 2;
-			}
 		}
 		return $priceParking;
 
 	}
 
-	public function getCostPark($park, $noches, $room = "")
+	public function getCostPark($typePark, $nights)
 	{
+		$costParking     = 0;
+		$parkCostSetting = \App\Settings::where('key', SettingsController::PARK_COST_SETTING_CODE)->first();
+		if (!$parkCostSetting)
+			return 0;
 
-		$costParking = 0;
-		switch ($park)
+		switch ($typePark)
 		{
 			case 1: // Yes
-				$costParking = Rooms::PARKING_COST * $noches;
+				$costParking = $parkCostSetting->value * $nights;
 				break;
 			case 2: // No
 			case 3: // Free
 				$costParking = 0;
 				break;
 			case 4: // 50%
-				$costParking = (Rooms::PARKING_COST * $noches) / 2;
+				$costParking = ($parkCostSetting->value * $nights) / 2;
 				break;
 		}
-
-		if ($room != "" && ($room == 150 || $room == 149 || $room == 153))
-		{
-			$costParking = $costParking * 2;
-		}
-
-
 		return $costParking;
 
 	}
 
-	public function getPriceLujo($typeLuxury)
+	public static function getPriceLujo($typeLuxury)
 	{
-		$priceLuxury = 0;
-		if ($typeLuxury > 4)
+		$priceLuxury      = 0;
+		$luxuryPvpSetting = \App\Settings::where('key', SettingsController::LUXURY_PVP_SETTING_CODE)->first();
+		if (!$luxuryPvpSetting)
+			return 0;
+
+		switch ($typeLuxury)
 		{
-			$priceLuxury = $typeLuxury;
-		} else
-		{
-			switch ($typeLuxury)
-			{
-				case 1: // Yes
-					$priceLuxury = Rooms::LUXURY_PRICE;
-					break;
-				case 2: // No
-				case 3: // Free
-					$priceLuxury = 0;
-					break;
-				case 4: // 50%
-					$priceLuxury = Rooms::LUXURY_PRICE / 2;
-					break;
-			}
+			case 1: // Yes
+				$priceLuxury = $luxuryPvpSetting->value;
+				break;
+			case 2: // No
+			case 3: // Free
+				$priceLuxury = 0;
+				break;
+			case 4: // 50%
+				$priceLuxury = $luxuryPvpSetting->value / 2;
+				break;
 		}
+
 		return $priceLuxury;
 	}
 
@@ -814,27 +872,23 @@ class BookController extends Controller
 	 */
 	public function getCostLujo($typeLuxury)
 	{
-		$costLuxury = 0;
-		if ($typeLuxury > 4)
+		$costLuxury        = 0;
+		$luxuryCostSetting = \App\Settings::where('key', SettingsController::LUXURY_COST_SETTING_CODE)->first();
+		if (!$luxuryCostSetting)
+			return 0;
+
+		switch ($typeLuxury)
 		{
-			$costLuxury = $typeLuxury - 10;
-		} else
-		{
-			switch ($typeLuxury)
-			{
-				case 1: // Yes
-					$costLuxury = Rooms::LUXURY_COST;
-					break;
-				case 2: // No
-					$costLuxury = 0;
-					break;
-				case 3: // Free
-					$costLuxury = 0;
-					break;
-				case 4: // 50%
-					$costLuxury = Rooms::LUXURY_COST / 2;
-					break;
-			}
+			case 1: // Yes
+				$costLuxury = $luxuryCostSetting->value;
+				break;
+			case 2: // No
+			case 3: // Free
+				$costLuxury = 0;
+				break;
+			case 4: // 50%
+				$costLuxury = $luxuryCostSetting->value / 2;
+				break;
 		}
 
 		return $costLuxury;
@@ -858,8 +912,11 @@ class BookController extends Controller
 		{
 			$date = $counter->copy()->format('Y-m-d');
 
-			$seasonActive = $this->cachedRepository->getSeasonType($date);
-			$costs        = $this->cachedRepository->getCostsFromSeason($seasonActive, $pax);
+			$seasonActive = Seasons::getSeasonType($date);
+			$costs        = Prices::getCostsFromSeason($seasonActive, $pax);
+
+			//            $seasonActive = $this->cachedRepository->getSeasonType($date);
+			//            $costs        = $this->cachedRepository->getCostsFromSeason($seasonActive, $pax);
 
 			foreach ($costs as $precio)
 			{
@@ -871,7 +928,7 @@ class BookController extends Controller
 		return $costBook;
 	}
 
-	public function getPriceBook($start, $finish, $pax, $room)
+	public static function getPriceBook($start, $finish, $pax, $room)
 	{
 		$start     = Carbon::createFromFormat('d/m/Y', $start);
 		$finish    = Carbon::createFromFormat('d/m/Y', $finish);
@@ -892,8 +949,11 @@ class BookController extends Controller
 		for ($i = 1; $i <= $countDays; $i++)
 		{
 			$date         = $counter->format('Y-m-d');
-			$seasonActive = $this->cachedRepository->getSeasonType($date);
-			$costs        = $this->cachedRepository->getCostsFromSeason($seasonActive, $pax);
+			$seasonActive = Seasons::getSeasonType($date);
+			$costs        = Prices::getCostsFromSeason($seasonActive, $pax);
+
+			//            $seasonActive = $this->cachedRepository->getSeasonType($date);
+			//            $costs        = $this->cachedRepository->getCostsFromSeason($seasonActive, $pax);
 
 			foreach ($costs as $precio)
 			{
@@ -903,40 +963,6 @@ class BookController extends Controller
 		}
 
 		return $priceBook;
-	}
-
-
-	// Funcion para la migracion de la base antigua  a la nuevas "cobros"
-	public function getCobrosBD()
-	{
-		$cobros = DB::connection('apartamento')->table('cobros')->orderBy('ID', 'ASC')->get();
-
-		echo "<pre>";
-		foreach ($cobros as $cobro)
-		{
-			$payment = \App\Payments::find($cobro->ID);
-			if (count($payment) > 0)
-			{
-				echo "Ya existe este cobro  " . $cobro->ID . " <br>";
-			} else
-			{
-				$payment              = new \App\Payments();
-				$payment->id          = $cobro->ID;
-				$payment->book_id     = $cobro->bookID;
-				$payment->datePayment = $cobro->dateCobro;
-				$payment->import      = $cobro->import;
-				$payment->type        = $cobro->type;
-				$payment->comment     = $cobro->Comment;
-
-				if ($payment->save())
-				{
-					echo "Insertado ID " . $cobro->ID . "<br>";
-				} else
-				{
-					# code...
-				}
-			}
-		}
 	}
 
 	//Funcion para coger la reserva mobil
@@ -1011,7 +1037,6 @@ class BookController extends Controller
 		}
 
 	}
-
 
 	public function emails($id)
 	{
@@ -1112,11 +1137,13 @@ class BookController extends Controller
 			{
 				$expenseLimp = \App\Expenses::where('date', $book->finish)
 					// ->where('import', $book->total_price)
-					                        ->where('concept', "LIMPIEZA RESERVA PROPIETARIO. " . $book->room->nameRoom)
-				                            ->first();
+					                        ->where('concept', "LIMPIEZA RESERVA PROPIETARIO. " . $book->room->nameRoom);
 
-				if (count($expenseLimp) > 0)
-					$expenseLimp->delete();
+				if ($expenseLimp->count() > 0)
+				{
+					$expenseLimp->first()->delete();
+				}
+
 			}
 
 
@@ -1147,9 +1174,7 @@ class BookController extends Controller
 	}
 
 	/* FUNCION DUPLICADA DE HOMECONTROLLER PARA CALCULAR LA RESERVA DESDE EL ADMIN */
-
-
-	static function getTotalBook(Request $request)
+	/*static function getTotalBook(Request $request)
 	{
 
 		$aux = str_replace('Abr', 'Apr', $request->input('fechas'));
@@ -1188,7 +1213,7 @@ class BookController extends Controller
 			$limp         = (int) \App\Extras::find(1)->price;
 		} elseif (($request->input('apto') == '3dorm' && $request->input('luxury') == 'si') || $request->input('apto') == '3dorm' && $request->input('luxury') == 'no')
 		{
-			/* Rooms para grandes capacidades */
+			// Rooms para grandes capacidades
 			if ($request->input('quantity') >= 8 && $request->input('quantity') <= 10)
 			{
 				$roomAssigned = 153;
@@ -1281,7 +1306,7 @@ class BookController extends Controller
 		{
 			return view('backend.bookStatus.bookError');
 		}
-	}
+	}*/
 
 	public function searchByName(Request $request)
 	{
@@ -1351,29 +1376,13 @@ class BookController extends Controller
 
 	}
 
-
 	public function getTableData(Request $request)
 	{
-		$mobile = new Mobile();
-		if (empty($request->year))
-		{
-			$date = Carbon::now();
-			if ($date->copy()->format('n') >= 9)
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
-			} else
-			{
-				$date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
-			}
+		$mobile    = new Mobile();
+		$year      = self::getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
 
-		} else
-		{
-			$year = Carbon::createFromFormat('Y', $request->year);
-			$date = $year->copy();
-
-		}
-
-		$date = new Carbon('first day of September ' . $date->copy()->format('Y'));
 
 		if (Auth::user()->role != "agente")
 		{
@@ -1402,26 +1411,31 @@ class BookController extends Controller
 
 				if (Auth::user()->role != "agente")
 				{
-					$books = \App\Book::where('start', '>', $date->copy())
-					                  ->where('start', '<', $date->copy()->addYear())
+					$books = \App\Book::where('start', '>=', $startYear)
+					                  ->where('finish', '<=', $endYear)
 					                  ->whereIn('type_book', $types)
 					                  ->whereIn('room_id', $roomsAgents)
 					                  ->orderBy('created_at', 'DESC')
 					                  ->get();
 				} else
 				{
-					$books = \App\Book::where('start', '>', $date->copy())
-					                  ->where('start', '<', $date->copy()->addYear())
+					$books = \App\Book::where('start', '>=', $startYear)
+					                  ->where('finish', '<=', $endYear)
 					                  ->whereIn('type_book', $types)
 					                  ->where('user_id', Auth::user()->id)
 					                  ->whereIn('room_id', $roomsAgents)
+					                  ->orWhere(function ($query) use ($roomsAgents, $types) {
+						                  $query->where('agency', Auth::user()->agent->agency_id)
+						                        ->whereIn('room_id', $roomsAgents)
+						                        ->whereIn('type_book', $types);
+					                  })
 					                  ->orderBy('created_at', 'DESC')
 					                  ->get();
 				}
 				break;
 			case 'especiales':
-				$books = \App\Book::where('start', '>', $date->copy()->subMonth())
-				                  ->where('start', '<', $date->copy()->addYear())
+				$books = \App\Book::where('start', '>=', $startYear)
+				                  ->where('finish', '<=', $endYear)
 				                  ->whereIn('type_book', [
 					                  7,
 					                  8
@@ -1433,49 +1447,54 @@ class BookController extends Controller
 
 				if (Auth::user()->role != "agente")
 				{
-					$books = \App\Book::where('start', '>', $date->copy()->subMonth())
-					                  ->where('start', '<', $date->copy()->addYear())
+					$books = \App\Book::where('start', '>=', $startYear)
+					                  ->where('finish', '<=', $endYear)
 					                  ->whereIn('type_book', [2])
 					                  ->whereIn('room_id', $roomsAgents)
 					                  ->orderBy('created_at', 'DESC')
 					                  ->get();
 				} else
 				{
-					$books = \App\Book::where('start', '>', $date->copy()->subMonth())
-					                  ->where('start', '<', $date->copy()->addYear())
+					$books = \App\Book::where('start', '>=', $startYear)
+					                  ->where('finish', '<=', $endYear)
 					                  ->whereIn('type_book', [2])
 					                  ->whereIn('room_id', $roomsAgents)
 					                  ->where('user_id', Auth::user()->id)
+					                  ->orWhere(function ($query) use ($roomsAgents) {
+						                  $query->where('agency', Auth::user()->agent->agency_id)
+						                        ->whereIn('room_id', $roomsAgents)
+						                        ->whereIn('type_book', [2]);
+					                  })
 					                  ->orderBy('created_at', 'DESC')
 					                  ->get();
 				}
 				break;
 			case 'checkin':
 				$dateX = Carbon::now();
-				$books = \App\Book::where('start', '>', $dateX->copy()->subDays(3))
-				                  ->where('start', '<', $dateX->copy()->addYear())
+				$books = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))
+				                  ->where('start', '<=', $dateX)
 				                  ->where('type_book', 2)
 				                  ->orderBy('start', 'ASC')
 				                  ->get();
 				break;
 			case 'checkout':
 				$dateX = Carbon::now();
-
-				$books = \App\Book::where('start', '>', $dateX->copy()->subDays(3))
-				                  ->where('start', '<', $dateX->copy()->addYear())
+				$books = \App\Book::where('finish', '>=', $dateX->copy()->subDays(3))
+				                  ->where('finish', '<', $dateX)
 				                  ->where('type_book', 2)
-				                  ->orderBy('start', 'ASC')
+				                  ->orderBy('finish', 'ASC')
 				                  ->get();
+				break;
 			case 'eliminadas':
-				$books = \App\Book::where('start', '>', $date->copy()->subDays(3))
-				                  ->where('start', '<', $date->copy()->addYear())
+				$books = \App\Book::where('start', '>=', $startYear)
+				                  ->where('finish', '<=', $endYear)
 				                  ->where('type_book', 0)
 				                  ->orderBy('updated_at', 'DESC')
 				                  ->get();
 				break;
 			case 'blocked-ical':
-				$books = \App\Book::where('start', '>', $date->copy()->subDays(3))
-				                  ->where('finish', '<', $date->copy()->addYear())
+				$books = \App\Book::where('start', '>=', $startYear->copy()->subDays(3))
+				                  ->where('finish', '<=', $endYear)
 				                  ->whereIn('type_book', [
 					                  11,
 					                  12
@@ -1496,17 +1515,10 @@ class BookController extends Controller
 				$payment[$book->id] = 0;
 				$payments           = \App\Payments::where('book_id', $book->id)->get();
 				if (count($payments) > 0)
-				{
-
 					foreach ($payments as $key => $pay)
-					{
 						$payment[$book->id] += $pay->import;
-					}
-
-				}
 
 			}
-
 			return view('backend/planning/_table', compact('books', 'rooms', 'type', 'mobile', 'payment'));
 		} else
 		{
@@ -1515,24 +1527,14 @@ class BookController extends Controller
 		}
 	}
 
-
 	public function getLastBooks(Request $request)
 	{
 		$mobile = new Mobile();
 
-		if ($request->year)
-		{
-			if ($now->copy()->format('n') >= 9)
-			{
-				$date = new Carbon('first day of September ' . $now->copy()->format('Y'));
-			} else
-			{
-				$date = new Carbon('first day of September ' . $now->copy()->subYear()->format('Y'));
-			}
-		} else
-		{
-			$date = new Carbon('first day of September ' . $request->year);
-		}
+		$year      = self::getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
+
 		$booksAux = array();
 		foreach (\App\Payments::orderBy('id', 'DESC')->get() as $key => $payment)
 		{
@@ -1737,41 +1739,23 @@ class BookController extends Controller
 		return view('backend.planning._calendarToBooking', compact('days', 'dateX', 'arrayMonths', 'mobile', 'typesRoom'));
 	}
 
-
 	function getAlertsBooking(Request $request)
 	{
 		return view('backend.planning._tableAlertBooking', compact('days', 'dateX', 'arrayMonths', 'mobile'));
 	}
 
-	public function getCalendarMobileView($year = "")
+	public function getCalendarMobileView()
 	{
 
-		$mes           = array();
-		$arrayReservas = array();
-		$totalPayments = array();
-		$arrayMonths   = array();
-		$arrayDays     = array();
-		$arrayTotales  = array();
-		$arrayPruebas  = array();
-		$mobile        = new Mobile();
-		$now           = Carbon::now();
-		if (empty($year))
-		{
-			$date = Carbon::now();
-		} else
-		{
-			$year = Carbon::createFromFormat('Y', $year);
-			$date = $year->copy();
-		}
-		if ($date->copy()->format('n') >= 9)
-		{
-			$date = new Carbon('first day of September ' . $now->copy()->format('Y'));
-		} else
-		{
-			$date = new Carbon('first day of September ' . $now->copy()->subYear()->format('Y'));
-		}
-		$apartamentos = \App\Rooms::where('state', '=', 1);
-		$reservas     = \App\Book::whereIn('type_book', [
+		$mes           = [];
+		$arrayReservas = [];
+		$arrayMonths   = [];
+		$arrayDays     = [];
+		$year          = $this->getActiveYear();
+		$startYear     = new Carbon($year->start_date);
+		$endYear       = new Carbon($year->end_date);
+
+		$books = \App\Book::whereIn('type_book', [
 			1,
 			2,
 			4,
@@ -1779,43 +1763,40 @@ class BookController extends Controller
 			7,
 			8,
 			9
-		])->whereYear('start', '>=', $date)->orderBy('start', 'ASC')->get();
+		])->where('start', '>=', $startYear->format('Y-m-d'))->where('finish', '<=', $endYear->format('Y-m-d'))
+		                  ->orderBy('start', 'ASC')->get();
 
-		foreach ($reservas as $reserva)
+		foreach ($books as $book)
 		{
-			$dia        = Carbon::createFromFormat('Y-m-d', $reserva->start);
-			$start      = Carbon::createFromFormat('Y-m-d', $reserva->start);
-			$finish     = Carbon::createFromFormat('Y-m-d', $reserva->finish);
+			$dia        = Carbon::createFromFormat('Y-m-d', $book->start);
+			$start      = Carbon::createFromFormat('Y-m-d', $book->start);
+			$finish     = Carbon::createFromFormat('Y-m-d', $book->finish);
 			$diferencia = $start->diffInDays($finish);
 			for ($i = 0; $i <= $diferencia; $i++)
 			{
-				$arrayReservas[$reserva->room_id][$dia->copy()->format('Y')][$dia->copy()->format('n')][$dia->copy()
-				                                                                                            ->format('j')][] = $reserva;
-				$dia                                                                                                         = $dia->addDay();
+				$arrayReservas[$book->room_id][$dia->copy()->format('Y')][$dia->copy()->format('n')][$dia->copy()
+				                                                                                         ->format('j')][] = $book;
+				$dia                                                                                                      = $dia->addDay();
 			}
 		}
 
+		$firstDayOfTheYear = $startYear->copy()->firstOfMonth();
+		$diffInMonths      = $startYear->diffInMonths($endYear) + 1;
 
-		$firstDayOfTheYear = new Carbon('first day of September ' . $date->copy()->format('Y'));
-		$book              = new \App\Book();
-
-		for ($i = 1; $i <= 12; $i++)
+		for ($i = 1; $i <= $diffInMonths; $i++)
 		{
 			$mes[$firstDayOfTheYear->copy()->format('n')] = $firstDayOfTheYear->copy()->format('M Y');
 
 			$startMonth = $firstDayOfTheYear->copy()->startOfMonth();
-			$endMonth   = $firstDayOfTheYear->copy()->endOfMonth();
-			$countDays  = $endMonth->diffInDays($startMonth);
 			$day        = $startMonth;
 
-
 			$arrayMonths[$firstDayOfTheYear->copy()->format('n')] = $day->copy()->format('t');
-
 
 			for ($j = 1; $j <= $day->copy()->format('t'); $j++)
 			{
 
-				$arrayDays[$firstDayOfTheYear->copy()->format('n')][$j] = $book->getDayWeek($day->copy()->format('w'));
+				$arrayDays[$firstDayOfTheYear->copy()->format('n')][$j] = \App\Book::getDayWeek($day->copy()
+				                                                                                    ->format('w'));
 				$day                                                    = $day->copy()->addDay();
 
 			}
@@ -1824,60 +1805,37 @@ class BookController extends Controller
 
 		}
 
-		unset($arrayMonths[6]);
-		unset($arrayMonths[7]);
-		unset($arrayMonths[8]);
-
-		if ($date->copy()->format('n') >= 9)
-		{
-			$start = new Carbon('first day of September ' . $date->copy()->format('Y'));
-		} else
-		{
-			$start = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
-		}
-
+		//unset($arrayMonths[6]);
+		//unset($arrayMonths[7]);
+		//unset($arrayMonths[8]);
 
 		if (Auth::user()->role != "agente")
 		{
 			$rooms         = \App\Rooms::where('state', '=', 1)->get();
-			$roomscalendar = \App\Rooms::where('id', '>=', 5)->where('state', '=', 1)->orderBy('order', 'ASC')->get();
+			$roomscalendar = \App\Rooms::where('state', '=', 1)->orderBy('order', 'ASC')->get();
 		} else
 		{
 			$roomsAgents   = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
 			$rooms         = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order')->get();
-			$roomscalendar = \App\Rooms::where('id', '>=', 5)->where('state', '=', 1)->whereIn('id', $roomsAgents)
-			                           ->orderBy('order', 'ASC')->get();
+			$roomscalendar = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order', 'ASC')
+			                           ->get();
 		}
-		$book   = new \App\Book();
-		$inicio = $start->copy();
-		$days   = $arrayDays;
+		$days = $arrayDays;
 
-		return view('backend/planning/calendar', compact('arrayBooks', 'arrayMonths', 'arrayTotales', 'rooms', 'roomscalendar', 'arrayReservas', 'mes', 'date', 'book', 'extras', 'days', 'inicio'));
+		return view('backend/planning/calendar', compact('arrayBooks', 'arrayMonths', 'arrayTotales', 'rooms', 'roomscalendar', 'arrayReservas', 'mes', 'date', 'extras', 'days', 'startYear', 'endYear'));
 	}
 
-	static function getCounters($year, $type)
+	static function getCounters($type)
 	{
-		$now = Carbon::now();
-
-		if ($year)
-		{
-			if ($now->copy()->format('n') >= 9)
-			{
-				$date = new Carbon('first day of September ' . $now->copy()->format('Y'));
-			} else
-			{
-				$date = new Carbon('first day of September ' . $now->copy()->subYear()->format('Y'));
-			}
-		} else
-		{
-			$date = new Carbon('first day of September ' . $year);
-		}
-
+		$year       = self::getActiveYear();
+		$startYear  = new Carbon($year->start_date);
+		$endYear    = new Carbon($year->end_date);
+		$booksCount = 0;
 		switch ($type)
 		{
 			case 'pendientes':
-				$booksCount = \App\Book::where('start', '>', $date->copy()->subMonth())
-				                       ->where('finish', '<', $date->copy()->addYear())
+				$booksCount = \App\Book::where('start', '>=', $startYear->copy()->format('Y-m-d'))
+				                       ->where('finish', '<=', $endYear->copy()->format('Y-m-d'))
 				                       ->whereIn('type_book', [
 					                       3,
 					                       11
@@ -1885,8 +1843,8 @@ class BookController extends Controller
 				                       ->count();
 				break;
 			case 'especiales':
-				$booksCount = \App\Book::where('start', '>', $date->copy()->subMonth())
-				                       ->where('finish', '<', $date->copy()->addYear())
+				$booksCount = \App\Book::where('start', '>=', $startYear->copy()->format('Y-m-d'))
+				                       ->where('finish', '<=', $endYear->copy()->format('Y-m-d'))
 				                       ->whereIn('type_book', [
 					                       7,
 					                       8
@@ -1894,22 +1852,22 @@ class BookController extends Controller
 				                       ->count();
 				break;
 			case 'confirmadas':
-				$booksCount = \App\Book::where('start', '>', $date->copy()->subMonth())
-				                       ->where('finish', '<', $date->copy()->addYear())
+				$booksCount = \App\Book::where('start', '>=', $startYear->copy()->format('Y-m-d'))
+				                       ->where('finish', '<=', $endYear->copy()->format('Y-m-d'))
 				                       ->whereIn('type_book', [2])
 				                       ->count();
 				break;
 			case 'checkin':
 				$dateX      = Carbon::now();
-				$booksCount = \App\Book::where('start', '>', $dateX->copy()->subDays(3))
-				                       ->where('finish', '<', $dateX->copy()->addYear())
+				$booksCount = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))
+				                       ->where('finish', '<=', $dateX)
 				                       ->where('type_book', 2)
 				                       ->count();
 				break;
 			case 'blocked-ical':
 				$dateX      = Carbon::now();
-				$booksCount = \App\Book::where('start', '>', $date->copy()->subMonth())
-				                       ->where('finish', '<', $date->copy()->addYear())
+				$booksCount = \App\Book::where('start', '>=', $startYear->copy()->format('Y-m-d'))
+				                       ->where('finish', '<=', $endYear->copy()->format('Y-m-d'))
 				                       ->whereIn('type_book', [
 					                       11,
 					                       12
@@ -1919,13 +1877,14 @@ class BookController extends Controller
 			case 'checkout':
 				$dateX      = Carbon::now();
 				$booksCount = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))
+				                       ->where('start', '<=', $dateX)
 				                       ->where('type_book', 2)
 				                       ->count();
 				break;
 			case 'eliminadas':
 				$dateX      = Carbon::now();
-				$booksCount = \App\Book::where('start', '>', $date->copy()->subMonth())
-				                       ->where('finish', '<', $date->copy()->addYear())
+				$booksCount = \App\Book::where('start', '>=', $startYear->copy()->format('Y-m-d'))
+				                       ->where('finish', '<=', $endYear->copy()->format('Y-m-d'))
 				                       ->whereIn('type_book', 0)
 				                       ->count();
 				break;
@@ -1934,7 +1893,6 @@ class BookController extends Controller
 		return $booksCount;
 	}
 
-
 	public function sendSencondEmail(Request $request)
 	{
 		$book = \App\Book::find($request->id);
@@ -1942,14 +1900,7 @@ class BookController extends Controller
 		{
 			$book->send = 1;
 			$book->save();
-			$sended = Mail::send(['html' => 'backend.emails._secondPayBook'], ['book' => $book], function ($message) use ($book) {
-				$message->from('reservas@apartamentosierranevada.net');
-				// $message->to('iankurosaki17@gmail.com');
-				$message->to($book->customer->email);
-				$message->subject('Recordatorio de pago Apto. de lujo Miramarski - ' . $book->customer->name);
-				$message->replyTo('reservas@apartamentosierranevada.net');
-			});
-
+			$this->sendEmail_secondPayBook($book, 'Recordatorio de pago Apto. de lujo Miramarski - ' . $book->customer->name);
 			if ($sended)
 			{
 				return [
@@ -1977,6 +1928,81 @@ class BookController extends Controller
 
 	}
 
+	/**
+	 * Enable/Disable alerts has_low_profit
+	 *
+	 * @param Request $request
+	 * @return type
+	 *
+	 */
+	public function toggleAlertLowProfits(Request $request)
+	{
+		$book = \App\Book::find($request->id);
+		if ($book)
+		{
+			$book->has_low_profit = !$book->has_low_profit;
+			$book->save();
+			if ($book->has_low_profit)
+			{
+				return [
+					'status'   => 'success',
+					'title'    => 'OK',
+					'response' => "Alarma desactivada para  " . $book->customer->name
+				];
+			} else
+			{
+				return [
+					'status'   => 'success',
+					'title'    => 'OK',
+					'response' => "Alarma activada para  " . $book->customer->name
+				];
+			}
+		} else
+		{
+			return [
+				'status'   => 'warning',
+				'title'    => 'Cuidado',
+				'response' => "Registro no encontrado"
+			];
+		}
+
+
+	}
+
+	/**
+	 * Enable alerts has_low_profit to all
+	 *
+	 * @param Request $request
+	 * @return type
+	 *
+	 */
+	public function activateAlertLowProfits()
+	{
+		if (Auth::user()->role == 'admin')
+		{
+			$year      = $this->getActiveYear();
+			$startYear = new Carbon($year->start_date);
+			$endYear   = new Carbon($year->end_date);
+
+			$book = \App\Book::where('start', '>', $startYear)
+			                 ->where('finish', '<', $endYear)
+			                 ->where('has_low_profit', TRUE)
+			                 ->update(['has_low_profit' => FALSE]);
+			return [
+				'status'   => 'success',
+				'title'    => 'OK',
+				'response' => "Alarma activada para  todos los registros"
+			];
+		} else
+		{
+			return [
+				'status'   => 'warning',
+				'title'    => 'Cuidado',
+				'response' => "No tiene permisos para la acción que desea realizar"
+			];
+		}
+
+	}
 
 	public function cobrarFianzas($id)
 	{
@@ -1985,7 +2011,6 @@ class BookController extends Controller
 		$stripe    = StripeController::$stripe;
 		return view('backend/planning/_fianza', compact('book', 'hasFiance', 'stripe'));
 	}
-
 
 	public function checkSecondPay()
 	{
@@ -2009,15 +2034,7 @@ class BookController extends Controller
 				{
 					$book->send = 1;
 					$book->save();
-
-					$sended = Mail::send(['html' => 'backend.emails._secondPayBook'], ['book' => $book], function ($message) use ($book) {
-						$message->from('reservas@apartamentosierranevada.net');
-						// $message->to('iankurosaki17@gmail.com');
-						$message->to($book->customer->email);
-						$message->subject('Recordatorio de pago Apto. de lujo Miramarski - ' . $book->customer->name);
-						$message->replyTo('reservas@apartamentosierranevada.net');
-					});
-
+					$this->sendEmail_secondPayBook($book, 'Recordatorio de pago Apto. de lujo Miramarski - ' . $book->customer->name);
 					if ($sended = 1)
 					{
 						echo json_encode([
@@ -2046,7 +2063,6 @@ class BookController extends Controller
 
 	}
 
-
 	public function getAllDataToBook(Request $request)
 	{
 		$room = \App\Rooms::with('extra')->find($request->room);
@@ -2058,7 +2074,7 @@ class BookController extends Controller
 
 		$promotion = $request->promotion ? floatval($request->promotion) : 0;
 
-		$data['costes']['parking']   = $this->getCostPark($request->park, $request->noches, $room->id);
+		$data['costes']['parking']   = $this->getCostPark($request->park, $request->noches) * $room->num_garage;
 		$data['costes']['book']      = $this->getCostBook($request->start, $request->finish, $request->pax, $request->room) - $promotion;
 		$data['costes']['lujo']      = $this->getCostLujo($request->lujo);
 		$data['costes']['limp']      = (int) $room->cost_cleaning;
@@ -2066,7 +2082,7 @@ class BookController extends Controller
 		$data['costes']['agencia']   = (float) $request->agencyCost;
 		$data['costes']['promotion'] = $promotion;
 
-		$data['totales']['parking']  = $this->getPricePark($request->park, $request->noches, $room->id);
+		$data['totales']['parking']  = $this->getPricePark($request->park, $request->noches) * $room->num_garage;
 		$data['totales']['lujo']     = $this->getPriceLujo($request->lujo);
 		$data['totales']['limp']     = (int) $room->price_cleaning;
 		$data['totales']['book']     = $this->getPriceBook($request->start, $request->finish, $request->pax, $request->room);
@@ -2096,7 +2112,7 @@ class BookController extends Controller
 				$totalPrice = array_sum($data['totales']);
 			}
 		}
-		$totalPrice  = ($totalPrice == 0)? $data['totales']['book']: $totalPrice;
+		$totalPrice = ($totalPrice == 0) ? $data['totales']['book'] : $totalPrice;
 
 		$totalCost = array_sum($data['costes']) - $promotion;
 		$profit    = $totalPrice - $totalCost;
@@ -2109,101 +2125,6 @@ class BookController extends Controller
 
 		return $data;
 	}
-
-	public function updateBooksCosts()
-	{
-		$reservas = \App\Book::whereIn('type_book', [
-			1,
-			2,
-			4,
-			5
-		])->where('start', '>=', '2017-09-01')->get();
-		//$reservas = \App\Book::whereIn('type_book',[1,2,4,5])->where('start','>=', '2017-09-01')->where('room_id', 138)->get();
-		foreach ($reservas as $key => $book):
-
-			$extraPrice = (int) \App\Extras::find(4)->price;
-			$extraCost  = (int) \App\Extras::find(4)->cost;
-			if ($book->room->sizeApto == 1)
-			{
-
-				$data['costes']['limp'] = (int) \App\Extras::find(2)->cost;
-
-			} elseif ($book->room->sizeApto == 2)
-			{
-
-				$data['costes']['limp'] = (int) \App\Extras::find(1)->cost;
-
-			} elseif ($book->room->sizeApto == 3 || $book->room->sizeApto == 4)
-			{
-
-				$data['costes']['limp'] = (int) \App\Extras::find(3)->cost;
-
-			}
-
-			$costParking = 0;
-			switch ($book->type_park)
-			{
-				case 1:
-					$costParking = 13.5 * $book->nigths;
-					break;
-				case 2:
-					$costParking = 0;
-					break;
-				case 3:
-					$costParking = 0;
-					break;
-				case 4:
-					$costParking = (13.5 * $book->nigths) / 2;
-					break;
-			}
-
-			if ($book->room_id != "")
-			{
-				if ($book->room_id == 150)
-				{
-					$costParking = $costParking * 3;
-				} else if ($book->room_id == 149)
-				{
-					$costParking = $costParking * 2;
-				}
-			}
-
-			/* LUJO */
-			$data['costes']['lujo'] = $this->getCostLujo($book->type_luxury);
-
-			/* PARKING */
-			$data['costes']['parking'] = $costParking;
-
-
-			/* RESERVA */
-			$start  = Carbon::createFromFormat('Y-m-d', $book->start)->format('d/m/Y');
-			$finish = Carbon::createFromFormat('Y-m-d', $book->finish)->format('d/m/Y');
-
-
-			$data['costes']['book'] = $this->getCostBook($start, $finish, $book->pax, $book->room->id);
-
-			$totalCost        = $data['costes']['book'] + $data['costes']['parking'] + $data['costes']['lujo'] + $data['costes']['limp'] + $book->PVPAgencia + $extraCost;
-			$book->cost_apto  = $data['costes']['book'];
-			$book->cost_park  = $data['costes']['parking'];
-			$book->cost_lujo  = $data['costes']['lujo'];
-			$book->cost_limp  = $data['costes']['limp'];
-			$book->extraPrice = $extraPrice;
-			$book->extraCost  = $extraCost;
-
-			$book->cost_total = $totalCost;
-			$book->total_ben  = $book->total_price - $totalCost;
-			if ($book->total_price == 0)
-			{
-				$book->total_price = 1;
-			}
-			$book->inc_percent = round(($book->total_ben / $book->total_price) * 100, 2);
-			$book->save();
-
-		endforeach;
-
-
-	}
-
 
 	public function saveComment(Request $request, $idBook, $type)
 	{
@@ -2234,6 +2155,204 @@ class BookController extends Controller
 		};
 
 
+	}
+
+	public static function getBookFFData(Request $request, $request_id)
+	{
+
+		$ff_request = [];
+
+		$book     = \App\Book::find($request_id);
+		$customer = \App\Customers::find($book->customer_id);
+
+		if ($book->ff_request_id != NULL)
+		{
+			$ff_request = \App\Solicitudes::find($book->ff_request_id);
+		}
+
+		return view('/backend/planning/listados/_ff_popup')->with('book', $book)
+		                                                   ->with('customer', $customer)
+		                                                   ->with('ff_request', $ff_request);
+	}
+
+	public static function updateBookFFStatus(Request $request, $request_id, $status)
+	{
+		$book            = \App\Book::find($request_id);
+		$book->ff_status = $status;
+
+		if ($book->save())
+		{
+			return redirect('/admin/reservas/ff_status_popup/' . $request_id);
+		}
+	}
+
+	public static function getBookingAgencyDetails()
+	{
+
+		$years = [];
+
+		$year      = self::getActiveYear();
+		$startYear = new Carbon($year->start_date);
+		$endYear   = new Carbon($year->end_date);
+
+		$year_season      = date('y', strtotime($startYear));
+		$year_season_full = date('Y', strtotime($startYear));
+
+		$years[] = $year_season . '-' . ($year_season + 1);
+		$years[] = ($year_season - 1) . '-' . $year_season;
+		$years[] = ($year_season - 2) . '-' . ($year_season - 1);
+
+		$years_full[] = (int) $year_season_full;
+		$years_full[] = (int) $year_season_full - 1;
+		$years_full[] = (int) $year_season_full - 2;
+
+		sort($years);
+		sort($years_full);
+
+		$dataNode = [
+			'reservations'      => 0,
+			'total'             => 0,
+			'commissions'       => 0,
+			'reservations_rate' => 0,
+			'total_rate'        => 0
+		];
+
+		$yearsNode = [
+			$years[0] => $dataNode,
+			$years[1] => $dataNode,
+			$years[2] => $dataNode
+		];
+
+		$agencyBooks    = [
+			'years'  => $years,
+			'data'   => [
+				'V. Directa' => $yearsNode,
+				'Booking'    => $yearsNode,
+				'Trivago'    => $yearsNode,
+				'Bed&Snow'   => $yearsNode,
+				'AirBnb'     => $yearsNode
+			],
+			'totals' => $yearsNode
+		];
+		$auxYearOne     = \App\Years::where('year', $years_full[0])->first();
+		$auxYearTwo     = \App\Years::where('year', $years_full[1])->first();
+		$auxYearThree   = \App\Years::where('year', $years_full[2])->first();
+		$agencyBooksSQL = Book::where("created_at", ">=", $auxYearThree->start_date)->get();
+
+		foreach ($agencyBooksSQL as $book)
+		{
+			$book_date = Carbon::createFromFormat('Y-m-d', $book->start);
+
+			if ($book_date >= $auxYearOne->start_date && $book_date <= $auxYearOne->end_date)
+			{
+				$season = $years[0];
+
+			} elseif ($book_date >= $auxYearTwo->start_date && $book_date <= $auxYearTwo->end_date)
+			{
+				$season = $years[1];
+			} elseif ($book_date >= $auxYearThree->start_date && $book_date <= $auxYearThree->end_date)
+			{
+				$season = $years[2];
+			}
+
+			if ($book->agency == 0)
+			{
+				$agency_name = 'V. Directa';
+			} elseif ($book->agency == 1)
+			{
+				$agency_name = 'Booking';
+			} elseif ($book->agency == 2)
+			{
+				$agency_name = 'Trivago';
+			} elseif ($book->agency == 3)
+			{
+				$agency_name = 'Bed&Snow';
+			} elseif ($book->agency == 4)
+			{
+				$agency_name = 'AirBnb';
+			}
+
+			if (isset($season))
+			{
+				$agencyBooks['data'][$agency_name][$season]['total']        += $book->real_price;
+				$agencyBooks['data'][$agency_name][$season]['reservations'] += 1;
+				$agencyBooks['data'][$agency_name][$season]['commissions']  += str_replace(',', '.', $book->PVPAgencia);
+
+				$agencyBooks['totals'][$season]['total']        += $book->real_price;
+				$agencyBooks['totals'][$season]['reservations'] += 1;
+				$agencyBooks['totals'][$season]['commissions']  += str_replace(',', '.', $book->PVPAgencia);
+			}
+
+		}
+
+		foreach ($agencyBooks['data'] as $agency_name => $seasons)
+		{
+			foreach ($seasons as $season_key => $season_data)
+			{
+
+				$agencyBooks['data'][$agency_name][$season_key]['reservations_rate'] = 0;
+				$agencyBooks['data'][$agency_name][$season_key]['total_rate']        = 0;
+
+				if ($season_data['reservations'] !== 0 && $agencyBooks['totals'][$season_key]['reservations'] !== 0)
+				{
+					$agencyBooks['data'][$agency_name][$season_key]['reservations_rate'] = round(($season_data['reservations'] / $agencyBooks['totals'][$season_key]['reservations']) * 100, 2);
+				}
+
+				if ($season_data['total'] !== 0 && $agencyBooks['totals'][$season_key]['total'] !== 0)
+				{
+					$agencyBooks['data'][$agency_name][$season_key]['total_rate'] = round(($season_data['total'] / $agencyBooks['totals'][$season_key]['total']) * 100, 2);
+				}
+
+			}
+		}
+
+		echo json_encode(array(
+			                 'status'      => 'true',
+			                 'agencyBooks' => $agencyBooks
+		                 ));
+	}
+
+	public function demoFormIntegration(Request $request)
+	{
+		$minMax = \App\Rooms::where('state', 1)->selectRaw('min(minOcu) as min, max(maxOcu) as max')->first();
+		return view('backend.form_demo', ['minMax' => $minMax]);
+	}
+
+	public function apiCheckBook(Request $request)
+	{
+		$rooms   = [];
+		$auxDate = explode('-', $request->input('result')['dates']);
+		$start   = Carbon::createFromFormat('d M, y', trim($auxDate[0]));
+		$finish  = Carbon::createFromFormat('d M, y', trim($auxDate[1]));
+		$name    = $request->input('result')['name'];
+		$email   = $request->input('result')['email'];
+		$phone   = $request->input('result')['phone'];
+		$dni     = $request->input('result')['dni'];
+		$pax     = $request->input('result')['pax'];
+
+		$roomsWithPax = \App\Rooms::where('state', 1)->where('minOcu', '<=', $pax)->where('maxOcu', '>=', $pax)->get();
+		foreach ($roomsWithPax as $index => $roomsWithPax)
+		{
+			if (\App\Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'),
+			                         $roomsWithPax->id))
+				$rooms[] = $roomsWithPax;
+		}
+
+		$instantPayment = (\App\Settings::where('key', 'instant_payment')
+		                                ->first()) ? \App\Settings::where('key', 'instant_payment')
+		                                                          ->first()->value : false;
+
+		return view('backend.api.response-book-request', [
+			'rooms'          => $rooms,
+			'start'          => $start,
+			'finish'         => $finish,
+			'pax'            => $pax,
+			'name'           => $name,
+			'email'          => $email,
+			'phone'          => $phone,
+			'dni'            => $dni,
+			'instantPayment' => $instantPayment,
+		]);
 	}
 
 }

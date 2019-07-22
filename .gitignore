@@ -9,3 +9,5 @@ Homestead.json
 /.phpintel
 /.idea
 test.blade.php
+nbproject
+/.htaccess

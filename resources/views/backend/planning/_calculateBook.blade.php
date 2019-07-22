@@ -139,7 +139,8 @@
             "buttonClasses": "button button-rounded button-mini nomargin",
             "applyClass": "button-color",
             "cancelClass": "button-light",
-            "startDate": '01 Dec, YY',
+            "startDate": moment().format("DD MMM, YY"),
+//            "startDate": '01 Dec, YY',
             locale: {
               format: 'DD MMM, YY',
               "applyLabel": "Aplicar",
