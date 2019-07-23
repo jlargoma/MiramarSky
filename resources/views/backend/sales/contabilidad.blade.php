@@ -78,6 +78,11 @@ setlocale(LC_TIME, "es_ES");
                                 ?>
                                 <?php 
                                 foreach ($rooms as $key => $room):
+                                  if (
+                                    isset($priceBookRoom[$room->id]) 
+                                    && isset($priceBookRoom[$room->id][$aux_year]) 
+                                    && isset($priceBookRoom[$room->id][$aux_year][$aux_month])
+                                  )
                                   $totalMonth += $priceBookRoom[$room->id][$aux_year][$aux_month];
                                 endforeach; 
                                 ?>
