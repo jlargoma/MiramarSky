@@ -108,10 +108,18 @@ setlocale(LC_TIME, "es_ES");
 						<?php foreach ($rooms as $key => $room): ?>
                             <?php $totalRoom = 0; ?>
                             <?php $monthsRooms = new Carbon($year->start_date); ?>
-                            <?php for ($i = 1; $i <= $diff; $i++): ?>
-                                <?php $totalRoom += $priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')] ?>
-                                <?php $monthsRooms->addMonth() ?>
-                            <?php endfor; ?>
+                            <?php 
+                            for ($i = 1; $i <= $diff; $i++): 
+                              if (
+                                  isset($priceBookRoom[$room->id]) 
+                                  && isset($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')]) 
+                                  && isset($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')])
+                                ){
+                                $totalRoom += $priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')];
+                                $monthsRooms->addMonth();
+                                }
+                            endfor; 
+                            ?>
                             <?php $totalAllRoom += $totalRoom; ?>
                         <?php endforeach ?>
 						<?php foreach ($rooms as $key => $room): ?>
