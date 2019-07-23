@@ -196,7 +196,11 @@
         </div>
         <!-- END CONTAINER FLUID -->
         </div>
-
+        <div class="overlay loading-box" id="loadigPage">
+          <div >
+            <h3 class="text-center"><i class="fas fa-spinner fa-spin"></i>Loading...</h3>
+          </div>
+        </div>
         </div>
         <!-- BEGIN VENDOR JS -->
         <script src="{{ asset('assets/plugins/pace/pace.min.js') }}" type="text/javascript"></script>

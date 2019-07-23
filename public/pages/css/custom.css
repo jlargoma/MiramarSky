@@ -478,9 +478,10 @@ input.beneficio,
       box-shadow: 0px 0px 2px 5px rgba(204,169,44, 0);
   }
 }
-
-.btn-alarms{
+.btn-mb-1 button{
   margin-bottom: 1em;
+}
+.btn-alarms{
   margin-left: 5px;
   padding: 5px;
   animation: pulsebtn 1s infinite!important;
@@ -608,4 +609,51 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
 }
 .p-8{
   padding: 8px !important;
+}
+.btn-contabilidad{
+    float: left;
+    margin: 0 1em 1em;
+    min-width: 8em;
+}
+.btn-contabilidad a,
+.btn-contabilidad button{
+  width: 100%; 
+}
+.btn-contabilidad button.active{
+  background-color: #6600ff;
+  pointer-events: none
+}
+#limpieza_table td{
+  padding: 7px !important;
+}
+.month_select-box{
+  clear: both;
+  overflow: auto;
+}
+.month_select{
+    float: left;
+    padding: 5px 9px;
+    margin: 4px;
+    background-color: #295d9b;
+    color: #fff;
+    border-radius: 17px;
+    min-width: 5.5em;
+    text-align: center;
+    cursor: pointer;
+}
+.month_select.active,
+.month_select:hover{
+  background-color: #9b59ff;
+  color: initial;
+
+}
+.loading-box{
+  background-color: rgba(255,255,255,0.4);
+  display: none;
+}
+.loading-box > div{
+    margin-top: 12em;
+}
+.modal .modal-body{
+  padding-top: 1em;
 }

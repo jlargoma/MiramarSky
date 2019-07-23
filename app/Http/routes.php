@@ -648,6 +648,18 @@ Route::get('admin/perdidas-ganancias/{year?}', [
     'middleware' => 'authAdmin',
     'uses'       => 'LiquidacionController@perdidasGanancias'
 ]);
+Route::get('admin/limpiezas/{year?}', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'LiquidacionController@limpiezas'
+]);
+Route::post('admin/limpiezasLst/', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'LiquidacionController@get_limpiezas'
+]);
+Route::post('admin/limpiezasUpd/', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'LiquidacionController@upd_limpiezas'
+]);
 
 
 //Facturas

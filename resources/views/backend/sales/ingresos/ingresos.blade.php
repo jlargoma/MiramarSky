@@ -42,12 +42,9 @@ background: white;
 </div>
 <div class="container-fluid">
 	<div class="row bg-white push-30">
-		<div class="col-lg-6 col-md-10 col-xs-12 push-20">
-
+		<div class="col-md-12 col-xs-12 push-20">
 			@include('backend.sales._button-contabiliad')
-
 		</div>
-		
 	</div>
 	
 	<div class="row bg-white push-30">

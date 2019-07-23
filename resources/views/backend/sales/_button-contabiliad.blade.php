@@ -1,102 +1,71 @@
- <style>
- 	.btn-primary{
- 		background-color: #295d9b!important;
- 	}
- </style>
- <?php 
- 	$url = substr(Request::path(), 6);
- 	$posicion =strpos($url, '/');
- 	if ($posicion > 0) {
- 		 $url = substr($url,0,$posicion);
- 	}else{
- 		 $url;
- 	};
+<style>
+  .btn-primary{
+    background-color: #295d9b!important;
+  }
+</style>
+<?php
+$url = substr(Request::path(), 6);
+$posicion = strpos($url, '/');
+if ($posicion > 0) {
+  $url = substr($url, 0, $posicion);
+} else {
+  $url;
+};
 ?>
- 	
 
-<div class="col-md-12 col-xs-12 push-20">
-	<div class="col-md-2 col-xs-4 push-10">
-		<?php if ($url == "contabilidad"): ?>
-			<button class="btn btn-md" style="width: 100%; background-color: #6600ff;pointer-events: none" disabled>
-				<a class="text-white" >Estadisticas</a>
-			</button>
-		<?php else: ?>
-			<a class="text-white" href="{{url('/admin/contabilidad/')}}">
-				<button class="btn btn-md btn-primary" style="width: 100%;">
-					Estadisticas
-				</button>
-			</a>
-		<?php endif ?>	
-	</div>
+  <div class="btn-contabilidad">
+    <?php if ($url == "contabilidad"): ?>
+      <button class="btn btn-md text-white active"  disabled>Estadisticas</button>
+    <?php else: ?>
+      <a class="text-white btn btn-md btn-primary" href="{{url('/admin/contabilidad/')}}">Estadisticas</a>
+    <?php endif ?>	
+  </div>
+  
+  <div class="btn-contabilidad">
+    <?php if ($url == "gastos"): ?>
+      <button class="btn btn-md text-white active"  disabled>Gastos</button>
+    <?php else: ?>
+      <a class="text-white btn btn-md btn-primary" href="{{url('/admin/gastos/')}}">Gastos</a>
+    <?php endif ?>	
+  </div>
 
-	<div class="col-md-2 col-xs-4 push-10">
-    	<?php if ($url == "gastos"): ?>
-    		<button class="btn btn-md" style="width: 100%; background-color: #6600ff;pointer-events: none" disabled>
-    			<a class="text-white" >Gastos</a>
-    		</button>
-    	<?php else: ?>
-    		<a class="text-white" href="{{url('/admin/gastos/')}}">
-    			<button class="btn btn-md btn-primary" style="width: 100%;">
-		        	Gastos
-    			</button>
-    		</a>
-    	<?php endif ?>	
-	</div>
+  <div class="btn-contabilidad">
+    <?php if ($url == "ingresos"): ?>
+      <button class="btn btn-md text-white active"  disabled>Ingresos</button>
+    <?php else: ?>
+      <a class="text-white btn btn-md btn-primary" href="{{url('/admin/ingresos/')}}">Ingresos</a>
+    <?php endif ?>
+  </div>
 
-	<div class="col-md-2 col-xs-4 push-10">
-    	<?php if ($url == "ingresos"): ?>
-    		<button class="btn btn-md" style="width: 100%; background-color: #6600ff;pointer-events: none" disabled>
-    			<a class="text-white" >Ingresos</a>
-    		</button>
-    	<?php else: ?>
-    		<a class="text-white" href="{{url('/admin/ingresos/')}}">
-	    		<button class="btn btn-md btn-primary" style="width: 100%;">
-		        	Ingresos
-	    		</button>
-    		</a>
-    	<?php endif ?>
-	</div>
+  <div class="btn-contabilidad">
+    <?php if ($url == "banco"): ?>
+      <button class="btn btn-md text-white active"  disabled>Banco</button>
+    <?php else: ?>
+      <a class="text-white btn btn-md btn-primary" href="{{url('/admin/banco/')}}">Banco</a>
+    <?php endif ?>
+  </div>
 
-	<div class="col-md-2 col-xs-4 push-10">
-    	<?php if ($url == "banco"): ?>
-    		<button class="btn btn-md" style="width: 100%; background-color: #6600ff;pointer-events: none" disabled>
-    			<a class="text-white" >Banco</a>
-    		</button>
-    	<?php else: ?>
-    		<a class="text-white" href="{{url('/admin/banco/')}}">
-    			<!--  -->
-	    		<button class="btn btn-md btn-primary" style="width: 100%;">
-		        	Banco
-	    		</button>
-    		</a>
-    	<?php endif ?>
-	</div>
+  <div class="btn-contabilidad">
+    <?php if ($url == "caja"): ?>
+      <button class="btn btn-md text-white active"  disabled>Caja</button>
+    <?php else: ?>
+      <a class="text-white btn btn-md btn-primary" href="{{url('/admin/caja/')}}">Caja</a>
+    <?php endif ?>
+  </div>
 
-	<div class="col-md-2 col-xs-4 push-10">
-    	<?php if ($url == "caja"): ?>
-    		<button class="btn btn-md" style="width: 100%; background-color: #6600ff;pointer-events: none" disabled>
-    			<a class="text-white" >Caja</a>
-    		</button>
-    	<?php else: ?>
-    		<a class="text-white" href="{{url('/admin/caja/')}}">
-	    		<button class="btn btn-md btn-primary" style="width: 100%;">
-		        	Caja
-	    		</button>
-    		</a>
-    	<?php endif ?>
-	</div>
+  <div class="btn-contabilidad">
+    <?php if ($url == "perdidas-ganancias"): ?>
+      <button class="btn btn-md text-white active"  disabled>CTA P &amp; G</button>
 
-	<div class="col-md-2 col-xs-4 push-10">
-    	<?php if ($url == "perdidas-ganancias"): ?>
-    		<button class="btn btn-md" style="width: 100%; background-color: #6600ff;pointer-events: none" disabled>
-    			<a class="text-white" >CTA P &amp; G</a>
-    		</button>
-    	<?php else: ?>
-    		<a class="text-white" href="{{url('/admin/perdidas-ganancias/')}}">
-	    		<button class="btn btn-md btn-primary" style="width: 100%;">
-		        	CTA P &amp; G
-	    		</button>
-    		</a>
-    	<?php endif ?>
-	</div>
-</div>
+    <?php else: ?>
+      <a class="text-white btn btn-md btn-primary" href="{{url('/admin/perdidas-ganancias/')}}">CTA P &amp; G</a>
+    <?php endif ?>
+  </div>
+
+  <div class="btn-contabilidad">
+    <?php if ($url == "limpiezas"): ?>
+      <button class="btn btn-md text-white active"  disabled>LIMPIEZAS</button>
+    <?php else: ?>
+      <a class="text-white btn btn-md btn-primary" href="{{url('/admin/limpiezas/')}}">LIMPIEZAS</a>
+    <?php endif ?>
+  </div>

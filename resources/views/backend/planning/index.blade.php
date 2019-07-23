@@ -30,7 +30,7 @@ setlocale(LC_TIME, "es_ES");
 
             <div class="row push-10">
                 <div class="col-md-7">
-                    <div class="row">
+                    <div class="row btn-mb-1">
                         <button class="btn btn-success btn-cons btn-newBook" type="button" data-toggle="modal" data-target="#modalNewBook">
                             <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Nueva Reserva</span>
                         </button>
