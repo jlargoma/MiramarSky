@@ -127,12 +127,20 @@ setlocale(LC_TIME, "es_ES");
                             <td class="text-center" style="padding: 12px 20px!important">
 								<?php echo $room->name ?> <b><?php echo $room->nameRoom ?></b>
                             </td>
-							<?php $totalRoom = 0; ?>
-							<?php $monthsRooms = new Carbon($year->start_date); ?>
-							<?php for ($i = 1; $i <= $diff; $i++): ?>
-                                    <?php $totalRoom += $priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')] ?>
-                                    <?php $monthsRooms->addMonth() ?>
-                                <?php endfor; ?>
+                              <?php $totalRoom = 0; ?>
+                              <?php $monthsRooms = new Carbon($year->start_date); ?>
+                              <?php 
+                              for ($i = 1; $i <= $diff; $i++): 
+                                if (
+                                  isset($priceBookRoom[$room->id]) 
+                                  && isset($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')]) 
+                                  && isset($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')])
+                                ){
+                                  $totalRoom += $priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')];
+                                  $monthsRooms->addMonth();
+                                }
+                              endfor; 
+                              ?>
                             <td class="text-center">
                                 <b><?php echo number_format($totalRoom, 0, ',', '.') ?>€</b>
                             </td>
