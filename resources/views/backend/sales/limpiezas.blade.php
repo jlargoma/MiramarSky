@@ -69,7 +69,7 @@ setlocale(LC_TIME, "es_ES");
               <tr>
                 <td colspan="6"><strong>Monto Fijo Mensual</strong></td>
                 <td><input id="limp_fix" type="text" class="form-control"></td>
-                <td><input id="extr_fix" type="text" class="form-control"></td>
+                <td><input id="extr_fix" type="text" class="form-control" readonly=""></td>
                 <td><button type="button" data-id="fix" class="btn btn-link limpieza_upd">Actualizar</button></td>
                 <td></td>
               </tr>
@@ -154,6 +154,8 @@ setlocale(LC_TIME, "es_ES");
     limp_year  = year;
     limp_month = month;
     $('#loadigPage').show('slow');
+    $('#limp_fix').val('');
+    $('#extr_fix').val('');
     $.ajax({
         url: '/admin/limpiezasLst',
         type:'POST',
@@ -161,12 +163,11 @@ setlocale(LC_TIME, "es_ES");
         success: function(response){
         if (response.status === 'true'){
 
-          console.log('#ms_'+year+'_'+month);
           $('#ms_'+year+'_'+month).addClass('active');
           
           $('#t_limp').text(response.total_limp);
           $('#t_extr').text(response.total_extr);
-          $('#monthly_limp').text(response.month_cost);
+          $('#limp_fix').val(response.month_cost);
           $('#monthly_extr').text(0);
           $('#tableItems').html('');
           $.each((response.respo_list), function(index, val) {
@@ -177,14 +178,14 @@ setlocale(LC_TIME, "es_ES");
             var name = val.name
 
             var row = '<tr><td>' + name + '</td>';
-            row += '<td>' + val.type + '</td>';
-            row += '<td>' + val.pax + '</td>';
-            row += '<td>' + val.apto + '</td>';
-            row += '<td>' + val.check_in + '</td>';
-            row += '<td>' + val.nigths + '</td>';
-            row += '<td><input id="limp_' + val.id + '" type="text" class="form-control" value="' + val.limp + '"></td>';
-            row += '<td><input id="extr_' + val.id + '" type="text" class="form-control" value="' + val.extra + '"></td>';
-            row += '<td><button type="button" data-id="' + val.id + '" class="btn btn-link limpieza_upd">Actualizar</button></td></tr>';
+            row += '<td class="text-center">' + val.type + '</td>';
+            row += '<td class="text-center">' + val.pax + '</td>';
+            row += '<td class="text-center">' + val.apto + '</td>';
+            row += '<td class="text-center">' + val.check_in + '</td>';
+            row += '<td class="text-center">' + val.nigths + '</td>';
+            row += '<td class="text-center"><input id="limp_' + val.id + '" type="text" class="form-control" value="' + val.limp + '"></td>';
+            row += '<td class="text-center"><input id="extr_' + val.id + '" type="text" class="form-control" value="' + val.extra + '"></td>';
+            row += '<td class="text-center"><button type="button" data-id="' + val.id + '" class="btn btn-link limpieza_upd">Actualizar</button></td></tr>';
             $('#tableItems').append(row);
           });
 

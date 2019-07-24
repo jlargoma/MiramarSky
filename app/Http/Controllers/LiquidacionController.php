@@ -353,7 +353,17 @@ class LiquidacionController extends AppController
 		                       ->Where('date', '<=', $endYear)
 		                       ->where('concept', 'NOT LIKE', '%LIMPIEZA RESERVA PROPIETARIO.%')
 		                       ->orderBy('date', 'DESC')->get();
-
+                
+                $totalMonthLimpieza = 0;
+                $dateMonthLimpieza = '';
+                foreach ($gastos as $key => $item)
+		{
+                  if ($item->concept == 'LIMPIEZA MENSUAL'){
+                    $totalMonthLimpieza += $item->import;
+                    $dateMonthLimpieza   = date('d M Y', strtotime($item->date));
+                  }
+                }
+                
 		$books           = \App\Book::whereIn('type_book', [2])->where('start', '>', $startYear)
 		                            ->where('start', '<=', $startYear)
 		                            ->orderBy('start', 'ASC')->get();
@@ -387,6 +397,8 @@ class LiquidacionController extends AppController
 			'totalStripep'    => $totalStripep,
 			'comisionBooking' => $comisionBooking,
 			'obsequios'       => $obsequios,
+                        'totalMonthLimpieza' => $totalMonthLimpieza,
+                        'dateMonthLimpieza' => $dateMonthLimpieza,
 		]);
 	}
 
@@ -2727,9 +2739,9 @@ class LiquidacionController extends AppController
             $date = Carbon::createFromFormat('Y-m-d', $book->start);
             $cMonth = intval($date->format('n'));
             if (isset($lstMonthlyCost[$cMonth])){
-              $lstMonthlyCost[$cMonth] += floatval($book->sup_limp);
+              $lstMonthlyCost[$cMonth] += floatval($book->cost_limp);
             } else {
-              $lstMonthlyCost[$cMonth]  = floatval($book->sup_limp);
+              $lstMonthlyCost[$cMonth]  = floatval($book->cost_limp);
             }
           }
           
@@ -2793,19 +2805,29 @@ class LiquidacionController extends AppController
             return response()->json(['status'=>'wrong']);
           }
            // First day of a specific month
-          $d = new \DateTime($year.'-'.$month.'-19');
+          $d = new \DateTime($year.'-'.$month.'-01');
           $d->modify('first day of this month');
           $startYear = $d->format('Y-m-d');
            // First day of a specific month
-          $d = new \DateTime($year.'-'.$month.'-19');
+          $d = new \DateTime($year.'-'.$month.'-01');
           $d->modify('last day of this month');
           $endYear = $d->format('Y-m-d');
+          
+          $month_cost = 0;
+          $monthly  = \App\Expenses::where('date', '=', $startYear)
+                      ->where('type','LIMPIEZA')
+                      ->where('concept','LIMPIEZA MENSUAL')
+                      ->first();
+          if ($monthly){
+            $month_cost = $monthly->import;
+          }
+          
 
           $lstBooks = \App\Book::type_book_sales()->where('start', '>=', $startYear)
                   ->where('start', '<=',$endYear)
                   ->orderBy('start', 'ASC')->get();
          
-          $month_cost = 0;
+          
           $respo_list = [];
           $total_limp = $month_cost; //start with the monthly cost
           $total_extr = 0;
@@ -2835,16 +2857,16 @@ class LiquidacionController extends AppController
               'name'    =>  $book->customer->name,
               'agency'  =>  $agency,
               'type'    =>  $type_book,
-              'limp'    =>  $book->sup_limp,
-              'extra'   =>  $book->extraPrice,
+              'limp'    =>  $book->cost_limp,
+              'extra'   =>  $book->extraCost,
               'pax'     =>  $book->pax,
               'apto'    =>  $book->room->nameRoom,
               'check_in'=>  $start->formatLocalized('%d %b') .' - '.$finish->formatLocalized('%d %b'),
               'nigths'  =>  $book->nigths
             ];
             
-            $total_limp += floatval($book->sup_limp);
-            $total_extr += floatval($book->extraPrice);
+            $total_limp += floatval($book->cost_limp);
+            $total_extr += floatval($book->extraCost);
             
   
           }
@@ -2874,6 +2896,25 @@ class LiquidacionController extends AppController
           
           if ($id){
             if($id == 'fix'){
+              $dateTime = new \DateTime($year.'-'.$month.'-01'); 
+              $date = $dateTime->format('Y-m-d');
+              $monthItem  = \App\Expenses::where('date', '=', $date)
+                      ->where('type','LIMPIEZA')
+                      ->where('concept','LIMPIEZA MENSUAL')
+                      ->first();
+		                         
+              if ($monthItem){
+                $monthItem->import = floatval($limp_value);
+                $monthItem->save();
+              } else {
+                $monthItem = new \App\Expenses();
+                $monthItem->type = 'LIMPIEZA';
+                $monthItem->concept = 'LIMPIEZA MENSUAL';
+                $monthItem->comment = 'LIMPIEZA MENSUAL';
+                $monthItem->date = $date; 
+                $monthItem->import = floatval($limp_value);
+                $monthItem->save();
+              }
               return response()->json(['status'=>'true']);
             } else {
               if ( !(is_numeric($limp_value) || empty($limp_value)) ){
@@ -2884,10 +2925,12 @@ class LiquidacionController extends AppController
               }
              $book = \App\Book::find($id); 
              if ($book){
-               $book->sup_limp = floatval($limp_value);
-               $book->extraPrice = floatval($extr_value);
-                $book->save();       
-              return response()->json(['status'=>'true']);
+               
+                $book->cost_limp = floatval($limp_value);
+                $book->extraCost = floatval($extr_value);
+                $book->save();  
+                
+                return response()->json(['status'=>'true']);
                
              }
             }

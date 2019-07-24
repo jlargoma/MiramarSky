@@ -62,7 +62,7 @@ background: white;
 	</div>
 
 	<div class="row bg-white push-30 table-responsive" id="contentTableExpenses" style="border: 0px!important">
-		@include('backend.sales.gastos._tableExpenses', ['gastos' => $gastos])
+	@include('backend.sales.gastos._tableExpenses', ['gastos' => $gastos,'totalMonthLimpieza' => $totalMonthLimpieza,'dateMonthLimpieza' => $dateMonthLimpieza])
 	</div>
 
 </div>
