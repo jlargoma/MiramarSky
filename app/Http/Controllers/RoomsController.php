@@ -693,4 +693,54 @@ class RoomsController extends AppController
 
 	}
 
+    public function getCupos(Request $request)
+    {
+        return view('backend.rooms.modal_cupos_fast_payment', [
+            'rooms'     => \App\Rooms::where('state', "!=", 0)->orderBy('order', 'ASC')->get(),
+            'sizes'     => \App\SizeRooms::all(),
+        ]);
+    }
+
+    public function updateFastPayment(Request $request)
+    {
+        $id                = $request->id;
+        $roomUpdate        = \App\Rooms::find($id);
+        $roomUpdate->fast_payment = $request->state;
+        if ($roomUpdate->save())
+        {
+            return 1;
+        }
+        else{
+            return 0;
+        }
+
+    }
+
+    public function updateOrderFastPayment(Request $request)
+    {
+        $id                = $request->id;
+        $roomUpdate        = \App\Rooms::find($id);
+        $roomUpdate->order_fast_payment = $request->orden;
+        if ($roomUpdate->save())
+        {
+            return view('backend.rooms.table_rooms_order_fast_payment', [
+                'rooms'     => \App\Rooms::where('state', "!=", 0)->orderBy('order', 'ASC')->get(),
+            ]);
+        }
+    }
+
+
+    public function updateSizeAptos(Request $request)
+    {
+        $id                = $request->id;
+        $roomUpdate        = \App\SizeRooms::find($id);
+        $roomUpdate->num_aptos_fast_payment = $request->num_aptos;
+        if ($roomUpdate->save())
+        {
+            return view('backend.rooms.table_size_aptos_summary', [
+                'sizes'     => \App\SizeRooms::all(),
+            ]);
+        }
+    }
+
 }

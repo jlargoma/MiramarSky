@@ -45,7 +45,13 @@
 
 	<div class="row text-center">
 		<p class="white push-10 font-s18 font-w300 text-center" style="line-height: 1">
-			Precio total de la solicitud de reserva<br> <span class="font-w800" style="font-size: 48px;"><?php echo number_format($total ,0,'','.') ?>€</span>
+			Precio total de la solicitud de reserva<br>
+			@if($setting)
+                <span class="font-w300" style="font-size: 32px; text-decoration:line-through; "><?php echo number_format($total ,0,'','.') ?>€</span><br>
+                <span class="font-w800" style="font-size: 48px;"><?php echo number_format(($total - $setting->value) ,0,'','.') ?>€</span>
+			@else
+                <span class="font-w300" style="font-size: 22px;"><?php echo number_format($total ,0,'','.') ?>€</span>
+			@endif
 		</p>
 	</div>
 	<div class="row push-10">
@@ -72,24 +78,27 @@
 				<?php else: ?>
 					<input type="hidden" name="type_luxury" value="2">
 				<?php endif; ?>
-				<?php
-					$showFastPayment = \App\Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'), $room->id);
-				?>
-
+                @if($setting)
+                    <input type="hidden" name="discount" value="{{$setting->value}}">
+                @else
+                    <input type="hidden" name="discount" value="0">
+                @endif
 				<div class="col-xs-12">
-					<div class="col-md-6">
-						<button type="submit" class="button button-rounded button-reveal button-large button-blue tright center hvr-grow-shadow font-s16 request" style="letter-spacing: 1px;">
-							<i class="icon-angle-right"></i><span style=" font-size: 16px">SOLICITAR</span>
-						</button>
-					</div>
-					@if($room->fast_payment && $showFastPayment)
-						<div class="col-md-6">
+
+					@if($room->fast_payment)
+						<div class="col-md-6 col-md-offset-3">
 							<button type="submit" class="button button-rounded button-reveal button-large
 						tright center hvr-grow-shadow font-s16 fastPayment" style="letter-spacing: 1px;
 						background-color: #59BA41;">
 								<i class="icon-angle-right"></i><span style=" font-size: 16px">RESERVA YA</span>
 							</button>
 						</div>
+                    @else
+                        <div class="col-md-6 col-md-offset-3">
+                            <button type="submit" class="button button-rounded button-reveal button-large button-blue tright center hvr-grow-shadow font-s16 request" style="letter-spacing: 1px;">
+                                <i class="icon-angle-right"></i><span style=" font-size: 16px">SOLICITAR</span>
+                            </button>
+                        </div>
 					@endif
 				</div>
 				<input type="hidden" name="recaptcha_response" id="recaptchaResponse">
@@ -139,7 +148,8 @@
 		var book_comments = $('input[name="book_comments"]').val();
 		var lujo 		  = $('input[name="lujo"]').val();
 		var type_luxury   = $('input[name="type_luxury"]').val();
-		var fast_payment   = $('input[name="fastPayment"]').val();
+        var fast_payment  = $('input[name="fastPayment"]').val();
+        var discount      = $('input[name="discount"]').val();
 		var url = $(this).attr('action');
                 
 		public_key = '6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV';
@@ -179,7 +189,8 @@
 								book_comments : book_comments,
 								Suplujo : lujo,
 								type_luxury : type_luxury,
-								fast_payment : fast_payment
+								fast_payment : fast_payment,
+                                discount:discount
 							}, function(data) {
 								hideLoad();
 								$('#content-book-payland').empty().append(data).fadeIn('300');

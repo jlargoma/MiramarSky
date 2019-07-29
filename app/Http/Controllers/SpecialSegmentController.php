@@ -70,7 +70,7 @@ class SpecialSegmentController extends AppController
 										->where('finish','>=',$dateStart->copy()->format('Y-m-d'))
 										->first();
 
-			if ( count($segment) > 0)
+			if ( $segment && count($segment) > 0)
 				return $segment;
 		}
 

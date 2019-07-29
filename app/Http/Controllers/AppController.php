@@ -2,29 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Book;
 use App\Repositories\CachedRepository;
+use App\Rooms;
 use App\Services\PaylandService;
+use App\SizeRooms;
 use App\Years;
 use Carbon\Carbon;
 
 class AppController extends Controller
 {
-	private $cachedRepository;
+    private $cachedRepository;
     private $paylandClient;
     const SANDBOX_ENV = "/sandbox";
 
-    public function __construct( CachedRepository $cachedRepository )
+    public function __construct(CachedRepository $cachedRepository)
     {
-	    $this->cachedRepository = $cachedRepository;
-        $endPoint = (env('PAYLAND_ENVIRONMENT') == "dev")? env('PAYLAND_ENDPOINT'). self::SANDBOX_ENV : env('PAYLAND_ENDPOINT');
-        $paylandConfig       = [
-                                    'endpoint'  => $endPoint,
-                                    'api_key'   => env('PAYLAND_API_KEY'),
-                                    'signarute' => env('PAYLAND_SIGNATURE'),
-                                    'service'   => env('PAYLAND_SERVICE')
-                                ];
-        $this->paylandClient = new PaylandService($paylandConfig);
+        $this->cachedRepository = $cachedRepository;
+        $endPoint               = (env('PAYLAND_ENVIRONMENT') == "dev") ? env('PAYLAND_ENDPOINT') . self::SANDBOX_ENV : env('PAYLAND_ENDPOINT');
+        $paylandConfig          = [
+            'endpoint'  => $endPoint,
+            'api_key'   => env('PAYLAND_API_KEY'),
+            'signarute' => env('PAYLAND_SIGNATURE'),
+            'service'   => env('PAYLAND_SERVICE')
+        ];
+        $this->paylandClient    = new PaylandService($paylandConfig);
     }
+
     protected function getPaylandApiClient()
     {
         return $this->paylandClient;
@@ -83,25 +87,42 @@ class AppController extends Controller
         return false;
     }
 
-	public function generateOrderPayment($params)
-	{
-		$response = $params;
-		if (isset($response['_token']))
-			unset($params['_token']);
-		$customer                    = \App\Customers::find($response['customer_id']);
-		$response['amount']          = ($response['amount']) * 100;
-		$response['customer_ext_id'] = $customer->email;
-		$response['operative']       = "AUTHORIZATION";
-		$response['secure']          = true;
-		$response['signature']       = env('PAYLAND_SIGNATURE');
-		$response['service']         = env('PAYLAND_SERVICE');
-		$response['description']     = "COBRO RESERVA CLIENTE " . $customer->name;
-		$response['url_ok']          .= "/" . $response['amount'];
-		$response['url_ko']          .= "/" . $response['amount'];
-		//dd($this->getPaylandApiClient());
-		$orderPayment  = $this->paylandClient->payment($response);
-		$urlToRedirect = $this->paylandClient->processPayment($orderPayment->order->token);
-		return $urlToRedirect;
+    public function generateOrderPayment($params)
+    {
+        $response = $params;
+        if (isset($response['_token'])) unset($params['_token']);
+        $customer                    = \App\Customers::find($response['customer_id']);
+        $response['amount']          = ($response['amount']) * 100;
+        $response['customer_ext_id'] = $customer->email;
+        $response['operative']       = "AUTHORIZATION";
+        $response['secure']          = true;
+        $response['signature']       = env('PAYLAND_SIGNATURE');
+        $response['service']         = env('PAYLAND_SERVICE');
+        $response['description']     = "COBRO RESERVA CLIENTE " . $customer->name;
+        $response['url_ok']          .= "/" . $response['amount'];
+        $response['url_ko']          .= "/" . $response['amount'];
+        //dd($this->getPaylandApiClient());
+        $orderPayment  = $this->paylandClient->payment($response);
+        $urlToRedirect = $this->paylandClient->processPayment($orderPayment->order->token);
+        return $urlToRedirect;
 
-	}
+    }
+
+    public function calculateRoomToFastPayment(SizeRooms $size, $start, $finish, $luxury)
+    {
+        $roomSelected   = null;
+        $luxurySelected = ($luxury == "si") ? 1 : 0;
+        $allRoomsBySize = Rooms::where('sizeApto', $size->id)->orderBy('order_fast_payment', 'ASC')->get();
+        for ($i = 0; $i <= $size->num_aptos_fast_payment; $i++)
+        {
+            if (Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'), $allRoomsBySize[$i]))
+            {
+                $roomSelected = $allRoomsBySize[$i];
+                break;
+            }
+        }
+        if (!$roomSelected) $roomSelected = $allRoomsBySize[0];
+
+        return $roomSelected->id;
+    }
 }
