@@ -61,7 +61,7 @@ class LiquidacionController extends AppController
 			                  8
 		                  ])->orderBy('start', 'ASC')->get();
 
-                $alert_lowProfits = false; //To the alert efect
+                $alert_lowProfits = 0; //To the alert efect
                 $percentBenef = DB::table('percent')->find(1)->percent;
                 $lowProfits = [];
                 
@@ -103,7 +103,7 @@ class LiquidacionController extends AppController
                     $inc_percent = $book->get_inc_percent();
                     if(round($inc_percent) <= $percentBenef){
                       if (!$book->has_low_profit){
-                        $alert_lowProfits = true;
+                        $alert_lowProfits++;
                       }
                       $lowProfits[] = $book;
                     }
@@ -2936,7 +2936,7 @@ class LiquidacionController extends AppController
             }
           }
           
-          return response()->json(['status'=>'false']);
+          return response()->json(['status'=>'false','msg'=>"No se han encontrado valores."]);
           
         }
           

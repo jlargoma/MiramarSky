@@ -63,14 +63,12 @@ setlocale(LC_TIME, "es_ES");
             <th class ="text-center bg-complete text-white col-md-2"><i class="fa fa-moon"></i></th>
             <th class ="text-center bg-complete text-white col-md-2">Limpieza<br><b id="t_limp"></b></th>
             <th class ="text-center bg-complete text-white col-md-2">Extras<br><b id="t_extr"></b></th>
-            <th class ="text-center bg-complete text-white col-md-1">Actualizar</th>
             </thead>
             <tbody >
               <tr>
                 <td colspan="6"><strong>Monto Fijo Mensual</strong></td>
-                <td><input id="limp_fix" type="text" class="form-control"></td>
-                <td><input id="extr_fix" type="text" class="form-control" readonly=""></td>
-                <td><button type="button" data-id="fix" class="btn btn-link limpieza_upd">Actualizar</button></td>
+                <td><input id="limp_fix" type="text" data-id="fix" class="form-control limpieza_upd"></td>
+                <td><input id="extr_fix" type="text" data-id="fix" class="form-control " readonly=""></td>
                 <td></td>
               </tr>
             </tbody>
@@ -161,49 +159,40 @@ setlocale(LC_TIME, "es_ES");
         type:'POST',
         data: {year:year, month:month, '_token':"{{csrf_token()}}"},
         success: function(response){
-        if (response.status === 'true'){
+          if (response.status === 'true'){
 
-          $('#ms_'+year+'_'+month).addClass('active');
-          
-          $('#t_limp').text(response.total_limp);
-          $('#t_extr').text(response.total_extr);
-          $('#limp_fix').val(response.month_cost);
-          $('#monthly_extr').text(0);
-          $('#tableItems').html('');
-          $.each((response.respo_list), function(index, val) {
-            var row = '';
-            if (val.agency){
-              var name = '<img style="width: 20px;" src="' + val.agency + '" align="center" />' + val.name;
-            }
-            var name = val.name
+            $('#ms_'+year+'_'+month).addClass('active');
 
-            var row = '<tr><td>' + name + '</td>';
-            row += '<td class="text-center">' + val.type + '</td>';
-            row += '<td class="text-center">' + val.pax + '</td>';
-            row += '<td class="text-center">' + val.apto + '</td>';
-            row += '<td class="text-center">' + val.check_in + '</td>';
-            row += '<td class="text-center">' + val.nigths + '</td>';
-            row += '<td class="text-center"><input id="limp_' + val.id + '" type="text" class="form-control" value="' + val.limp + '"></td>';
-            row += '<td class="text-center"><input id="extr_' + val.id + '" type="text" class="form-control" value="' + val.extra + '"></td>';
-            row += '<td class="text-center"><button type="button" data-id="' + val.id + '" class="btn btn-link limpieza_upd">Actualizar</button></td></tr>';
-            $('#tableItems').append(row);
-          });
+            $('#t_limp').text(response.total_limp);
+            $('#t_extr').text(response.total_extr);
+            $('#limp_fix').val(response.month_cost);
+            $('#monthly_extr').text(0);
+            $('#tableItems').html('');
+            $.each((response.respo_list), function(index, val) {
+              var row = '';
+              if (val.agency){
+                var name = '<img style="width: 20px;" src="' + val.agency + '" align="center" />' + val.name;
+              }
+              var name = val.name
 
-          
-        } else{
-        bootbox.alert({
-        message: '<div class="text-danger bold" style="margin-top:10px">Se ha producido un ERROR. El PAN no ha sido guardado.<br/>Contacte con el administrador.</div>',
-                backdrop: true
-        });
-        }
-        $('#loadigPage').hide('slow');
+              var row = '<tr><td>' + name + '</td>';
+              row += '<td class="text-center">' + val.type + '</td>';
+              row += '<td class="text-center">' + val.pax + '</td>';
+              row += '<td class="text-center">' + val.apto + '</td>';
+              row += '<td class="text-center">' + val.check_in + '</td>';
+              row += '<td class="text-center">' + val.nigths + '</td>';
+              row += '<td class="text-center"><input id="limp_' + val.id + '" data-id="' + val.id + '" type="text" class="form-control limpieza_upd" value="' + val.limp + '"></td>';
+              row += '<td class="text-center"><input id="extr_' + val.id + '" data-id="' + val.id + '" type="text" class="form-control limpieza_upd" value="' + val.extra + '"></td>';
+              $('#tableItems').append(row);
+            });
+          } else{
+            window.show_notif('ERROR','danger','El listado está vacío no ha sido guardado.');
+          }
+          $('#loadigPage').hide('slow');
         },
         error: function(response){
-        bootbox.alert({
-        message: '<div class="text-danger bold" style="margin-top:10px">Se ha producido un ERROR. No se ha podido obtener los detalles de la consulta.<br/>Contacte con el administrador.</div>',
-                backdrop: true
-        });
-        $('#loadigPage').hide('slow');
+          window.show_notif('ERROR','danger','No se ha podido obtener los detalles de la consulta.');
+          $('#loadigPage').hide('slow');
         }
     });
   }
@@ -214,7 +203,7 @@ setlocale(LC_TIME, "es_ES");
   dataTable($(this).data('year'),$(this).data('month'));
   });
 
-  $('#limpieza_table').on('click','.limpieza_upd', function(){
+  $('#limpieza_table').on('change','.limpieza_upd', function(){
     var id = $(this).data('id');
     var row = $(this).closest('tr');
     var data = {
@@ -226,30 +215,22 @@ setlocale(LC_TIME, "es_ES");
         'extr_value': row.find('#extr_'+id).val(),
       }
     $('#loadigPage').show('slow');
+    
     $.ajax({
           url: '/admin/limpiezasUpd',
           type:'POST',
           data: data,
           success: function(response){
-          if (response.status === 'true'){
-            bootbox.alert({
-          message: '<div class="text-success bold" >Registro Guardado</div>',
-                  backdrop: true
-          });
-          } else{
-          bootbox.alert({
-          message: '<div class="text-danger bold">'+response.msg+'</div>',
-                  backdrop: true
-          });
-          }
-          $('#loadigPage').hide('slow');
+            if (response.status === 'true'){
+              window.show_notif('OK','success','Registro Guardado.');
+            } else{
+              window.show_notif('ERROR','danger',response.msg);
+            }
+            $('#loadigPage').hide('slow');
           },
           error: function(response){
-          bootbox.alert({
-          message: '<div class="text-danger bold" style="margin-top:10px">Se ha producido un ERROR.<br/>Contacte con el administrador.</div>',
-                  backdrop: true
-          });
-          $('#loadigPage').hide('slow');
+            window.show_notif('ERROR','danger','No se ha podido obtener los detalles de la consulta.');
+            $('#loadigPage').hide('slow');
           }
     });
   });

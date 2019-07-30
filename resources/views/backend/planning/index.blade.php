@@ -48,15 +48,15 @@ setlocale(LC_TIME, "es_ES");
                             <span class="bold">Calcular reserva</span>
                         </button>
 
-                        <button class="btn btn-danger btn-cons <?php if(count($alarms)>0) echo 'btn-alarms'; ?>" type="button" data-toggle="modal" data-target="#modalAlarms">
+                        <button class="btn btn-danger btn-cons btn-blink <?php if(count($alarms)>0) echo 'btn-alarms'; ?>" type="button" data-toggle="modal" data-target="#modalAlarms">
                             <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">ALARMAS</span>
                             <span class="numPaymentLastBooks"><?php echo  count($alarms); ?></span>
                         </button>
-                      <button class="btn btn-danger btn-cons <?php if($alert_lowProfits) echo 'btn-alarms'; ?> "  id="btnLowProfits" type="button" data-toggle="modal" data-target="#modalLowProfits">
+                      <button class="btn btn-danger btn-cons btn-blink <?php if($alert_lowProfits) echo 'btn-alarms'; ?> "  id="btnLowProfits" type="button" data-toggle="modal" data-target="#modalLowProfits">
                             <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">BAJO BENEFICIO</span>
-                            <span class="numPaymentLastBooks"><?php echo  count($lowProfits); ?></span>
+                            <span class="numPaymentLastBooks" data-val="{{$alert_lowProfits}}">{{$alert_lowProfits}}</span>
                         </button>
-                      <button class="btn btn-danger btn-cons <?php if(count($parteeToActive)>0) echo 'btn-alarms'; ?> "  id="btnParteeToActive" type="button" data-toggle="modal" data-target="#modalParteeToActive">
+                      <button class="btn btn-danger btn-cons btn-blink <?php if(count($parteeToActive)>0) echo 'btn-alarms'; ?> "  id="btnParteeToActive" type="button" data-toggle="modal" data-target="#modalParteeToActive">
                             <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">PARTEE</span>
                             <span class="numPaymentLastBooks"><?php echo  count($parteeToActive); ?></span>
                         </button>

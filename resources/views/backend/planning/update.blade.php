@@ -163,12 +163,27 @@
                                 ?>
                             </a>
                         </div>
+                        <div class="col-md-2 col-xs-3 text-center push-10 partee-icon">
+                          <?php 
+                          $active = 'disabled-error';
+                          if (($partee = $book->partee())):
+                            $active = '';
+                            if ($partee->status == "FINALIZADO"){
+                              $active = 'active';
+                            }
+                            if ($partee->partee_id<1){
+                              $active = 'disabled-error';
+                            }
+                          endif;
+                          ?>
+                          <div class="policeman {{$active}}"></div>
+                        </div>
                         <div class="col-md-2 col-xs-3 text-center push-10 ">
                           <button class="partee-cp " onclick="copyParteeMsg()">
                             <div class="tooltip" id="tooltipPartee">
-                            <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+                            <span class="tooltiptext" id="myTooltip">Msg Partee Copiado</span>
                             </div>
-                            Partee
+                            <i class="far fa-copy"></i>      
                           </button>
                         </div>
 
@@ -1398,27 +1413,24 @@
             <style>
               button.partee-cp {
                 position: relative;
-                margin-top: 0.15em;
-                padding: 9px;
-                border-radius: 10px;
                 background-color: #fff;
-                color: #ff5a5f;
-                font-size: 20px;
-                font-weight: 600;
+                color: #10cfbd;
+                font-size: 2.52em;
+                border: none;
               }
               button.partee-cp:hover {
-                background-color: #ff5a5f;
-                color:#fff;
+                /*background-color: #ff5a5f;*/
+                color:#00d8c4;
               }
               .tooltip .tooltiptext::after {
                 content: "";
                 position: absolute;
                 top: 100%;
-                left: 50%;
+                left: 15%;
                 margin-left: -5px;
                 border-width: 5px;
                 border-style: solid;
-                border-color: #555 transparent transparent transparent;
+                border-color: #929292 transparent transparent transparent;
               }
 
               .tooltip:hover .tooltiptext {
@@ -1429,7 +1441,7 @@
                 display: block;
                 opacity: 1;
                 width: 100%;
-                top: -2em;
+                top: -3em;
                 left: 0;
               }
               .tooltiptext {

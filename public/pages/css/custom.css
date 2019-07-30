@@ -562,6 +562,10 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
   background-image: url(/img/police-green.ico);
   border-radius: 2px;
 }
+.partee-icon .policeman {
+  margin-top: 6px;
+  font-size: 1.2em;
+}
 .sendSMS{
   height: 2em;
   width: 2em;
@@ -575,7 +579,7 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
 .sendSMS.disabled{
   cursor: not-allowed;
 }
-.sendSMS.disabled:before{
+/*.sendSMS.disabled:before{
     content: "";
     background-image: url(/img/disable.ico);
     background-size: contain;
@@ -583,12 +587,17 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
     width: 100%;
     height: 100%;
     display: block;
-}
+}*/
 
-.sendSMS.disabled-error,.policeman.disabled-error{
+.sendSMS.disabled-error{
+  opacity: 0.45;
   cursor: not-allowed;
 }
-.disabled-error:before{
+.policeman.disabled-error{
+  cursor: not-allowed;
+  background-image: url(/img/police-dis.ico);
+}
+/*.disabled-error:before{
     content: "";
     background-image: url(/img/disable.ico);
     background-size: contain;
@@ -596,7 +605,7 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
     width: 100%;
     height: 100%;
     display: block;
-}
+}*/
 .sendSMS:after{
   content: "";
   background-image: url(/img/icon-sms.png);
@@ -648,12 +657,27 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
 
 }
 .loading-box{
-  background-color: rgba(255,255,255,0.4);
+  background-color: rgba(189, 189, 189, 0.5);
   display: none;
+  width: 300px;
+  height: 70px;
+  bottom: 0;
+  top: auto;
+  left: auto;
+  padding: 1em;
+  border-top-left-radius: 7px;
+  overflow: hidden;
 }
-.loading-box > div{
-    margin-top: 12em;
+.loading-box div .fa-spinner{
+  margin: 0 15px;
 }
 .modal .modal-body{
   padding-top: 1em;
+}
+
+.btn-blink .numPaymentLastBooks{
+  display: none;
+}
+.btn-blink.btn-alarms .numPaymentLastBooks{
+  display: block;
 }

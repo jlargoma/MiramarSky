@@ -170,7 +170,7 @@ class BookController extends AppController
 			}
 		}
                 
-                $alert_lowProfits = false; //To the alert efect
+                $alert_lowProfits = 0; //To the alert efect
                 $percentBenef = DB::table('percent')->find(1)->percent;
                 $lowProfits = $this->lowProfitAlert($startYear,$endYear,$percentBenef,$alert_lowProfits);
                 
@@ -197,7 +197,7 @@ class BookController extends AppController
             $inc_percent = $book->get_inc_percent();
             if(round($inc_percent) <= $percentBenef){
               if (!$book->has_low_profit){
-                $alert = true;
+                $alert++;
               }
               $alarms[] = $book;
             }
