@@ -660,7 +660,10 @@ Route::post('admin/limpiezasUpd/', [
     'middleware' => 'authAdmin',
     'uses'       => 'LiquidacionController@upd_limpiezas'
 ]);
-
+Route::post('admin/limpiezas/pdf', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'LiquidacionController@export_pdf_limpiezas'
+]);
 
 //Facturas
 

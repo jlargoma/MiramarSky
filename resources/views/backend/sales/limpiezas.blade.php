@@ -44,6 +44,12 @@ setlocale(LC_TIME, "es_ES");
       <div class="row push-10">
         <h2 class="text-left font-w800">
           Resumen liquidación
+          <form action="{{ URL::to('admin/limpiezas/pdf') }}" method="POST" style="display: inline-block;">
+            <input type="hidden" id="year" name="year" value="1999">
+            <input type="hidden" id="month" name="month" value="1">
+            <input type="hidden" id="_token" name="_token" value="{{csrf_token()}}">
+            <button class="btn-pdf" title="Exportar a PDF"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+          </form>
         </h2>
       </div>
       <div class="col-md-12 col-xs-12" style="padding-right: 0;">
@@ -148,6 +154,9 @@ setlocale(LC_TIME, "es_ES");
   var limp_year  = 0;
   var limp_month = 0;
   var dataTable = function(year, month){
+    $('#year').val(year);
+    $('#month').val(month);
+   
     $('.month_select.active').removeClass('active');
     limp_year  = year;
     limp_month = month;
@@ -179,7 +188,7 @@ setlocale(LC_TIME, "es_ES");
               row += '<td class="text-center">' + val.type + '</td>';
               row += '<td class="text-center">' + val.pax + '</td>';
               row += '<td class="text-center">' + val.apto + '</td>';
-              row += '<td class="text-center">' + val.check_in + '</td>';
+              row += '<td class="text-center">' + val.check_in +' - '+val.check_out+ '</td>';
               row += '<td class="text-center">' + val.nigths + '</td>';
               row += '<td class="text-center"><input id="limp_' + val.id + '" data-id="' + val.id + '" type="text" class="form-control limpieza_upd" value="' + val.limp + '"></td>';
               row += '<td class="text-center"><input id="extr_' + val.id + '" data-id="' + val.id + '" type="text" class="form-control limpieza_upd" value="' + val.extra + '"></td>';

@@ -681,3 +681,10 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
 .btn-blink.btn-alarms .numPaymentLastBooks{
   display: block;
 }
+
+button.btn-pdf{
+    font-size: 1em;
+    background-color: transparent;
+    border: none;
+    color: red;
+}
