@@ -52,6 +52,8 @@ trait BookEmailsStatus {
               break;
           }
           
+          $mailClientContent = $this->clearVars($mailClientContent);
+          
           Mail::send('backend.emails.base', 
             ['mailContent' => $mailClientContent,'title'=>$subject], function ($message) use ($book,$subject) {
               $message->from('reservas@apartamentosierranevada.net');
@@ -86,6 +88,7 @@ trait BookEmailsStatus {
           $mailClientContent = str_replace('{pend_payment}', number_format($pendiente,2,',','.'), $mailClientContent);
           $mailClientContent = str_replace('{urlPaymeny_rest}', $urlPaymeny, $mailClientContent);
         
+          $mailClientContent = $this->clearVars($mailClientContent);
           
            Mail::send('backend.emails.base', 
             ['mailContent' => $mailClientContent,'title'=>$subject], function ($message) use ($book,$subject) {
@@ -170,6 +173,17 @@ trait BookEmailsStatus {
           $percent = 0.50;
           }
           return $percent;
+        }
+        
+        /**
+         * Clear all not loaded vars
+         * @param type $text
+         * @return type
+         */
+        public function clearVars($text) {
+          
+          return preg_replace('/\{(\w+)\}/i', '', $text);
+          
         }
 
 }

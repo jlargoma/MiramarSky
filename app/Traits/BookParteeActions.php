@@ -30,6 +30,7 @@ trait BookParteeActions {
             //Get msg content
             $content = $this->getMailData($book,'SMS_Partee_msg');
             $content = str_replace('{partee}', $BookPartee->link, $content);
+            $content = $this->clearVars($content);
             die($content);
           } else {
             die('empty');
@@ -142,6 +143,9 @@ trait BookParteeActions {
                 $message = $this->getMailData($book,'SMS_Partee_upload_dni');
                 $message = str_replace('{partee}', $BookPartee->link, $message);
                 $phone = $book->customer['phone'];
+                $message = $this->clearVars($message);
+                $message = strip_tags($message);
+                
                 if ($SMSService->sendSMS($message,$phone)){
                   $BookPartee->sentSMS=2;
                   $BookPartee->log_data = $BookPartee->log_data .",". time() .'- SMS Sent';

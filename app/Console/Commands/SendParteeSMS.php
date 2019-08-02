@@ -137,6 +137,8 @@ class SendParteeSMS extends Command {
     //Get msg content
     $content = $this->getMailData($book,'SMS_Partee_upload_dni');
     $content = str_replace('{partee}', $link, $content);
+    $content = $this->clearVars($content);
+    $content = strip_tags($content);
     $this->phone = $book->customer['phone'];
     $this->message = $content;
     return true;
