@@ -3,18 +3,31 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Book;
-class BookPartee extends Model
+use App\Rooms;
+class RoomsPhotos extends Model
 {
-  static $status = array(
-    "VACIO",// indicando que ningún huésped ha cubierto el formulario de check-in online todavía; 
-    "HUESPEDES", // indicando que al menos un huésped ha cubierto el enlace de check-in online;
-    "FINALIZADO" // indicando que el parte de viajeros ha sido finalizado, es decir, se han creado los partes de viajeros y se ha realizado el envío al cuerpo policial correspondiente
-  );
   
-  
-  public function book()
+  public function migratePhotos() {
+    $rooms = Rooms::all();
+    foreach ($rooms as $room){
+        $directory = public_path() . "/img/miramarski/apartamentos/" . $room->nameRoom;
+        if (!file_exists($directory))
+        {
+                mkdir($directory, 0777, true);
+        }
+        $directorio = dir($directory);
+        
+         while ($archivo = $directorio->read()){
+           if ($archivo != '.' && $archivo != '..' ){
+             
+           }
+         }
+
+
+    }
+  }
+  public function room()
   {
-          return $this->belongsTo(Book::class)->first();
+          return $this->belongsTo(Rooms::class)->first();
   }
 }
