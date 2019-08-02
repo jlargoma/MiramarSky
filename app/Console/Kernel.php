@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         Commands\CheckPartee::class,
         Commands\SendParteeSMS::class,
         Commands\CreateMonthLimpieza::class,
+        Commands\RoomsPhotosMigrate::class,
     ];
 
     /**

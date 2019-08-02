@@ -201,6 +201,9 @@
             <h3 class="text-center"><i class="fas fa-spinner fa-spin"></i>Loading...</h3>
           </div>
         </div>
+        <div class="overlay message-bottom-box" id="bottom_msg">
+          <div id="bottom_msg_text">
+          </div>
         </div>
         <!-- BEGIN VENDOR JS -->
         <script src="{{ asset('assets/plugins/pace/pace.min.js') }}" type="text/javascript"></script>

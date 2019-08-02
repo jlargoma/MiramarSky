@@ -656,7 +656,7 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
   color: initial;
 
 }
-.loading-box{
+.loading-box,.message-bottom-box{
   background-color: rgba(189, 189, 189, 0.5);
   display: none;
   width: 300px;
@@ -667,6 +667,17 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
   padding: 1em;
   border-top-left-radius: 7px;
   overflow: hidden;
+}
+
+.message-bottom-box.error{
+  background-color: rgba(255, 139, 139, 0.6);
+  color: #d01515;
+    font-size: 1.1em;
+}
+.message-bottom-box.success{
+  background-color: rgba(139, 255, 154, 0.6);
+  color: #126f12;
+    font-size: 1.1em;
 }
 .loading-box div .fa-spinner{
   margin: 0 15px;
@@ -687,4 +698,59 @@ button.btn-pdf{
     background-color: transparent;
     border: none;
     color: red;
+}
+
+.photo_sortable,.ui-photo-highlight{
+    list-style: none;
+    display: inline-block;
+    width: 30%;
+    border: 1px solid #cecece;
+    height: 7em;
+    overflow: hidden;
+    margin: 1%;
+        position: relative;
+            padding: 0;
+            box-shadow: 2px 2px 3px #868686;
+  }
+  .ui-photo-highlight{
+    background-color: #cecece;
+  }
+  
+  .photo_sortable img{
+    width: 100%;
+    max-height: 7em;
+  }
+  .photo_sortable .btn-danger{
+      position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1px 5px;
+  }
+  .photo_sortable .btn_main{
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    padding: 1px 5px;
+    color: #dadada;
+    cursor: pointer;
+  }
+  .photo_sortable .btn_main:hover{
+    font-size: 2em;
+  }
+  .photo_sortable .btn_main.active{
+    color: #0b9285;
+  }
+    
+    
+.ui-sortable {
+    padding: 0;
+}
+.form-photo{
+  border: 1px solid #6d5cae;
+    padding: 1em;
+    text-align: center;
+}
+.form-photo .custom-file-input{
+  width: 210px;
+  margin: 1em auto;
 }

@@ -393,12 +393,28 @@ Route::get('admin/apartamentos/deletePhoto/{id}', [
     'middleware' => 'auth',
     'uses'       => 'RoomsController@deletePhoto'
 ]);
+Route::post('admin/apartamentos/deletePhoto', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@deletePhotoItem'
+]);
+Route::post('admin/apartamentos/photo_main', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@photoIsMain'
+]);
+Route::post('admin/apartamentos/photo_orden', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@photoOrden'
+]);
 Route::post('admin/apartamentos/send/email/owned', [
     'middleware' => 'auth',
     'uses'       => 'RoomsController@sendEmailToOwned'
 ]);
 Route::get('admin/apartamentos/getPaxPerRooms/{id}', 'RoomsController@getPaxPerRooms');
 Route::get('admin/apartamentos/getLuxuryPerRooms/{id}', 'RoomsController@getLuxuryPerRooms');
+Route::post('admin/apartamentos/uploadFile', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@uploadRoomFile'
+]);
 Route::post('admin/apartamentos/uploadFile/{id}', [
     'middleware' => 'auth',
     'uses'       => 'RoomsController@uploadFile'
