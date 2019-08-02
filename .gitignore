@@ -3,7 +3,7 @@
 /public/storage
 /public/actividades
 /public/contratos
-public/img
+public/img/
 Homestead.yaml
 Homestead.json
 .env
