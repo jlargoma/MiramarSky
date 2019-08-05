@@ -1,21 +1,27 @@
 <div class="col-md-12 text-center">
   <div class="row">
     <ul id="sortable">
+      @if($photos)
       @foreach ($photos as $photo)
       <li class="photo_sortable" id="{{$photo->id}}">
-        <img src="{{ $photo->file_rute }}" alt="{{$roomName}}">
-        <button class="btn btn-danger btn_remove" type="button" data-toggle="tooltip" data-id="{{$photo->id}}"  title="" data-apto="{{$roomName}}" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
+        <img src="{{ $photo->file_rute }}/thumbnails/{{ $photo->file_name }}" alt="{{$roomName}}">
+        <button class="btn btn-danger btn_remove" type="button" data-toggle="tooltip" data-id="{{$photo->id}}"  title="" data-apto="{{$roomName}}" data-gal="{{$key_gal}}" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
           <i class="fa fa-trash-o"></i>
         </button>
         <i class="fas fa-check btn_main <?php if ($photo->main) echo 'active'; ?>" data-id="{{$photo->id}}"></i>
       </li>
       @endforeach
+      @endif
     </ul>
   </div>
   <div class="row">
     <form enctype="multipart/form-data" action="{{ url('admin/apartamentos/uploadFile') }}" method="POST" class="form-photo">
       <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+      @if($key_gal)
+      <input type="hidden" name="key_gal" id="key_gal"  value="<?php echo $key_gal; ?>">
+      @else
       <input type="hidden" name="room" id="room"  value="<?php echo $roomName; ?>">
+      @endif
       <input name="uploadedfile[]" type="file" multiple class="custom-file-input" />
       <input type="submit" value="Subir archivo" class="btn btn-primary" />
     </form>
@@ -28,7 +34,6 @@
 
 
     function showFloatMsg(type, text) {
-      console.log(type);
       $('#bottom_msg').addClass(type);
       $('#bottom_msg_text').text(text);
       $('#bottom_msg').show('slow', function () {
@@ -109,6 +114,7 @@
       //-----------------^^^^
       var data = {
         'id': "{{$roomName}}",
+        'galley': "{{$key_gal}}",
         'order': idsInOrder.join('-'),
         '_token': "{{csrf_token()}}",
       }
@@ -141,18 +147,4 @@
 
 
   });
-
-
-//	$('.btn-danger').click(function(event) {
-//	    var name = $(this).attr('data-name');
-//	    var number = $(this).attr('data-number');
-//	    var apto = $(this).attr('data-id');
-//	    $.get('/admin/apartamentos/deletePhoto/'+name, {apto : apto} , function(data) {
-//	    	if (data == "OK") {
-//	    		console.log(name);
-//	    		$('.file-'+number).hide();
-//	    	}
-//	    });
-//	});
-
 </script>

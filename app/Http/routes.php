@@ -46,8 +46,8 @@ Route::post('/api/check_rooms_avaliables', 'BookController@apiCheckBook')->name(
 //        Route::get( '/homeTest' , 'HomeTestController@index' )->middleware( 'web' );
 //   Route::get( '/sitemap' , 'HomeController@siteMap' )->middleware( 'web' );
 //   Route::get( '/apartamentos/galeria/{apto}' , 'HomeController@galeriaApartamento' )->middleware( 'web' );
-//   Route::get( '/apartamentos/{apto}' , 'HomeController@apartamento' )->middleware( 'web' );
-//   Route::get( '/fotos/{apto}' , 'HomeController@apartamento' )->middleware( 'web' );
+   Route::get( '/apartamentos/{apto}' , 'HomeController@apartamento' )->middleware( 'web' );
+   Route::get( '/fotos/{apto}' , 'HomeController@apartamento' )->middleware( 'web' );
 //   Route::get( '/edificio-miramarski-sierra-nevada' , 'HomeController@edificio' )->middleware( 'web' );
 //   Route::get( '/contacto' , 'HomeController@contacto' )->middleware( 'web' );
 //
@@ -389,6 +389,10 @@ Route::get('admin/apartamentos/fotos/{id}', [
     'middleware' => 'auth',
     'uses'       => 'RoomsController@photo'
 ]);
+Route::get('admin/apartamentos/gallery/{id}', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@gallery'
+]);
 Route::get('admin/apartamentos/deletePhoto/{id}', [
     'middleware' => 'auth',
     'uses'       => 'RoomsController@deletePhoto'
@@ -426,6 +430,12 @@ Route::get('admin/apartamentos/assingToBooking', [
 Route::get('admin/apartamentos/download/contrato/{userId}', [
     'middleware' => 'auth',
     'uses'       => 'RoomsController@downloadContractoUser'
+]);
+
+
+Route::get('/admin/galleries', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'RoomsController@galleries'
 ]);
 
 

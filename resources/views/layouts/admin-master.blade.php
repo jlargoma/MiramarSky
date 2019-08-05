@@ -168,6 +168,9 @@
                     <li class="{{ Request::path() == 'admin/settings_msgs' ? 'active' : '' }}">
                         <a href="{{ url('admin/settings_msgs') }}" class="detailed">Txt Email</a>
                     </li>
+                    <li class="{{ Request::path() == 'admin/galleries' ? 'active' : '' }}">
+                        <a href="{{ url('admin/galleries') }}" class="detailed">Galerías</a>
+                    </li>
                     <?php endif ?>
 
                 </ul>

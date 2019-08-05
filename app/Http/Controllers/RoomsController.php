@@ -12,6 +12,7 @@ use Mail;
 use File;
 use PDF;
 use App\RoomsPhotos;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class RoomsController extends AppController {
 
@@ -43,6 +44,15 @@ class RoomsController extends AppController {
         'owners' => \App\User::all(),
         'typesApto' => \App\TypeApto::all(),
     ]);
+  }
+
+  /**
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function galleries() {
+    return view('backend/rooms/galleries', ['rooms'=> RoomsPhotos::getGalleries()]);
   }
 
   /**
@@ -259,6 +269,16 @@ class RoomsController extends AppController {
     return view('backend/rooms/photo', [
     'photos' => $photos,
     'roomName' => $id,
+    'key_gal' => null,
+    ]);
+  }
+  public function gallery($id) {
+    
+    $photos = RoomsPhotos::where('gallery_key', $id)->orderBy('position')->get();
+    return view('backend/rooms/photo', [
+    'photos' => $photos,
+    'key_gal' => $id,
+    'roomName' => null,
     ]);
   }
 
@@ -336,26 +356,43 @@ class RoomsController extends AppController {
   public function deletePhotoItem(Request $request) {
 
     $id = $request->input('id',null);
-    $apto = $request->input('apto',null);
-    if ($id && $apto){
+    if ($id){
       $photo = RoomsPhotos::find($id);
       if ($photo){
         
-        $file = public_path() . $photo->file_rute;
+        $rute = public_path() . $photo->file_rute;
+        $imagename = $photo->file_name;
         $photo->delete();
-        if (!is_file($file)){
-          return response()->json(['status'=>'ok']);
+        $file = $rute.'/'.$imagename;
+        $file2 = $rute.'/thumbnails/'.$imagename;
+        $error = false;
+        if (is_file($file)){
+          if (!unlink($file)) {
+            $error = true;
+          }
         }
-        if (unlink($file)) {
-          return response()->json(['status'=>'ok']);
+        if (is_file($file2)){
+          if (!unlink($file2)) {
+            $error = true;
+          }
+        }
+     
+        if ($error) {
+          return response()->json(['status'=>'del_error','msg'=>"Imagen no encontrado"]);
         } else {
-          return response()->json(['status'=>'del_erro','msg'=>"Imagen no encontrado"]);
+          return response()->json(['status'=>'ok']);
         }
       }
     }
     
     return response()->json(['status'=>'false','msg'=>"Objeto no encontrado"]);
   }
+  /**
+   * Mark a photo as principal
+   * 
+   * @param Request $request
+   * @return type
+   */
   public function photoIsMain(Request $request) {
 
     $id = $request->input('id',null);
@@ -363,7 +400,12 @@ class RoomsController extends AppController {
       $photo = RoomsPhotos::find($id);
       if ($photo){
         
-        RoomsPhotos::where('room_id',$photo->room_id)->update(['main' => 0]);
+        if ($photo->gallery_key){
+          RoomsPhotos::where('gallery_key',$photo->gallery_key)->update(['main' => 0]);
+        }
+        if ($photo->room_id){
+          RoomsPhotos::where('room_id',$photo->room_id)->update(['main' => 0]);
+        }
         
         $photo->main = 1;
         $photo->save();
@@ -641,17 +683,33 @@ class RoomsController extends AppController {
   
   public function uploadRoomFile(Request $request) {
 
-    $file = $_FILES;
-
     $id = $request->input('room',null);
-    $room = Rooms::where('nameRoom', $id)->first();
-    if (!$room){
-      return redirect()->action('RoomsController@index');
+    $key_gal = $request->input('key_gal',null);
+    
+    if ($key_gal){ //Is a gelleri
+      
+      $obj = new RoomsPhotos();
+      if(!$obj->existsGal($key_gal)){
+        return redirect()->back()->withErrors(['Galería no encontrada']);
+      }
+      
+      $folder   = $key_gal;
+      $room_id  = null;
+      
+    }else{ //is a apto
+      
+      $room = Rooms::where('nameRoom', $id)->first();
+      if (!$room){
+        return redirect()->back()->withErrors(['Apto no encontrado']);
+      }
+      $folder   = $room->nameRoom;
+      $room_id  = $room->id;
+      
     }
 
-    $rute = "/img/miramarski/apartamentos/" . $room->nameRoom;
+    $rute = "/img/miramarski/apartamentos/" . $folder;
     $directory = public_path() . $rute;
-    $directoryThumbnail = public_path() . "/img/miramarski/apartamentos/" . $room->nameRoom . "/thumbnails";
+    $directoryThumbnail = public_path() . "/img/miramarski/apartamentos/" . $folder . "/thumbnails";
 
     if (!file_exists($directory)) {
       mkdir($directory, 0777, true);
@@ -660,62 +718,82 @@ class RoomsController extends AppController {
     if (!file_exists($directoryThumbnail)) {
       mkdir($directoryThumbnail, 0777, true);
     }
-    // RECORREMOS LOS FICHEROS
-    for ($i = 0; $i < count($_FILES['uploadedfile']['name']); $i++) {
-      //Obtenemos la ruta temporal del fichero
-      $fichTemporal = $_FILES['uploadedfile']['tmp_name'][$i];
-
-      //Si tenemos fichero procedemos
-      if ($fichTemporal != "") {
-        
-        $fileName = preg_replace("/[^a-zA-Z0-9]+/", "-", $_FILES['uploadedfile']['name'][$i]);
-        //Definimos una ruta definitiva para guardarlo
-        $destino = $directory . "/" . $fileName;
-
-        //Movemos a la ruta final
-        if (move_uploaded_file($fichTemporal, $destino)) {
-//          //imprimimos el nombre del archivo subido
-//          printf("Se ha subido el fichero %s.", $fileName);
-          $status = true;
+    
+    /** Upload FILES */
+    
+      $this->validate($request, [
+	'uploadedfile' => 'required',
+        'uploadedfile.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:4086',
+      ]);
+    
+      if($request->hasfile('uploadedfile')){
+        foreach($request->file('uploadedfile') as $image){
+          $imagename = preg_replace("/[^a-zA-Z0-9]+/", "-",$image->getClientOriginalName());
           
+          $destinationPath = $directory;
+          $img = Image::make($image->getRealPath());
+          $width = $img->width();
+          if ($width>1024){
+            $img->widen(1024);
+          }
+          $img->save($destinationPath.'/'.$imagename);
+//          $img->resize(1024, 1024, function ($constraint) {
+//                      $constraint->aspectRatio();
+//                  })->save($destinationPath.'/'.$imagename);
+
+          //Save photo item
           $obj = new RoomsPhotos();
-          $obj->room_id = $room->id;
-          $obj->file_rute = $rute."/".$fileName;
-          $obj->file_name = $fileName;
+          $obj->room_id = $room_id;
+          $obj->file_rute = $rute;
+          $obj->file_name = $imagename;
           $obj->status = 'public';
           $obj->position = 99;
           $obj->main = 0;
+          $obj->gallery_key = $key_gal;
           $obj->save();
-            
-        } else {
-          $statu = false;
-        }
 
-        $destino = $directoryThumbnail . "/" . $fileName;
 
-        //Movemos a la ruta final
-        if (move_uploaded_file($fichTemporal, $destino)) {
-//          //imprimimos el nombre del archivo subido
-//          printf("Se ha subido el fichero %s.", $fileName);
-          $status = true;
-        } else {
-          $statu = false;
+          //thumbnail
+          $destinationPath = $directoryThumbnail;
+          $img = Image::make($image->getRealPath());
+          $img->resize(250, 250, function ($constraint) {
+                      $constraint->aspectRatio();
+                  })->save($destinationPath.'/'.$imagename);
+
         }
       }
-    }
-
-    return redirect()->action('RoomsController@index');
+      return redirect()->back()->with('success', 'Imágenes Guardadas');  
+    
+   
   }
 
   function photoOrden(Request $req){
     
     $id =  $req->input('id',null);
+    $galley =  $req->input('galley',null);
     $order =  $req->input('order',null);
-    
-    $room = Rooms::where('nameRoom', $id)->first();
     $photos = null;
-    if ($room) {
-      $photos = RoomsPhotos::where('room_id', $room->id)->get();
+    
+    if ($galley){ //Is a gelleri
+      
+      $obj = new RoomsPhotos();
+      if(!$obj->existsGal($galley)){
+        return response()->json(['status'=>'false','msg'=>"Objeto no encontrado"]);
+      }
+      $photos = RoomsPhotos::where('gallery_key', $galley)->get();
+
+    }else{ //is a apto
+      
+        $room = Rooms::where('nameRoom', $id)->first();
+        if (!$room){
+          return response()->json(['status'=>'false','msg'=>"Objeto no encontrado"]);
+        }
+        $photos = RoomsPhotos::where('room_id', $room->id)->get();
+    }
+    
+    
+    if ($photos) {
+      
       $orderArray = explode('-', $order);
       $orderIDs = [];
       foreach ($orderArray as $k=>$v){

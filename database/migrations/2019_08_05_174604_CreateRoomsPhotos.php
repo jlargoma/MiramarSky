@@ -14,11 +14,12 @@ class CreateRoomsPhotos extends Migration
     {
       Schema::create('rooms_photos', function (Blueprint $table) {
           $table->bigIncrements('id');
-          $table->integer('room_id')->unsigned();
+          $table->integer('room_id')->unsigned()->nullable();
           $table->foreign('room_id')->references('id')->on('rooms');
           $table->string('file_rute');
           $table->string('file_name');
           $table->string('status');
+          $table->string('gallery_key')->nullable();
           $table->integer('position')->nullable();
           $table->boolean('main')->nullable();
           $table->timestamps();
