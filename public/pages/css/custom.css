@@ -562,6 +562,10 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
   background-image: url(/img/police-green.ico);
   border-radius: 2px;
 }
+.partee-icon .policeman {
+  margin-top: 6px;
+  font-size: 1.2em;
+}
 .sendSMS{
   height: 2em;
   width: 2em;
@@ -575,7 +579,7 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
 .sendSMS.disabled{
   cursor: not-allowed;
 }
-.sendSMS.disabled:before{
+/*.sendSMS.disabled:before{
     content: "";
     background-image: url(/img/disable.ico);
     background-size: contain;
@@ -583,12 +587,17 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
     width: 100%;
     height: 100%;
     display: block;
-}
+}*/
 
-.sendSMS.disabled-error,.policeman.disabled-error{
+.sendSMS.disabled-error{
+  opacity: 0.45;
   cursor: not-allowed;
 }
-.disabled-error:before{
+.policeman.disabled-error{
+  cursor: not-allowed;
+  background-image: url(/img/police-dis.ico);
+}
+/*.disabled-error:before{
     content: "";
     background-image: url(/img/disable.ico);
     background-size: contain;
@@ -596,7 +605,7 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
     width: 100%;
     height: 100%;
     display: block;
-}
+}*/
 .sendSMS:after{
   content: "";
   background-image: url(/img/icon-sms.png);
@@ -647,13 +656,101 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
   color: initial;
 
 }
-.loading-box{
-  background-color: rgba(255,255,255,0.4);
+.loading-box,.message-bottom-box{
+  background-color: rgba(189, 189, 189, 0.5);
   display: none;
+  width: 300px;
+  height: 70px;
+  bottom: 0;
+  top: auto;
+  left: auto;
+  padding: 1em;
+  border-top-left-radius: 7px;
+  overflow: hidden;
 }
-.loading-box > div{
-    margin-top: 12em;
+
+.message-bottom-box.error{
+  background-color: rgba(255, 139, 139, 0.6);
+  color: #d01515;
+    font-size: 1.1em;
+}
+.message-bottom-box.success{
+  background-color: rgba(139, 255, 154, 0.6);
+  color: #126f12;
+    font-size: 1.1em;
+}
+.loading-box div .fa-spinner{
+  margin: 0 15px;
 }
 .modal .modal-body{
   padding-top: 1em;
+}
+
+.btn-blink .numPaymentLastBooks{
+  display: none;
+}
+.btn-blink.btn-alarms .numPaymentLastBooks{
+  display: block;
+}
+
+button.btn-pdf{
+    font-size: 1em;
+    background-color: transparent;
+    border: none;
+    color: red;
+}
+
+.photo_sortable,.ui-photo-highlight{
+    list-style: none;
+    display: inline-block;
+    width: 30%;
+    border: 1px solid #cecece;
+    height: 7em;
+    overflow: hidden;
+    margin: 1%;
+        position: relative;
+            padding: 0;
+            box-shadow: 2px 2px 3px #868686;
+  }
+  .ui-photo-highlight{
+    background-color: #cecece;
+  }
+  
+  .photo_sortable img{
+    width: 100%;
+    max-height: 7em;
+  }
+  .photo_sortable .btn-danger{
+      position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1px 5px;
+  }
+  .photo_sortable .btn_main{
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    padding: 1px 5px;
+    color: #dadada;
+    cursor: pointer;
+  }
+  .photo_sortable .btn_main:hover{
+    font-size: 2em;
+  }
+  .photo_sortable .btn_main.active{
+    color: #0b9285;
+  }
+    
+    
+.ui-sortable {
+    padding: 0;
+}
+.form-photo{
+  border: 1px solid #6d5cae;
+    padding: 1em;
+    text-align: center;
+}
+.form-photo .custom-file-input{
+  width: 210px;
+  margin: 1em auto;
 }

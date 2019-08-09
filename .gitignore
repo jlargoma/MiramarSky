@@ -3,6 +3,7 @@
 /public/storage
 /public/actividades
 /public/contratos
+public/img/miramarski/apartamentos/*
 Homestead.yaml
 Homestead.json
 .env
@@ -11,3 +12,4 @@ Homestead.json
 test.blade.php
 nbproject
 /.htaccess
+

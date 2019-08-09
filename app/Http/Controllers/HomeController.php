@@ -105,7 +105,7 @@ class HomeController extends AppController
 				break;
 			default:
 				$room = \App\Rooms::where('nameRoom', $url)->first();
-				if (count($room) > 0)
+				if ($room)
 				{
 					$aptoHeading       = ($room->luxury) ? $room->sizeRooms->name . " - LUJO" : $room->sizeRooms->name . " - ESTANDAR";
 					$aptoHeadingMobile = ($room->luxury) ? $room->sizeRooms->name . " - lujo" : $room->sizeRooms->name . " - estandar";
@@ -135,42 +135,20 @@ class HomeController extends AppController
 		}
 
 
-		if ($url == 'apartamento-standard-sierra-nevada' || $url == 'apartamento-lujo-sierra-nevada' || $url == 'estudio-lujo-sierra-nevada' || $url == 'estudio-standard-sierra-nevada' || $url == 'chalet-los-pinos-sierra-nevada' || $url == 'apartamento-lujo-gran-capacidad-sierra-nevada')
+                $galleries = \App\RoomsPhotos::getGalleries();
+		if (isset($galleries[$url]))
 		{
-
-			$slides    = File::allFiles(public_path() . '/img/miramarski/galerias/' . $url);
-			$directory = '/img/miramarski/galerias/';
+                  $slides = \App\RoomsPhotos::where('gallery_key',$url)->orderBy('position')->get();
+                  $directory = '/img/miramarski/galerias/';
 		} else
 		{
-
-			$slides    = File::allFiles(public_path() . '/img/miramarski/apartamentos/' . $url);
-			$directory = '/img/miramarski/apartamentos/';
-
+                  $slides = null;
+                  if ($room){
+                    $slides = \App\RoomsPhotos::where('room_id', $room->id)->orderBy('position')->get();
+                  }
+                  $directory = '';
 
 		}
-
-
-		foreach ($slides as $key => $slide)
-		{
-			$arraySlides[] = $slide->getFilename();
-		}
-		natcasesort($arraySlides);
-		$slides = array();
-		foreach ($arraySlides as $key => $sl)
-		{
-			if ($url == 'apartamento-standard-sierra-nevada' || $url == 'apartamento-lujo-sierra-nevada' || $url == 'estudio-lujo-sierra-nevada' || $url == 'estudio-standard-sierra-nevada' || $url == 'chalet-los-pinos-sierra-nevada' || $url == 'apartamento-lujo-gran-capacidad-sierra-nevada')
-			{
-
-				$slides[] = '/img/miramarski/galerias/' . $url . '/' . $sl;
-			} else
-			{
-
-				$slides[] = '/img/miramarski/apartamentos/' . $url . '/' . $sl;
-
-
-			}
-		}
-
 		$aptos = [
 			'apartamento-lujo-gran-capacidad-sierra-nevada',
 			'apartamento-lujo-sierra-nevada',

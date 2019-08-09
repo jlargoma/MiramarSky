@@ -61,7 +61,7 @@ class LiquidacionController extends AppController
 			                  8
 		                  ])->orderBy('start', 'ASC')->get();
 
-                $alert_lowProfits = false; //To the alert efect
+                $alert_lowProfits = 0; //To the alert efect
                 $percentBenef = DB::table('percent')->find(1)->percent;
                 $lowProfits = [];
                 
@@ -103,7 +103,7 @@ class LiquidacionController extends AppController
                     $inc_percent = $book->get_inc_percent();
                     if(round($inc_percent) <= $percentBenef){
                       if (!$book->has_low_profit){
-                        $alert_lowProfits = true;
+                        $alert_lowProfits++;
                       }
                       $lowProfits[] = $book;
                     }
@@ -2797,7 +2797,7 @@ class LiquidacionController extends AppController
          * @param Request $request
          * @return Json-Objet
          */
-        public function get_limpiezas(Request $request) {
+        public function get_limpiezas(Request $request, $isAjax = true) {
 
           $year = $request->input('year',null);
           $month = $request->input('month',null);
@@ -2861,7 +2861,8 @@ class LiquidacionController extends AppController
               'extra'   =>  $book->extraCost,
               'pax'     =>  $book->pax,
               'apto'    =>  $book->room->nameRoom,
-              'check_in'=>  $start->formatLocalized('%d %b') .' - '.$finish->formatLocalized('%d %b'),
+              'check_in'=>  $start->formatLocalized('%d %b'),
+              'check_out'=> $finish->formatLocalized('%d %b'),
               'nigths'  =>  $book->nigths
             ];
             
@@ -2871,14 +2872,18 @@ class LiquidacionController extends AppController
   
           }
 
-        
-          return response()->json([
-              'status'     => 'true',
-              'month_cost' => $month_cost,
-              'respo_list' => $respo_list,
-              'total_limp' => $total_limp,
-              'total_extr' => $total_extr,
-          ]);
+          $response = [
+                'status'     => 'true',
+                'month_cost' => $month_cost,
+                'respo_list' => $respo_list,
+                'total_limp' => $total_limp,
+                'total_extr' => $total_extr,
+            ];
+          if ($isAjax){
+            return response()->json($response);
+          }else {
+            return $response;
+          }
         }
         
         /**
@@ -2936,10 +2941,35 @@ class LiquidacionController extends AppController
             }
           }
           
-          return response()->json(['status'=>'false']);
+          return response()->json(['status'=>'false','msg'=>"No se han encontrado valores."]);
           
         }
           
+        public function export_pdf_limpiezas(Request $request) {
+          
+          $year = $request->input('year',null);
+          $month = $request->input('month',null);
+          
+          $arrayMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+          $file_name = 'Costos-de-limpieza-'.$month.'-20'.$year;
+          if(isset($arrayMonth[$month-1])){
+            $title = $arrayMonth[$month-1].' 20'.$year;
+          } else {
+            $title = ' 20'.$year;
+          }
+          $data = $this->get_limpiezas($request,false);
+          $data['tit'] = $title;
+          
+           // Send data to the view using loadView function of PDF facade
+          $pdf = \PDF::loadView('pdf.limpieza',$data);
+//          if (!is_dir(storage_path().'/pdf')){
+//            mkdir(storage_path().'/pdf');
+//          }
+//          // If you want to store the generated pdf to the server then you can use the store function
+//          $pdf->save(storage_path().'/pdf/'.$file_name.'.pdf');
+          // Finally, you can download the file using download function
+          return $pdf->download($file_name.'.pdf');
+        }
         ///////////  LIMPIEZA AREA        ////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////
 }

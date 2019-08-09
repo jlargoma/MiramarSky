@@ -120,58 +120,23 @@
       $('.toggleAlertLowProfits').click(function(event) {
       var id = $(this).attr('data-id');
       var objectIcon = $(this).find('i');
+      var totalCount = $("#btnLowProfits").find('.numPaymentLastBooks');
       $.get('/admin/reservas/api/toggleAlertLowProfits', { id:id }, function(data) {
                     if (data.status == 'danger') {
-                        $.notify({
-                            title: '<strong>'+data.title+'</strong>, ',
-                            icon: 'glyphicon glyphicon-star',
-                            message: data.response
-                        },{
-                            type: data.status,
-                            animate: {
-                                enter: 'animated fadeInUp',
-                                exit: 'animated fadeOutRight'
-                            },
-                            placement: {
-                                from: "top",
-                                align: "left"
-                            },
-                            offset: 80,
-                            spacing: 10,
-                            z_index: 1031,
-                            allow_dismiss: true,
-                            delay: 60000,
-                            timer: 60000,
-                        }); 
+                      window.show_notif(data.title,data.status,data.response);
                     } else {
+                      var currentCount = totalCount.data('val');
+                      
                       if (objectIcon.hasClass('fa-bell-slash')){
                         objectIcon.removeClass('fa-bell-slash').addClass('fa-bell');
+                        currentCount++;
                       } else {
+                        currentCount--;
                         objectIcon.removeClass('fa-bell').addClass('fa-bell-slash');
                       }
-                        
-                        $.notify({
-                            title: '<strong>'+data.title+'</strong>, ',
-                            icon: 'glyphicon glyphicon-star',
-                            message: data.response
-                        },{
-                            type: data.status,
-                            animate: {
-                                enter: 'animated fadeInUp',
-                                exit: 'animated fadeOutRight'
-                            },
-                            placement: {
-                                from: "top",
-                                align: "left"
-                            },
-                            allow_dismiss: false,
-                            offset: 80,
-                            spacing: 10,
-                            z_index: 1031,
-                            delay: 5000,
-                            timer: 1500,
-                        }); 
-                        
+                      totalCount.data('val',currentCount)
+                      totalCount.text(currentCount)
+                      window.show_notif(data.title,data.status,data.response);
                         /**Change button alert class */
                         if ($('#list_lowProf').find('.fa-bell').length>0){
                           //hasn't active items
@@ -196,50 +161,10 @@
       var objectIcon = $(this).find('i');
       $.get('/admin/reservas/api/activateAlertLowProfits', function(data) {
                     if (data.status == 'danger') {
-                        $.notify({
-                            title: '<strong>'+data.title+'</strong>, ',
-                            icon: 'glyphicon glyphicon-star',
-                            message: data.response
-                        },{
-                            type: data.status,
-                            animate: {
-                                enter: 'animated fadeInUp',
-                                exit: 'animated fadeOutRight'
-                            },
-                            placement: {
-                                from: "top",
-                                align: "left"
-                            },
-                            offset: 80,
-                            spacing: 10,
-                            z_index: 1031,
-                            allow_dismiss: true,
-                            delay: 60000,
-                            timer: 60000,
-                        }); 
+                        window.show_notif(data.title,data.status,data.response);
                         location.reload();
                     } else {
-                        $.notify({
-                            title: '<strong>'+data.title+'</strong>, ',
-                            icon: 'glyphicon glyphicon-star',
-                            message: data.response
-                        },{
-                            type: data.status,
-                            animate: {
-                                enter: 'animated fadeInUp',
-                                exit: 'animated fadeOutRight'
-                            },
-                            placement: {
-                                from: "top",
-                                align: "left"
-                            },
-                            allow_dismiss: false,
-                            offset: 80,
-                            spacing: 10,
-                            z_index: 1031,
-                            delay: 5000,
-                            timer: 1500,
-                        }); 
+                        window.show_notif(data.title,data.status,data.response);
                         location.reload();
                     }
                 });
