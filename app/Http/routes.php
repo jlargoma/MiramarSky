@@ -1153,24 +1153,24 @@ Route::get('/admin/agentRoom/delete/{id}', 'SettingsController@deleteAgentRoom')
 
 // FORFATIS
 
-Route::get('/admin/forfaits', [
-    'middleware' => 'authAdmin',
-    'uses'       => 'HomeController@getForfaitsRequests'
-]);
-Route::get('/admin/forfaits/deleteRequest/{id}', [
-    'middleware' => 'authAdmin',
-    'uses'       => 'FortfaitsController@deleteRequest'
-]);
+//Route::get('/admin/forfaits', [
+//    'middleware' => 'authAdmin',
+//    'uses'       => 'HomeController@getForfaitsRequests'
+//]);
+//Route::get('/admin/forfaits/deleteRequest/{id}', [
+//    'middleware' => 'authAdmin',
+//    'uses'       => 'FortfaitsController@deleteRequest'
+//]);
+//Route::get('/admin/forfaits/deleteRequest/{id}', [
+//    'middleware' => 'authAdmin',
+//    'uses'       => 'FortfaitsController@deleteRequest'
+//]);
 
 //LIMPIEZA
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/limpieza', 'LimpiezaController@index');
 });
-Route::get('/admin/forfaits/deleteRequest/{id}', [
-    'middleware' => 'authAdmin',
-    'uses'       => 'FortfaitsController@deleteRequest'
-]);
 Route::get('/admin/reservas/ff_status_popup/{id}', [
     'middleware' => 'authAdmin',
     'uses'       => 'BookController@getBookFFData'
@@ -1195,3 +1195,13 @@ Route::group(['middleware' => 'authAdmin'], function () {
     Route::get('payment/thansk-you/{id}/{payment?}', 'PaylandsController@thansYouPayment')->name('payland.thanks.payment');
 
 });
+
+Route::group(['middleware' => 'authAdmin','prefix' => 'admin/forfaits',], function () {
+
+Route::get('/{class?}', 'ForfaitsItemController@index');
+Route::get('/edit/{id}', 'ForfaitsItemController@edit');
+Route::post('/upd', 'ForfaitsItemController@update');
+Route::get('/createItems', 'ForfaitsItemController@createItems');
+});
+Route::get('/api/forfaits/categ', 'ForfaitsItemController@api_getCategories');
+Route::get('/api/forfaits/items/{id}', 'ForfaitsItemController@api_items');

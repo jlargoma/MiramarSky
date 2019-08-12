@@ -156,7 +156,7 @@
                     {{--<a href="#" class="detailed">Super</a>--}}
                     {{--</li>--}}
 
-                    {{--<li class="{{ Request::path() == 'admin/forfaits' ? 'active' : '' }}"><a href="{{ url('admin/forfaits') }}" class="detailed">Forfaits</a></li>--}}
+                    <li class="{{ Request::path() == 'admin/forfaits' ? 'active' : '' }}"><a href="{{ url('admin/forfaits') }}" class="detailed">Forfaits</a></li>
 
                     <li class="{{ Request::path() == 'admin/settings' ? 'active' : '' }}">
                         <a href="{{ url('admin/settings') }}" class="detailed">Settings</a>
