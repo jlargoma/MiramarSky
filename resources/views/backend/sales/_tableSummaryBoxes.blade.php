@@ -9,7 +9,6 @@
 		background: white;
 	}
 </style>
-<?php if ( !$mobile->isMobile() ): ?>
 <div class="row">
 	<div class="col-lg-2">
 		<div class="col-md-6 bordered">
@@ -102,6 +101,3 @@
 		
 	</div>
 </div>
-<?php else: ?>
-
-<?php endif; ?>
