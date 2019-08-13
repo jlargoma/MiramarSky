@@ -110,13 +110,13 @@
                         </h4>
                         <h5>Creado por <?php echo "<b>" . strtoupper($book->user->name) . "</b>" ?></h5>
                         <?php if ($book->type_book == 2): ?>
-                            <div class="col-md-2 col-xs-3 text-center push-10">
+                            <div class="col-md-2 col-xs-3 icon-lst">
                                 <a href="{{ url('/admin/pdf/pdf-reserva/'.$book->id) }}">
                                     <img src="/img/pdf.png"
                                          style="width: 50px; float:left; margin: 0 auto;">
                                 </a>
                             </div>
-                            <div class="col-md-2 col-xs-3 text-center push-10">
+                            <div class="col-md-2 col-xs-3 icon-lst">
                                 <?php $text = "Hola, esperamos que hayas disfrutado de tu estancia con nosotros." . "\n" . "Nos gustaria que valorarás, para ello te dejamos este link : https://www.apartamentosierranevada.net/encuesta-satisfaccion/" . base64_encode($book->id);
                                 ?>
 
@@ -128,14 +128,14 @@
                                 </a>
                             </div>
                         <?php endif ?>
-                        <div class="col-md-2 col-xs-3 text-center push-10">
+                        <div class="col-md-2 col-xs-3 icon-lst">
                             <a href="tel:<?php echo $book->customer->phone ?>"
                                style="width: 50px; float:left;">
                                 <i class="fa fa-phone  text-success"
                                    style="font-size: 48px;"></i>
                             </a>
                         </div>
-                        <div class="col-md-2 col-xs-3 text-center push-10 hidden-lg hidden-md">
+                        <div class="col-md-2 col-xs-3 icon-lst hidden-lg hidden-md">
                             <h2 class="text-center"
                                 style="font-size: 18px; line-height: 18px; margin: 0;">
                                 <?php $text = "En este link podrás realizar el pago de la señal por el 25% del total." . "\n" . " En el momento en que efectúes el pago, te legará un email confirmando tu reserva - https://www.apartamentosierranevada.net/reservas/stripe/pagos/" . base64_encode($book->id);
@@ -148,7 +148,7 @@
                             </h2>
                         </div>
                         
-                        <div class="col-md-2 col-xs-3 text-center push-10">
+                        <div class="col-md-2 col-xs-3 icon-lst">
                             <a href="/admin/reservas/ff_status_popup/<?php echo $book->id; ?>" onclick="window.open(this.href, 'Reserva - FF','left=400,top=20,width=1200,height=900,toolbar=0,resizable=0'); return false;" >
                                 <?php
                                     if($book->ff_status == 0){
@@ -163,12 +163,27 @@
                                 ?>
                             </a>
                         </div>
-                        <div class="col-md-2 col-xs-3 text-center push-10 ">
+                        <div class="col-md-2 col-xs-3 icon-lst partee-icon">
+                          <?php 
+                          $active = 'disabled-error';
+                          if (($partee = $book->partee())):
+                            $active = '';
+                            if ($partee->status == "FINALIZADO"){
+                              $active = 'active';
+                            }
+                            if ($partee->partee_id<1){
+                              $active = 'disabled-error';
+                            }
+                          endif;
+                          ?>
+                          <div class="policeman {{$active}}"></div>
+                        </div>
+                        <div class="col-md-2 col-xs-3 icon-lst ">
                           <button class="partee-cp " onclick="copyParteeMsg()">
                             <div class="tooltip" id="tooltipPartee">
-                            <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+                            <span class="tooltiptext" id="myTooltip">Msg Partee Copiado</span>
                             </div>
-                            Partee
+                            <i class="far fa-copy"></i>      
                           </button>
                         </div>
 
@@ -1398,27 +1413,24 @@
             <style>
               button.partee-cp {
                 position: relative;
-                margin-top: 0.15em;
-                padding: 9px;
-                border-radius: 10px;
                 background-color: #fff;
-                color: #ff5a5f;
-                font-size: 20px;
-                font-weight: 600;
+                color: #10cfbd;
+                font-size: 2.52em;
+                border: none;
               }
               button.partee-cp:hover {
-                background-color: #ff5a5f;
-                color:#fff;
+                /*background-color: #ff5a5f;*/
+                color:#00d8c4;
               }
               .tooltip .tooltiptext::after {
                 content: "";
                 position: absolute;
                 top: 100%;
-                left: 50%;
+                left: 15%;
                 margin-left: -5px;
                 border-width: 5px;
                 border-style: solid;
-                border-color: #555 transparent transparent transparent;
+                border-color: #929292 transparent transparent transparent;
               }
 
               .tooltip:hover .tooltiptext {
@@ -1429,7 +1441,7 @@
                 display: block;
                 opacity: 1;
                 width: 100%;
-                top: -2em;
+                top: -3em;
                 left: 0;
               }
               .tooltiptext {

@@ -16,6 +16,8 @@ class Kernel extends ConsoleKernel
         Commands\ImportICal::class,
         Commands\CheckPartee::class,
         Commands\SendParteeSMS::class,
+        Commands\CreateMonthLimpieza::class,
+        Commands\RoomsPhotosMigrate::class,
     ];
 
     /**
@@ -28,5 +30,7 @@ class Kernel extends ConsoleKernel
     {
          $schedule->command('partee:check')->daily();
          $schedule->command('partee:sendSMS')->dailyAt('7:00');
+         $schedule->command('monthLimpieza:create')->monthlyOn(1, '5:00');
+         $schedule->command('ical:import')->everyFiveMinutes();
     }
 }

@@ -256,6 +256,137 @@
         'uses'       => 'UsersController@searchUserByName'
     ]);
 
+// Rooms
+Route::get('admin/apartamentos', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@index'
+]);
+Route::get('admin/apartamentos/new', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@newRoom'
+]);
+Route::get('admin/apartamentos/new-type', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@newTypeRoom'
+]);
+Route::get('admin/apartamentos/new-size', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@newSizeRoom'
+]);
+Route::get('admin/apartamentos/update', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@update'
+]);
+Route::get('admin/apartamentos/update-type', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@updateType'
+]);
+Route::get('admin/apartamentos/update-name', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@updateName'
+]);
+Route::get('admin/apartamentos/update-nameRoom', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@updateNameRoom'
+]);
+Route::get('admin/apartamentos/update-order', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@updateOrder'
+]);
+Route::get('admin/apartamentos/update-size', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@updateSize'
+]);
+Route::get('admin/apartamentos/update-owned', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@updateOwned'
+]);
+Route::get('admin/apartamentos/update-parking', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@updateParking'
+]);
+Route::get('admin/apartamentos/update-taquilla', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@updateTaquilla'
+]);
+Route::post('admin/apartamentos/saveupdate', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@saveUpdate'
+]);
+Route::post('admin/apartamentos/create', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@create'
+]);
+Route::post('admin/apartamentos/create-type', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@createType'
+]);
+Route::post('admin/apartamentos/create-size', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@createSize'
+]);
+Route::get('admin/apartamentos/state', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@state'
+]);
+Route::get('admin/apartamentos/percentApto', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@percentApto'
+]);
+Route::get('admin/apartamentos/update-Percent', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@updatePercent'
+]);
+Route::get('admin/apartamentos/email/{id}', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@email'
+]);
+Route::get('admin/apartamentos/fotos/{id}', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@photo'
+]);
+Route::get('admin/apartamentos/gallery/{id}', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@gallery'
+]);
+Route::get('admin/apartamentos/deletePhoto/{id}', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@deletePhoto'
+]);
+Route::post('admin/apartamentos/deletePhoto', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@deletePhotoItem'
+]);
+Route::post('admin/apartamentos/photo_main', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@photoIsMain'
+]);
+Route::post('admin/apartamentos/photo_orden', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@photoOrden'
+]);
+Route::post('admin/apartamentos/send/email/owned', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@sendEmailToOwned'
+]);
+Route::get('admin/apartamentos/getPaxPerRooms/{id}', 'RoomsController@getPaxPerRooms');
+Route::get('admin/apartamentos/getLuxuryPerRooms/{id}', 'RoomsController@getLuxuryPerRooms');
+Route::post('admin/apartamentos/uploadFile', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@uploadRoomFile'
+]);
+Route::post('admin/apartamentos/uploadFile/{id}', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@uploadFile'
+]);
+Route::get('admin/apartamentos/assingToBooking', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@assingToBooking'
+]);
+Route::get('admin/apartamentos/download/contrato/{userId}', [
+    'middleware' => 'auth',
+    'uses'       => 'RoomsController@downloadContractoUser'
+]);
 
     // Clientes
     Route::get('admin/clientes', [
@@ -287,7 +418,41 @@
         'uses'       => 'CustomersController@delete'
     ]);
 
-    Route::get('admin/cliente/dni/{idCustomer}/update/{dni}', function ($idCustomer, $dni) {
+Route::get('/admin/galleries', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'RoomsController@galleries'
+]);
+
+
+// Prices
+Route::get('admin/precios', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'PricesController@index'
+]);
+Route::get('admin/precios/update', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'PricesController@update'
+]);
+Route::get('admin/precios/updateExtra', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'PricesController@updateExtra'
+]);
+Route::post('admin/precios/create', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'PricesController@create'
+]);
+Route::get('admin/precios/delete/{id}', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'PricesController@delete'
+]);
+Route::get('admin/precios/deleteExtra/{id}', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'PricesController@delete'
+]);
+Route::post('admin/precios/createExtras', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'PricesController@createExtras'
+]);
 
         $customer      = \App\Customers::find($idCustomer);
         $customer->DNI = $dni;
@@ -584,6 +749,34 @@
 
     });
 
+Route::get('admin/estadisticas/{year?}', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'LiquidacionController@Statistics'
+]);
+Route::get('admin/contabilidad', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'LiquidacionController@contabilidad'
+]);
+Route::get('admin/perdidas-ganancias/{year?}', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'LiquidacionController@perdidasGanancias'
+]);
+Route::get('admin/limpiezas/{year?}', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'LiquidacionController@limpiezas'
+]);
+Route::post('admin/limpiezasLst/', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'LiquidacionController@get_limpiezas'
+]);
+Route::post('admin/limpiezasUpd/', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'LiquidacionController@upd_limpiezas'
+]);
+Route::post('admin/limpiezas/pdf', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'LiquidacionController@export_pdf_limpiezas'
+]);
     Route::get('admin/caja', [
         'middleware' => 'authAdmin',
         'uses'       => 'LiquidacionController@caja'

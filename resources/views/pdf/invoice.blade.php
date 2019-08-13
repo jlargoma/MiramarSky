@@ -45,14 +45,14 @@
 <body>
   <header>
     <h1>Cabecera de mi documento</h1>
-    <h2>DesarrolloWeb.com</h2>
+    <h2>test</h2>
   </header>
   <footer>
     <table>
       <tr>
         <td>
             <p class="izq">
-              Desarrolloweb.com
+              
             </p>
         </td>
         <td>

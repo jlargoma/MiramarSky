@@ -165,7 +165,7 @@
           @endif
           <button class="btn btn-danger btn-cons btn-xs <?php if($alert_lowProfits) echo 'btn-alarms'; ?> " id="btnLowProfits" type="button" data-toggle="modal" data-target="#modalLowProfits">
                 <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">BAJO BENEFICIO</span>
-                <span class="numPaymentLastBooks"><?php echo  count($lowProfits); ?></span>
+                <span class="numPaymentLastBooks"  data-val="{{$alert_lowProfits}}"><?php echo  $alert_lowProfits; ?></span>
             </button>
           </div>
         </div>
@@ -176,7 +176,11 @@
             </div>
         </div>
         <div class="modal fade slide-up in" id="modalLowProfits" tabindex="-1" role="dialog" aria-hidden="true" >
+          @if ($mobile->isMobile() )
+            <div class="modal-dialog modal-xs">
+          @else
             <div class="modal-dialog modal-lg">
+          @endif
                 <div class="modal-content-wrapper">
                     <div class="modal-content">
                         @include('backend.planning._alarmsLowProfits', ['alarms' => $lowProfits])

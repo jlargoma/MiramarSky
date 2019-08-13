@@ -164,13 +164,13 @@ class BookController extends AppController
 					$alarms[] = $book;
 			}
 		}
-
-		$alert_lowProfits = false; //To the alert efect
-		$percentBenef     = DB::table('percent')->find(1)->percent;
-		$lowProfits       = $this->lowProfitAlert($startYear, $endYear, $percentBenef, $alert_lowProfits);
-
-		$parteeToActive = BookPartee::where('status', 'HUESPEDES')->get();
-
+                
+                $alert_lowProfits = 0; //To the alert efect
+                $percentBenef = DB::table('percent')->find(1)->percent;
+                $lowProfits = $this->lowProfitAlert($startYear,$endYear,$percentBenef,$alert_lowProfits);
+                
+                $parteeToActive = BookPartee::where('status','HUESPEDES')->get();
+                
 		return view(
 			'backend/planning/index',
 			compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
@@ -181,32 +181,26 @@ class BookController extends AppController
 	private function lowProfitAlert($startYear, $endYear, $percentBenef, &$alert)
 	{
 
-		$booksAlarms = \App\Book::where('start', '>', $startYear)
-		                        ->where('finish', '<', $endYear)
-		                        ->whereIn('type_book', [
-			                        2,
-			                        7,
-			                        8
-		                        ])
-		                        ->orderBy('start', 'ASC')->get();
-
-		$alarms = array();
-
-		foreach ($booksAlarms as $key => $book)
-		{
-			$inc_percent = $book->get_inc_percent();
-			if (round($inc_percent) <= $percentBenef)
-			{
-				if (!$book->has_low_profit)
-				{
-					$alert = true;
-				}
-				$alarms[] = $book;
-			}
-		}
-		return $alarms;
-	}
-
+          $booksAlarms = \App\Book::where('start', '>', $startYear)
+		  ->where('finish', '<', $endYear)
+                  ->whereIn('type_book', [2,7,8])
+                  ->orderBy('start', 'ASC')->get();
+	
+          $alarms      = array();
+          
+          foreach ($booksAlarms as $key => $book)
+          {
+            $inc_percent = $book->get_inc_percent();
+            if(round($inc_percent) <= $percentBenef){
+              if (!$book->has_low_profit){
+                $alert++;
+              }
+              $alarms[] = $book;
+            }
+          }
+          return $alarms;
+        }
+        
 	public function newBook(Request $request)
 	{
 		if (Auth::user()->role != "agente")

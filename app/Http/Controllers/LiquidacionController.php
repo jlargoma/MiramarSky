@@ -61,7 +61,7 @@ class LiquidacionController extends AppController
 			                  8
 		                  ])->orderBy('start', 'ASC')->get();
 
-                $alert_lowProfits = false; //To the alert efect
+                $alert_lowProfits = 0; //To the alert efect
                 $percentBenef = DB::table('percent')->find(1)->percent;
                 $lowProfits = [];
                 
@@ -103,7 +103,7 @@ class LiquidacionController extends AppController
                     $inc_percent = $book->get_inc_percent();
                     if(round($inc_percent) <= $percentBenef){
                       if (!$book->has_low_profit){
-                        $alert_lowProfits = true;
+                        $alert_lowProfits++;
                       }
                       $lowProfits[] = $book;
                     }
@@ -353,7 +353,17 @@ class LiquidacionController extends AppController
 		                       ->Where('date', '<=', $endYear)
 		                       ->where('concept', 'NOT LIKE', '%LIMPIEZA RESERVA PROPIETARIO.%')
 		                       ->orderBy('date', 'DESC')->get();
-
+                
+                $totalMonthLimpieza = 0;
+                $dateMonthLimpieza = '';
+                foreach ($gastos as $key => $item)
+		{
+                  if ($item->concept == 'LIMPIEZA MENSUAL'){
+                    $totalMonthLimpieza += $item->import;
+                    $dateMonthLimpieza   = date('d M Y', strtotime($item->date));
+                  }
+                }
+                
 		$books           = \App\Book::whereIn('type_book', [2])->where('start', '>', $startYear)
 		                            ->where('start', '<=', $startYear)
 		                            ->orderBy('start', 'ASC')->get();
@@ -387,6 +397,8 @@ class LiquidacionController extends AppController
 			'totalStripep'    => $totalStripep,
 			'comisionBooking' => $comisionBooking,
 			'obsequios'       => $obsequios,
+                        'totalMonthLimpieza' => $totalMonthLimpieza,
+                        'dateMonthLimpieza' => $dateMonthLimpieza,
 		]);
 	}
 
@@ -2672,4 +2684,292 @@ class LiquidacionController extends AppController
 
 		})->download('xlsx');
 	}
+        
+        ///////////////////////////////////////////////////////////////////////
+        ///////////  LIMPIEZA AREA        ////////////////////////////////////
+        
+        /**
+         * Get Limpieza index
+         * 
+         * @return type
+         */
+        public function limpiezas() {
+          
+          $year = $this->getActiveYear();
+          
+          $obj1  = $this->getMonthlyLimpieza($year);
+          $year2 = $this->getYearData($year->year-1);
+          $obj2  = $this->getMonthlyLimpieza($year2);
+          $year3 = $this->getYearData($year2->year-1);
+          $obj3  = $this->getMonthlyLimpieza($year3);
+          
+          return view('backend/sales/limpiezas', [
+              'year'=>$year,
+              'selected'=>$obj1['selected'],
+              'months_obj'=> $obj1['months_obj'],
+              'months_1'=> $obj1,
+              'months_2'=> $obj2,
+              'months_3'=> $obj3]
+                  );
+        }
+        
+        /**
+         * Get Limpieza Objet by Year Object
+         * 
+         * @param Object $year
+         * @return array
+         */
+        private function getMonthlyLimpieza($year) {
+          
+          
+          $startYear = new Carbon($year->start_date);
+          $endYear   = new Carbon($year->end_date);
+          $diff      = $startYear->diffInMonths($endYear) + 1;
+          $thisMonth = date('m');
+          //get the books to these date range
+          $lstBooks = \App\Book::type_book_sales()
+                  ->where('start', '>=', $startYear)
+                  ->where('start', '<=',$endYear)
+                  ->get();
+          
+          $arrayMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+          $arrayMonthMin = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sept', 'Oct', 'Nov', 'Dic'];
+          $lstMonthlyCost = [];
+          foreach ($lstBooks as $book){
+            $date = Carbon::createFromFormat('Y-m-d', $book->start);
+            $cMonth = intval($date->format('n'));
+            if (isset($lstMonthlyCost[$cMonth])){
+              $lstMonthlyCost[$cMonth] += floatval($book->cost_limp);
+            } else {
+              $lstMonthlyCost[$cMonth]  = floatval($book->cost_limp);
+            }
+          }
+          
+          //Prepare objets to JS Chars
+          $months_lab = '';
+          $months_val = [];
+          $months_obj = [];
+          $aux = $startYear->format('n');
+          $auxY = $startYear->format('y');
+          $selected = null;
+          for ($i=0; $i<$diff;$i++){
+            $c_month = $aux+$i;
+            if ($c_month>12){
+              $c_month -= 12;
+            }
+            if ($c_month == 12){
+              $auxY++;
+            }
+            
+            if ($thisMonth == $c_month){
+              $selected = "$auxY,$c_month";
+            }
+            
+            $months_lab .= "'".$arrayMonth[$c_month-1]."',";
+            if (!isset($lstMonthlyCost[$c_month])){
+              $months_val[] = 0;
+            } else {
+              $months_val[] = $lstMonthlyCost[$c_month];
+            }
+            //Only to the Months select
+            $months_obj[] = [
+                'id'    => $auxY.'_'.$c_month,
+                'month' => $c_month,
+                'year'  => $auxY,
+                'name'  => $arrayMonthMin[$c_month-1]
+            ];
+          }
+          
+          return [
+              'year'        => $year->year,
+              'selected'    => $selected,
+              'months_obj'  => $months_obj,
+              'months_label'=> $months_lab,
+              'months_val'  => implode(',',$months_val)
+              ];
+          
+        }
+        
+        
+        /**
+         * Get the Limpieza by month-years to ajax table
+         * 
+         * @param Request $request
+         * @return Json-Objet
+         */
+        public function get_limpiezas(Request $request, $isAjax = true) {
+
+          $year = $request->input('year',null);
+          $month = $request->input('month',null);
+          if (!$year || !$month){
+            return response()->json(['status'=>'wrong']);
+          }
+           // First day of a specific month
+          $d = new \DateTime($year.'-'.$month.'-01');
+          $d->modify('first day of this month');
+          $startYear = $d->format('Y-m-d');
+           // First day of a specific month
+          $d = new \DateTime($year.'-'.$month.'-01');
+          $d->modify('last day of this month');
+          $endYear = $d->format('Y-m-d');
+          
+          $month_cost = 0;
+          $monthly  = \App\Expenses::where('date', '=', $startYear)
+                      ->where('type','LIMPIEZA')
+                      ->where('concept','LIMPIEZA MENSUAL')
+                      ->first();
+          if ($monthly){
+            $month_cost = $monthly->import;
+          }
+          
+
+          $lstBooks = \App\Book::type_book_sales()->where('start', '>=', $startYear)
+                  ->where('start', '<=',$endYear)
+                  ->orderBy('start', 'ASC')->get();
+         
+          
+          $respo_list = [];
+          $total_limp = $month_cost; //start with the monthly cost
+          $total_extr = 0;
+
+          foreach ($lstBooks as $key => $book)
+          {
+            $agency = ($book->agency != 0) ? '/pages/'.strtolower($book->getAgency($book->agency)) . '.png' : null;
+            $type_book = null;
+            switch ($book->type_book){
+              case 2:
+                $type_book = "C";
+                break;
+              case 7:
+                $type_book = "P";
+              break;
+              case 8:
+                $type_book = "A";
+              break;
+              }
+               
+            $start = Carbon::createFromFormat('Y-m-d',$book->start);
+            $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
+
+                                    
+            $respo_list[] = [
+              'id'      =>  $book->id,
+              'name'    =>  $book->customer->name,
+              'agency'  =>  $agency,
+              'type'    =>  $type_book,
+              'limp'    =>  $book->cost_limp,
+              'extra'   =>  $book->extraCost,
+              'pax'     =>  $book->pax,
+              'apto'    =>  $book->room->nameRoom,
+              'check_in'=>  $start->formatLocalized('%d %b'),
+              'check_out'=> $finish->formatLocalized('%d %b'),
+              'nigths'  =>  $book->nigths
+            ];
+            
+            $total_limp += floatval($book->cost_limp);
+            $total_extr += floatval($book->extraCost);
+            
+  
+          }
+
+          $response = [
+                'status'     => 'true',
+                'month_cost' => $month_cost,
+                'respo_list' => $respo_list,
+                'total_limp' => $total_limp,
+                'total_extr' => $total_extr,
+            ];
+          if ($isAjax){
+            return response()->json($response);
+          }else {
+            return $response;
+          }
+        }
+        
+        /**
+         * Update Limpieza or Extra values
+         * 
+         * @param Request $request
+         * @return json
+         */
+        public function upd_limpiezas(Request $request) {
+          $id = $request->input('id',null);
+          $limp_value = $request->input('limp_value',null);
+          $extr_value = $request->input('extr_value',null);
+          $year = $request->input('year',null);
+          $month = $request->input('month',null);
+          
+          if ($id){
+            if($id == 'fix'){
+              $dateTime = new \DateTime($year.'-'.$month.'-01'); 
+              $date = $dateTime->format('Y-m-d');
+              $monthItem  = \App\Expenses::where('date', '=', $date)
+                      ->where('type','LIMPIEZA')
+                      ->where('concept','LIMPIEZA MENSUAL')
+                      ->first();
+		                         
+              if ($monthItem){
+                $monthItem->import = floatval($limp_value);
+                $monthItem->save();
+              } else {
+                $monthItem = new \App\Expenses();
+                $monthItem->type = 'LIMPIEZA';
+                $monthItem->concept = 'LIMPIEZA MENSUAL';
+                $monthItem->comment = 'LIMPIEZA MENSUAL';
+                $monthItem->date = $date; 
+                $monthItem->import = floatval($limp_value);
+                $monthItem->save();
+              }
+              return response()->json(['status'=>'true']);
+            } else {
+              if ( !(is_numeric($limp_value) || empty($limp_value)) ){
+                return response()->json(['status'=>'false','msg'=>"El valor de la Limpieza debe ser numérico"]);
+              }
+              if ( !(is_numeric($extr_value) || empty($extr_value)) ){
+                return response()->json(['status'=>'false','msg'=>"El valor Extra debe ser numérico"]);
+              }
+             $book = \App\Book::find($id); 
+             if ($book){
+               
+                $book->cost_limp = floatval($limp_value);
+                $book->extraCost = floatval($extr_value);
+                $book->save();  
+                
+                return response()->json(['status'=>'true']);
+               
+             }
+            }
+          }
+          
+          return response()->json(['status'=>'false','msg'=>"No se han encontrado valores."]);
+          
+        }
+          
+        public function export_pdf_limpiezas(Request $request) {
+          
+          $year = $request->input('year',null);
+          $month = $request->input('month',null);
+          
+          $arrayMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+          $file_name = 'Costos-de-limpieza-'.$month.'-20'.$year;
+          if(isset($arrayMonth[$month-1])){
+            $title = $arrayMonth[$month-1].' 20'.$year;
+          } else {
+            $title = ' 20'.$year;
+          }
+          $data = $this->get_limpiezas($request,false);
+          $data['tit'] = $title;
+          
+           // Send data to the view using loadView function of PDF facade
+          $pdf = \PDF::loadView('pdf.limpieza',$data);
+//          if (!is_dir(storage_path().'/pdf')){
+//            mkdir(storage_path().'/pdf');
+//          }
+//          // If you want to store the generated pdf to the server then you can use the store function
+//          $pdf->save(storage_path().'/pdf/'.$file_name.'.pdf');
+          // Finally, you can download the file using download function
+          return $pdf->download($file_name.'.pdf');
+        }
+        ///////////  LIMPIEZA AREA        ////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////
 }

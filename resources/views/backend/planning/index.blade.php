@@ -26,7 +26,7 @@ setlocale(LC_TIME, "es_ES");
             @include('backend.years.selector', ['minimal' => false])
             <div class="row push-10">
                 <div class="col-md-7">
-                    <div class="row">
+                    <div class="row btn-mb-1">
                         <button class="btn btn-success btn-cons btn-newBook" type="button" data-toggle="modal" data-target="#modalNewBook">
                             <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Nueva Reserva</span>
                         </button>
@@ -44,18 +44,18 @@ setlocale(LC_TIME, "es_ES");
                                 <span class="bold">Calcular reserva</span>
                             </button>
 
-                            <button class="btn btn-danger btn-cons <?php if(count($alarms)>0) echo 'btn-alarms'; ?>" type="button" data-toggle="modal" data-target="#modalAlarms">
-                                <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">ALARMAS</span>
-                                <span class="numPaymentLastBooks"><?php echo  count($alarms); ?></span>
-                            </button>
-                            <button class="btn btn-danger btn-cons <?php if($alert_lowProfits) echo 'btn-alarms'; ?> "  id="btnLowProfits" type="button" data-toggle="modal" data-target="#modalLowProfits">
-                                <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">BAJO BENEFICIO</span>
-                                <span class="numPaymentLastBooks"><?php echo  count($lowProfits); ?></span>
-                            </button>
-                            <button class="btn btn-danger btn-cons <?php if(count($parteeToActive)>0) echo 'btn-alarms'; ?> "  id="btnParteeToActive" type="button" data-toggle="modal" data-target="#modalParteeToActive">
-                                <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">PARTEE</span>
-                                <span class="numPaymentLastBooks"><?php echo  count($parteeToActive); ?></span>
-                            </button>
+                        <button class="btn btn-danger btn-cons btn-blink <?php if(count($alarms)>0) echo 'btn-alarms'; ?>" type="button" data-toggle="modal" data-target="#modalAlarms">
+                            <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">ALARMAS</span>
+                            <span class="numPaymentLastBooks"><?php echo  count($alarms); ?></span>
+                        </button>
+                      <button class="btn btn-danger btn-cons btn-blink <?php if($alert_lowProfits) echo 'btn-alarms'; ?> "  id="btnLowProfits" type="button" data-toggle="modal" data-target="#modalLowProfits">
+                            <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">BAJO BENEFICIO</span>
+                            <span class="numPaymentLastBooks" data-val="{{$alert_lowProfits}}">{{$alert_lowProfits}}</span>
+                        </button>
+                      <button class="btn btn-danger btn-cons btn-blink <?php if(count($parteeToActive)>0) echo 'btn-alarms'; ?> "  id="btnParteeToActive" type="button" data-toggle="modal" data-target="#modalParteeToActive">
+                            <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">PARTEE</span>
+                            <span class="numPaymentLastBooks"><?php echo  count($parteeToActive); ?></span>
+                        </button>
                         <?php endif ?>
                     </div>
                 </div>
@@ -331,7 +331,7 @@ setlocale(LC_TIME, "es_ES");
                         </div>
                         <div class="col-xs-2 push-10 text-center">
                             <button class="btn btn-success btn-sm" type="button" id="stripePayment">
-                                <i class="fa fa-money-bill-alt" aria-hidden="true"></i>
+                                <i class="fa fa-money" aria-hidden="true"></i>
                             </button>
                         </div>
                         <div class="col-xs-2 push-10 text-center">
@@ -345,6 +345,19 @@ setlocale(LC_TIME, "es_ES");
                                 <span class="numPaymentLastBooks">&nbsp;<?php echo  count($alarms); ?>&nbsp;</span>
                             </button>
                         </div>
+                      <div class="col-xs-6 text-center">
+                      <button class="btn btn-danger btn-cons btn-blink <?php if($alert_lowProfits) echo 'btn-alarms'; ?> "  id="btnLowProfits" type="button" data-toggle="modal" data-target="#modalLowProfits">
+                            <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">BAJO BENEFICIO</span>
+                            <span class="numPaymentLastBooks" data-val="{{$alert_lowProfits}}">{{$alert_lowProfits}}</span>
+                        </button>
+                        </div>
+                      <div class="col-xs-6 text-center">
+                      <button class="btn btn-danger btn-cons btn-blink <?php if(count($parteeToActive)>0) echo 'btn-alarms'; ?> "  id="btnParteeToActive" type="button" data-toggle="modal" data-target="#modalParteeToActive">
+                            <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">PARTEE</span>
+                            <span class="numPaymentLastBooks"><?php echo  count($parteeToActive); ?></span>
+                        </button>
+                      </div>
+                      
                         <?php endif ?>
                         <div class="col-xs-2 push-10 text-center">
                             <button class="btn btn-primary btn-sm calend" type="button" >
@@ -496,7 +509,7 @@ setlocale(LC_TIME, "es_ES");
         </div>
 
         <div class="modal fade slide-up in" id="modalAlarms" tabindex="-1" role="dialog" aria-hidden="true" >
-            <div class="modal-dialog modal-lg" >
+            <div class="modal-dialog modal-xs" >
                 <div class="modal-content-wrapper">
                     <div class="modal-content" style="width: 90%;">
                         @include('backend.planning._alarmsBooks', ['alarms' => $alarms])
@@ -505,6 +518,24 @@ setlocale(LC_TIME, "es_ES");
             </div>
         </div>
 
+         <div class="modal fade slide-up in" id="modalLowProfits" tabindex="-1" role="dialog" aria-hidden="true" >
+            <div class="modal-dialog modal-xs">
+                <div class="modal-content-wrapper">
+                    <div class="modal-content">
+                        @include('backend.planning._alarmsLowProfits', ['alarms' => $lowProfits])
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade slide-up in" id="modalParteeToActive" tabindex="-1" role="dialog" aria-hidden="true" >
+            <div class="modal-dialog modal-xs">
+                <div class="modal-content-wrapper">
+                    <div class="modal-content">
+                        @include('backend.planning._alarmsPartee', ['alarms' => $parteeToActive])
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- IMAGENES POR PISO -->
         <div class="modal fade slide-up in" id="modalRoomImages" tabindex="-1" role="dialog" aria-hidden="true" >
             <div class="modal-dialog modal-lg" style="width: 95%;">

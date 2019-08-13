@@ -27,8 +27,17 @@ setlocale(LC_TIME, "es_ES"); ?>
       <form method="POST" action="{{route('settings.msgs.upd')}}">
         <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
         <input type="hidden" name="key" id="key" value="{{$k}}">
-        <?php $content = isset($data[$k]) ? trim($data[$k]) : ''; ?>
-        <textarea class="ckeditor" name="{{$k}}" id="{{$k}}" rows="10" cols="80">{{$content}}</textarea>
+        <?php 
+          $content = isset($data[$k]) ? trim($data[$k]) : ''; 
+          $ckeditor = true;
+          if ( $k =='SMS_Partee_msg' || $k == 'SMS_Partee_upload_dni')
+            $ckeditor = false;
+        ?>
+        @if($ckeditor)
+          <textarea class="ckeditor" name="{{$k}}" id="{{$k}}" rows="10" cols="80">{{$content}}</textarea>
+        @else
+          <textarea class="form-control" name="{{$k}}" id="{{$k}}" rows="10" cols="80">{{$content}}</textarea>
+        @endif
         <button class="btn btn-primary m-t-20">Guardar</button>
       </form>
     </div>

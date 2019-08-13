@@ -30,7 +30,7 @@ setlocale(LC_TIME, "es_ES");
     </div>
     <div class="container-fluid">
         <div class="row bg-white push-30">
-            <div class="col-lg-8 col-md-10 col-xs-12 push-20">
+            <div class="col-lg-8 col-md-12 col-xs-12 push-20">
 
                 @include('backend.sales._button-contabiliad')
 
@@ -78,6 +78,11 @@ setlocale(LC_TIME, "es_ES");
                                 ?>
                                 <?php 
                                 foreach ($rooms as $key => $room):
+                                  if (
+                                    isset($priceBookRoom[$room->id]) 
+                                    && isset($priceBookRoom[$room->id][$aux_year]) 
+                                    && isset($priceBookRoom[$room->id][$aux_year][$aux_month])
+                                  )
                                   $totalMonth += $priceBookRoom[$room->id][$aux_year][$aux_month];
                                 endforeach; 
                                 ?>
@@ -103,10 +108,18 @@ setlocale(LC_TIME, "es_ES");
 						<?php foreach ($rooms as $key => $room): ?>
                             <?php $totalRoom = 0; ?>
                             <?php $monthsRooms = new Carbon($year->start_date); ?>
-                            <?php for ($i = 1; $i <= $diff; $i++): ?>
-                                <?php $totalRoom += $priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')] ?>
-                                <?php $monthsRooms->addMonth() ?>
-                            <?php endfor; ?>
+                            <?php 
+                            for ($i = 1; $i <= $diff; $i++): 
+                              if (
+                                  isset($priceBookRoom[$room->id]) 
+                                  && isset($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')]) 
+                                  && isset($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')])
+                                ){
+                                $totalRoom += $priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')];
+                                $monthsRooms->addMonth();
+                                }
+                            endfor; 
+                            ?>
                             <?php $totalAllRoom += $totalRoom; ?>
                         <?php endforeach ?>
 						<?php foreach ($rooms as $key => $room): ?>
@@ -114,12 +127,20 @@ setlocale(LC_TIME, "es_ES");
                             <td class="text-center" style="padding: 12px 20px!important">
 								<?php echo $room->name ?> <b><?php echo $room->nameRoom ?></b>
                             </td>
-							<?php $totalRoom = 0; ?>
-							<?php $monthsRooms = new Carbon($year->start_date); ?>
-							<?php for ($i = 1; $i <= $diff; $i++): ?>
-                                    <?php $totalRoom += $priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')] ?>
-                                    <?php $monthsRooms->addMonth() ?>
-                                <?php endfor; ?>
+                              <?php $totalRoom = 0; ?>
+                              <?php $monthsRooms = new Carbon($year->start_date); ?>
+                              <?php 
+                              for ($i = 1; $i <= $diff; $i++): 
+                                if (
+                                  isset($priceBookRoom[$room->id]) 
+                                  && isset($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')]) 
+                                  && isset($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')])
+                                ){
+                                  $totalRoom += $priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')];
+                                  $monthsRooms->addMonth();
+                                }
+                              endfor; 
+                              ?>
                             <td class="text-center">
                                 <b><?php echo number_format($totalRoom, 0, ',', '.') ?>€</b>
                             </td>
@@ -134,12 +155,16 @@ setlocale(LC_TIME, "es_ES");
 							<?php $monthsRooms = new Carbon($year->start_date);  ?>
 							<?php for ($i = 1; $i <= $diff ; $i++): ?>
                             <td class="text-center" style="padding: 12px 20px!important">
-								<?php if ($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')] == 0): ?>
-                                ---
-								<?php else: ?>
-                                <b><?php echo number_format($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')], 0, ',', '.') ?>
-                                    €</b>
-								<?php endif ?>
+                              <?php
+                              $aux = '---';
+                              if (
+                                  isset($priceBookRoom[$room->id]) 
+                                  && isset($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')]) 
+                                  && isset($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')])
+                                  && ($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')] == 0)
+                              ) $aux = number_format($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')], 0, ',', '.').' €';
+                              ?>
+                                <b><?php echo $aux ?></b>
 
                             </td>
 							<?php $monthsRooms->addMonth() ?>

@@ -42,19 +42,13 @@ background: white;
 </div>
 <div class="container-fluid">
 	<div class="row bg-white push-30">
-		<div class="col-lg-6 col-md-10 col-xs-12 push-20">
-
+		<div class="col-md-10 col-xs-12 push-20">
 			@include('backend.sales._button-contabiliad')
-
 		</div>
-		<div class="col-lg-6 col-md-2 col-xs-12 push-20">
-			<div class="col-md-12 col-xs-12 push-20">
-				<div class="col-md-2 col-xs-2">
-					<button class="btn btn-md btn-complete" data-toggle="modal" data-target="#expencesByRoom">
-						Hoja de gastos
-					</button>
-				</div>
-			</div>
+		<div class="col-md-2 col-xs-12 push-20 text-center">
+                    <button class="btn btn-md btn-complete" data-toggle="modal" data-target="#expencesByRoom">
+                            Hoja de gastos
+                    </button>
 		</div>
 	</div>
 	
@@ -68,7 +62,7 @@ background: white;
 	</div>
 
 	<div class="row bg-white push-30 table-responsive" id="contentTableExpenses" style="border: 0px!important">
-		@include('backend.sales.gastos._tableExpenses', ['gastos' => $gastos])
+	@include('backend.sales.gastos._tableExpenses', ['gastos' => $gastos,'totalMonthLimpieza' => $totalMonthLimpieza,'dateMonthLimpieza' => $dateMonthLimpieza])
 	</div>
 
 </div>

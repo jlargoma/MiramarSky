@@ -157,6 +157,9 @@
                     <li class="{{ Request::path() == 'admin/settings_msgs' ? 'active' : '' }}">
                         <a href="{{ url('admin/settings_msgs') }}" class="detailed">Txt Email</a>
                     </li>
+                    <li class="{{ Request::path() == 'admin/galleries' ? 'active' : '' }}">
+                        <a href="{{ url('admin/galleries') }}" class="detailed">Galerías</a>
+                    </li>
                     <?php endif ?>
 
                 </ul>
@@ -185,7 +188,14 @@
         </div>
         <!-- END CONTAINER FLUID -->
         </div>
-
+        <div class="overlay loading-box" id="loadigPage">
+          <div >
+            <h3 class="text-center"><i class="fas fa-spinner fa-spin"></i>Loading...</h3>
+          </div>
+        </div>
+        <div class="overlay message-bottom-box" id="bottom_msg">
+          <div id="bottom_msg_text">
+          </div>
         </div>
         <!-- BEGIN VENDOR JS -->
         <script src="{{ asset('assets/plugins/pace/pace.min.js') }}" type="text/javascript"></script>

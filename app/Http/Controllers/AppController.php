@@ -42,6 +42,14 @@ class AppController extends Controller
         $activeYear = Years::where('active', 1)->first();
         return $activeYear;
     }
+    /**
+     * @return mixed
+     */
+    protected static function getYearData($year)
+    {
+        $activeYear = Years::where('year', $year)->first();
+        return $activeYear;
+    }
 
     /**
      * @param array $params
