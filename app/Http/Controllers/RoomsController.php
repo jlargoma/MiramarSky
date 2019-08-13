@@ -633,7 +633,7 @@ class RoomsController extends AppController {
         return '<h2 class="text-center">NO HAY IMAGENES PARA ESTE APTO.</h2>';
       }
     } else {
-      
+      return '';
     }
   }
 

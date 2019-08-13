@@ -52,6 +52,7 @@ $mobile = new Mobile();
         <thead>
           <tr>
             <th class ="text-center bg-complete text-white font-s12" style="width: 50%;">APTO</th>
+            <th class ="text-center bg-complete text-white font-s12" >Texto</th>
             <th class ="text-center bg-complete text-white font-s12" >Galería</th>
             <th class ="text-center bg-complete text-white font-s12" >Url</th>
           </tr>
@@ -60,6 +61,11 @@ $mobile = new Mobile();
           <?php foreach ($rooms as $k=>$name): ?>
             <tr>
               <td class="text-left" >{{$name}}</td>
+              <td class="text-center" >
+                <button type="button" class="btn btn-success btn-sm uploadFile" data-toggle="modal" data-target="#modalTexts" data-id="{{$k}}" title="Editar textos aptos">
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                </button>                    
+              </td>
               <td class="text-center" >
                 <button type="button" class="btn btn-success btn-sm uploadFile" data-toggle="modal" data-target="#modalFiles" data-id="{{$k}}" title="Subir imagenes aptos">
                   <i class="fa fa-upload" aria-hidden="true"></i>
@@ -80,6 +86,27 @@ $mobile = new Mobile();
 
 
 
+<div class="modal fade slide-up in" id="modalTexts" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content-wrapper">
+      <div class="modal-content">
+        <div class="block">
+          <div class="block-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14" style="font-size: 40px!important;color: black!important"></i>
+            </button>
+            <h2 class="text-center">Descripción Apto</h2>
+          </div>
+          <div class="container-xs-height full-height">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
 <div class="modal fade slide-up in" id="modalFiles" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-xs">
     <div class="modal-content-wrapper">
@@ -92,7 +119,6 @@ $mobile = new Mobile();
               Subida de archivos
             </h2>
           </div>
-
           <div class="container-xs-height full-height">
             <div class="row-xs-height">
               <div class="modal-body col-xs-height col-middle text-center   ">
@@ -101,10 +127,7 @@ $mobile = new Mobile();
               </div>
             </div>
           </div>
-
         </div>
-
-
       </div>
     </div>
     <!-- /.modal-content -->
