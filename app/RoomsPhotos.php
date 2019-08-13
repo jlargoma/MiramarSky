@@ -15,17 +15,12 @@ class RoomsPhotos extends Model
   }
   
   static function getGalleries(){
-    return [
-        'estudio-standard-sierra-nevada'      => 'ESTUDIO',
-        'estudio-lujo-sierra-nevada'          => 'ESTUDIO LUJO',
-        'apartamento-un-dormitorio'           => 'APTO UN DORMITORIO',
-        'apartamento-standard-sierra-nevada'  => 'APTO DOS DORM',
-        'apartamento-lujo-sierra-nevada'      => 'APTO DOS DORM LUJO',
-        'apartamento-lujo-gran-capacidad-sierra-nevada' => 'APTO GRAN OCUPACION',
-        'chalet-los-pinos-sierra-nevada'      => 'CHALET LOS PINOS',
-        'monte-gorbea'                        => 'MONTE GORBEA',
-        'el-edificio'                         => 'EL EDIFICIO'
-        ];
+    $gals = \App\RoomsType::all();
+    $lst = [];
+    foreach ($gals as $item){
+      $lst[$item->slug] = $item->title;
+    }
+    return $lst;
   }
   
 
