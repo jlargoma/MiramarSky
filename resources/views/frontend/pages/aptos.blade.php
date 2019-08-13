@@ -183,11 +183,11 @@
                      <div class="col-xs-12 not-padding  container-image-box push-mobile-20">
                         <div class="col-xs-12 not-padding push-0">
                            
-                           <img class="img-responsive" src="{{$apto->file_rute}}/{{$apto->file_name}}"  alt="{{$aptoTitle}}"/>
+                           <img class="img-responsive" src="{{$apto->file_rute}}/{{$apto->file_name}}"  alt="{{$apto->title}}"/>
                         </div>
                         <div class="col-xs-12 not-padding text-right overlay-text">
                            <h2 class="font-w600 center push-10 text-center text white font-s24 hvr-reveal" >
-                              <?php echo strtoupper($aptoTitle ) ?>
+                              <?php echo strtoupper($apto->title ) ?>
                            </h2>
                         </div>
                      </div>
