@@ -1203,5 +1203,6 @@ Route::get('/edit/{id}', 'ForfaitsItemController@edit');
 Route::post('/upd', 'ForfaitsItemController@update');
 Route::get('/createItems', 'ForfaitsItemController@createItems');
 });
+Route::get('/api/forfaits/class', 'ForfaitsItemController@api_getClasses');
 Route::get('/api/forfaits/categ', 'ForfaitsItemController@api_getCategories');
 Route::get('/api/forfaits/items/{id}', 'ForfaitsItemController@api_items');

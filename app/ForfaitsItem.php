@@ -15,15 +15,25 @@ class ForfaitsItem extends Model
         "cascos" => 'Cascos',
     ];
   }
+  static function getClasses(){
+    return [
+        "indiv_class" => 'CLASES PARTICULARES',
+        "grupal_class" => 'Clase Colectivas',
+    ];
+  }
   public function getCategory(){
     
     $list = self::getCategories();
     if (isset($list[$this->cat])){
       return $list[$this->cat];
     } else {
-      return '';
+      $list = self::getClasses();
+      if (isset($list[$this->cat])){
+        return $list[$this->cat];
+      }
     }
      
+    return '';
     
   }
 }

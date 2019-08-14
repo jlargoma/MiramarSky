@@ -124,6 +124,16 @@ $mobile = new Mobile();
             <textarea class="" name="item_class" id="item_class" rows="10" cols="80"></textarea>
           </div>
         </div>  
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="hour_start">Hora de Inicio</label>
+            <input type="text" class="form-control" id="hour_start" name="hour_start" placeholder="" maxlength="3">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="hour_end">Hora de cierre</label>
+            <input type="text" class="form-control" id="hour_end" name="hour_end" placeholder="" maxlength="3">
+          </div>
+        </div>
         <div class="form-row btn-save-forfait">
           <button class="btn btn-primary">Guardar</button>
         </div>

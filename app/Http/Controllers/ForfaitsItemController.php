@@ -17,17 +17,19 @@ class ForfaitsItemController extends Controller
       }
       $items[$item->cat][] = $item;
     }
-//    dd($items);
     if ($class){
       if (isset($items[$class])){
         $items = array($class=>$items[$class]);
       }
     }
     
+    $catMat = ForfaitsItem::getCategories();
+    $catClass = ForfaitsItem::getClasses();
+    
     return view('backend/forfaits/index', [
         'selClass'=> $class,
         'items'=> $items,
-        'categ'=> ForfaitsItem::getCategories(),
+        'categ'=> array_merge($catMat,$catClass),
         ]);
   }
   public function edit($id) {
@@ -50,6 +52,8 @@ class ForfaitsItemController extends Controller
       $obj->status = $req->input('item_status', null);
       $obj->regular_price = $req->input('regular_price', null);
       $obj->special_price = $req->input('special_price', null);
+      $obj->hour_start = $req->input('hour_start', null);
+      $obj->hour_end = $req->input('hour_end', null);
       $obj->save();
       return redirect()->back()->with('success', 'Forfaits Guardado'); 
     }
@@ -59,12 +63,16 @@ class ForfaitsItemController extends Controller
   /*******************************/
   /*******       API      *******/
   /*****************************/
+  public function api_getClasses() {
+    return response()->json(ForfaitsItem::getClasses());
+  }
+
   public function api_getCategories() {
     return response()->json(ForfaitsItem::getCategories());
   }
   
   public function api_items($cat) {
-    $items = ForfaitsItem::where('cat',$cat)->get();
+    $items = ForfaitsItem::where('cat',$cat)->where('status',1)->get();
     return response()->json($items);
   }
 
