@@ -18,7 +18,7 @@ $(document).ready(function() {
               from: "top",
               align: "left"
           },
-          offset: 80,
+          offset: 20,
           spacing: 10,
           z_index: 1031,
           allow_dismiss: true,

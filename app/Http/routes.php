@@ -437,6 +437,26 @@ Route::get('/admin/galleries', [
     'middleware' => 'authAdmin',
     'uses'       => 'RoomsController@galleries'
 ]);
+Route::get('/admin/aptos/edit-room-descript/{id}', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'RoomsController@editRoomDescript'
+]);
+Route::get('/admin/aptos/edit-descript/{id}', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'RoomsController@editDescript'
+]);
+Route::post('/admin/aptos/edit-room-descript', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'RoomsController@updRoomDescript'
+]);
+Route::post('/admin/aptos/edit-descript', [
+    'middleware' => 'authAdmin',
+    'uses'       => 'RoomsController@updDescript'
+]);
+//Route::get('/admin/aptos/add/types',function(){
+//  $obj = new App\RoomsType();
+//  $obj->createItems();
+//});
 
 
 // Prices

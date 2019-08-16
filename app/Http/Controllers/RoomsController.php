@@ -52,7 +52,8 @@ class RoomsController extends AppController {
    * @return \Illuminate\Http\Response
    */
   public function galleries() {
-    return view('backend/rooms/galleries', ['rooms'=> RoomsPhotos::getGalleries()]);
+    $rooms = \App\RoomsType::all();
+    return view('backend/rooms/galleries', ['rooms'=> $rooms]);
   }
 
   /**
@@ -633,7 +634,7 @@ class RoomsController extends AppController {
         return '<h2 class="text-center">NO HAY IMAGENES PARA ESTE APTO.</h2>';
       }
     } else {
-      
+      return '';
     }
   }
 
@@ -688,8 +689,8 @@ class RoomsController extends AppController {
     
     if ($key_gal){ //Is a gelleri
       
-      $obj = new RoomsPhotos();
-      if(!$obj->existsGal($key_gal)){
+      $obj = \App\RoomsType::where('gallery_key','=',$key_gal)->get();
+      if(!$obj){
         return redirect()->back()->withErrors(['Galería no encontrada']);
       }
       
@@ -816,4 +817,149 @@ class RoomsController extends AppController {
     
     
   }
+  
+  /**
+   * Get RoomsType description
+   * @param int $apto
+   * @return json
+   */
+  public function editDescript($apto) {
+    
+    $room = \App\RoomsType::find($apto);
+    if (!$room){
+      return response()->json(['status'=>'false','msg'=>"Apto no encontrado"]);
+    }
+
+    return response()->json([
+        'result'=>'ok',
+        'title'=>$room->title,
+        'text'=>$room->description,
+        'status'=>$room->status,
+        'name'=>$room->name
+        ]);
+    
+    
+  }
+  /**
+   * Get Room front description
+   * @param int $apto
+   * @return json
+   */
+  public function editRoomDescript($apto) {
+    
+    $room = \App\Rooms::find($apto);
+    if (!$room){
+      return response()->json(['status'=>'false','msg'=>"Apto no encontrado"]);
+    }
+
+    return response()->json([
+        'result'=>'ok',
+        'name'=>$room->name,
+        'text'=>$room->content_front,
+        ]);
+    
+    
+  }
+  
+  /**
+   * Upd the room from description
+   * @param Request $request
+   * @return back()
+   */
+  public function updRoomDescript(Request $request) {
+    $apto = $request->input('room', null);
+    if ($apto){
+      $room = \App\Rooms::find($apto);
+      if (!$room){
+        return redirect()->back()->withErrors(['Apto no encontrado']);
+      }
+      $room->content_front = $request->input('apto_descript', null);
+      $room->save();
+      return redirect()->back()->with('success', 'Registro Guardado');  
+    }
+
+    return redirect()->back()->withErrors(['Apto no encontrado']);
+    
+  }
+    /**
+   * Upd the RoomsType description or create a new RoomsType
+   * @param Request $request
+   * @return back()
+   */
+  public function updDescript(Request $request) {
+    $apto = $request->input('room', null);
+    $item_nombre = $request->input('item_nombre', null);
+    $item_status = $request->input('item_status', null);
+    $name = $request->input('item_name', $item_nombre);
+    
+    if ($apto){ //edit
+      $room = \App\RoomsType::find($apto);
+      if (!$room){
+        return redirect()->back()->withErrors(['Apto no encontrado']);
+      }
+
+      if ($item_nombre){
+        $room->title = $item_nombre;
+      }
+      $room->status = $item_status;
+      $room->description = $request->input('apto_descript', null);
+      $room->name = $this->clearTitle($name); 
+      $room->save();
+      return redirect()->back()->with('success', 'Registro Guardado');  
+      
+    } else { //create
+      $room = new \App\RoomsType();
+      $room->title = $item_nombre;
+      $room->status = $item_status;
+      $room->name = $this->clearTitle($name); 
+      $room->description = $request->input('apto_descript', null);
+      $room->save();
+      return redirect()->back()->with('success', 'Registro Guardado'); 
+    }
+
+    return redirect()->back()->withErrors(['Apto no encontrado']);
+    
+  }
+  
+  /**
+   * Format a String to Slug
+   * @param type $string
+   * @return type
+   */
+  public function clearTitle($string){
+
+    $string = str_replace(
+        array('á', 'à', 'ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä'),
+        array('a', 'a', 'a', 'a', 'a', 'A', 'A', 'A', 'A'),
+        $string
+    );
+
+    $string = str_replace(
+        array('é', 'è', 'ë', 'ê', 'É', 'È', 'Ê', 'Ë'),
+        array('e', 'e', 'e', 'e', 'E', 'E', 'E', 'E'),
+        $string );
+
+    $string = str_replace(
+        array('í', 'ì', 'ï', 'î', 'Í', 'Ì', 'Ï', 'Î'),
+        array('i', 'i', 'i', 'i', 'I', 'I', 'I', 'I'),
+        $string );
+
+    $string = str_replace(
+        array('ó', 'ò', 'ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô'),
+        array('o', 'o', 'o', 'o', 'O', 'O', 'O', 'O'),
+        $string );
+
+    $string = str_replace(
+        array('ú', 'ù', 'ü', 'û', 'Ú', 'Ù', 'Û', 'Ü'),
+        array('u', 'u', 'u', 'u', 'U', 'U', 'U', 'U'),
+        $string );
+
+    $string = str_replace(
+        array('ñ', 'Ñ', 'ç', 'Ç'),
+        array('n', 'N', 'c', 'C'),
+        $string
+    );
+
+    return str_replace(' ','-', strtolower($string));
+}
 }

@@ -1,478 +1,424 @@
-<?php 
-	use \App\Classes\Mobile;
-	$mobile = new Mobile();
+<?php
+
+use \App\Classes\Mobile;
+
+$mobile = new Mobile();
 ?>
 @extends('layouts.admin-master')
 
 @section('title') Administrador de reservas MiramarSKI @endsection
 
 @section('externalScripts') 
-
-	<style type="text/css">
-		.name-back{
-			background-color: rgba(72,176,247,0.5)!important;
-		}
-		.name-back input{
-			background-color: transparent;
-			color: black;
-			font-weight: 800;
-		}
-		.ocupation-back{
-			background-color: rgba(72,176,247,0.5)!important;
-		}
-		.ocupation-back input{
-			background-color: transparent;
-			color: black;
-			font-weight: 800;
-		}
-	</style>
+<script src="{{ asset('/vendors/ckeditor/ckeditor.js') }}"></script>
+<style type="text/css">
+  .name-back{
+    background-color: rgba(72,176,247,0.5)!important;
+  }
+  .name-back input{
+    background-color: transparent;
+    color: black;
+    font-weight: 800;
+  }
+  .ocupation-back{
+    background-color: rgba(72,176,247,0.5)!important;
+  }
+  .ocupation-back input{
+    background-color: transparent;
+    color: black;
+    font-weight: 800;
+  }
+</style>
 @endsection
 
 @section('content')
 
-<?php if (!$mobile->isMobile()): ?>
-	<div class="container-fluid padding-25 sm-padding-10 table-responsive">
-		<div class="row">
-			<div class="col-md-12 text-center">
-				<h2>LISTADO DE <span class="font-w800">APARTAMENTOS</span></h2>
-			</div>
-                        <div class="col-md-12 text-center">
-                        @if($errors->any())
-                          <p class="alert alert-danger">{{$errors->first()}}</p>
-                        @endif
-                        @if (\Session::has('success'))
-                        <p class="alert alert-success">{!! \Session::get('success') !!}</p>
-                        @endif
-                        </div>
-			<div class="col-md-2 col-xs-12 push-20">
-				<input type="text" id="searchRoomByName" class="form-control" placeholder="Buscar..." />
-			</div>
-			<div class="col-md-1 col-xs-4 push-20">
-				<button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalNewSize">
-	                <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Crear tamaño</span>
-	            </button>
-			</div>
-			<div class="col-md-1 col-xs-4 push-20">
-				<button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalNewTypeApto">
-	                <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Tipo Apto.</span>
-	            </button>
-			</div>
-			<div class="col-md-1 col-xs-4 push-20">
-				<button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalNewApto">
-	                <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Nuevo Apto.</span>
-	            </button>
-			</div>
-			
-			<div class="clearfix"></div>
-			<div class="row">
-				<div class="col-md-5 col-xs-12 content-table-rooms" style="max-height:960px; overflow-y: auto;">
-					@include('backend.rooms._tableRooms', ['rooms' => $rooms, 'roomsdesc' => $roomsdesc])
-				</div>
-				<div class="col-md-7 col-xs-12">
-					<div class="col-md-12 col-xs-12 push-20">
-						<div class="row contentUpdateForm" style="border: 2px dashed black;">
-							<div class="col-xs-12" style="">
-								<h2 class="text-center">
-									HAZ CLIC PARA CARGAR LOS DATOS DE UN APTO.
-								</h2>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-12 col-xs-12">
-						<div class="col-md-5 col-xs-12">
-						    <div class="row">
+<div class="container-fluid padding-25 sm-padding-10 table-responsive">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <h2>LISTADO DE <span class="font-w800">APARTAMENTOS</span></h2>
+    </div>
+    <div class="col-md-12 text-center">
+      @if($errors->any())
+      <p class="alert alert-danger">{{$errors->first()}}</p>
+      @endif
+      @if (\Session::has('success'))
+      <p class="alert alert-success">{!! \Session::get('success') !!}</p>
+      @endif
+    </div>
+    <div class="col-md-2 col-xs-12 push-20">
+      <input type="text" id="searchRoomByName" class="form-control" placeholder="Buscar..." />
+    </div>
+    <div class="col-md-1 col-xs-4 push-20">
+      <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalNewSize">
+        <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Crear tamaño</span>
+      </button>
+    </div>
+    <div class="col-md-1 col-xs-4 push-20">
+      <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalNewTypeApto">
+        <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Tipo Apto.</span>
+      </button>
+    </div>
+    <div class="col-md-1 col-xs-4 push-20">
+      <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalNewApto">
+        <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Nuevo Apto.</span>
+      </button>
+    </div>
 
-					        	<div class="col-xs-12 col-md-12 push-20">
-					        		<h3 class="text-center">
-					        			Reparto de Beneficios por tipo
-					        		</h3>
-					        	</div>
-						        		
-					        	<div class="col-md-12 col-xs-12">
-					        		<table class="table table-condensed table-hover">
-										<thead>
-											<th class="text-center bg-complete text-white font-s12">Tipo</th>
-											<th class="text-center bg-complete text-white font-s12">% Jorge</th>
-											<th class="text-center bg-complete text-white font-s12">% Jaime</th>
-										</thead>
-										<tbody>
-											<?php foreach ($typesApto as $typeApto): ?>
-												<?php if ( $typeApto->name != 'Propio'): ?>											
-													<tr>
-														<td><?php echo $typeApto->name ?></td>
-														<td>
-															<input class="percentage percentJorge-<?php echo $typeApto->id?>" type="text" name="Jorge" data-id="<?php echo $typeApto->id ?>" value="<?php echo $typeApto->PercentJorge?>" style="width: 100%;text-align: center;border-style: none none ">
-														</td>
-														<td>
-															<input class="percentage percentJaime-<?php echo $typeApto->id?>" type="text" name="Jaime" data-id="<?php echo $typeApto->id ?>" value="<?php echo $typeApto->PercentJaime?>" style="width: 100%;text-align: center;border-style: none none ">
-														</td>
-													</tr>
-												<?php endif ?>
-											<?php endforeach ?>
-										</tbody>
-					        		</table>
-					        	</div>
-						    </div>
-						</div>
-						<div class="col-md-7 col-xs-12" id="listUrl">
-							<?php $urls = \App\IcalImport::all(); ?>
-							@include('backend.rooms._listUrlByRoom', ['urls' => $urls])
-						</div>
-					    
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="clearfix"></div>
+    <div class="row">
+      <div class="col-md-5 col-xs-12 content-table-rooms" style="max-height:960px; overflow-y: auto;">
+        @include('backend.rooms._tableRooms', ['rooms' => $rooms, 'roomsdesc' => $roomsdesc])
+      </div>
+      <div class="col-md-7 col-xs-12 push-20">
+        <div class="row contentUpdateForm" style="border: 2px dashed black;">
+          <div class="col-xs-12 push-20" >
+            <h2 class="text-center">
+              HAZ CLIC PARA CARGAR LOS DATOS DE UN APTO.
+            </h2>
+          </div>
+        </div>
+        <div class="col-md-5 col-xs-12">
 
-<?php else: ?>
-	
-	<div class="container-fluid padding-25 sm-padding-10 table-responsive">
-		<div class="row">
-			<div class="col-md-12 text-center">
-				<h2>LISTADO DE <span class="font-w800">APARTAMENTOS</span></h2>
-			</div>
-			<div class="col-md-2 col-xs-12 push-20">
-				<input type="text" id="searchRoomByName" class="form-control" placeholder="Buscar..." />
-			</div>
-			<div class="col-md-1 col-xs-4 push-20">
-				<button class="btn btn-success btn-cons btn-xs" type="button" data-toggle="modal" data-target="#modalNewSize">
-	                <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Crear tamaño</span>
-	            </button>
-			</div>
-			<div class="col-md-1 col-xs-4 push-20">
-				<button class="btn btn-success btn-cons btn-xs" type="button" data-toggle="modal" data-target="#modalNewTypeApto">
-	                <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Tipo Apto.</span>
-	            </button>
-			</div>
-			<div class="col-md-1 col-xs-4 push-20">
-				<button class="btn btn-success btn-cons btn-xs" type="button" data-toggle="modal" data-target="#modalNewApto">
-	                <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Nuevo Apto.</span>
-	            </button>
-			</div>
-			<div class="row">
-				<div class="col-md-5 col-xs-12 content-table-rooms push-20" style="max-height: 680px; overflow-y: auto;">
-					@include('backend.rooms._tableRooms', ['rooms' => $rooms, 'roomsdesc' => $roomsdesc])
-				</div>
-				<div class="col-md-7 col-xs-12">
-					<div class="row push-20">
+              <div class="col-xs-12 col-md-12 push-20">
+                <h3 class="text-center">
+                  Reparto de Beneficios por tipo
+                </h3>
+              </div>
 
-						<div class="col-xs-12 contentUpdateForm" style="border: 2px dashed black; padding: 15px;">
-							<div class="col-xs-12" style="">
-								<h2 class="text-center">
-									HAZ CLIC PARA CARGAR LOS DATOS DE UN APTO.
-								</h2>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-5 col-xs-12">
-					    <div class="row">
+              <div class="col-md-12 col-xs-12">
+                <table class="table table-condensed table-hover">
+                  <thead>
+                  <th class="text-center bg-complete text-white font-s12">Tipo</th>
+                  <th class="text-center bg-complete text-white font-s12">% Jorge</th>
+                  <th class="text-center bg-complete text-white font-s12">% Jaime</th>
+                  </thead>
+                  <tbody>
+<?php foreach ($typesApto as $typeApto): ?>
+  <?php if ($typeApto->name != 'Propio'): ?>											
+                        <tr>
+                          <td><?php echo $typeApto->name ?></td>
+                          <td>
+                            <input class="percentage percentJorge-<?php echo $typeApto->id ?>" type="text" name="Jorge" data-id="<?php echo $typeApto->id ?>" value="<?php echo $typeApto->PercentJorge ?>" style="width: 100%;text-align: center;border-style: none none ">
+                          </td>
+                          <td>
+                            <input class="percentage percentJaime-<?php echo $typeApto->id ?>" type="text" name="Jaime" data-id="<?php echo $typeApto->id ?>" value="<?php echo $typeApto->PercentJaime ?>" style="width: 100%;text-align: center;border-style: none none ">
+                          </td>
+                        </tr>
+  <?php endif ?>
+<?php endforeach ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          <div class="col-md-7 col-xs-12" id="listUrl">
+<?php $urls = \App\IcalImport::all(); ?>
+            @include('backend.rooms._listUrlByRoom', ['urls' => $urls])
+          </div>
 
-				        	<div class="col-xs-12 col-md-12 push-20">
-				        		<h3 class="text-center">
-				        			Reparto de Beneficios por tipo
-				        		</h3>
-				        	</div>
-					        		
-				        	<div class="col-md-12 col-xs-12">
-				        		<table class="table table-condensed table-hover">
-									<thead>
-										<th class="text-center bg-complete text-white font-s12">Tipo</th>
-										<th class="text-center bg-complete text-white font-s12">% Jorge</th>
-										<th class="text-center bg-complete text-white font-s12">% Jaime</th>
-									</thead>
-									<tbody>
-										<?php foreach ($typesApto as $typeApto): ?>
-											<?php if ( $typeApto->name != 'Propio'): ?>											
-												<tr>
-													<td><?php echo $typeApto->name ?></td>
-													<td>
-														<input class="percentage percentJorge-<?php echo $typeApto->id?>" type="text" name="Jorge" data-id="<?php echo $typeApto->id ?>" value="<?php echo $typeApto->PercentJorge?>" style="width: 100%;text-align: center;border-style: none none ">
-													</td>
-													<td>
-														<input class="percentage percentJaime-<?php echo $typeApto->id?>" type="text" name="Jaime" data-id="<?php echo $typeApto->id ?>" value="<?php echo $typeApto->PercentJaime?>" style="width: 100%;text-align: center;border-style: none none ">
-													</td>
-												</tr>
-											<?php endif ?>
-										<?php endforeach ?>
-									</tbody>
-				        		</table>
-				        	</div>
-					    </div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-<?php endif ?>
+    </div>
+  </div>
+</div>
 
 
 <div class="modal fade slide-up in" id="modalFiles" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog modal-xs">
-		<div class="modal-content-wrapper">
-			<div class="modal-content">
-				<div class="block">
-					<div class="block-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14" style="font-size: 40px!important;color: black!important"></i>
-						</button>
-						<h2 class="text-center">
-							Subida de archivos
-						</h2>
-					</div>
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content-wrapper">
+      <div class="modal-content">
+        <div class="block">
+          <div class="block-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14" style="font-size: 40px!important;color: black!important"></i>
+            </button>
+            <h2 class="text-center">
+              Subida de archivos
+            </h2>
+          </div>
 
-					<div class="container-xs-height full-height">
-						<div class="row-xs-height">
-							<div class="modal-body col-xs-height col-middle text-center   ">
-								<div class="upload-body">
-								</div>
-							</div>
-						</div>
-					</div>
+          <div class="container-xs-height full-height">
+            <div class="row-xs-height">
+              <div class="modal-body col-xs-height col-middle text-center   ">
+                <div class="upload-body">
+                </div>
+              </div>
+            </div>
+          </div>
 
-				</div>
+        </div>
 
 
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
 </div>
 
 <div class="modal fade slide-up in" id="modalEmailing" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content-wrapper">
-			<div class="modal-content emailing"></div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content-wrapper">
+      <div class="modal-content emailing"></div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
 </div>
 
 <div class="modal fade slide-up in" id="modalNewSize" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content-wrapper">
-			<div class="modal-content">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100;">
-		            <i class="pg-close fs-20" ></i>
-		        </button>
-				<div class="panel-body">
-					<div class="panel panel-default" style="margin-top: 15px;">
-						<div class="panel-heading">
-							<div class="panel-title col-md-12">Tamaño de  Apartamento
-							</div>
-						</div>
-						<div class="panel-body">
-							<div class="col-md-6">
-								<form role="form"  action="{{ url('/admin/apartamentos/create-size') }}" method="post">
-									<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-									<div class="input-group transparent">
-										<span class="input-group-addon">
-											<i class="fa fa-user"></i>
-										</span>
-										<input type="text" class="form-control" name="name" placeholder="nombre" required="" aria-required="true" aria-invalid="false">
-									</div>
-									<br>
-									<div class="input-group">
-										<button class="btn btn-complete" type="submit">Guardar</button>
-									</div>
-								</form>
-							</div>
-							<div class="col-md-6">
-								<?php foreach ($sizes as $size): ?>
-									<?php echo $size->name ?><br>
-								<?php endforeach ?>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content-wrapper">
+      <div class="modal-content">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100;">
+          <i class="pg-close fs-20" ></i>
+        </button>
+        <div class="panel-body">
+          <div class="panel panel-default" style="margin-top: 15px;">
+            <div class="panel-heading">
+              <div class="panel-title col-md-12">Tamaño de  Apartamento
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="col-md-6">
+                <form role="form"  action="{{ url('/admin/apartamentos/create-size') }}" method="post">
+                  <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                  <div class="input-group transparent">
+                    <span class="input-group-addon">
+                      <i class="fa fa-user"></i>
+                    </span>
+                    <input type="text" class="form-control" name="name" placeholder="nombre" required="" aria-required="true" aria-invalid="false">
+                  </div>
+                  <br>
+                  <div class="input-group">
+                    <button class="btn btn-complete" type="submit">Guardar</button>
+                  </div>
+                </form>
+              </div>
+              <div class="col-md-6">
+                <?php foreach ($sizes as $size): ?>
+  <?php echo $size->name ?><br>
+<?php endforeach ?>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
 </div>
 
 <div class="modal fade slide-up in" id="modalNewTypeApto" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content-wrapper">
-			<div class="modal-content">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100;">
-		            <i class="pg-close fs-20" ></i>
-		        </button>
-				<div class="panel-body">
-					<div class="panel panel-default" style="margin-top: 15px;">
-						<div class="panel-heading">
-							<div class="panel-title col-md-12">Tipo de  Apartamento
-							</div>
-						</div>
-						<div class="panel-body">
-							<div class="col-md-6">
-								<form role="form"  action="{{ url('/admin/apartamentos/create-type') }}" method="post">
-									<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-									<div class="input-group transparent">
-										<span class="input-group-addon">
-											<i class="fa fa-user"></i>
-										</span>
-										<input type="text" class="form-control" name="name" placeholder="nombre" required="" aria-required="true" aria-invalid="false">
-									</div>
-									<br>
-									<div class="input-group">
-										<button class="btn btn-complete" type="submit">Guardar</button>
-									</div>
-								</form>
-							</div>
-							<div class="col-md-6">
-								<?php foreach ($types as $type): ?>
-									<?php echo $type->name ?><br>
-								<?php endforeach ?>
-							</div>
-						</div>
-					</div>
-				</div> 
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content-wrapper">
+      <div class="modal-content">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100;">
+          <i class="pg-close fs-20" ></i>
+        </button>
+        <div class="panel-body">
+          <div class="panel panel-default" style="margin-top: 15px;">
+            <div class="panel-heading">
+              <div class="panel-title col-md-12">Tipo de  Apartamento
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="col-md-6">
+                <form role="form"  action="{{ url('/admin/apartamentos/create-type') }}" method="post">
+                  <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                  <div class="input-group transparent">
+                    <span class="input-group-addon">
+                      <i class="fa fa-user"></i>
+                    </span>
+                    <input type="text" class="form-control" name="name" placeholder="nombre" required="" aria-required="true" aria-invalid="false">
+                  </div>
+                  <br>
+                  <div class="input-group">
+                    <button class="btn btn-complete" type="submit">Guardar</button>
+                  </div>
+                </form>
+              </div>
+              <div class="col-md-6">
+                <?php foreach ($types as $type): ?>
+  <?php echo $type->name ?><br>
+<?php endforeach ?>
+              </div>
+            </div>
+          </div>
+        </div> 
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
 </div>
 
 <div class="modal fade slide-up in" id="modalNewApto" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content-wrapper">
-			<div class="modal-content">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100;">
-		            <i class="pg-close fs-20" ></i>
-		        </button>
-				<div class="panel-body">
-					<div class="panel panel-default" style="margin-top: 15px;">
-						<div class="panel-heading">
-							<div class="panel-title col-md-12">
-								Agregar Apartamento
-							</div>
-						</div>
-						<form role="form"  action="{{ url('/admin/apartamentos/create') }}" method="post">
-							<div class="panel-body">
-								<div class="col-md-12">
-									<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-									<div>
-										<div class="input-group transparent">
-											<span class="input-group-addon">
-												<i class="fa fa-user"></i>
-											</span>
-											<input type="text" class="form-control" name="name" placeholder="Nick" required="" aria-required="true" aria-invalid="false">
-										</div>
-										<br>
-										<div class="input-group transparent">
-											<span class="input-group-addon">
-												<i class="pg-home"></i>
-											</span>
-											<input type="text" class="form-control" name="nameRoom" placeholder="Piso" required="" aria-required="true" aria-invalid="false">
-										</div>
-										<br>
-										<div class="input-group transparent">
-											<div class="col-md-6">
-												<span class="input-group-addon">
-													<i class="pg-minus_circle"></i>
-												</span>
-												<input type="text" class="form-control" name="minOcu" placeholder="Minima ocupacion" required="" aria-required="true" aria-invalid="false">
-											</div>
-											<div class="col-md-6">
-												<span class="input-group-addon">
-													<i class="pg-plus_circle"></i>
-												</span>
-												<input type="text" class="form-control" name="maxOcu" placeholder="Maxima ocupacion" required="" aria-required="true" aria-invalid="false">
-											</div>
-										</div>
-										<br>
-										<div class="input-group transparent" style="width: 45%">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content-wrapper">
+      <div class="modal-content">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100;">
+          <i class="pg-close fs-20" ></i>
+        </button>
+        <div class="panel-body">
+          <div class="panel panel-default" style="margin-top: 15px;">
+            <div class="panel-heading">
+              <div class="panel-title col-md-12">
+                Agregar Apartamento
+              </div>
+            </div>
+            <form role="form"  action="{{ url('/admin/apartamentos/create') }}" method="post">
+              <div class="panel-body">
+                <div class="col-md-12">
+                  <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                  <div>
+                    <div class="input-group transparent">
+                      <span class="input-group-addon">
+                        <i class="fa fa-user"></i>
+                      </span>
+                      <input type="text" class="form-control" name="name" placeholder="Nick" required="" aria-required="true" aria-invalid="false">
+                    </div>
+                    <br>
+                    <div class="input-group transparent">
+                      <span class="input-group-addon">
+                        <i class="pg-home"></i>
+                      </span>
+                      <input type="text" class="form-control" name="nameRoom" placeholder="Piso" required="" aria-required="true" aria-invalid="false">
+                    </div>
+                    <br>
+                    <div class="input-group transparent">
+                      <div class="col-md-6">
+                        <span class="input-group-addon">
+                          <i class="pg-minus_circle"></i>
+                        </span>
+                        <input type="text" class="form-control" name="minOcu" placeholder="Minima ocupacion" required="" aria-required="true" aria-invalid="false">
+                      </div>
+                      <div class="col-md-6">
+                        <span class="input-group-addon">
+                          <i class="pg-plus_circle"></i>
+                        </span>
+                        <input type="text" class="form-control" name="maxOcu" placeholder="Maxima ocupacion" required="" aria-required="true" aria-invalid="false">
+                      </div>
+                    </div>
+                    <br>
+                    <div class="input-group transparent" style="width: 45%">
 
-										</div>
-										<br>
-										<div class="input-group">
-											<span class="input-group-addon">
-												Propietario
-											</span>
-											<select class="form-control minimal" name="owner">
-												<option></option>
-												<?php foreach (\App\User::whereIn('role',['admin', 'subadmin', 'propietario'])->get() as $owner): ?>
-													<option value="<?php echo $owner->id ?>"><?php echo $owner->name ?></option>
-												<?php endforeach ?>
-											</select>
-										</div>
-										<br>
-										<div class="input-group">
-											<span class="input-group-addon">
-												Tipo de apartamento
-											</span>
-											<select class="form-control minimal" name="type">
-												<option></option>
-												<?php foreach ($types as $type): ?>
-													<option value="<?php echo $type->id ?>"><?php echo $type->name ?></option>
-												<?php endforeach ?>
-											</select>
-										</div>
-										<br>
-										<div class="input-group">
-											<span class="input-group-addon">
-												Tamaño de apartamento
-											</span>
-											<select class="form-control minimal" name="sizeRoom">
-												<option></option>
-												<?php foreach ($sizes as $size): ?>
-													<option value="<?php echo $size->id ?>"><?php echo $size->name ?></option>
-												<?php endforeach ?>
-											</select>
-										</div>
-										<br>
-										<div class="input-group">
-											<label class="inline">Lujo</label>
-											<input type="checkbox" name="luxury" data-init-plugin="switchery" data-size="small" data-color="primary" checked="checked" />
-										</div>   
-									</div>
-									<br>
-									<div class="input-group">
-										<button class="btn btn-complete" type="submit">Guardar</button>
-									</div>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
+                    </div>
+                    <br>
+                    <div class="input-group">
+                      <span class="input-group-addon">
+                        Propietario
+                      </span>
+                      <select class="form-control minimal" name="owner">
+                        <option></option>
+                        <?php foreach (\App\User::whereIn('role', ['admin', 'subadmin', 'propietario'])->get() as $owner): ?>
+                          <option value="<?php echo $owner->id ?>"><?php echo $owner->name ?></option>
+<?php endforeach ?>
+                      </select>
+                    </div>
+                    <br>
+                    <div class="input-group">
+                      <span class="input-group-addon">
+                        Tipo de apartamento
+                      </span>
+                      <select class="form-control minimal" name="type">
+                        <option></option>
+                        <?php foreach ($types as $type): ?>
+                          <option value="<?php echo $type->id ?>"><?php echo $type->name ?></option>
+<?php endforeach ?>
+                      </select>
+                    </div>
+                    <br>
+                    <div class="input-group">
+                      <span class="input-group-addon">
+                        Tamaño de apartamento
+                      </span>
+                      <select class="form-control minimal" name="sizeRoom">
+                        <option></option>
+                        <?php foreach ($sizes as $size): ?>
+                          <option value="<?php echo $size->id ?>"><?php echo $size->name ?></option>
+<?php endforeach ?>
+                      </select>
+                    </div>
+                    <br>
+                    <div class="input-group">
+                      <label class="inline">Lujo</label>
+                      <input type="checkbox" name="luxury" data-init-plugin="switchery" data-size="small" data-color="primary" checked="checked" />
+                    </div>   
+                  </div>
+                  <br>
+                  <div class="input-group">
+                    <button class="btn btn-complete" type="submit">Guardar</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+  
+  <div class="modal fade slide-up in" id="modalTexts" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content-wrapper">
+      <div class="modal-content">
+        <div class="block">
+          <div class="block-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14" style="font-size: 40px!important;color: black!important"></i>
+            </button>
+            <h2 class="text-center">Descripción Apto</h2>
+          </div>
+          <div class="container-xs-height full-height" id="error_apto">
+            <p class="alert alert-danger"></p>
+          </div>
+          <div class="container-xs-height full-height" id="content_apto">
+            <h3 id="name_apto" class="text-center"></h3>
+              <form enctype="multipart/form-data" action="{{ url('/admin/aptos/edit-room-descript') }}" method="POST">
+                <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                <input type="hidden" name="room" id="room"  value="">
+                <div class="form-group col-md-12">
+                  <label for="Nombre">Descripción</label>
+                  <textarea class="" name="apto_descript" id="apto_descript" rows="10" cols="80"></textarea>
+                </div>
+                <div class="form-group col-md-12">
+                  <input type="submit" value="Enviar" class="btn btn-primary" />
+                </div>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
 </div>
 
 <div class="modal fade slide-up in" id="modalPercentApto" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content-wrapper">						
-			<div class="modal-content">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100;">
-		            <i class="pg-close fs-20" ></i>
-		        </button>
-				<div class="percent-body">
-					
-				</div>
-			</div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content-wrapper">						
+      <div class="modal-content">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100;">
+          <i class="pg-close fs-20" ></i>
+        </button>
+        <div class="percent-body">
+
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
 </div>
 
 <form role="form">
-    <div class="form-group form-group-default required" style="display: none">
-        <label class="highlight">Message</label>
-        <input type="text" hidden="" class="form-control notification-message" placeholder="Type your message here" value="This notification looks so perfect!" required>
-    </div>
-    <button class="btn btn-success show-notification hidden" id="boton">Show</button>
+  <div class="form-group form-group-default required" style="display: none">
+    <label class="highlight">Message</label>
+    <input type="text" hidden="" class="form-control notification-message" placeholder="Type your message here" value="This notification looks so perfect!" required>
+  </div>
+  <button class="btn btn-success show-notification hidden" id="boton">Show</button>
 </form>
-	
+
 
 @endsection
 
@@ -482,62 +428,98 @@
 
 <script type="text/javascript">
 
-	$(document).ready(function() {
+$(document).ready(function () {
 
-		$('.btn-emiling').click(function(event) {
-			var id = $(this).attr('data-id');
-			$('.modal-content.emailing').empty().load('/admin/apartamentos/email/'+id);
-		});
+  $('.btn-emiling').click(function (event) {
+    var id = $(this).attr('data-id');
+    $('.modal-content.emailing').empty().load('/admin/apartamentos/email/' + id);
+  });
 
-		$('.percentage').change(function(event) {
+  $('.percentage').change(function (event) {
 
-			
-			var id = $(this).attr('data-id');
-			var tipo = $(this).attr('name');
-			var percent = $(this).val();
 
-			$.get('/admin/apartamentos/update-Percent', {  id: id, tipo: tipo, percent: percent}, function(data) {
-				$('.notification-message').val(data);
-				$("#boton").click();
-	            setTimeout(function(){ 
-	                $('.alert-info .close').trigger('click');
-	                 }, 1500); 
+    var id = $(this).attr('data-id');
+    var tipo = $(this).attr('name');
+    var percent = $(this).val();
 
-			});
+    $.get('/admin/apartamentos/update-Percent', {id: id, tipo: tipo, percent: percent}, function (data) {
+      $('.notification-message').val(data);
+      $("#boton").click();
+      setTimeout(function () {
+        $('.alert-info .close').trigger('click');
+      }, 1500);
 
-		});
+    });
 
-		<?php if (!$mobile->isMobile()): ?>
-			$('.aptos').click(function(event) {
-				var id = $(this).attr('data-id');
+  });
 
-				$.get('/admin/rooms/getUpdateForm', {id: id}, function(data) {
-					$('.contentUpdateForm').empty().append(data)
-				});
-			});
-		<?php else: ?>
-			$('.aptos').click(function(event) {
-				var id = $(this).attr('data-id');
+<?php if (!$mobile->isMobile()): ?>
+    $('.aptos').click(function (event) {
+      var id = $(this).attr('data-id');
 
-				$.get('/admin/rooms/getUpdateForm', {id: id}, function(data) {
-					$('.contentUpdateForm').empty().append(data);
-					$('html,body').animate({
-					        scrollTop: $(".contentUpdateForm").offset().top},
-			        'slow');
-				});
-			});
-		<?php endif ?>
+      $.get('/admin/rooms/getUpdateForm', {id: id}, function (data) {
+        $('.contentUpdateForm').empty().append(data)
+      });
+    });
+<?php else: ?>
+    $('.aptos').click(function (event) {
+      var id = $(this).attr('data-id');
 
-		$('#searchRoomByName').keyup(function(event) {
-            var searchString = $(this).val();
+      $.get('/admin/rooms/getUpdateForm', {id: id}, function (data) {
+        $('.contentUpdateForm').empty().append(data);
+        $('html,body').animate({
+          scrollTop: $(".contentUpdateForm").offset().top},
+                'slow');
+      });
+    });
+<?php endif ?>
 
-            $.get('/admin/rooms/search/searchByName', { searchString: searchString}, function(data) {
+  $('#searchRoomByName').keyup(function (event) {
+    var searchString = $(this).val();
 
-                $('.content-table-rooms').empty().append(data);
-                
-            });
+    $.get('/admin/rooms/search/searchByName', {searchString: searchString}, function (data) {
+
+      $('.content-table-rooms').empty().append(data);
+
+    });
+  });
+  
+  CKEDITOR.replace('apto_descript',
+          {
+            toolbar:
+                    [
+            { name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
+            { name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
+            { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv',
+                '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ] },
+            { name: 'links', items : [ 'Link','Unlink','Anchor' ] },
+            '/',
+            { name: 'styles', items : [ 'Styles','Format','Font','FontSize' ] },
+            { name: 'colors', items : [ 'TextColor','BGColor' ] },
+            { name: 'tools', items : [ 'Maximize', 'ShowBlocks','-','About' ] }
+                    ]
+          });
+          
+  $('.editAptoText').click(function (event) {
+    var id = $(this).data('id');
+    $('#error_apto').hide();
+    $('#content_apto').hide();
+    $.get('/admin/aptos/edit-room-descript/' + id, function (data) {
+      if ( data.result == 'ok'){
+        $('#content_apto').show();
+        $('#room').val(id);
+        $('#name_apto').text(data.name);
+        CKEDITOR.instances.apto_descript.setData(data.text, function () {
+          this.checkDirty();
         });
+      } else {
+        $('#error_apto').show();
+        $('#error_apto').find('p').text(data.msg);
+//        window.show_notif('Error','error',data.msg);
+      }
+    });
+  });
 
-	});
+});
 </script>
 @endsection
