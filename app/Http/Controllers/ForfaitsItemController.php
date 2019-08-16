@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\ForfaitsItem;
+use App\ForfaitsUser;
 use App\Http\Requests;
 
 class ForfaitsItemController extends Controller
@@ -60,6 +61,26 @@ class ForfaitsItemController extends Controller
     return redirect()->back()->withErrors(['Forfaits no encontrado']);
    
   }
+  public function loadComment(Request $req) {
+    
+    $id = $req->input('item_id', null);
+    if ($id){
+      $obj = ForfaitsUser::find($id);
+      $obj->more_info = $req->input('more_info', null);
+      $obj->save();
+      return redirect()->back()->with('success', 'Comentario Guardado'); 
+    }
+    return redirect()->back()->withErrors(['Forfaits no encontrado']);
+   
+  }
+  
+  public function getBookingFF($bookingID) {
+    
+   
+     
+    return $response;
+                
+  }
   /*******************************/
   /*******       API      *******/
   /*****************************/
@@ -77,7 +98,225 @@ class ForfaitsItemController extends Controller
   }
 
 
+  private function getDays($start,$end){
+    $d_start = strtotime($start); 
+    $d_end = strtotime($end); 
+    $monToFr = 0;
+    $satOrSun = 0;
 
+    for($d_start; $d_start<=$d_end; $d_start=strtotime('+1 day ' . date('Y-m-d',$d_start))){ 
+      $day = date('N',$d_start);
+      if ($day<6){
+        $monToFr++;
+      } else {
+        $satOrSun++;
+      }
+    } 
+    return ['monToFr'=>$monToFr,'satOrSun'=>$satOrSun];
+  }
+
+  public function getCart(Request $req, $returnJson=true) {
+    $totalItems = 0;
+    
+    $materials  = $req->input('materials', null);
+    $classes    = $req->input('classes', null);
+    $forfaits   = $req->input('forfaits', null);
+    $error_1 = $error_2 = $error_3 = array();
+    $totalPrice = 0;
+    $totalForf = 0;
+    $totalMat = 0;
+    $totalClas = 0;
+    /** @todo enviar info a ForfaitExpress */
+    if ($materials){
+      foreach ($materials as $k=>$v){
+        if (isset($v['item']) && isset($v['item']['item_key'])){
+          
+          $itemKey = $v['item']['item_key'];
+          $objIten = ForfaitsItem::where('item_key',$itemKey)->first();
+          if ($objIten){
+            
+            $nro = isset($v['nro']) ? intval($v['nro']) : 0;
+            $days = $this->getDays($v['date_start'], $v['date_end']);
+            
+            if ( isset($days['monToFr']) && isset($days['monToFr']) ){
+              $price = ( $days['monToFr'] * $objIten->regular_price ) + ( $days['satOrSun'] * $objIten->special_price ); 
+              $price = $price * $nro;
+              $totalMat += $price;
+              $materials[$k]['total'] = $price;
+              $totalItems++;
+            }
+            
+          } else {
+            $error_1[] = 'Item no encontrado';
+          }
+          
+        } else {
+          $error_1[] = 'Item no encontrado';
+        }
+        
+      }
+    }
+    
+    if ($classes){
+      foreach ($classes as $k=>$v){
+        if (isset($v['item']) && isset($v['item']['item_key'])){
+          
+          $itemKey = $v['item']['item_key'];
+          $objIten = ForfaitsItem::where('item_key',$itemKey)->first();
+          if ($objIten){
+            
+            $nro = isset($v['nro']) ? intval($v['nro']) : 0;
+            $hours = isset($v['hours']) ? intval($v['hours']) : 1;
+            $day = date('N',strtotime($v['date_start']));
+            if ( $day > 0 && $day < 8 ){
+              if ($day<6){
+                $price = $objIten->regular_price;
+              } else {
+                $price = $objIten->special_price;
+              }
+
+              $price = $price * $hours * $nro;
+              $totalMat += $price;
+              $classes[$k]['total'] = $price;
+              $totalItems++;
+            }
+            
+          } else {
+            $error_1[] = 'Item no encontrado';
+          }
+          
+        } else {
+          $error_1[] = 'Item no encontrado';
+        }
+        
+      }
+    }
+    
+    $totalPrice = $totalForf+$totalMat+$totalClas;
+    $result = [
+        'status'    => 'ok',
+        'totalItems'=> $totalItems,
+        'materials' => $materials,
+        'forfaits'  => $forfaits,
+        'classes'   => $classes,
+        'error_1'   => $error_1,
+        'error_2'   => $error_2,
+        'error_3'   => $error_3,
+        'totalForf'   => $totalForf,
+        'totalMat'   => $totalMat,
+        'totalClas'   => $totalClas,
+        'totalPrice'   => $totalPrice,
+    ];
+    if ($returnJson)
+      return response()->json($result);
+    
+    return $result;
+   
+  }
+  
+  public function bookingData($bookingID,$clientID,$returnJson = true) {
+    $result = [
+      'user_name' => '',
+      'user_email' => '',
+      'user_phone' => '',
+      'apto' => '',
+      'start' => '',
+      'finish' => '',
+      'key'   => [$bookingID,$clientID]
+    ];
+    
+    $bookingID = desencriptID($bookingID);
+    $clientID = desencriptID($clientID);
+    if (is_numeric($bookingID)){
+      $book = \App\Book::find($bookingID);
+      /** @todo: control de que ya no tenga un Forfaits */
+      if ($book){
+        if ($book->customer_id == $clientID){
+          $client = $book->customer()->first();
+          if ($client){
+            $result['user_name'] = $client->name;
+            $result['user_email'] = $client->email;
+            $result['user_phone'] = $client->phone;
+          }
+          $room = $book->room()->first();
+          $result['apto'] = ($room->luxury) ? $room->sizeRooms->name . " - LUJO" : $room->sizeRooms->name . " - ESTANDAR";
+          $result['start'] = $book->finish;
+          $result['finish'] = $book->finish;
+      }
+    }}
+    if ($returnJson){
+      return response()->json($result);
+    }
+    
+    return $result;
+  }
+  
+  
+  public function checkout(Request $req) {
+    $cart = $this->getCart( $req, false);
+    /* materials : this.mat_added,
+          classes   : this.classes_added,
+          forfaits  : this.forfaits,
+          user      : this.userInfo*/
+    
+    
+    $user = $req->input('user', null); 
+    $userForm = $req->input('userForm', null); 
+    if ($user && $userForm && $cart){
+      if (isset($user['key']) || true){
+        $bookingKey = isset($user['key'][0]) ? ($user['key'][0]) : null;
+        $clientKey = isset($user['key'][1]) ? ($user['key'][1]) : null;
+        
+        $bookingKey = 'MTGS';
+        $clientKey = 'AZJS';
+        $bookingID = desencriptID($bookingKey);
+        $clientID = desencriptID($clientKey);
+    
+        
+        if (is_numeric($bookingID) && is_numeric($clientID)){
+          $book = \App\Book::find($bookingID);
+          /** @todo: control de que ya no tenga un Forfaits */
+          if ($book){
+            if ($book->customer_id == $clientID){
+                /** BEGIN: save booking **/
+                
+                           
+                $forfaitItem = new ForfaitsUser();
+                $forfaitItem->book_id = $bookingID;
+                $forfaitItem->room_id = $book->room_id;
+                $forfaitItem->cli_id = $book->customer_id;
+                $forfaitItem->name  = isset($user['name']) ? $user['name'] : null;
+                $forfaitItem->email = isset($user['email']) ? $user['namemaile'] : null;
+                $forfaitItem->phone = isset($user['phone']) ? $user['phone'] : null;
+                $forfaitItem->forfait_data = json_encode($cart['forfaits']);
+                $forfaitItem->materials_data = json_encode($cart['materials']);
+                $forfaitItem->classes_data = json_encode($cart['classes']);
+                $forfaitItem->forfait_total = $cart['totalForf'];
+                $forfaitItem->materials_total = $cart['totalMat'];
+                $forfaitItem->classes_total = $cart['totalClas'];
+                $forfaitItem->total = $cart['totalPrice'];
+                $forfaitItem->status = 'not_payment';
+                $forfaitItem->save();
+                /** END: save booking **/
+
+                $return = $cart;
+                $return['userInfo'] = $this->bookingData($bookingKey,$clientKey,false);
+                  
+                return response()->json($return);
+              
+            }
+          }
+        }
+    
+      }
+    }
+    
+    return response()->json(['error']);
+  }
+
+  /*****************************************************************/
+  /********     BORRAR                                  ************/
+  /*****************************************************************/
 
   public function createItems() {
     $items_material = array(
@@ -263,7 +502,7 @@ class ForfaitsItemController extends Controller
 foreach ($items_material as $cat=>$item){
   foreach ($item['item'] as $i){
     $obj = new ForfaitsItem();
-    $obj->id = $i['id'];
+    $obj->item_key = $i['id'];
     $obj->name = $i['name'];
     $obj->type = $i['type'];
     $obj->equip = $i['equip'];

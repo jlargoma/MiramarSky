@@ -12,24 +12,24 @@ class AddForfaitUsersItems extends Migration
      */
     public function up()
     {
-      Schema::create('forfaits_items_users', function (Blueprint $table) {
-          $table->bigIncrements('id');
-          $table->integer('item_id')->unsigned();
-          $table->foreign('item_id')->references('id')->on('forfaits_items');
-          $table->integer('user_id')->unsigned();
-          $table->foreign('user_id')->references('id')->on('forfaits_users');
-          $table->integer('type');
-          $table->integer('quantity');
-          $table->integer('years');
-          $table->date('date_start')->nullable();
-          $table->date('date_end');
-          $table->string('status');
-          $table->string('price');
-          $table->integer('guestNumber')->nullable();
-          $table->boolean('sentSMS')->nullable();
-          $table->text('long_data');
-          $table->timestamps();
-      });
+//      Schema::create('forfaits_items_users', function (Blueprint $table) {
+//          $table->bigIncrements('id');
+//          $table->integer('item_id')->unsigned();
+//          $table->foreign('item_id')->references('id')->on('forfaits_items');
+//          $table->integer('user_id')->unsigned();
+//          $table->foreign('user_id')->references('id')->on('forfaits_users');
+//          $table->integer('type');
+//          $table->integer('quantity');
+//          $table->integer('years');
+//          $table->date('date_start')->nullable();
+//          $table->date('date_end');
+//          $table->string('status');
+//          $table->string('price');
+//          $table->integer('guestNumber')->nullable();
+//          $table->boolean('sentSMS')->nullable();
+//          $table->text('long_data');
+//          $table->timestamps();
+//      });
     }
 
     /**
@@ -39,6 +39,6 @@ class AddForfaitUsersItems extends Migration
      */
     public function down()
     {
-      Schema::drop('forfaits_items_users');
+//      Schema::drop('forfaits_items_users');
     }
 }

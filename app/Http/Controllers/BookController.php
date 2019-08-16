@@ -2140,18 +2140,59 @@ class BookController extends AppController
 	{
 
 		$ff_request = [];
-
-		$book     = \App\Book::find($request_id);
+                if ($request_id == 388){
+		$book     = \App\Book::find(38);
 		$customer = \App\Customers::find($book->customer_id);
 
+                
+               
+    
 		if ($book->ff_request_id != NULL)
 		{
 			$ff_request = \App\Solicitudes::find($book->ff_request_id);
 		}
 
-		return view('/backend/planning/listados/_ff_popup')->with('book', $book)
+		return view('/backend/planning/listados/_ff_popup_1')->with('book', $book)
 		                                                   ->with('customer', $customer)
 		                                                   ->with('ff_request', $ff_request);
+                }
+                $book     = \App\Book::find($request_id);
+		$customer = \App\Customers::find($book->customer_id);
+
+                $forfaitItem = \App\ForfaitsUser::where('book_id',$request_id)->first();
+                $ff_data = [
+                    'forfait_data' => [],
+                    'materials_data' => [],
+                    'classes_data' => [],
+                    'forfait_total' => null,
+                    'materials_total' => null,
+                    'classes_total' => null,
+                    'total' => null,
+                    'status' => null,
+                    'created' => null,
+                    'more_info' => null,
+                    'id' => null,
+
+                ];
+                if ($forfaitItem){
+                  $ff_data = [
+                    'forfait_data' => json_decode($forfaitItem->forfait_data),
+                    'materials_data' => json_decode($forfaitItem->materials_data),
+                    'classes_data' => json_decode($forfaitItem->classes_data),
+                    'forfait_total' => $forfaitItem->forfait_total,
+                    'materials_total' => $forfaitItem->materials_total,
+                    'classes_total' => $forfaitItem->classes_total,
+                    'total' => $forfaitItem->total,
+                    'status' => $forfaitItem->status,
+                    'created' => $forfaitItem->created_at,
+                    'more_info' => $forfaitItem->more_info,
+                    'id' => $forfaitItem->id,
+                  ];
+                }
+                
+		return view('/backend/planning/listados/_ff_popup')->with('book', $book)
+		                                                   ->with('customer', $customer)
+		                                                   ->with('ff_data', $ff_data);
 	}
 
 	public static function updateBookFFStatus(Request $request, $request_id, $status)
