@@ -46,11 +46,11 @@
 	<div class="row text-center">
 		<p class="white push-10 font-s18 font-w300 text-center" style="line-height: 1">
 			Precio total de la solicitud de reserva<br>
-			@if($setting)
+			@if($setting and !empty($setting->value))
                 <span class="font-w300" style="font-size: 32px; text-decoration:line-through; "><?php echo number_format($total ,0,'','.') ?>€</span><br>
                 <span class="font-w800" style="font-size: 48px;"><?php echo number_format(($total - $setting->value) ,0,'','.') ?>€</span>
 			@else
-                <span class="font-w300" style="font-size: 22px;"><?php echo number_format($total ,0,'','.') ?>€</span>
+                <span class="font-w800" style="font-size: 48px;"><?php echo number_format($total ,0,'','.') ?>€</span>
 			@endif
 		</p>
 	</div>
@@ -78,7 +78,7 @@
 				<?php else: ?>
 					<input type="hidden" name="type_luxury" value="2">
 				<?php endif; ?>
-                @if($setting)
+                @if($setting and !empty($setting->value))
                     <input type="hidden" name="discount" value="{{$setting->value}}">
                 @else
                     <input type="hidden" name="discount" value="0">

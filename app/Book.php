@@ -270,9 +270,9 @@ class Book extends Model
 					7,
 					8
 				])
-				                  ->where('id', '!=', $id_excluded)
-				                  ->orderBy('start', 'DESC')
-				                  ->get();
+                  ->where('id', '!=', $id_excluded)
+                  ->orderBy('start', 'DESC')
+                  ->get();
 
 				//\App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,7,8])->where('id','!=',$id_excluded)->get();
 

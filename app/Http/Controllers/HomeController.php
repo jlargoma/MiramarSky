@@ -97,14 +97,14 @@ class HomeController extends AppController
                 $aptoHeading       = "APTOS 3/4 DORMITORIOS LUJO";
                 $aptoHeadingMobile = "3DORM GRAN CAPACIDAD";
 
-				$typeApto = 6;
-				break;
-			default:
-				$room = \App\Rooms::where('nameRoom', $url)->first();
-				if ($room)
-				{
-					$aptoHeading       = ($room->luxury) ? $room->sizeRooms->name . " - LUJO" : $room->sizeRooms->name . " - ESTANDAR";
-					$aptoHeadingMobile = ($room->luxury) ? $room->sizeRooms->name . " - lujo" : $room->sizeRooms->name . " - estandar";
+                $typeApto = 6;
+                break;
+            default:
+                $room = \App\Rooms::where('nameRoom', $url)->first();
+                if ($room)
+                {
+                    $aptoHeading       = ($room->luxury) ? $room->sizeRooms->name . " - LUJO" : $room->sizeRooms->name . " - ESTANDAR";
+                    $aptoHeadingMobile = ($room->luxury) ? $room->sizeRooms->name . " - lujo" : $room->sizeRooms->name . " - estandar";
 
                     if ($room->sizeApto == 1 && $room->luxury == 0)
                     {
@@ -131,27 +131,28 @@ class HomeController extends AppController
         }
 
 
-                $galleries = \App\RoomsPhotos::getGalleries();
-		if (isset($galleries[$url]))
-		{
-                  $slides = \App\RoomsPhotos::where('gallery_key',$url)->orderBy('position')->get();
-                  $directory = '/img/miramarski/galerias/';
-		} else
-		{
-                  $slides = null;
-                  if ($room){
-                    $slides = \App\RoomsPhotos::where('room_id', $room->id)->orderBy('position')->get();
-                  }
-                  $directory = '';
+        $galleries = \App\RoomsPhotos::getGalleries();
+        if (isset($galleries[$url]))
+        {
+            $slides    = \App\RoomsPhotos::where('gallery_key', $url)->orderBy('position')->get();
+            $directory = '/img/miramarski/galerias/';
+        } else
+        {
+            $slides = null;
+            if ($room)
+            {
+                $slides = \App\RoomsPhotos::where('room_id', $room->id)->orderBy('position')->get();
+            }
+            $directory = '';
 
-		}
-		$aptos = [
-			'apartamento-lujo-gran-capacidad-sierra-nevada',
-			'apartamento-lujo-sierra-nevada',
-			'estudio-lujo-sierra-nevada',
-			'apartamento-standard-sierra-nevada',
-			'estudio-standard-sierra-nevada'
-		];
+        }
+        $aptos = [
+            'apartamento-lujo-gran-capacidad-sierra-nevada',
+            'apartamento-lujo-sierra-nevada',
+            'estudio-lujo-sierra-nevada',
+            'apartamento-standard-sierra-nevada',
+            'estudio-standard-sierra-nevada'
+        ];
 
 
         return view('frontend.pages._apartamento2', [
@@ -279,8 +280,7 @@ class HomeController extends AppController
 
         $contact = Mail::send(['html' => 'frontend.emails.ayuda'], ['data' => $data,], function ($message) use ($data) {
             $message->from($data['email'], $data['name']);
-            $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */
-            // $message->bcc('jlargo@mksport.es');
+            $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */ // $message->bcc('jlargo@mksport.es');
             // $message->bcc('jlargoma@gmail.com');
             $message->subject('Formulario de Ayudanos a Mejorar MiramarSKI');
         });
@@ -312,8 +312,7 @@ class HomeController extends AppController
 
         $contact = Mail::send(['html' => 'frontend.emails.propietario'], ['data' => $data,], function ($message) use ($data) {
             $message->from($data['email'], $data['name']);
-            $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */
-            // $message->bcc('jlargo@mksport.es');
+            $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */ // $message->bcc('jlargo@mksport.es');
             // $message->bcc('jlargoma@gmail.com');
             $message->subject('Formulario de Propietario MiramarSKI');
         });
@@ -346,8 +345,7 @@ class HomeController extends AppController
 
         $contact = Mail::send(['html' => 'frontend.emails.grupos'], ['data' => $data,], function ($message) use ($data) {
             $message->from($data['email'], $data['name']);
-            $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */
-            // $message->to('jbaz@daimonconsulting.com'); /* $data['email'] */
+            $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */ // $message->to('jbaz@daimonconsulting.com'); /* $data['email'] */
             // $message->bcc('jlargo@mksport.es');
             // $message->bcc('jlargoma@gmail.com');
             $message->subject('Formulario de Grupos MiramarSKI');
@@ -701,7 +699,7 @@ class HomeController extends AppController
         {
             //$roomAssigned = 115;
             $typeApto = "2 DORM Lujo";
-            $sizeRoom = 2;
+            $sizeRoom = 6;
             $limp     = (int) \App\Extras::find(1)->price;
         } elseif ($request->input('apto') == '2dorm' && $request->input('luxury') == 'no')
         {
@@ -712,8 +710,8 @@ class HomeController extends AppController
         } elseif ($request->input('apto') == 'estudio' && $request->input('luxury') == 'si')
         {
             //$roomAssigned = 138;
-            //$limp         = (int) \App\Extras::find(2)->price;
-            $sizeRoom = 1;
+            $limp         = (int) \App\Extras::find(2)->price;
+            $sizeRoom = 5;
             $typeApto = "Estudio Lujo";
         } elseif ($request->input('apto') == 'estudio' && $request->input('luxury') == 'no')
         {
