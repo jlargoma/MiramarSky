@@ -534,5 +534,105 @@ class ForfaitsItemController extends Controller
             ]);
     
   }
+  
+  public function sendBooking(Request $req) {
+    
+    $id = $req->input('item_id');
+    
+     
+    
+    
+    $oForfait = ForfaitsUser::find($id);
+    if (!$oForfait){
+      return redirect()->back()->withErrors(['Forfaits no encontrado']);
+    }
+    if ($oForfait->ffexpr_status == 1){
+      return redirect()->back()->withErrors(['ForfaitsExpress ya reservado']);
+    }
+    
+    
+    
+//    dd($oForfait);
+    $cliente = \App\Customers::find($oForfait->cli_id);
+    $forfait_data = json_decode($oForfait->forfait_data);
+    if (!($cliente && $forfait_data)){
+      return redirect()->back()->withErrors(['Forfait sin items']);
+    }
+    
+    
+    
+    $data = [
+      "forfaits" => [],
+      "extras" => [
+        "equipments" => [],
+        "classes" => []
+      ],
+      "skiResortId" => env('FORFAIT_RESORTID'),
+      "clientName" => $cliente->name,
+      "clientEmail" => $cliente->email,
+      "paymentMethodId" => 11,
+      "pickupPointId" => 5,
+      "pickupPointAddress" =>  env('FORFAIT_POINT_ADDRESS'),
+      "familyFormula" => FALSE,
+      "comments" => "",
+    ];
+     
+    foreach ($forfait_data as $ff_data){
+      $data['forfaits'][] = [
+        "age" => $ff_data->age,
+        "dateFrom" => $ff_data->dateFrom,
+        "dateTo" => $ff_data->dateTo
+      ];
+    }
+    $json = json_encode($data);
+    $curl = curl_init();
+    $endpoint = env('FORFAIT_ENDPOINT').'createbooking';
+    
+    $Bearer = env('FORFAIT_TOKEN');
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => $endpoint,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => $json,
+        CURLOPT_HTTPHEADER => array(
+            "Content-Type: application/json",
+            "Authorization: Bearer $Bearer"
+        ),
+    ));
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+    
+    curl_close($curl);
+    if ($err) {
+      return redirect()->back()->withErrors([$err]);
+    } else {
+      $r = json_decode($response);
+      if (isset($r->success)){
+        if ($r->success){
+        
+        if (isset($r->data->bookingNumber)){
+          $oForfait->ffexpr_bookingNumber = intval($r->data->bookingNumber);
+        }
+        
+        $oForfait->ffexpr_status = 1;
+        $oForfait->ffexpr_data = $oForfait->ffexpr_data.'|'.date('Y-m-d H:i').' '.$response;
+        $oForfait->save();
+        return redirect()->back()->with('success', 'Se ha reservado el item en ForfaitExpress'); 
+        } else {
+        
+          $oForfait->ffexpr_status = 2;
+          $oForfait->ffexpr_data = $oForfait->ffexpr_data.'|'.date('Y-m-d H:i').' '.$r->data->message;
+          $oForfait->save();
+          return redirect()->back()->withErrors($r->data->message);
+        }
+        
+      } else {
+        $oForfait->ffexpr_status = 2;
+        $oForfait->ffexpr_data = $oForfait->ffexpr_data.'|'.date('Y-m-d H:i').' '.$response;
+        $oForfait->save();
+        return redirect()->back()->withErrors('Error al enviar petisión ForfaitExpress');
+      }
+    }
+  }
 
 }

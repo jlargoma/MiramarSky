@@ -2,8 +2,8 @@
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
 $ff_status = [
+  'new' => 'Nuevo',  
   'not_payment' => 'No pagado',  
-  'not_forfait' => 'Forfait no pagado',  
   'payment' => 'Pagado',  
 ];
 ?>
@@ -84,6 +84,14 @@ form{
 @endsection
 
 @section('content')
+
+  @if($errors->any())
+  <p class="alert alert-danger">{{$errors->first()}}</p>
+  @endif
+  @if (\Session::has('success'))
+  <p class="alert alert-success">{!! \Session::get('success') !!}</p>
+  @endif
+  
 <h1>Detalles de la Reserva</h1>
 
 <div class="row">
@@ -124,6 +132,12 @@ form{
         if (isset($ff_data['status']) && isset($ff_status[$ff_data['status']])):
           echo $ff_status[$ff_data['status']];
         endif;
+        if (isset($ff_data['ffexpr_status']) && $ff_data['ffexpr_status'] == 1):
+          echo ' - ForfaitExpress reservado';
+        else:
+          echo ' - ForfaitExpress no reservado';
+        endif;
+          
         ?>
       </td>
     </tr>
@@ -135,6 +149,19 @@ form{
           echo date('d/m/Y H:i',strtotime($ff_data['created']));
         endif;
         ?>
+      </td>
+    </tr>
+    <tr>
+    <tr>
+      <th scope="row" >Booking Number (ForfaitExpress)</th>
+      <td>
+        {{$ff_data['bookingNumber']}}
+      </td>
+    </tr>
+    <tr>
+      <th scope="row" >Dirección de recogida</th>
+      <td>
+        {{$pickupPointAddress}}
       </td>
     </tr>
     <tr>
@@ -166,8 +193,18 @@ form{
   </form>
   @endif
 <div class="text-center">
-  <h3><a href="https://miramarski.com/forfait-new/{{encriptID($book->id)}}-{{encriptID($customer->id)}}" target="black">Nuevo Forfaits >> </a></h3>
+  <h3><a href="https://miramarski.com/forfait-new/{{encriptID($book->id)}}-{{encriptID($customer->id)}}" target="black">Pagina Forfaits >> </a></h3>
 </div>
+  @if($ff_data['id'] && $ff_data['ffexpr_status'] != 1)
+  <form method="POST" action="/admin/forfaits/sendBooking">
+    <input type="hidden" id="item_id" name="item_id" value="{{$ff_data['id']}}">
+    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+    <div class="text-center">
+      <p>Solicitar la reserva del forfaits en ForfaitsExpress</p>
+      <button type="submit" class="btn btn-primary" id="sendComments">enviar</button>
+    </div>
+  </form>
+  @endif
 
 
 <div class="cart-container">

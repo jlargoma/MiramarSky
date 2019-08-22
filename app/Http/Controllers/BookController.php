@@ -2173,6 +2173,8 @@ class BookController extends AppController
                     'created' => null,
                     'more_info' => null,
                     'id' => null,
+                    'ffexpr_status' =>null,
+                    'bookingNumber'=>null
 
                 ];
                 if ($forfaitItem){
@@ -2188,11 +2190,14 @@ class BookController extends AppController
                     'created' => $forfaitItem->created_at,
                     'more_info' => $forfaitItem->more_info,
                     'id' => $forfaitItem->id,
+                    'ffexpr_status' =>$forfaitItem->ffexpr_status,
+                    'bookingNumber' =>$forfaitItem->ffexpr_bookingNumber
                   ];
                 }
                 
 		return view('/backend/planning/listados/_ff_popup')->with('book', $book)
 		                                                   ->with('customer', $customer)
+		                                                   ->with('pickupPointAddress', env('FORFAIT_POINT_ADDRESS'))
 		                                                   ->with('ff_data', $ff_data);
 	}
 

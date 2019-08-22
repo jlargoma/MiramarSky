@@ -1224,6 +1224,7 @@ Route::post('/upd', 'ForfaitsItemController@update');
 Route::get('/createItems', 'ForfaitsItemController@createItems');
 Route::get('/getBookItems/{bookingID}', 'ForfaitsItemController@getBookingFF');
 Route::post('/loadComment', 'ForfaitsItemController@loadComment');
+Route::post('/sendBooking', 'ForfaitsItemController@sendBooking');
 });
 Route::get('/api/forfaits/class', 'ForfaitsItemController@api_getClasses');
 Route::get('/api/forfaits/categ', 'ForfaitsItemController@api_getCategories');
