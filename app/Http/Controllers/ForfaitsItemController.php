@@ -127,6 +127,43 @@ class ForfaitsItemController extends Controller
       return $response;
     }
   }
+  public function getForfaitSeasons() {
+    $skiResortId = env('FORFAIT_RESORTID');
+    $curl = curl_init();
+    $endpoint = env('FORFAIT_ENDPOINT').'getseasons';
+    $Bearer = env('FORFAIT_TOKEN');
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => $endpoint,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => array(
+            "Content-Type: application/json",
+            "Authorization: Bearer $Bearer"
+        ),
+    ));
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+    curl_close($curl);
+    if ($err) {
+      return ['success'=>false, 'data'=>$err];
+    } else {
+      $list = json_decode($response);
+      
+      if ($list->success){
+      foreach ($list->data->seasons as $lst){
+        if ($lst->skiResortId == $skiResortId){
+          $start = explode('/', $lst->startDate);
+          $end = explode('/', $lst->endDate);
+          return [
+              'startDate'=> $start[2].'-'.$start[1].'-'.$start[0],
+              'endDate'=>$end[2].'-'.$end[1].'-'.$end[0],
+                  ];
+        }
+      }
+      }
+     return ['success'=>false, 'data'=>'no dates'];
+    }
+  }
 
 
   private function getDays($start,$end){
@@ -215,13 +252,20 @@ class ForfaitsItemController extends Controller
       /** @todo enviar info a ForfaitExpress */
       $forfaitsObj = $this->getForfaitUser($usr_forfaits);
       $forfaitsObj = json_decode($forfaitsObj);
-//      var_dump($forfaitsObj); die;
-      if ($forfaitsObj->success){
-        $forfaits = $forfaitsObj->data->forfaits;
-        $totalForf = $forfaitsObj->data->totalPrice;
-        $totalItems++;
+      
+      if (isset($forfaitsObj->success)){
+        if ($forfaitsObj->success){
+          $forfaits = $forfaitsObj->data->forfaits;
+          $totalForf = $forfaitsObj->data->totalPrice;
+          $totalItems++;
+          if (is_array($forfaits) && count($forfaits)<1){
+            $error_1 = "Forfaits vacíos";
+          }
+        } else {
+          $error_1 = $forfaitsObj->data->message;
+        }
       } else {
-        $error_1 = $forfaitsObj->data->message;
+        $error_1 = "Forfaits no encontrado";
       }
     }
     
@@ -490,204 +534,5 @@ class ForfaitsItemController extends Controller
             ]);
     
   }
-  /*****************************************************************/
-  /********     BORRAR                                  ************/
-  /*****************************************************************/
 
-  public function createItems() {
-    $items_material = array(
-    'packs_clases' => array(
-        'name' => 'Packs clases',
-        'cols' => array('name'=>1,'type'=>1,'equip'=>1,'class'=>1),
-        'cnum' => 4,
-        'item' => array(
-            array(
-                'id' => 'PC01',
-                'name'=>'1 Pax',
-                'type'=>'Esquí',
-                'equip'=>'<ul><li>Esquís gama MEDIUM</li><li>Botas gama MEDIUM</li><li>Bastones Incluidos</li></ul>',
-                'class'=>'3 Clases Colectivas. Duración 2h/día.',
-            ),
-            array(
-                'id' => 'PC02',
-                'name'=>'3 Pax',
-                'type'=>'Esquí',
-                'equip'=>'<ul><li>Esquís gama MEDIUM</li><li>Botas gama MEDIUM</li><li>Bastones Incluidos</li></ul>',
-                'class'=>'2 Clases Colectivas. Duración 2h/día.',
-            ),
-            array(
-                'id' => 'PC03',
-                'name'=>'1 Pax',
-                'type'=>'Snow',
-                'equip'=>'<ul><li>Snowboard gama MEDIUM</li><li>Botas gama MEDIUM</li></ul>',
-                'class'=>'3 Clases Colectivas .Duración 2h/día.',
-            ),
-            array(
-                'id' => 'PC014',
-                'name'=>'2 Pax',
-                'type'=>'Snow',
-                'equip'=>'<ul><li>Snowboard gama MEDIUM</li><li>Botas gama MEDIUM</li></ul>',
-                'class'=>'2 Clases Colectivas .Duración 2h/día.',
-            ),
-          )
-    ),
-    'esqui' => array(
-        'name' => 'Esqui',
-        'cols' => array('name'=>1,'type'=>1,'equip'=>1,'class'=>0),
-        'cnum' => 3,
-        'item' => array(
-            array(
-                'id' => 'PE01',
-                'name'=>'Pack',
-                'type'=>'Adulto',
-                'equip'=>'Esquis, Botas, Bastones',
-                'class'=>null,
-            ),
-            array(
-                'id' => 'PE02',
-                'name'=>'Pack',
-                'type'=>'Niño',
-                'equip'=>'Esquis, Botas, Bastones',
-                'class'=>null,
-            ),
-            array(
-                'id' => 'PE03',
-                'name'=>'Esquís + bastones',
-                'type'=>'Adulto',
-                'equip'=>'Esquis, Bastones',
-                'class'=>null,
-            ),
-            array(
-                'id' => 'PE04',
-                'name'=>'Esquís + bastones',
-                'type'=>'Niño',
-                'equip'=>'Esquis, Bastones',
-                'class'=>null,
-            ),
-            array(
-                'id' => 'PE05',
-                'name'=>'Botas',
-                'type'=>'Adulto',
-                'equip'=>'Botas',
-                'class'=>null,
-            ),
-            array(
-                'id' => 'PE06',
-                'name'=>'Botas',
-                'type'=>'Niño',
-                'equip'=>'Botas',
-                'class'=>null,
-            ),
-           
-          )
-    ),
-    'snowboard' => array(
-        'name' => 'Snowboard',
-        'cols' => array('name'=>1,'type'=>1,'equip'=>1,'class'=>0),
-        'cnum' => 3,
-        'item' => array(
-            array(
-                'id' => 'SBOARD1',
-                'name'=>'Pack',
-                'type'=>'Adulto',
-                'equip'=>'Tabla de Snowboard , Botas',
-                'class'=>null,
-            ),
-            array(
-                'id' => 'SBOARD2',
-                'name'=>'Pack',
-                'type'=>'Niño',
-                'equip'=>'Tabla de Snowboard , Botas',
-                'class'=>null,
-            ),
-            array(
-                'id' => 'SBOARD3',
-                'name'=>'Tabla de Snowboard',
-                'type'=>'Adulto',
-                'equip'=>'Tabla de Snowboard',
-                'class'=>null,
-            ),
-            array(
-                'id' => 'SBOARD4',
-                'name'=>'Tabla de Snowboard',
-                'type'=>'Niño',
-                'equip'=>'Tabla de Snowboard',
-                'class'=>null,
-            ),
-            array(
-                'id' => 'SBOARD5',
-                'name'=>'Botas',
-                'type'=>'Adulto',
-                'equip'=>'Botas',
-                'class'=>null,
-            ),
-            array(
-                'id' => 'SBOARD6',
-                'name'=>'Botas',
-                'type'=>'Niño',
-                'equip'=>'Botas',
-                'class'=>null,
-            ),
-          
-          )
-    ),
-    'snowblade' => array(
-        'name' => 'Snowblade',
-        'cols' => array('name'=>1,'type'=>0,'equip'=>1,'class'=>0),
-        'cnum' => 2,
-        'item' => array(
-            array(
-                'id' => 'SBLADE1',
-                'name'=>'Pack',
-                'type'=>null,
-                'equip'=>'Tabla de Snowblade , Botas',
-                'class'=>null,
-            ),
-            array(
-                'id' => 'SBLADE2',
-                'name'=>'Snowblade',
-                'type'=>null,
-                'equip'=>'Tabla de Snowblade',
-                'class'=>null,
-            ),
-            )
-    ),
-    'cascos' => array(
-        'name' => 'Cascos',
-        'cols' => array('name'=>1,'type'=>0,'equip'=>1,'class'=>0),
-        'cnum' => 2,
-        'item' => array(
-            array(
-                'id' => 'CASCO1',
-                'name'=>'Casco Adulto',
-                'type'=>null,
-                'equip'=>'Casco para Adulto',
-                'class'=>null,
-            ),
-            array(
-                'id' => 'CASCO2',
-                'name'=>'Casco Niño',
-                'type'=>null,
-                'equip'=>'Casco para Niño',
-                'class'=>null,
-            ),
-            )
-    ),
-);
-    
-foreach ($items_material as $cat=>$item){
-  foreach ($item['item'] as $i){
-    $obj = new ForfaitsItem();
-    $obj->item_key = $i['id'];
-    $obj->name = $i['name'];
-    $obj->type = $i['type'];
-    $obj->equip = $i['equip'];
-    $obj->class = $i['class'];
-    $obj->status = 1;
-    $obj->cat = $cat;
-    $obj->save();
-          
-  }
-}
-  }
 }

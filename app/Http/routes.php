@@ -1234,3 +1234,4 @@ Route::post('/api/forfaits/forfaits', 'ForfaitsItemController@getForfaitUser');
 Route::get('/api/forfaits/bookingData/{bID}/{uID}', 'ForfaitsItemController@bookingData');
 Route::get('/api/forfaits/getCurrentCart/{bID}/{uID}', 'ForfaitsItemController@getCurrentCart');
 Route::post('/api/forfaits/sendConsult', 'ForfaitsItemController@sendEmail');
+Route::get('/api/forfaits/getSeasons', 'ForfaitsItemController@getForfaitSeasons');
