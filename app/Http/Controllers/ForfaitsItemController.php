@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\ForfaitsItem;
 use App\ForfaitsUser;
 use App\Http\Requests;
+use Illuminate\Support\Facades\Mail;
 
 class ForfaitsItemController extends Controller
 {
@@ -96,6 +97,36 @@ class ForfaitsItemController extends Controller
     $items = ForfaitsItem::where('cat',$cat)->where('status',1)->get();
     return response()->json($items);
   }
+  
+  public function getForfaitUser($forfaitLst) {
+    
+    $data = array(
+        'forfaits'=>$forfaitLst,
+        'skiResortId'=>env('FORFAIT_RESORTID')
+        );
+    $json = json_encode($data);
+    $curl = curl_init();
+    $endpoint = env('FORFAIT_ENDPOINT').'getprices';
+    $Bearer = env('FORFAIT_TOKEN');
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => $endpoint,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_POSTFIELDS => $json,
+        CURLOPT_HTTPHEADER => array(
+            "Content-Type: application/json",
+            "Authorization: Bearer $Bearer"
+        ),
+    ));
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+    curl_close($curl);
+    if ($err) {
+      return json_encode(['success'=>false, 'data'=>['message'=>$err]]);
+    } else {
+      return $response;
+    }
+  }
 
 
   private function getDays($start,$end){
@@ -115,18 +146,85 @@ class ForfaitsItemController extends Controller
     return ['monToFr'=>$monToFr,'satOrSun'=>$satOrSun];
   }
 
+  public function getCurrentCart($bookingID,$clientID) {
+    $bookingID = desencriptID($bookingID);
+    $clientID = desencriptID($clientID);
+    if (is_numeric($bookingID) && is_numeric($clientID)){
+      $obj = ForfaitsUser::where('book_id',$bookingID)
+              ->where('cli_id',$clientID)
+              ->whereIn('status',['new','not_payment'])
+              ->orderBy('id','DESC')->first();
+  
+      if ($obj){
+        $forfaits = json_decode($obj->forfait_data);
+        $totalItems = (count($forfaits)>0) ? 1 : 0;
+        $a_materials = $a_clases = [];
+        $materials = $obj->materials_data;
+        if ($materials){
+          $a_materials = json_decode($materials);
+          $totalItems += count($a_materials);
+        }
+        $classes = $obj->classes_data;
+        if ($classes){
+          $a_clases = json_decode($classes);
+          $totalItems += count($a_clases);
+        }
+        
+        $result = [
+            'status'      => 'ok',
+            'totalItems'  => $totalItems,
+            'materials'   => $a_materials,
+            'forfaits'    => ($forfaits),
+            'users'       => json_decode($obj->forfait_users),
+            'classes'     => $a_clases,
+            'totalForf'   => $obj->forfait_total,
+            'totalMat'    => $obj->materials_total,
+            'totalClas'   => $obj->classes_total,
+            'totalPrice'  => $obj->total,
+            'ID'          => encriptID($obj->id),
+        ];
+        return response()->json($result);
+      }
+    } 
+    return response()->json(['status'    => 'error']);
+  }
   public function getCart(Request $req, $returnJson=true) {
     $totalItems = 0;
     
     $materials  = $req->input('materials', null);
     $classes    = $req->input('classes', null);
-    $forfaits   = $req->input('forfaits', null);
-    $error_1 = $error_2 = $error_3 = array();
+    $forfaits   = [];
+    $users   = $req->input('users', null);
+    $error_1 = $error_2 = $error_3 = null;
     $totalPrice = 0;
     $totalForf = 0;
     $totalMat = 0;
     $totalClas = 0;
-    /** @todo enviar info a ForfaitExpress */
+    
+    
+   
+    $usr_forfaits = [];
+    if ($users) {
+      foreach ($users as $usr) {
+        $usr_forfaits[] = [
+            "age" => $usr['years'],
+            "dateFrom" => date('d/m/Y', strtotime($usr['date_start'])),
+            "dateTo" => date('d/m/Y', strtotime($usr['date_end'])),
+        ];
+      }
+      /** @todo enviar info a ForfaitExpress */
+      $forfaitsObj = $this->getForfaitUser($usr_forfaits);
+      $forfaitsObj = json_decode($forfaitsObj);
+//      var_dump($forfaitsObj); die;
+      if ($forfaitsObj->success){
+        $forfaits = $forfaitsObj->data->forfaits;
+        $totalForf = $forfaitsObj->data->totalPrice;
+        $totalItems++;
+      } else {
+        $error_1 = $forfaitsObj->data->message;
+      }
+    }
+    
     if ($materials){
       foreach ($materials as $k=>$v){
         if (isset($v['item']) && isset($v['item']['item_key'])){
@@ -135,7 +233,7 @@ class ForfaitsItemController extends Controller
           $objIten = ForfaitsItem::where('item_key',$itemKey)->first();
           if ($objIten){
             
-            $nro = isset($v['nro']) ? intval($v['nro']) : 0;
+            $nro = isset($v['nro']) ? intval($v['nro']) : 1;
             $days = $this->getDays($v['date_start'], $v['date_end']);
             
             if ( isset($days['monToFr']) && isset($days['monToFr']) ){
@@ -147,11 +245,11 @@ class ForfaitsItemController extends Controller
             }
             
           } else {
-            $error_1[] = 'Item no encontrado';
+            $error_2 = 'Item no encontrado';
           }
           
         } else {
-          $error_1[] = 'Item no encontrado';
+          $error_2 = 'Item no encontrado';
         }
         
       }
@@ -162,31 +260,42 @@ class ForfaitsItemController extends Controller
         if (isset($v['item']) && isset($v['item']['item_key'])){
           
           $itemKey = $v['item']['item_key'];
+          $nro = isset($v['nro']) ? intval($v['nro']) : 1;
           $objIten = ForfaitsItem::where('item_key',$itemKey)->first();
           if ($objIten){
+            if ($objIten->cat == 'grupal_class'){
+              $days = $this->getDays($v['date_start'], $v['date_end']);
             
-            $nro = isset($v['nro']) ? intval($v['nro']) : 0;
-            $hours = isset($v['hours']) ? intval($v['hours']) : 1;
-            $day = date('N',strtotime($v['date_start']));
-            if ( $day > 0 && $day < 8 ){
-              if ($day<6){
-                $price = $objIten->regular_price;
-              } else {
-                $price = $objIten->special_price;
+              if ( isset($days['monToFr']) && isset($days['monToFr']) ){
+                $price = ( $days['monToFr'] * $objIten->regular_price ) + ( $days['satOrSun'] * $objIten->special_price ); 
+                $price = $price * $nro;
+                $totalClas += $price;
+                $classes[$k]['total'] = $price;
+                $totalItems++;
               }
+            } else {
+              $hours = isset($v['hours']) ? intval($v['hours']) : 1;
+              $day = date('N',strtotime($v['date_start']));
+              if ( $day > 0 && $day < 8 ){
+                if ($day<6){
+                  $price = $objIten->regular_price;
+                } else {
+                  $price = $objIten->special_price;
+                }
 
-              $price = $price * $hours * $nro;
-              $totalMat += $price;
-              $classes[$k]['total'] = $price;
-              $totalItems++;
+                $price = $price * $hours * $nro;
+                $totalClas += $price;
+                $classes[$k]['total'] = $price;
+                $totalItems++;
+              }
             }
             
           } else {
-            $error_1[] = 'Item no encontrado';
+            $error_3 = 'Item no encontrado';
           }
           
         } else {
-          $error_1[] = 'Item no encontrado';
+          $error_3 = 'Item no encontrado';
         }
         
       }
@@ -198,6 +307,7 @@ class ForfaitsItemController extends Controller
         'totalItems'=> $totalItems,
         'materials' => $materials,
         'forfaits'  => $forfaits,
+        'forfaits_users' => $users,
         'classes'   => $classes,
         'error_1'   => $error_1,
         'error_2'   => $error_2,
@@ -254,34 +364,29 @@ class ForfaitsItemController extends Controller
   
   public function checkout(Request $req) {
     $cart = $this->getCart( $req, false);
-    /* materials : this.mat_added,
-          classes   : this.classes_added,
-          forfaits  : this.forfaits,
-          user      : this.userInfo*/
-    
-    
     $user = $req->input('user', null); 
+    $ID   = $req->input('ID', null); 
     $userForm = $req->input('userForm', null); 
     if ($user && $userForm && $cart){
       if (isset($user['key']) || true){
         $bookingKey = isset($user['key'][0]) ? ($user['key'][0]) : null;
         $clientKey = isset($user['key'][1]) ? ($user['key'][1]) : null;
-        
-        $bookingKey = 'MTGS';
-        $clientKey = 'AZJS';
         $bookingID = desencriptID($bookingKey);
         $clientID = desencriptID($clientKey);
+        $ID = desencriptID($ID);
     
-        
         if (is_numeric($bookingID) && is_numeric($clientID)){
           $book = \App\Book::find($bookingID);
           /** @todo: control de que ya no tenga un Forfaits */
           if ($book){
             if ($book->customer_id == $clientID){
                 /** BEGIN: save booking **/
-                
+                if ($ID){
+                  $forfaitItem = ForfaitsUser::findOrNew($ID);
+                } else {
+                  $forfaitItem = new ForfaitsUser();
+                }
                            
-                $forfaitItem = new ForfaitsUser();
                 $forfaitItem->book_id = $bookingID;
                 $forfaitItem->room_id = $book->room_id;
                 $forfaitItem->cli_id = $book->customer_id;
@@ -289,13 +394,14 @@ class ForfaitsItemController extends Controller
                 $forfaitItem->email = isset($user['email']) ? $user['namemaile'] : null;
                 $forfaitItem->phone = isset($user['phone']) ? $user['phone'] : null;
                 $forfaitItem->forfait_data = json_encode($cart['forfaits']);
+                $forfaitItem->forfait_users = json_encode($cart['forfaits_users']);
                 $forfaitItem->materials_data = json_encode($cart['materials']);
                 $forfaitItem->classes_data = json_encode($cart['classes']);
                 $forfaitItem->forfait_total = $cart['totalForf'];
                 $forfaitItem->materials_total = $cart['totalMat'];
                 $forfaitItem->classes_total = $cart['totalClas'];
                 $forfaitItem->total = $cart['totalPrice'];
-                $forfaitItem->status = 'not_payment';
+                $forfaitItem->status = 'new';
                 $forfaitItem->save();
                 /** END: save booking **/
 
@@ -314,6 +420,76 @@ class ForfaitsItemController extends Controller
     return response()->json(['error']);
   }
 
+  
+  public function sendEmail(Request $req) {
+    /** @todo Usar el código para obtener los datos del usuario*/
+    
+    $bookingID = $req->input('bookingID', null); 
+    $userID    = $req->input('userID', null); 
+    $text      = $req->input('text', null); 
+    
+    if ($bookingID && $userID){
+      $bookingID = desencriptID($bookingID);
+      $clientID = desencriptID($userID);
+        
+      if (is_numeric($bookingID) && is_numeric($clientID)){
+        $book = \App\Book::find($bookingID);
+        if ($book){
+          if ($book->customer_id == $clientID){
+            
+            $client = $book->customer()->first();
+            if ($client){
+              $email = $client->email;
+              $text = $req->input('text', null); 
+              $subject = 'consulta sobre Forfaits';
+              $mailClientContent = '
+                  <h1>Nueva consulta sobre ForFaits</h1>
+                  <table>
+                    <tr>
+                    <th><b>Nombre</b></th>
+                    <td>'.$client->name.'</td>
+                    </tr>
+                    <tr>
+                    <th><b>Email</b></th>
+                    <td>'.$email.'</td>
+                    </tr>
+                    <tr>
+                    <th><b>Teléfono</b></th>
+                    <td>'.$client->phone.'</td>
+                    </tr>
+                    <tr>
+                  </table>
+                  <p><b>Consulta</b></p>
+                  <p>'.$text.'</p>
+                  ';
+
+              Mail::send('backend.emails.base', 
+                      ['mailContent' => $mailClientContent,'title'=>$subject], function ($message) use ($email,$subject) {
+                        $message->from('reservas@apartamentosierranevada.net');
+                        $message->to($email);
+                        $message->subject($subject);
+                        $message->replyTo('reservas@apartamentosierranevada.net');
+                      });
+              return response()->json(['ok']);
+            }
+            
+          }
+        }
+      }
+    }
+    return response()->json(['error']);       
+  }
+  
+  public function createPaylandsUrl($customer_id,$total_price,$key) {
+    
+    $urlPayland = $this->generateOrderPayment([
+                    'customer_id' => $customer_id,
+                    'amount'      => $total_price,
+                    'url_ok'      => route('payland.thanks.payment', ['id' => $key]),
+                    'url_ko'      => route('payland.thanks.payment', ['id' => $key]),
+            ]);
+    
+  }
   /*****************************************************************/
   /********     BORRAR                                  ************/
   /*****************************************************************/

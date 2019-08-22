@@ -2159,7 +2159,8 @@ class BookController extends AppController
                 $book     = \App\Book::find($request_id);
 		$customer = \App\Customers::find($book->customer_id);
 
-                $forfaitItem = \App\ForfaitsUser::where('book_id',$request_id)->first();
+                $forfaitItem = \App\ForfaitsUser::where('book_id',$request_id)->orderBy('id','DESC')->first();
+                
                 $ff_data = [
                     'forfait_data' => [],
                     'materials_data' => [],

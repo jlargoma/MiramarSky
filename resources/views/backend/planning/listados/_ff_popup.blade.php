@@ -166,7 +166,7 @@ form{
   </form>
   @endif
 <div class="text-center">
-  <h3><a href="http://forfait.virtual/{{encriptID($book->id)}}-{{encriptID($customer->id)}}" target="black">Nuevo Forfaits >> </a></h3>
+  <h3><a href="https://miramarski.com/forfait-new/{{encriptID($book->id)}}-{{encriptID($customer->id)}}" target="black">Nuevo Forfaits >> </a></h3>
 </div>
 
 
@@ -177,6 +177,7 @@ form{
   <thead>
     <tr>
       <th scope="col">Edad</th>
+      <th scope="col">Tarifa</th>
       <th scope="col">Días</th>
       <th scope="col">Inicio</th>
       <th scope="col">Fin</th>
@@ -184,23 +185,27 @@ form{
     </tr>
   </thead>
   <tbody>
-    <tr><td>5</td> <td>3<br></td> <td>12/10/2019</td> <td>15/10/2019</td> <th scope="row" class="text-right">15.00</th></tr>
-    <tr><td>17</td> <td>3<br></td> <td>12/10/2019</td> <td>15/10/2019</td> <th scope="row" class="text-right">126.00</th></tr>
-    <tr><td>35</td> <td>3<br></td> <td>12/10/2019</td> <td>15/10/2019</td> <th scope="row" class="text-right">126.00</th></tr>
     @if(isset($ff_data['forfait_data']))
     @foreach($ff_data['forfait_data'] as $item)
     <tr>
        <td>{{$item->age}}</td>
+       <td>{{$item->typeTariffName}}</td>
       <td>
         {{$item->days}}<br/>
       </td>
       <td>{{$item->dateFrom}}</td>
-      <td>{{$item->dateEnd}}</td>
+      <td>{{$item->dateTo}}</td>
       <th scope="row" class="text-right">{{$item->price}}€</th>
     </tr>
     @endforeach
     @endif
   </tbody>
+  <tfoot>
+    <tr class="spacer">
+      <th colspan="5">Subtotal</th>
+      <th scope="row" class="text-right">{{$ff_data['forfait_total']}}€</th>
+    </tr>
+  </tfoot>
 </table>
 </div>
 
@@ -256,6 +261,7 @@ form{
       <th scope="col">Nombre</th>
       <th scope="col">Cursado</th>
       <th scope="col">Idioma</th>
+      <th scope="col">Nivel</th>
       <th scope="col" class="text-right">Precio</th>
     </tr>
   </thead>
@@ -273,16 +279,21 @@ form{
       </td>
       <td> 
         {{date('d/m/Y',strtotime($item->date_start))}}<br/>
-        <div v-if='$item->start>0'>Inicio {{$item->start}}:00 Hrs | {{$item->hours}} Horas</div>
+        @if($item->start>0)
+        <div>Inicio {{$item->start}}:00 Hrs | {{$item->hours}} Horas</div>
+        @else
+        {{date('d/m/Y',strtotime($item->date_end))}} ({{$item->total_days}} Dias)
+        @endif
       </td>
       <td>{{$item->language}}</td>
+      <td>{{$item->level}}</td>
       <th scope="row" class="text-right">{{$item->total}}€</th>
     </tr>
     @endforeach
   </tbody>
   <tfoot>
     <tr>
-      <th colspan="4">Subtotal</th>
+      <th colspan="5">Subtotal</th>
       <th scope="row" class="text-right">{{$ff_data['classes_total']}}€</th>
     </tr>
   </tfoot>

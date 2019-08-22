@@ -24,6 +24,7 @@ class AddForfaitUsers extends Migration
           $table->boolean('asign')->nullable();
           $table->text('more_info')->nullable();
           $table->text('forfait_data')->nullable();
+          $table->text('forfait_users')->nullable();
           $table->string('forfait_total')->nullable();
           $table->text('materials_data')->nullable();
           $table->string('materials_total')->nullable();

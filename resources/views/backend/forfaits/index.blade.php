@@ -116,12 +116,8 @@ $mobile = new Mobile();
         </div>
         <div class="form-row">
           <div class="form-group col-md-12">
-            <label for="Nombre">Equipos</label>
+            <label for="Nombre">Descripción</label>
             <textarea class="" name="item_equip" id="item_equip" rows="10" cols="80"></textarea>
-          </div>
-          <div class="form-group col-md-12">
-            <label for="Nombre">Clases</label>
-            <textarea class="" name="item_class" id="item_class" rows="10" cols="80"></textarea>
           </div>
         </div>  
         <div class="form-row">
@@ -183,21 +179,6 @@ $(document).ready(function () {
             { name: 'tools', items : [ 'Maximize', 'ShowBlocks','-','About' ] }
                     ]
           });
-  CKEDITOR.replace('item_class',
-          {
-            toolbar:
-                    [
-                      { name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
-                      { name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
-                      { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv',
-                          '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ] },
-                      { name: 'links', items : [ 'Link','Unlink','Anchor' ] },
-                      '/',
-                      { name: 'styles', items : [ 'Styles','Format','Font','FontSize' ] },
-                      { name: 'colors', items : [ 'TextColor','BGColor' ] },
-                      { name: 'tools', items : [ 'Maximize', 'ShowBlocks','-','About' ] }
-                    ]
-          });
 
   $('#change_categ').on('change', function (event) {
     location.replace('/admin/forfaits/' + $(this).val());
@@ -216,6 +197,9 @@ $(document).ready(function () {
       $('#regular_price').val(data.item.regular_price);
       $('#special_price').val(data.item.special_price);
       $('#item_cat').val(data.cat);
+      $('#hour_start').val(data.item.hour_start);
+      $('#hour_end').val(data.item.hour_end);
+      
       CKEDITOR.instances.item_equip.setData(data.item.equip, function () {
         this.checkDirty();
       });

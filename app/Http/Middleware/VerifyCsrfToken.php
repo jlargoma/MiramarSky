@@ -36,5 +36,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/api/check_rooms_avaliables',
         '/api/forfaits/getCart',
         '/api/forfaits/checkout',
+        '/api/forfaits/forfaits',
+        '/api/forfaits/sendConsult',
     ];
 }
