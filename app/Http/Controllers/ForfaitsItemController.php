@@ -149,7 +149,7 @@ class ForfaitsItemController extends Controller
     } else {
       $list = json_decode($response);
       
-      if ($list->success){
+      if (isset($list->success) && $list->success){
       foreach ($list->data->seasons as $lst){
         if ($lst->skiResortId == $skiResortId){
           $start = explode('/', $lst->startDate);
