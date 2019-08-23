@@ -12,7 +12,11 @@
     <div class="alert alert-info fade in alert-dismissable" style="max-height: 600px; overflow-y: auto;">
         <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a> -->
         <!-- <strong>Info!</strong> This alert box indicates a neutral informative change or action. -->
-        <h4 class="text-center"> ALARMAS DE PARTEE </h4>
+        <h4 class="text-center"> ALARMAS DE PARTEE 
+          <a href="https://app.partee.es/#/" target="_black" title="Ir a Partee">
+            <i class="fa fa-external-link" aria-hidden="true"></i>
+          </a>
+        </h4>
         
         @if(count($alarms)>0)
          <div class="col-md-12 col-xs-12" style="padding-right: 0;">

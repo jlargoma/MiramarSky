@@ -31,11 +31,16 @@ class YearsController  extends AppController
 
 	public function changeMonthActiveYear(Request $request)
 	{
-		$aux  = str_replace('Abr', 'Apr', $request->input('dates'));
+		$aux  = $request->input('dates');
 		$date = explode(' - ', $aux);
-		$start  = Carbon::createFromFormat('Y-m-d', trim($date[0]));
-		$finish = Carbon::createFromFormat('Y-m-d', trim($date[1]));
-		$year = $this->getActiveYear();
+                
+                $aux = explode('/', trim($date[0]));
+                $start = $aux[2].'-'.$aux[1].'-'.$aux[0];
+                
+                $aux = explode('/', trim($date[1]));
+                $finish = $aux[2].'-'.$aux[1].'-'.$aux[0];
+
+                $year = $this->getActiveYear();
 		$year->start_date = $start;
 		$year->end_date = $finish;
 

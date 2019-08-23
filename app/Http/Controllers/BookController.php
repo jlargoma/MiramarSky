@@ -128,7 +128,9 @@ class BookController extends AppController
 		$stripedsPayments = \App\Payments::where('comment', 'LIKE', '%stripe%')
 		                                 ->where('created_at', '>=', Carbon::today()->toDateString())
 		                                 ->get();
-
+                
+                $lastBooksPayment = \App\Payments::where('created_at', '>=', Carbon::today()->toDateString())
+		                                 ->count();
 		// Notificaciones de alertas booking
 		/*$notifications = \App\BookNotification::whereHas('book', function ($q) {
 			return $q->where('type_book', '<>', 3)
@@ -179,7 +181,8 @@ class BookController extends AppController
 		return view(
 			'backend/planning/index',
 			compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
-			        'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits','alert_lowProfits','percentBenef','parteeToActive')
+			        'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits',
+                                'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment')
 		);
 	}
 
@@ -1518,7 +1521,8 @@ class BookController extends AppController
 		$endYear   = new Carbon($year->end_date);
 
 		$booksAux = array();
-		foreach (\App\Payments::orderBy('id', 'DESC')->get() as $key => $payment)
+                $lst = \App\Payments::orderBy('id', 'DESC')->get();
+		foreach ($lst as $key => $payment)
 		{
 			if (!in_array($payment->book_id, $booksAux))
 			{

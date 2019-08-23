@@ -171,6 +171,9 @@
                     <li class="{{ Request::path() == 'admin/galleries' ? 'active' : '' }}">
                         <a href="{{ url('admin/galleries') }}" class="detailed">Galerías</a>
                     </li>
+                    <li class="{{ Request::path() == 'admin/limpiezas' ? 'active' : '' }}">
+                        <a href="{{ url('admin/limpiezas/') }}" class="detailed">Limpiezas</a>
+                    </li>
                     <?php endif ?>
 
                 </ul>
