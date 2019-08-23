@@ -836,6 +836,14 @@ button#copy-link-stripe {
     margin-right: 1%;
     float: left;
 }
+.setting .form-control {
+    border-color: #c5c5c5;
+    /* margin-right: 21px; */
+    width: 96%;
+}
+.overflow-x{
+    overflow-x: auto;
+}
 .temporadas label{
   display: block !important;
   font-weight: 600;

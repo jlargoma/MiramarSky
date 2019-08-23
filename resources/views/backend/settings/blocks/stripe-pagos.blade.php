@@ -1,7 +1,7 @@
 <div class="box">
   <h2 class="text-center">Stripe y pagos</h2>
   <div class="row">
-    <div class="col-md-6 col-xs-12">
+    <div class="col-md-6 col-xs-12 overflow-x">
       <table class="table table-hover  table-responsive">
         <thead>
           <tr>
@@ -35,7 +35,7 @@
         </tbody>
       </table>
     </div>
-    <div class="col-md-6 col-xs-12">
+    <div class="col-md-6 col-xs-12 overflow-x">
       <table class="table table-hover  table-responsive">
         <thead>
           <tr>
