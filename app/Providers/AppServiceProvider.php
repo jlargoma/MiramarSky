@@ -13,7 +13,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+      //Show in apartamentosierranevada
+      $this->app['config']['show_ASN'] = false;
+      //show in riadpuertasdelalbaicin
+      $this->app['config']['show_RPA'] = true;
     }
 
     /**

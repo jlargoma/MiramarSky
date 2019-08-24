@@ -410,14 +410,13 @@ $mobile = new Mobile();
   </div>
   <!-- /.modal-dialog -->
 </div>
-
-<form role="form">
-  <div class="form-group form-group-default required" style="display: none">
+<!--<form role="form">
+  <div class="form-group form-group-default required" >
     <label class="highlight">Message</label>
     <input type="text" hidden="" class="form-control notification-message" placeholder="Type your message here" value="This notification looks so perfect!" required>
   </div>
-  <button class="btn btn-success show-notification hidden" id="boton">Show</button>
-</form>
+  <button class="btn btn-success show-notification " id="boton">Show</button>
+</form>-->
 
 
 @endsection

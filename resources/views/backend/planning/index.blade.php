@@ -161,12 +161,14 @@ setlocale(LC_TIME, "es_ES");
                         <div id="TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G"> </div>
                         <script type="text/javascript" src="https://www.tutiempo.net/s-widget/l_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G"></script>
                     </div>
+                  @if(config('show_ASN'))
                     <?php if ( Auth::user()->role != "agente" ): ?>
-                    <div class="col-md-12 hidden" id="stripe-conten-index">
+                    <div class="col-md-12 " id="stripe-conten-index">
                         @include('backend.stripe.link')
                         {{--@include('backend.stripe.stripe', ['bookTocharge' => null])--}}
                     </div>
                     <?php endif ?>
+                  @endif
                     <div class="row content-calendar push-20" style="min-height: 515px;">
                         <div class="col-xs-12 text-center sending" style="padding: 120px 15px;">
                             <i class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></i><br>
@@ -370,12 +372,14 @@ setlocale(LC_TIME, "es_ES");
                     </div>
                 </div>
             </div>
+            @if(config('show_ASN'))
             <div class="col-md-12 hidden" id="stripe-conten-index">
                 <?php if ( Auth::user()->role != "agente" ): ?>
                 @include('backend.stripe.link')
                 {{--@include('backend.stripe.stripe', ['bookTocharge' => null])--}}
                 <?php endif ?>
             </div>
+            @endif
 
             <div class="row push-20">
 
@@ -454,9 +458,11 @@ setlocale(LC_TIME, "es_ES");
                             <h2 class="text-center">CARGANDO CALENDARIO</h2>
                         </div>
                     </div>
-                    <div class="col-md-12 hidden" id="stripe-conten-index" style="display: none;">
+                  @if(config('show_ASN'))
+                    <div class="col-md-12" id="stripe-conten-index">
                         @include('backend.stripe.stripe', ['bookTocharge' => null])
                     </div>
+                  @endif
                     <div class="col-xs-12">
                         <!-- www.tutiempo.net - Ancho:446px - Alto:89px -->
                         <div id="TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G">El tiempo - Tutiempo.net</div>
