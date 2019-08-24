@@ -1,19 +1,20 @@
 <div class="row">
-	<div class="col-xs-12"> 
-		<h2 class="text-center font-w300" style="letter-spacing: -1px;">
-			GENERADOR DE LINKS PAYLAND
-		</h2>
-	</div>
-	<div class="col-md-3  col-xs-12 col-md-offset-4 push-20">
-		<input type="number" class="form-control only-numbers" name="importe_stripe" id="importe_stripe" placeholder="importe..." />
-        <input type="hidden" name="book" id="book" value="<?php if (isset($book)): ?>{{ $book->id }}<?php else: ?>0<?php endif;?>" />
-
-	</div>
-	<div class="col-md-3 col-xs-12 push-20">
-		<button id="btnGenerate" class="btn btn-success" type="button">Generar</button>
-	</div>
+  <div class="col-md-4 col-xs-12 text-center"> 
+    <b>GENERADOR DE LINKS PAYLAND</b>
+  </div>
+  <div class="col-md-4  col-xs-6">
+    <input type="number" class="form-control only-numbers" name="importe_stripe" id="importe_stripe" placeholder="importe..." />
+    <input type="hidden" name="book" id="book" value="<?php if (isset($book)): ?>{{ $book->id }}<?php else: ?>0<?php endif; ?>" />
+  </div>
+  <div class="col-md-4 col-xs-6 push-20">
+    <button id="btnGenerate" class="btn btn-success" type="button">Generar</button>
+  </div>
 </div>
-<div class="row content-importe-stripe"></div>
+<div class="row content-importe-stripe">
+  
+  
+  
+</div>
 <script type="text/javascript">
 	$(document).ready(function() {
 

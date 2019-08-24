@@ -208,7 +208,7 @@
     <script src="/assets/plugins/bootstrap-typehead/typeahead.bundle.min.js"></script>
     <script src="/assets/plugins/bootstrap-typehead/typeahead.jquery.min.js"></script>
     <script src="/assets/plugins/handlebars/handlebars-v4.0.5.js"></script>
-    <script type="text/javascript" src="{{asset('/forfait/js/bootbox.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('/js/bootbox.min.js')}}"></script>
 
     <script type="text/javascript">
 

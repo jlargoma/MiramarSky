@@ -80,7 +80,12 @@ class Rooms extends Model
 
     public static function getPaxRooms($pax, $room)
     {
-        return self::select('minOcu')->where('id', $room)->first()->minOcu;
+      $obj = self::select('minOcu')->where('id', $room)->first();
+      if ($obj){
+        return $obj->minOcu;
+      } else {
+        return 0;
+      }
     }
 
     public function isAssingToBooking()

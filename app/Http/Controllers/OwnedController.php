@@ -33,9 +33,10 @@ class OwnedController extends AppController
 				return view('backend.rooms.not_rooms_avaliables');
 			else
 				$room = \App\Rooms::where('nameRoom', 'LIKE' , "%".$name."%")->first();
-
-		if ($room->owned != Auth::user()->id && Auth::user()->role != "admin")
+                if ($room){
+                  if ($room->owned != Auth::user()->id && Auth::user()->role != "admin")
 			return view('errors.owned-access');
+                } else return view('errors.owned-access');
 
 		// Variables
 		$mes           = array();

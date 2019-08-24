@@ -1,359 +1,347 @@
-@extends('layouts.admin-master')
+<?php   use \Carbon\Carbon;
+setlocale(LC_TIME, "ES");
+setlocale(LC_TIME, "es_ES");
+$ff_status = [
+  'new' => 'Nuevo',  
+  'not_payment' => 'No pagado',  
+  'payment' => 'Pagado',  
+];
+?>
+@extends('layouts.popup')
+
+@section('title') Administrador de reservas MiramarSKI @endsection
+
+@section('externalScripts')
+<style>
+  .update_ff_status{
+background-color: #eaeaea;
+    border: solid 2px #d2d2d2;
+    padding: 7px 10px;
+    margin: 3px;
+    color: inherit;
+    border-radius: 3px;
+  }
+  .update_ff_status.active{
+    color:#ffffff; 
+    background-color:green;
+  }
+  .bold{
+        margin-top: 11px;
+    font-weight: 600;
+  }
+.table-responsive {
+    margin: 1em auto;
+    box-shadow: 1px 1px 8px #bdbdbd;
+}
+h1{
+  background-color: #295d9b;
+    color: #dfe6ef;
+    padding: 7px;
+    box-shadow: 1px 1px 3px #295d9b;
+    margin-bottom: 0.7em;
+    margin-top: 7px;
+}
+h2 {
+    font-size: 1.2em;
+    width: 100%;
+    border-bottom: 1px solid #c1c1c1;
+    padding-top: 1em;
+}
+.table{
+  margin-bottom: 0;
+}
+thead,tfoot {
+  background-color: #f5f5f5;
+}
+form{
+  margin: 2em 0;
+  border-radius: 3px;
+  padding: 1em;
+  box-shadow: 1px 1px 8px #bdbdbd;
+}
+.item_name{
+  position: relative;
+}
+.item_detail{
+  display: none;
+    left: 75px;
+    width: 16em;
+    position: absolute;
+    background-color: #ffffff;
+    padding: 8px;
+    border: 2px solid #c3c3c3;
+    box-shadow: 1px 1px 8px #ababab;
+    top: 37px;
+    z-index: 164;
+}
+.table-responsive{
+      overflow-x: initial;
+}
+.cart-container {
+    margin-bottom: 7em;
+}
+  </style>
+@endsection
+
 @section('content')
- 
-<?php
-    $forfait_price = 0;
-    $material_price = 0;
-    $classes_price = 0;
-    
-    $ff_prices_total = 0;
-    if(isset($ff_request->request_prices) && $ff_request->request_prices != NULL){
-       $request_prices = unserialize($ff_request->request_prices);
-       
-       if($ff_request->request_forfaits != NULL){
-            foreach($request_prices as $request_price_key => $request_price){
-                $ff_prices_total += $request_price;
-            }
-       }
-   }
-?>   
 
-<style type="text/css">
-    div.div_margin{
-        margin-bottom:8px;
-    }
-</style>
+  @if($errors->any())
+  <p class="alert alert-danger">{{$errors->first()}}</p>
+  @endif
+  @if (\Session::has('success'))
+  <p class="alert alert-success">{!! \Session::get('success') !!}</p>
+  @endif
+  
+<h1>Detalles de la Reserva</h1>
 
-<script type="text/javascript" src="{{asset('/forfait/js/bootbox.min.js')}}"></script>
-
-<div class="container col-lg-12">
-    <div class="col-lg-12 col-md-12 h4 bold row">
-        <!--<div class="col-lg-8 col-xs-8">-->
-            Detalles de la Reserva
-        <!--</div>-->
-<!--        <div class="col-lg-4 col-xs-4 text-right">
-            <?php
-//                if($book->ff_status == 0){
-//                    echo '<img src="'.asset('/img/miramarski/ski_icon_status_transparent.png').'" style="max-width:30px;"/>';
-//                }elseif($book->ff_status == 1){
-//                    echo '<img src="'.asset('/img/miramarski/ski_icon_status_grey.png').'" style="max-width:30px;"/>';
-//                }elseif($book->ff_status == 2){
-//                    echo '<img src="'.asset('/img/miramarski/ski_icon_status_red.png').'" style="max-width:30px;"/>';
-//                }elseif($book->ff_status == 3){
-//                    echo '<img src="'.asset('/img/miramarski/ski_icon_status_green.png').'" style="max-width:30px;"/>';
-//                }
-            ?>
-        </div>-->
-    </div>
-
-    <div class="container div_margin col-lg-12">
-        <div class="col-lg-4 col-md-4 bold" style="background-color:#0000E6; color:#ffffff; padding:4px;">Estado</div>
-        <div class="col-lg-2 col-md-2 col-xs-5 text-center" style="margin-bottom:8px;"><a class="btn btn-raise update_ff_status" href="/admin/reservas/ff_change_status_popup/{{$book->id}}/3" style="@if($book->ff_status == 3)color:#ffffff; background-color:green;@else background-color:#cccccc;@endif">Confirmada</a></div>
-        <div class="col-lg-2 col-md-2 col-xs-5 text-center" style="margin-bottom:8px;"><a class="btn btn-raise update_ff_status" href="/admin/reservas/ff_change_status_popup/{{$book->id}}/2" style="@if($book->ff_status == 2)color:#ffffff; background-color:red;@else background-color:#cccccc;@endif">No Cobrada</a></div>
-        <div class="col-lg-2 col-md-2 col-xs-5 text-center" style="margin-bottom:8px;"><a class="btn btn-raise update_ff_status" href="/admin/reservas/ff_change_status_popup/{{$book->id}}/1" style="@if($book->ff_status == 1)background-color:#7F7F7F; color:#ffffff;@else background-color:#cccccc;@endif">Cancelada</a></div>
-        <div class="col-lg-2 col-md-2 col-xs-5 text-center" style="margin-bottom:8px;"><a class="btn btn-raise update_ff_status" href="/admin/reservas/ff_change_status_popup/{{$book->id}}/0" style="@if($book->ff_status == 0)background-color:#7F7F7F; color:#ffffff;@else background-color:#cccccc;@endif">No Gestionada</a></div>
-    </div>
-
-    <div class="container div_margin col-lg-12">
-        <div class="col-lg-4 col-md-4" style="background-color:#d1daff; padding:4px;">Número de la Reserva</div>
-        <div class="col-lg-8 col-md-8 bold" style="background-color:#d1daff; padding:4px;"><?php echo $book->id; ?></div>
-    </div>
-    
-    <div class="container div_margin col-lg-12">
-        <div class="col-lg-4 col-md-4" style="padding:4px;">Fecha de Solicitud</div>
-        <div class="col-lg-8 col-md-8 bold" style="padding:4px;">{{date('d/m/Y H:i:s',strtotime($book->created_at))}}</div>
-    </div>
-    
-    <div class="container div_margin col-lg-12">
-        <div class="col-lg-4 col-md-4" style="background-color:#d1daff; padding:4px;">Nombre del Cliente</div>
-        <div class="col-lg-8 col-md-8 bold" style="background-color:#d1daff; padding:4px;"><?php echo $customer->name; ?>&nbsp;</div>
-    </div>
-    
-    <div class="container div_margin col-lg-12">
-        <div class="col-lg-4 col-md-4" style="padding:4px;">Teléfono</div>
-        <div class="col-lg-8 col-md-8 bold" style="padding:4px;"><?php echo $customer->phone; ?></div>
-    </div>
-    
-    <div class="container div_margin col-lg-12">
-        <div class="col-lg-4 col-md-4" style="background-color:#d1daff; padding:4px;">Total</div>
-        <div class="col-lg-8 col-md-8 bold" style="background-color:#d1daff; padding:4px;"><?php echo str_replace('.',',',$ff_prices_total); ?>€</div>
-    </div>
-
-    <div class="container div_margin col-lg-12">
-        <div class="col-lg-4 col-md-4" style="padding:4px;">Método de Pago</div>
-        <div class="col-lg-8 col-md-8 bold" style="padding:4px;"></div>
-    </div>
-    
-    <div class="container div_margin col-lg-12">
-        <div class="col-lg-4 col-md-4" style="background-color:#d1daff; padding:4px;">Nombre Tarjeta de Crédito</div>
-        <div class="col-lg-8 col-md-8 bold" style="background-color:#d1daff; padding:4px;">
-            <?php if(isset($ff_request->cc_name)){echo $ff_request->cc_name;}?>&nbsp;
-        </div>
-    </div>
-    <div class="container div_margin col-lg-12">
-        <div class="col-lg-4 col-md-4" style="padding:4px;">Tarjeta de Crédito</div>
-        <div class="col-lg-8 col-md-8 bold" style="padding:4px;">
-            <?php if(isset($ff_request->cc_pan)){echo $ff_request->cc_pan;}?>&nbsp;
-        </div>
-    </div>
-    <div class="container div_margin col-lg-12">
-        <div class="col-lg-4 col-md-4" style="background-color:#d1daff; padding:4px;">CV2</div>
-        <div class="col-lg-8 col-md-8 bold" style="background-color:#d1daff; padding:4px;">
-            <?php if(isset($ff_request->cc_cvc)){echo $ff_request->cc_cvc;}?>&nbsp;
-        </div>
-    </div>
-    <div class="container div_margin col-lg-12">
-        <div class="col-lg-4 col-md-4" style="padding:4px;">Caducidad</div>
-        <div class="col-lg-8 col-md-8 bold" style="padding:4px;">
-            <?php if(isset($ff_request->cc_expiry)){echo $ff_request->cc_expiry;}?>
-        </div>
-    </div>
-
-<!--    <div class="container div_margin col-lg-12">
-        <div class="col-lg-4 col-md-4" style="background-color:#d1daff; padding:4px;">Lugar de Recogida</div>
-        <div class="col-lg-8 col-md-8 bold" style="background-color:#d1daff; padding:4px;">&nbsp;</div>
-    </div>
-    
-    <div class="container div_margin col-lg-12">
-        <div class="col-lg-4 col-md-4" style="padding:4px;">Detalles de Recogida</div>
-        <div class="col-lg-8 col-md-8 bold" style="padding:4px;"></div>
-    </div>-->
-    
-    <div class="container div_margin col-lg-12">
-        <div class="col-lg-4 col-md-4" style="background-color:#d1daff; padding:4px;">Anotaciones del Cliente</div>
-        <div class="col-lg-8 col-md-8 bold" style="background-color:#d1daff; padding:4px;">
-            <span>
-                <?php echo $customer->comments;
-                    if(empty($customer->comments)){
-                        echo '&nbsp';
-                    }
-                ?>
-            </span>
-        </div>
-    </div>
-    
-    <div class="container div_margin col-lg-12">
-        <div class="col-lg-4 col-md-4" style="padding:4px;">Anotaciones de la Reserva</div>
-        <div class="col-lg-8 col-md-8 bold" style="padding:4px;">
-            <span><?php echo $book->book_comments; ?></span>
-        </div>
-    </div>
-
-    <div class="container div_margin col-lg-12 col-md-12 col-xs-12 h3 bold">
-        <div class="col-lg-3 col-md-3 col-xs-3 col-lg-offset-3 col-md-offset-3 col-xs-offset-3 text-center" style="margin-bottom:8px;"><a id="new_request" class="btn btn-raise btn-info" href="{{url('/forfait')}}" onclick="window.open(this.href, 'Solicitud - FF','left=200,top=20,width=1500,height=900,toolbar=0,resizable=0'); return false;" style="color:#ffffff; background-color:green;">Nueva Solicitud FF/Material/Clases</a><br/>
-            <span class="h5">Recuerde Refrescar esta página<br/>después de generar una nueva solicitud.</span>
-        </div>
-        @if(isset($ff_request->id))
-            <div class="col-lg-6 col-md-6 col-xs-6" style="margin-bottom:8px;"><button id="delete_request_items" class="btn btn-raise btn-danger" href="#" data-request-id="{{$ff_request->id}}" style="color:#ffffff; background-color:red;">Eliminar FF/Material/Clases</button></div>
-        @else
-            <div class="col-lg-6 col-md-6 col-xs-6" style="margin-bottom:8px;"><button id="delete_request_items" class="btn btn-raise btn-danger" href="#" data-request-id="" style="color:#ffffff; background-color:grey;" disabled="disabled">Eliminar FF/Material/Clases</button></div>
-        @endif
-        
-    </div>
-
-    <div class="container div_margin col-lg-12 col-md-12 h3 bold">Forfaits</div>
-    <div class="col-lg-12 col-md-12 col-xs-12">
-        
-        <div class="col-lg-3 col-xs-3" style="padding: 4px 0 4px 0; background-color:#b3c2ff">Nombre</div>
-        <div class="col-lg-2 col-xs-2" style="padding: 4px 0 4px 0; background-color:#b3c2ff">Primer día de Esquí</div>
-        <div class="col-lg-2 col-xs-2" style="padding: 4px 0 4px 0; background-color:#b3c2ff">Última día de Esquí</div>
-        <div class="col-lg-1 col-xs-1" style="padding: 4px 0 4px 0; background-color:#b3c2ff">Días</div>
-        <div class="col-lg-2 col-xs-2 text-right" style="padding: 4px 0 4px 0; background-color:#b3c2ff">Precio</div>
-        <div class="col-lg-2 col-xs-2 text-center" style="padding: 4px 0 4px 0; background-color:#b3c2ff">Edad</div>
-        
-        @if(isset($ff_request->request_forfaits) && $ff_request->request_forfaits != NULL)
-            <?php $x=1; ?>
-            @foreach(unserialize($ff_request->request_forfaits) as $forfait_request_key => $forfait_request)
-                <div class="col-lg-12 col-xs-12" style="padding: 4px 0 4px 0; @if($x % 2 == 1) background-color:#d1daff; @endif">  
-                    
-                    <?php
-                        $forfait_string_array = explode('al',$forfait_request);
-                    
-                        $name = trim(explode('- Del',$forfait_string_array[0])[0]);
-                        $start_date = trim(explode('- Del',$forfait_string_array[0])[1]);
-                        $end_date = trim(explode(' - ',$forfait_string_array[1])[0]);
-                    ?>
-                    
-                    <div class="col-lg-3 col-xs-3" style="padding: 4px 0 4px 0;">
-                        <span>{{$name}}</span>
-                    </div>
-                    <div class="col-lg-2 col-xs-3" style="padding: 4px 0 4px 0;">{{date('d/m/Y',strtotime($start_date))}}</div>
-                    <div class="col-lg-2 col-xs-3" style="padding: 4px 0 4px 0;">{{date('d/m/Y',strtotime($end_date))}}</div>
-                    <div class="col-lg-1 col-xs-1" style="padding: 4px 0 4px 0;"></div>
-                    <div class="col-lg-2 col-xs-2 text-right" style="padding: 4px 0 4px 0;">
-                        
-                        <?php
-                            echo str_replace('.',',',$request_prices[$forfait_request_key]).'€';
-                            $forfait_price += $request_prices[$forfait_request_key];
-                        ?>
-                        
-                    </div>
-                    <div class="col-lg-2 col-xs-2 text-right" style="padding: 4px 0 4px 0;"></div>
-                </div>
-                <?php $x++; ?>
-            @endforeach
-        @endif
-    </div>
-    <div class="col-lg-12 col-md-12 col-xs-12 bold" style="margin-top:12px;">
-        <div class="col-lg-4 col-xs-4" style="padding: 4px 0 4px 0;">&nbsp;</div>
-        <div class="col-lg-2 col-xs-2" style="padding: 4px 0 4px 0;">&nbsp;</div>
-        <div class="col-lg-2 col-xs-2 text-right bold" style="padding: 4px 0 4px 0;">Subtotal:</div>
-        <div class="col-lg-2 col-xs-2 text-right" style="padding: 4px 0 4px 0;">{{str_replace('.',',',$forfait_price)}}€</div>
-        <div class="col-lg-2 col-xs-2" style="padding: 4px 0 4px 0;">&nbsp;</div>
-    </div>
-    
-    <div class="container col-lg-12 col-md-12 h3 bold">Alquiler de Esquipos</div>
-    <div class="col-lg-12 col-md-12 col-xs-12">
-        
-        <div class="col-lg-3 col-xs-3" style="padding: 4px 0 4px 0; background-color:#b3c2ff">Equipos</div>
-        <div class="col-lg-2 col-xs-2" style="padding: 4px 0 4px 0; background-color:#b3c2ff">Primer día de Esquí</div>
-        <div class="col-lg-2 col-xs-2" style="padding: 4px 0 4px 0; background-color:#b3c2ff">Última día de Esquí</div>
-        <div class="col-lg-1 col-xs-1" style="padding: 4px 0 4px 0; background-color:#b3c2ff">Días</div>
-        <div class="col-lg-2 col-xs-2 text-right" style="padding: 4px 0 4px 0; background-color:#b3c2ff">Precio</div>
-        <div class="col-lg-2 col-xs-2 text-center" style="padding: 4px 0 4px 0; background-color:#b3c2ff">Edad</div>
-        
-        @if(isset($ff_request->request_material) && $ff_request->request_material != NULL)
-            <?php $x=1; ?>
-            @foreach(unserialize($ff_request->request_material) as $material_request_key => $material_request)
-                <div class="col-lg-12 col-xs-12" style="padding: 4px 0 4px 0; @if($x % 2 == 1) background-color:#d1daff; @endif">  
-                    
-                    <?php
-//                        $material_string_array = explode('al',$material_request);
-//                    
-//                        $name = trim(explode('- Del',$material_string_array[0])[0]);
-//                        $start_date = trim(explode('- Del',$material_string_array[0])[1]);
-//                        $end_date = trim(explode(' - ',$material_string_array[1])[0]);
-                    ?>
-                    
-                    <div class="col-lg-4 col-xs-4" style="padding: 4px 0 4px 0;">
-                        <span>{{$material_request}}</span>
-                    </div>
-                    <div class="col-lg-2 col-xs-2" style="padding: 4px 0 4px 0;"></div>
-                    <div class="col-lg-2 col-xs-2" style="padding: 4px 0 4px 0;"></div>
-                    <div class="col-lg-2 col-xs-2 text-right" style="padding: 4px 0 4px 0;">
-                        
-                        <?php
-                            echo str_replace('.',',',$request_prices[$material_request_key]).'€';
-                            $material_price += $request_prices[$material_request_key];
-                        ?>
-                        
-                    </div>
-                    <div class="col-lg-2 col-xs-2 text-right" style="padding: 4px 0 4px 0;"></div>
-                </div>
-                <?php $x++; ?>
-            @endforeach
-        @endif
-    </div>
-    <div class="col-lg-12 col-md-12 col-xs-12 bold" style="margin-top:12px;">
-        <div class="col-lg-4 col-xs-4" style="padding: 4px 0 4px 0;">&nbsp;</div>
-        <div class="col-lg-2 col-xs-2" style="padding: 4px 0 4px 0;">&nbsp;</div>
-        <div class="col-lg-2 col-xs-2 text-right bold" style="padding: 4px 0 4px 0;">Subtotal:</div>
-        <div class="col-lg-2 col-xs-2 text-right" style="padding: 4px 0 4px 0;">{{str_replace('.',',',$material_price)}}€</div>
-        <div class="col-lg-2 col-xs-2" style="padding: 4px 0 4px 0;">&nbsp;</div>
-    </div>
-    
-    <div class="container col-lg-12 col-md-12 h3 bold">Clases</div>
-    <div class="col-lg-12 col-md-12 col-xs-12">
-        
-        <div class="col-lg-3 col-xs-3" style="padding: 4px 0 4px 0; background-color:#b3c2ff">Clases</div>
-        <div class="col-lg-2 col-xs-2" style="padding: 4px 0 4px 0; background-color:#b3c2ff">Primer día de Esquí</div>
-        <div class="col-lg-2 col-xs-2" style="padding: 4px 0 4px 0; background-color:#b3c2ff">Última día de Esquí</div>
-        <div class="col-lg-1 col-xs-1" style="padding: 4px 0 4px 0; background-color:#b3c2ff">Días</div>
-        <div class="col-lg-2 col-xs-2 text-right" style="padding: 4px 0 4px 0; background-color:#b3c2ff">Precio</div>
-        <div class="col-lg-2 col-xs-2 text-center" style="padding: 4px 0 4px 0; background-color:#b3c2ff">Edad</div>
-        
-        @if(isset($ff_request->request_classes) && $ff_request->request_classes != NULL)
-            <?php $x=1; ?>
-            @foreach(unserialize($ff_request->request_classes) as $classes_request_key => $classes_request)
-                <div class="col-lg-12 col-xs-12" style="padding: 4px 0 4px 0; @if($x % 2 == 1) background-color:#d1daff; @endif">  
-                    
-                    <?php
-//                        $classes_string_array = explode('al',$classes_request);
-//                        print_r($classes_string_array);
-//                    
-//                        $name = trim(explode('- Del',$classes_string_array[0])[0]);
-//                        $start_date = trim(explode('- Del',$classes_string_array[0])[1]);
-//                        $end_date = trim(explode(' - ',$classes_string_array[1])[0]);
-                    ?>
-                    
-                    <div class="col-lg-4 col-xs-4" style="padding: 4px 0 4px 0;">
-                        <span>{{$classes_request}}</span>
-                    </div>
-                    <div class="col-lg-2 col-xs-2" style="padding: 4px 0 4px 0;"></div>
-                    <div class="col-lg-2 col-xs-2" style="padding: 4px 0 4px 0;"></div>
-                    <div class="col-lg-2 col-xs-2 text-right" style="padding: 4px 0 4px 0;">
-                        
-                        <?php
-                            echo str_replace('.',',',$request_prices[$classes_request_key]).'€';
-                            $classes_price += $request_prices[$classes_request_key];
-                        ?>
-                        
-                    </div>
-                    <div class="col-lg-2 col-xs-2 text-right" style="padding: 4px 0 4px 0;"></div>
-                </div>
-                <?php $x++; ?>
-            @endforeach
-        @endif
-    </div>
-    <div class="col-lg-12 col-md-12 col-xs-12 bold" style="margin-top:12px;">
-        <div class="col-lg-4 col-xs-4" style="padding: 4px 0 4px 0;">&nbsp;</div>
-        <div class="col-lg-2 col-xs-2" style="padding: 4px 0 4px 0;">&nbsp;</div>
-        <div class="col-lg-2 col-xs-2 text-right bold" style="padding: 4px 0 4px 0;">Subtotal:</div>
-        <div class="col-lg-2 col-xs-2 text-right" style="padding: 4px 0 4px 0;">{{str_replace('.',',',$classes_price)}}€</div>
-        <div class="col-lg-2 col-xs-2" style="padding: 4px 0 4px 0;">&nbsp;</div>
-    </div>
-    
-    <div class="col-lg-12 col-md-12 col-xs-12 bold h3" style="margin-top:20px; margin-bottom:40px;">
-        <div class="col-lg-4 col-xs-3" style="padding: 4px 0 4px 0;">&nbsp;</div>
-        <div class="col-lg-2 col-xs-5 text-right bold" style="padding: 4px 0 4px 0;">Total:</div>
-        <div class="col-lg-2 col-xs-3 text-center" style="padding: 4px 0 4px 0;">{{str_replace('.',',',$ff_prices_total)}}€</div>
-        <div class="col-lg-2 col-xs-2" style="padding: 4px 0 4px 0;">&nbsp;</div>
-    </div>
-
+<div class="row">
+    <div class="col-md-2 bold">Estado</div>
+    <a class="update_ff_status @if($book->ff_status == 3) active @endif" href="/admin/reservas/ff_change_status_popup/{{$book->id}}/3" >Confirmada</a>
+    <a class="update_ff_status @if($book->ff_status == 2) active @endif" href="/admin/reservas/ff_change_status_popup/{{$book->id}}/2" >No Cobrada</a>
+    <a class="update_ff_status @if($book->ff_status == 1) active @endif" href="/admin/reservas/ff_change_status_popup/{{$book->id}}/1" >Cancelada</a>
+    <a class="update_ff_status @if($book->ff_status == 0) active @endif" href="/admin/reservas/ff_change_status_popup/{{$book->id}}/0" >No Gestionada</a>
 </div>
 
-<script type="text/javascript">
-    $('.update_ff_status').click(function(event){
-        event.preventDefault();
+<div class="table-responsive">
+  <table class="table table-striped">
+  <tbody>
+    <tr>
+      <th scope="row" >Número de la Reserva</th>
+      <td>{{$book->id}}</td>
+    </tr>
+    <tr>
+      <th scope="row" >Fecha de Solicitud de Reserva</th>
+      <td>{{date('d/m/Y H:i',strtotime($book->created_at))}}</td>
+    </tr>
+    <tr>
+      <th scope="row" >Nombre del Cliente</th>
+      <td>{{$customer->name}}</td>
+    </tr>
+    <tr>
+      <th scope="row" >Teléfono</th>
+      <td>{{$customer->phone}}</td>
+    </tr>
+    <tr>
+      <th scope="row" >Total</th>
+      <td><?php if (isset($ff_data['total'])) echo str_replace('.',',',$ff_data['total']); ?>€</td>
+    </tr>
+    <tr>
+      <th scope="row" >Estado Forfait</th>
+      <td>
+        <?php 
+        if (isset($ff_data['status']) && isset($ff_status[$ff_data['status']])):
+          echo $ff_status[$ff_data['status']];
+        endif;
+        if (isset($ff_data['ffexpr_status']) && $ff_data['ffexpr_status'] == 1):
+          echo ' - ForfaitExpress reservado';
+        else:
+          echo ' - ForfaitExpress no reservado';
+        endif;
+          
+        ?>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row" >Fecha de Solicitud Forfait</th>
+      <td>
+        <?php 
+        if (isset($ff_data['created'])):
+          echo date('d/m/Y H:i',strtotime($ff_data['created']));
+        endif;
+        ?>
+      </td>
+    </tr>
+    <tr>
+    <tr>
+      <th scope="row" >Booking Number (ForfaitExpress)</th>
+      <td>
+        {{$ff_data['bookingNumber']}}
+      </td>
+    </tr>
+    <tr>
+      <th scope="row" >Dirección de recogida</th>
+      <td>
+        {{$pickupPointAddress}}
+      </td>
+    </tr>
+    <tr>
+      <th scope="row" >Método de Pago</th>
+      <td></td>
+    </tr>
+    <tr>
+      <th scope="row" >Anotaciones del Cliente </th>
+      <td>{{$customer->comments}}</td>
+    </tr>
+    <tr>
+      <th scope="row" >Anotaciones de la Reserva</th>
+      <td>{{$book->book_comments}}</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+  @if($ff_data['id'])
+  <form method="POST" action="/admin/forfaits/loadComment">
+    <input type="hidden" id="item_id" name="item_id" value="{{$ff_data['id']}}">
+    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+    <div class="form-group">
+      <label for="ff_comments">Agregar comentarios / info</label>
+      <textarea class="form-control" id="more_info" name="more_info" rows="3">{{$ff_data['more_info']}}</textarea>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary" id="sendComments">Guardar</button>
+    </div>
+  </form>
+  @endif
+<div class="text-center">
+  <h3><a href="https://miramarski.com/forfait-new/{{encriptID($book->id)}}-{{encriptID($customer->id)}}" target="black">Pagina Forfaits >> </a></h3>
+</div>
+  @if($ff_data['id'] && $ff_data['ffexpr_status'] != 1)
+  <form method="POST" action="/admin/forfaits/sendBooking">
+    <input type="hidden" id="item_id" name="item_id" value="{{$ff_data['id']}}">
+    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+    <div class="text-center">
+      <p>Solicitar la reserva del forfaits en ForfaitsExpress</p>
+      <button type="submit" class="btn btn-primary" id="sendComments">enviar</button>
+    </div>
+  </form>
+  @endif
 
-        new_status = $(this).text();
-        url = $(this).attr('href');
-        
-        bootbox.confirm('<div style="margin-top:12px">¿Está seguro que desea cambiar el estado a <span class="bold">'+new_status+'?</div>', function(result){
-            if(result === true){
-                window.location.replace(url);
-            }
-        });
 
-    });
-    
-    $('button#delete_request_items').click(function(){
-        request_id = $(this).attr('data-request-id');
-        bootbox.confirm('<div style="margin-top:12px">¿Está seguro que desea <strong>Eliminar</strong> la solicitud de FF/Material/Clases?</div>', function(result){
-            if(result === true){
-    
-                $.ajax({
-                    type: "POST",
-                    url: "/ajax/forfaits/deleteRequestPopup",
-                    data: {request_id:request_id, book_id:{{$book->id}}},
-                    dataType:'json',
-    //                async: false,
-                    success: function(response){
-                        console.log(response);
-                        if(response == true){
-                            location.reload();
-                        }
-                    },
-                    error: function(response){
-    //                    console.log(response);
-                    }
-                });
-                
-            }
-        });
-    });
-    
-</script>
+<div class="cart-container">
+<H2>FORFAIT</H2>
+<div class="table-responsive">
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Edad</th>
+      <th scope="col">Tarifa</th>
+      <th scope="col">Días</th>
+      <th scope="col">Inicio</th>
+      <th scope="col">Fin</th>
+      <th scope="col" class="text-right">Precio</th>
+    </tr>
+  </thead>
+  <tbody>
+    @if(isset($ff_data['forfait_data']))
+    @foreach($ff_data['forfait_data'] as $item)
+    <tr>
+       <td>{{$item->age}}</td>
+       <td>{{$item->typeTariffName}}</td>
+      <td>
+        {{$item->days}}<br/>
+      </td>
+      <td>{{$item->dateFrom}}</td>
+      <td>{{$item->dateTo}}</td>
+      <th scope="row" class="text-right">{{$item->price}}€</th>
+    </tr>
+    @endforeach
+    @endif
+  </tbody>
+  <tfoot>
+    <tr class="spacer">
+      <th colspan="5">Subtotal</th>
+      <th scope="row" class="text-right">{{$ff_data['forfait_total']}}€</th>
+    </tr>
+  </tfoot>
+</table>
+</div>
 
 
+<H2>ALQUILER DE MATERIALES</H2>
+<div class="table-responsive">
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Cant</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Días</th>
+      <th scope="col">Inicio</th>
+      <th scope="col">Fin</th>
+      <th scope="col" class="text-right">Precio</th>
+    </tr>
+  </thead>
+  @if(isset($ff_data['materials_data']))
+  <tbody>
+    @foreach($ff_data['materials_data'] as $item)
+    <tr>
+      <td>{{$item->nro}}</td>
+      <td class="item_name">{{$item->item->name}} - {{$item->item->type}}
+        <div class="item_detail">
+        {!!$item->item->equip!!}
+        <hr>
+        {!!$item->item->class!!}
+        </div>
+      </td>
+      <td>{{$item->total_days}}</td>
+      <td>{{date('d/m/Y',strtotime($item->date_start))}}</td> 
+      <td>{{$item->date_end}}</td>
+      <th scope="row" class="text-right">{{$item->total}}€</th>
+    </tr>
+    @endforeach
+  </tbody>
+  <tfoot>
+    <tr class="spacer">
+      <th colspan="5">Subtotal</th>
+      <th scope="row" class="text-right">{{$ff_data['materials_total']}}€</th>
+    </tr>
+  </tfoot>
+  @endif
+  
+</table>
+</div>
+<H2>CLASES</H2>
+<div class="table-responsive">
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Cant</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Cursado</th>
+      <th scope="col">Idioma</th>
+      <th scope="col">Nivel</th>
+      <th scope="col" class="text-right">Precio</th>
+    </tr>
+  </thead>
+  @if(isset($ff_data['classes_data']))
+  <tbody>
+    @foreach($ff_data['classes_data'] as $item)
+    <tr >
+      <td>{{$item->nro}}</td>
+      <td class="item_name">{{$item->item->name}} - {{$item->item->type}}
+        <div class="item_detail">
+        {!!$item->item->equip!!}
+        <hr>
+        {!!$item->item->class!!}
+        </div>
+      </td>
+      <td> 
+        {{date('d/m/Y',strtotime($item->date_start))}}<br/>
+        @if($item->start>0)
+        <div>Inicio {{$item->start}}:00 Hrs | {{$item->hours}} Horas</div>
+        @else
+        {{date('d/m/Y',strtotime($item->date_end))}} ({{$item->total_days}} Dias)
+        @endif
+      </td>
+      <td>{{$item->language}}</td>
+      <td>{{$item->level}}</td>
+      <th scope="row" class="text-right">{{$item->total}}€</th>
+    </tr>
+    @endforeach
+  </tbody>
+  <tfoot>
+    <tr>
+      <th colspan="5">Subtotal</th>
+      <th scope="row" class="text-right">{{$ff_data['classes_total']}}€</th>
+    </tr>
+  </tfoot>
+  @endif
+</table>
+</div>
+</div>
+<script>
+$( document ).ready(function() {
+  $( "td.item_name" ).hover(function() {$( this ).find( '.item_detail' ).show();},function() {$( this ).find( '.item_detail' ).hide();});
+});
+  
+  </script>
 @endsection

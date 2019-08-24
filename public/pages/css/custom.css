@@ -777,3 +777,80 @@ button.btn-pdf{
   margin-bottom: 10px;
   min-height: 5em;
 }
+.content-importe-stripe{
+  clear: both;
+  overflow: auto;
+}
+.content-importe-stripe .text{
+  float: left;
+  width: calc( 100% - 90px);
+  margin-top: 15px;
+}
+.send-wsp {
+    float: left;
+    margin: 10px;
+        width: 55px;
+}
+i.fa.fa-whatsapp.fa-3x {
+    font-size: 5em;
+}
+
+button#copy-link-stripe {
+    box-shadow: 2px 2px 5px #616161;
+    margin-bottom: 1em;
+}
+.setting h2 {
+  border-bottom: 2px solid #929292;
+}
+.setting h3{
+  font-size: 1.4em;
+}
+
+.box {
+    box-shadow: 1px 1px 8px #949494;
+    padding: 12px;
+    margin: 1em auto;
+    border-radius: 5px;
+}
+.setting .btn{
+  padding: 4px 10px;
+}
+.table-striped>tbody>tr:nth-of-type(odd) td{
+      background-color: #48b0f714 !important;
+    border-bottom: 1px solid #b9b9b9;
+}
+.py-1{
+  padding: 1em 3px !important;
+}
+.pt-1{
+    padding-top: 1em; 
+  }
+  
+.setting .datepicker2 {
+  width: 80%;
+    cursor: pointer;
+    padding: 3px 7px;
+}
+.setting .col-4 {
+    width: 30%;
+    margin-right: 1%;
+    float: left;
+}
+.setting .form-control {
+    border-color: #c5c5c5;
+    /* margin-right: 21px; */
+    width: 96%;
+}
+.overflow-x{
+    overflow-x: auto;
+}
+.temporadas label{
+  display: block !important;
+  font-weight: 600;
+}
+
+@media only screen  and (min-width: 992px){
+  .pt-md-1{
+    padding-top: 1em; 
+  }
+}

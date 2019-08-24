@@ -45,16 +45,16 @@
 		border: none;
 	}
 </style>
-<?php if (!$mobile->isMobile()): ?>
-	<table class="table table-condensed table-striped">
+<div class="table-responsive">
+	<table class="table ">
 		<thead>
 			<tr>
-				<th class ="text-center bg-complete text-white font-s12" style="width: 8%">#</th>
-				<th class ="text-center bg-complete text-white font-s12" style="width: 20%;">APTO</th>
-				<th class ="text-center bg-complete text-white font-s12" style="width: 8%">Lujo</th>
-				<th class ="text-center bg-complete text-white font-s12" style="width: 10%">Estado</th>
-				<th class ="text-center bg-complete text-white font-s12" style="width: 10%">Booking</th>
-				<th class ="text-center bg-complete text-white font-s12" style="width: 20%">Acc</th>
+				<th class ="text-center bg-complete text-white font-s12" style="width:7px">#</th>
+				<th class ="text-center bg-complete text-white font-s12" style="min-width: 20%;">APTO</th>
+				<th class ="text-center bg-complete text-white font-s12" style="min-width: 10px">Lujo</th>
+				<th class ="text-center bg-complete text-white font-s12" style="min-width: 10px">Estado</th>
+				<th class ="text-center bg-complete text-white font-s12" style="min-width: 10px">Booking</th>
+				<th class ="text-center bg-complete text-white font-s12" style="min-width: 80px">Acc</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -83,7 +83,7 @@
 							<input type="checkbox" class="assingToBooking" data-id="<?php echo $room->id ?>" name="assingToBooking" data-init-plugin="switchery" data-size="small" data-color="danger" <?php echo ( $room->isAssingToBooking() ) ? "checked" : "" ?>> 
 						</span>
 					</td>
-					<td class="text-center" >
+					<td class="text-center" style="min-width: 80px">
 						<a class="btn btn-default btn-pdf btn-sm" href="{{ url
 							('/admin/apartamentos/download/contrato/'.$room->user->id) }}">
 							<i class="fa fa-file-pdf"></i>
@@ -99,76 +99,17 @@
 
 						<button type="button" class="btn btn-success btn-sm uploadFile" data-toggle="modal" data-target="#modalFiles" data-id="<?php echo $room->nameRoom ?>" title="Subir imagenes aptos">
 							<i class="fa fa-upload" aria-hidden="true"></i>
-						</button>                    
+						</button>    
+                                          <button type="button" class="btn btn-success btn-sm editAptoText" data-toggle="modal" data-target="#modalTexts" data-id="{{$room->id}}" title="Editar textos aptos">
+                                                          <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                        </button>
 					</td>
 				</tr>
 			<?php endforeach ?>
 		</tbody>
 	</table>
-<?php else: ?>
-	<div class="table-responsive">
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th class ="text-center bg-complete text-white font-s12" style="width: 5%">#</th>
-					<th class ="text-center bg-complete text-white font-s12" style="width: 5%;">APTO</th>
-					<th class ="text-center bg-complete text-white font-s12" style="width: 8%">Lujo</th>
-					<th class ="text-center bg-complete text-white font-s12" style="width: 10%">Estado</th>
-					<th class ="text-center bg-complete text-white font-s12" style="width: 10%">Booking</th>
-					<th class ="text-center bg-complete text-white font-s12" style="width: 30%">Acc</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach ($rooms as $room): ?>
-					<tr>
-						<td class="text-center not-padding" >
-							<input class="orden order-<?php echo $room->id?>" type="number" name="orden" data-id="<?php echo $room->id ?>" value="<?php echo $room->order?>" style="width: 100%;text-align: center;border-style: none none">
-						</td>
-						<td class="text-left not-padding" >
-							<a class="aptos" data-id="<?php echo $room->id?>" style="cursor: pointer;">
-								<?php echo substr($room->name, 0, 8)?> (<?php echo substr($room->nameRoom, 0, 5)?>)
-							</a>
-						</td>
-						<td class="text-center not-padding" >
-							<span class="input-group-addon bg-transparent">
-								<input type="checkbox" class="editable" data-id="<?php echo $room->id ?>" name="luxury" data-init-plugin="switchery" data-size="small" data-color="primary" <?php echo ($room->luxury == 0) ? "" : "checked" ?>/>
-							</span>
-						</td>
-						<td class="text-center not-padding" >
-							<span class="input-group-addon bg-transparent">
-								<input type="checkbox" class="estado" data-id="<?php echo $room->id ?>" name="state" data-init-plugin="switchery" data-size="small" data-color="success" <?php echo ($room->state == 0) ? "" : "checked" ?>> 
-							</span>
-						</td>
-						<td class="text-center not-padding" >
-							<span class="input-group-addon bg-transparent">
-								<input type="checkbox" class="assingToBooking" data-id="<?php echo $room->id ?>" name="assingToBooking" data-init-plugin="switchery" data-size="small" data-color="danger" <?php echo ( $room->isAssingToBooking() ) ? "checked" : "" ?>> 
-							</span>
-						</td>
-						<td class="text-center not-padding" >
-							<a class="btn btn-default btn-pdf btn-sm" href="{{ url
-							('/admin/apartamentos/download/contrato/'.$room->user->id) }}">
-								<i class="fa fa-file-pdf"></i>
-							</a>
+</div>
 
-							<a type="button" class="btn btn-default btn-xs" href="{{ url ('/fotos') }}/<?php echo $room->nameRoom ?>" target="_blank" data-original-title="Enlace de Apartamento" data-toggle="tooltip">
-								<i class="fa fa-paperclip"></i>
-							</a>
-
-							<button class="btn btn-default btn-emiling btn-xs" type="button" data-toggle="modal" data-target="#modalEmailing" data-id="<?php echo $room->user->id ?>">
-								<i class=" pg-mail"></i>
-							</button>
-
-							<button type="button" class="btn btn-success btn-xs uploadFile" data-toggle="modal" data-target="#modalFiles" data-id="<?php echo $room->nameRoom ?>" title="Subir imagenes aptos">
-								<i class="fa fa-upload" aria-hidden="true"></i>
-							</button>                    
-						</td>
-					</tr>
-				<?php endforeach ?>
-			</tbody>
-		</table>
-	</div>
-
-<?php endif ?>
 <script type="text/javascript">
 
     $('.uploadFile').click(function(event) {

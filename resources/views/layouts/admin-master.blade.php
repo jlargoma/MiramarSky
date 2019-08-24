@@ -45,32 +45,8 @@
         <link href="/assets/plugins/codrops-dialogFx/dialog.ie.css" rel="stylesheet" type="text/css" media="screen"/>
         <![endif]-->
         <link rel="stylesheet" type="text/css" href="{{ asset('/pages/css/custom.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('/css/custom-backend.css')}}">
 
-        <style>
-            .phpdebugbar.phpdebugbar-minimized {
-                display: none !important
-            }
-
-            .navbar-inverse .navbar-nav > li > a {
-                color: white;
-                font-weight: bold;
-                font-size: 14px;
-            }
-
-            .navbar {
-                margin-bottom: 0px;
-            }
-
-            .navbar-toggle {
-                float: left !important;
-                margin-left: 10px !important;
-            }
-
-            .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:focus, .navbar-inverse .navbar-nav > .active > a:hover {
-                background: rgb(81, 81, 81);
-            }
-
-        </style>
         <?php
         use App\Classes\Mobile;
         $mobile = new Mobile();
@@ -136,16 +112,19 @@
                     <li class="{{ Request::path() == 'admin/facturas' ? 'active' : '' }}">
                         <a href="{{ url('admin/facturas') }}"  class="detailed">Facturas</a>
                     </li>
-
-                    {{--<li class="{{ Request::path() == 'admin/encuestas' ? 'active' : '' }}">--}}
-                        {{--<a href="{{ url('admin/encuestas') }}" class="detailed">Encuestas</a>--}}
-                    {{--</li>--}}
-
-                    <li class="{{ Request::path() == 'admin/supermercado' ? 'active' : '' }}">
-                        <a href="#" class="detailed">Super</a>
+                    @if (config('show_ASN'))
+                    <li class="{{ Request::path() == 'admin/encuestas' ? 'active' : '' }}">
+                        <a href="{{ url('admin/encuestas') }}" class="detailed">Encuestas</a>
                     </li>
+                    @endif
 
-                    <li class="{{ Request::path() == 'admin/forfaits' ? 'active' : '' }}"><a href="{{ url('admin/forfaits') }}" class="detailed">Forfaits</a></li>
+<!--                    <li class="{{ Request::path() == 'admin/supermercado' ? 'active' : '' }}">
+                        <a href="#" class="detailed">Super</a>
+                    </li>-->
+
+                    <li class="{{ Request::path() == 'admin/forfaits' ? 'active' : '' }}">
+                      <a href="{{ url('admin/forfaits') }}" class="detailed">Forfaits</a>
+                    </li>
 
                     <li class="{{ Request::path() == 'admin/settings' ? 'active' : '' }}">
                         <a href="{{ url('admin/settings') }}" class="detailed">Settings</a>
@@ -159,6 +138,9 @@
                     </li>
                     <li class="{{ Request::path() == 'admin/galleries' ? 'active' : '' }}">
                         <a href="{{ url('admin/galleries') }}" class="detailed">Galerías</a>
+                    </li>
+                    <li class="{{ Request::path() == 'admin/limpiezas' ? 'active' : '' }}">
+                        <a href="{{ url('admin/limpiezas/') }}" class="detailed">Limpiezas</a>
                     </li>
                     <?php endif ?>
 

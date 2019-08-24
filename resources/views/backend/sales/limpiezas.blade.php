@@ -13,7 +13,7 @@ setlocale(LC_TIME, "es_ES");
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
-<script type="text/javascript" src="{{asset('/forfait/js/bootbox.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('/js/bootbox.min.js')}}"></script>
 @endsection
 
 @section('content')
