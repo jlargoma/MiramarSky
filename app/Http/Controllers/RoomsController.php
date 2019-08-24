@@ -825,7 +825,27 @@ class RoomsController extends AppController {
     
     
   }
-  
+    /**
+   * Get RoomsType description
+   * @param int $apto
+   * @return json
+   */
+  public function editDescript($apto) {
+    
+    $room = \App\RoomsType::find($apto);
+    if (!$room){
+      return response()->json(['status'=>'false','msg'=>"Apto no encontrado"]);
+    }
+    return response()->json([
+        'result'=>'ok',
+        'title'=>$room->title,
+        'text'=>$room->description,
+        'status'=>$room->status,
+        'name'=>$room->name
+        ]);
+    
+    
+  }
   /**
    * Get Room front description
    * @param int $apto
