@@ -109,8 +109,42 @@ setlocale(LC_TIME, "es_ES");
 
 			</td>
 		</tr>
-		<?php foreach ($gastos as $key => $gasto): ?>
+		<tr>
 
+			<td class="text-center" style="padding: 8px 5px!important">
+				Acutalizado a {{$dateMonthLimpieza}}
+			</td>
+			<td class="text-center" style="padding: 8px 5px!important">
+				LIMPIEZA MENSUAL
+			</td>
+			<td class="text-center" style="padding: 8px 5px!important">
+				LIMPIEZA
+			</td>
+
+			<td class="text-center" style="padding: 8px 5px!important">
+				BANCO
+
+			</td>
+			<td class="text-center" style="padding: 8px 5px!important">
+				<b><?php echo number_format($totalMonthLimpieza, 0, ',', '.'); ?> €</b>
+			</td>
+			<td class="text-center" style="padding: 8px 5px!important">
+				GENERICO
+			</td>
+
+			<td class="text-center" style="padding: 8px 5px!important">
+				PAGO DE LAS LIMPIEZA MENSUALES DE LA TEMPORADA
+			</td>
+			<td class="text-center" style="padding: 8px 5px!important">
+
+			</td>
+		</tr>
+		<?php foreach ($gastos as $key => $gasto): ?>
+                <?php           
+                  if ($gasto->concept == 'LIMPIEZA MENSUAL') {
+                    continue;
+                  }
+                ?>
 
 			<tr>
 

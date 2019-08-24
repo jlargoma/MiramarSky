@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-class ApiController extends Controller
+class ApiController extends AppController
 {
     public function index()
     {

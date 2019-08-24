@@ -6,8 +6,7 @@
 
 @section('title') Administrador de reservas MiramarSKI @endsection
 
-@section('externalScripts') 
-
+@section('externalScripts')
 	<style type="text/css">
 		.name-back{
 			background-color: rgba(72,176,247,0.5)!important;
@@ -36,6 +35,14 @@
 			<div class="col-md-12 text-center">
 				<h2>LISTADO DE <span class="font-w800">APARTAMENTOS</span></h2>
 			</div>
+                        <div class="col-md-12 text-center">
+                        @if($errors->any())
+                          <p class="alert alert-danger">{{$errors->first()}}</p>
+                        @endif
+                        @if (\Session::has('success'))
+                        <p class="alert alert-success">{!! \Session::get('success') !!}</p>
+                        @endif
+                        </div>
 			<div class="col-md-2 col-xs-12 push-20">
 				<input type="text" id="searchRoomByName" class="form-control" placeholder="Buscar..." />
 			</div>

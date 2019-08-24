@@ -12,7 +12,7 @@
     <script src="//js.stripe.com/v3/"></script>
     <style>
         .pgn-wrapper[data-position$='-right'] {
-            right:: 82% !important;
+            right: 82% !important;
         }
 
         input[type=number]::-webkit-outer-spin-button,
@@ -110,13 +110,13 @@
                         </h4>
                         <h5>Creado por <?php echo "<b>" . strtoupper($book->user->name) . "</b>" ?></h5>
                         <?php if ($book->type_book == 2): ?>
-                            <div class="col-md-2 col-xs-3 text-center push-10">
+                            <div class="col-md-2 col-xs-3 icon-lst">
                                 <a href="{{ url('/admin/pdf/pdf-reserva/'.$book->id) }}">
                                     <img src="/img/pdf.png"
                                          style="width: 50px; float:left; margin: 0 auto;">
                                 </a>
                             </div>
-                            <div class="col-md-2 col-xs-3 text-center push-10">
+                            <div class="col-md-2 col-xs-3 icon-lst">
                                 <?php $text = "Hola, esperamos que hayas disfrutado de tu estancia con nosotros." . "\n" . "Nos gustaria que valorarás, para ello te dejamos este link : https://www.apartamentosierranevada.net/encuesta-satisfaccion/" . base64_encode($book->id);
                                 ?>
 
@@ -128,14 +128,14 @@
                                 </a>
                             </div>
                         <?php endif ?>
-                        <div class="col-md-2 col-xs-3 text-center push-10">
+                        <div class="col-md-2 col-xs-3 icon-lst">
                             <a href="tel:<?php echo $book->customer->phone ?>"
                                style="width: 50px; float:left;">
                                 <i class="fa fa-phone  text-success"
                                    style="font-size: 48px;"></i>
                             </a>
                         </div>
-                        <div class="col-md-2 col-xs-3 text-center push-10 hidden-lg hidden-md">
+                        <div class="col-md-2 col-xs-3 icon-lst hidden-lg hidden-md">
                             <h2 class="text-center"
                                 style="font-size: 18px; line-height: 18px; margin: 0;">
                                 <?php $text = "En este link podrás realizar el pago de la señal por el 25% del total." . "\n" . " En el momento en que efectúes el pago, te legará un email confirmando tu reserva - https://www.apartamentosierranevada.net/reservas/stripe/pagos/" . base64_encode($book->id);
@@ -148,7 +148,7 @@
                             </h2>
                         </div>
                         
-                        <div class="col-md-2 col-xs-3 text-center push-10">
+                        <div class="col-md-2 col-xs-3 icon-lst">
                             <a href="/admin/reservas/ff_status_popup/<?php echo $book->id; ?>" onclick="window.open(this.href, 'Reserva - FF','left=400,top=20,width=1200,height=900,toolbar=0,resizable=0'); return false;" >
                                 <?php
                                     if($book->ff_status == 0){
@@ -163,9 +163,35 @@
                                 ?>
                             </a>
                         </div>
+                        <div class="col-md-2 col-xs-3 icon-lst partee-icon">
+                          <?php 
+                          $active = 'disabled-error';
+                          if (($partee = $book->partee())):
+                            $active = '';
+                            if ($partee->status == "FINALIZADO"){
+                              $active = 'active';
+                            }
+                            if ($partee->partee_id<1){
+                              $active = 'disabled-error';
+                            }
+                          endif;
+                          ?>
+                          <div class="policeman {{$active}}"></div>
+                        </div>
+                        <div class="col-md-2 col-xs-3 icon-lst ">
+                          <button class="partee-cp " onclick="copyParteeMsg()">
+                            <div class="tooltip" id="tooltipPartee">
+                            <span class="tooltiptext" id="myTooltip">Msg Partee Copiado</span>
+                            </div>
+                            <i class="far fa-copy"></i>      
+                          </button>
+                        </div>
 
                     </div>
                     <div class="col-md-3 col-xs-12 content-guardar" style="padding: 20px 0;">
+                      @if($low_profit)
+                      <div class="btn btn-danger btn-cons btn-alarms m-b-10">BAJO BENEFICIO</div>
+                      @endif
                         <div id="overlay" style="display: none;"></div>
                         <select class="status form-control minimal" data-id="<?php echo $book->id ?>" name="status" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
 							<?php for ($i = 1; $i <= 12; $i++): ?>
@@ -739,7 +765,7 @@
                     <div class="row push-20 content-link-stripe"
                          style="margin-top: 20px; border-top: 2px dashed #000; border-bottom: 2px dashed #000; padding: 20px 15px;">
 
-                        @include('backend.planning._links', ['import' => 0])
+                        @include('backend.stripe.link')
 
                     </div>
                 <?php endif ?>
@@ -783,7 +809,8 @@
                 </div>
                 <?php if (Auth::user()->role != "limpieza"):?>
                     <div class="row">
-                        @include('backend.stripe.stripe', ['bookTocharge' => $book])
+                        @include('Paylands.payment', ['routeToRedirect' => route('payland.proccess.payment.book',
+                        ['id' => $book->id]), 'customer' => $book->customer->id])
                     </div>
                  <?php endif ?>
             </div>
@@ -1151,15 +1178,14 @@
                     <div class="col-xs-12 push-20 ">
 						<?php if ($book->type_book == 2): ?>
                         <?php if ( $hasFiance ): ?>
-                        <div class="col-md-6">
-
-                                    <button class="btn btn-primary btn-lg" type="button" id="fianza"> COBRAR FIANZA</button>
-                                </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-primary btn-lg" type="button" id="fianza"> COBRAR FIANZA</button>
+                            </div>
                         <?php else: ?>
-                        <div class="col-md-6">
-                                    <a class="btn btn-primary btn-lg"
-                                       href="{{ url('/admin/reservas/fianzas/cobrar/'.$book->id) }}"> RECOGER FIANZA</a>
-                                </div>
+                            <div class="col-md-6">
+                                <a class="btn btn-primary btn-lg"
+                                   href="{{ url('/admin/reservas/fianzas/cobrar/'.$book->id) }}"> RECOGER FIANZA</a>
+                            </div>
                         <?php endif ?>
                         <?php endif ?>
                     </div>
@@ -1304,7 +1330,8 @@
                     </div>
 
                     <div class="row">
-                        @include('backend.stripe.stripe', ['bookTocharge' => $book])
+                        @include('Paylands.payment', ['routeToRedirect' => route('payland.proccess.payment.book',
+                       ['id' => $book->id]), 'customer' => $book->customer->id])
                     </div>
                 <?php endif ?>
             </div>
@@ -1358,5 +1385,73 @@
                       });
                 });
               });
+              var copyParteeMsg = function(){
+                $.get('/get-partee-msg', {bookID: <?php echo $book->id ?>},
+                      function(data) {
+                        if (data == 'empty'){
+                          alert('No se ha encontrado un registro asociado');
+                        } else {
+                          var dummy = document.createElement("textarea");
+                          // to avoid breaking orgain page when copying more words
+                          // cant copy when adding below this code
+                          // dummy.style.display = 'none'
+                          document.body.appendChild(dummy);
+                          //Be careful if you use texarea. setAttribute('value', value), which works with "input" does not work with "textarea". – Eduard
+                          dummy.value = data;
+                          dummy.select();
+                          document.execCommand("copy");
+                          document.body.removeChild(dummy);
+                          $('#tooltipPartee').addClass('show');
+                          setTimeout(function(){
+                            $('#tooltipPartee').removeClass('show');
+                          },500);
+                        }
+                      
+                      });
+              }
             </script>
+            <style>
+              button.partee-cp {
+                position: relative;
+                background-color: #fff;
+                color: #10cfbd;
+                font-size: 2.52em;
+                border: none;
+              }
+              button.partee-cp:hover {
+                /*background-color: #ff5a5f;*/
+                color:#00d8c4;
+              }
+              .tooltip .tooltiptext::after {
+                content: "";
+                position: absolute;
+                top: 100%;
+                left: 15%;
+                margin-left: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: #929292 transparent transparent transparent;
+              }
+
+              .tooltip:hover .tooltiptext {
+                visibility: visible;
+                opacity: 1;
+              }
+              button.partee-cp .tooltip.show{
+                display: block;
+                opacity: 1;
+                width: 100%;
+                top: -3em;
+                left: 0;
+              }
+              .tooltiptext {
+                position: absolute;
+                font-size: 11px;
+                color: #fff;
+                background-color: rgba(0, 0, 0, 0.42);
+                padding: 2px 5px;
+                width: 10em;
+                border-radius: 7px;
+              }
+            </style>
 @endsection

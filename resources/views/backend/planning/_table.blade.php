@@ -185,7 +185,6 @@
     $('.deleteBook').click(function(event) {
     	var id = $(this).attr('data-id');
     	$.get('/admin/reservas/delete/'+id, function(data) {
-           	
 
     		$.notify({
                 title: '<strong>'+data.title+'</strong>, ',
@@ -206,7 +205,7 @@
                 spacing: 10,
                 z_index: 1031,
                 delay: 5000,
-                timer: 1500,
+                timer: 1500
             }); 
 
     		// recargamos la actual tabla
@@ -534,4 +533,27 @@
     });
 
 
+ $('.sendSMS').click(function(event) {
+        var id = $(this).data('id');
+        var that = $(this);
+        if (that.hasClass('disabled-error')) {
+          alert('Partee error.');
+          return ;
+        }
+        if (that.hasClass('disabled')) {
+          alert('SMS ya envíado.');
+          return ;
+        }
+        $('#loadigPage').show('slow');
+        that.addClass('disabled')
+        $.post('/ajax/send-partee-sms', { _token: "{{ csrf_token() }}",id:id }, function(data) {
+              if (data.status == 'danger') {
+                window.show_notif('Partee Error:',data.status,data.response);
+              } else {
+                window.show_notif('Partee:',data.status,data.response);
+                that.prop('disabled', true);
+              }
+              $('#loadigPage').hide('slow');
+          });
+        });
 </script>

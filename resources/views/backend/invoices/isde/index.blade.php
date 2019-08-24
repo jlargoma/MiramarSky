@@ -93,10 +93,10 @@
                                 <td class="text-center font-s16">
                                     <?php
                                         $date = Carbon::CreateFromFormat('Y-m-d',$invoice->date);
-                                        if ($date->copy()->format('n') >= 9) {
-                                            $date = new Carbon('first day of September '.$date->copy()->format('Y'));
+                                        if ($date->copy()->format('n') >= 6) {
+                                            $date = new Carbon('first day of june '.$date->copy()->format('Y'));
                                         }else{
-                                            $date = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+                                            $date = new Carbon('first day of june '.$date->copy()->subYear()->format('Y'));
                                         }
                                     ?>
                                     <b>#SN<?php echo $date->copy()->format('y'); ?>-<?php echo $date->copy()->addYear()->format('y'); ?>/<?php echo str_pad($invoice->id, 5, "0", STR_PAD_LEFT);  ?></b>

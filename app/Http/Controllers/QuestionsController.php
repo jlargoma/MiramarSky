@@ -8,7 +8,7 @@ use App\Http\Requests;
 use \Carbon\Carbon;
 use Mail;
 use App\Classes\Mobile;
-class QuestionsController extends Controller
+class QuestionsController extends AppController
 {
 
 	public static 	$meetUs = [
@@ -60,10 +60,10 @@ class QuestionsController extends Controller
             $date = $year->copy();
         }
 
-        if ($date->copy()->format('n') >= 9) {
-            $start = new Carbon('first day of September '.$date->copy()->format('Y'));
+        if ($date->copy()->format('n') >= 6) {
+            $start = new Carbon('first day of June '.$date->copy()->format('Y'));
         }else{
-            $start = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            $start = new Carbon('first day of June '.$date->copy()->subYear()->format('Y'));
         }
 
         $data = array();
@@ -115,10 +115,10 @@ class QuestionsController extends Controller
             $date = $year->copy();
         }
 
-        if ($date->copy()->format('n') >= 9) {
-            $start = new Carbon('first day of September '.$date->copy()->format('Y'));
+        if ($date->copy()->format('n') >= 6) {
+            $start = new Carbon('first day of June '.$date->copy()->format('Y'));
         }else{
-            $start = new Carbon('first day of September '.$date->copy()->subYear()->format('Y'));
+            $start = new Carbon('first day of June '.$date->copy()->subYear()->format('Y'));
         }
 
         if ($room_id != "") {

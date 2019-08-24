@@ -8,7 +8,7 @@ use App\Http\Requests;
 use Carbon\Carbon;
 use \App\SpecialSegment;
 
-class SpecialSegmentController extends Controller
+class SpecialSegmentController extends AppController
 {
 
 	public function create(Request $request)
@@ -70,7 +70,7 @@ class SpecialSegmentController extends Controller
 										->where('finish','>=',$dateStart->copy()->format('Y-m-d'))
 										->first();
 
-			if ( count($segment) > 0)
+			if ( $segment && count($segment) > 0)
 				return $segment;
 		}
 

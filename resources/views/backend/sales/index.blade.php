@@ -93,7 +93,9 @@
         .alert-limp {
             background-color: #f8d053 !important;
         }
-
+        .title-year-selector{
+            display: none;
+        }
     </style>
 @endsection
 
@@ -132,40 +134,18 @@
                 </div>
             </div>
             <div class="col-md-3 text-center">
-                <h2>Liquidación por reservas <?php echo $temporada->copy()->format('Y') . "-" . $temporada->copy()
-				                                                                                          ->AddYear()
-				                                                                                          ->format('Y') ?> </h2>
+                <h2>Liquidación por reservas {{ $year->year }} - {{ $year->year + 1 }}</h2>
             </div>
             <div class="col-md-1" style="padding: 10px 0;">
-                <select id="date" class="form-control minimal">
-					<?php $fecha = $temporada->copy()->SubYear(2); ?>
-					<?php if ($fecha->copy()->format('Y') < 2015): ?>
-					<?php $fecha = new Carbon('first day of September 2015'); ?>
-				<?php else: ?>
-
-				<?php endif ?>
-
-					<?php for ($i = 1; $i <= 4; $i++): ?>
-                    <option value="<?php echo $fecha->copy()
-					                                ->format('Y'); ?>" {{ $temporada->copy()->format('Y') == $fecha->copy()->format('Y') ? 'selected' : '' }}>
-						<?php echo $fecha->copy()->format('Y') . "-" . $fecha->copy()->addYear()->format('Y'); ?>
-                    </option>
-					<?php $fecha->addYear(); ?>
-					<?php endfor; ?>
-                </select>
+                @include('backend.years._selector', ['minimal' => true])
             </div>
-
 
             <div class="col-md-1 pull-right">
                 <button class="btn btn-md btn-primary exportExcel">
                     Exportar Excel
                 </button>
             </div>
-            {{--<div class="col-md-1 pull-right">--}}
-                {{--<button class="btn btn-md btn-danger orderPercentBenef">--}}
-                    {{--Ord benef critico--}}
-                {{--</button>--}}
-            {{--</div>--}}
+            
         </div>
         <div class="row">
             <?php if ( !$mobile->isMobile() ): ?>
@@ -177,11 +157,35 @@
                     <button id="booking_agency_details" class="btn btn-primary btn-xs">Ventas por Agencia</button>
                 </div>
             <?php endif; ?>
+          
+          @if ( $mobile->isMobile() ): 
+            <div class="col-lg-1 col-lg-offset-3 text-right m-t-5">
+          @else:
+            <div class="col-lg-1 col-lg-offset-3 text-center">
+          @endif
+          <button class="btn btn-danger btn-cons btn-xs <?php if($alert_lowProfits) echo 'btn-alarms'; ?> " id="btnLowProfits" type="button" data-toggle="modal" data-target="#modalLowProfits">
+                <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">BAJO BENEFICIO</span>
+                <span class="numPaymentLastBooks"  data-val="{{$alert_lowProfits}}"><?php echo  $alert_lowProfits; ?></span>
+            </button>
+          </div>
         </div>
 
         <div class="row">
             <div class="liquidationSummary">
-                @include('backend.sales._tableSummary', ['totales' => $totales, 'books' => $books, 'temporada' => $temporada])
+                @include('backend.sales._tableSummary', ['totales' => $totales, 'books' => $books, 'year' => $year])
+            </div>
+        </div>
+        <div class="modal fade slide-up in" id="modalLowProfits" tabindex="-1" role="dialog" aria-hidden="true" >
+          @if ($mobile->isMobile() )
+            <div class="modal-dialog modal-xs">
+          @else
+            <div class="modal-dialog modal-lg">
+          @endif
+                <div class="modal-content-wrapper">
+                    <div class="modal-content">
+                        @include('backend.planning._alarmsLowProfits', ['alarms' => $lowProfits])
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -219,7 +223,7 @@
         $('.searchabled').keyup(function (event) {
           var searchString = $(this).val();
           var searchRoom = $('.searchSelect').val();
-          var year = '<?php echo $temporada->copy()->format('Y')?>';
+          var year = "{{ $year->year }}";
           var searchAgency = $('.searchAgency').val();
           $.get('/admin/liquidation/searchByName', {
             searchString: searchString,
@@ -236,7 +240,7 @@
           var searchRoom = $('.searchSelect').val();
           var searchString = $('.searchabled').val();
           var searchAgency = $('.searchAgency').val();
-          var year = '<?php echo $temporada->copy()->format('Y')?>';
+          var year = "{{ $year->year }}";
 
           $.get('/admin/liquidation/searchByRoom', {
             searchRoom: searchRoom,
@@ -271,7 +275,7 @@
           var searchRoom = $('.searchSelect').val();
           var searchString = $('.searchabled').val();
           var searchAgency = $('.searchAgency').val();
-          var year = '<?php echo $temporada->copy()->format('Y')?>';
+          var year = "{{ $year->year }}";
           $.get('/admin/liquidation/orderByBenefCritico', {
             searchRoom: searchRoom,
             searchString: searchString,
@@ -289,7 +293,7 @@
         $('.exportExcel').click(function (event) {
           var searchString = $('.searchabled').val();
           var searchRoom = $('.searchSelect').val();
-          var year = '<?php echo $temporada->copy()->format('Y')?>';
+          var year = "{{ $year->year }}";
 
           window.open('/admin/liquidacion/export/excel?searchString=' + searchString + '&year=' + year + '&searchRoom=' + searchRoom, '_blank');
 

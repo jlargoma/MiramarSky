@@ -43,7 +43,7 @@ setlocale( LC_TIME , "es_ES" );
 <script type="text/javascript">
 	$(document).ready(function () {
       $('.selectorRoom').change(function (event) {
-        $.get('/admin/gastos/getHojaGastosByRoom/' + $('#fecha').val() + '/' + $(this).val(), function (data) {
+        $.get('/admin/gastos/getHojaGastosByRoom/' + {{ $year->year }} + '/' + $(this).val(), function (data) {
 
           $('.contentExpencesByRoom').empty().append(data);
         });
@@ -51,7 +51,7 @@ setlocale( LC_TIME , "es_ES" );
       $('.deleteExpenseByRoom').click(function (event) {
         var id = $(this).attr('data-id');
         var room = $(".selectorRoom").val();
-        var year = '{{ $year->copy()->format("Y") }}';
+        var year = '{{ $year->year }}';
         $.get('/admin/gastos/delete/' + id, function (data) {console.log(data)});
         $('#containerTableExpensesByRoom').empty().load('/admin/gastos/containerTableExpensesByRoom/' + year + "/" + room);
       });

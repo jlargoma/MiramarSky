@@ -1,11 +1,12 @@
+<?php   use \Carbon\Carbon;?>
 <table class=" table table-bordered table-striped table-header-bg">
 	<thead>
 		<tr>
 			<th class="bg-complete text-white text-center"></th>
 			<th class="bg-complete text-white text-center">Total</th>
 			<th class="bg-danger text-white text-center">Pendiente</th>
-			<?php $x = $inicio->copy(); ?>
-			<?php for($i = 1 ; $i <= 12; $i++): ?>
+			<?php $x = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
+			<?php for($i = 1 ; $i <= $diff; $i++): ?>
 				<th class="bg-complete text-white text-center"><?php echo $x->formatlocalized('%B'); ?></th>
 				<?php $x->addMonths(1); ?>
 
@@ -16,8 +17,8 @@
 	<tbody>
 		<tr>
 			<?php $totalYear = 0; ?>
-			<?php $init = $inicio->copy(); ?>
-			<?php for($i = 1 ; $i <= 12; $i++): ?>
+			<?php $init = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
+			<?php for($i = 1 ; $i <= $diff; $i++): ?>
 				<?php $totalMonth = 	$arrayTotales['meses'][$init->copy()->format('n')] + 
 				            								$arrayIncomes['INGRESOS EXTRAORDINARIOS'][$init->copy()->format('n')] + 
 				            								$arrayIncomes['RAPPEL CLOSES'][$init->copy()->format('n')] + 
@@ -39,8 +40,8 @@
 				<b>----</b>
 			</td>
 
-			<?php $init = $inicio->copy(); ?>
-			<?php for($i = 1 ; $i <= 12; $i++): ?>
+			<?php $init = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
+			<?php for($i = 1 ; $i <= $diff; $i++): ?>
 				<td class="text-center" style="color: #fff; background-color:#46c37b!important; border-bottom-color:#46c37b; padding: 8px 5px!important;">
 					<?php $totalMonth = 	$arrayTotales['meses'][$init->copy()->format('n')] + 
             								$arrayIncomes['INGRESOS EXTRAORDINARIOS'][$init->copy()->format('n')] + 
@@ -64,8 +65,8 @@
 	
 		<tr>
 			<?php $totalYear = 0; ?>
-			<?php $init = $inicio->copy(); ?>
-			<?php for($i = 1 ; $i <= 12; $i++): ?>
+			<?php $init = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
+			<?php for($i = 1 ; $i <= $diff; $i++): ?>
 				<?php $totalMonth = $arrayTotales['meses'][$init->copy()->format('n')];?>
 				<?php $totalYear += $totalMonth; ?>
 				<?php $init->addMonths(1); ?>
@@ -82,8 +83,8 @@
 			<td class="text-center" style="padding: 8px 5px!important;">
 				<b>----</b>
 			</td>
-			<?php $init = $inicio->copy(); ?>
-			<?php for($i = 1 ; $i <= 12; $i++): ?>
+			<?php $init = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
+			<?php for($i = 1 ; $i <= $diff; $i++): ?>
 				<td class="text-center" style=" padding: 8px 5px!important;">
 					
 					<b>
@@ -102,8 +103,8 @@
 
 		<?php foreach ($arrayIncomes as $key => $income): ?>
 			<?php $totalYear = 0; ?>
-			<?php $init = $inicio->copy(); ?>
-			<?php for($i = 1 ; $i <= 12; $i++): ?>
+			<?php $init = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
+			<?php for($i = 1 ; $i <= $diff; $i++): ?>
 
 				<?php $totalYear += $income[$init->copy()->format('n')]; ?>
 				<?php $init->addMonths(1); ?>
@@ -121,8 +122,8 @@
 					<b>----</b>
 				</td>
 				<?php $totalYear = 0; ?>
-				<?php $init = $inicio->copy(); ?>
-				<?php for($i = 1 ; $i <= 12; $i++): ?>
+				<?php $init = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
+				<?php for($i = 1 ; $i <= $diff; $i++): ?>
 					<td class="text-center" style=" padding: 8px 5px!important;">
 						
 						<b>
@@ -145,8 +146,8 @@
 		
 		<tr>
 			<?php $totalYear = 0; ?>
-			<?php $init = $inicio->copy(); ?>
-			<?php for($i = 1 ; $i <= 12; $i++): ?>
+			<?php $init = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
+			<?php for($i = 1 ; $i <= $diff; $i++): ?>
 				<?php 
 	    				$totalMonth = 
 									$arrayExpenses['PAGO PROPIETARIO'][$init->copy()->format('n')] +
@@ -195,8 +196,8 @@
 
 
 			<?php $totalYear = 0; ?>
-			<?php $init = $inicio->copy(); ?>
-			<?php for($i = 1 ; $i <= 12; $i++): ?>
+			<?php $init = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
+			<?php for($i = 1 ; $i <= $diff; $i++): ?>
 				<td class="text-center" style="color: #fff; background-color: #a94442!important; border-bottom-color: #a94442!important;padding: 8px 5px!important;">
 					<?php 
         				$totalMonth = 
@@ -233,8 +234,8 @@
 
 		<?php foreach ($arrayExpenses as $key => $expense): ?>	
 			<?php $totalYear = 0; ?>
-			<?php $init = $inicio->copy(); ?>
-			<?php for($i = 1 ; $i <= 12; $i++): ?>
+			<?php $init = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
+			<?php for($i = 1 ; $i <= $diff; $i++): ?>
 				<?php $totalYear += $expense[$init->copy()->format('n')]; ?>
 				<?php $init->addMonths(1); ?>
 			<?php endfor; ?>
@@ -262,8 +263,8 @@
 					
 
 				</td>
-				<?php $init = $inicio->copy(); ?>
-				<?php for($i = 1 ; $i <= 12; $i++): ?>
+				<?php $init = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
+				<?php for($i = 1 ; $i <= $diff; $i++): ?>
 					<td class="text-center" style=" padding: 8px 5px!important;">
 						
 						<b>
@@ -285,8 +286,8 @@
 		<tr >
 			<?php $totalYearBeneficios = 0; ?>
 			<?php $totalYearExpenses = 0; ?>
-			<?php $init = $inicio->copy(); ?>
-			<?php for($i = 1 ; $i <= 12; $i++): ?>
+			<?php $init = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
+			<?php for($i = 1 ; $i <= $diff; $i++): ?>
 				<?php 	$totalMonthGastos = 
 		    								$arrayExpenses['PAGO PROPIETARIO'][$init->copy()->format('n')] +
 											$arrayExpenses['SERVICIOS PROF INDEPENDIENTES'][$init->copy()->format('n')] +
@@ -347,8 +348,8 @@
 				
 				<b> <?php echo number_format(($totalExpensesPending ) ,0,',','.' ); ?> € </b>
 			</td>
-			<?php $init = $inicio->copy(); ?>
-			<?php for($i = 1 ; $i <= 12; $i++): ?>
+			<?php $init = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
+			<?php for($i = 1 ; $i <= $diff; $i++): ?>
 				<td class="text-center" style="color: #fff; background-color: #5c90d2!important; border-bottom-color: #5c90d2!important; font-size: 18px; padding: 8px 5px!important">
 					<?php 
 						

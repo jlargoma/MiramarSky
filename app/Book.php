@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use \Carbon\Carbon;
 use DB;
 use Mail;
+use App\Traits\BookEmailsStatus;
+use App\BookPartee;
 
 /**
  * Class Book
@@ -69,6 +71,8 @@ class Book extends Model
 	protected $pendiente   = 0;
 	protected $agency      = 0;
 
+        use BookEmailsStatus;
+        
 	public function customer()
 	{
 		return $this->hasOne('\App\Customers', 'id', 'customer_id');
@@ -266,9 +270,9 @@ class Book extends Model
 					7,
 					8
 				])
-				                  ->where('id', '!=', $id_excluded)
-				                  ->orderBy('start', 'DESC')
-				                  ->get();
+                  ->where('id', '!=', $id_excluded)
+                  ->orderBy('start', 'DESC')
+                  ->get();
 
 				//\App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,7,8])->where('id','!=',$id_excluded)->get();
 
@@ -316,249 +320,127 @@ class Book extends Model
 	// Funcion para cambiar la reserva de habitacion o estado
 	public function changeBook($status, $room, $book)
 	{
-		if (!empty($status))
-		{
-			if ($status == 3)
-			{
+	if (!empty($status)){
+          
+          $response = ['status'=>'success','title'=>'OK','response' => ''];
+          if ($status == 3 || $status == 10 || $status == 12 || $status == 6){
+            $this->type_book = $status;
+            $this->save();
+            if ($status == 3) $response['response'] = "Estado Cambiado a Sin Responder";
+            if ($status == 10) $response['response'] = "Reserva cambiada a Overbooking";
+            if ($status == 12) $response['response'] = "Reserva cambiada a ICAL - INVISIBLE";
+            if ($status == 6){
+              $this->sendEmailChangeStatus($book,'Reserva denegada',$status);
+              $response['response'] = "Reserva cambiada a ICAL - INVISIBLE";
+            }
+            return $response;
+            
+          } else {
 
-				$this->type_book = $status;
-				$this->save();
+            $dateStart  = Carbon::createFromFormat('Y-m-d', $this->start);
+            $dateFinish = Carbon::createFromFormat('Y-m-d', $this->finish);
 
-				return [
-					'status'   => 'success',
-					'title'    => 'OK',
-					'response' => "Estado Cambiado a Sin Responder"
-				];
+            $roomStart  = $dateStart->format('U');
+            $roomFinish = $dateFinish->format('U');
 
-			} elseif ($status == 6)
-			{
+            $isRooms = \App\Book::where('room_id', $this->room_id)
+                                ->whereIn('type_book', [1,2,4,7,8])
+                                ->where('id', '!=', $this->id)
+                                ->orderBy('start', 'DESC')
+                                ->get();
 
-				$this->type_book = $status;
-				$this->save();
+            $existStart  = false;
+            $existFinish = false;
 
-				Mail::send('backend.emails.cancelado',['book' => $book], function ($message) use
-				($book) {
-					$message->from('reservas@apartamentosierranevada.net');
-					$message->to($this->customer->email);
-					$message->subject('Reserva denegada');
-				});
+            foreach ($isRooms as $isRoom)
+            {
+              if ($existStart == false)
+              {
 
-				return [
-					'status'   => 'success',
-					'title'    => 'OK',
-					'response' => "Reserva cambiada a Denegada"
-				];
+                $start  = Carbon::createFromFormat('Y-m-d', $isRoom->start)->format('U');
+                $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish)->format('U');
+                
+                if ($start < $roomStart && $roomStart < $finish)
+                {
+                  $existStart = true;
+                } elseif ($start <= $roomStart && $roomStart < $finish)
+                {
+                  $existStart = true;
+                } elseif ($roomStart <= $start && $start < $roomFinish)
+                {
+                  $existStart = true;
+                }
+                
+              } else
+              {
+                break;
+              }
+            }
 
-			} elseif ($status == 10)
-			{
+              if ($existStart == false && $existFinish == false)
+              {
+                $this->type_book = $status;
+                if ($status == 2){
+                  $this->sendToPartee();
+                }
+                
+                if ($this->customer->email == "")
+                {
+                  $this->save();
+                  return [
+                          'status'   => 'warning',
+                          'title'    => 'Cuidado',
+                          'response' => "No tiene Email asignado"
+                  ];
+                  
+                } else  {
 
-				$this->type_book = $status;
-				$this->save();
+                  switch ($status){
+                    case '1':
+                      $this->sendEmailChangeStatus($book,'Bloqueo de reserva y datos de pago',$status);
+                    break;
+                    case '2':
+                      $this->sendEmailChangeStatus($book,'Confirmación de reserva (pago parcial)',$status);
+                      break;
+                    case '7':
+                      $this->sendEmailChangeStatus($book,'Correo de Reserva de Propietario',$status);
+                      break;
+                   }
+                  if ($this->save()){
+                    /* Creamos las notificaciones de booking */
+                    /* Comprobamos que la room de la reserva este cedida a booking.com */
+                    if ($this->room->isAssingToBooking()){
 
-				return [
-					'status'   => 'success',
-					'title'    => 'OK',
-					'response' => "Reserva cambiada a Overbooking"
-				];
-			} elseif ($status == 12)
-			{
+                            $isAssigned = \App\BookNotification::where('book_id', $book->id)->get();
 
-				$this->type_book = $status;
-				$this->save();
+                            if (count($isAssigned) == 0)
+                            {
+                                    $notification          = new \App\BookNotification();
+                                    $notification->book_id = $book->id;
+                                    $notification->save();
+                            }
+                    }
+                    $response['response'] = "Estado Cambiado";
+                    if ($status == 1) $response['response'] = "Email Enviado Reserva";
+                    if ($status == 2) $response['response'] = "Email Enviado Pagada la señal";
+                    if ($status == 4) $response['response'] = "Estado Cambiado a Bloqueado";
+                    if ($status == 5) $response['response'] = "Contestado por email";
+                    if ($status == 7) $response['response'] = "Estado Cambiado a Reserva Propietario";
+                    if ($status == 8) $response['response'] = "Estado Cambiado a Subcomunidad";
 
-				return [
-					'status'   => 'success',
-					'title'    => 'OK',
-					'response' => "Reserva cambiada a ICAL - INVISIBLE"
-				];
-			} else
-			{
-
-				$dateStart  = Carbon::createFromFormat('Y-m-d', $this->start);
-				$dateFinish = Carbon::createFromFormat('Y-m-d', $this->finish);
-
-				$roomStart  = $dateStart->format('U');
-				$roomFinish = $dateFinish->format('U');
-
-				$isRooms = \App\Book::where('room_id', $this->room_id)
-				                    ->whereIn('type_book', [
-					                    1,
-					                    2,
-					                    4,
-					                    7,
-					                    8
-				                    ])
-				                    ->where('id', '!=', $this->id)
-				                    ->orderBy('start', 'DESC')
-				                    ->get();
-
-				$existStart  = false;
-				$existFinish = false;
-
-				foreach ($isRooms as $isRoom)
-				{
-					if ($existStart == false)
-					{
-
-						$start  = Carbon::createFromFormat('Y-m-d', $isRoom->start)->format('U');
-						$finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish)->format('U');
-
-
-						if ($start < $roomStart && $roomStart < $finish)
-						{
-							$existStart = true;
-						} elseif ($start <= $roomStart && $roomStart < $finish)
-						{
-							$existStart = true;
-						} elseif ($roomStart <= $start && $start < $roomFinish)
-						{
-							$existStart = true;
-						}
-					} else
-					{
-						break;
-					}
-				}
-
-				if ($existStart == false && $existFinish == false)
-				{
-
-					$this->type_book = $status;
-
-					if ($this->customer->email == "")
-					{
-						$this->save();
-						return [
-							'status'   => 'warning',
-							'title'    => 'Cuidado',
-							'response' => "No tiene Email asignado"
-						];
-					} else
-					{
-						switch ($status)
-						{
-							case '1':
-
-								Mail::send('backend.emails.reservado', ['book' => $book], function ($message) use ($book) {
-									$message->from('reservas@apartamentosierranevada.net');
-
-									$message->to($book->customer->email);
-									$message->subject('Bloqueo de reserva y datos de pago');
-								});
-								break;
-							case '2':
-								Mail::send('backend.emails.confirmado', ['book' => $book], function ($message) use ($book) {
-									$message->from('reservas@apartamentosierranevada.net');
-
-									$message->to($book->customer->email);
-									$message->subject('Confirmación de reserva (pago parcial)');
-								});
-								break;
-							case '4':
-								// Mail::send('backend.emails.bloqueado',['book' => $book], function ($message) use ($book) {
-								//     $message->from('reservas@apartamentosierranevada.net');
-								//     $message->to('alquilerapartamentosmiramarski@gmail.com');
-								//     $message->subject('Correo de Bloqueo');
-								// });
-								break;
-							case '7':
-								Mail::send('backend.emails.reserva-propietario', ['book' => $book], function ($message) use ($book) {
-									$message->from('reservas@apartamentosierranevada.net');
-									$message->to($book->customer->email);
-									$message->subject('Correo de Reserva de Propietario');
-								});
-								break;
-							case '8':
-								// Mail::send('backend.emails.subcomunidad',['book' => $book], function ($message) use ($book) {
-								//         $message->from('reservas@apartamentosierranevada.net');
-								//         $message->to('alquilerapartamentosmiramarski@gmail.com');
-								//         $message->subject('Correo de Subcomunidad');
-								//     });
-								break;
-						}
-						if ($this->save())
-						{
-
-							/* Creamos las notificaciones de booking */
-							/* Comprobamos que la room de la reserva este cedida a booking.com */
-							if ($this->room->isAssingToBooking())
-							{
-
-								$isAssigned = \App\BookNotification::where('book_id', $book->id)->get();
-
-								if (count($isAssigned) == 0)
-								{
-									$notification          = new \App\BookNotification();
-									$notification->book_id = $book->id;
-									$notification->save();
-								}
-
-
-							}
-
-							if ($status == 1)
-							{
-								return [
-									'status'   => 'success',
-									'title'    => 'OK',
-									'response' => "Email Enviado Reserva"
-								];
-							} elseif ($status == 2)
-							{
-								return [
-									'status'   => 'success',
-									'title'    => 'OK',
-									'response' => "Email Enviado Pagada la señal"
-								];
-							} elseif ($status == 4)
-							{
-								return [
-									'status'   => 'success',
-									'title'    => 'OK',
-									'response' => "Estado Cambiado a Bloqueado"
-								];
-							} elseif ($status == 5)
-							{
-								return [
-									'status'   => 'success',
-									'title'    => 'OK',
-									'response' => "Contestado por email"
-								];
-							}elseif ($status == 7)
-							{
-								return [
-									'status'   => 'success',
-									'title'    => 'OK',
-									'response' => "Estado Cambiado a Reserva Propietario"
-								];
-							} elseif ($status == 8)
-							{
-								return [
-									'status'   => 'success',
-									'title'    => 'OK',
-									'response' => "Estado Cambiado a Subcomunidad"
-								];
-							} else
-							{
-								return [
-									'status'   => 'success',
-									'title'    => 'OK',
-									'response' => "Estado Cambiado"
-								];
-							}
-						}
-					}
-				} else
-				{
-					return [
-						'status'   => 'danger',
-						'title'    => 'Peligro',
-						'response' => "No puedes cambiar el estado"
-					];
-				}
-			}
-
-		}
+                    return $response;
+                  }
+                }
+              } else {
+                
+                return [
+                        'status'   => 'danger',
+                        'title'    => 'Peligro',
+                        'response' => "No puedes cambiar el estado"
+                ];
+              }
+          }
+        }//if (!empty($status))
 
 		if (!empty($room))
 		{
@@ -686,7 +568,7 @@ class Book extends Model
 			}
 		}
 	}
-
+        
 
 	//Funcion para calcular el beneficio de Jorge
 	static public function getBenJorge($ben, $id)
@@ -850,6 +732,11 @@ class Book extends Model
 	{
 		return $this->hasMany(Payments::class);
 	}
+        
+	public function partee()
+	{
+		return $this->hasOne(BookPartee::class)->first();
+	}
 
 	public function getSumPaymentsAttribute()
 	{
@@ -971,4 +858,99 @@ class Book extends Model
 		$sendPictures = \App\LogImages::where('book_id', $this->id)->get();
 		return (count($sendPictures) > 0) ? $sendPictures : false;
 	}
+        
+        /**
+         * Get the inc_percent from the book
+         * 
+         * @return int inc_percent
+         */
+        public function get_inc_percent() {
+          $profit = $this->profit;
+          $total_price = $this->total_price;
+          $inc_percent = 0;
+          
+          if($this->room->luxury == 0 && $this->cost_lujo > 0) {
+            $profit      = $this->profit - $this->cost_lujo;
+            $total_price = $this->total_price - $this->sup_lujo;
+          }
+          
+          if ($total_price != 0){
+            $inc_percent = ($profit/ $total_price )*100;
+          }
+          
+          return $inc_percent;
+        }
+        
+        /**
+         * Get the total cost
+         * 
+         * @return int $cost_total
+         */
+        public function get_costeTotal(){
+          
+          $cost_total = $this->cost_apto + $this->cost_park + $this->cost_lujo + $this->cost_limp + $this->PVPAgencia + $this->stripeCost + $this->extraCost;
+          if($this->room->luxury == 0 && $this->cost_lujo > 0) {
+            $cost_total = $this->cost_total - $this->cost_lujo;
+          }
+          
+          return $cost_total;
+        }
+        
+        /**
+         * Get object Book that has status 2,7,8
+         * 
+         * @return Object Query
+         */
+        static function type_book_sales() {
+          return self::whereIn('type_book', [2,7,8]);
+          
+        }
+        
+        
+        /**
+         * Send the Booking to Partee
+         */
+        public function sendToPartee() {
+          $BookPartee = BookPartee::where('book_id',$this->id)->first();
+          
+          if ( $BookPartee ){ 
+            if ( $BookPartee->partee_id>0 ){
+              return FALSE;
+            }
+          } else {
+            $BookPartee = new BookPartee();
+            $BookPartee->book_id = $this->id;
+          }
+          
+          //Create Partee
+          $partee = new \App\Services\ParteeService();
+          if ($partee->conect()){
+
+            $result = $partee->getCheckinLink($this->customer->email, strtotime($this->start));
+            
+            if ($result){
+              
+              $BookPartee->link = $partee->response->checkInOnlineURL;
+              $BookPartee->partee_id = $partee->response->id;
+              $BookPartee->status = 'sent';
+              $BookPartee->log_data = $BookPartee->log_data .",". time() .'- Sent';
+              $BookPartee->save();
+              
+            } else {
+              $BookPartee->status = 'error';
+              $BookPartee->log_data = $BookPartee->log_data .",". time() .'-'.$partee->response;
+              $BookPartee->save();
+            }
+            
+          } else {
+            
+            $BookPartee->status = 'error';
+            $BookPartee->log_data = $BookPartee->log_data .",". time() .'-'.$partee->response;
+            $BookPartee->save();
+            
+          }
+          
+        }
+    
+                
 }

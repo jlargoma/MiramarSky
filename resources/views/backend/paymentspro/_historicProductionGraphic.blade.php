@@ -15,13 +15,13 @@ setlocale(LC_TIME, "es_ES");
 
         <div class="col-md-12 col-xs-12">
             <div>
-                <?php $dataChartMonths = \App\Rooms::getPvpByMonth($inicio->copy()->format('Y'),$room_id) ?>
+                <?php $dataChartMonths = \App\Rooms::getPvpByMonth($year->year,$room_id) ?>
             </div>
         </div>
         <div class="col-md-12 col-xs-12">
             <div>
-                <?php $dataChartYear = \App\Rooms::getPvpByMonth($inicio->copy()->subYear()->format('Y'),$room_id) ?>
-                <?php $dataChartPrevYear = \App\Rooms::getPvpByMonth($inicio->copy()->subYear()->subYear()->format('Y'),$room_id) ?>
+                <?php $dataChartYear = \App\Rooms::getPvpByMonth(($year->year - 1) ,$room_id) ?>
+                <?php $dataChartPrevYear = \App\Rooms::getPvpByMonth(($year->year - 2),$room_id) ?>
 
                 <canvas id="barChartTemp" style="width: 100%; height: 250px;"></canvas>
             </div>
@@ -33,39 +33,39 @@ setlocale(LC_TIME, "es_ES");
                 type: 'line',
                 data: {
                   labels: [
-                                  <?php foreach ($dataChartMonths as $key => $value): ?>
+                    <?php foreach ($dataChartMonths as $key => $value): ?>
                         <?php echo "'" . $key . "'," ?>
                     <?php endforeach ?>
                   ],
                   datasets: [{
                     data: [
-                                        <?php foreach ($dataChartMonths as $key => $value): ?>
+                     <?php foreach ($dataChartMonths as $key => $value): ?>
                         <?php echo "'" . round($value) . "'," ?>
-                    <?php endforeach ?>
+                      <?php endforeach ?>
                     ],
-                    label: '<?php echo $inicio->copy()->format('Y')?>-<?php echo $inicio->copy()->addYear()->format("Y")?>',
+                    label: '<?php echo $year->year ?>-<?php echo $year->year - 1 ?>',
                     borderColor: "rgba(54, 162, 235, 1)",
                     fill: false
                   },
                     {
                       data: [
-                                          <?php foreach ($dataChartYear as $key => $value): ?>
+                       <?php foreach ($dataChartYear as $key => $value): ?>
                         <?php echo "'" . round($value) . "'," ?>
                       <?php endforeach ?>
                       ],
-                                        <?php $aux = $inicio->copy()->subYears(1) ?>
-                        label: '<?php echo $aux->copy()->format('Y')?>-<?php echo $aux->copy()->addYear()->format("Y")?>',
+                       <?php $aux = ($year->year - 1) ?>
+                        label: '<?php echo $aux ?>-<?php echo $aux - 1 ?>',
                       borderColor: "rgba(104, 255, 0, 1)",
                       fill: false
                     },
                     {
                       data: [
-                                          <?php foreach ($dataChartPrevYear as $key => $value): ?>
+                       <?php foreach ($dataChartPrevYear as $key => $value): ?>
                         <?php echo "'" . round($value) . "'," ?>
                       <?php endforeach ?>
                       ],
-                                        <?php $aux = $inicio->copy()->subYears(1) ?>
-                        label: '<?php echo $aux->copy()->subYear()->format('Y')?>-<?php echo $aux->copy()->format("Y")?>',
+                       <?php $aux =  ($year->year - 2) ?>
+                        label: '<?php echo $aux ?>-<?php echo $aux - 1 ?>',
                       borderColor: "rgba(232, 142, 132, 1)",
                       fill: false
                     }

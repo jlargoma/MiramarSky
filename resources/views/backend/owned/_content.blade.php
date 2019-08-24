@@ -1,5 +1,5 @@
-<?php $dateStat = $date->copy(); ?>
 <?php use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); ?>
+<?php $dateStat = $startYear->copy(); ?>
 <style type="text/css"> 
 
 	.S, .D{
@@ -103,25 +103,13 @@
 			    				<h2 class="text-center"><b>Planning de reservas</b></h2>
 			    			</div>
 	    		    	    <div class="col-md-2" style="padding: 15px;">  
-	    		    	        <select id="fecha" class="form-control minimal">
-	    		    	            <?php $fecha = $date->copy()->SubYear(); ?>
-	    		    	            <?php if ($fecha->copy()->format('Y') < 2015): ?>
-	    		    	                <?php $fecha = new Carbon('first day of September 2015'); ?>
-	    		    	            <?php endif ?>
-	    		    	        
-	    		    	            <?php for ($i=1; $i <= 3; $i++): ?>                           
-	    		    	                <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $date->copy()->format('Y') == $fecha->format('Y') ? 'selected' : '' }}>
-	    		    	                    <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
-	    		    	                </option>
-	    		    	                <?php $fecha->addYear(); ?>
-	    		    	            <?php endfor; ?>
-	    		    	        </select>
+	    		    	        @include('backend.years._selector')
 	    		    		</div> 
 	    		    	<?php else: ?>
 	    		    		<div class="col-md-12 col-sm-8">
-	    		    			<?php $fecha = $date->copy(); ?>
+	    		    			<?php $fecha = $startYear->copy(); ?>
 			    				<h2 class="text-center">
-			    					<b>Planning de reservas</b> <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?>
+			    					<b>Planning de reservas</b> {{ $year->year }}-{{ $year->year + 1 }}
 			    				</h2>
 			    			</div>
 		    		    <?php endif ?>
@@ -131,8 +119,6 @@
 			
 				<div class="container">
 					<?php $roomsForUser = \App\Rooms::where('owned', $room->user->id)->get(); ?>
-					
-						
 						<?php if ( count($roomsForUser)  == 1): ?>
 							<?php if (Auth::user()->role == 'propietario'): ?>
 								<div class="col-md-12 text-center">
@@ -150,7 +136,6 @@
 		                            </select>
 								</div>
 							<?php endif ?>
-							
 						<?php else: ?>
 							<div class="col-md-2 col-md-offset-4 text-center push-20">
 								<!-- <h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1> -->
@@ -540,25 +525,13 @@
 			    				<h2 class="text-center"><b>Planning de reservas</b></h2>
 			    			</div>
 	    		    	    <div class="col-xs-6 col-xs-offset-3" style="padding: 15px;">  
-	    		    	        <select id="fecha" class="form-control minimal">
-	    		    	            <?php $fecha = $date->copy()->SubYear(); ?>
-	    		    	            <?php if ($fecha->copy()->format('Y') < 2015): ?>
-	    		    	                <?php $fecha = new Carbon('first day of September 2015'); ?>
-	    		    	            <?php endif ?>
-	    		    	        
-	    		    	            <?php for ($i=1; $i <= 3; $i++): ?>                           
-	    		    	                <option value="<?php echo $fecha->copy()->format('Y'); ?>" {{ $date->copy()->format('Y') == $fecha->format('Y') ? 'selected' : '' }}>
-	    		    	                    <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?> 
-	    		    	                </option>
-	    		    	                <?php $fecha->addYear(); ?>
-	    		    	            <?php endfor; ?>
-	    		    	        </select>
+	    		    	        @include('backend.years._selector')
 	    		    		</div> 
 	    		    	<?php else: ?>
 	    		    		<div class="col-xs-6 col-xs-offset-3">
-	    		    			<?php $fecha = $date->copy(); ?>
+	    		    			<?php $fecha = $startYear->copy(); ?>
 			    				<h2 class="text-center">
-			    					<b>Planning de reservas</b> <?php echo $fecha->copy()->format('Y')."-".$fecha->copy()->addYear()->format('Y'); ?>
+			    					<b>Planning de reservas</b> {{ $year->year }}-{{ $year->year + 1 }}
 			    				</h2>
 			    			</div>
 		    		    <?php endif ?>

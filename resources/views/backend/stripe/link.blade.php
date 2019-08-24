@@ -1,11 +1,13 @@
 <div class="row">
 	<div class="col-xs-12"> 
 		<h2 class="text-center font-w300" style="letter-spacing: -1px;">
-			GENERADOR DE LINKS STRIPE
+			GENERADOR DE LINKS PAYLAND
 		</h2>
 	</div>
-	<div class="col-md-3 col-xs-12 push-20">
+	<div class="col-md-3  col-xs-12 col-md-offset-4 push-20">
 		<input type="number" class="form-control only-numbers" name="importe_stripe" id="importe_stripe" placeholder="importe..." />
+        <input type="hidden" name="book" id="book" value="<?php if (isset($book)): ?>{{ $book->id }}<?php else: ?>0<?php endif;?>" />
+
 	</div>
 	<div class="col-md-3 col-xs-12 push-20">
 		<button id="btnGenerate" class="btn btn-success" type="button">Generar</button>
@@ -17,12 +19,13 @@
 
 		$('#btnGenerate').click(function(event) {
 			var importe = $('#importe_stripe').val();
+            var book = $('#book').val();
 
 			if (importe == '') {
 				alert('Rellena el importe a generar');
 			}else{
 
-				$.get('/admin/links-stripe',{ importe: importe }, function(data) {
+				$.get('/admin/links-payland',{ importe: importe, book: book }, function(data) {
 					$('.content-importe-stripe').empty().append(data);
 				});
 			}

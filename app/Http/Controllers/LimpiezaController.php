@@ -8,19 +8,19 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-class LimpiezaController extends Controller
+class LimpiezaController extends AppController
 {
     public function index(Request $request, $year = "")
     {
         if (empty($year))
         {
             $date = Carbon::now();
-            if ($date->copy()->format('n') >= 9)
+            if ($date->copy()->format('n') >= 6)
             {
-                $date = new Carbon('first day of September ' . $date->copy()->format('Y'));
+                $date = new Carbon('first day of June ' . $date->copy()->format('Y'));
             } else
             {
-                $date = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
+                $date = new Carbon('first day of June ' . $date->copy()->subYear()->format('Y'));
             }
 
         } else

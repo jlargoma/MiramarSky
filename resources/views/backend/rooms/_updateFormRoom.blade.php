@@ -54,9 +54,9 @@
 				<div class="col-md-2 col-xs-12 push-20">
 					<label for="owned">Prop.</label>
 					<select class="form-control minimal" name="owned">
-						<?php $owneds = \App\User::whereIn('role', ['propietario', 'admin'])->whereNotIn('id', [58,59,63])->get() ?>
+						<?php $owneds = \App\User::whereIn('role', ['propietario', 'admin'])->get() ?>
 						<?php foreach ($owneds as $key => $owned): ?>
-							<?php if ( ($owned->role == 'propietario') || $owned->name == 'jorge'): ?>
+							<?php if ( ($owned->role == 'propietario') || ($owned->role == 'admin') || $owned->name =='jorge'): ?>
 								<?php if( $owned->name == $room->user->name ){ $selected = "selected"; }else{$selected = "";} ?>
 								<option value="<?php echo $owned->id; ?>" <?php echo $selected ?> >
 									<?php echo $owned->name ?>
@@ -81,13 +81,20 @@
 					<label for="minOcu">% Min Benef</label>
 					<input type="number" name="profit_percent" class="form-control" value="<?php echo $room->profit_percent; ?>"/>
 				</div>
-							
+				<div class="col-md-2 col-xs-12 push-20">
+					<label for="num_garage">Plz parking</label>
+					<input type="number" name="num_garage" class="form-control" value="<?php echo $room->num_garage;?>"/>
+				</div>
+				<div class="col-md-2 col-xs-12 push-20">
+					<label for="num_garage">Plz parking</label>
+					<input type="number" name="num_garage" class="form-control" value="<?php echo $room->num_garage;?>"/>
+				</div>
 			</div>
 		</div>
 		<div class="col-md-12 push-20 ">
 			<div class="col-xs-12 col-md-12">
 				<h4 class="text-center">Descripción del apto</h4>
-				<textarea class="form-control" name="description"><?php echo $room->description; ?></textarea>
+				<textarea class="form-control" name="description" rows="7"><?php echo $room->description; ?></textarea>
 			</div>
 		</div>
 		<div class="col-xs-12 text-center push-20">
