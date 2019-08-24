@@ -91,10 +91,10 @@
             <div class="fslider" data-animation="fade" data-thumbs="flase" data-arrows="true" data-speed="1200" >
                <div class="flexslider">
                   <div class="slider-wrap">
-                     <?php foreach ($slides as $slide): ?>
-                        <div class="slide" data-thumb="{{ $slide->file_rute }}/thumbnails/{{ $slide->file_name }}">
+                     <?php foreach ($slides as $slide):?>
+                        <div class="slide" data-thumb="{{ $slide }}">
                            <a>
-                              <img class="img img-slider-apto" src="{{ $slide->file_rute }}/{{ $slide->file_name }}" alt="<?php echo str_replace('-', ' ', $url) ?>" title="<?php echo str_replace('-', ' ', $url) ?>" >
+                              <img class="img img-slider-apto" src="{{ $slide }}" alt="<?php echo str_replace('-', ' ', $url) ?>" title="<?php echo str_replace('-', ' ', $url) ?>" >
                            </a>
                         </div>
                      <?php endforeach ?>

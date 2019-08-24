@@ -41,103 +41,145 @@ class HomeController extends AppController
             'slidesEdificio' => $slides,
         ]);
     }
-    public function apartamento($apto)
-    {
-        $url  = $apto;
-        $apto = str_replace('-', ' ', $apto);
-        $apto = str_replace(' sierra nevada', '', $apto);
-        switch ($apto)
-        {
-            case 'apartamento lujo':
-                $aptoHeading       = "APARTAMENTOS DOS DORM - DE LUJO ";
-                $aptoHeadingMobile = "Apto de lujo 2 DORM";
-                $typeApto = 1;
-                break;
-            case 'estudio lujo':
-                $aptoHeading       = "ESTUDIOS – DE LUJO";
-                $aptoHeadingMobile = "Estudio de lujo";
-                $typeApto = 3;
-                break;
-            case 'apartamento standard':
-                $aptoHeading       = "APARTAMENTOS DOS DORM - ESTANDAR ";
-                $aptoHeadingMobile = "Apto Standard";
-                $typeApto = 2;
-                break;
-            case 'estudio standard':
-                $aptoHeading       = "ESTUDIOS – ESTANDAR";
-                $aptoHeadingMobile = "Estudio Standard";
-                $typeApto = 4;
-                break;
-            case 'chalet los pinos':
-                $aptoHeading       = "CHALET - LOS PINOS";
-                $aptoHeadingMobile = "Chalet los pinos";
-                $typeApto = 5;
-                break;
-            case 'apartamento lujo gran capacidad':
-                $aptoHeading       = "APTOS 3/4 DORMITORIOS LUJO";
-                $aptoHeadingMobile = "3DORM GRAN CAPACIDAD";
-                $typeApto = 6;
-                break;
-            default:
-                $room = \App\Rooms::where('nameRoom', $url)->first();
-                if ($room)
-                {
-                    $aptoHeading       = ($room->luxury) ? $room->sizeRooms->name . " - LUJO" : $room->sizeRooms->name . " - ESTANDAR";
-                    $aptoHeadingMobile = ($room->luxury) ? $room->sizeRooms->name . " - lujo" : $room->sizeRooms->name . " - estandar";
-                    if ($room->sizeApto == 1 && $room->luxury == 0)
-                    {
-                        $typeApto = 4;
-                    } elseif ($room->sizeApto == 1 && $room->luxury == 1)
-                    {
-                        $typeApto = 3;
-                    } elseif ($room->sizeApto == 2 && $room->luxury == 0)
-                    {
-                        $typeApto = 2;
-                    } elseif ($room->sizeApto == 2 && $room->luxury == 1)
-                    {
-                        $typeApto = 1;
-                    } elseif ($room->sizeApto == 3 || $room->sizeApto == 4)
-                    {
-                        $typeApto = 6;
-                    }
-                    break;
-                } else
-                {
-                    return view('errors.notexist-apartmanet');
-                }
-        }
-        $galleries = \App\RoomsPhotos::getGalleries();
-        if (isset($galleries[$url]))
-        {
-            $slides    = \App\RoomsPhotos::where('gallery_key', $url)->orderBy('position')->get();
-            $directory = '/img/miramarski/galerias/';
-        } else
-        {
-            $slides = null;
-            if ($room)
-            {
-                $slides = \App\RoomsPhotos::where('room_id', $room->id)->orderBy('position')->get();
-            }
-            $directory = '';
-        }
-        $aptos = [
-            'apartamento-lujo-gran-capacidad-sierra-nevada',
-            'apartamento-lujo-sierra-nevada',
-            'estudio-lujo-sierra-nevada',
-            'apartamento-standard-sierra-nevada',
-            'estudio-standard-sierra-nevada'
-        ];
-        return view('frontend.pages._apartamento2', [
-            'slides'            => $slides,
-            'mobile'            => new Mobile(),
-            'aptoHeading'       => $aptoHeading,
-            'aptoHeadingMobile' => $aptoHeadingMobile,
-            'typeApto'          => $typeApto,
-            'aptos'             => $aptos,
-            'url'               => $url,
-            'directory'         => $directory,
-        ]);
-    }
+public function apartamento($apto)
+	{
+		$url  = $apto;
+		$apto = str_replace('-', ' ', $apto);
+		$apto = str_replace(' sierra nevada', '', $apto);
+
+
+		switch ($apto)
+		{
+			case 'apartamento lujo':
+				$aptoHeading       = "APARTAMENTOS DOS DORM - DE LUJO ";
+				$aptoHeadingMobile = "Apto de lujo 2 DORM";
+
+				$typeApto = 1;
+				break;
+
+			case 'estudio lujo':
+				$aptoHeading       = "ESTUDIOS – DE LUJO";
+				$aptoHeadingMobile = "Estudio de lujo";
+
+				$typeApto = 3;
+				break;
+
+			case 'apartamento standard':
+				$aptoHeading       = "APARTAMENTOS DOS DORM - ESTANDAR ";
+				$aptoHeadingMobile = "Apto Standard";
+
+				$typeApto = 2;
+				break;
+
+			case 'estudio standard':
+				$aptoHeading       = "ESTUDIOS – ESTANDAR";
+				$aptoHeadingMobile = "Estudio Standard";
+
+				$typeApto = 4;
+				break;
+			case 'chalet los pinos':
+				$aptoHeading       = "CHALET - LOS PINOS";
+				$aptoHeadingMobile = "Chalet los pinos";
+
+				$typeApto = 5;
+				break;
+
+			case 'apartamento lujo gran capacidad':
+				$aptoHeading       = "APTOS 3/4 DORMITORIOS LUJO";
+				$aptoHeadingMobile = "3DORM GRAN CAPACIDAD";
+
+				$typeApto = 6;
+				break;
+			default:
+				$room = \App\Rooms::where('nameRoom', $url)->first();
+				if (count($room) > 0)
+				{
+					$aptoHeading       = ($room->luxury) ? $room->sizeRooms->name . " - LUJO" : $room->sizeRooms->name . " - ESTANDAR";
+					$aptoHeadingMobile = ($room->luxury) ? $room->sizeRooms->name . " - lujo" : $room->sizeRooms->name . " - estandar";
+
+					if ($room->sizeApto == 1 && $room->luxury == 0)
+					{
+						$typeApto = 4;
+					} elseif ($room->sizeApto == 1 && $room->luxury == 1)
+					{
+						$typeApto = 3;
+					} elseif ($room->sizeApto == 2 && $room->luxury == 0)
+					{
+						$typeApto = 2;
+					} elseif ($room->sizeApto == 2 && $room->luxury == 1)
+					{
+						$typeApto = 1;
+					} elseif ($room->sizeApto == 3 || $room->sizeApto == 4)
+					{
+						$typeApto = 6;
+					}
+					break;
+				} else
+				{
+					return view('errors.notexist-apartmanet');
+				}
+
+		}
+
+
+		if ($url == 'apartamento-standard-sierra-nevada' || $url == 'apartamento-lujo-sierra-nevada' || $url == 'estudio-lujo-sierra-nevada' || $url == 'estudio-standard-sierra-nevada' || $url == 'chalet-los-pinos-sierra-nevada' || $url == 'apartamento-lujo-gran-capacidad-sierra-nevada')
+		{
+
+			$slides    = File::allFiles(public_path() . '/img/miramarski/galerias/' . $url);
+			$directory = '/img/miramarski/galerias/';
+		} else
+		{
+
+			$slides    = File::allFiles(public_path() . '/img/miramarski/apartamentos/' . $url);
+			$directory = '/img/miramarski/apartamentos/';
+
+
+		}
+
+
+		foreach ($slides as $key => $slide)
+		{
+			$arraySlides[] = $slide->getFilename();
+		}
+		natcasesort($arraySlides);
+		$slides = array();
+		foreach ($arraySlides as $key => $sl)
+		{
+			if ($url == 'apartamento-standard-sierra-nevada' || $url == 'apartamento-lujo-sierra-nevada' || $url == 'estudio-lujo-sierra-nevada' || $url == 'estudio-standard-sierra-nevada' || $url == 'chalet-los-pinos-sierra-nevada' || $url == 'apartamento-lujo-gran-capacidad-sierra-nevada')
+			{
+
+				$slides[] = '/img/miramarski/galerias/' . $url . '/' . $sl;
+			} else
+			{
+
+				$slides[] = '/img/miramarski/apartamentos/' . $url . '/' . $sl;
+
+
+			}
+		}
+
+		$aptos = [
+			'apartamento-lujo-gran-capacidad-sierra-nevada',
+			'apartamento-lujo-sierra-nevada',
+			'estudio-lujo-sierra-nevada',
+			'apartamento-standard-sierra-nevada',
+			'estudio-standard-sierra-nevada'
+		];
+
+
+		return view('frontend.pages._apartamento2', [
+			'slides'            => $slides,
+			'mobile'            => new Mobile(),
+			'aptoHeading'       => $aptoHeading,
+			'aptoHeadingMobile' => $aptoHeadingMobile,
+			'typeApto'          => $typeApto,
+			'aptos'             => $aptos,
+			'url'               => $url,
+			'directory'         => $directory,
+		]);
+
+
+	}
     public function galeriaApartamento($apto)
     {
         $room = \App\Rooms::where('nameRoom', $apto)->first();
