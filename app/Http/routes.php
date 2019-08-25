@@ -10,6 +10,9 @@
     |
     */
     use App\Http\Controllers\ForfaitsController;
+
+    Route::auth();
+    Route::get('/', 'HomeController@index');
     Route::get('/partee-checkHuespedes', function () {
         $partee = new \App\Services\ParteeService();
         $partee->conect();
@@ -29,8 +32,6 @@
         \Artisan::call('ical:import');
         return redirect('/admin/reservas');
     });
-    Route::auth();
-    Route::get('/', 'HomeController@index');
     Route::get('/thanks-you', 'HomeController@thanksYou')->name('thanks-you');
     Route::get('/form-demo', 'BookController@demoFormIntegration');
     Route::post('/api/check_rooms_avaliables', 'BookController@apiCheckBook')->name('api.proccess');
