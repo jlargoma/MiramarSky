@@ -13,6 +13,7 @@
 
     Route::auth();
     Route::get('/', 'HomeController@index');
+
     Route::get('/partee-checkHuespedes', function () {
         $partee = new \App\Services\ParteeService();
         $partee->conect();
@@ -28,6 +29,7 @@
         'as'   => 'import-iCalendar',
         'uses' => 'ICalendarController@getIcalendar'
     ])->where('aptoID', '[0-9]+');
+
     Route::get('/ical/importFromUrl', function () {
         \Artisan::call('ical:import');
         return redirect('/admin/reservas');

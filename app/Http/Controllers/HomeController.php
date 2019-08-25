@@ -41,7 +41,8 @@ class HomeController extends AppController
             'slidesEdificio' => $slides,
         ]);
     }
-public function apartamento($apto)
+
+    public function apartamento($apto)
 	{
 		$url  = $apto;
 		$apto = str_replace('-', ' ', $apto);
@@ -180,6 +181,7 @@ public function apartamento($apto)
 
 
 	}
+
     public function galeriaApartamento($apto)
     {
         $room = \App\Rooms::where('nameRoom', $apto)->first();
@@ -222,15 +224,18 @@ public function apartamento($apto)
             'url'               => $apto,
         ]);
     }
+
     public function edificio()
     {
         // return view('frontend.pages._edificio');
     }
+
     public function contacto()
     {
         return view('frontend.contacto', ['mobile' => new Mobile(),]);
     }
     // Correos frontend
+
     public function formContacto(Request $request)
     {
         $data['name']    = $request->input('name');
@@ -257,6 +262,7 @@ public function apartamento($apto)
             ]);
         }
     }
+
     public function formAyuda(Request $request)
     {
         $data['name']    = $request->input('name');
@@ -284,6 +290,7 @@ public function apartamento($apto)
             ]);
         }
     }
+
     public function formPropietario(Request $request)
     {
         $data['name']    = $request->input('name');
@@ -311,6 +318,7 @@ public function apartamento($apto)
             ]);
         }
     }
+
     public function formGrupos(Request $request)
     {
         $data['name']     = $request->input('name');
@@ -340,54 +348,67 @@ public function apartamento($apto)
             ]);
         }
     }
+
     public function form()
     {
         return view('frontend._formBook', ['mobile' => new Mobile()]);
     }
+
     public function terminos()
     {
         return view('frontend.terminos', ['mobile' => new Mobile()]);
     }
+
     public function politicaPrivacidad()
     {
         return view('frontend.privacidad', ['mobile' => new Mobile()]);
     }
+
     public function politicaCookies()
     {
         return view('frontend.cookies', ['mobile' => new Mobile()]);
     }
+
     public function condicionesGenerales()
     {
         return view('frontend.condiciones-generales', ['mobile' => new Mobile()]);
     }
+
     public function preguntasFrecuentes()
     {
         return view('frontend.preguntas-frecuentes', ['mobile' => new Mobile()]);
     }
+
     public function eresPropietario()
     {
         return view('frontend.eres-propietario', ['mobile' => new Mobile()]);
     }
+
     public function grupos()
     {
         return view('frontend.grupos', ['mobile' => new Mobile()]);
     }
+
     public function quienesSomos()
     {
         return view('frontend.quienes-somos', ['mobile' => new Mobile()]);
     }
+
     public function ayudanosAMejorar()
     {
         return view('frontend.ayudanos-a-mejorar', ['mobile' => new Mobile()]);
     }
+
     public function avisoLegal()
     {
         return view('frontend.aviso-legal', ['mobile' => new Mobile()]);
     }
+
     public function huesped()
     {
         return view('frontend.huesped', ['mobile' => new Mobile()]);
     }
+
     public function tiempo()
     {
         $aptos = [
@@ -401,12 +422,14 @@ public function apartamento($apto)
             'aptos'  => $aptos,
         ]);
     }
+
     public function getCitiesByCountry(Request $request)
     {
         return view('frontend.responses._citiesByCountry', [
             'cities' => \App\Cities::where('code_country', $request->code)->orderBy('city', 'ASC')->get()
         ]);
     }
+
     public function solicitudForfait(Request $request)
     {
         $arrayProducts     = array();
@@ -541,11 +564,13 @@ public function apartamento($apto)
             }
         }
     }
+
     public function getForfaitsRequests()
     {
         $requests = \App\Solicitudes::where("enable", "=", 1)->orderBy('id', 'DESC')->get();
         return view('/backend/forfaits/index')->with('requests', $requests);
     }
+
     public function getDiffIndays(Request $request)
     {
         $date1 = Carbon::createFromFormat('d M, y', trim($request->date1));
@@ -564,10 +589,12 @@ public function apartamento($apto)
             'dates'          => $date1->copy()->format('d M, y') . ' - ' . $date2->copy()->format('d M, y')
         ];
     }
+
     public function condicionesContratacion(Request $request)
     {
         return view('frontend.condiciones-contratacion', ['mobile' => new Mobile()]);
     }
+
     public static function getLastBookByPhone($ff_request_id, $phone)
     {
         $customers = \App\Customers::where("phone", "=", "$phone")->orderBy('ID', 'DESC')->take(1)->get();
@@ -589,10 +616,12 @@ public function apartamento($apto)
         }
         return false;
     }
+
     public function thanksYou(Request $request)
     {
         return view('frontend.stripe.stripe', ['mobile' => new Mobile()]);
     }
+
     public function getPriceBook(Request $request)
     {
         $aux       = str_replace('Abr', 'Apr', $request->input('fechas'));
