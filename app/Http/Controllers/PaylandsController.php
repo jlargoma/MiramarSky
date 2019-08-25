@@ -32,7 +32,7 @@ class PaylandsController extends AppController
         $params['amount']          = ($request->importe) * 100;
         $params['customer_ext_id'] = "admin@" . $_SERVER['REQUEST_URI'];
         $params['operative']       = "AUTHORIZATION";
-        $params['secure']          = true;
+        $params['secure']          = false;
         $params['signature']       = env('PAYLAND_SIGNATURE');
         $params['service']         = env('PAYLAND_SERVICE');
         $params['description']     = "COBRO ESTANDAR";

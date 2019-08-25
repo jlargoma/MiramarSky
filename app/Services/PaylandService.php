@@ -79,6 +79,7 @@ class PaylandService
 
     public function payment(array $params)
     {
+        $params['secure'] = false;
         try
         {
             $response = $this->call(self::METHOD_POST, self::$PAYMENT_URL, $params);

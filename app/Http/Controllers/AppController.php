@@ -103,7 +103,7 @@ class AppController extends Controller
         $response['amount']          = ($response['amount']) * 100;
         $response['customer_ext_id'] = $customer->email;
         $response['operative']       = "AUTHORIZATION";
-        $response['secure']          = true;
+        $response['secure']          = false;
         $response['signature']       = env('PAYLAND_SIGNATURE');
         $response['service']         = env('PAYLAND_SERVICE');
         $response['description']     = "COBRO RESERVA CLIENTE " . $customer->name;
