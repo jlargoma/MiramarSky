@@ -45,20 +45,21 @@ $mobile = new Mobile();
                     <label for="status">Estado</label>
                 </div>
                 <div class="col-md-8">
+                    <?php $book = new \App\book(); ?>
                     <select name="status" class="form-control minimal" >
 	                    <?php  $status = [ 1 => 1, 2 => 2 ]; ?>
                         <?php if ( Auth::user()->role != "agente"): ?>
                         <?php for ($i=1; $i <= 10; $i++): ?>
                         <option <?php echo $i == 3 ? "selected" : ""; ?>
                                 <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?> value="<?php echo $i ?>">
-                                <?php echo \App\Book::getStatus($i) ?>
+                                <?php echo $book->getStatus($i) ?>
                             </option>
                         <?php endfor; ?>
                         <?php else: ?>
                         <?php for ($i=1; $i <= count($status); $i++): ?>
                         <option <?php echo $status[$i] == 3 ? "selected" : ""; ?>
                                 <?php echo ($status[$i]  == 1 || $status[$i] == 5) ? "style='font-weight:bold'" : "" ?> value="<?php echo $status[$i] ?>">
-			                    <?php echo \App\Book::getStatus($status[$i]) ?>
+			                    <?php echo $book->getStatus($status[$i]) ?>
                             </option>
                         <?php endfor; ?>
                         <?php endif ?>

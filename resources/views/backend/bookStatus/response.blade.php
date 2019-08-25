@@ -34,14 +34,35 @@
 		</div> -->
 	</div>
 	<div class="line" style="margin-bottom: 10px;"></div>
-
-	<div class="form-group col-sm-12 col-xs-12 col-md-12 text-center">
-		<p class="push-20 font-s18 font-w300 text-center black">
-			Precio total de la solicitud de reserva<br><br>
-			<span class="font-w800 black" style="font-size: 48px;"><?php echo number_format($total ,0,'','.') ?>€</span>
-		</p>
-		<div class="col-md-7 col-xs-6 text-center">
+	<div class="row push-10">
+		<div class="col-xs-12">
 			<form method="post" action="{{url('/admin/reservas/create')}}" id="confirm-book">
+			    <div class="row text-center push-10">
+                    <div class="col-xs-12">
+                        <div class="col-xs-6 text-left push-10">
+                            <input id="price" class="radio-style" name="priceDiscount" type="radio"  value="no" @if(!$setting || empty($setting->value)) checked @endif>
+                            <label for="price" class="radio-style-3-label">Precio Apto:</label>
+                        </div>
+                        <div class="col-xs-6 push-10">
+                            <p class="text-black push-10 font-s16 font-w300 text-right" style="line-height: 1">
+                                <span class="font-w800" style="font-size: 20px; @if($setting and !empty($setting->value)) text-decoration:line-through; @endif"><?php echo number_format($total ,0,'','.') ?>€</span>
+                            </p>
+                        </div>
+                    </div>
+                    @if($setting and !empty($setting->value))
+                        <div class="col-xs-12">
+                            <div class="col-xs-6 text-left">
+                                <input id="price-discount" class="radio-style" name="priceDiscount" type="radio"  value="yes" checked>
+                                <label for="price-discount" class="radio-style-3-label"> Descuento en Precio Apto:</label>
+                            </div>
+                            <div class="col-xs-6">
+                                <p class="text-black push-10 font-s16 font-w300 text-right" style="line-height: 1">
+                                    <span class="font-w800" style="font-size: 20px;"><?php echo number_format(($total - $setting->value) ,0,'','.') ?>€</span>
+                                </p>
+                            </div>
+                       </div>
+                    @endif
+                </div>
 	    		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 	    		<input type="hidden" name="newroom" value="<?php echo $id_apto; ?>">
 	    		<input type="hidden" name="name" value="<?php echo $name; ?>">
@@ -60,14 +81,24 @@
 				<?php else: ?>
 					<input type="hidden" name="type_luxury" value="2">
 				<?php endif; ?>
-				<button type="submit" class="btn btn-success text-white btn-lg btn-cons center hvr-grow-shadow ">RESERVAR</button>
+
+                @if($setting and !empty($setting->value))
+                    <input type="hidden" name="discount" value="{{$setting->value}}">
+                @else
+                    <input type="hidden" name="discount" value="0">
+                @endif
+               <div class="row">
+                    <div class="col-xs-6 col-xs-offset-3">
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-success text-white btn-lg btn-cons center hvr-grow-shadow ">RESERVAR</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-danger btn-lg btn-cons  text-white center hvr-grow-shadow btn-back-calculate">VOLVER</button>
+                        </div>
+                    </div>
+               </div>
 			</form>
 		</div>
-        <div class="col-md-5 col-xs-6 text-center">
-        	<button class="btn btn-danger btn-lg btn-cons  text-white center hvr-grow-shadow btn-back-calculate">
-        		VOLVER
-        	</button>
-        </div>
     </div>
 </div>
 <script type="text/javascript">

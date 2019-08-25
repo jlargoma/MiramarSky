@@ -772,7 +772,7 @@ class RoomsController extends AppController {
     {
         return view('backend.rooms.modal_cupos_fast_payment', [
             'rooms'     => \App\Rooms::where('state', "!=", 0)->orderBy('order', 'ASC')->get(),
-            'sizes'     => \App\SizeRooms::all(),
+            'sizes'     => \App\SizeRooms::orderBy('order', 'ASC')->get(),
         ]);
     }
     

@@ -809,7 +809,7 @@
                 </div>
                 <?php if (Auth::user()->role != "limpieza"):?>
                     <div class="row">
-                        @include('Paylands.payment', ['routeToRedirect' => route('payland.proccess.payment.book',
+                        @include('Paylands.payment', ['routeToRedirect' => route('payland.thanks.payment',
                         ['id' => $book->id]), 'customer' => $book->customer->id])
                     </div>
                  <?php endif ?>
@@ -1330,7 +1330,7 @@
                     </div>
 
                     <div class="row">
-                        @include('Paylands.payment', ['routeToRedirect' => route('payland.proccess.payment.book',
+                        @include('Paylands.payment', ['routeToRedirect' => route('payland.thanks.payment',
                        ['id' => $book->id]), 'customer' => $book->customer->id])
                     </div>
                 <?php endif ?>

@@ -127,7 +127,7 @@
     ]);
     Route::get('/admin/reservas/changeStatusBook/{id}', [
         'middleware' => 'auth',
-        'uses'       => 'BookController@changeStatusBook'
+        'uses'       => 'BookController@admin/rooms/cupos'
     ]);
     Route::get('admin/reservas/ansbyemail/{id}', [
         'middleware' => 'auth',

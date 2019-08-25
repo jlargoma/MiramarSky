@@ -71,7 +71,25 @@ class Book extends Model
 	protected $pendiente   = 0;
 	protected $agency      = 0;
 
-        use BookEmailsStatus;
+    protected $typeBooks = [
+        0  => 'ELIMINADA',
+        1  => 'Reservado - stripe',
+        2  => 'Pagada-la-señal',
+        3  => 'SIN RESPONDER',
+        4  => 'Bloqueado',
+        5  => 'Contestado(EMAIL)',
+        6  => 'Denegada',
+        7  => 'Reserva Propietario',
+        8  => 'ATIPICAS',
+        //'SubComunidad',
+        9  => 'Booking',
+        10 => 'Overbooking',
+        11 => 'blocked-ical',
+        12 => 'ICAL - INVISIBLE',
+        99 => 'FASTPAYMENT - SOLICITUD',
+    ];
+
+    use BookEmailsStatus;
         
 	public function customer()
 	{
@@ -121,26 +139,14 @@ class Book extends Model
 	}
 
 	//Para poner nombre al estado de la reserva//
-	static function getStatus($status)
+	public function getStatus($status)
 	{
-		$array = [
-			0  => 'ELIMINADA',
-			1  => 'Reservado - stripe',
-			2  => 'Pagada-la-señal',
-			3  => 'SIN RESPONDER',
-			4  => 'Bloqueado',
-			5  => 'Contestado(EMAIL)',
-			6  => 'Denegada',
-			7  => 'Reserva Propietario',
-			8  => 'ATIPICAS',
-			//'SubComunidad',
-			9  => 'Booking',
-			10 => 'Overbooking',
-			11 => 'blocked-ical',
-			12 => 'ICAL - INVISIBLE'
-		];
+	    return $this->typeBooks[$status];
+	}
 
-		return $array[$status];
+    public function getTypeBooks()
+    {
+        return $this->typeBooks;
 	}
 
 	//Para poner nombre al tipo de cobro//

@@ -4,8 +4,8 @@
             GENERADOR COBROS
         </h2>
     </div>
-    <div class="col-md-12">
-        <form action="{{ route('payland.payment') }}" method="post" target="_blank">
+    <div class="col-md-12 push-20">
+        <form action="{{ route('payland.payment') }}" method="post" id="form-generate-payland">
             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
             <input type="hidden" name="customer_id" value="{{ $customer }}">
             <input type="hidden" name="url_post" value="{{ route('payland.payment') }}">
@@ -19,4 +19,29 @@
             </div>
         </form>
     </div>
+    <div class="col-md-12" id="content-response"></div>
 </div>
+<script>
+    $('#form-generate-payland').submit(function (event) {
+      event.preventDefault();
+      var url = $(this).attr('action');
+      var _token = $('input[name="_token"]').val();
+      var customer_id = $('input[name="customer_id"]').val();
+      var url_post = $('input[name="url_post"]').val();
+      var url_ok = $('input[name="url_ok"]').val();
+      var url_ko = $('input[name="url_ko"]').val();
+      var amount = $('input[name="amount"]').val();
+
+      $.post(url, {
+        _token: _token,
+        customer_id: customer_id,
+        url_post: url_post,
+        url_ok: url_ok,
+        url_ko: url_ko,
+        amount: amount
+      }, function (data) {
+        $('#content-response').empty().append(data).fadeIn('300');
+
+      });
+    });
+</script>

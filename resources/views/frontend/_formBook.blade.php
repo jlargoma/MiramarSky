@@ -103,8 +103,8 @@
             
             <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12 text-center">
                <span style="font-size:16px; color: #FFFFFF; font-weight: bold;">
-                     OFERTA 7 x 6 NOCHES<br/>
-                     OFERTA 5 x 4 NOCHES
+                     OFERTA 5 x 4 NOCHES<br/>
+                     OFERTA 7 x 6 NOCHES
                 </span>
             </div>
             <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12 text-left">
@@ -199,8 +199,9 @@
                 </div>
                 <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12 text-center">
                <span style="font-size:16px; color: #FFFFFF; font-weight: bold;">
-                     OFERTA 7 x 6 NOCHES<br/>
-                     OFERTA 5 x 4 NOCHES
+                     OFERTA 5 x 4 NOCHES<br/>
+                     OFERTA 7 x 6 NOCHES
+
                 </span>
             </div>
             <div class="form-group col-sm-12 col-xs-12 col-md-12 col-lg-12 text-left" style="padding: 0 5px 0 5px;">
