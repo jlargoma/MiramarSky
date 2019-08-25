@@ -21,14 +21,10 @@ setlocale(LC_TIME, "es_ES");
 @endsection
 
 @section('content')
-
-
     <?php if (!$mobile->isMobile() ): ?>
-
-        <div class="container-fluid  p-l-15 p-r-15 p-t-20 bg-white">
+    <div class="container-fluid  p-l-15 p-r-15 p-t-20 bg-white">
             @include('backend.years.selector', ['minimal' => false])
-
-            <div class="row push-10">
+        <div class="row push-10">
                 <div class="col-md-7">
                     <div class="row btn-mb-1">
                         <button class="btn btn-success btn-cons btn-newBook" type="button" data-toggle="modal" data-target="#modalNewBook">
@@ -36,19 +32,17 @@ setlocale(LC_TIME, "es_ES");
                         </button>
                         <?php if ( Auth::user()->role != "agente" ): ?>
                         <button id="lastBooks" class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalLastBooks">
-                            <span class="bold">Últimas Confirmadas</span>
-                              <?php if ($lastBooksPayment>0): ?>
-                                <span class="numPaymentLastBooks"><?php echo  $lastBooksPayment; ?></span>
-                              <?php endif;?>
-                        </button>
+                                <span class="bold">Últimas Confirmadas</span>
+                                <span class="numPaymentLastBooks"><?php echo  $stripedsPayments->count(); ?></span>
+                            </button>
 
-                        <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalPaylandGenerator" >
-                            <i class="fa fa-money" aria-hidden="true"></i> <span class="bold">Cobros TPV</span>
-                        </button>
+                            <button class="btn btn-success btn-cons" type="button" id="stripePayment">
+                                <i class="fa fa-money" aria-hidden="true"></i> <span class="bold">Cobros TPV</span>
+                            </button>
 
-                        <button class="btn btn-success btn-calcuteBook btn-cons" type="button" data-toggle="modal" data-target="#modalCalculateBook">
-                            <span class="bold">Calcular reserva</span>
-                        </button>
+                            <button class="btn btn-success btn-calcuteBook btn-cons" type="button" data-toggle="modal" data-target="#modalCalculateBook">
+                                <span class="bold">Calcular reserva</span>
+                            </button>
 
                         <button class="btn btn-danger btn-cons btn-blink <?php if(count($alarms)>0) echo 'btn-alarms'; ?>" type="button" data-toggle="modal" data-target="#modalAlarms">
                             <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">ALARMAS</span>
@@ -87,15 +81,15 @@ setlocale(LC_TIME, "es_ES");
             </div>
         </div>
 
-        <div class="col-md-7">
+    <div class="col-md-7">
             <?php if ( Auth::user()->role != "agente" ): ?>
-            <div class="row push-10">
+        <div class="row push-10">
                 <div class="col-md-5 col-xs-12">
                     <input id="nameCustomer" type="text" name="searchName" class="searchabled form-control" placeholder="nombre del cliente" />
                 </div>
             </div>
-            <?php endif ?>
-            <div class="col-xs-12 text-left push-0" style="padding-left: 0;">
+        <?php endif ?>
+        <div class="col-xs-12 text-left push-0" style="padding-left: 0;">
 
                 <button class="btn btn-primary  btn-blue btn-tables btn-cons" type="button" data-type="pendientes">
                     <span class="bold">Pendientes</span>
@@ -105,78 +99,79 @@ setlocale(LC_TIME, "es_ES");
                         </span>
                     <?php endif ?>
                 </button>
-                <?php if ( Auth::user()->role != "agente" ): ?>
-                <button class="btn btn-primary  btn-orange btn-tables btn-cons" type="button" data-type="especiales">
+            <?php if ( Auth::user()->role != "agente" ): ?>
+            <button class="btn btn-primary  btn-orange btn-tables btn-cons" type="button" data-type="especiales">
                     <span class="bold">Especiales</span>
                     <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
                             {{ $booksCount['special'] }}
                         </span>
                 </button>
-                <?php endif ?>
-                <button class="btn  btn-primary btn-green btn-tables btn-cons" type="button" data-type="confirmadas">
+            <?php endif ?>
+            <button class="btn  btn-primary btn-green btn-tables btn-cons" type="button" data-type="confirmadas">
                     <span class="bold">Confirmadas</span>
                     <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
                             {{ $booksCount['confirmed'] }}
                         </span>
                 </button>
-                <?php if ( Auth::user()->role != "agente" ): ?>
-                <button class="btn btn-success btn-tables btn-cons" type="button" data-type="checkin">
+            <?php if ( Auth::user()->role != "agente" ): ?>
+            <button class="btn btn-success btn-tables btn-cons" type="button" data-type="checkin">
                     <span class="bold">Check IN</span>
                     <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
                             {{ $booksCount['checkin'] }}
                         </span>
                 </button>
-               
 
-                        <button class="btn btn-primary btn-tables btn-cons" type="button" data-type="checkout">
-                            <span class="bold">Check OUT</span>
-                            <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
-                                    {{ $booksCount['checkout'] }}
-                                </span>
-                        </button>
+                <button class="btn btn-primary btn-tables btn-cons" type="button" data-type="checkout">
+                    <span class="bold">Check OUT</span>
+                    <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
+                            {{ $booksCount['checkout'] }}
+                        </span>
+                </button>
 
-                        <button class="btn btn-success btn-grey btn-tables btn-cons" type="button" data-type="blocked-ical">
-                            <span class="bold">Blocked ICal</span>
-                            <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
-                                    {{ $booksCount['blocked-ical'] }}
-                                </span>
-                        </button>
+                <button class="btn btn-success btn-grey btn-tables btn-cons" type="button" data-type="blocked-ical">
+                    <span class="bold">Blocked ICal</span>
+                    <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
+                            {{ $booksCount['blocked-ical'] }}
+                        </span>
+                </button>
 
-                        <button class="btn btn-danger btn-tables btn-cons" type="button" data-type="eliminadas">
-                            <span class="bold">Eliminadas</span>
-                            <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
-                                    {{ $booksCount['deletes'] }}
-                                </span>
-                            <?php endif ?>
-                        </button>
+                <button class="btn btn-danger btn-tables btn-cons" type="button" data-type="eliminadas">
+                    <span class="bold">Eliminadas</span>
+                    <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
+                            {{ $booksCount['deletes'] }}
+                        </span>
+                    <?php endif ?>
+                </button>
 
-                    </div>
-                    <div class="col-xs-12" id="resultSearchBook" style="display: none; padding-left: 0;"></div>
-                    <div class="col-xs-12 content-tables" style="padding-left: 0;">
-                        @include('backend.planning._table', ['type'=> 'pendientes'])
-                    </div>
+            </div>
+            <div class="col-xs-12" id="resultSearchBook" style="display: none; padding-left: 0;"></div>
+            <div class="col-xs-12 content-tables" style="padding-left: 0;">
+                @include('backend.planning._table', ['type'=> 'pendientes'])
+            </div>
 
-                </div>
-                <div class="col-md-5">
-                    <div class="col-xs-12">
-                        <!-- www.tutiempo.net - Ancho:446px - Alto:89px -->
-                        <div id="TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G"> </div>
-                        <script type="text/javascript" src="https://www.tutiempo.net/s-widget/l_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G"></script>
-                    </div>
-                 
-                    <div class="row content-calendar push-20" style="min-height: 515px;">
-                        <div class="col-xs-12 text-center sending" style="padding: 120px 15px;">
-                            <i class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></i><br>
-                            <h2 class="text-center">CARGANDO CALENDARIO</h2>
-                        </div>
-                    </div>
+        </div>
+    <div class="col-md-5">
+            <div class="col-xs-12">
+                <!-- www.tutiempo.net - Ancho:446px - Alto:89px -->
+                <div id="TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G"> </div>
+                <script type="text/javascript" src="https://www.tutiempo.net/s-widget/l_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G"></script>
+            </div>
+            <div class="row content-calendar push-20" style="min-height: 515px;">
+                <div class="col-xs-12 text-center sending" style="padding: 120px 15px;">
+                    <i class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></i><br>
+                    <h2 class="text-center">CARGANDO CALENDARIO</h2>
                 </div>
             </div>
-            
+        <?php if ( Auth::user()->role != "agente" ): ?>
+        <div class="col-md-12" id="stripe-conten-index" style="display: none;">
+                @include('backend.stripe.link')
+            {{--@include('backend.stripe.stripe', ['bookTocharge' => null])--}}
+            </div>
+        <?php endif ?>
         </div>
 
-        <!-- NUEVAS RESERVAS -->
-        <div class="modal fade slide-up in" id="modalNewBook" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- NUEVAS RESERVAS -->
+    <div class="modal fade slide-up in" id="modalNewBook" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content-wrapper">
                     <div class="modal-content contentNewBook">
@@ -186,8 +181,8 @@ setlocale(LC_TIME, "es_ES");
             </div>
         </div>
 
-        <!-- CALCULAR RESERVAS -->
-        <div class="modal fade slide-up in" id="modalCalculateBook" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- CALCULAR RESERVAS -->
+    <div class="modal fade slide-up in" id="modalCalculateBook" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content-wrapper">
                     <div class="modal-content"></div>
@@ -195,8 +190,8 @@ setlocale(LC_TIME, "es_ES");
             </div>
         </div>
 
-        <!-- ÚLTIMAS RESERVAS -->
-        <div class="modal fade slide-up in" id="modalLastBooks" tabindex="-1" role="dialog" aria-hidden="true" >
+    <!-- ÚLTIMAS RESERVAS -->
+    <div class="modal fade slide-up in" id="modalLastBooks" tabindex="-1" role="dialog" aria-hidden="true" >
             <div class="modal-dialog modal-lg">
                 <div class="modal-content-wrapper">
                     <div class="modal-content">
@@ -206,19 +201,17 @@ setlocale(LC_TIME, "es_ES");
             </div>
         </div>
 
-
-        <div class="modal fade slide-up in" id="modalAlarms" tabindex="-1" role="dialog" aria-hidden="true" >
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content-wrapper">
-                    <div class="modal-content">
-                        @include('backend.planning._alarmsBooks', ['alarms' => $alarms])
-                    </div>
+    <div class="modal fade slide-up in" id="modalAlarms" tabindex="-1" role="dialog" aria-hidden="true" >
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content-wrapper">
+                <div class="modal-content">
+                    @include('backend.planning._alarmsBooks', ['alarms' => $alarms])
                 </div>
             </div>
         </div>
     </div>
 
-        <div class="modal fade slide-up in" id="modalLowProfits" tabindex="-1" role="dialog" aria-hidden="true" >
+    <div class="modal fade slide-up in" id="modalLowProfits" tabindex="-1" role="dialog" aria-hidden="true" >
             <div class="modal-dialog modal-lg">
                 <div class="modal-content-wrapper">
                     <div class="modal-content">
@@ -228,7 +221,7 @@ setlocale(LC_TIME, "es_ES");
             </div>
         </div>
 
-        <div class="modal fade slide-up in" id="modalParteeToActive" tabindex="-1" role="dialog" aria-hidden="true" >
+    <div class="modal fade slide-up in" id="modalParteeToActive" tabindex="-1" role="dialog" aria-hidden="true" >
             <div class="modal-dialog modal-lg">
                 <div class="modal-content-wrapper">
                     <div class="modal-content">
@@ -238,21 +231,22 @@ setlocale(LC_TIME, "es_ES");
             </div>
         </div>
 
-        <!-- ALERTAS DE BOOKING -->
+    <!-- ALERTAS DE BOOKING -->
 
-        <div class="modal fade slide-up in" id="modalAlertsBooking" tabindex="-1" role="dialog" aria-hidden="true" >
-            <div class="modal-dialog modal-lg" style="float: left; margin-left: 5%;">
-                <div class="modal-content-wrapper">
-                    <div class="modal-content">
+    <!-- ALERTAS DE BOOKING -->
 
-                    </div>
+    <div class="modal fade slide-up in" id="modalAlertsBooking" tabindex="-1" role="dialog" aria-hidden="true" >
+        <div class="modal-dialog modal-lg" style="float: left; margin-left: 5%;">
+            <div class="modal-content-wrapper">
+                <div class="modal-content">
+
                 </div>
             </div>
         </div>
     </div>
 
-        <!-- IMAGENES POR PISO -->
-        <div class="modal fade slide-up in" id="modalRoomImages" tabindex="-1" role="dialog" aria-hidden="true" >
+    <!-- IMAGENES POR PISO -->
+    <div class="modal fade slide-up in" id="modalRoomImages" tabindex="-1" role="dialog" aria-hidden="true" >
             <div class="modal-dialog modal-lg" style="width: 85%;">
                 <div class="modal-content-wrapper">
 
@@ -263,8 +257,8 @@ setlocale(LC_TIME, "es_ES");
             </div>
         </div>
 
-        <!-- CALENDARIO DE BOOKING -->
-        <div class="modal fade slide-up in" id="modalCalendarBooking" tabindex="-1" role="dialog" aria-hidden="true" >
+    <!-- CALENDARIO DE BOOKING -->
+    <div class="modal fade slide-up in" id="modalCalendarBooking" tabindex="-1" role="dialog" aria-hidden="true" >
             <div class="modal-dialog modal-lg" style="float: left; margin-left: 5%;">
                 <div class="modal-content-wrapper">
 
@@ -276,7 +270,7 @@ setlocale(LC_TIME, "es_ES");
         </div>
 
 
-        <div class="modal fade slide-up in" id="modalCuposVtn" tabindex="-1" role="dialog" aria-hidden="true" >
+    <div class="modal fade slide-up in" id="modalCuposVtn" tabindex="-1" role="dialog" aria-hidden="true" >
             <div class="modal-dialog modal-lg">
                 <div class="modal-content-wrapper">
                     <div class="modal-content" id="content-cupos">
@@ -285,18 +279,17 @@ setlocale(LC_TIME, "es_ES");
             </div>
         </div>
 
-        <!-- RESPUESTA POR EMAIL AL CLIENTE  -->
-        <button style="display: none;" id="btnContestado" class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalContestado"> </button>
-        <div class="modal fade slide-up in" id="modalContestado" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- RESPUESTA POR EMAIL AL CLIENTE  -->
+    <button style="display: none;" id="btnContestado" class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalContestado"> </button>
+    <div class="modal fade slide-up in" id="modalContestado" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content-wrapper">
                     <div class="modal-content contestado" id="contentEmailing"></div>
                 </div>
             </div>
         </div>
-
     <?php else: ?>
-        <script type="text/javascript">
+    <script type="text/javascript">
           $(document).ready(function() {
             $('.calend').click(function(event) {
               $('html, body').animate({
@@ -310,7 +303,7 @@ setlocale(LC_TIME, "es_ES");
             });
           });
         </script>
-        <style>
+    <style>
             #TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G{
                 width: 100%!important;
             }
@@ -319,15 +312,11 @@ setlocale(LC_TIME, "es_ES");
             }
         </style>
 
-        <div class="container-fluid  p-l-15 p-r-15 p-t-20 bg-white">
-
-            @include('backend.years.selector', ['minimal' => false])
-
-            <div class="row">
-                <div class="col-xs-3" style="position: fixed; bottom: 20px; right: 10px; z-index: 100">
-                    <button class="btn btn-success btn-cons btn-newBook" type="button" data-toggle="modal" data-target="#modalNewBook" style="min-width: 10px!important;width: 80px!important; padding: 25px; border-radius: 100%;opacity: 0.4">
-                        <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
-                    </button>
+    <div class="container-fluid  p-l-15 p-r-15 p-t-20 bg-white">
+            <div class="row push-10">
+            <div class="container">
+                <div class="col-xs-12 text-center">
+                     @include('backend.years.selector', ['minimal' => false])
                 </div>
             </div>
             <div class="row push-10">
@@ -337,13 +326,11 @@ setlocale(LC_TIME, "es_ES");
                         <div class="col-xs-4 push-10 text-center">
                             <button id="lastBooks" class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#modalLastBooks">
                                 <span class="bold">Últ. reser</span>
-                                    <?php if ($lastBooksPayment>0): ?>
-                                <span class="numPaymentLastBooks">&nbsp;<?php echo  $lastBooksPayment; ?>&nbsp;</span>
-                                    <?php endif; ?>
+                                <span class="numPaymentLastBooks">&nbsp;<?php echo  $stripedsPayments->count(); ?>&nbsp;</span>
                             </button>
                         </div>
                         <div class="col-xs-2 push-10 text-center">
-                            <button class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#modalPaylandGenerator">
+                            <button class="btn btn-success btn-sm" type="button" id="stripePayment">
                                 <i class="fa fa-money" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -353,14 +340,14 @@ setlocale(LC_TIME, "es_ES");
                             </button>
                         </div>
                         <div class="col-xs-2 push-10 text-center">
-                            <button class="btn btn-danger btn-sm btn-blink <?php if(count($alarms)>0) echo 'btn-alarms'; ?>" type="button" data-toggle="modal" data-target="#modalAlarms">
+                            <button class="btn btn-danger btn-sm btn-alarms" type="button" data-toggle="modal" data-target="#modalAlarms">
                                 &nbsp;&nbsp;<i class="fa fa-bell" aria-hidden="true"></i>&nbsp;&nbsp;
                                 <span class="numPaymentLastBooks">&nbsp;<?php echo  count($alarms); ?>&nbsp;</span>
                             </button>
                         </div>
                       <div class="col-xs-6 text-center">
                       <button class="btn btn-danger btn-cons btn-blink <?php if($alert_lowProfits) echo 'btn-alarms'; ?> "  id="btnLowProfits" type="button" data-toggle="modal" data-target="#modalLowProfits">
-                            <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">BAJO BENEF</span>
+                            <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">BAJO BENEFICIO</span>
                             <span class="numPaymentLastBooks" data-val="{{$alert_lowProfits}}">{{$alert_lowProfits}}</span>
                         </button>
                         </div>
@@ -370,7 +357,7 @@ setlocale(LC_TIME, "es_ES");
                             <span class="numPaymentLastBooks"><?php echo  count($parteeToActive); ?></span>
                         </button>
                       </div>
-                      
+
                         <?php endif ?>
                         <div class="col-xs-2 push-10 text-center">
                             <button class="btn btn-primary btn-sm calend" type="button" >
@@ -381,10 +368,15 @@ setlocale(LC_TIME, "es_ES");
                     </div>
                 </div>
             </div>
-            
+        </div>
+            <div class="col-md-12" id="stripe-conten-index" style="display: none;">
+                <?php if ( Auth::user()->role != "agente" ): ?>
+                @include('backend.stripe.link')
+                @include('backend.stripe.stripe', ['bookTocharge' => null])
+                <?php endif ?>
+            </div>
 
             <div class="row push-20">
-
                 <div class="col-md-7">
                     <div class="row push-10">
                         <div class="col-md-5 col-xs-12">
@@ -447,37 +439,35 @@ setlocale(LC_TIME, "es_ES");
                             <?php endif ?>
                         </div>
                     </div>
-                    <div class="row" id="resultSearchBook" style="display: none;"></div>
-                    <div class="row content-tables" >
-                        @include('backend.planning._table', ['type'=> 'pendientes'])
-                    </div>
                 </div>
-
-               
-                <div class="col-md-5">
-                    <div class="row content-calendar calendar-mobile" style="min-height: 485px;">
-                        <div class="col-xs-12 text-center sending" style="padding: 120px 15px;">
-                            <i class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></i><br>
-                            <h2 class="text-center">CARGANDO CALENDARIO</h2>
-                        </div>
-                    </div>
-                  @if(config('show_ASN'))
-                    <div class="col-md-12" id="stripe-conten-index">
-                        @include('backend.stripe.stripe', ['bookTocharge' => null])
-                    </div>
-                  @endif
-                    <div class="col-xs-12">
-                        <!-- www.tutiempo.net - Ancho:446px - Alto:89px -->
-                        <div id="TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G">El tiempo - Tutiempo.net</div>
-                        <script type="text/javascript" src="https://www.tutiempo.net/s-widget/l_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G"></script>
-                    </div>
+                <div class="row" id="resultSearchBook" style="display: none;"></div>
+                <div class="row content-tables" >
+                    @include('backend.planning._table', ['type'=> 'pendientes'])
                 </div>
             </div>
+            <div class="col-md-5">
+                <div class="row content-calendar calendar-mobile" style="min-height: 485px;">
+                    <div class="col-xs-12 text-center sending" style="padding: 120px 15px;">
+                        <i class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></i><br>
+                        <h2 class="text-center">CARGANDO CALENDARIO</h2>
+                    </div>
+                </div>
 
+                <div class="col-md-12" id="stripe-conten-index" style="display: none;">
+
+                    @include('backend.stripe.stripe', ['bookTocharge' => null])
+                </div>
+
+                <div class="col-xs-12">
+                    <!-- www.tutiempo.net - Ancho:446px - Alto:89px -->
+                    <div id="TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G">El tiempo - Tutiempo.net</div>
+                    <script type="text/javascript" src="https://www.tutiempo.net/s-widget/l_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G"></script>
+                </div>
+            </div>
         </div>
 
-        <!-- NUEVAS RESERVAS -->
-        <div class="modal fade slide-up in" id="modalNewBook" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- NUEVAS RESERVAS -->
+    <div class="modal fade slide-up in" id="modalNewBook" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content-wrapper">
                     <div class="modal-content contentNewBook">
@@ -487,18 +477,29 @@ setlocale(LC_TIME, "es_ES");
             </div>
         </div>
 
-        <!-- CALCULAR RESERVAS -->
-        <div class="modal fade slide-up in" id="modalCalculateBook" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-xs">
+    <!-- CALCULAR RESERVAS -->
+    <div class="modal fade slide-up in" id="modalCalculateBook" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content-wrapper">
                     <div class="modal-content"></div>
                 </div>
             </div>
         </div>
 
-        <!-- ÚLTIMAS RESERVAS -->
-        <div class="modal fade slide-up in" id="modalLastBooks" tabindex="-1" role="dialog" aria-hidden="true" >
-            <div class="modal-dialog modal-xs" >
+    <!-- ÚLTIMAS RESERVAS -->
+    <div class="modal fade slide-up in" id="modalLastBooks" tabindex="-1" role="dialog" aria-hidden="true" >
+            <div class="modal-dialog modal-lg" >
+                <div class="modal-content-wrapper">
+                    <div class="modal-content" style="width: 90%;">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- ALERTAS DE BOOKING -->
+    <div class="modal fade slide-up in" id="modalAlertsBooking" tabindex="-1" role="dialog" aria-hidden="true" >
+            <div class="modal-dialog modal-lg" style="margin: 0;">
                 <div class="modal-content-wrapper">
                     <div class="modal-content">
 
@@ -507,21 +508,7 @@ setlocale(LC_TIME, "es_ES");
             </div>
         </div>
 
-
-        <!-- ALERTAS DE BOOKING -->
-
-        <div class="modal fade slide-up in" id="modalAlertsBooking" tabindex="-1" role="dialog" aria-hidden="true" >
-            <div class="modal-dialog modal-xs" style="margin: 0;">
-                <div class="modal-content-wrapper">
-                    <div class="modal-content">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="modal fade slide-up in" id="modalAlarms" tabindex="-1" role="dialog" aria-hidden="true" >
+    <div class="modal fade slide-up in" id="modalAlarms" tabindex="-1" role="dialog" aria-hidden="true" >
             <div class="modal-dialog modal-xs" >
                 <div class="modal-content-wrapper">
                     <div class="modal-content" style="width: 90%;">
@@ -531,7 +518,7 @@ setlocale(LC_TIME, "es_ES");
             </div>
         </div>
 
-         <div class="modal fade slide-up in" id="modalLowProfits" tabindex="-1" role="dialog" aria-hidden="true" >
+    <div class="modal fade slide-up in" id="modalLowProfits" tabindex="-1" role="dialog" aria-hidden="true" >
             <div class="modal-dialog modal-xs">
                 <div class="modal-content-wrapper">
                     <div class="modal-content">
@@ -540,7 +527,7 @@ setlocale(LC_TIME, "es_ES");
                 </div>
             </div>
         </div>
-        <div class="modal fade slide-up in" id="modalParteeToActive" tabindex="-1" role="dialog" aria-hidden="true" >
+    <div class="modal fade slide-up in" id="modalParteeToActive" tabindex="-1" role="dialog" aria-hidden="true" >
             <div class="modal-dialog modal-xs">
                 <div class="modal-content-wrapper">
                     <div class="modal-content">
@@ -549,8 +536,8 @@ setlocale(LC_TIME, "es_ES");
                 </div>
             </div>
         </div>
-        <!-- IMAGENES POR PISO -->
-        <div class="modal fade slide-up in" id="modalRoomImages" tabindex="-1" role="dialog" aria-hidden="true" >
+    <!-- IMAGENES POR PISO -->
+    <div class="modal fade slide-up in" id="modalRoomImages" tabindex="-1" role="dialog" aria-hidden="true" >
             <div class="modal-dialog modal-lg" style="width: 95%;">
                 <div class="modal-content-wrapper">
 
@@ -561,8 +548,8 @@ setlocale(LC_TIME, "es_ES");
             </div>
         </div>
 
-        <!-- CALENDARIO DE BOOKING -->
-        <div class="modal fade slide-up in" id="modalCalendarBooking" tabindex="-1" role="dialog" aria-hidden="true" >
+    <!-- CALENDARIO DE BOOKING -->
+    <div class="modal fade slide-up in" id="modalCalendarBooking" tabindex="-1" role="dialog" aria-hidden="true" >
             <div class="modal-dialog modal-lg" style="float: left; margin-left: 5%;">
                 <div class="modal-content-wrapper">
 
@@ -573,9 +560,9 @@ setlocale(LC_TIME, "es_ES");
             </div>
         </div>
 
-        <!-- RESPUESTA POR EMAIL AL CLIENTE  -->
-        <button style="display: none;" id="btnContestado" class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalContestado"> </button>
-        <div class="modal fade slide-up in" id="modalContestado" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- RESPUESTA POR EMAIL AL CLIENTE  -->
+    <button style="display: none;" id="btnContestado" class="btn btn-success btn-cons m-b-10" type="button" data-toggle="modal" data-target="#modalContestado"> </button>
+    <div class="modal fade slide-up in" id="modalContestado" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content-wrapper">
                     <div class="modal-content contestado" id="contentEmailing"></div>
@@ -584,25 +571,6 @@ setlocale(LC_TIME, "es_ES");
         </div>
 
     <?php endif ?>
-
-        <!-- MODAL GENERADOR DE LINKS PAYLAND -->
-
-        <div class="modal fade slide-up in" id="modalPaylandGenerator" tabindex="-1" role="dialog" aria-hidden="true" >
-            <div class="modal-dialog modal-xs" >
-                <div class="modal-content-wrapper">
-                    <div class="modal-content">
-                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
-                          <i class="fa fa-times fa-2x" style="color: #000!important;"></i>
-                      </button>
-                      <div  id="stripe-conten-index">
-                        <?php if ( Auth::user()->role != "agente" ): ?>
-                        @include('backend.stripe.link')
-                        <?php endif ?>
-                    </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 @endsection
 
 @section('scripts')
@@ -715,7 +683,7 @@ setlocale(LC_TIME, "es_ES");
           <?php endif ?>
 
 
-        $('.btn-cupos').click(function () {
+          $('.btn-cupos').click(function () {
             $.get('/admin/rooms/cupos', function(data) {
 
               $('#content-cupos').empty().append(data);
