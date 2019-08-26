@@ -478,12 +478,17 @@ class BookController extends AppController
                         $book->cost_apto = ($request->input('costApto')) ? $request->input('costApto') : $this->getCostBook($start, $finish, $request->input('pax'), $request->input('newroom')) + $book->cost_limp;
                         $book->cost_total = ($request->input('cost')) ? $request->input('cost') : $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
 
+
                         if (isset($request->priceDiscount))
                         {
                             if ($request->input('priceDiscount') == "yes")
                             {
                                 $book->total_price = $request->input('total') - $request->input('discount');
                                 $book->real_price  = ($this->getPriceBook($start, $finish, $request->input('pax'), $request->input('newroom')) + $book->sup_park + $book->sup_lujo + $book->sup_limp) - $request->input('discount');
+                            }else
+                            {
+                                $book->total_price = $request->input('total');
+                                $book->real_price  = $this->getPriceBook($start, $finish, $request->input('pax'), $request->input('newroom')) + $book->sup_park + $book->sup_lujo + $book->sup_limp;
                             }
                         }else
                         {
@@ -494,6 +499,7 @@ class BookController extends AppController
                         $book->total_ben = $book->total_price - $book->cost_total;
 
                         $book->inc_percent = round(($book->total_ben / $book->total_price) * 100, 2);
+                        
                         $book->ben_jorge   = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
                         $book->ben_jaime   = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
                     }
