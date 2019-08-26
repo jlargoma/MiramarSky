@@ -3,7 +3,7 @@
     <b>GENERADOR DE LINKS PAYLAND</b>
   </div>
   <div class="col-md-4  col-xs-6">
-    <input type="number" class="form-control only-numbers" name="importe_stripe" id="importe_stripe" placeholder="importe..." />
+    <input type="number" class="form-control only-numbers" name="importe_stripe" id="importe_stripe" placeholder="importe..." @if(isset($book)) value="{{ $book->total_price * 0.5 }}" @endif/>
     <input type="hidden" name="book" id="book" value="<?php if (isset($book)): ?>{{ $book->id }}<?php else: ?>0<?php endif; ?>" />
   </div>
   <div class="col-md-4 col-xs-6 push-20">

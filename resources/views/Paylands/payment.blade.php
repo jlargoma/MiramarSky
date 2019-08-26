@@ -12,7 +12,7 @@
             <input type="hidden" name="url_ok" value="{{ $routeToRedirect }}">
             <input type="hidden" name="url_ko" value="{{ $routeToRedirect }}">
             <div class="col-md-6">
-                <input type="number" name="amount" step="0.01" min="1" class="form-control" placeholder="(importe)" required>
+                <input type="number" name="amount" step="0.01" min="1" class="form-control" placeholder="(importe)" required @if(isset($book)) value="{{ $book->total_price * 0.5 }}" @endif>
             </div>
             <div class="col-md-6">
                 <button class="btn btn-primary btn-lg" type="submit">GENERAR COBRO</button>

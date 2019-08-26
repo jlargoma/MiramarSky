@@ -8,8 +8,7 @@
         <div class="content-wrap notoppadding" style="padding-bottom: 0;">
 
       <?php if (!$mobile->isMobile()): ?>
-        <!-- DESKTOP -->
-
+            <!-- DESKTOP -->
             <div class="row clearfix" style="background-color: #3F51B5;">
                 <div id="close-form-book" style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
                     <span class="white text-white"><i class="fa fa-times fa-2x"></i></span>
@@ -479,9 +478,15 @@
             <!-- END DESKTOP -->
 
       <?php else: ?>
-        <!-- MOBILE -->
-            <section class="page-section degradado-background1"
-                     style="letter-spacing: 0;line-height: 1;color: #fff!important;">
+            <style>
+
+                #content-book-payland iframe{
+                    min-height: 378px!important;
+                    overflow: hidden!important;
+                }
+            </style>
+            <!-- MOBILE -->
+            <section class="page-section degradado-background1" style="letter-spacing: 0;line-height: 1;color: #fff!important;">
 
                 <div class="row degradado-background1" style="">
 
@@ -492,20 +497,20 @@
                         </div>
                         <div class="container clearfix" style="padding: 20px 0;">
                             <div class="row">
-                                <div class="col-md-6 col-md-offset-3 not-padding">
-                                    <div class="row" id="content-book-response">
-                                        <div class="front" style="min-height: 600px!important;">
-                                            <div class="col-xs-12">
-                                                <h3 class="text-center white">FORMULARIO DE RESERVA</h3>
-                                            </div>
-                                            <div id="form-content">
-                                                @include('frontend._formBook')
-                                            </div>
+                                <div class="col-md-4 col-xs-12">
+                                    <div class="row" >
+                                        <div class="col-xs-12">
+                                            <h3 class="text-center white">FORMULARIO DE RESERVA</h3>
                                         </div>
-                                        <div class="back degradado-background1" style="min-height: 600px!important;">
-
+                                        <div id="form-content">
+                                            @include('frontend._formBook')
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-md-4 col-xs-12" id="content-book-response" style="padding: 0">
+                                    <div class="col-xs-12 back" style="background-color: #3330c8;"></div>
+                                </div>
+                                <div class="col-md-4 col-xs-12" id="content-book-payland" style="padding: 0">
                                 </div>
                             </div>
                         </div>
