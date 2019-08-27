@@ -476,7 +476,6 @@
 
             </section>
             <!-- END DESKTOP -->
-
       <?php else: ?>
             <style>
 

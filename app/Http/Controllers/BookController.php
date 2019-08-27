@@ -499,7 +499,7 @@ class BookController extends AppController
                         $book->total_ben = $book->total_price - $book->cost_total;
 
                         $book->inc_percent = round(($book->total_ben / $book->total_price) * 100, 2);
-                        
+
                         $book->ben_jorge   = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
                         $book->ben_jaime   = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
                     }

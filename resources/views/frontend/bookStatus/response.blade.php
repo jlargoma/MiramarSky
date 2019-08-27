@@ -1,3 +1,4 @@
+<?php $mobile = new \App\Classes\Mobile();?>
 <div id="loading-book" style="display:none; position: absolute;width: 100%;top: 0;padding-top: 150px;height: 100%;z-index: 99;background-color: rgba(63, 81, 181, 0.5);">
 	<div class="col-padding">
 		<div class="heading-block center nobottomborder nobottommargin">
@@ -106,13 +107,13 @@
 					@if($room->fast_payment)
                         <input type="hidden" name="status" value="99">
                         <div class="col-md-6 col-md-offset-3">
-							<button type="submit" class="button button-rounded button-reveal button-large tright center hvr-grow-shadow font-s16 fastPayment" style="letter-spacing: 1px; background-color: #59BA41;">
+							<button type="submit" class="button button-rounded button-reveal button-large tright center hvr-grow-shadow font-s16 fastPayment submitBookForm" style="letter-spacing: 1px; background-color: #59BA41;">
 								<i class="icon-angle-right"></i><span style=" font-size: 16px">RESERVA YA</span>
 							</button>
 						</div>
                     @else
                         <div class="col-md-6 col-md-offset-3">
-                            <button type="submit" class="button button-rounded button-reveal button-large button-blue tright center hvr-grow-shadow font-s16 request" style="letter-spacing: 1px;">
+                            <button type="submit" class="button button-rounded button-reveal button-large button-blue tright center hvr-grow-shadow font-s16 request submitBookForm" style="letter-spacing: 1px;">
                                 <i class="icon-angle-right"></i><span style=" font-size: 16px">SOLICITAR</span>
                             </button>
                         </div>
@@ -221,9 +222,14 @@
                       status: status,
                       priceDiscount: priceDiscount
                     }, function (data) {
-                      hideLoad();
-                      $('#content-book-payland').empty().append(data).fadeIn('300');
-
+                        hideLoad();
+                        $('#content-book-payland').empty().append(data).fadeIn('300');
+                        <?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
+                            $('html, body').animate({
+                              /*scrollTop: $("section#content").offset().top*/
+                              scrollTop: $("#content-book-payland").offset().top - 30
+                            }, 2000);
+                        <?php endif; ?>
                     });
                   }
                 },

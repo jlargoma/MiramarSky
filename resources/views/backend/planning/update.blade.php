@@ -1325,7 +1325,7 @@
                     <div class="row push-20 content-link-stripe"
                          style="margin-top: 20px; border-top: 2px dashed #000; border-bottom: 2px dashed #000; padding: 20px 15px;">
 
-                        @include('backend.planning._links', ['import' => 0])
+                        @include('backend.stripe.link', ['import' => 0])
 
                     </div>
 

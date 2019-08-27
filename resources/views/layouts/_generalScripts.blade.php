@@ -169,54 +169,62 @@
     });
 
      <?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
-      $('#banner-offert, .menu-booking').click(function (event) {
-        $('#content-book').show('400');
-        $('#banner-offert').hide();
-        $('#line-banner-offert').hide();
-        $('#desc-section').hide();
-        $('section#content').css('z-index', '20000');
-        $('html, body').animate({
-          /*scrollTop: $("section#content").offset().top*/
-          scrollTop: $("#content-book").offset().top + 10
-        }, 2000);
-      });
+          $('#banner-offert, .menu-booking').click(function (event) {
+            $('#content-book').show('400');
+            $('#banner-offert').hide();
+            $('#line-banner-offert').hide();
+            $('#desc-section').hide();
+            $('section#content').css('z-index', '20000');
+            $('html, body').animate({
+              /*scrollTop: $("section#content").offset().top*/
+              scrollTop: $("#content-book").offset().top + 10
+            }, 2000);
+          });
 
-    $('#close-form-book').click(function (event) {
-      $('#banner-offert').show();
-      $('#line-banner-offert').show();
-      $('#content-book').hide('100');
-      $('#desc-section').show();
-      $('section#content').css('z-index', '0');
+            $('#close-form-book').click(function (event) {
+              $('#banner-offert').show();
+              $('#line-banner-offert').show();
+              $('#content-book').hide('100');
+              $('#desc-section').show();
+              $('section#content').css('z-index', '0');
 
-      unflip();
+              unflip();
 
-      $('html, body').animate({
-        scrollTop: $("body").offset().top
-      }, 2000);
-    });
+              $('html, body').animate({
+                scrollTop: $("body").offset().top
+              }, 2000);
+            });
+
+            $('#confirm-reserva').click(function () {
+              $('html, body').animate({
+                /*scrollTop: $("section#content").offset().top*/
+                scrollTop: $("#content-book-response").offset().top - 30
+              }, 2000);
+            });
+
 
      <?php else: ?>
-      $('#banner-offert, .menu-booking').click(function (event) {
-        $('#content-book').show('400');
-        $('#banner-offert').hide();
-        $('#line-banner-offert').hide();
+              $('#banner-offert, .menu-booking').click(function (event) {
+                $('#content-book').show('400');
+                $('#banner-offert').hide();
+                $('#line-banner-offert').hide();
 
-        $('html, body').animate({
-          scrollTop: $("#content-book").offset().top - 85
-        }, 2000);
-      });
+                $('html, body').animate({
+                  scrollTop: $("#content-book").offset().top - 85
+                }, 2000);
+              });
 
 
-    $('#close-form-book').click(function (event) {
-      $('#banner-offert').show();
-      $('#line-banner-offert').show();
-      $('#content-book').hide('100');
+            $('#close-form-book').click(function (event) {
+              $('#banner-offert').show();
+              $('#line-banner-offert').show();
+              $('#content-book').hide('100');
 
-      unflip();
-      $('html, body').animate({
-        scrollTop: $("body").offset().top
-      }, 2000);
-    });
+              unflip();
+              $('html, body').animate({
+                scrollTop: $("body").offset().top
+              }, 2000);
+            });
      <?php endif; ?>
 
       $('.daterange1').change(function (event) {
