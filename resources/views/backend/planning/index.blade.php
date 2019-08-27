@@ -317,6 +317,13 @@ setlocale(LC_TIME, "es_ES");
                 </div>
             </div>
             <div class="row push-10">
+                <div class="row">
+                    <div class="col-xs-3" style="position: fixed; bottom: 20px; right: 10px; z-index: 100">
+                        <button class="btn btn-success btn-cons btn-newBook" type="button" data-toggle="modal" data-target="#modalNewBook" style="min-width: 10px!important;width: 80px!important; padding: 25px; border-radius: 100%;opacity: 0.4">
+                            <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
                 <div class="col-xs-12">
                     <div class="row">
                         <?php if ( Auth::user()->role != "agente" ): ?>
