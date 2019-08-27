@@ -112,6 +112,8 @@ class BookController extends AppController
         $stripedsPayments = \App\Payments::where('comment', 'LIKE', '%stripe%')
                                          ->where('created_at', '>=', Carbon::today()->toDateString())->get();
 
+                $lastBooksPayment = \App\Payments::where('created_at', '>=', Carbon::today()->toDateString())
+		                                 ->count();
         // Notificaciones de alertas booking
         /*$notifications = \App\BookNotification::whereHas('book', function ($q) {
             return $q->where('type_book', '<>', 3)
@@ -155,7 +157,12 @@ class BookController extends AppController
 
         $parteeToActive = BookPartee::where('status', 'HUESPEDES')->get();
 
-        return view('backend/planning/index', compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date', 'stripedsPayments', 'notifications', 'booksCount', 'alarms', 'lowProfits', 'alert_lowProfits', 'percentBenef', 'parteeToActive'));
+		return view(
+			'backend/planning/index',
+			compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
+			        'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits',
+                                'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment')
+		);
     }
 
     private function lowProfitAlert($startYear, $endYear, $percentBenef, &$alert)

@@ -33,7 +33,9 @@ setlocale(LC_TIME, "es_ES");
                         <?php if ( Auth::user()->role != "agente" ): ?>
                         <button id="lastBooks" class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalLastBooks">
                                 <span class="bold">Últimas Confirmadas</span>
-                                <span class="numPaymentLastBooks"><?php echo  $stripedsPayments->count(); ?></span>
+                              <?php if ($lastBooksPayment>0): ?>
+                                <span class="numPaymentLastBooks"><?php echo  $lastBooksPayment; ?></span>
+                              <?php endif;?>
                             </button>
 
                             <button class="btn btn-success btn-cons" type="button" id="stripePayment">
@@ -344,7 +346,7 @@ setlocale(LC_TIME, "es_ES");
                             </button>
                         </div>
                         <div class="col-xs-2 push-10 text-center">
-                            <button class="btn btn-danger btn-sm btn-alarms" type="button" data-toggle="modal" data-target="#modalAlarms">
+                            <button class="btn btn-danger btn-sm btn-blink <?php if(count($alarms)>0) echo 'btn-alarms'; ?>" type="button" data-toggle="modal" data-target="#modalAlarms">
                                 &nbsp;&nbsp;<i class="fa fa-bell" aria-hidden="true"></i>&nbsp;&nbsp;
                                 <span class="numPaymentLastBooks">&nbsp;<?php echo  count($alarms); ?>&nbsp;</span>
                             </button>
