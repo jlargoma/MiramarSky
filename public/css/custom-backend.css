@@ -64,3 +64,11 @@ a.see_more {
     font-size: 0.8em;
     font-style: italic;
 }
+
+
+span.mobile#loadchatbox {
+    display: block;
+    float: none;
+    background-color: #6d5cae;
+    margin-top: 1em;
+}

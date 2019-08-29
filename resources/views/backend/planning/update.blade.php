@@ -1345,6 +1345,11 @@
                     </div>
                 <?php endif ?>
             </div>
+              <div class="col-xs-12 bg-black push-0">
+                <h4 class="text-center white">HISTORICO EMAILS CON EL CLIENTE <span id="loadchatbox" class="mobile">desplegar</span></h4>
+              </div>
+              <div id="chatbox">
+              </div>
 			<?php endif ?>
         </div>
         <button style="display: none;" id="btnEmailing" class="btn btn-success btn-cons m-b-10" type="button"
