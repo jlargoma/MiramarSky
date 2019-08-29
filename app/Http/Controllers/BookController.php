@@ -253,10 +253,10 @@ class BookController extends AppController
                 $book->comment       = ($request->input('comments')) ? ltrim($request->input('comments')) : "";
                 $book->book_comments = ($request->input('book_comments')) ? ltrim($request->input('book_comments')) : "";
                 $book->type_book     = ($request->input('status')) ? $request->input('status') : 3;
-                $book->pax           = $request->input('pax');
-                $book->real_pax      = $request->input('pax');
-                $book->nigths        = $request->input('nigths');
-                $book->agency        = $request->input('agency');
+                $book->pax           = $request->input('pax',0);
+                $book->real_pax      = $request->input('pax',0);
+                $book->nigths        = $request->input('nigths',0);
+                $book->agency        = $request->input('agency',0);
                 $book->PVPAgencia    = ($request->input('agencia')) ? $request->input('agencia') : 0;
 
                 $room = \App\Rooms::find($request->input('newroom'));
