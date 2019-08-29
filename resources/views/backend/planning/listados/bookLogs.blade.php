@@ -24,6 +24,7 @@
         <a href="#" class="see_more" data-id="{{$item->id}}">ver mas</a>
         @else
         {{$item->subject}}
+        <a href="#" class="see_more" data-id="{{$item->id}}">ver mas</a>
         @endif
       </div>
       <div class="chat-user">
