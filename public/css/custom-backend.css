@@ -59,3 +59,8 @@ div#msl_content {
   border: 2px solid #e2e2e2;
   padding: 6px;
 }
+a.see_more {
+    color: #337ab7;
+    font-size: 0.8em;
+    font-style: italic;
+}
