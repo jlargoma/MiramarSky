@@ -16,7 +16,8 @@
         "doctrine/dbal": "^2.6",
         "barryvdh/laravel-dompdf": "0.8.*",
         "predis/predis": "^1.1",
-        "guzzlehttp/guzzle": "^6.3"
+        "guzzlehttp/guzzle": "^6.3",
+        "webklex/laravel-imap": "^1.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

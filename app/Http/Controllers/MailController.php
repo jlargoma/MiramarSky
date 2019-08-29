@@ -46,7 +46,7 @@ class MailController extends AppController
               $message->subject('Solicitud disponibilidad');
           });
 
-    	}else{
+        }else{
 
     		/* Cliente */
 
@@ -67,6 +67,7 @@ class MailController extends AppController
 
     	}
 
+        \App\BookLogs::saveLog($data->id,$data->room_id,$data->customer->email,'new_request_rva','Solicitud disponibilidad',$mailClientContent);
     }
 
 

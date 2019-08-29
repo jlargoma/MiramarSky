@@ -81,6 +81,12 @@
         use App\Classes\Mobile;
         $mobile = new Mobile();
 	?>
+  @if($errors->any())
+  <p class="alert alert-danger">{{$errors->first()}}</p>
+  @endif
+  @if (\Session::has('success'))
+  <p class="alert alert-success">{!! \Session::get('success') !!}</p>
+  @endif
     <div class="container-fluid padding-10 sm-padding-10">
         <div class="row">
             <div class="col-md-12 col-xs-12 center text-left0">
@@ -224,8 +230,7 @@
                         <input type="hidden" id="shareEmailImages" value="<?php echo $book->customer->email; ?>">
                         <input type="hidden" value="<?php echo $book->id; ?>" id="registerData">
                         <div class=" col-md-4 col-md-offset-4 col-xs-12 text-center">
-                            <button class="btn btn-complete btn-md" id="sendShareImagesEmail"
-                                    onclick="return confirm('¿Quieres reenviar las imagenes');">
+                            <button class="btn btn-complete btn-md" id="sendShareImagesEmail">
                                 <i class="fa fa-eye"></i> Enviar
                             </button>
                         </div>
@@ -813,6 +818,11 @@
                         ['id' => $book->id]), 'customer' => $book->customer->id])
                     </div>
                  <?php endif ?>
+              <div class="col-xs-12 bg-black push-0">
+              <h4 class="text-center white">HISTORICO EMAILS CON EL CLIENTE <span id="loadchatbox">desplegar</span></h4>
+              </div>
+              <div id="chatbox">
+              </div>
             </div>
         </div>
 		<?php else: ?>
@@ -1374,6 +1384,7 @@
             <script type="text/javascript">
               $(document).ready(function () {
                 $('#sendShareImagesEmail').click(function (event) {
+                  if (confirm('¿Quieres reenviar las imagenes')){
                   var email = $('#shareEmailImages').val();
                   var register = $('#registerData').val();
                   var roomId = $('#newroom').val();
@@ -1383,7 +1394,44 @@
                           (data) {
                         location.reload();
                       });
+                    }
                 });
+                
+                function getScrollButton(){
+                  $('#chatbox').find("#chats").animate({ scrollTop: $('#chats').prop("scrollHeight")}, 1000);
+                }
+                $('#loadchatbox').click(function () {
+                  $('#chatbox').load('/admin/book-logs/{{$book->id}}',getScrollButton);
+                });
+                $('#chatbox').on('click','.see_more',function (event) {
+                  event.preventDefault();
+                  
+                  $.ajax({
+                    url: '/admin/book-logs/get/'+$(this).data('id'),
+                    cache: false
+                  })
+                  .done(function( data ) {
+                    var obj = $('#chatbox').find('#modal_seeLog');
+                    console.log(obj);
+                    obj.find('#msl_subj').text(data.subj);
+                    obj.find('#msl_room').text(data.room);
+                    obj.find('#msl_user').text(data.user);
+                    obj.find('#msl_content').html(data.content);
+                    obj.find('#msl_date').text(data.date);
+                    obj.modal('show'); 
+                   
+                    console.log(data);
+                  });
+  
+//                  $.get(),{}, function(data){
+//                    
+//                  }
+                  
+                });
+                 
+                 
+                
+                
               });
               var copyParteeMsg = function(){
                 $.get('/get-partee-msg', {bookID: <?php echo $book->id ?>},
@@ -1452,6 +1500,12 @@
                 padding: 2px 5px;
                 width: 10em;
                 border-radius: 7px;
+              }
+              span#loadchatbox {
+                  float: right;
+                  font-size: 0.75em;
+                  color: #daeffd;
+                  cursor: pointer;
               }
             </style>
 @endsection

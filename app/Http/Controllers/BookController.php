@@ -19,6 +19,7 @@ use App\Seasons;
 use App\Prices;
 use App\Traits\BookEmailsStatus;
 use App\Traits\BookParteeActions;
+use App\Traits\BookLogsTraits;
 use App\BookPartee;
 
 setlocale(LC_TIME, "ES");
@@ -26,7 +27,7 @@ setlocale(LC_TIME, "es_ES");
 
 class BookController extends AppController
 {
-    use BookEmailsStatus, BookParteeActions;
+    use BookEmailsStatus, BookParteeActions,BookLogsTraits;
 
 
     /**
@@ -1056,23 +1057,27 @@ class BookController extends AppController
     {
 
         $book = \App\Book::find($request->input('id'));
+        if ($book){
+          Mail::send('backend.emails.contestadoAdvanced', ['body' => nl2br($request->input('textEmail')),], function ($message) use ($book) {
+              $message->from('reservas@apartamentosierranevada.net');
 
-        Mail::send('backend.emails.contestadoAdvanced', ['body' => nl2br($request->input('textEmail')),], function ($message) use ($book) {
-            $message->from('reservas@apartamentosierranevada.net');
+              $message->to($book->customer->email);
+              $message->subject('Disponibilidad para tu reserva');
+          });
 
-            $message->to($book->customer->email);
-            $message->subject('Disponibilidad para tu reserva');
-        });
+          \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'sendEmailDisp','Disponibilidad para tu reserva',$request->input('textEmail'));
 
-        // $book->send = 1;
-        $book->type_book = 5;
-        if ($book->save())
-        {
-            return 1;
-        } else
-        {
-            return 0;
+          // $book->send = 1;
+          $book->type_book = 5;
+          if ($book->save())
+          {
+              return 1;
+          } else
+          {
+              return 0;
+          }
         }
+        return 0;
 
     }
 

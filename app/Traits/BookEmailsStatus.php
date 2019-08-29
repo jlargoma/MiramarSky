@@ -20,7 +20,11 @@ trait BookEmailsStatus
     public function sendEmailChangeStatus($book, $subject, $status)
     {
         $cachedRepository  = new CachedRepository();
-        $mailClientContent = $this->getMailData($book, $this->getKeyTemplate($status));
+        $keyMail = $this->getKeyTemplate($status);
+        if (!$keyMail){
+          return;
+        }
+        $mailClientContent = $this->getMailData($book, $keyMail);
         setlocale(LC_TIME, "ES");
         setlocale(LC_TIME, "es_ES");
 
@@ -68,6 +72,7 @@ trait BookEmailsStatus
             $message->subject($subject);
         });
 
+        \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,$keyMail,$subject,$mailClientContent);
     }
 
     /**
@@ -109,12 +114,15 @@ trait BookEmailsStatus
             $message->subject($subject);
             $message->replyTo('reservas@apartamentosierranevada.net');
         });
+        
+        \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'second_payment_reminder',$subject,$mailClientContent);
 
     }
 
 
     private function getKeyTemplate($status)
     {
+      $key = null;
         switch ($status)
         {
             case 1:

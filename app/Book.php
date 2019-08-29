@@ -339,6 +339,7 @@ class Book extends Model
               $this->sendEmailChangeStatus($book,'Reserva denegada',$status);
               $response['response'] = "Reserva cambiada a ICAL - INVISIBLE";
             }
+            \App\BookLogs::saveLogStatus($this->id,$this->room_id,$this->customer->email,$this->getStatus($status));
             return $response;
             
           } else {
@@ -393,6 +394,7 @@ class Book extends Model
                 if ($this->customer->email == "")
                 {
                   $this->save();
+                  \App\BookLogs::saveLogStatus($this->id,$this->room_id,$this->customer->email,$this->getStatus($status));
                   return [
                           'status'   => 'warning',
                           'title'    => 'Cuidado',
@@ -434,6 +436,7 @@ class Book extends Model
                     if ($status == 7) $response['response'] = "Estado Cambiado a Reserva Propietario";
                     if ($status == 8) $response['response'] = "Estado Cambiado a Subcomunidad";
 
+                    \App\BookLogs::saveLogStatus($this->id,$this->room_id,$this->customer->email,$this->getStatus($status));
                     return $response;
                   }
                 }
@@ -472,6 +475,8 @@ class Book extends Model
 					{
 						$deleted = \App\BookNotification::where('book_id', $book->id)->delete();
 					}
+                                        \App\BookLogs::saveLogStatus($this->id,$this->room_id,$this->customer->email,$this->getStatus($status));
+
 					return [
 						'status'   => 'success',
 						'title'    => 'OK',
@@ -532,6 +537,8 @@ class Book extends Model
 					$this->room_id = $room;
 					if ($this->save())
 					{
+                                          \App\BookLogs::saveLogStatus($this->id,$this->room_id,$this->customer->email,$this->getStatus($status));
+
 						if ($this->room->isAssingToBooking())
 						{
 

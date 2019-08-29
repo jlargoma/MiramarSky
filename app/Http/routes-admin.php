@@ -11,6 +11,9 @@ Route::group(['middleware' => 'authAdmin','prefix' => 'admin',], function () {
     Route::get('/forfaits/deleteRequest/{id}','FortfaitsController@deleteRequest');
     Route::get('/reservas/ff_status_popup/{id}', 'BookController@getBookFFData');
     Route::get('/reservas/ff_change_status_popup/{id}/{status}', 'BookController@updateBookFFStatus');
+    Route::get('/book-logs/{id}', 'BookController@printBookLogs');
+    Route::post('/response-email', 'BookController@sendEmailResponse');
+    Route::get('/book-logs/get/{id}', 'BookController@getBookLog');
 });
 /**
  * FORFAITS
@@ -40,3 +43,19 @@ Route::get('/api/forfaits/bookingData/{bID}/{uID}', 'ForfaitsItemController@book
 Route::get('/api/forfaits/getCurrentCart/{bID}/{uID}', 'ForfaitsItemController@getCurrentCart');
 Route::post('/api/forfaits/sendConsult', 'ForfaitsItemController@sendEmail');
 Route::get('/api/forfaits/getSeasons', 'ForfaitsItemController@getForfaitSeasons');
+
+
+
+Route::get('/get_mails', 'ChatEmailsController@index');
+Route::get('/send_mails_test', function(){
+  
+  \Illuminate\Support\Facades\Mail::send('backend.emails.base', [
+            'mailContent' => 'test  Filtro Emails',
+            'title'       => 'test Filtro Emails'
+        ], function ($message) use ($book, $subject) {
+            $message->from('reservas@apartamentosierranevada.net');
+            $message->to('pingodevwe@gmail.com');
+            $message->subject('test emails');
+        });
+});
+

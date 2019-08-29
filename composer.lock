@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "867e90197f6c01c0a5e6040723a8dbc1",
+    "content-hash": "ed157a8fa3f05c87198ea84b310151bb",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -1050,8 +1050,8 @@
             "authors": [
                 {
                     "name": "John Grogg",
-                    "email": "john.grogg@gmail.com",
-                    "role": "Developer/Prior Owner"
+                    "role": "Developer/Prior Owner",
+                    "email": "john.grogg@gmail.com"
                 },
                 {
                     "name": "Jonathan Goode",
@@ -3286,6 +3286,69 @@
                 "environment"
             ],
             "time": "2019-01-29T11:11:52+00:00"
+        },
+        {
+            "name": "webklex/laravel-imap",
+            "version": "1.4.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Webklex/laravel-imap.git",
+                "reference": "a6bb4f9659abfd76b39df5016be2f6e8fea77917"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Webklex/laravel-imap/zipball/a6bb4f9659abfd76b39df5016be2f6e8fea77917",
+                "reference": "a6bb4f9659abfd76b39df5016be2f6e8fea77917",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "ext-iconv": "*",
+                "ext-imap": "*",
+                "ext-mbstring": "*",
+                "laravel/framework": ">=5.0.0",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Webklex\\IMAP\\Providers\\LaravelServiceProvider"
+                    ],
+                    "aliases": {
+                        "Client": "Webklex\\IMAP\\Facades\\Client"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Webklex\\IMAP\\": "src/IMAP"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Malte Goldenbaum",
+                    "role": "Developer",
+                    "email": "github@webklex.com"
+                }
+            ],
+            "description": "Laravel IMAP client",
+            "homepage": "https://github.com/webklex/laravel-imap",
+            "keywords": [
+                "imap",
+                "laravel",
+                "laravel-imap",
+                "mail",
+                "webklex"
+            ],
+            "time": "2019-07-02T20:21:40+00:00"
         }
     ],
     "packages-dev": [

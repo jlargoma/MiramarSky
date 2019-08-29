@@ -662,8 +662,10 @@ class RoomsController extends AppController {
                 $message->subject('Imagenes del apartamento ' . $room->sizeRooms->name . ' // ' . $luxury);
               });
 
-      if ($send)
+      if ($send){
         echo "EMAIL SALIENDO";
+        \App\BookLogs::saveLog($request->input('register',-1),$request->roomId,$email,'sendImagesRoomEmail');
+      }
 
       $log = new \App\LogImages();
       $log->email = $email;
