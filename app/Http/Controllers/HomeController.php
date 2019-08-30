@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use App\Classes\Mobile;
 use Auth;
 use Carbon\Carbon;
@@ -8,9 +10,11 @@ use Illuminate\Http\Request;
 use Mail;
 use Route;
 use URL;
+
 class HomeController extends AppController
 {
     const minDays = 2;
+
     /**
      * Show the application dashboard.
      *
@@ -43,144 +47,124 @@ class HomeController extends AppController
     }
 
     public function apartamento($apto)
-	{
-		$url  = $apto;
-		$apto = str_replace('-', ' ', $apto);
-		$apto = str_replace(' sierra nevada', '', $apto);
+    {
+        $url  = $apto;
+        $apto = str_replace('-', ' ', $apto);
+        $apto = str_replace(' sierra nevada', '', $apto);
 
 
-		switch ($apto)
-		{
-			case 'apartamento lujo':
-				$aptoHeading       = "APARTAMENTOS DOS DORM - DE LUJO ";
-				$aptoHeadingMobile = "Apto de lujo 2 DORM";
+        switch ($apto)
+        {
+            case 'apartamento lujo':
+                $aptoHeading       = "APARTAMENTOS DOS DORM - DE LUJO ";
+                $aptoHeadingMobile = "Apto de lujo 2 DORM";
 
-				$typeApto = 1;
-				break;
+                $typeApto = 1;
+                break;
 
-			case 'estudio lujo':
-				$aptoHeading       = "ESTUDIOS – DE LUJO";
-				$aptoHeadingMobile = "Estudio de lujo";
+            case 'estudio lujo':
+                $aptoHeading       = "ESTUDIOS – DE LUJO";
+                $aptoHeadingMobile = "Estudio de lujo";
 
-				$typeApto = 3;
-				break;
+                $typeApto = 3;
+                break;
 
-			case 'apartamento standard':
-				$aptoHeading       = "APARTAMENTOS DOS DORM - ESTANDAR ";
-				$aptoHeadingMobile = "Apto Standard";
+            case 'apartamento standard':
+                $aptoHeading       = "APARTAMENTOS DOS DORM - ESTANDAR ";
+                $aptoHeadingMobile = "Apto Standard";
 
-				$typeApto = 2;
-				break;
+                $typeApto = 2;
+                break;
 
-			case 'estudio standard':
-				$aptoHeading       = "ESTUDIOS – ESTANDAR";
-				$aptoHeadingMobile = "Estudio Standard";
+            case 'estudio standard':
+                $aptoHeading       = "ESTUDIOS – ESTANDAR";
+                $aptoHeadingMobile = "Estudio Standard";
 
-				$typeApto = 4;
-				break;
-			case 'chalet los pinos':
-				$aptoHeading       = "CHALET - LOS PINOS";
-				$aptoHeadingMobile = "Chalet los pinos";
+                $typeApto = 4;
+                break;
+            case 'chalet los pinos':
+                $aptoHeading       = "CHALET - LOS PINOS";
+                $aptoHeadingMobile = "Chalet los pinos";
 
-				$typeApto = 5;
-				break;
+                $typeApto = 5;
+                break;
 
-			case 'apartamento lujo gran capacidad':
-				$aptoHeading       = "APTOS 3/4 DORMITORIOS LUJO";
-				$aptoHeadingMobile = "3DORM GRAN CAPACIDAD";
+            case 'apartamento lujo gran capacidad':
+                $aptoHeading       = "APTOS 3/4 DORMITORIOS LUJO";
+                $aptoHeadingMobile = "3DORM GRAN CAPACIDAD";
 
-				$typeApto = 6;
-				break;
-			default:
-				$room = \App\Rooms::where('nameRoom', $url)->first();
-				if (count($room) > 0)
-				{
-					$aptoHeading       = ($room->luxury) ? $room->sizeRooms->name . " - LUJO" : $room->sizeRooms->name . " - ESTANDAR";
-					$aptoHeadingMobile = ($room->luxury) ? $room->sizeRooms->name . " - lujo" : $room->sizeRooms->name . " - estandar";
+                $typeApto = 6;
+                break;
+            default:
+                $room = \App\Rooms::where('nameRoom', $url)->first();
+                if ($room)
+                {
+                    $aptoHeading       = ($room->luxury) ? $room->sizeRooms->name . " - LUJO" : $room->sizeRooms->name . " - ESTANDAR";
+                    $aptoHeadingMobile = ($room->luxury) ? $room->sizeRooms->name . " - LUJO" : $room->sizeRooms->name . " - ESTANDAR";
+                    $typeApto          = $room->sizeRooms->id;
+                    break;
+                } else
+                {
+                    return view('errors.notexist-apartmanet');
+                }
 
-					if ($room->sizeApto == 1 && $room->luxury == 0)
-					{
-						$typeApto = 4;
-					} elseif ($room->sizeApto == 1 && $room->luxury == 1)
-					{
-						$typeApto = 3;
-					} elseif ($room->sizeApto == 2 && $room->luxury == 0)
-					{
-						$typeApto = 2;
-					} elseif ($room->sizeApto == 2 && $room->luxury == 1)
-					{
-						$typeApto = 1;
-					} elseif ($room->sizeApto == 3 || $room->sizeApto == 4)
-					{
-						$typeApto = 6;
-					}
-					break;
-				} else
-				{
-					return view('errors.notexist-apartmanet');
-				}
+        }
+        if ($url == 'apartamento-standard-sierra-nevada' || $url == 'apartamento-lujo-sierra-nevada' || $url == 'estudio-lujo-sierra-nevada' || $url == 'estudio-standard-sierra-nevada' || $url == 'chalet-los-pinos-sierra-nevada' || $url == 'apartamento-lujo-gran-capacidad-sierra-nevada')
+        {
 
-		}
+            $slides    = File::allFiles(public_path() . '/img/miramarski/galerias/' . $url);
+            $directory = '/img/miramarski/galerias/';
+        } else
+        {
+
+            $slides    = File::allFiles(public_path() . '/img/miramarski/apartamentos/' . $url);
+            $directory = '/img/miramarski/apartamentos/';
 
 
-		if ($url == 'apartamento-standard-sierra-nevada' || $url == 'apartamento-lujo-sierra-nevada' || $url == 'estudio-lujo-sierra-nevada' || $url == 'estudio-standard-sierra-nevada' || $url == 'chalet-los-pinos-sierra-nevada' || $url == 'apartamento-lujo-gran-capacidad-sierra-nevada')
-		{
-
-			$slides    = File::allFiles(public_path() . '/img/miramarski/galerias/' . $url);
-			$directory = '/img/miramarski/galerias/';
-		} else
-		{
-
-			$slides    = File::allFiles(public_path() . '/img/miramarski/apartamentos/' . $url);
-			$directory = '/img/miramarski/apartamentos/';
+        }
 
 
-		}
+        foreach ($slides as $key => $slide)
+        {
+            $arraySlides[] = $slide->getFilename();
+        }
+        natcasesort($arraySlides);
+        $slides = array();
+        foreach ($arraySlides as $key => $sl)
+        {
+            if ($url == 'apartamento-standard-sierra-nevada' || $url == 'apartamento-lujo-sierra-nevada' || $url == 'estudio-lujo-sierra-nevada' || $url == 'estudio-standard-sierra-nevada' || $url == 'chalet-los-pinos-sierra-nevada' || $url == 'apartamento-lujo-gran-capacidad-sierra-nevada')
+            {
+
+                $slides[] = '/img/miramarski/galerias/' . $url . '/' . $sl;
+            } else
+            {
+
+                $slides[] = '/img/miramarski/apartamentos/' . $url . '/' . $sl;
 
 
-		foreach ($slides as $key => $slide)
-		{
-			$arraySlides[] = $slide->getFilename();
-		}
-		natcasesort($arraySlides);
-		$slides = array();
-		foreach ($arraySlides as $key => $sl)
-		{
-			if ($url == 'apartamento-standard-sierra-nevada' || $url == 'apartamento-lujo-sierra-nevada' || $url == 'estudio-lujo-sierra-nevada' || $url == 'estudio-standard-sierra-nevada' || $url == 'chalet-los-pinos-sierra-nevada' || $url == 'apartamento-lujo-gran-capacidad-sierra-nevada')
-			{
+            }
+        }
 
-				$slides[] = '/img/miramarski/galerias/' . $url . '/' . $sl;
-			} else
-			{
-
-				$slides[] = '/img/miramarski/apartamentos/' . $url . '/' . $sl;
+        $aptos = [
+            'apartamento-lujo-gran-capacidad-sierra-nevada',
+            'apartamento-lujo-sierra-nevada',
+            'estudio-lujo-sierra-nevada',
+            'apartamento-standard-sierra-nevada',
+            'estudio-standard-sierra-nevada'
+        ];
 
 
-			}
-		}
-
-		$aptos = [
-			'apartamento-lujo-gran-capacidad-sierra-nevada',
-			'apartamento-lujo-sierra-nevada',
-			'estudio-lujo-sierra-nevada',
-			'apartamento-standard-sierra-nevada',
-			'estudio-standard-sierra-nevada'
-		];
-
-
-		return view('frontend.pages._apartamento2', [
-			'slides'            => $slides,
-			'mobile'            => new Mobile(),
-			'aptoHeading'       => $aptoHeading,
-			'aptoHeadingMobile' => $aptoHeadingMobile,
-			'typeApto'          => $typeApto,
-			'aptos'             => $aptos,
-			'url'               => $url,
-			'directory'         => $directory,
-		]);
-
-
-	}
+        return view('frontend.pages._apartamento2', [
+            'slides'            => $slides,
+            'mobile'            => new Mobile(),
+            'aptoHeading'       => $aptoHeading,
+            'aptoHeadingMobile' => $aptoHeadingMobile,
+            'typeApto'          => $typeApto,
+            'aptos'             => $aptos,
+            'url'               => $url,
+            'directory'         => $directory,
+        ]);
+    }
 
     public function galeriaApartamento($apto)
     {
@@ -189,22 +173,22 @@ class HomeController extends AppController
         {
             $aptoHeading       = "APARTAMENTOS DOS DORM - DE LUJO ";
             $aptoHeadingMobile = "Apto de lujo 2 DORM";
-            $typeApto = 1;
+            $typeApto          = 1;
         } elseif ($room->sizeApto == 2 && $room->luxury == 0)
         {
             $aptoHeading       = "APARTAMENTOS DOS DORM - ESTANDAR ";
             $aptoHeadingMobile = "Apto Standard";
-            $typeApto = 2;
+            $typeApto          = 2;
         } elseif ($room->sizeApto == 1 && $room->luxury == 1)
         {
             $aptoHeading       = "ESTUDIOS – DE LUJO";
             $aptoHeadingMobile = "Estudio de lujo";
-            $typeApto = 3;
+            $typeApto          = 3;
         } else
         {
             $aptoHeading       = "ESTUDIOS – ESTANDAR";
             $aptoHeadingMobile = "Estudio Standard";
-            $typeApto = 4;
+            $typeApto          = 4;
         }
         $slides = File::allFiles(public_path() . '/img/miramarski/galerias/' . $apto);
         $aptos  = [
@@ -234,6 +218,7 @@ class HomeController extends AppController
     {
         return view('frontend.contacto', ['mobile' => new Mobile(),]);
     }
+
     // Correos frontend
 
     public function formContacto(Request $request)
@@ -243,7 +228,7 @@ class HomeController extends AppController
         $data['phone']   = $request->input('phone');
         $data['subject'] = $request->input('subject');
         $data['message'] = $request->input('message');
-        $contact = Mail::send(['html' => 'frontend.emails.contact'], ['data' => $data,], function ($message) use ($data) {
+        $contact         = Mail::send(['html' => 'frontend.emails.contact'], ['data' => $data,], function ($message) use ($data) {
             $message->from($data['email'], $data['name']);
             $message->to('reservas@apartamentosierranevada.net');
             $message->subject('Formulario de contacto MiramarSKI');
@@ -270,7 +255,7 @@ class HomeController extends AppController
         $data['phone']   = $request->input('phone');
         $data['subject'] = $request->input('subject');
         $data['message'] = $request->input('message');
-        $contact = Mail::send(['html' => 'frontend.emails.ayuda'], ['data' => $data,], function ($message) use ($data) {
+        $contact         = Mail::send(['html' => 'frontend.emails.ayuda'], ['data' => $data,], function ($message) use ($data) {
             $message->from($data['email'], $data['name']);
             $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */ // $message->bcc('jlargo@mksport.es');
             // $message->bcc('jlargoma@gmail.com');
@@ -298,7 +283,7 @@ class HomeController extends AppController
         $data['phone']   = $request->input('phone');
         $data['subject'] = $request->input('subject');
         $data['message'] = $request->input('message');
-        $contact = Mail::send(['html' => 'frontend.emails.propietario'], ['data' => $data,], function ($message) use ($data) {
+        $contact         = Mail::send(['html' => 'frontend.emails.propietario'], ['data' => $data,], function ($message) use ($data) {
             $message->from($data['email'], $data['name']);
             $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */ // $message->bcc('jlargo@mksport.es');
             // $message->bcc('jlargoma@gmail.com');
@@ -327,7 +312,7 @@ class HomeController extends AppController
         $data['destino']  = $request->input('destino');
         $data['personas'] = $request->input('personas');
         $data['message']  = $request->input('message');
-        $contact = Mail::send(['html' => 'frontend.emails.grupos'], ['data' => $data,], function ($message) use ($data) {
+        $contact          = Mail::send(['html' => 'frontend.emails.grupos'], ['data' => $data,], function ($message) use ($data) {
             $message->from($data['email'], $data['name']);
             $message->to('reservas@apartamentosierranevada.net'); /* $data['email'] */ // $message->to('jbaz@daimonconsulting.com'); /* $data['email'] */
             // $message->bcc('jlargo@mksport.es');
@@ -436,7 +421,7 @@ class HomeController extends AppController
         $commissions       = [];
         $anon_request_text = NULL;
         // die();
-        $data = $request->input();
+        $data             = $request->input();
         $solicitud        = new \App\Solicitudes();
         $solicitud->name  = $data['nombre'];
         $solicitud->email = $data['email'];
@@ -474,10 +459,10 @@ class HomeController extends AppController
             $commissions[] = $commission->value;
         }
         $solicitud->commissions = serialize($commissions);
-        $solicitud->cc_name   = $_POST['cc_name'];
-        $solicitud->cc_pan    = $_POST['cc_pan'];
-        $solicitud->cc_expiry = $_POST['cc_expiry'];
-        $solicitud->cc_cvc    = $_POST['cc_cvc'];
+        $solicitud->cc_name     = $_POST['cc_name'];
+        $solicitud->cc_pan      = $_POST['cc_pan'];
+        $solicitud->cc_expiry   = $_POST['cc_expiry'];
+        $solicitud->cc_cvc      = $_POST['cc_cvc'];
         if ($solicitud->save())
         {
             if (HomeController::getLastBookByPhone($solicitud->id, trim($data['telefono'])) === false)
@@ -573,8 +558,8 @@ class HomeController extends AppController
 
     public function getDiffIndays(Request $request)
     {
-        $date1 = Carbon::createFromFormat('d M, y', trim($request->date1));
-        $date2 = Carbon::createFromFormat(' d M, y', trim($request->date2));
+        $date1   = Carbon::createFromFormat('d M, y', trim($request->date1));
+        $date2   = Carbon::createFromFormat(' d M, y', trim($request->date2));
         $minDays = self::minDays;
         /* Check min Days by segment */
         $checkSpecialSegment = SpecialSegmentController::checkDates($date1, $date2);
@@ -644,7 +629,7 @@ class HomeController extends AppController
         } elseif ($request->input('apto') == 'estudio' && $request->input('luxury') == 'si')
         {
             //$roomAssigned = 138;
-            $limp         = (int) \App\Extras::find(2)->price;
+            $limp     = (int) \App\Extras::find(2)->price;
             $sizeRoom = 5;
             $typeApto = "Estudio Lujo";
         } elseif ($request->input('apto') == 'estudio' && $request->input('luxury') == 'no')
@@ -674,7 +659,7 @@ class HomeController extends AppController
             $typeApto = "3 DORM";
             $limp     = (int) \App\Extras::find(3)->price;
         }
-        $size = \App\SizeRooms::find($sizeRoom);
+        $size         = \App\SizeRooms::find($sizeRoom);
         $roomAssigned = $this->calculateRoomToFastPayment($size, $start, $finish, $request->input('luxury'));
         //dd($roomAssigned);
         $paxPerRoom = \App\Rooms::getPaxRooms($request->input('quantity'), $roomAssigned);
