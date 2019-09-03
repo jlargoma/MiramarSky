@@ -12,7 +12,7 @@
     use App\Http\Controllers\ForfaitsController;
 
     Route::auth();
-    Route::get('/', 'HomeController@index');
+    Route::get('/', 'HomeController@index')->middleware('auth');
 
     Route::get('/partee-checkHuespedes', function () {
         $partee = new \App\Services\ParteeService();

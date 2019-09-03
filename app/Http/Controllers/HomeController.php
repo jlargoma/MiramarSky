@@ -18,8 +18,9 @@ class HomeController extends AppController
      */
     public function index(Request $request)
     {
+        return redirect()->route('dashboard.planning');
         /* Detectamos el tipo de dispositivo*/
-        $mobile = new Mobile();
+        /*$mobile = new Mobile();
         if (!$mobile->isMobile())
         {
             $slides = File::allFiles(public_path() . '/img/miramarski/edificio/');
@@ -39,7 +40,7 @@ class HomeController extends AppController
             'cookie'         => $cookie,
             'mobile'         => $mobile,
             'slidesEdificio' => $slides,
-        ]);
+        ]);*/
     }
 
     public function apartamento($apto)
