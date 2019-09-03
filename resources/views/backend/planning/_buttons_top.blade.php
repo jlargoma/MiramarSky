@@ -22,7 +22,7 @@
         </button>
 
        <button class="btn btn-orange btn-cons  btn-tables btn-blink"  type="button" data-type="checkin">
-            <span class="bold">Check IN</span>
+            <span class="bold">FF PDTES</span>
             <span class="numPaymentLastBooks show"><?php echo $ff_pendientes; ?></span>
         </button>
       
