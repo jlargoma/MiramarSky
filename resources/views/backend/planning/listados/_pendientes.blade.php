@@ -210,6 +210,12 @@
             <?php if ( Auth::user()->role != "agente" ): ?>
             <td class="text-center">
               <?php
+                $ff_status = $book->get_ff_status(false);
+                if ($ff_status['icon']){
+                      echo '<img src="'.$ff_status['icon'].'" style="max-width:25px;" alt="'.$ff_status['name'].'"/>';
+                }
+              ?>
+              <?php
               if (($partee = $book->partee())):
                 $active = $phoneSMS = '';
                 if ($partee->status == "FINALIZADO"){
@@ -395,6 +401,12 @@
                 </td>
                 <?php if ( Auth::user()->role != "agente" ): ?>
                 <td class="text-center">
+                  <?php
+                $ff_status = $book->get_ff_status(false);
+                if ($ff_status['icon']){
+                      echo '<img src="'.$ff_status['icon'].'" style="max-width:25px;" alt="'.$ff_status['name'].'"/>';
+                }
+              ?>
                   <?php
                     if (($partee = $book->partee())):
                       $active = $phoneSMS = '';

@@ -478,7 +478,8 @@ input.beneficio,
       box-shadow: 0px 0px 2px 5px rgba(204,169,44, 0);
   }
 }
-.btn-mb-1 button{
+.btn-mb-1 button,
+.btn-mb-1 a{
   margin-bottom: 1em;
 }
 .btn-alarms{
