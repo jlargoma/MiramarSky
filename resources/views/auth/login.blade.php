@@ -47,8 +47,8 @@
           <div class="bg-pic" >
             <!-- START Background Pic-->
 
-            <img src="{{ asset('img/riad/lockscreen.jpg') }}" data-src="{{ asset('img/riad/lockscreen.jpg') }}"
-            data-src-retina="{{ asset('img/riad/lockscreen.jpg') }}" alt="" class="lazy" style="opacity: 1 !important;float: right;position:initial;">
+            <img src="{{ asset('img/miramarski/lockscreen.jpg') }}" data-src="{{ asset('img/miramarski/lockscreen.jpg') }}"
+            data-src-retina="{{ asset('img/miramarski/lockscreen.jpg') }}" alt="" class="lazy" style="opacity: 1 !important;float: right;position:initial;">
             <!-- END Background Pic-->
             <!-- START Background Caption-->
             <div class="bg-caption pull-bottom sm-pull-bottom text-white p-l-20 m-b-20">
@@ -61,7 +61,7 @@
           <!-- START Login Right Container-->
           <div class="login-container " style="float: left;background-color: rgba(0,0,0,0.1);">
             <div class="p-l-50 m-l-20 p-r-50 m-r-20  m-t-10 sm-p-l-15 sm-p-r-15 sm-p-t-10">
-              <h2 class="semi-bold text-white" > Gestion RIAD ALBAICIN </h2>
+              <h2 class="semi-bold text-white" > Gestion MIRAMARSKI </h2>
 
               <p class="p-t-20 text-white bold">Logueate para acceder a tu cuenta</p>
               <!-- START Login Form -->
@@ -115,7 +115,7 @@
           <div class="bg-pic" >
             <!-- START Background Pic-->
 
-            <img src="{{ asset('img/riad/lockscreen.jpg') }}" data-src="{{ asset('img/riad/lockscreen.jpg') }}" data-src-retina="{{ asset('img/riad/lockscreen.jpg') }}" alt="" class="lazy" style="opacity: 1 !important;width: 100%!important;float: right;">
+            <img src="{{ asset('img/miramarski/lockscreen.jpg') }}" data-src="{{ asset('img/miramarski/lockscreen.jpg') }}" data-src-retina="{{ asset('img/miramarski/lockscreen.jpg') }}" alt="" class="lazy" style="opacity: 1 !important;width: 100%!important;float: right;">
             <!-- END Background Pic-->
             <!-- START Background Caption-->
             <div class="bg-caption pull-bottom sm-pull-bottom text-white p-l-20 m-b-20">
@@ -128,7 +128,7 @@
           <!-- START Login Right Container-->
           <div class="login-container " style="float: left;background-color: rgba(0,0,0,0.1);">
             <div class="p-l-50 m-l-20 p-r-50 m-r-20 p-t-50 m-t-30 sm-p-l-15 sm-p-r-15 sm-p-t-40">
-              <h2 class="semi-bold text-white" > Gestion RIAD ALBAICIN </h2>
+              <h2 class="semi-bold text-white" > Gestion MIRAMARSKI </h2>
 
               <p class="p-t-35 text-white">Logueate para acceder a tu cuenta</p>
               <!-- START Login Form -->

@@ -50,20 +50,7 @@ class AppController extends Controller
         $activeYear = Years::where('year', $year)->first();
         return $activeYear;
     }
-
-    /**
-     * @param array $params
-     *  params must be content:
-     *  - dates
-     *  - pax
-     * @return html-form  with rooms avaliable to book and pay
-     */
-    protected function searchRoomsAvaliables(array $params)
-    {
-        //TODO refactoring this function to look for rooms with capacity to accommodate the guests and that area
-        // vailable to reserve
-    }
-
+    
     public function payBook($id, $payment)
     {
         $book = \App\Book::find($id);

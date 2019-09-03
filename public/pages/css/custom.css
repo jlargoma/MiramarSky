@@ -853,4 +853,8 @@ button#copy-link-stripe {
   .pt-md-1{
     padding-top: 1em; 
   }
+
+  ul.nav.navbar-nav.navbar-left{
+    margin: 7.5px -15px!important
+  }
 }

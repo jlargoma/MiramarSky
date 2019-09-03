@@ -167,7 +167,6 @@ setlocale(LC_TIME, "es_ES");
             <?php if ( Auth::user()->role != "agente" ): ?>
             <div class="col-md-12" id="stripe-conten-index" style="display: none;">
                     @include('backend.stripe.link')
-                {{--@include('backend.stripe.stripe', ['bookTocharge' => null])--}}
                 </div>
             <?php endif ?>
             </div>
@@ -309,6 +308,9 @@ setlocale(LC_TIME, "es_ES");
             .panel-mobile, .table-responsive.content-calendar{
                 margin-bottom: 0px;
             }
+            .btn-cons{
+                min-width: auto!important;
+            }
         </style>
 
         <div class="container-fluid  p-l-15 p-r-15 p-t-20 bg-white">
@@ -329,48 +331,48 @@ setlocale(LC_TIME, "es_ES");
                 <div class="col-xs-12">
                     <div class="row">
                         <?php if ( Auth::user()->role != "agente" ): ?>
-                        <div class="col-xs-4 push-10 text-center">
-                            <button id="lastBooks" class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#modalLastBooks">
-                                <span class="bold">Últ. reser</span>
-                                <span class="numPaymentLastBooks">&nbsp;<?php echo  $stripedsPayments->count(); ?>&nbsp;</span>
-                            </button>
-                        </div>
-                        <div class="col-xs-2 push-10 text-center">
-                            <button class="btn btn-success btn-sm" type="button" id="stripePayment">
-                                <i class="fa fa-money" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                        <div class="col-xs-2 push-10 text-center">
-                            <button class="btn btn-success btn-calcuteBook btn-sm" type="button" data-toggle="modal" data-target="#modalCalculateBook">
-                                <span class="bold"><i class="fa fa-calendar-alt" aria-hidden="true"></i></span>
-                            </button>
-                        </div>
-                        <div class="col-xs-2 push-10 text-center">
-                            <button class="btn btn-danger btn-sm btn-blink <?php if(count($alarms)>0) echo 'btn-alarms'; ?>" type="button" data-toggle="modal" data-target="#modalAlarms">
-                                &nbsp;&nbsp;<i class="fa fa-bell" aria-hidden="true"></i>&nbsp;&nbsp;
-                                <span class="numPaymentLastBooks">&nbsp;<?php echo  count($alarms); ?>&nbsp;</span>
-                            </button>
-                        </div>
-                      <div class="col-xs-6 text-center">
-                      <button class="btn btn-danger btn-cons btn-blink <?php if($alert_lowProfits) echo 'btn-alarms'; ?> "  id="btnLowProfits" type="button" data-toggle="modal" data-target="#modalLowProfits">
-                            <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">BAJO BENEFICIO</span>
-                            <span class="numPaymentLastBooks" data-val="{{$alert_lowProfits}}">{{$alert_lowProfits}}</span>
-                        </button>
-                        </div>
-                      <div class="col-xs-6 text-center">
-                      <button class="btn btn-danger btn-cons btn-blink <?php if(count($parteeToActive)>0) echo 'btn-alarms'; ?> "  id="btnParteeToActive" type="button" data-toggle="modal" data-target="#modalParteeToActive">
-                            <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">PARTEE</span>
-                            <span class="numPaymentLastBooks"><?php echo  count($parteeToActive); ?></span>
-                        </button>
-                      </div>
-
+                            <div class="col-xs-4 push-10 text-center">
+                                <button id="lastBooks" class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#modalLastBooks">
+                                    <span class="bold">Últ. reser</span>
+                                    <span class="numPaymentLastBooks">&nbsp;<?php echo  $stripedsPayments->count(); ?>&nbsp;</span>
+                                </button>
+                            </div>
+                            <div class="col-xs-2 push-10 text-center">
+                                <button class="btn btn-success btn-sm" type="button" id="stripePayment">
+                                    <i class="fa fa-money" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="col-xs-2 push-10 text-center">
+                                <button class="btn btn-success btn-calcuteBook btn-sm" type="button" data-toggle="modal" data-target="#modalCalculateBook">
+                                    <span class="bold"><i class="fa fa-calendar-alt" aria-hidden="true"></i></span>
+                                </button>
+                            </div>
+                            <div class="col-xs-2 push-10 text-center">
+                                <button class="btn btn-danger btn-sm btn-blink <?php if(count($alarms)>0) echo 'btn-alarms'; ?>" type="button" data-toggle="modal" data-target="#modalAlarms">
+                                    &nbsp;&nbsp;<i class="fa fa-bell" aria-hidden="true"></i>&nbsp;&nbsp;
+                                    <span class="numPaymentLastBooks">&nbsp;<?php echo  count($alarms); ?>&nbsp;</span>
+                                </button>
+                            </div>
                         <?php endif ?>
-                        <div class="col-xs-2 push-10 text-center">
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-4 text-center">
+                            <button class="btn btn-danger btn-sm btn-cons btn-blink <?php if($alert_lowProfits) echo 'btn-alarms'; ?> "  id="btnLowProfits" type="button" data-toggle="modal" data-target="#modalLowProfits">
+                                <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">BJ BENEF</span>
+                                <span class="numPaymentLastBooks" data-val="{{$alert_lowProfits}}">{{$alert_lowProfits}}</span>
+                            </button>
+                        </div>
+                        <div class="col-xs-4 text-center">
+                            <button class="btn btn-danger btn-sm btn-cons btn-blink <?php if(count($parteeToActive)>0) echo 'btn-alarms'; ?> "  id="btnParteeToActive" type="button" data-toggle="modal" data-target="#modalParteeToActive">
+                                <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">PARTEE</span>
+                                <span class="numPaymentLastBooks"><?php echo  count($parteeToActive); ?></span>
+                            </button>
+                        </div>
+                         <div class="col-xs-2 push-10 text-center">
                             <button class="btn btn-primary btn-sm calend" type="button" >
                                 <span class="bold"><i class="fa fa-calendar"></i></span>
                             </button>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -378,7 +380,6 @@ setlocale(LC_TIME, "es_ES");
         <div class="col-md-12" id="stripe-conten-index" style="display: none;">
             <?php if ( Auth::user()->role != "agente" ): ?>
                 @include('backend.stripe.link')
-                @include('backend.stripe.stripe', ['bookTocharge' => null])
             <?php endif ?>
         </div>
 
