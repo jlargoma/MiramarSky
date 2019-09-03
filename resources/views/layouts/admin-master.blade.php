@@ -60,6 +60,10 @@
                 <a class="navbar-brand" href="{{ route('dashboard.planning') }}" style="max-width: 155px;">
                     <img src="{{ asset('img/riad/logo_riad_b.png') }}" alt="" style="width: 100%">
                 </a>
+            <?php else:?>
+                <a class="navbar-brand" href="{{ route('dashboard.planning') }}" style="max-width: 155px;">
+                    <img src="{{ asset('img/miramarski/logo_miramar.png') }}" alt="" style="width: 100%;     margin-top: -5px;">
+                </a>
             <?php endif; ?>
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">

@@ -9,12 +9,12 @@
         <th class="text-center Reservado-table text-white"> Telefono</th>
         <th class="text-center Reservado-table text-white" style="width: 7%!important"> Pax</th>
         <th class="text-center Reservado-table text-white" style="width: 5%!important"></th>
-        <th class="text-center Reservado-table text-white" style="width: 12%!important"> Apart</th>
+        <th class="text-center Reservado-table text-white" style="width: 10%!important"> Apart</th>
         <th class="text-center Reservado-table text-white" style="width: 6%!important"> IN</th>
-        <th class="text-center Reservado-table text-white" style="width: 8%!important"> OUT</th>
+        <th class="text-center Reservado-table text-white" style="width: 7%!important"> OUT</th>
         <th class="text-center Reservado-table text-white" style="width: 6%!important"><i class="fa fa-moon-o"></i></th>
         <th class="text-center Reservado-table text-white"> Precio</th>
-        <th class="text-center Reservado-table text-white" style="width: 17%!important"> Estado</th>
+        <th class="text-center Reservado-table text-white" style="width: 12%!important"> Estado</th>
         <th class="text-center Reservado-table text-white" style="width: 6%!important">&nbsp;</th>
 		<?php if ( Auth::user()->role != "agente" ): ?>
         <th class="text-center Reservado-table text-white" style="width: 65px!important">Acciones</th>
@@ -50,7 +50,7 @@
                     <?php endif;?>
                 <?php endif ?>
             </td>
-            <td class="text-center" style="padding: 10px 15px!important">
+            <td class="text-center" style="padding: 10px 5px!important">
                 <?php if (isset($payment[$book->id])): ?>
                 <a class="update-book" data-id="<?php echo $book->id ?>"
                    title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"
@@ -209,6 +209,12 @@
             </td>
             <?php if ( Auth::user()->role != "agente" ): ?>
             <td class="text-center">
+              <?php
+                $ff_status = $book->get_ff_status(false);
+                if ($ff_status['icon']){
+                      echo '<img src="'.$ff_status['icon'].'" style="max-width:25px;" alt="'.$ff_status['name'].'"/>';
+                }
+              ?>
               <?php
               if (($partee = $book->partee())):
                 $active = $phoneSMS = '';
@@ -395,6 +401,12 @@
                 </td>
                 <?php if ( Auth::user()->role != "agente" ): ?>
                 <td class="text-center">
+                  <?php
+                $ff_status = $book->get_ff_status(false);
+                if ($ff_status['icon']){
+                      echo '<img src="'.$ff_status['icon'].'" style="max-width:25px;" alt="'.$ff_status['name'].'"/>';
+                }
+              ?>
                   <?php
                     if (($partee = $book->partee())):
                       $active = $phoneSMS = '';

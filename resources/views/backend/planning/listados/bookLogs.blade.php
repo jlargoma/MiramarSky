@@ -21,11 +21,13 @@
       <div class="chat-text">
         @if($item->action == 'user_mail_response')
         {{ $item->content }}
-        <a href="#" class="see_more" data-id="{{$item->id}}">ver mas</a>
         @else
         {{$item->subject}}
         <a href="#" class="see_more" data-id="{{$item->id}}">ver mas</a>
         @endif
+        <a href="#" class="see_more" data-id="{{$item->id}}">
+          <i class="fa fa-eye"></i>
+        </a>
       </div>
       <div class="chat-user">
         @if(isset($userLst[$item->user_id])) 
@@ -41,7 +43,7 @@
     <div class="user">
       <div class="chat-text">
         {{ $item->content }}
-        <a href="#" class="see_more" data-id="{{$item->id}}">ver mas</a>
+        <a href="#" class="see_more" data-id="{{$item->id}}"><i class="fa fa-eye"></i></a>
       </div>
       <div class="chat-date">{{$item->created_at->format('d.m.Y H:i')}}</div>
     </div>

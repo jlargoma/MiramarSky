@@ -2,7 +2,7 @@
 use App\Classes\Mobile;
 $mobile = new Mobile();
 ?>
-<link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
+<link href="{{ asset('/assets/plugins/bootstrap-datepicker/css/datepicker3.css')}}" rel="stylesheet" type="text/css" media="screen">
 <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
 <style type="text/css" media="screen">
     .daterangepicker{
@@ -45,7 +45,7 @@ $mobile = new Mobile();
                     <label for="status">Estado</label>
                 </div>
                 <div class="col-md-8">
-                    <?php $book = new \App\book(); ?>
+                    <?php $book = new \App\Book(); ?>
                     <select name="status" class="form-control minimal" >
 	                    <?php  $status = [ 1 => 1, 2 => 2 ]; ?>
                         <?php if ( Auth::user()->role != "agente"): ?>

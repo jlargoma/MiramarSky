@@ -96,6 +96,7 @@ form{
 
 <div class="row">
     <div class="col-md-2 bold">Estado</div>
+    <a class="update_ff_status @if($book->ff_status == 4) active @endif" href="/admin/reservas/ff_change_status_popup/{{$book->id}}/4" >Comprometida</a>
     <a class="update_ff_status @if($book->ff_status == 3) active @endif" href="/admin/reservas/ff_change_status_popup/{{$book->id}}/3" >Confirmada</a>
     <a class="update_ff_status @if($book->ff_status == 2) active @endif" href="/admin/reservas/ff_change_status_popup/{{$book->id}}/2" >No Cobrada</a>
     <a class="update_ff_status @if($book->ff_status == 1) active @endif" href="/admin/reservas/ff_change_status_popup/{{$book->id}}/1" >Cancelada</a>

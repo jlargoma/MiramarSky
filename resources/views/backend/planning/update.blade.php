@@ -149,7 +149,7 @@
 
                                 <a href="whatsapp://send?text=<?php echo $text; ?>"
                                    data-action="share/whatsapp/share">
-                                    <i class="fa fa-eye fa-3x" aria-hidden="true"></i>
+                                    <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
                                 </a>
                             </h2>
                         </div>
@@ -157,15 +157,10 @@
                         <div class="col-md-2 col-xs-3 icon-lst">
                             <a href="/admin/reservas/ff_status_popup/<?php echo $book->id; ?>" onclick="window.open(this.href, 'Reserva - FF','left=400,top=20,width=1200,height=900,toolbar=0,resizable=0'); return false;" >
                                 <?php
-                                    if($book->ff_status == 0){
-                                        echo '<img src="'.asset('/img/miramarski/ski_icon_status_transparent.png').'" style="max-width:45px;"/>';
-                                    }elseif($book->ff_status == 1){
-                                        echo '<img src="'.asset('/img/miramarski/ski_icon_status_grey.png').'" style="max-width:45px;"/>';
-                                    }elseif($book->ff_status == 2){
-                                        echo '<img src="'.asset('/img/miramarski/ski_icon_status_red.png').'" style="max-width:45px;"/>';
-                                    }elseif($book->ff_status == 3){
-                                        echo '<img src="'.asset('/img/miramarski/ski_icon_status_green.png').'" style="max-width:45px;"/>';
-                                    }
+                                $ff_status = $book->get_ff_status();
+                                if ($ff_status['icon']){
+                                      echo '<img src="'.$ff_status['icon'].'" style="max-width:40px;" alt="'.$ff_status['name'].'"/>';
+                                }
                                 ?>
                             </a>
                         </div>
@@ -482,20 +477,21 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-xs-12 bg-white">
-                        <div class="col-md-5 col-xs-6 push-20 not-padding">
-                            <div class="col-md-5 col-xs-12 push-10">
+                  <div class="col-xs-12 bg-white">
+                        <div class="col-md-6 col-xs-12 push-20 not-padding">
+                            <div class="col-md-6 col-xs-6 push-10">
                                 <label>Agencia</label>
                                 <select class="form-control full-width agency minimal" name="agency" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
 									<?php for ($i = 0; $i <= 7 ; $i++): ?>
                                     <option value="<?php echo $i ?>"
                                             {{ $book->agency == $i ? 'selected' : '' }} <?php if ( Auth::user()->role == "agente" && $book->getAgency($i) == "S.essence"): ?>
                                             selected<?php endif ?>>
-										<?php echo $book->getAgency($i) ?></option>
+										<?php echo $book->getAgency($i) ?>
+                                    </option>
 									<?php endfor;?>
                                 </select>
                             </div>
-                            <div class="col-md-7 col-xs-12 push-10">
+                            <div class="col-md-6 col-xs-6 push-10">
                                 <label>Cost Agencia</label>
 								<?php if ($book->PVPAgencia == 0.00): ?>
                                 <input type="number" step='0.01' class="agencia form-control" name="agencia" value="" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>>
@@ -504,19 +500,22 @@
                                        value="<?php echo $book->PVPAgencia ?>">
 								<?php endif ?>
                             </div>
-
                         </div>
-                        <div class="col-md-2 col-xs-4 not-padding">
+                        <div class="col-md-3 col-xs-6 push-20 ">
                             <label>promoción 3x2</label>
-                            <input type="number" step='0.01' class="promociones only-numbers form-control"
-                                   name="promociones" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>
+                            <input type="number" step='0.01' class="promociones only-numbers form-control" <?php if ( Auth::user()->role == "limpieza"):?>disabled<?php endif ?>
+                                   name="promociones"
                                    value="<?php echo ($book->promociones > 0) ? $book->promociones : "" ?>">
                         </div>
-						<?php if ($book->book_owned_comments != "" && $book->promociones != 0): ?>
-                        <div class="col-md-2 col-xs-6 push-10 content_image_offert">
-                            <img src="/pages/oferta.png" style="width: 90px;">
+                       <div class="col-md-3 col-xs-6 push-20">
+                          <label>DTO FF</label>
+                          <input type="text"  class="promociones only-numbers form-control" disabled  value="{{$book->ff_discount}}">
                         </div>
-						<?php endif ?>
+                        <?php if ($book->book_owned_comments != "" && $book->promociones != 0): ?>
+                          <div class="col-md-2 col-xs-6 push-10 content_image_offert">
+                            <img src="/pages/oferta.png" style="width: 90px;">
+                          </div>
+                        <?php endif ?>
 
                         <div class="col-md-12 col-xs-12 push-20 not-padding">
                             <div class="col-md-3 col-xs-12 text-center boxtotales" style="background-color: #0c685f;">
@@ -1073,6 +1072,11 @@
                                    name="promociones"
                                    value="<?php echo ($book->promociones > 0) ? $book->promociones : "" ?>">
                         </div>
+                       <div class="col-md-2 col-xs-6 push-20">
+                          <label>DTO FF</label>
+                          <input type="text"  class="promociones only-numbers form-control" disabled  value="{{$book->ff_discount}}">
+                        </div>
+                      
 						<?php if ($book->book_owned_comments != "" && $book->promociones != 0): ?>
                         <div class="col-md-2 col-xs-6 push-10 content_image_offert">
                             <img src="/pages/oferta.png" style="width: 90px;">
@@ -1345,6 +1349,11 @@
                     </div>
                 <?php endif ?>
             </div>
+              <div class="col-xs-12 bg-black push-0">
+                <h4 class="text-center white">HISTORICO EMAILS CON EL CLIENTE <span id="loadchatbox" class="mobile">desplegar</span></h4>
+              </div>
+              <div id="chatbox">
+              </div>
 			<?php endif ?>
         </div>
         <button style="display: none;" id="btnEmailing" class="btn btn-success btn-cons m-b-10" type="button"

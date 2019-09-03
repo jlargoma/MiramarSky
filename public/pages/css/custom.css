@@ -478,7 +478,8 @@ input.beneficio,
       box-shadow: 0px 0px 2px 5px rgba(204,169,44, 0);
   }
 }
-.btn-mb-1 button{
+.btn-mb-1 button,
+.btn-mb-1 a{
   margin-bottom: 1em;
 }
 .btn-alarms{
@@ -852,5 +853,9 @@ button#copy-link-stripe {
 @media only screen  and (min-width: 992px){
   .pt-md-1{
     padding-top: 1em; 
+  }
+
+  ul.nav.navbar-nav.navbar-left{
+    margin: 7.5px -15px!important
   }
 }
