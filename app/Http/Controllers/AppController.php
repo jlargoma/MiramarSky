@@ -50,7 +50,7 @@ class AppController extends Controller
         $activeYear = Years::where('year', $year)->first();
         return $activeYear;
     }
-    
+
     public function payBook($id, $payment)
     {
         $book = \App\Book::find($id);

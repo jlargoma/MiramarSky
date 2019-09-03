@@ -55,7 +55,7 @@
     <body class="fixed-header   windows desktop pace-done sidebar-visible menu-pin" style="padding-top:0px!important">
         <!-- <body class="fixed-header dashboard  windows desktop sidebar-visible pace-done menu-pin"> -->
         <?php if (preg_match('/subadmin/i', Auth::user()->role) || preg_match('/admin/i', Auth::user()->role) || preg_match('/agente/i', Auth::user()->role)): ?>
-            <nav class="navbar navbar-inverse" role="navigation">
+            <nav class="navbar navbar-inverse" role="navigation" style="<?php if (env('APP_APPLICATION') == "riad"): ?>background-color: #6d5cae!important; <?php else:?> background-color: #295d9b!important;<?php endif; ?>">
             <?php if (env('APP_APPLICATION') == "riad"): ?>
                 <a class="navbar-brand" href="{{ route('dashboard.planning') }}" style="max-width: 155px;">
                     <img src="{{ asset('img/riad/logo_riad_b.png') }}" alt="" style="width: 100%">
