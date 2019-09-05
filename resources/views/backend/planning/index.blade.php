@@ -115,11 +115,6 @@ setlocale(LC_TIME, "es_ES");
                         <h2 class="text-center">CARGANDO CALENDARIO</h2>
                     </div>
                 </div>
-            <?php if ( Auth::user()->role != "agente" ): ?>
-            <div class="col-md-12" id="stripe-conten-index" style="display: none;">
-                    @include('backend.stripe.link')
-                </div>
-            <?php endif ?>
             </div>
 
         <!-- NUEVAS RESERVAS -->
@@ -278,12 +273,6 @@ setlocale(LC_TIME, "es_ES");
             'parteeToActive'=>$parteeToActive,
             ])
         </div>
-        <div class="col-md-12" id="stripe-conten-index" style="display: none;">
-            <?php if ( Auth::user()->role != "agente" ): ?>
-                @include('backend.stripe.link')
-            <?php endif ?>
-        </div>
-
         <div class="row push-20">
             <div class="col-md-7">
                 <div class="row push-10">
@@ -476,6 +465,20 @@ setlocale(LC_TIME, "es_ES");
             </div>
         </div>
     <?php endif ?>
+        
+         <?php if (Auth::user()->role != "agente"): ?>
+          <!-- GENERADOR DE LINKS PAYLAND  -->
+           <div class="modal fade slide-up in" id="modalLinkStrip" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-xd">
+              <div class="modal-content-classic">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
+                    <i class="fa fa-times fa-2x" style="color: #000!important;"></i>
+                </button>
+                @include('backend.stripe.link')
+                 </div>
+               </div>
+              </div>
+        <?php endif ?>
 @endsection
 
 @section('scripts')

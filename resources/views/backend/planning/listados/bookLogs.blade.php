@@ -1,54 +1,56 @@
 <div class="chat-lst" id="chats">
-  @foreach($allLogs as $item)
-  <div class="chat-item">
-    @if($item->user_id)
-    @if($item->action == 'change_status')
-    <div class="status">
-      <div class="chat-text">{{$item->subject}} 
-        @if(isset($roomLst[$item->room_id]))<span> {{$roomLst[$item->room_id]}}</span> @endif
+  @if($allLogs)
+    @foreach($allLogs as $item)
+    <div class="chat-item">
+      @if($item->user_id)
+      @if($item->action == 'change_status')
+      <div class="status">
+        <div class="chat-text">{{$item->subject}} 
+          @if(isset($roomLst[$item->room_id]))<span> {{$roomLst[$item->room_id]}}</span> @endif
+        </div>
+        <div class="chat-user">
+          @if(isset($userLst[$item->user_id])) 
+            {{$userLst[$item->user_id]}} 
+          @else
+            Admin
+          @endif
+        </div>
+        <div class="chat-date">{{$item->created_at->format('d.m.Y H:i')}}</div>
       </div>
-      <div class="chat-user">
-        @if(isset($userLst[$item->user_id])) 
-          {{$userLst[$item->user_id]}} 
-        @else
-          Admin
-        @endif
+      @else
+      <div class="admin">
+        <div class="chat-text">
+          @if($item->action == 'user_mail_response')
+          {{ $item->content }}
+          @else
+          {{$item->subject}}
+          @endif
+          <a href="#" class="see_more" data-id="{{$item->id}}">
+            <i class="fa fa-eye"></i>
+          </a>
+        </div>
+        <div class="chat-user">
+          @if(isset($userLst[$item->user_id])) 
+            {{$userLst[$item->user_id]}} 
+          @else
+            Admin
+          @endif
+        </div>
+        <div class="chat-date">{{$item->created_at->format('d.m.Y H:i')}}</div>
       </div>
-      <div class="chat-date">{{$item->created_at->format('d.m.Y H:i')}}</div>
+      @endif
+      @else
+      <div class="user">
+        <div class="chat-text">
+          {{ $item->content }}
+          <a href="#" class="see_more" data-id="{{$item->id}}"><i class="fa fa-eye"></i></a>
+        </div>
+        <div class="chat-date">{{$item->created_at->format('d.m.Y H:i')}}</div>
+      </div>
+      @endif
     </div>
-    @else
-    <div class="admin">
-      <div class="chat-text">
-        @if($item->action == 'user_mail_response')
-        {{ $item->content }}
-        @else
-        {{$item->subject}}
-        @endif
-        <a href="#" class="see_more" data-id="{{$item->id}}">
-          <i class="fa fa-eye"></i>
-        </a>
-      </div>
-      <div class="chat-user">
-        @if(isset($userLst[$item->user_id])) 
-          {{$userLst[$item->user_id]}} 
-        @else
-          Admin
-        @endif
-      </div>
-      <div class="chat-date">{{$item->created_at->format('d.m.Y H:i')}}</div>
-    </div>
-    @endif
-    @else
-    <div class="user">
-      <div class="chat-text">
-        {{ $item->content }}
-        <a href="#" class="see_more" data-id="{{$item->id}}"><i class="fa fa-eye"></i></a>
-      </div>
-      <div class="chat-date">{{$item->created_at->format('d.m.Y H:i')}}</div>
-    </div>
-    @endif
-  </div>
-  @endforeach
+    @endforeach
+@endif
 </div>
   <button class="btn btn-success btn-cons m-b-10" type="button"
           data-toggle="modal" data-target="#modalResponseEmail">Enviar Nueva Respuesta</button>

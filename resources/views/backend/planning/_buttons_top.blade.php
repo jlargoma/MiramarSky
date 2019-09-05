@@ -13,7 +13,8 @@
           <?php endif; ?>
         </button>
 
-        <button class="btn btn-success btn-cons" type="button" id="stripePayment">
+        <!--<button class="btn btn-success btn-cons" type="button" id="stripePayment" modalLinkStrip>-->
+        <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalLinkStrip">
           <i class="fa fa-money" aria-hidden="true"></i> <span class="bold hidden-mobile">Cobros TPV</span>
         </button>
 

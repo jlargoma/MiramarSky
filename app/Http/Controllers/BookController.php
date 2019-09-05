@@ -301,18 +301,18 @@ class BookController extends AppController
 
                 $book->cost_total = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
 
-                if ($request->input('priceDiscount') == "yes")
+                if ($request->input('priceDiscount') == "yes" || $request->input('price-discount') == "yes")
                 {
                     $discount = \App\Settings::getKeyValue('discount_books');
                     $book->total_price = ($this->getPriceBook($start, $finish, $request->input('pax'), $request->input('newroom')) + $book->sup_park + $book->sup_lujo + $book->sup_limp) - $discount;
                     $book->real_price = ($this->getPriceBook($start, $finish, $request->input('pax'), $request->input('newroom')) + $book->sup_park + $book->sup_lujo + $book->sup_limp) - $discount;
                     $book->ff_status = 4;
+                    $book->has_ff_discount = 1;
                     $book->ff_discount = $discount;
                 }else{
                     $book->total_price = ($this->getPriceBook($start, $finish, $request->input('pax'), $request->input('newroom')) + $book->sup_park + $book->sup_lujo + $book->sup_limp);
                     $book->real_price = ($this->getPriceBook($start, $finish, $request->input('pax'), $request->input('newroom')) + $book->sup_park + $book->sup_lujo + $book->sup_limp);
                 }
-
                 $book->total_ben = $book->total_price - $book->cost_total;
 
                 $book->extraPrice = $extraPrice;
@@ -498,6 +498,7 @@ class BookController extends AppController
                                 $discount = \App\Settings::getKeyValue('discount_books');
                                 $book->ff_status = 4;
                                 $book->ff_discount = $discount;
+                                $book->has_ff_discount = 1;
                                 $book->total_price = $request->input('total') - $discount;
                                 $book->real_price  = ($this->getPriceBook($start, $finish, $request->input('pax'), $request->input('newroom')) + $book->sup_park + $book->sup_lujo + $book->sup_limp) - $request->input('discount');
                             }else
@@ -606,7 +607,7 @@ class BookController extends AppController
     {
         $computedData = json_decode($request->input('computed_data'));
         $aux          = str_replace('Abr', 'Apr', $request->input('fechas'));
-
+        dd($computedData);
         $date = explode('-', $aux);
 
         $start  = Carbon::createFromFormat('d M, y', trim($date[0]))->format('d/m/Y');
@@ -678,6 +679,9 @@ class BookController extends AppController
             $book->schedule    = $request->input('schedule');
             $book->scheduleOut = $request->input('scheduleOut');
             $book->promociones = ($request->input('promociones')) ? $request->input('promociones') : 0;
+            
+            $book->has_ff_discount = $request->input('has_ff_discount',0);
+            $book->ff_discount = $request->input('ff_discount',0);
 
             $book->total_price = $request->input('total'); // This can be modified in frontend
             $book->real_price  = $computedData->calculated->real_price; // This cannot be modified in frontend

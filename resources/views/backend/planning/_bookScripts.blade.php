@@ -204,11 +204,15 @@
 	                    $('.beneficio').val(data.calculated.profit);
 	                    $('.beneficio-text').html(data.calculated.profit_percentage + '%');
 	                    $('#real-price').html(data.calculated.real_price);
-	                    $('#modified-price').html(data.aux.price_modified);
-
-	                    if (data.calculated.real_price < data.aux.price_modified) {
+                            /* fix data.aux.price_modified UNDEFINED */
+                                    var price_modified = 0;
+                                    if (data.aux){
+                                         price_modified = data.aux.price_modified;
+                                     }
+                                     $('#modified-price').html(price_modified);
+	                    if (data.calculated.real_price < price_modified) {
 	                        $('#arrow-price-modification').fadeIn().removeClass().addClass('fa fa-arrow-up');
-	                    } else if (data.calculated.real_price == data.aux.price_modified) {
+	                    } else if (data.calculated.real_price == price_modified) {
 	                        $('#arrow-price-modification').fadeOut();
 	                    } else {
 	                        $('#arrow-price-modification').fadeIn().removeClass().addClass('fa fa-arrow-down');
