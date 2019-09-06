@@ -72,6 +72,7 @@
     Route::post('/solicitudForfait', 'HomeController@solicitudForfait');
     Route::get('/admin/links-stripe', 'StripeController@link');
     Route::get('/admin/links-payland', 'PaylandsController@link');
+    Route::get('/admin/links-payland-single', 'PaylandsController@linkSingle');
     /* SUPERMERCADO */
     Route::get('/supermercado', function () {
         return redirect('http://miramarski.com/supermercado');

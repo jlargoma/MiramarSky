@@ -26,7 +26,7 @@
 				alert('Rellena el importe a generar');
 			}else{
 
-				$.get('/admin/links-payland',{ importe: importe, book: book }, function(data) {
+				$.get('/admin/links-payland-single',{ importe: importe, book: book }, function(data) {
 					$('.content-importe-stripe').empty().append(data);
 				});
 			}
