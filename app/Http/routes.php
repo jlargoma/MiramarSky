@@ -88,7 +88,7 @@
     Route::post('/admin/reservas/stripe/paymentsBooking', 'StripeController@stripePaymentBooking');
     
    Route::group(['middleware' => 'authSubAdmin'], function () {
-     Route::get('admin/reservas', 'BookController@index')->name('dashboard.planning');
+    Route::get('admin/reservas', 'BookController@index')->name('dashboard.planning');
     Route::get('admin/reservas/emails/{id}',  'BookController@emails');
     Route::get('admin/reservas/sendJaime',  'BookController@sendJaime');
     Route::get('admin/reservas/saveCobro', 'BookController@saveCobro');
@@ -134,8 +134,6 @@
     
 
   
-    include_once 'routes-superAdmin.php';
-    include_once 'routes-admin.php';
 
     Route::get('/api/forfaits/class', 'ForfaitsItemController@api_getClasses');
     Route::get('/api/forfaits/categ', 'ForfaitsItemController@api_getCategories');
@@ -149,18 +147,20 @@
     Route::get('/api/forfaits/getSeasons', 'ForfaitsItemController@getForfaitSeasons');
 
 
+    include_once 'routes-admin.php';
+    include_once 'routes-superAdmin.php';
 
-//        Route::get('/admin', function () {
-//      $user = \Auth::user();
-//      if ($user->role == "propietario") {
-//        $room = \App\Rooms::where('owned', $user->id)->first();
-//        if ($room)
-//          return redirect('/admin/propietario/' . $room->nameRoom);
-//        return redirect('/admin/propietario/');
-//      } else {
-//        return redirect('/admin/reservas');
-//      }
-//    })->middleware('auth');
+    Route::get('/admin', function () {
+      $user = \Auth::user();
+      if ($user->role == "propietario") {
+        $room = \App\Rooms::where('owned', $user->id)->first();
+        if ($room)
+          return redirect('/admin/propietario/' . $room->nameRoom);
+        return redirect('/admin/propietario/');
+      } else {
+        return redirect('/admin/reservas');
+      }
+    })->middleware('auth');
     
      Route::get('/alroutes', function () {
  

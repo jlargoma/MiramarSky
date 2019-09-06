@@ -22,7 +22,7 @@
 	<div class="col-xs-12 bg-white">
 	    <div class="row">
 			<div class="col-md-3 col-xs-12 text-left">
-				<a href="{{ url('admin/facturas/descargar-todas/'.$date->copy()->format('Y').'/'.$room->id) }}" class="text-white btn btn-md btn-primary">
+                          <a href="{{ url('admin/facturas/descargar-todas/'.$date->copy()->format('Y').'/'.$room->id) }}" target="_black" class="text-white btn btn-md btn-primary">
 					Descargar Todas
 				</a>
 			</div>

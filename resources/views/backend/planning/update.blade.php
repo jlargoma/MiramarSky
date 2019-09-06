@@ -563,6 +563,30 @@ $mobile = new Mobile();
 
             </div>
             <div class="col-md-12 col-xs-12 push-20 not-padding">
+              <?php
+              $price = $book->getPriceBook($book->start,$book->finish,$book->room_id,$book->real_pax);
+//              dd($price);
+              ?>
+              <div class="col-md-2 text-white" style="background-color: #0c685f;">
+                PVP<br>{{$price['t_price']}}
+              </div>
+              <div class="col-md-2 text-white" style="background-color: #99D9EA;">
+                COSTE TOTAL<br>{{$price['t_cost']}}
+              </div>
+              <div class="col-md-2 text-white" style="background-color: #91cf81;">
+                COSTE APTO<br>{{$price['cost']}}
+              </div>
+              <div class="col-md-3 text-white" style="background-color: #337ab7;">
+                COSTE PARKING<br>{{$price['parking_cost']}}
+              </div>
+              <div class="col-md-3 text-white" style="background-color: #ff7f27;">
+                BENEFICIO<br>{{$price['t_benef']}}<br/>
+                <small>(<?php echo number_format($price['benef'], 0) . "%" ?>)</small>
+              </div>
+            </div>
+            
+            
+            <div class="col-md-12 col-xs-12 push-20 not-padding">
               <p class="personas-antiguo" style="color: red">
   <?php if ($book->pax < $book->room->minOcu): ?>
                   Van menos personas que la ocupacion minima del apartamento.

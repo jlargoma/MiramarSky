@@ -607,7 +607,7 @@ class BookController extends AppController
     {
         $computedData = json_decode($request->input('computed_data'));
         $aux          = str_replace('Abr', 'Apr', $request->input('fechas'));
-        dd($computedData);
+        
         $date = explode('-', $aux);
 
         $start  = Carbon::createFromFormat('d M, y', trim($date[0]))->format('d/m/Y');
@@ -1390,6 +1390,12 @@ class BookController extends AppController
         $endYear   = new Carbon($year->end_date);
 
 
+        if (Auth::user()->role == "limpieza"){
+          if (!($request->type == 'checkin' || $request->type == 'checkout')){
+            $request->type = 'checkin';
+          }
+        }
+          
         if (Auth::user()->role != "agente")
         {
             $roomsAgents = \App\Rooms::all(['id'])->toArray();
@@ -2049,8 +2055,15 @@ class BookController extends AppController
             $data['costes']['limp'] = \App\Extras::find(3)->cost;//70;
         }
 
+        $aux = explode('/', $request->start);
+        $start = $aux[1].'/'.$aux[0].'/'.$aux[2];
+        $finish    = Carbon::createFromFormat('m/d/Y', $request->finish);
+        $aux = explode('/', $request->finish);
+        $finish = $aux[1].'/'.$aux[0].'/'.$aux[2];
+        
+        
         $data['costes']['parking']   = $this->getCostPark($request->park, $request->noches) * $room->num_garage;
-        $data['costes']['book']      = $this->getCostBook($request->start, $request->finish, $request->pax, $request->room) - $promotion;
+        $data['costes']['book']      = $this->getCostBook($start, $finish, $request->pax, $request->room) - $promotion;
         $data['costes']['lujo']      = $this->getCostLujo($request->lujo);
         $data['costes']['obsequio']  = Rooms::GIFT_COST;
         $data['costes']['agencia']   = (float) $request->agencyCost;
@@ -2058,7 +2071,7 @@ class BookController extends AppController
 
         $data['totales']['parking']  = $this->getPricePark($request->park, $request->noches) * $room->num_garage;
         $data['totales']['lujo']     = $this->getPriceLujo($request->lujo);
-        $data['totales']['book']     = $this->getPriceBook($request->start, $request->finish, $request->pax, $request->room);
+        $data['totales']['book']     = $this->getPriceBook($start, $finish, $request->pax, $request->room);
         $data['totales']['obsequio'] = Rooms::GIFT_PRICE;
 
         // If the request comes with a price to show use it

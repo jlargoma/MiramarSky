@@ -881,4 +881,170 @@ class Book extends Model {
     return $result;
   }
 
+  public function getPriceBook($dStart,$dEnd,$roomID,$cant=1) {
+
+    $oRoom = Rooms::find($roomID);
+    $return = [
+      'status'        => 'error',  
+      'msg'           => 'error',  
+      'price'         => 0,  
+      'cost'          => 0,
+      'parking_cost'  => 0,
+      'parking_price' => 0,
+      'cost_lux'      => 0,
+      'price_lux'     => 0,
+      'cost_limp'     => 0,
+      'price_limp'    => 0,
+      't_cost'        => 0,
+      't_price'       => 0,
+      't_benef'       => 0,
+      'benef'         => 0,
+    ];
+    if (!$oRoom){
+      $return['msg'] = "Apto no encontrado";
+      return $return;
+    }
+    
+    //Settings additionals
+    $additinals = $this->addtionals();
+    if ($oRoom->luxury){
+      $return['cost_lux']  = $additinals['luxury_book_cost'];
+      $return['price_lux'] = $additinals['luxury_book_price'];
+    }
+    $return['parking_cost']  = $additinals['parking_book_cost'];
+    $return['parking_price'] = $additinals['parking_book_price'];
+    
+    //Extras
+    $limp = $this->priceLimpieza($oRoom->sizeApto);
+    $return['cost_limp']  = $limp['cost_limp'];
+    $return['price_limp'] = $limp['price_limp'];
+   
+ 
+    // check cant people
+    $minOcu = $oRoom->minOcu;
+    if ($cant<$minOcu){
+      $cant = $minOcu;
+    }
+
+    if ($cant>$oRoom->maxOcu){
+      $return['msg'] = "Supera la ocupación máxima";
+      return $return;
+    }
+    
+    $season_1 = Seasons::where('start_date','<=',$dStart)->where('finish_date','>=',$dStart)->first();
+    $book = array();
+    if ($season_1){
+        $finish_date = $season_1->finish_date;
+        if ($finish_date>=$dEnd){
+           $days = $this->getDaysBetween($dStart, $dEnd);
+           $book[] = [
+               'days' => $days,
+               'type' => $season_1->type,
+               'start_date' => $season_1->start_date,
+               'finish_date' => $season_1->finish_date
+           ];
+        } else {
+           $season_2 = Seasons::where('start_date','<=',$dEnd)->where('finish_date','>=',$dEnd)->first();
+           if ($season_2){
+            $book[] = [
+                'days' => $this->getDaysBetween($dStart, $finish_date),
+                'type' => $season_1->type,
+                'start_date' => $season_1->start_date,
+                'finish_date' => $season_1->finish_date
+            ];
+            //days+1 -> start in the first night
+            $book[] = [
+                'days' => $this->getDaysBetween($season_2->start_date, $dEnd)+1,
+                'type' => $season_2->type,
+                'start_date' => $season_2->start_date,
+                'finish_date' => $season_2->finish_date
+            ];
+           }
+         }
+    }
+    
+    $totalDays = 0;
+    if (count($book)>0){
+      foreach ($book as $item){
+        $priceNight = Prices::where('season',$item['type'])
+                ->where('occupation',$cant)->first();
+        if (!$priceNight){
+          $return['msg'] = "Precios no encontrados";
+          return $return;
+        }
+        
+        $return['price']+= $priceNight->price*$item['days'];
+        $return['cost'] += $priceNight->cost*$item['days'];
+        $totalDays      += $item['days'];
+      }
+    } else{
+      $return['msg'] = "Precios no encontrados";
+      return $return;
+    }
+    $return['parking_cost']  *= $totalDays;
+    $return['parking_price'] *= $totalDays;
+    
+    //calc totals
+    $return['t_price'] = $return['price']+$return['parking_price']+$return['price_lux']+$return['price_limp'];
+    $return['t_cost']  = $return['cost']+$return['parking_cost']+$return['cost_lux']+$return['cost_limp'];
+    $return['t_benef'] = $return['t_price'] - $return['t_cost'];
+    $return['benef']   = $return['t_cost'] / $return['t_price']*100;
+              
+    $return['status'] = 'ok';
+    return $return;
+  }
+  
+  private function getDaysBetween($d1,$d2) {
+        $datetime1 = date_create($d1);
+        $datetime2 = date_create($d2);
+        $interval = date_diff($datetime1, $datetime2);
+        return  $interval->format('%a');
+  }
+  
+  private function addtionals() {
+    $specials = ['parking_book_cost',
+        'parking_book_price',
+        'luxury_book_cost',
+        'luxury_book_price'];
+    $return = [
+        'parking_book_cost' => 0,
+        'parking_book_price' => 0,
+        'luxury_book_cost' => 0,
+        'luxury_book_price' => 0,
+        ];
+    $settingS = \App\Settings::whereIn('key', $specials)->get();
+    if ($settingS){
+      foreach ($settingS as $s){
+        $return[$s->key] = floatval($s->value);
+      }
+    }
+    
+    return $return;
+    
+  }
+  
+  private function priceLimpieza($sizeApto) {
+    
+    if ($sizeApto == 1 || $sizeApto == 5){
+      $oExtra = \App\Extras::find(2);
+    }
+    if ($sizeApto == 2 || $sizeApto == 6){
+      $oExtra = \App\Extras::find(1);
+    }
+    if ($sizeApto == 3 || $sizeApto == 4 || $sizeApto == 7 || $sizeApto == 8){
+      $oExtra = \App\Extras::find(3);
+    }
+    
+    if ($oExtra){
+      return  [
+          'price_limp'=>floatval($oExtra->price),
+          'cost_limp'=>floatval($oExtra->cost)
+          ];
+    } 
+    
+    return  [
+          'price_limp'=>0,
+          'cost_limp'=>0
+          ];
+  }
 }

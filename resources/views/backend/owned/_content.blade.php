@@ -154,61 +154,7 @@
 
 				</div>
 				<div style="clear: both;"></div>
-				<div class="row buttons push-40">
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-4 push-10">
-						<button class="btn btn-success btn-cons text-white btn-blocks" data-block="resumen">
-							<span class="bold">Resumen</span>
-						</button>
-					</div>
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-4 push-10">
-						<button class="btn btn-success btn-cons text-white btn-blocks" data-block="reservas">
-							<span class="bold">Reservas</span>
-						</button>
-					</div>
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-4 push-10">
-						<button class="btn btn-success btn-cons text-white btn-blocks" data-block="estadisticas">
-							<span class="bold">Estadisticas</span>
-						</button>
-					</div>
-					
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-4 push-10">
-						<button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalBloq">
-		                    <span class="bold">Bloq. fechas</span>
-		                </button>
-			        </div>
-
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-4 push-10">
-						<button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalLiquidation">
-		                    <span class="bold">Liquidación</span>
-		                </button>
-					</div>
-					
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-4 push-10">
-						<button class="btn btn-success btn-cons text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/operativa" ?>">
-							Operativa
-						</button>
-					</div>
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-4 push-10">
-						<button class="btn btn-success btn-cons text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/tarifas" ?>">
-							Tarifas
-						</button>
-					</div>
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-4 push-10">
-						<button class="btn btn-success btn-cons text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/descuentos" ?>">
-							Descuentos
-						</button>
-					</div>
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-4 push-10">
-						<button class="btn btn-success btn-cons text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/fiscalidad" ?>">
-							Fiscalidad
-						</button>
-					</div>
-					<div class="col-lg-1 col-md-1 col-sm-3 col-xs-4 push-10">
-						<button class="btn btn-success btn-cons text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/facturas" ?>">
-							Facturas
-						</button>
-					</div>
-				</div>
+				
 			</div>
 			<div class="col-md-12 push-20 text-center" id="content-info" style="display: none;"></div>
 			<div class="col-md-12 push-20 text-center" id="content-info-ini">
@@ -573,66 +519,11 @@
 						<?php endif ?>
 	    	    	</div>      
 	    		</div>
-				<div class="row">
-					<div class="col-xs-4 push-10" style="padding: 0px 5px">
-						<button class="btn btn-success   text-white btn-blocks" data-block="resumen" style="width: 100%">
-							<span class="bold">Resumen</span>
-						</button>
-					</div>
-					<div class="col-xs-4 push-10" style="padding: 0px 5px">
-						<button class="btn btn-success text-white btn-blocks" data-block="reservas" style="width: 100%">
-							<span class="bold">Reservas</span>
-						</button>
-					</div>
-					<div class="col-xs-4 push-10" style="padding: 0px 5px">
-						<button class="btn btn-success text-white btn-blocks" data-block="estadisticas" style="width: 100%">
-							<span class="bold">Estadisticas</span>
-						</button>
-					</div>
-					<div class="col-xs-4 push-10" style="padding: 0px 5px">
-						<button class="btn btn-success" type="button" data-toggle="modal" data-target="#modalBloq" style="width: 100%">
-		                    <span class="bold">Bloquear</span>
-		                </button>
-			        </div>
-					<div class="col-xs-4 push-10" style="padding: 0px 5px">
-						<button class="btn btn-success" type="button" data-toggle="modal" data-target="#modalLiquidation" style="width: 100%">
-		                    <span class="bold">Liquidación</span>
-		                </button>
-					</div>
-					<div class="col-xs-4 push-10" style="padding: 0px 5px">
-						<button class="btn btn-success text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/operativa" ?>" style="width: 100%">
-							Operativa
-						</button>
-					</div>
-					<div class="col-xs-4 push-10" style="padding: 0px 5px">
-						<button class="btn btn-success text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/tarifas" ?>" style="width: 100%">
-							Tarifas
-						</button>
-					</div>
-					<div class="col-xs-4 push-10" style="padding: 0px 5px">
-						<button class="btn btn-success text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/descuentos" ?>" style="width: 100%">
-							Descuentos
-						</button>
-					</div>
-					<div class="col-xs-4 push-10" style="padding: 0px 5px">
-						<button class="btn btn-success text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/fiscalidad" ?>" style="width: 100%">
-							Fiscalidad
-						</button>
-					</div>
-					<div class="col-xs-4 push-10" style="padding: 0px 5px">
-						<button class="btn btn-success text-white btn-content" data-url="{{ url('admin/propietario') }}/<?php echo $room->nameRoom."/facturas" ?>" style="width: 100%">
-							Facturas
-						</button>
-					</div>
-				</div>
-				<div class="col-xs-12">
-					
-				</div>
 			</div>
 		</div>
 		<div class="row push-20 text-center" id="content-info" style="display: none;"></div>
 		<div class="row push-20 text-center" id="content-info-ini">
-			<?php if (count($room) > 0): ?>
+			<?php if ($room): ?>
 				<div class="col-xs-12 push-20 resumen blocks">
 					<h2 class="text-center push-10" style="font-size: 24px;"><b>Resumen</b></h2>
 
