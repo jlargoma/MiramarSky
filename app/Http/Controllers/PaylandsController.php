@@ -57,8 +57,8 @@ class PaylandsController extends AppController
         $params['signature']       = env('PAYLAND_SIGNATURE');
         $params['service']         = env('PAYLAND_SERVICE');
         $params['description']     = "COBRO ESTANDAR";
-        $params['url_ok']          = route('thanks-you');
-        $params['url_ko']          = route('thanks-you');
+        $params['url_ok']          = route('payland.thanks.payment', ['id' => $book->id, 'payment' => $params['amount']]);
+        $params['url_ko']          = route('payland.thanks.payment', ['id' => $book->id, 'payment' => $params['amount']]);
 
         $orderPayment  = $this->getPaylandApiClient()->payment($params);
         $urlToRedirect = $this->getPaylandApiClient()->processPayment($orderPayment->order->token);
