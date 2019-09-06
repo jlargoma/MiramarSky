@@ -88,7 +88,7 @@ class Book extends Model
         12 => 'ICAL - INVISIBLE',
         99 => 'FASTPAYMENT - SOLICITUD',
     ];
-
+  
     use BookEmailsStatus;
         
 	public function customer()
@@ -964,6 +964,48 @@ class Book extends Model
           }
           
         }
-    
-                
+
+  public function get_ff_status($showAll=true) {
+      $result = [
+          'name' => '',
+          'icon' => null
+      ];
+
+      switch ($this->ff_status) {
+        case 0:
+          if ($showAll){
+            $result = [
+                'name' => 'No Gestionada',
+                'icon' => asset('/img/miramarski/ski_icon_status_transparent.png')
+            ];
+          }
+          break;
+        case 1:
+          $result = [
+              'name' => 'Cancelada',
+              'icon' => asset('/img/miramarski/ski_icon_status_grey.png')
+          ];
+          break;
+        case 2:
+          $result = [
+              'name' => 'No Cobrada',
+              'icon' => asset('/img/miramarski/ski_icon_status_red.png')
+          ];
+          break;
+        case 3:
+          $result = [
+              'name' => 'Confirmada',
+              'icon' => asset('/img/miramarski/ski_icon_status_green.png')
+          ];
+          break;
+        case 4:
+          $result = [
+              'name' => 'Comprometida',
+              'icon' => asset('/img/miramarski/ski_icon_status_orange.png')
+          ];
+          break;
+      }
+      return $result;
+    }
+
 }

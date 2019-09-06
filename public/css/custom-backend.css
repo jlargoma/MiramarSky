@@ -72,3 +72,17 @@ span.mobile#loadchatbox {
     background-color: #6d5cae;
     margin-top: 1em;
 }
+.btn-tables.btn-blink{    
+  padding: 6px 12px;
+}
+@media only screen and (min-width: 426px) {
+  .show-mobile{
+    display: none;
+  }
+}
+@media only screen and (max-width: 425px) {
+  .hidden-mobile{
+    visibility: hidden;
+    display: none;
+  }
+}
