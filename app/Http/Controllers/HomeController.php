@@ -606,6 +606,10 @@ class HomeController extends AppController
     {
         return view('frontend.stripe.stripe', ['mobile' => new Mobile()]);
     }
+    public function paymenyError(Request $request)
+    {
+        return view('frontend.stripe.error', ['mobile' => new Mobile()]);
+    }
 
     public function getPriceBook(Request $request)
     {

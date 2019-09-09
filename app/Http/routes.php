@@ -28,6 +28,7 @@
     
  
     Route::get('/thanks-you', 'HomeController@thanksYou')->name('thanks-you');
+    Route::get('/paymeny-error', 'HomeController@paymenyError')->name('paymeny-error');
     Route::get('/form-demo', 'BookController@demoFormIntegration');
     Route::post('/api/check_rooms_avaliables', 'BookController@apiCheckBook')->name('api.proccess');
     //        Route::get( '/homeTest' , 'HomeTestController@index' )->middleware( 'web' );
@@ -130,9 +131,13 @@
          ->name('payland.proccess.payment.book.customer');
     Route::post('/proccess/payment/book/customer/{id}/{payment?}', 'PaylandsController@processPaymentBook')
          ->name('payland.proccess.payment.book.customer');
-    Route::get('payment/thansk-you/{id}/{payment?}', 'PaylandsController@thansYouPayment')->name('payland.thanks.payment');
+    Route::get('payment/thansk-you/{key_token}', 'PaylandsController@thansYouPayment')->name('payland.thanks.payment');
+   
+    Route::get('payment/error/{key_token}', 'PaylandsController@errorPayment')->name('payland.error.payment');
+    Route::get('payment/process/{key_token}', 'PaylandsController@processPayment')->name('payland.process.payment');
     //});
     
+    Route::get('/paylands/payment', 'PaylandsController@paymentTest');
 
   
 

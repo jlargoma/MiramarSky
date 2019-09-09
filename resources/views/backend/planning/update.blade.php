@@ -852,7 +852,7 @@ $mobile = new Mobile();
   <?php if (Auth::user()->role != "limpieza"): ?>
           <div class="row">
             @include('Paylands.payment', ['routeToRedirect' => route('payland.thanks.payment',
-            ['id' => $book->id]), 'customer' => $book->customer->id])
+            ['id' => $book->id]), 'id' => $book->id, 'customer' => $book->customer->id])
           </div>
   <?php endif ?>
         <div class="col-xs-12 bg-black push-0">
@@ -1395,7 +1395,7 @@ $mobile = new Mobile();
 
           <div class="row">
             @include('Paylands.payment', ['routeToRedirect' => route('payland.thanks.payment',
-            ['id' => $book->id]), 'customer' => $book->customer->id])
+            ['id' => $book->id]),'id' => $book->id, 'customer' => $book->customer->id])
           </div>
   <?php endif ?>
       </div>
