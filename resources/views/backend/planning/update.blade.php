@@ -565,6 +565,9 @@ $mobile = new Mobile();
             <div class="col-md-12 col-xs-12 push-20 not-padding">
               <?php
               $price = $book->getPriceBook($book->start,$book->finish,$book->room_id,$book->real_pax);
+              if ($price['status'] == 'error'){
+                echo '<p class="alert alert-warning">'.$price['msg'].'</p>';
+              }
 //              dd($price);
               ?>
               <div class="col-md-2 text-white" style="background-color: #0c685f;">

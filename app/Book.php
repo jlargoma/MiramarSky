@@ -904,6 +904,10 @@ class Book extends Model {
       $return['msg'] = "Apto no encontrado";
       return $return;
     }
+    if ($oRoom->state != 1){
+      $return['msg'] = 'Apto '.$oRoom->name.' no Habilitado';
+      return $return;
+    }
     
     //Settings additionals
     $additinals = $this->addtionals();

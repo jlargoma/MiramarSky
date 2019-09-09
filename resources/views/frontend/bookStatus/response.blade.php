@@ -154,7 +154,12 @@
 
     $('#confirm-book').submit(function (event) {
 
-//      event.preventDefault();
+<?php
+if(env('APP_ENV') != 'VIRTUAL'){
+?> event.preventDefault();<?php  
+}
+?>
+//     
       //showLoad();
 
 

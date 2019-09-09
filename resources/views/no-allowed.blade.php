@@ -28,6 +28,7 @@
                     <h1 class="font-s128 font-w300 text-modern animated zoomInDown">403</h1>
                     <h2 class="h3 font-w300 push-50 animated fadeInUp">Ups!! No tienes autorización para ingresar.</h2>
                     <!-- END Error Titles -->
+                    <a href="{{url ('/logout')}}">Log Out</a>
                 </div>
             </div>
         </div>

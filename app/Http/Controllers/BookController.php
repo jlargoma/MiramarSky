@@ -2055,11 +2055,18 @@ class BookController extends AppController
             $data['costes']['limp'] = \App\Extras::find(3)->cost;//70;
         }
 
-        $aux = explode('/', $request->start);
-        $start = $aux[1].'/'.$aux[0].'/'.$aux[2];
-        $finish    = Carbon::createFromFormat('m/d/Y', $request->finish);
-        $aux = explode('/', $request->finish);
-        $finish = $aux[1].'/'.$aux[0].'/'.$aux[2];
+
+        
+        $start  = $request->start;
+        $finish = $request->finish;
+        
+        if(env('APP_ENV') == 'VIRTUAL'){
+          $aux = explode('/', $request->start);
+          $start = $aux[1].'/'.$aux[0].'/'.$aux[2];
+          $finish    = Carbon::createFromFormat('m/d/Y', $request->finish);
+          $aux = explode('/', $request->finish);
+          $finish = $aux[1].'/'.$aux[0].'/'.$aux[2];
+        }
         
         
         $data['costes']['parking']   = $this->getCostPark($request->park, $request->noches) * $room->num_garage;
@@ -2074,6 +2081,7 @@ class BookController extends AppController
         $data['totales']['book']     = $this->getPriceBook($start, $finish, $request->pax, $request->room);
         $data['totales']['obsequio'] = Rooms::GIFT_PRICE;
 
+        file_put_contents(storage_path()."/testapto".time(), json_encode($data)."\n". json_encode($request->all()));
         // If the request comes with a price to show use it
         if (!empty($request->total_price))
         {
