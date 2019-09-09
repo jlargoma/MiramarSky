@@ -24,11 +24,12 @@ class PaylandsController extends AppController
               if ($book){
                 if ($book->customer_id == $clientID){
                   $client = $book->customer()->first();
+                  $description = "COBRO RESERVA CLIENTE " . $client->name;
                   $urlToRedirect = $this->generateOrderPaymentBooking(
                           $bookingID,
                           $clientID,
                           $client->email,
-                          $client->name,
+                          $description,
                           ($amount * 100) // esto hay que revisar
                           );
                   return view('backend.bookStatus.bookPaylandPay', [ 'url' => $urlToRedirect]);
@@ -53,10 +54,10 @@ class PaylandsController extends AppController
                           );
         }
 
-        private function generateOrderPaymentBooking($bookingID,$clientID,$client_email,$client_name,$amount){
+        private function generateOrderPaymentBooking($bookingID,$clientID,$client_email,$description,$amount){
           
           $key_token = md5($bookingID.'-'.time().'-'.$clientID);
-          $description = "COBRO RESERVA CLIENTE " . $client_name;
+          
           $response['_token']          = null;
           $response['amount']          = $amount;
           $response['customer_ext_id'] = $client_email;
@@ -131,51 +132,74 @@ class PaylandsController extends AppController
 
     public function linkSingle(Request $request)
     {
-        if ($request->book != 0)
-            $book = \App\Book::find($request->book);
-        //$importe = base64_encode($request->importe);
-        $params['amount']          = ($request->importe) * 100;
-        $params['customer_ext_id'] = "admin@" . $_SERVER['REQUEST_URI'];
-        $params['operative']       = "AUTHORIZATION";
-        $params['secure']          = false;
-        $params['signature']       = env('PAYLAND_SIGNATURE');
-        $params['service']         = env('PAYLAND_SERVICE');
-        $params['description']     = "COBRO ESTANDAR";
-        $params['url_ok']          = route('payland.thanks.payment', ['id' => $book->id, 'payment' => $params['amount']]);
-        $params['url_ko']          = route('payland.thanks.payment', ['id' => $book->id, 'payment' => $params['amount']]);
+      $amount = $request->input('importe',null);
+      $subject= $request->input('subject',null);
+      $bookingID = $request->input('book',null);
+      $book = \App\Book::find($bookingID);
+      if ($amount){
+        if ($book){
+          $client = $book->customer()->first();
+          $description = "COBRO RESERVA CLIENTE " . $client->name;
+          $urlPay = $this->generateOrderPaymentBooking(
+                  $bookingID,
+                  $client->id,
+                  $client->email,
+                  $description,
+                  ($amount * 100) // esto hay que revisar
+                  );
+          return $this->getPaymentText($urlPay);
+        } else {
+          $urlPay = $this->generateOrderPaymentBooking(
+                  -1,
+                  -1,
+                  "admin@" . $_SERVER['REQUEST_URI'],
+                  $subject,
+                  ($amount * 100) // esto hay que revisar
+                  );
+          return $this->getPaymentText($urlPay);
+        }
+      }
+      return 'error';
+    }
+    
+    private function getPaymentText($urlPay) {
+      $response = '<div class="col-md-2 col-xs-12">
+              <h2 class="text-center" style="font-size: 18px; line-height: 18px; margin: 0;">
 
-        $orderPayment  = $this->getPaylandApiClient()->payment($params);
-        $urlToRedirect = $this->getPaylandApiClient()->processPayment($orderPayment->order->token);
-        $url           = $urlToRedirect;
+                  <a href="whatsapp://send?text=En este link podrás realizar el pago de la señal.&#10; En el momento en que efectúes el pago, te llegará un email - ' . $urlPay . '" data-action="share/whatsapp/share">
+                      <i class="fa fa-whatsapp fa-3x" aria-hidden="true"></i>
+                  </a>
+              </h2>
+          </div>
+          <div class="col-md-10 col-xs-12">
+              <h2 class="text-center" style="font-size: 24px; line-height: 15px">
+                  <span style="font-size: 18px;">En este link podrás realizar el pago de la señal.<br> En el momento en que efectúes el pago, te legará un email</span><br>
+                  <a target="_blank" href="' . $urlPay . '">
+                      ' . substr($urlPay, 0, 45) . '...     
+                  </a>
+              </h2>
+              <div class="row text-center">
+                  <button class="btn btn-cons" type="button" id="copy-link-stripe" data-link="' . $urlPay . '">
+                      <span class="bold">Copiar Link</span>
+                  </button>  
+              </div>
 
-        $response      = '<div class="col-md-2 col-xs-12">
-                                <h2 class="text-center" style="font-size: 18px; line-height: 18px; margin: 0;">
-                                                                    
-                                    <a href="whatsapp://send?text=En este link podrás realizar el pago de la señal.&#10; En el momento en que efectúes el pago, te llegará un email - ' . $url . '" data-action="share/whatsapp/share">
-                                        <i class="fa fa-whatsapp fa-3x" aria-hidden="true"></i>
-                                    </a>
-                                </h2>
-                            </div>
-                            <div class="col-md-10 col-xs-12">
-                                <h2 class="text-center" style="font-size: 24px; line-height: 15px">
-                                    <span style="font-size: 18px;">En este link podrás realizar el pago de la señal.<br> En el momento en que efectúes el pago, te legará un email</span><br>
-                                    <a target="_blank" href="' . $url . '">
-                                        ' . substr($url, 0, 45) . '...     
-                                    </a>
-                                </h2>
-                                <div class="row text-center">
-                                    <button class="btn btn-cons" type="button" id="copy-link-stripe" data-link="' . $url . '">
-                                        <span class="bold">Copiar Link</span>
-                                    </button>  
-                                </div>
-        
-                            </div>';
-
-        return $response;
+          </div>';
+      return $response;
     }
 
     public function thansYouPayment($key_token)
     {
+      
+//      $bookOrder = BookOrders::where('key_token',$key_token)->first();
+//      if ($bookOrder){
+//        $amount = $bookOrder->amount;
+//        
+//        $book = \App\Book::find($id);
+//        $this->payBook($id, $payment);
+//         
+//      }
+      
 ////        $book = \App\Book::find($id);
 ////        $this->payBook($id, $payment);
       return redirect()->route('thanks-you');
@@ -185,10 +209,9 @@ class PaylandsController extends AppController
     {
       return redirect()->route('paymeny-error');
     }
-    public function processPayment(Request $request, $id, $payment=null)
+    public function processPayment(Request $request, $id)
     {
-      
-      file_put_contents(storage_path()."/testapto".time()."-$id", json_encode($payment)."\n". json_encode($request->all()));
+      file_put_contents(storage_path()."/test-payland".time(), $id."\n". json_encode($request->all()));
       var_dump($request->all());
       dd($id, $payment);
 //        $book = \App\Book::find($id);

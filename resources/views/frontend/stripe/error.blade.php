@@ -29,8 +29,8 @@ use \Carbon\Carbon;
       </h2>
       <br>
       <p style="line-height: 1; color: white">
-        Por favor, intentelo nuevamente<br><br>
-        O comuniquese con nosotros.
+        Por favor, inténtelo nuevamente<br/><br/>
+        O comuníquese con nosotros.
       </p>
     </div>
   </div>
