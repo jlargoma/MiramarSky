@@ -204,8 +204,10 @@ class PaylandsController extends AppController
       if ($bookOrder){
         $amount = ($bookOrder->amount/100).' €';
         \App\BookLogs::saveLogStatus($bookOrder->book_id,null,$bookOrder->cli_email,"Pago de $amount ($key_token)");
-//        $book = \App\Book::find($id);
-//        $this->payBook($id, $payment);
+//        $book = \App\Book::find($bookOrder->book_id);
+        if ($bookOrder->book_id){
+          $this->payBook($bookOrder->book_id, $bookOrder->amount);
+        }
          
       }
       
