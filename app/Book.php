@@ -992,7 +992,7 @@ class Book extends Model {
     $return['t_price'] = $return['price']+$return['parking_price']+$return['price_lux']+$return['price_limp'];
     $return['t_cost']  = $return['cost']+$return['parking_cost']+$return['cost_lux']+$return['cost_limp'];
     $return['t_benef'] = $return['t_price'] - $return['t_cost'];
-    $return['benef']   = $return['t_cost'] / $return['t_price']*100;
+    $return['benef']   = (1-($return['t_cost'] / $return['t_price'])) * 100;
               
     $return['status'] = 'ok';
     return $return;

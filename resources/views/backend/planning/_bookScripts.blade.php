@@ -95,6 +95,8 @@
         var status     = $('select[name=status]').val();
         var sizeApto   = $('select[name=newroom] option:selected').attr('data-size');
         var comentario = $('.book_comments').val();
+        var has_ff_discount = ($('#has_ff_discount').is(':checked')) ? 1 : 0;
+        var ff_discount_val = $('#ff_discount').val();
 
         var date       = $('.daterange1').val();
         var arrayDates = date.split('-');
@@ -111,7 +113,6 @@
         var finish     = date2.toLocaleDateString();
 
 		if ( override ){
-
 	        if ( status == 8) {
 	            $('.total').empty();
 	            $('.total').val(0);
@@ -183,6 +184,8 @@
 	                    agencyCost: agencyCost,
 	                    promotion: promotion,
 	                    agencyType: agencyType,
+                            has_ff_discount:has_ff_discount,
+                            ff_discount_val:ff_discount_val,
 	                    //total_price: data && data.hasOwnProperty('pvp') ? data.pvp : '',
 	                    book_id: book_id
 	                }).done(function( data ) {
@@ -234,6 +237,7 @@
           var apartmentCost = $('.costApto').val();
           var parkingCost = $('.costParking').val();
           var book_id = $('#book-id').val();
+          
           $.get('/admin/api/reservas/getDataBook', {
             start: start,
             finish: finish,
@@ -245,6 +249,8 @@
             agencyCost: agencyCost,
             promotion: promotion,
             agencyType: agencyType,
+            has_ff_discount:has_ff_discount,
+            ff_discount_val:ff_discount_val,
             //                    total_price: data && data.hasOwnProperty('pvp') ? data.pvp : '',
             book_id: book_id
           }).done(function( data ) {
@@ -348,6 +354,15 @@
         });
 
         $('.agency').change(function(event){
+            calculate();
+        });
+        $('.agency').change(function(event){
+            calculate();
+        });
+        $('#has_ff_discount').change(function(event){
+            calculate();
+        });
+        $('#ff_discount').change(function(event){
             calculate();
         });
 
@@ -633,6 +648,8 @@
                 var book_owned_comments = $('textarea[name="book_owned_comments"]').val();
                 var computed_data       = $('#computed-data').html();
 
+                var has_ff_discount = ($('#has_ff_discount').is(':checked')) ? 1 : 0;
+                var ff_discount = $('#ff_discount').val();
 
                 var url        = $('#updateForm').attr('action');
 
@@ -668,7 +685,9 @@
                                 promociones: promociones,
                                 book_comments: book_comments,
                                 book_owned_comments: book_owned_comments,
-                                computed_data: computed_data
+                                computed_data: computed_data,
+                                has_ff_discount:has_ff_discount,
+                                ff_discount:ff_discount
                 },
                 function(data) {
 

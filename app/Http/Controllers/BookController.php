@@ -689,7 +689,6 @@ class BookController extends AppController
             
             $book->has_ff_discount = $request->input('has_ff_discount',0);
             $book->ff_discount = $request->input('ff_discount',0);
-
             $book->total_price = $request->input('total'); // This can be modified in frontend
             $book->real_price  = $computedData->calculated->real_price; // This cannot be modified in frontend
             $book->inc_percent = $book->profit_percentage;
@@ -2102,6 +2101,9 @@ class BookController extends AppController
         $data['totales']['book']     = $this->getPriceBook($start, $finish, $request->pax, $request->room);
         $data['totales']['obsequio'] = Rooms::GIFT_PRICE;
 
+        if ($request->input('has_ff_discount',null)){
+          $data['totales']['book'] = $data['totales']['book'] - $request->input('ff_discount_val',0);
+        }
         
         // If the request comes with a price to show use it
         if (!empty($request->total_price))

@@ -516,9 +516,19 @@ $mobile = new Mobile();
             </div>
             <div class="col-md-3 col-xs-6 push-20">
               <label>DTO FF</label>
-              <input type="checkbox" name="has_ff_discount" id="has_ff_discount" @if($book->has_ff_discount ) checked @endif>
-              <input type="text"  class="only-numbers form-control"  name="ff_discount" id="ff_discount"  value="{{$book->ff_discount}}">
+              <div class="row">
+                <div class="col-xs-6">
+                  <span class="input-group-addon">
+                        <input type="checkbox" name="has_ff_discount" id="has_ff_discount"  data-init-plugin="switchery" data-size="small" data-color="primary" <?php echo ($book->has_ff_discount == 0) ? "" : "checked" ?>/>
+                    </span>
+                </div>
+                <div class="col-xs-6">
+                   <input type="text"  class="only-numbers form-control"  name="ff_discount" id="ff_discount"  value="{{$book->ff_discount}}">
               <input type="hidden" name="old_ff_discount" id="old_ff_discount"    value="{{$book->ff_discount}}">
+                </div>
+              </div>
+             
+               
             </div>
   <?php if ($book->book_owned_comments != "" && $book->promociones != 0): ?>
               <div class="col-md-2 col-xs-6 push-10 content_image_offert">
