@@ -200,14 +200,14 @@ class PaylandsController extends AppController
     public function thansYouPayment($key_token)
     {
       
-//      $bookOrder = BookOrders::where('key_token',$key_token)->first();
-//      if ($bookOrder){
-//        $amount = $bookOrder->amount;
-//        
+      $bookOrder = BookOrders::where('key_token',$key_token)->first();
+      if ($bookOrder){
+        $amount = ($bookOrder->amount/100).' €';
+        \App\BookLogs::saveLogStatus($bookOrder->book_id,null,$bookOrder->cli_email,"Pago de $amount ($key_token)");
 //        $book = \App\Book::find($id);
 //        $this->payBook($id, $payment);
-//         
-//      }
+         
+      }
       
 ////        $book = \App\Book::find($id);
 ////        $this->payBook($id, $payment);
@@ -216,6 +216,11 @@ class PaylandsController extends AppController
     }
     public function errorPayment($key_token)
     {
+      $bookOrder = BookOrders::where('key_token',$key_token)->first();
+      if ($bookOrder){
+        $amount = ($bookOrder->amount/100).' €';
+        \App\BookLogs::saveLogStatus($bookOrder->book_id,null,$bookOrder->cli_email,"Error en Pago de $amount ($key_token)");
+      }
       return redirect()->route('paymeny-error');
     }
     public function processPayment(Request $request, $id)
