@@ -73,7 +73,7 @@
             </script>
         <?php endif ?>
     <?php endif ?>
-<?php elseif( $type == 'checkin'): ?>
+<?php elseif( $type == 'checkin' || $type == 'ff_pdtes'): ?>
 	@include('backend.planning.listados._checkin', ['books' => $books ])
     <?php if (Auth::user()->role != "agente" && Auth::user()->role != "limpieza"): ?>
         <?php if (!$mobile->isMobile() ): ?>

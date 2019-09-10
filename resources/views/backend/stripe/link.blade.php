@@ -17,7 +17,7 @@
     <button id="btnGenerate" class="btn btn-success" type="button">Generar</button>
   </div>
 </div>
-<div class="row content-importe-stripe">
+<div class="row content-importe-stripe" id="paymentDataLink">
   
   
   
@@ -41,14 +41,14 @@
 
 		});
 
-		$(document).on("click","#copy-link-stripe", function(){
-            var link = $(this).data("link");
-            var $temp = $("<input>");
-            $("body").append($temp);
-            $temp.val(link).select();
-            document.execCommand("copy");
-            $temp.remove();
-        });
+		$('#paymentDataLink').on("click","#copy-link-stripe", function(){
+                 
+                  var link = $('#paymentDataLink').find('#cpy_link');
+                  link.show().select();
+                  document.execCommand("copy");
+                  link.hide();
+                  
+                });
 
 
 		$('.only-numbers').keydown(function (e) {

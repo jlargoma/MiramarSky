@@ -14,8 +14,8 @@ use \Carbon\Carbon;
     overflow: hidden;
   }
 </style>
-<section class="section full-screen nobottommargin" style="background-color: #3f51b5;margin: 0; padding: 0;" >
-  <div class="container clearfix">
+<section class="section full-screen nobottommargin" style="background-color: #3f51b5;margin: 0; padding: 0;height: 100vh;" >
+  <div class="container clearfix" style="height: 100vh;">
     <div class="row" style="margin-top: 5em;">
       <?php if (env('APP_APPLICATION') == "riad"): ?>
         <div class="col-md-2 col-md-offset-5">

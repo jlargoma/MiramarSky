@@ -107,17 +107,85 @@ class AppController extends Controller
     {
         $roomSelected   = null;
         $luxurySelected = ($luxury == "si") ? 1 : 0;
-        $allRoomsBySize = Rooms::where('sizeApto', $size->id)->orderBy('order_fast_payment', 'ASC')->get();
-        for ($i = 0; $i <= $size->num_aptos_fast_payment; $i++)
+        $allRoomsBySize = Rooms::
+                where('sizeApto', $size->id)
+                ->where('state', 1)
+                ->orderBy('order_fast_payment', 'ASC')->get();
+        
+        $startDate  = $start->copy()->format('d/m/Y');
+        $finishDate = $finish->copy()->format('d/m/Y');
+        for ($i = 0; $i < $size->num_aptos_fast_payment; $i++)
         {
-            if (Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()->format('d/m/Y'), $allRoomsBySize[$i]))
+          if(isset($allRoomsBySize[$i])){
+            $room_id = $allRoomsBySize[$i]->id;
+            if (Book::existDate($startDate,$finishDate, $room_id))
             {
-                $roomSelected = $allRoomsBySize[$i];
-                break;
+              $roomSelected = $allRoomsBySize[$i];
+              break;
             }
+          }
         }
         if (!$roomSelected) $roomSelected = $allRoomsBySize[0];
-
+          
         return $roomSelected->id;
     }
+    
+    
+    
+    /**
+     * Create link to new Payland
+     * 
+     * @param type $bookingID
+     * @param type $clientID
+     * @param type $client_email
+     * @param type $description
+     * @param type $amount
+     * @return type
+     */
+    public function generateOrderPaymentBooking($bookingID,$clientID,$client_email,$description,$amount){
+          
+      $key_token = md5($bookingID.'-'.time().'-'.$clientID);
+
+      $amount = ($amount * 100); // esto hay que revisar
+      $response['_token']          = null;
+      $response['amount']          = $amount;
+      $response['customer_ext_id'] = $client_email;
+      $response['operative']       = "AUTHORIZATION";
+      $response['secure']          = false;
+      $response['signature']       = env('PAYLAND_SIGNATURE');
+      $response['service']         = env('PAYLAND_SERVICE');
+      $response['description']     = $description;
+      $response['url_ok']          = route('payland.thanks.payment',$key_token);
+      $response['url_ko']          = route('payland.error.payment',$key_token);
+      $response['url_post']        = route('payland.process.payment',$key_token);
+      //dd($this->getPaylandApiClient());
+      $paylandClient = $this->getPaylandApiClient();
+      $orderPayment  = $paylandClient->payment($response);
+
+
+      $BookOrders = new \App\BookOrders();
+      $BookOrders->book_id = $bookingID;
+      $BookOrders->cli_id = $clientID;
+      $BookOrders->cli_email = $client_email;
+      $BookOrders->subject = $description;
+      $BookOrders->key_token = $key_token;
+      $BookOrders->order_uuid = $orderPayment->order->uuid;
+      $BookOrders->order_created = $orderPayment->order->created;
+      $BookOrders->amount = $orderPayment->order->amount;
+      $BookOrders->refunded = $orderPayment->order->refunded;
+      $BookOrders->currency = $orderPayment->order->currency;
+      $BookOrders->additional = $orderPayment->order->additional;
+      $BookOrders->service = $orderPayment->order->service;
+      $BookOrders->status = $orderPayment->order->status;
+      $BookOrders->token = $orderPayment->order->token;
+      $BookOrders->transactions = json_encode($orderPayment->order->transactions);
+      $BookOrders->client_uuid = $orderPayment->client->uuid;
+      $bo_id = $BookOrders->save();
+
+
+      $urlToRedirect = $paylandClient->processPayment($orderPayment->order->token);
+      return $urlToRedirect;
+
+    }
+
 }

@@ -154,13 +154,8 @@
 
     $('#confirm-book').submit(function (event) {
 
-<?php
-if(env('APP_ENV') != 'VIRTUAL'){
-?> event.preventDefault();<?php  
-}
-?>
-//     
-      //showLoad();
+      event.preventDefault();
+      showLoad();
 
 
       var _token = $('input[name="_token"]').val();
@@ -187,7 +182,46 @@ if(env('APP_ENV') != 'VIRTUAL'){
 
       public_key = '6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV';
 
-      grecaptcha.ready(function () {
+<?php
+if(env('APP_ENV') == 'VIRTUAL'){
+?> 
+
+                    $.post(url, {
+                      _token: _token,
+                      newroom: newroom,
+                      name: name,
+                      email: email,
+                      phone: phone,
+                      fechas: fechas,
+                      pax: pax,
+                      nigths: nigths,
+                      comments: comments,
+                      from: from,
+                      parking: {{ $parking }},
+                      agencia: agencia,
+                      agency: agency,
+                      book_comments: book_comments,
+                      Suplujo: lujo,
+                      type_luxury: type_luxury,
+                      fast_payment: fast_payment,
+                      discount: discount,
+                      status: status,
+                      priceDiscount: priceDiscount
+                    }, function (data) {
+                        hideLoad();
+                        $('#content-book-payland').empty().append(data).fadeIn('300');
+                        <?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
+                            $('html, body').animate({
+                              /*scrollTop: $("section#content").offset().top*/
+                              scrollTop: $("#content-book-payland").offset().top - 30
+                            }, 2000);
+                        <?php endif; ?>
+                    });
+   
+ <?php  
+} else {
+  ?>
+  grecaptcha.ready(function () {
         grecaptcha.execute(public_key, {action: 'launch_form_submit'})
             .then(function (token) {
               // Verify the token on the server.
@@ -243,7 +277,10 @@ if(env('APP_ENV') != 'VIRTUAL'){
                 }
               });
             });
-      });
+      });  
+  <?php
+}
+?>
 
     });
 </script>

@@ -187,7 +187,7 @@
               $('#content-book').hide('100');
               $('#desc-section').show();
               $('section#content').css('z-index', '0');
-
+              $('#content-book-payland').html('');
               unflip();
 
               $('html, body').animate({
@@ -219,7 +219,7 @@
               $('#banner-offert').show();
               $('#line-banner-offert').show();
               $('#content-book').hide('100');
-
+              $('#content-book-payland').html('');
               unflip();
               $('html, body').animate({
                 scrollTop: $("body").offset().top

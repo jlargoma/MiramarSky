@@ -332,12 +332,19 @@ class BookController extends AppController
                     }
                     if ($request->input('fast_payment') == 1)
                     {
-                        $urlPayland = $this->generateOrderPayment([
-                                                                      'customer_id' => $book->customer->id,
-                                                                      'amount'      => ($book->total_price / 2),
-                                                                      'url_ok'      => route('payland.thanks.payment', ['id' => $book->id]),
-                                                                      'url_ko'      => route('payland.thanks.payment', ['id' => $book->id]),
-                                                                  ]);
+                      $amount = ($book->total_price / 2);
+                      $client_email = 'no_email';
+                      if ($book->customer->email && trim($book->customer->email)){
+                        $client_email = $book->customer->email;
+                      }
+                      $description = "COBRO RESERVA CLIENTE " . $book->customer->name;
+                      $urlPayland = $this->generateOrderPaymentBooking(
+                                    $book->id,
+                                    $book->customer->id,
+                                    $client_email,
+                                    $description,
+                                    $amount
+                                    );
 
                         return view('frontend.bookStatus.bookPaylandPay', ['urlPayland' => $urlPayland]);
                     } else
@@ -1463,14 +1470,24 @@ class BookController extends AppController
                                       })->orderBy('created_at', 'DESC')->get();
                 }
                 break;
+            case 'ff_pdtes':
+              
+                $dateX = Carbon::now();
+                $books = \App\Book::where('ff_status',4)
+                        ->where('start', '>=', $dateX->copy()->subDays(3))
+                        ->orderBy('start', 'ASC')->get();
+//                $books = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('start', '<=', $year->end_date)
+//                                  ->where('type_book', 2)->orderBy('start', 'ASC')->get();
+                
+                break;
             case 'checkin':
                 $dateX = Carbon::now();
-                $books = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('start', '<=', $dateX)
+                $books = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('start', '<=', $year->end_date)
                                   ->where('type_book', 2)->orderBy('start', 'ASC')->get();
                 break;
             case 'checkout':
                 $dateX = Carbon::now();
-                $books = \App\Book::where('finish', '>=', $dateX->copy()->subDays(3))->where('finish', '<', $dateX)
+                $books = \App\Book::where('finish', '>=', $dateX->copy()->subDays(3))->where('finish', '<', $year->end_date)
                                   ->where('type_book', 2)->orderBy('finish', 'ASC')->get();
                 break;
             case 'eliminadas':
@@ -1489,7 +1506,7 @@ class BookController extends AppController
 
         $type = $request->type;
 
-        if ($request->type == 'confirmadas' || $request->type == 'checkin')
+        if ($request->type == 'confirmadas' || $request->type == 'checkin' || $request->type == 'ff_pdtes')
         {
             $payment = array();
             foreach ($books as $key => $book)
@@ -1835,8 +1852,10 @@ class BookController extends AppController
                 break;
             case 'checkin':
                 $dateX      = Carbon::now();
-                $booksCount = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('finish', '<=', $dateX)
-                                       ->where('type_book', 2)->count();
+                $booksCount = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('start', '<=', $year->end_date)
+                                  ->where('type_book', 2)->orderBy('start', 'ASC')->count();
+//                $booksCount = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('finish', '<=', $dateX)
+//                                       ->where('type_book', 2)->count();
                 break;
             case 'blocked-ical':
                 $dateX      = Carbon::now();
@@ -1849,8 +1868,10 @@ class BookController extends AppController
                 break;
             case 'checkout':
                 $dateX      = Carbon::now();
-                $booksCount = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('start', '<=', $dateX)
-                                       ->where('type_book', 2)->count();
+                $booksCount = \App\Book::where('finish', '>=', $dateX->copy()->subDays(3))->where('finish', '<', $year->end_date)
+                                  ->where('type_book', 2)->orderBy('finish', 'ASC')->count();
+//                $booksCount = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('start', '<=', $dateX)
+//                                       ->where('type_book', 2)->count();
                 break;
             case 'eliminadas':
                 $dateX      = Carbon::now();

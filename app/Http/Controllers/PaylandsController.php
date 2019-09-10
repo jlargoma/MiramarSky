@@ -35,7 +35,7 @@ class PaylandsController extends AppController
                           $clientID,
                           $client_email,
                           $description,
-                          ($amount * 100) // esto hay que revisar
+                          $amount
                           );
                   return view('backend.bookStatus.bookPaylandPay', [ 'url' => $urlToRedirect]);
                 } 
@@ -55,64 +55,17 @@ class PaylandsController extends AppController
                           22,
                           'test@tesset.com',
                           'test',
-                          ($amount * 100) // esto hay que revisar
+                          $amount
                           );
         }
 
-        private function generateOrderPaymentBooking($bookingID,$clientID,$client_email,$description,$amount){
-          
-          $key_token = md5($bookingID.'-'.time().'-'.$clientID);
-          
-          $response['_token']          = null;
-          $response['amount']          = $amount;
-          $response['customer_ext_id'] = $client_email;
-          $response['operative']       = "AUTHORIZATION";
-          $response['secure']          = false;
-          $response['signature']       = env('PAYLAND_SIGNATURE');
-          $response['service']         = env('PAYLAND_SERVICE');
-          $response['description']     = $description;
-          $response['url_ok']          = route('payland.thanks.payment',$key_token);
-          $response['url_ko']          = route('payland.error.payment',$key_token);
-          $response['url_post']          = route('payland.process.payment',$key_token);
-          //dd($this->getPaylandApiClient());
-          $paylandClient = $this->getPaylandApiClient();
-          $orderPayment  = $paylandClient->payment($response);
-          
-          
-          $BookOrders = new BookOrders();
-          $BookOrders->book_id = $bookingID;
-          $BookOrders->cli_id = $clientID;
-          $BookOrders->cli_email = $client_email;
-          $BookOrders->subject = $description;
-          $BookOrders->key_token = $key_token;
-          $BookOrders->order_uuid = $orderPayment->order->uuid;
-          $BookOrders->order_created = $orderPayment->order->created;
-          $BookOrders->amount = $orderPayment->order->amount;
-          $BookOrders->refunded = $orderPayment->order->refunded;
-          $BookOrders->currency = $orderPayment->order->currency;
-          $BookOrders->additional = $orderPayment->order->additional;
-          $BookOrders->service = $orderPayment->order->service;
-          $BookOrders->status = $orderPayment->order->status;
-          $BookOrders->token = $orderPayment->order->token;
-          $BookOrders->transactions = json_encode($orderPayment->order->transactions);
-          $BookOrders->client_uuid = $orderPayment->client->uuid;
-          $bo_id = $BookOrders->save();
+    public function processPaymentBook(Request $request, $id, $payment)
+    {
+    $book = \App\Book::find($id);
+    $this->payBook($id, $payment);
+    return redirect()->route('book.update', ['id' => $book->id]);
 
-          
-          $urlToRedirect = $paylandClient->processPayment($orderPayment->order->token);
-          return $urlToRedirect;
-        
-        }
-
-        
-
-        public function processPaymentBook(Request $request, $id, $payment)
-	{
-        $book = \App\Book::find($id);
-        $this->payBook($id, $payment);
-        return redirect()->route('book.update', ['id' => $book->id]);
-
-	}
+    }
 
     public function link(Request $request)
     {
@@ -154,7 +107,7 @@ class PaylandsController extends AppController
                   $client->id,
                   $client_email,
                   $description,
-                  ($amount * 100) // esto hay que revisar
+                  $amount
                   );
           return $this->getPaymentText($urlPay);
         } else {
@@ -163,7 +116,7 @@ class PaylandsController extends AppController
                   -1,
                   env('PAYLAND_MAIL'),
                   $subject,
-                  ($amount * 100) // esto hay que revisar
+                  $amount
                   );
           return $this->getPaymentText($urlPay);
         }
@@ -191,6 +144,7 @@ class PaylandsController extends AppController
                   <button class="btn btn-cons" type="button" id="copy-link-stripe" data-link="' . $urlPay . '">
                       <span class="bold">Copiar Link</span>
                   </button>  
+                <input type="text" id="cpy_link" value="' . $urlPay . '" style="display:none;border: none;color: #fff;">
               </div>
 
           </div>';
