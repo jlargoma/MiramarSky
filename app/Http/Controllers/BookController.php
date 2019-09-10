@@ -688,6 +688,13 @@ class BookController extends AppController
             $book->promociones = ($request->input('promociones')) ? $request->input('promociones') : 0;
             
             $book->has_ff_discount = $request->input('has_ff_discount',0);
+            if (!$book->has_ff_discount && $book->ff_status == 4){
+              $book->ff_status = 0;
+            } else {
+              if ($book->has_ff_discount && $book->ff_status == 0){
+                $book->ff_status = 4;
+              }
+            }
             $book->ff_discount = $request->input('ff_discount',0);
             $book->total_price = $request->input('total'); // This can be modified in frontend
             $book->real_price  = $computedData->calculated->real_price; // This cannot be modified in frontend
