@@ -25,10 +25,15 @@ class PaylandsController extends AppController
                 if ($book->customer_id == $clientID){
                   $client = $book->customer()->first();
                   $description = "COBRO RESERVA CLIENTE " . $client->name;
+                  $client_email = 'no_email';
+                  if ($client && trim($client->email)){
+                    $client_email = $client->email;
+                  }
+          
                   $urlToRedirect = $this->generateOrderPaymentBooking(
                           $bookingID,
                           $clientID,
-                          $client->email,
+                          $client_email,
                           $description,
                           ($amount * 100) // esto hay que revisar
                           );
@@ -140,10 +145,14 @@ class PaylandsController extends AppController
         if ($book){
           $client = $book->customer()->first();
           $description = "COBRO RESERVA CLIENTE " . $client->name;
+          $client_email = 'no_email';
+          if ($client && trim($client->email)){
+            $client_email = $client->email;
+          }
           $urlPay = $this->generateOrderPaymentBooking(
                   $bookingID,
                   $client->id,
-                  $client->email,
+                  $client_email,
                   $description,
                   ($amount * 100) // esto hay que revisar
                   );
@@ -152,7 +161,7 @@ class PaylandsController extends AppController
           $urlPay = $this->generateOrderPaymentBooking(
                   -1,
                   -1,
-                  "admin@" . $_SERVER['REQUEST_URI'],
+                  env('PAYLAND_MAIL'),
                   $subject,
                   ($amount * 100) // esto hay que revisar
                   );
