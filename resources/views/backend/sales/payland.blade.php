@@ -65,6 +65,11 @@ setlocale(LC_TIME, "es_ES");
             </tbody>
           </table>
         </div>
+        <div class="paginate">
+          <span id="payland_ant" class="action"> << </span>
+        <span id="payland_page"> 1 </span>
+        <span id="payland_sgt" class="action"> >> </span>
+        </div>
       </div>
     </div>
 
@@ -126,12 +131,18 @@ url: '/admin/getOrders-payland',
         $('#ms_' + year + '_' + month).addClass('active');
         $('#tableItems').html('');
         $('#payland_month').text(response.total_month);
+        var count = 0;
         $.each((response.respo_list), function(index, val) {
 
-
+        count++;
+        var page = Math.ceil(count/10);
 
         var row = '';
-        var row = '<tr><td class="text-center">' + val.date + '</td>';
+        var row = '<tr class="payland_page'+page+'" '
+        if (page == 1) row += '>';
+        else row += 'style="display: none">';
+        
+        row += '<td class="text-center">' + val.date + '</td>';
         row += '<td >' + val.customer_name + '<br>' + val.customer + '</td>';
         row += '<td class="text-right">' + val.amount + ' ' + val.currency + '</td>';
         row += '<td class="text-center pay-status-' + val.status + '">' + val.status + '</td>';
@@ -212,13 +223,30 @@ url: '/admin/get-summary-payland',
 console.log('asdfadf');
 }
 
+var currentPage = 1;
 $(document).ready(function() {
-var dt = new Date();
-dataTable({!!$selected!!});
-dataPaylandSummary();
-$('.month_select').on('click', function(){
-dataTable($(this).data('year'), $(this).data('month'));
-});
+  var dt = new Date();
+  dataTable({!!$selected!!});
+  dataPaylandSummary();
+  $('.month_select').on('click', function(){
+    dataTable($(this).data('year'), $(this).data('month'));
+  });
+  
+  $('#payland_ant').on('click', function(){
+    console.log('payland_ant',currentPage);
+    if (currentPage>1){
+      $('.payland_page'+currentPage).hide('150');
+      $('.payland_page'+(currentPage-1)).show();
+      currentPage--;
+      $('#payland_page').text(currentPage);
+    }
+  });
+  $('#payland_sgt').on('click', function(){
+    $('.payland_page'+currentPage).hide('150');
+    $('.payland_page'+(currentPage+1)).show();
+    currentPage++;
+    $('#payland_page').text(currentPage);
+  });
 });
 
 </script>
