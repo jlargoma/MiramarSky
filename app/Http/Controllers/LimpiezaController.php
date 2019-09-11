@@ -37,21 +37,22 @@ class LimpiezaController extends AppController
         $books                   = $booksCollection->whereIn('type_book', [2]);
 
         $payment = array();
-        foreach ($books as $key => $book)
-        {
-            $payment[$book->id] = 0;
-            $payments           = \App\Payments::where('book_id', $book->id)->get();
-            if (count($payments) > 0)
-            {
-
-                foreach ($payments as $key => $pay)
-                {
-                    $payment[$book->id] += $pay->import;
-                }
-
-            }
-
-        }
+        $payment = null;
+//        foreach ($books as $key => $book)
+//        {
+//            $payment[$book->id] = 0;
+//            $payments           = \App\Payments::where('book_id', $book->id)->get();
+//            if (count($payments) > 0)
+//            {
+//
+//                foreach ($payments as $key => $pay)
+//                {
+//                    $payment[$book->id] += $pay->import;
+//                }
+//
+//            }
+//
+//        }
 
         return view('backend.limpieza.index', [
             'mobile'     => new Mobile(),

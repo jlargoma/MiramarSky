@@ -20,9 +20,6 @@ setlocale(LC_TIME, "es_ES");
 @section('content')
 	<?php if (!$mobile->isMobile() ): ?>
         <div class="container-fluid  p-l-15 p-r-15 p-t-20 bg-white">
-        <div class="row  p-l-15 p-r-15 p-t-20">
-            <a class="pull-right" href="{{ url('logout') }}">Cerrar sesion</a>
-        </div>
         <div class="row push-10">
             <div class="container">
                 <div class="col-xs-12 text-center">

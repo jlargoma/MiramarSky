@@ -53,959 +53,1002 @@ use App\BookPartee;
  * @property string  book_owned_comments
  * @property float   promociones
  */
-class Book extends Model
-{
-	protected $table = 'book';
-	/**
-	 * The attributes that should be casted to native types.
-	 *
-	 * @var array
-	 */
-	protected $status      = 0;
-	protected $dayweek     = 0;
-	protected $parking     = 0;
-	protected $typePayment = 0;
-	protected $banco       = 0;
-	protected $cobJorge    = 0;
-	protected $cobJaime    = 0;
-	protected $pendiente   = 0;
-	protected $agency      = 0;
+class Book extends Model {
 
-    protected $typeBooks = [
-        0  => 'ELIMINADA',
-        1  => 'Reservado - stripe',
-        2  => 'Pagada-la-señal',
-        3  => 'SIN RESPONDER',
-        4  => 'Bloqueado',
-        5  => 'Contestado(EMAIL)',
-        6  => 'Denegada',
-        7  => 'Reserva Propietario',
-        8  => 'ATIPICAS',
-        //'SubComunidad',
-        9  => 'Booking',
-        10 => 'Overbooking',
-        11 => 'blocked-ical',
-        12 => 'ICAL - INVISIBLE',
-        99 => 'FASTPAYMENT - SOLICITUD',
+  protected $table = 'book';
+
+  /**
+   * The attributes that should be casted to native types.
+   *
+   * @var array
+   */
+  protected $status = 0;
+  protected $dayweek = 0;
+  protected $parking = 0;
+  protected $typePayment = 0;
+  protected $banco = 0;
+  protected $cobJorge = 0;
+  protected $cobJaime = 0;
+  protected $pendiente = 0;
+  protected $agency = 0;
+  protected $typeBooks = [
+      0 => 'ELIMINADA',
+      1 => 'Reservado - stripe',
+      2 => 'Pagada-la-señal',
+      3 => 'SIN RESPONDER',
+      4 => 'Bloqueado',
+      5 => 'Contestado(EMAIL)',
+      6 => 'Denegada',
+      7 => 'Reserva Propietario',
+      8 => 'ATIPICAS',
+      //'SubComunidad',
+      9 => 'Booking',
+      10 => 'Overbooking',
+      11 => 'blocked-ical',
+      12 => 'ICAL - INVISIBLE',
+      99 => 'FASTPAYMENT - SOLICITUD',
+  ];
+
+  use BookEmailsStatus;
+
+  public function customer() {
+    return $this->hasOne('\App\Customers', 'id', 'customer_id');
+  }
+
+  public function room() {
+    return $this->hasOne('\App\Rooms', 'id', 'room_id');
+  }
+
+  public function extrasBook() {
+    return $this->hasMany('\App\ExtrasBooks', 'id', 'book_id');
+  }
+
+  public function pago() {
+    return $this->hasMany('\App\Payments', 'book_id', 'id');
+  }
+
+  public function user() {
+    return $this->hasOne('\App\User', 'id', 'user_id');
+  }
+
+  public function notifications() {
+    return $this->hasMany('\App\BookNotification', 'book_id', 'id');
+  }
+
+  //Para poner nombre al dia del calendario//
+  static function getDayWeek($dayweek) {
+    $array = [
+        1 => "L",
+        2 => "M",
+        3 => "X",
+        4 => "J",
+        5 => "V",
+        6 => "S",
+        0 => "D"
     ];
-  
-    use BookEmailsStatus;
-        
-	public function customer()
-	{
-		return $this->hasOne('\App\Customers', 'id', 'customer_id');
-	}
 
-	public function room()
-	{
-		return $this->hasOne('\App\Rooms', 'id', 'room_id');
-	}
+    return $dayweek = $array[$dayweek];
+  }
 
-	public function extrasBook()
-	{
-		return $this->hasMany('\App\ExtrasBooks', 'id', 'book_id');
-	}
+  //Para poner nombre al estado de la reserva//
+  public function getStatus($status) {
+    return $this->typeBooks[$status];
+  }
 
-	public function pago()
-	{
-		return $this->hasMany('\App\Payments', 'book_id', 'id');
-	}
+  public function getTypeBooks() {
+    return $this->typeBooks;
+  }
 
-	public function user()
-	{
-		return $this->hasOne('\App\User', 'id', 'user_id');
-	}
+  //Para poner nombre al tipo de cobro//
+  static function getTypeCobro($typePayment) {
+    $array = [
+        0 => "Metalico Jorge",
+        1 => "Metalico Jaime",
+        2 => "Banco Jorge",
+        3 => "Banco Jaime"
+    ];
 
-	public function notifications()
-	{
-		return $this->hasMany('\App\BookNotification', 'book_id', 'id');
-	}
+    return $typePayment = $array[$typePayment];
+  }
 
+  //Para poner nombre al parking de la reserva//
+  static function getParking($parking) {
+    $array = [
+        1 => "Si",
+        2 => "No",
+        3 => "Gratis",
+        4 => "50 %"
+    ];
 
-	//Para poner nombre al dia del calendario//
-	static function getDayWeek($dayweek)
-	{
-		$array = [
-			1 => "L",
-			2 => "M",
-			3 => "X",
-			4 => "J",
-			5 => "V",
-			6 => "S",
-			0 => "D"
-		];
+    return $parking = $array[$parking];
+  }
 
-		return $dayweek = $array[$dayweek];
-	}
+  // Para poner nombre al suplemento de lujo en la reserva
+  static function getSupLujo($lujo) {
+    $array = [
+        1 => "Si",
+        2 => "No",
+        3 => "Gratis",
+        4 => "50 %"
+    ];
 
-	//Para poner nombre al estado de la reserva//
-	public function getStatus($status)
-	{
-	    return $this->typeBooks[$status];
-	}
+    return $supLujo = $array[$lujo];
+  }
 
-    public function getTypeBooks()
-    {
-        return $this->typeBooks;
-	}
+  //Para poner nombre a la agencia//
+  static function getAgency($agency) {
+    $array = [
+        0 => "",
+        1 => "Booking",
+        2 => "Trivago",
+        3 => "Bed&Snow",
+        4 => "AirBnb",
+        5 => "Jaime Diaz",
+        6 => "S.essence",
+        7 => "Cerogrados"
+    ];
 
-	//Para poner nombre al tipo de cobro//
-	static function getTypeCobro($typePayment)
-	{
-		$array = [
-			0 => "Metalico Jorge",
-			1 => "Metalico Jaime",
-			2 => "Banco Jorge",
-			3 => "Banco Jaime"
-		];
+    return $agency = $array[$agency];
+  }
 
-		return $typePayment = $array[$typePayment];
-	}
+  //Para comprobar el dia de la reserva en el calendario
+  static function existDate($start, $finish, $room) {
 
-	//Para poner nombre al parking de la reserva//
-	static function getParking($parking)
-	{
-		$array = [
-			1 => "Si",
-			2 => "No",
-			3 => "Gratis",
-			4 => "50 %"
-		];
+    $books = \App\Book::where('room_id', $room)->whereIn('type_book', [
+                1,
+                2,
+                4,
+                7,
+                8
+            ])->get();
+    $existStart = false;
+    $existFinish = false;
+    $requestStart = Carbon::createFromFormat('d/m/Y', $start);
+    $requestFinish = Carbon::createFromFormat('d/m/Y', $finish);
 
-		return $parking = $array[$parking];
-	}
+    foreach ($books as $book) {
+      if ($existStart == false && $existFinish == false) {
 
-	// Para poner nombre al suplemento de lujo en la reserva
-	static function getSupLujo($lujo)
-	{
-		$array = [
-			1 => "Si",
-			2 => "No",
-			3 => "Gratis",
-			4 => "50 %"
-		];
+        $start = Carbon::createFromFormat('Y-m-d', $book->start);
+        $finish = Carbon::createFromFormat('Y-m-d', $book->finish);
 
-		return $supLujo = $array[$lujo];
-	}
+        if ($start < $requestStart && $requestStart < $finish) {
+          $existStart = true;
+        } elseif ($start <= $requestStart && $requestStart < $finish) {
+          $existStart = true;
+        } elseif ($requestStart <= $start && $start < $requestFinish) {
+          $existStart = true;
+        }
+      } else {
+        break;
+      }
+    }
+    if ($existStart == false && $existFinish == false) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-	//Para poner nombre a la agencia//
-	static function getAgency($agency)
-	{
-		$array = [
-			0 => "",
-			1 => "Booking",
-			2 => "Trivago",
-			3 => "Bed&Snow",
-			4 => "AirBnb",
-			5 => "Jaime Diaz",
-			6 => "S.essence",
-			7 => "Cerogrados"
-		];
+  public function existDateOverrride($start, $finish, $room, $id_excluded) {
 
-		return $agency = $array[$agency];
-	}
+    if ($room >= 5) {
 
-	//Para comprobar el dia de la reserva en el calendario
-	static function existDate($start, $finish, $room)
-	{
-
-		$books         = \App\Book::where('room_id', $room)->whereIn('type_book', [
-			1,
-			2,
-			4,
-			7,
-			8
-		])->get();
-		$existStart    = false;
-		$existFinish   = false;
-		$requestStart  = Carbon::createFromFormat('d/m/Y', $start);
-		$requestFinish = Carbon::createFromFormat('d/m/Y', $finish);
-
-		foreach ($books as $book)
-		{
-			if ($existStart == false && $existFinish == false)
-			{
-
-				$start  = Carbon::createFromFormat('Y-m-d', $book->start);
-				$finish = Carbon::createFromFormat('Y-m-d', $book->finish);
-
-				if ($start < $requestStart && $requestStart < $finish)
-				{
-					$existStart = true;
-				} elseif ($start <= $requestStart && $requestStart < $finish)
-				{
-					$existStart = true;
-				} elseif ($requestStart <= $start && $start < $requestFinish)
-				{
-					$existStart = true;
-				}
-			} else
-			{
-				break;
-			}
-		}
-		if ($existStart == false && $existFinish == false)
-		{
-			return true;
-		} else
-		{
-			return false;
-		}
-	}
-
-	public function existDateOverrride($start, $finish, $room, $id_excluded)
-	{
-
-		if ($room >= 5)
-		{
-
-			if ($this->type_book == 3 || $this->type_book == 0 || $this->type_book == 6)
-			{
-				return true;
-			} else
-			{
+      if ($this->type_book == 3 || $this->type_book == 0 || $this->type_book == 6) {
+        return true;
+      } else {
 
 
-				$requestStart  = Carbon::createFromFormat('d/m/Y', $start);
-				$requestFinish = Carbon::createFromFormat('d/m/Y', $finish);
+        $requestStart = Carbon::createFromFormat('d/m/Y', $start);
+        $requestFinish = Carbon::createFromFormat('d/m/Y', $finish);
 
-				$books = \App\Book::where('room_id', $room)->whereIn('type_book', [
-					1,
-					2,
-					4,
-					7,
-					8
-				])
-                  ->where('id', '!=', $id_excluded)
-                  ->orderBy('start', 'DESC')
-                  ->get();
+        $books = \App\Book::where('room_id', $room)
+                ->whereIn('type_book', [1, 2, 4, 7, 8 ])
+                ->where('id', '!=', $id_excluded)
+                ->orderBy('start', 'DESC')
+                ->get();
 
-				//\App\Book::where('room_id',$room)->whereIn('type_book',[1,2,4,5,7,8])->where('id','!=',$id_excluded)->get();
+        $existStart = false;
+        $existFinish = false;
+        foreach ($books as $book) {
+          if ($existStart == false && $existFinish == false) {
+            $start = Carbon::createFromFormat('Y-m-d', $book->start);
+            $finish = Carbon::createFromFormat('Y-m-d', $book->finish);
 
-				$existStart  = false;
-				$existFinish = false;
+            if ($start < $requestStart && $requestStart < $finish) {
+              $existStart = true;
+            } elseif ($start <= $requestStart && $requestStart < $finish) {
+              $existStart = true;
+            } elseif ($requestStart <= $start && $start < $requestFinish) {
+              $existStart = true;
+            }
+          } else {
+            break;
+          }
+        }
+        if ($existStart == false && $existFinish == false) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    } else {
+      return true;
+    }
+  }
 
+  // Funcion para cambiar la reserva de habitacion o estado
+  public function changeBook($status, $room, $book) {
+    if (!empty($status)) {
 
-				foreach ($books as $book)
-				{
-					if ($existStart == false && $existFinish == false)
-					{
-						$start  = Carbon::createFromFormat('Y-m-d', $book->start);
-						$finish = Carbon::createFromFormat('Y-m-d', $book->finish);
+      $response = ['status' => 'success', 'title' => 'OK', 'response' => ''];
+      if ($status == 3 || $status == 10 || $status == 12 || $status == 6) {
+        $this->type_book = $status;
+        $this->save();
+        if ($status == 3)
+          $response['response'] = "Estado Cambiado a Sin Responder";
+        if ($status == 10)
+          $response['response'] = "Reserva cambiada a Overbooking";
+        if ($status == 12)
+          $response['response'] = "Reserva cambiada a ICAL - INVISIBLE";
+        if ($status == 6) {
+          $this->sendEmailChangeStatus($book, 'Reserva denegada', $status);
+          $response['response'] = "Reserva cambiada a ICAL - INVISIBLE";
+        }
+        \App\BookLogs::saveLogStatus($this->id, $this->room_id, $this->customer->email, $this->getStatus($status));
+        return $response;
+      } else {
 
-						if ($start < $requestStart && $requestStart < $finish)
-						{
-							$existStart = true;
-						} elseif ($start <= $requestStart && $requestStart < $finish)
-						{
-							$existStart = true;
-						} elseif ($requestStart <= $start && $start < $requestFinish)
-						{
-							$existStart = true;
-						}
-					} else
-					{
-						break;
-					}
-				}
-				if ($existStart == false && $existFinish == false)
-				{
-					return true;
-				} else
-				{
-					return false;
-				}
-			}
-		} else
-		{
-			return true;
-		}
-	}
+        $dateStart = Carbon::createFromFormat('Y-m-d', $this->start);
+        $dateFinish = Carbon::createFromFormat('Y-m-d', $this->finish);
 
+        $roomStart = $dateStart->format('U');
+        $roomFinish = $dateFinish->format('U');
 
-	// Funcion para cambiar la reserva de habitacion o estado
-	public function changeBook($status, $room, $book)
-	{
-	if (!empty($status)){
-          
-          $response = ['status'=>'success','title'=>'OK','response' => ''];
-          if ($status == 3 || $status == 10 || $status == 12 || $status == 6){
-            $this->type_book = $status;
+        $isRooms = \App\Book::where('room_id', $this->room_id)
+                ->whereIn('type_book', [1, 2, 4, 7, 8])
+                ->where('id', '!=', $this->id)
+                ->orderBy('start', 'DESC')
+                ->get();
+
+        $existStart = false;
+        $existFinish = false;
+
+        foreach ($isRooms as $isRoom) {
+          if ($existStart == false) {
+
+            $start = Carbon::createFromFormat('Y-m-d', $isRoom->start)->format('U');
+            $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish)->format('U');
+
+            if ($start < $roomStart && $roomStart < $finish) {
+              $existStart = true;
+            } elseif ($start <= $roomStart && $roomStart < $finish) {
+              $existStart = true;
+            } elseif ($roomStart <= $start && $start < $roomFinish) {
+              $existStart = true;
+            }
+          } else {
+            break;
+          }
+        }
+
+        if ($existStart == false && $existFinish == false) {
+          $this->type_book = $status;
+          if ($status == 2) {
+            $this->sendToPartee();
+          }
+
+          if ($this->customer->email == "") {
             $this->save();
-            if ($status == 3) $response['response'] = "Estado Cambiado a Sin Responder";
-            if ($status == 10) $response['response'] = "Reserva cambiada a Overbooking";
-            if ($status == 12) $response['response'] = "Reserva cambiada a ICAL - INVISIBLE";
-            if ($status == 6){
-              $this->sendEmailChangeStatus($book,'Reserva denegada',$status);
-              $response['response'] = "Reserva cambiada a ICAL - INVISIBLE";
-            }
-            \App\BookLogs::saveLogStatus($this->id,$this->room_id,$this->customer->email,$this->getStatus($status));
-            return $response;
-            
+            \App\BookLogs::saveLogStatus($this->id, $this->room_id, $this->customer->email, $this->getStatus($status));
+            return [
+                'status' => 'warning',
+                'title' => 'Cuidado',
+                'response' => "No tiene Email asignado"
+            ];
           } else {
 
-            $dateStart  = Carbon::createFromFormat('Y-m-d', $this->start);
-            $dateFinish = Carbon::createFromFormat('Y-m-d', $this->finish);
-
-            $roomStart  = $dateStart->format('U');
-            $roomFinish = $dateFinish->format('U');
-
-            $isRooms = \App\Book::where('room_id', $this->room_id)
-                                ->whereIn('type_book', [1,2,4,7,8])
-                                ->where('id', '!=', $this->id)
-                                ->orderBy('start', 'DESC')
-                                ->get();
-
-            $existStart  = false;
-            $existFinish = false;
-
-            foreach ($isRooms as $isRoom)
-            {
-              if ($existStart == false)
-              {
-
-                $start  = Carbon::createFromFormat('Y-m-d', $isRoom->start)->format('U');
-                $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish)->format('U');
-                
-                if ($start < $roomStart && $roomStart < $finish)
-                {
-                  $existStart = true;
-                } elseif ($start <= $roomStart && $roomStart < $finish)
-                {
-                  $existStart = true;
-                } elseif ($roomStart <= $start && $start < $roomFinish)
-                {
-                  $existStart = true;
-                }
-                
-              } else
-              {
+            switch ($status) {
+              case '1':
+                $this->sendEmailChangeStatus($book, 'Bloqueo de reserva y datos de pago', $status);
                 break;
-              }
+              case '2':
+                $this->sendEmailChangeStatus($book, 'Confirmación de reserva (pago parcial)', $status);
+                break;
+              case '7':
+                $this->sendEmailChangeStatus($book, 'Correo de Reserva de Propietario', $status);
+                break;
             }
+            if ($this->save()) {
+              /* Creamos las notificaciones de booking */
+              /* Comprobamos que la room de la reserva este cedida a booking.com */
+              if ($this->room->isAssingToBooking()) {
 
-              if ($existStart == false && $existFinish == false)
-              {
-                $this->type_book = $status;
-                if ($status == 2){
-                  $this->sendToPartee();
+                $isAssigned = \App\BookNotification::where('book_id', $book->id)->get();
+
+                if (count($isAssigned) == 0) {
+                  $notification = new \App\BookNotification();
+                  $notification->book_id = $book->id;
+                  $notification->save();
                 }
-                
-                if ($this->customer->email == "")
-                {
-                  $this->save();
-                  \App\BookLogs::saveLogStatus($this->id,$this->room_id,$this->customer->email,$this->getStatus($status));
-                  return [
-                          'status'   => 'warning',
-                          'title'    => 'Cuidado',
-                          'response' => "No tiene Email asignado"
-                  ];
-                  
-                } else  {
-
-                  switch ($status){
-                    case '1':
-                      $this->sendEmailChangeStatus($book,'Bloqueo de reserva y datos de pago',$status);
-                    break;
-                    case '2':
-                      $this->sendEmailChangeStatus($book,'Confirmación de reserva (pago parcial)',$status);
-                      break;
-                    case '7':
-                      $this->sendEmailChangeStatus($book,'Correo de Reserva de Propietario',$status);
-                      break;
-                   }
-                  if ($this->save()){
-                    /* Creamos las notificaciones de booking */
-                    /* Comprobamos que la room de la reserva este cedida a booking.com */
-                    if ($this->room->isAssingToBooking()){
-
-                            $isAssigned = \App\BookNotification::where('book_id', $book->id)->get();
-
-                            if (count($isAssigned) == 0)
-                            {
-                                    $notification          = new \App\BookNotification();
-                                    $notification->book_id = $book->id;
-                                    $notification->save();
-                            }
-                    }
-                    $response['response'] = "Estado Cambiado";
-                    if ($status == 1) $response['response'] = "Email Enviado Reserva";
-                    if ($status == 2) $response['response'] = "Email Enviado Pagada la señal";
-                    if ($status == 4) $response['response'] = "Estado Cambiado a Bloqueado";
-                    if ($status == 5) $response['response'] = "Contestado por email";
-                    if ($status == 7) $response['response'] = "Estado Cambiado a Reserva Propietario";
-                    if ($status == 8) $response['response'] = "Estado Cambiado a Subcomunidad";
-
-                    \App\BookLogs::saveLogStatus($this->id,$this->room_id,$this->customer->email,$this->getStatus($status));
-                    return $response;
-                  }
-                }
-              } else {
-                
-                return [
-                        'status'   => 'danger',
-                        'title'    => 'Peligro',
-                        'response' => "No puedes cambiar el estado"
-                ];
               }
+              $response['response'] = "Estado Cambiado";
+              if ($status == 1)
+                $response['response'] = "Email Enviado Reserva";
+              if ($status == 2)
+                $response['response'] = "Email Enviado Pagada la señal";
+              if ($status == 4)
+                $response['response'] = "Estado Cambiado a Bloqueado";
+              if ($status == 5)
+                $response['response'] = "Contestado por email";
+              if ($status == 7)
+                $response['response'] = "Estado Cambiado a Reserva Propietario";
+              if ($status == 8)
+                $response['response'] = "Estado Cambiado a Subcomunidad";
+
+              \App\BookLogs::saveLogStatus($this->id, $this->room_id, $this->customer->email, $this->getStatus($status));
+              return $response;
+            }
           }
-        }//if (!empty($status))
+        } else {
 
-		if (!empty($room))
-		{
-
-
-			if ($this->type_book == 3)
-			{
-				$this->room_id = $room;
-				if ($this->save())
-				{
-					if ($this->room->isAssingToBooking())
-					{
-
-						$isAssigned = \App\BookNotification::where('book_id', $book->id)->get();
-
-						if (count($isAssigned) == 0)
-						{
-							$notification          = new \App\BookNotification();
-							$notification->book_id = $book->id;
-							$notification->save();
-						}
-					} else
-					{
-						$deleted = \App\BookNotification::where('book_id', $book->id)->delete();
-					}
-                                        \App\BookLogs::saveLogStatus($this->id,$this->room_id,$this->customer->email,$this->getStatus($status));
-
-					return [
-						'status'   => 'success',
-						'title'    => 'OK',
-						'response' => "Apartamento cambiado correctamente"
-					];
-				}
-			}
-			else
-			{
-
-
-				$dateStart  = Carbon::createFromFormat('Y-m-d', $this->start);
-				$dateFinish = Carbon::createFromFormat('Y-m-d', $this->finish);
-
-				$roomStart  = $dateStart->format('U');
-				$roomFinish = $dateFinish->format('U');
-
-
-				$isRooms = \App\Book::where('room_id', $room)->whereIn('type_book', [
-					1,
-					2,
-					4,
-					7,
-					8
-				])
-				                    ->where('id', '!=', $this->id)
-				                    ->orderBy('start', 'DESC')
-				                    ->get();
-
-				$existStart  = False;
-				$existFinish = False;
-
-				foreach ($isRooms as $isRoom)
-				{
-					if ($existStart == False && $existFinish == False)
-					{
-
-						$start  = Carbon::createFromFormat('Y-m-d', $isRoom->start)->format('U');
-						$finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish)->format('U');
-
-						if ($start < $roomStart && $roomStart < $finish)
-						{
-							$existStart = true;
-						} elseif ($start <= $roomStart && $roomStart < $finish)
-						{
-							$existStart = true;
-						} elseif ($roomStart <= $start && $start < $roomFinish)
-						{
-							$existStart = true;
-						}
-					} else
-					{
-						break;
-					}
-				}
-				if ($existStart == false && $existFinish == false)
-				{
-					$this->room_id = $room;
-					if ($this->save())
-					{
-                                          \App\BookLogs::saveLogStatus($this->id,$this->room_id,$this->customer->email,$this->getStatus($status));
-
-						if ($this->room->isAssingToBooking())
-						{
-
-							$isAssigned = \App\BookNotification::where('book_id', $book->id)->get();
-
-							if (count($isAssigned) == 0)
-							{
-								$notification          = new \App\BookNotification();
-								$notification->book_id = $book->id;
-								$notification->save();
-							}
-						} else
-						{
-							$deleted = \App\BookNotification::where('book_id', $book->id)->delete();
-						}
-						return [
-							'status'   => 'success',
-							'title'    => 'OK',
-							'response' => "Apartamento cambiado correctamente"
-						];
-					} else
-					{
-						return [
-							'status'   => 'danger',
-							'title'    => 'Peligro',
-							'response' => "Error mientrar en el cambio de apartamento"
-						];
-					}
-
-				} else
-				{
-					return [
-						'status'   => 'danger',
-						'title'    => 'Peligro',
-						'response' => "Este apartamento ya esta ocupado para estas fechas"
-					];
-				}
-
-
-			}
-		}
-	}
-        
-
-	//Funcion para calcular el beneficio de Jorge
-	static public function getBenJorge($ben, $id)
-	{
-		$room      = \App\Rooms::find($id);
-		$beneficio = 0;
-
-		switch ($room->commission)
-		{
-			case '0':
-				//Jorge
-				$beneficio = $ben;
-				break;
-			case '1':
-				//Propietario
-				$beneficio = $ben * 0.9;
-				break;
-			case '2':
-				//Riesgo
-				$beneficio = $ben * 0.65;
-				break;
-			case '3':
-				$beneficio = 0;
-				break;
-		}
-		return $beneficio;
-	}
-
-	//Funcion para calcular el beneficio de Jaime
-	static public function getBenJaime($ben, $id)
-	{
-		$room      = \App\Rooms::find($id);
-		$beneficio = 0;
-
-		switch ($room->commission)
-		{
-			case '0':
-				//Jorge
-				$beneficio = 0;
-				break;
-			case '1':
-				//Propietario
-				$beneficio = $ben * 0.1;
-				break;
-			case '2':
-				//Riesgo
-				$beneficio = $ben * 0.35;
-				break;
-			case '3':
-				$beneficio = 0;
-				break;
-		}
-		return $beneficio;
-	}
-
-	public function getPayment($tipo)
-	{
-		return $this->payments->filter(function ($payment) use ($tipo) {
-			return $payment->type == $tipo;
-		})->sum('import');
-	}
-
-	public function getLastPayment()
-	{
-		$lastPayment = 0;
-		if (count($this->payments) > 0)
-		{
-			foreach ($this->payments as $index => $payment)
-			{
-				$lastPayment = $payment->import;
-			}
-		}
-
-		return $lastPayment;
-	}
-
-	// Funcion para Sacar Ventas por temporada
-	public function getVentas($year)
-	{
-		$ventas = [
-			"Ventas" => [],
-			"Ben"    => [],
-		];
-
-		$date  = Carbon::CreateFromFormat('Y-m-d', $year);
-		$books = \App\Book::where('type_book', 2)->where('start', '>=', $date->copy()->format('Y-m-d'))
-		                  ->where('start', '<=', $date->copy()->addYear()->format('Y-m-d'))->get();
-
-		foreach ($books as $book)
-		{
-			$mes      = Carbon::createFromFormat('Y-m-d', $book->start);
-			$posicion = $mes->format('n');
-			if ($posicion == 9 || $posicion == 10 || $posicion == 11)
-			{
-				$posicion = 12;
-			} else if ($posicion == 5 || $posicion == 6)
-			{
-				$posicion = "04";
-			}
-			if (isset($ventas["Ventas"][$posicion]))
-			{
-				$ventas["Ventas"][$posicion] += $book->total_price;
-				$ventas["Ben"][$posicion]    += $book->total_ben;
-			} else
-			{
-				$ventas["Ventas"][$posicion] = $book->total_price;
-				$ventas["Ben"][$posicion]    = $book->total_ben;
-			}
-
-		}
-		if (isset($ventas["Ventas"][12]))
-		{
-		} else
-		{
-			$ventas["Ventas"][12] = "0";
-			$ventas["Ben"][12]    = "0";
-		}
-		if (isset($ventas["Ventas"][01]))
-		{
-		} else
-		{
-			$ventas["Ventas"][01] = "0";
-			$ventas["Ben"][01]    = "0";
-		}
-		if (isset($ventas["Ventas"][02]))
-		{
-		} else
-		{
-			$ventas["Ventas"][02] = "0";
-			$ventas["Ben"][02]    = "0";
-		}
-		if (isset($ventas["Ventas"][03]))
-		{
-		} else
-		{
-			$ventas["Ventas"][03] = "0";
-			$ventas["Ben"][03]    = "0";
-		}
-		if (isset($ventas["Ventas"][04]))
-		{
-		} else
-		{
-			$ventas["Ventas"][04] = "0";
-			$ventas["Ben"][04]    = "0";
-		}
-
-		return $ventas;
-	}
-
-	public static function getBeneficioJorge()
-	{
-
-	}
-
-	public static function getBeneficioJaime()
-	{
-
-	}
-
-	public function payments()
-	{
-		return $this->hasMany(Payments::class);
-	}
-        
-	public function partee()
-	{
-		return $this->hasOne(BookPartee::class)->first();
-	}
-
-	public function getSumPaymentsAttribute()
-	{
-		return $this->payments->sum('import');
-	}
-
-	/**
-	 * Do not use this function without eager load
-	 *
-	 * @return int
-	 */
-	public function getJorgeProfit()
-	{
-		return $this->profit * ($this->room->type->PercentJorge / 100);
-	}
-
-	/**
-	 * Do not use this function without eager load
-	 *
-	 * @return int
-	 */
-	public function getJaimeProfit()
-	{
-		return $this->profit * ($this->room->type->PercentJaime / 100);
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getProfitAttribute()
-	{
-		return $this->total_price - $this->costs;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getCostsAttribute()
-	{
-		return $this->cost_apto + $this->cost_park + $this->cost_lujo + $this->PVPAgencia + $this->cost_limp
-			+ $this->stripeCost + $this->extraCost;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getStripeCostAttribute()
-	{
-		$totalStripe = $this->payments->filter(function ($payment) {
-			return str_contains(strtolower($payment->comment), 'stripe');
-		})->sum('import');
-
-
-		return $totalStripe > 0 ? round(((1.4 * $totalStripe) / 100) + 0.25) : 0;
-	}
-
-	/**
-	 * @return float|int
-	 */
-	public function getStripeCostRawAttribute()
-	{
-		$totalStripe = $this->payments->filter(function ($payment) {
-			return str_contains(strtolower($payment->comment), 'stripe');
-		})->sum('import');
-
-
-		return $totalStripe > 0 ? ((1.4 * $totalStripe) / 100) + 0.25 : 0;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getPendingAttribute()
-	{
-		return $this->total_price - $this->payments->sum('import');
-	}
-
-	/**
-	 * Trick applied here avoiding null results on DB
-	 *
-	 * @return mixed
-	 */
-	public function getProfitPercentageRawAttribute()
-	{
-		if ($this->total_price == '0.00')
-		{
-			return 0;
-		}
-
-		return ($this->profit * 100) / $this->total_price;
-	}
-
-	/**
-	 * Trick applied here avoiding null results on DB
-	 *
-	 *
-	 * @return mixed
-	 */
-	public function getProfitPercentageAttribute()
-	{
-		if ($this->total_price == '0.00')
-		{
-			return 0;
-		}
-
-		return round(($this->profit * 100) / $this->total_price);
-	}
-
-	public function hasSendPicture()
-	{
-		$sendPictures = DB::select("SELECT * FROM log_images 
-									WHERE book_id = '" . $this->id . "'");
-
-		return (count($sendPictures) == 0) ? false : true;
-	}
-
-	public function getSendPicture()
-	{
-		$sendPictures = \App\LogImages::where('book_id', $this->id)->get();
-		return (count($sendPictures) > 0) ? $sendPictures : false;
-	}
-        
-        /**
-         * Get the inc_percent from the book
-         * 
-         * @return int inc_percent
-         */
-        public function get_inc_percent() {
-          $profit = $this->profit;
-          $total_price = $this->total_price;
-          $inc_percent = 0;
-          
-          if($this->room->luxury == 0 && $this->cost_lujo > 0) {
-            $profit      = $this->profit - $this->cost_lujo;
-            $total_price = $this->total_price - $this->sup_lujo;
-          }
-          
-          if ($total_price != 0){
-            $inc_percent = ($profit/ $total_price )*100;
-          }
-          
-          return $inc_percent;
+          return [
+              'status' => 'danger',
+              'title' => 'Peligro',
+              'response' => "No puedes cambiar el estado"
+          ];
         }
-        
-        /**
-         * Get the total cost
-         * 
-         * @return int $cost_total
-         */
-        public function get_costeTotal(){
-          
-          $cost_total = $this->cost_apto + $this->cost_park + $this->cost_lujo + $this->cost_limp + $this->PVPAgencia + $this->stripeCost + $this->extraCost;
-          if($this->room->luxury == 0 && $this->cost_lujo > 0) {
-            $cost_total = $this->cost_total - $this->cost_lujo;
-          }
-          
-          return $cost_total;
-        }
-        
-        /**
-         * Get object Book that has status 2,7,8
-         * 
-         * @return Object Query
-         */
-        static function type_book_sales() {
-          return self::whereIn('type_book', [2,7,8]);
-          
-        }
-        
-        
-        /**
-         * Send the Booking to Partee
-         */
-        public function sendToPartee() {
-          $BookPartee = BookPartee::where('book_id',$this->id)->first();
-          
-          if ( $BookPartee ){ 
-            if ( $BookPartee->partee_id>0 ){
-              return FALSE;
+      }
+    }//if (!empty($status))
+
+    if (!empty($room)) {
+
+
+      if ($this->type_book == 3) {
+        $this->room_id = $room;
+        if ($this->save()) {
+          if ($this->room->isAssingToBooking()) {
+
+            $isAssigned = \App\BookNotification::where('book_id', $book->id)->get();
+
+            if (count($isAssigned) == 0) {
+              $notification = new \App\BookNotification();
+              $notification->book_id = $book->id;
+              $notification->save();
             }
           } else {
-            $BookPartee = new BookPartee();
-            $BookPartee->book_id = $this->id;
+            $deleted = \App\BookNotification::where('book_id', $book->id)->delete();
           }
-          
-          //Create Partee
-          $partee = new \App\Services\ParteeService();
-          if ($partee->conect()){
+          \App\BookLogs::saveLogStatus($this->id, $this->room_id, $this->customer->email, $this->getStatus($status));
 
-            $result = $partee->getCheckinLink($this->customer->email, strtotime($this->start));
-            
-            if ($result){
-              
-              $BookPartee->link = $partee->response->checkInOnlineURL;
-              $BookPartee->partee_id = $partee->response->id;
-              $BookPartee->status = 'sent';
-              $BookPartee->log_data = $BookPartee->log_data .",". time() .'- Sent';
-              $BookPartee->save();
-              
+          return [
+              'status' => 'success',
+              'title' => 'OK',
+              'response' => "Apartamento cambiado correctamente"
+          ];
+        }
+      } else {
+
+
+        $dateStart = Carbon::createFromFormat('Y-m-d', $this->start);
+        $dateFinish = Carbon::createFromFormat('Y-m-d', $this->finish);
+
+        $roomStart = $dateStart->format('U');
+        $roomFinish = $dateFinish->format('U');
+
+
+        $isRooms = \App\Book::where('room_id', $room)
+                ->whereIn('type_book', [1, 2, 4,7, 8 ])
+                ->where('id', '!=', $this->id)
+                ->orderBy('start', 'DESC')
+                ->get();
+
+        $existStart = False;
+        $existFinish = False;
+
+        foreach ($isRooms as $isRoom) {
+          if ($existStart == False && $existFinish == False) {
+
+            $start = Carbon::createFromFormat('Y-m-d', $isRoom->start)->format('U');
+            $finish = Carbon::createFromFormat('Y-m-d', $isRoom->finish)->format('U');
+
+            if ($start < $roomStart && $roomStart < $finish) {
+              $existStart = true;
+            } elseif ($start <= $roomStart && $roomStart < $finish) {
+              $existStart = true;
+            } elseif ($roomStart <= $start && $start < $roomFinish) {
+              $existStart = true;
+            }
+          } else {
+            break;
+          }
+        }
+        if ($existStart == false && $existFinish == false) {
+          $this->room_id = $room;
+          if ($this->save()) {
+            \App\BookLogs::saveLogStatus($this->id, $this->room_id, $this->customer->email, $this->getStatus($status));
+
+            if ($this->room->isAssingToBooking()) {
+
+              $isAssigned = \App\BookNotification::where('book_id', $book->id)->get();
+
+              if (count($isAssigned) == 0) {
+                $notification = new \App\BookNotification();
+                $notification->book_id = $book->id;
+                $notification->save();
+              }
             } else {
-              $BookPartee->status = 'error';
-              $BookPartee->log_data = $BookPartee->log_data .",". time() .'-'.$partee->response;
-              $BookPartee->save();
+              $deleted = \App\BookNotification::where('book_id', $book->id)->delete();
             }
-            
+            return [
+                'status' => 'success',
+                'title' => 'OK',
+                'response' => "Apartamento cambiado correctamente"
+            ];
           } else {
-            
-            $BookPartee->status = 'error';
-            $BookPartee->log_data = $BookPartee->log_data .",". time() .'-'.$partee->response;
-            $BookPartee->save();
-            
-          }
-          
-        }
-
-  public function get_ff_status($showAll=true) {
-      $result = [
-          'name' => '',
-          'icon' => null
-      ];
-
-      switch ($this->ff_status) {
-        case 0:
-          if ($showAll){
-            $result = [
-                'name' => 'No Gestionada',
-                'icon' => asset('/img/miramarski/ski_icon_status_transparent.png')
+            return [
+                'status' => 'danger',
+                'title' => 'Peligro',
+                'response' => "Error mientrar en el cambio de apartamento"
             ];
           }
-          break;
-        case 1:
-          $result = [
-              'name' => 'Cancelada',
-              'icon' => asset('/img/miramarski/ski_icon_status_grey.png')
+        } else {
+          return [
+              'status' => 'danger',
+              'title' => 'Peligro',
+              'response' => "Este apartamento ya esta ocupado para estas fechas"
           ];
-          break;
-        case 2:
-          $result = [
-              'name' => 'No Cobrada',
-              'icon' => asset('/img/miramarski/ski_icon_status_red.png')
-          ];
-          break;
-        case 3:
-          $result = [
-              'name' => 'Confirmada',
-              'icon' => asset('/img/miramarski/ski_icon_status_green.png')
-          ];
-          break;
-        case 4:
-          $result = [
-              'name' => 'Comprometida',
-              'icon' => asset('/img/miramarski/ski_icon_status_orange.png')
-          ];
-          break;
+        }
       }
-      return $result;
+    }
+  }
+
+  //Funcion para calcular el beneficio de Jorge
+  static public function getBenJorge($ben, $id) {
+    $room = \App\Rooms::find($id);
+    $beneficio = 0;
+
+    switch ($room->commission) {
+      case '0':
+        //Jorge
+        $beneficio = $ben;
+        break;
+      case '1':
+        //Propietario
+        $beneficio = $ben * 0.9;
+        break;
+      case '2':
+        //Riesgo
+        $beneficio = $ben * 0.65;
+        break;
+      case '3':
+        $beneficio = 0;
+        break;
+    }
+    return $beneficio;
+  }
+
+  //Funcion para calcular el beneficio de Jaime
+  static public function getBenJaime($ben, $id) {
+    $room = \App\Rooms::find($id);
+    $beneficio = 0;
+
+    switch ($room->commission) {
+      case '0':
+        //Jorge
+        $beneficio = 0;
+        break;
+      case '1':
+        //Propietario
+        $beneficio = $ben * 0.1;
+        break;
+      case '2':
+        //Riesgo
+        $beneficio = $ben * 0.35;
+        break;
+      case '3':
+        $beneficio = 0;
+        break;
+    }
+    return $beneficio;
+  }
+
+  public function getPayment($tipo) {
+    return $this->payments->filter(function ($payment) use ($tipo) {
+              return $payment->type == $tipo;
+            })->sum('import');
+  }
+
+  public function getLastPayment() {
+    $lastPayment = 0;
+    if (count($this->payments) > 0) {
+      foreach ($this->payments as $index => $payment) {
+        $lastPayment = $payment->import;
+      }
     }
 
+    return $lastPayment;
+  }
+
+  // Funcion para Sacar Ventas por temporada
+  public function getVentas($year) {
+    $ventas = [
+        "Ventas" => [],
+        "Ben" => [],
+    ];
+
+    $date = Carbon::CreateFromFormat('Y-m-d', $year);
+    $books = \App\Book::where('type_book', 2)->where('start', '>=', $date->copy()->format('Y-m-d'))
+                    ->where('start', '<=', $date->copy()->addYear()->format('Y-m-d'))->get();
+
+    foreach ($books as $book) {
+      $mes = Carbon::createFromFormat('Y-m-d', $book->start);
+      $posicion = $mes->format('n');
+      if ($posicion == 9 || $posicion == 10 || $posicion == 11) {
+        $posicion = 12;
+      } else if ($posicion == 5 || $posicion == 6) {
+        $posicion = "04";
+      }
+      if (isset($ventas["Ventas"][$posicion])) {
+        $ventas["Ventas"][$posicion] += $book->total_price;
+        $ventas["Ben"][$posicion] += $book->total_ben;
+      } else {
+        $ventas["Ventas"][$posicion] = $book->total_price;
+        $ventas["Ben"][$posicion] = $book->total_ben;
+      }
+    }
+    if (isset($ventas["Ventas"][12])) {
+      
+    } else {
+      $ventas["Ventas"][12] = "0";
+      $ventas["Ben"][12] = "0";
+    }
+    if (isset($ventas["Ventas"][01])) {
+      
+    } else {
+      $ventas["Ventas"][01] = "0";
+      $ventas["Ben"][01] = "0";
+    }
+    if (isset($ventas["Ventas"][02])) {
+      
+    } else {
+      $ventas["Ventas"][02] = "0";
+      $ventas["Ben"][02] = "0";
+    }
+    if (isset($ventas["Ventas"][03])) {
+      
+    } else {
+      $ventas["Ventas"][03] = "0";
+      $ventas["Ben"][03] = "0";
+    }
+    if (isset($ventas["Ventas"][04])) {
+      
+    } else {
+      $ventas["Ventas"][04] = "0";
+      $ventas["Ben"][04] = "0";
+    }
+
+    return $ventas;
+  }
+
+  public static function getBeneficioJorge() {
+    
+  }
+
+  public static function getBeneficioJaime() {
+    
+  }
+
+  public function payments() {
+    return $this->hasMany(Payments::class);
+  }
+
+  public function partee() {
+    return $this->hasOne(BookPartee::class)->first();
+  }
+
+  public function getSumPaymentsAttribute() {
+    return $this->payments->sum('import');
+  }
+
+  /**
+   * Do not use this function without eager load
+   *
+   * @return int
+   */
+  public function getJorgeProfit() {
+    return $this->profit * ($this->room->type->PercentJorge / 100);
+  }
+
+  /**
+   * Do not use this function without eager load
+   *
+   * @return int
+   */
+  public function getJaimeProfit() {
+    return $this->profit * ($this->room->type->PercentJaime / 100);
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getProfitAttribute() {
+    return $this->total_price - $this->costs;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getCostsAttribute() {
+    return $this->cost_apto + $this->cost_park + $this->cost_lujo + $this->PVPAgencia + $this->cost_limp + $this->stripeCost + $this->extraCost;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getStripeCostAttribute() {
+    $totalStripe = $this->payments->filter(function ($payment) {
+              return str_contains(strtolower($payment->comment), 'stripe');
+            })->sum('import');
+
+
+    return $totalStripe > 0 ? round(((1.4 * $totalStripe) / 100) + 0.25) : 0;
+  }
+
+  /**
+   * @return float|int
+   */
+  public function getStripeCostRawAttribute() {
+    $totalStripe = $this->payments->filter(function ($payment) {
+              return str_contains(strtolower($payment->comment), 'stripe');
+            })->sum('import');
+
+
+    return $totalStripe > 0 ? ((1.4 * $totalStripe) / 100) + 0.25 : 0;
+  }
+
+  /**
+   * @return int
+   */
+  public function getPendingAttribute() {
+    return $this->total_price - $this->payments->sum('import');
+  }
+
+  /**
+   * Trick applied here avoiding null results on DB
+   *
+   * @return mixed
+   */
+  public function getProfitPercentageRawAttribute() {
+    if ($this->total_price == '0.00') {
+      return 0;
+    }
+
+    return ($this->profit * 100) / $this->total_price;
+  }
+
+  /**
+   * Trick applied here avoiding null results on DB
+   *
+   *
+   * @return mixed
+   */
+  public function getProfitPercentageAttribute() {
+    if ($this->total_price == '0.00') {
+      return 0;
+    }
+
+    return round(($this->profit * 100) / $this->total_price);
+  }
+
+  public function hasSendPicture() {
+    $sendPictures = DB::select("SELECT * FROM log_images WHERE book_id = '" . $this->id . "'");
+    return (count($sendPictures) == 0) ? false : true;
+  }
+
+  public function getSendPicture() {
+    $sendPictures = \App\LogImages::where('book_id', $this->id)->get();
+    return (count($sendPictures) > 0) ? $sendPictures : false;
+  }
+
+  /**
+   * Get the inc_percent from the book
+   * 
+   * @return int inc_percent
+   */
+  public function get_inc_percent() {
+    $profit = $this->profit;
+    $total_price = $this->total_price;
+    $inc_percent = 0;
+
+    if ($this->room->luxury == 0 && $this->cost_lujo > 0) {
+      $profit = $this->profit - $this->cost_lujo;
+      $total_price = $this->total_price - $this->sup_lujo;
+    }
+
+    if ($total_price != 0) {
+      $inc_percent = ($profit / $total_price ) * 100;
+    }
+
+    return $inc_percent;
+  }
+
+  /**
+   * Get the total cost
+   * 
+   * @return int $cost_total
+   */
+  public function get_costeTotal() {
+
+    $cost_total = $this->cost_apto + $this->cost_park + $this->cost_lujo + $this->cost_limp + $this->PVPAgencia + $this->stripeCost + $this->extraCost;
+    if ($this->room->luxury == 0 && $this->cost_lujo > 0) {
+      $cost_total = $this->cost_total - $this->cost_lujo;
+    }
+
+    return $cost_total;
+  }
+
+  /**
+   * Get object Book that has status 2,7,8
+   * 
+   * @return Object Query
+   */
+  static function type_book_sales() {
+    return self::whereIn('type_book', [2, 7, 8]);
+  }
+
+  /**
+   * Send the Booking to Partee
+   */
+  public function sendToPartee() {
+    $BookPartee = BookPartee::where('book_id', $this->id)->first();
+
+    if ($BookPartee) {
+      if ($BookPartee->partee_id > 0) {
+        return FALSE;
+      }
+    } else {
+      $BookPartee = new BookPartee();
+      $BookPartee->book_id = $this->id;
+    }
+
+    //Create Partee
+    $partee = new \App\Services\ParteeService();
+    if ($partee->conect()) {
+
+      $result = $partee->getCheckinLink($this->customer->email, strtotime($this->start));
+
+      if ($result) {
+
+        $BookPartee->link = $partee->response->checkInOnlineURL;
+        $BookPartee->partee_id = $partee->response->id;
+        $BookPartee->status = 'sent';
+        $BookPartee->log_data = $BookPartee->log_data . "," . time() . '- Sent';
+        $BookPartee->save();
+      } else {
+        $BookPartee->status = 'error';
+        $BookPartee->log_data = $BookPartee->log_data . "," . time() . '-' . $partee->response;
+        $BookPartee->save();
+      }
+    } else {
+
+      $BookPartee->status = 'error';
+      $BookPartee->log_data = $BookPartee->log_data . "," . time() . '-' . $partee->response;
+      $BookPartee->save();
+    }
+  }
+
+  public function get_ff_status($showAll = true) {
+    $result = [
+        'name' => '',
+        'icon' => null
+    ];
+
+    switch ($this->ff_status) {
+      case 0:
+        if ($showAll) {
+          $result = [
+              'name' => 'No Gestionada',
+              'icon' => asset('/img/miramarski/ski_icon_status_transparent.png')
+          ];
+        }
+        break;
+      case 1:
+        $result = [
+            'name' => 'Cancelada',
+            'icon' => asset('/img/miramarski/ski_icon_status_grey.png')
+        ];
+        break;
+      case 2:
+        $result = [
+            'name' => 'No Cobrada',
+            'icon' => asset('/img/miramarski/ski_icon_status_red.png')
+        ];
+        break;
+      case 3:
+        $result = [
+            'name' => 'Confirmada',
+            'icon' => asset('/img/miramarski/ski_icon_status_green.png')
+        ];
+        break;
+      case 4:
+        $result = [
+            'name' => 'Comprometida',
+            'icon' => asset('/img/miramarski/ski_icon_status_orange.png')
+        ];
+        break;
+    }
+    return $result;
+  }
+
+  public function getPriceBook($dStart,$dEnd,$roomID,$cant=1) {
+
+    $oRoom = Rooms::find($roomID);
+    $return = [
+      'status'        => 'error',  
+      'msg'           => 'error',  
+      'price'         => 0,  
+      'cost'          => 0,
+      'parking_cost'  => 0,
+      'parking_price' => 0,
+      'cost_lux'      => 0,
+      'price_lux'     => 0,
+      'cost_limp'     => 0,
+      'price_limp'    => 0,
+      't_cost'        => 0,
+      't_price'       => 0,
+      't_benef'       => 0,
+      'benef'         => 0,
+    ];
+    if (!$oRoom){
+      $return['msg'] = "Apto no encontrado";
+      return $return;
+    }
+    if ($oRoom->state != 1){
+      $return['msg'] = 'Apto '.$oRoom->name.' no Habilitado';
+      return $return;
+    }
+    
+    //Settings additionals
+    $additinals = $this->addtionals();
+    if ($oRoom->luxury){
+      $return['cost_lux']  = $additinals['luxury_book_cost'];
+      $return['price_lux'] = $additinals['luxury_book_price'];
+    }
+    $return['parking_cost']  = $additinals['parking_book_cost'];
+    $return['parking_price'] = $additinals['parking_book_price'];
+    
+    //Extras
+    $limp = $this->priceLimpieza($oRoom->sizeApto);
+    $return['cost_limp']  = $limp['cost_limp'];
+    $return['price_limp'] = $limp['price_limp'];
+   
+ 
+    // check cant people
+    $minOcu = $oRoom->minOcu;
+    if ($cant<$minOcu){
+      $cant = $minOcu;
+    }
+
+    if ($cant>$oRoom->maxOcu){
+      $return['msg'] = "Supera la ocupación máxima";
+      return $return;
+    }
+    
+    $season_1 = Seasons::where('start_date','<=',$dStart)->where('finish_date','>=',$dStart)->first();
+    $book = array();
+    if ($season_1){
+        $finish_date = $season_1->finish_date;
+        if ($finish_date>=$dEnd){
+           $days = $this->getDaysBetween($dStart, $dEnd);
+           $book[] = [
+               'days' => $days,
+               'type' => $season_1->type,
+               'start_date' => $season_1->start_date,
+               'finish_date' => $season_1->finish_date
+           ];
+        } else {
+           $season_2 = Seasons::where('start_date','<=',$dEnd)->where('finish_date','>=',$dEnd)->first();
+           if ($season_2){
+            $book[] = [
+                'days' => $this->getDaysBetween($dStart, $finish_date),
+                'type' => $season_1->type,
+                'start_date' => $season_1->start_date,
+                'finish_date' => $season_1->finish_date
+            ];
+            //days+1 -> start in the first night
+            $book[] = [
+                'days' => $this->getDaysBetween($season_2->start_date, $dEnd)+1,
+                'type' => $season_2->type,
+                'start_date' => $season_2->start_date,
+                'finish_date' => $season_2->finish_date
+            ];
+           }
+         }
+    }
+    
+    $totalDays = 0;
+    if (count($book)>0){
+      foreach ($book as $item){
+        $priceNight = Prices::where('season',$item['type'])
+                ->where('occupation',$cant)->first();
+        if (!$priceNight){
+          $return['msg'] = "Precios no encontrados";
+          return $return;
+        }
+        
+        $return['price']+= $priceNight->price*$item['days'];
+        $return['cost'] += $priceNight->cost*$item['days'];
+        $totalDays      += $item['days'];
+      }
+    } else{
+      $return['msg'] = "Precios no encontrados";
+      return $return;
+    }
+    $return['parking_cost']  *= $totalDays;
+    $return['parking_price'] *= $totalDays;
+    
+    //calc totals
+    $return['t_price'] = $return['price']+$return['parking_price']+$return['price_lux']+$return['price_limp'];
+    $return['t_cost']  = $return['cost']+$return['parking_cost']+$return['cost_lux']+$return['cost_limp'];
+    $return['t_benef'] = $return['t_price'] - $return['t_cost'];
+    $return['benef']   = (1-($return['t_cost'] / $return['t_price'])) * 100;
+              
+    $return['status'] = 'ok';
+    return $return;
+  }
+  
+  private function getDaysBetween($d1,$d2) {
+        $datetime1 = date_create($d1);
+        $datetime2 = date_create($d2);
+        $interval = date_diff($datetime1, $datetime2);
+        return  $interval->format('%a');
+  }
+  
+  private function addtionals() {
+    $specials = ['parking_book_cost',
+        'parking_book_price',
+        'luxury_book_cost',
+        'luxury_book_price'];
+    $return = [
+        'parking_book_cost' => 0,
+        'parking_book_price' => 0,
+        'luxury_book_cost' => 0,
+        'luxury_book_price' => 0,
+        ];
+    $settingS = \App\Settings::whereIn('key', $specials)->get();
+    if ($settingS){
+      foreach ($settingS as $s){
+        $return[$s->key] = floatval($s->value);
+      }
+    }
+    
+    return $return;
+    
+  }
+  
+  private function priceLimpieza($sizeApto) {
+    
+    if ($sizeApto == 1 || $sizeApto == 5){
+      $oExtra = \App\Extras::find(2);
+    }
+    if ($sizeApto == 2 || $sizeApto == 6){
+      $oExtra = \App\Extras::find(1);
+    }
+    if ($sizeApto == 3 || $sizeApto == 4 || $sizeApto == 7 || $sizeApto == 8){
+      $oExtra = \App\Extras::find(3);
+    }
+    
+    if ($oExtra){
+      return  [
+          'price_limp'=>floatval($oExtra->price),
+          'cost_limp'=>floatval($oExtra->cost)
+          ];
+    } 
+    
+    return  [
+          'price_limp'=>0,
+          'cost_limp'=>0
+          ];
+  }
 }

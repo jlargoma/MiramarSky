@@ -31,6 +31,7 @@ setlocale(LC_TIME, "es_ES");
     </div>
   </div>
 </div>
+<?php if (Auth::user()->role !== "limpieza"): ?>
 <div class="container-fluid">
   <div class="row bg-white push-30">
     <div class="col-lg-8 col-md-12 col-xs-12 push-20">
@@ -38,6 +39,7 @@ setlocale(LC_TIME, "es_ES");
     </div>
   </div>
 </div>
+<?php endif ?>
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-8 col-xs-12">

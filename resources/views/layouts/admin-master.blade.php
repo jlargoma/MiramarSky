@@ -53,8 +53,6 @@
         ?>
     </head>
     <body class="fixed-header   windows desktop pace-done sidebar-visible menu-pin" style="padding-top:0px!important">
-        <!-- <body class="fixed-header dashboard  windows desktop sidebar-visible pace-done menu-pin"> -->
-        <?php if (preg_match('/subadmin/i', Auth::user()->role) || preg_match('/admin/i', Auth::user()->role) || preg_match('/agente/i', Auth::user()->role)): ?>
             <nav class="navbar navbar-inverse" role="navigation" style="<?php if (env('APP_APPLICATION') == "riad"): ?>background-color: #6d5cae!important; <?php else:?> background-color: #295d9b!important;<?php endif; ?>">
             <?php if (env('APP_APPLICATION') == "riad"): ?>
                 <a class="navbar-brand" href="{{ route('dashboard.planning') }}" style="max-width: 155px;">
@@ -73,82 +71,7 @@
                 </button>
             </div>
             <div class="navbar-collapse collapse" style="<?php if (env('APP_APPLICATION') == "riad"): ?>background-color: #6d5cae!important; <?php else:?> background-color: #295d9b!important;<?php endif; ?>">
-                <ul class="nav navbar-nav navbar-left">
-
-                    <li class="{{ Request::path() == 'admin/reservas' ? 'active' : '' }}"><a href="{{ url('admin/reservas') }}"
-                                                                                             class="detailed">Reservas</a></li>
-
-                    <?php if ( Auth::user()->role == "admin" || Auth::user()->role == "subadmin"): ?>
-                        <li class="{{ Request::path() == 'admin/liquidacion'  ? 'active' : '' }}">
-                            <a href="{{ url('admin/liquidacion') }}" class="detailed">Liq. por reservas</a>
-                        </li>
-
-                        <li class="{{ Request::path() == 'admin/pagos-propietarios'  ? 'active' : '' }}">
-                            <a href="{{ url('admin/pagos-propietarios') }}" class="detailed">Pagos a propietarios</a>
-                        </li>
-
-
-                        <li class="{{ Request::path() == 'admin/contabilidad'  ? 'active' : '' }}">
-                            <a href="{{ url('admin/contabilidad') }}" class="detailed">Contabilidad</a>
-                        </li>
-                    <?php endif ?>
-                    <?php if ( Auth::user()->role == "admin" ): ?>
-                    <li class="{{  (preg_match('/propietario/i',Request::path()))  ? 'active' : '' }}">
-                        <a href="{{ url('admin/propietario/8D') }}" class="detailed">Area Propietario</a>
-                    </li>
-
-                    <li class="{{ Request::path() == 'admin/precios' ? 'active' : '' }}">
-                        <a href="{{ url('admin/precios') }}" class="detailed">Precios y temporadas</a>
-                    </li>
-
-                    <li class="{{ Request::path() == 'admin/usuarios' ? 'active' : '' }}">
-                        <a href="{{ url('admin/usuarios') }}"  class="detailed">Usuarios</a>
-                    </li>
-
-                    <li class="{{ Request::path() == 'admin/clientes' ? 'active' : '' }}">
-                        <a href="{{ url('admin/clientes') }}" class="detailed">Clientes</a>
-                    </li>
-
-                    <li class="{{ Request::path() == 'admin/apartamentos' ? 'active' : '' }}">
-                        <a href="{{ url('admin/apartamentos') }}" class="detailed">Aptos</a>
-                    </li>
-
-                    <li class="{{ Request::path() == 'admin/facturas' ? 'active' : '' }}">
-                        <a href="{{ url('admin/facturas') }}"  class="detailed">Facturas</a>
-                    </li>
-                    @if (config('show_ASN'))
-                    <li class="{{ Request::path() == 'admin/encuestas' ? 'active' : '' }}">
-                        <a href="{{ url('admin/encuestas') }}" class="detailed">Encuestas</a>
-                    </li>
-                    @endif
-
-<!--                    <li class="{{ Request::path() == 'admin/supermercado' ? 'active' : '' }}">
-                        <a href="#" class="detailed">Super</a>
-                    </li>-->
-
-                    <li class="{{ Request::path() == 'admin/forfaits' ? 'active' : '' }}">
-                      <a href="{{ url('admin/forfaits') }}" class="detailed">Forfaits</a>
-                    </li>
-
-                    <li class="{{ Request::path() == 'admin/settings' ? 'active' : '' }}">
-                        <a href="{{ url('admin/settings') }}" class="detailed">Settings</a>
-                    </li>
-                    {{--<li class="{{ Request::path() == 'admin/stripe-connect' ? 'active' : '' }}">--}}
-                        {{--<a href="{{ url('admin/stripe-connect') }}" class="detailed">Stripe Connect</a>--}}
-                    {{--</li>--}}
-                    
-                    <li class="{{ Request::path() == 'admin/settings_msgs' ? 'active' : '' }}">
-                        <a href="{{ url('admin/settings_msgs') }}" class="detailed">Txt Email</a>
-                    </li>
-                    <li class="{{ Request::path() == 'admin/galleries' ? 'active' : '' }}">
-                        <a href="{{ url('admin/galleries') }}" class="detailed">Galerías</a>
-                    </li>
-                    <li class="{{ Request::path() == 'admin/limpiezas' ? 'active' : '' }}">
-                        <a href="{{ url('admin/limpiezas/') }}" class="detailed">Limpiezas</a>
-                    </li>
-                    <?php endif ?>
-
-                </ul>
+               @include('layouts._nav_links')
                 <ul class="nav navbar-nav navbar-right">
                     <li style="color:white"><a href="#"
                                                style="pointer-events: none"><?php echo ucwords(Auth::user()->name) ?></a></li>
@@ -162,7 +85,6 @@
             <?php endif ?>
 
         </nav>
-        <?php endif ?>
         <div class="page-container ">
             <div class="page-content-wrapper ">
 

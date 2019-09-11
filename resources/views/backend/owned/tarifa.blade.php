@@ -69,7 +69,8 @@
                                 </td>
                                 <?php foreach ($seasons as $key => $season): ?>
                                     <?php $price =  \App\Prices::where('occupation', $i)->where('season', $season->id )->first(); ?>
-                                    <?php if ( count($price) > 0): ?>
+                                    <?php 
+                                    if ($price): ?>
                                         <td  class ="text-center font-s16 font-w600" style="padding: 10px 5px" colspan="3"> 
                                             <?php echo round( $price->cost ); ?>€
                                         </td>

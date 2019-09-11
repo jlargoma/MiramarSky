@@ -110,9 +110,7 @@ setlocale(LC_TIME, "es_ES");
 										{
 											$titulo =
 												$calendars[$x]->customer['name'].'&#10'.
-												'Pax-real '.$calendars[$x]->real_pax.'&#10;'.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;'.
-												'PVP:'.$calendars[$x]->total_price.'&#10'.
-												$agency;
+												'Pax-real '.$calendars[$x]->real_pax.'&#10;'.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;';
 										} else
 										{
 											$titulo =
@@ -142,9 +140,7 @@ setlocale(LC_TIME, "es_ES");
 									{
 										$titulo =
 											$calendars[$x]->customer['name'].'&#10'.
-											'Pax-real '.$calendars[$x]->real_pax.'&#10;'.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;'.
-											'PVP:'.$calendars[$x]->total_price.'&#10'.
-											$agency;
+											'Pax-real '.$calendars[$x]->real_pax.'&#10;'.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;';
 									} else
 									{
 										$titulo =
@@ -176,9 +172,7 @@ setlocale(LC_TIME, "es_ES");
 									   {
 										   $titulo =
 											   $calendars[$x]->customer['name'].'&#10'.
-											   'Pax-real '.$calendars[$x]->real_pax.'&#10;'.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;'.
-											   'PVP:'.$calendars[$x]->total_price.'&#10'.
-											   $agency;
+											   'Pax-real '.$calendars[$x]->real_pax.'&#10;'.Carbon::createFromFormat('Y-m-d',$calendars[$x]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[$x]->finish)->formatLocalized('%d %b').'&#10;';
 									   } else
 									   {
 										   $titulo =
@@ -213,8 +207,7 @@ setlocale(LC_TIME, "es_ES");
 										$titulo =
 											$calendars[0]->customer['name'].'&#10'.
 											'Pax-real '.$calendars[0]->real_pax.'&#10;'.
-											''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;'.
-											'PVP:'.$calendars[0]->total_price.'&#10'.$agency;
+											''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;';
 									} else
 									{
 										$titulo =
@@ -244,9 +237,7 @@ setlocale(LC_TIME, "es_ES");
 										$titulo =
 											$calendars[0]->customer['name'].'&#10'.
 											'Pax-real '.$calendars[0]->real_pax.'&#10;'.
-											''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;'.
-											'PVP:'.$calendars[0]->total_price.'&#10'.$agency;
-									} else
+											''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;';									} else
 									{
 										$titulo =
 											$calendars[0]->customer['name'].'&#10'.
@@ -274,8 +265,7 @@ setlocale(LC_TIME, "es_ES");
 									    $titulo =
 										    $calendars[0]->customer['name'].'&#10'.
 										    'Pax-real '.$calendars[0]->real_pax.'&#10;'.
-										    ''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;'.
-										    'PVP:'.$calendars[0]->total_price.'&#10'.$agency;
+										    ''.Carbon::createFromFormat('Y-m-d',$calendars[0]->start)->formatLocalized('%d %b').' - '.Carbon::createFromFormat('Y-m-d',$calendars[0]->finish)->formatLocalized('%d %b').'&#10;';
 								    } else
 								    {
 									    $titulo =

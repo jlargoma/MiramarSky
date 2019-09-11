@@ -1,61 +1,96 @@
 <?php
 
-/**
- * GENERAL
- */
-Route::group(['middleware' => 'authAdmin','prefix' => 'admin',], function () {
-    Route::get('/galleries', 'RoomsController@galleries');
-    //LIMPIEZA
-    Route::get('/limpieza', 'LimpiezaController@index');
-    
-    Route::get('/forfaits/deleteRequest/{id}','FortfaitsController@deleteRequest');
-    Route::get('/reservas/ff_status_popup/{id}', 'BookController@getBookFFData');
-    Route::get('/reservas/ff_change_status_popup/{id}/{status}', 'BookController@updateBookFFStatus');
-    Route::get('/book-logs/{id}', 'BookController@printBookLogs');
-    Route::post('/response-email', 'BookController@sendEmailResponse');
-    Route::get('/book-logs/get/{id}', 'BookController@getBookLog');
-});
-/**
- * FORFAITS
- */
-Route::group(['middleware' => 'authAdmin','prefix' => 'admin/aptos',], function () {
-  Route::get('/edit-room-descript/{id}','RoomsController@editRoomDescript');
-  Route::get('/edit-descript/{id}', 'RoomsController@editDescript');
-  Route::post('/edit-room-descript', 'RoomsController@updRoomDescript');
-  Route::post('/edit-descript', 'RoomsController@updDescript');
-});
-Route::group(['middleware' => 'authAdmin','prefix' => 'admin/forfaits',], function () {
-Route::get('/{class?}', 'ForfaitsItemController@index');
-Route::get('/edit/{id}', 'ForfaitsItemController@edit');
-Route::post('/upd', 'ForfaitsItemController@update');
-Route::get('/createItems', 'ForfaitsItemController@createItems');
-Route::get('/getBookItems/{bookingID}', 'ForfaitsItemController@getBookingFF');
-Route::post('/loadComment', 'ForfaitsItemController@loadComment');
-Route::post('/sendBooking', 'ForfaitsItemController@sendBooking');
-});
-Route::get('/api/forfaits/class', 'ForfaitsItemController@api_getClasses');
-Route::get('/api/forfaits/categ', 'ForfaitsItemController@api_getCategories');
-Route::get('/api/forfaits/items/{id}', 'ForfaitsItemController@api_items');
-Route::post('/api/forfaits/getCart', 'ForfaitsItemController@getCart');
-Route::post('/api/forfaits/checkout', 'ForfaitsItemController@checkout');
-Route::post('/api/forfaits/forfaits', 'ForfaitsItemController@getForfaitUser');
-Route::get('/api/forfaits/bookingData/{bID}/{uID}', 'ForfaitsItemController@bookingData');
-Route::get('/api/forfaits/getCurrentCart/{bID}/{uID}', 'ForfaitsItemController@getCurrentCart');
-Route::post('/api/forfaits/sendConsult', 'ForfaitsItemController@sendEmail');
-Route::get('/api/forfaits/getSeasons', 'ForfaitsItemController@getForfaitSeasons');
-
-
-
-Route::get('/get_mails', 'ChatEmailsController@index');
-Route::get('/send_mails_test', function(){
+Route::group(['middleware' => ['auth','role:admin|limpieza'], 'prefix' => 'admin',], function () {
   
-  \Illuminate\Support\Facades\Mail::send('backend.emails.base', [
-            'mailContent' => 'test  Filtro Emails',
-            'title'       => 'test Filtro Emails'
-        ], function ($message) use ($book, $subject) {
-            $message->from('reservas@apartamentosierranevada.net');
-            $message->to('pingodevwe@gmail.com');
-            $message->subject('test emails');
-        });
+  Route::get('/reservas/api/getTableData', 'BookController@getTableData');
+  
+  //LIMPIEZA
+  Route::get('/limpieza', 'LimpiezaController@index');
+  Route::get('/limpiezas/{year?}','LiquidacionController@limpiezas');
+  Route::post('/limpiezasLst/','LiquidacionController@get_limpiezas');
+  Route::post('/limpiezasUpd/','LiquidacionController@upd_limpiezas');
+  Route::post('/limpiezas/pdf','LiquidacionController@export_pdf_limpiezas');
+  
+  
 });
+Route::group(['middleware' => ['auth','role:admin|propietario'], 'prefix' => 'admin',], function () {
+  //Facturas
+  Route::get('/facturas/ver/{id}', 'InvoicesController@view');
+  Route::get('/facturas/descargar/{id}', 'InvoicesController@download');
+  Route::get('/facturas/descargar-todas', 'InvoicesController@downloadAll');
+  Route::get('/facturas/descargar-todas/{year}/{id}', 'InvoicesController@downloadAllProp');
+  
+ //Propietario
+  Route::get('/propietario/bloquear', 'OwnedController@bloqOwned');
+  Route::get('/propietario/{name?}/operativa', 'OwnedController@operativaOwned');
+  Route::get('/propietario/{name?}/tarifas', 'OwnedController@tarifasOwned');
+  Route::get('/propietario/{name?}/descuentos', 'OwnedController@descuentosOwned');
+  Route::get('/propietario/{name?}/fiscalidad', 'OwnedController@fiscalidadOwned');
+  Route::get('/propietario/{name?}/facturas', 'OwnedController@facturasOwned');
+  Route::get('/propietario/{name?}', 'OwnedController@index');
+  Route::get('/propietario/create/password/{email}', 'UsersController@createPasswordUser');
+  Route::post('/propietario/create/password/{email}', 'UsersController@createPasswordUser');
+  
+});
+
+/** Moved form routers */
+Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
+  Route::get('/rooms/api/getImagesRoom/{id?}/{bookId?}', 'RoomsController@getImagesRoom');
+  
+  Route::get('/reservas/help/calculateBook', function () {
+    return view('backend.planning._calculateBook');
+  });
+  Route::get('/update/seasonsDays/{val}', 'RouterActionsController@seasonsDays');
+  Route::get('/update/percentBenef/{val}', 'LiquidacionController@changePercentBenef');
+  Route::post('/reservas/help/getTotalBook', 'BookController@getTotalBook');
+  Route::get('/delete/nofify/{id}', 'RouterActionsController@nofify');
+  Route::get('/reservas/changeSchedule/{id}/{type}/{schedule}', 'RouterActionsController@changeSchedule');
+  Route::get('/reservas/restore/{id}/', 'RouterActionsController@restore');
+  Route::get('/books/{idBook}/comments/{type}/save', 'BookController@saveComment');
+  Route::get('/liquidation/searchByName', 'LiquidacionController@searchByName');
+  Route::get('/liquidation/searchByRoom', 'LiquidacionController@searchByRoom');
+  Route::get('/liquidation/orderByBenefCritico', 'LiquidacionController@orderByBenefCritico');
+  Route::get('/apartamentos/rooms/getTableRooms/', 'RouterActionsController@getTableRooms');
+  Route::get('/rooms/search/searchByName', 'RoomsController@searchByName');
+  Route::get('/rooms/getUpdateForm', 'RoomsController@getUpdateForm');
+  Route::get('/rooms/cupos', 'RoomsController@getCupos');
+  Route::get('/apartamentos/fast-payment', 'RoomsController@updateFastPayment');
+  Route::get('/apartamentos/update-order-payment', 'RoomsController@updateOrderFastPayment');
+  Route::get('/sizeAptos/update-num-fast-payment', 'RoomsController@updateSizeAptos');
+  Route::get('/paymentspro/delete/{id}', 'RouterActionsController@paymentspro_del');
+  Route::get('/customer/delete/{id}','RouterActionsController@customer_delete');
+  Route::get('/customer/change/phone/{id}/{phone}','RouterActionsController@customer_change');
+  
+  Route::get('/sendImagesRoomEmail', 'RoomsController@sendImagesRoomEmail');
+  Route::get('/books/getStripeLink/{book}/{importe}','RouterActionsController@books_getStripeLink');
+
+  Route::get('/sales/updateLimpBook/{id}/{importe}','RouterActionsController@sales_updateLimpBook');
+  Route::get('/sales/updateExtraCost/{id}/{importe}','RouterActionsController@sales_updateExtraCost');
+  Route::get('/sales/updateCostApto/{id}/{importe}','RouterActionsController@sales_updateCostApto');
+  Route::get('/sales/updateCostPark/{id}/{importe}','RouterActionsController@sales_updateCostPark');
+  Route::get('/sales/updateCostTotal/{id}/{importe}','RouterActionsController@sales_updateCostTotal');
+  Route::get('/sales/updatePVP/{id}/{importe}','RouterActionsController@sales_updatePVP');
+  Route::get('/customers/searchByName/{searchString?}','RouterActionsController@customers_searchByName');
+  Route::get('/invoices/searchByName/{searchString?}','RouterActionsController@invoices_searchByName');
+  Route::get('/settings', 'SettingsController@index');
+  Route::post('/settings-general', 'SettingsController@upd_general')->name('settings.gral.upd');
+  Route::get('/settings_msgs', 'SettingsController@messages')->name('settings.msgs');
+  Route::post('/settings_msgs', 'SettingsController@messages_upd')->name('settings.msgs.upd');
+  Route::post('/specialSegments/create', 'SpecialSegmentController@create');
+  Route::get('/specialSegments/update/{id?}', 'SpecialSegmentController@update');
+  Route::post('/specialSegments/update/{id?}', 'SpecialSegmentController@update');
+  Route::get('/specialSegments/delete/{id?}', 'SpecialSegmentController@delete');
+  Route::get('/stripe-connect/{id}/acceptStripeConnect', 'StripeConnectController@acceptStripe');
+  Route::get('/stripe-connect', 'StripeConnectController@index');
+  Route::post('/stripe-connect/create-account-stripe-connect', 'StripeConnectController@createAccountStripeConnect');
+  Route::post('/stripe-connect/load-transfer-form', 'StripeConnectController@loadTransferForm');
+  Route::get('/stripe-connect/load-table-owneds', 'StripeConnectController@loadTableOwneds');
+  Route::post('/stripe-connect/send-transfers', 'StripeConnectController@sendTransfers');
+  //YEARS
+  Route::post('/years/change', 'YearsController@changeActiveYear')->name('years.change');
+  Route::post('/years/change/months', 'YearsController@changeMonthActiveYear')->name('years.change.month');
+  //SETTINGS
+  Route::post('/settings/createUpdate', 'SettingsController@createUpdateSetting')->name('settings.createUpdate');
+});
+
 

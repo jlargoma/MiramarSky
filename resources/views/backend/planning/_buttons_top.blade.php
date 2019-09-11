@@ -13,7 +13,8 @@
           <?php endif; ?>
         </button>
 
-        <button class="btn btn-success btn-cons" type="button" id="stripePayment">
+        <!--<button class="btn btn-success btn-cons" type="button" id="stripePayment" modalLinkStrip>-->
+        <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalLinkStrip">
           <i class="fa fa-money" aria-hidden="true"></i> <span class="bold hidden-mobile">Cobros TPV</span>
         </button>
 
@@ -21,7 +22,7 @@
           <i class="fa fa-calendar-alt" aria-hidden="true"></i><span class="bold hidden-mobile">Calcular reserva</span>
         </button>
 
-       <button class="btn btn-orange btn-cons  btn-tables btn-blink"  type="button" data-type="checkin">
+       <button class="btn btn-orange btn-cons  btn-tables btn-blink"  type="button" data-type="ff_pdtes">
             <span class="bold">FF PDTES</span>
             <span class="numPaymentLastBooks show"><?php echo $ff_pendientes; ?></span>
         </button>
@@ -65,4 +66,5 @@
       </button>
     <?php endif ?>
   </div>
+</div>
 </div>

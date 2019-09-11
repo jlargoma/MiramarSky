@@ -6,7 +6,7 @@ use \Carbon\Carbon;
 ?>
 @extends('layouts.master_onlybody')
 
-@section('title')Gracias por tu reserva @endsection
+@section('title')Graicas por tu reserva @endsection
 
 @section('content')
 <style>
@@ -25,12 +25,12 @@ use \Carbon\Carbon;
     </div>
     <div class="text-center">
       <h2 class="text-center ls1" style="line-height: 1; color: white">
-        ¡Muchas gracias por confiar en nosotros!
+        Ups! A ocurrido un error con su pago.
       </h2>
       <br>
       <p style="line-height: 1; color: white">
-        Te enviaremos un email con la confirmación de tu reserva y los pasos a seguir.<br><br>
-	Un saludo
+        Por favor, inténtelo nuevamente<br/><br/>
+        O comuníquese con nosotros.
       </p>
     </div>
   </div>

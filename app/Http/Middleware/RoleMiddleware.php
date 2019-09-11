@@ -21,7 +21,7 @@ class RoleMiddleware
     {
 
         if (!Auth::guest()) {
-            if (!preg_match('/admin/i', Auth::user()->role)) {
+            if ('admin' !== Auth::user()->role) {
                 return redirect()->guest('/admin/reservas');
             }
         }else{

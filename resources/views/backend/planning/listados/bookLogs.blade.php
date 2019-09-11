@@ -1,4 +1,5 @@
 <div class="chat-lst" id="chats">
+  @if($allLogs)
   @foreach($allLogs as $item)
   <div class="chat-item">
     @if($item->user_id)
@@ -50,6 +51,7 @@
     @endif
   </div>
   @endforeach
+@endif
 </div>
   <button class="btn btn-success btn-cons m-b-10" type="button"
           data-toggle="modal" data-target="#modalResponseEmail">Enviar Nueva Respuesta</button>

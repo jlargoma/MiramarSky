@@ -94,9 +94,23 @@
             padding: 0px 7px;
             z-index: 15;
         }
+.btn-nav {
+    color: #fff;
+    padding: 0.35em 0.7em;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+        li.btn-nav.active {
+    background-color: #51b1f7;
+}
     </style>
 @endsection
      
+@section('nav_link')
+
+@include('backend.owned._nav_links')
+
+@endsection
 @section('content')
 
 @include('backend.owned._content')
@@ -212,9 +226,9 @@
 			$('.btn-content').click(function(event) {
 				var url = $(this).attr('data-url');
 				$('button.btn-content').css('background-color', '#10cfbd');
-				$('#btn-back').css('background-color', '#10cfbd');
-				$('.btn-blocks').css('background-color', '#10cfbd');
-				$(this).css('background-color', '#0a7d72');
+//				$('#btn-back').css('background-color', '#10cfbd');
+				$('.btn-nav').removeClass('active');
+				$(this).addClass('active');
 				$.get(url, function(data) {
 
 					$('#content-info').empty().append(data);
@@ -245,9 +259,11 @@
 				$('#content-info-ini').show();
 				$('#content-info').empty();
 
-				$('.btn-blocks').css('background-color', '#10cfbd');
-				$(this).css('background-color', '#0a7d72');
-				$('.btn-content').css('background-color', '#10cfbd')
+				$('.btn-nav').removeClass('active');
+				$(this).addClass('active');
+//				$('.btn-blocks').css('background-color', '#10cfbd');
+//				$(this).css('background-color', '#0a7d72');
+//				$('.btn-content').css('background-color', '#10cfbd')
 				
 
 			});

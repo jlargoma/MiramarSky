@@ -35,7 +35,7 @@ trait BookLogsTraits {
           $userLst[$u->id] = $u->name;
         }
       }
-      $userLst[-1] = "Resp por correo";
+      $userLst[-1] = "No user";
 
       $room_ids = array_unique($room_ids);
       $lstRooms = \App\Rooms::whereIn('id', $room_ids)->get();

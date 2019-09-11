@@ -816,10 +816,7 @@ button#copy-link-stripe {
 .setting .btn{
   padding: 4px 10px;
 }
-.table-striped>tbody>tr:nth-of-type(odd) td{
-      background-color: #48b0f714 !important;
-    border-bottom: 1px solid #b9b9b9;
-}
+
 .py-1{
   padding: 1em 3px !important;
 }

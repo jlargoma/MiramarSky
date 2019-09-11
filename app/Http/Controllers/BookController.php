@@ -301,18 +301,18 @@ class BookController extends AppController
 
                 $book->cost_total = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
 
-                if ($request->input('priceDiscount') == "yes")
+                if ($request->input('priceDiscount') == "yes" || $request->input('price-discount') == "yes")
                 {
                     $discount = \App\Settings::getKeyValue('discount_books');
                     $book->total_price = ($this->getPriceBook($start, $finish, $request->input('pax'), $request->input('newroom')) + $book->sup_park + $book->sup_lujo + $book->sup_limp) - $discount;
                     $book->real_price = ($this->getPriceBook($start, $finish, $request->input('pax'), $request->input('newroom')) + $book->sup_park + $book->sup_lujo + $book->sup_limp) - $discount;
                     $book->ff_status = 4;
+                    $book->has_ff_discount = 1;
                     $book->ff_discount = $discount;
                 }else{
                     $book->total_price = ($this->getPriceBook($start, $finish, $request->input('pax'), $request->input('newroom')) + $book->sup_park + $book->sup_lujo + $book->sup_limp);
                     $book->real_price = ($this->getPriceBook($start, $finish, $request->input('pax'), $request->input('newroom')) + $book->sup_park + $book->sup_lujo + $book->sup_limp);
                 }
-
                 $book->total_ben = $book->total_price - $book->cost_total;
 
                 $book->extraPrice = $extraPrice;
@@ -332,12 +332,19 @@ class BookController extends AppController
                     }
                     if ($request->input('fast_payment') == 1)
                     {
-                        $urlPayland = $this->generateOrderPayment([
-                                                                      'customer_id' => $book->customer->id,
-                                                                      'amount'      => ($book->total_price / 2),
-                                                                      'url_ok'      => route('payland.thanks.payment', ['id' => $book->id]),
-                                                                      'url_ko'      => route('payland.thanks.payment', ['id' => $book->id]),
-                                                                  ]);
+                      $amount = ($book->total_price / 2);
+                      $client_email = 'no_email';
+                      if ($book->customer->email && trim($book->customer->email)){
+                        $client_email = $book->customer->email;
+                      }
+                      $description = "COBRO RESERVA CLIENTE " . $book->customer->name;
+                      $urlPayland = $this->generateOrderPaymentBooking(
+                                    $book->id,
+                                    $book->customer->id,
+                                    $client_email,
+                                    $description,
+                                    $amount
+                                    );
 
                         return view('frontend.bookStatus.bookPaylandPay', ['urlPayland' => $urlPayland]);
                     } else
@@ -498,6 +505,7 @@ class BookController extends AppController
                                 $discount = \App\Settings::getKeyValue('discount_books');
                                 $book->ff_status = 4;
                                 $book->ff_discount = $discount;
+                                $book->has_ff_discount = 1;
                                 $book->total_price = $request->input('total') - $discount;
                                 $book->real_price  = ($this->getPriceBook($start, $finish, $request->input('pax'), $request->input('newroom')) + $book->sup_park + $book->sup_lujo + $book->sup_limp) - $request->input('discount');
                             }else
@@ -606,7 +614,7 @@ class BookController extends AppController
     {
         $computedData = json_decode($request->input('computed_data'));
         $aux          = str_replace('Abr', 'Apr', $request->input('fechas'));
-
+        
         $date = explode('-', $aux);
 
         $start  = Carbon::createFromFormat('d M, y', trim($date[0]))->format('d/m/Y');
@@ -678,7 +686,16 @@ class BookController extends AppController
             $book->schedule    = $request->input('schedule');
             $book->scheduleOut = $request->input('scheduleOut');
             $book->promociones = ($request->input('promociones')) ? $request->input('promociones') : 0;
-
+            
+            $book->has_ff_discount = $request->input('has_ff_discount',0);
+            if (!$book->has_ff_discount && $book->ff_status == 4){
+              $book->ff_status = 0;
+            } else {
+              if ($book->has_ff_discount && $book->ff_status == 0){
+                $book->ff_status = 4;
+              }
+            }
+            $book->ff_discount = $request->input('ff_discount',0);
             $book->total_price = $request->input('total'); // This can be modified in frontend
             $book->real_price  = $computedData->calculated->real_price; // This cannot be modified in frontend
             $book->inc_percent = $book->profit_percentage;
@@ -1386,6 +1403,12 @@ class BookController extends AppController
         $endYear   = new Carbon($year->end_date);
 
 
+        if (Auth::user()->role == "limpieza"){
+          if (!($request->type == 'checkin' || $request->type == 'checkout')){
+            $request->type = 'checkin';
+          }
+        }
+          
         if (Auth::user()->role != "agente")
         {
             $roomsAgents = \App\Rooms::all(['id'])->toArray();
@@ -1453,14 +1476,24 @@ class BookController extends AppController
                                       })->orderBy('created_at', 'DESC')->get();
                 }
                 break;
+            case 'ff_pdtes':
+              
+                $dateX = Carbon::now();
+                $books = \App\Book::where('ff_status',4)
+                        ->where('start', '>=', $dateX->copy()->subDays(3))
+                        ->orderBy('start', 'ASC')->get();
+//                $books = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('start', '<=', $year->end_date)
+//                                  ->where('type_book', 2)->orderBy('start', 'ASC')->get();
+                
+                break;
             case 'checkin':
                 $dateX = Carbon::now();
-                $books = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('start', '<=', $dateX)
+                $books = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('start', '<=', $year->end_date)
                                   ->where('type_book', 2)->orderBy('start', 'ASC')->get();
                 break;
             case 'checkout':
                 $dateX = Carbon::now();
-                $books = \App\Book::where('finish', '>=', $dateX->copy()->subDays(3))->where('finish', '<', $dateX)
+                $books = \App\Book::where('finish', '>=', $dateX->copy()->subDays(3))->where('finish', '<', $year->end_date)
                                   ->where('type_book', 2)->orderBy('finish', 'ASC')->get();
                 break;
             case 'eliminadas':
@@ -1479,7 +1512,7 @@ class BookController extends AppController
 
         $type = $request->type;
 
-        if ($request->type == 'confirmadas' || $request->type == 'checkin')
+        if ($request->type == 'confirmadas' || $request->type == 'checkin' || $request->type == 'ff_pdtes')
         {
             $payment = array();
             foreach ($books as $key => $book)
@@ -1825,8 +1858,10 @@ class BookController extends AppController
                 break;
             case 'checkin':
                 $dateX      = Carbon::now();
-                $booksCount = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('finish', '<=', $dateX)
-                                       ->where('type_book', 2)->count();
+                $booksCount = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('start', '<=', $year->end_date)
+                                  ->where('type_book', 2)->orderBy('start', 'ASC')->count();
+//                $booksCount = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('finish', '<=', $dateX)
+//                                       ->where('type_book', 2)->count();
                 break;
             case 'blocked-ical':
                 $dateX      = Carbon::now();
@@ -1839,8 +1874,10 @@ class BookController extends AppController
                 break;
             case 'checkout':
                 $dateX      = Carbon::now();
-                $booksCount = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('start', '<=', $dateX)
-                                       ->where('type_book', 2)->count();
+                $booksCount = \App\Book::where('finish', '>=', $dateX->copy()->subDays(3))->where('finish', '<', $year->end_date)
+                                  ->where('type_book', 2)->orderBy('finish', 'ASC')->count();
+//                $booksCount = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('start', '<=', $dateX)
+//                                       ->where('type_book', 2)->count();
                 break;
             case 'eliminadas':
                 $dateX      = Carbon::now();
@@ -2045,8 +2082,22 @@ class BookController extends AppController
             $data['costes']['limp'] = \App\Extras::find(3)->cost;//70;
         }
 
+
+        
+        $start  = $request->start;
+        $finish = $request->finish;
+        
+        if(env('APP_ENV') == 'VIRTUAL'){
+          $aux = explode('/', $request->start);
+          $start = $aux[1].'/'.$aux[0].'/'.$aux[2];
+          $finish    = Carbon::createFromFormat('m/d/Y', $request->finish);
+          $aux = explode('/', $request->finish);
+          $finish = $aux[1].'/'.$aux[0].'/'.$aux[2];
+        }
+        
+        
         $data['costes']['parking']   = $this->getCostPark($request->park, $request->noches) * $room->num_garage;
-        $data['costes']['book']      = $this->getCostBook($request->start, $request->finish, $request->pax, $request->room) - $promotion;
+        $data['costes']['book']      = $this->getCostBook($start, $finish, $request->pax, $request->room) - $promotion;
         $data['costes']['lujo']      = $this->getCostLujo($request->lujo);
         $data['costes']['obsequio']  = Rooms::GIFT_COST;
         $data['costes']['agencia']   = (float) $request->agencyCost;
@@ -2054,9 +2105,13 @@ class BookController extends AppController
 
         $data['totales']['parking']  = $this->getPricePark($request->park, $request->noches) * $room->num_garage;
         $data['totales']['lujo']     = $this->getPriceLujo($request->lujo);
-        $data['totales']['book']     = $this->getPriceBook($request->start, $request->finish, $request->pax, $request->room);
+        $data['totales']['book']     = $this->getPriceBook($start, $finish, $request->pax, $request->room);
         $data['totales']['obsequio'] = Rooms::GIFT_PRICE;
 
+        if ($request->input('has_ff_discount',null)){
+          $data['totales']['book'] = $data['totales']['book'] - $request->input('ff_discount_val',0);
+        }
+        
         // If the request comes with a price to show use it
         if (!empty($request->total_price))
         {

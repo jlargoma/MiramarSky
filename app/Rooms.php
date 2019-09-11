@@ -211,30 +211,6 @@ class Rooms extends Model
     }
 
     /**
-     * This little trick because 4 in Extras is obsequio
-     *
-     * @return float
-     */
-    public function getCostCleaningAttribute()
-    {
-        return $this->sizeApto > 3
-            ? self::CLEANING_MAX_COST
-            : $this->extra->cost;
-    }
-
-    /**
-     * This little trick because 4 in Extras is obsequio
-     *
-     * @return float
-     */
-    public function getPriceCleaningAttribute()
-    {
-        return $this->sizeApto > 3
-            ? self::CLEANING_MAX_PRICE
-            : $this->extra->price;
-    }
-
-    /**
      * @return float
      */
     public function getCostGiftAttribute()

@@ -16,7 +16,7 @@ class UsersController extends AppController
     public function index()
     {
         return view('backend/users/index',  [
-                                                'users' => \App\User::whereIn('role', ['admin', 'propietario', 'subadmin'])->get(),
+              'users' => \App\User::whereIn('role', ['admin', 'propietario', 'subadmin','limpieza'])->get(),
                                             ]);
     }
 

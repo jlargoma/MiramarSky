@@ -239,9 +239,17 @@ class OwnedController extends AppController
 			return view('errors.owned-access');
 
 		}
+                $year      = $this->getActiveYear();
+                $startYear = new Carbon($year->start_date);
+                $endYear   = new Carbon($year->end_date);
+                $diff      = $startYear->diffInMonths($endYear);
+//                dd($diff);
 		return view('backend.owned.tarifa', [
 			'mobile' => new Mobile(),
-			'room'   => $room
+			'room'   => $room,
+			'startYear'   => $startYear,
+			'endYear'   => $endYear,
+			'diff'   => $diff,
 		]);
 	}
 
