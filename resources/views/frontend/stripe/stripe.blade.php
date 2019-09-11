@@ -13,13 +13,17 @@ use \Carbon\Carbon;
   html {
     overflow: hidden;
   }
+    .logo-payments{
+    width: 18em;
+    margin: 2em auto;
+  }
 </style>
 <section class="section full-screen nobottommargin" style="background-color: #3f51b5;margin: 0; padding: 0;height: 100vh;" >
   <div class="container clearfix" style="height: 100vh;">
     <div class="row" style="margin-top: 5em;">
       <?php if (env('APP_APPLICATION') == "riad"): ?>
-        <div class="col-md-2 col-md-offset-5">
-          <img src="{{ asset('img/riad/logo_riad.png') }}" alt="" style="width: 100%">
+        <div class="logo-payments">
+          <img src="{{ asset('img/riad/logo_riad_b.png') }}" alt="Riad Puertas del Albaicín" width="100%">
         </div>
       <?php endif; ?>
     </div>

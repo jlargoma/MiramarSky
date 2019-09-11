@@ -15,7 +15,7 @@ class BookOrders extends Migration
       Schema::create('book_orders', function (Blueprint $table) {
           $table->bigIncrements('id');
           $table->unsignedBigInteger('book_id');
-          $table->foreign('book_id')->references('id')->on('book');
+//          $table->foreign('book_id')->references('id')->on('book');
           $table->integer('cli_id')->nullable();
           $table->string('cli_email')->nullable();
           $table->string('subject')->nullable();

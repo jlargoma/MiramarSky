@@ -166,33 +166,4 @@
       } else {
         return redirect('/admin/reservas');
       }
-    })->middleware('auth');
-    
-     Route::get('/alroutes', function () {
- 
-    $routeCollection = Route::getRoutes();
-    $lst = ['web'=>[],'authAdmin'=>[],'auth'=>[]];
-$count = 0;
-foreach ($routeCollection as $value) {
-  if (preg_match('/^admin/i',$value->getPath())){
-//    dd(get_class_methods($value));
-    $middleware = $value->middleware();
-    if (isset($middleware[1])){
-      $lst[$middleware[1]][] = $value->getPath();
-    } else {
-      $lst[$middleware[0]][] = $value->getPath();
-    }
-    $count++;
-  }
-}
-
-foreach ($lst as $k=>$v){
-  echo '<h1>'.$k.' ('. count($v).')'.'</h1>';
-  foreach ($v as $route){
-    echo $route.'<br>';
-  }
-}
-die;
-   })->middleware('auth');
-
-    
+    })->middleware('auth');   

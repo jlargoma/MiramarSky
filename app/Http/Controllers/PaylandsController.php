@@ -250,7 +250,7 @@ class PaylandsController extends AppController
          
           $response = [
                 'status'     => 'true',
-                'total_month' => $total_month,
+                'total_month' => number_format($total_month, 2, ',', '.'),
                 'respo_list' => $respo_list,
             ];
           if ($isAjax){
@@ -369,15 +369,20 @@ class PaylandsController extends AppController
           $totals['ERROR'] += $r;
         }
         
+        $average = $totals['SUCCESS']/$count['SUCCESS'];
+//        $totals['SUCCESS'] = number_format($totals['SUCCESS'], 2, ',', '.');
+                
         $response = [
                 'status'     => 'true',
                 'result' => $result,
-                'today' => $totalToday,
+                'today' => number_format($totalToday, 2, ',', '.'),
+                'average' => number_format($average, 2, ',', '.'),
+                'season' => number_format($totals['SUCCESS'], 2, ',', '.'),
                 'count' => $count,
                 'totals' => $totals,
             ];
           
-//          dd($response);
+
           return response()->json($response);
          
           

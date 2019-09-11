@@ -46,3 +46,9 @@ function encriptID($data){
     }
     return $result;
 }
+
+function assetV($uri){
+  $uri_asset = asset($uri);
+  $v = env('VERSION','v1.0.1');
+  return $uri_asset.'?'.$v;
+}

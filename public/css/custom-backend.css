@@ -82,7 +82,7 @@ td.text-center.pay-status-pagada {
     font-size: 1.2em;
 }
 td.text-center.pay-status-rechazada {
-    background-color: #f8d053;
+    background-color: #f55753;
     color: #fff;
     font-size: 1.2em;
 }
@@ -109,6 +109,9 @@ td.text-center.pay-status-error {
     border-right: none;
 }
 
+.bordered {
+    border: 1px solid #cecece;
+}
 
 @media only screen and (min-width: 426px) {
   .show-mobile{

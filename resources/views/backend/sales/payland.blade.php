@@ -43,7 +43,7 @@ setlocale(LC_TIME, "es_ES");
     <div class="col-md-8 col-xs-12">
       <div class="row push-10">
         <h2 class="text-left font-w800">
-          Resumen liquidación
+          Resumen liquidación: <span id="payland_month_2"></span> € 
         </h2>
       </div>
       <div class="col-md-12 col-xs-12" style="padding-right: 0;">
@@ -75,27 +75,27 @@ setlocale(LC_TIME, "es_ES");
 
     <div class="col-md-4 col-xs-12">
       <div class="row bg-white push-30">
-        <div class="col-md-4 bordered">
-          <div class="card-title text-black hint-text">Hoy</div>
-            <h3 class="text-black font-w400 text-center"><span id="payland_today"></span>€</h3>
+        <div class="col-md-4 bordered text-center">
+          <h4 class="hint-text">Hoy</h4>
+            <h3 ><span id="payland_today"></span>€</h3>
         </div>
-        <div class="col-md-4 bordered">
-          <div class="card-title text-black hint-text">Mes</div>
-          <h3 class="text-black font-w400 text-center"><span id="payland_month"></span>€</h3>
+        <div class="col-md-4 bordered text-center">
+          <h4 class="hint-text">Mes</h4>
+          <h3 ><span id="payland_month"></span>€</h3>
         </div>
-        <div class="col-md-4 bordered">
-          <div class="card-title text-black hint-text">Temporada</div>
-            <h3 class="text-black font-w400 text-center"><span id="payland_temp"></span>€</h3>
+        <div class="col-md-4 bordered text-center">
+          <h4 class="hint-text">Temporada</h4>
+            <h3 ><span id="payland_season"></span>€</h3>
         </div>
-        <div class="col-md-6 bordered">
-          <div class="card-title text-black hint-text">Total de pagos</div>
+        <div class="col-md-6 bordered text-center">
+          <h4 class="hint-text">Total de pagos</h4>
           <div class="p-l-20">
-            <h3 class="text-black font-w400 text-center"><span id="payland_total"></span></h3>
+            <h3 ><span id="payland_total"></span></h3>
           </div>
         </div>
-        <div class="col-md-6 bordered">
-          <div class="card-title text-black hint-text">Promedio por pagos</div>
-            <h3 class="text-black font-w400 text-center"><span id="payland_average"></span>€</h3>
+        <div class="col-md-6 bordered text-center">
+          <h4 class="hint-text">Promedio por pagos</h4>
+            <h3 ><span id="payland_average"></span>€</h3>
         </div>
       </div>
       <div>
@@ -131,6 +131,7 @@ url: '/admin/getOrders-payland',
         $('#ms_' + year + '_' + month).addClass('active');
         $('#tableItems').html('');
         $('#payland_month').text(response.total_month);
+        $('#payland_month_2').text(response.total_month);
         var count = 0;
         $.each((response.respo_list), function(index, val) {
 
@@ -171,9 +172,9 @@ url: '/admin/get-summary-payland',
         if (response.status === 'true'){
           $('#payland_today').text(response.today);
           
-          $('#payland_temp').text(response.totals.SUCCESS)
+          $('#payland_season').text(response.season);
           $('#payland_total').text(response.count.SUCCESS);
-          $('#payland_average').text((response.totals.SUCCESS/response.count.SUCCESS).toFixed(2));
+          $('#payland_average').text(response.average);
           
           
         new Chart(document.getElementById("barChartTemp"), {
@@ -190,15 +191,9 @@ url: '/admin/get-summary-payland',
                         {
                         data: response.result.REFUSED,
                                 label: 'Rechazadas',
-                                borderColor: "rgb(248, 208, 83)",
-                                fill: false
-                        },
-                        {
-                        data: response.result.ERROR,
-                                label: 'error',
                                 borderColor: "rgba(232, 142, 132, 1)",
                                 fill: false
-                        },
+                        }
                         ]
                 },
                 options: {

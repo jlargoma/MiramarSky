@@ -69,6 +69,9 @@
     <li class="{{ Request::path() == 'admin/galleries' ? 'active' : '' }}">
           <a href="{{ url('admin/galleries') }}" class="detailed">Galerías</a>
       </li>
+    <li class="{{ Request::path() == 'admin/orders-payland' ? 'active' : '' }}">
+          <a href="{{ url('admin/orders-payland') }}" class="detailed">PAYLAND</a>
+    </li>
 <?php endif ?>
       <?php if (Auth::user()->role == "limpieza"): ?>
     <li class="{{ Request::path() == 'admin/limpieza' ? 'active' : '' }}">
