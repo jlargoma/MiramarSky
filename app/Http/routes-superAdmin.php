@@ -94,6 +94,11 @@ Route::group(['middleware' => 'authAdmin'], function () {
   Route::get('/get-partee-msg', 'BookController@getParteeMsg');
   Route::post('/ajax/send-partee-finish', 'BookController@finishParteeCheckIn');
   Route::post('/ajax/send-partee-sms', 'BookController@finishParteeSMS');
+  
+  //Paylands
+  Route::get('/admin/orders-payland', 'PaylandsController@lstOrders');
+  Route::post('/admin/getOrders-payland', 'PaylandsController@getOrders');
+  Route::get('/admin/get-summary-payland', 'PaylandsController@getSummary');
 });
 
 /**

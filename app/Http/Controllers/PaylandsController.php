@@ -189,4 +189,252 @@ class PaylandsController extends AppController
 //        return redirect()->route('thanks-you');
     }
     
+    public function getOrders(Request $request, $isAjax = true) {
+      
+      
+      
+       $year = $request->input('year',null);
+          $month = $request->input('month',null);
+          if (!$year || !$month){
+            return response()->json(['status'=>'wrong']);
+          }
+           // First day of a specific month
+          $d = new \DateTime($year.'-'.$month.'-01');
+          $d->modify('first day of this month');
+          $startDate = $d->format('YmdHi');
+           // First day of a specific month
+          $d = new \DateTime($year.'-'.$month.'-01');
+          $d->modify('last day of this month');
+          $endDate = $d->format('YmdHi');
+          
+          
+          $orderPayment = $this->getPaylandApiClient()->getOrders($startDate,$endDate);
+           $respo_list = [];
+          $total_month = 0;
+        if ($orderPayment){
+          if ($orderPayment->message == 'OK')
+          foreach ($orderPayment->transactions as $order){
+            
+            $time = strtotime($order->created);
+            $amount = floatval($order->amount/100);
+              
+            $status = '';
+            switch ($order->status){
+              case 'SUCCESS':
+                $status = 'pagada';
+                $total_month += $amount;
+                break;
+              case 'REFUSED':
+                $status = 'rechazada';
+                break;
+              case 'ERROR':
+                $status = 'error';
+                break;
+            }
+            $date = date('d M H:i',$time);
+            $respo_list[] = [
+                'customer' => $order->customerExtId,
+                'customer_name' => $order->holder,
+                'sourceType' => $order->sourceType,
+                'pan' => $order->pan,
+                'date' => $date,
+                'status' => $status,
+                'amount' => number_format($amount, 2, ',', '.'),
+                'currency' => ($order->currency == 978) ? '€' : '$',
+                
+                  ];
+            
+            
+          }
+        }
+         
+          $response = [
+                'status'     => 'true',
+                'total_month' => $total_month,
+                'respo_list' => $respo_list,
+            ];
+          if ($isAjax){
+            return response()->json($response);
+          }else {
+            return $response;
+          }
+    }
+    
+    
+    /**
+         * Get Limpieza index
+         * 
+         * @return type
+         */
+        public function lstOrders() {
+          
+          $year = $this->getActiveYear();
+          
+          $obj1  = $this->getMonthlyData($year);
+          return view('backend/sales/payland', [
+              'year'=>$year,
+              'selected'=>$obj1['selected'],
+              'months_obj'=> $obj1['months_obj'],
+              'months_label'=> $obj1['months_label'],
+              ]
+
+                  );
+        }
+        
+        public function getSummary() {
+          
+          $year = $this->getActiveYear();
+          $d = str_replace('-','', $year->start_date);
+          $startDate = $d.'0000';
+          $d = str_replace('-','', $year->end_date);
+          $endDate = $d.'0000';
+      
+          $today = date('Ymd');
+          $totalToday = 0;
+          $SUCCESS = $REFUSED = $ERROR = [];
+          // prepare the chart
+          $startYear = new Carbon($year->start_date);
+          $endYear   = new Carbon($year->end_date);
+          $diff      = $startYear->diffInMonths($endYear) + 1;
+          $aux = $startYear->format('n');
+          $auxY = $startYear->format('y');
+          for ($i=0; $i<$diff;$i++){
+            $c_month = $aux+$i;
+            if ($c_month>12){
+              $c_month -= 12;
+            }
+            if ($c_month == 12){
+              $auxY++;
+            }
+            $SUCCESS[$auxY.'_'.$c_month] = 0;
+            $REFUSED[$auxY.'_'.$c_month] = 0;
+            $ERROR[$auxY.'_'.$c_month] = 0;
+          }
+          
+      
+          $orderPayment = $this->getPaylandApiClient()->getOrders($startDate,$endDate);
+          $count = [
+                  'SUCCESS' => 0,
+                  'REFUSED' => 0,
+                  'ERROR' => 0,
+              ];
+          if ($orderPayment){
+          if ($orderPayment->message == 'OK')
+          foreach ($orderPayment->transactions as $order){
+            
+            $time = strtotime($order->created);
+            $month = date('y_n',$time);
+            $amount = $order->amount/100;
+            switch ($order->status){
+              case 'SUCCESS':
+                $SUCCESS[$month] += $amount;
+                if (date('Ymd',$time) == $today){
+                  $totalToday +=$amount;
+                }
+                break;
+              case 'REFUSED':
+                $REFUSED[$month] += $amount;
+                break;
+              case 'ERROR':
+                $ERROR[$month] += $amount;
+                break;
+            }
+            $count[$order->status]++;
+          }
+        }
+        
+        $totals = [
+                'SUCCESS' => 0,
+                'REFUSED' => 0,
+                'ERROR' => 0,
+            ];
+        
+        
+        
+        $result = [
+            'SUCCESS' => [],
+            'REFUSED' => [],
+            'ERROR' => [],
+        ];
+        foreach ($SUCCESS as $r){ 
+          $result['SUCCESS'][] = $r;
+          $totals['SUCCESS'] += $r;
+        }
+        foreach ($REFUSED as $r){ 
+          $result['REFUSED'][] = $r;
+          $totals['REFUSED'] += $r;
+        }
+        foreach ($ERROR as $r){ 
+          $result['ERROR'][] = $r;
+          $totals['ERROR'] += $r;
+        }
+        
+        $response = [
+                'status'     => 'true',
+                'result' => $result,
+                'today' => $totalToday,
+                'count' => $count,
+                'totals' => $totals,
+            ];
+          
+//          dd($response);
+          return response()->json($response);
+         
+          
+        }
+        
+    /**
+         * Get Limpieza Objet by Year Object
+         * 
+         * @param Object $year
+         * @return array
+         */
+        private function getMonthlyData($year) {
+          
+          
+          $startYear = new Carbon($year->start_date);
+          $endYear   = new Carbon($year->end_date);
+          $diff      = $startYear->diffInMonths($endYear) + 1;
+          $thisMonth = date('m');
+          $arrayMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+          $arrayMonthMin = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sept', 'Oct', 'Nov', 'Dic'];
+          //Prepare objets to JS Chars
+          $months_lab = '';
+          $months_val = [];
+          $months_obj = [];
+          $aux = $startYear->format('n');
+          $auxY = $startYear->format('y');
+          $selected = null;
+          for ($i=0; $i<$diff;$i++){
+            $c_month = $aux+$i;
+            if ($c_month>12){
+              $c_month -= 12;
+            }
+            if ($c_month == 12){
+              $auxY++;
+            }
+            
+            if ($thisMonth == $c_month){
+              $selected = "$auxY,$c_month";
+            }
+            
+            $months_lab .= "'".$arrayMonth[$c_month-1]."',";
+            //Only to the Months select
+            $months_obj[] = [
+                'id'    => $auxY.'_'.$c_month,
+                'month' => $c_month,
+                'year'  => $auxY,
+                'name'  => $arrayMonthMin[$c_month-1]
+            ];
+          }
+          
+          return [
+              'year'        => $year->year,
+              'selected'    => $selected,
+              'months_obj'  => $months_obj,
+              'months_label'=> $months_lab,
+              ];
+          
+        }
+        
 }

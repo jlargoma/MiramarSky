@@ -69,3 +69,10 @@ if ($posicion > 0) {
       <a class="text-white btn btn-md btn-primary" href="{{url('/admin/limpiezas/')}}">LIMPIEZAS</a>
     <?php endif ?>
   </div>
+  <div class="btn-contabilidad">
+    <?php if ($url == "orders-payland"): ?>
+      <button class="btn btn-md text-white active"  disabled>PAYLAND</button>
+    <?php else: ?>
+      <a class="text-white btn btn-md btn-primary" href="{{url('/admin/orders-payland')}}">PAYLAND</a>
+    <?php endif ?>
+  </div>

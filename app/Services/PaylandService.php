@@ -65,6 +65,7 @@ class PaylandService
         try
         {
             $response = $this->client->request($method, $url, $options);
+          
             $code     = $response->getStatusCode();
             $response = (string) $response->getBody();
             $response = \GuzzleHttp\json_decode($response);
@@ -73,6 +74,7 @@ class PaylandService
             return $response;
         } catch (\Exception $e)
         {
+          dd($e->getMessage());
             throw new \Exception($e->getMessage());
         }
     }
@@ -94,5 +96,32 @@ class PaylandService
     {
         //dump($this->api. self::$PROCCESS_PAYMENT . $orderToken);
         return $this->api. self::$PROCCESS_PAYMENT . $orderToken;
+    }
+    
+    public function getOrders($startDate,$endDate)
+    {
+        $params['secure'] = false;
+        try
+        {
+          $params = [
+              'start' => $startDate,
+              'end' => $endDate,
+              'terminal' => env('PAYLAND_TERMINAL')
+          ];
+          //readonly
+            $response = $this->call(self::METHOD_GET,'/orders', $params);
+            return $response;
+        } catch (\Exception $e)
+        {
+           return null;
+        }
+    }
+    public function getCurrency($currencyID) {
+      if ($currencyID == 978){
+        return 'EUR';
+      }
+      
+      return '$';
+      
     }
 }
