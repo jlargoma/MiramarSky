@@ -141,15 +141,6 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin'], function () {
   Route::post('/ical/import/saveUrl', 'ICalendarController@saveUrl');
   Route::get('/ical/urls/deleteUrl', 'ICalendarController@deleteUrl');
   Route::get('/ical/urls/getAllUrl/{aptoID}', 'ICalendarController@getAllUrl');
-  Route::get('/ical/{aptoID}', [
-      'as' => 'import-iCalendar',
-      'uses' => 'ICalendarController@getIcalendar'
-  ])->where('aptoID', '[0-9]+');
-
-  Route::get('/ical/importFromUrl', function () {
-    \Artisan::call('ical:import');
-    return redirect('/reservas');
-  });
 
   Route::post('/reservas/stripe/save/fianza', 'StripeController@fianza');
   Route::post('/reservas/stripe/pay/fianza', 'StripeController@payFianza');

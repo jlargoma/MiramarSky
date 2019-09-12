@@ -55,11 +55,11 @@ setlocale(LC_TIME, "es_ES");
         <div class="table-responsive" id="limpieza_table">
           <table class="table">
             <thead >
-            <th class ="text-center bg-complete text-white col-md-2">Fecha</th>
-            <th class ="bg-complete text-white col-md-3">Nombre</th>
-            <th class ="text-right bg-complete text-white col-md-2">Importe</th>
-            <th class ="text-center bg-complete text-white col-md-2">Estado</th>
-            <th class ="text-center bg-complete text-white col-md-3">Card</th>
+            <th class ="text-center bg-complete text-white">Fecha</th>
+            <th class ="bg-complete text-white">Nombre</th>
+            <th class ="text-center bg-complete text-white ">Importe</th>
+            <th class ="text-center bg-complete text-white ">Estado</th>
+            <th class ="text-center bg-complete text-white">Card</th>
             </thead>
             <tbody id="tableItems">
             </tbody>
@@ -136,7 +136,7 @@ url: '/admin/getOrders-payland',
         $.each((response.respo_list), function(index, val) {
 
         count++;
-        var page = Math.ceil(count/10);
+        var page = Math.ceil(count/50);
 
         var row = '';
         var row = '<tr class="payland_page'+page+'" '
@@ -145,7 +145,7 @@ url: '/admin/getOrders-payland',
         
         row += '<td class="text-center">' + val.date + '</td>';
         row += '<td >' + val.customer_name + '<br>' + val.customer + '</td>';
-        row += '<td class="text-right">' + val.amount + ' ' + val.currency + '</td>';
+        row += '<td class="text-center">' + val.amount + ' ' + val.currency + '</td>';
         row += '<td class="text-center pay-status-' + val.status + '">' + val.status + '</td>';
         row += '<td class="text-center">' + val.sourceType + '<br>' + val.pan + '</td>';
         $('#tableItems').append(row);
@@ -168,7 +168,6 @@ $.ajax({
 url: '/admin/get-summary-payland',
         type:'GET',
         success: function(response){
-        console.log(response);
         if (response.status === 'true'){
           $('#payland_today').text(response.today);
           
@@ -215,7 +214,6 @@ url: '/admin/get-summary-payland',
         $('#loadigPage').hide('slow');
         }
 });
-console.log('asdfadf');
 }
 
 var currentPage = 1;
@@ -228,7 +226,6 @@ $(document).ready(function() {
   });
   
   $('#payland_ant').on('click', function(){
-    console.log('payland_ant',currentPage);
     if (currentPage>1){
       $('.payland_page'+currentPage).hide('150');
       $('.payland_page'+(currentPage-1)).show();

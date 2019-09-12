@@ -251,7 +251,7 @@ class PaylandsController extends AppController
           $response = [
                 'status'     => 'true',
                 'total_month' => number_format($total_month, 2, ',', '.'),
-                'respo_list' => $respo_list,
+                'respo_list' => array_reverse($respo_list),
             ];
           if ($isAjax){
             return response()->json($response);

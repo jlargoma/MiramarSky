@@ -26,7 +26,7 @@
         return view('no-allowed');
     });
     
- 
+  
     Route::get('/thanks-you', 'HomeController@thanksYou')->name('thanks-you');
     Route::get('/paymeny-error', 'HomeController@paymenyError')->name('paymeny-error');
     Route::get('/form-demo', 'BookController@demoFormIntegration');
@@ -167,3 +167,14 @@
         return redirect('/admin/reservas');
       }
     })->middleware('auth');   
+    
+    /* ICalendar links */
+    Route::get('/ical/{aptoID}', [
+        'as' => 'import-iCalendar',
+        'uses' => 'ICalendarController@getIcalendar'
+    ])->where('aptoID', '[0-9]+');
+
+    Route::get('/ical/importFromUrl', function () {
+      \Artisan::call('ical:import');
+      return redirect('/reservas');
+    });
