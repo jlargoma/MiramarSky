@@ -7,7 +7,6 @@
 <?php $pagoProp = 0; ?>
 <div class="col-xs-12">
     <h2> <?php echo $room->nameRoom." de (".$room->user->name ?>)</h2>
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 15px; right: 15px; z-index: 9999"><i class="fa fa-close fa-2x"></i></button>
 </div>
 <div class="row">
 
