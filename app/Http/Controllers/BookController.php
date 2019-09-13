@@ -261,6 +261,7 @@ class BookController extends AppController
                 $book->agency        = $request->input('agency',0);
                 $book->PVPAgencia    = ($request->input('agencia')) ? $request->input('agencia') : 0;
 
+                $book->is_fastpayment = ($book->type_book == 99 ) ? 1:0;
                 $room = \App\Rooms::find($request->input('newroom'));
                 if ($room->sizeApto == 1 || $room->sizeApto == 5)
                 {
@@ -411,6 +412,8 @@ class BookController extends AppController
                     $book->type_park           = $request->input('parking');
                     $book->type_luxury         = $request->input('type_luxury');
 
+                    $book->is_fastpayment = ($book->type_book == 99 ) ? 1:0;
+                    
                     if ($request->input('status') == 8)
                     {
                         $book->PVPAgencia  = ($request->input('agencia')) ? $request->input('agencia') : 0;
@@ -2277,24 +2280,37 @@ class BookController extends AppController
             $years[2] => $dataNode
         ];
 
+        $data = [
+                'fp'   => $yearsNode, //  FAST PAYMENT
+                'vd'   => $yearsNode, // V. Directa
+                'b'    => $yearsNode, //Booking
+                't'    => $yearsNode, // Trivago
+                'bs'   => $yearsNode, // Bed&Snow
+                'ab'   => $yearsNode, // AirBnb
+            ];
+            
+        $totals = $yearsNode;
+        
         $agencyBooks    = [
             'years'  => $years,
-            'data'   => [
-                'V. Directa' => $yearsNode,
-                'Booking'    => $yearsNode,
-                'Trivago'    => $yearsNode,
-                'Bed&Snow'   => $yearsNode,
-                'AirBnb'     => $yearsNode
+            'data'   => null,
+            'items'  => [
+                'fp'   => 'FAST PAYMENT',
+                'vd'   => 'V. Directa',
+                'b'    => 'Booking',
+                't'    => 'Trivago',
+                'bs'   => 'Bed&Snow',
+                'ab'   => 'AirBnb',
             ],
-            'totals' => $yearsNode
+            'totals' => null
         ];
         $auxYearOne     = \App\Years::where('year', $years_full[0])->first();
         $auxYearTwo     = \App\Years::where('year', $years_full[1])->first();
         $auxYearThree   = \App\Years::where('year', $years_full[2])->first();
-        $agencyBooksSQL = Book::where("created_at", ">=", $auxYearThree->start_date)->get();
-
+        $agencyBooksSQL = Book::where("created_at", ">=", $auxYearOne->start_date)->get();
         foreach ($agencyBooksSQL as $book)
         {
+
             $book_date = Carbon::createFromFormat('Y-m-d', $book->start);
 
             if ($book_date >= $auxYearOne->start_date && $book_date <= $auxYearOne->end_date)
@@ -2311,55 +2327,66 @@ class BookController extends AppController
 
             if ($book->agency == 0)
             {
-                $agency_name = 'V. Directa';
+              if ($book->type_book == 99 || $book->is_fastpayment) // fastpayment
+                $agency_name = 'fp';
+              else
+                $agency_name = 'vd';
             } elseif ($book->agency == 1)
             {
-                $agency_name = 'Booking';
+                $agency_name = 'b';
             } elseif ($book->agency == 2)
             {
-                $agency_name = 'Trivago';
+                $agency_name = 't';
             } elseif ($book->agency == 3)
             {
-                $agency_name = 'Bed&Snow';
+                $agency_name = 'bs';
             } elseif ($book->agency == 4)
             {
-                $agency_name = 'AirBnb';
+                $agency_name = 'ab';
             }
 
             if (isset($season))
             {
-                $agencyBooks['data'][$agency_name][$season]['total']        += $book->real_price;
-                $agencyBooks['data'][$agency_name][$season]['reservations'] += 1;
-                $agencyBooks['data'][$agency_name][$season]['commissions']  += str_replace(',', '.', $book->PVPAgencia);
+              $payments = DB::table('payments')->select(DB::raw('SUM(import) as total'))->where('book_id', $book->id)->first();
+              if ($payments){
+                $data[$agency_name][$season]['total']        += $payments->total;
+                $data[$agency_name][$season]['reservations'] += 1;
+                $data[$agency_name][$season]['commissions']  += str_replace(',', '.', $book->PVPAgencia);
 
-                $agencyBooks['totals'][$season]['total']        += $book->real_price;
-                $agencyBooks['totals'][$season]['reservations'] += 1;
-                $agencyBooks['totals'][$season]['commissions']  += str_replace(',', '.', $book->PVPAgencia);
+                if (!isset($totals[$season])){
+                  $totals[$season] = ['total' => 0,'reservations' => 0,'commissions' => 0];
+                }
+                $totals[$season]['total']        += $book->real_price;
+                $totals[$season]['reservations'] += 1;
+                $totals[$season]['commissions']  += str_replace(',', '.', $book->PVPAgencia);
+              }
             }
 
         }
 
-        foreach ($agencyBooks['data'] as $agency_name => $seasons)
+        foreach ($data as $agency_name => $seasons)
         {
             foreach ($seasons as $season_key => $season_data)
             {
 
-                $agencyBooks['data'][$agency_name][$season_key]['reservations_rate'] = 0;
-                $agencyBooks['data'][$agency_name][$season_key]['total_rate']        = 0;
+                $data[$agency_name][$season_key]['reservations_rate'] = 0;
+                $data[$agency_name][$season_key]['total_rate']        = 0;
 
-                if ($season_data['reservations'] !== 0 && $agencyBooks['totals'][$season_key]['reservations'] !== 0)
+                if ($season_data['reservations'] !== 0 && $totals[$season_key]['reservations'] !== 0)
                 {
-                    $agencyBooks['data'][$agency_name][$season_key]['reservations_rate'] = round(($season_data['reservations'] / $agencyBooks['totals'][$season_key]['reservations']) * 100, 2);
+                    $data[$agency_name][$season_key]['reservations_rate'] = round(($season_data['reservations'] / $totals[$season_key]['reservations']) * 100, 2);
                 }
 
-                if ($season_data['total'] !== 0 && $agencyBooks['totals'][$season_key]['total'] !== 0)
+                if ($season_data['total'] !== 0 && $totals[$season_key]['total'] !== 0)
                 {
-                    $agencyBooks['data'][$agency_name][$season_key]['total_rate'] = round(($season_data['total'] / $agencyBooks['totals'][$season_key]['total']) * 100, 2);
+                    $data[$agency_name][$season_key]['total_rate'] = round(($season_data['total'] / $totals[$season_key]['total']) * 100, 2);
                 }
 
             }
         }
-
+        $agencyBooks['data'] = $data;
+        $agencyBooks['totals'] = $totals;
+          
         echo json_encode(array(
                              'status'      => 'true',
                              'agencyBooks' => $agencyBooks

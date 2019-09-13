@@ -159,55 +159,55 @@ class Rooms extends Model
 
     static function getPvpByMonth($year,$room_id = NULL)
     {
-        setlocale(LC_TIME, "ES"); 
-        setlocale(LC_TIME, "es_ES");
-	    $arrayMonth = ['Enero' => 0, 'Febrero' => 0, 'Marzo' => 0, 'Abril' => 0, 'Mayo' => 0, 'Junio' => 0, 'Julio' => 0, 'Agosto' => 0, 'Septiembre' => 0, 'Octubre' => 0, 'Noviembre' => 0, 'Diciembre' => 0];
-		$actualYear = \App\Years::where('year', $year)->first();
-	    if (!$actualYear)
-		    return $arrayMonth;
-
-	    $startYear = new Carbon($actualYear->start_date);
-	    $endYear   = new Carbon($actualYear->end_date);
-		$diff = $startYear->diffInMonths($endYear) + 1;
-
-        $dateInit = $startYear->copy();
-        $arrayMonth = array();
-        for ($i=1; $i <= $diff ; $i++) {
-            $arrayMonth[$dateInit->copy()->formatLocalized('%B')] = 0;
-
-            $dateInit->addMonth();
+      
+      $existYear = true;
+      $year = \App\Years::where('year', $year)->first();
+      if (!$year){
+        $existYear = false;
+        $year = Years::where('active', 1)->first();
+      }
+      $startYear = new Carbon($year->start_date);
+      $endYear = new Carbon($year->end_date);
+      $diff = $startYear->diffInMonths($endYear) + 1;
+      $lstMonths = lstMonths($startYear,$endYear);
+      
+      $arrayMonth = [];
+      foreach ($lstMonths as $k=>$v){
+        $arrayMonth[getMonthsSpanish($v['m'])] = 0;
+      }
+      
+      if (!$existYear){
+        return $arrayMonth;
+      }
+      
+      $qry = \App\Book::type_book_sales()
+            ->where('start', '>=', $startYear)
+            ->where('start', '<=', $endYear);
+      
+      if($room_id){
+        $qry->where('room_id',$room_id);
+      }
+      
+      $books = $qry->get();
+      $aux= [];
+      //get PVP by month
+      if ($books){
+        foreach ($books as $key => $book) {
+          $date = date('n', strtotime($book->start));
+          if (!isset($aux[$date])) $aux[$date] = 0;
+          $aux[$date] += $book->total_price;
         }
-
-        $dateInit = $startYear->copy();
-       
-        for ($i=1; $i <= $diff ; $i++) {
-            
-            if($room_id == NULL){
-                $books = \App\Book::whereIn('type_book', [2])
-                                ->where('start', '>', $dateInit->copy()->format('Y-m-d'))
-                                ->where('start', '<=', $dateInit->copy()->addMonth()->format('Y-m-d'))
-                                ->orderBy('start', 'ASC')
-                                ->get();
-            }else{
-                $books = \App\Book::whereIn('type_book', [2])
-                                ->where('start', '>', $dateInit->copy()->format('Y-m-d'))
-                                ->where('start', '<=', $dateInit->copy()->addMonth()->format('Y-m-d'))
-                                ->where('room_id',"=","$room_id")
-                                ->orderBy('start', 'ASC')
-                                ->get();
-            }
-
-            foreach ($books as $book) {
-               $arrayMonth[$dateInit->copy()->formatLocalized('%B')]  +=  $book->total_price;
-            }
-
-            $dateInit->addMonth();
-            
-        }
-        
-         return $arrayMonth;
-        
-
+      }
+      
+      //Load the PVP into Monts list
+      foreach ($lstMonths as $k=>$v){
+        $month = $v['m'];
+        if (isset($aux[$month]))
+          $arrayMonth[getMonthsSpanish($month)] = $aux[$month];
+      }
+      
+      
+      return $arrayMonth;
     }
 
     /**

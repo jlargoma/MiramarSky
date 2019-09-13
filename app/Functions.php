@@ -52,3 +52,27 @@ function assetV($uri){
   $v = env('VERSION','v1.0.1');
   return $uri_asset.'?'.$v;
 }
+
+function lstMonths($startYear,$endYear,$format='ym'){
+  $diff = $startYear->diffInMonths($endYear) + 1;
+  $lstMonths = [];
+  if (is_numeric($diff) && $diff>0){
+    $aux = strtotime($startYear);
+    while ($diff>0){
+      $lstMonths[date($format,$aux)] =['m' => date('n',$aux), 'y' => date('y',$aux)];
+      $aux = strtotime("+1 month", $aux);
+      $diff--;
+    }
+  }
+  
+  return $lstMonths;
+}
+
+function getMonthsSpanish($m,$min=true){
+  if ($min){
+    $arrayMonth = ['','Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sept', 'Oct', 'Nov', 'Dic'];
+  } else {
+    $arrayMonth = ['','Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  }
+  return isset($arrayMonth[$m]) ? $arrayMonth[$m] : '';
+}

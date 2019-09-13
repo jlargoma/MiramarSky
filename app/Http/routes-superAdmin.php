@@ -91,6 +91,7 @@ Route::group(['middleware' => 'authAdmin'], function () {
   Route::get('admin/propietarios/dashboard/{name?}/{year?}', 'OwnedController@index');
   Route::post('/ajax/forfaits/deleteRequestPopup', 'FortfaitsController@deleteRequestPopup');
   Route::post('/ajax/booking/getBookingAgencyDetails', 'BookController@getBookingAgencyDetails');
+  Route::get('/ajax/booking/getBookingAgencyDetails', 'BookController@getBookingAgencyDetails');
   Route::get('/get-partee-msg', 'BookController@getParteeMsg');
   Route::post('/ajax/send-partee-finish', 'BookController@finishParteeCheckIn');
   Route::post('/ajax/send-partee-sms', 'BookController@finishParteeSMS');
@@ -99,6 +100,11 @@ Route::group(['middleware' => 'authAdmin'], function () {
   Route::get('/admin/orders-payland', 'PaylandsController@lstOrders');
   Route::post('/admin/getOrders-payland', 'PaylandsController@getOrders');
   Route::get('/admin/get-summary-payland', 'PaylandsController@getSummary');
+  
+  /* ICalendar links */
+  Route::post('/ical/import/saveUrl', 'ICalendarController@saveUrl');
+  Route::get('/ical/urls/deleteUrl', 'ICalendarController@deleteUrl');
+  Route::get('/ical/urls/getAllUrl/{aptoID}', 'ICalendarController@getAllUrl');
 });
 
 /**
@@ -137,10 +143,6 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin'], function () {
   Route::post('/response-email', 'BookController@sendEmailResponse');
   Route::get('/book-logs/get/{id}', 'BookController@getBookLog');
 
-  /* ICalendar links */
-  Route::post('/ical/import/saveUrl', 'ICalendarController@saveUrl');
-  Route::get('/ical/urls/deleteUrl', 'ICalendarController@deleteUrl');
-  Route::get('/ical/urls/getAllUrl/{aptoID}', 'ICalendarController@getAllUrl');
 
   Route::post('/reservas/stripe/save/fianza', 'StripeController@fianza');
   Route::post('/reservas/stripe/pay/fianza', 'StripeController@payFianza');

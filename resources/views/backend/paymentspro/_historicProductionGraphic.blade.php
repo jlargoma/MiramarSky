@@ -43,7 +43,7 @@ setlocale(LC_TIME, "es_ES");
                         <?php echo "'" . round($value) . "'," ?>
                       <?php endforeach ?>
                     ],
-                    label: '<?php echo $year->year ?>-<?php echo $year->year - 1 ?>',
+                    label: '<?php echo $year->year ?>-<?php echo $year->year + 1 ?>',
                     borderColor: "rgba(54, 162, 235, 1)",
                     fill: false
                   },
@@ -53,8 +53,8 @@ setlocale(LC_TIME, "es_ES");
                         <?php echo "'" . round($value) . "'," ?>
                       <?php endforeach ?>
                       ],
-                       <?php $aux = ($year->year - 1) ?>
-                        label: '<?php echo $aux ?>-<?php echo $aux - 1 ?>',
+                       <?php $aux = ($year->year) ?>
+                        label: '<?php echo $aux-1 ?>-<?php echo $aux  ?>',
                       borderColor: "rgba(104, 255, 0, 1)",
                       fill: false
                     },
@@ -64,8 +64,8 @@ setlocale(LC_TIME, "es_ES");
                         <?php echo "'" . round($value) . "'," ?>
                       <?php endforeach ?>
                       ],
-                       <?php $aux =  ($year->year - 2) ?>
-                        label: '<?php echo $aux ?>-<?php echo $aux - 1 ?>',
+                       <?php $aux =  ($year->year - 1) ?>
+                        label: '<?php echo $aux-1 ?>-<?php echo $aux ?>',
                       borderColor: "rgba(232, 142, 132, 1)",
                       fill: false
                     }

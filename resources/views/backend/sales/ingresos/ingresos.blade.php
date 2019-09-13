@@ -1,6 +1,9 @@
-<?php   use \Carbon\Carbon;  
-setlocale(LC_TIME, "ES"); 
-setlocale(LC_TIME, "es_ES"); 
+<?php
+
+use \Carbon\Carbon;
+
+setlocale(LC_TIME, "ES");
+setlocale(LC_TIME, "es_ES");
 ?>
 @extends('layouts.admin-master')
 
@@ -12,138 +15,129 @@ setlocale(LC_TIME, "es_ES");
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
 
 <style type="text/css">
-.bordered{
-padding: 15px;
-border:1px solid #e8e8e8;
-background: white;
-}
-.form-control{
-		border: 1px solid rgba(0, 0, 0, 0.07)!important;
-	}
+  .bordered{
+    padding: 15px;
+    border:1px solid #e8e8e8;
+    background: white;
+  }
+  .form-control{
+    border: 1px solid rgba(0, 0, 0, 0.07)!important;
+  }
 </style>
 
 @endsection
 
 @section('content')
 <div class="container padding-5 sm-padding-10">
-<div class="row bg-white">
-	<div class="col-md-12 col-xs-12">
-
-		<div class="col-md-3 col-md-offset-3 col-xs-12">
-			<h2 class="text-center">
-				Ingresos
-			</h2>
-		</div>
-		<div class="col-md-2 col-xs-12 sm-padding-10" style="padding: 10px">
-			@include('backend.years._selector')
-			</div>
-		</div>
-	</div>
+  <div class="row bg-white">
+    <div class="col-md-12 col-xs-12">
+      <div class="col-md-3 col-md-offset-3 col-xs-12">
+        <h2 class="text-center">
+          Ingresos
+        </h2>
+      </div>
+      <div class="col-md-2 col-xs-12 sm-padding-10" style="padding: 10px">
+        @include('backend.years._selector')
+      </div>
+    </div>
+  </div>
 </div>
 <div class="container-fluid">
-	<div class="row bg-white push-30">
-		<div class="col-md-12 col-xs-12 push-20">
-			@include('backend.sales._button-contabiliad')
-		</div>
-	</div>
-	
-	<div class="row bg-white push-30">
+  <div class="row bg-white push-30">
+    <div class="col-md-12 col-xs-12 push-20">
+      @include('backend.sales._button-contabiliad')
+    </div>
+  </div>
 
-		<div class="col-xs-12 col-md-12 push-30" >
-			@include('backend.sales.ingresos._formIngreso')
-		</div>
-		<div class="col-xs-12 col-md-12">
-			
-			<div class="row table-responsive" style="border: 0px!important">
-            <table class="table table-striped " style="margin-top: 0;">
-    			<thead>
-    				<tr>
-    					<th class="text-center bg-complete text-white">AREA DE NEGOCIO</th>
-                        <th class="text-center bg-complete text-white">total</th>
-                        <th class="text-center bg-complete text-white"> % </th>
-    					<?php $months = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
-    					<?php for ($i=1; $i <= $diff ; $i++): ?>
-    						<th class="text-center bg-complete text-white">&nbsp;<?php echo $months->formatLocalized('%b') ?>&nbsp;</th>
-    						<?php $months->addMonth() ?>
-    					<?php endfor; ?>
-    				</tr>
-    			</thead>
-    			<tbody>
-    				<?php $totalIngresosYear = 0; ?>
-					<?php foreach ($incomes as $key => $income): ?>
-						<?php $totalIngresosYear += array_sum($income); ?>
-					<?php endforeach ?>
-					<?php $totalIngresosYear += $arrayTotales['totales']; ?>
-					<?php $totalIngresosYear = ($totalIngresosYear > 0) ? $totalIngresosYear : 1?>
+  <div class="row bg-white push-30">
 
-					<tr>
-						<td class="text-center" style="padding: 12px 20px!important">
-							<b>VENTAS TEMPORADA</b>
-						</td>
-                       
-                        <td class="text-center">
-                            <b><?php echo  number_format($arrayTotales['totales'], 0,',','.'); ?>€</b>
-                        </td>
-                        <td class="text-center">
-                        	<?php $percent = ($arrayTotales['totales'] / $totalIngresosYear) *100; ?>
-                            <b><?php echo  number_format( $percent, 2, '.', ',') ?>%</b>
-                        </td>
-						
-						<?php $monthsRooms = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
-    					<?php for ($i=1; $i <= $diff ; $i++): ?>
-    						<td class="text-center" style="padding: 12px 20px!important">
-    							<b><?php echo  number_format($arrayTotales['meses'][$monthsRooms->copy()->format('n')], 0,',','.'); ?>€</b>
-    						</td>
-    						<?php $monthsRooms->addMonth() ?>
-    					<?php endfor; ?>
-						
-					</tr>
-					<?php foreach ($incomes as $key => $income): ?>
-						<tr>
-							<td class="text-center" style="padding: 12px 20px!important">
-								<b><?php echo substr($key, 0, 15) ?>...</b>
-							</td>
-	                       
-	                        <td class="text-center">
-	                        	<?php if (array_sum($income) > 0): ?>
-	                            	<b><?php echo number_format( array_sum($income) , 0,',','.') ?> €</b>
-	                        	<?php else: ?>
-    								<b>----</b>
-    							<?php endif ?>
-	                        </td>
-	                        <td class="text-center">
-	                           <?php $percent = (array_sum($income) / $totalIngresosYear) *100; ?>
-                            	<b><?php echo  number_format( $percent, 2, '.', ',') ?> %</b>
-	                        </td>
-							
-							<?php $monthsRooms = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
-	    					<?php for ($i=1; $i <= $diff ; $i++): ?>
-	    						<td class="text-center" style="padding: 12px 20px!important">
-	    							<?php if ($income[$monthsRooms->copy()->format('n')] > 0): ?>
-	    								<b><?php echo number_format( array_sum($income) , 0,',','.') ?> €</b>
-	    							<?php else: ?>
-	    								<b>----</b>
-	    							<?php endif ?>
-	    							
-	    						</td>
-	    						<?php $monthsRooms->addMonth() ?>
-	    					<?php endfor; ?>
-							
-						</tr>
-					<?php endforeach ?>
-					
-    			</tbody>
-            </table>
+    <div class="col-xs-12 col-md-12 push-30" >
+      @include('backend.sales.ingresos._formIngreso')
+    </div>
+    <div class="col-xs-12 col-md-12">
 
-			</div>
-		</div>
+      <div class="row table-responsive" style="border: 0px!important">
+        <table class="table table-mounts " style="margin-top: 0;">
+          <thead>
+            <tr>
+              <th class="text-center bg-complete text-white">AREA DE NEGOCIO</th>
+              <th class="text-center bg-complete text-white">
+                total<br/>
+                <?php echo number_format( $total, 0, ',', '.' ); ?>€
+              </th>
+              <th class="text-center bg-complete text-white">%</th>
+              @foreach($lstMonths as $k => $month)
+              <th class="text-center bg-complete text-white">
+                {{getMonthsSpanish($month['m'])}}<br/>
+                <?php
+                if (isset($tMonths[$k]) && $tMonths[$k]>0){
+                  echo number_format( $tMonths[$k], 0, ',', '.' ).'€';
+                } else {
+                  echo '--';
+                }
+                ?>
+              </th>
+              @endforeach
+            </tr>
+          </thead>           
+          <tbody>
+            <tr>
+              <td >VENTAS TEMPORADA</td>
+              <td >
+                <?php echo number_format($totalBooks, 0, ',', '.'); ?>€
+              </td>
+              <td>
+                <?php $percent = ($totalBooks / $t_year) * 100; ?>
+                <?php echo number_format($percent, 2, '.', ',') ?>%
+              </td>
+
+              @foreach($lstMonths as $k => $month)
+              <td>
+                <?php
+                if (isset($salesBook[$k]) && $salesBook[$k] > 0) {
+                  echo number_format($salesBook[$k], 0, ',', '.') . '€';
+                } else {
+                  echo '--';
+                }
+                ?>
+              </td>
+              @endforeach
+            </tr>
+            @foreach($aIncomes as $k => $income)
+            <tr>
+              <td>{{$income[0]}}</td>
+              <td>
+              <?php echo number_format($income[1], 0, ',', '.'); ?>€
+              </td>
+              <td>
+                <?php $percent = ($income[1] / $t_year) * 100; ?>
+                <?php echo number_format($percent, 2, '.', ',') ?>%
+              </td>
+              @foreach($lstMonths as $m => $month)
+              <td>
+                <?php
+                if (isset($arrayIncomes[$k]) && isset($arrayIncomes[$k][$m]) && $arrayIncomes[$k][$m] > 0) {
+                  echo number_format($arrayIncomes[$k][$m], 0, ',', '.') . '€';
+                } else {
+                  echo '--';
+                }
+                ?>
+              </td>
+              @endforeach
+            </tr>
+             @endforeach
+          </tbody>
+        </table>
+
+      </div>
+    </div>
 
 
-	</div>
+  </div>
 
-	<div class="row bg-white push-30" id="contentTableExpenses">
-		
-	</div>
+  <div class="row bg-white push-30" id="contentTableExpenses">
+
+  </div>
 
 </div>
 

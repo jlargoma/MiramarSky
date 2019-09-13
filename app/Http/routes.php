@@ -12,7 +12,7 @@
     use App\Http\Controllers\ForfaitsController;
 
     Route::auth();
-    Route::get('/', 'HomeController@index')->middleware('auth');
+    Route::get('/', 'HomeController@index');
 
     Route::get('/partee-checkHuespedes', function () {
         $partee = new \App\Services\ParteeService();
@@ -176,5 +176,5 @@
 
     Route::get('/ical/importFromUrl', function () {
       \Artisan::call('ical:import');
-      return redirect('/reservas');
+      return redirect('/admin/reservas');
     });

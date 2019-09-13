@@ -809,17 +809,22 @@
 </div>
 
 
-<div class="modal fade slide-up disable-scroll in" id="payments" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content-wrapper">
-			<div class="modal-content contentPayments" style="max-height: 650px; overflow-y: auto;">
-
-			</div>
-		</div>
-		<!-- /.modal-content -->
+<div class="modal fade slide-up in" id="payments" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content-wrapper">
+        <div class="modal-content">
+	<div class="modal-header clearfix text-left">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14" style="font-size: 40px!important;color: black!important"></i>
+          </button>
 	</div>
-	<!-- /.modal-dialog -->
-</div>
+	<div class="modal-body">
+          <div class="contentPayments row"></div>
+	</div>
+      </div>
+    </div>
+  </div>
+  </div>
+
 
 
 <div class="modal fade slide-up disable-scroll in" id="bookByRoom" tabindex="-1" role="dialog" aria-hidden="true">

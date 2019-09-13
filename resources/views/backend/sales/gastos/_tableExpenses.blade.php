@@ -25,7 +25,7 @@ setlocale(LC_TIME, "es_ES");
 				Acutalizado a <?php echo Carbon::now()->formatLocalized('%d %b %Y') ?>
 			</td>
 			<td class="text-center" style="padding: 8px 5px!important">
-				COMISION STRIPE
+				COMISION TPV
 			</td>
 			<td class="text-center" style="padding: 8px 5px!important">
 				COMISION

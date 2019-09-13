@@ -359,12 +359,11 @@
                         agencyBookHTML += '</thead><body>';
                         
                         x = 1;
-                        
+                        var agencyName = response.agencyBooks.items;
                         $.each(response.agencyBooks.data,function(agency,seasons){
                             
                             seasons_count = Object.keys(seasons).length;
-        
-                            agencyBookHTML += '<tr class="text-right"><td class="bold" style="font-size:16px !important;">'+agency+'</td>';
+                            agencyBookHTML += '<tr class="text-right"><td class="bold" style="font-size:16px !important;">'+agencyName[agency]+'</td>';
                             
                             a = 1;
                             $.each(seasons,function(season,data){
@@ -384,6 +383,24 @@
                             x++;
                         });
 
+agencyBookHTML += '<tr class="footer-table text-right"><td class="bold" style="font-size:16px !important">Total</td>';
+                            
+a = 1;
+$.each(response.agencyBooks.totals,function(season,data){
+    agencyBookHTML += '<td class="bold" style="font-size:16px !important;">'+formatNumber(toFixed(data.total,0))+' €</td><td style="font-size:16px !important;">'+toFixed(data.total_rate,0)+' %</td><td style="font-size:16px !important;">'+formatNumber(data.reservations)+'</td><td style="font-size:16px !important;">'+toFixed(data.reservations_rate,0)+' %</td><td style="font-size:16px !important;">'+formatNumber(toFixed(data.commissions,0))+' €</td>';
+
+    if(a % 5==0){
+      agencyBookHTML += '<td style="background-color:#48b0f7;"></td>';
+    }else{
+      agencyBookHTML += '<td style="background-color:#48b0f7;" rowspan="'+agencies_count+'"></td>';
+    }
+
+    a++;
+});
+
+agencyBookHTML += '</tr>';
+                            
+                            
                         agencyBookHTML += '<tbody></table>';
                         agencyBookHTML += '</div>';
 

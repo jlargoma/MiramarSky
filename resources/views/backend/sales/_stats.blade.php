@@ -32,7 +32,11 @@
   }
 </style>
 
-<?php $dataStats = \App\http\Controllers\LiquidacionController::getSalesByYear(); ?>
+<?php 
+//$dataStats = \App\http\Controllers\LiquidacionController::getSalesByYear(); 
+$pending = ($vendido-$cobrado);
+if ($pending<0) $pending = 0;
+?>
 <div class="col-lg-3 col-md-6 col-xs-12">
 
   <table class="table table-hover table-striped table-ingresos" style="background-color: #92B6E2">
@@ -43,7 +47,7 @@
       <tr>
         <td class="" style="padding: 5px 8px!important; background-color: #d3e8f7!important;"><b>VENTAS TEMPORADA</b></td>
         <td class=" text-center" style="padding: 5px 8px!important; background-color: #d3e8f7!important;">
-          <b><?php echo number_format(round($dataStats['ventas']), 0, ',', '.') ?> €</b>
+          <b><?php echo number_format(round($vendido), 0, ',', '.') ?> €</b>
         </td>
       </tr>
       <tr style="background-color: #38C8A7;">
@@ -51,13 +55,13 @@
           Cobrado Temporada
         </td>
         <td class="text-white text-center" style="padding: 5px 8px!important;background-color: #38C8A7!important;">
-          <?php echo number_format(round($dataStats['cobrado']), 0, ',', '.') ?> € 
+          <?php echo number_format(round($cobrado), 0, ',', '.') ?> € 
         </td>
       </tr>
       <tr style="background-color: #8e5ea2;">
         <td class="text-white" style="padding: 5px 8px!important;background-color: #8e5ea2!important;">Pendiente Cobro</td>
         <td class="text-white text-center" style="padding: 5px 8px!important;background-color: #8e5ea2!important;">
-          <?php echo number_format(round($dataStats['pendiente']), 0, ',', '.') ?> €
+          <?php echo number_format(round($pending), 0, ',', '.') ?> €
         </td>
       </tr>
     </tbody>
@@ -77,25 +81,25 @@
     <tbody style="background-color: #38C8A7">
       <tr class="tr-cobros">
         <th class="text-white" style="padding: 5px 8px!important;background-color: #38C8A7!important;">TOTAL COBRADO</th>
-        <th class="text-white text-center" style="padding: 5px 8px!important;background-color: #38C8A7!important;"><?php echo number_format(round($dataStats['cobrado']), 0, ',', '.') ?> €
+        <th class="text-white text-center" style="padding: 5px 8px!important;background-color: #38C8A7!important;">
+          <?php echo number_format(round($cobrado), 0, ',', '.') ?> €
         </th>
       </tr>
       <tr class="tr-cobros">
         <td class="text-white" style="padding: 5px 8px!important; background-color: #2ba840!important;">Metalico</td>
         <td class="text-white text-center" style="padding: 5px 8px!important; background-color: #2ba840!important;">
-          <?php echo number_format(round($dataStats['metalico']), 0, ',', '.') ?> €
+          <?php echo number_format(round($metalico), 0, ',', '.') ?> €
         </td>
       </tr>
       <tr class="tr-cobros">
         <td class="text-white" style="padding: 5px 8px!important;background-color: #2ca085!important;">Banco</td>
         <td class="text-white text-center" style="padding: 5px 8px!important;background-color: #2ca085!important;">
-          <?php echo number_format(round($dataStats['banco']), 0, ',', '.') ?> €
+          <?php echo number_format(round($banco), 0, ',', '.') ?> €
         </td>
       </tr>
 
     </tbody>
   </table>
-
   <div>
     <canvas id="pieCobros" style="width: 100%; height: 250px;"></canvas>
   </div>
@@ -141,7 +145,6 @@
 
   </div>
   <div class="row">
-    <?php $dataX = \App\Http\Controllers\LiquidacionController::getSalesByYearByRoomGeneral("", "all") ?>
     <div class="row bg-white push-30">
       <div class="col-md-12">
         <div class="col-md-6 bordered">
@@ -149,7 +152,7 @@
             COBRADO
           </div>
           <div class="p-l-20">
-            <h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['pagado'], 0, ',', '.') ?>€</h3>
+            <h3 class="text-black font-w400 text-center"><?php echo number_format($cobrado, 0, ',', '.') ?>€</h3>
           </div>
         </div>
         <div class="col-md-6 bordered">
@@ -157,7 +160,7 @@
             PENDIENTE
           </div>
           <div class="p-l-20">
-            <h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['total'] - $dataX['pagado'], 0, ',', '.') ?>€</h3>
+            <h3 class="text-black font-w400 text-center"><?php echo number_format($pending, 0, ',', '.') ?>€</h3>
           </div>
         </div>
       </div>
@@ -168,7 +171,7 @@
           </div>
           <div class="p-l-20">
             <h3 class="text-black font-w400 text-center">
-              <?php echo number_format($dataX['metalico_jorge'] + $dataX['metalico_jaime'], 0, ',', '.') ?>€
+              <?php echo number_format($metalico, 0, ',', '.') ?>€
             </h3>
           </div>
         </div>
@@ -177,7 +180,7 @@
             BANCO
           </div>
           <div class="p-l-20">
-            <h3 class="text-black font-w400 text-center"><?php echo number_format($dataX['banco_jorge'] + $dataX['banco_jaime'], 0, ',', '.') ?>€</h3>
+            <h3 class="text-black font-w400 text-center"><?php echo number_format($banco, 0, ',', '.') ?>€</h3>
           </div>
         </div>
       </div>
@@ -199,19 +202,19 @@
           data: [
 
             //Comprobamos si existen cobros
-<?php echo round($dataStats['cobrado']) ?>,
-<?php echo round($dataStats['pendiente']) ?>,
+<?php echo round($cobrado) ?>,
+<?php echo round($pending) ?>,
           ]
         }]
     },
     options: {
       title: {
-        display: true,
-        text: 'Ingresos de la temporada <?php echo ($year->year - 1); ?> - <?php echo $year->year; ?>'
+        display: false,
+        text: 'Ingresos de la temporada'
       }
     }
   });
-
+  
   new Chart(document.getElementById("pieCobros"), {
     type: 'pie',
     data: {
@@ -220,15 +223,15 @@
           backgroundColor: ["#2ba840", "#2ca085"],
           data: [
             //Comprobamos si existen cobros
-<?php echo round($dataStats['metalico']) ?>,
-<?php echo round($dataStats['banco']) ?>,
+<?php echo round($metalico) ?>,
+<?php echo round($banco) ?>,
           ]
         }]
     },
     options: {
       title: {
-        display: true,
-        text: 'Cobros de la temporada <?php echo ($year->year - 1); ?> - <?php echo $year->year; ?>'
+        display: false,
+        text: ''
       }
     }
   });

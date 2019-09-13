@@ -57,78 +57,140 @@ setlocale(LC_TIME, "es_ES");
         <div class="row bg-white">
             <div class="col-lg-8 col-md-8 col-xs-12">
                 <div class="row table-responsive" style="border: 0px!important">
-                    <table class="table">
-                       <thead>
+                    <table class="table  table-striped " style="margin-top: 0;">
+                        <thead>
                         <tr>
                             <th class="text-center bg-complete text-white">Apto</th>
                             <th class="text-center bg-complete text-white">
-                              total<br/>
-                              <?php echo number_format( $t_all_rooms, 0, ',', '.' ); ?>€
+                              total
+                              <?php $totalMain = 0; ?>
+                              <div id="main_total"></div>
                             </th>
                             <th class="text-center bg-complete text-white">%</th>
-                            @foreach($lstMonths as $k => $month)
+							<?php $months = new Carbon($year->start_date); ?>
+							<?php for ($i = 1; $i <= $diff ; $i++): ?>
                             <th class="text-center bg-complete text-white">
-                              {{getMonthsSpanish($month['m'])}}<br/>
-                              <?php
-                              if (isset($t_room_month[$k]) && $t_room_month[$k]>1){
-                                echo number_format( $t_room_month[$k], 0, ',', '.' ).'€';
-                              } else {
-                                echo '--';
-                              }
-                              ?>
-                            </th>
-                            @endforeach
-                            
-                       <tbody>
-                            @foreach($lstRooms as $roomID => $name)
-                            <tr class="text-center">
-                              <td class="text-center" style="padding: 12px 20px!important">{!!$name!!}</td>
-                              <th class="text-center">
-                                <?php
-                                $totalRoom = 0;
-                                if (isset($t_rooms[$roomID]) && $t_rooms[$roomID]>1){
-                                  $totalRoom = $t_rooms[$roomID];
-                                  echo number_format( $totalRoom, 0, ',', '.' ).'€';
-                                } else {
-                                  echo '--';
-                                }
-                                ?>
-                              </th>
-                              <td class="text-center">
+                                <?php echo $months->formatLocalized('%b') ?>
                                 <?php 
-                                $percent = ($totalRoom / $t_all_rooms) * 100; 
-                                echo number_format($percent, 0, ',', '.');
-                                ?>%
-                              </td>
-                              @foreach($lstMonths as $k => $month)
-                              <th class="text-center">
-                              <?php
-                              if (isset($sales_rooms[$roomID]) && isset($sales_rooms[$roomID][$k]) && $sales_rooms[$roomID][$k]>1){
-                                echo number_format( $sales_rooms[$roomID][$k], 0, ',', '.' ).'€';
-                              } else {
-                                echo '--';
-                              }
-                              ?>
+                                  $totalMonth = 0; 
+                                  $aux_year = $months->copy()->format('Y');
+                                  $aux_month = $months->copy()->format('n');
+                                ?>
+                                <?php 
+                                foreach ($rooms as $key => $room):
+                                  if (
+                                    isset($priceBookRoom[$room->id]) 
+                                    && isset($priceBookRoom[$room->id][$aux_year]) 
+                                    && isset($priceBookRoom[$room->id][$aux_year][$aux_month])
+                                  )
+                                  $totalMonth += $priceBookRoom[$room->id][$aux_year][$aux_month];
+                                endforeach; 
+                                ?>
+                                <br/>
+                                <?php 
+                                  if ($totalMonth>0):
+                                    echo number_format( $totalMonth, 0, ',', '.' ).' €';
+                                    $totalMain += $totalMonth;
+                                  else:
+                                    echo '---';
+                                  endif;
+                                ?>
                             </th>
-                              @endforeach
-                            </tr>
-                            @endforeach
-                            </tbody>
+							<?php $months->addMonth() ?>
+							<?php endfor; ?>
+
+
                         </tr>
                         </thead>
+                        <tbody>
+						<?php $totalAllRoom = 0; ?>
+
+						<?php foreach ($rooms as $key => $room): ?>
+                            <?php $totalRoom = 0; ?>
+                            <?php $monthsRooms = new Carbon($year->start_date); ?>
+                            <?php 
+                            for ($i = 1; $i <= $diff; $i++): 
+                              if (
+                                  isset($priceBookRoom[$room->id]) 
+                                  && isset($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')]) 
+                                  && isset($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')])
+                                ){
+                                $totalRoom += $priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')];
+                                $monthsRooms->addMonth();
+                                }
+                            endfor; 
+                            ?>
+                            <?php $totalAllRoom += $totalRoom; ?>
+                        <?php endforeach ?>
+						<?php foreach ($rooms as $key => $room): ?>
+                        <tr>
+                            <td class="text-center" style="padding: 12px 20px!important">
+								<?php echo $room->name ?> <b><?php echo $room->nameRoom ?></b>
+                            </td>
+                              <?php $totalRoom = 0; ?>
+                              <?php $monthsRooms = new Carbon($year->start_date); ?>
+                              <?php 
+                              for ($i = 1; $i <= $diff; $i++): 
+                                if (
+                                  isset($priceBookRoom[$room->id]) 
+                                  && isset($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')]) 
+                                  && isset($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')])
+                                ){
+                                  $totalRoom += $priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')];
+                                  $monthsRooms->addMonth();
+                                }
+                              endfor; 
+                              ?>
+                            <td class="text-center">
+                                <b><?php echo number_format($totalRoom, 0, ',', '.') ?>€</b>
+                            </td>
+                            <td class="text-center">
+								<?php if ($totalAllRoom == 0) {
+									$totalAllRoom = 1;
+								}?>
+								<?php $percent = ($totalRoom / $totalAllRoom) * 100; ?>
+                                &nbsp;&nbsp;<b><?php echo number_format($percent, 0, ',', '.') ?>%</b>&nbsp;&nbsp;
+                            </td>
+
+							<?php $monthsRooms = new Carbon($year->start_date);  ?>
+							<?php for ($i = 1; $i <= $diff ; $i++): ?>
+                            <td class="text-center" style="padding: 12px 20px!important">
+                              <?php
+                              $aux = '---';
+                              if (
+                                  isset($priceBookRoom[$room->id]) 
+                                  && isset($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')]) 
+                                  && isset($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')])
+                                  && ($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')] == 0)
+                              ) $aux = number_format($priceBookRoom[$room->id][$monthsRooms->copy()->format('Y')][$monthsRooms->copy()->format('n')], 0, ',', '.').' €';
+                              ?>
+                                <b><?php echo $aux ?></b>
+
+                            </td>
+							<?php $monthsRooms->addMonth() ?>
+							<?php endfor; ?>
+
+                        </tr>
+						<?php endforeach ?>
+
+
+                        </tbody>
                     </table>
                 </div>
             </div>
             <div class="col-lg-4 col-md-4 col-xs-12">
                 <div class="col-md-12 col-xs-12">
                     <div>
+						<?php $dataChartMonths = \App\Rooms::getPvpByMonth($year->year) ?>
+
                         <canvas id="barChartMonth" style="width: 100%; height: 250px;"></canvas>
                     </div>
                 </div>
                 <div class="col-md-12 col-xs-12">
                     <div>
-			<?php $dataChartYear = \App\Rooms::getPvpByMonth(($year->year - 1 )) ?>
+						<?php $dataChartYear = \App\Rooms::getPvpByMonth(($year->year - 1 )) ?>
                         <?php $dataChartPrevYear = \App\Rooms::getPvpByMonth(($year->year - 2 )) ?>
+
                         <canvas id="barChartTemp" style="width: 100%; height: 250px;"></canvas>
                     </div>
                 </div>
@@ -137,10 +199,11 @@ setlocale(LC_TIME, "es_ES");
     </div>
 @endsection
 
-<!---->
+
 @section('scripts')
     <script type="text/javascript">
 
+    $('#main_total').text("<?php echo number_format( $totalMain, 0, ',', '.' ); ?> €");
       
       var data = {
         labels: [
