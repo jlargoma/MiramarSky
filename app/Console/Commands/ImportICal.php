@@ -88,27 +88,35 @@ class ImportICal extends Command
 
             $valid_events = [];
 
-            foreach ($events as $event) {
-              
-              // is is empty => is a AIRBNB alert
-              if ($agency == 4){
-                if ( empty($event->description) ){ 
+//            $this->printEvents($events);
+            if (true){
+              foreach ($events as $event) {
+
+                if (strpos(strtoupper($event->summary),'NOT AVAILABLE') !== false){
                   continue;
                 }
-              } elseif( $agency == 1 && trim($event->summary) == "CLOSED - Not Available"){ // is is empty => is a BOOKING alert
-                continue;
-              }
-               
-              if ($this->isEventValidForAdd($event, $agency, $room_id)) {
-                      // $valid_events[] = $event;
-                  if (!$this->addBook($event, $agency, $room_id))
-                      Log::error("Adding event => " . print_r($event,true));
+
+                if ($this->isEventValidForAdd($event, $agency, $room_id)) {
+                    if (!$this->addBook($event, $agency, $room_id))
+                        Log::error("Adding event => " . print_r($event,true));
+                }
               }
             }
             // file_put_contents("/var/www/vhosts/apartamentosierranevada.net/httpdocs/miramarski/test.json", json_encode($valid_events));
         }
     }
 
+    function printEvents($events){
+      $bloqued = array();
+        foreach ($events as $event) {
+          if (strpos(strtoupper($event->summary),'NOT AVAILABLE') !== false){
+            $bloqued[] = $event->summary;
+            continue;
+          }
+          echo $event->dtstart.' - '.$event->dtend.' - '.($event->summary)."\n";
+        }
+        print_r($bloqued);
+    }
     /**
      * Add event to calendar
      * 
