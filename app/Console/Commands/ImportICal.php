@@ -288,6 +288,10 @@ class ImportICal extends Command
             </tbody>
           </table>
           <?php
+      } else {
+        ?>
+        <p class="alert alert-warning text-center mt-15">No hay registros que importar</p>
+        <?php
       }
     }
 }

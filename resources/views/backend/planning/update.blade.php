@@ -196,6 +196,11 @@ $mobile = new Mobile();
           <div class="btn btn-danger btn-cons btn-alarms m-b-10">BAJO BENEFICIO</div>
           @endif
           <div id="overlay" style="display: none;"></div>
+          @if($book->type_book == 0)
+          <select class="form-control" disabled style="font-weight: 600;">
+            <option style=""><strong></strong>Eliminado</option>
+          </select>
+          @else
           <select class="status form-control minimal" data-id="<?php echo $book->id ?>" name="status" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
             <?php for ($i = 1; $i <= 12; $i++): ?>
               <?php if ($i == 5 && $book->customer->email == ""): ?>
@@ -206,9 +211,10 @@ $mobile = new Mobile();
                 <?php echo $book->getStatus($i) ?>
 
                 </option>
-  <?php endif ?>
-<?php endfor; ?>
+              <?php endif ?>
+            <?php endfor; ?>
           </select>
+          @endif
           <h5 class="guardar" style="font-weight: bold; display: none; font-size: 15px;"></h5>
         </div>
       </div>

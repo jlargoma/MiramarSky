@@ -156,7 +156,7 @@ class BookController extends AppController
         $percentBenef     = DB::table('percent')->find(1)->percent;
         $lowProfits       = $this->lowProfitAlert($startYear, $endYear, $percentBenef, $alert_lowProfits);
 
-        $ff_pendientes = Book::where('ff_status',4)->count();
+        $ff_pendientes = Book::where('ff_status',4)->where('type_book','>',0)->count();
         
         $parteeToActive = BookPartee::where('status', 'HUESPEDES')->get();
 
@@ -1503,7 +1503,7 @@ class BookController extends AppController
             case 'ff_pdtes':
               
                 $dateX = Carbon::now();
-                $books = \App\Book::where('ff_status',4)
+                $books = \App\Book::where('ff_status',4)->where('type_book','>',0)
                         ->where('start', '>=', $dateX->copy()->subDays(3))
                         ->orderBy('start', 'ASC')->get();
 //                $books = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('start', '<=', $year->end_date)
