@@ -37,9 +37,9 @@
           <span class="bold show-mobile"><i class="fa fa-bell" aria-hidden="true"></i> BJ BENEF</span>
           <span class="numPaymentLastBooks" data-val="{{$alert_lowProfits}}">{{$alert_lowProfits}}</span>
         </button>
-        <button class="btn btn-danger btn-cons btn-blink <?php if (count($parteeToActive) > 0) echo 'btn-alarms'; ?> "  id="btnParteeToActive" type="button" data-toggle="modal" data-target="#modalParteeToActive">
+        <button class="btn btn-danger btn-cons btn-blink <?php if ($parteeToActive > 0) echo 'btn-alarms'; ?> "  id="btnParteeToActive" test-target="#modalParteeToActive">
           <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">PARTEE</span>
-          <span class="numPaymentLastBooks"><?php echo count($parteeToActive); ?></span>
+          <span class="numPaymentLastBooks"><?php echo  $parteeToActive; ?></span>
         </button>
       <?php endif ?>
           <button class="btn btn-primary btn-sm calend show-mobile" type="button" >

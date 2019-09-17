@@ -171,8 +171,8 @@ setlocale(LC_TIME, "es_ES");
         <div class="modal fade slide-up in" id="modalParteeToActive" tabindex="-1" role="dialog" aria-hidden="true" >
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content-wrapper">
-                        <div class="modal-content">
-                            @include('backend.planning._alarmsPartee', ['alarms' => $parteeToActive])
+                        <div class="modal-content" id="_alarmsPartee">
+                            
                         </div>
                     </div>
                 </div>
@@ -425,8 +425,7 @@ setlocale(LC_TIME, "es_ES");
         <div class="modal fade slide-up in" id="modalParteeToActive" tabindex="-1" role="dialog" aria-hidden="true" >
             <div class="modal-dialog modal-xs">
                 <div class="modal-content-wrapper">
-                    <div class="modal-content">
-                        @include('backend.planning._alarmsPartee', ['alarms' => $parteeToActive])
+                  <div class="modal-content" id="_alarmsPartee">
                     </div>
                 </div>
             </div>
@@ -570,6 +569,11 @@ setlocale(LC_TIME, "es_ES");
         // CARGAMOS POPUP DE CALENDARIO BOOKING
         $('.btn-calendarBooking').click(function(event) {
           $('#modalCalendarBooking .modal-content').empty().load('/admin/reservas/api/calendarBooking');
+        });
+        // CARGAMOS POPUP DE CALENDARIO BOOKING
+        $('#btnParteeToActive').click(function(event) {
+          $('#modalParteeToActive').modal('show');
+          $('#_alarmsPartee').empty().load('/admin/get-partee');
         });
 
         // Buscador al vuelo de reservas por nombre del cliente

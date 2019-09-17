@@ -618,7 +618,7 @@ class RoomsController extends AppController {
         foreach ($images as $key => $slide) {
           $arraySlides[] = $slide->getFilename();
         }
-        natcasesort($arraySlides);
+        if (is_array($arraySlides))    natcasesort($arraySlides);
         $slides = array();
         foreach ($arraySlides as $key => $sl) {
           $slides[] = '/img/miramarski/apartamentos/' . $room->nameRoom . '/' . $sl;

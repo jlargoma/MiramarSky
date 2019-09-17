@@ -395,7 +395,7 @@ class Book extends Model {
           return [
               'status' => 'danger',
               'title' => 'Peligro',
-              'response' => "No puedes cambiar el estado"
+              'response' => "No puedes cambiar el estado - Los aptos no están disponibles"
           ];
         }
       }

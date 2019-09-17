@@ -92,6 +92,7 @@ Route::group(['middleware' => 'authAdmin'], function () {
   Route::post('/ajax/forfaits/deleteRequestPopup', 'FortfaitsController@deleteRequestPopup');
   Route::post('/ajax/booking/getBookingAgencyDetails', 'BookController@getBookingAgencyDetails');
   Route::get('/ajax/booking/getBookingAgencyDetails', 'BookController@getBookingAgencyDetails');
+  Route::get('admin/get-partee', 'BookController@getParteeLst');
   Route::get('/get-partee-msg', 'BookController@getParteeMsg');
   Route::post('/ajax/send-partee-finish', 'BookController@finishParteeCheckIn');
   Route::post('/ajax/send-partee-sms', 'BookController@finishParteeSMS');

@@ -123,6 +123,22 @@ td.text-center.pay-status-error {
     text-align: center;
 }
 
+.btn-partee button.btn {
+    background-color: #9c9c9c;
+    color: #fff;
+}
+
+.btn-partee button.btn.sent {
+    background-color: #189c18;
+    border-color: #189c18;
+    color: #fff;
+}
+.btn-partee button.btn.toSend {
+    background-color: #f55753;
+    border-color: #f55753;
+    color: #fff;
+}
+
 @media only screen and (min-width: 426px) {
   .show-mobile{
     display: none;

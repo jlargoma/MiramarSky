@@ -3,6 +3,7 @@
         setlocale(LC_TIME, "es_ES");  
         $total_pvp = 0;
         $total_coste = 0;
+        $now         = Carbon::now();
 ?>
 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
     <i class="fa fa-times fa-2x" style="color: #000!important;"></i>
@@ -69,17 +70,42 @@
                                 ?>
                             </td>
                             <td class="text-center guestNumber">
-                              {{$bookPartee->guestNumber}}
+                              @if($bookPartee->guestNumber)
+                                {{$bookPartee->guestNumber}}
+                              @else 
+                                --
+                              @endif
                             </td>
                             <td class="text-center updated_at">
                               {{\Carbon\Carbon::parse($bookPartee->updated_at)->format('d/m/Y H:i')}}
                             </td>
                            
-                            <td class="text-center " >
-                              <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-primary finish_partee sending" type="button" data-toggle="tooltip" title="" data-original-title="" data-sended="1">
-                                Finalizar
-                              </button> 
-                            </td>
+                            <td class="text-center btn-partee" >
+                             <?php 
+                             
+                             if ($bookPartee->status == "FINALIZADO"){
+                              ?>
+                              <button class="btn btn-xs sent" type="button" disabled="" style="">
+                                    <i class="fa fa-share-square"></i>
+                                </button> 
+                                <?php
+                             } else {
+                               if ($start<$now && $now->diffInDays($start)<=2){
+                                  ?>
+                              <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-primary toSend finish_partee sending" type="button" data-toggle="tooltip" title="" data-original-title="" data-sended="1">
+                                    <i class="fa fa-share-square"></i>
+                                </button> 
+                                <?php
+                               } else {
+                                  ?>
+                                  <button class="btn btn-xs" type="button" disabled="" >
+                                    <i class="fa fa-share-square"></i>
+                                  </button> 
+                                <?php
+                               }
+                             }
+                              ?>
+                          </td>
                         </tr>
                     <?php endforeach ?>
 

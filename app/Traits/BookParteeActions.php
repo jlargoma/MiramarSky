@@ -177,4 +177,11 @@ trait BookParteeActions {
             'response' => "No existe el registro solicitado."
           ];
         }
+        
+        public function getParteeLst(){
+          $parteeToActive = BookPartee::whereIn('status', ['HUESPEDES',"FINALIZADO"])->get();
+//          $parteeToActive = BookPartee::get();
+          return view('backend/planning/_alarmsPartee',['alarms' => $parteeToActive]);
+          
+        }
 }

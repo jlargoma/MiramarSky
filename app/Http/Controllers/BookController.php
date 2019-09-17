@@ -158,8 +158,8 @@ class BookController extends AppController
 
         $ff_pendientes = Book::where('ff_status',4)->where('type_book','>',0)->count();
         
-        $parteeToActive = BookPartee::where('status', 'HUESPEDES')->get();
-
+        $parteeToActive = BookPartee::whereIn('status', ['HUESPEDES',"FINALIZADO"])->count();
+        
 		return view(
 			'backend/planning/index',
 			compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
