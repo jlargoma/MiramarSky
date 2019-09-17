@@ -380,12 +380,10 @@ $mobile = new Mobile();
               <label>Pax</label>
               <select class=" form-control pax minimal" name="pax" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
                 <?php for ($i = 1; $i <= 14; $i++): ?>
-                  <?php if ($i != 11): ?>
                     <option value="<?php echo $i ?>" <?php echo ($i == $book->pax) ? "selected" : ""; ?>>
-      <?php echo $i ?>
+                      <?php echo $i ?>
                     </option>
-    <?php endif; ?>
-  <?php endfor; ?>
+                <?php endfor; ?>
               </select>
 
             </div>
@@ -1461,7 +1459,7 @@ $mobile = new Mobile();
           var register = $('#registerData').val();
           var roomId = $('#newroom').val();
 
-          $.get('/sendImagesRoomEmail', {email: email, roomId: roomId, register: register, returned: '1'},
+          $.get('/admin/sendImagesRoomEmail', {email: email, roomId: roomId, register: register, returned: '1'},
                   function
                           (data) {
                     location.reload();

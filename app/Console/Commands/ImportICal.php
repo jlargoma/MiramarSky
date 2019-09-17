@@ -38,6 +38,14 @@ class ImportICal extends Command
      * @var string
      */
     protected $description = 'Import ICal from agencies';
+    
+    
+    /**
+     * The console command result.
+     *
+     * @var string
+     */
+    var $result = array();
 
     /**
      * Create a new command instance.
@@ -46,6 +54,7 @@ class ImportICal extends Command
      */
     public function __construct()
     {
+        $this->result = array();
         parent::__construct();
     }
 
@@ -102,6 +111,8 @@ class ImportICal extends Command
                 }
               }
             }
+            
+            $this->printResults();
             // file_put_contents("/var/www/vhosts/apartamentosierranevada.net/httpdocs/miramarski/test.json", json_encode($valid_events));
         }
     }
@@ -131,7 +142,7 @@ class ImportICal extends Command
         $interval = $start->diff($finish);
         $nights = $interval->format("%a");
         $phone = '';
-        
+
         if ($agency == 4){ //AIRBNB
           $lines = explode(PHP_EOL, $event->description);
           foreach ($lines as $data){
@@ -164,6 +175,10 @@ class ImportICal extends Command
         $book->type_book     = 11;
         $book->nigths        = $nights;
         $book->agency        = $agency;
+        
+        $this->result[] = [
+            $agency,$customer->name,$book->start,$book->finish,$nights,
+        ];
         return $book->save();
     }
 
@@ -231,5 +246,48 @@ class ImportICal extends Command
         //if we dont match any agency is a book of Jorge
         //but this is weird
         return 0;
+    }
+    
+     
+    /**
+     * Print result in the website
+     * 
+     * @return type
+     */
+    function printResults(){
+      
+      if (!isset($_SERVER['REQUEST_METHOD'])) return;
+      
+      if (count($this->result)){
+        
+        ?>
+        <h1>Registros Importados (<?php echo count($this->result); ?>)</h1>
+        <table class="table text-center">
+          <thead>
+            <tr>
+              <th class="text-center">Agencia</th>
+              <th class="text-center">Cliente</th>
+              <th class="text-center">CheckIn</th>
+              <th class="text-center">CheckOut</th>
+              <th class="text-center">Noches</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($this->result as $book):?>
+            <tr>
+              <td style="height: 5em;">
+                <?php if ($book[0]==1) echo 'Booking' ?>
+                <?php if ($book[0]==4) echo 'Airbnb' ?>
+              </td>
+              <td><?php echo $book[1]; ?></td>
+              <td><?php echo $book[2]; ?></td>
+              <td><?php echo $book[3]; ?></td>
+              <td><?php echo $book[4]; ?></td>
+            </tr>
+            <?php endforeach; ?>
+            </tbody>
+          </table>
+          <?php
+      }
     }
 }

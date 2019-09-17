@@ -338,6 +338,27 @@ class BookController extends AppController
                       if ($book->customer->email && trim($book->customer->email)){
                         $client_email = $book->customer->email;
                       }
+                      
+                      //check if already exist another FastPayment to the user
+                      $email = $request->input('email', null);
+                      if ($email){
+
+                        $clientExist = Book::select('book.*')->join('customers', function ($join) use($email) {
+                                $join->on('book.customer_id', '=', 'customers.id')
+                                     ->where('customers.email','=',$email);
+                            })->where('type_book',99)->get();
+
+                        if ($clientExist){
+                          foreach ($clientExist as $oldBook){
+                            if ($book->id != $oldBook->id){
+                              $oldBook->type_book = 0;
+                              $oldBook->save();
+                            }
+                          }
+                        }        
+                      }
+                      
+                      //Prin box to payment
                       $description = "COBRO RESERVA CLIENTE " . $book->customer->name;
                       $urlPayland = $this->generateOrderPaymentBooking(
                                     $book->id,
@@ -1149,7 +1170,7 @@ class BookController extends AppController
                     } elseif ($pago->type == 2 || $pago->type == 3)
                     {
                         $move = \App\Bank::where('date', $pago->datePayment)->where('import', $pago->import)->first();
-                        if (count($move) > 0)
+                        if ($move)
                         {
                             $move->delete();
                         }

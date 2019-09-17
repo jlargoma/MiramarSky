@@ -63,9 +63,7 @@
                                         <div class="quantity center clearfix divcenter">
                                             <select id="quantity" class="form-control minimal" name="quantity">
                                                 <?php for ($i = 1;  $i <= 14 ; $i++): ?>
-                                                    <?php if ($i != 11 && $i != 13): ?>
-                                                        <option value="<?php echo $i ?>"><?php echo $i ?></option>  
-                                                    <?php endif ?>
+                                                  <option value="<?php echo $i ?>"><?php echo $i ?></option>  
                                                 <?php endfor ?>
                                             </select>
                                         </div>

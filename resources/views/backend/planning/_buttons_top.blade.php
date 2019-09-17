@@ -58,7 +58,7 @@
         <span class="bold">Calendario booking</span>
       </button>
 
-      <a href="{{ url('ical/importFromUrl') }}" class="btn btn-primary btn-cons" <?php if (count(\App\IcalImport::all()) == 0): ?> disabled="" <?php endif ?> style="background-color: #337ab7; border-color: #2e6da4;">
+      <a href="#" id="sendImportICal" class="btn btn-primary btn-cons" <?php if (count(\App\IcalImport::all()) == 0): ?> disabled="" <?php endif ?> style="background-color: #337ab7; border-color: #2e6da4;">
         <span class="bold">IMPORTACIÓN</span>
       </a>
       <button class="btn btn-primary btn-cupos btn-cons" type="button" data-toggle="modal" data-target="#modalCuposVtn">

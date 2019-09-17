@@ -479,6 +479,18 @@ setlocale(LC_TIME, "es_ES");
                </div>
               </div>
         <?php endif ?>
+          
+          
+        <div class="modal fade slide-up in" id="modalICalImport" tabindex="-1" role="dialog" aria-hidden="true" >
+          <div class="modal-dialog modal-xd">
+            <div class="modal-content-classic">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
+                <i class="fa fa-times fa-2x" style="color: #000!important;"></i>
+              </button>
+              <div id="modal_ical_content"></div>
+            </div>
+          </div>
+        </div>
 @endsection
 
 @section('scripts')
@@ -542,7 +554,12 @@ setlocale(LC_TIME, "es_ES");
 
 
         });
-
+        
+        $('#sendImportICal').click(function(event) {
+          event.preventDefault()
+          $('#modalICalImport').modal('show'); 
+          $('#modal_ical_content').load("{{ url('ical/importFromUrl') }}");
+        });
 
         // Cargamos el calendario cuando acaba de cargar la pagina
         setTimeout(function(){

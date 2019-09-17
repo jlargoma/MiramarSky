@@ -69,7 +69,7 @@
       var register = $('#registerData').val();
       var roomId = <?php echo $room->id; ?>
 
-      $.get('/sendImagesRoomEmail', {email: email, roomId: roomId, register: register}, function (data) {
+      $.get('/admin/sendImagesRoomEmail', {email: email, roomId: roomId, register: register}, function (data) {
         $('.loading-emailImages').hide();
         $('.sended-emailImages').show();
 

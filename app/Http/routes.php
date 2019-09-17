@@ -176,5 +176,5 @@
 
     Route::get('/ical/importFromUrl', function () {
       \Artisan::call('ical:import');
-      return redirect('/admin/reservas');
+//      return redirect('/admin/reservas');
     });
