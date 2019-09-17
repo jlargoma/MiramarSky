@@ -112,7 +112,7 @@ class ImportICal extends Command
               }
             }
             
-            $this->printResults();
+            $this->printResults($room_id);
             // file_put_contents("/var/www/vhosts/apartamentosierranevada.net/httpdocs/miramarski/test.json", json_encode($valid_events));
         }
     }
@@ -254,14 +254,17 @@ class ImportICal extends Command
      * 
      * @return type
      */
-    function printResults(){
+    function printResults($room_id){
       
       if (!isset($_SERVER['REQUEST_METHOD'])) return;
       
+      $room = \App\Rooms::find($room_id);
+      if ($room){
+        echo '<h5>'.$room->name.'</h5>';
+      }
       if (count($this->result)){
-        
         ?>
-        <h1>Registros Importados (<?php echo count($this->result); ?>)</h1>
+        <p>Registros Importados (<?php echo count($this->result); ?>)</p>
         <table class="table text-center">
           <thead>
             <tr>
