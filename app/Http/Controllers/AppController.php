@@ -110,6 +110,7 @@ class AppController extends Controller
         $allRoomsBySize = Rooms::
                 where('sizeApto', $size->id)
                 ->where('state', 1)
+                ->where('fast_payment', 1)
                 ->orderBy('order_fast_payment', 'ASC')->get();
         
         $startDate  = $start->copy()->format('d/m/Y');
@@ -125,7 +126,15 @@ class AppController extends Controller
             }
           }
         }
-        if (!$roomSelected) $roomSelected = $allRoomsBySize[0];
+        if (!$roomSelected){
+          $oRoomsBySize = Rooms::
+                where('sizeApto', $size->id)
+                ->where('state', 1)
+                ->orderBy('order_fast_payment', 'ASC')->first();
+          if ($oRoomsBySize){
+            $roomSelected = $oRoomsBySize;
+          }
+        }
           
         return $roomSelected->id;
     }
