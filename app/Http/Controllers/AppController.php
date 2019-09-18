@@ -111,32 +111,28 @@ class AppController extends Controller
                 where('sizeApto', $size->id)
                 ->where('state', 1)
                 ->where('fast_payment', 1)
-                ->orderBy('order_fast_payment', 'ASC')->get();
+                ->orderBy('order_fast_payment', 'ASC')->limit($size->num_aptos_fast_payment)->get();
         
         $startDate  = $start->copy()->format('d/m/Y');
         $finishDate = $finish->copy()->format('d/m/Y');
-        for ($i = 0; $i < $size->num_aptos_fast_payment; $i++)
-        {
-          if(isset($allRoomsBySize[$i])){
-            $room_id = $allRoomsBySize[$i]->id;
-            if (Book::existDate($startDate,$finishDate, $room_id))
-            {
-              $roomSelected = $allRoomsBySize[$i];
-              break;
-            }
+        foreach ($allRoomsBySize as $room){
+            $room_id = $room->id;
+          if (Book::existDate($startDate,$finishDate, $room_id))
+          {
+            return ['isFastPayment'=>true,'id'=>$room_id];
           }
         }
-        if (!$roomSelected){
-          $oRoomsBySize = Rooms::
+        
+        //search simple Rooms to Booking
+        $oRoomsBySize = Rooms::
                 where('sizeApto', $size->id)
                 ->where('state', 1)
                 ->orderBy('order_fast_payment', 'ASC')->first();
           if ($oRoomsBySize){
-            $roomSelected = $oRoomsBySize;
+            return ['isFastPayment'=>false,'id'=>$oRoomsBySize->id];
           }
-        }
           
-        return $roomSelected->id;
+        return ['isFastPayment'=>false,'id'=>-1];
     }
     
     

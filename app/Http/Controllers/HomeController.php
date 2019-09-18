@@ -668,8 +668,8 @@ class HomeController extends AppController
             $limp     = (int) \App\Extras::find(3)->price;
         }
         $size         = \App\SizeRooms::find($sizeRoom);
-        $roomAssigned = $this->calculateRoomToFastPayment($size, $start, $finish, $request->input('luxury'));
-        //dd($roomAssigned);
+        $getRoomToBook = $this->calculateRoomToFastPayment($size, $start, $finish, $request->input('luxury'));
+        $roomAssigned = $getRoomToBook['id'];
         $paxPerRoom = \App\Rooms::getPaxRooms($request->input('quantity'), $roomAssigned);
         $pax        = $request->input('quantity');
         if ($paxPerRoom > $pax)
@@ -693,6 +693,9 @@ class HomeController extends AppController
             $counter->addDay();
         }
         $room = \App\Rooms::find($roomAssigned);
+        if (!$room){
+          return view('frontend.bookStatus.bookError');
+        }
         if ($request->input('parking') == 'si')
         {
             $priceParking = BookController::getPricePark(1, $countDays) * $room->num_garage;
@@ -732,12 +735,13 @@ class HomeController extends AppController
                 'dni'          => $dni,
                 'address'      => $address,
                 'room'         => $room,
+                'isFastPayment'         => $getRoomToBook['isFastPayment'],
                 'setting'      => ($setting) ? $setting : 0,
                 'comment'      => $request->input('comment'),
             ]);
         } else
         {
-            return view('frontend.bookStatus.bookError');
+          return view('frontend.bookStatus.bookError');
         }
     }
 }

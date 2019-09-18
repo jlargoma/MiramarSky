@@ -104,7 +104,7 @@
                     <input type="hidden" name="discount" value="0">
                 @endif
                 <div class="col-xs-12">
-					@if($room->fast_payment)
+                    @if($isFastPayment)
                         <input type="hidden" name="status" value="99">
                         <div class="col-md-6 col-md-offset-3">
 							<button type="submit" class="button button-rounded button-reveal button-large tright center hvr-grow-shadow font-s16 fastPayment submitBookForm" style="letter-spacing: 1px; background-color: #59BA41;">
