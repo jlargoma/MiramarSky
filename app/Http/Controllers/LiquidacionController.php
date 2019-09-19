@@ -350,7 +350,7 @@ class LiquidacionController extends AppController {
     foreach ($gastos as $key => $item) {
       if ($item->concept == 'LIMPIEZA MENSUAL') {
         $totalMonthLimpieza += $item->import;
-        $dateMonthLimpieza = date('d M Y', strtotime($item->date));
+        $dateMonthLimpieza = date('d M Y', strtotime($item->updated_at));
       }
     }
 
@@ -2649,15 +2649,150 @@ class LiquidacionController extends AppController {
 
     // Send data to the view using loadView function of PDF facade
     $pdf = \PDF::loadView('pdf.limpieza', $data);
-//          if (!is_dir(storage_path().'/pdf')){
-//            mkdir(storage_path().'/pdf');
-//          }
-//          // If you want to store the generated pdf to the server then you can use the store function
-//          $pdf->save(storage_path().'/pdf/'.$file_name.'.pdf');
     // Finally, you can download the file using download function
     return $pdf->download($file_name . '.pdf');
   }
 
   ///////////  LIMPIEZA AREA        ////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////
+  
+  
+    private function getBookingAgencyDetailsBy_date($start,$end) {
+        
+      $start = new Carbon($start);
+      $end   = new Carbon($end);
+      
+      $dataNode = [
+            'reservations'      => 0,
+            'total'             => 0,
+            'commissions'       => 0,
+            'reservations_rate' => 0,
+            'total_rate'        => 0
+        ];
+      $data = [
+                'fp'   => $dataNode, //  FAST PAYMENT
+                'vd'   => $dataNode, // V. Directa
+                'b'    => $dataNode, //Booking
+                't'    => $dataNode, // Trivago
+                'bs'   => $dataNode, // Bed&Snow
+                'ab'   => $dataNode, // AirBnb
+                'jd'   => $dataNode, // "Jaime Diaz",
+                'se'   => $dataNode, // S.essence
+                'c'   => $dataNode, //Cerogrados
+                'none'   => $dataNode, // none
+            ];
+      
+      $totals = ['total' => 0,'reservations' => 0,'commissions' => 0];
+      $books = \App\Book::type_book_sales()->with('payments')
+            ->where('start', '>=', $start)
+            ->where('start', '<=', $end)->get();
+      if ($books){
+      foreach ($books as $book){
+        $agency_name = 'none';
+        switch ($book->agency){
+          case 1: $agency_name = 'b';  break;
+          case 2: $agency_name = 't';  break;
+          case 3: $agency_name = 'bs';  break;
+          case 4: $agency_name = 'ab';  break;
+          case 5: $agency_name = 'jd';  break;
+          case 6: $agency_name = 'se';  break;
+          case 7: $agency_name = 'c';  break;
+          default :
+          
+            if ($book->type_book == 99 || $book->is_fastpayment) // fastpayment
+                $agency_name = 'fp';
+            else
+              $agency_name = 'vd';
+            
+          break;
+        }
+        $t = round(floatval($book->total_price), 2);
+        $data[$agency_name]['total']        += $t;
+        $data[$agency_name]['reservations'] += 1;
+        $data[$agency_name]['commissions']  += str_replace(',', '.', $book->PVPAgencia);
+        $totals['total']        += $t;
+        $totals['reservations'] += 1;
+        $totals['commissions']  += str_replace(',', '.', $book->PVPAgencia);
+        
+        
+        }
+        
+        foreach ($data as $a=>$d){
+          if ($d['reservations']>0 && $totals['reservations']>0)
+            $data[$a]['reservations_rate'] = $d['reservations']/$totals['reservations']*100;
+          if ($d['total']>0 && $totals['total']>0)
+            $data[$a]['total_rate'] = $d['total']/$totals['total']*100;
+        }
+        
+      }
+      return  ['totals' => $totals,'data'=>$data];
+    }
+    
+    public function getBookingAgencyDetails()
+    {
+        $agencyBooks    = [
+            'years'  => [],
+            'data'   => [],
+            'items'  => [
+                'fp'   => 'FAST PAYMENT',
+                'vd'   => 'V. Directa',
+                'b'    => 'Booking',
+                't'    => 'Trivago',
+                'bs'   => 'Bed&Snow',
+                'ab'   => 'AirBnb',
+                'jd'   => "Jaime Diaz",
+                'se'   => 'S.essence',
+                'c'   => 'Cerogrados',
+            ],
+            'totals' => []
+        ];
+                  
+        $yearLst = [];
+        $aux = [];
+       
+        $season    = self::getActiveYear();
+        $yearFull  = $season->year;
+        $yearLst[] = $yearFull;
+        $year = $yearFull-2000;
+        $dataSeason = $this->getBookingAgencyDetailsBy_date($season->start_date,$season->end_date);
+        $agencyBooks['years'][$yearFull]    = $year . '-' . ($year + 1);
+        $aux[$yearFull]     = $dataSeason['data'];
+        $agencyBooks['totals'][$yearFull]   = $dataSeason['totals'];
+        
+      
+        $season    = self::getYearData($yearFull-1);
+        $yearFull  = $season->year;
+        $yearLst[] = $yearFull;
+        $year = $yearFull-2000;
+        $dataSeason = $this->getBookingAgencyDetailsBy_date($season->start_date,$season->end_date);
+        $agencyBooks['years'][$yearFull]    = $year . '-' . ($year + 1);
+        $aux[$yearFull]     = $dataSeason['data'];
+        $agencyBooks['totals'][$yearFull]   = $dataSeason['totals'];
+        
+        $season    = self::getYearData($yearFull-1);
+        $yearFull  = $season->year;
+        $yearLst[] = $yearFull;
+        $year = $yearFull-2000;
+        $dataSeason = $this->getBookingAgencyDetailsBy_date($season->start_date,$season->end_date);
+        $agencyBooks['years'][$yearFull]    = $year . '-' . ($year + 1);
+        $aux[$yearFull]     = $dataSeason['data'];
+        $agencyBooks['totals'][$yearFull]   = $dataSeason['totals'];
+        sort($yearLst);
+        
+        
+        foreach ($agencyBooks['items'] as $k=>$n){
+          $agencyBooks['data'][$k] = [];
+          foreach ($yearLst as $y){
+            if (isset($aux[$y])){
+              $agencyBooks['data'][$k][$y] = $aux[$y][$k];
+            }
+          }
+        }
+//        dd($yearLst,$agencyBooks);
+        echo json_encode(array(
+                             'status'      => 'true',
+                             'agencyBooks' => $agencyBooks,
+                             'yearLst' => $yearLst,
+                         ));
+    }
 }

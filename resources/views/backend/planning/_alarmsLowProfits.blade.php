@@ -68,8 +68,8 @@
                                 ?>
                             </td>
                             <td class="text-center PVP" style="border-left: 1px solid black;">
-                              <?php $total_pvp += $book->real_price;?>
-                              <?php echo number_format($book->real_price,0,',','.') ?> €</b>
+                              <?php $total_pvp += $book->total_price;?>
+                              <?php echo number_format($book->total_price,0,',','.') ?> €</b>
                             </td>
                             <td class="text-center coste bi " style="border-left: 1px solid black;">
                               <?php $total_coste += $book->get_costeTotal();?>

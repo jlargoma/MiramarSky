@@ -139,6 +139,26 @@ td.text-center.pay-status-error {
     color: #fff;
 }
 
+.table.liq-agencia thead{
+  background-color: #48b0f7;
+  text-align: center;
+}
+.table.liq-agencia thead th{
+  color: #0c0c0c;
+  text-align: center;
+  font-size:16px
+}
+.table.liq-agencia tbody td{
+  text-align: center;
+  font-weight: 600;
+  font-size: 15px !important;
+  
+}
+.table.liq-agencia .footer-table td{
+  color: #0c0c0c;
+  text-align: center;
+  font-size:16px
+}
 @media only screen and (min-width: 426px) {
   .show-mobile{
     display: none;

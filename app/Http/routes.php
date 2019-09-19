@@ -9,7 +9,7 @@
     | and give it the controller to call when that URI is requested.
     |
     */
-    use App\Http\Controllers\ForfaitsController;
+//    use App\Http\Controllers\ForfaitsController;
 
     Route::auth();
     Route::get('/', 'HomeController@index');
