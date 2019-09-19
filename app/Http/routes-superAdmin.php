@@ -105,6 +105,7 @@ Route::group(['middleware' => 'authAdmin'], function () {
   /* ICalendar links */
   Route::post('/ical/import/saveUrl', 'ICalendarController@saveUrl');
   Route::get('/ical/urls/deleteUrl', 'ICalendarController@deleteUrl');
+  Route::get('/ical/getLasts', 'ICalendarController@getLasts');
   Route::get('/ical/urls/getAllUrl/{aptoID}', 'ICalendarController@getAllUrl');
 });
 

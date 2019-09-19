@@ -106,4 +106,30 @@ class ICalendarController extends AppController
     {
         return view('backend.rooms._listUrlByRoom', ['urls' => \App\IcalImport::all()]);
     }
+    
+    public function getLasts() {
+      $logs = '';
+      $last_airbnb = \App\LogsData::where('key','ical_airbnb')->orderBy('created_at','DESC')->first();
+      if ($last_airbnb){
+        
+        $time  = date('H:i', strtotime($last_airbnb->created_at));
+        $date  = date('d M', strtotime($last_airbnb->created_at));
+        $logs .='<p><b>AIR BNB: &nbsp;&nbsp;'.$date.' &nbsp;&nbsp; '.$time.'hr</b></p>';
+        $logs .='<p>'.$last_airbnb->data.'</p>';
+      } else {
+        $logs .='<p><b>AIR BNB: &nbsp; No importado</b></p>';
+      }
+      $last_booking = \App\LogsData::where('key','ical_booking')->orderBy('created_at','DESC')->first();
+      if ($last_booking){
+        $time  = date('H:i', strtotime($last_booking->created_at));
+        $date  = date('d M', strtotime($last_booking->created_at));
+        $logs .='<p><b>BOOKING.COM:  &nbsp;&nbsp;'.$date.' &nbsp;&nbsp; '.$time.'hr</b></p>';
+        $logs .='<p>'.$last_booking->data.'</p>';
+      } else {
+        $logs .='<p><b>BOOKING.COM: No importado</b></p>';
+      }
+      
+      echo $logs;
+      return;
+    }
 }

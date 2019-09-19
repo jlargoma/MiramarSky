@@ -126,7 +126,7 @@ setlocale(LC_TIME, "es_ES");
                         </div>
                     </div>
                 </div>
-            </div>
+        </div>
 
         <!-- CALCULAR RESERVAS -->
         <div class="modal fade slide-up in" id="modalCalculateBook" tabindex="-1" role="dialog" aria-hidden="true">
@@ -486,7 +486,14 @@ setlocale(LC_TIME, "es_ES");
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
                 <i class="fa fa-times fa-2x" style="color: #000!important;"></i>
               </button>
-              <div id="modal_ical_content"></div>
+              <div class="row">
+                <div class="col-md-7"  id="modal_ical_content"></div>
+                <div class="col-md-5">
+                  <button id="syncr_ical" class="btn btn-primary">Sincronizar <i class="fa fa-refresh"></i></button>
+                </div>
+              </div>
+              <p class="alert alert-success" id="syncr_ical_succss" style="display: none;">Sincronización enviada</p>
+             
             </div>
           </div>
         </div>
@@ -557,8 +564,36 @@ setlocale(LC_TIME, "es_ES");
         $('#sendImportICal').click(function(event) {
           event.preventDefault()
           $('#modalICalImport').modal('show'); 
-          $('#modal_ical_content').load("{{ url('ical/importFromUrl') }}");
+          $('#modal_ical_content').load("{{ url('ical/getLasts') }}");
         });
+        $('#syncr_ical').click(function(event) {
+          event.preventDefault()
+          $('#syncr_ical_succss').hide();
+          var icon = $(this).find('.fa');
+          icon.addClass('fa-spin');
+          
+          var request = $.ajax({url: "{{ url('ical/importFromUrl') }}",method: "GET"});
+          request.done(function( msg ) {
+            if (msg == 'ok'){
+              $('#modal_ical_content').load("{{ url('ical/getLasts') }}");
+              $('#syncr_ical_succss').show();
+             } else {
+               alert( "Sync failed: " + msg );
+             }
+            icon.removeClass('fa-spin');
+          });
+
+          request.fail(function( jqXHR, textStatus ) {
+            console.log('fail',textStatus);
+            alert( "Request failed: " + textStatus );
+            icon.removeClass('fa-spin');
+            $('#syncr_ical_succss').show();
+          });
+
+        });
+        
+        
+          
 
         // Cargamos el calendario cuando acaba de cargar la pagina
         setTimeout(function(){

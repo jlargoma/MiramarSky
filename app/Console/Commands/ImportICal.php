@@ -74,8 +74,8 @@ class ImportICal extends Command
     public function importICalendar()
     {              
         $icalendars_to_import = IcalImport::all();
-        
         foreach ($icalendars_to_import as $ical_to_import) {
+            $this->result = [];
             //id releated with the icalendar to import
             $room_id = $ical_to_import->room_id;
 
@@ -98,6 +98,7 @@ class ImportICal extends Command
             $valid_events = [];
 
 //            $this->printEvents($events);
+            $count = 0;
             if (true){
               foreach ($events as $event) {
 
@@ -106,14 +107,30 @@ class ImportICal extends Command
                 }
 
                 if ($this->isEventValidForAdd($event, $agency, $room_id)) {
-                    if (!$this->addBook($event, $agency, $room_id))
-                        Log::error("Adding event => " . print_r($event,true));
+                    if ($this->addBook($event, $agency, $room_id)){
+                      $count++;
+                    } else {
+                      Log::error("Adding event => " . print_r($event,true));
+                    }
                 }
               }
             }
             
-            $this->printResults($room_id);
-            // file_put_contents("/var/www/vhosts/apartamentosierranevada.net/httpdocs/miramarski/test.json", json_encode($valid_events));
+            // save log data
+            $lData = new \App\LogsData();
+            $dataLog = [
+                'room'    => $room_id,
+                'url'     => $ical_to_import->url,
+                'result'  => $this->result
+            ];
+            $lData->key  = ($agency == 4) ? 'ical_airbnb' : 'ical_booking';
+            $lData->data =  $count.' Registros importados';
+            $lData->long_info = json_encode($dataLog);
+            $lData->save();
+//            $this->printResults($room_id);
+        }
+        if (isset($_SERVER['REQUEST_METHOD'])){
+          echo 'ok';
         }
     }
 
