@@ -91,6 +91,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
   Route::post('/years/change/months', 'YearsController@changeMonthActiveYear')->name('years.change.month');
   //SETTINGS
   Route::post('/settings/createUpdate', 'SettingsController@createUpdateSetting')->name('settings.createUpdate');
+  //PAYMENTS
+//  Route::post('/', 'SettingsController@createUpdateSetting')->name('settings.createUpdate');
+  Route::get('/links-payland', 'PaylandsController@link');
+  Route::get('/links-payland-single', 'PaylandsController@linkSingle');
 });
 
 

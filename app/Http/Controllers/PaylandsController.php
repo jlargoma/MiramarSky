@@ -94,6 +94,8 @@ class PaylandsController extends AppController
       $subject= $request->input('subject',null);
       $bookingID = $request->input('book',null);
       $book = \App\Book::find($bookingID);
+      $token = str_random(32).time();
+      $urlPay = route('front.payments',$token);
       if ($amount){
         if ($book){
           $client = $book->customer()->first();
@@ -102,22 +104,35 @@ class PaylandsController extends AppController
           if ($client && trim($client->email)){
             $client_email = $client->email;
           }
-          $urlPay = $this->generateOrderPaymentBooking(
-                  $bookingID,
-                  $client->id,
-                  $client_email,
-                  $description,
-                  $amount
-                  );
+          
+          $PaymentOrders = new \App\PaymentOrders();
+          $PaymentOrders->book_id = $bookingID;
+          $PaymentOrders->cli_id = $client->id;
+          $PaymentOrders->cli_email = $client_email;
+          $PaymentOrders->amount = $amount;
+          $PaymentOrders->status = 0;
+          $PaymentOrders->token = $token;
+          $PaymentOrders->description = $description;
+          $PaymentOrders->save();
           return $this->getPaymentText($urlPay);
         } else {
-          $urlPay = $this->generateOrderPaymentBooking(
-                  -1,
-                  -1,
-                  env('PAYLAND_MAIL'),
-                  $subject,
-                  $amount
-                  );
+          $PaymentOrders = new \App\PaymentOrders();
+          $PaymentOrders->book_id = -1;
+          $PaymentOrders->cli_id = -1;
+          $PaymentOrders->cli_email = env('PAYLAND_MAIL');
+          $PaymentOrders->amount = $amount;
+          $PaymentOrders->status = 0;
+          $PaymentOrders->token = $token;
+          $PaymentOrders->description = $subject;
+          $PaymentOrders->save();
+          
+//          $urlPay = $this->generateOrderPaymentBooking(
+//                  -1,
+//                  -1,
+//                  env('PAYLAND_MAIL'),
+//                  $subject,
+//                  $amount
+//                  );
           return $this->getPaymentText($urlPay);
         }
       }
@@ -442,4 +457,26 @@ class PaylandsController extends AppController
           
         }
         
+      public function paymentsForms($token) {
+        
+        if ($token){
+          $payment = \App\PaymentOrders::where('token',$token)->first();
+          if ($payment){
+
+            $urlPayland = $this->generateOrderPaymentBooking(
+                    $payment->book_id,
+                    $payment->cli_id,
+                    $payment->cli_email,
+                    $payment->description,
+                    $payment->amount
+                    );
+             return view('frontend.bookStatus.paylandPay', ['urlPayland' => $urlPayland]);
+          }
+          dd($payment);
+        }
+        dd($token);
+      }
+    
+    
+           
 }
