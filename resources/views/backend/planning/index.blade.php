@@ -493,7 +493,6 @@ setlocale(LC_TIME, "es_ES");
                 </div>
               </div>
               <p class="alert alert-success" id="syncr_ical_succss" style="display: none;">Sincronización enviada</p>
-             
             </div>
           </div>
         </div>
@@ -584,10 +583,8 @@ setlocale(LC_TIME, "es_ES");
           });
 
           request.fail(function( jqXHR, textStatus ) {
-            console.log('fail',textStatus);
             alert( "Request failed: " + textStatus );
             icon.removeClass('fa-spin');
-            $('#syncr_ical_succss').show();
           });
 
         });
