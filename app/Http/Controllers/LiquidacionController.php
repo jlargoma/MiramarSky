@@ -8,6 +8,7 @@ use \Carbon\Carbon;
 use \DB;
 use App\Classes\Mobile;
 use Excel;
+use Auth;
 
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
@@ -163,6 +164,18 @@ class LiquidacionController extends AppController {
     $data['pax-media'] = ($data['num-pax'] / $totBooks);
 
     $mobile = new Mobile();
+    if (Auth::user()->role == "subadmin"){
+      return view('backend/sales/index-subadmin', [
+          'books' => $books,
+          'lowProfits' => $lowProfits,
+          'alert_lowProfits' => $alert_lowProfits,
+          'percentBenef' => $percentBenef,
+          'totales' => $totales,
+          'year' => $year,
+          'data' => $data,
+          'percentBenef' => DB::table('percent')->find(1)->percent,
+      ]);
+    }
     if (!$mobile->isMobile()) {
       return view('backend/sales/index', [
           'books' => $books,

@@ -576,7 +576,9 @@ $mobile = new Mobile();
   <?php endif ?>
 
             </div>
+            <?php if (Auth::user()->role == "admin"): ?>
             <div class="col-md-12 col-xs-12 push-20 not-padding">
+            <p>Cáculos desde nueva fórmula</p>
               <?php
               $price = $book->getPriceBook($book->start,$book->finish,$book->room_id,$book->real_pax);
               if ($price['status'] == 'error'){
@@ -601,7 +603,7 @@ $mobile = new Mobile();
                 <small>(<?php echo number_format($price['benef'], 0) . "%" ?>)</small>
               </div>
             </div>
-            
+            <?php endif ?>
             
             <div class="col-md-12 col-xs-12 push-20 not-padding">
               <p class="personas-antiguo" style="color: red">
