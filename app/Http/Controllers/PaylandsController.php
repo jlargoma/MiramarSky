@@ -171,8 +171,10 @@ class PaylandsController extends AppController
     public function thansYouPayment($key_token)
     {
       
-      $bookOrder = BookOrders::where('key_token',$key_token)->first();
+      $bookOrder = BookOrders::where('key_token',$key_token)->whereNull('paid')->first();
       if ($bookOrder){
+        $bookOrder->paid = true;
+        $bookOrder->save();
         $amount = ($bookOrder->amount/100).' €';
         \App\BookLogs::saveLogStatus($bookOrder->book_id,null,$bookOrder->cli_email,"Pago de $amount ($key_token)");
 //        $book = \App\Book::find($bookOrder->book_id);
@@ -181,9 +183,6 @@ class PaylandsController extends AppController
         }
          
       }
-      
-////        $book = \App\Book::find($id);
-////        $this->payBook($id, $payment);
       return redirect()->route('thanks-you');
         
     }

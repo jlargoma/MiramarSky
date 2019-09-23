@@ -124,14 +124,14 @@
     //PAYLANDS
     //Route::group(['middleware' => 'authAdmin'], function () {
     Route::post('/paylands/payment', 'PaylandsController@payment')->name('payland.payment');
-    Route::get('/proccess/payment/book/{id}/{payment?}', 'PaylandsController@processPaymentBook')
-         ->name('payland.proccess.payment.book');
-    Route::post('/proccess/payment/book/{id}/{payment?}', 'PaylandsController@processPaymentBook')
-         ->name('payland.proccess.payment.book');
-    Route::get('/proccess/payment/book/customer/{id}/{payment?}', 'PaylandsController@processPaymentBook')
-         ->name('payland.proccess.payment.book.customer');
-    Route::post('/proccess/payment/book/customer/{id}/{payment?}', 'PaylandsController@processPaymentBook')
-         ->name('payland.proccess.payment.book.customer');
+//    Route::get('/proccess/payment/book/{id}/{payment?}', 'PaylandsController@processPaymentBook')
+//         ->name('payland.proccess.payment.book');
+//    Route::post('/proccess/payment/book/{id}/{payment?}', 'PaylandsController@processPaymentBook')
+//         ->name('payland.proccess.payment.book');
+//    Route::get('/proccess/payment/book/customer/{id}/{payment?}', 'PaylandsController@processPaymentBook')
+//         ->name('payland.proccess.payment.book.customer');
+//    Route::post('/proccess/payment/book/customer/{id}/{payment?}', 'PaylandsController@processPaymentBook')
+//         ->name('payland.proccess.payment.book.customer');
     Route::get('payment/thansk-you/{key_token}', 'PaylandsController@thansYouPayment')->name('payland.thanks.payment');
    
     Route::get('payment/error/{key_token}', 'PaylandsController@errorPayment')->name('payland.error.payment');
