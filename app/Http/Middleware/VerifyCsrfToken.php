@@ -38,5 +38,6 @@ class VerifyCsrfToken extends BaseVerifier
         '/api/forfaits/checkout',
         '/api/forfaits/forfaits',
         '/api/forfaits/sendConsult',
+        '/payment/process/*',
     ];
 }

@@ -197,9 +197,10 @@ class PaylandsController extends AppController
     }
     public function processPayment(Request $request, $id)
     {
-      file_put_contents(storage_path()."/test-payland".time(), $id."\n". json_encode($request->all()));
-      var_dump($request->all());
-      dd($id, $payment);
+//      file_put_contents(storage_path()."/test-payland".time(), $id."\n". json_encode($request->all()));
+      die('ok');
+//      var_dump($request->all());
+//      dd($id, $payment);
 //        $book = \App\Book::find($id);
 //        $this->payBook($id, $payment);
 //        return redirect()->route('thanks-you');

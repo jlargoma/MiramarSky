@@ -136,6 +136,7 @@
    
     Route::get('payment/error/{key_token}', 'PaylandsController@errorPayment')->name('payland.error.payment');
     Route::get('payment/process/{key_token}', 'PaylandsController@processPayment')->name('payland.process.payment');
+    Route::post('payment/process/{key_token}', 'PaylandsController@processPayment')->name('payland.process.payment');
     //});
     
     Route::get('/paylands/payment', 'PaylandsController@paymentTest');
