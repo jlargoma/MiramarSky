@@ -44,46 +44,12 @@ Route::group(['middleware' => 'authAdmin'], function () {
   Route::get('admin/pagos', 'PaymentsController@index');
   Route::get('admin/pagos/create', 'PaymentsController@create');
   Route::get('admin/pagos/update', 'PaymentsController@update');
-  // Pagos-Propietarios
-  Route::get('admin/pagos-propietarios', 'PaymentsProController@index');
-  Route::post('admin/pagos-propietarios/create', 'PaymentsProController@create');
-  Route::get('admin/pagos-propietarios/update/{id}/{month?}', 'PaymentsProController@update');
-  Route::get('admin/paymentspro/getBooksByRoom/{idRoom}', 'PaymentsProController@getBooksByRoom');
-  Route::get('admin/paymentspro/getLiquidationByRoom', 'PaymentsProController@getLiquidationByRoom');
-  Route::get('admin/pagos-propietarios/get/historic_production/{room_id}', 'PaymentsProController@getHistoricProduction');
+
   //Liquidacion
-  Route::get('admin/liquidacion', 'LiquidacionController@index');
-  Route::get('admin/liquidacion-apartamentos', 'LiquidacionController@apto');
-  Route::get('admin/liquidacion/export/excel', 'LiquidacionController@exportExcel');
-  Route::get('admin/gastos/{year?}', 'LiquidacionController@gastos');
-  Route::post('admin/gastos/create', 'LiquidacionController@gastoCreate');
-  Route::get('/admin/gastos/getTableGastos', 'LiquidacionController@getTableGastos');
-  Route::get('admin/gastos/update/{id}', 'LiquidacionController@updateGasto');
-  Route::get('/admin/gastos/getHojaGastosByRoom/{year?}/{id}', 'LiquidacionController@getHojaGastosByRoom');
-  Route::get('/admin/gastos/containerTableExpensesByRoom/{year?}/{id}', 'LiquidacionController@getTableExpensesByRoom');
-  Route::get('/admin/gastos/delete/{id}','RouterActionsController@gastos_delete');
-  Route::get('admin/ingresos', 'LiquidacionController@ingresos');
-  Route::post('admin/ingresos/create', 'LiquidacionController@ingresosCreate');
-  Route::get('/admin/ingresos/delete/{id}','RouterActionsController@ingresos_delete');
-  Route::get('admin/estadisticas/{year?}','LiquidacionController@Statistics');
-  Route::get('admin/contabilidad','LiquidacionController@contabilidad');
   Route::get('admin/perdidas-ganancias/{year?}','LiquidacionController@perdidasGanancias');
-  Route::post('admin/limpiezasUpd/','LiquidacionController@upd_limpiezas');
-  Route::get('admin/caja', 'LiquidacionController@caja');
-  Route::get('admin/caja/getTableMoves/{year?}/{type}', 'LiquidacionController@getTableMoves');
-  Route::post('admin/cashBox/create', 'LiquidacionController@cashBoxCreate');
-  Route::get('admin/cashbox/updateSaldoInicial/{id}/{type}/{importe}','RouterActionsController@cashbox_updateSaldoInicial');
-  Route::get('admin/banco', 'LiquidacionController@bank');
-  Route::get('admin/banco/getTableMoves/{year?}/{type}', 'LiquidacionController@getTableMovesBank');
-  Route::get('admin/bank/updateSaldoInicial/{id}/{type}/{importe}','RouterActionsController@bank_updateSaldoInicial');
-  Route::get('/admin/rules/stripe/update', 'RulesStripeController@update');
-  Route::get('/admin/days/secondPay/update/{id}/{days}','RouterActionsController@days_secondPay_update');
-  Route::get('admin/estadisticas/{year?}', 'LiquidacionController@Statistics');
-  Route::get('admin/contabilidad', 'LiquidacionController@contabilidad');
-  Route::get('admin/perdidas-ganancias/{year?}', 'LiquidacionController@perdidasGanancias');
+
   //Facturas
   Route::get('admin/facturas/', 'InvoicesController@index');
-
 
   Route::get('admin/encuestas/{year?}/{apto?}', 'QuestionsController@admin');
 
@@ -97,10 +63,6 @@ Route::group(['middleware' => 'authAdmin'], function () {
   Route::post('/ajax/send-partee-finish', 'BookController@finishParteeCheckIn');
   Route::post('/ajax/send-partee-sms', 'BookController@finishParteeSMS');
   
-  //Paylands
-  Route::get('/admin/orders-payland', 'PaylandsController@lstOrders');
-  Route::post('/admin/getOrders-payland', 'PaylandsController@getOrders');
-  Route::get('/admin/get-summary-payland', 'PaylandsController@getSummary');
   
   /* ICalendar links */
   Route::post('/ical/import/saveUrl', 'ICalendarController@saveUrl');
@@ -135,38 +97,14 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin/forfaits',], funct
  * GENERAL
  */
 Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin'], function () {
-  Route::get('/get_mails', 'ChatEmailsController@index');
-  Route::get('/galleries', 'RoomsController@galleries');
+  
 
-  Route::get('/forfaits/deleteRequest/{id}', 'FortfaitsController@deleteRequest');
-  Route::get('/reservas/ff_status_popup/{id}', 'BookController@getBookFFData');
-  Route::get('/reservas/ff_change_status_popup/{id}/{status}', 'BookController@updateBookFFStatus');
-  Route::get('/book-logs/{id}', 'BookController@printBookLogs');
-  Route::post('/response-email', 'BookController@sendEmailResponse');
-  Route::get('/book-logs/get/{id}', 'BookController@getBookLog');
-
-
-  Route::post('/reservas/stripe/save/fianza', 'StripeController@fianza');
-  Route::post('/reservas/stripe/pay/fianza', 'StripeController@payFianza');
-  Route::get('/reservas/new', 'BookController@newBook');
-  Route::get('/reservas/delete/{id}', 'BookController@delete');
-  Route::get('/reservas/update/{id}', 'BookController@update')->name('book.update');
-  Route::post('/reservas/saveUpdate/{id}', 'BookController@saveUpdate');
-  Route::get('/reservas/changeBook/{id}', 'BookController@changeBook');
-  Route::get('/reservas/changeStatusBook/{id}', 'BookController@changeStatusBook');
-  Route::get('/reservas/ansbyemail/{id}', 'BookController@ansbyemail');
-  Route::post('/reservas/sendEmail', 'BookController@sendEmail');
-  Route::get('/reservas/saveFianza', 'BookController@saveFianza');
-  Route::get('/reservas/reserva/{id}', 'BookController@tabReserva');
-  Route::get('/reservas/cobrar/{id}', 'BookController@cobroBook');
-  Route::get('/reservas/api/lastsBooks', 'BookController@getLastBooks');
-  Route::get('/reservas/api/calendarBooking', 'BookController@getCalendarBooking');
-  Route::get('/reservas/api/alertsBooking', 'BookController@getAlertsBooking');
-  Route::get('/api/reservas/getDataBook', 'BookController@getAllDataToBook');
-  Route::get('/reservas/api/sendSencondEmail', 'BookController@sendSencondEmail');
-  Route::get('/reservas/api/toggleAlertLowProfits', 'BookController@toggleAlertLowProfits');
-
-
+  Route::get('/apartamentos/fast-payment', 'RoomsController@updateFastPayment');
+  Route::get('/apartamentos/update-order-payment', 'RoomsController@updateOrderFastPayment');
+  Route::get('/sizeAptos/update-num-fast-payment', 'RoomsController@updateSizeAptos');
+  Route::get('/rooms/getUpdateForm', 'RoomsController@getUpdateForm');
+  Route::get('/rooms/cupos', 'RoomsController@getCupos');
+  
   Route::get('/reservas/api/activateAlertLowProfits', 'BookController@activateAlertLowProfits');
   Route::get('/reservas/fianzas/cobrar/{id}', 'BookController@cobrarFianzas');
 
@@ -226,4 +164,90 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin'], function () {
   Route::get('/facturas/isde/editar/{id}', 'InvoicesController@updateIsde');
   Route::post('/facturas/isde/saveUpdate', 'InvoicesController@saveUpdate');
  
+});
+
+Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin',], function () {
+  
+  // Clientes
+  Route::get('/clientes/update', 'CustomersController@update');
+  Route::get('/clientes/save', 'CustomersController@save');
+  Route::post('/clientes/create', 'CustomersController@create');
+  
+  Route::get('/get_mails', 'ChatEmailsController@index');
+  Route::get('/galleries', 'RoomsController@galleries');
+
+  Route::get('/forfaits/deleteRequest/{id}', 'FortfaitsController@deleteRequest');
+  Route::get('/reservas/ff_status_popup/{id}', 'BookController@getBookFFData');
+  Route::get('/reservas/ff_change_status_popup/{id}/{status}', 'BookController@updateBookFFStatus');
+  Route::get('/book-logs/{id}', 'BookController@printBookLogs');
+  Route::post('/response-email', 'BookController@sendEmailResponse');
+  Route::get('/book-logs/get/{id}', 'BookController@getBookLog');
+  
+  Route::post('/reservas/stripe/save/fianza', 'StripeController@fianza');
+  Route::post('/reservas/stripe/pay/fianza', 'StripeController@payFianza');
+  Route::get('/reservas/new', 'BookController@newBook');
+  Route::get('/reservas/delete/{id}', 'BookController@delete');
+  Route::get('/reservas/update/{id}', 'BookController@update')->name('book.update');
+  Route::post('/reservas/saveUpdate/{id}', 'BookController@saveUpdate');
+  Route::get('/reservas/changeBook/{id}', 'BookController@changeBook');
+  Route::get('/reservas/changeStatusBook/{id}', 'BookController@changeStatusBook');
+  Route::get('/reservas/ansbyemail/{id}', 'BookController@ansbyemail');
+  Route::post('/reservas/sendEmail', 'BookController@sendEmail');
+  Route::get('/reservas/saveFianza', 'BookController@saveFianza');
+  Route::get('/reservas/reserva/{id}', 'BookController@tabReserva');
+  Route::get('/reservas/cobrar/{id}', 'BookController@cobroBook');
+  Route::get('/reservas/api/lastsBooks', 'BookController@getLastBooks');
+  Route::get('/reservas/api/calendarBooking', 'BookController@getCalendarBooking');
+  Route::get('/reservas/api/alertsBooking', 'BookController@getAlertsBooking');
+  Route::get('/api/reservas/getDataBook', 'BookController@getAllDataToBook');
+  Route::get('/reservas/api/sendSencondEmail', 'BookController@sendSencondEmail');
+  Route::get('/reservas/api/toggleAlertLowProfits', 'BookController@toggleAlertLowProfits');
+  
+
+   //Liquidacion
+  Route::get('/liquidacion', 'LiquidacionController@index');
+  Route::get('/liquidacion-apartamentos', 'LiquidacionController@apto');
+  Route::get('/liquidacion/export/excel', 'LiquidacionController@exportExcel');
+  Route::get('/gastos/{year?}', 'LiquidacionController@gastos');
+  Route::post('/gastos/create', 'LiquidacionController@gastoCreate');
+  Route::get('/gastos/getTableGastos', 'LiquidacionController@getTableGastos');
+  Route::get('/gastos/update/{id}', 'LiquidacionController@updateGasto');
+  Route::get('/gastos/getHojaGastosByRoom/{year?}/{id}', 'LiquidacionController@getHojaGastosByRoom');
+  Route::get('/gastos/containerTableExpensesByRoom/{year?}/{id}', 'LiquidacionController@getTableExpensesByRoom');
+  Route::get('/gastos/delete/{id}','RouterActionsController@gastos_delete');
+  Route::get('/ingresos', 'LiquidacionController@ingresos');
+  Route::post('/ingresos/create', 'LiquidacionController@ingresosCreate');
+  Route::get('/ingresos/delete/{id}','RouterActionsController@ingresos_delete');
+  Route::get('/estadisticas/{year?}','LiquidacionController@Statistics');
+  Route::get('/contabilidad','LiquidacionController@contabilidad');
+ 
+  Route::post('/limpiezasUpd/','LiquidacionController@upd_limpiezas');
+  Route::get('/caja', 'LiquidacionController@caja');
+  Route::get('/caja/getTableMoves/{year?}/{type}', 'LiquidacionController@getTableMoves');
+  Route::post('/cashBox/create', 'LiquidacionController@cashBoxCreate');
+  Route::get('/cashbox/updateSaldoInicial/{id}/{type}/{importe}','RouterActionsController@cashbox_updateSaldoInicial');
+  Route::get('/banco', 'LiquidacionController@bank');
+  Route::get('/banco/getTableMoves/{year?}/{type}', 'LiquidacionController@getTableMovesBank');
+  Route::get('/bank/updateSaldoInicial/{id}/{type}/{importe}','RouterActionsController@bank_updateSaldoInicial');
+  Route::get('/rules/stripe/update', 'RulesStripeController@update');
+  Route::get('/days/secondPay/update/{id}/{days}','RouterActionsController@days_secondPay_update');
+  Route::get('/estadisticas/{year?}', 'LiquidacionController@Statistics');
+  Route::get('/contabilidad', 'LiquidacionController@contabilidad');
+
+  Route::get('/contabilidad','LiquidacionController@contabilidad');
+  
+  
+  //Paylands
+  Route::get('/orders-payland', 'PaylandsController@lstOrders');
+  Route::post('/getOrders-payland', 'PaylandsController@getOrders');
+  Route::get('/get-summary-payland', 'PaylandsController@getSummary');
+  
+  // Pagos-Propietarios
+  Route::get('/pagos-propietarios', 'PaymentsProController@index');
+  Route::post('/pagos-propietarios/create', 'PaymentsProController@create');
+  Route::get('/pagos-propietarios/update/{id}/{month?}', 'PaymentsProController@update');
+  Route::get('/paymentspro/getBooksByRoom/{idRoom}', 'PaymentsProController@getBooksByRoom');
+  Route::get('/paymentspro/getLiquidationByRoom', 'PaymentsProController@getLiquidationByRoom');
+  Route::get('/pagos-propietarios/get/historic_production/{room_id}', 'PaymentsProController@getHistoricProduction');
+  
 });

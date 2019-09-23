@@ -33,12 +33,23 @@ class User extends Authenticatable
     {
         return $this->hasOne('\App\Book', 'user_id', 'id');
     }
-	public function isAgent()
-	{
-		return ($this->hasOne('\App\AgentsRooms', 'user_id', 'id')) ? true : false;
-	}
-	public function agent()
-	{
-		return $this->hasOne('\App\AgentsRooms', 'user_id', 'id');
-	}
+    public function isAgent()
+    {
+            return ($this->hasOne('\App\AgentsRooms', 'user_id', 'id')) ? true : false;
+    }
+    public function agent()
+    {
+            return $this->hasOne('\App\AgentsRooms', 'user_id', 'id');
+    }
+    static function getRolesLst(){
+      return [
+          'admin',
+          'agente',
+          'jaime',
+          'limpieza',
+          'propietario',
+          'recepcionista',
+          'subadmin',
+      ];
+    }
 }

@@ -43,7 +43,7 @@
                             <select class="form-control full-width" data-init-plugin="select2" name="role">
                                 <option value="<?php echo $user->role ?>" default><?php echo $user->role ?></option>
                                 <option value="admin">admin</option>
-                                <option value="Subadmin">Subadmin</option>
+                                <option value="subadmin">SubAdmin</option>
                                 <option value="limpieza">Limpieza</option>
                                 <option value="agente">Agente</option>
                                 <option value="propietario">Propietario</option>

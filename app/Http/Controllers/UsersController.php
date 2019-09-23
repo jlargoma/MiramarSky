@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\User;
 use App\Http\Requests;
 
 class UsersController extends AppController
@@ -15,8 +16,8 @@ class UsersController extends AppController
      */
     public function index()
     {
-        return view('backend/users/index',  [
-              'users' => \App\User::whereIn('role', ['admin', 'propietario', 'subadmin','limpieza'])->get(),
+      return view('backend/users/index',  [
+              'users' => User::whereIn('role',User::getRolesLst())->get(),
                                             ]);
     }
 
@@ -28,7 +29,7 @@ class UsersController extends AppController
 
     public function create(Request $request)
     {
-        $user = new \App\User();
+        $user = new User();
 
         $user->name = $request->input('name');
         $user->email = $request->input('email');
@@ -53,7 +54,7 @@ class UsersController extends AppController
 
     public function update($id)
     {
-        $user = \App\User::find($id);
+        $user = User::find($id);
 
         return view('backend/users/_form',  [
                                                 'user' => $user
@@ -63,7 +64,7 @@ class UsersController extends AppController
     public function saveUpdate(Request $request)
     {
         $id                   = $request->input('id');
-        $userUpadate          = \App\User::find($id);
+        $userUpadate          = User::find($id);
         
         
         $userUpadate->name = $request->input('name');
@@ -87,7 +88,7 @@ class UsersController extends AppController
     public function saveAjax(Request $request)
     {
         $id                   = $request->input('id');
-        $userUpadate          = \App\User::find($id);
+        $userUpadate          = User::find($id);
         $userUpadate->name    = $request->input('name');
         $userUpadate->email    = $request->input('email');
 
@@ -104,7 +105,7 @@ class UsersController extends AppController
      */
     public function delete($id)
     {
-        $user = \App\User::find($id);
+        $user = User::find($id);
         if ( $user->delete() ) {
             return redirect()->action('UsersController@index');
         }
@@ -117,7 +118,7 @@ class UsersController extends AppController
         if (request()->getMethod() == 'POST') {
 
             $data = $request->input();
-            $user = \App\User::where('email', $data['email'])->first();
+            $user = User::where('email', $data['email'])->first();
             
             if ($data['password'] == $data['rep-password']) {
                 $user->password = bcrypt($data['password']);
@@ -140,7 +141,7 @@ class UsersController extends AppController
 
 
             $email = base64_decode($email);
-            $user = \App\User::where('email', $email)->first();
+            $user = User::where('email', $email)->first();
 
             if (count($user) > 0) {
                 
@@ -175,10 +176,10 @@ class UsersController extends AppController
 	{
 		if (empty($request->input('search')))
 		{
-			$users =  \App\User::whereIn('role', ['admin', 'propietario', 'subadmin'])->get();
+			$users =  User::whereIn('role', User::getRolesLst())->get();
 		}
 		else{
-			$users = \App\User::where('name', 'LIKE', "%".$request->input('search')."%")->get();
+			$users = User::where('name', 'LIKE', "%".$request->input('search')."%")->get();
 		}
 		return view('backend/users/_tableUser',  [
 			'users' => $users

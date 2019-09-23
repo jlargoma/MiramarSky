@@ -49,7 +49,7 @@
                             </p>
                         </div>
                     </div>
-                    @if($setting and !empty($setting->value))
+                    @if($setting and !empty($setting->value) && $isFastPayment)
                         <div class="col-xs-12">
                             <div class="col-xs-6 text-left">
                                 <input id="price-discount" class="radio-style" name="priceDiscount" type="radio"  value="yes" checked>

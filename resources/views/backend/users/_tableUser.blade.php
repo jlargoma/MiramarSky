@@ -3,8 +3,8 @@
     <tr>
         <th class="text-center bg-complete text-white" style="width: 25%">#</th>
         <th class="text-center bg-complete text-white" style="width: 25%">Nombre</th>
-        <th class="text-center bg-complete text-white" style="width: 25%">Telefono</th>
         <th class="text-center bg-complete text-white" style="width: 35%">Email</th>
+        <th class="text-center bg-complete text-white" style="width: 25%">Telefono</th>
         <th class="text-center bg-complete text-white" style="width: 15%">Tipo</th>
         <th class="text-center bg-complete text-white" style="width: 25%">Modificar</th>
 
@@ -22,15 +22,11 @@
         </td>
         <td class="text-center "><a href="tel:<?php echo $user->phone ?>"><?php echo $user->phone ?></a></td>
         <td class="text-center ">
-			<?php if($user->role == "admin"): ?>
-                <span class="label label-inverse"><?php echo strtoupper($user->role) ?></span>
-			<?php endif;?>
-			<?php if($user->role == "subadmin"): ?>
-                <span class="label label-success"><?php echo strtoupper($user->role) ?></span>
-			<?php endif;?>
-			<?php if($user->role == "propietario"): ?>
-                <span class="label label-warning"><?php echo strtoupper($user->role) ?></span>
-			<?php endif;?>
+            <span class="label 
+                <?php if($user->role == "admin") echo 'label-inverse'; ?>
+                <?php if($user->role == "subadmin") echo 'label-success'; ?>
+                <?php if($user->role == "propietario") echo 'label-warning'; ?>
+              "><?php echo strtoupper($user->role) ?></span>
         </td>
 
         <td class="text-center">

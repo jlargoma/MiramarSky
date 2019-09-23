@@ -1,8 +1,6 @@
 <?php
 
-Route::group(['middleware' => ['auth','role:admin|limpieza'], 'prefix' => 'admin',], function () {
-  
-  Route::get('/reservas/api/getTableData', 'BookController@getTableData');
+Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin'], 'prefix' => 'admin',], function () {
   
   //LIMPIEZA
   Route::get('/limpieza', 'LimpiezaController@index');
@@ -10,8 +8,7 @@ Route::group(['middleware' => ['auth','role:admin|limpieza'], 'prefix' => 'admin
   Route::post('/limpiezasLst/','LiquidacionController@get_limpiezas');
   Route::post('/limpiezasUpd/','LiquidacionController@upd_limpiezas');
   Route::post('/limpiezas/pdf','LiquidacionController@export_pdf_limpiezas');
-  
-  
+  Route::get('/reservas/api/getTableData', 'BookController@getTableData');
 });
 Route::group(['middleware' => ['auth','role:admin|propietario'], 'prefix' => 'admin',], function () {
   //Facturas
@@ -52,11 +49,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
   Route::get('/liquidation/orderByBenefCritico', 'LiquidacionController@orderByBenefCritico');
   Route::get('/apartamentos/rooms/getTableRooms/', 'RouterActionsController@getTableRooms');
   Route::get('/rooms/search/searchByName', 'RoomsController@searchByName');
-  Route::get('/rooms/getUpdateForm', 'RoomsController@getUpdateForm');
-  Route::get('/rooms/cupos', 'RoomsController@getCupos');
-  Route::get('/apartamentos/fast-payment', 'RoomsController@updateFastPayment');
-  Route::get('/apartamentos/update-order-payment', 'RoomsController@updateOrderFastPayment');
-  Route::get('/sizeAptos/update-num-fast-payment', 'RoomsController@updateSizeAptos');
+
+  
   Route::get('/paymentspro/delete/{id}', 'RouterActionsController@paymentspro_del');
   Route::get('/customer/delete/{id}','RouterActionsController@customer_delete');
   Route::get('/customer/change/phone/{id}/{phone}','RouterActionsController@customer_change');

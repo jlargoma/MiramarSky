@@ -681,6 +681,7 @@ class BookController extends AppController
                 $book->real_price = ($room->sizeApto == 1) ? 30 : 50;
             } else
             {
+              if ($computedData){
                 $book->sup_park  = $computedData->totales->parking;
                 $book->sup_limp  = $computedData->totales->limp;
                 $book->cost_limp = $computedData->costes->limp;
@@ -688,21 +689,34 @@ class BookController extends AppController
                 $book->sup_lujo   = $computedData->totales->lujo;
                 $book->cost_lujo  = $computedData->costes->lujo;
                 $book->real_price = $computedData->calculated->real_price;
+              }
             }
 
-            $book->cost_park  = $request->input('costParking');
+            
             $book->type_park  = $request->input('parking');
             $book->agency     = $request->input('agency');
             $book->PVPAgencia = $request->input('agencia') ? : 0;
 
             $book->type_luxury = $request->input('type_luxury');
-            $book->sup_lujo    = $computedData->totales->lujo;
-            $book->cost_lujo   = $computedData->costes->lujo;
-
-            $book->cost_apto  = $request->input('costApto');
-            $book->cost_total = $request->input('cost');
-
-            $book->total_ben = $request->input('beneficio');
+            if ($computedData){
+              $book->sup_lujo    = $computedData->totales->lujo;
+              $book->cost_lujo   = $computedData->costes->lujo;
+            }
+            
+            $book->total_price = $request->input('total'); // This can be modified in frontend
+            if ($request->input('costApto'))   $book->cost_apto  = $request->input('costApto');
+            if ($request->input('cost'))  $book->cost_total = $request->input('cost');
+            if ($request->input('costParking'))  $book->cost_park  = $request->input('costParking');
+            
+            if ($request->input('beneficio')) $book->total_ben = $request->input('beneficio');
+            else { //A subadmin has change the PVP
+              if ($book->cost_total>0){
+                $profit = $book->total_price-$book->cost_total;
+                $book->total_ben = $profit;
+              }
+            }
+              
+              
             $book->extra     = $request->input('extra');
 
             $book->extraPrice  = Rooms::GIFT_PRICE;
@@ -720,8 +734,9 @@ class BookController extends AppController
               }
             }
             $book->ff_discount = $request->input('ff_discount',0);
-            $book->total_price = $request->input('total'); // This can be modified in frontend
-            $book->real_price  = $computedData->calculated->real_price; // This cannot be modified in frontend
+            if ($computedData){
+              $book->real_price  = $computedData->calculated->real_price; // This cannot be modified in frontend
+            }
             $book->inc_percent = $book->profit_percentage;
             $book->ben_jorge   = $book->getJorgeProfit();
             $book->ben_jaime   = $book->getJaimeProfit();
@@ -2364,9 +2379,9 @@ class BookController extends AppController
 
         $roomAssigned = $this->calculateRoomToFastPayment($size, $start, $finish, $request->input('luxury'));
 
-        //dd($roomAssigned);
 
-        $paxPerRoom = \App\Rooms::getPaxRooms($request->input('quantity'), $roomAssigned);
+        $roomID = isset($roomAssigned['id']) ? $roomAssigned['id'] : -1;
+        $paxPerRoom = \App\Rooms::getPaxRooms($request->input('quantity'), $roomID);
         $pax        = $request->input('quantity');
         if ($paxPerRoom > $pax)
         {
@@ -2389,7 +2404,7 @@ class BookController extends AppController
             $counter->addDay();
         }
 
-        $room = \App\Rooms::find($roomAssigned);
+        $room = \App\Rooms::find($roomID);
 
         if ($request->input('parking') == 'si')
         {
@@ -2415,7 +2430,8 @@ class BookController extends AppController
         if ($seasonActive != 0)
         {
             return view('backend.bookStatus.response', [
-                'id_apto'      => $roomAssigned,
+                'id_apto'      => $roomID,
+                'isFastPayment' => $roomAssigned['isFastPayment'],
                 'pax'          => $pax,
                 'nigths'       => $countDays,
                 'apto'         => $typeApto,

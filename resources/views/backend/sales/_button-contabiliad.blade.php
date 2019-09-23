@@ -52,7 +52,7 @@ if ($posicion > 0) {
       <a class="text-white btn btn-md btn-primary" href="{{url('/admin/caja/')}}">Caja</a>
     <?php endif ?>
   </div>
-
+  <?php if (Auth::user()->role == "admin"): ?>
   <div class="btn-contabilidad">
     <?php if ($url == "perdidas-ganancias"): ?>
       <button class="btn btn-md text-white active"  disabled>CTA P &amp; G</button>
@@ -61,7 +61,7 @@ if ($posicion > 0) {
       <a class="text-white btn btn-md btn-primary" href="{{url('/admin/perdidas-ganancias/')}}">CTA P &amp; G</a>
     <?php endif ?>
   </div>
-
+  <?php endif ?>
   <div class="btn-contabilidad">
     <?php if ($url == "limpiezas"): ?>
       <button class="btn btn-md text-white active"  disabled>LIMPIEZAS</button>

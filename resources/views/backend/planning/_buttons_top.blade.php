@@ -61,9 +61,11 @@
       <a href="#" id="sendImportICal" class="btn btn-primary btn-cons" <?php if (count(\App\IcalImport::all()) == 0): ?> disabled="" <?php endif ?> style="background-color: #337ab7; border-color: #2e6da4;">
         <span class="bold">IMPORTACIÓN</span>
       </a>
+      <?php if (Auth::user()->role == "admin"): ?>
       <button class="btn btn-primary btn-cupos btn-cons" type="button" data-toggle="modal" data-target="#modalCuposVtn">
         <span class="bold">Cupos Vtn Rapida</span>
       </button>
+      <?php endif ?>
     <?php endif ?>
   </div>
 </div>

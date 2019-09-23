@@ -7,6 +7,7 @@
     </li>
     @yield('nav_link')
   <?php endif ?>  
+    
   <?php if (Auth::user()->role == "admin" || Auth::user()->role == "subadmin"): ?>
     <li class="{{ Request::path() == 'admin/reservas' ? 'active' : '' }}">
       <a href="{{ url('admin/reservas') }}" class="detailed">Reservas</a>
@@ -22,6 +23,7 @@
       <a href="{{ url('admin/contabilidad') }}" class="detailed">Contabilidad</a>
     </li>
   <?php endif ?>
+    
   <?php if (Auth::user()->role == "admin"): ?>
     <li class="{{  (preg_match('/propietario/i',Request::path()))  ? 'active' : '' }}">
       <a href="{{ url('admin/propietario/8D') }}" class="detailed">Area Propietario</a>
@@ -73,14 +75,22 @@
           <a href="{{ url('admin/orders-payland') }}" class="detailed">PAYLAND</a>
     </li>
 <?php endif ?>
-      <?php if (Auth::user()->role == "limpieza"): ?>
+    
+<?php if (Auth::user()->role == "limpieza"): ?>
     <li class="{{ Request::path() == 'admin/limpieza' ? 'active' : '' }}">
         <a href="{{ url('admin/limpieza') }}" class="detailed">Planning</a>
     </li>
 <?php endif ?>
-      <?php if (Auth::user()->role == "admin" || Auth::user()->role == "limpieza"): ?>
+    
+<?php if (Auth::user()->role == "admin" || Auth::user()->role == "limpieza" || Auth::user()->role == "subadmin"): ?>
     <li class="{{ Request::path() == 'admin/limpiezas' ? 'active' : '' }}">
         <a href="{{ url('admin/limpiezas/') }}" class="detailed">Limpiezas</a>
+    </li>
+<?php endif ?>
+    
+<?php if (Auth::user()->role == "subadmin"): ?>
+    <li class="{{ Request::path() == 'admin/orders-payland' ? 'active' : '' }}">
+          <a href="{{ url('admin/orders-payland') }}" class="detailed">PAYLAND</a>
     </li>
 <?php endif ?>
 
