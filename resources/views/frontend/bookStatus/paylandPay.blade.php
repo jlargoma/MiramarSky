@@ -20,6 +20,7 @@
         z-index: 99;
         position: absolute;
         top: 4em;
+        left: 0;
         width: 100%;
       }
       .title{

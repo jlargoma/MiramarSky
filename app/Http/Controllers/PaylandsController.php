@@ -93,6 +93,15 @@ class PaylandsController extends AppController
       $amount = $request->input('importe',null);
       $subject= $request->input('subject',null);
       $bookingID = $request->input('book',null);
+      
+      $urlPay = $this->generateOrder($amount,$subject,$bookingID);
+      if ($urlPay){
+        return $this->getPaymentText($urlPay);
+      }
+      return 'error';
+    }
+    
+    public function generateOrder($amount,$subject,$bookingID) {
       $book = \App\Book::find($bookingID);
       $token = str_random(32).time();
       $urlPay = route('front.payments',$token);
@@ -114,7 +123,7 @@ class PaylandsController extends AppController
           $PaymentOrders->token = $token;
           $PaymentOrders->description = $description;
           $PaymentOrders->save();
-          return $this->getPaymentText($urlPay);
+          return $urlPay;
         } else {
           $PaymentOrders = new \App\PaymentOrders();
           $PaymentOrders->book_id = -1;
@@ -126,17 +135,10 @@ class PaylandsController extends AppController
           $PaymentOrders->description = $subject;
           $PaymentOrders->save();
           
-//          $urlPay = $this->generateOrderPaymentBooking(
-//                  -1,
-//                  -1,
-//                  env('PAYLAND_MAIL'),
-//                  $subject,
-//                  $amount
-//                  );
-          return $this->getPaymentText($urlPay);
+          return $urlPay;
         }
       }
-      return 'error';
+      return null;
     }
     
     private function getPaymentText($urlPay) {
@@ -472,9 +474,9 @@ class PaylandsController extends AppController
                     );
              return view('frontend.bookStatus.paylandPay', ['urlPayland' => $urlPayland]);
           }
-          dd($payment);
+          return redirect()->route('paymeny-error');
         }
-        dd($token);
+        return redirect()->route('paymeny-error');
       }
     
     

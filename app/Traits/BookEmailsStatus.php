@@ -34,14 +34,9 @@ trait BookEmailsStatus
                 $percent            = $this->getPercent($book);
                 $mount_percent      = number_format(($book->total_price * $percent), 2, ',', '.');
                 $PaylandsController = new \App\Http\Controllers\PaylandsController($cachedRepository);
-                $urlToPayment       = $PaylandsController->generateOrderPayment([
-                                                                                    'customer_id' => $book->customer->id,
-                                                                                    'amount'      => (round($book->total_price * $percent)),
-                                                                                    'url_ok'      => route('payland.thanks.payment', ['id' => $book->id]),
-                                                                                    'url_ko'      => route('payland.thanks.payment', ['id' => $book->id]),
-                                                                                ]);
-                //              $urlToPayment = '$urlToPayment';
-
+                
+                $amount             = (round($book->total_price * $percent));
+                $urlToPayment       = $PaylandsController->generateOrder($amount,'',$book->id);
                 $mailClientContent = str_replace('{urlToPayment}', $urlToPayment, $mailClientContent);
                 $mailClientContent = str_replace('{mount_percent}', $mount_percent, $mailClientContent);
                 $mailClientContent = str_replace('{percent}', $percent, $mailClientContent);
