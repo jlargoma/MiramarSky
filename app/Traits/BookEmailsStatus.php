@@ -92,7 +92,10 @@ trait BookEmailsStatus
         }
         $percent           = 100 - (round(($totalPayment / $book->total_price) * 100));
         $pendiente         = ($book->total_price - $totalPayment);
-        $urlPaymeny        = 'https://miramarski.com/reservas/stripe/pagos/' . base64_encode($book->id) . '/' . base64_encode(round($pendiente));
+        $cachedRepository  = new CachedRepository();
+        $PaylandsController= new \App\Http\Controllers\PaylandsController($cachedRepository);
+        $urlPaymeny        = $PaylandsController->generateOrder($pendiente,'',$book->id);
+//        $urlPaymeny        = 'https://miramarski.com/reservas/stripe/pagos/' . base64_encode($book->id) . '/' . base64_encode(round($pendiente));
         $mailClientContent = str_replace('{pend_percent}', $percent, $mailClientContent);
         $mailClientContent = str_replace('{total_payment}', number_format($totalPayment, 2, ',', '.'), $mailClientContent);
         $mailClientContent = str_replace('{pend_payment}', number_format($pendiente, 2, ',', '.'), $mailClientContent);
@@ -100,7 +103,7 @@ trait BookEmailsStatus
 
         $mailClientContent = $this->clearVars($mailClientContent);
 
-        Mail::send('backend.emails.base', [
+        $sended = Mail::send('backend.emails.base', [
             'mailContent' => $mailClientContent,
             'title'       => $subject
         ], function ($message) use ($book, $subject) {
@@ -112,6 +115,7 @@ trait BookEmailsStatus
         
         \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'second_payment_reminder',$subject,$mailClientContent);
 
+        return $sended;
     }
 
 

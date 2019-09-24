@@ -1936,7 +1936,7 @@ class BookController extends AppController
         {
             $book->send = 1;
             $book->save();
-            $this->sendEmail_secondPayBook($book, 'Recordatorio de pago Apto. de lujo Miramarski - ' . $book->customer->name);
+            $sended = $this->sendEmail_secondPayBook($book, 'Recordatorio de pago Apto. de lujo Miramarski - ' . $book->customer->name);
             if ($sended)
             {
                 return [
