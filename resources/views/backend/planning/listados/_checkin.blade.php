@@ -6,30 +6,25 @@
 <?php $endWeek = Carbon::now()->endOfWeek(); ?>
 <?php if(!$mobile->isMobile() ): ?>
     <div class="tab-pane" id="tabPagadas">
-        <div class="row">
+        <div class="row  table-responsive">
             <table class="table <?php if (Auth::user()->role != "limpieza"): ?>table-condensed<?php endif ?> table-striped table-data"  data-type="confirmadas" style="margin-top: 0;">
                 <thead>
-                    <tr>
-                        <th class ="text-center bg-success text-white" style="width: 4%!important">&nbsp;</th> 
-                        <th class ="text-center bg-success text-white" style="width: 12%!important">   Cliente     </th>
-                        <th class ="text-center bg-success text-white" style="width: 10%!important">   Telefono     </th>
-                        <th class ="text-center bg-success text-white" style="width: 5%!important">   Pax         </th>
-                        <th class ="text-center bg-success text-white" style="width: 12%!important">   Apart       </th>
-                        <th class ="text-center bg-success text-white" style="width: 9%!important">  <i class="fa fa-moon-o"></i> </th>
-                         <th class="bg-success text-white text-center" style="width: 10%!important">
-                            <i class="fa fa-clock-o" aria-hidden="true"></i> Hora
-                        </th>
-                        <th class ="text-center bg-success text-white" style="width: 7%!important">   IN     </th>
-                        <th class ="text-center bg-success text-white" style="width: 7%!important">   OUT      </th>
-                        
-                        <th class="text-center bg-success text-white" style="width: 5%!important">FF</th>
-                       
-                        <th class ="text-center bg-success text-white" style="width: 12%!important">   Precio      </th>
-                        
-                        <th class ="text-center bg-success text-white" style="width: 4%!important">&nbsp;</th>
+                    <tr class ="text-center bg-success text-white">
+                      <th class="th-bookings th-1" >&nbsp;</th> 
+                        <th class="th-bookings th-name">Cliente</th>
+                        <th class="th-bookings">Telefono</th>
+                        <th class="th-bookings th-2">Pax</th>
+                        <th class="th-bookings">Apart</th>
+                        <th class="th-bookings th-2">  <i class="fa fa-moon-o"></i> </th>
+                        <th class="th-bookings th-3">Hora</th>
+                        <th class="th-bookings  th-4">   IN     </th>
+                        <th class="th-bookings th-4">   OUT      </th>
+                        <th class="th-bookings th-3">FF</th>
+                        <th class="th-bookings th-6">   Precio      </th>
                         <?php if (Auth::user()->role != "limpieza"): ?>
-                            <th class ="text-center bg-success text-white" style="width: 4%!important">   a      </th>
+                            <th class="th-bookings th-6">   a      </th>
                         <?php endif ?>
+                        <th class="th-bookings">&nbsp;</th>
                         
                     </tr>
                 </thead>
@@ -94,7 +89,7 @@
                                     <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
                                 <?php endif ?>
                             </td>
-                            <td class="text-center" style="padding: 10px 15px!important">
+                            <td class="text-center" style="padding: 10px !important">
                                 <?php if (isset($payment[$book->id])): ?>
                                     <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>
                                 <?php else: ?>
@@ -227,18 +222,27 @@
                                     <?php echo round($book->total_price)."€" ?>
                                 <?php endif ?>
                             </td>
-                            <td class="text-center">
-                                <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
-                                    <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
-                                        <img src="/pages/oferta.png" style="width: 40px;">
-                                    </span>
-                                    <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
-                                    
-                                <?php endif ?>
-                            </td>
+
                             <?php if (Auth::user()->role != "limpieza"): ?>
                             <td class="text-center sm-p-t-10 sm-p-b-10">
 
+                                <?php
+                                  if (($partee = $book->partee())):
+                                    $active = $phoneSMS = '';
+                                    if ($partee->status == "FINALIZADO"){
+                                      $active = 'active';
+                                      $phoneSMS = 'disabled';
+                                    }
+                                    if ($partee->partee_id<1){
+                                      $active = 'disabled-error';
+                                      $phoneSMS = 'disabled-error';
+                                    }
+                                ?>
+                                  <div class="policeman {{$active}}"></div>
+                                  <div class="sendSMS {{$phoneSMS}}" data-id="{{$book->id}}" {{$phoneSMS}}></div>
+                                <?php
+                                  endif;
+                                ?>
                                 <?php if ($book->send == 1): ?>
                                     <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-default sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="1">
                                         <i class="fa fa-paper-plane" aria-hidden="true"></i>
@@ -251,6 +255,15 @@
                                 
                             </td>
                             <?php endif ?>
+                            <td class="text-center">
+                                <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
+                                    <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
+                                        <img src="/pages/oferta.png" style="width: 40px;">
+                                    </span>
+                                    <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
+                                    
+                                <?php endif ?>
+                            </td>
                             
                             
                         </tr>
@@ -272,7 +285,6 @@
             <th class="bg-success text-white text-center" style="min-width:50px ">Out2</th>
             <th class="bg-success text-white text-center" style="min-width:50px">FF</th>
             <th class="bg-success text-white text-center">Pax</th>
-            
             <th class="bg-success text-white text-center"><i class="fa fa-moon-o"></i></th>
             <th class="bg-success text-white text-center">a</th>
         </thead>
@@ -435,6 +447,23 @@
                             <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
                             <br>
                         <?php endif ?>
+                            <?php
+                                  if (($partee = $book->partee())):
+                                    $active = $phoneSMS = '';
+                                    if ($partee->status == "FINALIZADO"){
+                                      $active = 'active';
+                                      $phoneSMS = 'disabled';
+                                    }
+                                    if ($partee->partee_id<1){
+                                      $active = 'disabled-error';
+                                      $phoneSMS = 'disabled-error';
+                                    }
+                                ?>
+                                  <div class="policeman {{$active}}"></div>
+                                  <div class="sendSMS {{$phoneSMS}}" data-id="{{$book->id}}" {{$phoneSMS}}></div>
+                                <?php
+                                  endif;
+                                ?>
                         <?php if ($book->send == 1): ?>
                             <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-default sendSecondPay" type="button" data-toggle="   tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="1">
                                <i class="fa fa-paper-plane" aria-hidden="true"></i>

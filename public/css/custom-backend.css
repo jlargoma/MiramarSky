@@ -159,6 +159,51 @@ td.text-center.pay-status-error {
   text-align: center;
   font-size:16px
 }
+
+#tabPagadas .th-bookings{
+  text-align: center;
+  color: #fff;
+}
+
+#tabPagadas .th-bookings.th-1{
+  padding: 3px !important;
+  max-width: 15px;
+  width: 15px;
+  overflow: none;
+}
+#tabPagadas .th-bookings.th-2{
+  padding: 3px !important;
+  max-width: 30px !important;
+  width: 30px !important;
+  overflow: none;
+}
+#tabPagadas .th-bookings.th-3{
+  padding: 3px !important;
+  max-width: 50px !important;
+  width: 50px !important;
+  overflow: none;
+}
+#tabPagadas .th-bookings.th-4{
+  padding: 3px !important;
+  max-width: 60px !important;
+  width: 60px !important;
+  overflow: none;
+}
+#tabPagadas .th-bookings.th-6{
+  padding: 3px !important;
+  max-width: 105px !important;
+  width: 105px !important;
+  overflow: none;
+}
+#tabPagadas .th-bookings.th-name{
+  padding: 3px !important;
+  max-width: 135px !important;
+  width: 135px !important;
+  overflow: none;
+}
+#tabPagadas select{
+  padding: 3px !important;
+}
 @media only screen and (min-width: 426px) {
   .show-mobile{
     display: none;
