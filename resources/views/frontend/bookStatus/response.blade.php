@@ -49,6 +49,7 @@
 	<div class="row push-10">
 		<div class="col-xs-12">
 			<form method="post" action="{{url('/admin/reservas/create')}}" id="confirm-book">
+                          @if(false)
 			    <div class="row text-center">
                     <div class="col-xs-12">
                         <div class="col-xs-6 text-left push-10">
@@ -61,7 +62,7 @@
                             </p>
                         </div>
                     </div>
-                    @if($setting and !empty($setting->value))
+                    @if($setting and !empty($setting->value) )
                         <div class="col-xs-12">
                             <div class="col-xs-6 text-left">
                                 <input id="price-discount" class="radio-style" name="price-discount" type="radio" value="yes" checked>
@@ -75,6 +76,9 @@
                        </div>
                     @endif
                 </div>
+                          @else
+                          <input id="price" name="price-discount" type="hidden" value="no">
+                          @endif
 				<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 				<input type="hidden" name="newroom" value="<?php echo $room->id; ?>">
 				<input type="hidden" name="name" value="<?php echo $name; ?>">
@@ -123,6 +127,7 @@
 			</form>
 		</div>
 	</div>
+        @if(false)
 	<div class="row push-10">
 		<div class="col-xs-12 text-left">
 		     <span style="font-size:13px; color: #FFFFFF; font-weight: bold;">
@@ -131,6 +136,7 @@
                     * Los fortfaits tiene el mismo precio en toda la estación<br/>
                 </span>
         </div>
+          @endif
 	</div>
 </div>
 <script type="text/javascript">

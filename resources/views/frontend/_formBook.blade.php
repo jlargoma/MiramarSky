@@ -111,7 +111,7 @@
                 <span style="font-size:13px; color: #FFFFFF; font-weight: bold;">
                     *La oferta 5x4 es para días Laborables.<br/>
                     *Ofertas validas toda la temporada excepto del:<br/>
-                    5-9 dic / 21dic-6 ene / 25 feb-3 Marz / 15 -18 Marz / 15-20 Abril
+                    5-9 Dic / 20 dic - 6 Ene/ 24 Feb -1 Marz / 6-12 Abril
                 </span>
             </div>
     </div>
@@ -208,7 +208,7 @@
                 <span style="font-size:13px; color: #FFFFFF; font-weight: bold;">
                     *La oferta 5x4 es para días Laborables.<br/>
                     *Ofertas validas toda la temporada excepto del:<br/>
-                    5-9 dic / 21dic-6 ene / 25 feb-3 Marz / 15 -18 Marz / 15-20 Abril
+                    5-9 Dic / 20 dic - 6 Ene/ 24 Feb -1 Marz / 6-12 Abril
                 </span>
             </div>
         </div>

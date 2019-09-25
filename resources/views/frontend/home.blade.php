@@ -11,7 +11,7 @@
             <!-- DESKTOP -->
             <div class="row clearfix" style="background-color: #3F51B5;">
                 <div id="close-form-book" style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
-                    <span class="white text-white"><i class="fa fa-times fa-2x"></i></span>
+                    <span class="white text-white"><i class="fa fa-times fa-4x"></i></span>
                 </div>
                 <div id="content-book" class="container-fluid clearfix push-10" style="display: none; min-height:675px;">
                     <div class="container-fluid clearfix" style="padding: 20px 0;">
@@ -492,7 +492,7 @@
                     <div id="content-book" class="container-mobile clearfix push-10" style="display: none; height: 125vh;">
                         <div id="close-form-book"
                              style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
-                            <span class="white text-white"><i class="fa fa-times fa-2x"></i></span>
+                            <span class="white text-white"><i class="fa fa-times fa-4x"></i></span>
                         </div>
                         <div class="container clearfix" style="padding: 20px 0;">
                             <div class="row">

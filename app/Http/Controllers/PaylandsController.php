@@ -104,7 +104,13 @@ class PaylandsController extends AppController
     public function generateOrder($amount,$subject,$bookingID) {
       $book = \App\Book::find($bookingID);
       $token = str_random(32).time();
-      $urlPay = route('front.payments',$token);
+      
+      if (env('APP_APPLICATION') == "riad"){
+        $urlPay = route('front.payments',$token);
+      } else {
+        $urlPay = 'https://miramarski.com/payments-forms?t='.$token;
+      }
+      
       if ($amount){
         if ($book){
           $client = $book->customer()->first();

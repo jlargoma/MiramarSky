@@ -74,7 +74,7 @@ class AppController extends Controller
       $data['type']        = 0;
 
       LiquidacionController::addBank($data);
-      if ($book->type_book != 1  && $book->type_book != 2) {
+      if ($book->type_book != 2) {
         $book->changeBook(2, "", $book);
       }
       return true;
