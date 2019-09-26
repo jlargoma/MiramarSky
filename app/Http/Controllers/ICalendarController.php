@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use DateTime;
 use DateInterval;
+use \Carbon\Carbon;
 
 class ICalendarController extends AppController
 {
@@ -111,9 +112,9 @@ class ICalendarController extends AppController
       $logs = '';
       $last_airbnb = \App\LogsData::where('key','ical_airbnb')->orderBy('created_at','DESC')->first();
       if ($last_airbnb){
-        
-        $time  = date('H:i', strtotime($last_airbnb->created_at));
-        $date  = date('d M', strtotime($last_airbnb->created_at));
+        $createdAt = Carbon::parse($last_airbnb->created_at);
+        $time  = $createdAt->format('H:i');
+        $date  = $createdAt->format('d M');
         $logs .='<p><b>AIR BNB: &nbsp;&nbsp;'.$date.' &nbsp;&nbsp; '.$time.'hr</b></p>';
         $logs .='<p>'.$last_airbnb->data.'</p>';
       } else {
@@ -121,8 +122,9 @@ class ICalendarController extends AppController
       }
       $last_booking = \App\LogsData::where('key','ical_booking')->orderBy('created_at','DESC')->first();
       if ($last_booking){
-        $time  = date('H:i', strtotime($last_booking->created_at));
-        $date  = date('d M', strtotime($last_booking->created_at));
+        $createdAt = Carbon::parse($last_booking->created_at);
+        $time  = $createdAt->format('H:i');
+        $date  = $createdAt->format('d M');
         $logs .='<p><b>BOOKING.COM:  &nbsp;&nbsp;'.$date.' &nbsp;&nbsp; '.$time.'hr</b></p>';
         $logs .='<p>'.$last_booking->data.'</p>';
       } else {

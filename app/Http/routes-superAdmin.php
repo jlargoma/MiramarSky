@@ -250,4 +250,8 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::get('/paymentspro/getLiquidationByRoom', 'PaymentsProController@getLiquidationByRoom');
   Route::get('/pagos-propietarios/get/historic_production/{room_id}', 'PaymentsProController@getHistoricProduction');
   
+  
+  Route::get('/ical/importFromUrl', function () {
+      \Artisan::call('ical:import');
+  });
 });

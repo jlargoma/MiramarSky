@@ -176,7 +176,7 @@
         'uses' => 'ICalendarController@getIcalendar'
     ])->where('aptoID', '[0-9]+');
 
-    Route::get('/ical/importFromUrl', function () {
-      \Artisan::call('ical:import');
-//      return redirect('/admin/reservas');
-    });
+//    Route::get('/ical/importFromUrl', function () {
+//      \Artisan::call('ical:import');
+////      return redirect('/admin/reservas');
+//    });

@@ -105,13 +105,20 @@ class ImportICal extends Command
                 if (strpos(strtoupper($event->summary),'NOT AVAILABLE') !== false){
                   continue;
                 }
-
-                if ($this->isEventValidForAdd($event, $agency, $room_id)) {
+                $checEvent = $this->isEventValidForAdd($event, $agency, $room_id);
+                if ($checEvent['valid']) {
                     if ($this->addBook($event, $agency, $room_id)){
                       $count++;
                     } else {
                       Log::error("Adding event => " . print_r($event,true));
                     }
+                } else {
+                  
+                  $date_start_book = new DateTime($event->dtstart);
+                  $date_end_book = new DateTime($event->dtend);
+                  $this->result[] = [
+                      $agency,'No valido '.$checEvent['msg'],$date_start_book->format("Y-m-d"),$date_end_book->format("Y-m-d"),0
+                  ];
                 }
               }
             }
@@ -127,7 +134,8 @@ class ImportICal extends Command
             $lData->data =  $count.' Registros importados';
             $lData->long_info = json_encode($dataLog);
             $lData->save();
-//            $this->printResults($room_id);
+            if (isset($_GET['detail']))
+              $this->printResults($room_id,$ical_to_import->url);
         }
         if (isset($_SERVER['REQUEST_METHOD'])){
           echo 'ok';
@@ -218,13 +226,15 @@ class ImportICal extends Command
         $date_end_book = new DateTime($event->dtend);
 
         if ($date_now->format("Y-m-d") >= $date_end_book->format("Y-m-d"))
-            return false;
+          return ['valid'=>false,'msg'=>'Fecha posterior'];
+//            return false;
 
         // if summary event start on #ADMIN, #BOOKING, #TRIVAGO, #BED&SNOW, #AIRBNB
 
         if (  preg_match("/^#ADMIN/", $event->summary ) || preg_match("/^#BOOKING/", $event->summary ) || preg_match("/^#TRIVAGO/", $event->summary ) || preg_match("/^#BED&SNOW/", $event->summary ) || preg_match("/^#AIRBNB/", $event->summary )
             )
-           return false;
+          return ['valid'=>false,'msg'=>'error '.$event->summary];
+//           return false;
 
         //  $start & $finish in format d/m/Y
         //  \App\Book::existDate($start, $finish, %room_id ) 
@@ -237,8 +247,11 @@ class ImportICal extends Command
                         ->where('finish', $date_end_book->format("Y-m-d"))
                         ->where('agency', $agency)
                         ->get();
-
-        return count($books) == 0;
+        if (count($books) == 0){
+          return ['valid'=>true,'msg'=>''];
+        }
+        return ['valid'=>false,'msg'=>'Evento ya cargado'];
+//        return count($books) == 0;
     }
 
     /**
@@ -271,7 +284,7 @@ class ImportICal extends Command
      * 
      * @return type
      */
-    function printResults($room_id){
+    function printResults($room_id, $url){
       
       if (!isset($_SERVER['REQUEST_METHOD'])) return;
       
@@ -279,17 +292,30 @@ class ImportICal extends Command
       if ($room){
         echo '<h5>'.$room->name.'</h5>';
       }
+      echo $url.'<br>';
+      echo '<style>
+table {
+  border-collapse: collapse;
+}
+
+table, td, th {
+  border: 1px solid black;
+}
+table, td, th,td {
+ text-align: center;
+ }
+</style>';
       if (count($this->result)){
         ?>
         <p>Registros Importados (<?php echo count($this->result); ?>)</p>
         <table class="table text-center">
           <thead>
             <tr>
-              <th class="text-center">Agencia</th>
-              <th class="text-center">Cliente</th>
-              <th class="text-center">CheckIn</th>
-              <th class="text-center">CheckOut</th>
-              <th class="text-center">Noches</th>
+              <th  style="min-width: 90px;">Agencia</th>
+              <th  style="min-width: 90px;">Cliente</th>
+              <th  style="min-width: 90px;">CheckIn</th>
+              <th  style="min-width: 90px;">CheckOut</th>
+              <th >Noches</th>
             </tr>
           </thead>
           <tbody>

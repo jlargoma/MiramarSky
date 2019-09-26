@@ -571,7 +571,7 @@ setlocale(LC_TIME, "es_ES");
           var icon = $(this).find('.fa');
           icon.addClass('fa-spin');
           
-          var request = $.ajax({url: "{{ url('ical/importFromUrl') }}",method: "GET"});
+          var request = $.ajax({url: "{{ url('admin/ical/importFromUrl') }}",method: "GET"});
           request.done(function( msg ) {
             if (msg == 'ok'){
               $('#modal_ical_content').load("{{ url('ical/getLasts') }}");
