@@ -1938,7 +1938,10 @@ class BookController extends AppController
         {
             $book->send = 1;
             $book->save();
-            $sended = $this->sendEmail_secondPayBook($book, 'Recordatorio de pago Apto. de lujo Miramarski - ' . $book->customer->name);
+            
+//            $sended = $this->sendEmail_secondPayBook($book, 'Recordatorio de pago Apto. de lujo Miramarski - ' . $book->customer->name);
+            $subject = 'Recordatorio Pago '.env('APP_NAME').' '.$book->customer->name;
+            $sended = $this->sendEmail_secondPayBook($book, $subject);
             if ($sended)
             {
                 return [
@@ -2051,6 +2054,7 @@ class BookController extends AppController
     public function checkSecondPay()
     {
 
+      return;
         $daysToCheck = \App\DaysSecondPay::find(1)->days;
         /* Esta funcion tiene una cron asosciada que se ejecuta los dia 1 y 15 de cada mes, es decir cad 2 semanas */
         $date  = Carbon::now();
