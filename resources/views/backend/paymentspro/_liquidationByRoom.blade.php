@@ -241,13 +241,13 @@ setlocale( LC_TIME , "es_ES" );
 			<div class="row push-20" style="padding: 10px; background-color: rgba(16,207,189,0.5);">
 				<h4 class="text-left hidden-sm hidden-xs" style="line-height: 1; letter-spacing: -1px;">
 					Liquidación:
-					<span class="font-w800"><?php echo $dates[ 'start' ]->copy()->formatLocalized( '%d %b %Y' ) ?></span> -
-					<span class="font-w800"><?php echo $dates[ 'finish' ]->copy()->formatLocalized( '%d %b %Y' ) ?></span>
+					<span class="font-w800"><?php echo $startDate ?></span> -
+					<span class="font-w800"><?php echo $finishDate ?></span>
 				</h4>
 				<h4 class="text-left  hidden-md hidden-lg" style="line-height: 1; letter-spacing: -1px;">
 					Liquidación:<br>
-					<span class="font-w800"><?php echo $dates[ 'start' ]->copy()->formatLocalized( '%d %b %Y' ) ?></span> -
-					<span class="font-w800"><?php echo $dates[ 'finish' ]->copy()->formatLocalized( '%d %b %Y' ) ?></span>
+					<span class="font-w800"><?php echo $startDate ?></span> -
+					<span class="font-w800"><?php echo $finishDate ?></span>
 				</h4>
 				<table class="table table-bordered table-hover  no-footer" id="basicTable" role="grid">
 					<tr>
@@ -346,15 +346,15 @@ setlocale( LC_TIME , "es_ES" );
 				</table>
 				<table class="table table-bordered no-footer">
 					<tr>
-						<td class="text-center white" style="background-color: #48b0f7;!important;">
+						<td class="text-center white" style="background-color: #48b0f7;">
 							<h5 class="text-center white" style="margin-top: 0">GENERADO</h5>
 							<strong><?php echo number_format( $total , 2 , ',' , '.' ); ?>€</strong>
 						</td>
-						<td class="text-center white" style="background-color: #10cfbd;!important;">
+						<td class="text-center white" style="background-color: #10cfbd;">
 							 <h5 class="text-center white" style="margin-top: 0">PAGADO</h5>
 							<strong><?php echo number_format( $pagototalProp , 2 , ',' , '.' );?>€</strong>
 						</td>
-						<td class="text-center white" style="background-color: #f55753;!important;">
+						<td class="text-center white" style="background-color: #f55753;">
 							<h5 class="text-center white" style="margin-top: 0">PENDIENTE</h5>
 							<strong><?php echo number_format( ($total - $pagototalProp) , 2 , ',' ,	'.'	); ?>€</strong>
 						</td>

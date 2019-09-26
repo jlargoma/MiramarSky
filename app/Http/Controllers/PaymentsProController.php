@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests;
 use \Carbon\Carbon;
 use App\Classes\Mobile;
 
@@ -18,11 +17,28 @@ class PaymentsProController extends AppController {
     $year = self::getActiveYear();
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
-
+    
+    return $this->getItems($year,$startYear,$endYear);
+  }
+    
+  public function indexByDate(Request $req) {
+    $range = $req->input('dateRangefilter',null);
+    $filter_startDate = $req->input('filter_startDate',null);
+    $filter_endDate = $req->input('filter_endDate',null);
+    if ($range){
+      if ($filter_startDate && $filter_endDate){
+        $startYear = new Carbon($filter_startDate);
+        $endYear = new Carbon($filter_endDate);
+        $year = self::getYearData($startYear->format('Y'));
+        return $this->getItems($year,$startYear,$endYear);
+      }
+    }
+    return $this->index();
+  }
+  private  function getItems($year,$startYear,$endYear) {
     $rooms = \App\Rooms::orderBy('order', 'ASC')->get();
 
     /* Calculamos los ingresos por reserva y room */
-
     $data = array();
     $summary = [
         'totalLimp' => 0,
@@ -56,7 +72,6 @@ class PaymentsProController extends AppController {
               ->where('start', '>=', $startYear)
               ->where('finish', '<=', $endYear)
               ->get();
-
 
       foreach ($booksByRoom as $book) {
 
@@ -119,7 +134,9 @@ class PaymentsProController extends AppController {
         'year' => $year,
         'data' => $data,
         'summary' => $summary,
-        'rooms' => $rooms
+        'rooms' => $rooms,
+        'startYear' => $startYear,
+        'endYear' => $endYear
     ]);
   }
 
@@ -300,15 +317,17 @@ class PaymentsProController extends AppController {
     $year = self::getActiveYear();
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
+    $startDate = $request->input('start',null);
+    $endDate = $request->input('end',null);
 
     if ($idRoom == "all") {
-      $books = \App\Book::type_book_sales()->where('start', '>=', $startYear)
-              ->where('start', '<=', $endYear)
+      $books = \App\Book::type_book_sales()->where('start', '>=', $startDate)
+              ->where('start', '<=', $endDate)
               ->orderBy('start', 'ASC')
               ->get();
     } else {
-      $books = \App\Book::type_book_sales()->where('start', '>=', $startYear)
-              ->where('start', '<=', $endYear)
+      $books = \App\Book::type_book_sales()->where('start', '>=', $startDate)
+              ->where('start', '<=', $endDate)
               ->where('room_id', $idRoom)
               ->orderBy('start', 'ASC')
               ->get();
@@ -411,13 +430,8 @@ class PaymentsProController extends AppController {
 
   public function getLiquidationByRoom(Request $request) {
 
-    $aux = str_replace('Abr', 'Apr', $request->date);
-
-    $date = explode('-', $aux);
-
-    $start = Carbon::createFromFormat('d M, y', trim($date[0]));
-    $finish = Carbon::createFromFormat('d M, y', trim($date[1]));
-
+    $start = $request->input('start',null);
+    $finish = $request->input('end',null);
 
     $total = 0;
     $apto = 0;
@@ -427,14 +441,14 @@ class PaymentsProController extends AppController {
     if ($request->idRoom != 'all') {
       $room = \App\Rooms::find($request->idRoom);
       $books = \App\Book::type_book_sales()->where('room_id', $room->id)
-              ->where('start', '>=', $start->copy()->format('Y-m-d'))
-              ->where('finish', '<=', $finish->copy()->format('Y-m-d'))
+              ->where('start', '>=', $start)
+              ->where('finish', '<=', $finish)
               ->orderBy('start', 'ASC')
               ->get();
     } else {
       $room = "all";
-      $books = \App\Book::type_book_sales()->where('start', '>=', $start->copy()->format('Y-m-d'))
-              ->where('finish', '<=', $finish->copy()->format('Y-m-d'))
+      $books = \App\Book::type_book_sales()->where('start', '>=', $start)
+              ->where('finish', '<=', $finish)
               ->orderBy('start', 'ASC')
               ->get();
     }
@@ -455,8 +469,8 @@ class PaymentsProController extends AppController {
     }
     $total += ($apto + $park + $lujo);
     $roomID = isset($room->id) ? $room->id : -1;
-    $pagos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
-            ->where('date', '<=', $start->copy()->addYear()->format('Y-m-d'))
+    $pagos = \App\Expenses::where('date', '>=', $start)
+            ->where('date', '<=', $start)
             ->where('PayFor', 'LIKE', '%' . $roomID . '%')
             ->orderBy('date', 'ASC')
             ->get();
@@ -475,6 +489,8 @@ class PaymentsProController extends AppController {
         'lujo' => $lujo,
         'total' => $total,
         'room' => $room,
+        'startDate' => date('d M Y', strtotime($start)),
+        'finishDate' => date('d M Y', strtotime($finish)),
         'dates' => [
             'start' => $start,
             'finish' => $finish,

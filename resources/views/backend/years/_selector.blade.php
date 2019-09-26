@@ -13,7 +13,8 @@
                         var yearId = $(this).val();
                         $.post("{{ route('years.change') }}", { year: yearId }).done(function( data ) {
                                 console.log(data);
-                                location.reload();
+                                window.location = window.location.href.split("#")[0];
+//                                location.reload();
                         });
                 });
         });

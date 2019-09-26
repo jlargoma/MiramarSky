@@ -98,11 +98,21 @@ use \Carbon\Carbon; ?>
 <div class="container-fluid padding-25 sm-padding-10">
   <div class="row push-20">
     <div class="col-md-2 col-xs-12 text-center">
+      <form method="POST" id="form_filterByRange"> 
+        <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
+        <input type="hidden" id="filter_startDate" name="filter_startDate" value="">
+        <input type="hidden" id="filter_endDate" name="filter_endDate" value="">
       <h5 class="text-center push-10">GENERAR LIQUIDACIÓN:</h5>
-      <input type="text" class="form-control dateRange" id="dateRange" name="dateRange" required="" style="cursor: pointer; text-align: center;min-height: 28px; width: 85%;float: left;" readonly="">
-      <button class="btn btn-xs btn-primary liquidationByRoom" data-id="all" data-costeProp="<?php echo $summary['totalApto'] + $summary['totalParking'] + $summary['totalLujo']; ?>" data-toggle="modal" data-target="#liquidationByRoom" style="cursor: pointer; font-weight: 600; width: 15%; height: 35px;" title="Liquidacion total">
+      <input type="text" class="form-control dateRange" id="dateRangefilter" name="dateRangefilter" required="" style="cursor: pointer; text-align: center;min-height: 28px; width: 85%;float: left;" readonly="">
+      <button class="btn btn-xs btn-primary"  title="Liquidacion total" id="filterByRange">
+      <!--<button class="btn btn-xs btn-primary liquidationByRoom" type="button" data-id="all" data-costeProp="<?php echo $summary['totalApto'] + $summary['totalParking'] + $summary['totalLujo']; ?>" data-toggle="modal" data-target="#liquidationByRoom" style="cursor: pointer; font-weight: 600; width: 15%; height: 35px;" title="Liquidacion total">-->
         <i class="fa fa-eye"></i>
       </button>
+      </form>
+      
+      
+
+
     </div>
     <div class="col-md-2 col-md-offset-1 col-xs-12 text-center">
       <h2 class="font-w300">Pagos a <span class="font-w800">propietarios</span> </h2>
@@ -532,8 +542,10 @@ $(".dateRange").daterangepicker({
 "buttonClasses": "button button-rounded button-mini nomargin",
 "applyClass": "button-color",
 "cancelClass": "button-light",
-"startDate": moment().format("DD MMM, YY"),
-"endDate": moment().add(1, 'years').format("DD MMM, YY"),
+
+//endYear
+"startDate": new Date("{{$startYear}}"),
+"endDate": new Date("{{$endYear}}"),
 //                "startDate": '01 Nov, <?php // echo $date->copy()->format('y')  ?>',
 //                "endDate": '01 Nov, <?php // echo $date->copy()->addYear()->format('y')  ?>',
 locale: {
@@ -615,10 +627,22 @@ $('button.bookByRoom').click(function (event) {
 event.preventDefault();
 var year = $('#fechas').val();
 var idRoom = $(this).attr('data-id');
-$.get('/admin/paymentspro/getBooksByRoom/' + idRoom, {idRoom: idRoom, year: year}, function (data) {
+var startDate = "{{$startYear}}";
+var endDate = "{{$endYear}}";
+
+$.get('/admin/paymentspro/getBooksByRoom/' + idRoom, {idRoom: idRoom, year: year,start:startDate,end:endDate}, function (data) {
 $('.contentBookRoom').empty().append(data);
 });
 
+});
+$('#filterByRange').click(function (event) {
+  event.preventDefault();
+  var date = $('#dateRangefilter').val();
+  var start = window.formatDate($('#dateRangefilter').data('daterangepicker').startDate._d);
+  var end = window.formatDate($('#dateRangefilter').data('daterangepicker').endDate._d);
+  $('#filter_startDate').val(start);
+  $('#filter_endDate').val(end);
+  $('#form_filterByRange').submit();
 });
 $('button.liquidationByRoom').click(function (event) {
 event.preventDefault();
@@ -626,7 +650,9 @@ var date = $('#dateRange').val();
 
 var idRoom = $(this).attr('data-id');
 var costeProp = $(this).attr('data-costeProp');
-$.get('/admin/paymentspro/getLiquidationByRoom', {idRoom: idRoom, date: date, costeProp: costeProp}, function (data) {
+var startDate = "{{$startYear}}";
+var endDate = "{{$endYear}}";
+$.get('/admin/paymentspro/getLiquidationByRoom', {idRoom: idRoom, date: date, costeProp: costeProp,start:startDate,end:endDate}, function (data) {
 $('.contentLiquidationByRoom').empty().append(data);
 });
 
