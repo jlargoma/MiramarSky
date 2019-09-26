@@ -78,6 +78,19 @@
                 </div>
                           @else
                           <input id="price" name="price-discount" type="hidden" value="no">
+                          <div class="row">
+                            <div class="col-xs-12">
+                            <div class="col-xs-6 text-left push-10">
+                                <label for="price">Precio Apto:</label>
+                            </div>
+                              
+                            <div class="col-xs-6 push-10">
+                               <p class="white push-10 font-s16 font-w300 text-right" style="line-height: 1">
+                                <span class="font-w800" style="font-size: 20px;"><?php echo number_format($total, 0, '', '.') ?>€</span>
+                                </p>
+                            </div>
+                            </div>
+                          </div>
                           @endif
 				<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 				<input type="hidden" name="newroom" value="<?php echo $room->id; ?>">
