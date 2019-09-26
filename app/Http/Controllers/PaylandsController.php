@@ -6,9 +6,11 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\BookOrders;
+use App\Traits\BookEmailsStatus;
 
 class PaylandsController extends AppController
 {
+  use BookEmailsStatus;
 	public function payment(Request $request)
 	{
           
@@ -183,9 +185,26 @@ class PaylandsController extends AppController
         $bookOrder->save();
         $amount = ($bookOrder->amount/100).' €';
         \App\BookLogs::saveLogStatus($bookOrder->book_id,null,$bookOrder->cli_email,"Pago de $amount ($key_token)");
-//        $book = \App\Book::find($bookOrder->book_id);
-        if ($bookOrder->book_id){
+        $book = \App\Book::find($bookOrder->book_id);
+        if ($book){
           $this->payBook($bookOrder->book_id, $bookOrder->amount);
+          
+          //BEGIN: check if is a final payment
+          $totalPayment = 0;
+          $payments     = \App\Payments::where('book_id', $book->id)->get();
+          if (count($payments) > 0)
+          {
+              foreach ($payments as $key => $pay)
+              {
+                  $totalPayment += $pay->import;
+              }
+          }
+          $pendiente         = ($book->total_price - $totalPayment);
+          if ($pendiente<=0){
+            $subject = 'Confirmanción de Pago '.env('APP_NAME').' '.$book->customer->name;
+            $this->sendEmail_confirmSecondPayBook($book,$subject,$totalPayment);
+          }
+          //END: check if is a final payment
         }
          
       }

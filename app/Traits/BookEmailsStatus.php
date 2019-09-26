@@ -62,7 +62,7 @@ trait BookEmailsStatus
             'mailContent' => $mailClientContent,
             'title'       => $subject
         ], function ($message) use ($book, $subject) {
-            $message->from('reservas@apartamentosierranevada.net');
+            $message->from(env('MAIL_FROM'));
             $message->to($book->customer->email);
             $message->subject($subject);
         });
@@ -70,7 +70,7 @@ trait BookEmailsStatus
         \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,$keyMail,$subject,$mailClientContent);
     }
 
-    /**
+        /**
      *
      * @param type $book
      * @param type $subject
@@ -107,10 +107,51 @@ trait BookEmailsStatus
             'mailContent' => $mailClientContent,
             'title'       => $subject
         ], function ($message) use ($book, $subject) {
-            $message->from('reservas@apartamentosierranevada.net');
+            $message->from(env('MAIL_FROM'));
             $message->to($book->customer->email);
             $message->subject($subject);
-            $message->replyTo('reservas@apartamentosierranevada.net');
+            $message->replyTo(env('MAIL_FROM'));
+        });
+        
+        \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'second_payment_reminder',$subject,$mailClientContent);
+
+        return $sended;
+    }
+
+    /**
+     *
+     * @param type $book
+     * @param type $subject
+     */
+    public function sendEmail_confirmSecondPayBook($book, $subject,$totalPayment)
+    {
+        $mailClientContent = $this->getMailData($book, 'second_payment_confirm');
+        setlocale(LC_TIME, "ES");
+        setlocale(LC_TIME, "es_ES");
+
+        $totalPayment = 0;
+        $payments     = \App\Payments::where('book_id', $book->id)->get();
+        if (count($payments) > 0)
+        {
+            foreach ($payments as $key => $pay)
+            {
+                $totalPayment += $pay->import;
+            }
+        }
+        $pendiente         = ($book->total_price - $totalPayment);
+        if ($pendiente>0) return; //only if the Booking is totally payment
+        
+        $mailClientContent = str_replace('{total_payment}', number_format($totalPayment, 2, ',', '.'), $mailClientContent);
+        $mailClientContent = $this->clearVars($mailClientContent);
+
+        $sended = Mail::send('backend.emails.base', [
+            'mailContent' => $mailClientContent,
+            'title'       => $subject
+        ], function ($message) use ($book, $subject) {
+            $message->from(env('MAIL_FROM'));
+            $message->to($book->customer->email);
+            $message->subject($subject);
+            $message->replyTo(env('MAIL_FROM'));
         });
         
         \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'second_payment_reminder',$subject,$mailClientContent);

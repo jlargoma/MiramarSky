@@ -44,6 +44,7 @@ class Settings extends Model
           'reservation_state_changed_cancel'  =>'Denegada RVA',
           'reserva-propietario'               =>'RVA Propietario',
           'second_payment_reminder'           =>'Recordatorio 2º pago',
+          'second_payment_confirm'            =>'Confirmación del 2º pago',
           'Forfait_email_payment_request'     =>'Solicitud de pago Forfaits',
           'Forfait_email_confirmation_payment'=>'Confirmación pago Forfait',
           'SMS_Partee_msg'                    =>'Mensaje Partee (enviar por plataforma de terceros)',

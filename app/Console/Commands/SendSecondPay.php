@@ -58,11 +58,9 @@ class SendSecondPay extends Command {
     $books = Book::where('start', '>=', $today)
             ->where('start', '<=', $today->copy()->addDays($daysToCheck))
             ->where('type_book', 2)
-//            ->where('send', 0)
+            ->where('send', 0)
             ->orderBy('created_at', 'DESC')->get();
 
-//    dd($books); 
-     
     $subject = 'Recordatorio Pago '.env('APP_NAME').' ';
     if ($books)
     {
@@ -80,8 +78,8 @@ class SendSecondPay extends Command {
           }
           $pending = ($book->total_price - $totalPayment);
           
-          echo $subject . $book->customer->name.', checkin: '.$book->start.', pendiente: '.$pending."\n";
-          continue;
+//          echo $subject . $book->customer->name.', checkin: '.$book->start.', pendiente: '.$pending."\n";
+//          continue;
           
           if ($pending>0)
             $this->sendEmail_secondPayBook($book,$subject . $book->customer->name);
