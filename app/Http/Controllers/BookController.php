@@ -706,6 +706,8 @@ class BookController extends AppController
             $book->total_price = $request->input('total'); // This can be modified in frontend
             if ($request->input('costApto'))   $book->cost_apto  = $request->input('costApto');
             if ($request->input('cost'))  $book->cost_total = $request->input('cost');
+            //Parking NO o Gratis
+            if ($book->type_park == 2 || $book->type_park == 3) $book->cost_park = 0;
             if ($request->input('costParking'))  $book->cost_park  = $request->input('costParking');
             
             if ($request->input('beneficio')) $book->total_ben = $request->input('beneficio');
