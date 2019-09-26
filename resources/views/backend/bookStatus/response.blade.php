@@ -37,6 +37,7 @@
 	<div class="row push-10">
 		<div class="col-xs-12">
 			<form method="post" action="{{url('/admin/reservas/create')}}" id="confirm-book">
+                          @if(false)
 			    <div class="row text-center push-10">
                     <div class="col-xs-12">
                         <div class="col-xs-6 text-left push-10">
@@ -63,6 +64,9 @@
                        </div>
                     @endif
                 </div>
+                          @else
+                          <input id="price" name="priceDiscount" type="hidden"  value="no">
+                          @endif
 	    		<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 	    		<input type="hidden" name="newroom" value="<?php echo $id_apto; ?>">
 	    		<input type="hidden" name="name" value="<?php echo $name; ?>">
