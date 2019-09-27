@@ -294,68 +294,16 @@
 	$(document).ready(function() {
 		/* GRAFICA INGRESOS/GASTOS */
 			var data = {
-			    labels: [
-		    			"Sep",
-		    			"Oct",
-		    			"Nov",
-		    			"Dic",
-		    			"Ene",
-		    			"Feb",
-		    			"Abr",
-		    			"Mar",
-		    			"May",
-		    			"Jun",
-		    			"Jul",
-		    			"Ago"
-			    			],
+			    labels: [{!! $estadisticas['ingresos']['label'] !!}],
 			    datasets: [
-					        {
-					            label: "Ingresos",
-					            backgroundColor: [
-					                'rgba(67, 160, 71, 0.3)',
-					                'rgba(67, 160, 71, 0.3)',
-					                'rgba(67, 160, 71, 0.3)',
-					                'rgba(67, 160, 71, 0.3)',
-					                'rgba(67, 160, 71, 0.3)',
-					                'rgba(67, 160, 71, 0.3)',
-					                'rgba(67, 160, 71, 0.3)',
-					                'rgba(67, 160, 71, 0.3)',
-					                'rgba(67, 160, 71, 0.3)',
-					                'rgba(67, 160, 71, 0.3)',
-					                'rgba(67, 160, 71, 0.3)',
-					                'rgba(67, 160, 71, 0.3)',
-					            ],
-					            borderColor: [
-					                'rgba(67, 160, 71, 1)',
-					                'rgba(67, 160, 71, 1)',
-					                'rgba(67, 160, 71, 1)',
-					                'rgba(67, 160, 71, 1)',
-					                'rgba(67, 160, 71, 1)',
-					                'rgba(67, 160, 71, 1)',
-					                'rgba(67, 160, 71, 1)',
-					                'rgba(67, 160, 71, 1)',
-					                'rgba(67, 160, 71, 1)',
-					                'rgba(67, 160, 71, 1)',
-					                'rgba(67, 160, 71, 1)',
-					                'rgba(67, 160, 71, 1)',
-					            ],
-					            borderWidth: 1,
-					            data: [
-					            		<?php echo $estadisticas['ingresos'][9] ?>,
-					            		<?php echo $estadisticas['ingresos'][10] ?>,
-					            		<?php echo $estadisticas['ingresos'][11] ?>,
-					            		<?php echo $estadisticas['ingresos'][12] ?>,
-					            		<?php echo $estadisticas['ingresos'][1] ?>,
-					            		<?php echo $estadisticas['ingresos'][2] ?>,
-					            		<?php echo $estadisticas['ingresos'][3] ?>,
-					            		<?php echo $estadisticas['ingresos'][4] ?>,
-					            		<?php echo $estadisticas['ingresos'][5] ?>,
-					            		<?php echo $estadisticas['ingresos'][6] ?>,
-					            		<?php echo $estadisticas['ingresos'][7] ?>,
-					            		<?php echo $estadisticas['ingresos'][8] ?>
-					            	],
-					        }
-					    ]
+                                        {
+                                            label: "Ingresos",
+                                            backgroundColor: 'rgba(67, 160, 71, 0.3)',
+                                            borderColor: 'rgba(67, 160, 71, 1)',
+                                            borderWidth: 1,
+                                            data: [{!! $estadisticas['ingresos']['val'] !!}]
+                                        }
+                                    ]
 			};
 
 			var myBarChart = new Chart('barChart', {
@@ -372,66 +320,14 @@
 			Chart.defaults.global.legend.labels.usePointStyle = true;
 			/*Fin de configuracion de posicion*/
 			var dataClient = {
-			    labels: [
-			    			"Sep",
-			    			"Oct",
-			    			"Nov",
-			    			"Dic",
-			    			"Ene",
-			    			"Feb",
-			    			"Abr",
-			    			"Mar",
-			    			"May",
-			    			"Jun",
-			    			"Jul",
-			    			"Ago"
-			    			],
+			    labels: [{!! $estadisticas['ingresos']['label'] !!}],
 			    datasets: [
 			        {
 			            label: "Clientes por mes",
-			            backgroundColor: [
-			                'rgba(54, 162, 235, 0.2)',
-			                'rgba(54, 162, 235, 0.2)',
-			                'rgba(54, 162, 235, 0.2)',
-			                'rgba(54, 162, 235, 0.2)',
-			                'rgba(54, 162, 235, 0.2)',
-			                'rgba(54, 162, 235, 0.2)',
-			                'rgba(54, 162, 235, 0.2)',
-			                'rgba(54, 162, 235, 0.2)',
-			                'rgba(54, 162, 235, 0.2)',
-			                'rgba(54, 162, 235, 0.2)',
-			                'rgba(54, 162, 235, 0.2)',
-			                'rgba(54, 162, 235, 0.2)',
-			            ],
-			            borderColor: [
-			                'rgba(54, 162, 235, 1)',
-			                'rgba(54, 162, 235, 1)',
-			                'rgba(54, 162, 235, 1)',
-			                'rgba(54, 162, 235, 1)',
-			                'rgba(54, 162, 235, 1)',
-			                'rgba(54, 162, 235, 1)',
-			                'rgba(54, 162, 235, 1)',
-			                'rgba(54, 162, 235, 1)',
-			                'rgba(54, 162, 235, 1)',
-			                'rgba(54, 162, 235, 1)',
-			                'rgba(54, 162, 235, 1)',
-			                'rgba(54, 162, 235, 1)',
-			            ],
+			            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+			            borderColor: 'rgba(54, 162, 235, 1)',
 			            borderWidth: 1,
-			            data: [
-			            		<?php echo $estadisticas['clientes'][9] ?>,
-			            		<?php echo $estadisticas['clientes'][10] ?>,
-			            		<?php echo $estadisticas['clientes'][11] ?>,
-			            		<?php echo $estadisticas['clientes'][12] ?>,
-			            		<?php echo $estadisticas['clientes'][1] ?>,
-			            		<?php echo $estadisticas['clientes'][2] ?>,
-			            		<?php echo $estadisticas['clientes'][3] ?>,
-			            		<?php echo $estadisticas['clientes'][4] ?>,
-			            		<?php echo $estadisticas['clientes'][5] ?>,
-			            		<?php echo $estadisticas['clientes'][6] ?>,
-			            		<?php echo $estadisticas['clientes'][7] ?>,
-			            		<?php echo $estadisticas['clientes'][8] ?>
-			            		],
+			            data: [{!! $estadisticas['ingresos']['val'] !!}],
 			        }
 			    ]
 			};
