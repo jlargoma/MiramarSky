@@ -88,8 +88,8 @@
                                             </span>
                                             <select class="full-width form-control"  name="role" required placeholder="Seleccione role">
                                                 <option></option>
-                                                <option value="admin">Admin</option>
-                                                <option value="jaime">Jaime</option>
+                                                <option value="admin">admin</option>
+                                                <option value="subadmin">SubAdmin</option>
                                                 <option value="limpieza">Limpieza</option>
                                                 <option value="agente">Agente</option>
                                                 <option value="propietario">Propietario</option>

@@ -72,7 +72,10 @@ class UsersController extends AppController
         $userUpadate->phone = $request->input('phone');
         $userUpadate->role = $request->input('role');
         $userUpadate->remember_token = str_random(60);
-        $userUpadate->password = bcrypt($request->input('password'));
+        
+        $psw = $request->input('password',null);
+        if ($psw && trim($psw) != '')
+          $userUpadate->password = bcrypt($psw);
 
         $userUpadate->name_business = $request->input('name_business');
         $userUpadate->nif_business = $request->input('nif_business');
@@ -143,7 +146,7 @@ class UsersController extends AppController
             $email = base64_decode($email);
             $user = User::where('email', $email)->first();
 
-            if (count($user) > 0) {
+            if ($user > 0) {
                 
                 if ( preg_match('/propietario/i', $user->role) ) {
 

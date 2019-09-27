@@ -53,7 +53,7 @@
                         <br>
                         <div class="input-group">
                             <label>Contraseña</label>
-                            <input type="password" class="form-control" name="password"  required="" aria-required="true" aria-invalid="false" value="<?php echo $user->password ?>">
+                            <input type="password" class="form-control" name="password"  aria-required="true" aria-invalid="false" value="">
                         </div>
                         <br>
                         <div class="input-group">
