@@ -179,8 +179,8 @@ td.text-center.pay-status-error {
 }
 #tabPagadas .th-bookings.th-3{
   padding: 3px !important;
-  max-width: 50px !important;
-  width: 50px !important;
+  max-width: 40px !important;
+  width: 40px !important;
   overflow: none;
 }
 #tabPagadas .th-bookings.th-4{
@@ -203,6 +203,67 @@ td.text-center.pay-status-error {
 }
 #tabPagadas select{
   padding: 3px !important;
+}
+#tabPagadas select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+}
+
+
+button#refreshFilters {
+    float: left;
+    height: 35px;
+    font-size: 1.2em;
+    width: 35px;
+    margin-right: 1px;
+    background-color: #51b1f7;
+    color: #fff;
+}
+button#filterByRange {
+    float: left;
+    height: 35px;
+    width: 35px;
+    margin-left: 1px;
+    font-size: 1.2em;
+}
+
+input#dateRangefilter {
+    cursor: pointer;
+    text-align: center;
+    min-height: 28px;
+    width: calc( 100% - 72px);
+    float: left;
+    max-width: 200px;
+}
+
+#payland_table .td-date-payland{
+    max-width: 110px !important;
+    width: 110px !important;
+    text-align: center;
+}
+
+#payland_table .td-name-payland{
+    padding: 7px 3px !important;
+    max-width: 240px !important;
+    width: 135px !important;
+}
+#payland_table .td-mount-payland{
+  padding: 3px !important;
+  max-width: 135px !important;
+  width: 135px !important;
+  text-align: center;
+  overflow: none;
+}
+
+#tabPagadas table.dataTable,
+#tabPagadas table.dataTable th,
+#tabPagadas table.dataTable td{
+  box-sizing: inherit;
+}
+.comment-floating{
+  right: 0;
 }
 @media only screen and (min-width: 426px) {
   .show-mobile{

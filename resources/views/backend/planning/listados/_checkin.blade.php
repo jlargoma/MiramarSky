@@ -16,7 +16,7 @@
                         <th class="th-bookings th-2">Pax</th>
                         <th class="th-bookings">Apart</th>
                         <th class="th-bookings th-2">  <i class="fa fa-moon-o"></i> </th>
-                        <th class="th-bookings th-3">Hora</th>
+                        <th class="th-bookings th-2"> <i class="fa fa-clock-o"></i></th>
                         <th class="th-bookings  th-4">   IN     </th>
                         <th class="th-bookings th-4">   OUT      </th>
                         <th class="th-bookings th-3">FF</th>
@@ -24,7 +24,7 @@
                         <?php if (Auth::user()->role != "limpieza"): ?>
                             <th class="th-bookings th-6">   a      </th>
                         <?php endif ?>
-                        <th class="th-bookings">&nbsp;</th>
+                        <th class="th-bookings th-2">&nbsp;</th>
                         
                     </tr>
                 </thead>
@@ -256,7 +256,7 @@
                             </td>
                             <?php endif ?>
                             <td class="text-center">
-                                <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
+                                <?php if ($book->promociones> 0 ): ?>
                                     <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
                                         <img src="/pages/oferta.png" style="width: 40px;">
                                     </span>

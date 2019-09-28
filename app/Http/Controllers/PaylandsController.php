@@ -469,10 +469,22 @@ class PaylandsController extends AppController
             //Only to the Months select
             $months_obj[] = [
                 'id'    => $auxY.'_'.$c_month,
+                'dateYear'    => '20'.$auxY,
                 'month' => $c_month,
                 'year'  => $auxY,
-                'name'  => $arrayMonthMin[$c_month-1]
+                'name'  => $arrayMonthMin[$c_month-1],
+                't_pvp' => 0
             ];
+          }
+          
+          foreach ($months_obj as $k=>$months){
+            $tPVP = \App\Book::type_book_sales()
+                    ->whereYear('start', '=', $months['dateYear'])
+                    ->whereMonth('start', '=', $months['month'])
+                    ->sum('total_price');
+            if ($tPVP)
+              $months_obj[$k]['t_pvp'] = $tPVP;
+            
           }
           
           return [

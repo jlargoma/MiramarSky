@@ -64,11 +64,7 @@ class PaymentsProController extends AppController {
       $data[$room->id]['pagos'] = 0;
 
       $booksByRoom = \App\Book::where('room_id', $room->id)
-              ->whereIn('type_book', [
-                  2,
-                  7,
-                  8
-              ])
+              ->where('type_book', 2)
               ->where('start', '>=', $startYear)
               ->where('finish', '<=', $endYear)
               ->get();
@@ -504,11 +500,40 @@ class PaymentsProController extends AppController {
 
   public static function getHistoricProduction($room_id, Request $request) {
 
+    $return = [];
     $year = self::getActiveYear();
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
-
+    
+    $oRoom = \App\Rooms::find($room_id);
+    
+    $CostProp = $oRoom->getCostPropByYear($year->year);
+    
+    if ($CostProp){
+      $return[] = ['y'=>($year->year-2000),'val'=>$CostProp];
+    } else {
+      $return[] = ['y'=>($year->year-2000),'val'=>0];
+    }
+    
+    $aux = $year->year-1;
+    $CostProp = $oRoom->getCostPropByYear($aux);
+    if ($CostProp){
+      $return[] = ['y'=>($aux-2000),'val'=>$CostProp];
+    } else {
+      $return[] = ['y'=>($aux-2000),'val'=>0];
+    }
+    
+    $aux = $aux-1;
+    $CostProp = $oRoom->getCostPropByYear($aux);
+    if ($CostProp){
+      $return[] = ['y'=>($aux-2000),'val'=>$CostProp];
+    } else {
+      $return[] = ['y'=>($aux-2000),'val'=>0];
+    }
+      
     return view('backend/paymentspro/_historicProductionGraphic', [
+        'oRoom' => $oRoom,
+        'info_years' => $return,
         'year' => $year,
         'room_id' => $room_id
     ]);

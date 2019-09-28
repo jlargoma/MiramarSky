@@ -23,7 +23,7 @@
         </button>
 
        <button class="btn btn-orange btn-cons  btn-tables btn-blink"  type="button" data-type="ff_pdtes">
-            <span class="bold">FF PDTES</span>
+            <span class="bold">FORFAITS</span>
             <span class="numPaymentLastBooks show"><?php echo $ff_pendientes; ?></span>
         </button>
       

@@ -13,15 +13,36 @@ setlocale(LC_TIME, "es_ES");
     </head>
     <body class="fixed-header   windows desktop pace-done sidebar-visible menu-pin" style="padding-top:0px!important">
 
+      @if(count($info_years))
+       <div class="col-md-12 col-xs-12 table-responsive" style="padding-right: 0;">
+        <table class="table table-striped" id="tableOrderable">
+          <thead >
+              <th class ="text-center bg-complete text-white">Apto</th>
+              @foreach($info_years as $item)
+              <th class ="text-center bg-complete text-white">Temp. {{$item['y']}} - {{$item['y']+1}}</th>
+              @endforeach
+          </thead>
+          <tbody >
+            <tr>
+              <td class ="text-center">{{$oRoom->name}} ({{$oRoom->nameRoom}})</td>
+              @foreach($info_years as $item)
+              <th class ="text-center"><?php echo number_format($item['val'] ,0,'','.'); ?>€</th>
+              @endforeach
+            </tr>
+          </tbody>
+        </table>
+       </div>
+      @endif
+      
         <div class="col-md-12 col-xs-12">
             <div>
-                <?php $dataChartMonths = \App\Rooms::getPvpByMonth($year->year,$room_id) ?>
+                <?php $dataChartMonths = \App\Rooms::getCostPropByMonth($year->year,$room_id) ?>
             </div>
         </div>
         <div class="col-md-12 col-xs-12">
             <div>
-                <?php $dataChartYear = \App\Rooms::getPvpByMonth(($year->year - 1) ,$room_id) ?>
-                <?php $dataChartPrevYear = \App\Rooms::getPvpByMonth(($year->year - 2),$room_id) ?>
+                <?php $dataChartYear = \App\Rooms::getCostPropByMonth(($year->year - 1) ,$room_id) ?>
+                <?php $dataChartPrevYear = \App\Rooms::getCostPropByMonth(($year->year - 2),$room_id) ?>
 
                 <canvas id="barChartTemp" style="width: 100%; height: 250px;"></canvas>
             </div>

@@ -644,12 +644,11 @@ class RoomsController extends AppController {
     $email = $request->email;
     $room = Rooms::find($request->roomId);
     $path = public_path() . '/img/miramarski/apartamentos/' . $room->nameRoom . '/';
-
     if (File::exists($path)) {
       $images = File::allFiles($path);
 
       $send = Mail::send('backend.emails._imagesRoomEmail', ['room' => $room], function ($message) use ($email, $images, $room, $path) {
-                $message->from('info@apartamentosierranevada.net');
+                $message->from(env('MAIL_FROM'));
                 $luxury = ($room->luxury == 1) ? "Lujo" : "Estandar";
 
 
@@ -661,7 +660,6 @@ class RoomsController extends AppController {
                 $message->to($email);
                 $message->subject('Imagenes del apartamento ' . $room->sizeRooms->name . ' // ' . $luxury);
               });
-
       if ($send){
         echo "EMAIL SALIENDO";
         \App\BookLogs::saveLog($request->input('register',-1),$request->roomId,$email,'sendImagesRoomEmail');

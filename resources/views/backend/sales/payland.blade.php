@@ -52,12 +52,12 @@ setlocale(LC_TIME, "es_ES");
           <div class="month_select" id="ms_{{$m['id']}}" data-month="{{$m['month']}}" data-year="{{$m['year']}}">{{$m['name']}} {{$m['year']}}</div>
           @endforeach
         </div>
-        <div class="table-responsive" id="limpieza_table">
+        <div class="table-responsive" id="payland_table">
           <table class="table">
             <thead >
-            <th class ="text-center bg-complete text-white">Fecha</th>
-            <th class ="bg-complete text-white">Nombre</th>
-            <th class ="text-center bg-complete text-white ">Importe</th>
+            <th class ="text-center bg-complete text-white td-date-payland">Fecha</th>
+            <th class ="bg-complete text-white td-name-payland">Nombre</th>
+            <th class ="text-center bg-complete text-white td-mount-payland">Importe</th>
             <th class ="text-center bg-complete text-white ">Estado</th>
             <th class ="text-center bg-complete text-white">Card</th>
             </thead>
@@ -101,6 +101,25 @@ setlocale(LC_TIME, "es_ES");
       <div>
         <canvas id="barChartTemp" style="width: 100%; height: 250px;"></canvas>
       </div>
+      <div class="col-md-12 table-responsive">
+        <h3>cobrado por TPV</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              @foreach($months_obj as $m)
+              <td class="text-center bg-complete text-white" style="min-width: 5em; height: 2em;">{{$m['name']}} {{$m['year']}}</td>
+              @endforeach
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              @foreach($months_obj as $m)
+              <td class="text-center" style="height: 2em;"><?php echo number_format($m['t_pvp'], 0, ',', '.') ?> €</td>
+              @endforeach
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
@@ -143,9 +162,9 @@ url: '/admin/getOrders-payland',
         if (page == 1) row += '>';
         else row += 'style="display: none">';
         
-        row += '<td class="text-center">' + val.date + '</td>';
-        row += '<td >' + val.customer_name + '<br>' + val.customer + '</td>';
-        row += '<td class="text-center">' + val.amount + ' ' + val.currency + '</td>';
+        row += '<td class="td-date-payland">' + val.date + '</td>';
+        row += '<td class="td-name-payland">' + val.customer_name + '<br>' + val.customer + '</td>';
+        row += '<td class="td-mount-payland">' + val.amount + ' ' + val.currency + '</td>';
         row += '<td class="text-center pay-status-' + val.status + '">' + val.status + '</td>';
         row += '<td class="text-center">' + val.sourceType + '<br>' + val.pan + '</td>';
         $('#tableItems').append(row);

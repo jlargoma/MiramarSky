@@ -109,7 +109,8 @@ class Rooms extends Model
 	    $startYear  = new Carbon($activeYear->start_date);
 	    $endYear    = new Carbon($activeYear->end_date);
 
-        $books = \App\Book::whereIn('type_book', [2,7,8])
+//        $books = \App\Book::whereIn('type_book', [2,7,8])
+        $books = \App\Book::where('type_book',2)
                             ->where('room_id', $this->id)
                             ->where('start', '>=', $startYear)
                             ->where('finish', '<=', $endYear)
@@ -122,9 +123,9 @@ class Rooms extends Model
         $park = 0;
         $lujo = 0;
         foreach ($books as $book) {
-           $apto  +=  $book->cost_apto;
-           $park  +=  $book->cost_park;
-           $lujo  +=  $book->cost_lujo;
+          $apto  +=  $book->cost_apto;
+          $park  +=  $book->cost_park;
+          $lujo  +=  $book->cost_lujo;
         }
         $total += ( $apto + $park + $lujo);
 
@@ -157,6 +158,58 @@ class Rooms extends Model
 
     }
 
+    static function getCostPropByMonth($year,$room_id = NULL)
+    {
+      
+      $existYear = true;
+      $year = \App\Years::where('year', $year)->first();
+      if (!$year){
+        $existYear = false;
+        $year = Years::where('active', 1)->first();
+      }
+      $startYear = new Carbon($year->start_date);
+      $endYear = new Carbon($year->end_date);
+      $diff = $startYear->diffInMonths($endYear) + 1;
+      $lstMonths = lstMonths($startYear,$endYear);
+      
+      $arrayMonth = [];
+      foreach ($lstMonths as $k=>$v){
+        $arrayMonth[getMonthsSpanish($v['m'])] = 0;
+      }
+      
+      if (!$existYear){
+        return $arrayMonth;
+      }
+      
+      $qry = \App\Book::where('type_book', 2)
+            ->where('start', '>=', $startYear)
+            ->where('start', '<=', $endYear);
+      
+      if($room_id){
+        $qry->where('room_id',$room_id);
+      }
+      
+      $books = $qry->get();
+      $aux= [];
+      //get PVP by month
+      if ($books){
+        foreach ($books as $key => $book) {
+          $date = date('n', strtotime($book->start));
+          if (!isset($aux[$date])) $aux[$date] = 0;
+          $aux[$date] += ($book->cost_apto + $book->cost_park + $book->cost_lujo);
+        }
+      }
+      
+      //Load the PVP into Monts list
+      foreach ($lstMonths as $k=>$v){
+        $month = $v['m'];
+        if (isset($aux[$month]))
+          $arrayMonth[getMonthsSpanish($month)] = $aux[$month];
+      }
+      
+      
+      return $arrayMonth;
+    }
     static function getPvpByMonth($year,$room_id = NULL)
     {
       

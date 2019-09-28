@@ -97,22 +97,20 @@ use \Carbon\Carbon; ?>
 
 <div class="container-fluid padding-25 sm-padding-10">
   <div class="row push-20">
-    <div class="col-md-2 col-xs-12 text-center">
+    <div class="col-md-3 col-xs-12 text-center">
       <form method="POST" id="form_filterByRange"> 
         <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
         <input type="hidden" id="filter_startDate" name="filter_startDate" value="">
         <input type="hidden" id="filter_endDate" name="filter_endDate" value="">
-      <h5 class="text-center push-10">GENERAR LIQUIDACIÓN:</h5>
-      <input type="text" class="form-control dateRange" id="dateRangefilter" name="dateRangefilter" required="" style="cursor: pointer; text-align: center;min-height: 28px; width: 85%;float: left;" readonly="">
+      <h5 class="text-center push-10">FILTRAR LIQUIDACIONES:</h5>
+      <button class="btn btn-xs btn-primary" type="button" id="refreshFilters" dat title="Limpiar filtros">
+        <i class="fa fa-trash"></i>
+      </button>
+      <input type="text" class="form-control dateRange" id="dateRangefilter" name="dateRangefilter" required="" readonly="">
       <button class="btn btn-xs btn-primary"  title="Liquidacion total" id="filterByRange">
-      <!--<button class="btn btn-xs btn-primary liquidationByRoom" type="button" data-id="all" data-costeProp="<?php echo $summary['totalApto'] + $summary['totalParking'] + $summary['totalLujo']; ?>" data-toggle="modal" data-target="#liquidationByRoom" style="cursor: pointer; font-weight: 600; width: 15%; height: 35px;" title="Liquidacion total">-->
         <i class="fa fa-eye"></i>
       </button>
       </form>
-      
-      
-
-
     </div>
     <div class="col-md-2 col-md-offset-1 col-xs-12 text-center">
       <h2 class="font-w300">Pagos a <span class="font-w800">propietarios</span> </h2>
@@ -634,6 +632,9 @@ $.get('/admin/paymentspro/getBooksByRoom/' + idRoom, {idRoom: idRoom, year: year
 $('.contentBookRoom').empty().append(data);
 });
 
+});
+$('#refreshFilters').click(function (event) {
+  window.location = window.location.href;
 });
 $('#filterByRange').click(function (event) {
   event.preventDefault();

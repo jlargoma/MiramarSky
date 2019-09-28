@@ -180,25 +180,6 @@ endif
                                     </span>
                                     <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
                                 <?php endif ?>
-                                <?php 
-                                if (($partee = $book->partee())):
-                                  $active = $phoneSMS = '';
-                                  if ($partee->status == "FINALIZADO"){
-                                    $active = 'active';
-                                    $phoneSMS = 'disabled';
-                                  }
-                                  if ($partee->partee_id<1){
-                                    $active = 'disabled-error';
-                                    $phoneSMS = 'disabled-error';
-                                  }
-                                ?>
-                                <div class="policeman {{$active}}"></div>
-                                <div class="sendSMS {{$phoneSMS}}" data-id="{{$book->id}}"  >
-                                  <i class="fas fa-sms"></i>
-                                </div>
-                                <?php
-                                endif;
-                                ?>
                             </td>
                             <td class="text-center">
                                 <select class="status form-control minimal" data-id="<?php echo $book->id ?>" style="width: 95%">
@@ -361,25 +342,6 @@ endif
 	                        <?php endif ?>
 
 	                        <?php endif ?>
-                             <?php 
-                                if (($partee = $book->partee())):
-                                  $active = $phoneSMS = '';
-                                  if ($partee->status == "FINALIZADO"){
-                                    $active = 'active';
-                                    $phoneSMS = 'disabled';
-                                  }
-                                  if ($partee->partee_id<1){
-                                    $active = 'disabled-error';
-                                    $phoneSMS = 'disabled-error';
-                                  }
-                                ?>
-                                <div class="policeman {{$active}}"></div>
-                                <div class="sendSMS {{$phoneSMS}}" data-id="{{$book->id}}"  >
-                                  <i class="fas fa-sms"></i>
-                                </div>
-                                <?php
-                                endif;
-                                ?>
                     </td>
                     <td class="text-center">
                         <select class="status form-control minimal" data-id="<?php echo $book->id ?>" style="width: 95%">
