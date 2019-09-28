@@ -66,7 +66,7 @@ class PaymentsProController extends AppController {
       $booksByRoom = \App\Book::where('room_id', $room->id)
               ->where('type_book', 2)
               ->where('start', '>=', $startYear)
-              ->where('finish', '<=', $endYear)
+              ->where('start', '<=', $endYear)
               ->get();
 
       foreach ($booksByRoom as $book) {
