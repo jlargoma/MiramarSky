@@ -247,9 +247,7 @@ class PaylandsController extends AppController
            // First day of a specific month
           $d = new \DateTime($year.'-'.$month.'-01');
           $d->modify('last day of this month');
-          $endDate = $d->format('YmdHi');
-          
-          
+          $endDate = $d->format('Ymd').'2359';
           $orderPayment = $this->getPaylandApiClient()->getOrders($startDate,$endDate);
            $respo_list = [];
           $total_month = 0;
@@ -329,7 +327,7 @@ class PaylandsController extends AppController
           $d = str_replace('-','', $year->start_date);
           $startDate = $d.'0000';
           $d = str_replace('-','', $year->end_date);
-          $endDate = $d.'0000';
+          $endDate = $d.'2359';
       
           $today = date('Ymd');
           $totalToday = 0;
