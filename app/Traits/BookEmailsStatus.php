@@ -19,6 +19,7 @@ trait BookEmailsStatus
      */
     public function sendEmailChangeStatus($book, $subject, $status)
     {
+      if (!$book->customer->email || trim($book->customer->email) == '') return;
         $cachedRepository  = new CachedRepository();
         $keyMail = $this->getKeyTemplate($status);
         if (!$keyMail){
@@ -77,6 +78,8 @@ trait BookEmailsStatus
      */
     public function sendEmail_secondPayBook($book, $subject)
     {
+      if (!$book->customer->email || trim($book->customer->email) == '') return;
+      
         $mailClientContent = $this->getMailData($book, 'second_payment_reminder');
         setlocale(LC_TIME, "ES");
         setlocale(LC_TIME, "es_ES");
@@ -125,6 +128,7 @@ trait BookEmailsStatus
      */
     public function sendEmail_confirmSecondPayBook($book, $subject,$totalPayment)
     {
+      if (!$book->customer->email || trim($book->customer->email) == '') return;
         $mailClientContent = $this->getMailData($book, 'second_payment_confirm');
         setlocale(LC_TIME, "ES");
         setlocale(LC_TIME, "es_ES");
