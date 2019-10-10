@@ -173,7 +173,7 @@ class BookController extends AppController
       $today = Carbon::now();
       return Book::Join('book_partees','book.id','=','book_id')
               ->where('start', '>=', $today->copy()->subDays(2))
-              ->where('start', '<=', $today->copy()->subDays(5))
+              ->where('start', '<=', $today->copy()->addDays(5))
               ->where('book_partees.status', '!=', 'FINALIZADO')
               ->where('type_book', 2)->orderBy('start', 'ASC')->count();
     }
