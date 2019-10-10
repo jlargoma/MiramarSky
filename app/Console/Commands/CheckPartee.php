@@ -52,9 +52,11 @@ class CheckPartee extends Command {
       //List the no-complete partee
       $listBookPartee = BookPartee::where('partee_id','>',0)
               ->whereNotIn('status', ['HUESPEDES', 'FINALIZADO'])
+              ->where('has_checked','0')
               ->get();
 
-      foreach ($listBookPartee as $BookPartee) {
+      if ($listBookPartee){
+        foreach ($listBookPartee as $BookPartee) {
         //Read a $BookPartee            
         try {
 
@@ -67,23 +69,34 @@ class CheckPartee extends Command {
             $log = $BookPartee->log_data . "," . time() . '-' . $apiPartee->response->status;
             $BookPartee->status = $apiPartee->response->status;
             $BookPartee->log_data = $log;
-            $BookPartee->guestNumber = $apiPartee->response->guestNumber;
+            $BookPartee->has_checked = 1;
+            if ($apiPartee->response->status == 'HUESPEDES'){
+              $BookPartee->guestNumber = $apiPartee->response->guestNumber;
+              $BookPartee->date_complete = date('Y-m-d H:i:s');
+            }
+            
             $BookPartee->save();
 
           } else {
             
-            $log = $BookPartee->log_data . "," . time() . '-' . $apiPartee->response;
+//            $log = $BookPartee->log_data . "," . time() . '-' . $apiPartee->response;
             Log::error($apiPartee->response);
             $BookPartee->status = 'error';
             $BookPartee->log_data = $log;
+            $BookPartee->has_checked = 1;
             $BookPartee->save();
             
           }
         } catch (\Exception $e) {
           Log::error("Error CheckIn Partee " . $BookPartee->id . ". Error  message => " . $e->getMessage());
           echo $e->getMessage();
+          $BookPartee->has_checked = 1;
+          $BookPartee->save();
           continue;
         }
+      }
+      } else {
+        BookPartee::update(['has_checked' => 0]);
       }
     } else {
       //Can't conect to partee

@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
         Commands\CreateMonthLimpieza::class,
         Commands\RoomsPhotosMigrate::class,
         Commands\SendSecondPay::class,
+        Commands\SendParteeAdmin::class,
     ];
 
     /**
@@ -29,8 +30,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('partee:check')->daily();
+         $schedule->command('partee:check')->everyThirtyMinutes();
          $schedule->command('partee:sendSMS')->dailyAt('7:00');
+         $schedule->command('partee:sendAlert')->dailyAt('8:00');
          $schedule->command('secondPay:sendEmails')->dailyAt('7:00');
          $schedule->command('monthLimpieza:create')->monthlyOn(1, '5:00');
          $schedule->command('ical:import')->everyFiveMinutes();

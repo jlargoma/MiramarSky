@@ -60,18 +60,6 @@ trait BookParteeActions {
             
             if ($BookPartee->status == "HUESPEDES"){
               
-               if (true){
-
-                  $BookPartee->status = 'FINALIZADO';
-                  $BookPartee->log_data = $BookPartee->log_data .",". time() .'-FINALIZADO';
-                  $BookPartee->save();
-                  return [
-                    'status'   => 'success',
-                    'response' => "Registro Partee finalizado",
-                  ];
-
-                } 
-                
               //Create Partee
               $partee = new \App\Services\ParteeService();
               if ($partee->conect()){
@@ -82,6 +70,7 @@ trait BookParteeActions {
 
                   $BookPartee->status = 'FINALIZADO';
                   $BookPartee->log_data = $BookPartee->log_data .",". time() .'-FINALIZADO';
+                  $BookPartee->date_finish = date('Y-m-d H:i:s');
                   $BookPartee->save();
                   return [
                     'status'   => 'success',

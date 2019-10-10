@@ -21,7 +21,7 @@ class BookPartee extends Model
   }
   
   public function print_status($bookID,$bookGuest,$action=false) {
-    
+//    date_default_timezone_set('Europe/Madrid');
     /*
      * 1º- Verde : ENVIAR HOY (enviar a la jefatura de policía) ….significaría que el cliente entro el día anterior y que “hoy”debemos enviar el parte)
      * 2º- ROJO PARPAPADEANDO (peligro…hay que enviarlo en los próximas horas y el cliente no ha rellenado Partee
@@ -55,9 +55,13 @@ correspondiente.
     }
     
     if ($this->status == "FINALIZADO"){
-      preg_match('|([0-9])*[\-FINALIZADO]|', $this->log_data, $data);
-      if (isset($data[0])){
-        $msgPolice = 'Finalizado el '.date('Y-m-d H:i', intval($data[0]));
+      if (isset($this->date_finish)){
+        $msgPolice = 'Finalizado el '.$this->date_finish;
+      } else {
+        preg_match('|([0-9])*(\-FINALIZADO)|', $this->log_data, $data);
+        if (isset($data[0])){
+          $msgPolice = 'Finalizado el '.date('Y-m-d H:i', intval($data[0]));
+        }
       }
       
       return '<div class="tooltip-2">'
@@ -71,10 +75,13 @@ correspondiente.
     $parteeStatus = '';  
     $policeStatus = 'grey';
     if ($this->status == "HUESPEDES"){
-      
-      preg_match('|([0-9])*[\-HUESPEDES]|', $this->log_data, $data);
-      if (isset($data[0])){
-        $msgPartee .= 'Revisado el '.date('Y-m-d H:i', intval($data[0]));
+      if (isset($this->date_complete)){
+        $msgPartee .= 'Revisado el '.$this->date_complete;
+      } else {
+        preg_match('|([0-9])*(-HUESPEDES)|', $this->log_data, $data);
+        if (isset($data[0]) && intval($data[0])>0){
+          $msgPartee .= 'Revisado el '.date('Y-m-d H:i', intval($data[0])).' - '.intval($data[0]);
+        }
       }
       if ($this->guestNumber){
         if ($this->guestNumber !== $bookGuest){
