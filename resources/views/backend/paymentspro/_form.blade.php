@@ -22,7 +22,7 @@
                     <div class="col-md-7 col-xs-12">
                         
                         <h3 class="tex-center">Resumen de pagos</h3>
-                        <?php $array = [0 =>"Tarjeta visa", 1 =>"Cash Jaime", 2 =>"Cash Jorge", 3=>"Banco Jorge"] ?>
+                        <?php $array = [0 =>"Tarjeta visa", 1 =>"Cash", 2 =>"Cash", 3=>"Banco", 4=>"Banco"] ?>
                             
                         <div class="row">
                             <table class="table table-hover " >
@@ -61,7 +61,7 @@
                                             </td>
                                             
                                             <td class="text-center">
-                                                <?php echo $array[$payment->typePayment] ?>
+                                                <?php if(isset($array[$payment->typePayment])) echo $array[$payment->typePayment]; else echo $payment->typePayment;?>
                                             </td>
                                             <td class="text-center">
                                                 {{ $payment->concept }}
