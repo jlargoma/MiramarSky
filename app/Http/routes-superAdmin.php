@@ -1,6 +1,25 @@
 <?php
 
 Route::group(['middleware' => 'authAdmin'], function () {
+  Route::get('/partee-checkHuespedes/{id}', function ($id) {
+      $partee = new \App\Services\ParteeService();
+      $partee->conect();
+      $partee->getCheckHuespedes($id);
+      dd($partee);
+  });
+  Route::get('/partee-checkStatus/{id}', function ($id) {
+      $partee = new \App\Services\ParteeService();
+      $partee->conect();
+      $partee->getCheckStatus($id);
+      dd($partee);
+  });
+  Route::get('/partee-getPDF/{id}', function ($id) {
+      $partee = new \App\Services\ParteeService();
+      $partee->conect();
+      $partee->getParteePDF($id);
+      dd($partee);
+  });
+    
   Route::get('admin/cambiarCostes', 'BookController@changeCostes');
   // Usuarios
   Route::get('admin/usuarios', 'UsersController@index');
@@ -58,10 +77,14 @@ Route::group(['middleware' => 'authAdmin'], function () {
   Route::post('/ajax/forfaits/deleteRequestPopup', 'FortfaitsController@deleteRequestPopup');
   Route::post('/ajax/booking/getBookingAgencyDetails', 'LiquidacionController@getBookingAgencyDetails');
   Route::get('/ajax/booking/getBookingAgencyDetails', 'LiquidacionController@getBookingAgencyDetails');
+  
+  //PARTEE
   Route::get('admin/get-partee', 'BookController@getParteeLst');
   Route::get('/get-partee-msg', 'BookController@getParteeMsg');
   Route::post('/ajax/send-partee-finish', 'BookController@finishParteeCheckIn');
   Route::post('/ajax/send-partee-sms', 'BookController@finishParteeSMS');
+  Route::post('/ajax/send-partee-mail', 'BookController@finishParteeMail');
+  Route::get('/ajax/showSendRemember/{bookID}', 'BookController@showSendRemember');
   
   
   /* ICalendar links */

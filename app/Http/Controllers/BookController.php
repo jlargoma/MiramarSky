@@ -158,7 +158,8 @@ class BookController extends AppController
 
         $ff_pendientes = Book::where('ff_status',4)->where('type_book','>',0)->count();
         
-        $parteeToActive = BookPartee::whereIn('status', ['HUESPEDES',"FINALIZADO"])->count();
+        $parteeToActive = $this->countPartte();
+//        $parteeToActive = BookPartee::whereIn('status', ['HUESPEDES',"FINALIZADO"])->count();
         
 		return view(
 			'backend/planning/index',
@@ -166,6 +167,15 @@ class BookController extends AppController
 			        'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits',
                                 'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment','ff_pendientes')
 		);
+    }
+    
+    private function countPartte() {
+      $today = Carbon::now();
+      return Book::Join('book_partees','book.id','=','book_id')
+              ->where('start', '>=', $today->copy()->subDays(2))
+              ->where('start', '<=', $today->copy()->subDays(5))
+              ->where('book_partees.status', '!=', 'FINALIZADO')
+              ->where('type_book', 2)->orderBy('start', 'ASC')->count();
     }
 
     private function lowProfitAlert($startYear, $endYear, $percentBenef, &$alert)

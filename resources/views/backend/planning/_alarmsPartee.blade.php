@@ -3,7 +3,7 @@
         setlocale(LC_TIME, "es_ES");  
         $total_pvp = 0;
         $total_coste = 0;
-        $now         = Carbon::now();
+        $today         = Carbon::now();
 ?>
 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
     <i class="fa fa-times fa-2x" style="color: #000!important;"></i>
@@ -19,108 +19,217 @@
           </a>
         </h4>
         
-        @if(count($alarms)>0)
-         <div class="col-md-12 col-xs-12" style="padding-right: 0;">
-           <table class="table table-striped" id="list_lowProf">
-                <thead >
-                    <th>Nombre</th>
-                    <th>Apto</th>
-                    <th>IN - OUT</th>
-                    <th class="text-center">Ocupantes</th>
-                    <th class="text-center">Actualizado</th>
-                    <th class="text-center">SEND TO POLICE</th>
+        @if(count($books)>0)
+       
+        
+          <div class="tab-pane" id="tabPagadas">
+        <div class="row  table-responsive">
+            <table class="table <?php if (Auth::user()->role != "limpieza"): ?>table-condensed<?php endif ?> table-striped table-data"  data-type="confirmadas" style="margin-top: 0;">
+                <thead>
+                    <tr class ="text-center bg-success text-white">
+                      <th class="th-bookings th-1" >&nbsp;</th> 
+                        <th class="th-bookings th-name">Cliente</th>
+                        <th class="th-bookings">Telefono</th>
+                        <th class="th-bookings th-2">Pax</th>
+                        <th class="th-bookings">Apart</th>
+                        <th class="th-bookings th-2">  <i class="fa fa-moon-o"></i> </th>
+                        <th class="th-bookings th-2"> <i class="fa fa-clock-o"></i></th>
+                        <th class="th-bookings  th-4">   IN     </th>
+                        <th class="th-bookings th-4">   OUT      </th>
+                        <th class="th-bookings th-6">   Precio      </th>
+                        <?php if (Auth::user()->role != "limpieza"): ?>
+                            <th class="th-bookings th-6">   a      </th>
+                        <?php endif ?>
+                        <th class="th-bookings th-2">&nbsp;</th>
+                        
+                    </tr>
                 </thead>
-                <tbody >
-                    <!-- Totales -->
+                <tbody>
+                    <?php $count = 0 ?>
+                    <?php foreach ($books as $book): ?>
+                        <?php $class = ( $book->start <= $today) ? "blurred-line"  : '' ?>
+                        <tr class="<?php if($count <= 1){echo $class;} ?>">
+                            <?php 
+                                $dateStart = Carbon::createFromFormat('Y-m-d', $book->start);
+                            ?>
+                            <td class="text-center">
+                                <?php if ( $payment[$book->id] == 0): ?>
+                                    <?php if ( $today->diffInDays($dateStart) <= 15 ):?>
+                                        <span class=" label label-danger alertDay heart text-white">
+                                            <i class="fa fa-bell"></i>
+                                        </span>
+                                    <?php elseif($today->diffInDays($dateStart) <= 7):?>
+                                        <span class=" label label-danger alertDay heart text-white">
+                                            <i class="fa fa-bell"></i>
+                                        </span>
+                                    <?php endif; ?>
+                                <?php else: ?>
+                                    <?php $percent = 100 / ( $book->total_price / $payment[$book->id] ); ?>
+                                    <?php if ( $percent <= 25 ): ?>
 
-                    <?php foreach ($alarms as $bookPartee): ?>
-                    <?php $book = $bookPartee->book(); ?>
-                        <tr >
-                            <td class="p-8">
-                                <span style="display: none;"><?php echo strtotime($book->start);?></span>
-                                <div class="col-xs-2">
-                                    <?php if ($book->agency != 0): ?>
-                                        <img style="width: 20px;margin: 0 auto;position: absolute; left: 0px;" src="/pages/<?php  echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
-	                               <?php endif ?>
+                                        <?php if ( $today->diffInDays($dateStart) <= 15 ):?>
+                                            <span class=" label label-danger alertDay heart text-white">
+                                                <i class="fa fa-bell"></i>
+                                            </span>
+                                        <?php elseif($today->diffInDays($dateStart) <= 7):?>
+                                            <span class=" label label-danger alertDay heart text-white">
+                                                <i class="fa fa-bell"></i>
+                                            </span>
+                                        <?php endif; ?>
+                                        
+                                    <?php endif ?>
+                                    
 
-                                </div>
-                                <div class="col-xs-8">
-                                    <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
-                                        <?php  echo $book->customer->name ?>
-                                    </a>
-                                </div>
-                                <div class="col-xs-2">
-                                    <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
-                                        <img src="/pages/oferta.png" style="width: 40px;" title="<?php echo $book->book_owned_comments ?>">
+                                <?php endif ?>
+
+
+
+                                <?php if ($book->agency != 0): ?>
+                                    <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
+                                <?php endif ?>
+                            </td>
+                            <td class="text-center" style="padding: 10px !important">
+                                <?php if (isset($payment[$book->id])): ?>
+                                    <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>
+                                <?php else: ?>
+                                    <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" ><?php echo $book->customer['name']  ?></a>
+                                <?php endif ?>
+                                <?php if (Auth::user()->role != "limpieza"): ?>
+                                <?php if (!empty($book->comment) || !empty($book->book_comments)): ?>
+                                    <?php 
+                                        $textComment = "";
+                                        if (!empty($book->comment)) {
+                                            $textComment .= "<b>COMENTARIOS DEL CLIENTE</b>:"."<br>"." ".$book->comment."<br>";
+                                        }
+                                        if (!empty($book->book_comments)) {
+                                            $textComment .= "<b>COMENTARIOS DE LA RESERVA</b>:"."<br>"." ".$book->book_comments;
+                                        }
+                                    ?>
+                                    
+                                    <div class="tooltip-2">
+                                      <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
+                                      <div class="tooltiptext"><p class="text-left"><?php echo $textComment ?></p></div>
+                                    </div>
+                            <?php endif ?>
+                                <?php endif ?>
+                            </td>
+                            <td class="text-center">
+                                <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
+                                    <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?>
+                                <?php else: ?>
+                                    <input type="text" class="only-numbers customer-phone" data-id="<?php echo $book->customer->id ?>"/>
+                                <?php endif ?>
+                            </td>
+                            <td class ="text-center" >
+                                <?php if ($book->real_pax > 6): ?>
+                                    <?php echo $book->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
+                                <?php else: ?>
+                                    <?php echo $book->pax ?>
+                                <?php endif ?>
+                                    
+                            </td>
+                            <td class ="text-center">
+                                <select class="room form-control minimal" disabled data-id="<?php echo $book->id ?>" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
+                            
+                                    <?php foreach ($rooms as $room): ?>
+                                        <?php if ($room->id == $book->room_id): ?>
+                                            <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
+                                               <?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?>
+                                            </option>
+                                        <?php else:?>
+                                            <option value="<?php echo $room->id ?>"><?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?></option>
+                                        <?php endif ?>
+                                    <?php endforeach ?>
+
+                                </select>
+                            </td>
+                            <td class ="text-center"><?php echo $book->nigths ?></td>
+                            <td class="text-center sm-p-t-10 sm-p-b-10">
+                                {{$book->schedule}}
+                            </td>
+
+                            <?php $start = Carbon::createFromFormat('Y-m-d',$book->start); ?>
+                            <td class ="text-center" data-order="<?php echo strtotime($start->copy()->format('Y-m-d'))?>"  style="width:20%!important">
+                                <b><?php echo $start->formatLocalized('%d %b'); ?></b>
+                            </td>
+
+                            <?php $finish = Carbon::createFromFormat('Y-m-d',$book->finish);?>
+                            <td class ="text-center" data-order="<?php echo strtotime($finish->copy()->format('Y-m-d'))?>"  style="width: 20%!important">
+                                <b><?php echo $finish->formatLocalized('%d %b'); ?></b>
+                            </td>
+                            <td class ="text-center">
+                                <?php if (Auth::user()->role != "limpieza"): ?>
+                                    <div class="col-md-6 col-xs-12 not-padding">
+                                    <?php echo round($book->total_price)."€" ?><br>
+                                        <?php if (isset($payment[$book->id])): ?>
+                                        <p style="color: <?php if ($book->total_price == $payment[$book->id]):?>#008000<?php else: ?>red<?php endif ?>;">
+                                                <?php echo $payment[$book->id] ?> €
+                                            </p>
+                                        <?php else: ?>
                                     <?php endif ?>
                                 </div>
+
+                                    <?php if (isset($payment[$book->id])): ?>
+                                    <?php if ($payment[$book->id] == 0): ?>
+                                    <div class="col-md-5 col-xs-12 not-padding bg-success">
+                                        <b style="color: red;font-weight: bold">0%</b>
+                                        </div>
+                                    <?php else:?>
+                                    <div class="col-md-5  col-xs-12 not-padding">
+	                                        <?php $total = number_format(100/($book->total_price/$payment[$book->id]),0);?>
+                                        <p class="text-white m-t-10">
+                                                <b style="color: <?php if ($total == 100):?>#008000<?php else: ?>red<?php endif ?>;font-weight: bold"><?php echo $total.'%' ?></b>
+                                            </p>
+                                        </div>
+
+                                    <?php endif; ?>
+                                    <?php else: ?>
+                                    <div class="col-md-5 col-xs-12 not-padding bg-success">
+                                        <b style="color: red;font-weight: bold">0%</b>
+                                        </div>
+                                    <?php endif ?>
+                                <?php else: ?>
+                                    <?php echo round($book->total_price)."€" ?>
+                                <?php endif ?>
                             </td>
-                            <td class="p-8">
-                                <!-- apto -->
-                                <?php echo $book->room->nameRoom ?>
-                            </td>
-                            <td class="p-8">
-                                <?php
-                                    $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                    echo $start->formatLocalized('%d %b');
-                                ?> -
-                                <?php
-                                    $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                    echo $finish->formatLocalized('%d %b');
+
+                            <?php if (Auth::user()->role != "limpieza"): ?>
+                            <td class="text-center sm-p-t-10 sm-p-b-10">
+                              
+                                <?php if ($book->send == 1): ?>
+                                    <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-default sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="1">
+                                        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                    </button> 
+                                <?php else: ?>
+                                    <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-primary sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="0">
+                                        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                    </button> 
+                                <?php endif ?>
+                                  <?php
+                                $partee = $book->partee();
+                                if ($partee):
+                                  echo $partee->print_status($book->id,$book->pax,true);
+                                 endif;
                                 ?>
                             </td>
-                            <td class="text-center guestNumber">
-                              @if($bookPartee->guestNumber)
-                                {{$bookPartee->guestNumber}}
-                              @else 
-                                --
-                              @endif
+                            <?php endif ?>
+                            <td class="text-center">
+                                <?php if ($book->promociones> 0 ): ?>
+                                    <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
+                                        <img src="/pages/oferta.png" style="width: 40px;">
+                                    </span>
+                                    <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
+                                    
+                                <?php endif ?>
                             </td>
-                            <td class="text-center updated_at">
-                              {{\Carbon\Carbon::parse($bookPartee->updated_at)->format('d/m/Y H:i')}}
-                            </td>
-                           
-                            <td class="text-center btn-partee" >
-                             <?php 
-                             
-                             if ($bookPartee->status == "FINALIZADO"){
-                              ?>
-                              <button class="btn btn-xs sent" type="button" disabled="" style="">
-                                    <i class="fa fa-share-square"></i>
-                                </button> 
-                                <?php
-                             } else {
-                               if ($start<$now && $now->diffInDays($start)<=2){
-                                  ?>
-                              <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-primary toSend finish_partee sending" type="button" data-toggle="tooltip" title="" data-original-title="" data-sended="1">
-                                    <i class="fa fa-share-square"></i>
-                                </button> 
-                                <?php
-                               } else {
-                                  ?>
-                                  <button class="btn btn-xs" type="button" disabled="" >
-                                    <i class="fa fa-share-square"></i>
-                                  </button> 
-                                <?php
-                               }
-                             }
-                              ?>
-                          </td>
+                            
+                            
                         </tr>
                     <?php endforeach ?>
-
                 </tbody>
-            </table>
-           <hr>
-           <div>
-           La finalización de un check-in online implica que Partee:<br />
-           <ul>
-             <li>Crea los partes de entrada de viajeros.</li>
-             <li>Realiza el envío al cuerpo policial correspondiente.</li>
-             <li>Envía los partes de entrada de viajeros en formato PDF al e-mail de la cuenta de Partee a la que pertenece el alojamiento.</li>
-           </ul>
-           </div>
+            </table>  
         </div>
+    </div>
         @else
         <p class="alert alert-warning">
           No existen registros.
@@ -129,11 +238,33 @@
     </div>
 </div> 
 
+
 <script type="text/javascript">
     $(document).ready(function() {
+     
+      $('.sendPartee').click(function(event) {
+         var bID = $(this).data('id');
+      var sms = $(this).data('sms');
+        $.ajax({
+        url: '/ajax/showSendRemember/'+bID,
+        type: 'GET',
+        success: function (response) {
+          $('#modalSendPartee_sms').text(sms+" Sms enviados");
+          $('#modalSendPartee_content').html(response);
+          $('#modalSendPartee').modal('show');
+        },
+        error: function (response) {
+          alert('No se ha podido obtener los detalles de la consulta.');
+        }
+      });
+        
+
+        
+      });
       
       $('.finish_partee').click(function(event) {
-        var id = $(this).attr('data-id');
+//        var id = $(this).attr('data-id');
+        var id = $(this).data('id');
         var that = $(this);
         var rowTr = that.closest('tr');
         var thatBtn = that.closest('td');
@@ -185,9 +316,8 @@
                             delay: 5000,
                             timer: 1500,
                         }); 
-                        
+                        thatBtn.html('<div>Enviado</div>');
                         that.closest('tr').remove();
-                        
                     }
                 });
         });

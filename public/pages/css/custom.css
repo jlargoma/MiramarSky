@@ -552,34 +552,50 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
 }
 .policeman{
   display: inline-block;
-  background-image: url(/img/police-red.ico);
+  background-image: url(/img/police-dis.ico);
   background-size: contain;
   height: 2em;
   width: 2em;
   content: "";
 }  
-.policeman.active {
+.policeman.green {
   /*background-color: #97ef99;*/
   background-image: url(/img/police-green.ico);
   border-radius: 2px;
+}
+.policeman.red{
+  background-image: url(/img/police-red.ico);
+}
+.policeman.grey-dark{
+  background-image: url(/img/police.ico);
+}
+.policeman.hide{
+  display: none;
+}
+.partee-form{
+  font-size: 2em;
+  color: red;
+}
+.partee-form.complete{
+  color: green;
 }
 .partee-icon .policeman {
   margin-top: 6px;
   font-size: 1.2em;
 }
-.sendSMS{
+/*.sendSMS{
   height: 2em;
   width: 2em;
   display: inline-block;
   cursor: pointer;    
   position: relative;
-}
-.sendSMS:hover{
+}*/
+/*.sendSMS:hover{
   background-color: #8e8e8e69;
 }
 .sendSMS.disabled{
   cursor: not-allowed;
-}
+}*/
 /*.sendSMS.disabled:before{
     content: "";
     background-image: url(/img/disable.ico);
@@ -590,10 +606,10 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
     display: block;
 }*/
 
-.sendSMS.disabled-error{
+/*.sendSMS.disabled-error{
   opacity: 0.45;
   cursor: not-allowed;
-}
+}*/
 .policeman.disabled-error{
   cursor: not-allowed;
   background-image: url(/img/police-dis.ico);
@@ -607,15 +623,15 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
     height: 100%;
     display: block;
 }*/
-.sendSMS:after{
-  content: "";
-  background-image: url(/img/icon-sms.png);
-  background-size: contain;
-  width: 90%;
-  height: 90%;
-  position: absolute;
-  left: 2px;
-  top: 2px;
+.sendSMSIcon{
+    background-image: url(/img/icon-sms.png);
+    background-size: contain;
+    width: 17px;
+    height: 17px;
+    margin-right: 8px;
+    /* left: 2px; */
+    /* top: 2px; */
+    display: inline-block;
 }
 .p-8{
   padding: 8px !important;
@@ -845,6 +861,54 @@ button#copy-link-stripe {
 .temporadas label{
   display: block !important;
   font-weight: 600;
+}
+#modalSendPartee{
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.policeman.red.tooltip-2.finish_partee,
+i.fa.fa-file-powerpoint.partee-form.sendPartee {
+    cursor: pointer;
+}
+
+.col-xs-11.col-sm-4.alert.animated.fadeInUp {
+    z-index: 9999999 !important;
+}
+.tooltip-2 {
+  position: inherit;
+  cursor: help;
+  display: inline-block;
+}
+
+.partee-icon .tooltip-2 .tooltiptext {
+    top: 8px;
+    right: 0;
+    background-color: #2b5d9b;
+}
+.tooltip-2 .tooltiptext {
+  visibility: hidden;
+    background-color: black;
+    color: #fff;
+    font-size: 14px;
+    /* top: -3px; */
+    /* text-align: center; */
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 999;
+    position: absolute;
+    /* width: 240px; */
+    height: auto;
+    padding: 5px 15px;
+    right: 5em;
+    /* top: 68px; */
+    margin-top: 2.15em;
+    z-index: 25;
+    /* background: rgba(0,0,0,0.8); */
+    /* border: 1px solid rgb(232, 232, 232); */
+}
+
+.tooltip-2:hover .tooltiptext {
+  visibility: visible;
 }
 
 @media only screen  and (min-width: 992px){

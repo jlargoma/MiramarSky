@@ -241,5 +241,24 @@ class ParteeService
         }
     }
 
+     /**
+     * Check status Partee
+     * @param type $id
+     * @return type
+     * @throws \Exception
+     */
+    public function getParteePDF($id)
+    {
+        $code = null;
+        try
+        {
+          $endpoint = 'parteviajeros/download/parte/'.$id;
+          return $this->call( $endpoint,"GET");
+          
+        } catch (\Exception $e)
+        {
+            throw new \Exception($e->getMessage());
+        }
+    }
  
 }

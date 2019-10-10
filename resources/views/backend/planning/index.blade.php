@@ -496,6 +496,20 @@ setlocale(LC_TIME, "es_ES");
             </div>
           </div>
         </div>
+          
+           <div class="modal fade slide-up in" id="modalSendPartee" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-xd">
+              <div class="modal-content-classic">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
+                  <i class="fa fa-times fa-2x" style="color: #000!important;"></i>
+                </button>
+                <h3>Enviar Recordatorio para completar Partee</h3>
+                <div class="row" id="modalSendPartee_content" style="margin-top:1em;">
+                </div>
+                <p class="alert alert-success" id="syncr_ical_succss" style="display: none;">Sincronización enviada</p>
+              </div>
+            </div>
+        </div>
 @endsection
 
 @section('scripts')
