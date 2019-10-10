@@ -97,6 +97,8 @@ class SendParteeSMS extends Command {
               if ($this->prepareMessage($BookPartee->book_id, $BookPartee->link)){
                 if ($this->sendSMS()){
                   $BookPartee->sentSMS=1;
+                  $log = $BookPartee->log_data . "," . time() . '-' .'sentSMS';
+                  $BookPartee->log_data = $log;
                   $BookPartee->save();
                 }
               }

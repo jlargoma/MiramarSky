@@ -134,7 +134,6 @@ trait BookParteeActions {
                 'response' => "El registro Partee ya se encuentra finalizado."
               ];
             }
-            var_dump($BookPartee->link);
             $link = '<a href="'.$BookPartee->link.'" title="Ir a Partee">'.$BookPartee->link.'</a>';
             $subject = 'Recordatorio para Completado de Partee';
             $message = $this->getMailData($book,'SMS_Partee_upload_dni');
@@ -155,7 +154,7 @@ trait BookParteeActions {
             \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'SMS_Partee_upload_dni',$subject,$message);
             if ($sended){
                   $BookPartee->sentSMS=2;
-                  $BookPartee->log_data = $BookPartee->log_data .",". time() .'- SMS Sent';
+                  $BookPartee->log_data = $BookPartee->log_data .",".time() . '-' .'sentMail';
                   $BookPartee->save();
                   return [
                     'status'   => 'success',
@@ -228,7 +227,7 @@ trait BookParteeActions {
                 
                 if ($SMSService->sendSMS($message,$phone)){
                   $BookPartee->sentSMS=2;
-                  $BookPartee->log_data = $BookPartee->log_data .",". time() .'- SMS Sent';
+                  $BookPartee->log_data = $BookPartee->log_data .",".time() . '-' .'sentSMS';
                   $BookPartee->save();
                   return [
                     'status'   => 'success',
@@ -295,17 +294,44 @@ trait BookParteeActions {
             if ($book->customer->email) $disableEmail = '';
             if ($book->customer->phone) $disablePhone = '';
           }
+          $partee = BookPartee::where('book_id',$bookID)->first();
+          $showInfo = [];
+          if ($partee){
+            $data = $partee->log_data;
+            if ($data){
+              preg_match_all('|([0-9])*(\-sentSMS)|', $data, $info);
+              if (isset($info[0])){
+                foreach ($info[0] as $t){
+                  $showInfo[intval($t)] = '<b>SMS</b> enviado el '.date('d/m H:i', intval($t));
+                }
+              }
+              preg_match_all('|([0-9])*(\-sentMail)|', $data, $info);
+              if (isset($info[0])){
+                foreach ($info[0] as $t){
+                  $showInfo[intval($t)] = '<b>Mail</b> enviado el '.date('d/m H:i', intval($t));
+                }
+              }
+             
+            }
+          }
+         
           ?>
-<div class="col-md-6">
-  <button class="sendSMS btn btn-default <?php echo $disablePhone;?>" data-id="<?php echo $bookID;?>">
-    <i class="sendSMSIcon"></i>Enviar SMS
-  </button>
-</div>
-<div class="col-md-6">
-  <button class="sendParteeMail btn btn-primary <?php echo $disableEmail;?>" data-id="<?php echo $bookID;?>">
-    <i class="fa fa-inbox"></i> Enviar Email
-  </button>
-</div>
+        <div class="col-md-6">
+          <button class="sendSMS btn btn-default <?php echo $disablePhone;?>" data-id="<?php echo $bookID;?>">
+            <i class="sendSMSIcon"></i>Enviar SMS
+          </button>
+        </div>
+        <div class="col-md-6">
+          <button class="sendParteeMail btn btn-primary <?php echo $disableEmail;?>" data-id="<?php echo $bookID;?>">
+            <i class="fa fa-inbox"></i> Enviar Email
+          </button>
+        </div>
           <?php
+           if (count($showInfo)){
+            ksort($showInfo);
+            echo '<div class="col-md-12" style="margin-top:3em;" ><b>Histórico:</b><br>';
+            echo implode('<br>', $showInfo);
+            echo '</div>';
+          }
         }
 }
