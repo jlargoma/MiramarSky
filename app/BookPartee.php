@@ -69,7 +69,7 @@ correspondiente.
     
     $msgPartee = 'Partee<br>';  
     $parteeStatus = '';  
-    $policeStatus = 'grey'; 
+    $policeStatus = 'grey';
     if ($this->status == "HUESPEDES"){
       
       preg_match('|([0-9])*[\-HUESPEDES]|', $this->log_data, $data);
@@ -98,6 +98,12 @@ correspondiente.
           }
       }
       
+    } else {
+      if ($action){
+        $ParteeAction = 'sendPartee';
+        $msgPartee .= '<br><b>Enviar recordatorio</b>';
+      }
+
     }
 
     $policeman = '<div class="policeman  tooltip-2 '.$policeStatus.'" data-id="'.$bookID.'"> <div class="tooltiptext">Enviar Partee a la Policia</div></div>';
