@@ -14,12 +14,4 @@ class Paymentspro extends Model
     {
         return $this->hasOne('\App\Rooms', 'room_id', 'id');
     }
-
-    //Para poner nombre al dia del calendario//
-       static function getPaymentType($type)
-            {
-                $array = [1=> "Metalico Jorge",2 =>"Metalico Jaime",3=> "Banco Jorge", 4 => "Banco Jaime"];
-
-                return $typePayment = $array[$type];
-            }
 }

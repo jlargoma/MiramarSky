@@ -51,6 +51,21 @@
         use App\Classes\Mobile;
         $mobile = new Mobile();
         ?>
+            <style>
+        <?php if (env('APP_APPLICATION') == "riad"): ?>
+               .showOnlyRiad{
+                 visibility:visible;
+               }
+               .hiddenOnlyRiad{
+                visibility:hidden;
+                display: none !important;
+               }
+            <?php else:?>
+              .showOnlyRiad{
+                 visibility:hidden;
+               }
+            <?php endif; ?>
+        </style>
     </head>
     <body class="fixed-header   windows desktop pace-done sidebar-visible menu-pin" style="padding-top:0px!important">
             <nav class="navbar navbar-inverse" role="navigation" style="<?php if (env('APP_APPLICATION') == "riad"): ?>background-color: #6d5cae!important; <?php else:?> background-color: #295d9b!important;<?php endif; ?>">

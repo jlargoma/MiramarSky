@@ -22,7 +22,7 @@
           <i class="fa fa-calendar-alt" aria-hidden="true"></i><span class="bold hidden-mobile">Calcular reserva</span>
         </button>
 
-       <button class="btn btn-orange btn-cons  btn-tables btn-blink"  type="button" data-type="ff_pdtes">
+       <button class="btn btn-orange btn-cons btn-tables btn-blink hiddenOnlyRiad"  type="button" data-type="ff_pdtes">
             <span class="bold">FORFAITS</span>
             <span class="numPaymentLastBooks show"><?php echo $ff_pendientes; ?></span>
         </button>

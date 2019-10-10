@@ -18,7 +18,7 @@ setlocale(LC_TIME, "es_ES");
 		</tr>
 	</thead>
 	<tbody>
-		<?php $array = [0 =>"Metalico Jorge", 1 =>"Metalico Jaime",2 =>"Banco Jorge",3=>"Banco Jaime"] ?>
+		<?php $array = [0 =>"Metalico",2 =>"Banco"] ?>
 		<tr>
 
 			<td class="text-center" style="padding: 8px 5px!important">

@@ -40,30 +40,13 @@
 		</div>
     </div>
     <div class="row bg-white">
-        <div class="col-lg-8 col-md-12 col-xs-12">
+        <div class="col-lg-10 col-md-12 col-xs-12">
             @include('backend.sales.cashbox._formCashBox')
         </div>
     </div>
 	
 	<div class="row bg-white">
        <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-xs-12">
-            <div class="col-lg-6 col-md-6">
-                <h3 class="text-center selectCash selected" data-type="jaime" style="cursor: pointer;">
-                    <?php $totalJaime = 0;//$saldoInicial->import; ?>
-                    <?php foreach ($cashJaime as $key => $cash): ?>
-                        <?php if ($cash->type == 1): ?>
-                            <?php $totalJaime -= $cash->import ?>
-                        <?php endif ?>
-                        <?php if ($cash->type == 0): ?>
-                            <?php $totalJaime += $cash->import ?>
-                        <?php endif ?>
-                        
-                        
-                    <?php endforeach ?>
-                    CAJA JAIME (<?php echo number_format($totalJaime, 0, ',','.') ?>€)
-                </h3>
-            </div>
-            <div class="col-lg-6 col-md-6">
                 <h3 class="text-center selectCash" data-type="jorge" style="cursor: pointer;">
                     <?php $totalJorge = 0;//$saldoInicial->import; ?>
                     <?php foreach ($cashboxJor as $key => $cash): ?>
@@ -78,11 +61,10 @@
                     <?php endforeach ?>
                     CAJA JORGE (<?php echo number_format($totalJorge, 0, ',','.') ?>€)
                 </h3>
-            </div>
         </div>
 	    <div class="col-md-12 col-xs-12 contentCashbox table-responsive" style="border: 0px;">
            
-           @include('backend.sales.cashbox._tableMoves', ['cashbox' => $cashJaime, 'saldoInicial' => $saldoInicial ])
+           @include('backend.sales.cashbox._tableMoves', ['cashbox' => $cashboxJor, 'saldoInicial' => $saldoInicial ])
 	       
         </div>
 	</div>

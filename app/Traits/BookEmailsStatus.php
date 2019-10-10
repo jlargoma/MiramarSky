@@ -218,13 +218,16 @@ trait BookEmailsStatus
             'url-condiciones-generales' => url('/condiciones-generales'),
             'url-forfait'               => url('/forfait'),
         );
-
+        
+        if (env('APP_APPLICATION') == 'riad'){
+          $dataContent['room'] = $data->room->nameRoom;
+        }
+        
         /** process the mail content */
         foreach ($dataContent as $k => $v)
         {
             $mailClientContent = str_replace('{' . $k . '}', $v, $mailClientContent);
         }
-
         return $mailClientContent;
 
     }

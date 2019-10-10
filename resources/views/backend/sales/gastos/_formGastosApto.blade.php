@@ -88,10 +88,8 @@
                                     <select class="js-select2 form-control" id="type_payment" name="type_payment" style="width: 100%;" data-placeholder="Seleccione una" required>
                                         <option></option>
                                         <option value="0"> Tarjeta visa </option>
-                                        <option value="1"> Cash Jaime </option>
-                                        <option value="2"> Cash Jorge </option>
-                                        <option value="3"> Banco Jorge</option>
-                                        <option value="4"> Banco Jaime</option>
+                                        <option value="2"> Cash</option>
+                                        <option value="3"> Banco</option>
                                     </select>
                                 </div>
 <!--                                <div class="col-xs-12 col-lg-3 col-md-2 push-10">

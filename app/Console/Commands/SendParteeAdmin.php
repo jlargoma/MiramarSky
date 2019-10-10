@@ -86,7 +86,7 @@ class SendParteeAdmin extends Command {
   }
   
   private function sendMessage($items) {
-    $subject = 'Recordatorio: enviar Partee a la policía';
+    $subject = 'Atención: enviar Partee a la policía';
     
     $mailContent = '<h3>Las siguientes reservas deben enviarse a la polícia hoy:</h3>';
            

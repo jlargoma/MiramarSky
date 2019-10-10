@@ -1220,10 +1220,10 @@ class LiquidacionController extends AppController {
         'banco' => $banco,
         'metalico' => $metalico,
         'pagado' => $pagado,
-        'metalico_jaime' => $metalico_jaime,
-        'metalico_jorge' => $metalico_jorge,
-        'banco_jorge' => $banco_jorge,
-        'banco_jaime' => $banco_jaime,
+        'metalico_jaime' => 0,
+        'metalico_jorge' => $metalico_jorge+$metalico_jaime,
+        'banco_jorge' => $banco_jorge+$banco_jaime,
+        'banco_jaime' => 0,
     ];
   }
 

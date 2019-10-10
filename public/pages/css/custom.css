@@ -920,3 +920,14 @@ i.fa.fa-file-powerpoint.partee-form.sendPartee {
     margin: 7.5px -15px!important
   }
 }
+
+@media (max-width: 768px) {
+  .modal.slide-up .modal-dialog.modal-lg {
+    display:block !important;
+    margin-top: 5em;
+    width: 100%;
+  }
+  .modal.slide-up .modal-dialog.modal-lg .modal-content-wrapper{
+    display:block;
+  }
+}

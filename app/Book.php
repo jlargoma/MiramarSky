@@ -142,10 +142,10 @@ class Book extends Model {
   //Para poner nombre al tipo de cobro//
   static function getTypeCobro($typePayment) {
     $array = [
-        0 => "Metalico Jorge",
-        1 => "Metalico Jaime",
-        2 => "Banco Jorge",
-        3 => "Banco Jaime"
+        0 => "Metalico",//"Metalico Jorge",
+        1 => "Metalico",// "Metalico Jaime",
+        2 => "Banco",//"Banco Jorge",
+        3 => "Banco"//"Banco Jaime"
     ];
 
     return $typePayment = $array[$typePayment];

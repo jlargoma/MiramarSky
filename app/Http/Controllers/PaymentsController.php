@@ -41,7 +41,7 @@ class PaymentsController extends AppController
 
         if ($request->type == 1 || $request->type == 0) {
 
-            $data['concept'] = ( $request->type == 1 )? 'COBRO METALICO JAIME':'COBRO METALICO JORGE';
+            $data['concept'] = 'COBRO METALICO';
             $data['date'] = $date->copy()->format('Y-m-d');
             $data['import'] = $request->importe;
             $data['comment'] = $request->comment;

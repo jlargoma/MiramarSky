@@ -2,9 +2,10 @@
     <div class="col-xs-12">
         <form action="{{ url('/admin/cashBox/create') }}" method="post" id="formAddCashBox">
             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-            <div class="col-xs-12">
+            <input type="hidden" id="type_payment" name="type_payment" value="0" data-name="Caja Jorge">
+            <div class="col-xs-12 col-md-10">
 
-                <div class="col-xs-12 col-lg-2 col-md-2 push-10" style="padding: 0">
+                <div class="col-xs-12 col-lg-2 col-md-3" >
                     <label for="date">fecha</label>
                      <div id="datepicker-component" class="input-group date col-xs-12">
                           <input type="text" class="form-control" name="fecha" id="fecha" value="<?php echo date('d/m/Y') ?>" style="font-size: 12px">
@@ -12,14 +13,11 @@
                     </div>
                     
                 </div>
-                <div class=" col-xs-12 col-lg-3 col-md-3 push-10">
-                    <div class="col-xs-12 col-md-12 push-10">
-                        <label for="concept">Concepto</label>
-                        <input  type="text" class="form-control" name="concept" id="concept" />
-                    </div>
+                <div class=" col-xs-12 col-lg-3 col-md-3">
+                  <label for="concept">Concepto</label>
+                  <input  type="text" class="form-control" name="concept" id="concept" />
                 </div>
-
-                <div class="col-xs-12 col-lg-1 col-md-2 push-10">
+                <div class="col-xs-12 col-md-3">
                     <label for="type">T. Mov</label>
                     <select class="js-select2 form-control" id="type" name="type" style="width: 100%;" data-placeholder="Seleccione un tipo" required >
                         <option></option>
@@ -27,32 +25,19 @@
                         <option value="0">TRASPASO (ENTRADA)</option>
                     </select>
                 </div>
-                <div class="col-xs-12 col-lg-1 col-md-2  push-10">
-                    <label for="pay_for">Caja</label>
-                    <select class="js-select2 form-control" id="type_payment" name="type_payment" style="width: 100%;" data-placeholder="Seleccione una" required>
-                        <option></option>
-                        <option value="1">Caja Jaime </option>
-                        <option value="0">Caja Jorge </option>
-                    </select>
-
-                </div>
-
-                <div class="col-xs-12 col-lg-1 col-md-1 push-10">
+              
+                <div class="col-xs-12 col-md-3">
                     <label for="import">Importe</label>
                     <input  type="number" step="0.01" name="import" id="import" class="form-control"  />
                 </div>
-
-                <div class="col-lg-3 col-md-3 col-xs-12">
-                    <div class="row form-group push-10">
-                        <label for="comment">Comentario</label>
-                        <textarea class="form-control" name="comment" id="comment" rowspan="1"></textarea>
-                    </div>
+               
+              <div class="col-md-6 col-xs-12" style="margin:1em 0;">
+                  <label for="comment">Comentario</label>
+                  <textarea class="form-control" name="comment" id="comment" rowspan="1"></textarea>
                 </div>
-
-                <div class="col-lg-1 col-md-4 form-group text-center push-10" style="padding: 20px;">
-                    <button class="btn btn-lg btn-success">Añadir</button>
-                </div>
-                
+            </div>
+            <div class="col-md-2 form-group text-center">
+              <button class="btn btn-lg btn-success">Añadir</button>
             </div>
                
         </form>

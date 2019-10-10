@@ -17,7 +17,7 @@ setlocale(LC_TIME, "es_ES");
                     <th class="text-center bg-complete text-white">accion</th>
                 </thead>
                 <tbody>
-            	<?php $array = [0 => "Metalico Jorge" , 1 => "Metalico Jaime" , 2 => "Banco Jorge" , 3 => "Banco Jaime"] ?>
+            	<?php $array = [0 => "Metalico",2 => "Banco"] ?>
 	            <?php if (count( $gastos ) > 0): ?>
 	            <?php foreach ($gastos as $gasto): ?>
 	            <tr>

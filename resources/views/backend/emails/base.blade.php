@@ -47,7 +47,7 @@
             <tr>
               <td bgcolor="#3F51B5" class="header">
                 <div class="subhead" style="padding: 0 0 0 3px; color: white;">
-                  apartamentosierranevada.net
+                  <?php echo env('APP_SITE'); ?>
                 </div>
                 <h1 style="font-weight: bold;color: #fff;margin: 5px 0;font-family: sans-serif;">{{ $title }}</h1>
               </td>
@@ -62,7 +62,7 @@
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                   <tr>
                     <td align="center" class="footercopy" style="color: #FFF">
-                      &reg; Apartamentosierranevada.net, Copyright <?php echo date('Y'); ?><br/>
+                      &reg; <?php echo env('APP_SITE'); ?>, Copyright <?php echo date('Y'); ?><br/>
                     </td>
                   </tr>
                 </table>

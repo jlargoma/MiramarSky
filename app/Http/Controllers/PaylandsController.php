@@ -507,7 +507,14 @@ class PaylandsController extends AppController
                     $payment->description,
                     $payment->amount
                     );
-             return view('frontend.bookStatus.paylandPay', ['urlPayland' => $urlPayland]);
+            
+            if (env('APP_APPLICATION') == "riad"){
+              $background = assetV('img/riad/lockscreen.jpg');
+            } else {
+              $background = assetV('img/miramarski/lockscreen.jpg');
+            }
+      
+             return view('frontend.bookStatus.paylandPay', ['urlPayland' => $urlPayland,'background'=>$background]);
           }
           return redirect()->route('paymeny-error');
         }

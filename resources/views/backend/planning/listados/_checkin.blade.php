@@ -19,7 +19,7 @@
                         <th class="th-bookings th-2"> <i class="fa fa-clock-o"></i></th>
                         <th class="th-bookings  th-4">   IN     </th>
                         <th class="th-bookings th-4">   OUT      </th>
-                        <th class="th-bookings th-3">FF</th>
+                        <th class="th-bookings th-3 hiddenOnlyRiad">FF</th>
                         <th class="th-bookings th-6">   Precio      </th>
                         <?php if (Auth::user()->role != "limpieza"): ?>
                             <th class="th-bookings th-6">   a      </th>
@@ -176,7 +176,7 @@
                                 <b><?php echo $finish->formatLocalized('%d %b'); ?></b>
                             </td>
                             
-                            <td class="text-center">
+                            <td class="text-center hiddenOnlyRiad">
                                 <a href="/admin/reservas/ff_status_popup/<?php echo $book->id; ?>" onclick="window.open(this.href, 'Reserva - FF','left=400,top=20,width=1200,height=900,toolbar=0,resizable=0'); return false;" >
                                     <?php
                                     $ff_status = $book->get_ff_status();
@@ -272,7 +272,7 @@
             <th class="bg-success text-white text-center" style="min-width:30px ">Hor</th>
             <th class="bg-success text-white text-center" style="min-width:50px">In</th>
             <th class="bg-success text-white text-center" style="min-width:50px ">Out2</th>
-            <th class="bg-success text-white text-center" style="min-width:50px">FF</th>
+            <th class="bg-success text-white text-center hiddenOnlyRiad" style="min-width:50px">FF</th>
             <th class="bg-success text-white text-center">Pax</th>
             <th class="bg-success text-white text-center"><i class="fa fa-moon-o"></i></th>
             <th class="bg-success text-white text-center">a</th>
@@ -389,7 +389,7 @@
 		                <?php echo $finish->formatLocalized('%d %b'); ?>
                     </td>
                     
-                    <td class="text-center">
+                    <td class="text-center hiddenOnlyRiad">
                         <a href="/admin/reservas/ff_status_popup/<?php echo $book->id; ?>" onclick="window.open(this.href, 'Reserva - FF','left=400,top=20,width=1200,height=900,toolbar=0,resizable=0'); return false;" >
                             <?php
                           switch ($book->ff_status){

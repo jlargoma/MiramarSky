@@ -156,7 +156,7 @@ $mobile = new Mobile();
             </h2>
           </div>
 
-          <div class="col-md-2 col-xs-3 icon-lst">
+          <div class="col-md-2 col-xs-3 icon-lst hiddenOnlyRiad">
             <a href="/admin/reservas/ff_status_popup/<?php echo $book->id; ?>" onclick="window.open(this.href, 'Reserva - FF', 'left=400,top=20,width=1200,height=900,toolbar=0,resizable=0'); return false;" >
               <?php
               $ff_status = $book->get_ff_status();
@@ -425,7 +425,7 @@ $mobile = new Mobile();
               </select>
             </div>
 
-            <div class="col-md-2 col-xs-6 push-20 ">
+            <div class="col-md-2 col-xs-6 push-20 hiddenOnlyRiad">
               <label>Parking</label>
               <select class=" form-control parking minimal" name="parking" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
   <?php for ($i = 1; $i <= 4; $i++): ?>
@@ -433,7 +433,7 @@ $mobile = new Mobile();
                 <?php endfor; ?>
               </select>
             </div>
-            <div class="col-md-2 col-xs-6 push-20">
+            <div class="col-md-2 col-xs-6 push-20 hiddenOnlyRiad">
               <label>Sup. Lujo</label>
               <select class=" form-control full-width type_luxury minimal" name="type_luxury" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
   <?php for ($i = 1; $i <= 4; $i++): ?>
@@ -521,7 +521,7 @@ $mobile = new Mobile();
                      name="promociones"
                      value="<?php echo ($book->promociones > 0) ? $book->promociones : "" ?>">
             </div>
-            <div class="col-md-3 col-xs-6 push-20">
+            <div class="col-md-3 col-xs-6 push-20 hiddenOnlyRiad">
               <label>DTO FF</label>
               <div class="row">
                 <div class="col-xs-6">
@@ -740,18 +740,8 @@ $mobile = new Mobile();
                     <td class="text-center">
                       <select class="full-width select2-hidden-accessible type_payment"
                               data-init-plugin="select2" name="type_payment" tabindex="-1" aria-hidden="true">
-                        <?php for ($i = 0; $i < 4; $i++): ?>
-                          <?php if (Auth::user()->id == 39 && $i == 2): ?>
-                            <option value="<?php echo $i ?>"
-                                    selected><?php echo $book->getTypeCobro($i) ?></option>
-        <?php elseif (Auth::user()->id == 28 && $i == 1): ?>
-                            <option value="<?php echo $i ?>"
-                                    selected><?php echo $book->getTypeCobro($i) ?></option>
-        <?php else: ?>
-                            <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
-        <?php endif ?>
-
-                  <?php endfor; ?>
+                            <option value="0"><?php echo $book->getTypeCobro(0) ?></option>
+                            <option value="2"><?php echo $book->getTypeCobro(2) ?></option>
                       </select>
                     </td>
                     <td class="text-center">
@@ -779,18 +769,8 @@ $mobile = new Mobile();
                     <td class="text-center">
                       <select class="full-width select2-hidden-accessible type_payment"
                               data-init-plugin="select2" name="type_payment" tabindex="-1" aria-hidden="true">
-                        <?php for ($i = 0; $i < 4; $i++): ?>
-        <?php if (Auth::user()->id == 39 && $i == 2): ?>
-                            <option value="<?php echo $i ?>"
-                                    selected><?php echo $book->getTypeCobro($i) ?></option>
-        <?php elseif (Auth::user()->id == 28 && $i == 1): ?>
-                            <option value="<?php echo $i ?>"
-                                    selected><?php echo $book->getTypeCobro($i) ?></option>
-        <?php else: ?>
-                            <option value="<?php echo $i ?>"><?php echo $book->getTypeCobro($i) ?></option>
-                    <?php endif ?>
-
-                    <?php endfor; ?>
+                            <option value="0"><?php echo $book->getTypeCobro(0) ?></option>
+                            <option value="2"><?php echo $book->getTypeCobro(2) ?></option>
                       </select>
                     </td>
                     <td class="text-center">
@@ -1041,7 +1021,7 @@ $mobile = new Mobile();
   <?php endforeach ?>
               </select>
             </div>
-            <div class="col-md-1 col-xs-6 push-20">
+            <div class="col-md-1 col-xs-6 push-20 hiddenOnlyRiad">
               <label>Parking</label>
               <select class=" form-control parking minimal" name="parking" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
                 <?php for ($i = 1; $i <= 4; $i++): ?>
@@ -1049,7 +1029,7 @@ $mobile = new Mobile();
                 <?php endfor; ?>
               </select>
             </div>
-            <div class="col-md-2 col-xs-6 push-0">
+            <div class="col-md-2 col-xs-6 push-0 hiddenOnlyRiad">
               <label>Sup. Lujo</label>
               <select class=" form-control full-width type_luxury minimal" name="type_luxury" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
                   <?php for ($i = 1; $i <= 4; $i++): ?>
@@ -1137,7 +1117,7 @@ $mobile = new Mobile();
                      name="promociones"
                      value="<?php echo ($book->promociones > 0) ? $book->promociones : "" ?>">
             </div>
-            <div class="col-md-2 col-xs-6 push-20">
+            <div class="col-md-2 col-xs-6 push-20 hiddenOnlyRiad">
               <label>DTO FF</label>
               <input type="text"  class="promociones only-numbers form-control" disabled  value="{{$book->ff_discount}}">
             </div>

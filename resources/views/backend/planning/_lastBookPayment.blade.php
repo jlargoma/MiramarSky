@@ -21,11 +21,9 @@
                 <?php foreach ($books as $key => $book): ?>
                     <tr>
                         <td class="text-center" style="width: 30px; padding: 5px 0!important">
-                            <?php if ($book->agency != 0): ?>
-                                <img src="/pages/booking.png" style="width: 20px;"/>
-                            <?php else: ?>
-
-                            <?php endif ?>
+                          <?php if ($book->agency != 0): ?>
+                              <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
+                          <?php endif ?>
                         </td>
                         <td class ="text-center" style="color: black;padding: 5px!important;">  
                             <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
