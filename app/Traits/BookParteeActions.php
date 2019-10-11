@@ -296,7 +296,7 @@ trait BookParteeActions {
           }
           $partee = BookPartee::where('book_id',$bookID)->first();
           $showInfo = [];
-          if ($partee && trim($partee->link) !=''){
+          if ($partee && $partee->partee_id>0 && trim($partee->link) !=''){
             $data = $partee->log_data;
             if ($data){
               preg_match_all('|([0-9])*(\-sentSMS)|', $data, $info);
@@ -381,14 +381,20 @@ trait BookParteeActions {
             $partee->getCheckHuespedes($id);
             if ($partee){
               $obj = $partee->response;
+              if (!is_object($obj)){
+                echo 'No se ha encontrado el Registro asociado';
+                return ;
+              }
               ?>
-                <h1>Partee</h1>
+                <h1>Datos Partee</h1>
                 <?php if ($obj->borrador): ?>
-                <h2>Borrador: no enviado aún a la policia</h2>
+                <strong class="text-danger">Borrador: no enviado aún a la policia</strong>
                 <?php endif; ?>
                 <p><b>Creado: </b> <?php echo date('d/m H:i', strtotime($obj->fecha_creacion)); ?>Hrs</p>
                 <p><b>Entrada: </b> <?php echo date('d/m H:i', strtotime($obj->fecha_entrada)); ?>Hrs</p> 
+                <?php if ($obj->checkin_online_url): ?>
                 <p><b>Enlace Checkin: </b> <a href="<?php echo $obj->checkin_online_url; ?>" ><?php echo $obj->checkin_online_url; ?></a></p>
+                <?php endif; ?>
                 <h3>Viajeros Cargados</h3>
                 <?php 
                 if ($obj->viajeros):
@@ -403,6 +409,9 @@ trait BookParteeActions {
                       <p><b>Indentificación: </b> <?php echo $v->numero_identificacion.' - '.$v->pais_nacimiento_viajero; ?></p>
                     <?php
                   endforeach;
+                else: ?>
+                  <p class="alert alert-warning">No han cargado datos aún</p>
+                <?php
                 endif;
               return;
             }

@@ -265,7 +265,6 @@
       
       $('body').on('click','.showParteeData',function(event) {
          var partee_id= $(this).data('partee_id');
-         alert(partee_id);
         $.ajax({
         url: '/ajax/partee-checkHuespedes/'+partee_id,
         type: 'GET',
