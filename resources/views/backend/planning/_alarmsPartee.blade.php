@@ -251,6 +251,7 @@
         success: function (response) {
           $('#modalSendPartee_sms').text(sms+" Sms enviados");
           $('#modalSendPartee_content').html(response);
+          $('#modalSendPartee_title').html('Enviar Recordatorio para completar Partee');
           $('#modalSendPartee').modal('show');
         },
         error: function (response) {
@@ -269,6 +270,7 @@
         url: '/ajax/partee-checkHuespedes/'+partee_id,
         type: 'GET',
         success: function (response) {
+          $('#modalSendPartee_title').html('');
           $('#modalSendPartee_content').html(response);
         },
         error: function (response) {

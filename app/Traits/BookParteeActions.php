@@ -389,10 +389,12 @@ trait BookParteeActions {
                 <h1>Datos Partee</h1>
                 <?php if ($obj->borrador): ?>
                 <strong class="text-danger">Borrador: no enviado aún a la policia</strong>
+                <?php else: ?>
+                <strong class="text-success">Enviado a la policia</strong>
                 <?php endif; ?>
                 <p><b>Creado: </b> <?php echo date('d/m H:i', strtotime($obj->fecha_creacion)); ?>Hrs</p>
                 <p><b>Entrada: </b> <?php echo date('d/m H:i', strtotime($obj->fecha_entrada)); ?>Hrs</p> 
-                <?php if ($obj->checkin_online_url): ?>
+                <?php if (isset($obj->checkin_online_url)): ?>
                 <p><b>Enlace Checkin: </b> <a href="<?php echo $obj->checkin_online_url; ?>" ><?php echo $obj->checkin_online_url; ?></a></p>
                 <?php endif; ?>
                 <h3>Viajeros Cargados</h3>
