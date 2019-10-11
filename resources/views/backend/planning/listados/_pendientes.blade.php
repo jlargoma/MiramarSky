@@ -391,23 +391,7 @@
                       echo '<img src="'.$ff_status['icon'].'" style="max-width:25px;" alt="'.$ff_status['name'].'"/>';
                 }
               ?>
-                  <?php
-                    if (($partee = $book->partee())):
-                      $active = $phoneSMS = '';
-                      if ($partee->status == "FINALIZADO"){
-                        $active = 'active';
-                        $phoneSMS = 'disabled';
-                      }
-                      if ($partee->partee_id<1){
-                        $active = 'disabled-error';
-                        $phoneSMS = 'disabled-error';
-                      }
-                    ?>
-                    <div class="policeman {{$active}}"></div>
-                    <div class="sendSMS {{$phoneSMS}}" data-id="{{$book->id}}" {{$phoneSMS}}></div>
-                    <?php
-                    endif;
-                    ?>
+               
                     <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-danger deleteBook" type="button"
                             data-toggle="tooltip" title="" data-original-title="Eliminar Reserva"
                             onclick="return confirm('¿Quieres Eliminar la reserva?');">

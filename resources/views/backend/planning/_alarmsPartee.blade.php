@@ -257,9 +257,25 @@
           alert('No se ha podido obtener los detalles de la consulta.');
         }
       });
+      
         
 
         
+      });
+      
+      $('body').on('click','.showParteeData',function(event) {
+         var partee_id= $(this).data('partee_id');
+         alert(partee_id);
+        $.ajax({
+        url: '/ajax/partee-checkHuespedes/'+partee_id,
+        type: 'GET',
+        success: function (response) {
+          $('#modalSendPartee_content').html(response);
+        },
+        error: function (response) {
+          alert('No se ha podido obtener los detalles de la consulta.');
+        }
+      });
       });
       
       $('.finish_partee').click(function(event) {

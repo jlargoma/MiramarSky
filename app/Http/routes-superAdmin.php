@@ -1,12 +1,6 @@
 <?php
 
 Route::group(['middleware' => 'authAdmin'], function () {
-  Route::get('/partee-checkHuespedes/{id}', function ($id) {
-      $partee = new \App\Services\ParteeService();
-      $partee->conect();
-      $partee->getCheckHuespedes($id);
-      dd($partee);
-  });
   Route::get('/partee-checkStatus/{id}', function ($id) {
       $partee = new \App\Services\ParteeService();
       $partee->conect();
@@ -19,6 +13,8 @@ Route::group(['middleware' => 'authAdmin'], function () {
       $partee->getParteePDF($id);
       dd($partee);
   });
+  Route::get('admin/sendPartee/{id}', 'BookController@sendPartee');
+  Route::get('ajax/partee-checkHuespedes/{id}', 'BookController@seeParteeHuespedes')->name('partee.checkHuespedes');
     
   Route::get('admin/cambiarCostes', 'BookController@changeCostes');
   // Usuarios

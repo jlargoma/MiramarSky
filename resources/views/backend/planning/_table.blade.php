@@ -31,7 +31,7 @@
                 "paging":   false,
                 "aaSorting": [],
                 "columnDefs": [
-                  {"targets": [0,3,4,6,7,8,9,10,11], "orderable": false }
+                  {"targets": [0,3,4,6,7,8,9], "orderable": false }
                   //1,2,5
                 ],
 
@@ -94,7 +94,7 @@
                 "order": [[ 5, "asc" ], [6, "asc" ]],
                 "paging":   false,
                 "columnDefs": [
-                  {"targets": [0,1,2,3,4,7,8,9,10, 11], "orderable": false }
+                  {"targets": [0,1,2,3,4,7,8,9], "orderable": false }
                 ],
 
               });
@@ -579,4 +579,9 @@
               $('#loadigPage').hide('slow');
           });
         });
+        $('body').on('click','.showParteeLink',function(event) {
+          $('#linkPartee').show(700);
+        });
+        
+     
 </script>

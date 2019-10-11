@@ -209,11 +209,7 @@ class ParteeService
         try
         {
           $endpoint = 'parteviajeros/'.$id;
-          if ($this->call( $endpoint,"GET")){
-            dd($this->response);
-          } else {
-            return $this->response;
-          }
+          return $this->call( $endpoint,"GET");
         } catch (\Exception $e)
         {
             throw new \Exception($e->getMessage());

@@ -296,7 +296,7 @@ trait BookParteeActions {
           }
           $partee = BookPartee::where('book_id',$bookID)->first();
           $showInfo = [];
-          if ($partee){
+          if ($partee && trim($partee->link) !=''){
             $data = $partee->log_data;
             if ($data){
               preg_match_all('|([0-9])*(\-sentSMS)|', $data, $info);
@@ -313,17 +313,51 @@ trait BookParteeActions {
               }
              
             }
+            $link = '<a href="'.$partee->link.'" title="Ir a Partee">'.$partee->link.'</a>';
+            $subject = 'Recordatorio para Completado de Partee';
+            $message = $this->getMailData($book,'SMS_Partee_upload_dni');
+            $message = str_replace('{partee}', $partee->link, $message);
+            $message = $this->clearVars($message);
+            
+          } else {
+            ?>
+            <p class="alert alert-warning">Partee no encontrado</p>
+            <p class="text-center">
+              <a href="/admin/sendPartee/<?php echo $book->id; ?>">Crear Partee</a>
+            </p>
+            <?php
+            return;
           }
          
           ?>
-        <div class="col-md-6">
-          <button class="sendSMS btn btn-default <?php echo $disablePhone;?>" data-id="<?php echo $bookID;?>">
+        <div class="col-md-6 minH-4">
+          <button class="sendSMS btn btn-default <?php echo $disablePhone;?>" title="Enviar Texto partee por SMS" data-id="<?php echo $bookID;?>">
             <i class="sendSMSIcon"></i>Enviar SMS
           </button>
         </div>
-        <div class="col-md-6">
-          <button class="sendParteeMail btn btn-primary <?php echo $disableEmail;?>" data-id="<?php echo $bookID;?>">
+        <div class="col-md-6 minH-4">
+          <button class="sendParteeMail btn btn-default <?php echo $disableEmail;?>" title="Enviar Texto partee por Correo" data-id="<?php echo $bookID;?>">
             <i class="fa fa-inbox"></i> Enviar Email
+          </button>
+        </div>
+        <div class="col-md-6 minH-4">
+          <a href="whatsapp://send?text=<?php echo $message; ?>"
+                 data-action="share/whatsapp/share"
+                 data-original-title="Enviar Partee link"
+                 data-toggle="tooltip"
+                 class="btn btn-default <?php echo $disablePhone;?>">
+            <i class="fa  fa-whatsapp" aria-hidden="true" style="color: #000; margin-right: 7px;"></i>Enviar Whatsapp
+              </a>
+        </div>
+        <div class="col-md-6 minH-4">
+          <button class="showParteeLink btn btn-default" title="Mostrar link Partee">
+            <i class="fa fa-link"></i> Mostart Link
+          </button>
+        </div>  
+        <div id="linkPartee" class="col-xs-12" style="display:none;"><?php echo $link; ?></div>
+        <div class="col-xs-12"> 
+          <button class="showParteeData btn btn-default" title="Mostrar Partee" data-partee_id="<?php echo $partee->partee_id; ?>">
+            <i class="fa fa-eye"></i> Mostart Partee
           </button>
         </div>
           <?php
@@ -333,5 +367,48 @@ trait BookParteeActions {
             echo implode('<br>', $showInfo);
             echo '</div>';
           }
+        }
+        function sendPartee($bookID) {
+          $book = Book::find($bookID);
+          if ($book){
+            $return = $book->sendToPartee();
+          }
+          return back();
+        }
+        function seeParteeHuespedes($id){
+          $partee = new \App\Services\ParteeService();
+          if ($partee->conect()){
+            $partee->getCheckHuespedes($id);
+            if ($partee){
+              $obj = $partee->response;
+              ?>
+                <h1>Partee</h1>
+                <?php if ($obj->borrador): ?>
+                <h2>Borrador: no enviado aún a la policia</h2>
+                <?php endif; ?>
+                <p><b>Creado: </b> <?php echo date('d/m H:i', strtotime($obj->fecha_creacion)); ?>Hrs</p>
+                <p><b>Entrada: </b> <?php echo date('d/m H:i', strtotime($obj->fecha_entrada)); ?>Hrs</p> 
+                <p><b>Enlace Checkin: </b> <a href="<?php echo $obj->checkin_online_url; ?>" ><?php echo $obj->checkin_online_url; ?></a></p>
+                <h3>Viajeros Cargados</h3>
+                <?php 
+                if ($obj->viajeros):
+                  foreach ($obj->viajeros as $v):
+                    if ($v->borrador): ?>
+                    <strong>Borrador</strong>
+                    <?php endif; ?>
+                      <h4><?php echo $v->nombre_viajero.' '.$v->primer_apellido_viajero; ?></h4>
+                      <p><b>Sexo: </b> <?php echo $v->sexo_viajero; ?></p>
+                      <p><b>Dias estancia: </b> <?php echo $v->dias_estancia; ?></p>
+                      <p><b>Entrada: </b> <?php echo $v->fecha_expedicion_documento; ?></p>
+                      <p><b>Indentificación: </b> <?php echo $v->numero_identificacion.' - '.$v->pais_nacimiento_viajero; ?></p>
+                    <?php
+                  endforeach;
+                endif;
+              return;
+            }
+          }
+          
+          echo '<h1>Partee no encontrado</h1>';
+          
         }
 }

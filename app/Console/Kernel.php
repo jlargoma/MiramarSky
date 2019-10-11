@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
     {
          $schedule->command('partee:check')->everyThirtyMinutes();
          $schedule->command('partee:sendSMS')->dailyAt('7:00');
-         $schedule->command('partee:sendAlert')->dailyAt('8:00');
+         $schedule->command('partee:sendAlert')->dailyAt('21:00');
          $schedule->command('secondPay:sendEmails')->dailyAt('7:00');
          $schedule->command('monthLimpieza:create')->monthlyOn(1, '5:00');
          $schedule->command('ical:import')->everyFiveMinutes();

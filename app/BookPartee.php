@@ -22,12 +22,6 @@ class BookPartee extends Model
   
   public function print_status($bookID,$bookGuest,$action=false) {
 //    date_default_timezone_set('Europe/Madrid');
-    /*
-     * 1º- Verde : ENVIAR HOY (enviar a la jefatura de policía) ….significaría que el cliente entro el día anterior y que “hoy”debemos enviar el parte)
-     * 2º- ROJO PARPAPADEANDO (peligro…hay que enviarlo en los próximas horas y el cliente no ha rellenado Partee
-     * 3º GRIS CLARITO …. su entrada es para dentro de más tiempo…..pero que no toca enviar ni hacer nada
-     * 4º GRIS OSCURO: enviado correctamente a la policia
-     */
     
     // para enviar a la policia: finish_partee
     
@@ -47,7 +41,7 @@ correspondiente.
     
     if(!$this->partee_id || $this->partee_id<1){
       $policeman = '<div class="policeman grey tooltip-2"> <div class="tooltiptext">Enviar Partee a la Policia</div></div>';
-      return '<div class="tooltip-2">'
+      return '<div class="tooltip-2 sendPartee" data-id="'.$bookID.'" >'
       . '<i class="fa fa-file-powerpoint partee-form"></i>'
       . '<div class="tooltiptext">Partee no creado</div>'
       . '</div>'.$policeman;

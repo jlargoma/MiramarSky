@@ -911,6 +911,9 @@ i.fa.fa-file-powerpoint.partee-form.sendPartee {
   visibility: visible;
 }
 
+.minH-4{
+  min-height: 4em;
+}
 @media only screen  and (min-width: 992px){
   .pt-md-1{
     padding-top: 1em; 
