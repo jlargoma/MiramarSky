@@ -265,13 +265,19 @@
       });
       
       $('body').on('click','.showParteeData',function(event) {
-         var partee_id= $(this).data('partee_id');
+        var partee_id= $(this).data('partee_id');
+        if ($('#modalSendPartee').is(':visible') == false){
+          $('#modalSendPartee').modal('show');
+        }
+        $('#modalSendPartee_content').html('cargando información...');
+        
         $.ajax({
         url: '/ajax/partee-checkHuespedes/'+partee_id,
         type: 'GET',
         success: function (response) {
           $('#modalSendPartee_title').html('');
           $('#modalSendPartee_content').html(response);
+         
         },
         error: function (response) {
           alert('No se ha podido obtener los detalles de la consulta.');

@@ -41,7 +41,7 @@ correspondiente.
     
     if(!$this->partee_id || $this->partee_id<1){
       $policeman = '<div class="policeman grey tooltip-2"> <div class="tooltiptext">Enviar Partee a la Policia</div></div>';
-      return '<div class="tooltip-2 sendPartee" data-id="'.$bookID.'" >'
+      return '<div class="tooltip-2 sendPartee cursor" data-id="'.$bookID.'" >'
       . '<i class="fa fa-file-powerpoint partee-form"></i>'
       . '<div class="tooltiptext">Partee no creado</div>'
       . '</div>'.$policeman;
@@ -58,7 +58,7 @@ correspondiente.
         }
       }
       
-      return '<div class="tooltip-2">'
+      return '<div class="tooltip-2 showParteeData cursor" data-partee_id="'.$this->partee_id.'" >'
       . '<i class="fa fa-file-powerpoint partee-form complete"></i>'
       . '<div class="tooltiptext">Partee Completado<br>'.intval($this->guestNumber).' huéspeds</div></div>'
       . '<div class="policeman green tooltip-2"> <div class="tooltiptext">Partee enviado a la Policia<br> '.$msgPolice.'</div></div>';
@@ -111,7 +111,7 @@ correspondiente.
      
     
       return '<div class="tooltip-2">'
-      . '<i class="fa fa-file-powerpoint partee-form '.$parteeStatus.' '.$ParteeAction.'" data-id="'.$bookID.'" data-sms="'.intval($this->sentSMS).'"></i>'
+      . '<i class="fa fa-file-powerpoint partee-form '.$parteeStatus.' '.$ParteeAction.' cursor" data-id="'.$bookID.'" data-sms="'.intval($this->sentSMS).'"></i>'
       . '<div class="tooltiptext">'.$msgPartee.'</div>'
       . '</div>'.$policeman;
    

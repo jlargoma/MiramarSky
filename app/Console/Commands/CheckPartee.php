@@ -55,6 +55,9 @@ class CheckPartee extends Command {
               ->where('has_checked','0')
               ->get();
 
+      $aux = new BookPartee();
+      $aux->whereNotIn('status', ['HUESPEDES', 'FINALIZADO'])->update(['has_checked' => 0]); //pasa a todos a listo para leer
+       
       if ($listBookPartee){
         foreach ($listBookPartee as $BookPartee) {
         //Read a $BookPartee            
@@ -95,8 +98,7 @@ class CheckPartee extends Command {
           continue;
         }
       }
-      } else {
-        BookPartee::update(['has_checked' => 0]);
+    
       }
     } else {
       //Can't conect to partee

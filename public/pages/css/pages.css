@@ -11781,7 +11781,7 @@ Main components
   z-index: 1;
 }
 .cursor {
-  cursor: pointer;
+  cursor: pointer !important;
 }
 .scroll-x-hidden {
   overflow-x: hidden !important;
