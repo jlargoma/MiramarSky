@@ -212,7 +212,7 @@
                                   <?php
                                 $partee = $book->partee();
                                 if ($partee):
-                                  echo $partee->print_status($book->id,$book->pax,true);
+                                  echo $partee->print_status($book->id,$book->start,$book->pax,true);
                                  endif;
                                 ?>
                             </td>

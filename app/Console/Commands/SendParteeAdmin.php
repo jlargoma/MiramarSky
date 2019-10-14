@@ -9,6 +9,7 @@ use App\BookPartee;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use App\Settings;
+use Carbon\Carbon;
 
 class SendParteeAdmin extends Command {
 
@@ -50,13 +51,14 @@ class SendParteeAdmin extends Command {
    * Check the Partee HUESPEDES completed
    */
   public function checkInStatus() {
+    
+      $now         = Carbon::now();
       $qry = 'SELECT book_partees.status,book_partees.partee_id,guestNumber,book.start,book.id as bookID'
               . ' FROM book INNER JOIN book_partees '
               . ' ON book.id = book_partees.book_id '
               . ' WHERE  book.type_book = 2 '
               . ' AND book_partees.status != "FINALIZADO" '
-              . ' AND DATEDIFF(book.start,CURDATE()) = -1';
-      
+              . ' AND DATEDIFF(book.start,"'.$now->format('Y-m-d').'") = -1';
       $listBookPartee = DB::select($qry);
 
       $link = '<a href="'.env('APP_URL').'/admin/reservas/update/%d" title="Ir a la reserva">Ir a la reserva</a>';

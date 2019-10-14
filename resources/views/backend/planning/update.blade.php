@@ -171,7 +171,7 @@ $mobile = new Mobile();
             $policeman = 'error';
             $partee = $book->partee();
              if ($partee):
-              echo $partee->print_status($book->id,$book->pax);
+              echo $partee->print_status($book->id,$book->start,$book->pax);
 //            $active = 'disabled-error';
 //            if (($partee = $book->partee())):
 //              $active = '';

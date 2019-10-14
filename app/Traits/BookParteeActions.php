@@ -455,32 +455,29 @@ trait BookParteeActions {
             $partee_id = $BookPartee->partee_id;
             //check Partee status
             $result = $apiPartee->getCheckStatus($partee_id);
-            if ($result){
-              if( isset($partee->responseCode) && $partee->responseCode == 200) {
-                if ($apiPartee->response && $apiPartee->response != $apiPartee->response->status){
-                  //Save the new status
-                  $log = $BookPartee->log_data . "," . time() . '-' . $apiPartee->response->status;
-                  $BookPartee->status = $apiPartee->response->status;
-                  $BookPartee->log_data = $log;
-                  $BookPartee->has_checked = 1;
-                  if ($apiPartee->response->status == 'HUESPEDES'){
-                    $BookPartee->guestNumber = $apiPartee->response->guestNumber;
-                    $BookPartee->date_complete = date('Y-m-d H:i:s');
-                  }
-                  if ($apiPartee->response->status == 'FINALIZADO'){
-                    $BookPartee->date_finish = date('Y-m-d H:i:s');
-                  }
-                  $BookPartee->save();
+            if( isset($apiPartee->responseCode) && $apiPartee->responseCode == 200) {
+              if ($apiPartee->response && $apiPartee->response != $apiPartee->response->status){
+                //Save the new status
+                $log = $BookPartee->log_data . "," . time() . '-' . $apiPartee->response->status;
+                $BookPartee->status = $apiPartee->response->status;
+                $BookPartee->log_data = $log;
+                $BookPartee->has_checked = 1;
+                if ($apiPartee->response->status == 'HUESPEDES'){
+                  $BookPartee->guestNumber = $apiPartee->response->guestNumber;
+                  $BookPartee->date_complete = date('Y-m-d H:i:s');
                 }
-              } else {
-                if( isset($partee->responseCode) && $partee->responseCode == 404){
-                  $log = $BookPartee->log_data . "," . time() . '-NotFound '.$BookPartee->partee_id;
-                  $BookPartee->partee_id = -1;
-                  $BookPartee->save();
-                } 
+                if ($apiPartee->response->status == 'FINALIZADO'){
+                  $BookPartee->date_finish = date('Y-m-d H:i:s');
+                }
+                $BookPartee->save();
               }
-          
-          } 
+            } else {
+              if( isset($apiPartee->responseCode) && $apiPartee->responseCode == 404){
+                $log = $BookPartee->log_data . "," . time() . '-NotFound '.$BookPartee->partee_id;
+                $BookPartee->partee_id = -1;
+                $BookPartee->save();
+              } 
+            }
           }
         } catch (\Exception $e) {
           Log::error("Error CheckIn Partee " . $BookPartee->id . ". Error  message => " . $e->getMessage());

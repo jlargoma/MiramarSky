@@ -30,11 +30,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+      //Le quito 2 horas de diff
          $schedule->command('partee:check')->everyThirtyMinutes();
-         $schedule->command('partee:sendSMS')->dailyAt('7:00');
-         $schedule->command('partee:sendAlert')->dailyAt('21:00');
-         $schedule->command('secondPay:sendEmails')->dailyAt('7:00');
-         $schedule->command('monthLimpieza:create')->monthlyOn(1, '5:00');
+         $schedule->command('partee:sendSMS')->dailyAt('7:00')->timezone('Europe/Madrid');
+         $schedule->command('partee:sendAlert')->dailyAt('21:00')->timezone('Europe/Madrid');
+         $schedule->command('secondPay:sendEmails')->dailyAt('7:00')->timezone('Europe/Madrid');
+         $schedule->command('monthLimpieza:create')->monthlyOn(1, '5:00')->timezone('Europe/Madrid');
          $schedule->command('ical:import')->everyFiveMinutes();
     }
 }

@@ -20,7 +20,7 @@ class BookPartee extends Model
           return $this->belongsTo(Book::class)->first();
   }
   
-  public function print_status($bookID,$bookGuest,$action=false) {
+  public function print_status($bookID,$bookStart,$bookGuest,$action=false) {
 //    date_default_timezone_set('Europe/Madrid');
     
     // para enviar a la policia: finish_partee
@@ -39,11 +39,15 @@ correspondiente.
     $policeAction = '';
     $ParteeAction ='';
     
+    $limitDay = date('d \d\e M', strtotime('+1 days '.$bookStart));
+    $alertDays = '<br/>a partir del día '.$limitDay.' , el enlace no estará disponible.... <br/>'
+            . 'tendrás que hacer el registro directamente en www.partee.com';
+    
     if(!$this->partee_id || $this->partee_id<1){
       $policeman = '<div class="policeman grey tooltip-2"> <div class="tooltiptext">Enviar Partee a la Policia</div></div>';
       return '<div class="tooltip-2 sendPartee cursor" data-id="'.$bookID.'" >'
       . '<i class="fa fa-file-powerpoint partee-form"></i>'
-      . '<div class="tooltiptext">Partee no creado</div>'
+      . '<div class="tooltiptext">Partee no creado'.$alertDays.'</div>'
       . '</div>'.$policeman;
       
     }
@@ -86,6 +90,7 @@ correspondiente.
             $policeStatus = 'red finish_partee';
           }
         } else {
+          $alertDays = '';
           $parteeStatus = 'complete';
           $msgPartee .= '<br>Completado';
           $policeStatus = $action ? 'red finish_partee' : '';
@@ -107,6 +112,7 @@ correspondiente.
 
     }
 
+    $msgPartee .=  $alertDays;
     $policeman = '<div class="policeman  tooltip-2 '.$policeStatus.'" data-id="'.$bookID.'"> <div class="tooltiptext">Enviar Partee a la Policia</div></div>';
      
     

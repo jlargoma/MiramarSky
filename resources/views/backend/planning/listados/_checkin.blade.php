@@ -239,7 +239,7 @@
                                  <?php
                                 $partee = $book->partee();
                                 if ($partee):
-                                  echo $partee->print_status($book->id,$book->pax);
+                                  echo $partee->print_status($book->id,$book->start,$book->pax);
                                  endif;
                                 ?>
                             </td>
@@ -439,7 +439,7 @@
                             <?php
                                 $partee = $book->partee();
                                 if ($partee):
-                                  echo $partee->print_status($book->id,$book->pax);
+                                  echo $partee->print_status($book->id,$book->start,$book->pax);
                                  endif;
                                 ?>
                         <?php if ($book->send == 1): ?>
