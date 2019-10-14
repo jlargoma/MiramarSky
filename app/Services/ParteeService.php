@@ -15,6 +15,7 @@ use App\Settings;
 class ParteeService
 {
     public $response;
+    public $responseCode;
     protected   $api;
     protected   $usr;
     protected   $psw;
@@ -57,9 +58,10 @@ class ParteeService
       if(!$result) 
       { 
         $this->response = 'Server error - empty response';
+        $this->responseCode = 400;
         return FALSE; 
       } 
-
+      $this->responseCode = $httpCode;
       switch ($httpCode){
         case 200:
           $response = \json_decode($result);
@@ -116,12 +118,13 @@ class ParteeService
       $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
       curl_exec($ch);
       curl_close($ch);
-      
+      $this->response = null;
+      $this->responseCode = $httpCode;
       switch ($httpCode){
         case 200:
           if(!$result) 
           { 
-            $this->response = 'Empty response';
+            $this->response = null;
             return FALSE; 
           } 
           $this->response = \json_decode($result);
@@ -132,6 +135,9 @@ class ParteeService
           break;
         case 401:
           $this->response = $result;
+          break;
+        case 404:
+          $this->response = 'NotFound';
           break;
         default :
           $this->response = 'Server error';

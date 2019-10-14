@@ -15,6 +15,7 @@ Route::group(['middleware' => 'authAdmin'], function () {
   });
   Route::get('admin/sendPartee/{id}', 'BookController@sendPartee');
   Route::get('ajax/partee-checkHuespedes/{id}', 'BookController@seeParteeHuespedes')->name('partee.checkHuespedes');
+  Route::get('ajax/partee-syncCheckInStatus', 'BookController@syncCheckInStatus')->name('partee.sinc');
     
   Route::get('admin/cambiarCostes', 'BookController@changeCostes');
   // Usuarios

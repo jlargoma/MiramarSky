@@ -66,7 +66,8 @@ class CheckPartee extends Command {
           $partee_id = $BookPartee->partee_id;
           //check Partee status
           $result = $apiPartee->getCheckStatus($partee_id);
-          if ($result) {
+
+          if($apiPartee->response && isset($apiPartee->responseCode) && $apiPartee->responseCode == 200) {
             
             //Save the new status
             $log = $BookPartee->log_data . "," . time() . '-' . $apiPartee->response->status;
@@ -79,16 +80,19 @@ class CheckPartee extends Command {
             }
             
             $BookPartee->save();
-
+            
           } else {
-            
-//            $log = $BookPartee->log_data . "," . time() . '-' . $apiPartee->response;
-            Log::error($apiPartee->response);
-            $BookPartee->status = 'error';
-            $BookPartee->log_data = $log;
-            $BookPartee->has_checked = 1;
-            $BookPartee->save();
-            
+              if( isset($apiPartee->responseCode) && $apiPartee->responseCode == 404){
+                $log = $BookPartee->log_data . "," . time() . '-NotFound '.$BookPartee->partee_id;
+                $BookPartee->log_data = $log;
+                $BookPartee->partee_id = -1;
+                $BookPartee->save();
+              } else {
+                Log::error($apiPartee->response);
+                $BookPartee->status = 'error';
+                $BookPartee->has_checked = 1;
+                $BookPartee->save();
+              }
           }
         } catch (\Exception $e) {
           Log::error("Error CheckIn Partee " . $BookPartee->id . ". Error  message => " . $e->getMessage());

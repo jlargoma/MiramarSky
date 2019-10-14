@@ -17,6 +17,10 @@
           <a href="https://app.partee.es/#/" target="_black" title="Ir a Partee">
             <i class="fa fa-external-link" aria-hidden="true"></i>
           </a>
+          <a href="{{route('partee.sinc')}}"  class="btn btn-primary" title="Sincronizar Partee">
+            Sincronizar <i class="fa fa-refresh"></i>
+          </a>
+          
         </h4>
         
         @if(count($books)>0)

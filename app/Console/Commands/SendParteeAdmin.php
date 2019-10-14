@@ -82,7 +82,9 @@ class SendParteeAdmin extends Command {
           }
       }
     } 
-    $this->sendMessage($listToSend);
+    
+    if (count($listToSend)>0)
+      $this->sendMessage($listToSend);
   }
   
   private function sendMessage($items) {

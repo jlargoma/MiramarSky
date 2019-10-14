@@ -65,8 +65,15 @@ trait BookParteeActions {
               if ($partee->conect()){
 
                 $result = $partee->finish($BookPartee->partee_id);
-
-                if ($result){
+                
+                if($partee->response && isset($partee->responseCode) && $partee->responseCode == 200) {
+                  if ($partee->response->isError){
+                     return [
+                      'status'   => 'danger',
+                      'response' => $partee->response->errorMessage,
+                    ];
+                  }
+                  
 
                   $BookPartee->status = 'FINALIZADO';
                   $BookPartee->log_data = $BookPartee->log_data .",". time() .'-FINALIZADO';
@@ -422,4 +429,69 @@ trait BookParteeActions {
           echo '<h1>Partee no encontrado</h1>';
           
         }
+        
+        
+  /**
+   * Check the Partee HUESPEDES completed
+   */
+  public function syncCheckInStatus() {
+    $apiPartee = new \App\Services\ParteeService();
+    
+    //conect to Partee and get the JWT
+    if ($apiPartee->conect()) {
+
+      $today = Carbon::now();
+      $books = \App\Book::where('start', '>=', $today->copy()->subDays(2))
+                  ->where('start', '<=', $today->copy()->addDays(5))
+                  ->where('type_book', 2)->orderBy('start', 'ASC')->get();
+          
+    
+      if ($books){
+        foreach ($books as $Book) {
+        //Read a $BookPartee            
+        try {
+          $BookPartee = $Book->partee();
+          if ($BookPartee){
+            $partee_id = $BookPartee->partee_id;
+            //check Partee status
+            $result = $apiPartee->getCheckStatus($partee_id);
+            if ($result){
+              if( isset($partee->responseCode) && $partee->responseCode == 200) {
+                if ($apiPartee->response && $apiPartee->response != $apiPartee->response->status){
+                  //Save the new status
+                  $log = $BookPartee->log_data . "," . time() . '-' . $apiPartee->response->status;
+                  $BookPartee->status = $apiPartee->response->status;
+                  $BookPartee->log_data = $log;
+                  $BookPartee->has_checked = 1;
+                  if ($apiPartee->response->status == 'HUESPEDES'){
+                    $BookPartee->guestNumber = $apiPartee->response->guestNumber;
+                    $BookPartee->date_complete = date('Y-m-d H:i:s');
+                  }
+                  if ($apiPartee->response->status == 'FINALIZADO'){
+                    $BookPartee->date_finish = date('Y-m-d H:i:s');
+                  }
+                  $BookPartee->save();
+                }
+              } else {
+                if( isset($partee->responseCode) && $partee->responseCode == 404){
+                  $log = $BookPartee->log_data . "," . time() . '-NotFound '.$BookPartee->partee_id;
+                  $BookPartee->partee_id = -1;
+                  $BookPartee->save();
+                } 
+              }
+          
+          } 
+          }
+        } catch (\Exception $e) {
+          Log::error("Error CheckIn Partee " . $BookPartee->id . ". Error  message => " . $e->getMessage());
+          continue;
+        }
+      }
+    
+      }
+    }
+    
+    return redirect('/admin/reservas');
+  
+  }
 }
