@@ -146,7 +146,8 @@
     Route::get('/api/forfaits/class', 'ForfaitsItemController@api_getClasses');
     Route::get('/api/forfaits/categ', 'ForfaitsItemController@api_getCategories');
     Route::get('/api/forfaits/items/{id}', 'ForfaitsItemController@api_items');
-    Route::post('/api/forfaits/getCart', 'ForfaitsItemController@getCart');
+    Route::post('/api/forfaits/cancelItem', 'ForfaitsItemController@cancelItem');
+    Route::post('/api/forfaits/saveCart', 'ForfaitsItemController@saveCart');
     Route::post('/api/forfaits/checkout', 'ForfaitsItemController@checkout');
     Route::post('/api/forfaits/forfaits', 'ForfaitsItemController@getForfaitUser');
     Route::get('/api/forfaits/bookingData/{bID}/{uID}', 'ForfaitsItemController@bookingData');

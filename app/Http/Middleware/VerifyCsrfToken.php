@@ -34,7 +34,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/admin/years/change/months',
         '/admin/settings/createUpdate',
         '/api/check_rooms_avaliables',
-        '/api/forfaits/getCart',
+        '/api/forfaits/saveCart',
         '/api/forfaits/checkout',
         '/api/forfaits/forfaits',
         '/api/forfaits/sendConsult',
