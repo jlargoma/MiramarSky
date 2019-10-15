@@ -497,7 +497,7 @@ setlocale(LC_TIME, "es_ES");
           </div>
         </div>
           
-           <div class="modal fade slide-up in" id="modalSendPartee" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade slide-up in" id="modalSendPartee" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-xd">
               <div class="modal-content-classic">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">

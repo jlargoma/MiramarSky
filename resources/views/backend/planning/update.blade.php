@@ -73,6 +73,7 @@
   }
 
 </style>
+<script type="text/javascript" src="{{ assetV('/js/partee.js')}}"></script>
 @endsection
 
 @section('content')
@@ -171,7 +172,7 @@ $mobile = new Mobile();
             $policeman = 'error';
             $partee = $book->partee();
              if ($partee):
-              echo $partee->print_status($book->id,$book->start,$book->pax);
+              echo $partee->print_status($book->id,$book->start,$book->pax,true);
 //            $active = 'disabled-error';
 //            if (($partee = $book->partee())):
 //              $active = '';
@@ -185,7 +186,7 @@ $mobile = new Mobile();
             ?>
           </div>
           <div class="col-md-2 col-xs-3 icon-lst ">
-            <button class="partee-cp " onclick="copyParteeMsg()">
+            <button class="partee-cp " onclick="copyParteeMsg(<?php echo $book->id ?>)">
               <div class="tooltip" id="tooltipPartee">
                 <span class="tooltiptext" id="myTooltip">Msg Partee Copiado</span>
               </div>
@@ -1425,6 +1426,19 @@ $mobile = new Mobile();
   </form>
   <input type="hidden" class="precio-oculto" value="<?php echo $book->total_price ?>">
 
+  <div class="modal fade slide-up in" id="modalSendPartee" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-xd">
+              <div class="modal-content-classic">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
+                  <i class="fa fa-times fa-2x" style="color: #000!important;"></i>
+                </button>
+                <h3 id="modalSendPartee_title"></h3>
+                <div class="row" id="modalSendPartee_content" style="margin-top:1em;">
+                </div>
+              </div>
+            </div>
+        </div>
+  
   @endsection
 
   @section('scripts')
@@ -1435,11 +1449,7 @@ $mobile = new Mobile();
   <script src="/assets/js/notifications.js" type="text/javascript"></script>
   @include('backend.planning._bookScripts', ['update' => 1])
   <script>
-                       {
-                         {
-                           -- This little trick will override wrong rendered data --}
-                       }
-                       calculate(null, false);
+    calculate(null, false);
   </script>
 
   <script type="text/javascript">
@@ -1494,30 +1504,7 @@ $mobile = new Mobile();
 
 
     });
-    var copyParteeMsg = function () {
-      $.get('/get-partee-msg', {bookID: <?php echo $book->id ?>},
-              function (data) {
-                if (data == 'empty') {
-                  alert('No se ha encontrado un registro asociado');
-                } else {
-                  var dummy = document.createElement("textarea");
-                  // to avoid breaking orgain page when copying more words
-                  // cant copy when adding below this code
-                  // dummy.style.display = 'none'
-                  document.body.appendChild(dummy);
-                  //Be careful if you use texarea. setAttribute('value', value), which works with "input" does not work with "textarea". – Eduard
-                  dummy.value = data;
-                  dummy.select();
-                  document.execCommand("copy");
-                  document.body.removeChild(dummy);
-                  $('#tooltipPartee').addClass('show');
-                  setTimeout(function () {
-                    $('#tooltipPartee').removeClass('show');
-                  }, 500);
-                }
-
-              });
-    }
+  
   </script>
   <style>
     button.partee-cp {

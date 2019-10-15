@@ -362,10 +362,16 @@ trait BookParteeActions {
           </button>
         </div>  
         <div id="linkPartee" class="col-xs-12" style="display:none;"><?php echo $link; ?></div>
-        <div class="col-xs-12"> 
+        <div class="col-md-6 minH-4"> 
           <button class="showParteeData btn btn-default" title="Mostrar Partee" data-partee_id="<?php echo $partee->partee_id; ?>">
             <i class="fa fa-eye"></i> Mostart Partee
           </button>
+        </div>
+        <div class="col-md-6 minH-4"> 
+          <button class="btn btn-default" title="Mostrar Partee" onclick="copyParteeMsg(<?php echo $book->id; ?>,'cpMsgPartee',0)">
+            <i class="far fa-copy"></i>  Copiar mensaje Partee
+          </button>
+          <div id="cpMsgPartee"></div>
         </div>
           <?php
            if (count($showInfo)){
