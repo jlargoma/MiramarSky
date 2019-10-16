@@ -19,10 +19,25 @@ class ForfaitsOrders extends Model
       return $order;
     }
   }
+  
+  static function getByKey($key) {
+    $order = null;
+     if ($key){
+      $aKey = explode('-',$key);
+      $bookingKey = isset($aKey[0]) ? ($aKey[0]) : null;
+      $clientKey = isset($aKey[1]) ? ($aKey[1]) : null;
+      $bookingID = desencriptID($bookingKey);
+      $clientID = desencriptID($clientKey);
+      if ($bookingID>0 && $clientID>0){
+        $order = ForfaitsOrders::getByBook($bookingID);
+      }
+     }
+     return $order;
+  }
  
   public function recalculate() {
     $TotalItems = ForfaitsOrderItem::where('order_id',$this->id)
-            ->where('status','!=', 'cancel')->sum('total');
+            ->WhereNull('cancel')->sum('total');
     $this->total = $TotalItems;
     $this->save();
   }

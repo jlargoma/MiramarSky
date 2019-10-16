@@ -14,6 +14,12 @@
     Route::auth();
     Route::get('/', 'HomeController@index');
 
+    Route::get('/lalala', function () {
+      $a = encriptID(99499999858);
+      echo $a.'<br>';
+      echo desencriptID($a);
+    });
+    
     Route::get('/partee-checkHuespedes', function () {
         $partee = new \App\Services\ParteeService();
         $partee->conect();

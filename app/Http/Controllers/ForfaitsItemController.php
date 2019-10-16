@@ -122,6 +122,7 @@ class ForfaitsItemController extends Controller
     ));
     $response = curl_exec($curl);
     $err = curl_error($curl);
+//    var_dump($forfaitLst,$response); die;
     curl_close($curl);
     if ($err) {
       return json_encode(['success'=>false, 'data'=>['message'=>$err]]);
@@ -189,41 +190,8 @@ class ForfaitsItemController extends Controller
     $bookingID = desencriptID($bookingID);
     $clientID = desencriptID($clientID);
     if (is_numeric($bookingID) && is_numeric($clientID)){
-      $obj = ForfaitsUser::where('book_id',$bookingID)
-              ->where('cli_id',$clientID)
-              ->whereIn('status',['new','not_payment'])
-              ->orderBy('id','DESC')->first();
-  
-      if ($obj){
-        $forfaits = json_decode($obj->forfait_data);
-        $totalItems = (count($forfaits)>0) ? 1 : 0;
-        $a_materials = $a_clases = [];
-        $materials = $obj->materials_data;
-        if ($materials){
-          $a_materials = json_decode($materials);
-          $totalItems += count($a_materials);
-        }
-        $classes = $obj->classes_data;
-        if ($classes){
-          $a_clases = json_decode($classes);
-          $totalItems += count($a_clases);
-        }
-        
-        $result = [
-            'status'      => 'ok',
-            'totalItems'  => $totalItems,
-            'materials'   => $a_materials,
-            'forfaits'    => ($forfaits),
-            'users'       => json_decode($obj->forfait_users),
-            'classes'     => $a_clases,
-            'totalForf'   => $obj->forfait_total,
-            'totalMat'    => $obj->materials_total,
-            'totalClas'   => $obj->classes_total,
-            'totalPrice'  => $obj->total,
-            'ID'          => encriptID($obj->id),
-        ];
-        return response()->json($result);
-      }
+      $order = ForfaitsOrders::getByBook($bookingID);
+      return $this->getCart($order);
     } 
     return response()->json(['status'    => 'error']);
   }
@@ -237,8 +205,13 @@ class ForfaitsItemController extends Controller
   public function saveCart(Request $req, $returnJson=true) {
     $type = $req->input('type', null);
     $data = $req->input('data', null);
-    $id = $req->input('ID', null);
-    $order = ForfaitsOrders::getByBook($id);
+//    $id = $req->input('ID', null);
+    
+    $key = $req->input('key', null);
+    $order = ForfaitsOrders::getByKey($key);
+    if (!$order){
+      return die('404');
+    }
     $orderID = $order->id;
     
 //    var_dump($type,$data,$id); die;
@@ -271,6 +244,7 @@ class ForfaitsItemController extends Controller
   }
   
 
+
   /**
    * 
    * @param Request $req
@@ -278,10 +252,34 @@ class ForfaitsItemController extends Controller
    * @return type
    */
   public function cancelItem(Request $req, $returnJson=true) {
-    $item = $req->input('item', null);
-    $id = $req->input('ID', null);
-    $order = ForfaitsOrders::getByBook($id);
-    $orderID = $order->id;
+    $type = $req->input('type', null);
+    $data = $req->input('data', null);
+    $key = $req->input('key', null);
+    $order = ForfaitsOrders::getByKey($key);
+    if (!$order)  return response()->json(['status'    => 'error']);
+    
+    if ($type == 'forfait'){
+      $item = ForfaitsOrderItem::find($data);
+      if ($item->order_id == $order->id){
+        $item->cancel = 1;
+        $item->save();
+      }
+    } else {
+      if ( isset($data['item']) && isset($data['item']['id']) ){
+        $itemID = $data['item']['id'];
+        $itemkey = $data['item']['item_key'];
+        $item = ForfaitsOrderItem::find($itemID);
+        if ($item && $item->order_id == $order->id){
+          $itemData = json_decode($item->data);
+  //        var_dump($itemData);die;
+          if ($itemData->item->item_key == $itemkey){
+            $item->cancel = 1;
+            $item->save();
+          }
+        }
+      }
+    }
+    
     $order->recalculate();
     $cart = $this->getCart($order);
     if ($returnJson)
@@ -432,39 +430,55 @@ class ForfaitsItemController extends Controller
    */
   public function getCart($order) {
    
+   
     $totalForf = $totalMat = $totalClas = 0;
     $classes = [];
     $materials = [];
     $users = [];
     $forfaits = [];
-    $totalPrice = $order->total;
+    $totalPrice = 0;
+    $totalItems = 0;
+    if ($order){
+      $totalPrice = $order->total;
+      
+      $forfaitsLst = ForfaitsOrderItem::where('order_id',$order->id)->where('type','forfaits')->WhereNull('cancel')->get();
+      if ($forfaitsLst){
+        foreach ($forfaitsLst as $f){
+          $aux = json_decode($f->data);
+          $totalItems += count($aux);
+          $forfaits[$f->id] = $aux;
+          $totalForf += $f->total;
+        }
+      }
+      $classesLst = ForfaitsOrderItem::where('order_id',$order->id)->WhereNull('cancel')->where('type','class')->get();
+      if ($classesLst){
+        foreach ($classesLst as $item){
+          $aux = json_decode($item->data);
+          $aux->total = $item->total;
+          $aux->item->id = $item->id;
+          $classes[] = $aux;
+          $totalItems++;
+          $totalClas += $item->total;
+        }
+      }
+      $objLst = ForfaitsOrderItem::where('order_id',$order->id)->WhereNull('cancel')->where('type','material')->get();
+      if ($objLst){
+        foreach ($objLst as $item){
+          $aux = json_decode($item->data);
+          $aux->total = $item->total;
+          $aux->item->id = $item->id;
+          $materials[] = $aux;
+          $totalItems++;
+          $totalMat += $item->total;
+        }
+      }
+    }
     
-    $forfaitsLst = ForfaitsOrderItem::where('order_id',$order->id)->where('type','forfaits')->get();
-    if ($forfaitsLst){
-      foreach ($forfaitsLst as $f){
-        $forfaits = array_merge($forfaits,json_decode($f->data));
-      }
-    }
-    $classesLst = ForfaitsOrderItem::where('order_id',$order->id)->where('type','class')->get();
-    if ($classesLst){
-      foreach ($classesLst as $item){
-        $aux = json_decode($item->data);
-        $aux->total = $item->total;
-        $classes[] = $aux;
-      }
-    }
-    $objLst = ForfaitsOrderItem::where('order_id',$order->id)->where('type','material')->get();
-    if ($objLst){
-      foreach ($objLst as $item){
-        $aux = json_decode($item->data);
-        $aux->total = $item->total;
-        $materials[] = $aux;
-      }
-    }
-    
+    $totalPayment = 55;
+    $totalToPay = $totalPrice-$totalPayment;
     $result = [
         'status'    => 'ok',
-        'totalItems'=> 0,
+        'totalItems'=> $totalItems,
         'materials' => $materials,
         'forfaits'  => $forfaits,
         'forfaits_users' => $users,
@@ -476,6 +490,8 @@ class ForfaitsItemController extends Controller
         'totalMat'   => $totalMat,
         'totalClas'   => $totalClas,
         'totalPrice'   => $totalPrice,
+        'totalPayment'   => $totalPayment,
+        'totalToPay'   => $totalToPay,
     ];
 
     return $result;
@@ -508,7 +524,7 @@ class ForfaitsItemController extends Controller
           }
           $room = $book->room()->first();
           $result['apto'] = ($room->luxury) ? $room->sizeRooms->name . " - LUJO" : $room->sizeRooms->name . " - ESTANDAR";
-          $result['start'] = $book->finish;
+          $result['start'] = $book->start;
           $result['finish'] = $book->finish;
       }
     }}

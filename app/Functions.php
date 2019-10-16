@@ -2,6 +2,7 @@
 
 function desencriptID($text){
 
+    $text = trim($text);
     $char_list = "GHIJKLMNOPQRSTUVWXYZ";
     $char_salt = "ABCDEFabcdef";
     $text_len = strlen($text);
@@ -21,8 +22,10 @@ function desencriptID($text){
       }
     }
     $id = hexdec($result);
-    
-    return $id/217;
+    $cantControl = strlen($result);
+    if (substr($text,-1) == $cantControl) return $id/217;
+    if (substr($text,-2) == $cantControl) return $id/217;
+    return 'null';
 }
 
 function encriptID($data){
@@ -44,7 +47,13 @@ function encriptID($data){
         }
       }
     }
-    return $result;
+    
+    $length = strlen($result);
+    $newVal = '';
+    for ($i=0; $i<$length; $i++) {
+      $newVal .= (rand(0, 117)). $result[$i];
+    }
+    return ($newVal).$length;
 }
 
 function assetV($uri){

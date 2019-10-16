@@ -37,6 +37,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/api/forfaits/saveCart',
         '/api/forfaits/checkout',
         '/api/forfaits/forfaits',
+        '/api/forfaits/cancelItem',
         '/api/forfaits/sendConsult',
         '/payment/process/*',
     ];
