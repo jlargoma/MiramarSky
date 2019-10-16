@@ -64,7 +64,7 @@
                                 <?php endforeach ?>
                             <?php endif ?>
                             <?php echo  $paymentBook." €" ?> <br>
-                            <?php if ($paymentBook != 0): ?>
+                            <?php if ($paymentBook != 0 && $book->total_price>0): ?>
                                 <b><?php echo  round(($paymentBook/$book->total_price)*100)?>%</b>
                             <?php else: ?>
                                 <b>0%</b>

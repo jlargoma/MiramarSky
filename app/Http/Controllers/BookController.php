@@ -144,7 +144,12 @@ class BookController extends AppController
                 }
                 //echo $total." DE ----> ".$book->total_price."<br>";
 
-                $percent = 100 / ($book->total_price / $total);
+                $percent = 0;
+                if ($total>0){
+                  $percentAux = ($book->total_price / $total);
+                  if ($percentAux>0)
+                  $percent = 100 / $percentAux;
+                }
                 if ($percent < 100) if ($now->diffInDays($dateStart) <= 15) $alarms[] = $book;
             } else
             {
@@ -329,7 +334,10 @@ class BookController extends AppController
                 $book->extraPrice = $extraPrice;
                 $book->extraCost  = $extraCost;
                 //Porcentaje de beneficio
-                $book->inc_percent = round(($book->total_ben / $book->total_price) * 100, 2);
+                if ($book->total_price>0)
+                  $book->inc_percent = round(($book->total_ben / $book->total_price) * 100, 2);
+                else $book->inc_percent = 0;
+                
                 $book->ben_jorge   = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
                 $book->ben_jaime   = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
                 $book->promociones = 0;
@@ -484,7 +492,10 @@ class BookController extends AppController
                         $book->real_price  = ($room->sizeApto == 1) ? 30 : 50;
                         $book->total_ben   = $book->total_price - $book->cost_total;
 
-                        $book->inc_percent = round(($book->total_ben / $book->total_price) * 100, 2);
+                        if ($book->total_price>0)
+                          $book->inc_percent = round(($book->total_ben / $book->total_price) * 100, 2);
+                        else $book->inc_percent = 0;
+                        
                         $book->ben_jorge   = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
                         $book->ben_jaime   = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
 
@@ -555,7 +566,9 @@ class BookController extends AppController
 
                         $book->total_ben = $book->total_price - $book->cost_total;
 
-                        $book->inc_percent = round(($book->total_ben / $book->total_price) * 100, 2);
+                        if ($book->total_price>0)
+                          $book->inc_percent = round(($book->total_ben / $book->total_price) * 100, 2);
+                        else $book->inc_percent = 0;
 
                         $book->ben_jorge   = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
                         $book->ben_jaime   = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
@@ -2200,7 +2213,7 @@ class BookController extends AppController
         $data['calculated']['total_price']       = $totalPrice;
         $data['calculated']['total_cost']        = $totalCost;
         $data['calculated']['profit']            = $profit;
-        $data['calculated']['profit_percentage'] = round(($profit / $totalPrice) * 100);
+        $data['calculated']['profit_percentage'] = ($totalPrice>0) ? round(($profit / $totalPrice) * 100) : 0;
         $data['calculated']['real_price']        = array_sum($data['totales']);
 
         return $data;
