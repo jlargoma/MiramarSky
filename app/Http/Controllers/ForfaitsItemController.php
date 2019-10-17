@@ -120,6 +120,7 @@ class ForfaitsItemController extends AppController {
         CURLOPT_URL => $endpoint,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_CONNECTTIMEOUT => 3,
         CURLOPT_POSTFIELDS => $json,
         CURLOPT_HTTPHEADER => array(
             "Content-Type: application/json",
@@ -145,6 +146,7 @@ class ForfaitsItemController extends AppController {
         CURLOPT_URL => $endpoint,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_CONNECTTIMEOUT => 3,
         CURLOPT_HTTPHEADER => array(
             "Content-Type: application/json",
             "Authorization: Bearer $Bearer"
@@ -153,9 +155,7 @@ class ForfaitsItemController extends AppController {
     $response = curl_exec($curl);
     $err = curl_error($curl);
     curl_close($curl);
-    if ($err) {
-      return ['success' => false, 'data' => $err];
-    } else {
+    if (!$err) {
       $list = json_decode($response);
 
       if (isset($list->success) && $list->success) {
@@ -170,8 +170,8 @@ class ForfaitsItemController extends AppController {
           }
         }
       }
-      return ['success' => false, 'data' => 'no dates'];
     }
+    return ['startDate' => null, 'endDate' => null];
   }
 
   private function getDays($start, $end) {
@@ -506,7 +506,7 @@ class ForfaitsItemController extends AppController {
   }
 
   public function bookingData($bookingID, $clientID, $returnJson = true) {
-    $result = [
+    $userData = [
         'user_name' => '',
         'user_email' => '',
         'user_phone' => '',
@@ -527,19 +527,31 @@ class ForfaitsItemController extends AppController {
         if ($book->customer_id == $clientID) {
           $client = $book->customer()->first();
           if ($client) {
-            $result['user_name'] = $client->name;
-            $result['user_email'] = $client->email;
-            $result['user_phone'] = $client->phone;
+            $userData['user_name'] = $client->name;
+            $userData['user_email'] = $client->email;
+            $userData['user_phone'] = $client->phone;
           }
           $room = $book->room()->first();
-          $result['apto'] = ($room->luxury) ? $room->sizeRooms->name . " - LUJO" : $room->sizeRooms->name . " - ESTANDAR";
-          $result['start'] = $book->start;
-          $result['finish'] = $book->finish;
-          $result['ff_status'] = $book->ff_status;
+          $userData['apto'] = ($room->luxury) ? $room->sizeRooms->name . " - LUJO" : $room->sizeRooms->name . " - ESTANDAR";
+          $userData['start'] = $book->start;
+          $userData['finish'] = $book->finish;
+          $userData['ff_status'] = $book->ff_status;
         }
       }
     }
+    
+    $result = [
+      'userData' => $userData,
+      'classes' => ForfaitsItem::getClasses(),
+      'categories' => ForfaitsItem::getCategories(),
+      'seasons' => $this->getForfaitSeasons(),
+    ];
+    
+    
+
     if ($returnJson) {
+      
+      
       return response()->json($result);
     }
 
@@ -660,6 +672,7 @@ class ForfaitsItemController extends AppController {
         CURLOPT_URL => $endpoint,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_CONNECTTIMEOUT => 5,
         CURLOPT_POSTFIELDS => $json,
         CURLOPT_HTTPHEADER => array(
             "Content-Type: application/json",

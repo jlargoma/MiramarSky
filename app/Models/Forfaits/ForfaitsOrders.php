@@ -3,7 +3,7 @@
 namespace App\Models\Forfaits;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\ForfaitsOrderItem;
+use App\Models\Forfaits\ForfaitsOrderItem;
 
 class ForfaitsOrders extends Model
 {

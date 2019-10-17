@@ -169,33 +169,15 @@ $mobile = new Mobile();
             </a>
 
           </div>
-          <div class="col-md-2 col-xs-3 icon-lst partee-icon" style="position:relative">
+          <div class="col-md-4 col-xs-6 icon-lst partee-icon" style="position:relative">
             <?php
             $policeman = 'error';
             $partee = $book->partee();
              if ($partee):
               echo $partee->print_status($book->id,$book->start,$book->pax,true);
-//            $active = 'disabled-error';
-//            if (($partee = $book->partee())):
-//              $active = '';
-//              if ($partee->status == "FINALIZADO") {
-//                $active = 'active';
-//              }
-//              if ($partee->partee_id < 1) {
-//                $active = 'disabled-error';
-//              }
             endif;
             ?>
           </div>
-          <div class="col-md-2 col-xs-3 icon-lst ">
-            <button class="partee-cp " onclick="copyParteeMsg(<?php echo $book->id ?>)">
-              <div class="tooltip" id="tooltipPartee">
-                <span class="tooltiptext" id="myTooltip">Msg Partee Copiado</span>
-              </div>
-              <i class="far fa-copy"></i>      
-            </button>
-          </div>
-
         </div>
         <div class="col-md-3 col-xs-12 content-guardar" style="padding: 20px 0;">
           @if($low_profit)
@@ -1570,6 +1552,21 @@ $mobile = new Mobile();
       font-size: 0.75em;
       color: #daeffd;
       cursor: pointer;
+    }
+    .partee-icon .pf-icon {
+        float: left;
+        width: 50%;
+        text-align: center;
+        display: block;
+        font-size: 20px;
+    }
+    .partee-icon .policeman{
+      display: block;
+      float: left;
+      width: 50%;
+      background-repeat: no-repeat;
+      height: 2.3em;
+      margin-top: 00;
     }
   </style>
   @endsection
