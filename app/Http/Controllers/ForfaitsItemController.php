@@ -702,12 +702,12 @@ class ForfaitsItemController extends AppController {
   }
 
   public function changeStatus(Request $req) {
-
-    $token = $req->input('token', null);
-    $key = $req->input('key', null);
-    $data = $req->input('data', null);
-    if ($this->checkUserAdmin($token)) {
-
+    
+    $token = $req->header('token-ff');
+    if (!$this->checkUserAdmin($token)) return die('404');
+    
+      $key = $req->input('key', null);
+      $data = $req->input('data', null);
       if ($key) {
         $aKey = explode('-', $key);
         $bookingKey = isset($aKey[0]) ? ($aKey[0]) : null;
@@ -722,13 +722,15 @@ class ForfaitsItemController extends AppController {
           return response()->json(['status' => 'ok']);
         }
       }
-    }
-
-    return die('404');
+    
+    
   }
 
-  public function getUserAdmin($token) {
+  public function getUserAdmin(request $req) {
 
+    $token = $req->header('token-ff');
+    if (!$this->checkUserAdmin($token)) return die('404');
+    
     if ($this->checkUserAdmin($token)) {
       return response('1');
     }

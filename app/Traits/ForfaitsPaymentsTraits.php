@@ -15,10 +15,13 @@ trait ForfaitsPaymentsTraits {
 
   public function createPayment(Request $req) {
 
+    $token = $req->header('token-ff');
+    if (!$this->checkUserAdmin($token)) return die('404');
+    
     $token = $req->input('token', null);
     $key = $req->input('key', null);
     $amount = $req->input('data', null);
-    if ($this->checkUserAdmin($token)) {
+   
 
       if ($key) {
         $aKey = explode('-', $key);
@@ -38,19 +41,20 @@ trait ForfaitsPaymentsTraits {
           return response()->json(['status' => 'ok', 'url' => $urlPayland]);
         }
       }
-    }
+   
 
     return die('404');
   }
 
   public function createPaylandsUrl(Request $req) {
-
-    $token = $req->input('token', null);
+     
+    $token = $req->header('token-ff');
+    if (!$this->checkUserAdmin($token)) return die('404');
+    
     $key = $req->input('key', null);
     $amount = $req->input('data', null);
-    if ($this->checkUserAdmin($token)) {
 
-      if ($key) {
+    if ($key) {
         $aKey = explode('-', $key);
         $bookingKey = isset($aKey[0]) ? ($aKey[0]) : null;
         $clientKey = isset($aKey[1]) ? ($aKey[1]) : null;
@@ -77,22 +81,21 @@ trait ForfaitsPaymentsTraits {
           $BookOrders->save();
           
           $urlPay = route('front.payments.forfaits',$token);
-          return response()->json(['status' => 'ok', 'content' => $this->getPaymentText($urlPay)]);
+          return response()->json(['status' => 'ok', 'content' => $this->getPaymentText($urlPay,$amount)]);
         }
       }
-    }
-
+      
     return die('404');
   }
   
-    private function getPaymentText($urlPay) {
+    private function getPaymentText($urlPay,$amount) {
       $response = '<div class="col-md-2 col-xs-12">
-                  <a href="whatsapp://send?text=En este link podrás realizar el pago de los Forfaits - ' . $urlPay . '" data-action="share/whatsapp/share">
+                  <a href="whatsapp://send?text=En este link podrás realizar el pago de '.$amount.'€ correspondiente a los Forfaits - ' . $urlPay . '" data-action="share/whatsapp/share">
                       <i class="fa fa-whatsapp fa-3x" aria-hidden="true"></i>
                   </a>
           </div>
           <div class="col-md-10 col-xs-12 ">
-              En este link podrás realizar el pago el pago de los Forfaits<br>
+              En este link podrás realizar el pago el pago de '.$amount.'€ correspondiente a los Forfaits<br>
                   <a target="_blank" href="' . $urlPay . '">
                       ' . substr($urlPay, 0, 45) . '...     
                   </a>
@@ -159,11 +162,13 @@ trait ForfaitsPaymentsTraits {
   }
   
   public function getPayments(Request $req) {
-    $token = $req->input('token', null);
+        
+    $token = $req->header('token-ff');
+    if (!$this->checkUserAdmin($token)) return die('404');
+    
     $key = $req->input('key', null);
-    if ($this->checkUserAdmin($token)) {
 
-      if ($key) {
+    if ($key) {
         $aKey = explode('-', $key);
         $bookingKey = isset($aKey[0]) ? ($aKey[0]) : null;
         $clientKey = isset($aKey[1]) ? ($aKey[1]) : null;
@@ -192,8 +197,7 @@ trait ForfaitsPaymentsTraits {
           return response()->json(['status' => 'ok', 'content' => $paymentsLst]);
         }
       }
-    }
-
+    
     return die('404');
   }
 }

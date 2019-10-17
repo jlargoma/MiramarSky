@@ -149,7 +149,7 @@
     Route::get('/api/forfaits/error/{key_token}', 'ForfaitsItemController@errorPayment')->name('payland.error.forfait');
     Route::get('/api/forfaits/process/{key_token}', 'ForfaitsItemController@processPayment')->name('payland.process.forfait');
     Route::post('/api/forfaits/process/{key_token}', 'ForfaitsItemController@processPayment')->name('payland.process.forfait');
-    Route::get('/api/forfaits/token/{token}', 'ForfaitsItemController@getUserAdmin');
+    Route::get('/api/forfaits/token', 'ForfaitsItemController@getUserAdmin');
     Route::post('/api/forfaits/getPayments', 'ForfaitsItemController@getPayments');
     Route::post('/api/forfaits/createPayment', 'ForfaitsItemController@createPayment');
     Route::post('/api/forfaits/createPaylandsUrl', 'ForfaitsItemController@createPaylandsUrl');
