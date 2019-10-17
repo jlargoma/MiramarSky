@@ -704,7 +704,8 @@ class ForfaitsItemController extends AppController {
   public function changeStatus(Request $req) {
     
     $token = $req->header('token-ff');
-    if (!$this->checkUserAdmin($token)) return die('404');
+    $client = $req->header('client');
+    if (!$this->checkUserAdmin($token,$client)) return die('404');
     
       $key = $req->input('key', null);
       $data = $req->input('data', null);
@@ -728,20 +729,19 @@ class ForfaitsItemController extends AppController {
 
   public function getUserAdmin(request $req) {
 
-    $token = $req->header('token-ff');
-    if (!$this->checkUserAdmin($token)) return die('404');
-    
-    if ($this->checkUserAdmin($token)) {
+    $token  = $req->header('token-ff');
+    $client = $req->header('client');
+    if ($this->checkUserAdmin($token,$client)) {
       return response('1');
     }
     return response('0');
   }
 
-  private function checkUserAdmin($token) {
+  private function checkUserAdmin($token,$ipClient) {
 
     $token = desencriptID($token);
     if (is_numeric($token)) {
-      $ip = explode('.', getUserIpAddr());
+      $ip = explode('.', $ipClient);
       $aux = 1;
       if ($ip[0] > $ip[1]) {
         $aux = $ip[0] - $ip[1];

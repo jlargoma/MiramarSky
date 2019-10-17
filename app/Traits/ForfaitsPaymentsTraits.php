@@ -16,7 +16,8 @@ trait ForfaitsPaymentsTraits {
   public function createPayment(Request $req) {
 
     $token = $req->header('token-ff');
-    if (!$this->checkUserAdmin($token)) return die('404');
+    $client = $req->header('client');
+    if (!$this->checkUserAdmin($token,$client)) return die('404');
     
     $token = $req->input('token', null);
     $key = $req->input('key', null);
@@ -49,7 +50,8 @@ trait ForfaitsPaymentsTraits {
   public function createPaylandsUrl(Request $req) {
      
     $token = $req->header('token-ff');
-    if (!$this->checkUserAdmin($token)) return die('404');
+    $client = $req->header('client');
+    if (!$this->checkUserAdmin($token,$client)) return die('404');
     
     $key = $req->input('key', null);
     $amount = $req->input('data', null);
@@ -164,7 +166,8 @@ trait ForfaitsPaymentsTraits {
   public function getPayments(Request $req) {
         
     $token = $req->header('token-ff');
-    if (!$this->checkUserAdmin($token)) return die('404');
+    $client = $req->header('client');
+    if (!$this->checkUserAdmin($token,$client)) return die('404');
     
     $key = $req->input('key', null);
 
