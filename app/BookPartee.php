@@ -40,8 +40,8 @@ correspondiente.
     $ParteeAction ='';
     
     $limitDay = date('d \d\e M', strtotime('+1 days '.$bookStart));
-    $alertDays = '<br/>a partir del día '.$limitDay.' , el enlace no estará disponible.... <br/>'
-            . 'tendrás que hacer el registro directamente en www.partee.com';
+    $alertDays = '<br/><small>a partir del día '.$limitDay.' , el enlace no estará disponible.... <br/>'
+            . 'tendrás que hacer el registro directamente en www.partee.com</small>';
     
     if(!$this->partee_id || $this->partee_id<1){
       $policeman = '<div class="policeman grey tooltip-2"> <div class="tooltiptext">Enviar Partee a la Policia</div></div>';
@@ -54,11 +54,11 @@ correspondiente.
     
     if ($this->status == "FINALIZADO"){
       if (isset($this->date_finish)){
-        $msgPolice = 'Finalizado el '.$this->date_finish;
+        $msgPolice = '<br>'.date('d M H:i', strtotime($this->date_finish));
       } else {
         preg_match('|([0-9])*(\-FINALIZADO)|', $this->log_data, $data);
         if (isset($data[0])){
-          $msgPolice = 'Finalizado el '.date('Y-m-d H:i', intval($data[0]));
+          $msgPolice = 'Finalizado el '.date('d M H:i', intval($data[0]));
         }
       }
       
@@ -69,18 +69,11 @@ correspondiente.
     }
        
     
-    $msgPartee = 'Partee<br>';  
+    $msgPartee = 'Partee';  
     $parteeStatus = '';  
     $policeStatus = 'grey';
     if ($this->status == "HUESPEDES"){
-      if (isset($this->date_complete)){
-        $msgPartee .= 'Revisado el '.$this->date_complete;
-      } else {
-        preg_match('|([0-9])*(-HUESPEDES)|', $this->log_data, $data);
-        if (isset($data[0]) && intval($data[0])>0){
-          $msgPartee .= 'Revisado el '.date('Y-m-d H:i', intval($data[0])).' - '.intval($data[0]);
-        }
-      }
+      
       if ($this->guestNumber){
         if ($this->guestNumber !== $bookGuest){
           $msgPartee .= '<br>Incompleto: '.$this->guestNumber.' de '.$bookGuest;
@@ -103,7 +96,9 @@ correspondiente.
             $msgPartee .= '<br><b>Enviar recordatorio</b>';
           }
       }
-      
+      if (isset($this->date_complete)){
+        $msgPartee .= '<br>Chequeado el '.date('d M H:i', strtotime($this->date_complete));
+      }
     } else {
       if ($action){
         $ParteeAction = 'sendPartee';

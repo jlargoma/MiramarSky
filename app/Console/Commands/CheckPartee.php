@@ -49,21 +49,24 @@ class CheckPartee extends Command {
     //conect to Partee and get the JWT
     if ($apiPartee->conect()) {
 
+      $date = date('Y-m-d', strtotime('-2 days'));
       //List the no-complete partee
-      $listBookPartee = BookPartee::where('partee_id','>',0)
-              ->whereNotIn('status', ['HUESPEDES', 'FINALIZADO'])
+      $listBookPartee = BookPartee::select('book_partees.*','book.pax')
+              ->Join('book','book.id','=','book_partees.book_id')
+              ->where('partee_id','>',0)
+              ->where('type_book','2')
               ->where('has_checked','0')
+              ->where('start','>=',$date)
               ->get();
 
       $aux = new BookPartee();
-      $aux->whereNotIn('status', ['HUESPEDES', 'FINALIZADO'])->update(['has_checked' => 0]); //pasa a todos a listo para leer
-       
+      $aux->whereNotIn('status', ['FINALIZADO'])->update(['has_checked' => 0]); //pasa a todos a listo para leer
       if ($listBookPartee){
         foreach ($listBookPartee as $BookPartee) {
-        //Read a $BookPartee            
+        //Read a $BookPartee     
         try {
-
           $partee_id = $BookPartee->partee_id;
+          
           //check Partee status
           $result = $apiPartee->getCheckStatus($partee_id);
 
