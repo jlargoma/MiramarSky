@@ -1,9 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models\Forfaits;
 
 use Illuminate\Database\Eloquent\Model;
-use App\ForfaitsOrderItem;
+use App\Models\ForfaitsOrderItem;
 
 class ForfaitsOrders extends Model
 {

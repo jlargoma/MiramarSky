@@ -29,6 +29,7 @@
     
   
     Route::get('/thanks-you', 'HomeController@thanksYou')->name('thanks-you');
+    Route::get('/thanks-you',function () {return view('frontend.stripe.forfait');})->name('thanks-you-forfait');
     Route::get('/paymeny-error', 'HomeController@paymenyError')->name('paymeny-error');
     Route::get('/form-demo', 'BookController@demoFormIntegration');
     Route::post('/api/check_rooms_avaliables', 'BookController@apiCheckBook')->name('api.proccess');
@@ -143,13 +144,15 @@
     Route::get('/paylands/payment', 'PaylandsController@paymentTest');
 
   
-
+    Route::get('/payments-forms-forfaits/{token}', 'ForfaitsItemController@paymentsForms')->name('front.payments.forfaits');
     Route::get('/api/forfaits/thansk-you/{key_token}', 'ForfaitsItemController@thansYouPayment')->name('payland.thanks.forfait');
     Route::get('/api/forfaits/error/{key_token}', 'ForfaitsItemController@errorPayment')->name('payland.error.forfait');
-    Route::get('/api/forfaits/process/{key_token}', 'ForfaitsItemController@processPayment')->name('payland.thanks.forfait');
+    Route::get('/api/forfaits/process/{key_token}', 'ForfaitsItemController@processPayment')->name('payland.process.forfait');
     Route::post('/api/forfaits/process/{key_token}', 'ForfaitsItemController@processPayment')->name('payland.process.forfait');
     Route::get('/api/forfaits/token/{token}', 'ForfaitsItemController@getUserAdmin');
+    Route::post('/api/forfaits/getPayments', 'ForfaitsItemController@getPayments');
     Route::post('/api/forfaits/createPayment', 'ForfaitsItemController@createPayment');
+    Route::post('/api/forfaits/createPaylandsUrl', 'ForfaitsItemController@createPaylandsUrl');
     Route::post('/api/forfaits/changeStatus', 'ForfaitsItemController@changeStatus');
     Route::get('/api/forfaits/class', 'ForfaitsItemController@api_getClasses');
     Route::get('/api/forfaits/categ', 'ForfaitsItemController@api_getCategories');

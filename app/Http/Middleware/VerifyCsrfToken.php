@@ -34,14 +34,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/admin/years/change/months',
         '/admin/settings/createUpdate',
         '/api/check_rooms_avaliables',
-        '/api/forfaits/saveCart',
-        '/api/forfaits/checkout',
-        '/api/forfaits/forfaits',
-        '/api/forfaits/cancelItem',
-        '/api/forfaits/sendConsult',
-        '/api/forfaits/changeStatus',
-        '/api/forfaits/createPayment',
-        '/payment/process/*',
+        '/api/forfaits/*',
         '/payment/process/*',
         '/ajax/send-partee-finish'
     ];

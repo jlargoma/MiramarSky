@@ -223,7 +223,7 @@ class AppController extends Controller
       $orderPayment  = $paylandClient->payment($response);
 
 
-      $BookOrders = new \App\ForfaitsOrderPayments();
+      $BookOrders = new \App\Models\Forfaits\ForfaitsOrderPayments();
       $BookOrders->book_id = $bookingID;
       $BookOrders->order_id = $orderID;
       $BookOrders->cli_email = $client_email;
