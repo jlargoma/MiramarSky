@@ -9,8 +9,9 @@ use App\Http\Requests;
 use Illuminate\Support\Facades\Mail;
 use App\ForfaitsOrders;
 use App\ForfaitsOrderItem;
+use Auth;
 
-class ForfaitsItemController extends Controller
+class ForfaitsItemController_1 extends Controller
 {
   public function index($class = null) {
     $all = ForfaitsItem::all();
@@ -122,7 +123,6 @@ class ForfaitsItemController extends Controller
     ));
     $response = curl_exec($curl);
     $err = curl_error($curl);
-//    var_dump($forfaitLst,$response); die;
     curl_close($curl);
     if ($err) {
       return json_encode(['success'=>false, 'data'=>['message'=>$err]]);
@@ -400,6 +400,7 @@ class ForfaitsItemController extends Controller
         if ($forfaitsObj->success){
           $forfaits = $forfaitsObj->data->forfaits;
           $totalForf = $forfaitsObj->data->totalPrice;
+          $extra = $forfaitsObj->data->manageFees;
           if (is_array($forfaits) && count($forfaits)<1){
             $error = "Forfaits vacíos";
           } else {
@@ -409,6 +410,7 @@ class ForfaitsItemController extends Controller
             $item->data         = json_encode($forfaits);
             $item->forfait_users= json_encode($users);
             $item->total        = $totalForf;
+            $item->extra        = $extra;
             $item->status       = 'new';
             $item->save();
           }
@@ -438,6 +440,7 @@ class ForfaitsItemController extends Controller
     $forfaits = [];
     $totalPrice = 0;
     $totalItems = 0;
+    $extraForfait = 0;
     if ($order){
       $totalPrice = $order->total;
       
@@ -448,6 +451,8 @@ class ForfaitsItemController extends Controller
           $totalItems += count($aux);
           $forfaits[$f->id] = $aux;
           $totalForf += $f->total;
+          $extraForfait += $f->extra;
+           
         }
       }
       $classesLst = ForfaitsOrderItem::where('order_id',$order->id)->WhereNull('cancel')->where('type','class')->get();
@@ -492,6 +497,7 @@ class ForfaitsItemController extends Controller
         'totalPrice'   => $totalPrice,
         'totalPayment'   => $totalPayment,
         'totalToPay'   => $totalToPay,
+        'extraForfait'   => $extraForfait,
     ];
 
     return $result;
@@ -503,6 +509,8 @@ class ForfaitsItemController extends Controller
       'user_name' => '',
       'user_email' => '',
       'user_phone' => '',
+      'ff_status' => '',
+      'ff_statusLst' => '',
       'apto' => '',
       'start' => '',
       'finish' => '',
@@ -513,7 +521,7 @@ class ForfaitsItemController extends Controller
     $clientID = desencriptID($clientID);
     if (is_numeric($bookingID)){
       $book = \App\Book::find($bookingID);
-      /** @todo: control de que ya no tenga un Forfaits */
+      /** @todo: control de que ya no tenga un Forfaits + administrador datos */
       if ($book){
         if ($book->customer_id == $clientID){
           $client = $book->customer()->first();
@@ -526,6 +534,7 @@ class ForfaitsItemController extends Controller
           $result['apto'] = ($room->luxury) ? $room->sizeRooms->name . " - LUJO" : $room->sizeRooms->name . " - ESTANDAR";
           $result['start'] = $book->start;
           $result['finish'] = $book->finish;
+          $result['ff_status'] = $book->ff_status;
       }
     }}
     if ($returnJson){
@@ -763,6 +772,98 @@ class ForfaitsItemController extends Controller
         return redirect()->back()->withErrors('Error al enviar petisión ForfaitExpress');
       }
     }
+  }
+  
+  public function changeStatus(Request $req) {
+    
+    $token= $req->input('token', null);
+    $key = $req->input('key', null);
+    $data = $req->input('data', null);
+    if($this->checkUserAdmin($token)){
+      
+      if ($key){
+        $aKey = explode('-',$key);
+        $bookingKey = isset($aKey[0]) ? ($aKey[0]) : null;
+        $clientKey = isset($aKey[1]) ? ($aKey[1]) : null;
+        $bookingID = desencriptID($bookingKey);
+        $clientID = desencriptID($clientKey);
+        $book = \App\Book::find($bookingID);
+        
+        if ($book && $book->customer_id == $clientID){
+          $book->ff_status = intval($data);
+          $book->save();
+          return response()->json(['status'=>'ok']);
+        }
+     }
+     
+    }
+    
+    return die('404');
+  }
+  public function getUserAdmin($token) {
+    
+    if($this->checkUserAdmin($token)){
+      return response('1');
+    }
+      return response('0');
+  }
+  private function checkUserAdmin($token) {
+    
+    $token = desencriptID($token);
+    if (is_numeric($token)){
+      $ip = explode('.',getUserIpAddr());
+      $aux = 1;
+      if ($ip[0]>$ip[1]){
+        $aux =  $ip[0]-$ip[1];
+      } else {
+        $aux =  $ip[1]-$ip[0];
+      }
+      
+      if ($ip[2]>$ip[3]){
+        $aux .=  $ip[2]-$ip[3];
+      } else {
+        $aux .=  $ip[3]-$ip[2];
+      }
+
+      $uID = $token/$aux;
+      $user = \App\User::find($uID);
+      if ($user){
+        return true;
+      }
+    }
+    return FALSE;
+  }
+  public function getOpenData(Request $req) {
+
+    $return = [
+      'link' => env('FF_PAGE'),
+      'admin' => null
+    ];
+    $bookID = $req->input('id');
+    $book = \App\Book::find($bookID);
+    if ($book){
+      $customer = $book->customer_id;
+      $return['link'] .=  encriptID($bookID).'-'.encriptID($customer);
+      // create the Admin token
+      $ip = explode('.',getUserIpAddr());
+      $aux = 1;
+      if ($ip[0]>$ip[1]){
+        $aux =  $ip[0]-$ip[1];
+      } else {
+        $aux =  $ip[1]-$ip[0];
+      }
+
+      if ($ip[2]>$ip[3]){
+        $aux .=  $ip[2]-$ip[3];
+      } else {
+        $aux .=  $ip[3]-$ip[2];
+      }
+
+      $token = $aux*Auth::user()->id;
+      $return['admin'] = encriptID($token);
+    }
+    return $return;
+    
   }
 
 }

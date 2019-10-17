@@ -158,7 +158,8 @@ $mobile = new Mobile();
           </div>
 
           <div class="col-md-2 col-xs-3 icon-lst hiddenOnlyRiad">
-            <a href="/admin/reservas/ff_status_popup/<?php echo $book->id; ?>" onclick="window.open(this.href, 'Reserva - FF', 'left=400,top=20,width=1200,height=900,toolbar=0,resizable=0'); return false;" >
+            
+              <a data-booking="<?php echo $book->id; ?>" class="openFF" title="Ir a Forfaits" >
               <?php
               $ff_status = $book->get_ff_status();
               if ($ff_status['icon']) {
@@ -166,6 +167,7 @@ $mobile = new Mobile();
               }
               ?>
             </a>
+
           </div>
           <div class="col-md-2 col-xs-3 icon-lst partee-icon" style="position:relative">
             <?php
@@ -1439,6 +1441,10 @@ $mobile = new Mobile();
             </div>
         </div>
   
+             
+            <form method="post" id="formFF" action="" target="_blank">
+              <input type="hidden" name="admin_ff" id="admin_ff">
+            </form>
   @endsection
 
   @section('scripts')
@@ -1499,8 +1505,18 @@ $mobile = new Mobile();
 //                  }
 
       });
+      $('.openFF').on('click', function (event) {
+        event.preventDefault();
+        var id = $(this).data('booking');
+        $.post('/admin/forfaits/open', { _token: "{{ csrf_token() }}",id:id }, function(data) {
+          console.log(data);
+          var formFF = $('#formFF');
+          formFF.attr('action', data.link);
+          formFF.find('#admin_ff').val(data.admin);
+          formFF.submit();
 
-
+        });
+      });
 
 
     });

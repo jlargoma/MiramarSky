@@ -198,6 +198,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
 
   Route::get('/forfaits/deleteRequest/{id}', 'FortfaitsController@deleteRequest');
   Route::get('/reservas/ff_status_popup/{id}', 'BookController@getBookFFData');
+  Route::post('/forfaits/open', 'ForfaitsItemController@getOpenData');
   Route::get('/reservas/ff_change_status_popup/{id}/{status}', 'BookController@updateBookFFStatus');
   Route::get('/book-logs/{id}', 'BookController@printBookLogs');
   Route::post('/response-email', 'BookController@sendEmailResponse');

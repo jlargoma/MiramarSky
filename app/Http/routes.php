@@ -13,13 +13,8 @@
 
     Route::auth();
     Route::get('/', 'HomeController@index');
-
-    Route::get('/lalala', function () {
-      $a = encriptID(99499999858);
-      echo $a.'<br>';
-      echo desencriptID($a);
-    });
-    
+   
+  
     Route::get('/partee-checkHuespedes', function () {
         $partee = new \App\Services\ParteeService();
         $partee->conect();
@@ -149,6 +144,13 @@
 
   
 
+    Route::get('/api/forfaits/thansk-you/{key_token}', 'ForfaitsItemController@thansYouPayment')->name('payland.thanks.forfait');
+    Route::get('/api/forfaits/error/{key_token}', 'ForfaitsItemController@errorPayment')->name('payland.error.forfait');
+    Route::get('/api/forfaits/process/{key_token}', 'ForfaitsItemController@processPayment')->name('payland.thanks.forfait');
+    Route::post('/api/forfaits/process/{key_token}', 'ForfaitsItemController@processPayment')->name('payland.process.forfait');
+    Route::get('/api/forfaits/token/{token}', 'ForfaitsItemController@getUserAdmin');
+    Route::post('/api/forfaits/createPayment', 'ForfaitsItemController@createPayment');
+    Route::post('/api/forfaits/changeStatus', 'ForfaitsItemController@changeStatus');
     Route::get('/api/forfaits/class', 'ForfaitsItemController@api_getClasses');
     Route::get('/api/forfaits/categ', 'ForfaitsItemController@api_getCategories');
     Route::get('/api/forfaits/items/{id}', 'ForfaitsItemController@api_items');

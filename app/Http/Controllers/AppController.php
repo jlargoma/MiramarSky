@@ -192,4 +192,60 @@ class AppController extends Controller
 
     }
 
+     /**
+     * Create link to new Payland
+     * 
+     * @param type $bookingID
+     * @param type $clientID
+     * @param type $client_email
+     * @param type $description
+     * @param type $amount
+     * @return type
+     */
+    public function generateOrderPaymentForfaits($bookingID,$orderID,$client_email,$description,$amount){
+          
+      $key_token = md5($bookingID.'-'.time().'-'.$orderID);
+
+      $amount = ($amount * 100); // esto hay que revisar
+      $response['_token']          = null;
+      $response['amount']          = $amount;
+      $response['customer_ext_id'] = $client_email;
+      $response['operative']       = "AUTHORIZATION";
+      $response['secure']          = false;
+      $response['signature']       = env('PAYLAND_SIGNATURE');
+      $response['service']         = env('PAYLAND_SERVICE');
+      $response['description']     = $description;
+      $response['url_ok']          = route('payland.thanks.forfait',$key_token);
+      $response['url_ko']          = route('payland.error.forfait',$key_token);
+      $response['url_post']        = route('payland.process.forfait',$key_token);
+      //dd($this->getPaylandApiClient());
+      $paylandClient = $this->getPaylandApiClient();
+      $orderPayment  = $paylandClient->payment($response);
+
+
+      $BookOrders = new \App\ForfaitsOrderPayments();
+      $BookOrders->book_id = $bookingID;
+      $BookOrders->order_id = $orderID;
+      $BookOrders->cli_email = $client_email;
+      $BookOrders->subject = $description;
+      $BookOrders->key_token = $key_token;
+      $BookOrders->order_uuid = $orderPayment->order->uuid;
+      $BookOrders->order_created = $orderPayment->order->created;
+      $BookOrders->amount = $orderPayment->order->amount;
+      $BookOrders->refunded = $orderPayment->order->refunded;
+      $BookOrders->currency = $orderPayment->order->currency;
+      $BookOrders->additional = $orderPayment->order->additional;
+      $BookOrders->service = $orderPayment->order->service;
+      $BookOrders->status = $orderPayment->order->status;
+      $BookOrders->token = $orderPayment->order->token;
+      $BookOrders->transactions = json_encode($orderPayment->order->transactions);
+      $BookOrders->client_uuid = $orderPayment->client->uuid;
+      $bo_id = $BookOrders->save();
+
+
+      $urlToRedirect = $paylandClient->processPayment($orderPayment->order->token);
+      return $urlToRedirect;
+
+    }
+
 }
