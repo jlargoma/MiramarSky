@@ -9,6 +9,7 @@ use App\Repositories\CachedRepository;
 use App\Models\Forfaits\ForfaitsOrderPayments;
 use App\Models\Forfaits\ForfaitsOrderPaymentLinks;
 use App\Models\Forfaits\ForfaitsOrders;
+use App\Models\Forfaits\ForfaitsOrderItem;
 use Illuminate\Http\Request;
 
 trait ForfaitsPaymentsTraits {
@@ -202,5 +203,79 @@ trait ForfaitsPaymentsTraits {
       }
     
     return die('404');
+  }
+  
+  function listOrders(){
+    
+    $year = $this->getActiveYear();
+    $startYear = new Carbon($year->start_date);
+    $endYear = new Carbon($year->end_date);
+    
+    $allOrders = ForfaitsOrders::where('book_id','>',0)->get();
+    $lstOrders = [];
+   
+    $totals = [
+        'totalPrice' =>0,
+        'forfaits'   => 0,
+        'class'      => 0,
+        'material'   => 0,
+        'totalPayment'=> 0,
+        'totalToPay'  =>0,
+  ];
+            
+    if ($allOrders){
+      foreach ($allOrders as $order){
+        if ($order->book_id>0){
+          $book = Book::find($order->book_id);
+          if ($book){
+            $totalPrice = $order->total;
+            $forfaits = ForfaitsOrderItem::where('order_id', $order->id)->where('type', 'forfaits')->WhereNull('cancel')->sum('total');
+            $class = ForfaitsOrderItem::where('order_id', $order->id)->where('type', 'class')->WhereNull('cancel')->sum('total');
+            $material = ForfaitsOrderItem::where('order_id', $order->id)->where('type', 'material')->WhereNull('cancel')->sum('total');
+            $totalPayment =  ForfaitsOrderPayments::where('order_id', $order->id)->where('paid',1)->sum('amount');
+            
+            if ($totalPayment>0){
+              $totalPayment = $totalPayment/100;
+            }
+            $totalToPay = $totalPrice - $totalPayment;
+    
+            $lstOrders[] = [
+                'book'       => $book,
+                'totalPrice' =>$totalPrice,
+                'forfaits'   => $forfaits,
+                'class'      => $class,
+                'material'   => $material,
+                'totalPayment'=> $totalPayment,
+                'totalToPay'  =>$totalToPay,
+            ];
+            
+            
+            $totals['totalPrice'] = $totals['totalPrice']+$totalPrice;
+            $totals['forfaits'] = $totals['forfaits']+$forfaits;
+            $totals['class'] = $totals['class']+$class;
+            $totals['material'] = $totals['material']+$material;
+            $totals['totalPayment'] = $totals['totalPayment']+$totalPayment;
+            $totals['totalToPay'] = $totals['totalToPay']+$totalToPay;
+          }
+        }
+      }
+      $rooms = \App\Rooms::all();
+      
+      return view('backend.forfaits.orders', ['orders' => $lstOrders,'year'=>$year,'rooms'=>$rooms,'totals'=>$totals]);
+    }
+    
+    
+    
+   
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    dd($allOrders);
   }
 }

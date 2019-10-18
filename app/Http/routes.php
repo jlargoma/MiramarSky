@@ -26,6 +26,9 @@
     Route::get('/no-allowed', function () {
         return view('no-allowed');
     });
+    Route::get('403', function () {
+        return view('no-allowed');
+    });
     
   
     Route::get('/thanks-you', 'HomeController@thanksYou')->name('thanks-you');

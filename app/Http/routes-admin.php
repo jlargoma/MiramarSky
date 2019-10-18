@@ -1,14 +1,26 @@
 <?php
 
-Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin'], 'prefix' => 'admin',], function () {
+Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin']], function () {
   
   //LIMPIEZA
-  Route::get('/limpieza', 'LimpiezaController@index');
-  Route::get('/limpiezas/{year?}','LiquidacionController@limpiezas');
-  Route::post('/limpiezasLst/','LiquidacionController@get_limpiezas');
-  Route::post('/limpiezasUpd/','LiquidacionController@upd_limpiezas');
-  Route::post('/limpiezas/pdf','LiquidacionController@export_pdf_limpiezas');
-  Route::get('/reservas/api/getTableData', 'BookController@getTableData');
+  Route::get('admin/limpieza', 'LimpiezaController@index');
+  Route::get('admin/limpiezas/{year?}','LiquidacionController@limpiezas');
+  Route::post('admin/limpiezasLst/','LiquidacionController@get_limpiezas');
+  Route::post('admin/limpiezasUpd/','LiquidacionController@upd_limpiezas');
+  Route::post('admin/limpiezas/pdf','LiquidacionController@export_pdf_limpiezas');
+  Route::get('admin/reservas/api/getTableData', 'BookController@getTableData');
+  
+  //PARTEE
+  Route::get('admin/sendPartee/{id}', 'BookController@sendPartee');
+  Route::get('ajax/partee-checkHuespedes/{id}', 'BookController@seeParteeHuespedes')->name('partee.checkHuespedes');
+  Route::get('ajax/partee-syncCheckInStatus', 'BookController@syncCheckInStatus')->name('partee.sinc');
+  Route::get('admin/get-partee', 'BookController@getParteeLst');
+  Route::get('/get-partee-msg', 'BookController@getParteeMsg');
+  Route::post('/ajax/send-partee-finish', 'BookController@finishParteeCheckIn');
+  Route::post('/ajax/send-partee-sms', 'BookController@finishParteeSMS');
+  Route::post('/ajax/send-partee-mail', 'BookController@finishParteeMail');
+  Route::get('/ajax/showSendRemember/{bookID}', 'BookController@showSendRemember');
+  
 });
 Route::group(['middleware' => ['auth','role:admin|propietario'], 'prefix' => 'admin',], function () {
   //Facturas

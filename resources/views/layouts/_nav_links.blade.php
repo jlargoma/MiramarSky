@@ -57,8 +57,8 @@
                             <a href="#" class="detailed">Super</a>
                         </li>-->
  @if (env('APP_APPLICATION') != "riad")
-    <li class="{{ Request::path() == 'admin/forfaits' ? 'active' : '' }}">
-      <a href="{{ url('admin/forfaits') }}" class="detailed">Forfaits</a>
+    <li class="{{ Request::path() == 'admin/forfaits/orders' ? 'active' : '' }}">
+      <a href="{{ url('admin/forfaits/orders') }}" class="detailed">Forfaits</a>
     </li>
  @endif
     <li class="{{ Request::path() == 'admin/settings' ? 'active' : '' }}">

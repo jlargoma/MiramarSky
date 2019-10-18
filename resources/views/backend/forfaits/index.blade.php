@@ -15,11 +15,28 @@ $mobile = new Mobile();
 @section('content')
 
 <div class="container-fluid padding-25 sm-padding-10 table-responsive">
+  
   <div class="row">
     <div class="col-md-12 text-center">
       <h2>LISTADO DE <span class="font-w800"> ITEMS</span></h2>
     </div>
+    <div class="col-md-12 text-center">
+      <div class="btn-contabilidad">
+        <?php if (Request::path() == 'admin/forfaits/orders'): ?>
+          <button class="btn btn-md text-white active"  disabled>Control FF</button>
+        <?php else: ?>
+          <a class="text-white btn btn-md btn-primary" href="{{url('/admin/forfaits/orders')}}">Control FF</a>
+        <?php endif ?>	
+      </div>
 
+      <div class="btn-contabilidad">
+        <?php if (Request::path() == 'admin/forfaits'): ?>
+          <button class="btn btn-md text-white active"  disabled>Items FF</button>
+        <?php else: ?>
+          <a class="text-white btn btn-md btn-primary" href="{{url('/admin/forfaits')}}">Items FF</a>
+        <?php endif ?>	
+      </div>
+    </div>
   </div>
   @if($errors->any())
   <p class="alert alert-danger">{{$errors->first()}}</p>

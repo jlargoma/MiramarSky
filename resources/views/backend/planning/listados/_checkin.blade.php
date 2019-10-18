@@ -177,13 +177,13 @@
                             </td>
                             
                             <td class="text-center hiddenOnlyRiad">
-                                <a href="/admin/reservas/ff_status_popup/<?php echo $book->id; ?>" onclick="window.open(this.href, 'Reserva - FF','left=400,top=20,width=1200,height=900,toolbar=0,resizable=0'); return false;" >
-                                    <?php
-                                    $ff_status = $book->get_ff_status();
-                                    if ($ff_status['icon']){
-                                          echo '<img src="'.$ff_status['icon'].'" style="max-width:40px;" alt="'.$ff_status['name'].'"/>';
-                                    }
-                                    ?>
+                              <a data-booking="<?php echo $book->id; ?>" class="openFF" title="Ir a Forfaits" >
+                                <?php
+                                $ff_status = $book->get_ff_status();
+                                if ($ff_status['icon']) {
+                                  echo '<img src="' . $ff_status['icon'] . '" style="max-width:30px;" alt="' . $ff_status['name'] . '"/>';
+                                }
+                                ?>
                                 </a>
                             </td>
                            
@@ -390,27 +390,14 @@
                     </td>
                     
                     <td class="text-center hiddenOnlyRiad">
-                        <a href="/admin/reservas/ff_status_popup/<?php echo $book->id; ?>" onclick="window.open(this.href, 'Reserva - FF','left=400,top=20,width=1200,height=900,toolbar=0,resizable=0'); return false;" >
-                            <?php
-                          switch ($book->ff_status){
-                            case 0:
-                               echo '<img src="'.asset('/img/miramarski/ski_icon_status_transparent.png').'" style="max-width:30px;"/>';
-                              break;
-                            case 1:
-                              echo '<img src="'.asset('/img/miramarski/ski_icon_status_grey.png').'" style="max-width:30px;"/>';
-                              break;
-                            case 2:
-                              echo '<img src="'.asset('/img/miramarski/ski_icon_status_red.png').'" style="max-width:30px;"/>';
-                              break;
-                            case 3:
-                              echo '<img src="'.asset('/img/miramarski/ski_icon_status_green.png').'" style="max-width:30px;"/>';
-                              break;
-                           case 4:
-                              echo '<img src="'.asset('/img/miramarski/ski_icon_status_orange.png').'" style="max-width:30px;"/>';
-                              break;
-                          }
-                            ?>
-                        </a>
+                      <a data-booking="<?php echo $book->id; ?>" class="openFF" title="Ir a Forfaits" >
+                     <?php
+                     $ff_status = $book->get_ff_status();
+                     if ($ff_status['icon']) {
+                       echo '<img src="' . $ff_status['icon'] . '" style="max-width:30px;" alt="' . $ff_status['name'] . '"/>';
+                     }
+                     ?>
+                     </a>                 
                     </td>
                     
                     <td class ="text-center" >

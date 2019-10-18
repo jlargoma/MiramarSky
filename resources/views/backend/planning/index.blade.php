@@ -509,6 +509,9 @@ setlocale(LC_TIME, "es_ES");
               </div>
             </div>
         </div>
+          <form method="post" id="formFF" action="" target="_blank">
+              <input type="hidden" name="admin_ff" id="admin_ff">
+            </form>
 @endsection
 
 @section('scripts')
@@ -664,7 +667,19 @@ setlocale(LC_TIME, "es_ES");
 
             });
           });
-
+ 
+      $('body').on('click','.openFF', function (event) {
+        
+        event.preventDefault();
+        var id = $(this).data('booking');
+        $.post('/admin/forfaits/open', { _token: "{{ csrf_token() }}",id:id }, function(data) {
+          console.log(data);
+          var formFF = $('#formFF');
+          formFF.attr('action', data.link);
+          formFF.find('#admin_ff').val(data.admin);
+          formFF.submit();
+        });
+      });
 
       });
 

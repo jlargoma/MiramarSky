@@ -22,7 +22,7 @@ class RoleMiddleware
 
         if (!Auth::guest()) {
             if ('admin' !== Auth::user()->role) {
-                return redirect()->guest('/admin/reservas');
+                return redirect('403');//->guest('/admin/reservas');
             }
         }else{
             return redirect()->guest('login');

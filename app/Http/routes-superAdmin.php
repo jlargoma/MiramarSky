@@ -13,9 +13,6 @@ Route::group(['middleware' => 'authAdmin'], function () {
       $partee->getParteePDF($id);
       dd($partee);
   });
-  Route::get('admin/sendPartee/{id}', 'BookController@sendPartee');
-  Route::get('ajax/partee-checkHuespedes/{id}', 'BookController@seeParteeHuespedes')->name('partee.checkHuespedes');
-  Route::get('ajax/partee-syncCheckInStatus', 'BookController@syncCheckInStatus')->name('partee.sinc');
     
   Route::get('admin/cambiarCostes', 'BookController@changeCostes');
   // Usuarios
@@ -71,17 +68,11 @@ Route::group(['middleware' => 'authAdmin'], function () {
 
   // AUX PROPIETARIOS
   Route::get('admin/propietarios/dashboard/{name?}/{year?}', 'OwnedController@index');
-  Route::post('/ajax/forfaits/deleteRequestPopup', 'FortfaitsController@deleteRequestPopup');
+//  Route::post('/ajax/forfaits/deleteRequestPopup', 'FortfaitsController@deleteRequestPopup');
   Route::post('/ajax/booking/getBookingAgencyDetails', 'LiquidacionController@getBookingAgencyDetails');
   Route::get('/ajax/booking/getBookingAgencyDetails', 'LiquidacionController@getBookingAgencyDetails');
   
-  //PARTEE
-  Route::get('admin/get-partee', 'BookController@getParteeLst');
-  Route::get('/get-partee-msg', 'BookController@getParteeMsg');
-  Route::post('/ajax/send-partee-finish', 'BookController@finishParteeCheckIn');
-  Route::post('/ajax/send-partee-sms', 'BookController@finishParteeSMS');
-  Route::post('/ajax/send-partee-mail', 'BookController@finishParteeMail');
-  Route::get('/ajax/showSendRemember/{bookID}', 'BookController@showSendRemember');
+
   
   
   /* ICalendar links */
@@ -104,13 +95,15 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin/aptos',], function
  * FORFAITS
  */
 Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin/forfaits',], function () {
-  Route::get('/{class?}', 'ForfaitsItemController@index');
+  Route::get('/orders', 'ForfaitsItemController@listOrders');
+  Route::post('/open', 'ForfaitsItemController@getOpenData');
   Route::get('/edit/{id}', 'ForfaitsItemController@edit');
   Route::post('/upd', 'ForfaitsItemController@update');
   Route::get('/createItems', 'ForfaitsItemController@createItems');
   Route::get('/getBookItems/{bookingID}', 'ForfaitsItemController@getBookingFF');
   Route::post('/loadComment', 'ForfaitsItemController@loadComment');
   Route::post('/sendBooking', 'ForfaitsItemController@sendBooking');
+  Route::get('/{class?}', 'ForfaitsItemController@index');
 });
 
 /**
@@ -196,10 +189,10 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::get('/get_mails', 'ChatEmailsController@index');
   Route::get('/galleries', 'RoomsController@galleries');
 
-  Route::get('/forfaits/deleteRequest/{id}', 'FortfaitsController@deleteRequest');
-  Route::get('/reservas/ff_status_popup/{id}', 'BookController@getBookFFData');
-  Route::post('/forfaits/open', 'ForfaitsItemController@getOpenData');
-  Route::get('/reservas/ff_change_status_popup/{id}/{status}', 'BookController@updateBookFFStatus');
+//  Route::get('/forfaits/deleteRequest/{id}', 'FortfaitsController@deleteRequest');
+//  Route::get('/reservas/ff_status_popup/{id}', 'BookController@getBookFFData');
+
+//  Route::get('/reservas/ff_change_status_popup/{id}/{status}', 'BookController@updateBookFFStatus');
   Route::get('/book-logs/{id}', 'BookController@printBookLogs');
   Route::post('/response-email', 'BookController@sendEmailResponse');
   Route::get('/book-logs/get/{id}', 'BookController@getBookLog');
