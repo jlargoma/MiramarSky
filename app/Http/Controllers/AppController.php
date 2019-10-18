@@ -202,7 +202,7 @@ class AppController extends Controller
      * @param type $amount
      * @return type
      */
-    public function generateOrderPaymentForfaits($bookingID,$orderID,$client_email,$description,$amount){
+    public function generateOrderPaymentForfaits($bookingID,$orderID,$client_email,$description,$amount,$last_item_id){
           
       $key_token = md5($bookingID.'-'.time().'-'.$orderID);
 
@@ -240,6 +240,7 @@ class AppController extends Controller
       $BookOrders->token = $orderPayment->order->token;
       $BookOrders->transactions = json_encode($orderPayment->order->transactions);
       $BookOrders->client_uuid = $orderPayment->client->uuid;
+      $BookOrders->last_item_id = $last_item_id;
       $bo_id = $BookOrders->save();
 
 

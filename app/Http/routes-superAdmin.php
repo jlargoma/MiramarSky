@@ -96,6 +96,7 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin/aptos',], function
  */
 Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin/forfaits',], function () {
   Route::get('/orders', 'ForfaitsItemController@listOrders');
+  Route::get('/balance', 'ForfaitsItemController@getBalance');
   Route::post('/open', 'ForfaitsItemController@getOpenData');
   Route::get('/edit/{id}', 'ForfaitsItemController@edit');
   Route::post('/upd', 'ForfaitsItemController@update');

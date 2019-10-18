@@ -10,6 +10,9 @@ $mobile = new Mobile();
 @section('title') Liquidacion @endsection
 
 @section('externalScripts')
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
 <style>
   .table thead tr.text-white th{
     color: #fff !important;
@@ -43,6 +46,82 @@ $mobile = new Mobile();
     </div>
   </div>
 
+  
+  
+  
+<div class="clearfix"></div>
+  <div class="row">
+    <div class="col-md-3 col-xs-8">
+      <table class="table table-hover table-striped table-ingresos" style="background-color: #92B6E2">
+        <thead class="bg-complete" style="background: #d3e8f7">
+        <th colspan="2" class="text-black text-center"> Ingresos Temporada</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="" style="padding: 5px 8px!important; background-color: #d3e8f7!important;"><b>VENTAS TEMPORADA</b></td>
+            <td class=" text-center" style="padding: 5px 8px!important; background-color: #d3e8f7!important;">
+              <b><?php echo number_format(round($totals['totalPrice']), 0, ',', '.') ?> €</b>
+            </td>
+          </tr>
+          <tr style="background-color: #38C8A7;">
+            <td class="text-white" style="padding: 5px 8px!important;background-color: #38C8A7!important;">
+              Cobrado Temporada
+            </td>
+            <td class="text-white text-center" style="padding: 5px 8px!important;background-color: #38C8A7!important;">
+              <?php echo number_format(round($totals['totalPayment']), 0, ',', '.') ?> € 
+            </td>
+          </tr>
+          <tr style="background-color: #8e5ea2;">
+            <td class="text-white" style="padding: 5px 8px!important;background-color: #8e5ea2!important;">Pendiente Cobro</td>
+            <td class="text-white text-center" style="padding: 5px 8px!important;background-color: #8e5ea2!important;">
+              <?php echo number_format(round($totals['totalToPay']), 0, ',', '.') ?> €
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-2 col-xs-4">
+      <canvas id="pieIng" style="width: 100%; height: 250px;"></canvas>
+    </div>
+    <div class="col-md-4 col-xs-7">
+       <div class="row bg-white push-30">
+        <div class="col-md-6 bordered text-center">
+          <h4 class="hint-text">Cobrado Temporada</h4>
+          <h3 ><?php echo number_format(round($totals['totalPayment']), 0, ',', '.') ?> €</h3>
+        </div>
+        <div class="col-md-6 bordered text-center">
+          <h4 class="hint-text">Vendido Temporada</h4>
+            <h3 ><?php echo number_format(round($totals['totalPrice']), 0, ',', '.') ?> €</h3>
+        </div>
+        <div class="col-md-6 bordered text-center">
+          <h4 class="hint-text">Total de Ordenes</h4>
+          <div class="p-l-20">
+            <h3 ><?php echo count($orders); ?></h3>
+          </div>
+        </div>
+        <div class="col-md-6 bordered text-center">
+          <h4 class="hint-text">Promedio por Orden</h4>
+            <h3 >
+              <?php 
+              $promedio = 0;
+              if ($orders){
+                $promedio = round($totals['totalPrice'])/count($orders);
+              }
+              echo number_format(round($promedio), 0, ',', '.')
+              ?>
+              €</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-xs-5 text-center">
+      <div class="bordered bg-white p-8 ">
+        <h4 class="hint-text">Wallet de Forfait Express</h4>
+        <h3 class="<?php if($ff_mount<100) echo 'text-danger';?>"><?php echo number_format($ff_mount, 0, ',', '.')?>€</h3>
+      </div>
+    </div>
+</div>
+  
+  
   <div class="clearfix"></div>
   <div class="row">
     <div class="col-md-9 col-xs-12 content-table-rooms">
@@ -71,6 +150,7 @@ $mobile = new Mobile();
             <th class="th-bookings th-6">
               PENDIENTE<br/><?php echo number_format($totals['totalToPay'], 0, ',', '.') ?> €</th>
             <th class="th-bookings th-2">FF</th>
+            <th class="th-bookings th-2" title="Reservas hechas en Forfait Express">FFExpress</th>
           </tr>
           </tr>
         </thead>
@@ -158,13 +238,42 @@ $mobile = new Mobile();
               }
               ?>
               </a>
-            </td>                
+            </td>  
+            <td class="text-center">
+                <?php echo $order['ff_sent'].'/'.$order['ff_item_total']; ?>
+            </td>
           </tr>
           <?php
           endforeach;
           ?>
         </tbody>
       </table>
+    </div>
+    <div class="col-md-3">
+       <canvas id="barChartMounth" style="width: 100%; height: 250px;"></canvas>
+       <div class="box-errors">
+         <h3 class="text-danger">Errores Forfaits</h3>
+        <?php 
+        if($errors):
+          foreach ($errors as $er): 
+        ?>
+         <div class="item-error row">
+           <div class="col-md-8">
+              <?php echo $er->detail; ?><br/>
+              <small><?php echo date('d M H:i', strtotime($er->created_at)); ?></small>
+           </div>
+           <div class="col-md-4">
+             <a data-booking="<?php echo $er->book_id; ?>" class="openFF text-danger" title="Ir a Forfaits" >
+              Ver Forfait
+              </a>
+           </div>
+           
+         </div>
+        <?php 
+          endforeach; 
+        endif;
+        ?>
+       </div>
     </div>
   </div>
 </div>
@@ -180,7 +289,6 @@ $mobile = new Mobile();
         event.preventDefault();
         var id = $(this).data('booking');
         $.post('/admin/forfaits/open', { _token: "{{ csrf_token() }}",id:id }, function(data) {
-          console.log(data);
           var formFF = $('#formFF');
           formFF.attr('action', data.link);
           formFF.find('#admin_ff').val(data.admin);
@@ -188,6 +296,51 @@ $mobile = new Mobile();
 
         });
       });
+      
+      new Chart(document.getElementById("pieIng"), {
+        type: 'pie',
+        data: {
+          labels: ["Cobrado", "Pendiente", ],
+          datasets: [{
+              label: "Population (millions)",
+              backgroundColor: ["#38C8A7", "#8e5ea2"],
+              data: [
+                //Comprobamos si existen cobros
+              <?php echo round($totals['totalPayment']) ?>,
+              <?php echo round($totals['totalToPay']) ?>,
+              ]
+            }]
+        },
+        options: {
+          title: {
+            display: false,
+            text: 'Ingresos de la temporada'
+          }
+        }
+      });
+      
+      new Chart(document.getElementById("barChartMounth"), {
+        type: 'line',
+                data: {
+                labels: [{!!$months_label!!}],
+                        datasets: [
+                        {
+                        data: [{!!$monthValue!!}],
+                                label: 'Pagadas',
+                                borderColor: "rgba(104, 255, 0, 1)",
+                                fill: false
+                        },
+                     
+                        ]
+                },
+                options: {
+                title: {
+                display: false,
+                        text: ''
+                }
+                }
+        });
+  
     });
   </script>
 @endsection

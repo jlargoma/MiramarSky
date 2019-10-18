@@ -11,6 +11,7 @@ use App\Models\Forfaits\ForfaitsOrderPaymentLinks;
 use App\Models\Forfaits\ForfaitsOrders;
 use App\Models\Forfaits\ForfaitsOrderItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 trait ForfaitsPaymentsTraits {
 
@@ -39,7 +40,8 @@ trait ForfaitsPaymentsTraits {
           }
           $orderID = $order->id;
           $description = 'Pago por orden de Forfaits';
-          $urlPayland = $this->generateOrderPaymentForfaits($bookingID, $orderID, $book->customer->email, $description, $amount);
+          $last_item_id = ForfaitsOrderItem::getLastItem($orderID);
+          $urlPayland = $this->generateOrderPaymentForfaits($bookingID, $orderID, $book->customer->email, $description, $amount,$last_item_id);
           return response()->json(['status' => 'ok', 'url' => $urlPayland]);
         }
       }
@@ -72,6 +74,7 @@ trait ForfaitsPaymentsTraits {
           $orderID = $order->id;
           $description = 'Pago por orden de Forfaits';
           $token = md5('linktopay'.$bookingID.'-'.time().'-'.$orderID);
+          $last_item_id = ForfaitsOrderItem::getLastItem($orderID);
           $BookOrders = new ForfaitsOrderPaymentLinks();
 
           $BookOrders->book_id = $bookingID;
@@ -81,6 +84,7 @@ trait ForfaitsPaymentsTraits {
           $BookOrders->amount = $amount;
           $BookOrders->status = 'new';
           $BookOrders->token = $token;
+          $BookOrders->last_item_id = $last_item_id;
           $BookOrders->save();
           
           $urlPay = route('front.payments.forfaits',$token);
@@ -121,6 +125,10 @@ trait ForfaitsPaymentsTraits {
       $bookOrder->save();
       $amount = ($bookOrder->amount / 100) . ' €';
       \App\BookLogs::saveLogStatus($bookOrder->book_id, null, $bookOrder->cli_email, "Pago de Forfaits de $amount ($key_token)");
+      $order = ForfaitsOrders::find($bookOrder->order_id);
+      if ($order){
+        $this->sendBookingOrder($order,$bookOrder->last_item_id);
+      }
     }
     return redirect()->route('thanks-you-forfait');
   }
@@ -148,7 +156,8 @@ trait ForfaitsPaymentsTraits {
                 $payment->order_id,
                 $payment->cli_email,
                 $payment->subject,
-                $payment->amount
+                $payment->amount,
+                $payment->last_item_id
                 );
 
         if (env('APP_APPLICATION') == "riad"){
@@ -221,11 +230,12 @@ trait ForfaitsPaymentsTraits {
         'material'   => 0,
         'totalPayment'=> 0,
         'totalToPay'  =>0,
-  ];
+      ];
             
     if ($allOrders){
       foreach ($allOrders as $order){
         if ($order->book_id>0){
+          
           $book = Book::find($order->book_id);
           if ($book){
             $totalPrice = $order->total;
@@ -239,6 +249,15 @@ trait ForfaitsPaymentsTraits {
             }
             $totalToPay = $totalPrice - $totalPayment;
     
+            
+            
+            $ff_sent = ForfaitsOrderItem::where('order_id', $order->id)
+                    ->where('type', 'forfaits')
+                    ->where('ffexpr_status', 1)
+                    ->WhereNull('cancel')->count();
+            $ff_item_total = ForfaitsOrderItem::where('order_id', $order->id)
+                    ->where('type', 'forfaits')
+                    ->WhereNull('cancel')->count();
             $lstOrders[] = [
                 'book'       => $book,
                 'totalPrice' =>$totalPrice,
@@ -247,6 +266,8 @@ trait ForfaitsPaymentsTraits {
                 'material'   => $material,
                 'totalPayment'=> $totalPayment,
                 'totalToPay'  =>$totalToPay,
+                'ff_sent'     => $ff_sent,
+                'ff_item_total'=> $ff_item_total,
             ];
             
             
@@ -261,21 +282,102 @@ trait ForfaitsPaymentsTraits {
       }
       $rooms = \App\Rooms::all();
       
-      return view('backend.forfaits.orders', ['orders' => $lstOrders,'year'=>$year,'rooms'=>$rooms,'totals'=>$totals]);
+      $obj1  = $this->getMonthlyData($year);
+      
+      $balance = $this->getBalance();
+      $ff_mount = 0;
+      if (isset($balance->success) && $balance->success ){
+        $ff_mount = $balance->data->total;
+      }
+      
+      $errors = DB::table('forfaits_errors')->whereNull('watched')->get();
+         
+      return view('backend.forfaits.orders', [
+          'orders' => $lstOrders,
+          'ff_mount' => $ff_mount,
+          'year'=>$year,
+          'rooms'=>$rooms,
+          'errors'=>$errors,
+          'totals'=>$totals,
+          'year'=>$year,
+          'selected'=>$obj1['selected'],
+          'months_obj'=> $obj1['months_obj'],
+          'monthValue'=> $obj1['monthValue'],
+          'months_label'=> $obj1['months_label'],
+              ]);
     }
     
-    
-    
-   
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    dd($allOrders);
   }
+  
+      /**
+         * Get Limpieza Objet by Year Object
+         * 
+         * @param Object $year
+         * @return array
+      */
+      private function getMonthlyData($year) {
+          
+          $startYear = new Carbon($year->start_date);
+          $endYear   = new Carbon($year->end_date);
+          $diff      = $startYear->diffInMonths($endYear) + 1;
+          $thisMonth = date('m');
+          $arrayMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+          $arrayMonthMin = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sept', 'Oct', 'Nov', 'Dic'];
+          //Prepare objets to JS Chars
+          $months_lab = '';
+          $months_val = [];
+          $months_obj = [];
+          $aux = $startYear->format('n');
+          $auxY = $startYear->format('y');
+          $selected = null;
+          for ($i=0; $i<$diff;$i++){
+            $c_month = $aux+$i;
+            if ($c_month>12){
+              $c_month -= 12;
+            }
+            if ($c_month == 12){
+              $auxY++;
+            }
+            
+            if ($thisMonth == $c_month){
+              $selected = "$auxY,$c_month";
+            }
+            
+            $months_lab .= "'".$arrayMonth[$c_month-1]."',";
+            //Only to the Months select
+            $months_obj[] = [
+                'id'    => $auxY.'_'.$c_month,
+                'dateYear'    => '20'.$auxY,
+                'month' => $c_month,
+                'year'  => $auxY,
+                'name'  => $arrayMonthMin[$c_month-1],
+                'value' => 0
+            ];
+          }
+          
+          
+          $monthValue = array();
+          foreach ($months_obj as $k=>$months){
+            $value = ForfaitsOrders::whereYear('created_at', '=', $months['dateYear'])
+                    ->whereMonth('created_at', '=', $months['month'])->sum('total');
+            if ($value){
+              $months_obj[$k]['value'] = $value;
+              $monthValue[] = $value;
+            }
+            else {
+              $monthValue[] = 0;
+              $months_obj[$k]['value'] = 0;
+            }
+            
+          }
+          
+          return [
+              'year'        => $year->year,
+              'selected'    => $selected,
+              'months_obj'  => $months_obj,
+              'monthValue'  => implode(',', $monthValue),
+              'months_label'=> $months_lab,
+              ];
+          
+        }
 }

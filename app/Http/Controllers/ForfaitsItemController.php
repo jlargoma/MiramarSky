@@ -13,6 +13,7 @@ use App\Models\Forfaits\ForfaitsOrderPayments;
 use Auth;
 use App\Book;
 use App\Traits\ForfaitsPaymentsTraits;
+use Illuminate\Support\Facades\DB;
 
 class ForfaitsItemController extends AppController {
 
@@ -41,6 +42,30 @@ class ForfaitsItemController extends AppController {
         'items' => $items,
         'categ' => array_merge($catMat, $catClass),
     ]);
+  }
+  
+  public function getBalance() {
+    $curl = curl_init();
+    $endpoint = env('FORFAIT_ENDPOINT') . 'getbalance';
+    $Bearer = env('FORFAIT_TOKEN');
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => $endpoint,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_CONNECTTIMEOUT => 3,
+        CURLOPT_HTTPHEADER => array(
+            "Content-Type: application/json",
+            "Authorization: Bearer $Bearer"
+        ),
+    ));
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+    curl_close($curl);
+    if ($err) {
+    echo "cURL Error #:" . $err;
+    } else {
+    return json_decode($response);
+    }
   }
 
   public function edit($id) {
@@ -614,30 +639,69 @@ class ForfaitsItemController extends AppController {
     return response()->json(['error']);
   }
 
-  public function sendBooking(Request $req) {
-
-    $id = $req->input('item_id');
-
-
-
-
-    $oForfait = ForfaitsUser::find($id);
-    if (!$oForfait) {
-      return redirect()->back()->withErrors(['Forfaits no encontrado']);
+  public function sendBookingOrder($order,$lastItemIDPayment) {
+    
+    $error = [
+        'order_id' => $order->id,
+        'book_id' => $order->book_id,
+        'detail' => '',
+        'item_id' => '',
+        'created_at' => date('Y-m-d H:i:s'),
+    ];
+    
+    $book = Book::find($order->book_id);
+    if ($book){
+      $clientName = $book->customer->name;
+      $clientEmail = $book->customer->email;
+    } else {
+      $error['detail'] = 'Reserva no encontrada';
+      DB::table('forfaits_errors')->insert($error);
+      return ;
     }
+    
+    $forfaitsLst = ForfaitsOrderItem::where('order_id', $order->id)
+            ->where('type', 'forfaits')
+            ->where('id','<=',$lastItemIDPayment)
+            ->WhereNull('cancel')->get();
+    if ($forfaitsLst) {
+        foreach ($forfaitsLst as $f) {
+          if ($f->ffexpr_status == 1) {
+            continue; //return 'ForfaitsExpress ya reservado';
+          }
+          $result = $this->sendBooking($f,$clientName,$clientEmail);
+          if ($result != 'ok'){
+            $error['item_id'] = $f->id;
+            $error['detail'] = $result;
+            DB::table('forfaits_errors')->insert($error);
+          }
+        }
+    }
+      
+  }
+  /**
+   * Send a Forfait to Create FFExpress booking
+   * @param type $oForfait
+   * @param type $clientName
+   * @param type $clientEmail
+   * @return string
+   */
+  public function sendBooking($oForfait,$clientName,$clientEmail) {
+
+    if ($oForfait->type != 'forfaits'){
+      return 'El Item no es Forfait';
+    }
+    if ($oForfait->cancel == 1){
+        return 'El Item fue cancelado';
+    }
+    
     if ($oForfait->ffexpr_status == 1) {
-      return redirect()->back()->withErrors(['ForfaitsExpress ya reservado']);
+      return 'ForfaitsExpress ya reservado';
     }
 
-
-
-//    dd($oForfait);
-    $cliente = \App\Customers::find($oForfait->cli_id);
-    $forfait_data = json_decode($oForfait->forfait_data);
-    if (!($cliente && $forfait_data)) {
-      return redirect()->back()->withErrors(['Forfait sin items']);
+    $forfait_data = json_decode($oForfait->data);
+    if (!$forfait_data) {
+      return 'Forfait sin items';
     }
-
 
 
     $data = [
@@ -647,11 +711,11 @@ class ForfaitsItemController extends AppController {
             "classes" => []
         ],
         "skiResortId" => env('FORFAIT_RESORTID'),
-        "clientName" => $cliente->name,
-        "clientEmail" => $cliente->email,
+        "clientName" => $clientName,
+        "clientEmail" => $clientEmail,
         "paymentMethodId" => 11,
-        "pickupPointId" => 5,
-        "pickupPointAddress" => env('FORFAIT_POINT_ADDRESS'),
+        "pickupPointId" => 4,
+        "pickupPointAddress" => '',//env('FORFAIT_POINT_ADDRESS'),
         "familyFormula" => FALSE,
         "comments" => "",
     ];
@@ -666,7 +730,6 @@ class ForfaitsItemController extends AppController {
     $json = json_encode($data);
     $curl = curl_init();
     $endpoint = env('FORFAIT_ENDPOINT') . 'createbooking';
-
     $Bearer = env('FORFAIT_TOKEN');
     curl_setopt_array($curl, array(
         CURLOPT_URL => $endpoint,
@@ -697,19 +760,26 @@ class ForfaitsItemController extends AppController {
           $oForfait->ffexpr_status = 1;
           $oForfait->ffexpr_data = $oForfait->ffexpr_data . '|' . date('Y-m-d H:i') . ' ' . $response;
           $oForfait->save();
-          return redirect()->back()->with('success', 'Se ha reservado el item en ForfaitExpress');
+          return 'ok';
         } else {
 
+          $msg = 'Error no definido';
+          if (isset($r->data) && isset($r->data->message))
+            $msg = $r->data->message;
+          else $msg = json_encode($r->data);
+          
           $oForfait->ffexpr_status = 2;
-          $oForfait->ffexpr_data = $oForfait->ffexpr_data . '|' . date('Y-m-d H:i') . ' ' . $r->data->message;
+          $oForfait->ffexpr_data = $oForfait->ffexpr_data . '|' . date('Y-m-d H:i') . ' ' . $msg;
           $oForfait->save();
-          return redirect()->back()->withErrors($r->data->message);
+          return $msg;
+//          return redirect()->back()->withErrors($r->data->message);
         }
       } else {
         $oForfait->ffexpr_status = 2;
         $oForfait->ffexpr_data = $oForfait->ffexpr_data . '|' . date('Y-m-d H:i') . ' ' . $response;
         $oForfait->save();
-        return redirect()->back()->withErrors('Error al enviar petisión ForfaitExpress');
+        return 'Error al enviar petisión ForfaitExpress';
+//        return redirect()->back()->withErrors('Error al enviar petisión ForfaitExpress');
       }
     }
   }
