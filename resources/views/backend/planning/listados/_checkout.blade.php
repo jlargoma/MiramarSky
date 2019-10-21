@@ -28,6 +28,9 @@
                         <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                             <?php echo substr($book->customer->name, 0, 10) ?>
                         </a> 
+                    @if($book->is_fastpayment == 1 || $book->type_book == 99 )
+                    <img style="width: 30px;margin: 0 auto;" src="/pages/fastpayment.png" align="center"/>
+                    @endif
                     </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
                         <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>

@@ -33,8 +33,11 @@ endif
 
                             <td class="text-center">
                                 <?php if ($book->agency != 0): ?>
-                                    <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
-                                <?php endif ?>
+                                    <img style="width: 18px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
+                                <?php endif;?>
+                                @if($book->is_fastpayment || $book->type_book == 99 )
+                                  <img style="width: 18px;margin: 0 auto;" src="/pages/fastpayment.png" align="center"/>
+                                @endif
                             </td>
                             <td class="text-center" style="padding: 10px 15px!important">
 		                        <?php if (isset($payment[$book->id])): ?>
@@ -248,6 +251,9 @@ endif
                         <?php if ($book->agency != 0): ?>
                             <img style="width: 15px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
                         <?php endif ?>
+                        @if($book->is_fastpayment == 1 || $book->type_book == 99 )
+                                <img style="width: 15px;margin: 0 auto;" src="/pages/fastpayment.png" align="center"/>
+                                @endif
                     </td>
                     <td class="text-left">
 		                <?php if (isset($payment[$book->id]) && empty($payment[$book->id])): ?>

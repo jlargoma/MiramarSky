@@ -10,7 +10,7 @@
             <table class="table <?php if (Auth::user()->role != "limpieza"): ?>table-condensed<?php endif ?> table-striped table-data"  data-type="confirmadas" style="margin-top: 0;">
                 <thead>
                     <tr class ="text-center bg-success text-white">
-                      <th class="th-bookings th-1" >&nbsp;</th> 
+                      <th class="th-bookings th-2" >&nbsp;</th> 
                         <th class="th-bookings th-name">Cliente</th>
                         <th class="th-bookings">Telefono</th>
                         <th class="th-bookings th-2">Pax</th>
@@ -86,8 +86,11 @@
 
 
                                 <?php if ($book->agency != 0): ?>
-                                    <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
+                                    <img style="width: 15px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
                                 <?php endif ?>
+                                @if($book->is_fastpayment == 1 || $book->type_book == 99 )
+                                <img style="width: 15px;margin: 0 auto;" src="/pages/fastpayment.png" align="center"/>
+                                @endif
                             </td>
                             <td class="text-center" style="padding: 10px !important">
                                 <?php if (isset($payment[$book->id])): ?>
@@ -339,6 +342,9 @@
                         <?php if ($book->agency != 0): ?>
                             <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
                         <?php endif ?>
+                        @if($book->is_fastpayment == 1 || $book->type_book == 99 )
+                        <img style="width: 30px;margin: 0 auto;" src="/pages/fastpayment.png" align="center"/>
+                        @endif
                     </td>
                     <td class="text-center">
                         <b><?php echo substr($book->room->nameRoom, 0, 4)  ?></b>

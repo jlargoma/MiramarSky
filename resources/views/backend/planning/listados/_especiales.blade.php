@@ -10,7 +10,7 @@
             <table class="table  table-condensed table-striped table-data"  data-type="especiales" style="margin-top: 0;">
                 <thead>
                     <tr>  
-                        <th style="display: none">ID</th> 
+                      <th class ="text-center Reserva Propietario text-white" style="width: 15px!important">&nbsp;</th>
                         <th class ="text-center Reserva Propietario text-white" >   Cliente     </th>
                         <th class ="text-center Reserva Propietario text-white" >   Telefono     </th>
                         <th class ="text-center Reserva Propietario text-white" style="width: 7%!important">   Pax         </th>
@@ -32,6 +32,11 @@
 
                     <tr class="<?php echo strtolower( $class) ;?>">
 
+                                <td class ="text-center">
+                                @if($book->is_fastpayment == 1 || $book->type_book == 99 )
+                                <img style="width: 18px;margin: 0 auto;" src="/pages/fastpayment.png" align="center"/>
+                                @endif
+                                </td>
                                 <td class ="text-center" style="padding: 10px 15px!important">                                                            
                                     <?php if (isset($payment[$book->id])): ?>
                                         <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>
@@ -147,6 +152,9 @@
                         <?php else: ?>
                             <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" ><?php echo $book->customer['name']  ?></a>
                         <?php endif ?> 
+                      @if($book->is_fastpayment == 1 || $book->type_book == 99 )
+                      <img style="width: 18px;margin: 0 auto;" src="/pages/fastpayment.png" align="center"/>
+                      @endif
                     </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b') ?></td>
                     <td class="text-center sm-p-t-10 sm-p-b-10"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b') ?></td>

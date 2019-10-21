@@ -42,13 +42,12 @@
 
         <tr class="<?php echo $class;?>">
             <td class="text-center">
-                <?php if ($book->agency != 0 || $book->type_book == 99 ): ?>
-                    <?php if ($book->type_book == 99 ): ?>
-                        <img style="width: 30px;margin: 0 auto;" src="/pages/fastpayment.png" align="center"/>
-                    <?php else: ?>
-                        <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center"/>
-                    <?php endif;?>
+                <?php if ($book->agency != 0): ?>
+                  <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center"/>
                 <?php endif ?>
+                @if($book->is_fastpayment == 1 || $book->type_book == 99 )
+                 <img style="width: 30px;margin: 0 auto;" src="/pages/fastpayment.png" align="center"/>
+                @endif
             </td>
             <td class="text-center" style="padding: 10px 5px!important">
                 <?php if (isset($payment[$book->id])): ?>
@@ -267,12 +266,8 @@
                 <tr class="<?php echo $class;?>">
 
                 <td class="text-left">
-                    <?php if ($book->agency != 0 || $book->type_book == 99 ): ?>
-                        <?php if ($book->type_book == 99 ): ?>
-                            <img style="width: 30px;margin: 0 auto;" src="/pages/fastpayment.png" align="center"/>
-                        <?php else: ?>
-                            <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center"/>
-                        <?php endif;?>
+                    <?php if ($book->agency != 0): ?>
+                      <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center"/>
                         <a title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  <?php if ( Auth::user()->role != "agente"): ?> href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"<?php endif ?>>
                             <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " ")  ?>
                         </a>
@@ -281,6 +276,9 @@
                         <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " ")  ?>
                     </a>
                     <?php endif ?>
+                @if($book->is_fastpayment == 1 || $book->type_book == 99 )
+                 <img style="width: 30px;margin: 0 auto;" src="/pages/fastpayment.png" align="center"/>
+                @endif
                 </td>
                 <?php $start = Carbon::createFromFormat('Y-m-d',$book->start); ?>
                 <td class ="text-center" data-order="<?php echo strtotime($start->copy()->format('Y-m-d'))?>"  style="width: 20%!important">
