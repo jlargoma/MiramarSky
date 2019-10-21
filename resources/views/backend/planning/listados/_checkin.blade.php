@@ -132,19 +132,7 @@
                                     
                             </td>
                             <td class ="text-center">
-                                <select class="room form-control minimal" data-id="<?php echo $book->id ?>" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
-                            
-                                    <?php foreach ($rooms as $room): ?>
-                                        <?php if ($room->id == $book->room_id): ?>
-                                            <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                               <?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?>
-                                            </option>
-                                        <?php else:?>
-                                            <option value="<?php echo $room->id ?>"><?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?></option>
-                                        <?php endif ?>
-                                    <?php endforeach ?>
-
-                                </select>
+                               @include('backend.planning.listados._select-rooms', ['rooms'=>$rooms,'bookID' => $book->id,'select'=>$book->room_id])
                             </td>
                             <td class ="text-center"><?php echo $book->nigths ?></td>
                             <td class="text-center sm-p-t-10 sm-p-b-10">

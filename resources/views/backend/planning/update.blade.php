@@ -403,6 +403,7 @@ $mobile = new Mobile();
                 <?php foreach ($rooms as $room): ?>
                   <option data-size="<?php echo $room->sizeApto ?>"
                           data-luxury="<?php echo $room->luxury ?>"
+                          <?php if ($room->state==0) echo 'disabled'; ?>
                           value="<?php echo $room->id ?>" {{ $room->id == $book->room_id ? 'selected' : '' }} >
     <?php echo substr($room->nameRoom . " - " . $room->name, 0, 15) ?>
                   </option>

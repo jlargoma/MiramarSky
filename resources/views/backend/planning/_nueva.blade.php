@@ -164,9 +164,11 @@ $mobile = new Mobile();
                     <select class="form-control full-width newroom minimal" name="newroom" id="newroom" required>
                         <option ></option>
                         <?php foreach ($rooms as $room): ?>
-                        <option value="<?php echo $room->id ?>" data-luxury="<?php echo $room->luxury ?>" data-size="<?php echo $room->sizeApto ?>">
-                                <?php echo substr($room->nameRoom." - ".$room->name, 0,12)  ?>
+                          <?php if($room->state>0):?>
+                            <option value="<?php echo $room->id ?>" data-luxury="<?php echo $room->luxury ?>" data-size="<?php echo $room->sizeApto ?>">
+                              {{$room->state}}<?php echo substr($room->nameRoom." - ".$room->name, 0,12)  ?>
                             </option>
+                          <?php endif; ?>
                         <?php endforeach ?>
                     </select>
                 </div>

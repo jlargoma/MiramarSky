@@ -29,7 +29,7 @@ class LimpiezaController extends AppController
             $date = $year->copy();
         }
         $now                     = Carbon::now();
-        $rooms                   = \App\Rooms::where('state', '=', 1)->get();
+        $rooms                   = \App\Rooms::all();
         $booksCollection         = \App\Book::where('start', '>=', $now->copy()->subDays(3))
                                             ->where('start', '<=', $now->copy()->addYear())
                                             ->orderBy('start', 'ASC')

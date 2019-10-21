@@ -44,7 +44,7 @@ class BookController extends AppController
         if (Auth::user()->role != "agente")
         {
             $roomsAgents = \App\Rooms::all(['id'])->toArray();
-            $rooms       = \App\Rooms::where('state', '=', 1)->get();
+            $rooms       = \App\Rooms::orderBy('order')->get();
             $types       = [
                 1,
                 3,
@@ -58,7 +58,7 @@ class BookController extends AppController
         } else
         {
             $roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
-            $rooms       = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order')->get();
+            $rooms       = \App\Rooms::whereIn('id', $roomsAgents)->orderBy('order')->get();
             $types       = [1];
         }
 
@@ -644,7 +644,7 @@ class BookController extends AppController
         return view('backend/planning/update', [
             'book'         => $book,
             'low_profit'   => $low_profit,
-            'rooms'        => \App\Rooms::where('state', '=', 1)->orderBy('order')->get(),
+            'rooms'        => \App\Rooms::orderBy('order')->get(),
             'extras'       => \App\Extras::all(),
             'start'        => Carbon::createFromFormat('Y-m-d', $book->start)->format('d M,y'),
             'payments'     => $book->payments,
@@ -1476,7 +1476,8 @@ class BookController extends AppController
         if (Auth::user()->role != "agente")
         {
             $roomsAgents = \App\Rooms::all(['id'])->toArray();
-            $rooms       = \App\Rooms::where('state', '=', 1)->get();
+            $rooms       = \App\Rooms::orderBy('order')->get();
+//            $rooms       = \App\Rooms::where('state', '=', 1)->get();
             $types       = [
                 1,
                 3,
@@ -1490,7 +1491,8 @@ class BookController extends AppController
         } else
         {
             $roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
-            $rooms       = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order')->get();
+//            $rooms       = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order')->get();
+            $rooms       = \App\Rooms::whereIn('id', $roomsAgents)->orderBy('order')->get();
             $types       = [1];
         }
 

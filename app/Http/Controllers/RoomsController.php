@@ -36,7 +36,8 @@ class RoomsController extends AppController {
    */
   public function index() {
     return view('backend/rooms/index', [
-        'rooms' => Rooms::where('state', "!=", 0)->orderBy('order', 'ASC')->get(),
+//        'rooms' => Rooms::where('state', "!=", 0)->orderBy('order', 'ASC')->get(),
+        'rooms' => Rooms::orderBy('order', 'ASC')->get(),
         'roomsdesc' => Rooms::where('state', 1)->orderBy('order', 'ASC')->get(),
         'sizes' => \App\SizeRooms::all(),
         'types' => \App\TypeApto::all(),
@@ -235,6 +236,13 @@ class RoomsController extends AppController {
    */
   public function state(Request $request) {
     $room = Rooms::find($request->id);
+    $state = $request->input('state');
+    $room->state = intval($state);
+   
+    if ($room->save()) {
+      return 1;
+    }
+    
     $book = \App\Book::where('room_id', '=', $request->id)->where('start', '>', '2017-09-01')->get();
 
     if (count($book) > 0) {

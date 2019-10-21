@@ -402,7 +402,22 @@ class Book extends Model {
     }//if (!empty($status))
 
     if (!empty($room)) {
-
+      $oRoom = Rooms::find($room);
+      if ($oRoom){
+        if (!$oRoom->state){
+          return [
+            'status' => 'danger',
+            'title' => 'Peligro',
+            'response' => "Este apartamento no está habilitado"
+                ];
+        }
+      } else {
+         return [
+            'status' => 'danger',
+            'title' => 'Peligro',
+            'response' => "No se ha encontrado el apartamento seleccionado"
+                ];
+    }
 
       if ($this->type_book == 3) {
         $this->room_id = $room;
