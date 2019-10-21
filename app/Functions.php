@@ -100,7 +100,7 @@ function getUserIpAddr(){
 }
 
 function translateSubject($text,$lng='es'){
-  if (strtolower($lng) == 'es'){
+  if (!$lng || strtolower($lng) == 'es'){
     return $text;
   }
   
@@ -116,14 +116,14 @@ function translateSubject($text,$lng='es'){
   ];
   
   $trasl = [
-    'Reservation lock and payment details',
-    'Owner Reservation Mail',
-    'Reservation denied',
-    'Reservation confirmation (partial payment)',
-    'Availability request',
-    'Payment Reminder',
+    'Booking Request and payment details',
+    'Correo de Reserva de Propietario',
+    'unavailable request',
+    'Booking confirmation (partial payment. done)',
+    'Solicitud disponibilidad',
+    'Second Payment Reminder',
     'Payment confirmation',
-    'Reminder to Complete Parts'
+    'Reminder to Complete Police information'
   ];
   
   $text = trim($text);
