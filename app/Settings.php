@@ -18,7 +18,7 @@ class Settings extends Model
       ];
     }
     
-    static function getKeyValue($key){
+    static function getKeyValue($key){     
       $obj = Settings::select('value')->where('key', $key)->first();
       if ($obj){
         return $obj->value;
@@ -28,7 +28,7 @@ class Settings extends Model
       
     }
 
-    static function getKeysTxtMails() {
+    static function getKeysTxtMails($lng='es') {
       /*
         *Cuando nos llega una Solicitud el cliente recibe un texto por email
         *Cuando la reserva se cambia al estado: RESERVADO / DENEGADO / CONFIRMADO/ PAGADA LA SEÑAL
@@ -37,7 +37,8 @@ class Settings extends Model
         *email confirmación pago Forfait
         *SMS Partee (subir dni para el control diario de huéspedes)
        */
-      return [
+      
+      $lst = [
           'new_request_rva'                   =>'Solicitud RVA',
           'reservation_state_changed_reserv'  =>'Reservado RVA',
           'reservation_state_changed_confirm' =>'Confirmado RVA',
@@ -50,10 +51,31 @@ class Settings extends Model
           'SMS_Partee_msg'                    =>'Mensaje Partee (enviar por plataforma de terceros)',
           'SMS_Partee_upload_dni'             =>'SMS Partee (subir dni para el control diario de huéspedes)'
       ];
+      if ($lng && $lng != 'es'){
+        $lstNew = [];
+        foreach ($lst as $k=>$v){
+          $lstNew[$k.'_'.$lng] = $v." ($lng)";
+        }
+        return $lstNew;
+      }
+      
+      return $lst;
     }
     
-    static function getContent($key) {
-      $Object = Settings::where('key',$key)->first();
+    static function getContent($key,$lng='es') {
+      
+      if ($lng && strtolower($lng) != 'es'){
+        
+        $Object = Settings::where('key',$key.'_en')->first();
+        if (!$Object)
+          $Object = Settings::where('key',$key)->first();
+        
+      } else {
+        $Object = Settings::where('key',$key)->first();
+        
+      }
+       
+      
             
       if ($Object){
        return $Object->content;
@@ -61,6 +83,23 @@ class Settings extends Model
       
       return '';
       
+    }
+    
+    static function CountriesLang(){
+      $countryEs = [
+          'Argentina','Bolivia','Chile','Colombia','Costa Rica','Cuba',
+          'Ecuador','El Salvador','España','Guatemala','Guinea Ecuatorial',
+          'Honduras','México','Nicaragua','Panamá','Paraguay','Perú',
+          'República Dominicana','Uruguay','Venezuela'
+          ];
+      
+      $lst = [];
+      foreach ($countryEs as $c){
+        $lst['es'] = $c;
+      }
+      
+      $lst['en'] = 'Otros';
+      return $lst;
     }
    
 }

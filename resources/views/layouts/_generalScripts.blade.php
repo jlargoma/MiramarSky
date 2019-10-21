@@ -128,6 +128,10 @@
       var date2 = new Date(res2);
       var timeDiff = Math.abs(date2.getTime() - date1.getTime());
 
+	if(apto == '' || typeof apto == "undefined"){
+		alert('El tipo de Apartamento es requerido');
+		return;
+	}
 
       $.post('/getDiffIndays', {date1: arrayDates[0], date2: arrayDates[1]}, function (data) {
         var diffDays = data.diff;
@@ -135,6 +139,19 @@
 
 
         if (diffDays >= 2) {
+		 if (data.specialSegment != false && minDays>diffDays) {
+		    $('#content-book-response .back').empty();
+		    alert('ESTANCIA MÍNIMA EN ESTAS FECHAS:' + minDays + ' DÍAS');
+		    /*
+              $('#content-book-response .back').append('<h2 class="text-center text-white white" ' +
+                  'style="line-height: 1; letter-spacing: -1px;">ESTANCIA M&Iacute;NIMA EN ' +
+                  'ESTAS ' +
+                  'FECHAS: ' + minDays + ' D&Iacute;AS</h2>');
+                  */
+               
+            //$('#content-book-response .back').append(data);
+            //$("#content-book-response").flip(true);
+         } else {
           $.post(url, {
             _token: _token,
             name: name,
@@ -151,13 +168,9 @@
             $('#content-book-response .back').empty();
             $('#content-book-response .back').append(data);
             $("#content-book-response").flip(true);
-            if (data.specialSegment != false) {
-              $('.content-alert-min-special-days').append('<h2 class="text-center text-white white" ' +
-                  'style="line-height: 1; letter-spacing: -1px;">ESTANCIA M&Iacute;NIMA EN ' +
-                  'ESTAS ' +
-                  'FECHAS: ' + minDays + ' D&Iacute;AS</h2>');
-            }
+           
           });
+		}
         } else {
           alert('Estancia minima ' + minDays + ' NOCHES')
         }

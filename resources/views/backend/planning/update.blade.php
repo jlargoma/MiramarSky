@@ -310,7 +310,7 @@ $mobile = new Mobile();
             <div class="col-md-3 col-xs-12 push-10">
               <label for="country">PAÍS</label>
               <select class="form-control country minimal" name="country" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
-                <option>--Seleccione país --</option>
+                <option value="">--Seleccione país --</option>
                 <?php foreach (\App\Countries::orderBy('code', 'ASC')->get() as $country): ?>
                   <option value="<?php echo $country->code ?>" <?php
                           if ($country->code == $book->customer->country) {
@@ -912,7 +912,7 @@ $mobile = new Mobile();
             <div class="col-xs-12 push-10">
               <label for="country">PAÍS</label>
               <select class="form-control country minimal" name="country" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
-                <option>--Seleccione país --</option>
+                <option value="">--Seleccione país --</option>
   <?php foreach (\App\Countries::orderBy('code', 'ASC')->get() as $country): ?>
                   <option value="<?php echo $country->code ?>" <?php
     if ($country->code == $book->customer->country) {
@@ -1500,6 +1500,57 @@ $mobile = new Mobile();
         });
       });
 
+
+ $('body').on('click','.sendSMS',function(event) {
+        var id = $(this).data('id');
+        var that = $(this);
+        if (that.hasClass('disabled-error')) {
+          alert('Partee error.');
+          return ;
+        }
+        if (that.hasClass('disabled')) {
+//          alert('No se puede enviar el SMS.');
+          return ;
+        }
+        $('#loadigPage').show('slow');
+        that.addClass('disabled')
+        $.post('/ajax/send-partee-sms', { _token: "{{ csrf_token() }}",id:id }, function(data) {
+              if (data.status == 'danger') {
+                window.show_notif('Partee Error:',data.status,data.response);
+              } else {
+                window.show_notif('Partee:',data.status,data.response);
+                that.prop('disabled', true);
+              }
+              $('#loadigPage').hide('slow');
+          });
+        });
+ $('body').on('click','.sendParteeMail',function(event) {
+        var id = $(this).data('id');
+        var that = $(this);
+        if (that.hasClass('disabled-error')) {
+          alert('Partee error.');
+          return ;
+        }
+        if (that.hasClass('disabled')) {
+//          alert('No se puede enviar el SMS.');
+          return ;
+        }
+        $('#loadigPage').show('slow');
+        that.addClass('disabled')
+        $.post('/ajax/send-partee-mail', { _token: "{{ csrf_token() }}",id:id }, function(data) {
+              if (data.status == 'danger') {
+                window.show_notif('Partee Error:',data.status,data.response);
+              } else {
+                window.show_notif('Partee:',data.status,data.response);
+                that.prop('disabled', true);
+              }
+              $('#loadigPage').hide('slow');
+          });
+        });
+        $('body').on('click','.showParteeLink',function(event) {
+          $('#linkPartee').show(700);
+        });
+        
 
     });
   

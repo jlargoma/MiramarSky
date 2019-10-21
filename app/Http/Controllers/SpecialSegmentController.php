@@ -69,8 +69,8 @@ class SpecialSegmentController extends AppController
 			$segment = SpecialSegment::where('start','<=', $dateStart->copy()->format('Y-m-d'))
 										->where('finish','>=',$dateStart->copy()->format('Y-m-d'))
 										->first();
-
-			if ( $segment && count($segment) > 0)
+                        
+			if ( $segment)
 				return $segment;
 		}
 

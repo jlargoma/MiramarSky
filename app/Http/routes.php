@@ -32,7 +32,7 @@
     
   
     Route::get('/thanks-you', 'HomeController@thanksYou')->name('thanks-you');
-    Route::get('/thanks-you',function () {return view('frontend.stripe.forfait');})->name('thanks-you-forfait');
+    Route::get('/thanks-you-forfait',function () {return view('frontend.stripe.forfait');})->name('thanks-you-forfait');
     Route::get('/paymeny-error', 'HomeController@paymenyError')->name('paymeny-error');
     Route::get('/form-demo', 'BookController@demoFormIntegration');
     Route::post('/api/check_rooms_avaliables', 'BookController@apiCheckBook')->name('api.proccess');

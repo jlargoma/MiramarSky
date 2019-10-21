@@ -112,10 +112,10 @@ class SettingsController extends AppController
     /**
      * Get messages page
      */
-    public function messages()
+    public function messages($lng='es')
     {
         //get all emial's options
-        $settings = Settings::getKeysTxtMails();
+        $settings = Settings::getKeysTxtMails($lng);
         //get from DB all messages
         $keysValue = Settings::whereIn('key', array_keys($settings))->get();
         $data      = [];
@@ -129,7 +129,8 @@ class SettingsController extends AppController
 
         return view('backend/settings/txt-email', [
             'settings' => $settings,
-            'data'     => $data
+            'data'     => $data,
+            'lng'         => $lng
         ]);
     }
 
@@ -139,10 +140,10 @@ class SettingsController extends AppController
      * @param Request $request
      * @return type
      */
-    public function messages_upd(Request $request)
+    public function messages_upd(Request $request,$lng='es')
     {
 
-        $settings = Settings::getKeysTxtMails();
+        $settings = Settings::getKeysTxtMails($lng);
         $key      = $request->input('key');
 
         //key controll

@@ -1202,7 +1202,7 @@ class BookController extends AppController
                     {
                         $move = \App\Cashbox::where('date', $pago->datePayment)->where('import', $pago->import)
                                             ->first();
-                        if (count($move) > 0)
+                        if ($move)
                         {
                             $move->delete();
                         }

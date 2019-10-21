@@ -80,8 +80,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
   Route::get('/invoices/searchByName/{searchString?}','RouterActionsController@invoices_searchByName');
   Route::get('/settings', 'SettingsController@index');
   Route::post('/settings-general', 'SettingsController@upd_general')->name('settings.gral.upd');
-  Route::get('/settings_msgs', 'SettingsController@messages')->name('settings.msgs');
-  Route::post('/settings_msgs', 'SettingsController@messages_upd')->name('settings.msgs.upd');
+  Route::get('/settings_msgs/{lng?}', 'SettingsController@messages')->name('settings.msgs');
+  Route::post('/settings_msgs/{lng?}', 'SettingsController@messages_upd')->name('settings.msgs.upd');
   Route::post('/specialSegments/create', 'SpecialSegmentController@create');
   Route::get('/specialSegments/update/{id?}', 'SpecialSegmentController@update');
   Route::post('/specialSegments/update/{id?}', 'SpecialSegmentController@update');

@@ -14,8 +14,9 @@ class MailController extends AppController
     public static function sendEmailBookSuccess( $data ,$admin = 0)
     {
 
+      $country = $book->customer->country;
 
-      $mailClientContent = Settings::getContent('new_request_rva');
+      $mailClientContent = Settings::getContent('new_request_rva',$country);
       $dataContent = array(
             'customer_name' =>  $data->customer->name,
             'customer_email' =>  $data->customer->email,
@@ -35,25 +36,23 @@ class MailController extends AppController
         $mailClientContent = str_replace('{'.$k.'}', $v, $mailClientContent);
       }
           
+      $subject = translateSubject('Solicitud disponibilidad',$country);
     	if ($admin == 0) {
           /* xCliente */
-
-          
-          
-          Mail::send(['html' => 'frontend.emails.bookSuccess'],[ 'data' => $data, 'admin' => 0,'mailContent'=>$mailClientContent], function ($message) use ($data) {
+          Mail::send(['html' => 'frontend.emails.bookSuccess'],[ 'data' => $data, 'admin' => 0,'mailContent'=>$mailClientContent], function ($message) use ($data,$subject) {
               $message->from('reservas@apartamentosierranevada.net');
               $message->to($data->customer->email); /* $data['email'] */
-              $message->subject('Solicitud disponibilidad');
+              $message->subject($subject);
           });
 
         }else{
 
     		/* Cliente */
 
-		Mail::send(['html' => 'frontend.emails.bookSuccess'],[ 'data' => $data, 'admin' => 0,'mailContent'=>$mailClientContent], function ($message) use ($data) {
+		Mail::send(['html' => 'frontend.emails.bookSuccess'],[ 'data' => $data, 'admin' => 0,'mailContent'=>$mailClientContent], function ($message) use ($data,$subject) {
 	            $message->from('reservas@apartamentosierranevada.net');
 	            $message->to($data->customer->email); /* $data['email'] */
-	            $message->subject('Solicitud disponibilidad');
+	            $message->subject($subject);
 	        });
 
     		/* Admin */

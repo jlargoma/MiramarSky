@@ -61,7 +61,7 @@ class SendSecondPay extends Command {
             ->where('send', 0)
             ->orderBy('created_at', 'DESC')->get();
 
-    $subject = 'Recordatorio Pago '.env('APP_NAME').' ';
+    $site = env('APP_NAME');
     if ($books)
     {
       foreach ($books as $book){
@@ -81,8 +81,10 @@ class SendSecondPay extends Command {
 //          echo $subject . $book->customer->name.', checkin: '.$book->start.', pendiente: '.$pending."\n";
 //          continue;
           
-          if ($pending>0)
+          if ($pending>0){
+            $subject = translateSubject('Recordatorio Pago',$book->customer->country).' '.$site.' ';
             $this->sendEmail_secondPayBook($book,$subject . $book->customer->name);
+          }
           $book->send = 1;
           $book->save();
         }

@@ -19,18 +19,33 @@ setlocale(LC_TIME, "es_ES"); ?>
     <div class="col-md-12 text-center">
       <h2 class="font-w800">CONFIGURACIONES - TEXTOS</h2>
 
-       
+      <div>
+         <?php if (\Request::is('admin/settings_msgs')): ?>
+          <button class="btn btn-md btn-primary active"  disabled>Español</button>
+        <?php else: ?>
+          <a class="text-white btn btn-md btn-primary" href="/admin/settings_msgs">Español</a>
+<?php endif ?>	
+          <?php if (\Request::is('admin/settings_msgs/en')): ?>
+          <button class="btn btn-primary active"  disabled>Ingles</button>
+        <?php else: ?>
+          <a class="text-white btn btn-md btn-primary" href="/admin/settings_msgs/en">Ingles</a>
+<?php endif ?>
+      </div>
     </div>
     @foreach($settings as $k=>$v)
     <div class="col-md-6 text-center m-t-20 p-l-50 p-r-50">
       <h3 class="font-w800">{{$v}}</h3>
-      <form method="POST" action="{{route('settings.msgs.upd')}}">
+      <form method="POST" action="{{route('settings.msgs.upd',$lng)}}">
         <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
         <input type="hidden" name="key" id="key" value="{{$k}}">
         <?php 
           $content = isset($data[$k]) ? trim($data[$k]) : ''; 
           $ckeditor = true;
-          if ( $k =='SMS_Partee_msg' || $k == 'SMS_Partee_upload_dni')
+          if ( $k =='SMS_Partee_msg' 
+              || $k == 'SMS_Partee_upload_dni'
+              || $k == 'SMS_Partee_upload_dni_en'
+              || $k == 'SMS_Partee_msg_en'
+            )
             $ckeditor = false;
         ?>
         @if($ckeditor)

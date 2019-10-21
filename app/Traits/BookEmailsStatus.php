@@ -29,6 +29,7 @@ trait BookEmailsStatus
         setlocale(LC_TIME, "ES");
         setlocale(LC_TIME, "es_ES");
 
+        $subject = translateSubject($subject,$book->customer->country);
         switch ($status)
         {
             case "1":
@@ -197,8 +198,8 @@ trait BookEmailsStatus
      */
     public function getMailData($data, $keyTemp)
     {
-
-        $mailClientContent = Settings::getContent($keyTemp);
+      
+        $mailClientContent = Settings::getContent($keyTemp,$data->customer->country);
 
         $dataContent = array(
             'customer_name'             => $data->customer->name,

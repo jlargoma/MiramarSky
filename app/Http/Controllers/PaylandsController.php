@@ -201,7 +201,9 @@ class PaylandsController extends AppController
           }
           $pendiente         = ($book->total_price - $totalPayment);
           if ($pendiente<=0){
-            $subject = 'Confirmanción de Pago '.env('APP_NAME').' '.$book->customer->name;
+            $subject = translateSubject('Confirmación de Pago',$book->customer->country);
+
+            $subject .= ' '.env('APP_NAME').' '.$book->customer->name;
             $this->sendEmail_confirmSecondPayBook($book,$subject,$totalPayment);
           }
           //END: check if is a final payment

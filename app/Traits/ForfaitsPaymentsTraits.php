@@ -86,8 +86,8 @@ trait ForfaitsPaymentsTraits {
           $BookOrders->token = $token;
           $BookOrders->last_item_id = $last_item_id;
           $BookOrders->save();
-          
-          $urlPay = route('front.payments.forfaits',$token);
+          $urlPay = 'https://miramarski.com/payments-forms-forfaits?t='.$token;
+//          $urlPay = route('front.payments.forfaits',$token);
           return response()->json(['status' => 'ok', 'content' => $this->getPaymentText($urlPay,$amount)]);
         }
       }

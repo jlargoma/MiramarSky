@@ -142,7 +142,7 @@ trait BookParteeActions {
               ];
             }
             $link = '<a href="'.$BookPartee->link.'" title="Ir a Partee">'.$BookPartee->link.'</a>';
-            $subject = 'Recordatorio para Completado de Partee';
+            $subject = translateSubject('Recordatorio para Completado de Partee',$book->customer->country);
             $message = $this->getMailData($book,'SMS_Partee_upload_dni');
             $message = str_replace('{partee}', $link, $message);
             $message = $this->clearVars($message);
@@ -321,7 +321,8 @@ trait BookParteeActions {
              
             }
             $link = '<a href="'.$partee->link.'" title="Ir a Partee">'.$partee->link.'</a>';
-            $subject = 'Recordatorio para Completado de Partee';
+            
+            $subject = translateSubject('Recordatorio para Completado de Partee',$book->customer->country);
             $message = $this->getMailData($book,'SMS_Partee_upload_dni');
             $message = str_replace('{partee}', $partee->link, $message);
             $message = $this->clearVars($message);

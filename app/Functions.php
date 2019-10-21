@@ -98,3 +98,40 @@ function getUserIpAddr(){
     }
     return $ip;
 }
+
+function translateSubject($text,$lng='es'){
+  if (strtolower($lng) == 'es'){
+    return $text;
+  }
+  
+  $texts = [
+  'Bloqueo de reserva y datos de pago',
+  'Correo de Reserva de Propietario',
+  'Reserva denegada',
+  'Confirmación de reserva (pago parcial)',
+  'Solicitud disponibilidad',
+  'Recordatorio Pago',
+  'Confirmación de Pago',
+  'Recordatorio para Completado de Partee'
+  ];
+  
+  $trasl = [
+    'Reservation lock and payment details',
+    'Owner Reservation Mail',
+    'Reservation denied',
+    'Reservation confirmation (partial payment)',
+    'Availability request',
+    'Payment Reminder',
+    'Payment confirmation',
+    'Reminder to Complete Parts'
+  ];
+  
+  $text = trim($text);
+  foreach ($texts as $k=>$t){
+    if ($t == $text){
+      return isset($trasl[$k]) ? $trasl[$k] : $text;
+    }
+  }
+  
+  return $text;
+}
