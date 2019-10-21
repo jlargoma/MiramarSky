@@ -213,20 +213,20 @@
                             
                             <div class="col-md-3 col-xs-6 text-center " style="background: #99D9EA;">
                                 <label class="font-w800 text-white" for="">COSTE TOTAL</label>
-                                <input type="text" class="form-control only-numbers cost m-t-10 m-b-10 white" name="cost"  value="<?php echo $request->cost ?>">
+                                <input type="text" class="form-control only-numbers cost m-t-10 m-b-10 white" name="cost"  value="<?php if(isset($request->cost)) echo $request->cost ?>">
                             </div>
                             <div class="col-md-3 col-xs-6 text-center " style="background: #91cf81;">
                                 <label class="font-w800 text-white" for="">APTO</label>
-                                <input type="text" class="form-control only-numbers costApto m-t-10 m-b-10 white" name="costApto"  value="<?php echo $request->costApto ?>">
+                                <input type="text" class="form-control only-numbers costApto m-t-10 m-b-10 white" name="costApto"  value="<?php if(isset($request->costApto))  echo $request->costApto ?>">
                             </div>
                             <div class="col-md-3 col-xs-6 text-center " style="background: #337ab7;">
                                 <label class="font-w800 text-white" for="">PARKING</label>
-                                <input type="text" class="form-control only-numbers costParking m-t-10 m-b-10 white" name="costParking"  value="<?php echo $request->costParking ?>">
+                                <input type="text" class="form-control only-numbers costParking m-t-10 m-b-10 white" name="costParking"  value="<?php  if(isset($request->costParking))echo $request->costParking ?>">
                             </div>
                             <?php if (Auth::user()->role == "admin"): ?>
                                 <div class="col-md-3 col-xs-6 text-center  not-padding" style="background: #ff7f27;">
                                     <label class="font-w800 text-white" for="">BENEFICIO</label>
-                                    <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php echo $request->beneficio ?>">
+                                    <input type="text" class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio" value="<?php if(isset($request->beneficio)) echo $request->beneficio ?>">
                                     <div class="beneficio-text font-w400 font-s18 white"></div>
                                 </div>
                             <?php endif ?>

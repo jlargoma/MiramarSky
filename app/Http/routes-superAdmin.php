@@ -151,8 +151,7 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin'], function () {
   Route::post('/apartamentos/photo_main', 'RoomsController@photoIsMain');
   Route::post('/apartamentos/photo_orden', 'RoomsController@photoOrden');
   Route::post('/apartamentos/send/email/owned', 'RoomsController@sendEmailToOwned');
-  Route::get('/apartamentos/getPaxPerRooms/{id}', 'RoomsController@getPaxPerRooms');
-  Route::get('/apartamentos/getLuxuryPerRooms/{id}', 'RoomsController@getLuxuryPerRooms');
+
   Route::post('/apartamentos/uploadFile', 'RoomsController@uploadRoomFile');
   Route::post('/apartamentos/uploadFile/{id}', 'RoomsController@uploadFile');
   Route::get('/apartamentos/assingToBooking', 'RoomsController@assingToBooking');
@@ -200,7 +199,6 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   
   Route::post('/reservas/stripe/save/fianza', 'StripeController@fianza');
   Route::post('/reservas/stripe/pay/fianza', 'StripeController@payFianza');
-  Route::get('/reservas/new', 'BookController@newBook');
   Route::get('/reservas/delete/{id}', 'BookController@delete');
   Route::get('/reservas/update/{id}', 'BookController@update')->name('book.update');
   Route::post('/reservas/saveUpdate/{id}', 'BookController@saveUpdate');
@@ -214,7 +212,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::get('/reservas/api/lastsBooks', 'BookController@getLastBooks');
   Route::get('/reservas/api/calendarBooking', 'BookController@getCalendarBooking');
   Route::get('/reservas/api/alertsBooking', 'BookController@getAlertsBooking');
-  Route::get('/api/reservas/getDataBook', 'BookController@getAllDataToBook');
+
   Route::get('/reservas/api/sendSencondEmail', 'BookController@sendSencondEmail');
   Route::get('/reservas/api/toggleAlertLowProfits', 'BookController@toggleAlertLowProfits');
   

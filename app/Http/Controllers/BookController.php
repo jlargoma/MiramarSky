@@ -68,23 +68,26 @@ class BookController extends AppController
                                         ->whereIn('room_id', $roomsAgents)->orderBy('created_at', 'DESC')->get();
         } else
         {
-            $booksCollection = \App\Book::whereIn('room_id', $roomsAgents)->where([
-                                                                                      [
-                                                                                          'start',
-                                                                                          '>=',
-                                                                                          $startYear
-                                                                                      ],
-                                                                                      [
-                                                                                          'start',
-                                                                                          '<=',
-                                                                                          $endYear
-                                                                                      ],
-                                                                                      [
-                                                                                          'user_id',
-                                                                                          Auth::user()->id
-                                                                                      ]
-                                                                                  ])
-                                        ->orWhere(function ($query) use ($roomsAgents, $types) {
+          if (!Auth::user()->agent){
+            return redirect('no-allowed');
+          }
+            $booksCollection = \App\Book::whereIn('room_id', $roomsAgents)
+                    ->where([
+                              [
+                                  'start',
+                                  '>=',
+                                  $startYear
+                              ],
+                              [
+                                  'start',
+                                  '<=',
+                                  $endYear
+                              ],
+                              [
+                                  'user_id',
+                                  Auth::user()->id
+                              ]
+                    ])->orWhere(function ($query) use ($roomsAgents, $types) {
                                             $query->where('agency', Auth::user()->agent->agency_id)
                                                   ->whereIn('room_id', $roomsAgents);
                                         })->orderBy('created_at', 'DESC')->get();
@@ -564,7 +567,7 @@ class BookController extends AppController
                             $book->real_price  = $this->getPriceBook($start, $finish, $request->input('pax'), $request->input('newroom')) + $book->sup_park + $book->sup_lujo + $book->sup_limp;
                         }
 
-                        $book->total_ben = $book->total_price - $book->cost_total;
+                        $book->total_ben = intval($book->total_price) - intval($book->cost_total);
 
                         if ($book->total_price>0)
                           $book->inc_percent = round(($book->total_ben / $book->total_price) * 100, 2);
@@ -602,12 +605,16 @@ class BookController extends AppController
 
             } else
             {
+              if ( Auth::user()->role != "agente" ){
                 return view('backend/planning/_formBook', [
                     'request' => (object) $request->input(),
                     'book'    => new \App\Book(),
                     'rooms'   => \App\Rooms::where('state', '=', 1)->get(),
                     'mobile'  => $mobile
                 ]);
+              } else{
+                return redirect('admin/reservas')->withErrors(['Error: El apartamento ya tiene una reserva confirmada']);
+              }
             }
         }
 
@@ -888,7 +895,7 @@ class BookController extends AppController
         $priceParking   = 0;
         $parkPvpSetting = \App\Settings::where('key', SettingsController::PARK_PVP_SETTING_CODE)->first();
         if (!$parkPvpSetting) return 0;
-
+        if ($nights<1) return 0;
         switch ($typePark)
         {
             case 1: // Yes
@@ -911,7 +918,7 @@ class BookController extends AppController
         $costParking     = 0;
         $parkCostSetting = \App\Settings::where('key', SettingsController::PARK_COST_SETTING_CODE)->first();
         if (!$parkCostSetting) return 0;
-
+        if ($nights<1) return 0;
         switch ($typePark)
         {
             case 1: // Yes

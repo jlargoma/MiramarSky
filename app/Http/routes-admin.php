@@ -8,7 +8,7 @@ Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin']], function
   Route::post('admin/limpiezasLst/','LiquidacionController@get_limpiezas');
   Route::post('admin/limpiezasUpd/','LiquidacionController@upd_limpiezas');
   Route::post('admin/limpiezas/pdf','LiquidacionController@export_pdf_limpiezas');
-  Route::get('admin/reservas/api/getTableData', 'BookController@getTableData');
+
   
   //PARTEE
   Route::get('admin/sendPartee/{id}', 'BookController@sendPartee');
@@ -45,6 +45,11 @@ Route::group(['middleware' => ['auth','role:admin|propietario'], 'prefix' => 'ad
 /** Moved form routers */
 Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
   Route::get('/rooms/api/getImagesRoom/{id?}/{bookId?}', 'RoomsController@getImagesRoom');
+  Route::get('/reservas/api/getTableData', 'BookController@getTableData');
+  Route::get('/reservas/new', 'BookController@newBook');
+  Route::get('/apartamentos/getPaxPerRooms/{id}', 'RoomsController@getPaxPerRooms');
+  Route::get('/apartamentos/getLuxuryPerRooms/{id}', 'RoomsController@getLuxuryPerRooms');
+  Route::get('/api/reservas/getDataBook', 'BookController@getAllDataToBook');
   
   Route::get('/reservas/help/calculateBook', function () {
     return view('backend.planning._calculateBook');

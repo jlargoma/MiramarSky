@@ -21,6 +21,11 @@ setlocale(LC_TIME, "es_ES");
 @endsection
 
 @section('content')
+  @if ($errors->any())
+    <div class="alert alert-danger">
+      {{ implode('', $errors->all(':message')) }}
+    </div>
+  @endif
     <?php if (!$mobile->isMobile() ): ?>
         <div class="container-fluid  p-l-15 p-r-15 p-t-20 bg-white">
             @include('backend.years.selector', ['minimal' => false])

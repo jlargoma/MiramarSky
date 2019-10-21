@@ -166,7 +166,7 @@ $mobile = new Mobile();
                         <?php foreach ($rooms as $room): ?>
                           <?php if($room->state>0):?>
                             <option value="<?php echo $room->id ?>" data-luxury="<?php echo $room->luxury ?>" data-size="<?php echo $room->sizeApto ?>">
-                              {{$room->state}}<?php echo substr($room->nameRoom." - ".$room->name, 0,12)  ?>
+                              <?php echo substr($room->nameRoom." - ".$room->name, 0,12)  ?>
                             </option>
                           <?php endif; ?>
                         <?php endforeach ?>
