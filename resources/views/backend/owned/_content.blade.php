@@ -54,7 +54,7 @@
     	display:none;font-size: 20px !important;
     	background-color: rgb(228, 22, 22)!important;
     	border: rgb(201, 53, 53) !important;
-    	box-shadow: 0px 0px 3px 2px rgba(228, 22, 22, 0.5)!important;"
+    	box-shadow: 0px 0px 3px 2px rgba(228, 22, 22, 0.5)!important;
     	color: white!important;
     }
     .daterangepicker.dropdown-menu{
@@ -118,37 +118,37 @@
 	    		</div>
 			
 				<div class="container">
-					<?php $roomsForUser = \App\Rooms::where('owned', $room->user->id)->get(); ?>
-						<?php if ( count($roomsForUser)  == 1): ?>
-							<?php if (Auth::user()->role == 'propietario'): ?>
-								<div class="col-md-12 text-center">
-									<h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1>
-								</div>
-							<?php else: ?>
-								<div class="col-md-2 col-md-offset-4 text-center push-20">
-									<!-- <h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1> -->
-									<select class="form-control full-width minimal selectorRoom">
-		                                <?php foreach (\App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get() as $roomX): ?>
-		                                    <option value="<?php echo $roomX->nameRoom ?>" {{ $roomX->id == $room->id ? 'selected' : '' }} >
-		                                        <?php echo substr($roomX->nameRoom." - ".$roomX->name, 0, 15)  ?>
-		                                    </option>
-		                                <?php endforeach ?>
-		                            </select>
-								</div>
-							<?php endif ?>
-						<?php else: ?>
-							<div class="col-md-2 col-md-offset-4 text-center push-20">
-								<!-- <h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1> -->
-								<select class="form-control full-width minimal selectorRoom">
-	                                <?php foreach (\App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get() as $roomX): ?>
-	                                    <option value="<?php echo $roomX->nameRoom ?>" {{ $roomX->id == $room->id ? 'selected' : '' }} >
-	                                        <?php echo substr($roomX->nameRoom." - ".$roomX->name, 0, 15)  ?>
-	                                    </option>
-	                                <?php endforeach ?>
-	                            </select>
-							</div>
-							
-						<?php endif ?>
+                                    <?php if (Auth::user()->role == 'propietario'): ?>
+                                    <?php $roomsForUser = \App\Rooms::where('owned', $room->user->id)->get();?>
+                                    <?php if (count($roomsForUser) == 1): ?>
+                                        <div class="col-md-12 text-center">
+                                          <h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1>
+                                        </div>
+                                      <?php else: ?>
+                                        <div class="col-md-2 col-md-offset-4 text-center push-20">
+                                                <!-- <h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1> -->
+                                          <select class="form-control full-width minimal selectorRoom">
+                                            <?php foreach ($roomsForUser as $roomX): ?>
+                                              <option value="<?php echo $roomX->nameRoom ?>" {{ $roomX->id == $room->id ? 'selected' : '' }} >
+                                                <?php echo substr($roomX->nameRoom . " - " . $roomX->name, 0, 15) ?>
+                                              </option>
+                                            <?php endforeach ?>
+                                          </select>
+                                        </div>
+                                      <?php endif ?>
+                                    <?php else: ?>
+                                      <div class="col-md-2 col-md-offset-4 text-center push-20">
+                                              <!-- <h1 class="text-complete font-w800"><?php echo strtoupper($room->user->name) ?> <?php echo strtoupper($room->nameRoom) ?></h1> -->
+                                        <select class="form-control full-width minimal selectorRoom">
+                                          <?php foreach (\App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get() as $roomX): ?>
+                                            <option value="<?php echo $roomX->nameRoom ?>" {{ $roomX->id == $room->id ? 'selected' : '' }} >
+                                              <?php echo substr($roomX->nameRoom . " - " . $roomX->name, 0, 15) ?>
+                                            </option>
+                                          <?php endforeach ?>
+                                        </select>
+                                      </div>
+
+                                    <?php endif ?>
 						
 					
 
@@ -372,8 +372,8 @@
 		            			</h2>
 		            		</div>
 		            		
-		            		<div class="row" style="padding:20px">
-		            			<div class="col-md-4 col-md-offset-4">
+		            		<div class="row" style="padding:20px" id="dateBlockContent">
+                                          <div class="col-md-4 col-md-offset-4">
 		            				<h5 class="text-center"> Seleccione sus fechas</h5>
 									<input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="" placeholder="Seleccione sus fechas">
 									<div class="input-group col-md-12 padding-10 text-center">
@@ -720,7 +720,7 @@
 	            			</h2>
 	            		</div>
 	            		
-	            		<div class="row" style="padding:20px">
+	            		<div class="row" style="padding:20px" id="dateBlockContent">
 	            			<div class="col-md-4 col-md-offset-4">
 	            				<h5 class="text-center"> Seleccione sus fechas</h5>
 								<input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="" placeholder="Seleccione sus fechas">

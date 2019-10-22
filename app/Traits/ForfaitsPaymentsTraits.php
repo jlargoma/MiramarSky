@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Settings;
 use Carbon\Carbon;
 use App\Book;
+use App\Settings;
 use App\Repositories\CachedRepository;
 use App\Models\Forfaits\ForfaitsOrderPayments;
 use App\Models\Forfaits\ForfaitsOrderPaymentLinks;
@@ -380,4 +381,48 @@ trait ForfaitsPaymentsTraits {
               ];
           
         }
+        
+        
+        
+          /**
+     *
+     * @param type $book
+     * @param type $subject
+     */
+    public function sendEmail_confirmPayForfaits($email, $totalPayment)
+    {
+      /*
+      $mailClientContent = Settings::getContent('Forfait_email_confirmation_payment',$data->customer->country);
+      $totalPayment = 0;
+        $payments     = \App\Payments::where('book_id', $book->id)->get();
+        if (count($payments) > 0)
+        {
+            foreach ($payments as $key => $pay)
+            {
+                $totalPayment += $pay->import;
+            }
+        }
+        $pendiente         = ($book->total_price - $totalPayment);
+        if ($pendiente>0) return; //only if the Booking is totally payment
+        
+        $mailClientContent = str_replace('{total_payment}', number_format($totalPayment, 2, ',', '.'), $mailClientContent);
+        $mailClientContent = $this->clearVars($mailClientContent);
+
+        $sended = Mail::send('backend.emails.base', [
+            'mailContent' => $mailClientContent,
+            'title'       => $subject
+        ], function ($message) use ($book, $subject) {
+            $message->from(env('MAIL_FROM'));
+            $message->to($email);
+            $message->subject($subject);
+            $message->replyTo(env('MAIL_FROM'));
+        });
+        
+        \App\BookLogs::saveLog($book->id,$book->room_id,$email,'Forfait_email_confirmation_payment',$subject,$mailClientContent);
+
+        return $sended;
+       * */
+       
+    }
+    
 }

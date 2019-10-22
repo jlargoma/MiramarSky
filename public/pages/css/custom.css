@@ -292,7 +292,7 @@ tr.lined{
   .fixed-td{
     left: -10px!important;
   }
-  .btn-fechas-calendar[data-month="9"],
+/*  .btn-fechas-calendar[data-month="9"],
   .btn-fechas-calendar[data-month="10"],
   .btn-fechas-calendar[data-month="11"],
   .bg-info-light.fechas.nav-tabs > li a[data-month="1"],
@@ -300,7 +300,7 @@ tr.lined{
   .bg-info-light.fechas.nav-tabs > li a[data-month="3"]
   {
     display: none;
-  }
+  }*/
   #tabPendientes {
         max-height: 850px;
     overflow-y: auto;

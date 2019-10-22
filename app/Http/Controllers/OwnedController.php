@@ -352,32 +352,21 @@ class OwnedController extends AppController {
 
       return view('errors.owned-access');
     }
-    // Año
-    if (empty($year)) {
-      $date = Carbon::now();
-    } else {
-      $year = Carbon::createFromFormat('Y', $year);
-      $date = $year->copy();
-    }
+    
+    $year = $this->getYearData(date('Y'));
+    $startYear = new Carbon($year->start_date);
+    $endYear   = new Carbon($year->end_date);
 
-    if ($date->copy()->format('n') >= 9) {
-      $date = new Carbon('first day of June ' . $date->copy()->format('Y'));
-    } else {
-      $date = new Carbon('first day of June ' . $date->copy()->subYear()->format('Y'));
-    }
-
-    $books = Book::where('room_id', $room->id)->whereIn('type_book', [
-                2,
-                7,
-                8
-            ])->where('start', '>=', $date->copy())->where('start', '<=', $date->copy()->addYear())->orderBy('start', 'ASC')
+    //Pagada-la-señal y reserva-prop
+    $books = Book::where('room_id', $room->id)->whereIn('type_book',[2, 7])
+            ->where('start', '>=', $startYear)->where('start', '<=', $endYear)->orderBy('start', 'ASC')
             ->get();
 
 
     return view('backend.owned.facturas', [
         'mobile' => new Mobile(),
         'books' => $books,
-        'date' => $date,
+        'date' => $startYear,
         'room' => $room
     ]);
   }

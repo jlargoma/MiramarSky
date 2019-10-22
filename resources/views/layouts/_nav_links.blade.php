@@ -2,9 +2,6 @@
 
 
   <?php if (Auth::user()->role == "propietario"): ?>
-    <li class="{{  (preg_match('/propietario/i',Request::path()))  ? 'active' : '' }}">
-      <a href="{{ url('admin/propietario/8D') }}" class="detailed">Area Propietario</a>
-    </li>
     @yield('nav_link')
   <?php endif ?>  
     

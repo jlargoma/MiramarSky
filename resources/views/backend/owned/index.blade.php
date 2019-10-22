@@ -215,9 +215,10 @@
 					$('.notification-message').val(data);
 					document.getElementById("boton").click();
 					if (data == "Reserva Guardada") {
-						setTimeout('document.location.reload()',1000);
+                                          $('#dateBlockContent').html('<h5 class="alert alert-success text-center">Bloqueo de fechas guardado</h5>')
+                                          setTimeout('document.location.reload()',1000);
 					}else{
-                          
+                          $('#dateBlockContent').html('<h5 class="alert alert-warning text-center">No se pueden reservar las fechas solicitadas<br/>Para mas información, pongase en contacto con la Administración</h5>');
                     } 
 				});
 			});
