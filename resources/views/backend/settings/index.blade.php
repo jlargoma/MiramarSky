@@ -131,11 +131,8 @@
                                     <div class="col-md-3 col-xs-12 push-10">
                                         <label>Agencia</label>
                                         <select class="form-control full-width agency minimal" name="agency_id">
-											<?php for ($i = 0; $i <= 7 ; $i++): ?>
-                                            <option value="<?php echo $i ?>">
-												<?php echo \App\Book::getAgency($i) ?>
-                                            </option>
-											<?php endfor;?>
+                                           <?php $book = new \App\Book(); ?>
+                                            @include('backend.blocks._select-agency', ['agencyID'=>0,'book' => $book])
                                         </select>
                                     </div>
                                     <div class="col-md-3 col-xs-12 push-10">

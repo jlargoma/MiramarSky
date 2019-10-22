@@ -481,14 +481,8 @@ $mobile = new Mobile();
             <div class="col-md-6 col-xs-12 push-20 not-padding">
               <div class="col-md-6 col-xs-6 push-10">
                 <label>Agencia</label>
-                <select class="form-control full-width agency minimal" name="agency" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
-  <?php for ($i = 0; $i <= 7; $i++): ?>
-                    <option value="<?php echo $i ?>"
-                            {{ $book->agency == $i ? 'selected' : '' }} <?php if (Auth::user()->role == "agente" && $book->getAgency($i) == "S.essence"): ?>
-                        selected<?php endif ?>>
-                  <?php echo $book->getAgency($i) ?>
-                    </option>
-                <?php endfor; ?>
+                <select class="form-control full-width agency minimal" name="agency" >
+              @include('backend.blocks._select-agency', ['agencyID'=>$book->agency,'book' => $book])
                 </select>
               </div>
               <div class="col-md-6 col-xs-6 push-10">

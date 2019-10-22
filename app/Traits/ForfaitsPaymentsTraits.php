@@ -5,7 +5,6 @@ namespace App\Traits;
 use App\Settings;
 use Carbon\Carbon;
 use App\Book;
-use App\Settings;
 use App\Repositories\CachedRepository;
 use App\Models\Forfaits\ForfaitsOrderPayments;
 use App\Models\Forfaits\ForfaitsOrderPaymentLinks;

@@ -246,13 +246,9 @@ $mobile = new Mobile();
                     <div class="col-md-6 col-xs-6 push-10">
                         <label>Agencia</label>
                         <?php if ( Auth::user()->role != "agente"): ?>
-                            <select class="form-control full-width agency minimal" name="agency">
-                                <?php for ($i=0; $i <= 7 ; $i++): ?>
-                                <option value="<?php echo $i ?>">
-                                    <?php echo \App\Book::getAgency($i) ?>
-                                </option>
-                                <?php endfor;?>
-                            </select>
+                        <select class="form-control full-width agency minimal" name="agency" >
+                          @include('backend.blocks._select-agency', ['agencyID'=>$book->agency,'book' => $book])
+                          </select>
                         <?php else: ?>
                             <input type="hidden" name="agency" value="<?php echo Auth::user()->agent->agency_id ?>">
                             <input type="text" disabled class="form-control full-width agency minimal" value="<?php echo \App\Book::getAgency(Auth::user()->agent->agency_id) ?>">

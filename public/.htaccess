@@ -5,6 +5,8 @@
 
     RewriteEngine On
 
+    RewriteRule ^pages/agencia-([0-9])*.png$ /pages/agencias.jpg [L,R=301]
+
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)/$ /$1 [L,R=301]

@@ -175,8 +175,8 @@ class Book extends Model {
     return $supLujo = $array[$lujo];
   }
 
-  //Para poner nombre a la agencia//
-  static function getAgency($agency) {
+   //Para poner nombre a la agencia//
+  static function listAgency() {
     $array = [
         0 => "",
         1 => "Booking",
@@ -187,8 +187,22 @@ class Book extends Model {
         6 => "S.essence",
         7 => "Cerogrados"
     ];
-
-    return $agency = $array[$agency];
+    
+    for($i=1;$i<21;$i++){
+      $array[] = 'Agencia-'.$i;
+    }
+    return $array;
+  }
+  
+  //Para poner nombre a la agencia//
+  static function getAgency($agency) {
+    $array = self::listAgency();
+    
+    for($i=1;$i<21;$i++){
+      $array[] = 'Agencia '.$i;
+    }
+//echo count($array); die;
+    return isset($array[$agency]) ? $array[$agency] : 'Sin Nombre';
   }
 
   //Para comprobar el dia de la reserva en el calendario

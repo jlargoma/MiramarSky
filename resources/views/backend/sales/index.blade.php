@@ -105,7 +105,7 @@
     <div class="container-fluid padding-5 sm-padding-10">
 
         <div class="row push-10">
-            <div class="col-md-4 push-20">
+            <div class="col-md-5 push-20">
                 <div class="col-md-6">
                     <label>Nombre del cliente:</label>
                     <input id="nameCustomer" type="text" name="searchName" class="searchabled form-control"
@@ -125,11 +125,8 @@
                 <div class="col-md-3">
                     <label>AGENCIA:</label>
                     <select class="form-control searchAgency minimal" name="searchByAgency">
-                        <option value="0">Todas</option>
-                        <option value="1">Booking</option>
-                        <option value="2">Trivago</option>
-                        <option value="3">Bed&Snow</option>
-                        <option value="4">AirBnb</option>
+                    <?php $book = new \App\Book(); ?>
+                    @include('backend.blocks._select-agency', ['agencyID'=>0,'book' => $book,'selectName'=>'searchByAgency'])
                     </select>
                 </div>
             </div>
