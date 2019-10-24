@@ -47,14 +47,14 @@
           </button>
     </div>
   </div>
-  <div class="col-md-5 hidden-mobile">
+  <div class="col-md-5 ">
     <div class="row btn-mb-1">
     <?php if (Auth::user()->role != "agente"): ?>
-      <button id="btnAlertsBookking" disabled class="btn btn-success btn-cons " type="button" data-toggle="modal" data-target="#modalAlertsBooking">
+      <button id="btnAlertsBookking" disabled class="btn btn-success btn-cons hidden-mobile" type="button" data-toggle="modal" data-target="#modalAlertsBooking">
         <span class="bold">Alertas booking</span>
       </button>
 
-      <button class="btn btn-primary btn-calendarBooking btn-cons" type="button" data-toggle="modal" data-target="#modalCalendarBooking">
+      <button class="btn btn-primary btn-calendarBooking btn-cons hidden-mobile" type="button" data-toggle="modal" data-target="#modalCalendarBooking">
         <span class="bold">Calendario booking</span>
       </button>
 
@@ -62,7 +62,7 @@
         <span class="bold">IMPORTACIÓN</span>
       </a>
       <?php if (Auth::user()->role == "admin"): ?>
-      <button class="btn btn-primary btn-cupos btn-cons" type="button" data-toggle="modal" data-target="#modalCuposVtn">
+      <button class="btn btn-primary btn-cupos btn-cons hidden-mobile" type="button" data-toggle="modal" data-target="#modalCuposVtn">
         <span class="bold">Cupos Vtn Rapida</span>
       </button>
       <?php endif ?>
