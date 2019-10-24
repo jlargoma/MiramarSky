@@ -24,7 +24,9 @@ endif
                         <th class ="{{$classTH}}" style="width: 10%">   OUT      </th>
                         <th class ="{{$classTH}}" style="width: 17%">   Precio      </th>
                         <th class ="{{$classTH}}" style="width: 10%">   &nbsp;      </th>
+                        @if(Auth::user()->role != "agente" )
                         <th class ="{{$classTH}}" style="width: 10%">   Estado      </th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -174,6 +176,7 @@ endif
                                     <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
                                 <?php endif ?>
                             </td>
+                            @if(Auth::user()->role != "agente" )
                             <td class="text-center">
                                 <select class="status form-control minimal" data-id="<?php echo $book->id ?>" style="width: 95%">
 			                        <?php
@@ -209,6 +212,7 @@ endif
 			                        <?php endif ?>
                                 </select>
                             </td>
+                            @endif
                         </tr>
                     <?php endforeach ?>
                 </tbody>

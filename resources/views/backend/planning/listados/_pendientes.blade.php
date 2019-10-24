@@ -14,7 +14,9 @@
         <th class="text-center Reservado-table text-white" style="width: 7%!important"> OUT</th>
         <th class="text-center Reservado-table text-white" style="width: 6%!important"><i class="fa fa-moon-o"></i></th>
         <th class="text-center Reservado-table text-white"> Precio</th>
+        @if(Auth::user()->role != "agente" )
         <th class="text-center Reservado-table text-white" style="width: 12%!important"> Estado</th>
+        @endif
         <th class="text-center Reservado-table text-white" style="width: 6%!important">&nbsp;</th>
 		<?php if ( Auth::user()->role != "agente" ): ?>
         <th class="text-center Reservado-table text-white" style="width: 65px!important">Acciones</th>
@@ -53,10 +55,7 @@
                 <?php if (isset($payment[$book->id])): ?>
                 <a class="update-book" data-id="<?php echo $book->id ?>"
                    title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"
-                   <?php if ( Auth::user()->role != "agente" ): ?>
                    href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"
-                   <?php endif ?>
-
                    style="color: red"
                 >
                     <?php echo $book->customer['name']  ?>
@@ -64,9 +63,7 @@
                 <?php else: ?>
                 <a class="update-book" data-id="<?php echo $book->id ?>"
                    title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"
-                   <?php if ( Auth::user()->role != "agente"): ?>
                    href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"
-                <?php endif ?>
                 >
                     <?php echo $book->customer['name']  ?>
                 </a>
@@ -141,7 +138,7 @@
 
             <td class="text-center"><?php echo round($book->total_price) . "€" ?><br>
             </td>
-
+            @if(Auth::user()->role != "agente" )
             <td class="text-center">
                 <select class="status form-control minimal" data-id="<?php echo $book->id ?>">
                     <?php
@@ -151,7 +148,8 @@
                             $status[] = $book->type_book;
 
                     ?>
-                    <?php if ( Auth::user()->role != "agente" && in_array($book->type_book, $status)): ?>
+                  
+                    <?php if (in_array($book->type_book, $status)): ?>
                         <?php foreach($book->getTypeBooks() as $key => $typeStatusBook ): ?>
                             <?php if ($key == 5 && $book->customer->email == ""): ?>
 
@@ -176,9 +174,10 @@
                             <?php endif ?>
                         <?php endfor; ?>
                     <?php endif ?>
+                   
                 </select>
             </td>
-
+             @endif
             <td class="text-center">
                 <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
                 <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
