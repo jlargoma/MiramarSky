@@ -623,8 +623,29 @@ class BookController extends AppController
 
     public function update(Request $request, $id)
     {
-        $book = \App\Book::with('payments')->find($id);
+      
+      $updateBlade = '';
+      if ( Auth::user()->role != "agente"){
+         
+          $book  = \App\Book::with('payments')->find($id);
+          $rooms = \App\Rooms::orderBy('order')->get();
+          
+       } else {
+         
+          $updateBlade = '-agente';
+          $roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
+          $rooms       = \App\Rooms::whereIn('id', $roomsAgents)->orderBy('order')->get();
+          $types       = [1];
+          
+          $book = \App\Book::with('payments')
+                  ->whereIn('type_book',$types)
+                  ->whereIn('room_id', $roomsAgents)
+                  ->find($id);
+       }
 
+       if (!$book){
+         return redirect('/admin/reservas');
+       }
         $totalpayment = $book->sum_payments;
 
         // We are passing wrong data from this to view by using $book data, in order to correct data
@@ -648,10 +669,10 @@ class BookController extends AppController
 
         //END: Check low_profit alert
 
-        return view('backend/planning/update', [
+        return view('backend/planning/update'.$updateBlade, [
             'book'         => $book,
             'low_profit'   => $low_profit,
-            'rooms'        => \App\Rooms::orderBy('order')->get(),
+            'rooms'        => $rooms,
             'extras'       => \App\Extras::all(),
             'start'        => Carbon::createFromFormat('Y-m-d', $book->start)->format('d M,y'),
             'payments'     => $book->payments,
@@ -666,6 +687,34 @@ class BookController extends AppController
     //Funcion para actualizar la reserva
     public function saveUpdate(Request $request, $id)
     {
+      
+      
+      $IS_agente= false;
+      if ( Auth::user()->role != "agente"){
+        $book = \App\Book::find($id);
+      } else {
+         
+          $IS_agente= true;
+          $roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
+          $rooms       = \App\Rooms::whereIn('id', $roomsAgents)->orderBy('order')->get();
+          $types       = [1];
+          
+          $book = \App\Book::with('payments')
+                  ->whereIn('type_book',$types)
+                  ->whereIn('room_id', $roomsAgents)
+                  ->find($id);
+       }
+
+       if (!$book){
+         return [
+                'status'   => 'danger',
+                'title'    => 'ERROR',
+                'response' => "RESERVA NO ENCONTRADA"
+            ];
+         
+         return redirect('404');
+       }
+       
         $computedData = json_decode($request->input('computed_data'));
         $aux          = str_replace('Abr', 'Apr', $request->input('fechas'));
         
@@ -681,7 +730,7 @@ class BookController extends AppController
         $customer->city    = ($request->input('city')) ? $request->input('city') : "";
         $customer->save();
 
-        $book = \App\Book::find($id);
+        
         if ($book->existDateOverrride($start, $finish, $request->input('newroom'), $id))
         {
 
@@ -695,10 +744,13 @@ class BookController extends AppController
             $book->finish              = Carbon::createFromFormat('d/m/Y', $finish);
             $book->comment             = ltrim($request->input('comments'));
             $book->book_comments       = ltrim($request->input('book_comments'));
-            $book->book_owned_comments = ($request->input('book_owned_comments')) ? $request->input('book_owned_comments') : "";
             $book->pax                 = $request->input('pax');
             $book->real_pax            = $request->input('real_pax');
             $book->nigths              = $request->input('nigths');
+            if(!$IS_agente){
+              $book->book_owned_comments = ($request->input('book_owned_comments')) ? $request->input('book_owned_comments') : "";
+            }
+            
             if ($book->type_book == 7)
             {
                 $book->sup_park  = 0;
@@ -748,31 +800,31 @@ class BookController extends AppController
               }
             }
               
-              
-            $book->extra     = $request->input('extra');
+            if(!$IS_agente){  
+              $book->extra     = $request->input('extra');
 
-            $book->extraPrice  = Rooms::GIFT_PRICE;
-            $book->extraCost   = Rooms::GIFT_COST;
-            $book->schedule    = $request->input('schedule');
-            $book->scheduleOut = $request->input('scheduleOut');
-            $book->promociones = ($request->input('promociones')) ? $request->input('promociones') : 0;
-            
-            $book->has_ff_discount = $request->input('has_ff_discount',0);
-            if (!$book->has_ff_discount && $book->ff_status == 4){
-              $book->ff_status = 0;
-            } else {
-              if ($book->has_ff_discount && $book->ff_status == 0){
-                $book->ff_status = 4;
+              $book->extraPrice  = Rooms::GIFT_PRICE;
+              $book->extraCost   = Rooms::GIFT_COST;
+              $book->schedule    = $request->input('schedule');
+              $book->scheduleOut = $request->input('scheduleOut');
+              $book->promociones = ($request->input('promociones')) ? $request->input('promociones') : 0;
+
+              $book->has_ff_discount = $request->input('has_ff_discount',0);
+              if (!$book->has_ff_discount && $book->ff_status == 4){
+                $book->ff_status = 0;
+              } else {
+                if ($book->has_ff_discount && $book->ff_status == 0){
+                  $book->ff_status = 4;
+                }
               }
+              $book->ff_discount = $request->input('ff_discount',0);
+              if ($computedData){
+                $book->real_price  = $computedData->calculated->real_price; // This cannot be modified in frontend
+              }
+              $book->inc_percent = $book->profit_percentage;
+              $book->ben_jorge   = $book->getJorgeProfit();
+              $book->ben_jaime   = $book->getJaimeProfit();
             }
-            $book->ff_discount = $request->input('ff_discount',0);
-            if ($computedData){
-              $book->real_price  = $computedData->calculated->real_price; // This cannot be modified in frontend
-            }
-            $book->inc_percent = $book->profit_percentage;
-            $book->ben_jorge   = $book->getJorgeProfit();
-            $book->ben_jaime   = $book->getJaimeProfit();
-
             if ($book->save())
             {
 

@@ -179,6 +179,10 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin'], function () {
  
 });
 
+Route::group(['middleware' => ['auth','role:admin|subadmin|agente'], 'prefix' => 'admin',], function () {
+  Route::get('/reservas/update/{id}', 'BookController@update')->name('book.update');
+  Route::post('/reservas/saveUpdate/{id}', 'BookController@saveUpdate');
+});
 Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin',], function () {
   
   // Clientes
@@ -200,8 +204,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::post('/reservas/stripe/save/fianza', 'StripeController@fianza');
   Route::post('/reservas/stripe/pay/fianza', 'StripeController@payFianza');
   Route::get('/reservas/delete/{id}', 'BookController@delete');
-  Route::get('/reservas/update/{id}', 'BookController@update')->name('book.update');
-  Route::post('/reservas/saveUpdate/{id}', 'BookController@saveUpdate');
+
   Route::get('/reservas/changeBook/{id}', 'BookController@changeBook');
   Route::get('/reservas/changeStatusBook/{id}', 'BookController@changeStatusBook');
   Route::get('/reservas/ansbyemail/{id}', 'BookController@ansbyemail');
