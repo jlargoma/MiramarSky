@@ -9,7 +9,6 @@
       media="screen">
 
 <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css"/>
-<script src="//js.stripe.com/v3/"></script>
 <style>
   .pgn-wrapper[data-position$='-right'] {
     right: 82% !important;
@@ -785,10 +784,6 @@ $mobile = new Mobile();
                    data-id="<?php echo $book->id ?>" style="width: 30%;min-height: 50px">
           </div>
 
-          <div class="row push-20 content-link-stripe"
-               style="margin-top: 20px; border-top: 2px dashed #000; border-bottom: 2px dashed #000; padding: 20px 15px;">
-            @include('backend.stripe.link')
-          </div>
   <?php endif ?>
         <div class="row">
 
@@ -1365,13 +1360,6 @@ $mobile = new Mobile();
                      data-id="<?php echo $book->id ?>" style="width: 50%;min-height: 50px">
             </div>
           </div>
-          <div class="row push-20 content-link-stripe"
-               style="margin-top: 20px; border-top: 2px dashed #000; border-bottom: 2px dashed #000; padding: 20px 15px;">
-
-            @include('backend.stripe.link', ['import' => 0])
-
-          </div>
-
           <div class="row">
             @include('Paylands.payment', ['routeToRedirect' => route('payland.thanks.payment',
             ['id' => $book->id]),'id' => $book->id, 'customer' => $book->customer->id])
@@ -1457,6 +1445,9 @@ $mobile = new Mobile();
       $('#loadchatbox').click(function () {
         $('#chatbox').load('/admin/book-logs/{{$book->id}}', getScrollButton);
       });
+      setTimeout(function(){
+        $('#chatbox').load('/admin/book-logs/{{$book->id}}', getScrollButton);
+      },1000);
       $('#chatbox').on('click', '.see_more', function (event) {
         event.preventDefault();
 

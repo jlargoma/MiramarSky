@@ -220,7 +220,9 @@
         <th class="Reservado-table text-white text-center" style="min-width:100px">Apart</th>
         <th class="Reservado-table text-white text-center"><i class="fa fa-moon-o"></i></th>
         <th class="Reservado-table text-white text-center" style="min-width:65px">PVP</th>
+        @if ( Auth::user()->role != "agente" )
         <th class="Reservado-table text-white text-center" style="min-width:200px">Estado</th>
+        @endif
         <th class="Reservado-table text-white text-center" style="min-width:50px">&nbsp;</th>
 		<?php if ( Auth::user()->role != "agente" ): ?>
         <th class="Reservado-table text-white text-center" style="min-width:50px">A</th>
@@ -250,11 +252,11 @@
                 <td class="text-left">
                     <?php if ($book->agency != 0): ?>
                       <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center"/>
-                        <a title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  <?php if ( Auth::user()->role != "agente"): ?> href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"<?php endif ?>>
+                        <a title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                             <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " ")  ?>
                         </a>
                     <?php else: ?>
-                    <a title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  <?php if ( Auth::user()->role != "agente"): ?> href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"  <?php endif ?> style="margin-left: 15px;">
+                    <a title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="margin-left: 15px;">
                         <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " ")  ?>
                     </a>
                     <?php endif ?>
@@ -291,6 +293,7 @@
                 </td>
                 <td class="text-center"><?php echo $book->nigths ?></td>
                 <td class="text-center"><?php echo round($book->total_price) ?> €</td>
+                @if ( Auth::user()->role != "agente" )
                 <td class="text-center sm-p-l-10 sm-p-r-10">
                     <select class="status form-control minimal" data-id="<?php echo $book->id ?>">
                         <?php
@@ -323,6 +326,7 @@
                         <?php endif ?>
                     </select>
                 </td>
+                @endif
                 <td class="text-center">
                     <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
                     <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
