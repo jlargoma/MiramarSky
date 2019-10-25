@@ -56,12 +56,9 @@ $mobile = new Mobile();
                             </option>
                         <?php endfor; ?>
                         <?php else: ?>
-                        <?php for ($i=1; $i <= count($status); $i++): ?>
-                        <option <?php echo $status[$i] == 3 ? "selected" : ""; ?>
-                                <?php echo ($status[$i]  == 1 || $status[$i] == 5) ? "style='font-weight:bold'" : "" ?> value="<?php echo $status[$i] ?>">
-			                    <?php echo $book->getStatus($status[$i]) ?>
-                            </option>
-                        <?php endfor; ?>
+                         <option selected value="1">
+	                    <?php echo $book->getStatus(1) ?>
+                         </option>
                         <?php endif ?>
 
                     </select>

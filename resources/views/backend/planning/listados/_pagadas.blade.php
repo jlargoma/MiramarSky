@@ -45,12 +45,12 @@ endif
 		                        <?php if (isset($payment[$book->id])): ?>
                                 <a class="update-book" data-id="<?php echo $book->id ?>"
                                    title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"
-		                           <?php if ( Auth::user()->role != "agente"): ?> href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" <?php endif ?>
+		                    href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"
                                    style="color: red"><?php echo $book->customer['name']  ?></a>
 		                        <?php else: ?>
                                 <a class="update-book" data-id="<?php echo $book->id ?>"
                                    title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"
-		                           <?php if ( Auth::user()->role != "agente"): ?> href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" <?php endif ?>
+		                  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"
                                 >
 			                        <?php echo $book->customer['name']  ?></a>
 		                        <?php endif ?>
@@ -137,7 +137,6 @@ endif
                             </td>
 
                             <td class="text-center">
-		                        <?php if (Auth::user()->role != "agente"): ?>
                                     <div class="col-md-6">
                                         <?php echo round($book->total_price) . "€" ?><br>
                                         <?php if (isset($payment[$book->id])): ?>
@@ -164,9 +163,7 @@ endif
                                             <b style="color: red;font-weight: bold">0%</b>
                                         </div>
                                     <?php endif ?>
-                                <?php else: ?>
-                                    <?php echo round($book->total_price) . "€" ?>
-                                <?php endif ?>
+
                             </td>
                             <td class="text-center">
 	                            <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
@@ -234,7 +231,9 @@ endif
                 <th class="{{$classTH}}"><i class="fa fa-moon-o"></i></th>
                 <th class="{{$classTH}}">PVP</th>
                 <th class="{{$classTH}}">   &nbsp; </th>
+                @if(Auth::user()->role != "agente" )
                 <th class="Pagada-la-señal text-white text-center" >Estado</th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -256,8 +255,7 @@ endif
                                 <i class="fa fa-eur" aria-hidden="true"></i>
                             </span>
 		                <?php endif; ?>
-                        <a <?php if ( Auth::user()->role != "agente"): ?> href="{{url ('/admin/reservas/update')}}/<?php echo
-		                $book->id ?>" <?php endif ?>>
+                        <a  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
 			                <?php echo str_pad(substr($book->customer->name, 0, 10), 10, " ")  ?>
                         </a>
 		                <?php if (!empty($book->comment)): ?>
@@ -296,13 +294,11 @@ endif
                     </td>
                     <td class="text-center"><?php echo $book->nigths ?></td>
                     <td class="text-center">
-		                <?php echo round($book->total_price) . "€" ?><br>
-		                <?php if (isset($payment[$book->id])): ?>
-		                    <?php if ( Auth::user()->role != "agente"): ?>
-                                <?php echo "<p style='color:red'>" . $payment[$book->id] . "</p>" ?>
-                            <?php endif ?>
-                        <?php else: ?>
-                        <?php endif ?>
+                      <?php echo round($book->total_price) . "€" ?><br>
+                      <?php if (isset($payment[$book->id])): ?>
+                        <?php echo "<p style='color:red'>" . $payment[$book->id] . "</p>" ?>
+                      <?php endif ?>
+                       
                     </td>
                     <td class="text-center">
                         <?php if (!empty($book->book_owned_comments) && $book->promociones != 0): ?>
@@ -327,6 +323,7 @@ endif
 
 	                        <?php endif ?>
                     </td>
+                    @if(Auth::user()->role != "agente" )
                     <td class="text-center">
                         <select class="status form-control minimal" data-id="<?php echo $book->id ?>" style="width: 95%">
 			                <?php
@@ -359,6 +356,7 @@ endif
 			                <?php endif ?>
                         </select>
                     </td>
+                    @endif
                 </tr>
             <?php endforeach ?>
         </tbody>

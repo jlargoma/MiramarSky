@@ -71,7 +71,9 @@
     -webkit-transition: box-shadow 150ms ease !important;
     transition: box-shadow 150ms ease !important;
   }
-
+  table.table.table-hover.demo-table-search tr td{
+    padding: 7px !important;
+  }
 </style>
 @endsection
 
@@ -204,15 +206,17 @@ $mobile = new Mobile();
   </div>
     <div class="row center text-center">
       <!-- DATOS DE LA RESERVA -->
-      <div class="col-md-6 col-xs-12">
+      <div class="col-md-6 col-xs-12" id="reserva_formBox">
         <div class="overlay loading-div" style="background-color: rgba(255,255,255,0.6); ">
           <div style="position: absolute; top: 50%; left: 35%; width: 40%; z-index: 1011; color: #000;">
             <i class="fa fa-spinner fa-spin fa-5x"></i><br>
             <h3 class="text-center font-w800" style="letter-spacing: -2px;">CALCULANDO...</h3>
           </div>
         </div>
+        @if($book->type_book == 1)
         <form role="form" id="updateForm"
               action="{{ url('/admin/reservas/saveUpdate') }}/<?php echo $book->id ?>" method="post">
+       @endif
           <textarea id="computed-data" style="display: none"></textarea>
           <input id="book-id" type="hidden" name="book_id" value="{{ $book->id }}">
           <!-- DATOS DEL CLIENTE -->
@@ -446,6 +450,8 @@ $mobile = new Mobile();
                           data-type="2"><?php echo $book->book_comments ?></textarea>
               </div>
             </div>
+          </div>
+            @if($book->type_book == 1)
             <div class="row push-40 bg-white padding-block">
               <div class="col-md-4 col-md-offset-4 text-center">
                 <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit"
@@ -453,8 +459,8 @@ $mobile = new Mobile();
                 </button>
               </div>
             </div>
-          </div>
         </form>
+            @endif
       </div>
       <div class="col-md-6 col-xs-12 padding-block">
   <?php if (Auth::user()->role != "limpieza"): ?>
@@ -464,7 +470,7 @@ $mobile = new Mobile();
                 {{ $totalpayment }}€ COBRADO
               </h4>
             </div>
-            <table class="table table-hover demo-table-search table-responsive-block" style="margin-top: 0;">
+            <table class="table table-hover demo-table-search" style="margin-top: 0;">
               <thead>
                 <tr>
                   <th class="text-center bg-success text-white" style="width:25%">fecha</th>
@@ -477,17 +483,16 @@ $mobile = new Mobile();
 
       <?php foreach ($payments as $payment): ?>
                     <tr>
-                      <td class="text-center p-t-25">
+                      <td class="text-center">
         <?php
         $fecha = new Carbon($payment->datePayment);
         echo $fecha->format('d-m-Y')
         ?>
                       </td>
                       <td class="text-center">
-                        <input  type="text" value="<?php echo $payment->import ?>"
-                               style="width: 50%;text-align: center;border-style: none none ">€
+                        <?php echo $payment->import ?> &nbsp;€
                       </td>
-                      <td class="text-center p-t-25"><?php echo $payment->comment ?></td>
+                      <td class="text-center "><?php echo $payment->comment ?></td>
                     </tr>
         <?php $total = $total + $payment->import ?>
       <?php endforeach ?>
@@ -514,14 +519,6 @@ $mobile = new Mobile();
               </tbody>
             </table>
           </div>
-
-          <div class="row push-20 content-link-stripe"
-               style="margin-top: 20px; border-top: 2px dashed #000; border-bottom: 2px dashed #000; padding: 20px 15px;">
-            @include('backend.stripe.link')
-          </div>
-  <?php endif ?>
-       
-  <?php if (Auth::user()->role != "limpieza"): ?>
           <div class="row">
             @include('Paylands.payment', ['routeToRedirect' => route('payland.thanks.payment',
             ['id' => $book->id]), 'id' => $book->id, 'customer' => $book->customer->id])
@@ -654,7 +651,11 @@ $mobile = new Mobile();
           $('#linkPartee').show(700);
         });
         
-
+@if($book->type_book != 1)
+$( "#reserva_formBox :input" ).each(function( index ) {
+  $( this ).prop('disabled', true);
+});
+@endif
     });
   
   </script>

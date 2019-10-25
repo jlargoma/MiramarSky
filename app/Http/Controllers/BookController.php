@@ -635,7 +635,7 @@ class BookController extends AppController
           $updateBlade = '-agente';
           $roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
           $rooms       = \App\Rooms::whereIn('id', $roomsAgents)->orderBy('order')->get();
-          $types       = [1];
+          $types       = [1,2];
           
           $book = \App\Book::with('payments')
                   ->whereIn('type_book',$types)

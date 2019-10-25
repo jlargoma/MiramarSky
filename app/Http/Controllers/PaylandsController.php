@@ -11,9 +11,7 @@ use App\Traits\BookEmailsStatus;
 class PaylandsController extends AppController
 {
   use BookEmailsStatus;
-	public function payment(Request $request)
-	{
-          
+    public function payment(Request $request){
           $booking = $request->input('booking', null);
           $amount = $request->input('amount', null);
           if ($booking && $amount){
@@ -112,7 +110,7 @@ class PaylandsController extends AppController
       } else {
         $urlPay = 'https://miramarski.com/payments-forms?t='.$token;
       }
-      
+
       if ($amount){
         if ($book){
           $client = $book->customer()->first();
@@ -523,6 +521,30 @@ class PaylandsController extends AppController
         return redirect()->route('paymeny-error');
       }
     
-    
+   public function getPaymentByType(Request $request) {
+      $type = $request->input('type','link');
+      if ($type == 'form'){
+        return $this->payment($request);
+      }
+      if ($type == 'link'){
+        $subject = '';
+        $booking = $request->input('booking', null);
+        $amount = $request->input('amount', null);
+        if ($booking && $amount){
+          $aux = explode('-', $booking);
+          if (is_array($aux) && count($aux) == 2){
+            $bookingID = desencriptID($aux[1]);
+            $clientID = desencriptID($aux[0]);
+            $urlPay = $this->generateOrder($amount,$subject,$bookingID);
+            if ($urlPay){
+              return $this->getPaymentText($urlPay);
+            }
+            
+          }
+        }
+
+      }
+      return 'error';
+    }
            
 }
