@@ -109,7 +109,7 @@ class HomeControllerNew extends AppController
           }
         }
 
-        
+        return redirect('404');
         
     
     }
