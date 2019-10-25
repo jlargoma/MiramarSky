@@ -176,6 +176,7 @@
 
     include_once 'routes-admin.php';
     include_once 'routes-superAdmin.php';
+    include_once 'new.php';
 
     Route::get('/admin', function () {
       $user = \Auth::user();

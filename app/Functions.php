@@ -61,6 +61,13 @@ function assetV($uri){
   $v = env('VERSION','v1.0.1');
   return $uri_asset.'?'.$v;
 }
+function assetNew($uri){
+  $uri_asset = asset('/new-asset/'.$uri);
+  $v = env('VERSION','v1.0.1');
+  return $uri_asset.'?'.$v;
+}
+
+
 
 function lstMonths($startYear,$endYear,$format='ym'){
   $diff = $startYear->diffInMonths($endYear) + 1;
