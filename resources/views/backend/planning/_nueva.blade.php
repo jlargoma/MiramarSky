@@ -281,7 +281,12 @@ $mobile = new Mobile();
                 <div class="col-xs-12 not-padding">
                     <div class="col-md-3 col-xs-12 text-center  first" style="background-color: #0c685f;">
                         <label class="font-w800 text-white" for="">TOTAL</label>
-                        <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" name="total" >
+                        @if ( Auth::user()->role == "agente" )
+                        <input type="hidden" name="total" id="total_pvp" value="">
+                        <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" disabled="">
+                        @else
+                        <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" id="total_pvp" name="total" >
+                        @endif
                     </div>
                     <?php if ( Auth::user()->role != "agente" ): ?>
                     <div class="col-md-3 col-xs-6 text-center " style="background: #99D9EA;">

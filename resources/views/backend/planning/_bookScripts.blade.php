@@ -201,6 +201,7 @@
 	                        $('.book_owned_comments').html('(PROMOCIÓN 3x2 DESCUENTO : '+ Math.abs(data.costes.promotion) +' €)');
 	                    }
 	                    $('.total').val(data.calculated.total_price);
+	                    $('#total_pvp').val(data.calculated.total_price);
 	                    $('.cost').val(data.calculated.total_cost);
 	                    $('.costApto').val(data.costes.book);
 	                    $('.costParking').val(data.costes.parking);
