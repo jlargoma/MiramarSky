@@ -32,7 +32,7 @@ class BookPartee extends Model
      * FINALIZADO indicando que el parte de viajeros ha sido finalizado, es decir, se han creado los partes de viajeros y se ha realizado el envío al cuerpo policial
 correspondiente.
      */
-    
+
     $msgPolice = '';
     $msgPartee = null;
       
@@ -74,19 +74,24 @@ correspondiente.
     $policeStatus = 'grey';
     if ($this->status == "HUESPEDES"){
       
+      $now = new \DateTime("now");
+      $checkin = new \DateTime($bookStart);
+     
       if ($this->guestNumber){
         if ($this->guestNumber !== $bookGuest){
           $msgPartee .= '<br>Incompleto: '.$this->guestNumber.' de '.$bookGuest;
           if ($action){
             $ParteeAction = 'sendPartee';
             $msgPartee .= '<br><b>Enviar recordatorio</b>';
-            $policeStatus = 'red finish_partee';
+            if ($now >= $checkin) $policeStatus = 'red finish_partee';
+              else $policeStatus = 'grey';
           }
         } else {
           $alertDays = '';
           $parteeStatus = 'complete';
           $msgPartee .= '<br>Completado';
-          $policeStatus = $action ? 'red finish_partee' : '';
+          if ($now >= $checkin) $policeStatus = $action ? 'red finish_partee' : '';
+            else $policeStatus = 'grey';
         }
       } else {
           $msgPartee .= '<br>No posee huéspeds cargados';
