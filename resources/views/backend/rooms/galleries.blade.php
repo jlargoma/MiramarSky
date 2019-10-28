@@ -79,7 +79,7 @@ $mobile = new Mobile();
                 </button>                    
               </td>
               <td class="text-center" >
-                <button type="button" class="btn btn-success btn-sm uploadFile" data-toggle="modal" data-target="#modalFiles" data-id="{{$item->name}}" title="Subir imagenes aptos">
+                <button type="button" class="btn btn-success btn-sm uploadFile" data-toggle="modal" data-target="#modalFiles" data-id="{{$item->id}}" title="Subir imagenes aptos">
                   <i class="fa fa-upload" aria-hidden="true"></i>
                 </button>                    
               </td>

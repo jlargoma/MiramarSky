@@ -32,7 +32,7 @@ class BookPartee extends Model
      * FINALIZADO indicando que el parte de viajeros ha sido finalizado, es decir, se han creado los partes de viajeros y se ha realizado el envío al cuerpo policial
 correspondiente.
      */
-    
+
     $msgPolice = '';
     $msgPartee = null;
       
@@ -80,13 +80,15 @@ correspondiente.
           if ($action){
             $ParteeAction = 'sendPartee';
             $msgPartee .= '<br><b>Enviar recordatorio</b>';
-            $policeStatus = 'red finish_partee';
+            if ($this->TimeControl($bookStart)) $policeStatus = 'red finish_partee';
+              else $policeStatus = 'grey';
           }
         } else {
           $alertDays = '';
           $parteeStatus = 'complete';
           $msgPartee .= '<br>Completado';
-          $policeStatus = $action ? 'red finish_partee' : '';
+          if ($this->TimeControl($bookStart)) $policeStatus = $action ? 'red finish_partee' : '';
+            else $policeStatus = 'grey';
         }
       } else {
           $msgPartee .= '<br>No posee huéspeds cargados';
@@ -116,5 +118,23 @@ correspondiente.
       . '<div class="tooltiptext">'.$msgPartee.'</div>'
       . '</div>'.$policeman;
    
+  }
+  
+  /**
+   * Check if can send to the police by time
+   * 
+   * @param type $bookStart
+   * @return boolean
+   */
+  private function TimeControl($bookStart) {
+    $current = Carbon::now();
+    $checkin = new Carbon($bookStart);
+    if ($current>=$checkin){
+      //Check after 12 am
+      if ($current->format('h')>=12){
+        return true;
+      }
+    }
+    return false;
   }
 }
