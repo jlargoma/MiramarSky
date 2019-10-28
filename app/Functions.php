@@ -63,7 +63,7 @@ function assetV($uri){
 }
 function assetNew($uri){
   $uri_asset = asset('/new-asset/'.$uri);
-  $v = env('VERSION','v1.0.1');
+  $v = env('VERSION','v1.1');
   return $uri_asset.'?'.$v;
 }
 

@@ -21,11 +21,12 @@ body.not-dark{
 }
 .footer-area {
     border-top: 2px solid #3f51b5;
-    background-image: url(../images/home/footer-fondo.jpg);
+    background: url(/img/miramarski/contacto.jpg) center;
+    /*background-image: url(../images/home/footer-fondo.jpg);*/
     position: relative;
     background-repeat: no-repeat;
-    background-size: cover;
-        background-position-y: bottom;
+    /*background-size: cover;*/
+        /*background-position-y: bottom;*/
     /* background: #e7f9ff; */
    padding: 0 !important;
     clear: both;
@@ -221,7 +222,7 @@ section.few-words.sec-pad {
     padding-top: 14em;
 }
 .lSSlideOuter .lSPager.lSGallery li {
-  max-height: 70px;
+  max-height: 100px;
   overflow: hidden;
 }
 .home-service{
@@ -331,6 +332,12 @@ a.sf-with-ul:hover div{
   color: #3F51B5;
 }
 
+.box-feature-home .bfh-text .button.menu-booking{
+    background-color: rgb(89, 186, 65) !important;
+    border-color: rgb(89, 186, 65);
+    box-shadow: 4px 2px 4px rgb(56, 101, 45);
+    color: #fff;
+}
 @media only screen and (min-width: 1024px){
   .bfh-text {
     float: left;

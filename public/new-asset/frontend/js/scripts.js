@@ -18,8 +18,10 @@
       adaptiveHeight: false,
       keyPress: false,
       controls: true,
+      pauseOnHover:true,
       arrows: true,
       mode: "slide",
+      speed: 1500,
       useCSS: true,
       cssEasing: 'ease', //'cubic-bezier(0.25, 0, 0.25, 1)',//
       easing: 'linear', //'for jquery animation',////

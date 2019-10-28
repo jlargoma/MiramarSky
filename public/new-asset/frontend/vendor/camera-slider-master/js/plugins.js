@@ -54,7 +54,7 @@ $(function () {
         loaderOpacity: 1,
         loaderPadding: 0,
         time: 10000,
-        fx: 'curtainTopRight',
+        fx: 'simpleFade',
 //        transPeriod: 1500,
         pauseOnClick: true,
         pagination: true,

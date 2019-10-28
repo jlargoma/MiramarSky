@@ -97,7 +97,7 @@
   <div class="box-feature-home">
     <div class="bfh-text">
       <div class="box">
-      <h2>EL EDIFICIO MIRAMAR SKI…LUJO A PIE DE PISTA</h2>
+        <h2 style="font-size: 22px;">EL EDIFICIO MIRAMAR SKI…LUJO A PIE DE PISTA</h2>
     <figure class="mobil"><img src="{{ assetNew('/frontend/images/home/edificio-1.jpg')}}" alt="Edificio Miramar Ski a pie de pista, zona baja"></figure>
       <div class="text">
         <p>
