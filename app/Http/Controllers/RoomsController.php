@@ -619,22 +619,13 @@ class RoomsController extends AppController {
     ini_set('max_execution_time', 300);
     if ($id != '') {
       $room = Rooms::find($id);
-      $path = public_path() . '/img/miramarski/apartamentos/' . $room->nameRoom . '/';
-
-      if (File::exists($path)) {
-        $images = File::allFiles($path);
-        foreach ($images as $key => $slide) {
-          $arraySlides[] = $slide->getFilename();
-        }
-        if (is_array($arraySlides))    natcasesort($arraySlides);
-        $slides = array();
-        foreach ($arraySlides as $key => $sl) {
-          $slides[] = '/img/miramarski/apartamentos/' . $room->nameRoom . '/' . $sl;
-        }
+      $photos = null;
+      if ($room) {
+        $photos = RoomsPhotos::where('room_id', $room->id)->orderBy('position')->get();
         $book = ($bookId != "") ? \App\Book::find($bookId) : null;
-
+        
         return view('backend/rooms/_imagesByRoom', [
-            'images' => $slides,
+            'photos' => $photos,
             'room' => $room,
             'book' => $book,
         ]);
@@ -652,16 +643,17 @@ class RoomsController extends AppController {
     $email = $request->email;
     $room = Rooms::find($request->roomId);
     $path = public_path() . '/img/miramarski/apartamentos/' . $room->nameRoom . '/';
-    if (File::exists($path)) {
-      $images = File::allFiles($path);
-
+    $images = RoomsPhotos::where('room_id', $room->id)->orderBy('position')->get();
+   
+    if ($images && $images->count()>0 ){
       $send = Mail::send('backend.emails._imagesRoomEmail', ['room' => $room], function ($message) use ($email, $images, $room, $path) {
                 $message->from(env('MAIL_FROM'));
                 $luxury = ($room->luxury == 1) ? "Lujo" : "Estandar";
 
 
                 foreach ($images as $key => $image):
-                  $message->attach($path . $image->getFilename());
+                  if (file_exists($path . $image->file_name))
+                    $message->attach($path . $image->file_name);
                 endforeach;
 
 

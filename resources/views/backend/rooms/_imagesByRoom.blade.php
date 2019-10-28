@@ -52,12 +52,14 @@
         </div>
     </div>
     <div class="col-xs-12">
-		<?php foreach ($images as $key => $image): ?>
-        <div class="col-md-2 col-xs-12 push-10">
-            <!--  -->
-            <img src="<?php echo $image ?>" class="img-responsive" style="height: 200px">
+      
+      @if($photos)
+        @foreach ($photos as $photo)
+        <div class="col-md-2 col-xs-12 push-10" style="overflow: hidden;">
+          <img src="{{ $photo->file_rute }}/thumbnails/{{ $photo->file_name }}" alt="{{$room->nameRoom}}" style="height: 200px">
         </div>
-		<?php endforeach ?>
+        @endforeach
+      @endif
     </div>
 </div>
 <script type="text/javascript">
