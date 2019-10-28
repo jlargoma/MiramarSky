@@ -182,8 +182,18 @@ width: 0px;
   0% {opacity: 0;margin-top: -30%;}
   100% {opacity: 1; margin-left: 0;}
 }
-@media (min-width: 1200px){
-
+@media (min-width: 990px){
+  .slider-text-1 h2{
+    font-size: 63px;
+  }
+  .slider-text-2 .text{
+    font-size: 36px;
+  }
+  .slider-text-3 button.main{
+    padding: 1em;
+    font-size: 2.3em;
+    font-weight: 600;
+  }
 }
   </style>
   
