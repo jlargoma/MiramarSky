@@ -59,6 +59,9 @@ $mobile = new Mobile();
     <button type="button" class="btn btn-success btn-sm newAptoText" data-toggle="modal" data-target="#modalTexts" title="Agregar aptos">
       <i class="fa fa-plus-circle" aria-hidden="true"></i>Agregar Apto
     </button> 
+    <button type="button" class="btn btn-success btn-sm uploadHeaderEdificio" data-toggle="modal" data-target="#modalHeaders" data-id="-1" title="Subir cabecera aptos">
+      <i class="fa fa-upload" aria-hidden="true"></i> Cabeceras de <b>El edificio</b>
+    </button> 
     <div class="col-xs-12 content-table-rooms">
       <table class="table table-condensed table-striped">
         <thead>
@@ -66,6 +69,7 @@ $mobile = new Mobile();
             <th class ="text-center bg-complete text-white font-s12" style="width: 50%;">APTO</th>
             <th class ="text-center bg-complete text-white font-s12" >Texto</th>
             <th class ="text-center bg-complete text-white font-s12" >Galería</th>
+            <th class ="text-center bg-complete text-white font-s12" >Cabeceras</th>
             <th class ="text-center bg-complete text-white font-s12" >Url</th>
           </tr>
         </thead>
@@ -80,6 +84,11 @@ $mobile = new Mobile();
               </td>
               <td class="text-center" >
                 <button type="button" class="btn btn-success btn-sm uploadFile" data-toggle="modal" data-target="#modalFiles" data-id="{{$item->id}}" title="Subir imagenes aptos">
+                  <i class="fa fa-upload" aria-hidden="true"></i>
+                </button>                    
+              </td>
+              <td class="text-center" >
+                <button type="button" class="btn btn-success btn-sm uploadHeader" data-toggle="modal" data-target="#modalHeaders" data-id="{{$item->id}}" title="Subir cabecera aptos">
                   <i class="fa fa-upload" aria-hidden="true"></i>
                 </button>                    
               </td>
@@ -147,6 +156,34 @@ $mobile = new Mobile();
   <!-- /.modal-dialog -->
 </div>
 
+<div class="modal fade slide-up in" id="modalHeaders" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content-wrapper">
+      <div class="modal-content">
+        <div class="block">
+          <div class="block-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14" style="font-size: 40px!important;color: black!important"></i>
+            </button>
+            <h2 class="text-center">
+              Subida de Imágenes de cabeceras
+            </h2>
+          </div>
+          <div class="container-xs-height full-height">
+            <div class="row-xs-height">
+              <div class="modal-body col-xs-height col-middle text-center   ">
+                <div class="upload-body">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
 <div class="modal fade slide-up in" id="modalFiles" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-xs">
     <div class="modal-content-wrapper">
@@ -174,7 +211,6 @@ $mobile = new Mobile();
   </div>
   <!-- /.modal-dialog -->
 </div>
-
 @endsection
 
 @section('scripts')
@@ -185,11 +221,23 @@ $mobile = new Mobile();
 
 $(document).ready(function () {
  $('.uploadFile').click(function(event) {
-      var id = $(this).attr('data-id');
-      $.get('/admin/apartamentos/gallery/'+id, function(data) {
-        $('.upload-body').empty().append(data);
-      });
+    var id = $(this).attr('data-id');
+    $.get('/admin/apartamentos/gallery/'+id, function(data) {
+      $('#modalHeaders').find('.upload-body').empty().append(data);
     });
+  });
+
+  $('.uploadHeader').click(function(event) {
+    var id = $(this).attr('data-id');
+    $.get('/admin/apartamentos/headers/room_type/'+id, function(data) {
+      $('.upload-body').empty().append(data);
+    });
+  });
+  $('.uploadHeaderEdificio').click(function(event) {
+    $.get('/admin/apartamentos/headers/edificio/edificio', function(data) {
+      $('#modalHeaders').find('.upload-body').empty().append(data);
+    });
+  });
   
   
   CKEDITOR.replace('apto_descript',

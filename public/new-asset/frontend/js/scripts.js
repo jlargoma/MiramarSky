@@ -21,7 +21,8 @@
       pauseOnHover:true,
       arrows: true,
       mode: "slide",
-      speed: 1500,
+      speed: 900,
+      pause: 7000,
       useCSS: true,
       cssEasing: 'ease', //'cubic-bezier(0.25, 0, 0.25, 1)',//
       easing: 'linear', //'for jquery animation',////

@@ -39,6 +39,9 @@
   .btn_reservar{
     margin-bottom: 4em;
   }
+  .apartamento {
+    background-image: url('{{ $photoHeader }}') !important;
+  }
   .btn_reservar .menu-booking-apt img{
     width: 15em;
     min-width: auto;

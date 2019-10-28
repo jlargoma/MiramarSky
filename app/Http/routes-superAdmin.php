@@ -146,12 +146,14 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin'], function () {
   Route::get('/apartamentos/email/{id}', 'RoomsController@email');
   Route::get('/apartamentos/fotos/{id}', 'RoomsController@photo');
   Route::get('/apartamentos/gallery/{id}', 'RoomsController@gallery');
+  Route::get('/apartamentos/headers/{type}/{id}', 'RoomsController@headers');
   Route::get('/apartamentos/deletePhoto/{id}', 'RoomsController@deletePhoto');
   Route::post('/apartamentos/deletePhoto', 'RoomsController@deletePhotoItem');
   Route::post('/apartamentos/photo_main', 'RoomsController@photoIsMain');
   Route::post('/apartamentos/photo_orden', 'RoomsController@photoOrden');
   Route::post('/apartamentos/send/email/owned', 'RoomsController@sendEmailToOwned');
 
+  Route::post('/apartamentos/upload-img-header', 'RoomsController@uploadHeaderFile');
   Route::post('/apartamentos/uploadFile', 'RoomsController@uploadRoomFile');
   Route::post('/apartamentos/uploadFile/{id}', 'RoomsController@uploadFile');
   Route::get('/apartamentos/assingToBooking', 'RoomsController@assingToBooking');
