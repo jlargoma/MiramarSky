@@ -127,11 +127,12 @@ correspondiente.
    * @return boolean
    */
   private function TimeControl($bookStart) {
+    date_default_timezone_set('Europe/Madrid');
     $current = Carbon::now();
     $checkin = new Carbon($bookStart);
     if ($current>=$checkin){
       //Check after 12 am
-      if ($current->format('h')>=12){
+      if ( intval($current->format('H')) >= 12){
         return true;
       }
     }
