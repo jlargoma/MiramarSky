@@ -729,8 +729,10 @@ class RoomsController extends AppController {
     
       if($request->hasfile('uploadedfile')){
         foreach($request->file('uploadedfile') as $image){
-          $imagename = preg_replace("/[^a-zA-Z0-9]+/", "-",$image->getClientOriginalName());
-          
+          $extension = explode('.', $image->getClientOriginalName());
+          $newName = implode('-',array_slice($extension,0,count($extension)-1));
+          $imagename = preg_replace("/[^a-zA-Z0-9]+/", "-",$newName);
+          $imagename .= '.'.$extension[count($extension)-1];
           $destinationPath = $directory;
           $img = Image::make($image->getRealPath());
           $width = $img->width();
@@ -990,6 +992,31 @@ class RoomsController extends AppController {
     if ($roomUpdate->save()){return 1;} else { return 0;}
   }
 
+  //http://miramarski.virtual/fixNameImages
+//  public function fixNameImages() {
+//    $rooms = Rooms::all();
+//    foreach ($rooms as $room){
+//    
+//      $path = public_path() . '/img/miramarski/apartamentos/' . $room->nameRoom . '/';
+//      $images = RoomsPhotos::where('room_id','>',0)->orderBy('position')->get();
+//      if ($images){
+//        foreach ($images as $img){
+//          if (substr($img->file_name, -4) == '-jpg' || true) {
+//            if (file_exists($path . $img->file_name)){
+//              $file_name = str_replace('-jpg', '.jpg', $img->file_name);
+//              rename($path.$img->file_name,$path.$file_name);
+//              if (file_exists($path .'/thumbnails/'. $img->file_name))
+//                rename($path.'/thumbnails/'.$img->file_name,$path.'/thumbnails/'.$file_name);
+//              
+//              $img->file_name = $file_name;
+//              $img->save();
+//            }
+//          }
+//        }
+//      }
+//      
+//    }
+//  }
 
 
 }
