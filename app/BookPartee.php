@@ -74,23 +74,20 @@ correspondiente.
     $policeStatus = 'grey';
     if ($this->status == "HUESPEDES"){
       
-      $now = new \DateTime("now");
-      $checkin = new \DateTime($bookStart);
-     
       if ($this->guestNumber){
         if ($this->guestNumber !== $bookGuest){
           $msgPartee .= '<br>Incompleto: '.$this->guestNumber.' de '.$bookGuest;
           if ($action){
             $ParteeAction = 'sendPartee';
             $msgPartee .= '<br><b>Enviar recordatorio</b>';
-            if ($now >= $checkin) $policeStatus = 'red finish_partee';
+            if ($this->TimeControl($bookStart)) $policeStatus = 'red finish_partee';
               else $policeStatus = 'grey';
           }
         } else {
           $alertDays = '';
           $parteeStatus = 'complete';
           $msgPartee .= '<br>Completado';
-          if ($now >= $checkin) $policeStatus = $action ? 'red finish_partee' : '';
+          if ($this->TimeControl($bookStart)) $policeStatus = $action ? 'red finish_partee' : '';
             else $policeStatus = 'grey';
         }
       } else {
@@ -121,5 +118,23 @@ correspondiente.
       . '<div class="tooltiptext">'.$msgPartee.'</div>'
       . '</div>'.$policeman;
    
+  }
+  
+  /**
+   * Check if can send to the police by time
+   * 
+   * @param type $bookStart
+   * @return boolean
+   */
+  private function TimeControl($bookStart) {
+    $current = Carbon::now();
+    $checkin = new Carbon($bookStart);
+    if ($current>=$checkin){
+      //Check after 12 am
+      if ($current->format('h')>=12){
+        return true;
+      }
+    }
+    return false;
   }
 }
