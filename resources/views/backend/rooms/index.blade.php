@@ -117,6 +117,35 @@
   <!-- /.modal-dialog -->
 </div>
 
+  <div class="modal fade slide-up in" id="modalHeaders" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content-wrapper">
+      <div class="modal-content">
+        <div class="block">
+          <div class="block-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14" style="font-size: 40px!important;color: black!important"></i>
+            </button>
+            <h2 class="text-center">
+              Subida de Imágenes de cabeceras
+            </h2>
+          </div>
+          <div class="container-xs-height full-height">
+            <div class="row-xs-height">
+              <div class="modal-body col-xs-height col-middle text-center   ">
+                <div class="upload-body">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+  
 <div class="modal fade slide-up in" id="modalEmailing" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content-wrapper">

@@ -103,6 +103,9 @@
                                           <button type="button" class="btn btn-success btn-sm editAptoText" data-toggle="modal" data-target="#modalTexts" data-id="{{$room->id}}" title="Editar textos aptos">
                                                           <i class="fa fa-pencil" aria-hidden="true"></i>
                                                         </button>
+                                          <button type="button" class="btn btn-success btn-sm uploadHeader" data-toggle="modal" data-target="#modalHeaders" data-id="<?php echo $room->id ?>" title="Subir imagenes cabeceras aptos">
+							<i class="fa fa-upload" aria-hidden="true"></i>
+						</button>  
 					</td>
 				</tr>
 			<?php endforeach ?>
@@ -119,6 +122,12 @@
       });
     });
 
+ $('.uploadHeader').click(function(event) {
+    var id = $(this).attr('data-id');
+    $.get('/admin/apartamentos/headers/room/'+id, function(data) {
+      $('.upload-body').empty().append(data);
+    });
+  });
 	$('.editable').change(function(event) {
 		var id = $(this).attr('data-id');
 		var luxury = $(this).is(':checked');

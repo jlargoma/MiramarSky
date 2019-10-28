@@ -69,8 +69,9 @@
     padding: 1em;
 }
 .apartamento.fotos {
-    background-image: url('{{ assetNew('/frontend/images/home/aptos-tit.png')}}') !important;
+    background-image: url('{{ $photoHeader }}') !important;
 }
+
 .page-title {
     padding: 5em 0 3em;
      background-size: cover; 

@@ -290,6 +290,25 @@ class RoomsController extends AppController {
     'roomName' => null,
     ]);
   }
+  public function headers($type,$id) {
+    
+    if ($type == 'room_type')
+      $photo = \App\RoomsHeaders::where('room_type_id', $id)->first();
+    if ($type == 'room')
+      $photo = \App\RoomsHeaders::where('room_id', $id)->first();
+    
+    if ($type == 'edificio') 
+      $photo = \App\RoomsHeaders::where('url', 'edificio')->first();
+//    dd($photo);
+    return view('backend/rooms/header-img', [
+    'photo' => $photo,
+    'id' => $id,
+    'type' => $type,
+    'roomName' => null,
+    ]);
+  }
+  
+  
 
   public function uploadFile(Request $request, $id) {
 
@@ -681,6 +700,72 @@ class RoomsController extends AppController {
     }
   }
   
+    public function uploadHeaderFile(Request $request) {
+
+    $id  = $request->input('id',null);
+    $type  = $request->input('type',null);
+    
+    if ($type == 'room_type')
+      $obj = \App\RoomsHeaders::where('room_type_id', $id)->first();
+    if ($type == 'room')
+      $obj = \App\RoomsHeaders::where('room_id', $id)->first();
+    if ($type == 'edificio')
+      $obj = \App\RoomsHeaders::where('url', $id)->first();
+    
+    if (!$obj){
+      $obj = new \App\RoomsHeaders();
+      if ($type == 'room_type') $obj->room_type_id = $id;
+      if ($type == 'room') $obj->room_id = $id;
+      if ($type == 'edificio') $obj->url = $id;
+    }
+    
+    $key = ($type == 'room_type') ? '-category-' : '-room-';
+    
+    $rute = "/img/miramarski/apartamentos/headers";
+    $directory = public_path() . $rute;
+    if (!file_exists($directory)) {
+      mkdir($directory, 0777, true);
+    }
+    /** Upload FILES */
+    if($request->hasfile('img_desktop')){
+      $img_desktop = $request->file('img_desktop');
+      $extension = explode('.', $img_desktop->getClientOriginalName());
+      $imagename_desktop = $id.$key.'img-desktop.'.$extension[count($extension)-1];
+      $img = Image::make($img_desktop->getRealPath());
+      $width = $img->width();
+      if ($width>1024){
+        $img->widen(1024);
+      }
+
+      $img->save($directory.'/'.$imagename_desktop);
+      //Save photo item
+      $obj->img_desktop = $rute.'/'.$imagename_desktop;
+      $obj->save();
+      
+    }
+    if($request->hasfile('img_mobile')){
+      $img_mobile = $request->file('img_mobile');
+      $extension = explode('.', $img_mobile->getClientOriginalName());
+      $imagename_mobile = $id.$key.'img-mobile.'.$extension[count($extension)-1];
+      $img = Image::make($img_mobile->getRealPath());
+      $width = $img->width();
+      if ($width>1024){
+        $img->widen(1024);
+      }
+
+      $img->save($directory.'/'.$imagename_mobile);
+      //Save photo item
+      $obj->img_mobile = $rute.'/'.$imagename_mobile;
+      $obj->save();
+      
+    }
+      
+    
+    return redirect()->back()->with('success', 'Imágenes Guardadas');  
+    
+   
+  }
+
   
   public function uploadRoomFile(Request $request) {
 

@@ -56,10 +56,28 @@ class HomeControllerNew extends AppController
         $photos = \App\RoomsPhotos::where('room_id', $room->id)->orderBy('main','DESC')->orderBy('position')->get();
 //        dd($photos);
       }
+      
+      $mobile = new Mobile();
+      $oPhotoHeader = \App\RoomsHeaders::where('room_id', $room->id)->first();
+      $photoHeader = assetNew('/frontend/images/home/aptos-tit.png');
+      if ($oPhotoHeader){
+        if ($mobile->isMobile()){
+          $aux = public_path().$oPhotoHeader->img_mobile;
+          if (is_file($aux)){
+            $photoHeader = $oPhotoHeader->img_mobile;
+          }
+        } else {
+          $aux = public_path().$oPhotoHeader->img_desktop;
+          if (is_file($aux)){
+            $photoHeader = $oPhotoHeader->img_desktop;
+          }
+        }
+      }
     
        return view('new.frontend.pages.fotos', [
               'photos'            => $photos,
-              'mobile'            => new Mobile(),
+              'photoHeader'       => $photoHeader,
+              'mobile'            => $mobile,
               'aptoHeading'       => $aptoHeading,
               'aptoHeadingMobile' => $aptoHeadingMobile,
               'typeApto'          => $typeApto,
@@ -97,10 +115,30 @@ class HomeControllerNew extends AppController
                 $aptos[] = $v->name;
               }
             }
+            $mobile = new Mobile();
+            $oPhotoHeader = \App\RoomsHeaders::where('room_type_id', $room->id)->first();
+            $photoHeader = assetNew('/frontend/images/home/apart-bg.jpg');
+
+            if ($oPhotoHeader){
+              if ($mobile->isMobile()){
+                $aux = public_path().$oPhotoHeader->img_mobile;
+                if (is_file($aux)){
+                  $photoHeader = $oPhotoHeader->img_mobile;
+                }
+              } else {
+                $aux = public_path().$oPhotoHeader->img_desktop;
+                if (is_file($aux)){
+                  $photoHeader = $oPhotoHeader->img_desktop;
+                }
+              }
+            }
+            
+            
             return view('new.frontend.pages.apartamento', [
               'photos'   => $photos,
               'aptoHeading'   => $aptoHeading,
-              'mobile'   => new Mobile(),
+              'photoHeader'   => $photoHeader,
+              'mobile'   => $mobile,
               'room'     => $room,
               'aptos'    => $aptos,
               'url'      => $url,
@@ -175,10 +213,30 @@ class HomeControllerNew extends AppController
         }
         natcasesort($arraySlides);
       }
+      
+      $mobile = new Mobile();
+      $oPhotoHeader = \App\RoomsHeaders::where('url', 'edificio')->first();
+      $photoHeader = assetNew('/frontend/images/home/apart-bg.jpg');
+
+      if ($oPhotoHeader){
+        if ($mobile->isMobile()){
+          $aux = public_path().$oPhotoHeader->img_mobile;
+          if (is_file($aux)){
+            $photoHeader = $oPhotoHeader->img_mobile;
+          }
+        } else {
+          $aux = public_path().$oPhotoHeader->img_desktop;
+          if (is_file($aux)){
+            $photoHeader = $oPhotoHeader->img_desktop;
+          }
+        }
+      }
+            
         
       return view('new.frontend.pages.edificio',[
           'aptoHeading' => 'Edificio Miramar Ski',
           'aptos'       => $aptos,
+          'photoHeader' => $photoHeader,
           'slides'      => $arraySlides,
           'mobile'      => $mobile,
               ]);
