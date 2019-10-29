@@ -223,7 +223,7 @@ $(document).ready(function () {
  $('.uploadFile').click(function(event) {
     var id = $(this).attr('data-id');
     $.get('/admin/apartamentos/gallery/'+id, function(data) {
-      $('#modalHeaders').find('.upload-body').empty().append(data);
+      $('#modalFiles').find('.upload-body').empty().append(data);
     });
   });
 

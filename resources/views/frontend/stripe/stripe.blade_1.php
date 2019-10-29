@@ -5,7 +5,7 @@
 ?>
 @extends('layouts.master_onlybody')
 
-@section('title')Gracias por tu reserva @endsection
+@section('title')Graicas por tu reserva @endsection
 
 @section('content')
 	<style>
