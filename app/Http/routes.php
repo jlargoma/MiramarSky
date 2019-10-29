@@ -39,14 +39,15 @@
     Route::get('/paymeny-error', 'HomeController@paymenyError')->name('paymeny-error');
     Route::get('/form-demo', 'BookController@demoFormIntegration');
     Route::post('/api/check_rooms_avaliables', 'BookController@apiCheckBook')->name('api.proccess');
-    //        Route::get( '/homeTest' , 'HomeTestController@index' )->middleware( 'web' );
-    //        Route::get( '/homeTest' , 'HomeTestController@index' )->middleware( 'web' );
-    Route::get('/sitemap', 'HomeController@siteMap')->middleware('web');
-    Route::get('/apartamentos/galeria/{apto}', 'HomeController@galeriaApartamento')->middleware('web');
-    Route::get('/apartamentos/{apto}', 'HomeController@apartamento')->middleware('web');
-    Route::get('/fotos/{apto}', 'HomeController@apartamento')->middleware('web');
-    Route::get('/edificio-miramarski-sierra-nevada', 'HomeController@edificio')->middleware('web');
-    Route::get('/contacto', 'HomeController@contacto')->middleware('web');
+    
+    Route::group(['middleware' => 'web'], function () {
+      Route::get('/sitemap', 'HomeController@siteMap');
+      Route::get('/apartamentos/galeria/{apto}', 'HomeController@galeriaApartamento');
+      Route::get('/apartamentos/{apto}', 'HomeController@apartamento')->name('web.apto');
+      Route::get('/fotos/{apto}', 'HomeController@apartamento');
+      Route::get('/edificio-miramarski-sierra-nevada', 'HomeController@edificio')->name('web.edificio');
+      Route::get('/contacto', 'HomeController@contacto');
+    });
     //   /*Correos Frontend */
     Route::post('/contacto-form', 'HomeController@formContacto');
     Route::post('/contacto-ayuda', 'HomeController@formAyuda');
@@ -176,7 +177,7 @@
 
     include_once 'routes-admin.php';
     include_once 'routes-superAdmin.php';
-    include_once 'new.php';
+//    include_once 'new.php';
 
     Route::get('/admin', function () {
       $user = \Auth::user();

@@ -12,7 +12,7 @@
           position: fixed;
           left: 0;
           top: 0;
-          background-image: url("{{$background}}");
+          background-image: url("{{ assetV('img/miramarski/lockscreen.jpg')}}");
           background-repeat: no-repeat;
           background-size: cover;
       }

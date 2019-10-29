@@ -1,4 +1,4 @@
-<div class="col-xs-12 push-10">
+<div class="push-10">
   <iframe src="{{ $urlPayland  }}" frameborder="0" style="width: 100%; min-height: 550px;"></iframe>
 </div>
 <div class="col-xs-12 push-10 text-left">

@@ -33,10 +33,7 @@
          padding: 40px 15px 0 15px;
       }
       #primary-menu-trigger {
-          color: #3F51B5!important;
-          top: 5px!important;
-          left: 5px!important;
-          border: 2px solid #3F51B5!important;
+
       }
       .container-image-box img{
          height: 180px!important;

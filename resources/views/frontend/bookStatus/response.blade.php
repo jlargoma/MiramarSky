@@ -176,7 +176,6 @@
       event.preventDefault();
       showLoad();
 
-
       var _token = $('input[name="_token"]').val();
       var newroom = $('input[name="newroom"]').val();
       var name = $('input[name="name"]').val();
@@ -228,11 +227,15 @@ if(env('APP_ENV') == 'VIRTUAL'){
                       priceDiscount: priceDiscount
                     }, function (data) {
                         hideLoad();
-                        $('#content-book-payland').empty().append(data).fadeIn('300');
+                        var objAux = $('#content-book-payland');
+                        if (objAux.length<=0){
+                          objAux = $('#content-book-response');
+                        }
+                        objAux.empty().append(data).fadeIn('300');
                         <?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
                             $('html, body').animate({
                               /*scrollTop: $("section#content").offset().top*/
-                              scrollTop: $("#content-book-payland").offset().top - 30
+                              scrollTop: objAux.offset().top - 30
                             }, 2000);
                         <?php endif; ?>
                     });
@@ -281,11 +284,15 @@ if(env('APP_ENV') == 'VIRTUAL'){
                       priceDiscount: priceDiscount
                     }, function (data) {
                         hideLoad();
-                        $('#content-book-payland').empty().append(data).fadeIn('300');
+                        var objAux = $('#content-book-payland');
+                        if (objAux.length<=0){
+                          objAux = $('#content-book-response');
+                        }
+                        objAux.empty().append(data).fadeIn('300');
                         <?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
                             $('html, body').animate({
                               /*scrollTop: $("section#content").offset().top*/
-                              scrollTop: $("#content-book-payland").offset().top - 30
+                              scrollTop: objAux.offset().top - 30
                             }, 2000);
                         <?php endif; ?>
                     });

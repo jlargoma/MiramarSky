@@ -11,7 +11,7 @@ use Mail;
 use Route;
 use URL;
 
-class HomeController extends AppController
+class HomeControllerOld extends AppController
 {
     const minDays = 2;
 
@@ -28,6 +28,13 @@ class HomeController extends AppController
         /* Detectamos el tipo de dispositivo*/
       
         $mobile = new Mobile();
+        if (!$mobile->isMobile())
+        {
+            $slides = File::allFiles(public_path() . '/img/miramarski/edificio/');
+        } else
+        {
+            $slides = File::allFiles(public_path() . '/img/miramarski/edificio/');
+        }
         $val = $request->cookie('showPopup');
         if (!empty($val))
         {
@@ -39,117 +46,128 @@ class HomeController extends AppController
         return view('frontend.home', [
             'cookie'         => $cookie,
             'mobile'         => $mobile,
-            'slidesEdificio' => null,
+            'slidesEdificio' => $slides,
         ]);
     }
 
-    
-    private function getRoomData($url,$room) {
-      $aptoHeading       = ($room->luxury) ? $room->sizeRooms->name  : $room->sizeRooms->name;
-      $aptoHeadingMobile = ($room->luxury) ? $room->sizeRooms->name  : $room->sizeRooms->name;
-      $typeApto          = $room->sizeRooms->id;
-      $directory = public_path() . "/img/miramarski/apartamentos/" . $room->nameRoom.'/';
-      $directoryThumbnail = "/img/miramarski/apartamentos/" . $room->nameRoom . "/thumbnails/";
-
-      $photos = null;
-      if ($room) {
-        $photos = \App\RoomsPhotos::where('room_id', $room->id)->orderBy('main','DESC')->orderBy('position')->get();
-//        dd($photos);
-      }
-      
-      $mobile = new Mobile();
-      $oPhotoHeader = \App\RoomsHeaders::where('room_id', $room->id)->first();
-      $photoHeader = assetNew('/frontend/images/home/aptos-tit.png');
-      if ($oPhotoHeader){
-        if ($mobile->isMobile()){
-          $aux = public_path().$oPhotoHeader->img_mobile;
-          if (is_file($aux)){
-            $photoHeader = $oPhotoHeader->img_mobile;
-          }
-        } else {
-          $aux = public_path().$oPhotoHeader->img_desktop;
-          if (is_file($aux)){
-            $photoHeader = $oPhotoHeader->img_desktop;
-          }
-        }
-      }
-    
-       return view('frontend.pages.fotos', [
-              'photos'            => $photos,
-              'photoHeader'       => $photoHeader,
-              'mobile'            => $mobile,
-              'aptoHeading'       => $aptoHeading,
-              'aptoHeadingMobile' => $aptoHeadingMobile,
-              'typeApto'          => $typeApto,
-              'room'              => $room,
-              'url'               => $url,
-              'directory'         => $directory,
-              'directoryThumbnail'=> $directoryThumbnail,
-          ]);
-       
-    }
-    
-    
     public function apartamento($apto)
     {
         $url  = $apto;
         $apto = str_replace('-', ' ', $apto);
         $apto = str_replace(' sierra nevada', '', $apto);
-        $room = \App\Rooms::where('nameRoom', $url)->first();
-        if ($room)
-        {
-          return $this->getRoomData($url,$room);
-        } else {
-          $room = \App\RoomsType::where('name',$url)->first();
-          if ($room){
-            
-            $aptoHeading = $room->title;
-            $photos = \App\RoomsPhotos::where('gallery_key', $room->id)
-                    ->orderBy('main','DESC')->orderBy('position')->get();
-            
-            
-            $aptos = array();
-            $roomsType = \App\RoomsType::select('name')->where('status',1)->get();
-            if ($roomsType){
-              foreach ($roomsType as $v){
-                $aptos[] = $v->name;
-              }
-            }
-            $mobile = new Mobile();
-            $oPhotoHeader = \App\RoomsHeaders::where('room_type_id', $room->id)->first();
-            $photoHeader = assetNew('/frontend/images/home/apart-bg.jpg');
 
-            if ($oPhotoHeader){
-              if ($mobile->isMobile()){
-                $aux = public_path().$oPhotoHeader->img_mobile;
-                if (is_file($aux)){
-                  $photoHeader = $oPhotoHeader->img_mobile;
+
+        switch ($apto)
+        {
+            case 'apartamento lujo':
+                $aptoHeading       = "APARTAMENTOS DOS DORM - DE LUJO ";
+                $aptoHeadingMobile = "Apto de lujo 2 DORM";
+
+                $typeApto = 1;
+                break;
+
+            case 'estudio lujo':
+                $aptoHeading       = "ESTUDIOS – DE LUJO";
+                $aptoHeadingMobile = "Estudio de lujo";
+
+                $typeApto = 3;
+                break;
+
+            case 'apartamento standard':
+                $aptoHeading       = "APARTAMENTOS DOS DORM - ESTANDAR ";
+                $aptoHeadingMobile = "Apto Standard";
+
+                $typeApto = 2;
+                break;
+
+            case 'estudio standard':
+                $aptoHeading       = "ESTUDIOS – ESTANDAR";
+                $aptoHeadingMobile = "Estudio Standard";
+
+                $typeApto = 4;
+                break;
+            case 'chalet los pinos':
+                $aptoHeading       = "CHALET - LOS PINOS";
+                $aptoHeadingMobile = "Chalet los pinos";
+
+                $typeApto = 5;
+                break;
+
+            case 'apartamento lujo gran capacidad':
+                $aptoHeading       = "APTOS 3/4 DORMITORIOS LUJO";
+                $aptoHeadingMobile = "3DORM GRAN CAPACIDAD";
+
+                $typeApto = 6;
+                break;
+            default:
+                $room = \App\Rooms::where('nameRoom', $url)->first();
+                if ($room)
+                {
+                    $aptoHeading       = ($room->luxury) ? $room->sizeRooms->name . " - LUJO" : $room->sizeRooms->name . " - ESTANDAR";
+                    $aptoHeadingMobile = ($room->luxury) ? $room->sizeRooms->name . " - LUJO" : $room->sizeRooms->name . " - ESTANDAR";
+                    $typeApto          = $room->sizeRooms->id;
+                    break;
+                } else
+                {
+                    return view('errors.notexist-apartmanet');
                 }
-              } else {
-                $aux = public_path().$oPhotoHeader->img_desktop;
-                if (is_file($aux)){
-                  $photoHeader = $oPhotoHeader->img_desktop;
-                }
-              }
-            }
-            
-            
-            return view('frontend.pages.apartamento', [
-              'photos'   => $photos,
-              'aptoHeading'   => $aptoHeading,
-              'photoHeader'   => $photoHeader,
-              'mobile'   => $mobile,
-              'room'     => $room,
-              'aptos'    => $aptos,
-              'url'      => $url,
-            ]);
-            
-          }
+
+        }
+        if ($url == 'apartamento-standard-sierra-nevada' || $url == 'apartamento-lujo-sierra-nevada' || $url == 'estudio-lujo-sierra-nevada' || $url == 'estudio-standard-sierra-nevada' || $url == 'chalet-los-pinos-sierra-nevada' || $url == 'apartamento-lujo-gran-capacidad-sierra-nevada')
+        {
+
+            $slides    = File::allFiles(public_path() . '/img/miramarski/galerias/' . $url);
+            $directory = '/img/miramarski/galerias/';
+        } else
+        {
+
+            $slides    = File::allFiles(public_path() . '/img/miramarski/apartamentos/' . $url);
+            $directory = '/img/miramarski/apartamentos/';
+
+
         }
 
-        return redirect('404');
-        
-    
+
+        foreach ($slides as $key => $slide)
+        {
+            $arraySlides[] = $slide->getFilename();
+        }
+        natcasesort($arraySlides);
+        $slides = array();
+        foreach ($arraySlides as $key => $sl)
+        {
+            if ($url == 'apartamento-standard-sierra-nevada' || $url == 'apartamento-lujo-sierra-nevada' || $url == 'estudio-lujo-sierra-nevada' || $url == 'estudio-standard-sierra-nevada' || $url == 'chalet-los-pinos-sierra-nevada' || $url == 'apartamento-lujo-gran-capacidad-sierra-nevada')
+            {
+
+                $slides[] = '/img/miramarski/galerias/' . $url . '/' . $sl;
+            } else
+            {
+
+                $slides[] = '/img/miramarski/apartamentos/' . $url . '/' . $sl;
+
+
+            }
+        }
+
+        $aptos = [
+            'apartamento-lujo-gran-capacidad-sierra-nevada',
+            'apartamento-lujo-sierra-nevada',
+            'estudio-lujo-sierra-nevada',
+            'apartamento-standard-sierra-nevada',
+            'estudio-standard-sierra-nevada'
+        ];
+
+
+        return view('frontend.pages._apartamento2', [
+            'slides'            => $slides,
+            'mobile'            => new Mobile(),
+            'aptoHeading'       => $aptoHeading,
+            'aptoHeadingMobile' => $aptoHeadingMobile,
+            'typeApto'          => $typeApto,
+            'aptos'             => $aptos,
+            'url'               => $url,
+            'directory'         => $directory,
+        ]);
     }
 
     public function galeriaApartamento($apto)
@@ -197,49 +215,7 @@ class HomeController extends AppController
 
     public function edificio()
     {
-      $mobile = new Mobile();
-      $aptos  = [
-            'apartamento-lujo-sierra-nevada',
-            'estudio-lujo-sierra-nevada',
-            'apartamento-standard-sierra-nevada',
-            'estudio-standard-sierra-nevada'
-        ];
-      $folder = '/img/miramarski/edificio/';
-      $slides = File::allFiles(public_path() . $folder);
-      if ($slides){
-       foreach ($slides as $key => $slide)
-        {
-            $arraySlides[] = $folder.$slide->getFilename();
-        }
-        natcasesort($arraySlides);
-      }
-      
-      $mobile = new Mobile();
-      $oPhotoHeader = \App\RoomsHeaders::where('url', 'edificio')->first();
-      $photoHeader = assetNew('/frontend/images/home/apart-bg.jpg');
-
-      if ($oPhotoHeader){
-        if ($mobile->isMobile()){
-          $aux = public_path().$oPhotoHeader->img_mobile;
-          if (is_file($aux)){
-            $photoHeader = $oPhotoHeader->img_mobile;
-          }
-        } else {
-          $aux = public_path().$oPhotoHeader->img_desktop;
-          if (is_file($aux)){
-            $photoHeader = $oPhotoHeader->img_desktop;
-          }
-        }
-      }
-            
-        
-      return view('frontend.pages.edificio',[
-          'aptoHeading' => 'Edificio Miramar Ski',
-          'aptos'       => $aptos,
-          'photoHeader' => $photoHeader,
-          'slides'      => $arraySlides,
-          'mobile'      => $mobile,
-              ]);
+        // return view('frontend.pages._edificio');
     }
 
     public function contacto()
