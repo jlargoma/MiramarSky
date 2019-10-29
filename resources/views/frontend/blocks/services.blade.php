@@ -1,58 +1,30 @@
+<?php
+$oContents = new App\Contents();
+$services = $oContents->getContentByKey('services');
+?>
+
+
 <section class="page-section darkgrey">
   <div class="row" style="margin:2em auto;">
     <h2 class="text-center white font-w300">
       OTROS SERVICIOS
     </h2>
     <div class="col-md-12 col-xs-12">
-      <div class="col-md-4 col-xs-6 home-service ">
-        <a href="{{ url('/restaurantes')}}">
+      <?php for($i=1;$i<4;$i++): ?>
+      <div class="col-md-4   <?php echo ($i<3) ? 'col-xs-6' : 'col-xs-12'; ?> home-service">
+        <a href="{{ $services['link_'.$i]}}">
           <div class=" container-image-box hover-effect">
-            
-              <img class="img-responsive imga"
-                   src="{{ asset('/img/posts/restaurante-sierra-nevada.jpg')}}"
-                   alt="Apartamento standard sierra nevada"/>
+              <img class="img-responsive imga"  src="{{ $services['imagen_'.$i]}}"  alt="{{$services['title_'.$i]}}"/>
             <div class="text-right overlay-text">
               <h2 class="font-w200 center push-10 text-center text font-s24 white">
-                <span class="font-w800 white"> BARES Y  RESTAURANTES</span>
+                <span class="font-w800 white">{{$services['title_'.$i]}}</span>
               </h2>
             </div>
           </div>
         </a>
       </div>
+      <?php endfor; ?>
 
-      <div class="col-md-4 col-xs-6 home-service">
-        <a href="//miramarski.com/forfait">
-          <div class=" container-image-box  hover-effect">
-            
-              <img class="img-responsive imga"
-                   src="{{ assetV('/frontend/images/home/fondo-servicio-1.jpg')}}"
-                   alt="VENTA DE FORFAITS"/>
-            <div class="text-right overlay-text">
-              <h2 class="font-w200 center push-10 text-center text font-s24 white">
-                <span class="font-w800 white" style="letter-spacing: -2px;">VENTA DE FORFAITS</span>
-              </h2>
-            </div>
-          </div>
-        </a>
-      </div>
-
-      <div class="col-md-4 col-xs-12 home-service">
-        <a href="{{ url('//miramarski.com/forfait')}}">
-          <div class=" container-image-box hover-effect">
-            
-
-              <img class="img-responsive"
-                   src="{{ assetV('/frontend/images/home/fondo-servicio-2.jpg')}}"
-                   alt="CLASES DE SKI"/>
-            <div class="text-right overlay-text">
-              <h2 class="font-w200 center push-10 text-center text font-s24 white">
-                <span class="font-w800 white" style="letter-spacing: -2px;">CLASES DE SKI</span>
-              </h2>
-           
-            </div>
-          </div>
-        </a>
-      </div>
     </div>
   </div>
 </section>

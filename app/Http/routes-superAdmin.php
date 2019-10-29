@@ -80,6 +80,12 @@ Route::group(['middleware' => 'authAdmin'], function () {
   Route::get('/ical/urls/deleteUrl', 'ICalendarController@deleteUrl');
   Route::get('/ical/getLasts', 'ICalendarController@getLasts');
   Route::get('/ical/urls/getAllUrl/{aptoID}', 'ICalendarController@getAllUrl');
+  
+  
+  Route::get('admin/contents-home/{type?}', 'ContentsControllers@index')->name('contents.index');
+  Route::post('admin/contents-home/{type?}', 'ContentsControllers@update')->name('contents.upd');
+  
+  
 });
 
 /**

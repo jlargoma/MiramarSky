@@ -98,39 +98,27 @@
   <div class="box-feature-home">
     <div class="bfh-text">
       <div class="box">
-        <h2 style="font-size: 22px;">EL EDIFICIO MIRAMAR SKI…LUJO A PIE DE PISTA</h2>
-    <figure class="mobil"><img src="{{ assetV('/frontend/images/home/edificio-1.jpg')}}" alt="Edificio Miramar Ski a pie de pista, zona baja"></figure>
+        <h2 style="font-size: 22px;">{{$edificio['title']}}</h2>
+    <figure class="mobil"><img src="{{$edificio['imagen_1']}}" alt="Edificio Miramar Ski a pie de pista, zona baja"></figure>
       <div class="text">
-        <p>
-          El edificio Miramar Ski está situado en la Zona baja, <b>a 5 minutos andando de la plaza de Andalucía…</b> además puedes llegar y salir esquiando desde el propio edificio: <b>acceso directo a las pistas</b>
-          <br/><b>Piscina climatizada, gimnasio, parking cubierto, taquilla guarda esquís.</b>Se trata de uno de <b>edificios más modernos de Sierra Nevada, de más reciente construcción.</b>
-          <a href="{{ route('web.edificio') }}" class="text-center" title="Ver Más" style="color: #3f51b5;">Ver más..</a>
-        </p>
+        {!! $edificio['content_1'] !!}
       </div>
       </div>
     </div>
     <div class="bfh-img">
-      <figure><img src="{{ assetV('/frontend/images/home/edificio-1.jpg')}}" alt="Edificio Miramar Ski a pie de pista, zona baja"></figure>
+      <figure><img src="{{$edificio['imagen_1']}}" alt="Edificio Miramar Ski a pie de pista, zona baja"></figure>
     </div>
   </div>
   <div class="box-feature-home  hidden-mobile">
     <div class="bfh-img">
-      <figure><img src="{{ assetV('/frontend/images/home/edificio-2.jpg')}}" alt=""></figure>
+      <figure><img src="{{$edificio['imagen_2']}}" alt=""></figure>
     </div>
     <div class="bfh-text">
       <div class="box right">
       <h3>EXCELENTE SITUACION…..Y ADEMAS  SALES DE CASA ESQUIANDO!!</h3>
-    <figure class="mobil"><img src="{{ assetV('/frontend/images/home/edificio-2.jpg')}}" alt="Edificio Miramar Ski"></figure>
+    <figure class="mobil"><img src="{{$edificio['imagen_2']}}" alt="Edificio Miramar Ski"></figure>
       <div class="text">
-        En Sierra Nevada es muy importante la ubicación para que disfrutes tus vacaciones. Te es uno de los edificios más modernos den el que te olvidas de coger el coche y ni siquiera remontes para llegar a tu apartamento.
-        <b>Podrás Alquilar Alojamiento de diferentes tamaños según tus necesidades:</b>
-      <ul>
-        <li><b>Estudios</b> con capacidad <b>para 4 personas</b></li> 
-        <li><b>Apartamentos</b> con una habitación, con capacidad <b>para 4/5 personas</b></li> 
-        <li><b>Apartamentos</b> con dos habitación, con capacidad <b>para 6/8 personas</b></li> 
-        <li><b>Apartamentos</b> con tres habitaciones, con capacidad <b>para 10/12 personas</b></li>
-        <li><b>Apartamentos</b> con cuatro habitaciones, con capacidad <b>para 12/14 personas</b></li> 
-      </ul>
+       {!! $edificio['content_2'] !!}
       </div>
       <div class="button menu-booking">
             <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>RESERVAR
