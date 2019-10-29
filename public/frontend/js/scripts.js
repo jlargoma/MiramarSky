@@ -236,37 +236,42 @@ if (elementVisible($('#progressData1'))){
         var diffDays = data.diff;
         var minDays = data.minDays;
           if (diffDays >= 2) {
-            $.post(url, {
-              _token: _token,
-              name: name,
-              email: email,
-              phone: phone,
-              fechas: data.dates,
-              quantity: quantity,
-              apto: apto,
-              luxury: luxury,
-              parking: parking,
-              comment: comment
-            }, function (data) {
-
+            if (data.specialSegment != false && minDays>diffDays) {
               $('#content-book-response .back').empty();
-              $('#content-book-response .back').append(data);
-              $("#content-book-response").flip(true);
+              alert('ESTANCIA MÍNIMA EN ESTAS FECHAS:' + minDays + ' DÍAS');
+            } else {
+              $.post(url, {
+                _token: _token,
+                name: name,
+                email: email,
+                phone: phone,
+                fechas: data.dates,
+                quantity: quantity,
+                apto: apto,
+                luxury: luxury,
+                parking: parking,
+                comment: comment
+              }, function (data) {
 
-          if ($( document ).width()<991){
-            var scrollTopData = $("#content-book-response").offset().top;
-            $('html, body').animate({
-              /*scrollTop: $("section#content").offset().top*/
-              scrollTop: scrollTopData
-            }, 2000);
-          }
-              if (data.specialSegment != false) {
-                $('.content-alert-min-special-days').append('<h2 class="text-center text-white white" ' +
-                 'style="line-height: 1; letter-spacing: -1px;">ESTANCIA MÍNIMA EN ' +
-                 'ESTAS ' +
-                    'FECHAS: ' + minDays + ' DÍAS</h2>');
-              }
-            });
+                $('#content-book-response .back').empty();
+                $('#content-book-response .back').append(data);
+                $("#content-book-response").flip(true);
+
+                if ($( document ).width()<991){
+                  var scrollTopData = $("#content-book-response").offset().top;
+                  $('html, body').animate({
+                    /*scrollTop: $("section#content").offset().top*/
+                    scrollTop: scrollTopData
+                  }, 2000);
+                }
+                if (data.specialSegment != false) {
+                  $('.content-alert-min-special-days').append('<h2 class="text-center text-white white" ' +
+                   'style="line-height: 1; letter-spacing: -1px;">ESTANCIA MÍNIMA EN ' +
+                   'ESTAS ' +
+                      'FECHAS: ' + minDays + ' DÍAS</h2>');
+                }
+              });
+            }
           } else {
             alert('Estancia minima ' + minDays + ' NOCHES')
           }
