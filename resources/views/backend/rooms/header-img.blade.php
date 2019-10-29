@@ -10,14 +10,20 @@
         @if($photo)
         <img src="{{ $photo->img_desktop }}" alt="{{$roomName}}" width="100%">
         @endif
-        <input name="img_desktop" type="file" class="custom-file-input" />
+        <div class="row">
+          <div class="col-md-6"><input name="img_desktop" type="file" class="custom-file-input" /></div>
+          <div class="col-md-6"><p class="text-danger pt-1">Recomendado: 1024px * 310px</p></div>
+        </div>
       </div>
-      <div class="row">
+      <div class="row pt-1">
         <b>Imagen cabecera Mobil</b>
         @if($photo)
         <img src="{{ $photo->img_mobile }}" alt="{{$roomName}}" width="100%">
         @endif
-        <input name="img_mobile" type="file" class="custom-file-input" />
+        <div class="row">
+          <div class="col-md-6"><input name="img_mobile" type="file" class="custom-file-input" /></div>
+          <div class="col-md-6"><p class="text-danger  pt-1">Recomendado: 425px * 260x</p></div>
+        </div>
       </div>
       <input type="submit" value="Subir archivo" class="btn btn-primary" />
     </form>
