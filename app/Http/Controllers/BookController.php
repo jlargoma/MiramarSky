@@ -289,7 +289,7 @@ class BookController extends AppController
 
                     $book->sup_park  = $this->getPricePark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
                     $book->cost_park = $this->getCostPark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
-                } elseif ($room->sizeApto == 2 || $room->sizeApto == 6)
+                } elseif ($room->sizeApto == 2 || $room->sizeApto == 6 || $room->sizeApto == 9)
                 {
 
                     $book->sup_limp  = \App\Extras::find(1)->price;//50;
@@ -521,7 +521,7 @@ class BookController extends AppController
 
                             $book->sup_park  = $this->getPricePark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
                             $book->cost_park = $this->getCostPark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
-                        } elseif ($room->sizeApto == 2 || $room->sizeApto == 6)
+                        } elseif ($room->sizeApto == 2 || $room->sizeApto == 6 || $room->sizeApto == 9)
                         {
 
                             $book->sup_limp  = \App\Extras::find(1)->price;//50;
@@ -1749,16 +1749,12 @@ class BookController extends AppController
                 $typesRoom['estudio']['total'] += 1;
             }
 
+            if ($room->luxury == 0 && $room->sizeApto == 9){
+               $typesRoom['chalet']['total'] += 1;
+            }
             if ($room->luxury == 0 && $room->sizeApto == 2)
             {
-
-                if ($room->id == 144)
-                {
-                    $typesRoom['chalet']['total'] += 1;
-                } else
-                {
-                    $typesRoom['2dorm-stand']['total'] += 1;
-                }
+              $typesRoom['2dorm-stand']['total'] += 1;
             }
 
             if ($room->luxury == 0 && $room->sizeApto == 1)
@@ -1827,16 +1823,12 @@ class BookController extends AppController
                 {
                     $typesRoom['estudio']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
                 }
+                if ($room->luxury == 0 && $room->sizeApto == 9){
+                  $typesRoom['chalet']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
+                }
                 if ($room->luxury == 0 && $room->sizeApto == 2)
                 {
-                    if ($room->id == 144)
-                    {
-                        $typesRoom['chalet']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
-                    } else
-                    {
-                        $typesRoom['2dorm-stand']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
-                    }
-
+                  $typesRoom['2dorm-stand']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
                 }
                 if ($room->luxury == 0 && $room->sizeApto == 1)
                 {
@@ -2201,7 +2193,7 @@ class BookController extends AppController
             $data['totales']['limp']  = \App\Extras::find(2)->price;//30;
             $data['costes']['limp'] = \App\Extras::find(2)->cost;//30;
 
-        } elseif ($room->sizeApto == 2 || $room->sizeApto == 6)
+        } elseif ($room->sizeApto == 2 || $room->sizeApto == 6 || $room->sizeApto == 9)
         {
             $data['totales']['limp']  = \App\Extras::find(1)->price;//50;
             $data['costes']['limp'] = \App\Extras::find(1)->cost;//40;

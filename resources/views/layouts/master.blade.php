@@ -59,8 +59,7 @@
         <link rel="stylesheet" href="{{ assetV('/frontend/custom.css')}}" type="text/css"/>
 
         <link rel="stylesheet" type="text/css" href="{{ assetV('/frontend/css/normalize.css')}}" />
-        {{--<link rel="stylesheet" type="text/css" href="{{ /css/fourBoxSlider.css')}}" />--}}
-        <link rel="stylesheet" type="text/css" href="{{ assetV('/frontend/css/fourBoxSlider.min.css')}}" />
+
         <link rel="stylesheet" type="text/css" href="{{ assetV('/frontend/css/component.css')}}" />    
         <link rel="stylesheet" type="text/css" href="{{ assetV('/frontend/css/styles.css')}}" />    
         <script type="text/javascript" src="{{ assetV('/frontend/js/jquery-2.1.4.js')}}"></script><script src="{{assetV('/frontend/js/modernizr.custom.js')}}"></script>

@@ -63,7 +63,6 @@ $(document).ready(function () {
     var date2 = new Date(arrayDates[1]);
     var timeDiff = Math.abs(date2.getTime() - date1.getTime());
     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    console.log(diffDays);
     if (diffDays < 2) {
       $('.min-days').show();
     } else {
@@ -73,49 +72,45 @@ $(document).ready(function () {
   });
 
 
-  $(".apto-3dorm").click(function (event) {
 
-    $("#luxury-yes").trigger('click');
-
-
-    $("#luxury-no").prop("disabled", true);
-    $("#luxury-no").hide();
-
-
-  });
-  $(".apto-chlt").click(function (event) {
-
-    $("#luxury-no").trigger('click');
-
-
-    $("#luxury-yes").prop("disabled", true);
-    $("#luxury-yes").hide();
-
-
-  });
+ $('input:radio[name="apto"]').click(function (event) {
+  //apto-estudio
+  //apto-2dorm
+  //apto-3dorm
+  //apto-chlt
+  //apto-estudio
+  var id = $(this).attr('id');
+  $("#luxury-no").prop("disabled", false).show();
+  $("#luxury-yes").prop("disabled", false).show();
+  
+  if (id == 'apto-3dorm' || id == 'apto-chlt'){
+    if (id == 'apto-3dorm'){
+      $("#luxury-yes").trigger('click');
+      $("#luxury-no").prop("disabled", true).hide();
+    }
+    if (id == 'apto-chlt'){
+      $("#luxury-no").trigger('click');
+      $("#luxury-yes").prop("disabled", true).hide();
+    }
+  }
+   
+ });
 
   $('#quantity').change(function (event) {
       var pax = $(this).val();
+      
+      if (pax >= 1 && pax <= 6) $("#apto-chlt").prop("disabled", false);
+        else $("#apto-chlt").prop("disabled", true).hide();
 
       if (pax >= 1 && pax <= 4) {
         $("#apto-estudio").prop("disabled", false);
-        $("#apto-2dorm").prop("disabled", true).hide();
-        $("#apto-3dorm").prop("disabled", true).hide();
-        $("#apto-chlt").prop("disabled", true).hide();
-
         $("#apto-estudio").trigger('click');
         $("#apto-estudio").show();
-
       }
       if (pax >= 5 && pax <= 8) {
         $("#apto-2dorm").prop("disabled", false);
         $("#apto-2dorm").trigger('click');
-
-
         $("#apto-estudio").prop("disabled", true).hide();
-        $("#apto-3dorm").prop("disabled", true).hide();
-        $("#apto-chlt").prop("disabled", true).hide();
-
       } else if (pax >= 9) {
         $("#apto-3dorm").prop("disabled", false);
         $(".apto-3dorm").trigger('click');

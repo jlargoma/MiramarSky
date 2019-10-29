@@ -1292,7 +1292,7 @@ class LiquidacionController extends AppController {
 
     if ($room->sizeApto == 1) {
       $expenseLimp = 30;
-    } else if ($room->sizeApto == 2) {
+    } else if ($room->sizeApto == 2 || $room->sizeApto == 9) {
       $expenseLimp = 50; //40;
     } else if ($room->sizeApto == 3 || $room->sizeApto == 4) {
       $expenseLimp = 100; //70;
