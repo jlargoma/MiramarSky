@@ -63,7 +63,9 @@ setlocale(LC_TIME, "es_ES"); ?>
           case 'file':
             ?>
             @if($v[2])
-            <img src="{{ $v[2] }}" width="100%">
+            <p>
+            <img src="{{ $v[2] }}" style='max-width: 100%;'>
+            </p>
             @endif
             <input name="{{$k}}" id="{{$k}}" type="file" class="custom-file-input" />
             <?php

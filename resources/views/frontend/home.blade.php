@@ -115,7 +115,7 @@
     </div>
     <div class="bfh-text">
       <div class="box right">
-      <h3>EXCELENTE SITUACION…..Y ADEMAS  SALES DE CASA ESQUIANDO!!</h3>
+      <h3>{{$edificio['title_2']}}</h3>
     <figure class="mobil"><img src="{{$edificio['imagen_2']}}" alt="Edificio Miramar Ski"></figure>
       <div class="text">
        {!! $edificio['content_2'] !!}
