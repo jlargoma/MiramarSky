@@ -267,6 +267,7 @@ class BackendController extends AppController
 			        $book->real_price    = 30;
 			        break;
 		        case 2:
+		        case 9:
 			        $book->sup_limp      = 50;
 			        $book->cost_limp     = 40;
 			        $book->cost_total    = 40;

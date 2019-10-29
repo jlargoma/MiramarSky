@@ -1061,7 +1061,7 @@ class Book extends Model {
     if ($sizeApto == 1 || $sizeApto == 5){
       $oExtra = \App\Extras::find(2);
     }
-    if ($sizeApto == 2 || $sizeApto == 6){
+    if ($sizeApto == 2 || $sizeApto == 6 || $sizeApto == 9){
       $oExtra = \App\Extras::find(1);
     }
     if ($sizeApto == 3 || $sizeApto == 4 || $sizeApto == 7 || $sizeApto == 8){

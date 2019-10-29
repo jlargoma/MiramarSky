@@ -160,6 +160,11 @@ class HomeController extends AppController
             $aptoHeading       = "APARTAMENTOS DOS DORM - DE LUJO ";
             $aptoHeadingMobile = "Apto de lujo 2 DORM";
             $typeApto          = 1;
+        } elseif ($room->sizeApto == 9 && $room->luxury == 0)
+        {
+            $aptoHeading       = "CHALET - LOS PINOS ";
+            $aptoHeadingMobile = "CHALET - LOS PINOS";
+            $typeApto          = 2;
         } elseif ($room->sizeApto == 2 && $room->luxury == 0)
         {
             $aptoHeading       = "APARTAMENTOS DOS DORM - ESTANDAR ";
@@ -674,7 +679,7 @@ class HomeController extends AppController
         {
             //$roomAssigned = 144;
             $typeApto = "CHALET los pinos";
-            $sizeRoom = 2;
+            $sizeRoom = 9;
             $limp     = (int) \App\Extras::find(1)->price;
         } elseif ($request->input('apto') == '3dorm')
         {
