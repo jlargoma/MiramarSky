@@ -33,13 +33,13 @@ class Contents extends Model
       case 'services':
         return [
           'title_1'=>['Título','string',null],  
-          'imagen_1'=>['Primer Imagen','file',null],  
+          'imagen_1'=>['Primer Imagen ( 630*420 px )','file',null],  
           'link_1'=>['Primer enlace','string',null],  
           'title_2'=>['Segundo Título','string',null],  
-          'imagen_2'=>['Segunda Imagen','file',null],  
+          'imagen_2'=>['Segunda Imagen ( 630*420 px )','file',null],  
           'link_2'=>['Segundo enlace','string',null],  
           'title_3'=>['Tercer Título','string',null],  
-          'imagen_3'=>['Tercer Imagen','file',null],  
+          'imagen_3'=>['Tercer Imagen ( 630*420 px )','file',null],  
           'link_3'=>['Tercer enlace','string',null],  
         ];
         break;

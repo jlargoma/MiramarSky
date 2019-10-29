@@ -17,6 +17,7 @@ class ContentsControllers extends Controller
     public function index($key = null)
     {
       $current = null;
+      $fields = null;
       $lst = Contents::getKeyLst();
       if ($key && isset($lst[$key])){
         $fields = Contents::getKeyContent($key);
@@ -42,16 +43,17 @@ class ContentsControllers extends Controller
        $lst = Contents::getKeyLst();
       if ($key && isset($lst[$key])){
         $fields = Contents::getKeyContent($key);
-        
+        $i=0;
         if ($fields){
           foreach ($fields as $k=>$f){
+            $i++;
             switch ($f[1]){
               case 'ckeditor':
               case 'string':
                 $this->saveText($k,$key,$request);
               break;
               case 'file':
-                $this->saveImg($k,$key,$request);
+                $this->saveImg($k,$key,$request,$i);
               break;
             }            
           }
@@ -72,7 +74,7 @@ class ContentsControllers extends Controller
     }
     
     
-    private function saveImg($field,$key,Request $request) {
+    private function saveImg($field,$key,Request $request,$i) {
     
       $rute = "/img/miramarski/contents";
       $directory = public_path() . $rute;
@@ -85,7 +87,7 @@ class ContentsControllers extends Controller
         
         $img_file = $request->file($field);
         $extension = explode('.', $img_file->getClientOriginalName());
-        $imagename_desktop =  time().'.'.$extension[count($extension)-1];
+        $imagename_desktop =  $i.'-'.time().'.'.$extension[count($extension)-1];
         $img = Image::make($img_file->getRealPath());
         $width = $img->width();
         if ($width>1024){
