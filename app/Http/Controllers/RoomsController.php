@@ -719,8 +719,8 @@ class RoomsController extends AppController {
       if ($type == 'edificio') $obj->url = $id;
     }
     
-    $key = ($type == 'room_type') ? '-category-' : '-room-';
-    
+//    $key = ($type == 'room_type') ? '-category-' : '-room-';
+    $key = '-'.time().'-';
     $rute = "/img/miramarski/apartamentos/headers";
     $directory = public_path() . $rute;
     if (!file_exists($directory)) {
