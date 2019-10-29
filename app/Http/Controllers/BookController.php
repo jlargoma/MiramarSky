@@ -1754,7 +1754,7 @@ class BookController extends AppController
             }
             if ($room->luxury == 0 && $room->sizeApto == 2)
             {
-              $typesRoom['2dorm-stand']['total'] += 1;
+                $typesRoom['2dorm-stand']['total'] += 1;
             }
 
             if ($room->luxury == 0 && $room->sizeApto == 1)
@@ -1823,7 +1823,7 @@ class BookController extends AppController
                 {
                     $typesRoom['estudio']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
                 }
-                if ($room->luxury == 0 && $room->sizeApto == 9){
+                if ($room->sizeApto == 9){
                   $typesRoom['chalet']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
                 }
                 if ($room->luxury == 0 && $room->sizeApto == 2)

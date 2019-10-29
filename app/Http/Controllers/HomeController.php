@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Mail;
 use Route;
 use URL;
+use App\Contents;
 
 class HomeController extends AppController
 {
@@ -36,10 +37,14 @@ class HomeController extends AppController
         {
             $cookie = 0;
         }
+        
+        $oContents = new Contents();
+
         return view('frontend.home', [
             'cookie'         => $cookie,
             'mobile'         => $mobile,
             'slidesEdificio' => null,
+            'edificio' => $oContents->getContentByKey('edificio')
         ]);
     }
 
