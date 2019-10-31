@@ -1,6 +1,3 @@
-        <!-- BootStrap CSS -->
-        <link rel="stylesheet" type="text/css" href="{{ assetV('/frontend/vendor/camera-slider-master/css/camera.css')}}">
- 
 <!--HTML5shiv Js-->
   <script src="{{ assetV('/frontend/vendor/camera-slider-master/js/modernizr-3.5.0.min.js')}}"></script>
   <!--Camera JS with Required jQuery Easing Plugin-->

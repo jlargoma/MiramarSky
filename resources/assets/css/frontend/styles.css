@@ -1,0 +1,468 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Oct 2, 2019, 7:16:46 PM
+    Author     : cremonapg
+*/
+body.not-dark{
+  background-color: #fff;
+}
+.blue{
+  color: #3f51b5;
+}
+.no-padding{
+   padding: 0 !important;
+}
+.footer-block a{
+  color: #3f51b5;
+}
+.footer-area {
+    border-top: 2px solid #3f51b5;
+    background: url(/img/miramarski/contacto.jpg) center;
+    position: relative;
+    background-repeat: no-repeat;
+   padding: 0 !important;
+    clear: both;
+}
+.footer-area .capa-blanca{
+   padding: 90px 0px 30px 0px;
+   background-color: rgba(255, 255, 255, 0.2);
+   
+}
+.footer-area .capa-blanca h4{
+text-shadow: 1px 1px 0px #36495b;
+}
+.footer-area .col-md-2.col-sm-4 {
+    min-height: 15em;
+}
+.copyright{
+    width: 100%;
+    display: block;
+    color: #fff;
+    /* height: 5em; */
+    padding: 2em;
+    font-size: 14px;
+    background-color: #333;
+}
+.darkgrey {
+    background-color: #36495C;
+}
+section.feature-home {
+  clear: both;
+  text-align: center;
+  background: url(/frontend/images/home/feature-bg.jpg);
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  padding-bottom: 3em;
+
+}
+.box-feature-home{
+  width: 90%;
+  margin: 0 auto;
+  padding: 1em 0 3em;
+}
+figure.mobil {
+  max-width: 90%;
+  margin: auto;
+  overflow: hidden;
+  padding-bottom: 1em;
+}
+figure.mobil img{
+  width: 100%;
+}
+section.feature-home .bfh-img{
+  display: none;
+}
+.bfh-text .box {
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.85);
+  box-shadow: 3px 2px 8px #9a9a9a;
+  border-radius: 4px;
+  margin-top: 0;
+}
+
+.subtitle{
+  position: relative;
+  font-size: 19px;
+  font-family: 'Ek Mukta',sans-serif;
+  line-height: 28px;
+  color: #3f51b5;
+}
+
+.box-feature-home .btn-two.style-two{
+  box-shadow: none;
+}
+.box-feature-home h3{
+  font-size: 20px;
+}
+
+.box-feature-home figure {
+  width: 100%;
+  background: transparent;
+  height: auto;
+}
+.box-feature-home .text{
+  color: initial;
+  font-size: 15px;
+  line-height: 2;
+  text-align: justify;
+  padding: 0 7px;
+}
+.box-feature-home .text ul{margin-left: 1em;}
+
+.summer-secsion {
+  position: relative;
+  padding-bottom: 40px;
+  position: relative;
+  padding-bottom: 40px;
+  background-color: #fff;
+}
+
+.moreRooms-box {
+  clear: both;
+  overflow: hidden;
+    width: 90%;
+    margin: 7px auto;
+}
+
+.moreRooms {
+  width: 20%;
+  float: left;
+  padding: 1em;
+}
+
+section.few-words.sec-pad {
+    background-color: #fff;
+    padding: 2em 0;
+}
+.few-words .icon-box:before{
+  content: '';
+}
+.few-words .single-item {
+    position: relative;
+    padding: 0px 0px 0px 98px;
+}
+
+.few-words .single-item a{
+      font-size: 16px;
+    display: block;
+    padding: 0;
+    margin-left: 7px;
+    color: #3f50b5;
+}
+.few-words .icon-box {
+    position: absolute;
+    left: 0px;
+    top: 6px;
+}
+.few-words .single-item .title {
+    position: relative;
+    font-size: 24px;
+    font-family: 'Vollkorn',sans-serif;
+    font-style: italic;
+    margin-bottom: 16px;
+    line-height: 30px;
+    padding-top: 12px;
+    color: #222;
+    text-align: left;
+    padding-left: 4px;
+
+}
+.btn-green{
+  letter-spacing: 1px;
+    background-color: #59BA41;
+}
+#logo img, .jumbotron .container, img{
+  min-width: 100%;
+}
+.lSSlideOuter .lightSlider li img{
+  width: 100%;
+}
+.lSSlideOuter .lightSlider li.active img{
+  min-width: auto;
+  /*height: 100%;*/
+}
+
+.black-cover {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-bottom: 2px solid #3F51B5;
+    padding: 2em 3em;
+    margin-bottom: 1em;
+}
+.apartamento h1{
+    transform-origin: center center 0px;
+    transform: scale(1) translate3d(0px, 0px, 0px);
+    font-family: 'miramar';
+    color: #3f50b5;
+    text-shadow: rgb(255, 255, 255) 1px 1px;
+    line-height: 80px;
+    font-weight: bold;
+    font-size: 3em;
+    line-height: 1;
+}
+
+.page-title {
+    /* position: relative; */
+    /* width: 100%; */
+    padding: 5em 0 3em;
+     background-size: cover; 
+     background-position: center center; 
+     background-repeat: no-repeat; 
+    margin-top: -12em;
+    padding-top: 14em;
+}
+.lSSlideOuter .lSPager.lSGallery li {
+  max-height: 100px;
+  overflow: hidden;
+}
+.home-service{
+  margin-bottom: 1em;
+}
+
+.additional-info{
+  
+}
+.additional-info .single-item {
+    border: 1px solid #3f50b4;
+    text-align: center;
+    color: #3f50b4;
+        padding: 1em;
+            margin-bottom: 1em;
+}
+.additional-info h2.timer.count-title.count-number {
+    margin: 0;
+}
+.more-rooms-secsion .container-image-box{
+  overflow: hidden;
+}
+.more-rooms-secsion .container-image-box img{
+  width: auto !important;
+      max-width: none;
+}
+.home-service .container-image-box{
+  height: 270px;
+  overflow: hidden;
+}
+.home-service .container-image-box img{
+  height: auto !important;
+}
+.content-colmun{
+  text-align: left;
+}
+.content-colmun b,
+.content-colmun strong{
+  color: #3F51B5;
+}
+.content-colmun ul{
+  padding: 0;
+  margin-left: 1.5em;
+  text-align: left;
+}
+.content-colmun ul li {
+    list-style-type: none;
+}
+.content-colmun ul li:before {
+  content: "\f00c"; /* FontAwesome Unicode */
+  font-family: FontAwesome;
+  display: inline-block;
+  color: #3F51B5;
+  margin-left: -1.3em; /* same as padding-left set on li */
+  width: 1.3em; /* same as padding-left set on li */
+}
+
+  .lSNext::before{
+    content: ">";
+    width: 0px;
+    display: block;
+    color: #fff;
+    font-size: 4em;
+    margin-left: -10px;
+    margin-right: 0;
+}
+.lSPrev::before{
+    content: "<";
+width: 0px;
+    display: block;
+    color: #fff;
+    font-size: 4em;
+    margin-right: -10px;
+}
+.input-group{
+  width: 100%;
+}
+#fixed-book{
+  position: fixed; bottom: 0px; width: 100%; background-color: #FFF!important; padding: 15px 15px 15px 0;
+  z-index: 99;
+  left: 0;
+}
+#fixed-book .content{
+  max-width: 425px;
+  margin: 1px auto;
+}
+#fixed-book .btn_reservar{
+  width: 49%;
+  float: left;
+  padding: 0 10px;
+  margin: 0;
+}
+#fixed-book a.menu-booking-apt {
+    margin: 0;
+    padding: 0;
+}
+#fixed-book .showFormBook{
+  width: 47%;
+    float: left;
+    background-color: #4cb53f; 
+    padding: 24px 10px; 
+    text-align: center;
+    
+}
+
+a.sf-with-ul:hover div{
+  color: #3F51B5;
+}
+div#content-response {
+    padding: 1em 0em 1em 1em;
+}
+.box-feature-home .bfh-text .button.menu-booking{
+    background-color: rgb(89, 186, 65) !important;
+    border-color: rgb(89, 186, 65);
+    box-shadow: 4px 2px 4px rgb(56, 101, 45);
+    color: #fff;
+}
+@media only screen and (min-width: 1024px){
+  .bfh-text {
+    float: left;
+    width: 65%;
+  }
+  .bfh-img {
+    float: left;
+    width: 33%;
+  }
+}
+@media only screen and (max-width: 1024px) and (min-width: 768px){
+  .bfh-text {
+    float: left;
+    width: 55%;
+  }
+  .bfh-img {
+    float: left;
+    width: 43%;
+  }
+}  
+  
+@media only screen and (max-width: 985px){
+  .sliderDestock-gost {
+    height: calc(80vh - 5px);
+  }
+  .moreRooms .container-image-box img {
+    height: 176px;
+  }
+}
+@media only screen and (min-width: 768px){
+ 
+
+  figure.mobil {
+    display: none;
+  }
+  .box-feature-home {
+    max-width: 1190px;
+    margin: auto;
+    width: 90%;
+    clear: both;
+    overflow: hidden;
+  }
+  .bfh-img img {
+    height: 390px;
+    width: auto;
+    max-width: none;
+  }
+
+  .bfh-text .box {
+    position: relative;
+    margin-right: 5px;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 3px 2px 8px #9a9a9a;
+    border-radius: 4px;
+    margin-top: 0;
+    min-height: 390px;
+  }
+  
+  section.feature-home .bfh-img {
+    display: block;
+  }
+  .bfh-text .box.right {
+    margin-right: 0;
+    margin-left: 5px;
+  }
+}
+@media only screen and (max-width: 768px){
+  .moreRooms{
+    width: 50%;
+  }
+  .lSSlideOuter .lSPager.lSGallery li {
+    display: none;
+  }
+  nav#primary-menu .sf-js-enabled.show { 
+    border-top: 2px solid #3f51b5;
+    border-bottom: 2px solid #3f51b5;
+  }
+  .feature-box.fbox-center.fbox-plain .fbox-icon i{
+    height: 1em;
+  }
+  .daterangepicker.show-calendar .calendar{
+    color: #000;
+  }
+  div#top-bar{
+    margin-top: 7px !important;
+    height: 3em;
+    z-index: 9999;
+  }
+  div#primary-menu-trigger{
+    color: #3F51B5!important;
+    top: 5px!important;
+    left: 5px!important;
+    border: 2px solid #3F51B5!important;
+  }
+  .apartamento h1 {
+padding-top: 32px;
+    font-size: 27px;
+}
+.page-title{
+      margin-top: 0em;
+    padding-top: 33px;
+    padding-bottom: 10px;
+}
+#copyrights.footer-area{
+  background-color: #36495b;
+  background-image: none;
+}
+#copyrights .footer-block a,
+.footer-area .capa-blanca h4{
+  color:#fff;
+}
+}
+@media only screen and (max-width: 540px){
+  .home-service{
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 426px){
+  .hidden-mobile{
+    display: none;
+  }
+  
+  .moreRooms{
+    width: 100%;
+  }
+  .footer-area .col-md-2.col-sm-4 {
+      min-height:20em;
+      /*width: 90%;*/
+  }
+}
+
