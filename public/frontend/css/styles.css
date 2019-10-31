@@ -331,7 +331,9 @@ width: 0px;
 a.sf-with-ul:hover div{
   color: #3F51B5;
 }
-
+div#content-response {
+    padding: 1em 0em 1em 1em;
+}
 .box-feature-home .bfh-text .button.menu-booking{
     background-color: rgb(89, 186, 65) !important;
     border-color: rgb(89, 186, 65);

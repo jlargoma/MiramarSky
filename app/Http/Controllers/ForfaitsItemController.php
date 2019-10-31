@@ -486,11 +486,13 @@ class ForfaitsItemController extends AppController {
         if (isset($forfaitsObj->success)) {
           $forfaitsObjWithoutDiscount = $this->getForfaitUser($usr_forfaits,$usr_Insur);
           $forfaitsObjAux = json_decode($forfaitsObjWithoutDiscount);
-          
-          if (isset($forfaitsObj->success) && isset($forfaitsObjAux->data->totalPrice)) 
+          if (isset($forfaitsObjAux->success) && isset($forfaitsObjAux->data->totalPrice)) 
             $priceWithoutDisc = floatval(str_replace(',','',$forfaitsObjAux->data->totalPrice));
         }
       } else {
+        //clear al familyFormula
+//        foreach ($usr_forfaits as $k=>$v) $usr_forfaits[$k]["familyFormula"] = false;
+        
         $forfaitsObj = $this->getForfaitUser($usr_forfaits,$usr_Insur);
         $forfaitsObj = json_decode($forfaitsObj);
       }
