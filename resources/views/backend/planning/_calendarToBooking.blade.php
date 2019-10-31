@@ -36,7 +36,7 @@ use Illuminate\Support\Facades\Cache;
     <div class="col-xs-12" style="padding: 0px 20px;">
         <ul class="nav nav-tabs nav-tabs-simple bg-info-light fechas" role="tablist"
             data-init-reponsive-tabs="collapse">
-			<?php $dateAux = $dateX->copy(); ?>
+			<?php $dateAux = $dateX->copy()->firstOfMonth(); ?>
 			<?php for ($i = 1; $i <= 9 ; $i++) :?>
 			<?php if (!$mobile->isMobile()) {
 				$hidden = "";
@@ -50,10 +50,14 @@ use Illuminate\Support\Facades\Cache;
 			} ?>'>
                 <a href="#booking<?php echo $i?>" data-toggle="tab" role="tab" style="padding:10px"
                    data-month="<?php echo $i?>">
-					<?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>
+                  
+                  <?php $monthAux = $dateAux->copy()->format('n');?>
+                <?php echo getMonthsSpanish($monthAux).' '.ucfirst($dateAux->copy()->formatLocalized('%y'))?>
+		<?php //echo ucfirst($dateAux->copy()->formatLocalized('%b %y'))?>
                 </a>
             </li>
 			<?php $dateAux->addMonth(); ?>
+            
 			<?php endfor; ?>
         </ul>
         <div class="tab-content">

@@ -12,13 +12,12 @@ setlocale(LC_TIME, "es_ES");
         <?php $diffInMonths = $startYear->diffInMonths($endYear) + 1; ?>
       <div class="col-12" style="overflow-x: auto;">
           <?php for ($i = 1; $i <= $diffInMonths; $i++) : ?>
-          <button <?php if ($dateAux->copy()->format('n') == date('n')): ?>id="btn-active"<?php endif ?> class='btn btn-rounded btn-sm btn-default btn-fechas-calendar <?php if ($i < 4) {
-            echo 'hidden-xs';
-          } ?>' data-month="<?php echo $dateAux->copy()->format('n') ?>">
-  <?php echo ucfirst($dateAux->copy()->formatLocalized('%b %y')) ?>
-          </button>
-      <?php $dateAux->addMonth(); ?>
-<?php endfor; ?>
+            <?php $monthAux = $dateAux->copy()->format('n');?>
+            <button <?php if($monthAux == date('n')): ?>id="btn-active"<?php endif?> class='btn btn-rounded btn-sm btn-default btn-fechas-calendar' data-month="<?php echo $monthAux; ?>">
+                <?php echo getMonthsSpanish($monthAux).' '.ucfirst($dateAux->copy()->formatLocalized('%y'))?>
+            </button>
+            <?php $dateAux->addMonth(); ?>
+          <?php endfor; ?>
       </div>
     </div>
 <?php $inicioAux = $startYear->copy(); ?>
@@ -31,7 +30,10 @@ setlocale(LC_TIME, "es_ES");
                 <tr>
                   <td  style="width: 1%!important"></td>
 <?php foreach ($arrayMonths as $key => $daysMonth): ?>
-  <?php $monthX = Carbon::createFromFormat('m', str_pad($key, 2, "0", STR_PAD_LEFT))->formatLocalized('%B'); ?>
+  <?php 
+//  $monthX = Carbon::createFromFormat('m', str_pad($key, 2, "0", STR_PAD_LEFT))->formatLocalized('%B');
+    $monthX = getMonthsSpanish($key,false);
+  ?>
                     <td id="month-<?php echo $key ?>" colspan="<?php echo $daysMonth ?>" class="text-center months" style="border-right: 1px solid black;border-left: 1px solid black;padding: 5px 10px;">
                       <?php if ($key != 2): ?>
                         <span class="font-w600 pull-left" style="padding: 5px;"> <?php echo $monthX ?> </span>
