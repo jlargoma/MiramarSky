@@ -69,7 +69,7 @@
            style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
         <span class="white text-white"><i class="fa fa-times fa-4x"></i></span>
       </div>
-      <div class="container clearfix" style="padding: 20px 0;">
+      <div class="container clearfix" style="padding: 20px;">
         <div class="row">
           <div class="col-md-4 col-xs-12">
             <div class="row" >
@@ -81,7 +81,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4 col-xs-12" id="content-book-response" style="padding: 0">
+          <div class="col-md-4 col-xs-12" id="content-book-response">
             <div class="col-xs-12 back" style="background-color: #3330c8;"></div>
           </div>
           <div class="col-md-4 col-xs-12" id="content-book-payland" style="padding: 0">
