@@ -29,39 +29,14 @@
         <meta name="msapplication-TileImage" content="{{ assetV('/img/miramarski/favicon/ms-icon-144x144.png' ) }}">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="stylesheet" href="{{ assetV ('/css/app.css')}}" type="text/css"/>
-
-        <link rel="stylesheet" type="text/css" href="{{ assetV('/frontend/css/animate.css')}}">
-        <link rel="stylesheet" type="text/css" href="{{ assetV('/frontend/css/magnific-popup.css')}}">
-
+        <link rel="stylesheet" href="{{ assetV ('/css/frontend.css')}}" type="text/css"/>
+        
         <?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
             <link rel="stylesheet" href="{{ assetV('/frontend/css/responsive-mobile.css')}}" type="text/css"/>
         <?php else: ?>
             <link rel="stylesheet" href="{{ assetV('/frontend/css/responsive.css')}}" type="text/css"/>
         <?php endif; ?>
-
-        <link rel="stylesheet" href="{{ asset('/frontend/colors.php?color=3F51B5')}}" type="text/css"/>
-
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
-
-        <link rel="stylesheet" type="text/css" href="{{ assetV('/frontend/include/rs-plugin/css/settings.css')}}">
-        <link rel="stylesheet" type="text/css" href="{{ assetV('/frontend/include/rs-plugin/css/layers.css')}}">
-        <link rel="stylesheet" type="text/css" href="{{ assetV('/frontend/include/rs-plugin/css/navigation.css')}}">
-
-        <link rel="stylesheet" href="{{ assetV('/frontend/css/font-icons.css')}}" type="text/css"/>
-
-        <link rel="stylesheet" href="{{ assetV('/frontend/css/aos.css')}}" type="text/css"/>
-
-        <link rel="stylesheet" href="{{ assetV('/frontend/css/components/daterangepicker.css')}}" type="text/css"/>
-
-        <link href="{{ assetV('/frontend/hover.css')}}" rel="stylesheet" media="all">
-        <link rel="stylesheet" href="{{ assetV('/frontend/css/components/radio-checkbox.css')}}" type="text/css"/>
-        <link rel="stylesheet" href="{{ assetV('/frontend/custom.css')}}" type="text/css"/>
-
-        <link rel="stylesheet" type="text/css" href="{{ assetV('/frontend/css/normalize.css')}}" />
-
-        <link rel="stylesheet" type="text/css" href="{{ assetV('/frontend/css/component.css')}}" />    
-        <link rel="stylesheet" type="text/css" href="{{ assetV('/frontend/css/styles.css')}}" />    
         <script type="text/javascript" src="{{ assetV('/frontend/js/jquery-2.1.4.js')}}"></script><script src="{{assetV('/frontend/js/modernizr.custom.js')}}"></script>
 
         <!-- Global site tag (gtag.js) - Google Analytics -->

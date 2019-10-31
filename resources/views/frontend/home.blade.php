@@ -13,7 +13,6 @@
   <!-- Custom JS --->
   <script src="{{ assetV('/frontend/vendor/camera-slider-master/js/plugins.js')}}"></script>
   <script src="{{ assetV('/frontend/vendor/lightslider-master/src/js/lightslider.js')}}"></script>
-  <link rel="stylesheet" href="{{ assetV('/frontend/vendor/lightslider-master/src/css/lightslider.css')}}" />
   <script type="text/javascript" src="{{ assetV('/frontend/js/form_booking.js')}}"></script>
   @endsection 
 @section('content')
