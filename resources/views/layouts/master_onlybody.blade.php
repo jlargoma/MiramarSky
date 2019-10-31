@@ -2,12 +2,7 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
 <head>
-
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<meta name="robots" content="noindex">
-<meta name="robots" content="nosnippet">
-<meta name="robots" content="nofollow">
-<meta name="robots" content="noimageindex">
 	<!-- Stylesheets
 	============================================= -->
 	<link href="http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
