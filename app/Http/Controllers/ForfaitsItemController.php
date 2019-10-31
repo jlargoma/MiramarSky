@@ -331,6 +331,9 @@ class ForfaitsItemController extends AppController {
     if ($type == 'forfait') {
       $item = ForfaitsOrderItem::find($data);
       if ($item->order_id == $order->id) {
+        if ($item->ffexpr_status){
+          $this->sendEmailCancelForfait($order,$item);
+        }
         $item->cancel = 1;
         $item->save();
       }
@@ -467,8 +470,8 @@ class ForfaitsItemController extends AppController {
         if ($usr['insurance']){
           $usr_Insur[] = [
               'insuranceId' => $usr['insurance'],
-              'clientDni' => $usr['name'],
-              'clientName' => $usr['dni'],
+              'clientDni' => $usr['dni'],
+              'clientName' => $usr['name'],
               "dateFrom" => date('d/m/Y', strtotime($usr['date_start'])),
               "dateTo" => date('d/m/Y', strtotime($usr['date_end'])),
           ];
@@ -780,6 +783,7 @@ class ForfaitsItemController extends AppController {
       return 'ForfaitsExpress ya reservado';
     }
 
+    $forfait_insurances = json_decode($oForfait->insurances);
     $forfait_data = json_decode($oForfait->data);
     if (!$forfait_data) {
       return 'Forfait sin items';
@@ -790,7 +794,8 @@ class ForfaitsItemController extends AppController {
         "forfaits" => [],
         "extras" => [
             "equipments" => [],
-            "classes" => []
+            "classes" => [],
+            "insurances" => [],
         ],
         "skiResortId" => env('FORFAIT_RESORTID'),
         "clientName" => $clientName,
@@ -809,6 +814,16 @@ class ForfaitsItemController extends AppController {
           "dateTo" => $ff_data->dateTo
       ];
     }
+    foreach ($forfait_insurances as $ff_data) {
+      $data['insurances'][] = [
+          "insuranceId" => $ff_data->insuranceId,
+          "clientName" => $ff_data->clientName,
+          "clientDni" => $ff_data->clientDni,
+          "dateFrom" => $ff_data->dateFrom,
+          "dateTo" => $ff_data->dateTo
+      ];
+    }
+    
     $json = json_encode($data);
     $curl = curl_init();
     $endpoint = env('FORFAIT_ENDPOINT') . 'createbooking';

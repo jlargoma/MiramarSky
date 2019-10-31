@@ -22,6 +22,29 @@
       .footercopy a {color: #ffffff; text-decoration: underline;}
       .admin_info{    background-color: rgba(230, 230, 230, 0.4);}
 
+      .forfaitHeader{
+        background-color: rgba(5, 103, 165, 0.4392156862745098);
+        color: #fff;
+        text-align: left;
+        padding: 5em;
+        height: 30px;
+      }
+      .forfaitHeader th{
+          padding: 9px;
+      }
+      table.forfait, tr {
+        border: 1px solid black;
+        border-collapse: collapse
+      }
+      table.forfait td,table.forfait th {
+          padding: 8px;
+      }
+      .tcenter{
+        text-align: center;
+      }
+      .tright{
+        text-align: right;
+      }
       @media only screen and (max-width: 550px), screen and (max-device-width: 550px) {
         body[yahoo] .hide {display: none!important;}
         body[yahoo] .buttonwrapper {background-color: transparent!important;}

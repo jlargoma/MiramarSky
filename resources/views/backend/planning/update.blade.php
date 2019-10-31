@@ -1477,7 +1477,7 @@ $mobile = new Mobile();
         event.preventDefault();
         var id = $(this).data('booking');
         $.post('/admin/forfaits/open', { _token: "{{ csrf_token() }}",id:id }, function(data) {
-          console.log(data);
+//          console.log(data);
           var formFF = $('#formFF');
           formFF.attr('action', data.link);
           formFF.find('#admin_ff').val(data.admin);

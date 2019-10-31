@@ -12,18 +12,26 @@ use App\Models\Forfaits\ForfaitsOrders;
 use App\Models\Forfaits\ForfaitsOrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Traits\BookEmailsStatus;
 
 trait ForfaitsPaymentsTraits {
 
+  use BookEmailsStatus;
+  
   public function createPayment(Request $req) {
 
     $token = $req->header('token-ff');
     $client = $req->header('client');
-    if (!$this->checkUserAdmin($token,$client)) return die('404');
+    $amount = null;
+    if (!$this->checkUserAdmin($token,$client)){
+      //return die('404');
+      $amount = $req->input('data', null);
+    }
+    
+    
     
     $token = $req->input('token', null);
     $key = $req->input('key', null);
-    $amount = $req->input('data', null);
    
 
       if ($key) {
@@ -38,6 +46,11 @@ trait ForfaitsPaymentsTraits {
           if (!$order) {
             return die('404');
           }
+          
+          if (!$amount){
+            $amount = $order->total;
+          }
+    
           $orderID = $order->id;
           $description = 'Pago por orden de Forfaits';
           $last_item_id = ForfaitsOrderItem::getLastItem($orderID);
@@ -128,6 +141,10 @@ trait ForfaitsPaymentsTraits {
       $order = ForfaitsOrders::find($bookOrder->order_id);
       if ($order){
         $this->sendBookingOrder($order,$bookOrder->last_item_id);
+        //send email
+        $book = Book::find($bookOrder->book_id);
+        $orderText = $this->renderOrder($bookOrder->order_id);
+        $this->sendEmail_confirmForfaitPayment($book,$orderText,$amount);
       }
     }
     return redirect()->route('thanks-you-forfait');
@@ -388,40 +405,164 @@ trait ForfaitsPaymentsTraits {
      * @param type $book
      * @param type $subject
      */
-    public function sendEmail_confirmPayForfaits($email, $totalPayment)
+    public function renderOrder($orderID = 4)
     {
-      /*
-      $mailClientContent = Settings::getContent('Forfait_email_confirmation_payment',$data->customer->country);
-      $totalPayment = 0;
-        $payments     = \App\Payments::where('book_id', $book->id)->get();
-        if (count($payments) > 0)
-        {
-            foreach ($payments as $key => $pay)
-            {
-                $totalPayment += $pay->import;
+      $order = ForfaitsOrders::find($orderID);
+      $orderItems = $this->getCart($order);
+      if ($orderItems){
+        $text = '';
+        if (count($orderItems['forfaits'])){
+          foreach ($orderItems['forfaits'] as $f){
+            if ( isset($f['usr']) ){
+              foreach ($f['usr'] as $usr){
+                $text .= '<tr><td>'
+                        .'Forfaits '.$usr->days.' Dias'
+                        .'<br/>'.$usr->typeTariffName
+                        . '<br/>Edad: '.$usr->age
+                        . '<br/>Inicio: '.$usr->dateFrom
+                        . '<br/>Fin: '.$usr->dateFrom
+                        . '</td><td  class="tcenter">1</td><td class="tright">'.$usr->price.'€</td></tr>';
+              }
             }
+            if ( isset($f['insur']) ){
+              foreach ($f['insur'] as $insur){
+                $text .= '<tr><td>'
+                        .$order->getInsurName($insur->insuranceId)
+                        . '<br/>'.$insur->clientName
+                        . '<br/>DIN: '.$insur->clientDni
+                        . '<br/>Inicio: '.$insur->dateFrom
+                        . '<br/>Fin: '.$insur->dateFrom
+                        . '</td><td class="tcenter">1</td><td class="tright">'.$insur->price.'€</td></tr>';
+              }
+            }
+          }
         }
-        $pendiente         = ($book->total_price - $totalPayment);
-        if ($pendiente>0) return; //only if the Booking is totally payment
         
-        $mailClientContent = str_replace('{total_payment}', number_format($totalPayment, 2, ',', '.'), $mailClientContent);
-        $mailClientContent = $this->clearVars($mailClientContent);
-
-        $sended = Mail::send('backend.emails.base', [
-            'mailContent' => $mailClientContent,
-            'title'       => $subject
-        ], function ($message) use ($book, $subject) {
-            $message->from(env('MAIL_FROM'));
-            $message->to($email);
-            $message->subject($subject);
-            $message->replyTo(env('MAIL_FROM'));
-        });
         
-        \App\BookLogs::saveLog($book->id,$book->room_id,$email,'Forfait_email_confirmation_payment',$subject,$mailClientContent);
-
-        return $sended;
-       * */
-       
+        if (count($orderItems['materials'])){
+          foreach ($orderItems['materials'] as $m){
+                $text .= '<tr><td>'
+                        .$m->item->name.' '.$m->item->type
+                        . '<br/>Días: '.$m->total_days
+                        . '<br/>Inicio: '.date('d/m/Y', strtotime($m->date_start))
+                        . '<br/>Fin: '.date('d/m/Y', strtotime($m->date_end))
+                        . '</td><td  class="tcenter">'.$m->nro.'</td><td class="tright">'.number_format($m->total, 2).'€</td></tr>';
+          }
+        }
+        
+        if (count($orderItems['classes'])){
+          foreach ($orderItems['classes'] as $c){
+                $text .= '<tr><td>'
+                        .'Clase:'.$c->item->name.' '.$c->item->type
+                        . '<br/>Fecha: '.date('d/m/Y', strtotime($c->date_start));
+                
+                if ($c->start){
+                  $text .= 'Inicio '.$c->start.':00 Hrs | '.$c->hours.' Horas';
+                } else {
+                  $text .= 'al '.date('d/m/Y', strtotime($c->date_end)).''
+                          . '('.$c->total_days.' días)';
+                  
+                }
+                $text .=   '<br/>Idioma:'.$c->language;
+                if (isset($c->level)) $text .= '<br/>Nivel:'.$c->level;
+                
+                $text .= '</td><td class="tcenter">'.$c->nro.'</td><td class="tright">'.number_format($c->total, 2).'€</td></tr>';
+          }
+        }
+        $resume = '<tr>
+                    <td colspan="2"><b>SubTotal Forfaits</b></td>
+                    <td >'.number_format($orderItems['totalForf'], 2).'€</td>
+                  </tr><tr>
+                    <td colspan="2"><b>SubTotal Materiales</b></td>
+                    <td class="tright">'.number_format($orderItems['totalMat'], 2).'€</td>
+                  </tr><tr>
+                    <td colspan="2"><b>SubTotal Clases</b></td>
+                    <td class="tright">'.number_format($orderItems['totalClas'], 2).'€</td>
+                  </tr><tr>
+                    <td colspan="2"><b>Total</b></td>
+                    <td class="tright">'.number_format($orderItems['totalPrice'], 2).'€</td>
+                  </tr>';
+        
+      }
+      return '<table class="forfait">
+                  <tr class="forfaitHeader">
+                  <th>Item</th>
+                  <th>Cantidad</th>
+                  <th>Precio</th>
+                  </th>'.$text.$resume.' 
+                  </table>';
+     
+    }
+   
+    public function sendClientEmail($bookingKey, $clientKey) {
+      $bookingID = desencriptID($bookingKey);
+      $clientID = desencriptID($clientKey);
+      if (is_numeric($bookingID) && is_numeric($clientID)) {
+        //send email
+        $order = ForfaitsOrders::getByBook($bookingID);
+        if ($order){
+          $book = Book::find($order->book_id);
+          $orderText = $this->renderOrder($order->id);
+          
+          $link = env('FF_PAGE').$bookingKey.'-'.$clientKey;
+          $this->sendEmail_linkForfaitPayment($book,$orderText,$link);
+          return response()->json(['status' => 'ok']);
+        }
+      }
+      return response()->json(['status' => 'error']);
     }
     
+    /**
+     * Send email to the Forfait-admin with the canceled Item
+     * 
+     * @param type $order
+     * @param type $item
+     * @return
+     */
+    public function sendEmailCancelForfait($order,$item) {
+
+      if ($order && $item) {
+        //send email
+        $forfaits = json_decode($item->data);
+        $insurances = json_decode($item->insurances);
+        $text = '';
+        if ($forfaits){
+          foreach ($forfaits as $usr){
+            $text .= '<tr><td>'
+              .'Forfaits '.$usr->days.' Dias'
+              .'<br/>'.$usr->typeTariffName
+              . '<br/>Edad: '.$usr->age
+              . '<br/>Inicio: '.$usr->dateFrom
+              . '<br/>Fin: '.$usr->dateFrom
+              . '</td><td  class="tcenter">1</td><td class="tright">'.$usr->price.'€</td></tr>';
+          }
+        }
+        if ($insurances){
+          foreach ($insurances as $insur){
+            $text .= '<tr><td>'
+                    .$order->getInsurName($insur->insuranceId)
+                    . '<br/>'.$insur->clientName
+                    . '<br/>DIN: '.$insur->clientDni
+                    . '<br/>Inicio: '.$insur->dateFrom
+                    . '<br/>Fin: '.$insur->dateFrom
+                    . '</td><td class="tcenter">1</td><td class="tright">'.$insur->price.'€</td></tr>';
+              }
+            }
+        
+        $orderText = '<table class="forfait">
+                  <tr class="forfaitHeader">
+                  <th>Item</th>
+                  <th>Cantidad</th>
+                  <th>Precio</th>
+                  </th>'.$text.'</table>';
+        
+        if ($order){
+          $book = Book::find($order->book_id);
+          $link = env('FF_PAGE').encriptID($order->book_id).'-'.encriptID($book->customer->id);
+          $this->sendEmail_CancelForfaitItem($book,$orderText,$link);
+          return response()->json(['status' => 'ok']);
+        }
+      }
+      return response()->json(['status' => 'error']);
+    }
 }

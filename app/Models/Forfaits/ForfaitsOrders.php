@@ -41,4 +41,12 @@ class ForfaitsOrders extends Model
     $this->total = $TotalItems;
     $this->save();
   }
+  public function getInsurName($id) {
+    $insur = array(
+      5 => 'Seguro Básico de Esquí',
+      6 => 'Seguro Completo de Esquí'
+        );
+    
+    return isset($insur[$id]) ? $insur[$id] : '';
+  }
 }

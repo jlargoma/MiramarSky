@@ -6,14 +6,14 @@ use \Carbon\Carbon;
 ?>
 @extends('layouts.master_onlybody')
 
-@section('title')Gracias por tu reserva @endsection
+@section('title')Pago realizado @endsection
 
 @section('content')
 <style>
   html {
     overflow: hidden;
   }
-  .logo-payments{
+    .logo-payments{
     width: 18em;
     margin: 2em auto;
   }
@@ -29,12 +29,12 @@ use \Carbon\Carbon;
     </div>
     <div class="text-center">
       <h2 class="text-center ls1" style="line-height: 1; color: white">
-        Ups! A ocurrido un error con su pago.
+        ¡Muchas gracias por confiar en nosotros!
       </h2>
       <br>
       <p style="line-height: 1; color: white">
-        Por favor, inténtelo nuevamente<br/><br/>
-        O comuníquese con nosotros.
+        Su pago fue registrado con éxito<br><br>
+	Un saludo
       </p>
     </div>
   </div>

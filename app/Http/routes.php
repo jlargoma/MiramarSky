@@ -172,6 +172,7 @@
     Route::post('/api/forfaits/insurances', 'ForfaitsItemController@getInsurances');
     Route::get('/api/forfaits/bookingData/{bID}/{uID}', 'ForfaitsItemController@bookingData');
     Route::get('/api/forfaits/getCurrentCart/{bID}/{uID}', 'ForfaitsItemController@getCurrentCart');
+    Route::get('/api/forfaits/sedOrder/{bID}/{uID}', 'ForfaitsItemController@sendClientEmail');
     Route::post('/api/forfaits/sendConsult', 'ForfaitsItemController@sendEmail');
     Route::get('/api/forfaits/getSeasons', 'ForfaitsItemController@getForfaitSeasons');
 
