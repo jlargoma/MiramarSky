@@ -263,4 +263,94 @@ trait BookEmailsStatus
 
     }
 
+    
+    /**
+     *
+     * @param type $book
+     * @param type $subject
+     */
+    public function sendEmail_confirmForfaitPayment($book, $orderText,$totalPayment)
+    {
+      if (!$book->customer->email || trim($book->customer->email) == '') return;
+        $mailClientContent = $this->getMailData($book, 'Forfait_email_confirmation_payment');
+        setlocale(LC_TIME, "ES");
+        setlocale(LC_TIME, "es_ES");
+
+        $subject = translateSubject('Confirmación de Pago',$book->customer->country);
+        
+        $mailClientContent = str_replace('{total_payment}', $totalPayment, $mailClientContent);
+        $mailClientContent = str_replace('{forfait_order}', $orderText, $mailClientContent);
+        $mailClientContent = $this->clearVars($mailClientContent);
+        $sended = Mail::send('backend.emails.base', [
+            'mailContent' => $mailClientContent,
+            'title'       => $subject
+        ], function ($message) use ($book, $subject) {
+            $message->from(env('MAIL_FROM_FORFAITS'));
+            $message->to($book->customer->email);
+            $message->subject($subject);
+            $message->replyTo(env('MAIL_FROM_FORFAITS'));
+        });
+        
+        \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'second_payment_reminder',$subject,$mailClientContent);
+
+        return $sended;
+    }
+    
+    /**
+     *
+     * @param type $book
+     * @param type $subject
+     */
+    public function sendEmail_linkForfaitPayment($book, $orderText,$link)
+    {
+      if (!$book->customer->email || trim($book->customer->email) == '') return;
+        $mailClientContent = $this->getMailData($book, 'Forfait_email_payment_request');
+        setlocale(LC_TIME, "ES");
+        setlocale(LC_TIME, "es_ES");
+
+        $subject = translateSubject('Solicitud Forfait',$book->customer->country);
+        
+        $mailClientContent = str_replace('{forfait_order}', $orderText, $mailClientContent);
+        $mailClientContent = str_replace('{link_forfait}', $link, $mailClientContent);
+        $mailClientContent = $this->clearVars($mailClientContent);
+        $sended = Mail::send('backend.emails.base', [
+            'mailContent' => $mailClientContent,
+            'title'       => $subject
+        ], function ($message) use ($book, $subject) {
+            $message->from(env('MAIL_FROM_FORFAITS'));
+            $message->to($book->customer->email);
+            $message->subject($subject);
+            $message->replyTo(env('MAIL_FROM_FORFAITS'));
+        });
+        
+        \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'second_payment_reminder',$subject,$mailClientContent);
+
+        return $sended;
+    }
+    
+     /**
+     *
+     * @param type $book
+     * @param type $subject
+     */
+    public function sendEmail_CancelForfaitItem($book, $orderText,$link)
+    {
+      if (!$book->customer->email || trim($book->customer->email) == '') return;
+        $subject = translateSubject('Forfait Cancelado',$book->customer->country);
+        
+        $mailClientContent = '<strong>Se ha cancelado un Forfait ya pagado en ForfaitExpress</strong><br/><br/>';
+        $mailClientContent .= $orderText.'<br/><br/>';
+        $mailClientContent .= "Url de la Orden: <a href='$link' title='Ver Orden'>$link</a>";
+        $mailClientContent .= '<p><strong>Compruebe que el forfait fue cancelado correctamente en <a href="forfaitexpress.com">www.forfaitexpress.com</a></strong></p>';
+        $sended = Mail::send('backend.emails.base', [
+            'mailContent' => $mailClientContent,
+            'title'       => $subject
+        ], function ($message) use ($book, $subject) {
+            $message->from(env('MAIL_FROM_FORFAITS'));
+            $message->to(env('MAIL_FROM_FORFAITS'));
+            $message->subject($subject);
+        });
+        
+        return $sended;
+    }
 }
