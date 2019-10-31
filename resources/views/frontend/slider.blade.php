@@ -193,10 +193,9 @@ width: 0px;
   }
 }
   </style>
-  
  <div class="camera_wrap banner" id="home_camera">
-  <div data-src="{{ asset('/img/miramarski/mobile-full-slide-3.jpg')}}">
-      <img src="{{ asset('/img/miramarski/mobile-full-slide-3.jpg')}}" class="img-responsive">
+  <div data-src="/img/miramarski/mobile-full-slide-3.jpg">
+      <img src="/img/miramarski/mobile-full-slide-3.jpg" class="img-responsive">
       <div class="sliderContent">
         <div class="slider-text-1">
           <h2 class="cp-title2">APARTAMENTOS DE LUJO EN SIERRA NEVADA</h2>
@@ -212,8 +211,8 @@ width: 0px;
         </div>
         </div>
     </div>
-    <div data-src="{{ asset('/img/miramarski/mobile-full-slide-1.jpg')}}">
-        <img src="{{ asset('/img/miramarski/mobile-full-slide-1.jpg')}}" class="img-responsive">
+    <div data-src="/img/miramarski/mobile-full-slide-1.jpg">
+        <img src="/img/miramarski/mobile-full-slide-1.jpg" class="img-responsive">
         <div class="sliderContent">
         <div class="slider-text-1">
           <h2 class="cp-title2">SALES DE TU CASA ESQUIANDO</h2>
@@ -231,8 +230,8 @@ width: 0px;
         </div>
         </div>
     </div>
-    <div data-src="{{ asset('/img/miramarski/mobile-full-slide-2.jpg')}}">
-        <img src="{{ asset('/img/miramarski/mobile-full-slide-2.jpg')}}">
+    <div data-src="/img/miramarski/mobile-full-slide-2.jpg">
+        <img src="/img/miramarski/mobile-full-slide-2.jpg">
         <div class="sliderContent">
         <div class="slider-text-1">
           <h2 class="cp-title2">SITUADOS EN LA ZONA BAJA</h2>
