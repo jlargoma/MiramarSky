@@ -65,7 +65,11 @@
                                         </span>
                                     <?php endif; ?>
                                 <?php else: ?>
-                                    <?php $percent = 100 / ( $book->total_price / $payment[$book->id] ); ?>
+                                    <?php 
+                                    $percent = 0;
+                                    if ($book->total_price > 0)
+                                      $percent = 100 / ( $book->total_price / $payment[$book->id] ); 
+                                    ?>
                                     <?php if ( $percent <= 25 ): ?>
 
                                         <?php if ( $now->diffInDays($dateStart) <= 15 ):?>
@@ -197,7 +201,11 @@
                                         </div>
                                     <?php else:?>
                                     <div class="col-md-5  col-xs-12 not-padding">
-	                                        <?php $total = number_format(100/($book->total_price/$payment[$book->id]),0);?>
+	                              <?php 
+                                      if (isset($payment[$book->id]) && $payment[$book->id]>0 && $book->total_price>0)
+                                        $total = number_format(100/($book->total_price/$payment[$book->id]),0);
+                                      else $total = 0;
+                                      ?>
                                         <p class="text-white m-t-10">
                                                 <b style="color: <?php if ($total == 100):?>#008000<?php else: ?>red<?php endif ?>;font-weight: bold"><?php echo $total.'%' ?></b>
                                             </p>
@@ -311,7 +319,11 @@
                                 </span>
                             <?php endif; ?>
                         <?php else: ?>
-                            <?php $percent = 100 / ( $book->total_price / $payment[$book->id] ); ?>
+                            <?php 
+                            if (isset($payment[$book->id]) && $payment[$book->id]>0 && $book->total_price>0)
+                              $percent = 100 / ( $book->total_price / $payment[$book->id] ); 
+                            else $percent = 0;
+                            ?>
                             <?php if ( $percent <= 25 ): ?>
 
                                 <?php if ( $now->diffInDays($dateStart) <= 15 ):?>

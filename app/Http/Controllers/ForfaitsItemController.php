@@ -131,12 +131,53 @@ class ForfaitsItemController extends AppController {
     return response()->json($items);
   }
 
-  public function getForfaitUser($forfaitLst) {
+  /**
+   * Get the Forfaits with the Insurances
+   */
+  public function getInsurances(Request $req) {
+
+    $days = $req->input('days',7);
+    $data = array(
+        'days' => $days,
+        'skiResortId' => env('FORFAIT_RESORTID')
+    );
+    $json = json_encode($data);
+    $curl = curl_init();
+    $endpoint = env('FORFAIT_ENDPOINT') . 'getinsurances';
+    $Bearer = env('FORFAIT_TOKEN');
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => $endpoint,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_CONNECTTIMEOUT => 3,
+        CURLOPT_POSTFIELDS => $json,
+        CURLOPT_HTTPHEADER => array(
+            "Content-Type: application/json",
+            "Authorization: Bearer $Bearer"
+        ),
+    ));
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+    curl_close($curl);
+    if ($err) {
+      return json_encode(['success' => false, 'data' => ['message' => $err]]);
+    } else {
+      return $response;
+    }
+
+  }
+  public function getForfaitUser($forfaitLst,$usr_Insur,$isFamily=false) {
 
     $data = array(
         'forfaits' => $forfaitLst,
+        'familyFormula' => $isFamily,
         'skiResortId' => env('FORFAIT_RESORTID')
     );
+    
+    if (count($usr_Insur)){
+      $data['extras'] = array("insurances"=>$usr_Insur);
+    }
+    
     $json = json_encode($data);
     $curl = curl_init();
     $endpoint = env('FORFAIT_ENDPOINT') . 'getprices';
@@ -409,23 +450,53 @@ class ForfaitsItemController extends AppController {
   private function saveForfait($users, $orderID) {
     $error = null;
     $usr_forfaits = [];
+    $usr_Insur = [];
+    $isFamily = 0; // min 3 items
     if ($users) {
       foreach ($users as $usr) {
+        $familyFormula = isset($usr['family']) ? $usr['family'] : false;
+        if ($familyFormula){
+          $isFamily++;
+        }
         $usr_forfaits[] = [
             "age" => $usr['years'],
             "dateFrom" => date('d/m/Y', strtotime($usr['date_start'])),
             "dateTo" => date('d/m/Y', strtotime($usr['date_end'])),
+            "familyFormula" => $familyFormula,
         ];
+        if ($usr['insurance']){
+          $usr_Insur[] = [
+              'insuranceId' => $usr['insurance'],
+              'clientDni' => $usr['name'],
+              'clientName' => $usr['dni'],
+              "dateFrom" => date('d/m/Y', strtotime($usr['date_start'])),
+              "dateTo" => date('d/m/Y', strtotime($usr['date_end'])),
+          ];
+        }
+        
       }
-
-      /** @todo enviar info a ForfaitExpress */
-      $forfaitsObj = $this->getForfaitUser($usr_forfaits);
-      $forfaitsObj = json_decode($forfaitsObj);
-
+      
+      $priceWithoutDisc = null;
+      if ($isFamily>2){
+        $forfaitsObj = $this->getForfaitUser($usr_forfaits,$usr_Insur,true);
+        $forfaitsObj = json_decode($forfaitsObj);
+        if (isset($forfaitsObj->success)) {
+          $forfaitsObjWithoutDiscount = $this->getForfaitUser($usr_forfaits,$usr_Insur);
+          $forfaitsObjAux = json_decode($forfaitsObjWithoutDiscount);
+          
+          if (isset($forfaitsObj->success) && isset($forfaitsObjAux->data->totalPrice)) 
+            $priceWithoutDisc = floatval(str_replace(',','',$forfaitsObjAux->data->totalPrice));
+        }
+      } else {
+        $forfaitsObj = $this->getForfaitUser($usr_forfaits,$usr_Insur);
+        $forfaitsObj = json_decode($forfaitsObj);
+      }
+      
       if (isset($forfaitsObj->success)) {
-        if ($forfaitsObj->success) {
+        if ($forfaitsObj->success && !isset($forfaitsObj->data->errors)) {
           $forfaits = $forfaitsObj->data->forfaits;
-          $totalForf = $forfaitsObj->data->totalPrice;
+          $insurances = isset($forfaitsObj->data->insurances) ? $forfaitsObj->data->insurances : [];
+          $totalForf = floatval(str_replace(',','',$forfaitsObj->data->totalPrice));
           $extra = $forfaitsObj->data->manageFees;
           if (is_array($forfaits) && count($forfaits) < 1) {
             $error = "Forfaits vacíos";
@@ -434,14 +505,21 @@ class ForfaitsItemController extends AppController {
             $item->order_id = $orderID;
             $item->type = 'forfaits';
             $item->data = json_encode($forfaits);
+            $item->insurances = json_encode($insurances);
             $item->forfait_users = json_encode($users);
             $item->total = $totalForf;
             $item->extra = $extra;
+            
+            if ($priceWithoutDisc)
+              $item->price_wd = $priceWithoutDisc;
+            else
+              $item->price_wd = $totalForf;
+            
             $item->status = 'new';
             $item->save();
           }
         } else {
-          $error = $forfaitsObj->data->message;
+          $error = implode(', ',$forfaitsObj->data->errors->forfaits);
         }
       } else {
         $error = "Forfaits no encontrado";
@@ -466,6 +544,7 @@ class ForfaitsItemController extends AppController {
     $totalPrice = 0;
     $totalItems = 0;
     $extraForfait = 0;
+    $price_wdForf = 0;
     if ($order) {
       $totalPrice = $order->total;
 
@@ -473,9 +552,11 @@ class ForfaitsItemController extends AppController {
       if ($forfaitsLst) {
         foreach ($forfaitsLst as $f) {
           $aux = json_decode($f->data);
+          $insurances = json_decode($f->insurances);
           $totalItems += count($aux);
-          $forfaits[$f->id] = $aux;
+          $forfaits[$f->id] = ['usr'=>$aux,'insur'=>$insurances];
           $totalForf += $f->total;
+          $price_wdForf += $f->price_wd;
           $extraForfait += $f->extra;
         }
       }
@@ -519,6 +600,7 @@ class ForfaitsItemController extends AppController {
         'error_2' => '',
         'error_3' => '',
         'totalForf' => $totalForf,
+        'totalForfOrig' => $price_wdForf,
         'totalMat' => $totalMat,
         'totalClas' => $totalClas,
         'totalPrice' => $totalPrice,

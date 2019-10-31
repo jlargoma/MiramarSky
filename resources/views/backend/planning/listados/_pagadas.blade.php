@@ -152,8 +152,14 @@ endif
                                         </div>
                                         <?php else:?>
                                         <div class="col-md-5 ">
-                                            <p class="text-white m-t-10"><b
-                                                        style="color: red;font-weight: bold"><?php echo number_format(100 / ($book->total_price / $payment[$book->id]), 0) . '%' ?></b>
+                                            <p class="text-white m-t-10">
+                                              <b  style="color: red;font-weight: bold">
+                                                <?php 
+                                                if (isset($payment[$book->id]) && $payment[$book->id]>0 && $book->total_price>0)
+                                                  echo number_format(100 / ($book->total_price / $payment[$book->id]), 0) . '%';
+                                                else echo '0%';
+                                                ?>
+                                              </b>
                                             </p>
                                         </div>
 
