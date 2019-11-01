@@ -1,5 +1,5 @@
 <?php
-$oContents = new App\Contents();
+if (!isset($oContents)) $oContents = new App\Contents();
 $services = $oContents->getContentByKey('services');
 ?>
 

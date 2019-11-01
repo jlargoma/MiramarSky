@@ -1,3 +1,7 @@
+<?php
+if (!isset($oContents)) $oContents = new App\Contents();
+$sliderHome = $oContents->getContentByKey('slider_home');
+?>
 <!--HTML5shiv Js-->
   <script src="{{ assetV('/frontend/vendor/camera-slider-master/js/modernizr-3.5.0.min.js')}}"></script>
   <!--Camera JS with Required jQuery Easing Plugin-->
@@ -194,33 +198,17 @@ width: 0px;
 }
   </style>
  <div class="camera_wrap banner" id="home_camera">
-  <div data-src="/img/miramarski/mobile-full-slide-3.jpg">
-      <img src="/img/miramarski/mobile-full-slide-3.jpg" class="img-responsive">
+   <?php for($i=1; $i<4; $i++): ?>
+   @if($sliderHome['imagen_'.$i])
+    <div data-src="{{$sliderHome['imagen_'.$i]}}">
+      <img src="{{$sliderHome['imagen_'.$i]}}" class="img-responsive">
       <div class="sliderContent">
         <div class="slider-text-1">
-          <h2 class="cp-title2">APARTAMENTOS DE LUJO EN SIERRA NEVADA</h2>
+          <h2 class="cp-title2">{{$sliderHome['title_'.$i]}}</h2>
         </div>
         <div class="slider-text-2">
           <div class="text">
-            <b>SERVICIO EXCLUSIVO</b><br/>  Piscina Climatizada, gimnasio, parking cubierto guarda esquíes</div>
-        </div>
-        <div class="slider-text-3">
-          <button class="main menu-booking">
-            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>RESERVAR
-          </button>
-        </div>
-        </div>
-    </div>
-    <div data-src="/img/miramarski/mobile-full-slide-1.jpg">
-        <img src="/img/miramarski/mobile-full-slide-1.jpg" class="img-responsive">
-        <div class="sliderContent">
-        <div class="slider-text-1">
-          <h2 class="cp-title2">SALES DE TU CASA ESQUIANDO</h2>
-        </div>
-        <div class="slider-text-2">
-          <div class="text">
-            <b>ACCESO DIRECTO A LAS PISTAS</b><br/>
-            Sin coger Remontes ni esperar colas
+          {!! $sliderHome['content_'.$i] !!}  
           </div>
         </div>
         <div class="slider-text-3">
@@ -230,23 +218,6 @@ width: 0px;
         </div>
         </div>
     </div>
-    <div data-src="/img/miramarski/mobile-full-slide-2.jpg">
-        <img src="/img/miramarski/mobile-full-slide-2.jpg">
-        <div class="sliderContent">
-        <div class="slider-text-1">
-          <h2 class="cp-title2">SITUADOS EN LA ZONA BAJA</h2>
-        </div>
-        <div class="slider-text-2">
-          <div class="text">
-            <b>EDIFICIO DE RECIENTE CONSTRUCCION</b><br/>
-            Miramar Ski está situado a 5 minutos de la Plaza de Andalucía
-          </div>
-        </div>
-        <div class="slider-text-3">
-          <button class="main menu-booking">
-            <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>RESERVAR
-          </button>
-        </div>
-        </div>
-    </div>
+   @endif
+   <?php endfor; ?>
 </div> 

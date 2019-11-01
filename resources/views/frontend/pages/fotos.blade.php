@@ -172,7 +172,7 @@ h2.subtit {
         <div class="row" id="content-book-response">
           <div class="front" style="max-height: 520px!important;">
             <div class="col-xs-12">
-              <h3 class="text-center white">FORMULARIO DE RESERVA</h3>
+              <h3 class="text-center white">CALCULA TU PRECIO</h3>
             </div>
             <div id="form-content">
               @include('frontend._formBook')

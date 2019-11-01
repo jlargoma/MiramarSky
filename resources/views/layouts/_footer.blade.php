@@ -1,3 +1,13 @@
+<?php
+if (!isset($oContents)) $oContents = new App\Contents();
+$footerContent = $oContents->getContentByKey('footer');
+?>
+
+<style>
+  .footer-area{
+        background-image: url('{{$footerContent["imagen"]}}') !important;
+  }
+</style>
 <footer id="footer" >	
   <!-- Copyrights
 	============================================= -->

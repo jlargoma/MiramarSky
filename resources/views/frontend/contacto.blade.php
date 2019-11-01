@@ -2,6 +2,10 @@
 
 @section('title') Apartamentosierranevada.net - contacto @endsection
 
+<?php
+if (!isset($oContents)) $oContents = new App\Contents();
+$contactoContent = $oContents->getContentByKey('contacto');
+?>
 
 
 @section('content')
@@ -52,23 +56,28 @@
 .modal-dialog.modal-lg{
       margin-top: 120px;
 }
+.contacto-page{
+  background-image: url("{{$contactoContent['imagen']}}");
+  background-position:  center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 </style>
 
 <script src='https://www.google.com/recaptcha/api.js?render=6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV'></script>
 
-<section class="contacto-page" style="background: url(/img/miramarski/contacto.jpg) center;">
+<section class="contacto-page" >
   <div class="container ">
     <div class="row">
       <div class="col-md-6 col-xs-12 black-cover" style="padding">
           <div class="heading-block center">
-            <h4 class="white">Dónde Estamos?</h4>
-            <span class="white">Alquiler Apartamento de Lujo - Edif Miramar Ski</span>
+            <h4 class="white">{{$contactoContent['title']}}</h4>
+            <span class="white">{{$contactoContent['subtitle']}}</span>
           </div>
-              <p class="text-justify font-s18 font-w300 white">
-                Calle Cauchiles Escalera 1<br>
-                Edificio Miramar Ski<br>
-                18196 Monachil Sierra Nevada, Granada<br>
-              </p>							
+              <div class="text-justify font-s18 font-w300 white">
+                {!! $contactoContent['content'] !!}
+              </div>
             <h4 class="text-center white" >
               <a href="#" data-toggle="modal" data-target=".mapa" style="cursor: pointer;color: white">
                 <i class="fa fa-map-marker "></i> COMO LLEGAR
@@ -79,7 +88,7 @@
         <?php if (!isset($contacted)): ?>
         <div class=" black-cover" id="content-result-contact-form">
           <div class="heading-block center ">
-            <h4 class="white">ENVIANOS TUS DUDAS</h4>
+            <h4 class="white">{{$contactoContent['title_form']}}</h4>
             <!-- <span>Alquiler Apartamento de Lujo - Edif Miramar Ski</span> -->
           </div>
 
