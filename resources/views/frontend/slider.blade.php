@@ -2,14 +2,7 @@
 if (!isset($oContents)) $oContents = new App\Contents();
 $sliderHome = $oContents->getContentByKey('slider_home');
 ?>
-<!--HTML5shiv Js-->
-  <script src="{{ assetV('/frontend/vendor/camera-slider-master/js/modernizr-3.5.0.min.js')}}"></script>
-  <!--Camera JS with Required jQuery Easing Plugin-->
-  <script src="{{ assetV('/frontend/vendor/camera-slider-master/js/easing.min.js')}}" type="text/javascript"></script>
-  <script src="{{ assetV('/frontend/vendor/camera-slider-master/js/camera.min.js')}}" type="text/javascript"></script>
-  <!-- Bootstrap Js -->
-  <script src="{{ assetV('/frontend/vendor/camera-slider-master/js/bootstrap.min.js')}}" type="text/javascript"></script>
-  <!-- Custom JS --->
+
   <style>
     
    .camera_wrap {

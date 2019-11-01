@@ -1,10 +1,4 @@
 @extends('layouts.master_withoutslider')
-<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
-<link rel="stylesheet" href="{{ asset('/frontend/css/components/radio-checkbox.css')}}" type="text/css" />
-
-<link rel="stylesheet" type="text/css" href="{{ asset('/frontend/css/normalize.css')}}" />
-<link rel="stylesheet" type="text/css" href="{{ asset('/frontend/css/fourBoxSlider.min.css')}}" />
-<link rel="stylesheet" type="text/css" href="{{ asset('/frontend/css/component.css')}}" />    
 <script src="{{asset('/frontend/js/modernizr.custom.js')}}"></script>
 
 <style type="text/css">
@@ -177,6 +171,5 @@
 
 @section('scripts')
   <script src="{{ assetV('/frontend/vendor/lightslider-master/src/js/lightslider.js')}}"></script>
-  <link rel="stylesheet" href="{{ assetV('/frontend/vendor/lightslider-master/src/css/lightslider.css')}}" />
   <script type="text/javascript" src="{{ assetV('/frontend/js/form_booking.js')}}"></script>
 @endsection

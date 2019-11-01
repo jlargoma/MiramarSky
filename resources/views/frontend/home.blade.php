@@ -3,17 +3,7 @@
 @section('title') Alquiler apartamento Sierra Nevada @endsection
 
 @section('moreScripts')
- <!--HTML5shiv Js-->
-  <script src="{{ assetV('/frontend/vendor/camera-slider-master/js/modernizr-3.5.0.min.js')}}"></script>
-  <!--Camera JS with Required jQuery Easing Plugin-->
-  <script src="{{ assetV('/frontend/vendor/camera-slider-master/js/easing.min.js')}}" type="text/javascript"></script>
-  <script src="{{ assetV('/frontend/vendor/camera-slider-master/js/camera.min.js')}}" type="text/javascript"></script>
-  <!-- Bootstrap Js -->
-  <script src="{{ assetV('/frontend/vendor/camera-slider-master/js/bootstrap.min.js')}}" type="text/javascript"></script>
-  <!-- Custom JS --->
-  <script src="{{ assetV('/frontend/vendor/camera-slider-master/js/plugins.js')}}"></script>
-  <script src="{{ assetV('/frontend/vendor/lightslider-master/src/js/lightslider.js')}}"></script>
-  <script type="text/javascript" src="{{ assetV('/frontend/js/form_booking.js')}}"></script>
+<script type="text/javascript" src="{{ assetV('/js/scripts-home.js')}}"></script>
   @endsection 
 @section('content')
 <section id="content" style="padding: 0;    clear: both;">
